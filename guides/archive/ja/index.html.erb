@@ -1,0 +1,10 @@
+﻿
+<% content_for :page_title do %> Ruby on Railsガイド <% end %> <% content_for :header_section do %> <%= render 'welcome' %> <% end %> <% content_for :index_section do %> 
+Railsガイドは<%= link_to 'Kindle', @mobi %>でも読めます。
+アイコンが付いているガイドは現在作業中であり、このガイドのインデックスメニューからは参照できません。作業中のガイドはそれなりに有用ではありますが、不完全な情報やエラーが含まれている可能性もあります。内容に問題があった場合はコメントと修正内容を投稿いただけると助かります。
+<% end %> <% documents_by_section.each do |section| %> 
+<%= section['name'] %>
+<% section['documents'].each do |document| %> <%= guide(document['name'], document['url'], work_in_progress: document['work_in_progress']) do %> 
+<%= document['description'] %>
+<% end %> <% end %> 
+<% end %>

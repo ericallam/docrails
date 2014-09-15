@@ -1,0 +1,366 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>Ruby on Rails Guides</title>
+<link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
+<link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+<link rel="stylesheet" type="text/css" href="stylesheets/syntaxhighlighter/shCore.css" />
+<link rel="stylesheet" type="text/css" href="stylesheets/syntaxhighlighter/shThemeRailsGuides.css" />
+
+<link rel="stylesheet" type="text/css" href="stylesheets/fixes.css" />
+
+<link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+</head>
+<body class="guide">
+  <div id="topNav">
+    <div class="wrapper">
+      <strong class="more-info-label">More at <a href="http://rubyonrails.org/">rubyonrails.org:</a> </strong>
+      <span class="red-button more-info-button">
+        More Ruby on Rails
+      </span>
+      <ul class="more-info-links s-hidden">
+        <li class="more-info"><a href="http://rubyonrails.org/">Overview</a></li>
+        <li class="more-info"><a href="http://rubyonrails.org/download">Download</a></li>
+        <li class="more-info"><a href="http://rubyonrails.org/deploy">Deploy</a></li>
+        <li class="more-info"><a href="https://github.com/rails/rails">Code</a></li>
+        <li class="more-info"><a href="http://rubyonrails.org/screencasts">Screencasts</a></li>
+        <li class="more-info"><a href="http://rubyonrails.org/documentation">Documentation</a></li>
+        <li class="more-info"><a href="http://rubyonrails.org/ecosystem">Ecosystem</a></li>
+        <li class="more-info"><a href="http://rubyonrails.org/community">Community</a></li>
+        <li class="more-info"><a href="http://weblog.rubyonrails.org/">Blog</a></li>
+      </ul>
+    </div>
+  </div>
+  <div id="header">
+    <div class="wrapper clearfix">
+      <h1><a href="index.html" title="Return to home page">Guides.rubyonrails.org</a></h1>
+      <ul class="nav">
+        <li><a class="nav-item" href="index.html">Home</a></li>
+        <li class="guides-index guides-index-large">
+          <a href="index.html" id="guidesMenu" class="guides-index-item nav-item">Guides Index</a>
+          <div id="guides" class="clearfix" style="display: none;">
+            <hr />
+              <dl class="L">
+                <dt>Start Here</dt>
+                <dd><a href="getting_started.html">Getting Started with Rails</a></dd>
+                <dt>Models</dt>
+                <dd><a href="active_record_basics.html">Active Record Basics</a></dd>
+                <dd><a href="migrations.html">Rails Database Migrations</a></dd>
+                <dd><a href="active_record_validations.html">Active Record Validations</a></dd>
+                <dd><a href="active_record_callbacks.html">Active Record Callbacks</a></dd>
+                <dd><a href="association_basics.html">Active Record Associations</a></dd>
+                <dd><a href="active_record_querying.html">Active Record Query Interface</a></dd>
+                <dt>Views</dt>
+                <dd><a href="layouts_and_rendering.html">Layouts and Rendering in Rails</a></dd>
+                <dd><a href="form_helpers.html">Action View Form Helpers</a></dd>
+                <dt>Controllers</dt>
+                <dd><a href="action_controller_overview.html">Action Controller Overview</a></dd>
+                <dd><a href="routing.html">Rails Routing from the Outside In</a></dd>
+              </dl>
+              <dl class="R">
+                <dt>Digging Deeper</dt>
+                <dd><a href="active_support_core_extensions.html">Active Support Core Extensions</a></dd>
+                <dd><a href="i18n.html">Rails Internationalization API</a></dd>
+                <dd><a href="action_mailer_basics.html">Action Mailer Basics</a></dd>
+                <dd><a href="security.html">Securing Rails Applications</a></dd>
+                <dd><a href="debugging_rails_applications.html">Debugging Rails Applications</a></dd>
+                <dd><a href="configuring.html">Configuring Rails Applications</a></dd>
+                <dd><a href="command_line.html">Rails Command Line Tools and Rake Tasks</a></dd>
+                <dd><a href="asset_pipeline.html">Asset Pipeline</a></dd>
+                <dd><a href="working_with_javascript_in_rails.html">Working with JavaScript in Rails</a></dd>
+                <dt>Extending Rails</dt>
+                <dd><a href="rails_on_rack.html">Rails on Rack</a></dd>
+                <dd><a href="generators.html">Creating and Customizing Rails Generators</a></dd>
+                <dt>Contributing to Ruby on Rails</dt>
+                <dd><a href="contributing_to_ruby_on_rails.html">Contributing to Ruby on Rails</a></dd>
+                <dd><a href="api_documentation_guidelines.html">API Documentation Guidelines</a></dd>
+                <dd><a href="ruby_on_rails_guides_guidelines.html">Ruby on Rails Guides Guidelines</a></dd>
+                <dt>Maintenance Policy</dt>
+                <dd><a href="maintenance_policy.html">Maintenance Policy</a></dd>
+                <dt>Release Notes</dt>
+                <dd><a href="4_1_release_notes.html">Ruby on Rails 4.1 Release Notes</a></dd>
+                <dd><a href="4_0_release_notes.html">Ruby on Rails 4.0 Release Notes</a></dd>
+                <dd><a href="3_2_release_notes.html">Ruby on Rails 3.2 Release Notes</a></dd>
+                <dd><a href="3_1_release_notes.html">Ruby on Rails 3.1 Release Notes</a></dd>
+                <dd><a href="3_0_release_notes.html">Ruby on Rails 3.0 Release Notes</a></dd>
+                <dd><a href="2_3_release_notes.html">Ruby on Rails 2.3 Release Notes</a></dd>
+                <dd><a href="2_2_release_notes.html">Ruby on Rails 2.2 Release Notes</a></dd>
+              </dl>
+          </div>
+        </li>
+        <li><a class="nav-item" href="contributing_to_ruby_on_rails.html">Contribute</a></li>
+        <li><a class="nav-item" href="credits.html">Credits</a></li>
+        <li class="guides-index guides-index-small">
+          <select class="guides-index-item nav-item">
+            <option value="index.html">Guides Index</option>
+              <optgroup label="Start Here">
+                  <option value="getting_started.html">Getting Started with Rails</option>
+              </optgroup>
+              <optgroup label="Models">
+                  <option value="active_record_basics.html">Active Record Basics</option>
+                  <option value="migrations.html">Rails Database Migrations</option>
+                  <option value="active_record_validations.html">Active Record Validations</option>
+                  <option value="active_record_callbacks.html">Active Record Callbacks</option>
+                  <option value="association_basics.html">Active Record Associations</option>
+                  <option value="active_record_querying.html">Active Record Query Interface</option>
+              </optgroup>
+              <optgroup label="Views">
+                  <option value="layouts_and_rendering.html">Layouts and Rendering in Rails</option>
+                  <option value="form_helpers.html">Action View Form Helpers</option>
+              </optgroup>
+              <optgroup label="Controllers">
+                  <option value="action_controller_overview.html">Action Controller Overview</option>
+                  <option value="routing.html">Rails Routing from the Outside In</option>
+              </optgroup>
+              <optgroup label="Digging Deeper">
+                  <option value="active_support_core_extensions.html">Active Support Core Extensions</option>
+                  <option value="i18n.html">Rails Internationalization API</option>
+                  <option value="action_mailer_basics.html">Action Mailer Basics</option>
+                  <option value="security.html">Securing Rails Applications</option>
+                  <option value="debugging_rails_applications.html">Debugging Rails Applications</option>
+                  <option value="configuring.html">Configuring Rails Applications</option>
+                  <option value="command_line.html">Rails Command Line Tools and Rake Tasks</option>
+                  <option value="asset_pipeline.html">Asset Pipeline</option>
+                  <option value="working_with_javascript_in_rails.html">Working with JavaScript in Rails</option>
+              </optgroup>
+              <optgroup label="Extending Rails">
+                  <option value="rails_on_rack.html">Rails on Rack</option>
+                  <option value="generators.html">Creating and Customizing Rails Generators</option>
+              </optgroup>
+              <optgroup label="Contributing to Ruby on Rails">
+                  <option value="contributing_to_ruby_on_rails.html">Contributing to Ruby on Rails</option>
+                  <option value="api_documentation_guidelines.html">API Documentation Guidelines</option>
+                  <option value="ruby_on_rails_guides_guidelines.html">Ruby on Rails Guides Guidelines</option>
+              </optgroup>
+              <optgroup label="Maintenance Policy">
+                  <option value="maintenance_policy.html">Maintenance Policy</option>
+              </optgroup>
+              <optgroup label="Release Notes">
+                  <option value="4_1_release_notes.html">Ruby on Rails 4.1 Release Notes</option>
+                  <option value="4_0_release_notes.html">Ruby on Rails 4.0 Release Notes</option>
+                  <option value="3_2_release_notes.html">Ruby on Rails 3.2 Release Notes</option>
+                  <option value="3_1_release_notes.html">Ruby on Rails 3.1 Release Notes</option>
+                  <option value="3_0_release_notes.html">Ruby on Rails 3.0 Release Notes</option>
+                  <option value="2_3_release_notes.html">Ruby on Rails 2.3 Release Notes</option>
+                  <option value="2_2_release_notes.html">Ruby on Rails 2.2 Release Notes</option>
+              </optgroup>
+          </select>
+        </li>
+      </ul>
+      </div>
+    </div>
+  </div>
+  <hr class="hide" />
+
+  <div id="feature">
+    <div class="wrapper">
+      
+
+                <div id="subCol">
+            <h3 class="chapter"><img src="images/chapters_icon.gif" alt="" />Chapters</h3>
+            <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><body>
+<ol class="chapters">
+<li><a href="#b6bece44269124bb6021dc1de6943e1a5b5bc3f9">マークダウン (Markdown)</a></li>
+<li><a href="#82b55ead3e1825ef20f9f94c0fe4b12efa7e2699">プロローグ</a></li>
+<li><a href="#47b4753f220d4e6205ab2eb57371e940cbbdfd46">タイトル</a></li>
+<li><a href="#f1375120a8d9544ecb4a5bc7cf7967c12b0139e1">APIドキュメントの書き方</a></li>
+<li>
+<a href="#7ec2a233d8c804a41f6ac4cdf3107239fb1a2073">HTMLガイド</a>
+
+<ul>
+<li><a href="#7ec2a233d8c804a41f6ac4cdf3107239fb1a2073-4aa23063955bc02ec0812758bb83063e84383e4c">生成</a></li>
+<li><a href="#026c7bfdd1c04df5829eaa58914ec8e5591dffff">検証</a></li>
+</ul>
+</li>
+<li>
+<a href="#05ca0d2dda6cd44e50c14720e2b81c667f2cd597">Kindleガイド</a>
+
+<ul>
+<li><a href="#05ca0d2dda6cd44e50c14720e2b81c667f2cd597-4aa23063955bc02ec0812758bb83063e84383e4c">生成</a></li>
+</ul>
+</li>
+</ol>
+</body></html>
+
+          </div>
+
+    </div>
+  </div>
+
+  <div id="container">
+    <div class="wrapper">
+      <div id="mainCol">
+        <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><body>
+<h2>Ruby on Railsガイドのガイドライン</h2>
+<p>本ガイドは、Ruby on Railsガイドを書くためのガイドラインです。本ガイド自身が本ガイドに従って書かれており、望ましいガイドラインの例であると同時に優美なループを形成しています。</p>
+<p>このガイドの内容:</p>
+<ul>
+<li>Railsドキュメントの記法</li>
+<li>ガイドをローカルで生成する方法</li>
+</ul>
+
+<hr>
+<h3 id="b6bece44269124bb6021dc1de6943e1a5b5bc3f9">1 マークダウン (Markdown)</h3>
+<p>ガイドは <a href="http://github.github.com/github-flavored-markdown/">GitHub Flavored Markdown</a> で書かれています。まとまった<a href="http://daringfireball.net/projects/markdown/syntax">Markdownドキュメント</a>、<a href="http://daringfireball.net/projects/markdown/basics">チートシート</a>、通常のMarkdownとの違いに関する<a href="http://github.github.com/github-flavored-markdown/">追加ドキュメント</a> がそれぞれあります。</p>
+<h3 id="82b55ead3e1825ef20f9f94c0fe4b12efa7e2699">2 プロローグ</h3>
+<p>ガイドの冒頭には、読者の開発意欲を高めるような文を置いてください。ガイドの青い部分がこれに該当します。プロローグでは、そのガイドの概要と、ガイドで学ぶ項目について記載してください。例については<a href="routing.html">ルーティングガイド</a>を参照してください。</p>
+<h3 id="47b4753f220d4e6205ab2eb57371e940cbbdfd46">3 タイトル</h3>
+<p>ガイドのタイトルには<code>h1</code>、ガイドのセクションには<code>h2</code>、ガイドのサブセクションには<code>h3</code>をそれぞれ使用してください。なお、実際に生成されるHTMLの見出しは<code>&lt;h2&gt;</code>から始まります。</p>
+<div class="code_container">
+<pre class="brush: plain; gutter: false; toolbar: false">
+ガイドのタイトル
+===========
+
+セクション
+-------
+
+### サブセクション
+
+</pre>
+</div>
+<p>冠詞、前置詞、接続詞、be動詞以外の単語は冒頭を大文字にします。</p>
+<div class="code_container">
+<pre class="brush: plain; gutter: false; toolbar: false">
+#### Middlewareスタックは配列
+#### オブジェクトが保存されるタイミング
+
+</pre>
+</div>
+<p>通常のテキストと同じタイポグラフィを使用してください。</p>
+<div class="code_container">
+<pre class="brush: plain; gutter: false; toolbar: false">
+##### `:content_type`オプション
+
+</pre>
+</div>
+<h3 id="f1375120a8d9544ecb4a5bc7cf7967c12b0139e1">4 APIドキュメントの書き方</h3>
+<p>ガイドとAPIは、必要な箇所が互いに首尾一貫している必要があります。<a href="api_documentation_guidelines.html">APIドキュメント作成ガイドライン</a>の以下のセクションを参照してください</p>
+<ul>
+<li><a href="api_documentation_guidelines.html#wording">言葉遣い</a></li>
+<li><a href="api_documentation_guidelines.html#example-code">サンプルコード</a></li>
+<li><a href="api_documentation_guidelines.html#filenames">ファイル名</a></li>
+<li><a href="api_documentation_guidelines.html#fonts">フォント</a></li>
+</ul>
+<p>上記のガイドラインは、ガイドについても適用されます。</p>
+<h3 id="7ec2a233d8c804a41f6ac4cdf3107239fb1a2073">5 HTMLガイド</h3>
+<p>ガイドを生成する前に、システムに最新のBundlerがインストールされていることを確認してください。現時点であれば、Bundler 1.3.5がインストールされている必要があります。</p>
+<p>最新のBundlerをインストールするには<code>gem install bundler</code>コマンドを実行してください。</p>
+<h4 id="7ec2a233d8c804a41f6ac4cdf3107239fb1a2073-4aa23063955bc02ec0812758bb83063e84383e4c">5.1 生成</h4>
+<p>すべてのガイドを生成するには、<code>cd</code>コマンドで<code>guides</code>ディレクトリに移動し、<code>bundle install</code>を実行してから以下のいずれかを実行します。</p>
+<div class="code_container">
+<pre class="brush: plain; gutter: false; toolbar: false">
+bundle exec rake guides:generate
+
+</pre>
+</div>
+<p>または</p>
+<div class="code_container">
+<pre class="brush: plain; gutter: false; toolbar: false">
+bundle exec rake guides:generate:html
+
+</pre>
+</div>
+<p><code>my_guide.md</code>ファイルだけを生成したい場合は環境変数<code>ONLY</code>に設定します。</p>
+<div class="code_container">
+<pre class="brush: plain; gutter: false; toolbar: false">
+touch my_guide.md
+bundle exec rake guides:generate ONLY=my_guide
+
+</pre>
+</div>
+<p>デフォルトでは、変更のないガイドは生成がスキップされるので、<code>ONLY</code>を使用する機会はそうないと思われます。</p>
+<p>すべてのガイドを強制的に生成するには<code>ALL=1</code>を指定します。</p>
+<p>生成の際には<code>WARNINGS=1</code>を指定しておくことをお勧めします。これにより、重複したIDが検出され、内部リンクが切れている場合に警告が出力されます。</p>
+<p>英語以外の言語向けに生成を行いたい場合は、<code>source</code>ディレクトリの下にたとえば<code>source/es</code>のようにその言語用のディレクトリを作成し、<code>GUIDES_LANGUAGE</code>環境変数を設定します。</p>
+<div class="code_container">
+<pre class="brush: plain; gutter: false; toolbar: false">
+bundle exec rake guides:generate GUIDES_LANGUAGE=es
+
+</pre>
+</div>
+<p>生成スクリプトの設定に使用できる環境変数をすべて知りたい場合は、単に以下を実行してください。</p>
+<div class="code_container">
+<pre class="brush: plain; gutter: false; toolbar: false">
+rake
+
+</pre>
+</div>
+<h4 id="026c7bfdd1c04df5829eaa58914ec8e5591dffff">5.2 検証</h4>
+<p>生成されたHTMLを検証するには以下を実行します。</p>
+<div class="code_container">
+<pre class="brush: plain; gutter: false; toolbar: false">
+bundle exec rake guides:validate
+
+</pre>
+</div>
+<p>特に、タイトルを元にIDが生成される関係上、タイトルでの重複が生じやすくなっています。重複を検出するには、ガイド生成時に<code>WARNINGS=1</code>を指定してください。警告に解決方法が出力されます。</p>
+<h3 id="05ca0d2dda6cd44e50c14720e2b81c667f2cd597">6 Kindleガイド</h3>
+<h4 id="05ca0d2dda6cd44e50c14720e2b81c667f2cd597-4aa23063955bc02ec0812758bb83063e84383e4c">6.1 生成</h4>
+<p>Kindle向けにガイドを生成するには、以下のrakeタスクを実行します。</p>
+<div class="code_container">
+<pre class="brush: plain; gutter: false; toolbar: false">
+bundle exec rake guides:generate:kindle
+
+</pre>
+</div>
+</body></html>
+
+
+        <h3>Feedback</h3>
+        <p>
+          You're encouraged to help improve the quality of this guide.
+        </p>
+        <p>
+          Please contribute if you see any typos or factual errors.
+          To get started, you can read our <a href="http://edgeguides.rubyonrails.org/contributing_to_ruby_on_rails.html#contributing-to-the-rails-documentation">documentation contributions</a> section.
+        </p>
+        <p>
+          You may also find incomplete content, or stuff that is not up to date.
+          Please do add any missing documentation for master. Make sure to check
+          <a href="http://edgeguides.rubyonrails.org">Edge Guides</a> first to verify
+          if the issues are already fixed or not on the master branch.
+          Check the <a href="ruby_on_rails_guides_guidelines.html">Ruby on Rails Guides Guidelines</a>
+          for style and conventions.
+        </p>
+        <p>
+          If for whatever reason you spot something to fix but cannot patch it yourself, please
+          <a href="https://github.com/rails/rails/issues">open an issue</a>.
+        </p>
+        <p>And last but not least, any kind of discussion regarding Ruby on Rails
+          documentation is very welcome in the <a href="http://groups.google.com/group/rubyonrails-docs">rubyonrails-docs mailing list</a>.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="hide" />
+  <div id="footer">
+    <div class="wrapper">
+      <p>This work is licensed under a <a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-Share Alike 3.0</a> License</p>
+<p>"Rails", "Ruby on Rails", and the Rails logo are trademarks of David Heinemeier Hansson. All rights reserved.</p>
+
+    </div>
+  </div>
+
+  <script type="text/javascript" src="javascripts/jquery.min.js"></script>
+  <script type="text/javascript" src="javascripts/responsive-tables.js"></script>
+  <script type="text/javascript" src="javascripts/guides.js"></script>
+  <script type="text/javascript" src="javascripts/syntaxhighlighter/shCore.js"></script>
+  <script type="text/javascript" src="javascripts/syntaxhighlighter/shBrushRuby.js"></script>
+  <script type="text/javascript" src="javascripts/syntaxhighlighter/shBrushXml.js"></script>
+  <script type="text/javascript" src="javascripts/syntaxhighlighter/shBrushSql.js"></script>
+  <script type="text/javascript" src="javascripts/syntaxhighlighter/shBrushPlain.js"></script>
+  <script type="text/javascript">
+    SyntaxHighlighter.all();
+    $(guidesIndex.bind);
+  </script>
+</body>
+</html>
