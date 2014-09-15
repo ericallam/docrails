@@ -19,7 +19,7 @@
           <a id="forkme_banner" href="https://github.com/yasslab/docrails">View on GitHub</a>
 
           <h1 id="project_title">Ruby on Rails ガイド</h1>
-          <h2 id="project_tagline">Rails 開発のお供に最適! 日本語版 Rails リファレンスマニュアル.</h2>
+          <h2 id="project_tagline">Rails開発のお供に最適! 日本語版Railsリファレンスマニュアル</h2>
 
             <section id="downloads">
               <a class="zip_download_link" href="https://github.com/yasslab/docrails/zipball/master">Download this project as a .zip file</a>
@@ -120,7 +120,7 @@ the following resources handy:</p>
 <p>本リポジトリは<a href="http://guides.rubyonrails.org/">Ruby on Rails Guides</a>を日本語に訳したものです。</p>
 
 <p>Railsガイド
-<a href="http://railsguide.jp/">http://railsguide.jp/</a></p>
+<a href="http://railsguides.jp/">http://railsguides.jp/</a></p>
 
 <p>Ruby on Rails Tutorialの日本語訳「Railsチュートリアル」も無料で公開されているので，<br>
 こちらも是非合わせて読んでみてください :)</p>
