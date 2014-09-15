@@ -56,7 +56,7 @@ and supported by [ヤスラボ](http://yasslab.jp/ja/).
 
 ## 相談部屋 (チャットルーム)
 
-- [idobata.io](https://idobata.io) の [yasslab/railsguides.jp](https://idobata.io/organizations/yasslab/rooms/railsguides/join_request/c89d1d3b-d6d1-4baa-9271-145fbd0c4734) 部屋にて，Rails ガイドに関するアレコレを情報交換しています．
+- [idobata.io](https://idobata.io) の [yasslab/railsguides.jp](https://idobata.io/organizations/yasslab/rooms/railsguides/join_request/c89d1d3b-d6d1-4baa-9271-145fbd0c4734) 部屋にて，Rails ガイドに関する情報交換しています．
 
 ## ライセンス
 
