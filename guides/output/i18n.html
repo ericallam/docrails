@@ -47,27 +47,28 @@
           <div id="guides" class="clearfix" style="display: none;">
             <hr />
               <dl class="L">
-                <dt>Start Here</dt>
-                <dd><a href="getting_started.html">Getting Started with Rails</a></dd>
-                <dt>Models</dt>
-                <dd><a href="active_record_basics.html">Active Record Basics</a></dd>
-                <dd><a href="migrations.html">Rails Database Migrations</a></dd>
-                <dd><a href="active_record_validations.html">Active Record Validations</a></dd>
-                <dd><a href="active_record_callbacks.html">Active Record Callbacks</a></dd>
-                <dd><a href="association_basics.html">Active Record Associations</a></dd>
-                <dd><a href="active_record_querying.html">Active Record Query Interface</a></dd>
-                <dt>Views</dt>
-                <dd><a href="layouts_and_rendering.html">Layouts and Rendering in Rails</a></dd>
-                <dd><a href="form_helpers.html">Action View Form Helpers</a></dd>
-                <dt>Controllers</dt>
-                <dd><a href="action_controller_overview.html">Action Controller Overview</a></dd>
-                <dd><a href="routing.html">Rails Routing from the Outside In</a></dd>
+                <dt>はじめに</dt>
+                <dd><a href="getting_started.html">Railsをはじめよう</a></dd>
+                <dt>モデル</dt>
+                <dd><a href="active_record_basics.html">Active Recordの基礎</a></dd>
+                <dd><a href="active_record_migrations.html">Active Recordとマイグレーション (※翻訳中)</a></dd>
+                <dd><a href="active_record_validations.html">Active Record検証機能 (バリデーション)</a></dd>
+                <dd><a href="active_record_callbacks.html">Active Recordコールバック</a></dd>
+                <dd><a href="association_basics.html">Active Recordの関連付け (アソシエーション)</a></dd>
+                <dd><a href="active_record_querying.html">Active Recordクエリインターフェイス</a></dd>
+                <dt>ビュー</dt>
+                <dd><a href="layouts_and_rendering.html">ビューのレイアウトとレンダリング (※翻訳中)</a></dd>
+                <dd><a href="form_helpers.html">Action Viewフォームヘルパー</a></dd>
+                <dt>コントローラ</dt>
+                <dd><a href="action_controller_overview.html">Action Controllerの概要</a></dd>
+                <dd><a href="routing.html">Railsのルーティング (※翻訳中)</a></dd>
               </dl>
               <dl class="R">
-                <dt>Digging Deeper</dt>
-                <dd><a href="active_support_core_extensions.html">Active Support Core Extensions</a></dd>
-                <dd><a href="i18n.html">Rails Internationalization API</a></dd>
-                <dd><a href="action_mailer_basics.html">Action Mailer Basics</a></dd>
+                <dt>高度なトピック</dt>
+                <dd><a href="active_support_core_extensions.html">Active Supportコア拡張機能</a></dd>
+                <dd><a href="i18n.html">Rails国際化(I18n) API</a></dd>
+                <dd><a href="action_mailer_basics.html">Action Mailerの基礎 (未着手)</a></dd>
+                <dd><a href="active_job_basics.html">Active Jobの基礎 (未着手)</a></dd>
                 <dd><a href="security.html">Securing Rails Applications</a></dd>
                 <dd><a href="debugging_rails_applications.html">Debugging Rails Applications</a></dd>
                 <dd><a href="configuring.html">Configuring Rails Applications</a></dd>
@@ -84,6 +85,7 @@
                 <dt>Maintenance Policy</dt>
                 <dd><a href="maintenance_policy.html">Maintenance Policy</a></dd>
                 <dt>Release Notes</dt>
+                <dd><a href="upgrading_ruby_on_rails.html">Upgrading Ruby on Rails</a></dd>
                 <dd><a href="4_1_release_notes.html">Ruby on Rails 4.1 Release Notes</a></dd>
                 <dd><a href="4_0_release_notes.html">Ruby on Rails 4.0 Release Notes</a></dd>
                 <dd><a href="3_2_release_notes.html">Ruby on Rails 3.2 Release Notes</a></dd>
@@ -99,29 +101,30 @@
         <li class="guides-index guides-index-small">
           <select class="guides-index-item nav-item">
             <option value="index.html">Guides Index</option>
-              <optgroup label="Start Here">
-                  <option value="getting_started.html">Getting Started with Rails</option>
+              <optgroup label="はじめに">
+                  <option value="getting_started.html">Railsをはじめよう</option>
               </optgroup>
-              <optgroup label="Models">
-                  <option value="active_record_basics.html">Active Record Basics</option>
-                  <option value="migrations.html">Rails Database Migrations</option>
-                  <option value="active_record_validations.html">Active Record Validations</option>
-                  <option value="active_record_callbacks.html">Active Record Callbacks</option>
-                  <option value="association_basics.html">Active Record Associations</option>
-                  <option value="active_record_querying.html">Active Record Query Interface</option>
+              <optgroup label="モデル">
+                  <option value="active_record_basics.html">Active Recordの基礎</option>
+                  <option value="active_record_migrations.html">Active Recordとマイグレーション (※翻訳中)</option>
+                  <option value="active_record_validations.html">Active Record検証機能 (バリデーション)</option>
+                  <option value="active_record_callbacks.html">Active Recordコールバック</option>
+                  <option value="association_basics.html">Active Recordの関連付け (アソシエーション)</option>
+                  <option value="active_record_querying.html">Active Recordクエリインターフェイス</option>
               </optgroup>
-              <optgroup label="Views">
-                  <option value="layouts_and_rendering.html">Layouts and Rendering in Rails</option>
-                  <option value="form_helpers.html">Action View Form Helpers</option>
+              <optgroup label="ビュー">
+                  <option value="layouts_and_rendering.html">ビューのレイアウトとレンダリング (※翻訳中)</option>
+                  <option value="form_helpers.html">Action Viewフォームヘルパー</option>
               </optgroup>
-              <optgroup label="Controllers">
-                  <option value="action_controller_overview.html">Action Controller Overview</option>
-                  <option value="routing.html">Rails Routing from the Outside In</option>
+              <optgroup label="コントローラ">
+                  <option value="action_controller_overview.html">Action Controllerの概要</option>
+                  <option value="routing.html">Railsのルーティング (※翻訳中)</option>
               </optgroup>
-              <optgroup label="Digging Deeper">
-                  <option value="active_support_core_extensions.html">Active Support Core Extensions</option>
-                  <option value="i18n.html">Rails Internationalization API</option>
-                  <option value="action_mailer_basics.html">Action Mailer Basics</option>
+              <optgroup label="高度なトピック">
+                  <option value="active_support_core_extensions.html">Active Supportコア拡張機能</option>
+                  <option value="i18n.html">Rails国際化(I18n) API</option>
+                  <option value="action_mailer_basics.html">Action Mailerの基礎 (未着手)</option>
+                  <option value="active_job_basics.html">Active Jobの基礎 (未着手)</option>
                   <option value="security.html">Securing Rails Applications</option>
                   <option value="debugging_rails_applications.html">Debugging Rails Applications</option>
                   <option value="configuring.html">Configuring Rails Applications</option>
@@ -142,6 +145,7 @@
                   <option value="maintenance_policy.html">Maintenance Policy</option>
               </optgroup>
               <optgroup label="Release Notes">
+                  <option value="upgrading_ruby_on_rails.html">Upgrading Ruby on Rails</option>
                   <option value="4_1_release_notes.html">Ruby on Rails 4.1 Release Notes</option>
                   <option value="4_0_release_notes.html">Ruby on Rails 4.0 Release Notes</option>
                   <option value="3_2_release_notes.html">Ruby on Rails 3.2 Release Notes</option>
@@ -249,7 +253,7 @@
 <li>ロケール辞書の置き場所をRailsに指示すること。</li>
 <li>ロケールの設定・保存・切替方法をRailsに指示すること。</li>
 </ul>
-<p>Railsアプリケーションを_ローカライズする_ プロセスの場合、おそらく以下の3つの作業が必要となるでしょう。</p>
+<p>Railsアプリケーションを<em>ローカライズする</em> プロセスの場合、おそらく以下の3つの作業が必要となるでしょう。</p>
 <ul>
 <li>Railsのデフォルトロケールの差し替えまたはロケールの追加。日付や時刻のフォーマット、月の呼称、Active Recordモデル名などが対象。</li>
 <li>アプリケーションで使用される文字列を抽象化し、キーで検索できる辞書に保存する。フラッシュメッセージやビュー内の固定テキストなどが対象。</li>
@@ -272,7 +276,7 @@
 <li>基本的に英語およびそれに近い言語に対するサポートを提供する</li>
 <li>それ以外の言語についてもあらゆる要素をカスタマイズおよび拡張可能にする</li>
 </ul>
-<p>問題解決の一環として、**Railsフレームワーク内のすべての静的文字列** (Active Recordのバリデーションメッセージ、時刻や日付のフォーマットなど)の <strong>国際化部分は既に完了しています</strong> 。従って、Railsアプリケーションのこれらの部分の <em>ローカライズ</em> は、単にこれらのデフォルト文字列を訳文で「オーバーライド」するだけで済みます。</p>
+<p>問題解決の一環として、<strong>Railsフレームワーク内のすべての静的文字列</strong> (Active Recordのバリデーションメッセージ、時刻や日付のフォーマットなど)の <strong>国際化部分は既に完了しています</strong> 。従って、Railsアプリケーションのこれらの部分の <em>ローカライズ</em> は、単にこれらのデフォルト文字列を訳文で「オーバーライド」するだけで済みます。</p>
 <h4 id="02b76581ab4e4c77cb53932c3531f02f3668a1d5">1.1 ライブラリのアーキテクチャ概観</h4>
 <p>以上のことから、RubyのI18nのgemは2つに分割されています。</p>
 <ul>
@@ -399,7 +403,7 @@ end
 
 </pre>
 </div>
-<p>ほぼ同じ方法で、_サブドメイン_ を使用してロケールを設定する必要があります。</p>
+<p>ほぼ同じ方法で、<em>サブドメイン</em> を使用してロケールを設定する必要があります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # リクエストのサブドメインからロケールを取り出す (http://it.application.local:3000のような形式)
@@ -425,7 +429,7 @@ link_to("Deutsch", "#{APP_CONFIG[:deutsch_website_url]}#{request.env['REQUEST_UR
 <h4 id="6d4d728b6ed770af13f4c8488c6a0fef0d8de08b">2.5 URL Paramsを元にロケールを設定する</h4>
 <p>最も一般的なロケールの設定方法と受け渡し方法は、既に最初の例で<code>I18n.locale = params[:locale]</code> <em>before_action</em> を使用したのと同じように、ロケールをURL paramsに含めることでしょう。この場合、<code>www.example.com/books?locale=ja</code>や<code>www.example.com/ja/books</code>のようなURLを使用できます。</p>
 <p>このアプローチは、ドメイン名からロケールを取得するのとほぼ同じメリットを得ることができます。これによりアプリケーションはWorld Wide Webに則ってRESTfulを保つことができるからです。ただし、少しだけ実装を追加する必要があります。</p>
-<p><code>params</code>からロケールを取り出して設定するのは案外簡単です。ロケールをすべてのURLに含めて**リクエスト経由で渡せばよい** のです。ただし、たとえば<code>link_to(books_url(locale: I18n.locale))</code>のような形式ですべてのURLにロケールオプションを直接含める方法はかなり面倒になり、実用的ではありません。</p>
+<p><code>params</code>からロケールを取り出して設定するのは案外簡単です。ロケールをすべてのURLに含めて<strong>リクエスト経由で渡せばよい</strong> のです。ただし、たとえば<code>link_to(books_url(locale: I18n.locale))</code>のような形式ですべてのURLにロケールオプションを直接含める方法はかなり面倒になり、実用的ではありません。</p>
 <p>Railsには、こういうときのために<a href="http://api.rubyonrails.org/classes/ActionDispatch/Routing/Mapper/Base.html#method-i-default_url_options"><code>ApplicationController#default_url_options</code></a>に「URLの動的な決定を集中制御する」ためのインフラが備わっています。これを使用することで、たとえば<a href="http://api.rubyonrails.org/classes/ActionDispatch/Routing/UrlFor.html#method-i-url_for"><code>url_for</code></a>をデフォルトで有効にし、ヘルパーメソッドがこれに依存するようにすることができます(この場合ヘルパーメソッドを実装してオーバーライドする必要があります)。●</p>
 <p><code>ApplicationController</code>にも同様の設定を含めることができます。</p>
 <div class="code_container">
@@ -470,7 +474,7 @@ get '/:locale' =&gt; 'dashboard#index'
 
 </pre>
 </div>
-<p>このルーティング宣言が他のルーティングを「食べてしまう」ようなことのないよう、**ルーティング宣言の順序** には十分ご注意ください。(この記述は<code>root :to</code>の直前に置くこともできます)</p>
+<p>このルーティング宣言が他のルーティングを「食べてしまう」ようなことのないよう、<strong>ルーティング宣言の順序</strong> には十分ご注意ください。(この記述は<code>root :to</code>の直前に置くこともできます)</p>
 <p>メモ: ルーティングに対してこのような形でシンプルに動作する、以下の2つのプラグインをチェックしてみてもよいかもしれません。Sven Fuchs作 <a href="https://github.com/svenfuchs/routing-filter/tree/master">routing_filter</a> およびRaul Murciano作 <a href="https://github.com/raul/translate_routes/tree/master">translate_routes</a>。</p>
 <h4 id="6872047376c07beea1610c6435cbb311a62db50e">2.6 クライアント提供情報を元にロケールを設定する</h4>
 <p>場合によっては、URLではなく、クライアントから送信される情報を元にロケールを設定したいこともあるでしょう。クライアントから送信される情報としては、ブラウザに設定されている優先言語設定、IPから推測される範囲での地理情報の他に、ユーザーがアプリケーションの画面でロケールを選択してプロファイルに保存したものなどがあります。このアプローチは、Webサイトよりも、Webベースのアプリケーションやサービスに向いています。上の囲み記事にある <em>セッション</em> 、 <em>cookie</em> 、RESTfulアーキテクチャに関する記述を参照してください。</p>

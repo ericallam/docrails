@@ -3,87 +3,87 @@
   name: はじめに
   documents:
     -
-      name: Railsをはじめよう (翻訳済)
+      name: Railsをはじめよう
       url: getting_started.html
       description: Railsのインストール方法と最初のRailsアプリケーションの作成に必要なすべてを解説します。
 -
   name: モデル
   documents:
     -
-      name: Active Recordの基礎 (
+      name: Active Recordの基礎
       url: active_record_basics.html
       description: Active Recordの基礎となるモデル、データベースへの永続的な保存、Active Recordパターンとライブラリについて解説します。
     -
-      name: Active Recordとマイグレーション (未着手)
+      name: Active Recordとマイグレーション (※翻訳中)
       url: active_record_migrations.html
       description: Active Recordのマイグレーション (migration) を使用して、データベースを構造化された方法で整然と変更する方法について解説します。
     -
-      name: Active Record検証機能 (バリデーション) (翻訳済)
+      name: Active Record検証機能 (バリデーション)
       url: active_record_validations.html
       description: Active Recordのバリデーション機能について解説します。
     -
-      name: Active Recordコールバック (翻訳済)
+      name: Active Recordコールバック
       url: active_record_callbacks.html
       description: Active Recordのコールバックについて解説します。
     -
-      name: Active Recordの関連付け (アソシエーション) (翻訳済)
+      name: Active Recordの関連付け (アソシエーション)
       url: association_basics.html
       description: Active Recordが提供するすべての関連付け機能について解説します。
     -
-      name: Active Recordクエリインターフェイス (翻訳済)
+      name: Active Recordクエリインターフェイス
       url: active_record_querying.html
       description: Active Recordが提供するすべてのデータベースクエリインターフェイスについて解説します。
 -
   name: ビュー
   documents:
     -
-      name: Action Viewの概要 (翻訳済)
+      name: Action Viewの概要
       url: action_view_overview.html
       description: Action Viewの概要を紹介し、共通のビューヘルパーについてもある程度解説します。
       work_in_progress: true
     -
-      name: ビューのレイアウトとレンダリング (翻訳中)
+      name: ビューのレイアウトとレンダリング (※翻訳中)
       url: layouts_and_rendering.html
       description: Action ControllerとAction Viewが提供する基本的なレイアウト機能について解説します。画面出力 (レンダリング) とリダイレクト、content_forブロックとパーシャル (部分テンプレート) の使用方法についても解説します。
     -
-      name: Action Viewフォームヘルパー (翻訳済)
+      name: Action Viewフォームヘルパー
       url: form_helpers.html
       description: ビルトインのフォームヘルパーについて解説します。
 -
   name: コントローラ
   documents:
     -
-      name: Action Controllerの概要 (翻訳済)
+      name: Action Controllerの概要
       url: action_controller_overview.html
       description: コントローラの動作と、アプリケーションのリクエストサイクルでコントローラがどのように使われるかについて解説します。セッション、フィルタ、cookie、データストリーミング、リクエストによって発生する例外、その他多くの話題を取り扱っています。
     -
-      name: Rails Routing from the Outside In
+      name: Railsのルーティング (※翻訳中)
       url: routing.html
-      description: This guide covers the user-facing features of Rails routing. If you want to understand how to use routing in your own Rails applications, start here.
+      description: Railsのルーティング機能について解説しますRailsアプリケーションで行われているルーティングのしくみについて理解したい場合は、ここからお読みください。
 -
-  name: Digging Deeper
+  name: 高度なトピック
   documents:
     -
-      name: Active Support Core Extensions
+      name: Active Supportコア拡張機能
       url: active_support_core_extensions.html
-      description: This guide documents the Ruby core extensions defined in Active Support.
+      description: Active Supportで定義されているRubyのコア拡張機能に関するドキュメントです。
     -
-      name: Rails Internationalization API
+      name: Rails国際化(I18n) API
       url: i18n.html
-      description: This guide covers how to add internationalization to your applications. Your application will be able to translate content to different languages, change pluralization rules, use correct date formats for each country and so on.
+      description: Railsアプリケーションを国際化する方法について解説します。これによりアプリケーションを異なる言語に翻訳することができ、さらに単数形/複数形ルールを変更したり、その国に適した日付フォーマットを設定したりできます。
     -
-      name: Action Mailer Basics
+      name: Action Mailerの基礎 (未着手)
       url: action_mailer_basics.html
-      description: This guide describes how to use Action Mailer to send and receive emails.
+      description: Action Mailerを使用してメールを送受信する方法について解説します。
     -
-      name: Active Job Basics
+      name: Active Jobの基礎 (未着手)
       url: active_job_basics.html
-      description: This guide provides you with all you need to get started in creating, enqueueing and executing background jobs.
+      description: バックグラウンドで動作するジョブの作成・キュー送信・実行方法に必要なすべてを解説します。
     -
-      name: Testing Rails Applications
+      name: Railsアプリケーションのテスティング
       url: testing.html
       work_in_progress: true
-      description: This is a rather comprehensive guide to doing both unit and functional tests in Rails. It covers everything from 'What is a test?' to the testing APIs. Enjoy.
+      description: Railsで機能テストとIt covers everything from 'What is a test?' to the testing APIs. Enjoy.
     -
       name: Securing Rails Applications
       url: security.html

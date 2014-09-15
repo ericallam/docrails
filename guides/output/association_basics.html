@@ -47,27 +47,28 @@
           <div id="guides" class="clearfix" style="display: none;">
             <hr />
               <dl class="L">
-                <dt>Start Here</dt>
-                <dd><a href="getting_started.html">Getting Started with Rails</a></dd>
-                <dt>Models</dt>
-                <dd><a href="active_record_basics.html">Active Record Basics</a></dd>
-                <dd><a href="migrations.html">Rails Database Migrations</a></dd>
-                <dd><a href="active_record_validations.html">Active Record Validations</a></dd>
-                <dd><a href="active_record_callbacks.html">Active Record Callbacks</a></dd>
-                <dd><a href="association_basics.html">Active Record Associations</a></dd>
-                <dd><a href="active_record_querying.html">Active Record Query Interface</a></dd>
-                <dt>Views</dt>
-                <dd><a href="layouts_and_rendering.html">Layouts and Rendering in Rails</a></dd>
-                <dd><a href="form_helpers.html">Action View Form Helpers</a></dd>
-                <dt>Controllers</dt>
-                <dd><a href="action_controller_overview.html">Action Controller Overview</a></dd>
-                <dd><a href="routing.html">Rails Routing from the Outside In</a></dd>
+                <dt>はじめに</dt>
+                <dd><a href="getting_started.html">Railsをはじめよう</a></dd>
+                <dt>モデル</dt>
+                <dd><a href="active_record_basics.html">Active Recordの基礎</a></dd>
+                <dd><a href="active_record_migrations.html">Active Recordとマイグレーション (※翻訳中)</a></dd>
+                <dd><a href="active_record_validations.html">Active Record検証機能 (バリデーション)</a></dd>
+                <dd><a href="active_record_callbacks.html">Active Recordコールバック</a></dd>
+                <dd><a href="association_basics.html">Active Recordの関連付け (アソシエーション)</a></dd>
+                <dd><a href="active_record_querying.html">Active Recordクエリインターフェイス</a></dd>
+                <dt>ビュー</dt>
+                <dd><a href="layouts_and_rendering.html">ビューのレイアウトとレンダリング (※翻訳中)</a></dd>
+                <dd><a href="form_helpers.html">Action Viewフォームヘルパー</a></dd>
+                <dt>コントローラ</dt>
+                <dd><a href="action_controller_overview.html">Action Controllerの概要</a></dd>
+                <dd><a href="routing.html">Railsのルーティング (※翻訳中)</a></dd>
               </dl>
               <dl class="R">
-                <dt>Digging Deeper</dt>
-                <dd><a href="active_support_core_extensions.html">Active Support Core Extensions</a></dd>
-                <dd><a href="i18n.html">Rails Internationalization API</a></dd>
-                <dd><a href="action_mailer_basics.html">Action Mailer Basics</a></dd>
+                <dt>高度なトピック</dt>
+                <dd><a href="active_support_core_extensions.html">Active Supportコア拡張機能</a></dd>
+                <dd><a href="i18n.html">Rails国際化(I18n) API</a></dd>
+                <dd><a href="action_mailer_basics.html">Action Mailerの基礎 (未着手)</a></dd>
+                <dd><a href="active_job_basics.html">Active Jobの基礎 (未着手)</a></dd>
                 <dd><a href="security.html">Securing Rails Applications</a></dd>
                 <dd><a href="debugging_rails_applications.html">Debugging Rails Applications</a></dd>
                 <dd><a href="configuring.html">Configuring Rails Applications</a></dd>
@@ -84,6 +85,7 @@
                 <dt>Maintenance Policy</dt>
                 <dd><a href="maintenance_policy.html">Maintenance Policy</a></dd>
                 <dt>Release Notes</dt>
+                <dd><a href="upgrading_ruby_on_rails.html">Upgrading Ruby on Rails</a></dd>
                 <dd><a href="4_1_release_notes.html">Ruby on Rails 4.1 Release Notes</a></dd>
                 <dd><a href="4_0_release_notes.html">Ruby on Rails 4.0 Release Notes</a></dd>
                 <dd><a href="3_2_release_notes.html">Ruby on Rails 3.2 Release Notes</a></dd>
@@ -99,29 +101,30 @@
         <li class="guides-index guides-index-small">
           <select class="guides-index-item nav-item">
             <option value="index.html">Guides Index</option>
-              <optgroup label="Start Here">
-                  <option value="getting_started.html">Getting Started with Rails</option>
+              <optgroup label="はじめに">
+                  <option value="getting_started.html">Railsをはじめよう</option>
               </optgroup>
-              <optgroup label="Models">
-                  <option value="active_record_basics.html">Active Record Basics</option>
-                  <option value="migrations.html">Rails Database Migrations</option>
-                  <option value="active_record_validations.html">Active Record Validations</option>
-                  <option value="active_record_callbacks.html">Active Record Callbacks</option>
-                  <option value="association_basics.html">Active Record Associations</option>
-                  <option value="active_record_querying.html">Active Record Query Interface</option>
+              <optgroup label="モデル">
+                  <option value="active_record_basics.html">Active Recordの基礎</option>
+                  <option value="active_record_migrations.html">Active Recordとマイグレーション (※翻訳中)</option>
+                  <option value="active_record_validations.html">Active Record検証機能 (バリデーション)</option>
+                  <option value="active_record_callbacks.html">Active Recordコールバック</option>
+                  <option value="association_basics.html">Active Recordの関連付け (アソシエーション)</option>
+                  <option value="active_record_querying.html">Active Recordクエリインターフェイス</option>
               </optgroup>
-              <optgroup label="Views">
-                  <option value="layouts_and_rendering.html">Layouts and Rendering in Rails</option>
-                  <option value="form_helpers.html">Action View Form Helpers</option>
+              <optgroup label="ビュー">
+                  <option value="layouts_and_rendering.html">ビューのレイアウトとレンダリング (※翻訳中)</option>
+                  <option value="form_helpers.html">Action Viewフォームヘルパー</option>
               </optgroup>
-              <optgroup label="Controllers">
-                  <option value="action_controller_overview.html">Action Controller Overview</option>
-                  <option value="routing.html">Rails Routing from the Outside In</option>
+              <optgroup label="コントローラ">
+                  <option value="action_controller_overview.html">Action Controllerの概要</option>
+                  <option value="routing.html">Railsのルーティング (※翻訳中)</option>
               </optgroup>
-              <optgroup label="Digging Deeper">
-                  <option value="active_support_core_extensions.html">Active Support Core Extensions</option>
-                  <option value="i18n.html">Rails Internationalization API</option>
-                  <option value="action_mailer_basics.html">Action Mailer Basics</option>
+              <optgroup label="高度なトピック">
+                  <option value="active_support_core_extensions.html">Active Supportコア拡張機能</option>
+                  <option value="i18n.html">Rails国際化(I18n) API</option>
+                  <option value="action_mailer_basics.html">Action Mailerの基礎 (未着手)</option>
+                  <option value="active_job_basics.html">Active Jobの基礎 (未着手)</option>
                   <option value="security.html">Securing Rails Applications</option>
                   <option value="debugging_rails_applications.html">Debugging Rails Applications</option>
                   <option value="configuring.html">Configuring Rails Applications</option>
@@ -142,6 +145,7 @@
                   <option value="maintenance_policy.html">Maintenance Policy</option>
               </optgroup>
               <optgroup label="Release Notes">
+                  <option value="upgrading_ruby_on_rails.html">Upgrading Ruby on Rails</option>
                   <option value="4_1_release_notes.html">Ruby on Rails 4.1 Release Notes</option>
                   <option value="4_0_release_notes.html">Ruby on Rails 4.0 Release Notes</option>
                   <option value="3_2_release_notes.html">Ruby on Rails 3.2 Release Notes</option>
@@ -637,7 +641,7 @@ end
 <p>どちらを使用するかについてですが、経験上、リレーションシップのモデルそれ自体を独立したエンティティとして扱いたい(両モデルの関係そのものについて処理を行いたい)のであれば、中間に結合モデルを使用する<code>has_many :through</code>リレーションシップを選ぶのが最もシンプルです。リレーションシップのモデルで何か特別なことをする必要がまったくないのであれば、結合モデルの不要な<code>has_and_belongs_to_many</code>リレーションシップを使用するのがシンプルです(ただし、こちらの場合は結合モデルが不要な代わりに、専用の結合テーブルを別途データベースに作成しておく必要がありますので、お忘れなきよう)。</p>
 <p>結合モデルで検証(validation)、コールバック、追加の属性が必要なのであれば、<code>has_many :through</code>を使用しましょう。</p>
 <h4 id="2c0c96d34164dcf9f8af6458171efc77e91ee3f4">2.9 ポリモーフィック関連付け</h4>
-<p>_ポリモーフィック関連付け_は、関連付けのやや高度な応用です。ポリモーフィック関連付けを使用すると、ある1つのモデルが他の複数のモデルに属していることを、1つの関連付けだけで表現することができます。たとえば、写真(picture)モデルがあり、このモデルを従業員(employee)モデルと製品(product)モデルの両方に従属させたいとします。この場合は以下のように宣言します。</p>
+<p><em>ポリモーフィック関連付け</em>は、関連付けのやや高度な応用です。ポリモーフィック関連付けを使用すると、ある1つのモデルが他の複数のモデルに属していることを、1つの関連付けだけで表現することができます。たとえば、写真(picture)モデルがあり、このモデルを従業員(employee)モデルと製品(product)モデルの両方に従属させたいとします。この場合は以下のように宣言します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class Picture &lt; ActiveRecord::Base
@@ -987,7 +991,7 @@ create_customer!
 </div>
 <h6 id="ad114d20b361c697df364524412ff56935734315-ae349ddea95e886cdbafc5167c473441c71686f3">4.1.1.3 <code>build_association(attributes = {})</code>
 </h6>
-<p><code>build_association</code>メソッドは、関連付けられた型の新しいオブジェクトを返します。返されるオブジェクトは、渡された属性に基いてインスタンス化され、外部キーを経由するリンクが設定されます。関連付けられたオブジェクトは、値が返された時点ではまだ保存されて_いない_ことにご注意ください。</p>
+<p><code>build_association</code>メソッドは、関連付けられた型の新しいオブジェクトを返します。返されるオブジェクトは、渡された属性に基いてインスタンス化され、外部キーを経由するリンクが設定されます。関連付けられたオブジェクトは、値が返された時点ではまだ保存されて<em>いない</em>ことにご注意ください。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 @customer = @order.build_customer(customer_number: 123,
@@ -1239,7 +1243,7 @@ end
 </pre>
 </div>
 <h5 id="b16af56af5f89c3dc4d1a5972255d881b4151a9d-90d27bdafd66e49d1ec85a3f8d653fe6f469b0b4">4.1.5 オブジェクトが保存されるタイミング</h5>
-<p>オブジェクトを<code>belongs_to</code>関連付けに割り当てても、そのオブジェクトが自動的に保存されるわけでは_ありません_。関連付けられたオブジェクトが保存されることもありません。</p>
+<p>オブジェクトを<code>belongs_to</code>関連付けに割り当てても、そのオブジェクトが自動的に保存されるわけでは<em>ありません</em>。関連付けられたオブジェクトが保存されることもありません。</p>
 <h4 id="b4d48670de5418259e9c368c1f8c3bdfcab9988c">4.2 <code>has_one</code>関連付けにおける参照</h4>
 <p><code>has_one</code>関連付けは他のモデルと1対1対応します。データベースの観点では、この関連付けでは相手のクラスが外部キーを持ちます。相手ではなく自分のクラスが外部キーを持っているのであれば、<code>belongs_to</code>を使うべきです。</p>
 <h5 id="272450775929a6d130816d1eb1f3148ef67f4073">4.2.1 <code>has_one</code>で追加されるメソッド</h5>
@@ -1590,7 +1594,7 @@ orders.create!(attributes = {})`
 
 </pre>
 </div>
-<p>警告: この場合オブジェクトは_無条件で_データベースから削除されます。このとき、<code>:dependent</code>オプションがどのように設定されていても無視して削除が行われます。</p>
+<p>警告: この場合オブジェクトは<em>無条件で</em>データベースから削除されます。このとき、<code>:dependent</code>オプションがどのように設定されていても無視して削除が行われます。</p>
 <h6 id="841d80687ba233751207fc9fd38e3ec46611f8bb-a5ea3a3d1b45c05618a4173407f8a1cc14e712f8">4.3.1.5 <code>collection=objects</code>
 </h6>
 <p><code>collection=</code>メソッドは、指定したオブジェクトでそのコレクションの内容を置き換えます。元からあったオブジェクトは削除されます。</p>
@@ -1653,7 +1657,7 @@ orders.create!(attributes = {})`
 <p><code>collection.exists?</code>メソッドは、指定された条件に合うオブジェクトがコレクションの中に存在するかどうかをチェックします。このメソッドで使用される文法は、<code>ActiveRecord::Base.exists?</code>で使用されているものと同じです。`.</p>
 <h6 id="32ba17e2aeec4faa7f3e707ca89052d509852e78">4.3.1.14 <code>collection.build(attributes = {}, ...)</code>
 </h6>
-<p><code>collection.build</code>メソッドは、関連付けが行われたオブジェクトを1つまたは複数返します。返されるオブジェクトは、渡された属性に基いてインスタンス化され、外部キーを経由するリンクが作成されます。関連付けられたオブジェクトは、値が返された時点ではまだ保存されて_いない_ことにご注意ください。</p>
+<p><code>collection.build</code>メソッドは、関連付けが行われたオブジェクトを1つまたは複数返します。返されるオブジェクトは、渡された属性に基いてインスタンス化され、外部キーを経由するリンクが作成されます。関連付けられたオブジェクトは、値が返された時点ではまだ保存されて<em>いない</em>ことにご注意ください。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 @order = @customer.orders.build(order_date: Time.now,
@@ -2129,7 +2133,7 @@ assemblies.create!(attributes = {})`
 <p><code>collection.exists?</code>メソッドは、指定された条件に合うオブジェクトがコレクションの中に存在するかどうかをチェックします。このメソッドで使用される文法は、<code>ActiveRecord::Base.exists?</code>で使用されているものと同じです。`.</p>
 <h6 id="9ae24de3482cba41521dfbc8af792dee87f61d34">4.4.1.15 <code>collection.build(attributes = {})</code>
 </h6>
-<p><code>collection.build</code>メソッドは、関連付けが行われたオブジェクトを1つ返します。このオブジェクトは、渡された属性でインスタンス化され、その結合テーブルを介してリンクが作成されます。ただし、関連付けられたオブジェクトはこの時点では保存s慣れて_いない_ことにご注意ください。</p>
+<p><code>collection.build</code>メソッドは、関連付けが行われたオブジェクトを1つ返します。このオブジェクトは、渡された属性でインスタンス化され、その結合テーブルを介してリンクが作成されます。ただし、関連付けられたオブジェクトはこの時点では保存s慣れて<em>いない</em>ことにご注意ください。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 @assembly = @part.assemblies.build({assembly_name: "Transmission housing"})

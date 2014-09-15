@@ -47,27 +47,28 @@
           <div id="guides" class="clearfix" style="display: none;">
             <hr />
               <dl class="L">
-                <dt>Start Here</dt>
-                <dd><a href="getting_started.html">Getting Started with Rails</a></dd>
-                <dt>Models</dt>
-                <dd><a href="active_record_basics.html">Active Record Basics</a></dd>
-                <dd><a href="migrations.html">Rails Database Migrations</a></dd>
-                <dd><a href="active_record_validations.html">Active Record Validations</a></dd>
-                <dd><a href="active_record_callbacks.html">Active Record Callbacks</a></dd>
-                <dd><a href="association_basics.html">Active Record Associations</a></dd>
-                <dd><a href="active_record_querying.html">Active Record Query Interface</a></dd>
-                <dt>Views</dt>
-                <dd><a href="layouts_and_rendering.html">Layouts and Rendering in Rails</a></dd>
-                <dd><a href="form_helpers.html">Action View Form Helpers</a></dd>
-                <dt>Controllers</dt>
-                <dd><a href="action_controller_overview.html">Action Controller Overview</a></dd>
-                <dd><a href="routing.html">Rails Routing from the Outside In</a></dd>
+                <dt>はじめに</dt>
+                <dd><a href="getting_started.html">Railsをはじめよう</a></dd>
+                <dt>モデル</dt>
+                <dd><a href="active_record_basics.html">Active Recordの基礎</a></dd>
+                <dd><a href="active_record_migrations.html">Active Recordとマイグレーション (※翻訳中)</a></dd>
+                <dd><a href="active_record_validations.html">Active Record検証機能 (バリデーション)</a></dd>
+                <dd><a href="active_record_callbacks.html">Active Recordコールバック</a></dd>
+                <dd><a href="association_basics.html">Active Recordの関連付け (アソシエーション)</a></dd>
+                <dd><a href="active_record_querying.html">Active Recordクエリインターフェイス</a></dd>
+                <dt>ビュー</dt>
+                <dd><a href="layouts_and_rendering.html">ビューのレイアウトとレンダリング (※翻訳中)</a></dd>
+                <dd><a href="form_helpers.html">Action Viewフォームヘルパー</a></dd>
+                <dt>コントローラ</dt>
+                <dd><a href="action_controller_overview.html">Action Controllerの概要</a></dd>
+                <dd><a href="routing.html">Railsのルーティング (※翻訳中)</a></dd>
               </dl>
               <dl class="R">
-                <dt>Digging Deeper</dt>
-                <dd><a href="active_support_core_extensions.html">Active Support Core Extensions</a></dd>
-                <dd><a href="i18n.html">Rails Internationalization API</a></dd>
-                <dd><a href="action_mailer_basics.html">Action Mailer Basics</a></dd>
+                <dt>高度なトピック</dt>
+                <dd><a href="active_support_core_extensions.html">Active Supportコア拡張機能</a></dd>
+                <dd><a href="i18n.html">Rails国際化(I18n) API</a></dd>
+                <dd><a href="action_mailer_basics.html">Action Mailerの基礎 (未着手)</a></dd>
+                <dd><a href="active_job_basics.html">Active Jobの基礎 (未着手)</a></dd>
                 <dd><a href="security.html">Securing Rails Applications</a></dd>
                 <dd><a href="debugging_rails_applications.html">Debugging Rails Applications</a></dd>
                 <dd><a href="configuring.html">Configuring Rails Applications</a></dd>
@@ -84,6 +85,7 @@
                 <dt>Maintenance Policy</dt>
                 <dd><a href="maintenance_policy.html">Maintenance Policy</a></dd>
                 <dt>Release Notes</dt>
+                <dd><a href="upgrading_ruby_on_rails.html">Upgrading Ruby on Rails</a></dd>
                 <dd><a href="4_1_release_notes.html">Ruby on Rails 4.1 Release Notes</a></dd>
                 <dd><a href="4_0_release_notes.html">Ruby on Rails 4.0 Release Notes</a></dd>
                 <dd><a href="3_2_release_notes.html">Ruby on Rails 3.2 Release Notes</a></dd>
@@ -99,29 +101,30 @@
         <li class="guides-index guides-index-small">
           <select class="guides-index-item nav-item">
             <option value="index.html">Guides Index</option>
-              <optgroup label="Start Here">
-                  <option value="getting_started.html">Getting Started with Rails</option>
+              <optgroup label="はじめに">
+                  <option value="getting_started.html">Railsをはじめよう</option>
               </optgroup>
-              <optgroup label="Models">
-                  <option value="active_record_basics.html">Active Record Basics</option>
-                  <option value="migrations.html">Rails Database Migrations</option>
-                  <option value="active_record_validations.html">Active Record Validations</option>
-                  <option value="active_record_callbacks.html">Active Record Callbacks</option>
-                  <option value="association_basics.html">Active Record Associations</option>
-                  <option value="active_record_querying.html">Active Record Query Interface</option>
+              <optgroup label="モデル">
+                  <option value="active_record_basics.html">Active Recordの基礎</option>
+                  <option value="active_record_migrations.html">Active Recordとマイグレーション (※翻訳中)</option>
+                  <option value="active_record_validations.html">Active Record検証機能 (バリデーション)</option>
+                  <option value="active_record_callbacks.html">Active Recordコールバック</option>
+                  <option value="association_basics.html">Active Recordの関連付け (アソシエーション)</option>
+                  <option value="active_record_querying.html">Active Recordクエリインターフェイス</option>
               </optgroup>
-              <optgroup label="Views">
-                  <option value="layouts_and_rendering.html">Layouts and Rendering in Rails</option>
-                  <option value="form_helpers.html">Action View Form Helpers</option>
+              <optgroup label="ビュー">
+                  <option value="layouts_and_rendering.html">ビューのレイアウトとレンダリング (※翻訳中)</option>
+                  <option value="form_helpers.html">Action Viewフォームヘルパー</option>
               </optgroup>
-              <optgroup label="Controllers">
-                  <option value="action_controller_overview.html">Action Controller Overview</option>
-                  <option value="routing.html">Rails Routing from the Outside In</option>
+              <optgroup label="コントローラ">
+                  <option value="action_controller_overview.html">Action Controllerの概要</option>
+                  <option value="routing.html">Railsのルーティング (※翻訳中)</option>
               </optgroup>
-              <optgroup label="Digging Deeper">
-                  <option value="active_support_core_extensions.html">Active Support Core Extensions</option>
-                  <option value="i18n.html">Rails Internationalization API</option>
-                  <option value="action_mailer_basics.html">Action Mailer Basics</option>
+              <optgroup label="高度なトピック">
+                  <option value="active_support_core_extensions.html">Active Supportコア拡張機能</option>
+                  <option value="i18n.html">Rails国際化(I18n) API</option>
+                  <option value="action_mailer_basics.html">Action Mailerの基礎 (未着手)</option>
+                  <option value="active_job_basics.html">Active Jobの基礎 (未着手)</option>
                   <option value="security.html">Securing Rails Applications</option>
                   <option value="debugging_rails_applications.html">Debugging Rails Applications</option>
                   <option value="configuring.html">Configuring Rails Applications</option>
@@ -142,6 +145,7 @@
                   <option value="maintenance_policy.html">Maintenance Policy</option>
               </optgroup>
               <optgroup label="Release Notes">
+                  <option value="upgrading_ruby_on_rails.html">Upgrading Ruby on Rails</option>
                   <option value="4_1_release_notes.html">Ruby on Rails 4.1 Release Notes</option>
                   <option value="4_0_release_notes.html">Ruby on Rails 4.0 Release Notes</option>
                   <option value="3_2_release_notes.html">Ruby on Rails 3.2 Release Notes</option>
@@ -179,51 +183,53 @@ Railsガイドは<a href="kindle/ruby_on_rails_guides_local.mobi">Kindle</a>で�
       <div id="mainCol">
         ﻿
     
-Start Here
- <dt><a href="getting_started.html">Getting Started with Rails</a></dt><dd> 
-Everything you need to know to install Rails and create your first application.
+はじめに
+ <dt><a href="getting_started.html">Railsをはじめよう</a></dt><dd> 
+Railsのインストール方法と最初のRailsアプリケーションの作成に必要なすべてを解説します。
 </dd>  
  
-Models
- <dt><a href="active_record_basics.html">Active Record Basics</a></dt><dd> 
-This guide will get you started with models, persistence to database and the Active Record pattern and library.
-</dd>  <dt><a href="migrations.html">Rails Database Migrations</a></dt><dd> 
-This guide covers how you can use Active Record migrations to alter your database in a structured and organized manner.
-</dd>  <dt><a href="active_record_validations.html">Active Record Validations</a></dt><dd> 
-This guide covers how you can use Active Record validations
-</dd>  <dt><a href="active_record_callbacks.html">Active Record Callbacks</a></dt><dd> 
-This guide covers how you can use Active Record callbacks.
-</dd>  <dt><a href="association_basics.html">Active Record Associations</a></dt><dd> 
-This guide covers all the associations provided by Active Record.
-</dd>  <dt><a href="active_record_querying.html">Active Record Query Interface</a></dt><dd> 
-This guide covers the database query interface provided by Active Record.
+モデル
+ <dt><a href="active_record_basics.html">Active Recordの基礎</a></dt><dd> 
+Active Recordの基礎となるモデル、データベースへの永続的な保存、Active Recordパターンとライブラリについて解説します。
+</dd>  <dt><a href="active_record_migrations.html">Active Recordとマイグレーション (※翻訳中)</a></dt><dd> 
+Active Recordのマイグレーション (migration) を使用して、データベースを構造化された方法で整然と変更する方法について解説します。
+</dd>  <dt><a href="active_record_validations.html">Active Record検証機能 (バリデーション)</a></dt><dd> 
+Active Recordのバリデーション機能について解説します。
+</dd>  <dt><a href="active_record_callbacks.html">Active Recordコールバック</a></dt><dd> 
+Active Recordのコールバックについて解説します。
+</dd>  <dt><a href="association_basics.html">Active Recordの関連付け (アソシエーション)</a></dt><dd> 
+Active Recordが提供するすべての関連付け機能について解説します。
+</dd>  <dt><a href="active_record_querying.html">Active Recordクエリインターフェイス</a></dt><dd> 
+Active Recordが提供するすべてのデータベースクエリインターフェイスについて解説します。
 </dd>  
  
-Views
- <dt><a href="action_view_overview.html">Action View Overview</a></dt><dd class="work-in-progress">Work in progress</dd><dd> 
-This guide provides an introduction to Action View and introduces a few of the more common view helpers.
-</dd>  <dt><a href="layouts_and_rendering.html">Layouts and Rendering in Rails</a></dt><dd> 
-This guide covers the basic layout features of Action Controller and Action View, including rendering and redirecting, using content_for blocks, and working with partials.
-</dd>  <dt><a href="form_helpers.html">Action View Form Helpers</a></dt><dd> 
-Guide to using built-in Form helpers.
+ビュー
+ <dt><a href="action_view_overview.html">Action Viewの概要</a></dt><dd class="work-in-progress">Work in progress</dd><dd> 
+Action Viewの概要を紹介し、共通のビューヘルパーについてもある程度解説します。
+</dd>  <dt><a href="layouts_and_rendering.html">ビューのレイアウトとレンダリング (※翻訳中)</a></dt><dd> 
+Action ControllerとAction Viewが提供する基本的なレイアウト機能について解説します。画面出力 (レンダリング) とリダイレクト、content_forブロックとパーシャル (部分テンプレート) の使用方法についても解説します。
+</dd>  <dt><a href="form_helpers.html">Action Viewフォームヘルパー</a></dt><dd> 
+ビルトインのフォームヘルパーについて解説します。
 </dd>  
  
-Controllers
- <dt><a href="action_controller_overview.html">Action Controller Overview</a></dt><dd> 
-This guide covers how controllers work and how they fit into the request cycle in your application. It includes sessions, filters, and cookies, data streaming, and dealing with exceptions raised by a request, among other topics.
-</dd>  <dt><a href="routing.html">Rails Routing from the Outside In</a></dt><dd> 
-This guide covers the user-facing features of Rails routing. If you want to understand how to use routing in your own Rails applications, start here.
+コントローラ
+ <dt><a href="action_controller_overview.html">Action Controllerの概要</a></dt><dd> 
+コントローラの動作と、アプリケーションのリクエストサイクルでコントローラがどのように使われるかについて解説します。セッション、フィルタ、cookie、データストリーミング、リクエストによって発生する例外、その他多くの話題を取り扱っています。
+</dd>  <dt><a href="routing.html">Railsのルーティング (※翻訳中)</a></dt><dd> 
+Railsのルーティング機能について解説しますRailsアプリケーションで行われているルーティングのしくみについて理解したい場合は、ここからお読みください。
 </dd>  
  
-Digging Deeper
- <dt><a href="active_support_core_extensions.html">Active Support Core Extensions</a></dt><dd> 
-This guide documents the Ruby core extensions defined in Active Support.
-</dd>  <dt><a href="i18n.html">Rails Internationalization API</a></dt><dd> 
-This guide covers how to add internationalization to your applications. Your application will be able to translate content to different languages, change pluralization rules, use correct date formats for each country and so on.
-</dd>  <dt><a href="action_mailer_basics.html">Action Mailer Basics</a></dt><dd> 
-This guide describes how to use Action Mailer to send and receive emails.
-</dd>  <dt><a href="testing.html">Testing Rails Applications</a></dt><dd class="work-in-progress">Work in progress</dd><dd> 
-This is a rather comprehensive guide to doing both unit and functional tests in Rails. It covers everything from &#39;What is a test?&#39; to the testing APIs. Enjoy.
+高度なトピック
+ <dt><a href="active_support_core_extensions.html">Active Supportコア拡張機能</a></dt><dd> 
+Active Supportで定義されているRubyのコア拡張機能に関するドキュメントです。
+</dd>  <dt><a href="i18n.html">Rails国際化(I18n) API</a></dt><dd> 
+Railsアプリケーションを国際化する方法について解説します。これによりアプリケーションを異なる言語に翻訳することができ、さらに単数形/複数形ルールを変更したり、その国に適した日付フォーマットを設定したりできます。
+</dd>  <dt><a href="action_mailer_basics.html">Action Mailerの基礎 (未着手)</a></dt><dd> 
+Action Mailerを使用してメールを送受信する方法について解説します。
+</dd>  <dt><a href="active_job_basics.html">Active Jobの基礎 (未着手)</a></dt><dd> 
+バックグラウンドで動作するジョブの作成・キュー送信・実行方法に必要なすべてを解説します。
+</dd>  <dt><a href="testing.html">Railsアプリケーションのテスティング</a></dt><dd class="work-in-progress">Work in progress</dd><dd> 
+Railsで機能テストとIt covers everything from &#39;What is a test?&#39; to the testing APIs. Enjoy.
 </dd>  <dt><a href="security.html">Securing Rails Applications</a></dt><dd> 
 This guide describes common security problems in web applications and how to avoid them with Rails.
 </dd>  <dt><a href="debugging_rails_applications.html">Debugging Rails Applications</a></dt><dd> 
@@ -232,8 +238,6 @@ This guide describes how to debug Rails applications. It covers the different wa
 This guide covers the basic configuration settings for a Rails application.
 </dd>  <dt><a href="command_line.html">Rails Command Line Tools and Rake Tasks</a></dt><dd> 
 This guide covers the command line tools and rake tasks provided by Rails.
-</dd>  <dt><a href="caching_with_rails.html">Caching with Rails</a></dt><dd class="work-in-progress">Work in progress</dd><dd> 
-Various caching techniques provided by Rails.
 </dd>  <dt><a href="asset_pipeline.html">Asset Pipeline</a></dt><dd> 
 This guide documents the asset pipeline.
 </dd>  <dt><a href="working_with_javascript_in_rails.html">Working with JavaScript in Rails</a></dt><dd> 
@@ -268,8 +272,10 @@ What versions of Ruby on Rails are currently supported, and when to expect new v
 </dd>  
  
 Release Notes
- <dt><a href="upgrading_ruby_on_rails.html">Upgrading Ruby on Rails</a></dt><dd class="work-in-progress">Work in progress</dd><dd> 
+ <dt><a href="upgrading_ruby_on_rails.html">Upgrading Ruby on Rails</a></dt><dd> 
 This guide helps in upgrading applications to latest Ruby on Rails versions.
+</dd>  <dt><a href="4_2_release_notes.html">Ruby on Rails 4.2 Release Notes</a></dt><dd class="work-in-progress">Work in progress</dd><dd> 
+Release notes for Rails 4.2.
 </dd>  <dt><a href="4_1_release_notes.html">Ruby on Rails 4.1 Release Notes</a></dt><dd> 
 Release notes for Rails 4.1.
 </dd>  <dt><a href="4_0_release_notes.html">Ruby on Rails 4.0 Release Notes</a></dt><dd> 

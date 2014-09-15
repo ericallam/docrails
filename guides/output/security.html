@@ -47,27 +47,28 @@
           <div id="guides" class="clearfix" style="display: none;">
             <hr />
               <dl class="L">
-                <dt>Start Here</dt>
-                <dd><a href="getting_started.html">Getting Started with Rails</a></dd>
-                <dt>Models</dt>
-                <dd><a href="active_record_basics.html">Active Record Basics</a></dd>
-                <dd><a href="migrations.html">Rails Database Migrations</a></dd>
-                <dd><a href="active_record_validations.html">Active Record Validations</a></dd>
-                <dd><a href="active_record_callbacks.html">Active Record Callbacks</a></dd>
-                <dd><a href="association_basics.html">Active Record Associations</a></dd>
-                <dd><a href="active_record_querying.html">Active Record Query Interface</a></dd>
-                <dt>Views</dt>
-                <dd><a href="layouts_and_rendering.html">Layouts and Rendering in Rails</a></dd>
-                <dd><a href="form_helpers.html">Action View Form Helpers</a></dd>
-                <dt>Controllers</dt>
-                <dd><a href="action_controller_overview.html">Action Controller Overview</a></dd>
-                <dd><a href="routing.html">Rails Routing from the Outside In</a></dd>
+                <dt>はじめに</dt>
+                <dd><a href="getting_started.html">Railsをはじめよう</a></dd>
+                <dt>モデル</dt>
+                <dd><a href="active_record_basics.html">Active Recordの基礎</a></dd>
+                <dd><a href="active_record_migrations.html">Active Recordとマイグレーション (※翻訳中)</a></dd>
+                <dd><a href="active_record_validations.html">Active Record検証機能 (バリデーション)</a></dd>
+                <dd><a href="active_record_callbacks.html">Active Recordコールバック</a></dd>
+                <dd><a href="association_basics.html">Active Recordの関連付け (アソシエーション)</a></dd>
+                <dd><a href="active_record_querying.html">Active Recordクエリインターフェイス</a></dd>
+                <dt>ビュー</dt>
+                <dd><a href="layouts_and_rendering.html">ビューのレイアウトとレンダリング (※翻訳中)</a></dd>
+                <dd><a href="form_helpers.html">Action Viewフォームヘルパー</a></dd>
+                <dt>コントローラ</dt>
+                <dd><a href="action_controller_overview.html">Action Controllerの概要</a></dd>
+                <dd><a href="routing.html">Railsのルーティング (※翻訳中)</a></dd>
               </dl>
               <dl class="R">
-                <dt>Digging Deeper</dt>
-                <dd><a href="active_support_core_extensions.html">Active Support Core Extensions</a></dd>
-                <dd><a href="i18n.html">Rails Internationalization API</a></dd>
-                <dd><a href="action_mailer_basics.html">Action Mailer Basics</a></dd>
+                <dt>高度なトピック</dt>
+                <dd><a href="active_support_core_extensions.html">Active Supportコア拡張機能</a></dd>
+                <dd><a href="i18n.html">Rails国際化(I18n) API</a></dd>
+                <dd><a href="action_mailer_basics.html">Action Mailerの基礎 (未着手)</a></dd>
+                <dd><a href="active_job_basics.html">Active Jobの基礎 (未着手)</a></dd>
                 <dd><a href="security.html">Securing Rails Applications</a></dd>
                 <dd><a href="debugging_rails_applications.html">Debugging Rails Applications</a></dd>
                 <dd><a href="configuring.html">Configuring Rails Applications</a></dd>
@@ -84,6 +85,7 @@
                 <dt>Maintenance Policy</dt>
                 <dd><a href="maintenance_policy.html">Maintenance Policy</a></dd>
                 <dt>Release Notes</dt>
+                <dd><a href="upgrading_ruby_on_rails.html">Upgrading Ruby on Rails</a></dd>
                 <dd><a href="4_1_release_notes.html">Ruby on Rails 4.1 Release Notes</a></dd>
                 <dd><a href="4_0_release_notes.html">Ruby on Rails 4.0 Release Notes</a></dd>
                 <dd><a href="3_2_release_notes.html">Ruby on Rails 3.2 Release Notes</a></dd>
@@ -99,29 +101,30 @@
         <li class="guides-index guides-index-small">
           <select class="guides-index-item nav-item">
             <option value="index.html">Guides Index</option>
-              <optgroup label="Start Here">
-                  <option value="getting_started.html">Getting Started with Rails</option>
+              <optgroup label="はじめに">
+                  <option value="getting_started.html">Railsをはじめよう</option>
               </optgroup>
-              <optgroup label="Models">
-                  <option value="active_record_basics.html">Active Record Basics</option>
-                  <option value="migrations.html">Rails Database Migrations</option>
-                  <option value="active_record_validations.html">Active Record Validations</option>
-                  <option value="active_record_callbacks.html">Active Record Callbacks</option>
-                  <option value="association_basics.html">Active Record Associations</option>
-                  <option value="active_record_querying.html">Active Record Query Interface</option>
+              <optgroup label="モデル">
+                  <option value="active_record_basics.html">Active Recordの基礎</option>
+                  <option value="active_record_migrations.html">Active Recordとマイグレーション (※翻訳中)</option>
+                  <option value="active_record_validations.html">Active Record検証機能 (バリデーション)</option>
+                  <option value="active_record_callbacks.html">Active Recordコールバック</option>
+                  <option value="association_basics.html">Active Recordの関連付け (アソシエーション)</option>
+                  <option value="active_record_querying.html">Active Recordクエリインターフェイス</option>
               </optgroup>
-              <optgroup label="Views">
-                  <option value="layouts_and_rendering.html">Layouts and Rendering in Rails</option>
-                  <option value="form_helpers.html">Action View Form Helpers</option>
+              <optgroup label="ビュー">
+                  <option value="layouts_and_rendering.html">ビューのレイアウトとレンダリング (※翻訳中)</option>
+                  <option value="form_helpers.html">Action Viewフォームヘルパー</option>
               </optgroup>
-              <optgroup label="Controllers">
-                  <option value="action_controller_overview.html">Action Controller Overview</option>
-                  <option value="routing.html">Rails Routing from the Outside In</option>
+              <optgroup label="コントローラ">
+                  <option value="action_controller_overview.html">Action Controllerの概要</option>
+                  <option value="routing.html">Railsのルーティング (※翻訳中)</option>
               </optgroup>
-              <optgroup label="Digging Deeper">
-                  <option value="active_support_core_extensions.html">Active Support Core Extensions</option>
-                  <option value="i18n.html">Rails Internationalization API</option>
-                  <option value="action_mailer_basics.html">Action Mailer Basics</option>
+              <optgroup label="高度なトピック">
+                  <option value="active_support_core_extensions.html">Active Supportコア拡張機能</option>
+                  <option value="i18n.html">Rails国際化(I18n) API</option>
+                  <option value="action_mailer_basics.html">Action Mailerの基礎 (未着手)</option>
+                  <option value="active_job_basics.html">Active Jobの基礎 (未着手)</option>
                   <option value="security.html">Securing Rails Applications</option>
                   <option value="debugging_rails_applications.html">Debugging Rails Applications</option>
                   <option value="configuring.html">Configuring Rails Applications</option>
@@ -142,6 +145,7 @@
                   <option value="maintenance_policy.html">Maintenance Policy</option>
               </optgroup>
               <optgroup label="Release Notes">
+                  <option value="upgrading_ruby_on_rails.html">Upgrading Ruby on Rails</option>
                   <option value="4_1_release_notes.html">Ruby on Rails 4.1 Release Notes</option>
                   <option value="4_0_release_notes.html">Ruby on Rails 4.0 Release Notes</option>
                   <option value="3_2_release_notes.html">Ruby on Rails 3.2 Release Notes</option>
@@ -310,7 +314,7 @@ config.force_ssl = true
 <h4 id="a0f342c9af204faf6170f1d7e2553137211ed7b1">2.4 セッションの取り扱いに関するガイドライン</h4>
 <p>セッションを取り扱う際の一般的な注意について解説します。</p>
 <ul>
-<li><p>_セッションには巨大なオブジェクトを格納しないこと_。そのような大きなデータはサーバー側のデータベースに格納するようにし、セッションにはそのidだけを保存してください。こうすることで、同期に関して悩まずに済み、セッションのストレージ容量があふれることもありません(セッションの格納先をどこにするかにもよりますが: 後述)。
+<li><p><em>セッションには巨大なオブジェクトを格納しないこと</em>。そのような大きなデータはサーバー側のデータベースに格納するようにし、セッションにはそのidだけを保存してください。こうすることで、同期に関して悩まずに済み、セッションのストレージ容量があふれることもありません(セッションの格納先をどこにするかにもよりますが: 後述)。
 この方法は、オブジェクトの構造を変更し、変更前の古いオブジェクトが一部のユーザーによってまだ使用されているような場合にも有用です。セッションがサーバー側で保存されていればセッションを消去するのは容易ですが、セッションがクライアント側に格納されていると、それを制御するのは厄介です。</p></li>
 <li><p><em>セッションに重要なデータを保存しないこと。</em> ユーザーがcookieを消去したりブラウザを閉じたりすると、それらの情報が失われてしまいます。しかも、そのセッションがクライアント側に保存されていると、ユーザーがそのデータを読むことができてしまいます。</p></li>
 </ul>
@@ -318,10 +322,10 @@ config.force_ssl = true
 <p>メモ: <em>Railsにはセッションハッシュを保存すためのしくみが複数用意されています。中でも最も重要なのが<code>ActionDispatch::Session::CookieStore</code>です。</em> </p>
 <p>Rails 2でCookieStoreという新しいデフォルトセッションストレージが導入されました。CookieStoreはセッションハッシュを直接クライアント側のcookieに保存します。サーバーはそのcookieからセッションハッシュを読み出すことで、セッションidを使用せずに済みます。これによってサーバーの速度は大きく向上しますが、このストレージオプションにはセキュリティ上の論争が絶えず発生しており、導入にあたってはセキュリティに与える影響を十分考慮しておく必要があります。</p>
 <ul>
-<li><p>Cookieのサイズは4 KBと厳密に定められています。_通常通り、現在のユーザーのデータベースidをセッションに保存することには問題ありません。_</p></li>
-<li><p>Cookieに保存されているのは平文テキスト (実際にはBase64でエンコードされてますが暗号化はされてません) なので、セッションに保存されている情報はその気になればすべてクライアント側で読み取り可能です。ここからもわかるとおり、_いかなる機密情報をもcookieに保存すべきではありません_。サーバー側では、セッションが改竄されることを防ぐために、サーバー上の秘密キーを元にセッションからダイジェストを計算してそれをcookieの末尾に挿入しています。</p></li>
+<li><p>Cookieのサイズは4 KBと厳密に定められています。<em>通常通り、現在のユーザーのデータベースidをセッションに保存することには問題ありません。</em></p></li>
+<li><p>Cookieに保存されているのは平文テキスト (実際にはBase64でエンコードされてますが暗号化はされてません) なので、セッションに保存されている情報はその気になればすべてクライアント側で読み取り可能です。ここからもわかるとおり、<em>いかなる機密情報をもcookieに保存すべきではありません</em>。サーバー側では、セッションが改竄されることを防ぐために、サーバー上の秘密キーを元にセッションからダイジェストを計算してそれをcookieの末尾に挿入しています。</p></li>
 </ul>
-<p>つまり、cookieのストレージの(改竄防止の)セキュリティはこのサーバー上の秘密キー (およびダイジェストのアルゴリズム -- 互換性のためデフォルトではSHA1を使用) にかかっています。従って、_秘密キーには安易なもの(辞書から抽出した単語や、30文字より短い文字列)を使用すべきではありません。_</p>
+<p>つまり、cookieのストレージの(改竄防止の)セキュリティはこのサーバー上の秘密キー (およびダイジェストのアルゴリズム -- 互換性のためデフォルトではSHA1を使用) にかかっています。従って、<em>秘密キーには安易なもの(辞書から抽出した単語や、30文字より短い文字列)を使用すべきではありません。</em></p>
 <p><code>secrets.secret_key_base</code>メソッドは、改竄防止のために、アプリケーションのセッションを既知の秘密キーと照合するためのキーを指定するときに使います。アプリケーションは<code>secrets.secret_key_base</code>を使用して、<code>config/secrets.yml</code>などに保存されるキーをランダムに初期化します。</p>
 <p>development:
       secret_key_base: a75d...</p>
@@ -371,7 +375,7 @@ reset_session
 </pre>
 </div>
 <p>ユーザー管理用に、有名なRESTful認証プラグインを導入しているのであれば、SessionControl#createアクションにreset_sessionを追加してください。このメソッドを実行するとセッションからすべての値が削除されてしまいますので、 <em>新しいセッションにそれらの値を移行しておく必要があります。</em> </p>
-<p>その他の対応策として、_セッションにユーザー固有のプロパティを保存しておき、_ ユーザーからリクエストを受けるたびに照合して、マッチしない場合はアクセスを拒否するという方法もあります。ユーザー固有のプロパティとして利用可能な情報には、リモートIPアドレスや user agent (= webブラウザの名前) がありますが、後者は完全にユーザー固有とは限りません。IPアドレスを保存して対応する場合、インターネットサービスプロバイダ (ISP) や大企業からのアクセスはプロキシ越しに行われていることが多いことを忘れないようにしておく必要があります。 <em>IPアドレスはセッションの過程で変わる可能性がある</em> ため、IPアドレスをユーザー固有の情報として使用しようとすると、ユーザーがWebアプリケーションにアクセスできなくなったり、ユーザーの使用に制限が加わる可能性があります。</p>
+<p>その他の対応策として、<em>セッションにユーザー固有のプロパティを保存しておき、</em> ユーザーからリクエストを受けるたびに照合して、マッチしない場合はアクセスを拒否するという方法もあります。ユーザー固有のプロパティとして利用可能な情報には、リモートIPアドレスや user agent (= webブラウザの名前) がありますが、後者は完全にユーザー固有とは限りません。IPアドレスを保存して対応する場合、インターネットサービスプロバイダ (ISP) や大企業からのアクセスはプロキシ越しに行われていることが多いことを忘れないようにしておく必要があります。 <em>IPアドレスはセッションの過程で変わる可能性がある</em> ため、IPアドレスをユーザー固有の情報として使用しようとすると、ユーザーがWebアプリケーションにアクセスできなくなったり、ユーザーの使用に制限が加わる可能性があります。</p>
 <h4 id="5ac66121d9f85dcb36ccd3087d002d589922854d">2.9 セッションの期限切れ</h4>
 <p>メモ: <em>セッションを無期限にすると、攻撃される機会を増やしてしまいます (クロスサイトリクエストフォージェリ (CSRF)、セッションハイジャック、セッション固定など)。</em></p>
 <p>セッションidを持つcookieのタイムスタンプに有効期限を設定するという対応策も考えられなくはありません。しかし、ブラウザ内に保存されているcookieをユーザーが編集できてしまう点は変わらないので、やはりサーバー側でセッションを期限切れにする方が安全です。 <em>データベーステーブルのセッションを期限切れにする</em>. には、たとえば次のように行います。<code>Session.sweep("20 minutes")</code>を呼ぶと、20分以上経過したセッションが期限切れになります。</p>
@@ -495,8 +499,8 @@ http://www.example.com/site/legacy?param1=xy&amp;param2=23&amp;host=www.attacker
 <p>この例ではBase64でエンコードされたJavaScriptを使用しています。このJavaScriptは単にメッセージボックスを表示します。リダイレクションURL攻撃では、攻撃者がこのような悪意のあるコードを含んだURLへのリダイレクトを行います。この攻撃への対応策は、 <em>リダイレクトするURL(あるいはその一部)をユーザーが与えられないようにすること</em> です。</p>
 <h4 id="55090f2c8efbf14d3d71b8c7eefef3a218e7b361">4.2 ファイルアップロード</h4>
 <p>メモ: <em>ファイルがアップロードされたときに重要なファイルが上書きされることのないようにしましょう。また、メディアファイルの処理は非同期で行なうようにしましょう。</em></p>
-<p>多くのWebアプリケーションでは、ユーザーがファイルをアップロードできるようになっています。_ユーザーが選択/入力できるファイル名 (またはその一部) は必ずフィルタしてください。_ 攻撃者が危険なファイル名をわざと使用してサーバーのファイルを上書きしようとする可能性があるためです。ファイルが /var/www/uploads ディレクトリにアップロードされ、そのときにファイル名が "../../../etc/passwd" と入力されていると、重要なファイルが上書きされてしまう可能性があります。言うまでもなく、Rubyインタプリタにそれだけの実行権限が与えられていなければ、そのような上書きは実行できません。Webサーバー、データベースサーバーなどのプログラムは、比較的低い権限を持つUnixユーザーとして実行されているのが普通です。</p>
-<p>そしてもう一つ注意があります。ユーザーが入力したファイル名をフィルタするときに、_ファイル名から危険な部分を取り除こうなどとしないことです_ 。Webアプリケーションがファイル名から"../"という文字を取り除くことができるとしても、今度は攻撃者が "....//" のようなその裏をかくパターンを使用すれば、やはり "../" という相対パスが通ってしまいます。最も良いのは「ホワイトリスト」によるアプローチです。これは <em>ファイル名が有効であるかどうか (指定された文字のみが使用されているかどうか) をチェックするものです</em>. これは「ブラックリスト」アプローチと逆の手法です。こちらは、使用が許されてない文字を除去します。ファイル名が無効の場合は、拒否するか、無効な文字を置き換えますが、取り除きはしません。<a href="https://github.com/technoweenie/attachment_fu/tree/master">attachment_fu plugin</a>のファイル名サニタイザを以下に示します。</p>
+<p>多くのWebアプリケーションでは、ユーザーがファイルをアップロードできるようになっています。<em>ユーザーが選択/入力できるファイル名 (またはその一部) は必ずフィルタしてください。</em> 攻撃者が危険なファイル名をわざと使用してサーバーのファイルを上書きしようとする可能性があるためです。ファイルが /var/www/uploads ディレクトリにアップロードされ、そのときにファイル名が "../../../etc/passwd" と入力されていると、重要なファイルが上書きされてしまう可能性があります。言うまでもなく、Rubyインタプリタにそれだけの実行権限が与えられていなければ、そのような上書きは実行できません。Webサーバー、データベースサーバーなどのプログラムは、比較的低い権限を持つUnixユーザーとして実行されているのが普通です。</p>
+<p>そしてもう一つ注意があります。ユーザーが入力したファイル名をフィルタするときに、<em>ファイル名から危険な部分を取り除こうなどとしないことです</em> 。Webアプリケーションがファイル名から"../"という文字を取り除くことができるとしても、今度は攻撃者が "....//" のようなその裏をかくパターンを使用すれば、やはり "../" という相対パスが通ってしまいます。最も良いのは「ホワイトリスト」によるアプローチです。これは <em>ファイル名が有効であるかどうか (指定された文字のみが使用されているかどうか) をチェックするものです</em>. これは「ブラックリスト」アプローチと逆の手法です。こちらは、使用が許されてない文字を除去します。ファイル名が無効の場合は、拒否するか、無効な文字を置き換えますが、取り除きはしません。<a href="https://github.com/technoweenie/attachment_fu/tree/master">attachment_fu plugin</a>のファイル名サニタイザを以下に示します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 def sanitize_filename(filename)
@@ -582,7 +586,7 @@ SELECT * FROM users WHERE (users.activation_code IS NULL) LIMIT 1
 
 </pre>
 </div>
-<p>この結果、最初のユーザーがデータベースにいることがわかり、結果が返されてログインされます。詳細については<a href="http://www.rorsecurity.info/2007/10/28/restful_authentication-login-security/">筆者のブログ記事</a>を参照してください。_プラグインは、機会を見てアップデートすることをお勧めします_ 。さらに、Webアプリケーションにこのような欠陥がないかどうか見直しをかけてください。</p>
+<p>この結果、最初のユーザーがデータベースにいることがわかり、結果が返されてログインされます。詳細については<a href="http://www.rorsecurity.info/2007/10/28/restful_authentication-login-security/">筆者のブログ記事</a>を参照してください。<em>プラグインは、機会を見てアップデートすることをお勧めします</em> 。さらに、Webアプリケーションにこのような欠陥がないかどうか見直しをかけてください。</p>
 <h4 id="818e58c77b46950a77aab9a7a435970a4b77e0fe">6.1 アカウントに対する総当たり攻撃</h4>
 <p>メモ: <em>アカウントに対する総当たり攻撃 (Brute-force attack) とは、ログイン情報に対して試行錯誤を繰り返す攻撃です。エラーメッセージをより一般的なものにすることで回避可能ですが、CAPTCHA (相手がコンピュータでないことを確認するためのテスト) への情報入力の義務付けもおそらく必要でしょう</em> 。</p>
 <p>Webアプリケーション用のユーザー名リスト (名簿) は、パスワードへの総当たり攻撃に悪用される可能性があります。ユーザー名と同じであるなどの単純素朴なパスワードを使っている人が驚くほど多いため、総当たり攻撃に名簿が利用されやすいのです。辞書に載っている言葉に数字を混ぜた程度のパスワードが使用されていることがよくあります。従って、名簿と辞書を使用して総当り攻撃を行なう自動化プログラムがあれば、ものの数分でパスワードは見破られてしまいます。</p>
@@ -592,7 +596,7 @@ SELECT * FROM users WHERE (users.activation_code IS NULL) LIMIT 1
 <h4 id="6728311490057f7a2298ee32fce169dfafff4fee">6.2 アカウントのハイジャック</h4>
 <p>多くのWebアプリケーションでは、ユーザーアカウントのハイジャックを容易に行えてしまいます。攻撃を困難にするような改良が進まないのはなぜでしょうか。</p>
 <h5 id="a9694dc2e83bf1d3dd839259eaeb984fbbd86b31">6.2.1 パスワード</h5>
-<p>攻撃者が、盗み出されたユーザーセッションcookieを手に入れ、それによってWebアプリケーションが標的ユーザーとの間で共用可能になった状態を考えてみましょう。パスワードが簡単に変更できる画面設計(古いパスワードの入力が不要)であれば、攻撃者は数クリックするだけでアカウントをハイジャックできてしまいます。あるいは、パスワード変更画面がCSRF攻撃に対して脆弱な作りになっている場合、攻撃者は標的ユーザーを別のWebページに誘い込み、CSRFを実行するように仕込まれたimgタグを踏ませて、標的ユーザーのWebパスワードを変更するでしょう。対応策としては、_パスワード変更フォームがCSRF攻撃に対して脆弱にならないようにすること_ です。同時に、 <em>ユーザーにパスワードを変更させる場合は、古いパスワードを必ず入力させるようにしてください。</em></p>
+<p>攻撃者が、盗み出されたユーザーセッションcookieを手に入れ、それによってWebアプリケーションが標的ユーザーとの間で共用可能になった状態を考えてみましょう。パスワードが簡単に変更できる画面設計(古いパスワードの入力が不要)であれば、攻撃者は数クリックするだけでアカウントをハイジャックできてしまいます。あるいは、パスワード変更画面がCSRF攻撃に対して脆弱な作りになっている場合、攻撃者は標的ユーザーを別のWebページに誘い込み、CSRFを実行するように仕込まれたimgタグを踏ませて、標的ユーザーのWebパスワードを変更するでしょう。対応策としては、<em>パスワード変更フォームがCSRF攻撃に対して脆弱にならないようにすること</em> です。同時に、 <em>ユーザーにパスワードを変更させる場合は、古いパスワードを必ず入力させるようにしてください。</em></p>
 <h5 id="32ed60ff9f0c5fddc1d371a56ee7a5873f3885f9">6.2.2 メール</h5>
 <p>しかし攻撃者は、登録されているメールアドレスを変更することでアカウントを乗っ取ろうとする可能性もありますので注意が必要です。攻撃者はメールアドレス変更に成功すると、「パスワードを忘れた場合」ページに移動し、攻撃者の新しいメールアドレスに変更通知メールを送信します。システムによってはこのメールに新しいパスワードが記載されていることもあります。対応策は、 <em>メールアドレスを変更する場合にもパスワード入力を必須にする</em> ことです。</p>
 <h5 id="7c2281ce7193ecc75e3a27ab3260190556f717d4">6.2.3 その他</h5>
@@ -691,7 +695,7 @@ http://hi.com
 </pre>
 </div>
 <p>Webアプリケーションによっては、ユーザーが改ざん可能なパラメータが他にも潜んでいる可能性があります。経験則に照らし合わせても、 <em>安全が確認されていないユーザー入力が安全であることはありえず、ユーザーから送信されるどのようなパラメータにも、何らかの操作が加えられている可能性は常にあります</em> 。</p>
-<p>難読化とJavaScriptによる検証のセキュリティだけで安全を保てると考えてはなりません。Mozilla FirefoxのWeb Developer Toolbarを使用すれば、フォームの隠しフィールドを見つけて変更することができます。_JavaScriptを使用してユーザーの入力データを検証することはできますが、攻撃者が想定外の値を与えて邪悪なリクエストを送信することは阻止できません_ 。Mozilla Firefox用のLive HTTP Headersプラグインを使用すると、すべてのリクエストをログに記録して、それらを繰り返し送信したり変更したりすることができます。さらに、JavaScriptによる検証はJavaScriptをオフにすれ簡単にバイパスできてしまいます。クライアント側に、クライアントからのリクエストやインターネットからの応答を傍受しているプロキシが介在している可能性も忘れないようにしておく必要があります。</p>
+<p>難読化とJavaScriptによる検証のセキュリティだけで安全を保てると考えてはなりません。Mozilla FirefoxのWeb Developer Toolbarを使用すれば、フォームの隠しフィールドを見つけて変更することができます。<em>JavaScriptを使用してユーザーの入力データを検証することはできますが、攻撃者が想定外の値を与えて邪悪なリクエストを送信することは阻止できません</em> 。Mozilla Firefox用のLive HTTP Headersプラグインを使用すると、すべてのリクエストをログに記録して、それらを繰り返し送信したり変更したりすることができます。さらに、JavaScriptによる検証はJavaScriptをオフにすれ簡単にバイパスできてしまいます。クライアント側に、クライアントからのリクエストやインターネットからの応答を傍受しているプロキシが介在している可能性も忘れないようにしておく必要があります。</p>
 <h3 id="f4fb0c162eaa5150a7e7bebee004d3a597481ea7">7 インジェクション</h3>
 <p>情報: <em>インジェクション (注入) とは、Webアプリケーションに邪悪なコードやパラメータを導入して、そのときのセキュリティ権限で実行させることです。XSS (クロスサイトスクリプティング) やSQLインジェクションはインジェクションの顕著な例です。</em></p>
 <p>インジェクションは、それによって注入されるコードやパラメータが、あるコンテキストでは有害であっても、それ以外のほとんどのコンテキストでは無害であるという点で非常にトリッキーであると言えます。ここでいうコンテキストとは、スクリプティング、クエリ、プログラミング言語、シェル、RubyやRailsのメソッドなどがあります。以下の節では、インジェクション攻撃が発生しうる重要なコンテキストについて説明します。ただし最初の節では、インジェクションの際の接続方法におけるアーキテクチャ上の決定事項について説明します。</p>
@@ -785,7 +789,7 @@ Model.where(login: entered_user_name, password: entered_password).first
 
 </pre>
 </div>
-<p>モデルのインスタンスでは、配列またはハッシュのみが使用できます。他の場所で<code>sanitize_sql()</code>を使ってみることもできます。_SQLで外部の文字列を、サニタイズせずに使用するとセキュリティ上重大な結果がもたらされる可能性があることを普段から考える習慣をつけましょう_ 。</p>
+<p>モデルのインスタンスでは、配列またはハッシュのみが使用できます。他の場所で<code>sanitize_sql()</code>を使ってみることもできます。<em>SQLで外部の文字列を、サニタイズせずに使用するとセキュリティ上重大な結果がもたらされる可能性があることを普段から考える習慣をつけましょう</em> 。</p>
 <h4 id="8fe50134d2f8b9478769c05212680a42e2e43ad7">7.3 クロスサイトスクリプティング (XSS)</h4>
 <p>情報: <em>XSSは最もよく発生しするWebセキュリティ上の脆弱性であり、ひとたび発生すると壊滅的な影響が生じる可能性があります。XSSを使用した悪意のある攻撃が行われると、クライアント側のコンピュータに実行可能なコードが注入されてしまいます。Railsには、このような攻撃をかわすためのヘルパーメソッドが用意されています。</em></p>
 <h5 id="fd707023161791e50185a8a5a3937f09d8a6aa85">7.3.1 攻撃点</h5>
@@ -854,7 +858,7 @@ http://www.cbsnews.com/stories/2002/02/15/weather_local/main501644.shtml?zipcode
 </div>
 <h5 id="8fe50134d2f8b9478769c05212680a42e2e43ad7-ea5ea50e2665085ff9cee05fa89fcc1846ea3045">7.3.3 対応策</h5>
 <p><em>悪意のある入力をフィルタすることがきわめて重要です。Webアプリケーションの出力をエスケープすることも同様に重要です。</em>.</p>
-<p>特にXSSの場合、_ブラックリストではなくホワイトリストに基づいた入力フィルタを実施することが絶対重要です。_.ホワイトリストフィルタでは特定の値のみが許可され、それ以外の値はすべて拒否されます。ブラックリストを元にしている限り、必ず将来漏れが生じます。</p>
+<p>特にXSSの場合、<em>ブラックリストではなくホワイトリストに基づいた入力フィルタを実施することが絶対重要です。</em>.ホワイトリストフィルタでは特定の値のみが許可され、それ以外の値はすべて拒否されます。ブラックリストを元にしている限り、必ず将来漏れが生じます。</p>
 <p>ユーザー入力から「script」という文字を除去するのに使用されているブラックリストがあるとしましょう。それなら攻撃者は次には「&lt;scrscriptipt&gt;」という文字を入力するでしょう。この文字がフィルタされると「&lt;script&gt;」という文字が残ってしまいます。以前のRailsではstrip_tags()、strip_links()、sanitize()メソッドでブラックリスト的アプローチが使用されていました。従って、当時は以下のような攻撃が可能になっていました。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -871,7 +875,7 @@ s = sanitize(user_input, tags: tags, attributes: %w(href title))
 </pre>
 </div>
 <p>この方法なら指定されたタグのみが許可されるため、あらゆる攻撃方法や邪悪なタグに対してフィルタが健全に機能します。</p>
-<p>第2段階として、 <em>Webアプリケーションからの出力をもれなくエスケープする</em> ことが優れた対策となります。これは特に、ユーザー入力の段階でフィルタされなかった文字列がWeb画面に再表示されてしまうようなことがあった場合に有効です。_<code>escapeHTML()</code> (または別名の<code>h()</code>) メソッド_ を使用して、HTML入力文字「&amp;」「"」「&lt;」「&amp;gt」を、無害なHTML表現形式(<code>&amp;amp;</code>、<code>&amp;quot;</code>、<code>&amp;lt</code>;、and、<code>&amp;gt;</code>) に置き換えます。しかし、プログラマーがこの作業を忘れてしまうことなどいくらでもありえるため、 <em><a href="http://safe-erb.rubyforge.org/svn/plugins/safe_erb/">SafeErb</a> プラグイン</em> の使用をお勧めします。SafeErbは、外部入力された文字列をエスケープするよう通知してくれます。</p>
+<p>第2段階として、 <em>Webアプリケーションからの出力をもれなくエスケープする</em> ことが優れた対策となります。これは特に、ユーザー入力の段階でフィルタされなかった文字列がWeb画面に再表示されてしまうようなことがあった場合に有効です。<em><code>escapeHTML()</code> (または別名の<code>h()</code>) メソッド</em> を使用して、HTML入力文字「&amp;」「"」「&lt;」「&amp;gt」を、無害なHTML表現形式(<code>&amp;amp;</code>、<code>&amp;quot;</code>、<code>&amp;lt</code>;、and、<code>&amp;gt;</code>) に置き換えます。しかし、プログラマーがこの作業を忘れてしまうことなどいくらでもありえるため、 <em><a href="http://safe-erb.rubyforge.org/svn/plugins/safe_erb/">SafeErb</a> プラグイン</em> の使用をお勧めします。SafeErbは、外部入力された文字列をエスケープするよう通知してくれます。</p>
 <h6 id="06c8d05d9e77bbf9f7df99c6a71026f5d1225b0c">7.3.3.1 攻撃の難読化とエンコーディングインジェクション</h6>
 <p>従来のネットワークトラフィックは西欧文化圏のアルファベットがほとんどでしたが、それ以外の言語を伝えるためにUnicodeなどの新しいエンコード方式が使用されるようになってきました。しかしこれはWebアプリケーションにとっては新たな脅威となるかもしれません。異なるコードでエンコードされた中に、ブラウザでは処理可能だがサーバーでは処理されないような悪意のあるコードが潜んでいるかもしれないからです。UTF-8による攻撃方法の例を以下に示します。</p>
 <div class="code_container">
@@ -932,7 +936,7 @@ alert(eval('document.body.inne' + 'rHTML'));
 <p>最終的に4KBサイズのワームができあがり、作者は自分のプロファイルページにこれを注入しました。</p>
 <p><a href="http://www.securiteam.com/securitynews/5LP051FHPE.html">moz-binding</a>というCSSプロパティは、FirefoxなどのGeckoベースのブラウザではCSS経由でJavaScriptを注入する手段になる可能性があることが判明しています。</p>
 <h5 id="31c1a01e1218693cee6ec619ae16fdfd948f39f2-ea5ea50e2665085ff9cee05fa89fcc1846ea3045">7.4.1 対応策</h5>
-<p>繰り返しますが、ブラックリストによるフィルタは永遠に不完全なままにしかなりません。しかしWebアプリケーションでカスタムCSSを使用できるという機能は非常にまれなので、これに対抗するホワイトリストCSSフィルタというものがあるかどうか筆者は知りません。_Webアプリケーションの色や画像をカスタマイズできるようにしたいのであれば、ユーザーに色や画像を選ばせ、Webアプリケーションの側でCSSをビルドするようにしましょう_ 。ユーザーがCSSを直接カスタマイズできるような作りにはしないでください。どうしても必要であれば、ホワイトリストベースのCSSフィルタとしてRailsの<code>sanitize()</code>メソッドを使用することもできます。</p>
+<p>繰り返しますが、ブラックリストによるフィルタは永遠に不完全なままにしかなりません。しかしWebアプリケーションでカスタムCSSを使用できるという機能は非常にまれなので、これに対抗するホワイトリストCSSフィルタというものがあるかどうか筆者は知りません。<em>Webアプリケーションの色や画像をカスタマイズできるようにしたいのであれば、ユーザーに色や画像を選ばせ、Webアプリケーションの側でCSSをビルドするようにしましょう</em> 。ユーザーがCSSを直接カスタマイズできるような作りにはしないでください。どうしても必要であれば、ホワイトリストベースのCSSフィルタとしてRailsの<code>sanitize()</code>メソッドを使用することもできます。</p>
 <h4 id="d6d5f2dd015e82cbb01925abd13115e39b5cf64c">7.5 テキスタイルインジェクション</h4>
 <p>セキュリティ上の理由からHTML以外のテキストフォーマット機能を提供したいのであれば、何らかのマークアップ言語を採用し、それをサーバー側でHTMLに変換するようにしてください。<a href="http://redcloth.org/">RedCloth</a>はRuby用に開発されたマークアップ言語の一種ですが、気を付けて使用しないとXSSに対しても脆弱になります。</p>
 <p>例を挙げます。RedClothは <code>_test_</code>というマークアップを&lt;em&gt;test&lt;em&gt;に変換します。この箇所のテキストはイタリックになります。しかし、執筆当時の最新バージョンである3.0.4までのRedClothはXSSに関しても脆弱でした。この重大なバグを取り除くには<a href="http://www.redcloth.org">最新のバージョン4</a>を入手してください。しかし新しいバージョンにも<a href="http://www.rorsecurity.info/journal/2008/10/13/new-redcloth-security.html">若干のセキュリティバグ</a>があるため、対応策は未だに欠かせません。バージョン3.0.4の例を以下に示します。</p>
@@ -960,10 +964,10 @@ RedCloth.new("&lt;a href='javascript:alert(1)'&gt;hello&lt;/a&gt;", [:filter_htm
 </pre>
 </div>
 <h5 id="d6d5f2dd015e82cbb01925abd13115e39b5cf64c-ea5ea50e2665085ff9cee05fa89fcc1846ea3045">7.5.1 対応策</h5>
-<p>XSS対応策で既に述べたとおり、_RedClothは必ずホワイトリストフィルタと組み合わせて使用してください_ 。</p>
+<p>XSS対応策で既に述べたとおり、<em>RedClothは必ずホワイトリストフィルタと組み合わせて使用してください</em> 。</p>
 <h4 id="77947cd12008568586572ec082790b435e719413">7.6 Ajaxインジェクション</h4>
 <p>メモ: <em>通常のWebアプリケーション開発上で必要となるセキュリティ上の注意と同様の注意がAjaxに対しても必要です。ただし1つ例外があります。ページヘの出力は、アクションがビューをレンダリングしない場合であってもエスケープされている必要があります。</em></p>
-<p>plugin<a href="http://dev.rubyonrails.org/browser/plugins/in_place_editing">in_place_editorプラグイン</a>や、ビューをレンダリングする代りに文字列を返すようなアクションを使用しているのであれば、_アクションで返される値を確実にエスケープする必要があります_ 。もしXSSで汚染された文字列が返し値に含まれていると、ブラウザで表示されたときに悪意のあるコードが実行されてしまいます。すべての入力値は、h()メソッドを使用してエスケープしてください。</p>
+<p>plugin<a href="http://dev.rubyonrails.org/browser/plugins/in_place_editing">in_place_editorプラグイン</a>や、ビューをレンダリングする代りに文字列を返すようなアクションを使用しているのであれば、<em>アクションで返される値を確実にエスケープする必要があります</em> 。もしXSSで汚染された文字列が返し値に含まれていると、ブラウザで表示されたときに悪意のあるコードが実行されてしまいます。すべての入力値は、h()メソッドを使用してエスケープしてください。</p>
 <h4 id="bd89e854b7e888b6350a3d877727e0dfd768dc80">7.7 コマンドラインインジェクション</h4>
 <p>メモ: <em>ユーザーが入力したデータをコマンドラインのオプションに使用する場合は十分に注意してください。</em></p>
 <p>Webアプリケーションが背後のOSコマンドを実行しなければならない場合、Rubyには<code>exec(コマンド)</code>、<code>syscall(コマンド)</code>、<code>system(コマンド)</code>、そしてバッククォート記法という方法が用意されています。これのコマンド全体または一部にユーザー入力が使用されるようなことがある場合、特に注意が必要です。これは、ほとんどのシェルでは、コマンドにセミコロン;や垂直バー|を追加することで、別のコマンドを簡単に結合することができてしまうためです。</p>
@@ -977,7 +981,7 @@ system("/bin/echo","hello; rm *")
 </div>
 <h4 id="e6584e4883a4152726780d23a4e2e8a6f99f7a25">7.8 ヘッダーインジェクション</h4>
 <p>警告: <em>HTTPヘッダは動的に生成されるものであり、特定の状況ではヘッダにユーザー入力が注入されることがあります。これを使用して、にせのリダイレクト、XSS、HTTPレスポンス分割攻撃が行われる可能性があります。</em></p>
-<p>HTTPリクエストヘッダで使用されているフィールドの中にはReferer、User-Agent (クライアント側ソフトウェア)、Cookieフィールドがあります。Responseヘッダーには、たとえばステータスコード、Cookieフィールド、Locationフィールド (リダイレクト先を表す) があります。これらのフィールド情報はユーザー側から提供されるものであり、さほど手間をかけずに操作できてしまいます。_これらのフィールドもエスケープするようにしてください。_ エスケープが必要になるのは、管理画面でUser-Agentヘッダを表示する場合などが考えられます。</p>
+<p>HTTPリクエストヘッダで使用されているフィールドの中にはReferer、User-Agent (クライアント側ソフトウェア)、Cookieフィールドがあります。Responseヘッダーには、たとえばステータスコード、Cookieフィールド、Locationフィールド (リダイレクト先を表す) があります。これらのフィールド情報はユーザー側から提供されるものであり、さほど手間をかけずに操作できてしまいます。<em>これらのフィールドもエスケープするようにしてください。</em> エスケープが必要になるのは、管理画面でUser-Agentヘッダを表示する場合などが考えられます。</p>
 <p>さらに、 <em>ユーザー入力を部分的に元にしたレスポンスヘッダを生成するときに、自分が何をしているのかを正しく知っておくことが重要です。</em> たとえば、ユーザーを特定のページへリダイレクトして戻したいとします。このとき、"referer"フィールドをフォームに導入して、指定のアドレスにリダイレクトしたとします。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
