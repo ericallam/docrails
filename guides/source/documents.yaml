@@ -1,197 +1,198 @@
+﻿
 -
-  name: Start Here
+  name: はじめに
   documents:
     -
-      name: Getting Started with Rails
+      name: Railsをはじめよう
       url: getting_started.html
-      description: Everything you need to know to install Rails and create your first application.
+      description: Railsのインストール方法と最初のRailsアプリケーションの作成に必要なすべてを解説します。
 -
-  name: Models
+  name: モデル
   documents:
     -
-      name: Active Record Basics
+      name: Active Recordの基礎
       url: active_record_basics.html
-      description: This guide will get you started with models, persistence to database and the Active Record pattern and library.
+      description: Active Recordの基礎となるモデル、データベースへの永続的な保存、Active Recordパターンとライブラリについて解説します。
     -
-      name: Active Record Migrations
+      name: Active Recordとマイグレーション (※翻訳中)
       url: active_record_migrations.html
-      description: This guide covers how you can use Active Record migrations to alter your database in a structured and organized manner.
+      description: Active Recordのマイグレーション (migration) を使用して、データベースを構造化された方法で整然と変更する方法について解説します。
     -
-      name: Active Record Validations
+      name: Active Record検証機能 (バリデーション)
       url: active_record_validations.html
-      description: This guide covers how you can use Active Record validations
+      description: Active Recordのバリデーション機能について解説します。
     -
-      name: Active Record Callbacks
+      name: Active Recordコールバック
       url: active_record_callbacks.html
-      description: This guide covers how you can use Active Record callbacks.
+      description: Active Recordのコールバックについて解説します。
     -
-      name: Active Record Associations
+      name: Active Recordの関連付け (アソシエーション)
       url: association_basics.html
-      description: This guide covers all the associations provided by Active Record.
+      description: Active Recordが提供するすべての関連付け機能について解説します。
     -
-      name: Active Record Query Interface
+      name: Active Recordクエリインターフェイス
       url: active_record_querying.html
-      description: This guide covers the database query interface provided by Active Record.
+      description: Active Recordが提供するすべてのデータベースクエリインターフェイスについて解説します。
 -
-  name: Views
+  name: ビュー
   documents:
     -
-      name: Action View Overview
+      name: Action Viewの概要
       url: action_view_overview.html
-      description: This guide provides an introduction to Action View and introduces a few of the more common view helpers.
+      description: Action Viewの概要を紹介し、共通のビューヘルパーについてもある程度解説します。
       work_in_progress: true
     -
-      name: Layouts and Rendering in Rails
+      name: ビューのレイアウトとレンダリング (※翻訳中)
       url: layouts_and_rendering.html
-      description: This guide covers the basic layout features of Action Controller and Action View, including rendering and redirecting, using content_for blocks, and working with partials.
+      description: Action ControllerとAction Viewが提供する基本的なレイアウト機能について解説します。画面出力 (レンダリング) とリダイレクト、content_forブロックとパーシャル (部分テンプレート) の使用方法についても解説します。
     -
-      name: Action View Form Helpers
+      name: Action Viewフォームヘルパー
       url: form_helpers.html
-      description: Guide to using built-in Form helpers.
+      description: ビルトインのフォームヘルパーについて解説します。
 -
-  name: Controllers
+  name: コントローラ
   documents:
     -
-      name: Action Controller Overview
+      name: Action Controllerの概要
       url: action_controller_overview.html
-      description: This guide covers how controllers work and how they fit into the request cycle in your application. It includes sessions, filters, and cookies, data streaming, and dealing with exceptions raised by a request, among other topics.
+      description: コントローラの動作と、アプリケーションのリクエストサイクルでコントローラがどのように使われるかについて解説します。セッション、フィルタ、cookie、データストリーミング、リクエストによって発生する例外、その他多くの話題を取り扱っています。
     -
-      name: Rails Routing from the Outside In
+      name: Railsのルーティング (※翻訳中)
       url: routing.html
-      description: This guide covers the user-facing features of Rails routing. If you want to understand how to use routing in your own Rails applications, start here.
+      description: Railsのルーティング機能について解説しますRailsアプリケーションで行われているルーティングのしくみについて理解したい場合は、ここからお読みください。
 -
-  name: Digging Deeper
+  name: 高度なトピック
   documents:
     -
-      name: Active Support Core Extensions
+      name: Active Supportコア拡張機能
       url: active_support_core_extensions.html
-      description: This guide documents the Ruby core extensions defined in Active Support.
+      description: Active Supportで定義されているRubyのコア拡張機能に関するドキュメントです。
     -
-      name: Rails Internationalization API
+      name: Rails国際化(I18n) API
       url: i18n.html
-      description: This guide covers how to add internationalization to your applications. Your application will be able to translate content to different languages, change pluralization rules, use correct date formats for each country and so on.
+      description: Railsアプリケーションを国際化する方法について解説します。これによりアプリケーションを異なる言語に翻訳することができ、さらに単数形/複数形ルールを変更したり、その国に適した日付フォーマットを設定したりできます。
     -
-      name: Action Mailer Basics
+      name: Action Mailerの基礎 (未着手)
       url: action_mailer_basics.html
-      description: This guide describes how to use Action Mailer to send and receive emails.
+      description: Action Mailerを使用してメールを送受信する方法について解説します。
     -
-      name: Active Job Basics
+      name: Active Jobの基礎 (未着手)
       url: active_job_basics.html
-      description: This guide provides you with all you need to get started in creating, enqueueing and executing background jobs.
+      description: バックグラウンドで動作するジョブの作成・キュー送信・実行方法に必要なすべてを解説します。
     -
-      name: Testing Rails Applications
+      name: Railsアプリケーションのテスティング (未着手)
       url: testing.html
       work_in_progress: true
-      description: This is a rather comprehensive guide to doing both unit and functional tests in Rails. It covers everything from 'What is a test?' to the testing APIs. Enjoy.
+      description: Railsで単体テストと機能テストを実行するための総合的な解説を行います。「テスティングとは何か」からテスティングAPIまですべてのトピックを扱います。
     -
-      name: Securing Rails Applications
+      name: Ruby on Railsセキュリティガイド
       url: security.html
-      description: This guide describes common security problems in web applications and how to avoid them with Rails.
+      description: Webアプリケーション全般におけるセキュリティ問題と、Railsでこれらの問題を回避する方法について解説します。
     -
-      name: Debugging Rails Applications
+      name: Railsアプリケーションのデバッグ (未着手)
       url: debugging_rails_applications.html
-      description: This guide describes how to debug Rails applications. It covers the different ways of achieving this and how to understand what is happening "behind the scenes" of your code.
+      description: Railsアプリケーションのデバッグ方法について解説します。さまざまなデバッグ方法や、作成したコードの舞台裏でどのような動作が行われているかについても解説します。
     -
-      name: Configuring Rails Applications
+      name: Railsアプリケーションを設定する
       url: configuring.html
-      description: This guide covers the basic configuration settings for a Rails application.
+      description: Railsアプリケーションの基本的な設定方法について解説します。
     -
-      name: Rails Command Line Tools and Rake Tasks
+      name: コマンドラインツールとRakeタスク (未着手)
       url: command_line.html
-      description: This guide covers the command line tools and rake tasks provided by Rails.
+      description: Railsが提供する各種コマンドラインツールとRakeタスクについて解説します。
     -
-      name: Asset Pipeline
+      name: アセットパイプライン (未着手)
       url: asset_pipeline.html
-      description: This guide documents the asset pipeline.
+      description: アセットパイプラインに関するドキュメントです。
     -
-      name: Working with JavaScript in Rails
+      name: RailsでJavaScriptを使用する (未着手)
       url: working_with_javascript_in_rails.html
-      description: This guide covers the built-in Ajax/JavaScript functionality of Rails.
+      description: RailsビルトインのAjax/JavaScriptについて解説します。
     -
-      name: Getting Started with Engines
+      name: エンジンを導入する (未着手)
       url: engines.html
-      description: This guide explains how to write a mountable engine.
+      description: マウント可能なエンジンの作成方法について解説します。
       work_in_progress: true
     -
-      name: The Rails Initialization Process
+      name: Railsの初期化プロセス (未着手)
       work_in_progress: true
       url: initialization.html
-      description: This guide explains the internals of the Rails initialization process as of Rails 4
+      description: Rails 4内部の初期化プロセスについて解説します。
 -
-  name: Extending Rails
+  name: Railsを拡張する
   documents:
     -
-      name: The Basics of Creating Rails Plugins
+      name: Railsプラグイン作成方法の基礎 (未着手)
       work_in_progress: true
       url: plugins.html
-      description: This guide covers how to build a plugin to extend the functionality of Rails.
+      description: プラグインを作成してRailsの機能を拡張する方法について解説します。
     -
-      name: Rails on Rack
+      name: Rackに乗ったRails (未着手)
       url: rails_on_rack.html
-      description: This guide covers Rails integration with Rack and interfacing with other Rack components.
+      description: RailsとRackがどのように統合されているか、および他のRackコンポーネントとのインターフェイスについて解説します。
     -
-      name: Creating and Customizing Rails Generators
+      name: Railsジェネレータの作成とカスタマイズ (未着手)
       url: generators.html
-      description: This guide covers the process of adding a brand new generator to your extension or providing an alternative to an element of a built-in Rails generator (such as providing alternative test stubs for the scaffold generator).
+      description: 新しいジェネレータを拡張に追加したり、ビルトインのRailsジェネレータの要素に別の要素を提供したりする方法 (scaffoldジェネレータに別のテストスタブを提供するなど) について解説します。
 -
-  name: Contributing to Ruby on Rails
+  name: Ruby on Railsに貢献する
   documents:
     -
-      name: Contributing to Ruby on Rails
+      name: Ruby on Railsへの貢献方法 (未着手)
       url: contributing_to_ruby_on_rails.html
-      description: Rails is not 'somebody else's framework.' This guide covers a variety of ways that you can get involved in the ongoing development of Rails.
+      description: Railsは「どこかで誰かがうまくやってくれているフレームワーク」ではありません。現在も継続しているRailsフレームワーク開発に貢献するさまざまな方法について解説します。
     -
-      name: API Documentation Guidelines
+      name: APIドキュメントの書き方 (未着手)
       url: api_documentation_guidelines.html
-      description: This guide documents the Ruby on Rails API documentation guidelines.
+      description: Ruby on Rails APIドキュメントのガイドラインについて解説します。
     -
-      name: Ruby on Rails Guides Guidelines
+      name: Ruby on Railsガイドのガイドライン
       url: ruby_on_rails_guides_guidelines.html
-      description: This guide documents the Ruby on Rails guides guidelines.
+      description: Ruby on Railsガイド作成方法のガイドラインです。
 -
-  name: Maintenance Policy
+  name: メンテナンスポリシー
   documents:
     -
-      name: Maintenance Policy
+      name: メンテナンスポリシー (未着手)
       url: maintenance_policy.html
-      description: What versions of Ruby on Rails are currently supported, and when to expect new versions.
+      description: 現在サポートされているRuby on Railsのバージョンと、次期バージョンのリリース見込み時期について記載されています。
 -
-  name: Release Notes
+  name: リリースノート
   documents:
     -
-      name: Upgrading Ruby on Rails
+      name: Ruby on Railsアップグレードガイド
       url: upgrading_ruby_on_rails.html
-      description: This guide helps in upgrading applications to latest Ruby on Rails versions.
+      description: アプリケーションのRuby on Railsを最新バージョンにアップグレードする方法について解説します。
     -
-      name: Ruby on Rails 4.2 Release Notes
+      name: Ruby on Rails 4.2リリースノート (未着手)
       url: 4_2_release_notes.html
-      description: Release notes for Rails 4.2.
+      description: Rails 4.2のリリースノートです。
       work_in_progress: true
     -
-      name: Ruby on Rails 4.1 Release Notes
+      name: Ruby on Rails 4.1リリースノート
       url: 4_1_release_notes.html
-      description: Release notes for Rails 4.1.
+      description: Rails 4.1のリリースノートです。
     -
-      name: Ruby on Rails 4.0 Release Notes
+      name: Ruby on Rails 4.0リリースノート (未着手)
       url: 4_0_release_notes.html
-      description: Release notes for Rails 4.0.
+      description: Rails 4.0のリリースノートです。
     -
-      name: Ruby on Rails 3.2 Release Notes
+      name: Ruby on Rails 3.2リリースノート (未着手)
       url: 3_2_release_notes.html
-      description: Release notes for Rails 3.2.
+      description: Rails 3.2のリリースノートです。
     -
-      name: Ruby on Rails 3.1 Release Notes
+      name: Ruby on Rails 3.1リリースノート (未着手)
       url: 3_1_release_notes.html
-      description: Release notes for Rails 3.1.
+      description: Rails 3.1のリリースノートです。
     -
-      name: Ruby on Rails 3.0 Release Notes
+      name: Ruby on Rails 3.0リリースノート (未着手)
       url: 3_0_release_notes.html
-      description: Release notes for Rails 3.0.
+      description: Rails 3.0のリリースノートです。
     -
-      name: Ruby on Rails 2.3 Release Notes
+      name: Ruby on Rails 2.3リリースノート (未着手)
       url: 2_3_release_notes.html
-      description: Release notes for Rails 2.3.
+      description: Rails 2.3のリリースノートです。
     -
-      name: Ruby on Rails 2.2 Release Notes
+      name: Ruby on Rails 2.2リリースノート (未着手)
       url: 2_2_release_notes.html
-      description: Release notes for Rails 2.2.
+      description: Rails 2.2のリリースノートです。
