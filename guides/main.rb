@@ -11,7 +11,7 @@ ARCHIVE_NAME="archive.zip"
 `unzip #{ARCHIVE_NAME}`
 
 Dir.glob("archive/ja/**") do |filename|
-  new_name = filename.gsub(".txt", ".md").gsub(".md.md", ".md").gsub(".erb.md", ".erb")
+  new_name = filename.gsub(".txt", "").gsub(/\.(erb|yaml)\.md/, "#{$1}")
   puts "Rename: #{filename}\t->\t#{new_name}"
   FileUtils.mv(filename, new_name) unless filename == new_name
 
