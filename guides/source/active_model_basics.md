@@ -1,20 +1,21 @@
-Active Model Basics
+﻿
+Active Modelの基礎
 ===================
 
-This guide should provide you with all you need to get started using model classes. Active Model allows for Action Pack helpers to interact with non-Active Record models. Active Model also helps building custom ORMs for use outside of the Rails framework.
+このガイドでは、モデルクラスを使用して作業を開始するのに必要なことをすべて解説します。Action Packヘルパーは、Active Modelのおかげで非Active Recordモデルとやりとりすることができます。Active Modelを使用することで、カスタムのORM (オブジェクト/リレーションモデル) を作成してRailsフレームワークの外で使用することもできます。
 
-After reading this guide, you will know:
+このガイドの内容:
 
 --------------------------------------------------------------------------------
 
-Introduction
+はじめに
 ------------
 
-Active Model is a library containing various modules used in developing frameworks that need to interact with the Rails Action Pack library. Active Model provides a known set of interfaces for usage in classes. Some of modules are explained below.
+Active Modelは多くのモジュールを含むライブラリであり、それらのモジュールはRailsのAction Packライブラリとやりとりする必要のあるフレームワークで使用されます。Active Modelは、クラスで使用する既知の一連のインターフェイスを提供します。そのうちのいくつかについて以下で説明します。
 
-### AttributeMethods
+### AttributeMethodsモジュール
 
-The AttributeMethods module can add custom prefixes and suffixes on methods of a class. It is used by defining the prefixes and suffixes and which methods on the object will use them.
+AttributeMethodsモジュールは、クラスのメソッドにカスタムのプレフィックスやサフィックスを追加できます。このモジュールを使用するには、プレフィックスまたはサフィックスを定義し、オブジェクト内にあるプレフィックス/サフィックスの追加対象となるメソッドを指定します。
 
 ```ruby
 class Person
@@ -26,7 +27,7 @@ class Person
 
   attr_accessor :age
 
-  private
+    private
     def reset_attribute(attribute)
       send("#{attribute}=", 0)
     end
@@ -43,9 +44,9 @@ person.reset_age     # 0
 person.age_highest?  # false
 ```
 
-### Callbacks
+### Callbacksモジュール
 
-Callbacks gives Active Record style callbacks. This provides an ability to define callbacks which run at appropriate times. After defining callbacks, you can wrap them with before, after and around custom methods.
+Callbacksを使用することで、Active Recordスタイルのコールバックを使用できます。これにより、必要なタイミングで実行されるコールバックを定義することができるようになります。コールバックの定義後、それらをカスタムメソッドの実行前(before)、実行後(after)、あるいは実行中(around)にラップすることができます。
 
 ```ruby
 class Person
@@ -57,19 +58,19 @@ class Person
 
   def update
     run_callbacks(:update) do
-      # This method is called when update is called on an object.
+      # updateメソッドがオブジェクトに対して呼び出されるとこのメソッドが呼び出される
     end
   end
 
   def reset_me
-    # This method is called when update is called on an object as a before_update callback is defined.
+    # このメソッドは、before_updateコールバックで定義されているとおり、updateメソッドがオブジェクトに対して呼び出される直前に呼び出される。
   end
 end
 ```
 
-### Conversion
+### Conversionモジュール
 
-If a class defines `persisted?` and `id` methods, then you can include the `Conversion` module in that class and call the Rails conversion methods on objects of that class.
+クラスで`persisted?`メソッドと`id`メソッドが定義されていれば、この`Conversion`モジュールをインクルードしてRailsの変換メソッドをそのクラスのオブジェクトに対して呼び出すことができます。
 
 ```ruby
 class Person
@@ -90,9 +91,9 @@ person.to_key              # => nil
 person.to_param            # => nil
 ```
 
-### Dirty
+### Dirtyモジュール
 
-An object becomes dirty when it has gone through one or more changes to its attributes and has not been saved. This gives the ability to check whether an object has been changed or not. It also has attribute based accessor methods. Let's consider a Person class with attributes `first_name` and `last_name`:
+あるオブジェクトが数度にわたって変更され、保存されていない状態は、「汚れた (dirty)」状態です。このモジュールを使用して、オブジェクトで変更が生じたかどうかを検出できます。属性名に基づいたアクセサメソッドも使用できます。`first_name`属性と`last_name`を持つPersonというクラスを例に考えてみましょう。
 
 ```ruby
 require 'active_model'
@@ -120,37 +121,37 @@ class Person
   end
 
   def save
-    # do save work...
+    # 保存を実行
     changes_applied
   end
 end
 ```
 
-#### Querying object directly for its list of all changed attributes.
+#### 変更されたすべての属性のリストをオブジェクトから直接取得する
 
 ```ruby
 person = Person.new
-person.changed? # => false
+person.changed? # => false 
 
 person.first_name = "First Name"
 person.first_name # => "First Name"
 
-# returns if any attribute has changed.
+# 属性が1つ以上変更されている場合に返す
 person.changed? # => true
 
-# returns a list of attributes that have changed before saving.
+# 保存前に変更された属性のリストを返す
 person.changed # => ["first_name"]
 
-# returns a hash of the attributes that have changed with their original values.
+# 元の値から変更された属性のハッシュを返す
 person.changed_attributes # => {"first_name"=>nil}
 
-# returns a hash of changes, with the attribute names as the keys, and the values will be an array of the old and new value for that field.
+# 変更のハッシュを返す (ハッシュのキーは属性名、ハッシュの値はフィールドの新旧の値の配列
 person.changes # => {"first_name"=>[nil, "First Name"]}
 ```
 
-#### Attribute based accessor methods
+#### 属性名に基づいたアクセサメソッド
 
-Track whether the particular attribute has been changed or not.
+特定の属性が変更されたかどうかを検出します。
 
 ```ruby
 # attr_name_changed?
@@ -158,24 +159,24 @@ person.first_name # => "First Name"
 person.first_name_changed? # => true
 ```
 
-Track what was the previous value of the attribute.
+その属性の直前の値を返します。
 
 ```ruby
 # attr_name_was accessor
 person.first_name_was # => "First Name"
 ```
 
-Track both previous and current value of the changed attribute. Returns an array if changed, else returns nil.
+変更された属性の、直前の値と現在の値を両方返します。変更があった場合は配列を返し、変更がなかった場合はnilを返します。
 
 ```ruby
 # attr_name_change
 person.first_name_change # => [nil, "First Name"]
 person.last_name_change # => nil
-```
+``
 
-### Validations
+### Validationsモジュール
 
-Validations module adds the ability to class objects to validate them in Active Record style.
+Validationsモジュールを使用することで、クラスオブジェクトをActive Recordスタイルで検証することができます。
 
 ```ruby
 class Person
@@ -189,35 +190,12 @@ class Person
 end
 
 person = Person.new(token: "2b1f325")
-person.valid?                        # => false
+person.valid? # => false 
 person.name = 'vishnu'
 person.email = 'me'
-person.valid?                        # => false
+person.valid? # => false 
 person.email = 'me@vishnuatrai.com'
-person.valid?                        # => true
+person.valid? # => true
 person.token = nil
-person.valid?                        # => raises ActiveModel::StrictValidationFailed
-```
-
-### ActiveModel::Naming
-
-Naming adds a number of class methods which make the naming and routing
-easier to manage. The module defines the `model_name` class method which
-will define a number of accessors using some `ActiveSupport::Inflector` methods.
-
-```ruby
-class Person
-  extend ActiveModel::Naming
-end
-
-Person.model_name.name                # => "Person"
-Person.model_name.singular            # => "person"
-Person.model_name.plural              # => "people"
-Person.model_name.element             # => "person"
-Person.model_name.human               # => "Person"
-Person.model_name.collection          # => "people"
-Person.model_name.param_key           # => "person"
-Person.model_name.i18n_key            # => :person
-Person.model_name.route_key           # => "people"
-Person.model_name.singular_route_key  # => "person"
+person.valid? # => ActiveModel::StrictValidationFailedが発生する
 ```

@@ -1,32 +1,32 @@
-Active Record Callbacks
+﻿
+Active Recordコールバック
 =======================
 
-This guide teaches you how to hook into the life cycle of your Active Record
-objects.
+このガイドでは、Active Recordオブジェクトのライフサイクルにフックをかける方法について説明します。
 
-After reading this guide, you will know:
+このガイドの内容:
 
-* The life cycle of Active Record objects.
-* How to create callback methods that respond to events in the object life cycle.
-* How to create special classes that encapsulate common behavior for your callbacks.
+* Active Recordオブジェクトのライフサイクル
+* オブジェクトのライフサイクルにおけるイベントに応答するコールバックメソッドを作成する方法
+* コールバックで共通となる振る舞いをカプセル化する特殊なクラスの作成方法
 
 --------------------------------------------------------------------------------
 
-The Object Life Cycle
+オブジェクトのライフサイクル
 ---------------------
 
-During the normal operation of a Rails application, objects may be created, updated, and destroyed. Active Record provides hooks into this *object life cycle* so that you can control your application and its data.
+Railsアプリケーションを普通に操作すると、その内部でオブジェクトが作成されたり、更新されたりdestoryされたりします。Active Recordはこの<em>オブジェクトライフライクル</em>へのフックを提供しており、これを使用してアプリケーションやデータを制御できます。
 
-Callbacks allow you to trigger logic before or after an alteration of an object's state.
+コールバックは、オブジェクトの状態が切り替わる「前」または「後」にロジックをトリガします。
 
-Callbacks Overview
+コールバックの概要
 ------------------
 
-Callbacks are methods that get called at certain moments of an object's life cycle. With callbacks it is possible to write code that will run whenever an Active Record object is created, saved, updated, deleted, validated, or loaded from the database.
+コールバックとは、オブジェクトのライフサイクル期間における特定の瞬間に呼び出されるメソッドのことです。コールバックを利用することで、Active Recordオブジェクトが作成/保存/更新/削除/検証/データベースからの読み込み、などのイベント発生時に常に実行されるコードを書くことができます。
 
-### Callback Registration
+### コールバックの登録
 
-In order to use the available callbacks, you need to register them. You can implement the callbacks as ordinary methods and use a macro-style class method to register them as callbacks:
+コールバックを利用するためには、コールバックを登録する必要があります。コールバックの実装は普通のメソッドと特に違うところはありません。これをコールバックとして登録するには、マクロのようなスタイルのクラスメソッドを使用します。
 
 ```ruby
 class User < ActiveRecord::Base
@@ -43,7 +43,7 @@ class User < ActiveRecord::Base
 end
 ```
 
-The macro-style class methods can also receive a block. Consider using this style if the code inside your block is so short that it fits in a single line:
+このマクロスタイルのクラスメソッドはブロックを受け取ることもできます。以下のようにコールバックしたいコードがきわめて短く、1行に収まるような場合にこのスタイルを使ってみます。
 
 ```ruby
 class User < ActiveRecord::Base
@@ -55,13 +55,13 @@ class User < ActiveRecord::Base
 end
 ```
 
-Callbacks can also be registered to only fire on certain life cycle events:
+コールバックは、特定のライフサイクルのイベントでのみ呼び出されるように登録することもできます。
 
 ```ruby
 class User < ActiveRecord::Base
   before_validation :normalize_name, on: :create
 
-  # :on takes an array as well
+  # :onは配列を取ることもできる
   after_validation :set_location, on: [ :create, :update ]
 
   protected
@@ -75,14 +75,14 @@ class User < ActiveRecord::Base
 end
 ```
 
-It is considered good practice to declare callback methods as protected or private. If left public, they can be called from outside of the model and violate the principle of object encapsulation.
+コールバックの宣言はprotectedまたはprivateキーワードの後で行なうのが好ましい方法です。コールバックメソッドがpublicな状態のままだと、このメソッドがモデルの外から呼び出され、オブジェクトのカプセル化の原則に違反する可能性があります。
 
-Available Callbacks
+利用可能なコールバック
 -------------------
 
-Here is a list with all the available Active Record callbacks, listed in the same order in which they will get called during the respective operations:
+Active Recordで利用可能なコールバックの一覧を以下に示します。これらのコールバックは、実際の操作中に呼び出される順序に並んでいます。
 
-### Creating an Object
+### オブジェクトの作成
 
 * `before_validation`
 * `after_validation`
@@ -92,9 +92,8 @@ Here is a list with all the available Active Record callbacks, listed in the sam
 * `around_create`
 * `after_create`
 * `after_save`
-* `after_commit/after_rollback`
 
-### Updating an Object
+### オブジェクトの更新
 
 * `before_validation`
 * `after_validation`
@@ -104,54 +103,52 @@ Here is a list with all the available Active Record callbacks, listed in the sam
 * `around_update`
 * `after_update`
 * `after_save`
-* `after_commit/after_rollback`
 
-### Destroying an Object
+### オブジェクトのdestroy
 
 * `before_destroy`
 * `around_destroy`
 * `after_destroy`
-* `after_commit/after_rollback`
 
-WARNING. `after_save` runs both on create and update, but always _after_ the more specific callbacks `after_create` and `after_update`, no matter the order in which the macro calls were executed.
+警告: `after_save`は作成と更新の両方で呼び出されますが、コールバックマクロの呼び出し順にかかわらず、必ず、より具体的な`after_create`および`after_update`より _後_ に呼び出してください。
 
-### `after_initialize` and `after_find`
+### `after_initialize`と`after_find`
 
-The `after_initialize` callback will be called whenever an Active Record object is instantiated, either by directly using `new` or when a record is loaded from the database. It can be useful to avoid the need to directly override your Active Record `initialize` method.
+`after_initialize`コールバックは、Active Recordオブジェクトが1つインスタンス化されるたびに呼び出されます。インスタンス化は、直接`new`を実行する他にデータベースからレコードが読み込まれるときにも行われます。これを利用すれば、Active Recordの`initialize`メソッドを直接オーバーライドせずに済みます。
 
-The `after_find` callback will be called whenever Active Record loads a record from the database. `after_find` is called before `after_initialize` if both are defined.
+`after_find`コールバックは、Active Recordがデータベースからレコードを1つ読み込むたびに呼び出されます。`after_find`と`after_initialize`が両方定義されている場合は、`after_find`が先に実行されます。
 
-The `after_initialize` and `after_find` callbacks have no `before_*` counterparts, but they can be registered just like the other Active Record callbacks.
+`after_initialize`と`after_find`コールバックには、対応する`before_*`メソッドはありませんが、他のActive Recordコールバックと同様に登録できます。
 
 ```ruby
 class User < ActiveRecord::Base
   after_initialize do |user|
-    puts "You have initialized an object!"
-  end
+    puts "オブジェクトは初期化されました"
+end
 
   after_find do |user|
-    puts "You have found an object!"
+    puts "オブジェクトが見つかりました"
   end
 end
 
 >> User.new
-You have initialized an object!
+オブジェクトは初期化されました
 => #<User id: nil>
 
 >> User.first
-You have found an object!
-You have initialized an object!
+オブジェクトが見つかりました
+オブジェクトは初期化されました
 => #<User id: 1>
 ```
 
 ### `after_touch`
 
-The `after_touch` callback will be called whenever an Active Record object is touched.
+`after_touch`コールバックは、Active Recordオブジェクトがタッチされるたびに呼び出されます。
 
 ```ruby
 class User < ActiveRecord::Base
   after_touch do |user|
-    puts "You have touched an object"
+    puts "オブジェクトにタッチしました"
   end
 end
 
@@ -159,17 +156,17 @@ end
 => #<User id: 1, name: "Kuldeep", created_at: "2013-11-25 12:17:49", updated_at: "2013-11-25 12:17:49">
 
 >> u.touch
-You have touched an object
+オブジェクトにタッチしました
 => true
 ```
 
-It can be used along with `belongs_to`:
+このコールバックは`belongs_to`と併用できます。
 
 ```ruby
 class Employee < ActiveRecord::Base
   belongs_to :company, touch: true
   after_touch do
-    puts 'An Employee was touched'
+    puts 'Employeeモデルにタッチされました'
   end
 end
 
@@ -179,24 +176,24 @@ class Company < ActiveRecord::Base
 
   private
   def log_when_employees_or_company_touched
-    puts 'Employee/Company was touched'
+    puts 'Employee/Companyにタッチされました'
   end
 end
 
 >> @employee = Employee.last
 => #<Employee id: 1, company_id: 1, created_at: "2013-11-25 17:04:22", updated_at: "2013-11-25 17:05:05">
 
-# triggers @employee.company.touch
+# @employee.company.touchをトリガーする
 >> @employee.touch
-Employee/Company was touched
-An Employee was touched
+Employee/Companyにタッチされました
+Employeeにタッチされました
 => true
 ```
 
-Running Callbacks
+コールバックの実行
 -----------------
 
-The following methods trigger callbacks:
+以下のメソッドはコールバックをトリガします。
 
 * `create`
 * `create!`
@@ -214,7 +211,7 @@ The following methods trigger callbacks:
 * `update!`
 * `valid?`
 
-Additionally, the `after_find` callback is triggered by the following finder methods:
+また、`after_find`コールバックは以下のfinderメソッドを実行すると呼び出されます。
 
 * `all`
 * `first`
@@ -225,14 +222,14 @@ Additionally, the `after_find` callback is triggered by the following finder met
 * `find_by_sql`
 * `last`
 
-The `after_initialize` callback is triggered every time a new object of the class is initialized.
+`after_initialize`コールバックは、そのクラスの新しいオブジェクトが初期化されるたびに呼び出されます。
 
-NOTE: The `find_by_*` and `find_by_*!` methods are dynamic finders generated automatically for every attribute. Learn more about them at the [Dynamic finders section](active_record_querying.html#dynamic-finders)
+メモ: `find_by_*`メソッドと`find_by_*!`メソッドは、属性ごとに自動的に生成される動的なfinderメソッドです。詳細については[動的finderのセクション](active_record_querying.html#dynamic-finders)を参照してください。
 
-Skipping Callbacks
+コールバックをスキップする
 ------------------
 
-Just as with validations, it is also possible to skip callbacks by using the following methods:
+検証(validation)の場合と同様、以下のメソッドを使用するとコールバックをスキップできます。
 
 * `decrement`
 * `decrement_counter`
@@ -247,52 +244,52 @@ Just as with validations, it is also possible to skip callbacks by using the fol
 * `update_all`
 * `update_counters`
 
-These methods should be used with caution, however, because important business rules and application logic may be kept in callbacks. Bypassing them without understanding the potential implications may lead to invalid data.
+重要なビジネスルールやアプリケーションロジックはたいていコールバックに仕込まれていますので、これらのメソッドの使用には十分気をつけてください。コールバックをうかつにバイパスすると、データの不整合が発生する可能性があります。
 
-Halting Execution
+コールバックの停止
 -----------------
 
-As you start registering new callbacks for your models, they will be queued for execution. This queue will include all your model's validations, the registered callbacks, and the database operation to be executed.
+モデルに新しくコールバックを登録すると、コールバックは実行キューに入ります。このキューには、あらゆるモデルに対する検証、登録済みコールバック、実行待ちのデータベース操作が置かれます。
 
-The whole callback chain is wrapped in a transaction. If any _before_ callback method returns exactly `false` or raises an exception, the execution chain gets halted and a ROLLBACK is issued; _after_ callbacks can only accomplish that by raising an exception.
+コールバックの連鎖の全体は、1つのトランザクションに含まれます。●要検証● _before_ コールバックの1つが`false`を返すか例外を発生するという動作をする場合、実行の連鎖全体が停止してROLLBACKが発行されます。この場合、 _after_ コールバックは例外を発生することによってのみ完了します。
 
-WARNING. Any exception that is not `ActiveRecord::Rollback` will be re-raised by Rails after the callback chain is halted. Raising an exception other than `ActiveRecord::Rollback` may break code that does not expect methods like `save` and `update_attributes` (which normally try to return `true` or `false`) to raise an exception.
+警告: `ActiveRecord::Rollback`を除いて、コールバック連鎖後にRailsによって再発生したあらゆる例外は停止します。`ActiveRecord::Rollback`以外の例外が発生すると、`save`や`update_attributes`などのようにメソッドが例外を発生することを想定していないコード(通常`true`または`false`のいずれかを返します)は中断します。
 
-Relational Callbacks
+リレーションシップのコールバック
 --------------------
 
-Callbacks work through model relationships, and can even be defined by them. Suppose an example where a user has many articles. A user's articles should be destroyed if the user is destroyed. Let's add an `after_destroy` callback to the `User` model by way of its relationship to the `Article` model:
+コールバックはモデルのリレーションシップを経由して動作できます。また、リレーションシップを使用してコールバックを定義することすらできます。1人のユーザーが多数のポストを持っている状況を例に取ります。あるユーザーが所有するポストは、そのユーザーがdestroyされたらdestroyされる必要があります。`User`モデルに`after_destroy`コールバックを追加し、このコールバックで`Post`モデルへのリレーションシップを経由すると以下のようになります。
 
 ```ruby
 class User < ActiveRecord::Base
-  has_many :articles, dependent: :destroy
+  has_many :posts, dependent: :destroy
 end
 
-class Article < ActiveRecord::Base
+class Post < ActiveRecord::Base
   after_destroy :log_destroy_action
 
   def log_destroy_action
-    puts 'Article destroyed'
+    puts 'Post destroyed'
   end
 end
 
 >> user = User.first
 => #<User id: 1>
->> user.articles.create!
-=> #<Article id: 1, user_id: 1>
+>> user.posts.create!
+=> #<Post id: 1, user_id: 1>
 >> user.destroy
-Article destroyed
+Post destroyed
 => #<User id: 1>
 ```
 
-Conditional Callbacks
+条件付きコールバック
 ---------------------
 
-As with validations, we can also make the calling of a callback method conditional on the satisfaction of a given predicate. We can do this using the `:if` and `:unless` options, which can take a symbol, a string, a `Proc` or an `Array`. You may use the `:if` option when you want to specify under which conditions the callback **should** be called. If you want to specify the conditions under which the callback **should not** be called, then you may use the `:unless` option.
+検証と同様、与えられた述語による条件を満たす場合に実行されるコールバックメソッドの呼び出しを作成することもできます。これを 行なうには、コールバックで`:if`オプションまたは`:unless`オプションを使用します。このオプションはシンボル、文字列、`Proc`、または`Array`を引数に取ります。特定の状況でのみコールバックが呼び出される必要がある場合は、`:if`オプションを使用します。特定の状況ではコールバックを呼び出してはならない場合は、`:unless`オプションを使用します。
 
-### Using `:if` and `:unless` with a `Symbol`
+### `:if`および`:unless`オプションでシンボルを使用する
 
-You can associate the `:if` and `:unless` options with a symbol corresponding to the name of a predicate method that will get called right before the callback. When using the `:if` option, the callback won't be executed if the predicate method returns false; when using the `:unless` option, the callback won't be executed if the predicate method returns true. This is the most common option. Using this form of registration it is also possible to register several different predicates that should be called to check if the callback should be executed.
+`:if`オプションまたは`:unless`オプションは、コールバックの直前に呼び出される述語メソッド(訳注: trueかfalseのいずれかの値のみを返すメソッド)の名前に対応するシンボルと関連付けることができます。`:if`オプションを使用する場合、述語メソッドがfalseを返せばコールバックは実行されません。`:unless`オプションを使用する場合、述語メソッドがtrueを返せばコールバックは実行されません。これはコールバックで最もよく使用されるオプションです。この方法で登録することで、いくつもの異なる述語メソッドを登録して、コールバックを呼び出すべきかどうかをチェックすることができます。
 
 ```ruby
 class Order < ActiveRecord::Base
@@ -300,9 +297,9 @@ class Order < ActiveRecord::Base
 end
 ```
 
-### Using `:if` and `:unless` with a String
+### `:if`および`:unless`オプションで文字列を使用する
 
-You can also use a string that will be evaluated using `eval` and hence needs to contain valid Ruby code. You should use this option only when the string represents a really short condition:
+文字列を使用することもできます。この文字列は後で`eval`で評価されるため、実行可能な正しいRubyコードを含んでいる必要があります。オプションで文字列を使用するのは、文字列に含まれる条件が十分に短い場合だけにしてください。
 
 ```ruby
 class Order < ActiveRecord::Base
@@ -310,9 +307,9 @@ class Order < ActiveRecord::Base
 end
 ```
 
-### Using `:if` and `:unless` with a `Proc`
+### `:if`および`:unless`オプションで`Proc`を使用する
 
-Finally, it is possible to associate `:if` and `:unless` with a `Proc` object. This option is best suited when writing short validation methods, usually one-liners:
+最後に、`:if`および`:unless`オプションで`Proc`オブジェクトを使用することもできます。このオプションは、1行以内に収まるワンライナーで検証を行う場合に最適です。
 
 ```ruby
 class Order < ActiveRecord::Base
@@ -321,23 +318,23 @@ class Order < ActiveRecord::Base
 end
 ```
 
-### Multiple Conditions for Callbacks
+### コールバックで複数の条件を指定する
 
-When writing conditional callbacks, it is possible to mix both `:if` and `:unless` in the same callback declaration:
+1つの条件付きコールバック宣言内で、`:if`オプションと`:unless`オプションを同時に使用することができます。
 
 ```ruby
 class Comment < ActiveRecord::Base
   after_create :send_email_to_author, if: :author_wants_emails?,
-    unless: Proc.new { |comment| comment.article.ignore_comments? }
+    unless: Proc.new { |comment| comment.post.ignore_comments? }
 end
 ```
 
-Callback Classes
+コールバッククラス
 ----------------
 
-Sometimes the callback methods that you'll write will be useful enough to be reused by other models. Active Record makes it possible to create classes that encapsulate the callback methods, so it becomes very easy to reuse them.
+うまく書けたコールバックメソッドを他のモデルでも使い回したくなることもあります。Active Recordは、コールバックメソッドをカプセル化したクラスを作成できますので、簡単に再利用できます。
 
-Here's an example where we create a class with an `after_destroy` callback for a `PictureFile` model:
+以下の例では、`PictureFile`モデル用に`after_destroy`コールバックを持つクラスを作成しています。
 
 ```ruby
 class PictureFileCallbacks
@@ -349,7 +346,7 @@ class PictureFileCallbacks
 end
 ```
 
-When declared inside a class, as above, the callback methods will receive the model object as a parameter. We can now use the callback class in the model:
+上のようにクラス内で宣言することにより、コールバックメソッドはモデルオブジェクトをパラメータとして受け取れるようになります。これでこのコールバッククラスをモデルで使用できます。
 
 ```ruby
 class PictureFile < ActiveRecord::Base
@@ -357,7 +354,7 @@ class PictureFile < ActiveRecord::Base
 end
 ```
 
-Note that we needed to instantiate a new `PictureFileCallbacks` object, since we declared our callback as an instance method. This is particularly useful if the callbacks make use of the state of the instantiated object. Often, however, it will make more sense to declare the callbacks as class methods:
+コールバックをインスタンスメソッドとして宣言したので、`PictureFileCallbacks`オブジェクトを新しくインスタンス化する必要があったことにご注意ください。これは、インスタンス化されたオブジェクトの状態をコールバックメソッドで利用したい場合に特に便利です。ただし、コールバックをクラスメソッドとして宣言する方がわかりやすいこともしばしばあります。
 
 ```ruby
 class PictureFileCallbacks
@@ -369,7 +366,7 @@ class PictureFileCallbacks
 end
 ```
 
-If the callback method is declared this way, it won't be necessary to instantiate a `PictureFileCallbacks` object.
+コールバックメソッドを上のように宣言した場合は、`PictureFileCallbacks`オブジェクトのインスタンス化は不要です。
 
 ```ruby
 class PictureFile < ActiveRecord::Base
@@ -377,14 +374,14 @@ class PictureFile < ActiveRecord::Base
 end
 ```
 
-You can declare as many callbacks as you want inside your callback classes.
+コールバッククラスの内部では、いくつでもコールバックを宣言できます。
 
-Transaction Callbacks
+トランザクションコールバック
 ---------------------
 
-There are two additional callbacks that are triggered by the completion of a database transaction: `after_commit` and `after_rollback`. These callbacks are very similar to the `after_save` callback except that they don't execute until after database changes have either been committed or rolled back. They are most useful when your active record models need to interact with external systems which are not part of the database transaction.
+データベースのトランザクションが完了したときにトリガされるコールバックが2つあります。`after_commit`と`after_rollback`です。これらのコールバックは`after_save`コールバックときわめて似通っていますが、データベースの変更のコミットまたはロールバックが完了するまでトリガされない点が異なります。これらのメソッドは、Active Recordのモデルから、データベーストランザクションの一部に含まれていない外部のシステムとやりとりを行ないたい場合に特に便利です。
 
-Consider, for example, the previous example where the `PictureFile` model needs to delete a file after the corresponding record is destroyed. If anything raises an exception after the `after_destroy` callback is called and the transaction rolls back, the file will have been deleted and the model will be left in an inconsistent state. For example, suppose that `picture_file_2` in the code below is not valid and the `save!` method raises an error.
+例として、直前の例に使用した`PictureFile`モデルで、対応するレコードがdestroyされた後にファイルを1つ削除する必要があるとしましょう。`after_destroy`コールバックの直後に何らかの例外が発生してトランザクションがロールバックすると、ファイルが削除され、モデルの一貫性が損なわれたままになります。ここで、以下のコードにある`picture_file_2`オブジェクトが無効で、`save!`メソッドがエラーを発生するとします。
 
 ```ruby
 PictureFile.transaction do
@@ -393,7 +390,7 @@ PictureFile.transaction do
 end
 ```
 
-By using the `after_commit` callback we can account for this case.
+`after_commit`コールバックを使用することで、このような場合に対応することができます。
 
 ```ruby
 class PictureFile < ActiveRecord::Base
@@ -407,7 +404,6 @@ class PictureFile < ActiveRecord::Base
 end
 ```
 
-NOTE: the `:on` option specifies when a callback will be fired. If you
-don't supply the `:on` option the callback will fire for every action.
+メモ: `:on`オプションは、コールバックがトリガされる条件を指定します。`:on`オプションを指定しないと、あらゆるアクションでコールバックがトリガされまくります。
 
-WARNING. The `after_commit` and `after_rollback` callbacks are guaranteed to be called for all models created, updated, or destroyed within a transaction block. If any exceptions are raised within one of these callbacks, they will be ignored so that they don't interfere with the other callbacks. As such, if your callback code could raise an exception, you'll need to rescue it and handle it appropriately within the callback.
+警告: `after_commit`コールバックおよび`after_rollback`コールバックは、1つのトランザクションブロック内におけるあらゆるモデルの作成/更新/destroy時に呼び出されます。これらのコールバックのいずれかで何らかの例外が発生すると、例外は無視されるため、他のコールバックに干渉しません。従って、もし自作のコールバックが例外を発生する可能性がある場合は、自分のコールバック内でrescueし、適切にエラー処理を行なう必要があります。
