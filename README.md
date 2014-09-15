@@ -85,6 +85,11 @@ Railsチュートリアル
 http://railstutorial.jp/
 
 
+## 翻訳の流れ
+
+![翻訳の流れ](https://raw.githubusercontent.com/yasslab/railsguides.jp/japanese/images/flow-of-translation.jpg)
+参考: [[翻訳]Ruby on Rails 4.1リリース前にアップグレードガイドを先行翻訳した & 同じ翻訳を2回しないで済むようにした](http://techracho.bpsinc.jp/hachi8833/2014_03_28/16037)
+
 ## 日本語のHTMLファイルの生成方法
 
 0. `/guides` フォルダに移動する
