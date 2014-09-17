@@ -43,13 +43,9 @@ the asset pipeline you will have to add those gems to your Gemfile. Also, creati
 # require "sprockets/railtie"
 ```
 
-<<<<<<< HEAD
 To set asset compression methods, set the appropriate configuration options
 in `production.rb` - `config.assets.css_compressor` for your CSS and
 `config.assets.js_compressor` for your JavaScript:
-=======
-To set asset compression methods, set the appropriate configuration options in `production.rb` - `config.assets.css_compressor` for your CSS and `config.assets.js_compressor` for your Javascript:
->>>>>>> 29dd63d037d602b0a349a6db8ac5d9461dfb0970
 
 ```ruby
 config.assets.css_compressor = :yui
@@ -162,13 +158,9 @@ WARNING: If you are upgrading from Rails 3, please take into account that assets
 
 When a file is referenced from a manifest or a helper, Sprockets searches the three default asset locations for it.
 
-<<<<<<< HEAD
 The default locations are: the `images`, `javascripts` and `stylesheets`
 directories under the `app/assets` folder, but these subdirectories
 are not special - any path under `assets/*` will be searched.
-=======
-The default locations are: the `images`, `javascripts` and `stylesheets` directories under the `apps/assets` folder, but these subdirectories are not special - any path under `assets/*` will be searched.
->>>>>>> 29dd63d037d602b0a349a6db8ac5d9461dfb0970
 
 For example, these files:
 
@@ -496,12 +488,8 @@ The default matcher for compiling files includes `application.js`, `application.
 
 NOTE: The matcher (and other members of the precompile array; see below) is applied to final compiled file names. This means anything that compiles to JS/CSS is excluded, as well as raw JS/CSS files; for example, `.coffee` and `.scss` files are **not** automatically included as they compile to JS/CSS.
 
-<<<<<<< HEAD
 If you have other manifests or individual stylesheets and JavaScript files to
 include, you can add them to the `precompile` array in `config/initializers/assets.rb`:
-=======
-If you have other manifests or individual stylesheets and JavaScript files to include, you can add them to the `precompile` array in `config/application.rb`:
->>>>>>> 29dd63d037d602b0a349a6db8ac5d9461dfb0970
 
 ```ruby
 Rails.application.config.assets.precompile += ['admin.js', 'admin.css', 'swfObject.js']
@@ -551,14 +539,10 @@ NOTE: If there are missing precompiled files in production you will get an `Spro
 
 #### Far-future Expires Header
 
-<<<<<<< HEAD
 Precompiled assets exist on the file system and are served directly by your web
 server. They do not have far-future headers by default, so to get the benefit of
 fingerprinting you'll have to update your server configuration to add those
 headers.
-=======
-Precompiled assets exist on the filesystem and are served directly by your web server. They do not have far-future headers by default, so to get the benefit of fingerprinting you'll have to update your server configuration to add those headers.
->>>>>>> 29dd63d037d602b0a349a6db8ac5d9461dfb0970
 
 For Apache:
 
@@ -737,16 +721,12 @@ This is a handy option if you are updating an older project that didn't use the 
 
 ### X-Sendfile Headers
 
-<<<<<<< HEAD
 The X-Sendfile header is a directive to the web server to ignore the response
 from the application, and instead serve a specified file from disk. This option
 is off by default, but can be enabled if your server supports it. When enabled,
 this passes responsibility for serving the file to the web server, which is
 faster. Have a look at [send_file](http://api.rubyonrails.org/classes/ActionController/DataStreaming.html#method-i-send_file)
 on how to use this feature.
-=======
-The X-Sendfile header is a directive to the web server to ignore the response from the application, and instead serve a specified file from disk. This option is off by default, but can be enabled if your server supports it. When enabled, this passes responsibility for serving the file to the web server, which is faster. Have a look at [send_file](http://api.rubyonrails.org/classes/ActionController/DataStreaming.html#method-i-send_file) on how to use this feature.
->>>>>>> 29dd63d037d602b0a349a6db8ac5d9461dfb0970
 
 Apache and nginx support this option, which can be enabled in `config/environments/production.rb`:
 

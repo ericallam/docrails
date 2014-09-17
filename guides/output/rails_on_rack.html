@@ -218,27 +218,9 @@
 <p>Explaining Rack is not really in the scope of this guide. In case you are not familiar with Rack's basics, you should check out the <a href="#resources">Resources</a> section below.</p>
 <h3 id="9bc8267f86f12a15d7a5c0d4fc1b9b14390e4dd2">2 Rails on Rack</h3>
 <h4 id="30257fb8936a2af02b02ffb1e790de2ed599ec95">2.1 Rails Application's Rack Object</h4>
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
-<code>Rails.application</code> is the primary Rack application object of a Rails
-application. Any Rack compliant web server should be using</p>
-<h2>
-<code>Rails.application</code> object to serve a Rails application.</h2>
-<p><code>ApplicationName::Application</code> is the primary Rack application object of a Rails application. Any Rack compliant web server should be using <code>ApplicationName::Application</code> object to serve a Rails application. <code>Rails.application</code> refers to the same application object.</p>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>29dd63d037d602b0a349a6db8ac5d9461dfb0970</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
+<p><code>Rails.application</code> is the primary Rack application object of a Rails
+application. Any Rack compliant web server should be using
+<code>Rails.application</code> object to serve a Rails application.</p>
 <h4 id="a465db280aedb42cea0ffe211f2d63081f7e82d9">2.2 <code>rails server</code>
 </h4>
 <p><code>rails server</code> does the basic job of creating a <code>Rack::Server</code> object and starting the webserver.</p>

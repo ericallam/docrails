@@ -260,28 +260,6 @@ if the bug happens in the master branch.</p>
 <h4 id="0195d5eb476e8e00db8c67fe7678308d44f3e612">1.3 Special Treatment for Security Issues</h4>
 <div class="warning"><p>Please do not report security vulnerabilities with public GitHub issue reports. The <a href="http://rubyonrails.org/security">Rails security policy page</a> details the procedure to follow for security issues.</p></div>
 <h4 id="78b7dbe7e26d5c0fa9be676511f00150cce0b9ca">1.4 What about Feature Requests?</h4>
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
-Please don't put "feature request" items into GitHub Issues. If there's a new
-feature that you want to see added to Ruby on Rails, you'll need to write the
-code yourself - or convince someone else to partner with you to write the code.
-Later in this guide you'll find detailed instructions for proposing a patch to
-Ruby on Rails. If you enter a wish list item in GitHub Issues with no code, you
-can expect it to be marked "invalid" as soon as it's reviewed.</p>
-<p>Sometimes, the line between 'bug' and 'feature' is a hard one to draw.
-Generally, a feature is anything that adds new behavior, while a bug is
-anything that fixes already existing behavior that is misbehaving. Sometimes,
-the core team will have to make a judgement call. That said, the distinction
-generally just affects which release your patch will get in to; we love feature
-submissions! They just won't get backported to maintenance branches.</p>
-<p>If you'd like feedback on an idea for a feature before doing the work for make
-a patch, please send an email to the <a href="https://groups.google.com/forum/?fromgroups#!forum/rubyonrails-core">rails-core mailing
-list</a>. You
-might get no response, which means that everyone is indifferent. You might find
-someone who's also interested in building that feature. You might get a "This
-won't be accepted." But it's the proper place to discuss new ideas. GitHub
-Issues are not a particularly good venue for the sometimes long and involved
-discussions new features require.</p>
-<h2></h2>
 <p>Please don't put "feature request" items into GitHub Issues. If there's a new feature that you want to see added to Ruby on Rails, you'll need to write the code yourself - or convince someone else to partner with you to write the code. Later in this guide you'll find detailed instructions for proposing a patch to Ruby on Rails. If you enter a wishlist item in GitHub Issues with no code, you can expect it to be marked "invalid" as soon as it's reviewed.</p>
 <p>Sometimes, the line between 'bug' and 'feature' is a hard one to draw. Generally, a feature is anything that adds new behavior, while a bug is anything that fixes already existing behavior that is misbehaving. Sometimes, the core team will have to make a judgement call. That said, the distinction generally just affects which release your patch will get in to; we love feature submissions! They just won't get backported to maintenance branches.</p>
 <p>If you'd like feedback on an idea for a feature before doing the work for make a patch, please send an email to the <a href="https://groups.google.com/forum/?fromgroups#!forum/rubyonrails-core">rails-core mailing list</a>. You might get no response, which means that everyone is indifferent. You might find someone who's also interested in building that feature. You might get a "This won't be accepted." But it's the proper place to discuss new ideas. GitHub Issues are not a particularly good venue for the sometimes long and involved discussions new features require.</p>
@@ -355,21 +333,6 @@ $ git checkout 3-0-stable
 </pre>
 </div>
 <div class="info"><p>You may want to <a href="http://qugstart.com/blog/git-and-svn/add-colored-git-branch-name-to-your-shell-prompt/">put your Git branch name in your shell prompt</a> to make it easier to remember which version of the code you're working with.</p></div>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>29dd63d037d602b0a349a6db8ac5d9461dfb0970</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
 <h3 id="a4f2c4967b450dffa3d25e3c2dc67bc765f64f54">5 Helping to Resolve Existing Issues</h3>
 <p>As a next step beyond reporting issues, you can help the core team resolve existing issues. If you check the <a href="https://github.com/rails/rails/issues">Everyone's Issues</a> list in GitHub Issues, you'll find lots of issues already requiring attention. What can you do for these? Quite a bit, actually:</p>
 <h4 id="8429afe1595087a68a97012e16bbbe9a38fd4251">5.1 Verifying Bug Reports</h4>
@@ -459,24 +422,8 @@ and in particular sees any modifications upon server reboot.</p>
 <li>Include tests that fail without your code, and pass with it.</li>
 <li>Update the (surrounding) documentation, examples elsewhere, and the guides: whatever is affected by your contribution.</li>
 </ul>
-<h2>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</h2>
 <p>It is not customary in Rails to run the full test suite before pushing changes. The railties test suite in particular takes a long time, and even more if the source code is mounted in <code>/vagrant</code> as happens in the recommended workflow with the <a href="https://github.com/rails/rails-dev-box">rails-dev-box</a>.</p>
 <p>As a compromise, test what your code obviously affects, and if the change is not in railties, run the whole test suite of the affected component. If all tests are passing, that's enough to propose your contribution. We have <a href="https://travis-ci.org/rails/rails">Travis CI</a> as a safety net for catching unexpected breakages elsewhere.</p>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>29dd63d037d602b0a349a6db8ac5d9461dfb0970</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
 <div class="info"><p>Changes that are cosmetic in nature and do not add anything substantial to the stability, functionality, or testability of Rails will generally not be accepted.</p></div>
 <h5 id="d6d3e9ff71b6cbcf2950079c192fee27f2947a20">7.4.1 Follow the Coding Conventions</h5>
 <p>Rails follows a simple set of coding style conventions:</p>
@@ -588,30 +535,13 @@ $ RUBYOPT=-W0 bundle exec rake test
 </div>
 <p>Your name can be added directly after the last word if you don't provide any code examples or don't need multiple paragraphs. Otherwise, it's best to make as a new paragraph.</p>
 <h4 id="944c70383a0c1e417af1d781eea2d1a4fd480384">7.8 Sanity Check</h4>
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
-You should not be the only person who looks at the code before you submit it.
+<p>You should not be the only person who looks at the code before you submit it.
 If you know someone else who uses Rails, try asking them if they'll check out
 your work. If you don't know anyone else using Rails, try hopping into the IRC
 room or posting about your idea to the rails-core mailing list. Doing this in
 private before you push a patch out publicly is the "smoke test" for a patch:
-if you can't convince one other developer of the beauty of your code, you’re</p>
-<h2>unlikely to convince the core team either.</h2>
-<p>You should not be the only person who looks at the code before you submit it. If you know someone else who uses Rails, try asking them if they'll check out your work. If you don't know anyone else using Rails, try hopping into the IRC room or posting about your idea to the rails-core mailing list.  Doing this in private before you push a patch out publicly is the “smoke test” for a patch: if you can’t convince one other developer of the beauty of your code, you’re unlikely to convince the core team either.</p>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>29dd63d037d602b0a349a6db8ac5d9461dfb0970</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
+if you can't convince one other developer of the beauty of your code, you’re
+unlikely to convince the core team either.</p>
 <h4 id="c0964d8e58b7a67c25aba224ae16ad6ae0eb1959">7.9 Commit Your Changes</h4>
 <p>When you're happy with the code on your computer, you need to commit the changes to Git:</p>
 <div class="code_container">

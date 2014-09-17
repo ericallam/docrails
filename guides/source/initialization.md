@@ -506,7 +506,6 @@ For now, just keep in mind that common functionality like Rails engines, I18n an
 
 ### Back to `config/environment.rb`
 
-<<<<<<< HEAD
 The rest of `config/application.rb` defines the configuration for the
 `Rails::Application` which will be used once the application is fully
 initialized. When `config/application.rb` has finished loading Rails and defined
@@ -514,9 +513,6 @@ the application namespace, we go back to `config/environment.rb`,
 where the application is initialized. For example, if the application was called
 `Blog`, here we would find `Rails.application.initialize!`, which is
 defined in `rails/application.rb`
-=======
-The rest of `config/application.rb` defines the configuration for the `Rails::Application` which will be used once the application is fully initialized. When `config/application.rb` has finished loading Rails and defined the application namespace, we go back to `config/environment.rb`, where the application is initialized. For example, if the application was called `Blog`, here we would find `Blog::Application.initialize!`, which is defined in `rails/application.rb`
->>>>>>> 29dd63d037d602b0a349a6db8ac5d9461dfb0970
 
 ### `railties/lib/rails/application.rb`
 
@@ -596,13 +592,9 @@ Here's how it looked like when we left:
 server.run wrapped_app, options, &blk
 ```
 
-<<<<<<< HEAD
 At this point, the implementation of `server.run` will depend on the
 server you're using. For example, if you were using Puma, here's what
 the `run` method would look like:
-=======
-At this point, the implementation of `server.run` will depend on the server you're using. For example, if you were using Mongrel, here's what the `run` method would look like:
->>>>>>> 29dd63d037d602b0a349a6db8ac5d9461dfb0970
 
 ```ruby
 ...
@@ -650,11 +642,7 @@ end
 
 We won't dig into the server configuration itself, but this is the last piece of our journey in the Rails initialization process.
 
-<<<<<<< HEAD
 This high level overview will help you understand when your code is
 executed and how, and overall become a better Rails developer. If you
 still want to know more, the Rails source code itself is probably the
 best place to go next.
-=======
-This high level overview will help you understand when your code is executed and how, and overall become a better Rails developer. If you still want to know more, the Rails source code itself is probably the best place to go next.
->>>>>>> 29dd63d037d602b0a349a6db8ac5d9461dfb0970

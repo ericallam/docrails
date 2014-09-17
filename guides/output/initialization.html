@@ -706,31 +706,13 @@ end
 <p>For now, just keep in mind that common functionality like Rails engines, I18n and Rails configuration are all being defined here.</p>
 <h4 id="45b327e79203ecba0e88ab1aba7cb0038c59a49e">2.2 Back to <code>config/environment.rb</code>
 </h4>
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
-The rest of <code>config/application.rb</code> defines the configuration for the
+<p>The rest of <code>config/application.rb</code> defines the configuration for the
 <code>Rails::Application</code> which will be used once the application is fully
 initialized. When <code>config/application.rb</code> has finished loading Rails and defined
 the application namespace, we go back to <code>config/environment.rb</code>,
 where the application is initialized. For example, if the application was called
-<code>Blog</code>, here we would find <code>Rails.application.initialize!</code>, which is</p>
-<h2>defined in <code>rails/application.rb</code>
-</h2>
-<p>The rest of <code>config/application.rb</code> defines the configuration for the <code>Rails::Application</code> which will be used once the application is fully initialized. When <code>config/application.rb</code> has finished loading Rails and defined the application namespace, we go back to <code>config/environment.rb</code>, where the application is initialized. For example, if the application was called <code>Blog</code>, here we would find <code>Blog::Application.initialize!</code>, which is defined in <code>rails/application.rb</code></p>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>29dd63d037d602b0a349a6db8ac5d9461dfb0970</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
+<code>Blog</code>, here we would find <code>Rails.application.initialize!</code>, which is
+defined in <code>rails/application.rb</code></p>
 <h4 id="32b99e2f21f9ef89070a551fd7576b0eb694bd51">2.3 <code>railties/lib/rails/application.rb</code>
 </h4>
 <p>The <code>initialize!</code> method looks like this:</p>
@@ -810,26 +792,9 @@ server.run wrapped_app, options, &amp;blk
 
 </pre>
 </div>
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
-At this point, the implementation of <code>server.run</code> will depend on the
-server you're using. For example, if you were using Puma, here's what</p>
-<h2>the <code>run</code> method would look like:</h2>
-<p>At this point, the implementation of <code>server.run</code> will depend on the server you're using. For example, if you were using Mongrel, here's what the <code>run</code> method would look like:</p>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>29dd63d037d602b0a349a6db8ac5d9461dfb0970</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
+<p>At this point, the implementation of <code>server.run</code> will depend on the
+server you're using. For example, if you were using Puma, here's what
+the <code>run</code> method would look like:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 ...
@@ -877,27 +842,10 @@ end
 </pre>
 </div>
 <p>We won't dig into the server configuration itself, but this is the last piece of our journey in the Rails initialization process.</p>
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
-This high level overview will help you understand when your code is
+<p>This high level overview will help you understand when your code is
 executed and how, and overall become a better Rails developer. If you
-still want to know more, the Rails source code itself is probably the</p>
-<h2>best place to go next.</h2>
-<p>This high level overview will help you understand when your code is executed and how, and overall become a better Rails developer. If you still want to know more, the Rails source code itself is probably the best place to go next.</p>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>29dd63d037d602b0a349a6db8ac5d9461dfb0970</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
+still want to know more, the Rails source code itself is probably the
+best place to go next.</p>
 </body></html>
 
 

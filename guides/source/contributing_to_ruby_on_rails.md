@@ -46,31 +46,6 @@ WARNING: Please do not report security vulnerabilities with public GitHub issue 
 
 ### What about Feature Requests?
 
-<<<<<<< HEAD
-Please don't put "feature request" items into GitHub Issues. If there's a new
-feature that you want to see added to Ruby on Rails, you'll need to write the
-code yourself - or convince someone else to partner with you to write the code.
-Later in this guide you'll find detailed instructions for proposing a patch to
-Ruby on Rails. If you enter a wish list item in GitHub Issues with no code, you
-can expect it to be marked "invalid" as soon as it's reviewed.
-
-Sometimes, the line between 'bug' and 'feature' is a hard one to draw.
-Generally, a feature is anything that adds new behavior, while a bug is
-anything that fixes already existing behavior that is misbehaving. Sometimes,
-the core team will have to make a judgement call. That said, the distinction
-generally just affects which release your patch will get in to; we love feature
-submissions! They just won't get backported to maintenance branches.
-
-If you'd like feedback on an idea for a feature before doing the work for make
-a patch, please send an email to the [rails-core mailing
-list](https://groups.google.com/forum/?fromgroups#!forum/rubyonrails-core). You
-might get no response, which means that everyone is indifferent. You might find
-someone who's also interested in building that feature. You might get a "This
-won't be accepted." But it's the proper place to discuss new ideas. GitHub
-Issues are not a particularly good venue for the sometimes long and involved
-discussions new features require.
-
-=======
 Please don't put "feature request" items into GitHub Issues. If there's a new feature that you want to see added to Ruby on Rails, you'll need to write the code yourself - or convince someone else to partner with you to write the code. Later in this guide you'll find detailed instructions for proposing a patch to Ruby on Rails. If you enter a wishlist item in GitHub Issues with no code, you can expect it to be marked "invalid" as soon as it's reviewed.
 
 Sometimes, the line between 'bug' and 'feature' is a hard one to draw. Generally, a feature is anything that adds new behavior, while a bug is anything that fixes already existing behavior that is misbehaving. Sometimes, the core team will have to make a judgement call. That said, the distinction generally just affects which release your patch will get in to; we love feature submissions! They just won't get backported to maintenance branches.
@@ -159,7 +134,6 @@ $ git checkout 3-0-stable
 ```
 
 TIP: You may want to [put your Git branch name in your shell prompt](http://qugstart.com/blog/git-and-svn/add-colored-git-branch-name-to-your-shell-prompt/) to make it easier to remember which version of the code you're working with.
->>>>>>> 29dd63d037d602b0a349a6db8ac5d9461dfb0970
 
 Helping to Resolve Existing Issues
 ----------------------------------
@@ -281,12 +255,9 @@ Now get busy and add/edit code. You're on your branch now, so you can write what
 * Include tests that fail without your code, and pass with it.
 * Update the (surrounding) documentation, examples elsewhere, and the guides: whatever is affected by your contribution.
 
-<<<<<<< HEAD
-=======
 It is not customary in Rails to run the full test suite before pushing changes. The railties test suite in particular takes a long time, and even more if the source code is mounted in `/vagrant` as happens in the recommended workflow with the [rails-dev-box](https://github.com/rails/rails-dev-box).
 
 As a compromise, test what your code obviously affects, and if the change is not in railties, run the whole test suite of the affected component. If all tests are passing, that's enough to propose your contribution. We have [Travis CI](https://travis-ci.org/rails/rails) as a safety net for catching unexpected breakages elsewhere.
->>>>>>> 29dd63d037d602b0a349a6db8ac5d9461dfb0970
 
 TIP: Changes that are cosmetic in nature and do not add anything substantial to the stability, functionality, or testability of Rails will generally not be accepted.
 
@@ -406,7 +377,6 @@ Your name can be added directly after the last word if you don't provide any cod
 
 ### Sanity Check ###
 
-<<<<<<< HEAD
 You should not be the only person who looks at the code before you submit it.
 If you know someone else who uses Rails, try asking them if they'll check out
 your work. If you don't know anyone else using Rails, try hopping into the IRC
@@ -414,9 +384,6 @@ room or posting about your idea to the rails-core mailing list. Doing this in
 private before you push a patch out publicly is the "smoke test" for a patch:
 if you can't convince one other developer of the beauty of your code, you’re
 unlikely to convince the core team either.
-=======
-You should not be the only person who looks at the code before you submit it. If you know someone else who uses Rails, try asking them if they'll check out your work. If you don't know anyone else using Rails, try hopping into the IRC room or posting about your idea to the rails-core mailing list.  Doing this in private before you push a patch out publicly is the “smoke test” for a patch: if you can’t convince one other developer of the beauty of your code, you’re unlikely to convince the core team either.
->>>>>>> 29dd63d037d602b0a349a6db8ac5d9461dfb0970
 
 ### Commit Your Changes ###
 

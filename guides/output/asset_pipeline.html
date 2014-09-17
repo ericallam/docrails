@@ -264,27 +264,9 @@ the asset pipeline you will have to add those gems to your Gemfile. Also, creati
 
 </pre>
 </div>
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
-To set asset compression methods, set the appropriate configuration options
-in <code>production.rb</code> - <code>config.assets.css_compressor</code> for your CSS and</p>
-<h2>
-<code>config.assets.js_compressor</code> for your JavaScript:</h2>
-<p>To set asset compression methods, set the appropriate configuration options in <code>production.rb</code> - <code>config.assets.css_compressor</code> for your CSS and <code>config.assets.js_compressor</code> for your Javascript:</p>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>29dd63d037d602b0a349a6db8ac5d9461dfb0970</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
+<p>To set asset compression methods, set the appropriate configuration options
+in <code>production.rb</code> - <code>config.assets.css_compressor</code> for your CSS and
+<code>config.assets.js_compressor</code> for your JavaScript:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 config.assets.css_compressor = :yui
@@ -366,26 +348,9 @@ your operating system. Check <a href="https://github.com/sstephenson/execjs#read
 <div class="warning"><p>If you are upgrading from Rails 3, please take into account that assets under <code>lib/assets</code> or <code>vendor/assets</code> are available for inclusion via the application manifests but no longer part of the precompile array. See <a href="#precompiling-assets">Precompiling Assets</a> for guidance.</p></div>
 <h5 id="9c167a4413d0c1a280887bcef77a18671648d04d">2.2.1 Search Paths</h5>
 <p>When a file is referenced from a manifest or a helper, Sprockets searches the three default asset locations for it.</p>
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
-The default locations are: the <code>images</code>, <code>javascripts</code> and <code>stylesheets</code>
-directories under the <code>app/assets</code> folder, but these subdirectories</p>
-<h2>are not special - any path under <code>assets/*</code> will be searched.</h2>
-<p>The default locations are: the <code>images</code>, <code>javascripts</code> and <code>stylesheets</code> directories under the <code>apps/assets</code> folder, but these subdirectories are not special - any path under <code>assets/*</code> will be searched.</p>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>29dd63d037d602b0a349a6db8ac5d9461dfb0970</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
+<p>The default locations are: the <code>images</code>, <code>javascripts</code> and <code>stylesheets</code>
+directories under the <code>app/assets</code> folder, but these subdirectories
+are not special - any path under <code>assets/*</code> will be searched.</p>
 <p>For example, these files:</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
@@ -686,25 +651,8 @@ If you already use this shared folder you'll need to write your own deployment t
 </pre>
 </div>
 <div class="note"><p>The matcher (and other members of the precompile array; see below) is applied to final compiled file names. This means anything that compiles to JS/CSS is excluded, as well as raw JS/CSS files; for example, <code>.coffee</code> and <code>.scss</code> files are <strong>not</strong> automatically included as they compile to JS/CSS.</p></div>
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
-If you have other manifests or individual stylesheets and JavaScript files to</p>
-<h2>include, you can add them to the <code>precompile</code> array in <code>config/initializers/assets.rb</code>:</h2>
-<p>If you have other manifests or individual stylesheets and JavaScript files to include, you can add them to the <code>precompile</code> array in <code>config/application.rb</code>:</p>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>29dd63d037d602b0a349a6db8ac5d9461dfb0970</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
+<p>If you have other manifests or individual stylesheets and JavaScript files to
+include, you can add them to the <code>precompile</code> array in <code>config/initializers/assets.rb</code>:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Rails.application.config.assets.precompile += ['admin.js', 'admin.css', 'swfObject.js']
@@ -753,27 +701,10 @@ end
 <p>The default location for the manifest is the root of the location specified in <code>config.assets.prefix</code> ('/assets' by default).</p>
 <div class="note"><p>If there are missing precompiled files in production you will get an <code>Sprockets::Helpers::RailsHelper::AssetPaths::AssetNotPrecompiledError</code> exception indicating the name of the missing file(s).</p></div>
 <h5 id="d9a4dc336d5452f277927afa9bb4a0c7145865f5">4.1.1 Far-future Expires Header</h5>
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
-Precompiled assets exist on the file system and are served directly by your web
+<p>Precompiled assets exist on the file system and are served directly by your web
 server. They do not have far-future headers by default, so to get the benefit of
-fingerprinting you'll have to update your server configuration to add those</p>
-<h2>headers.</h2>
-<p>Precompiled assets exist on the filesystem and are served directly by your web server. They do not have far-future headers by default, so to get the benefit of fingerprinting you'll have to update your server configuration to add those headers.</p>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>29dd63d037d602b0a349a6db8ac5d9461dfb0970</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
+fingerprinting you'll have to update your server configuration to add those
+headers.</p>
 <p>For Apache:</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
@@ -933,29 +864,12 @@ config.assets.prefix = "/some_other_path"
 </div>
 <p>This is a handy option if you are updating an older project that didn't use the asset pipeline and already uses this path or you wish to use this path for a new resource.</p>
 <h4 id="9ce4ba672dbfa70c136d86802b2038833d699c47">5.5 X-Sendfile Headers</h4>
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
-The X-Sendfile header is a directive to the web server to ignore the response
+<p>The X-Sendfile header is a directive to the web server to ignore the response
 from the application, and instead serve a specified file from disk. This option
 is off by default, but can be enabled if your server supports it. When enabled,
 this passes responsibility for serving the file to the web server, which is
-faster. Have a look at <a href="http://api.rubyonrails.org/classes/ActionController/DataStreaming.html#method-i-send_file">send_file</a></p>
-<h2>on how to use this feature.</h2>
-<p>The X-Sendfile header is a directive to the web server to ignore the response from the application, and instead serve a specified file from disk. This option is off by default, but can be enabled if your server supports it. When enabled, this passes responsibility for serving the file to the web server, which is faster. Have a look at <a href="http://api.rubyonrails.org/classes/ActionController/DataStreaming.html#method-i-send_file">send_file</a> on how to use this feature.</p>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>29dd63d037d602b0a349a6db8ac5d9461dfb0970</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
+faster. Have a look at <a href="http://api.rubyonrails.org/classes/ActionController/DataStreaming.html#method-i-send_file">send_file</a>
+on how to use this feature.</p>
 <p>Apache and nginx support this option, which can be enabled in <code>config/environments/production.rb</code>:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">

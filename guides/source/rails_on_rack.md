@@ -27,13 +27,9 @@ Rails on Rack
 
 ### Rails Application's Rack Object
 
-<<<<<<< HEAD
 `Rails.application` is the primary Rack application object of a Rails
 application. Any Rack compliant web server should be using
 `Rails.application` object to serve a Rails application.
-=======
-`ApplicationName::Application` is the primary Rack application object of a Rails application. Any Rack compliant web server should be using `ApplicationName::Application` object to serve a Rails application. `Rails.application` refers to the same application object.
->>>>>>> 29dd63d037d602b0a349a6db8ac5d9461dfb0970
 
 ### `rails server`
 

@@ -423,25 +423,8 @@ logger.tagged("BCX") { logger.tagged("Jason") { logger.info "Stuff" } } # Logs "
 </pre>
 </div>
 <h4 id="4ba4b37c409e259716fe6f3feb135d41b0df925d">2.5 Impact of Logs on Performance</h4>
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
-Logging will always have a small impact on performance of your rails app,</p>
-<h2>        particularly when logging to disk.However, there are a few subtleties:</h2>
-<p>Logging will always have a small impact on performance of your rails app, particularly when logging to disk.However, there are a few subtleties:</p>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>29dd63d037d602b0a349a6db8ac5d9461dfb0970</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
+<p>Logging will always have a small impact on performance of your rails app,
+particularly when logging to disk.However, there are a few subtleties:</p>
 <p>Using the <code>:debug</code> level will have a greater performance penalty than <code>:fatal</code>, as a far greater number of strings are being evaluated and written to the log output (e.g. disk).</p>
 <p>Another potential pitfall is that if you have many calls to <code>Logger</code> like this in your code:</p>
 <div class="code_container">
@@ -450,56 +433,14 @@ logger.debug "Person attributes hash: #{@person.attributes.inspect}"
 
 </pre>
 </div>
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
-In the above example, There will be a performance impact even if the allowed
-output level doesn't include debug. The reason is that Ruby has to evaluate
-these strings, which includes instantiating the somewhat heavy <code>String</code> object
-and interpolating the variables, and which takes time.
-Therefore, it's recommended to pass blocks to the logger methods, as these are
-only evaluated if the output level is the same or included in the allowed level</p>
-<h2>(i.e. lazy loading). The same code rewritten would be:</h2>
 <p>In the above example, There will be a performance impact even if the allowed  output level doesn't include debug. The reason is that Ruby has to evaluate these strings, which includes instantiating the somewhat heavy <code>String</code> object and interpolating the variables, and which takes time. Therefore, it's recommended to pass blocks to the logger methods, as these are  only evaluated if the output level is the same or included in the allowed level (i.e. lazy loading). The same code rewritten would be:</p>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>29dd63d037d602b0a349a6db8ac5d9461dfb0970</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 logger.debug {"Person attributes hash: #{@person.attributes.inspect}"}
 
 </pre>
 </div>
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
-The contents of the block, and therefore the string interpolation, is only
-evaluated if debug is enabled. This performance savings is only really</p>
-<h2>noticeable with large amounts of logging, but it's a good practice to employ.</h2>
 <p>The contents of the block, and therefore the string interpolation, is only  evaluated if debug is enabled. This performance savings is only really noticeable with large amounts of logging, but it's a good practice to employ.</p>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>29dd63d037d602b0a349a6db8ac5d9461dfb0970</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
 <h3 id="cf770fdceda5c31a2542d3f9cdf6dadb2b95fdc6">3 Debugging with the <code>byebug</code> gem</h3>
 <p>When your code is behaving in unexpected ways, you can try printing to logs or
 the console to diagnose the problem. Unfortunately, there are times when this
