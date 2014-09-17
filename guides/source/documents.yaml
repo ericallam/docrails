@@ -3,14 +3,14 @@
   name: はじめに
   documents:
     -
-      name: Railsをはじめよう
+      name: Rails をはじめよう
       url: getting_started.html
       description: Railsのインストール方法と最初のRailsアプリケーションの作成に必要なすべてを解説します。
 -
   name: モデル
   documents:
     -
-      name: Active Recordの基礎
+      name: Active Record の基礎
       url: active_record_basics.html
       description: Active Recordの基礎となるモデル、データベースへの永続的な保存、Active Recordパターンとライブラリについて解説します。
     -
@@ -18,26 +18,26 @@
       url: active_record_migrations.html
       description: Active Recordのマイグレーション (migration) を使用して、データベースを構造化された方法で整然と変更する方法について解説します。
     -
-      name: Active Record検証機能 (バリデーション)
+      name: Active Record 検証機能 (バリデーション)
       url: active_record_validations.html
       description: Active Recordのバリデーション機能について解説します。
     -
-      name: Active Recordコールバック
+      name: Active Record コールバック
       url: active_record_callbacks.html
       description: Active Recordのコールバックについて解説します。
     -
-      name: Active Recordの関連付け (アソシエーション)
+      name: Active Record の関連付け (アソシエーション)
       url: association_basics.html
       description: Active Recordが提供するすべての関連付け機能について解説します。
     -
-      name: Active Recordクエリインターフェイス
+      name: Active Record クエリインターフェイス
       url: active_record_querying.html
       description: Active Recordが提供するすべてのデータベースクエリインターフェイスについて解説します。
 -
   name: ビュー
   documents:
     -
-      name: Action Viewの概要
+      name: Action View の概要
       url: action_view_overview.html
       description: Action Viewの概要を紹介し、共通のビューヘルパーについてもある程度解説します。
       work_in_progress: true
@@ -46,14 +46,14 @@
       url: layouts_and_rendering.html
       description: Action ControllerとAction Viewが提供する基本的なレイアウト機能について解説します。画面出力 (レンダリング) とリダイレクト、content_forブロックとパーシャル (部分テンプレート) の使用方法についても解説します。
     -
-      name: Action Viewフォームヘルパー
+      name: Action View フォームヘルパー
       url: form_helpers.html
       description: ビルトインのフォームヘルパーについて解説します。
 -
   name: コントローラ
   documents:
     -
-      name: Action Controllerの概要
+      name: Action Controller の概要
       url: action_controller_overview.html
       description: コントローラの動作と、アプリケーションのリクエストサイクルでコントローラがどのように使われるかについて解説します。セッション、フィルタ、cookie、データストリーミング、リクエストによって発生する例外、その他多くの話題を取り扱っています。
     -
@@ -64,7 +64,7 @@
   name: 高度なトピック
   documents:
     -
-      name: Active Supportコア拡張機能
+      name: Active Support コア拡張機能
       url: active_support_core_extensions.html
       description: Active Supportで定義されているRubyのコア拡張機能に関するドキュメントです。
     -
@@ -85,7 +85,7 @@
       work_in_progress: true
       description: Railsで単体テストと機能テストを実行するための総合的な解説を行います。「テスティングとは何か」からテスティングAPIまですべてのトピックを扱います。
     -
-      name: Ruby on Railsセキュリティガイド
+      name: Ruby on Rails セキュリティガイド
       url: security.html
       description: Webアプリケーション全般におけるセキュリティ問題と、Railsでこれらの問題を回避する方法について解説します。
     -
@@ -93,7 +93,7 @@
       url: debugging_rails_applications.html
       description: Railsアプリケーションのデバッグ方法について解説します。さまざまなデバッグ方法や、作成したコードの舞台裏でどのような動作が行われているかについても解説します。
     -
-      name: Railsアプリケーションを設定する
+      name: Rails アプリケーションを設定する
       url: configuring.html
       description: Railsアプリケーションの基本的な設定方法について解説します。
     -
@@ -119,7 +119,7 @@
       url: initialization.html
       description: Rails 4内部の初期化プロセスについて解説します。
 -
-  name: Railsを拡張する
+  name: Rails を拡張する
   documents:
     -
       name: The Basics of Creating Rails Plugins [未着手]
@@ -135,7 +135,7 @@
       url: generators.html
       description: 新しいジェネレータを拡張に追加したり、ビルトインのRailsジェネレータの要素に別の要素を提供したりする方法 (scaffoldジェネレータに別のテストスタブを提供するなど) について解説します。
 -
-  name: Ruby on Railsに貢献する
+  name: Ruby on Rails に貢献する
   documents:
     -
       name: Contributing to Ruby on Rails [未着手]
@@ -146,7 +146,7 @@
       url: api_documentation_guidelines.html
       description: Ruby on Rails APIドキュメントのガイドラインについて解説します。
     -
-      name: Ruby on Railsガイドのガイドライン
+      name: Ruby on Rails ガイドのガイドライン
       url: ruby_on_rails_guides_guidelines.html
       description: Ruby on Railsガイド作成方法のガイドラインです。
 -
@@ -160,7 +160,7 @@
   name: リリースノート
   documents:
     -
-      name: Ruby on Railsアップグレードガイド
+      name: Ruby on Rails アップグレードガイド
       url: upgrading_ruby_on_rails.html
       description: アプリケーションのRuby on Railsを最新バージョンにアップグレードする方法について解説します。
     -
@@ -169,7 +169,7 @@
       description: Rails 4.2のリリースノートです。
       work_in_progress: true
     -
-      name: Ruby on Rails 4.1リリースノート
+      name: Ruby on Rails 4.1 リリースノート
       url: 4_1_release_notes.html
       description: Rails 4.1のリリースノートです。
     -
