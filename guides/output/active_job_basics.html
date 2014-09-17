@@ -1,0 +1,603 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>Active Job Basics — Ruby on Rails Guides</title>
+<link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
+<link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+<link rel="stylesheet" type="text/css" href="stylesheets/syntaxhighlighter/shCore.css" />
+<link rel="stylesheet" type="text/css" href="stylesheets/syntaxhighlighter/shThemeRailsGuides.css" />
+
+<link rel="stylesheet" type="text/css" href="stylesheets/fixes.css" />
+
+<link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+</head>
+<body class="guide">
+  <div id="topNav">
+    <div class="wrapper">
+      <strong class="more-info-label">他の情報源: </strong>
+      <span class="red-button more-info-button">
+        他の情報源
+      </span>
+      <ul class="more-info-links s-hidden">
+        <li class="more-info"><a href="http://guides.rubyonrails.org/">原著 (英語)</a></li>
+        <li class="more-info"><a href="https://github.com/yasslab/railsguides.jp">ソースコード(GitHub)</a></li>
+        <li class="more-info"><a href="http://railstutorial.jp/">Railsチュートリアル</a></li>
+      </ul>
+    </div>
+  </div>
+  <div id="header">
+    <div class="wrapper clearfix">
+      <h1><a href="/" title="Return to home page">railsguides.jp</a></h1>
+      <ul class="nav">
+        <li><a class="nav-item" href="index.html">ホーム</a></li>
+        <li class="guides-index guides-index-large">
+          <a href="index.html" id="guidesMenu" class="guides-index-item nav-item">ガイド目次</a>
+          <div id="guides" class="clearfix" style="display: none;">
+            <hr />
+              <dl class="L">
+                <dt>はじめに</dt>
+                <dd><a href="getting_started.html">Railsをはじめよう</a></dd>
+                <dt>モデル</dt>
+                <dd><a href="active_record_basics.html">Active Recordの基礎</a></dd>
+                <dd><a href="active_record_migrations.html">Active Recordとマイグレーション (※翻訳中)</a></dd>
+                <dd><a href="active_record_validations.html">Active Record検証機能 (バリデーション)</a></dd>
+                <dd><a href="active_record_callbacks.html">Active Recordコールバック</a></dd>
+                <dd><a href="association_basics.html">Active Recordの関連付け (アソシエーション)</a></dd>
+                <dd><a href="active_record_querying.html">Active Recordクエリインターフェイス</a></dd>
+                <dt>ビュー</dt>
+                <dd><a href="layouts_and_rendering.html">ビューのレイアウトとレンダリング (※翻訳中)</a></dd>
+                <dd><a href="form_helpers.html">Action Viewフォームヘルパー</a></dd>
+                <dt>コントローラ</dt>
+                <dd><a href="action_controller_overview.html">Action Controllerの概要</a></dd>
+                <dd><a href="routing.html">Railsのルーティング (※翻訳中)</a></dd>
+              </dl>
+              <dl class="R">
+                <dt>高度なトピック</dt>
+                <dd><a href="active_support_core_extensions.html">Active Supportコア拡張機能</a></dd>
+                <dd><a href="i18n.html">Rails国際化(I18n) API</a></dd>
+                <dd><a href="action_mailer_basics.html">Action Mailerの基礎 (未着手)</a></dd>
+                <dd><a href="active_job_basics.html">Active Jobの基礎 (未着手)</a></dd>
+                <dd><a href="security.html">Ruby on Railsセキュリティガイド</a></dd>
+                <dd><a href="debugging_rails_applications.html">Railsアプリケーションのデバッグ (未着手)</a></dd>
+                <dd><a href="configuring.html">Railsアプリケーションを設定する</a></dd>
+                <dd><a href="command_line.html">コマンドラインツールとRakeタスク (未着手)</a></dd>
+                <dd><a href="asset_pipeline.html">アセットパイプライン (未着手)</a></dd>
+                <dd><a href="working_with_javascript_in_rails.html">RailsでJavaScriptを使用する (未着手)</a></dd>
+                <dt>Railsを拡張する</dt>
+                <dd><a href="rails_on_rack.html">Rackに乗ったRails (未着手)</a></dd>
+                <dd><a href="generators.html">Railsジェネレータの作成とカスタマイズ (未着手)</a></dd>
+                <dt>Ruby on Railsに貢献する</dt>
+                <dd><a href="contributing_to_ruby_on_rails.html">Ruby on Railsへの貢献方法 (未着手)</a></dd>
+                <dd><a href="api_documentation_guidelines.html">APIドキュメントの書き方 (未着手)</a></dd>
+                <dd><a href="ruby_on_rails_guides_guidelines.html">Ruby on Railsガイドのガイドライン</a></dd>
+                <dt>メンテナンスポリシー</dt>
+                <dd><a href="maintenance_policy.html">メンテナンスポリシー (未着手)</a></dd>
+                <dt>リリースノート</dt>
+                <dd><a href="upgrading_ruby_on_rails.html">Ruby on Railsアップグレードガイド</a></dd>
+                <dd><a href="4_1_release_notes.html">Ruby on Rails 4.1リリースノート</a></dd>
+                <dd><a href="4_0_release_notes.html">Ruby on Rails 4.0リリースノート (未着手)</a></dd>
+                <dd><a href="3_2_release_notes.html">Ruby on Rails 3.2リリースノート (未着手)</a></dd>
+                <dd><a href="3_1_release_notes.html">Ruby on Rails 3.1リリースノート (未着手)</a></dd>
+                <dd><a href="3_0_release_notes.html">Ruby on Rails 3.0リリースノート (未着手)</a></dd>
+                <dd><a href="2_3_release_notes.html">Ruby on Rails 2.3リリースノート (未着手)</a></dd>
+                <dd><a href="2_2_release_notes.html">Ruby on Rails 2.2リリースノート (未着手)</a></dd>
+              </dl>
+          </div>
+        </li>
+        <li><a class="nav-item" href="contributing_to_ruby_on_rails.html">貢献方法</a></li>
+        <li><a class="nav-item" href="credits.html">原著者</a></li>
+        <li class="guides-index guides-index-small">
+          <select class="guides-index-item nav-item">
+            <option value="index.html">ガイド目次</option>
+              <optgroup label="はじめに">
+                  <option value="getting_started.html">Railsをはじめよう</option>
+              </optgroup>
+              <optgroup label="モデル">
+                  <option value="active_record_basics.html">Active Recordの基礎</option>
+                  <option value="active_record_migrations.html">Active Recordとマイグレーション (※翻訳中)</option>
+                  <option value="active_record_validations.html">Active Record検証機能 (バリデーション)</option>
+                  <option value="active_record_callbacks.html">Active Recordコールバック</option>
+                  <option value="association_basics.html">Active Recordの関連付け (アソシエーション)</option>
+                  <option value="active_record_querying.html">Active Recordクエリインターフェイス</option>
+              </optgroup>
+              <optgroup label="ビュー">
+                  <option value="layouts_and_rendering.html">ビューのレイアウトとレンダリング (※翻訳中)</option>
+                  <option value="form_helpers.html">Action Viewフォームヘルパー</option>
+              </optgroup>
+              <optgroup label="コントローラ">
+                  <option value="action_controller_overview.html">Action Controllerの概要</option>
+                  <option value="routing.html">Railsのルーティング (※翻訳中)</option>
+              </optgroup>
+              <optgroup label="高度なトピック">
+                  <option value="active_support_core_extensions.html">Active Supportコア拡張機能</option>
+                  <option value="i18n.html">Rails国際化(I18n) API</option>
+                  <option value="action_mailer_basics.html">Action Mailerの基礎 (未着手)</option>
+                  <option value="active_job_basics.html">Active Jobの基礎 (未着手)</option>
+                  <option value="security.html">Ruby on Railsセキュリティガイド</option>
+                  <option value="debugging_rails_applications.html">Railsアプリケーションのデバッグ (未着手)</option>
+                  <option value="configuring.html">Railsアプリケーションを設定する</option>
+                  <option value="command_line.html">コマンドラインツールとRakeタスク (未着手)</option>
+                  <option value="asset_pipeline.html">アセットパイプライン (未着手)</option>
+                  <option value="working_with_javascript_in_rails.html">RailsでJavaScriptを使用する (未着手)</option>
+              </optgroup>
+              <optgroup label="Railsを拡張する">
+                  <option value="rails_on_rack.html">Rackに乗ったRails (未着手)</option>
+                  <option value="generators.html">Railsジェネレータの作成とカスタマイズ (未着手)</option>
+              </optgroup>
+              <optgroup label="Ruby on Railsに貢献する">
+                  <option value="contributing_to_ruby_on_rails.html">Ruby on Railsへの貢献方法 (未着手)</option>
+                  <option value="api_documentation_guidelines.html">APIドキュメントの書き方 (未着手)</option>
+                  <option value="ruby_on_rails_guides_guidelines.html">Ruby on Railsガイドのガイドライン</option>
+              </optgroup>
+              <optgroup label="メンテナンスポリシー">
+                  <option value="maintenance_policy.html">メンテナンスポリシー (未着手)</option>
+              </optgroup>
+              <optgroup label="リリースノート">
+                  <option value="upgrading_ruby_on_rails.html">Ruby on Railsアップグレードガイド</option>
+                  <option value="4_1_release_notes.html">Ruby on Rails 4.1リリースノート</option>
+                  <option value="4_0_release_notes.html">Ruby on Rails 4.0リリースノート (未着手)</option>
+                  <option value="3_2_release_notes.html">Ruby on Rails 3.2リリースノート (未着手)</option>
+                  <option value="3_1_release_notes.html">Ruby on Rails 3.1リリースノート (未着手)</option>
+                  <option value="3_0_release_notes.html">Ruby on Rails 3.0リリースノート (未着手)</option>
+                  <option value="2_3_release_notes.html">Ruby on Rails 2.3リリースノート (未着手)</option>
+                  <option value="2_2_release_notes.html">Ruby on Rails 2.2リリースノート (未着手)</option>
+              </optgroup>
+          </select>
+        </li>
+      </ul>
+      </div>
+    </div>
+  </div>
+  <hr class="hide" />
+
+  <div id="feature">
+    <div class="wrapper">
+      <h2>Active Job Basics</h2><p>This guide provides you with all you need to get started in creating,
+enqueueing and executing background jobs.</p><p>After reading this guide, you will know:</p>
+<ul>
+<li>How to create jobs.</li>
+<li>How to enqueue jobs.</li>
+<li>How to run jobs in the background.</li>
+<li>How to send emails from your application async.</li>
+</ul>
+
+                <div id="subCol">
+            <h3 class="chapter"><img src="images/chapters_icon.gif" alt="" />Chapters</h3>
+            <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><body>
+<ol class="chapters">
+<li><a href="#2473e96bc614a911821242119918a241a41836d6">Introduction</a></li>
+<li><a href="#6e973c70998057c4958ab5811d4862137e74756e">The Purpose of the Active Job</a></li>
+<li>
+<a href="#7f641a2cceee66819637540c7ffef5b1a1517126">Creating a Job</a>
+
+<ul>
+<li><a href="#f3de8a96c42b2e08e862cd5995a2d3b135b45ba2">Create the Job</a></li>
+<li><a href="#45442d2256e3bc7f8528e8f2a5c051a9242d65d5">Enqueue the Job</a></li>
+</ul>
+</li>
+<li>
+<a href="#4d1ff2f58b0a4a6adf2107fa93ff7226f28327a3">Job Execution</a>
+
+<ul>
+<li><a href="#b3776d63ad7b7a84bfe20d9c6d4a53a2b25d0e43">Backends</a></li>
+<li><a href="#67cf609ed3d3c5d9848a35339a7e6ebffbc16ce0">Change Backends</a></li>
+</ul>
+</li>
+<li><a href="#83dbc32040459c6d170231f099414d8cc8806687">Queues</a></li>
+<li>
+<a href="#9fdc2cfe374fa5bde1e4e458854875e1709add1c">Callbacks</a>
+
+<ul>
+<li><a href="#7da4c36a54ae7a349bf4428686c3741afe2a7fa3">Available callbacks</a></li>
+<li><a href="#0bb18642b70b9f8a9c12ccf39487328f306b8e19">Usage</a></li>
+</ul>
+</li>
+<li><a href="#dee6b36ab0339dc74025ff5f4b76f0179f7b8ed2">ActionMailer</a></li>
+<li><a href="#050a77a4626ca8e62779f307f3c63c92c683ac27">GlobalID</a></li>
+<li><a href="#cd3dfbe79fda3a9d92de67b1bd4f1dc9f60ab723">Exceptions</a></li>
+</ol>
+</body></html>
+
+          </div>
+</div>
+  </div>
+
+  <div id="container">
+    <div class="wrapper">
+      <div id="mainCol">
+        <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><body>
+<h3 id="2473e96bc614a911821242119918a241a41836d6">1 Introduction</h3>
+<p>Active Job is a framework for declaring jobs and making them run on a variety
+of queueing backends. These jobs can be everything from regularly scheduled
+clean-ups, to billing charges, to mailings. Anything that can be chopped up
+into small units of work and run in parallel, really.</p>
+<h3 id="6e973c70998057c4958ab5811d4862137e74756e">2 The Purpose of the Active Job</h3>
+<p>The main point is to ensure that all Rails apps will have a job infrastructure
+in place, even if it's in the form of an "immediate runner". We can then have
+framework features and other gems build on top of that, without having to
+worry about API differences between various job runners such as Delayed Job
+and Resque. Picking your queuing backend becomes more of an operational concern,
+then. And you'll be able to switch between them without having to rewrite your jobs.</p>
+<h3 id="7f641a2cceee66819637540c7ffef5b1a1517126">3 Creating a Job</h3>
+<p>This section will provide a step-by-step guide to creating a job and enqueuing it.</p>
+<h4 id="f3de8a96c42b2e08e862cd5995a2d3b135b45ba2">3.1 Create the Job</h4>
+<p>Active Job provides a Rails generator to create jobs. The following will create a
+job in <code>app/jobs</code>:</p>
+<div class="code_container">
+<pre class="brush: plain; gutter: false; toolbar: false">
+$ bin/rails generate job guests_cleanup
+create  app/jobs/guests_cleanup_job.rb
+
+</pre>
+</div>
+<p>You can also create a job that will run on a specific queue:</p>
+<div class="code_container">
+<pre class="brush: plain; gutter: false; toolbar: false">
+$ bin/rails generate job guests_cleanup --queue urgent
+create  app/jobs/guests_cleanup_job.rb
+
+</pre>
+</div>
+<p>As you can see, you can generate jobs just like you use other generators with
+Rails.</p>
+<p>If you don't want to use a generator, you could create your own file inside of
+<code>app/jobs</code>, just make sure that it inherits from <code>ActiveJob::Base</code>.</p>
+<p>Here's what a job looks like:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class GuestsCleanupJob &lt; ActiveJob::Base
+  queue_as :default
+
+  def perform(*args)
+    # Do something later
+  end
+end
+
+</pre>
+</div>
+<h4 id="45442d2256e3bc7f8528e8f2a5c051a9242d65d5">3.2 Enqueue the Job</h4>
+<p>Enqueue a job like so:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+MyJob.enqueue record  # Enqueue a job to be performed as soon the queueing system is free.
+
+</pre>
+</div>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+MyJob.enqueue_at Date.tomorrow.noon, record  # Enqueue a job to be performed tomorrow at noon.
+
+</pre>
+</div>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+MyJob.enqueue_in 1.week, record # Enqueue a job to be performed 1 week from now.
+
+</pre>
+</div>
+<p>That's it!</p>
+<h3 id="4d1ff2f58b0a4a6adf2107fa93ff7226f28327a3">4 Job Execution</h3>
+<p>If no adapter is set, the job is immediately executed.</p>
+<h4 id="b3776d63ad7b7a84bfe20d9c6d4a53a2b25d0e43">4.1 Backends</h4>
+<p>Active Job has adapters for the following queueing backends:</p>
+<ul>
+<li><a href="https://github.com/nesquena/backburner">Backburner</a></li>
+<li><a href="https://github.com/collectiveidea/delayed_job">Delayed Job</a></li>
+<li><a href="https://github.com/bkeepers/qu">Qu</a></li>
+<li><a href="https://github.com/chanks/que">Que</a></li>
+<li><a href="https://github.com/ryandotsmith/queue_classic/tree/v2.2.3">QueueClassic 2.x</a></li>
+<li><a href="https://github.com/resque/resque/tree/1-x-stable">Resque 1.x</a></li>
+<li><a href="https://github.com/mperham/sidekiq">Sidekiq</a></li>
+<li><a href="https://github.com/jondot/sneakers">Sneakers</a></li>
+<li><a href="https://github.com/brandonhilkert/sucker_punch">Sucker Punch</a></li>
+</ul>
+<h5 id="4f01b201bfc2cd6d3d886e183749d3c60bea57aa">4.1.1 Backends Features</h5>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Async</th>
+<th>Queues</th>
+<th>Delayed</th>
+<th>Priorities</th>
+<th>Timeout</th>
+<th>Retries</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Backburner</strong></td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Job</td>
+<td>Global</td>
+</tr>
+<tr>
+<td><strong>Delayed Job</strong></td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Job</td>
+<td>Global</td>
+<td>Global</td>
+</tr>
+<tr>
+<td><strong>Que</strong></td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Job</td>
+<td>No</td>
+<td>Job</td>
+</tr>
+<tr>
+<td><strong>Queue Classic</strong></td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No*</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td><strong>Resque</strong></td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes (Gem)</td>
+<td>Queue</td>
+<td>Global</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>Sidekiq</strong></td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Queue</td>
+<td>No</td>
+<td>Job</td>
+</tr>
+<tr>
+<td><strong>Sneakers</strong></td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+<td>Queue</td>
+<td>Queue</td>
+<td>No</td>
+</tr>
+<tr>
+<td><strong>Sucker Punch</strong></td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td><strong>Active Job Inline</strong></td>
+<td>No</td>
+<td>Yes</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><strong>Active Job</strong></td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<div class="note"><p>* Queue Classic does not support Job scheduling. However you can implement this
+yourself or you can use the queue_classic-later gem. See the documentation for
+ActiveJob::QueueAdapters::QueueClassicAdapter.</p></div>
+<h4 id="67cf609ed3d3c5d9848a35339a7e6ebffbc16ce0">4.2 Change Backends</h4>
+<p>You can easily change your adapter:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+# be sure to have the adapter gem in your Gemfile and follow the adapter specific
+# installation and deployment instructions
+YourApp::Application.config.active_job.queue_adapter = :sidekiq
+
+</pre>
+</div>
+<h3 id="83dbc32040459c6d170231f099414d8cc8806687">5 Queues</h3>
+<p>Most of the adapters support multiple queues. With Active Job you can schedule
+the job to run on a specific queue:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class GuestsCleanupJob &lt; ActiveJob::Base
+  queue_as :low_priority
+  #....
+end
+
+</pre>
+</div>
+<p>Also you can prefix the queue name for all your jobs using
+<code>config.active_job.queue_name_prefix</code> in <code>application.rb</code>:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+# config/application.rb
+module YourApp
+  class Application &lt; Rails::Application
+    config.active_job.queue_name_prefix = Rails.env
+  end
+end
+
+# app/jobs/guests_cleanup.rb
+class GuestsCleanupJob &lt; ActiveJob::Base
+  queue_as :low_priority
+  #....
+end
+
+# Now your job will run on queue production_low_priority on your production
+# environment and on beta_low_priority on your beta environment
+
+</pre>
+</div>
+<div class="note"><p>Make sure your queueing backend "listens" on your queue name. For some
+backends you need to specify the queues to listen to.</p></div>
+<h3 id="9fdc2cfe374fa5bde1e4e458854875e1709add1c">6 Callbacks</h3>
+<p>Active Job provides hooks during the lifecycle of a job. Callbacks allow you to
+trigger logic during the lifecycle of a job.</p>
+<h4 id="7da4c36a54ae7a349bf4428686c3741afe2a7fa3">6.1 Available callbacks</h4>
+<ul>
+<li><code>before_enqueue</code></li>
+<li><code>around_enqueue</code></li>
+<li><code>after_enqueue</code></li>
+<li><code>before_perform</code></li>
+<li><code>around_perform</code></li>
+<li><code>after_perform</code></li>
+</ul>
+<h4 id="0bb18642b70b9f8a9c12ccf39487328f306b8e19">6.2 Usage</h4>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class GuestsCleanupJob &lt; ActiveJob::Base
+  queue_as :default
+
+  before_enqueue do |job|
+    # do something with the job instance
+  end
+
+  around_perform do |job, block|
+    # do something before perform
+    block.call
+    # do something after perform
+  end
+
+  def perform
+    # Do something later
+  end
+end
+
+</pre>
+</div>
+<h3 id="dee6b36ab0339dc74025ff5f4b76f0179f7b8ed2">7 ActionMailer</h3>
+<p>One of the most common jobs in a modern web application is sending emails outside
+of the request-response cycle, so the user doesn't have to wait on it. Active Job
+is integrated with Action Mailer so you can easily send emails asynchronously:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+# If you want to send the email now use #deliver_now
+UserMailer.welcome(@user).deliver_now
+
+# If you want to send the email through Active Job use #deliver_later
+UserMailer.welcome(@user).deliver_later
+
+</pre>
+</div>
+<h3 id="050a77a4626ca8e62779f307f3c63c92c683ac27">8 GlobalID</h3>
+<p>Active Job supports GlobalID for parameters. This makes it possible to pass live
+Active Record objects to your job instead of class/id pairs, which you then have
+to manually deserialize. Before, jobs would look like this:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class TrashableCleanupJob
+  def perform(trashable_class, trashable_id, depth)
+    trashable = trashable_class.constantize.find(trashable_id)
+    trashable.cleanup(depth)
+  end
+end
+
+</pre>
+</div>
+<p>Now you can simply do:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class TrashableCleanupJob
+  def perform(trashable, depth)
+    trashable.cleanup(depth)
+  end
+end
+
+</pre>
+</div>
+<p>This works with any class that mixes in <code>ActiveModel::GlobalIdentification</code>, which
+by default has been mixed into Active Model classes.</p>
+<h3 id="cd3dfbe79fda3a9d92de67b1bd4f1dc9f60ab723">9 Exceptions</h3>
+<p>Active Job provides a way to catch exceptions raised during the execution of the
+job:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+
+class GuestsCleanupJob &lt; ActiveJob::Base
+  queue_as :default
+
+  rescue_from(ActiveRecord::RecordNotFound) do |exception|
+   # do something with the exception
+  end
+
+  def perform
+    # Do something later
+  end
+end
+
+</pre>
+</div>
+</body></html>
+
+
+        <h3>フィードバックについて</h3>
+        <p>
+          本ガイドの訳文およびソースコードは、GitHub上の <a href="https://github.com/yasslab/railsguides.jp">yasslab/railsguides.jp</a> で管理・公開されております。
+	  本ガイドを読んで、誤字・脱字・誤訳などを見かけましたら、上記リポジトリにてお気軽に <a href="https://github.com/yasslab/railsguides.jp/issues">Issue</a> を出して頂けると大変嬉しいです。また、「Pull Request を送りたい!」という場合には、<a href="ruby_on_rails_guides_guidelines.html">Ruby on Railsガイドのガイドライン</a>と、<a href="https://github.com/yasslab/railsguides.jp#%E7%BF%BB%E8%A8%B3%E3%81%AE%E6%B5%81%E3%82%8C">README</a>に記載されている「翻訳の流れ」をご参考にしてください。
+	</p>
+	<p>
+	  なお、原著レベルでの間違いを見つけましたら、原著へのフィードバック方法 (<a href="http://edgeguides.rubyonrails.org/contributing_to_ruby_on_rails.html#contributing-to-the-rails-documentation">documentation contributions</a>) をご参考にしてください。
+        </p>
+        <p>
+	  本ガイドの品質向上に向けて、皆さまのご協力が得られれば幸いです。よろしくお願い致します。
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="hide" />
+  <div id="footer">
+    <div class="wrapper">
+      <p>This work is licensed under a <a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-Share Alike 3.0</a> License</p>
+<p>"Rails", "Ruby on Rails", and the Rails logo are trademarks of David Heinemeier Hansson. All rights reserved.</p>
+
+    </div>
+  </div>
+
+  <script type="text/javascript" src="javascripts/jquery.min.js"></script>
+  <script type="text/javascript" src="javascripts/responsive-tables.js"></script>
+  <script type="text/javascript" src="javascripts/guides.js"></script>
+  <script type="text/javascript" src="javascripts/syntaxhighlighter/shCore.js"></script>
+  <script type="text/javascript" src="javascripts/syntaxhighlighter/shBrushRuby.js"></script>
+  <script type="text/javascript" src="javascripts/syntaxhighlighter/shBrushXml.js"></script>
+  <script type="text/javascript" src="javascripts/syntaxhighlighter/shBrushSql.js"></script>
+  <script type="text/javascript" src="javascripts/syntaxhighlighter/shBrushPlain.js"></script>
+  <script type="text/javascript">
+    SyntaxHighlighter.all();
+    $(guidesIndex.bind);
+  </script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    
+    ga('create', 'UA-50163209-4', 'auto');
+    ga('send', 'pageview');
+  </script>
+</body>
+</html>
