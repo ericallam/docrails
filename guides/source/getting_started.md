@@ -243,7 +243,7 @@ Rails.application.routes.draw do
   resources :articles
 
   root 'welcome#index'
-  end 
+end
 ```
 
 コマンドラインで`rake routes`コマンドを実行すると、標準的なRESTfulアクションへのルーティングがすべて定義されていることが確認できます。以下の出力のprefix列や他の列については後ほど解説しますが、ここでご注目いただきたいのは、Railsは「articles」というリソース名から単数形の「article」を推測し、両者をその意味にそって使い分けているという点です。prefix列で単一の項目には単数形のarticle、複数項目を扱う場合には複数形のarticlesが使われているという具合です。
