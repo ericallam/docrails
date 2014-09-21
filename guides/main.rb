@@ -5,7 +5,7 @@
 # 2. Change file extensions to appropriate ones (e.g. .txt -> .md)
 # 3. Copy the files to the 'guides/source/ja-JP' directory to generate HTMLs.
 
-require 'FileUtils'
+require 'fileutils'
 ARCHIVE_NAME="archive.zip"
 `rm -rf archive/`
 `unzip #{ARCHIVE_NAME}`
