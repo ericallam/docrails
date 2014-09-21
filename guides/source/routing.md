@@ -1,128 +1,129 @@
-Rails Routing from the Outside In
+﻿
+Railsのルーティング
 =================================
 
-This guide covers the user-facing features of Rails routing.
+このガイドでは、開発者に向けてRailsのルーティング機能を解説します (訳注: routeとrootを区別するため、訳文ではrouteを基本的に「ルーティング」と訳します)。
 
-After reading this guide, you will know:
+このガイドの内容:
 
-* How to interpret the code in `routes.rb`.
-* How to construct your own routes, using either the preferred resourceful style or the `match` method.
-* What parameters to expect an action to receive.
-* How to automatically create paths and URLs using route helpers.
-* Advanced techniques such as constraints and Rack endpoints.
+* `routes.rb`のコードの読み方
+* 独自のルーティング作成法 (リソースベースのルーティングが推奨されますが、`match`メソッドによるルーティングも可能です)
+* アクション側で受け取るパラメータ
+* ルーティングヘルパーを使用してパスやURLを自動生成する方法
+* 制限追加やRackエンドポイントなどの高度な手法
 
 --------------------------------------------------------------------------------
 
-The Purpose of the Rails Router
+Railsルーターの目的
 -------------------------------
 
-The Rails router recognizes URLs and dispatches them to a controller's action. It can also generate paths and URLs, avoiding the need to hardcode strings in your views.
+Railsのルーターは受け取ったURLを認識し、適切なコントローラ内アクションに割り当てます。ルーターは、ビューでこれらのパスやURLを直接ハードコードすることを避けるためにパスやURLを生成することもできます。
 
-### Connecting URLs to Code
+### URLを実際のコードに割り振る
 
-When your Rails application receives an incoming request for:
+Railsアプリケーションが以下のHTTPリクエストを受け取ったとします。
 
 ```
 GET /patients/17
 ```
 
-it asks the router to match it to a controller action. If the first matching route is:
+このリクエストは、特定のコントローラ内アクションにマッチさせるようルーターに要求しています。最初にマッチしたのが以下のルーティングだとします。
 
 ```ruby
 get '/patients/:id', to: 'patients#show'
 ```
 
-the request is dispatched to the `patients` controller's `show` action with `{ id: '17' }` in `params`.
+このリクエストは`patients`コントローラの`show`アクションに割り当てられ、`params`には`{ id: '17' }`ハッシュが含まれています。
 
-### Generating Paths and URLs from Code
+### コードからパスやURLを生成する
 
-You can also generate paths and URLs. If the route above is modified to be:
+パスやURLを生成することもできます。たとえば、上のルーティングが以下のように変更されたとします。
 
 ```ruby
 get '/patients/:id', to: 'patients#show', as: 'patient'
 ```
 
-and your application contains this code in the controller:
+そして、アプリケーションのコントローラに以下のコードがあるとします。
 
 ```ruby
 @patient = Patient.find(17)
 ```
 
-and this in the corresponding view:
+上記に対応するビューは以下です。
 
 ```erb
 <%= link_to 'Patient Record', patient_path(@patient) %>
 ```
 
-then the router will generate the path `/patients/17`. This reduces the brittleness of your view and makes your code easier to understand. Note that the id does not need to be specified in the route helper.
+これで、ルーターによって`/patients/17`というパスが生成されます。これを利用することでビューが改修しやすくなり、コードも読みやすくなります。このルーティングヘルパーではidを指定する必要がない点にご注目ください。
 
-Resource Routing: the Rails Default
+リソースベースのルーティング: Railsのデフォルト
 -----------------------------------
 
-Resource routing allows you to quickly declare all of the common routes for a given resourceful controller. Instead of declaring separate routes for your `index`, `show`, `new`, `edit`, `create`, `update` and `destroy` actions, a resourceful route declares them in a single line of code.
+リソースベースのルーティング (以下リソースルーティング) を使用することで、リソースベースで構成されたコントローラに対応する共通のルーティングを手軽に宣言できます。リソースフルなルーティングを宣言することで、コントローラの`index`、`show`、`new`、`edit`、`create`、`update`、`destroy`アクションを個別に宣言しなくても1行で宣言が完了します。
 
-### Resources on the Web
+### Web上のリソース
 
-Browsers request pages from Rails by making a request for a URL using a specific HTTP method, such as `GET`, `POST`, `PATCH`, `PUT` and `DELETE`. Each method is a request to perform an operation on the resource. A resource route maps a number of related requests to actions in a single controller.
+ブラウザはRailsに対してリクエストを送信する際に、特定のHTTPメソッド (`GET`、`POST`、`PATCH`、`PUT`、`DELETE`など) を使用して、URLに対するリクエストを作成します。上に述べたHTTPメソッドは、いずれもリソースに対して特定の操作の実行を指示するリクエストです。リソースルーティングでは、関連するさまざまなリクエストを1つのコントローラ内のアクションに割り当てます。
 
-When your Rails application receives an incoming request for:
+Railsアプリケーションが以下のHTTPリクエストを受け取ったとします。
 
 ```
 DELETE /photos/17
 ```
 
-it asks the router to map it to a controller action. If the first matching route is:
+このリクエストは、特定のコントローラ内アクションにマッピングさせるようルーターに要求しています。最初にマッチしたのが以下のルーティングだとします。
 
 ```ruby
 resources :photos
 ```
 
-Rails would dispatch that request to the `destroy` method on the `photos` controller with `{ id: '17' }` in `params`.
+Railsはこのリクエストを`photos`コントローラ内の`destroy`コントローラに割り当て、`params`ハッシュに`{ id: '17' }`を含めます。
 
-### CRUD, Verbs, and Actions
+### CRUD、動詞、アクション
 
-In Rails, a resourceful route provides a mapping between HTTP verbs and URLs to controller actions. By convention, each action also maps to particular CRUD operations in a database. A single entry in the routing file, such as:
+Railsのリソースフルルーティングでは、(GET、PUTなどの) 各種HTTP動詞 (verb) と、コントローラ内アクションを指すURLが対応付けられます。1つのアクションは、データベース上での特定のCRUD (Create/Read/Update/Delete) 操作に対応付けられるルールになっています。たとえば、以下のようなルーティングが1つあるとします。
 
 ```ruby
 resources :photos
 ```
 
-creates seven different routes in your application, all mapping to the `Photos` controller:
+上の記述により、アプリケーション内に以下の7つのルーティングが作成され、いずれも`Photos`コントローラに対応付けられます。
 
-| HTTP Verb | Path             | Controller#Action | Used for                                     |
+| HTTP動詞 | パス             | コントローラ#アクション | 目的                                     |
 | --------- | ---------------- | ----------------- | -------------------------------------------- |
-| GET       | /photos          | photos#index      | display a list of all photos                 |
-| GET       | /photos/new      | photos#new        | return an HTML form for creating a new photo |
-| POST      | /photos          | photos#create     | create a new photo                           |
-| GET       | /photos/:id      | photos#show       | display a specific photo                     |
-| GET       | /photos/:id/edit | photos#edit       | return an HTML form for editing a photo      |
-| PATCH/PUT | /photos/:id      | photos#update     | update a specific photo                      |
-| DELETE    | /photos/:id      | photos#destroy    | delete a specific photo                      |
+| GET       | /photos          | photos#index      | すべての写真の一覧を表示                 |
+| GET       | /photos/new      | photos#new        | 写真を1つ作成するためのHTMLフォームを返す |
+| POST      | /photos          | photos#create     | 写真を1つ作成する                           |
+| GET       | /photos/:id      | photos#show       | 特定の写真を表示する                     |
+| GET       | /photos/:id/edit | photos#edit       | 写真編集用のHTMLフォームを1つ返す      |
+| PATCH/PUT | /photos/:id      | photos#update     | 特定の写真を更新する                      |
+| DELETE    | /photos/:id      | photos#destroy    | 特定の写真を削除する                      |
 
-NOTE: Because the router uses the HTTP verb and URL to match inbound requests, four URLs map to seven different actions.
+メモ: Railsのルーターでは、サーバーへのリクエストをマッチさせる際にHTTP動詞とURLを使用しているため、4種類のURL (GET/POST/PATCH/DELETE) が7種類の異なるアクション (index/new/create/show/edit/update/destroy) に割り当てられています。
 
-NOTE: Rails routes are matched in the order they are specified, so if you have a `resources :photos` above a `get 'photos/poll'` the `show` action's route for the `resources` line will be matched before the `get` line. To fix this, move the `get` line **above** the `resources` line so that it is matched first.
+メモ: Railsのルーティングは、ルーティングファイルの「上からの記載順に」マッチします。このため、たとえば`resources :photos`というルーティングが`get 'photos/poll'`よりも前の行にあれば、`resources`行の`show`アクションが`get`行の記述よりも優先されますので、`get`行のルーティングは有効になりません。これを修正するには、`get`行を`resorces`行 **よりも上** の行に移動してください。これにより、`get`行がマッチするようになります。
 
-### Path and URL Helpers
+### パスとURL用ヘルパー
 
-Creating a resourceful route will also expose a number of helpers to the controllers in your application. In the case of `resources :photos`:
+リソースフルなルーティングを作成すると、アプリケーションのコントローラで多くのヘルパーが利用できるようになります。`resources :photos`というルーティングを例に取ってみましょう。
 
-* `photos_path` returns `/photos`
-* `new_photo_path` returns `/photos/new`
-* `edit_photo_path(:id)` returns `/photos/:id/edit` (for instance, `edit_photo_path(10)` returns `/photos/10/edit`)
-* `photo_path(:id)` returns `/photos/:id` (for instance, `photo_path(10)` returns `/photos/10`)
+* `photos_path`は`/photos`を返します
+* `new_photo_path`は`/photos/new`を返します
+* `edit_photo_path(:id)`は`/photos/:id/edit`を返します (`edit_photo_path(10)`であれば`/photos/10/edit`が返されます)
+* `photo_path(:id)`は`/photos/:id`を返します。 (`photo_path(10)`であれば`/photos/10`が返されます)
 
-Each of these helpers has a corresponding `_url` helper (such as `photos_url`) which returns the same path prefixed with the current host, port and path prefix.
+これらの_pathヘルパーには、それぞれに対応する`_url`ヘルパー (`photos_url`など) があります。_urlヘルパーは、_pathの前に現在のホスト名、ポート番号、パスのプレフィックスが追加されている点が異なります。
 
-### Defining Multiple Resources at the Same Time
+### 複数のリソースを同時に定義する
 
-If you need to create routes for more than one resource, you can save a bit of typing by defining them all with a single call to `resources`:
+リソースをいくつも定義しなければならない場合は、以下のような略記法で一度に定義することでタイプ量を節約できます。
 
 ```ruby
 resources :photos, :books, :videos
 ```
 
-This works exactly the same as:
+上の記法は以下と完全に同一です。
 
 ```ruby
 resources :photos
@@ -130,56 +131,56 @@ resources :books
 resources :videos
 ```
 
-### Singular Resources
+### 単数形リソース
 
-Sometimes, you have a resource that clients always look up without referencing an ID. For example, you would like `/profile` to always show the profile of the currently logged in user. In this case, you can use a singular resource to map `/profile` (rather than `/profile/:id`) to the `show` action:
+場合によっては、ユーザーがページを表示する時にidを参照することのないリソースが使用されることがあります。たとえば、`/profile`では常に「現在ログインしているユーザー自身」のプロファイルを表示し、他のユーザーidを参照する必要がないとします。このような場合には、単数形リソース (singular resource) を使用して`show`アクションに (`/profile/:id`ではなく) `/profile`を割り当てることができます。
 
 ```ruby
 get 'profile', to: 'users#show'
 ```
 
-Passing a `String` to `get` will expect a `controller#action` format, while passing a `Symbol` will map directly to an action:
+`get`の引数に`文字列`を渡す場合は`コントローラ#アクション`形式であることが前提ですが、`get`の引数に`シンボル`を渡すとアクションに直接割り当てられます。
 
 ```ruby
 get 'profile', to: :show
 ```
 
-This resourceful route:
+上をリソースフルなルーティングで記述すると以下のようになります。
 
 ```ruby
 resource :geocoder
 ```
 
-creates six different routes in your application, all mapping to the `Geocoders` controller:
+上のルーティングでは以下の6つのルーティングが作成され、すべて`Geocoders`コントローラに割り当てられます。
 
-| HTTP Verb | Path           | Controller#Action | Used for                                      |
+| HTTP動詞 | パス             | コントローラ#アクション | 目的                                     |
 | --------- | -------------- | ----------------- | --------------------------------------------- |
-| GET       | /geocoder/new  | geocoders#new     | return an HTML form for creating the geocoder |
-| POST      | /geocoder      | geocoders#create  | create the new geocoder                       |
-| GET       | /geocoder      | geocoders#show    | display the one and only geocoder resource    |
-| GET       | /geocoder/edit | geocoders#edit    | return an HTML form for editing the geocoder  |
-| PATCH/PUT | /geocoder      | geocoders#update  | update the one and only geocoder resource     |
-| DELETE    | /geocoder      | geocoders#destroy | delete the geocoder resource                  |
+| GET       | /geocoder/new  | geocoders#new     | geocoder作成用のHTMLフォームを返す |
+| POST      | /geocoder      | geocoders#create  | geocoderを作成する                       |
+| GET       | /geocoder      | geocoders#show    | 1つしかないgeocoderリソースを表示する    |
+| GET       | /geocoder/edit | geocoders#edit    | geocoder編集用のHTMLフォームを返す  |
+| PATCH/PUT | /geocoder      | geocoders#update  | 1つしかないgeocoderリソースを更新する     |
+| DELETE    | /geocoder      | geocoders#destroy | geocoderリソースを削除する                  |
 
-NOTE: Because you might want to use the same controller for a singular route (`/account`) and a plural route (`/accounts/45`), singular resources map to plural controllers. So that, for example, `resource :photo` and `resources :photos` creates both singular and plural routes that map to the same controller (`PhotosController`).
+メモ: 単数形リソースは複数形のコントローラに割り当てられます。これは、同じコントローラで単数形のルーティング (`/account`) と複数形のルーティング (`/accounts/45`) を両方使いたい場合を想定しているためです。従って、`resource :photo`と`resources :photos`のどちらも、単数形ルーティングと複数形ルーティングを両方作成し、同一のコントローラ (`PhotosController`) に割り当てられます。
 
-A singular resourceful route generates these helpers:
+単数形のリソースフルなルーティングを使用すると、以下のヘルパーメソッドが生成されます。
 
-* `new_geocoder_path` returns `/geocoder/new`
-* `edit_geocoder_path` returns `/geocoder/edit`
-* `geocoder_path` returns `/geocoder`
+* `new_geocoder_path`は`/geocoder/new`を返します
+* `edit_geocoder_path`は`/geocoder/edit`を返します
+* `geocoder_path`は`/geocoder`を返します。
 
-As with plural resources, the same helpers ending in `_url` will also include the host, port and path prefix.
+複数形リソースの場合と同様に、単数形リソースでも_pathヘルパーに対応する`_url`ヘルパーが使用できます。_urlヘルパーは、_pathの前に現在のホスト名、ポート番号、パスのプレフィックスが追加されている点が異なります。
 
-WARNING: A [long-standing bug](https://github.com/rails/rails/issues/1769) prevents `form_for` from working automatically with singular resources. As a workaround, specify the URL for the form directly, like so:
+警告: ある[長年の未解決バグ](https://github.com/rails/rails/issues/1769) が原因で、`form_for`では単数形リソースを自動的に扱えません。これを解決するには、以下のようにフォームのurlを直接指定します。
 
 ```ruby
 form_for @geocoder, url: geocoder_path do |f|
 ```
 
-### Controller Namespaces and Routing
+### コントローラの名前空間とルーティング
 
-You may wish to organize groups of controllers under a namespace. Most commonly, you might group a number of administrative controllers under an `Admin::` namespace. You would place these controllers under the `app/controllers/admin` directory, and you can group them together in your router:
+コントローラを名前空間によってグループ化することもできます。最もよく使用される名前空間といえば、多数の管理用コントローラ群をまとめる`Admin::`名前空間でしょう。これらのコントローラを`app/controllers/admin`ディレクトリに配置し、ルーティングでこれらをグループ化できます。
 
 ```ruby
 namespace :admin do
@@ -187,9 +188,9 @@ namespace :admin do
 end
 ```
 
-This will create a number of routes for each of the `posts` and `comments` controller. For `Admin::PostsController`, Rails will create:
+上のルーティングにより、`posts`コントローラや`comments`コントローラへのルーティングが多数生成されます。たとえば、`Admin::PostsController`によって作成されるルーティングは以下のとおりです。
 
-| HTTP Verb | Path                  | Controller#Action   | Named Helper              |
+| HTTP 動詞 | パス                  | コントローラ#アクション   | 名前付きヘルパー              |
 | --------- | --------------------- | ------------------- | ------------------------- |
 | GET       | /admin/posts          | admin/posts#index   | admin_posts_path          |
 | GET       | /admin/posts/new      | admin/posts#new     | new_admin_post_path       |
@@ -199,7 +200,7 @@ This will create a number of routes for each of the `posts` and `comments` contr
 | PATCH/PUT | /admin/posts/:id      | admin/posts#update  | admin_post_path(:id)      |
 | DELETE    | /admin/posts/:id      | admin/posts#destroy | admin_post_path(:id)      |
 
-If you want to route `/posts` (without the prefix `/admin`) to `Admin::PostsController`, you could use:
+例外的に、(`/admin`が前についていない) `/posts`を`Admin::PostsController`にルーティングしたい場合は、以下のようにすることもできます。
 
 ```ruby
 scope module: 'admin' do
@@ -207,13 +208,13 @@ scope module: 'admin' do
 end
 ```
 
-or, for a single case:
+以下のようにブロックを使用しない記述も可能です。
 
 ```ruby
 resources :posts, module: 'admin'
 ```
 
-If you want to route `/admin/posts` to `PostsController` (without the `Admin::` module prefix), you could use:
+逆に、`/admin/posts`を (`Admin::`なしの) `PostsController`にルーティングしたい場合は、以下のようにします。
 
 ```ruby
 scope '/admin' do
@@ -221,15 +222,15 @@ scope '/admin' do
 end
 ```
 
-or, for a single case:
+以下のようにブロックを使用しない記述も可能です。
 
 ```ruby
 resources :posts, path: '/admin/posts'
 ```
 
-In each of these cases, the named routes remain the same as if you did not use `scope`. In the last case, the following paths map to `PostsController`:
+いずれの場合も、名前付きルート (named route)は、`scope`を使用しなかった場合と同じであることにご注目ください。最後の例の場合は、以下のパスが`PostsController`に割り当てられます。
 
-| HTTP Verb | Path                  | Controller#Action | Named Helper        |
+| HTTP 動詞 | パス                  | コントローラ#アクション   | 名前付きヘルパー              |
 | --------- | --------------------- | ----------------- | ------------------- |
 | GET       | /admin/posts          | posts#index       | posts_path          |
 | GET       | /admin/posts/new      | posts#new         | new_post_path       |
@@ -239,11 +240,11 @@ In each of these cases, the named routes remain the same as if you did not use `
 | PATCH/PUT | /admin/posts/:id      | posts#update      | post_path(:id)      |
 | DELETE    | /admin/posts/:id      | posts#destroy     | post_path(:id)      |
 
-TIP: _If you need to use a different controller namespace inside a `namespace` block you can specify an absolute controller path, e.g: `get '/foo' => '/foo#index'`._
+ヒント: _`namespace`ブロックの内部で異なるコントローラ名前空間を使用したいのであれば、「`get '/foo' => '/foo#index'`」のような絶対コントローラパスを指定することもできます。_
 
-### Nested Resources
+### ネストしたリソース
 
-It's common to have resources that are logically children of other resources. For example, suppose your application includes these models:
+論理上、他のリソースの配下に子リソースを配置することはよくあります。たとえば、Railsアプリケーションに以下のモデルがあるとします。
 
 ```ruby
 class Magazine < ActiveRecord::Base
@@ -255,31 +256,31 @@ class Ad < ActiveRecord::Base
 end
 ```
 
-Nested routes allow you to capture this relationship in your routing. In this case, you could include this route declaration:
+ルーティングをネストする (入れ子にする) ことで、この親子関係をルーティングで表すことができるようになります。上の例の場合、以下のようにルーティングを宣言することができます。
 
-```ruby
+```ruby 
 resources :magazines do
   resources :ads
 end
 ```
 
-In addition to the routes for magazines, this declaration will also route ads to an `AdsController`. The ad URLs require a magazine:
+上のルーティングによって、雑誌 (magazine) へのルーティングに加えて、広告 (ad) を`AdsController`にルーティングすることもできるようになりました。adへのURLにはmagazineもなければなりません。
 
-| HTTP Verb | Path                                 | Controller#Action | Used for                                                                   |
+| HTTP動詞 | パス             | コントローラ#アクション | 目的                                     |
 | --------- | ------------------------------------ | ----------------- | -------------------------------------------------------------------------- |
-| GET       | /magazines/:magazine_id/ads          | ads#index         | display a list of all ads for a specific magazine                          |
-| GET       | /magazines/:magazine_id/ads/new      | ads#new           | return an HTML form for creating a new ad belonging to a specific magazine |
-| POST      | /magazines/:magazine_id/ads          | ads#create        | create a new ad belonging to a specific magazine                           |
-| GET       | /magazines/:magazine_id/ads/:id      | ads#show          | display a specific ad belonging to a specific magazine                     |
-| GET       | /magazines/:magazine_id/ads/:id/edit | ads#edit          | return an HTML form for editing an ad belonging to a specific magazine     |
-| PATCH/PUT | /magazines/:magazine_id/ads/:id      | ads#update        | update a specific ad belonging to a specific magazine                      |
-| DELETE    | /magazines/:magazine_id/ads/:id      | ads#destroy       | delete a specific ad belonging to a specific magazine                      |
+| GET       | /magazines/:magazine_id/ads          | ads#index         | ある雑誌1冊に含まれる広告をすべて表示する                          |
+| GET       | /magazines/:magazine_id/ads/new      | ads#new           | ある1冊の雑誌用の広告を1つ作成するHTMLフォームを返す |
+| POST      | /magazines/:magazine_id/ads          | ads#create        | ある1冊の雑誌用の広告を1つ作成する                           |
+| GET       | /magazines/:magazine_id/ads/:id      | ads#show          | ある雑誌1冊に含まれる広告を1つ表示する                    |
+| GET       | /magazines/:magazine_id/ads/:id/edit | ads#edit          | ある雑誌1冊に含まれる広告1つを編集するHTMLフォームを返す     |
+| PATCH/PUT | /magazines/:magazine_id/ads/:id      | ads#update        | ある雑誌1冊に含まれる広告を1つ更新する                      |
+| DELETE    | /magazines/:magazine_id/ads/:id      | ads#destroy       | ある雑誌1冊に含まれる広告を1つ削除する                      |
 
-This will also create routing helpers such as `magazine_ads_url` and `edit_magazine_ad_path`. These helpers take an instance of Magazine as the first parameter (`magazine_ads_url(@magazine)`).
+ルーティングを作成すると、ルーティングヘルパーも作成されます。ヘルパーは`magazine_ads_url`や`edit_magazine_ad_path`のような名前になります。これらのヘルパーは、最初のパラメーターとしてMagazineモデルのインスタンスを1つ取ります (`magazine_ads_url(@magazine)`)。
 
-#### Limits to Nesting
+#### ネスティング回数の限界
 
-You can nest resources within other nested resources if you like. For example:
+ネストしたリソースの中でさらに別のリソースをネストすることは可能です。例：
 
 ```ruby
 resources :publishers do
@@ -289,19 +290,19 @@ resources :publishers do
 end
 ```
 
-Deeply-nested resources quickly become cumbersome. In this case, for example, the application would recognize paths such as:
+すぐ想像が付くと思いますが、ネストが深くなるとたちまち扱いが厄介になります。たとえば、上のルーティングはアプリケーションで以下のようなパスとして認識されます。
 
 ```
 /publishers/1/magazines/2/photos/3
 ```
 
-The corresponding route helper would be `publisher_magazine_photo_url`, requiring you to specify objects at all three levels. Indeed, this situation is confusing enough that a popular [article](http://weblog.jamisbuck.org/2007/2/5/nesting-resources) by Jamis Buck proposes a rule of thumb for good Rails design:
+このURLに対応するルーティングヘルパーは`publisher_magazine_photo_url`となります。このヘルパーを使用するには毎回3つの階層すべてでオブジェクトを指定する必要があります。ネスティングが深くなることでルーティングの扱いが困難になる問題については、Jamis Buckの有名な [記事](http://weblog.jamisbuck.org/2007/2/5/nesting-resources) を参照してください。JamisはRailsアプリケーション設計上のよい経験則を提案しています。
 
-TIP: _Resources should never be nested more than 1 level deep._
+ヒント: _リソースのネスティングは、ぜひとも1回にとどめて下さい。決して2回以上ネストするべきではありません。_
 
-#### Shallow Nesting
+#### 「浅い」ネスト
 
-One way to avoid deep nesting (as recommended above) is to generate the collection actions scoped under the parent, so as to get a sense of the hierarchy, but to not nest the member actions. In other words, to only build routes with the minimal amount of information to uniquely identify the resource, like this:
+前述したような深いネストを避けるひとつの方法として、コレクション (index/new/createのような、idを持たないアクション) だけを親のスコープの下で生成するという手法があります。このとき、メンバー (show/edit/update/destroyのような、idを必要とするアクション) をネストに含めないのがポイントです。これによりコレクションだけが階層化のメリットを受けられます。つまり、以下のように最小限の情報でリソースを一意に指定できるルーティングを作成するということです。
 
 ```ruby
 resources :posts do
@@ -310,7 +311,7 @@ end
 resources :comments, only: [:show, :edit, :update, :destroy]
 ```
 
-This idea strikes a balance between descriptive routes and deep nesting. There exists shorthand syntax to achieve just that, via the `:shallow` option:
+この方法は、ルーティングの記述を複雑にせず、かつ深いネストを作らないという絶妙なバランスを保っています。`:shallow`オプションを使用することで、上と同じ内容をさらに簡単に記述できます。
 
 ```ruby
 resources :posts do
@@ -318,7 +319,7 @@ resources :posts do
 end
 ```
 
-This will generate the exact same routes as the first example. You can also specify the `:shallow` option in the parent resource, in which case all of the nested resources will be shallow:
+これによって生成されるルーティングは、最初の例と完全に同じです。親リソースで`:shallow`オプションを指定すると、すべてのネストしたリソースが浅くなります。
 
 ```ruby
 resources :posts, shallow: true do
@@ -328,19 +329,19 @@ resources :posts, shallow: true do
 end
 ```
 
-The `shallow` method of the DSL creates a scope inside of which every nesting is shallow. This generates the same routes as the previous example:
+DSL (ドメイン固有言語) である`shallow`メソッドをルーティングで使用すると、すべてのネストが浅くなるように内側にスコープを1つ作成します。●これによって生成されるルーティングは、最初の例と完全に同じです。
 
 ```ruby
 shallow do
   resources :posts do
-    resources :comments
+  resources :comments
     resources :quotes
     resources :drafts
   end
 end
 ```
 
-There exist two options for `scope` to customize shallow routes. `:shallow_path` prefixes member paths with the specified parameter:
+`scope`メソッドには、「浅い」ルーティングをカスタマイズするためのオプションが2つあります。`:shallow_path`オプションは、指定されたパラメータをメンバーのパスの冒頭にだけ追加します。
 
 ```ruby
 scope shallow_path: "sekret" do
@@ -350,9 +351,9 @@ scope shallow_path: "sekret" do
 end
 ```
 
-The comments resource here will have the following routes generated for it:
+上の場合、commentsリソースのルーティングは以下のようになります。
 
-| HTTP Verb | Path                                   | Controller#Action | Named Helper          |
+| HTTP 動詞 | パス                  | コントローラ#アクション   | 名前付きヘルパー              |
 | --------- | -------------------------------------- | ----------------- | --------------------- |
 | GET       | /posts/:post_id/comments(.:format)     | comments#index    | post_comments_path    |
 | POST      | /posts/:post_id/comments(.:format)     | comments#create   | post_comments_path    |
@@ -362,7 +363,7 @@ The comments resource here will have the following routes generated for it:
 | PATCH/PUT | /sekret/comments/:id(.:format)         | comments#update   | comment_path          |
 | DELETE    | /sekret/comments/:id(.:format)         | comments#destroy  | comment_path          |
 
-The `:shallow_prefix` option adds the specified parameter to the named helpers:
+`:shallow_prefix`オプションを使用すると、指定されたパラメータを (パスではなく) 名前付きヘルパー名の冒頭に追加します。
 
 ```ruby
 scope shallow_prefix: "sekret" do
@@ -372,21 +373,21 @@ scope shallow_prefix: "sekret" do
 end
 ```
 
-The comments resource here will have the following routes generated for it:
+上の場合、commentsリソースのルーティングは以下のようになります。
 
-| HTTP Verb | Path                                   | Controller#Action | Named Helper             |
+| HTTP 動詞 | パス                  | コントローラ#アクション   | 名前付きヘルパー              |
 | --------- | -------------------------------------- | ----------------- | ------------------------ |
-| GET       | /posts/:post_id/comments(.:format)     | comments#index    | post_comments_path       |
-| POST      | /posts/:post_id/comments(.:format)     | comments#create   | post_comments_path       |
+| GET       | /posts/:post_id/comments(.:format)     | comments#index    | post_comments_path    |
+| POST      | /posts/:post_id/comments(.:format)     | comments#create   | post_comments_path    |
 | GET       | /posts/:post_id/comments/new(.:format) | comments#new      | new_post_comment_path    |
 | GET       | /comments/:id/edit(.:format)           | comments#edit     | edit_sekret_comment_path |
 | GET       | /comments/:id(.:format)                | comments#show     | sekret_comment_path      |
 | PATCH/PUT | /comments/:id(.:format)                | comments#update   | sekret_comment_path      |
 | DELETE    | /comments/:id(.:format)                | comments#destroy  | sekret_comment_path      |
 
-### Routing concerns
+### ルーティングの「concern」機能
 
-Routing Concerns allows you to declare common routes that can be reused inside other resources and routes. To define a concern:
+concernを使用することで、他のリソースやルーティング内で使いまわすことのできる共通のルーティングを宣言することができます。concernは以下のように定義します。
 
 ```ruby
 concern :commentable do
@@ -398,7 +399,7 @@ concern :image_attachable do
 end
 ```
 
-These concerns can be used in resources to avoid code duplication and share behavior across routes:
+concernを利用すると、同じようなルーティングを繰り返し記述せずに済み、複数のルーティング間で同じ動作を共有できます。
 
 ```ruby
 resources :messages, concerns: :commentable
@@ -406,7 +407,7 @@ resources :messages, concerns: :commentable
 resources :posts, concerns: [:commentable, :image_attachable]
 ```
 
-The above is equivalent to:
+上のコードは以下と同等です。
 
 ```ruby
 resources :messages do
@@ -419,7 +420,7 @@ resources :posts do
 end
 ```
 
-Also you can use them in any place that you want inside the routes, for example in a scope or namespace call:
+concernはルーティング内のどのような場所にでも配置することができます。スコープや名前空間呼び出しでの使用法は以下のとおりです。
 
 ```ruby
 namespace :posts do
@@ -427,9 +428,9 @@ namespace :posts do
 end
 ```
 
-### Creating Paths and URLs From Objects
+### オブジェクトからパスとURLを作成する
 
-In addition to using the routing helpers, Rails can also create paths and URLs from an array of parameters. For example, suppose you have this set of routes:
+ルーティングヘルパーを使用する方法の他に、パラメータの配列からパスやURLを作成することもできます。例として、以下のようなルーティングがあるとします。
 
 ```ruby
 resources :magazines do
@@ -437,45 +438,45 @@ resources :magazines do
 end
 ```
 
-When using `magazine_ad_path`, you can pass in instances of `Magazine` and `Ad` instead of the numeric IDs:
+`magazine_ad_path`を使用すると、idを数字で渡す代りに`Magazine`と`Ad`のインスタンスを引数として渡すことができます。
 
 ```erb
 <%= link_to 'Ad details', magazine_ad_path(@magazine, @ad) %>
 ```
 
-You can also use `url_for` with a set of objects, and Rails will automatically determine which route you want:
+複数のオブジェクトが集まったセットに対して`url_for`を使用することもできます。複数のオブジェクトを渡しても、適切なルーティングが自動的に決定されます。
 
 ```erb
 <%= link_to 'Ad details', url_for([@magazine, @ad]) %>
 ```
 
-In this case, Rails will see that `@magazine` is a `Magazine` and `@ad` is an `Ad` and will therefore use the `magazine_ad_path` helper. In helpers like `link_to`, you can specify just the object in place of the full `url_for` call:
+上の場合、Railsは`@magazine`が`Magazine`であり、`@ad`が`Ad`であることを認識し、それに基づいて`magazine_ad_path`ヘルパーを呼び出します。`link_to`などのヘルパーでも、完全な`url_for`呼び出しの代りに単にオブジェクトを渡すことができます。
 
 ```erb
 <%= link_to 'Ad details', [@magazine, @ad] %>
 ```
 
-If you wanted to link to just a magazine:
+1冊の雑誌にだけリンクしたいのであれば、以下のように書きます。
 
 ```erb
 <%= link_to 'Magazine details', @magazine %>
 ```
 
-For other actions, you just need to insert the action name as the first element of the array:
+それ以外のアクションであれば、配列の最初の要素にアクション名を挿入するだけで済みます。
 
 ```erb
 <%= link_to 'Edit Ad', [:edit, @magazine, @ad] %>
 ```
 
-This allows you to treat instances of your models as URLs, and is a key advantage to using the resourceful style.
+これにより、モデルのインスタンスをURLとして扱うことができます。これはリソースフルなスタイルを採用する大きなメリットの1つです。
 
-### Adding More RESTful Actions
+### RESTfulなアクションをさらに追加する
 
-You are not limited to the seven routes that RESTful routing creates by default. If you like, you may add additional routes that apply to the collection or individual members of the collection.
+デフォルトで作成されるRESTfulなルーティングは7つですが、7つでなければならないということはありません。必要であれば、コレクションやコレクションの各メンバーに対して適用されるリソースを追加することもできます。
 
-#### Adding Member Routes
+#### メンバールーティングを追加する
 
-To add a member route, just add a `member` block into the resource block:
+メンバー (member) ルーティングを追加したい場合は、`member`ブロックをリソースブロックに1つ追加します。
 
 ```ruby
 resources :photos do
@@ -485,9 +486,9 @@ resources :photos do
 end
 ```
 
-This will recognize `/photos/1/preview` with GET, and route to the `preview` action of `PhotosController`, with the resource id value passed in `params[:id]`. It will also create the `preview_photo_url` and `preview_photo_path` helpers.
+上のルーティングはGETリクエストとそれに伴う`/photos/1/preview`を認識し、リクエストを`Photos`コントローラの`preview`アクションにルーティングし、リソースid値を`params[:id]`に渡します。同時に、`preview_photo_url`ヘルパーと`preview_photo_path`ヘルパーも作成されます。
 
-Within the block of member routes, each route name specifies the HTTP verb will be recognized. You can use `get`, `patch`, `put`, `post`, or `delete` here. If you don't have multiple `member` routes, you can also pass `:on` to a route, eliminating the block:
+memberルーティングブロックの内側では、次に述べるHTTP動詞が指定されたルーティング名を認識できます。指定可能な動詞は`get`、`patch`、`put`、`post`、`delete`です。`member`ルーティングが1つだけしかないのであれば、以下のようにルーティングで`:on`オプションを指定することでブロックを省略できます。
 
 ```ruby
 resources :photos do
@@ -495,11 +496,11 @@ resources :photos do
 end
 ```
 
-You can leave out the `:on` option, this will create the same member route except that the resource id value will be available in `params[:photo_id]` instead of `params[:id]`.
+`:on`オプションを省略しても同様のmemberルーティングが生成されます。この場合リソースidの値の取得に`params[:id]`ではなく`params[:photo_id]`を使用する点が異なります。
 
-#### Adding Collection Routes
+#### コレクションルーティングを追加する
 
-To add a route to the collection:
+ルーティングにコレクション (collection) を追加するには以下のようにします。
 
 ```ruby
 resources :photos do
@@ -509,9 +510,9 @@ resources :photos do
 end
 ```
 
-This will enable Rails to recognize paths such as `/photos/search` with GET, and route to the `search` action of `PhotosController`. It will also create the `search_photos_url` and `search_photos_path` route helpers.
+上のルーティングは、GETリクエスト+`/photos/search`などの (idを伴わない) パスを認識し、リクエストを`Photos`コントローラの`search`アクションにルーティングします。このとき`search_photos_url`や`search_photos_path`ルーティングヘルパーも同時に作成されます。
 
-Just as with member routes, you can pass `:on` to a route:
+collectionルーティングでもmemberルーティングのときと同様に`:on`オプションを使用できます。
 
 ```ruby
 resources :photos do
@@ -519,9 +520,9 @@ resources :photos do
 end
 ```
 
-#### Adding Routes for Additional New Actions
+#### 追加されたアクションへのルーティングを追加する
 
-To add an alternate new action using the `:on` shortcut:
+`:on`ショートカットを使用して、たとえば以下のように別のnewアクションを追加できます。
 
 ```ruby
 resources :comments do
@@ -529,159 +530,159 @@ resources :comments do
 end
 ```
 
-This will enable Rails to recognize paths such as `/comments/new/preview` with GET, and route to the `preview` action of `CommentsController`. It will also create the `preview_new_comment_url` and `preview_new_comment_path` route helpers.
+上のようにすることで、GET + `/comments/new/preview`のようなパスが認識され、`Comments`コントローラの`preview`アクションにルーティングされます。`preview_new_comment_url`や`preview_new_comment_path`ルーティングヘルパーも同時に作成されます。
 
-TIP: If you find yourself adding many extra actions to a resourceful route, it's time to stop and ask yourself whether you're disguising the presence of another resource.
+ヒント: リソースフルなルーティングにアクションが多数追加されていることに気付いたら、それ以上アクションを追加するのをやめて、そこに別のリソースが隠されているのではないかと疑ってみる方がよいでしょう。
 
-Non-Resourceful Routes
+リソースフルでないルーティング
 ----------------------
 
-In addition to resource routing, Rails has powerful support for routing arbitrary URLs to actions. Here, you don't get groups of routes automatically generated by resourceful routing. Instead, you set up each route within your application separately.
+Railsではリソースルーティングを行なう他に、任意のURLをアクションにルーティングすることもできます。この方式を使用する場合、リソースフルルーティングのような自動的なルーティンググループの生成は行われません。従って、アプリケーションで必要なルーティングを個別に設定することになります。
 
-While you should usually use resourceful routing, there are still many places where the simpler routing is more appropriate. There's no need to try to shoehorn every last piece of your application into a resourceful framework if that's not a good fit.
+基本的にはリソースフルルーティングを使用すべきではありますが、このような単純なルーティングの方が適している箇所も多数あるはずです。リソースフルルーティングでは大袈裟過ぎる場合に、アプリケーションを無理にリソースフルなフレームワークに押し込める必要はありません。
 
-In particular, simple routing makes it very easy to map legacy URLs to new Rails actions.
+シンプルルーティングは、特に従来形式のURLを新しいRailsのアクションに割り当てることがずっと簡単に行えるようになります。
 
-### Bound Parameters
+### パラメータの割り当て
 
-When you set up a regular route, you supply a series of symbols that Rails maps to parts of an incoming HTTP request. Two of these symbols are special: `:controller` maps to the name of a controller in your application, and `:action` maps to the name of an action within that controller. For example, consider this route:
+通常のルーティングを設定するのであれば、RailsがルーティングをブラウザからのHTTPリクエストに割り当てるためのシンボルをいくつか渡します。それらのシンボルのうち、`:controller`と`:action`は特別です。`:controller`はアプリケーションのコントローラへの割り当てを行い、`:action`はそのコントローラの中にあるアクションへの割り当てを行います (訳注: 具体的なコントローラ名とアクション名を指定していない点にご注目ください)。以下のルーティングを例にとってみましょう。
 
 ```ruby
 get ':controller(/:action(/:id))'
 ```
 
-If an incoming request of `/photos/show/1` is processed by this route (because it hasn't matched any previous route in the file), then the result will be to invoke the `show` action of the `PhotosController`, and to make the final parameter `"1"` available as `params[:id]`. This route will also route the incoming request of `/photos` to `PhotosController#index`, since `:action` and `:id` are optional parameters, denoted by parentheses.
+ブラウザからの`/photos/show/1`リクエストが上のルーティングで処理される (他のルーティング設定にはマッチしなかったとします) と、`Photos`コントローラの`show`アクションが呼び出され、URL末尾のパラメータ`"1"`へのアクセスは`params[:id]`で行なえます。`:action`と`:id`が必須パラメータではないことがかっこ () で示されているので、このルーティングは`/photos`を`PhotosController#index`にルーティングすることもできます。
 
-### Dynamic Segments
+### 動的なセグメント
 
-You can set up as many dynamic segments within a regular route as you like. Anything other than `:controller` or `:action` will be available to the action as part of `params`. If you set up this route:
+通常のルーティングの一部として、文字列を固定しない動的なセグメントを自由に使用できます。`:controller`や`:action`を除き、どんなものでも`params`の一部に含めてアクションに渡すことができます。以下のルーティングを設定したとします。
 
 ```ruby
 get ':controller/:action/:id/:user_id'
 ```
 
-An incoming path of `/photos/show/1/2` will be dispatched to the `show` action of the `PhotosController`. `params[:id]` will be `"1"`, and `params[:user_id]` will be `"2"`.
+ブラウザからの`/photos/show/1/2`パスは`Photos`コントローラの`show`アクションに割り当てられます。`params[:id]`には`"1"`、`params[:user_id]`には`"2"`がそれぞれ保存されます。
 
-NOTE: You can't use `:namespace` or `:module` with a `:controller` path segment. If you need to do this then use a constraint on :controller that matches the namespace you require. e.g:
+メモ: `:controller`パスセグメントを使用する場合、`:namespace`や`:module`を併用することはできません。どうしても使用したいのであれば、以下のように、必要な名前空間だけにマッチするように`:controller`に制限を加えます。
 
 ```ruby
 get ':controller(/:action(/:id))', controller: /admin\/[^\/]+/
 ```
 
-TIP: By default, dynamic segments don't accept dots - this is because the dot is used as a separator for formatted routes. If you need to use a dot within a dynamic segment, add a constraint that overrides this – for example, `id: /[^\/]+/` allows anything except a slash.
+ヒント: 動的なセグメント分割ではドット`.`をデフォルトでは使用できません。ドットはフォーマット済みルーティングでは区切り文字として使用されるためです。どうしても動的セグメント内でドットを使用したい場合は、デフォルト設定を上書きする制限を与えます。たとえば`id: /[^\/]+/`とすると、スラッシュ以外のすべての文字が使用できます。
 
-### Static Segments
+### 静的なセグメント
 
-You can specify static segments when creating a route by not prepending a colon to a fragment:
+ルート作成時にコロンを付けなかった部分は、静的なセグメントとして固定文字列が指定されます。
 
 ```ruby
 get ':controller/:action/:id/with_user/:user_id'
 ```
 
-This route would respond to paths such as `/photos/show/1/with_user/2`. In this case, `params` would be `{ controller: 'photos', action: 'show', id: '1', user_id: '2' }`.
+上のルーティングは、`/photos/show/1/with_user/2`のようなパスにマッチします。`with_user`の部分は固定されています。このときアクションで使用できる`params`は `{ controller: 'photos', action: 'show', id: '1', user_id: '2' }`となります。
 
-### The Query String
+### クエリ文字列
 
-The `params` will also include any parameters from the query string. For example, with this route:
+クエリ文字列 (訳注: `?パラメータ名=値`の形式でURLの末尾に置かれるパラメータ) で指定されているパラメータもすべて`params`に含まれます。以下のルーティングを例にとってみましょう。
 
 ```ruby
 get ':controller/:action/:id'
 ```
 
-An incoming path of `/photos/show/1?user_id=2` will be dispatched to the `show` action of the `Photos` controller. `params` will be `{ controller: 'photos', action: 'show', id: '1', user_id: '2' }`.
+ブラウザからのリクエストで`/photos/show/1?user_id=2`というパスが渡されると、`Photos`コントローラの`show`アクションに割り当てられます。このときの`params`は`{ controller: 'photos', action: 'show', id: '1', user_id: '2' }`となります。
 
-### Defining Defaults
+### デフォルト設定を定義する
 
-You do not need to explicitly use the `:controller` and `:action` symbols within a route. You can supply them as defaults:
+`:controller`シンボルや`:action`シンボルは、ルーティング内で明示的に指定する必要はありません。これらは以下のようにデフォルトとして指定することができます。
 
 ```ruby
 get 'photos/:id', to: 'photos#show'
 ```
 
-With this route, Rails will match an incoming path of `/photos/12` to the `show` action of `PhotosController`.
+上のルーティングはブラウザからの`/photos/12`パスにマッチし、`Photos`コントローラの`show`アクションに割り当てられます。
 
-You can also define other defaults in a route by supplying a hash for the `:defaults` option. This even applies to parameters that you do not specify as dynamic segments. For example:
+`:defaults`オプションにハッシュを渡すことで、これ以外のデフォルト設定を定義することもできます。この定義は、動的セグメントとして指定していないパラメータに対しても適用されます。例: 
 
-```ruby
+```ruby 
 get 'photos/:id', to: 'photos#show', defaults: { format: 'jpg' }
 ```
 
-Rails would match `photos/12` to the `show` action of `PhotosController`, and set `params[:format]` to `"jpg"`.
+上のルーティングは`photos/12`にマッチし、`Photos`コントローラの`show`アクションに割り当てられ、`params[:format]`には`"jpg"`が設定されます。
 
-### Naming Routes
+### 名前付きルーティング
 
-You can specify a name for any route using the `:as` option:
+`:as`オプションを使用することで、どんなルーティングにも名前を指定できます。
 
 ```ruby
 get 'exit', to: 'sessions#destroy', as: :logout
 ```
 
-This will create `logout_path` and `logout_url` as named helpers in your application. Calling `logout_path` will return `/exit`
+上のルーティングでは`logout_path`と`logout_url`がアプリケーションの名前付きヘルパーとして作成されます。`logout_path`を呼び出すと`/exit`が返されます。
 
-You can also use this to override routing methods defined by resources, like this:
+この方法を使用して、リソースとして定義されているルーティングを以下のように上書きすることもできます。
 
 ```ruby
 get ':username', to: 'users#show', as: :user
 ```
 
-This will define a `user_path` method that will be available in controllers, helpers and views that will go to a route such as `/bob`. Inside the `show` action of `UsersController`, `params[:username]` will contain the username for the user. Change `:username` in the route definition if you do not want your parameter name to be `:username`.
+上のルーティングでは`user_path`メソッドが生成され、コントローラ・ヘルパー・ビューでそれぞれ使用できるようになります。このメソッドは、`/bob`のようなユーザー名を持つルーティングに移動します。`Users`コントローラの`show`アクションの内部で`params[:username]`にアクセスすると、ユーザー名を取り出すことができます。パラメータ名を`:username`にしたくない場合は、ルーティング定義の`:username`の部分を変更してください。
 
-### HTTP Verb Constraints
+### HTTP動詞を制限する
 
-In general, you should use the `get`, `post`, `put`, `patch`  and `delete` methods to constrain a route to a particular verb. You can use the `match` method with the `:via` option to match multiple verbs at once:
+あるルーティングを特定のHTTP動詞に割り当てるために、通常は`get`、`post`、`put`、`patch`、`delete`メソッドのいずれかを使用する必要があります。`match`メソッドと`:via`オプションを使用することで、複数のHTTP動詞に同時にマッチするルーティングを作成できます。
 
 ```ruby
 match 'photos', to: 'photos#show', via: [:get, :post]
 ```
 
-You can match all verbs to a particular route using `via: :all`:
+`via: :all`を指定すると、すべてのHTTP動詞にマッチする特別なルーティングを作成できます。
 
 ```ruby
 match 'photos', to: 'photos#show', via: :all
 ```
 
-NOTE: Routing both `GET` and `POST` requests to a single action has security implications. In general, you should avoid routing all verbs to an action unless you have a good reason to.
+メモ: 1つのアクションに`GET`リクエストと`POST`リクエストを両方ルーティングすると、セキュリティに影響する可能性があります。本当に必要な理由がない限り、1つのアクションにすべてのHTTP動詞をルーティングすることは避けてください。
 
-### Segment Constraints
+### セグメントを制限する
 
-You can use the `:constraints` option to enforce a format for a dynamic segment:
+`:constraints`オプションを使用すると、動的セグメントのURLフォーマットを特定の形式に制限するすることができます。
 
 ```ruby
 get 'photos/:id', to: 'photos#show', constraints: { id: /[A-Z]\d{5}/ }
 ```
 
-This route would match paths such as `/photos/A12345`, but not `/photos/893`. You can more succinctly express the same route this way:
+上のルーティングは`/photos/A12345`のようなパスにはマッチしますが、`/photos/893`にはマッチしません。以下のようにもっと簡潔な方法で記述することもできます。
 
 ```ruby
 get 'photos/:id', to: 'photos#show', id: /[A-Z]\d{5}/
 ```
 
-`:constraints` takes regular expressions with the restriction that regexp anchors can't be used. For example, the following route will not work:
+`:constraints`は正規表現を引数に取りますが、この引数では正規表現の「アンカー」は使用できないという制限があることにご注意ください。たとえば、以下のルーティングは無効です。
 
 ```ruby
 get '/:id', to: 'posts#show', constraints: {id: /^\d/}
 ```
 
-However, note that you don't need to use anchors because all routes are anchored at the start.
+対象となるルーティングはすべて初めからアンカーされているので、このようなアンカー表現を使用する必要はないはずです。
 
-For example, the following routes would allow for `posts` with `to_param` values like `1-hello-world` that always begin with a number and `users` with `to_param` values like `david` that never begin with a number to share the root namespace:
+たとえば以下のルーティングでは、ルート (root) 名前空間を共有する際に`posts`に対して`to_param`が`1-hello-world`のように数字で始まる値だけが使用できるようになっており、`users`に対して`to_param`が`david`のように数字で始まらない値だけが使用できるようになっています。●
 
 ```ruby
 get '/:id', to: 'posts#show', constraints: { id: /\d.+/ }
 get '/:username', to: 'users#show'
 ```
 
-### Request-Based Constraints
+### リクエスト内容に応じて制限を加える
 
-You can also constrain a route based on any method on the <a href="action_controller_overview.html#the-request-object">Request</a> object that returns a `String`.
+また、`String`を返す<a href="action_controller_overview.html#the-request-object">Request</a>オブジェクトの任意のメソッドに基いてルーティングを制限することもできます。
 
-You specify a request-based constraint the same way that you specify a segment constraint:
+リクエストに応じた制限は、セグメントを制限するときと同様の方法で指定することができます。
 
 ```ruby
 get 'photos', constraints: {subdomain: 'admin'}
 ```
 
-You can also specify constraints in a block form:
+ブロックフォームに対して制限を指定することもできます。
 
 ```ruby
 namespace :admin do
@@ -691,11 +692,11 @@ namespace :admin do
 end
 ```
 
-NOTE: Request constraints work by calling a method on the <a href="action_controller_overview.html#the-request-object">Request object</a> with the same name as the hash key and then compare the return value with the hash value. Therefore, constraint values should match the corresponding Request object method return type. For example: `constraints: { subdomain: 'api' }` will match an `api` subdomain as expected, however using a symbol `constraints: { subdomain: :api }` will not, because `request.subdomain` returns `'api'` as a String.
+メモ: リクエストベースの制限は、Requestオブジェクト</a>に対してあるメソッドを呼び出すことで実行されます。メソッド呼び出し時にハッシュキーと同じ名前をメソッドに渡し、返された値をハッシュ値と比較します。従って、制限された値は、対応するRequestオブジェクトメソッドが返す型と一致する必要があります。たとえば、`constraints: { subdomain: 'api' }`という制限は`api`サブドメインに期待どおりマッチしますが、`constraints: { subdomain: :api }`のようにシンボルを使用した場合は`api`サブドメインに一致しません。`request.subdomain`が返す`'api'`は文字列型であるためです。
 
-### Advanced Constraints
+### 高度な制限
 
-If you have a more advanced constraint, you can provide an object that responds to `matches?` that Rails should use. Let's say you wanted to route all users on a blacklist to the `BlacklistController`. You could do:
+より高度な制限を使用したい場合、Railsで必要な`matches?`に応答できるオブジェクトを渡す方法があります。例として、ブラックリストに記載されているすべてのユーザーを`BlacklistController`にルーティングしたいとします。この場合、以下のように設定します。
 
 ```ruby
 class BlacklistConstraint
@@ -714,7 +715,7 @@ Rails.application.routes.draw do
 end
 ```
 
-You can also specify constraints as a lambda:
+制限をラムダとして指定することもできます。
 
 ```ruby
 Rails.application.routes.draw do
@@ -723,97 +724,97 @@ Rails.application.routes.draw do
 end
 ```
 
-Both the `matches?` method and the lambda gets the `request` object as an argument.
+`matches?`メソッドおよびラムダはいずれも引数として`request`オブジェクトを取ります。
 
-### Route Globbing and Wildcard Segments
+### ルーティンググロブとワイルドカードセグメント
 
-Route globbing is a way to specify that a particular parameter should be matched to all the remaining parts of a route. For example:
+ルーティンググロブ (route globbing) とはワイルドカード展開のことであり、ルーティングのある位置から下のすべての部分に特定のパラメータをマッチさせる際に使用します。例: 
 
 ```ruby
 get 'photos/*other', to: 'photos#unknown'
 ```
 
-This route would match `photos/12` or `/photos/long/path/to/12`, setting `params[:other]` to `"12"` or `"long/path/to/12"`. The fragments prefixed with a star are called "wildcard segments".
+上のルーティングは`photos/12`や`/photos/long/path/to/12`にマッチし、`params[:other]`には`"12"`や`"long/path/to/12"`が設定されます。先頭にアスタリスク`*`が付いている部分を「ワイルドカードセグメント」と呼びます。
 
-Wildcard segments can occur anywhere in a route. For example:
+ワイルドカードセグメントはルーティングのどの部分でも使用できます。例: 
 
 ```ruby
 get 'books/*section/:title', to: 'books#show'
 ```
 
-would match `books/some/section/last-words-a-memoir` with `params[:section]` equals `'some/section'`, and `params[:title]` equals `'last-words-a-memoir'`.
+上は`books/some/section/last-words-a-memoir`にマッチし、`params[:section]`には`'some/section'`が保存され、`params[:title]`には`'last-words-a-memoir'`が保存されます。
 
-Technically, a route can have even more than one wildcard segment. The matcher assigns segments to parameters in an intuitive way. For example:
+技術上は、1つのルーティングに2つ以上のワイルドカードセグメントを含めることは可能です。マッチャがセグメントをパラメータに割り当てる方法は直感的です。例: 
 
 ```ruby
 get '*a/foo/*b', to: 'test#index'
 ```
 
-would match `zoo/woo/foo/bar/baz` with `params[:a]` equals `'zoo/woo'`, and `params[:b]` equals `'bar/baz'`.
+上のルーティングは`zoo/woo/foo/bar/baz`にマッチし、`params[:a]`には`'zoo/woo'`が保存され、and `params[:b]`には`'bar/baz'`が保存されます。
 
-NOTE: By requesting `'/foo/bar.json'`, your `params[:pages]` will be equals to `'foo/bar'` with the request format of JSON. If you want the old 3.0.x behavior back, you could supply `format: false` like this:
+メモ: `'/foo/bar.json'`をリクエストすると`params[:pages]`には`'foo/bar'`がJSONリクエストフォーマットで保存されます。Rails 3.0.xの動作に戻したい場合は、以下のように`format: false`を指定することができます。
 
 ```ruby
 get '*pages', to: 'pages#show', format: false
 ```
 
-NOTE: If you want to make the format segment mandatory, so it cannot be omitted, you can supply `format: true` like this:
+メモ: このセグメントフォーマットを必須にしたい場合は、以下のように`format: true`を指定します。
 
 ```ruby
 get '*pages', to: 'pages#show', format: true
 ```
 
-### Redirection
+### リダイレクト
 
-You can redirect any path to another path using the `redirect` helper in your router:
+ルーティングで`redirect`を使用すると、あるパスを他のあらゆるパスにリダイレクトできます。
 
 ```ruby
 get '/stories', to: redirect('/posts')
 ```
 
-You can also reuse dynamic segments from the match in the path to redirect to:
+パスにマッチする動的セグメントを再利用してリダイレクトすることもできます。
 
 ```ruby
 get '/stories/:name', to: redirect('/posts/%{name}')
 ```
 
-You can also provide a block to redirect, which receives the symbolized path parameters and the request object:
+リダイレクトにブロックを渡すこともできます。このリダイレクトは、シンボル化されたパスパラメーターとrequestオブジェクトを受け取ります。
 
 ```ruby
 get '/stories/:name', to: redirect {|path_params, req| "/posts/#{path_params[:name].pluralize}" }
 get '/stories', to: redirect {|path_params, req| "/posts/#{req.subdomain}" }
 ```
 
-Please note that this redirection is a 301 "Moved Permanently" redirect. Keep in mind that some web browsers or proxy servers will cache this type of redirect, making the old page inaccessible.
+ここで行われているリダイレクトは、HTTPステータスで言う「301 "Moved Permanently"」であることにご注意ください。一部のWebブラウザやプロキシサーバーはこの種のリダイレクトをキャッシュすることがあり、その場合リダイレクト前の古いページにはアクセスできなくなります。
 
-In all of these cases, if you don't provide the leading host (`http://www.example.com`), Rails will take those details from the current request.
+どの場合であっても、ホスト (`http://www.example.com`など) がURLの冒頭で指定されていない場合は、Railsは (以前のリクエストではなく) 現在のリクエストから詳細を取得します。●
 
-### Routing to Rack Applications
+### Rackアプリケーションにルーティングする
 
-Instead of a String like `'posts#index'`, which corresponds to the `index` action in the `PostsController`, you can specify any <a href="rails_on_rack.html">Rack application</a> as the endpoint for a matcher:
+`Post`コントローラの`index`アクションに対応する`'posts#index'`のような文字列の代りに、任意の<a href="rails_on_rack.html">Rackアプリケーション</a>をマッチャーのエンドポイントとして指定することができます。
 
 ```ruby
 match '/application.js', to: Sprockets, via: :all
 ```
 
-As long as `Sprockets` responds to `call` and returns a `[status, headers, body]`, the router won't know the difference between the Rack application and an action. This is an appropriate use of `via: :all`, as you will want to allow your Rack application to handle all verbs as it considers appropriate.
+Railsルーターから見れば、`Sprockets`が`call`に応答して`[status, headers, body]`を返す限り、ルーティング先がRackアプリケーションであるかアクションであるかは区別できません。これは`via: :all`の適切な利用法です。というのは、適切と考えられるすべてのHTTP動詞をRackアプリケーションで扱えるようにできるからです。
 
-NOTE: For the curious, `'posts#index'` actually expands out to `PostsController.action(:index)`, which returns a valid Rack application.
+メモ: 参考までに、`'posts#index'`は実際には`PostsController.action(:index)`という形に展開されます。これは正しいRackアプリケーションを返します。
 
-### Using `root`
+### `root`を使用する
 
-You can specify what Rails should route `'/'` to with the `root` method:
+`root`メソッドを使用することで、Railsがルート`'/'`とすべき場所を指定できます。
 
 ```ruby
 root to: 'pages#main'
-root 'pages#main' # shortcut for the above
+root 'pages#main' # 上の省略形
 ```
 
-You should put the `root` route at the top of the file, because it is the most popular route and should be matched first.
+`root`ルーティングは、ルーティングファイルの先頭に記述してください。rootは最もよく使用されるルーティングであり、最初にマッチする必要があるからです。
 
-NOTE: The `root` route only routes `GET` requests to the action.
+メモ: `root`ルーティングがアクションに渡せるのは`GET`リクエストだけです。
 
-You can also use root inside namespaces and scopes as well. For example:
+名前空間やスコープの内側にrootを置くこともできます。例: 
 
 ```ruby
 namespace :admin do
@@ -823,30 +824,30 @@ end
 root to: "home#index"
 ```
 
-### Unicode character routes
+### Unicode文字列をルーティングで使用する
 
-You can specify unicode character routes directly. For example:
+Unicode文字列をルーティングで直接使用することもできます。例:
 
 ```ruby
 get 'こんにちは', to: 'welcome#index'
 ```
 
-Customizing Resourceful Routes
+リソースフルルーティングをカスタマイズする
 ------------------------------
 
-While the default routes and helpers generated by `resources :posts` will usually serve you well, you may want to customize them in some way. Rails allows you to customize virtually any generic part of the resourceful helpers.
+ほとんどの場合、`resources :posts`のような指定を行ってデフォルトのルーティングやヘルパーを生成することで用は足りますが、もう少しルーティングをカスタマイズしたくなることもあります。Railsでは、リソースフルなヘルパーの一般的などの部分であっても事実上自由にカスタマイズ可能です。
 
-### Specifying a Controller to Use
+### 使用するコントローラを指定する
 
-The `:controller` option lets you explicitly specify a controller to use for the resource. For example:
+`:controller`オプションは、リソースで使用するコントローラを明示的に指定します。例:
 
 ```ruby
 resources :photos, controller: 'images'
 ```
 
-will recognize incoming paths beginning with `/photos` but route to the `Images` controller:
+上のルーティングは、`/photos`で始まるパスを認識しますが、ルーティング先を`Images`コントローラにします。
 
-| HTTP Verb | Path             | Controller#Action | Named Helper         |
+| HTTP 動詞 | パス                  | コントローラ#アクション   | 名前付きヘルパー              |
 | --------- | ---------------- | ----------------- | -------------------- |
 | GET       | /photos          | images#index      | photos_path          |
 | GET       | /photos/new      | images#new        | new_photo_path       |
@@ -856,29 +857,29 @@ will recognize incoming paths beginning with `/photos` but route to the `Images`
 | PATCH/PUT | /photos/:id      | images#update     | photo_path(:id)      |
 | DELETE    | /photos/:id      | images#destroy    | photo_path(:id)      |
 
-NOTE: Use `photos_path`, `new_photo_path`, etc. to generate paths for this resource.
+メモ: このリソースへのパスを生成するには`photos_path`や`new_photo_path`などを使用してください。
 
-For namespaced controllers you can use the directory notation. For example:
+名前空間内のコントローラは以下のように直接指定することができます。例: 
 
 ```ruby
 resources :user_permissions, controller: 'admin/user_permissions'
 ```
 
-This will route to the `Admin::UserPermissions` controller.
+上は`Admin::UserPermissions`にルーティングされます。
 
-NOTE: Only the directory notation is supported. Specifying the controller with Ruby constant notation (eg. `controller: 'Admin::UserPermissions'`) can lead to routing problems and results in a warning.
+メモ: ここでサポートされている記法は、`/`で区切る「ディレクトリ式」のみです。Rubyの定数表記法 (`controller: 'Admin::UserPermissions'`など) をコントローラに対して使用すると、ルーティングで問題が生じ、警告が出力される可能性があります。
 
-### Specifying Constraints
+### 制限を指定する
 
-You can use the `:constraints` option to specify a required format on the implicit `id`. For example:
+`:constraints`オプションを使用すると、暗黙で使用される`id`に対してフォーマットを指定することができます。例:
 
 ```ruby
 resources :photos, constraints: {id: /[A-Z][A-Z][0-9]+/}
 ```
 
-This declaration constrains the `:id` parameter to match the supplied regular expression. So, in this case, the router would no longer match `/photos/1` to this route. Instead, `/photos/RR27` would match.
+上の宣言は`:id`パラメータに制限を加え、指定した正規表現にのみマッチするようにします。従って、上の例では`/photos/1`のようなパスにはマッチしなくなります。代わって、`/photos/RR27`のようなパスにマッチするようになります。
 
-You can specify a single constraint to apply to a number of routes by using the block form:
+ブロックフォームを使用することで、多数のルーティングに対して1つの制限をまとめて与えることもできます。
 
 ```ruby
 constraints(id: /[A-Z][A-Z][0-9]+/) do
@@ -887,21 +888,21 @@ constraints(id: /[A-Z][A-Z][0-9]+/) do
 end
 ```
 
-NOTE: Of course, you can use the more advanced constraints available in non-resourceful routes in this context.
+メモ: もちろん、この場合であれば「リソースフルでない」ルーティングに適用可能な、より高度な制限を加えることもできます。
 
-TIP: By default the `:id` parameter doesn't accept dots - this is because the dot is used as a separator for formatted routes. If you need to use a dot within an `:id` add a constraint which overrides this - for example `id: /[^\/]+/` allows anything except a slash.
+ヒント: `:id`パラメータではドット`.`をデフォルトでは使用できません。ドットはフォーマット済みルーティングでは区切り文字として使用されるためです。どうしても`:id`内でドットを使用したい場合は、デフォルト設定を上書きする制限を与えます。たとえば`id: /[^\/]+/`とすると、スラッシュ以外のすべての文字が使用できます。
 
-### Overriding the Named Helpers
+### 名前付きヘルパーをオーバーライドする
 
-The `:as` option lets you override the normal naming for the named route helpers. For example:
+`:as`オプションを使用すると、名前付きルーティングヘルパーを上書きして異なる名前を使用できます。例: 
 
 ```ruby
 resources :photos, as: 'images'
 ```
 
-will recognize incoming paths beginning with `/photos` and route the requests to `PhotosController`, but use the value of the :as option to name the helpers.
+上のルーティングでは、`/photos`で始まるブラウザからのパスを認識し、このリクエストを`Photos`コントローラにルーティングしますが、ヘルパーの命名に`:as`オプションの値が使用されます。
 
-| HTTP Verb | Path             | Controller#Action | Named Helper         |
+| HTTP 動詞 | パス                  | コントローラ#アクション   | 名前付きヘルパー              |
 | --------- | ---------------- | ----------------- | -------------------- |
 | GET       | /photos          | photos#index      | images_path          |
 | GET       | /photos/new      | photos#new        | new_image_path       |
@@ -911,34 +912,34 @@ will recognize incoming paths beginning with `/photos` and route the requests to
 | PATCH/PUT | /photos/:id      | photos#update     | image_path(:id)      |
 | DELETE    | /photos/:id      | photos#destroy    | image_path(:id)      |
 
-### Overriding the `new` and `edit` Segments
+### `new`セグメントや`edit`セグメントをオーバーライドする
 
-The `:path_names` option lets you override the automatically-generated "new" and "edit" segments in paths:
+`:path_names`オプションを使用すると、パスに含まれている、自動生成された"new"セグメントや"edit"セグメントをオーバーライドできます。
 
 ```ruby
 resources :photos, path_names: { new: 'make', edit: 'change' }
 ```
 
-This would cause the routing to recognize paths such as:
+これにより、ルーティングで以下のようなパスが認識できるようになります。
 
 ```
 /photos/make
 /photos/1/change
 ```
 
-NOTE: The actual action names aren't changed by this option. The two paths shown would still route to the `new` and `edit` actions.
+メモ: このオプションを指定しても、実際のアクション名が変更されるわけではありません。変更後のパスを使用しても、ルーティング先は依然として`new`アクションと`edit`アクションのままです。
 
-TIP: If you find yourself wanting to change this option uniformly for all of your routes, you can use a scope.
+ヒント: このオプションによる変更をすべてのルーティングに統一的に適用したくなった場合は、スコープを使用できます。
 
 ```ruby
 scope path_names: { new: 'make' } do
-  # rest of your routes
+  # 残りすべてのルーティング
 end
 ```
 
-### Prefixing the Named Route Helpers
+### 名前付きルーティングヘルパーにプレフィックスを追加する
 
-You can use the `:as` option to prefix the named route helpers that Rails generates for a route. Use this option to prevent name collisions between routes using a path scope. For example:
+`:as`オプションを使用することで、Railsがルーティングに対して生成する名前付きルーティングヘルパー名の冒頭に文字を追加できます (プレフィックス)。パススコープを使用するルーティング同士での名前の衝突を避けたい場合に使用してください。例: 
 
 ```ruby
 scope 'admin' do
@@ -948,9 +949,9 @@ end
 resources :photos
 ```
 
-This will provide route helpers such as `admin_photos_path`, `new_admin_photo_path` etc.
+上のルーティングでは、`admin_photos_path`や`new_admin_photo_path`などのルーティングヘルパーが生成されます。
 
-To prefix a group of route helpers, use `:as` with `scope`:
+ルーティングヘルパーのグループにプレフィックスを追加するには、以下のように`scope`メソッドで`:as`オプションを使用します。
 
 ```ruby
 scope 'admin', as: 'admin' do
@@ -960,11 +961,11 @@ end
 resources :photos, :accounts
 ```
 
-This will generate routes such as `admin_photos_path` and `admin_accounts_path` which map to `/admin/photos` and `/admin/accounts` respectively.
+上によって、`admin_photos_path`と`admin_accounts_path`などのルーティングが生成されます。これらは`/admin/photos`と`/admin/accounts`にそれぞれ割り当てられます。
 
-NOTE: The `namespace` scope will automatically add `:as` as well as `:module` and `:path` prefixes.
+メモ: `namespace`スコープを使用すると、`:module`や`:path`プレフィックスに加えて`:as`も自動的に追加されます。●
 
-You can prefix routes with a named parameter also:
+名前付きパラメータを持つルーティングにプレフィックスを追加することもできます。
 
 ```ruby
 scope ':username' do
@@ -972,31 +973,31 @@ scope ':username' do
 end
 ```
 
-This will provide you with URLs such as `/bob/posts/1` and will allow you to reference the `username` part of the path as `params[:username]` in controllers, helpers and views.
+上のルーティングにより、`/bob/posts/1`のような形式のURLを使用できるようになります。さらに、コントローラ、ヘルパー、ビューのいずれにおいても、このパスの`username`の部分に相当する文字列 (この場合であればbob) を`params[:username]`で参照できます。
 
-### Restricting the Routes Created
+### ルーティングの作成を制限する
 
-By default, Rails creates routes for the seven default actions (index, show, new, create, edit, update, and destroy) for every RESTful route in your application. You can use the `:only` and `:except` options to fine-tune this behavior. The `:only` option tells Rails to create only the specified routes:
+Railsは、アプリケーション内のすべてのRESTfulルーティングに対してデフォルトで7つのアクション (index、show、create、edit、update、destory) へのルーティングを作成します。`:only`オプションや`:except`オプションを使用することで、これらのルーティングを微調整できます。`:only`オプションは、指定されたルーティングだけを生成するよう指示します。
 
 ```ruby
 resources :photos, only: [:index, :show]
 ```
 
-Now, a `GET` request to `/photos` would succeed, but a `POST` request to `/photos` (which would ordinarily be routed to the `create` action) will fail.
+これで、`/photos`への`GET`リクエストは成功し、`/photos` への`POST`リクエスト (通常であれば`create`アクションにルーティングされます) は失敗します。
 
-The `:except` option specifies a route or list of routes that Rails should _not_ create:
+`:except`オプションは逆に、指定したルーティングのみを生成 _しない_ よう指示します。
 
 ```ruby
 resources :photos, except: :destroy
 ```
 
-In this case, Rails will create all of the normal routes except the route for `destroy` (a `DELETE` request to `/photos/:id`).
+この場合、`destroy` (`/photos/:id`への`DELETE`リクエスト) を除いて通常のルーティングが生成されます。
 
-TIP: If your application has many RESTful routes, using `:only` and `:except` to generate only the routes that you actually need can cut down on memory use and speed up the routing process.
+ヒント: アプリケーションでRESTfulルーティングが多数使用されているのであれば、それらに適宜`:only`や`:except`を使用して、本当に必要なルーティングのみを生成することで、メモリ使用量の節約とルーティングプロセスの速度向上が見込めます。
 
-### Translated Paths
+### パスを変更する
 
-Using `scope`, we can alter path names generated by resources:
+`scope`オプションを使用することで、リソースによって生成されたデフォルトのパス名を変更できます。
 
 ```ruby
 scope(path_names: { new: 'neu', edit: 'bearbeiten' }) do
@@ -1004,9 +1005,9 @@ scope(path_names: { new: 'neu', edit: 'bearbeiten' }) do
 end
 ```
 
-Rails now creates routes to the `CategoriesController`.
+上のようにすることで、以下のような`Categories`コントローラへのルーティングが作成されます。
 
-| HTTP Verb | Path                       | Controller#Action  | Named Helper            |
+| HTTP 動詞 | パス | コントローラ#アクション | 名前付きヘルパー |
 | --------- | -------------------------- | ------------------ | ----------------------- |
 | GET       | /kategorien                | categories#index   | categories_path         |
 | GET       | /kategorien/neu            | categories#new     | new_category_path       |
@@ -1016,9 +1017,9 @@ Rails now creates routes to the `CategoriesController`.
 | PATCH/PUT | /kategorien/:id            | categories#update  | category_path(:id)      |
 | DELETE    | /kategorien/:id            | categories#destroy | category_path(:id)      |
 
-### Overriding the Singular Form
+### 「単数形のフォーム」をオーバーライドする
 
-If you want to define the singular form of a resource, you should add additional rules to the `Inflector`:
+あるリソースの「単数形のフォーム」を定義したい場合、`Inflector`に活用形ルールを追加します。
 
 ```ruby
 ActiveSupport::Inflector.inflections do |inflect|
@@ -1026,9 +1027,9 @@ ActiveSupport::Inflector.inflections do |inflect|
 end
 ```
 
-### Using `:as` in Nested Resources
+### 名前付きリソースで`:as`を使用する
 
-The `:as` option overrides the automatically-generated name for the resource in nested route helpers. For example:
+`:as`を使用すると、ネストしたルーティングヘルパー内のリソース用に自動生成された名前をオーバーライドできます。例:
 
 ```ruby
 resources :magazines do
@@ -1036,75 +1037,75 @@ resources :magazines do
 end
 ```
 
-This will create routing helpers such as `magazine_periodical_ads_url` and `edit_magazine_periodical_ad_path`.
+上のルーティングによって、`magazine_periodical_ads_url`や`edit_magazine_periodical_ad_path`などのルーティングヘルパーが生成されます。
 
-Inspecting and Testing Routes
+ルーティングの調査とテスト
 -----------------------------
 
-Rails offers facilities for inspecting and testing your routes.
+Railsには、ルーティングを調べる機能とテストする機能が備わっています。
 
-### Listing Existing Routes
+### 既存のルールを一覧表示する
 
-To get a complete list of the available routes in your application, visit `http://localhost:3000/rails/info/routes` in your browser while your server is running in the **development** environment. You can also execute the `rake routes` command in your terminal to produce the same output.
+現在のアプリケーションで利用可能なルーティングをすべて表示するには、サーバーが **development** 環境で動作している状態で`http://localhost:3000/rails/info/routes`をブラウザで開きます。ターミナルで`rake routes`コマンドを実行しても同じ結果を得られます。
 
-Both methods will list all of your routes, in the same order that they appear in `routes.rb`. For each route, you'll see:
+どちらの方法を使用した場合でも、`routes.rb`ファイルに記載された順にルーティングが表示されます。1つのルーティングについて以下の情報が表示されます。
 
-* The route name (if any)
-* The HTTP verb used (if the route doesn't respond to all verbs)
-* The URL pattern to match
-* The routing parameters for the route
+* ルーティング名 (あれば)
+* 使用されているHTTP動詞 (そのルーティングがすべてのHTTP動詞に応答するのでない場合)
+* マッチするURLパターン
+* そのルーティングで使用するパラメーター
 
-For example, here's a small section of the `rake routes` output for a RESTful route:
+以下は、あるRESTfulルーティングに対して`rake routes`を実行した結果から抜粋したものです。
 
 ```
     users GET    /users(.:format)          users#index
           POST   /users(.:format)          users#create
- new_user GET    /users/new(.:format)      users#new
+new_user GET    /users/new(.:format)      users#new
 edit_user GET    /users/:id/edit(.:format) users#edit
 ```
 
-You may restrict the listing to the routes that map to a particular controller setting the `CONTROLLER` environment variable:
+`CONTROLLER`環境変数を設定することで、ルーティング一覧の表示を特定のコントローラにマップされたものに制限することもできます。
 
 ```bash
 $ CONTROLLER=users rake routes
 ```
 
-TIP: You'll find that the output from `rake routes` is much more readable if you widen your terminal window until the output lines don't wrap.
+ヒント: 折り返しが発生しないぐらいに十分大きなサイズのターミナルを使用できるのであれば、`rake routes`コマンドの出力の方がおそらく読みやすいでしょう。
 
-### Testing Routes
+### ルーティングをテストする
 
-Routes should be included in your testing strategy (just like the rest of your application). Rails offers three [built-in assertions](http://api.rubyonrails.org/classes/ActionDispatch/Assertions/RoutingAssertions.html) designed to make testing routes simpler:
+アプリケーションの他の部分と同様、ルーティング部分もテスティング戦略に含めておくべきでしょう。Railsでは、テスティングを容易にするために3つの[ビルトインアサーション](http://api.rubyonrails.org/classes/ActionDispatch/Assertions/RoutingAssertions.html) が用意されています。
 
 * `assert_generates`
 * `assert_recognizes`
 * `assert_routing`
 
-#### The `assert_generates` Assertion
+#### `assert_generates`アサーション
 
-`assert_generates` asserts that a particular set of options generate a particular path and can be used with default routes or custom routes. For example:
+`assert_generates`は、特定のオプションの組み合わせを使用した場合に特定のパスが生成されること、そしてそれらがデフォルトのルーティングでもカスタムルーティングでも使用できることをテストするアサーション (assert, assertion: 主張・検証とも) です。例:
 
 ```ruby
 assert_generates '/photos/1', { controller: 'photos', action: 'show', id: '1' }
 assert_generates '/about', controller: 'pages', action: 'about'
 ```
 
-#### The `assert_recognizes` Assertion
+#### `assert_recognizes`アサーション
 
-`assert_recognizes` is the inverse of `assert_generates`. It asserts that a given path is recognized and routes it to a particular spot in your application. For example:
+`assert_recognizes`は`assert_generates`と逆方向のテスティングを行います。与えられたパスが認識可能であること、アプリケーションの特定の場所にルーティングされることをテストするアサーションです。例:
 
 ```ruby
 assert_recognizes({ controller: 'photos', action: 'show', id: '1' }, '/photos/1')
 ```
 
-You can supply a `:method` argument to specify the HTTP verb:
+引数で`:method`を使用してHTTP動詞を指定することもできます。
 
 ```ruby
 assert_recognizes({ controller: 'photos', action: 'create' }, { path: 'photos', method: :post })
 ```
 
-#### The `assert_routing` Assertion
+#### `assert_routing`アサーション
 
-The `assert_routing` assertion checks the route both ways: it tests that the path generates the options, and that the options generate the path. Thus, it combines the functions of `assert_generates` and `assert_recognizes`:
+`assert_routing`アサーションは、ルーティングを2つの観点 (与えられたパスによってオプションが生成されること、そのオプションによって元のパスが生成されること) からチェックします。つまり、`assert_generates`と`assert_recognizes`の機能を組み合わせたものになります。
 
 ```ruby
 assert_routing({ path: 'photos', method: :post }, { controller: 'photos', action: 'create' })
