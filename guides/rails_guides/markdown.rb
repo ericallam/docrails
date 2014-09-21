@@ -29,8 +29,7 @@ module RailsGuides
     private
 
       def dom_id(nodes)
-        #dom_id = dom_id_text(nodes.last.text)
-        dom_id = dom_id_text(Digest::SHA1.hexdigest(nodes.last.text))
+        dom_id = dom_id_text(nodes.last.text)
 
         # Fix duplicate node by prefix with its parent node
         if @node_ids[dom_id]
@@ -49,8 +48,7 @@ module RailsGuides
       end
 
       def dom_id_text(text)
-        text.downcase.gsub(/\?/, '-questionmark').gsub(/!/, '-bang').gsub(/[^a-z0-9]+/, ' ')
-          .strip.gsub(/\s+/, '-')
+        text.downcase.strip.gsub(/\s+/, '-')
       end
 
       def engine

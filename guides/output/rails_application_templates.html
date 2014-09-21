@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
 <head>
@@ -188,28 +187,28 @@
             <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
 <ol class="chapters">
-<li><a href="#0bb18642b70b9f8a9c12ccf39487328f306b8e19">Usage</a></li>
+<li><a href="#usage">Usage</a></li>
 <li>
-<a href="#e6f1ec42ae0af9f2599a77525cba82e65dfc5e18">Template API</a>
+<a href="#template-api">Template API</a>
 
 <ul>
-<li><a href="#717eb04e8772dc6643dbd776744656e6955051a1">gem(*args)</a></li>
-<li><a href="#d62cc1f49929ca4c6a72944c2a655a875d3fea14">gem_group(*names, &amp;block)</a></li>
-<li><a href="#820cd0c59a474323a89a83ee97f147ac7171bddd">add_source(source, options = {})</a></li>
-<li><a href="#6937df1ff56513b3da45c1ece9324fe38fbeee06">environment/application(data=nil, options={}, &amp;block)</a></li>
-<li><a href="#49713aa8eca57d46622d58ee79f68dbb84a3792b">vendor/lib/file/initializer(filename, data = nil, &amp;block)</a></li>
-<li><a href="#10c3a80e57a8b1356bc54baf1ba2ee14c5966217">rakefile(filename, data = nil, &amp;block)</a></li>
-<li><a href="#858d4872d64cc771418ba3089706a9f662b4e301">generate(what, *args)</a></li>
-<li><a href="#4dc705d0bdf648eaf8d782ebfad5d858d996e76c">run(command)</a></li>
-<li><a href="#6afe55d1e89c1c678d71ace65d2586976aad9047">rake(command, options = {})</a></li>
-<li><a href="#d4bc875d3a01fcdf8f8dd514b5ac9713f9fc9ff1">route(routing_code)</a></li>
-<li><a href="#bc421dd65ea39f49663e874d2ce241b3ae293376">inside(dir)</a></li>
-<li><a href="#c1e6aed1a6c4421a010729d69e49abceddcc88d6">ask(question)</a></li>
-<li><a href="#4a32c67fff7669056b11ad92c6d879529c47213b">yes?(question) or no?(question)</a></li>
-<li><a href="#1ac0c3dd77aa0c9cc730191888b1769152af2da6">git(:command)</a></li>
+<li><a href="#gem(*args)">gem(*args)</a></li>
+<li><a href="#gem_group(*names,-&amp;block)">gem_group(*names, &amp;block)</a></li>
+<li><a href="#add_source(source,-options-=-%7B%7D)">add_source(source, options = {})</a></li>
+<li><a href="#environment/application(data=nil,-options=%7B%7D,-&amp;block)">environment/application(data=nil, options={}, &amp;block)</a></li>
+<li><a href="#vendor/lib/file/initializer(filename,-data-=-nil,-&amp;block)">vendor/lib/file/initializer(filename, data = nil, &amp;block)</a></li>
+<li><a href="#rakefile(filename,-data-=-nil,-&amp;block)">rakefile(filename, data = nil, &amp;block)</a></li>
+<li><a href="#generate(what,-*args)">generate(what, *args)</a></li>
+<li><a href="#run(command)">run(command)</a></li>
+<li><a href="#rake(command,-options-=-%7B%7D)">rake(command, options = {})</a></li>
+<li><a href="#route(routing_code)">route(routing_code)</a></li>
+<li><a href="#inside(dir)">inside(dir)</a></li>
+<li><a href="#ask(question)">ask(question)</a></li>
+<li><a href="#yes?(question)-or-no?(question)">yes?(question) or no?(question)</a></li>
+<li><a href="#git(:command)">git(:command)</a></li>
 </ul>
 </li>
-<li><a href="#ec9c1eee60a6c8d412e86494c4538774b81ce815">Advanced Usage</a></li>
+<li><a href="#advanced-usage">Advanced Usage</a></li>
 </ol>
 </body></html>
 
@@ -222,7 +221,7 @@
       <div id="mainCol">
         <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
-<h3 id="0bb18642b70b9f8a9c12ccf39487328f306b8e19">1 Usage</h3>
+<h3 id="usage">1 Usage</h3>
 <p>To apply a template, you need to provide the Rails generator with the location of the template you wish to apply using the -m option. This can either be a path to a file or a URL.</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
@@ -239,7 +238,7 @@ $ rake rails:template LOCATION=http://example.com/template.rb
 
 </pre>
 </div>
-<h3 id="e6f1ec42ae0af9f2599a77525cba82e65dfc5e18">2 Template API</h3>
+<h3 id="template-api">2 Template API</h3>
 <p>The Rails templates API is easy to understand. Here's an example of a typical Rails template:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -255,7 +254,7 @@ git commit: %Q{ -m 'Initial commit' }
 </pre>
 </div>
 <p>The following sections outline the primary methods provided by the API:</p>
-<h4 id="717eb04e8772dc6643dbd776744656e6955051a1">2.1 gem(*args)</h4>
+<h4 id="gem(*args)">2.1 gem(*args)</h4>
 <p>Adds a <code>gem</code> entry for the supplied gem to the generated application's <code>Gemfile</code>.</p>
 <p>For example, if your application depends on the gems <code>bj</code> and <code>nokogiri</code>:</p>
 <div class="code_container">
@@ -272,7 +271,7 @@ bundle install
 
 </pre>
 </div>
-<h4 id="d62cc1f49929ca4c6a72944c2a655a875d3fea14">2.2 gem_group(*names, &amp;block)</h4>
+<h4 id="gem_group(*names,-&amp;block)">2.2 gem_group(*names, &amp;block)</h4>
 <p>Wraps gem entries inside a group.</p>
 <p>For example, if you want to load <code>rspec-rails</code> only in the <code>development</code> and <code>test</code> groups:</p>
 <div class="code_container">
@@ -283,7 +282,7 @@ end
 
 </pre>
 </div>
-<h4 id="820cd0c59a474323a89a83ee97f147ac7171bddd">2.3 add_source(source, options = {})</h4>
+<h4 id="add_source(source,-options-=-{})">2.3 add_source(source, options = {})</h4>
 <p>Adds the given source to the generated application's <code>Gemfile</code>.</p>
 <p>For example, if you need to source a gem from <code>"http://code.whytheluckystiff.net"</code>:</p>
 <div class="code_container">
@@ -292,7 +291,7 @@ add_source "http://code.whytheluckystiff.net"
 
 </pre>
 </div>
-<h4 id="6937df1ff56513b3da45c1ece9324fe38fbeee06">2.4 environment/application(data=nil, options={}, &amp;block)</h4>
+<h4 id="environment/application(data=nil,-options={},-&amp;block)">2.4 environment/application(data=nil, options={}, &amp;block)</h4>
 <p>Adds a line inside the <code>Application</code> class for <code>config/application.rb</code>.</p>
 <p>If <code>options[:env]</code> is specified, the line is appended to the corresponding file in <code>config/environments</code>.</p>
 <div class="code_container">
@@ -302,7 +301,7 @@ environment 'config.action_mailer.default_url_options = {host: "http://yourwebsi
 </pre>
 </div>
 <p>A block can be used in place of the <code>data</code> argument.</p>
-<h4 id="49713aa8eca57d46622d58ee79f68dbb84a3792b">2.5 vendor/lib/file/initializer(filename, data = nil, &amp;block)</h4>
+<h4 id="vendor/lib/file/initializer(filename,-data-=-nil,-&amp;block)">2.5 vendor/lib/file/initializer(filename, data = nil, &amp;block)</h4>
 <p>Adds an initializer to the generated application's <code>config/initializers</code> directory.</p>
 <p>Let's say you like using <code>Object#not_nil?</code> and <code>Object#not_blank?</code>:</p>
 <div class="code_container">
@@ -333,7 +332,7 @@ CODE
 </pre>
 </div>
 <p>That'll create the <code>app/components</code> directory and put <code>foo.rb</code> in there.</p>
-<h4 id="10c3a80e57a8b1356bc54baf1ba2ee14c5966217">2.6 rakefile(filename, data = nil, &amp;block)</h4>
+<h4 id="rakefile(filename,-data-=-nil,-&amp;block)">2.6 rakefile(filename, data = nil, &amp;block)</h4>
 <p>Creates a new rake file under <code>lib/tasks</code> with the supplied tasks:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -350,7 +349,7 @@ end
 </pre>
 </div>
 <p>The above creates <code>lib/tasks/bootstrap.rake</code> with a <code>boot:strap</code> rake task.</p>
-<h4 id="858d4872d64cc771418ba3089706a9f662b4e301">2.7 generate(what, *args)</h4>
+<h4 id="generate(what,-*args)">2.7 generate(what, *args)</h4>
 <p>Runs the supplied rails generator with given arguments.</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -358,7 +357,7 @@ generate(:scaffold, "person", "name:string", "address:text", "age:number")
 
 </pre>
 </div>
-<h4 id="4dc705d0bdf648eaf8d782ebfad5d858d996e76c">2.8 run(command)</h4>
+<h4 id="run(command)">2.8 run(command)</h4>
 <p>Executes an arbitrary command. Just like the backticks. Let's say you want to remove the <code>README.rdoc</code> file:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -366,7 +365,7 @@ run "rm README.rdoc"
 
 </pre>
 </div>
-<h4 id="6afe55d1e89c1c678d71ace65d2586976aad9047">2.9 rake(command, options = {})</h4>
+<h4 id="rake(command,-options-=-{})">2.9 rake(command, options = {})</h4>
 <p>Runs the supplied rake tasks in the Rails application. Let's say you want to migrate the database:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -381,7 +380,7 @@ rake "db:migrate", env: 'production'
 
 </pre>
 </div>
-<h4 id="d4bc875d3a01fcdf8f8dd514b5ac9713f9fc9ff1">2.10 route(routing_code)</h4>
+<h4 id="route(routing_code)">2.10 route(routing_code)</h4>
 <p>Adds a routing entry to the <code>config/routes.rb</code> file. In the steps above, we generated a person scaffold and also removed <code>README.rdoc</code>. Now, to make <code>PeopleController#index</code> the default page for the application:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -389,7 +388,7 @@ route "root to: 'person#index'"
 
 </pre>
 </div>
-<h4 id="bc421dd65ea39f49663e874d2ce241b3ae293376">2.11 inside(dir)</h4>
+<h4 id="inside(dir)">2.11 inside(dir)</h4>
 <p>Enables you to run a command from the given directory. For example, if you have a copy of edge rails that you wish to symlink from your new apps, you can do this:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -399,7 +398,7 @@ end
 
 </pre>
 </div>
-<h4 id="c1e6aed1a6c4421a010729d69e49abceddcc88d6">2.12 ask(question)</h4>
+<h4 id="ask(question)">2.12 ask(question)</h4>
 <p><code>ask()</code> gives you a chance to get some feedback from the user and use it in your templates. Let's say you want your user to name the new shiny library you're adding:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -413,7 +412,7 @@ CODE
 
 </pre>
 </div>
-<h4 id="4a32c67fff7669056b11ad92c6d879529c47213b">2.13 yes?(question) or no?(question)</h4>
+<h4 id="yes?(question)-or-no?(question)">2.13 yes?(question) or no?(question)</h4>
 <p>These methods let you ask questions from templates and decide the flow based on the user's answer. Let's say you want to freeze rails only if the user wants to:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -422,7 +421,7 @@ rake("rails:freeze:gems") if yes?("Freeze rails gems?")
 
 </pre>
 </div>
-<h4 id="1ac0c3dd77aa0c9cc730191888b1769152af2da6">2.14 git(:command)</h4>
+<h4 id="git(:command)">2.14 git(:command)</h4>
 <p>Rails templates let you run any git command:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -432,7 +431,7 @@ git commit: "-a -m 'Initial commit'"
 
 </pre>
 </div>
-<h3 id="ec9c1eee60a6c8d412e86494c4538774b81ce815">3 Advanced Usage</h3>
+<h3 id="advanced-usage">3 Advanced Usage</h3>
 <p>The application template is evaluated in the context of a <code>Rails::Generators::AppGenerator</code> instance. It uses the <code>apply</code> action provided by <a href="https://github.com/erikhuda/thor/blob/master/lib/thor/actions.rb#L207">Thor</a>. This means you can extend and change the instance to match your needs.</p>
 <p>For example by overwriting the <code>source_paths</code> method to contain the location of your template. Now methods like <code>copy_file</code> will accept relative paths to your template's location.</p>
 <div class="code_container">
