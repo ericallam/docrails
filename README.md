@@ -3,9 +3,9 @@
 本リポジトリは[Ruby on Rails Guides](http://guides.rubyonrails.org/)を日本語に訳したものです。
 
 Railsガイド   
-http://railsguide.jp/
+http://railsguides.jp/
 
-Ruby on Rails Tutorialの日本語訳「Railsチュートリアル」も無料で公開されているので，    
+また，[Ruby on Rails Tutorial](https://www.railstutorial.org/)の日本語訳「Railsチュートリアル」も無料で公開されているので，    
 こちらも是非合わせて読んでみてください :)
 
 Railsチュートリアル   
