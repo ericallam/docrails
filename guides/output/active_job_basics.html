@@ -191,36 +191,36 @@ enqueueing and executing background jobs.</p><p>After reading this guide, you wi
             <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
 <ol class="chapters">
-<li><a href="#2473e96bc614a911821242119918a241a41836d6">Introduction</a></li>
-<li><a href="#6e973c70998057c4958ab5811d4862137e74756e">The Purpose of the Active Job</a></li>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#the-purpose-of-the-active-job">The Purpose of the Active Job</a></li>
 <li>
-<a href="#7f641a2cceee66819637540c7ffef5b1a1517126">Creating a Job</a>
+<a href="#creating-a-job">Creating a Job</a>
 
 <ul>
-<li><a href="#f3de8a96c42b2e08e862cd5995a2d3b135b45ba2">Create the Job</a></li>
-<li><a href="#45442d2256e3bc7f8528e8f2a5c051a9242d65d5">Enqueue the Job</a></li>
+<li><a href="#create-the-job">Create the Job</a></li>
+<li><a href="#enqueue-the-job">Enqueue the Job</a></li>
 </ul>
 </li>
 <li>
-<a href="#4d1ff2f58b0a4a6adf2107fa93ff7226f28327a3">Job Execution</a>
+<a href="#job-execution">Job Execution</a>
 
 <ul>
-<li><a href="#b3776d63ad7b7a84bfe20d9c6d4a53a2b25d0e43">Backends</a></li>
-<li><a href="#67cf609ed3d3c5d9848a35339a7e6ebffbc16ce0">Change Backends</a></li>
+<li><a href="#backends">Backends</a></li>
+<li><a href="#change-backends">Change Backends</a></li>
 </ul>
 </li>
-<li><a href="#83dbc32040459c6d170231f099414d8cc8806687">Queues</a></li>
+<li><a href="#queues">Queues</a></li>
 <li>
-<a href="#9fdc2cfe374fa5bde1e4e458854875e1709add1c">Callbacks</a>
+<a href="#callbacks">Callbacks</a>
 
 <ul>
-<li><a href="#7da4c36a54ae7a349bf4428686c3741afe2a7fa3">Available callbacks</a></li>
-<li><a href="#0bb18642b70b9f8a9c12ccf39487328f306b8e19">Usage</a></li>
+<li><a href="#available-callbacks">Available callbacks</a></li>
+<li><a href="#usage">Usage</a></li>
 </ul>
 </li>
-<li><a href="#dee6b36ab0339dc74025ff5f4b76f0179f7b8ed2">ActionMailer</a></li>
-<li><a href="#050a77a4626ca8e62779f307f3c63c92c683ac27">GlobalID</a></li>
-<li><a href="#cd3dfbe79fda3a9d92de67b1bd4f1dc9f60ab723">Exceptions</a></li>
+<li><a href="#actionmailer">ActionMailer</a></li>
+<li><a href="#globalid">GlobalID</a></li>
+<li><a href="#exceptions">Exceptions</a></li>
 </ol>
 </body></html>
 
@@ -233,21 +233,21 @@ enqueueing and executing background jobs.</p><p>After reading this guide, you wi
       <div id="mainCol">
         <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
-<h3 id="2473e96bc614a911821242119918a241a41836d6">1 Introduction</h3>
+<h3 id="introduction">1 Introduction</h3>
 <p>Active Job is a framework for declaring jobs and making them run on a variety
 of queueing backends. These jobs can be everything from regularly scheduled
 clean-ups, to billing charges, to mailings. Anything that can be chopped up
 into small units of work and run in parallel, really.</p>
-<h3 id="6e973c70998057c4958ab5811d4862137e74756e">2 The Purpose of the Active Job</h3>
+<h3 id="the-purpose-of-the-active-job">2 The Purpose of the Active Job</h3>
 <p>The main point is to ensure that all Rails apps will have a job infrastructure
 in place, even if it's in the form of an "immediate runner". We can then have
 framework features and other gems build on top of that, without having to
 worry about API differences between various job runners such as Delayed Job
 and Resque. Picking your queuing backend becomes more of an operational concern,
 then. And you'll be able to switch between them without having to rewrite your jobs.</p>
-<h3 id="7f641a2cceee66819637540c7ffef5b1a1517126">3 Creating a Job</h3>
+<h3 id="creating-a-job">3 Creating a Job</h3>
 <p>This section will provide a step-by-step guide to creating a job and enqueuing it.</p>
-<h4 id="f3de8a96c42b2e08e862cd5995a2d3b135b45ba2">3.1 Create the Job</h4>
+<h4 id="create-the-job">3.1 Create the Job</h4>
 <p>Active Job provides a Rails generator to create jobs. The following will create a
 job in <code>app/jobs</code>:</p>
 <div class="code_container">
@@ -282,7 +282,7 @@ end
 
 </pre>
 </div>
-<h4 id="45442d2256e3bc7f8528e8f2a5c051a9242d65d5">3.2 Enqueue the Job</h4>
+<h4 id="enqueue-the-job">3.2 Enqueue the Job</h4>
 <p>Enqueue a job like so:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -303,9 +303,9 @@ MyJob.enqueue_in 1.week, record # Enqueue a job to be performed 1 week from now.
 </pre>
 </div>
 <p>That's it!</p>
-<h3 id="4d1ff2f58b0a4a6adf2107fa93ff7226f28327a3">4 Job Execution</h3>
+<h3 id="job-execution">4 Job Execution</h3>
 <p>If no adapter is set, the job is immediately executed.</p>
-<h4 id="b3776d63ad7b7a84bfe20d9c6d4a53a2b25d0e43">4.1 Backends</h4>
+<h4 id="backends">4.1 Backends</h4>
 <p>Active Job has adapters for the following queueing backends:</p>
 <ul>
 <li><a href="https://github.com/nesquena/backburner">Backburner</a></li>
@@ -318,7 +318,7 @@ MyJob.enqueue_in 1.week, record # Enqueue a job to be performed 1 week from now.
 <li><a href="https://github.com/jondot/sneakers">Sneakers</a></li>
 <li><a href="https://github.com/brandonhilkert/sucker_punch">Sucker Punch</a></li>
 </ul>
-<h5 id="4f01b201bfc2cd6d3d886e183749d3c60bea57aa">4.1.1 Backends Features</h5>
+<h5 id="backends-features">4.1.1 Backends Features</h5>
 <table>
 <thead>
 <tr>
@@ -427,7 +427,7 @@ MyJob.enqueue_in 1.week, record # Enqueue a job to be performed 1 week from now.
 <div class="note"><p>* Queue Classic does not support Job scheduling. However you can implement this
 yourself or you can use the queue_classic-later gem. See the documentation for
 ActiveJob::QueueAdapters::QueueClassicAdapter.</p></div>
-<h4 id="67cf609ed3d3c5d9848a35339a7e6ebffbc16ce0">4.2 Change Backends</h4>
+<h4 id="change-backends">4.2 Change Backends</h4>
 <p>You can easily change your adapter:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -437,7 +437,7 @@ YourApp::Application.config.active_job.queue_adapter = :sidekiq
 
 </pre>
 </div>
-<h3 id="83dbc32040459c6d170231f099414d8cc8806687">5 Queues</h3>
+<h3 id="queues">5 Queues</h3>
 <p>Most of the adapters support multiple queues. With Active Job you can schedule
 the job to run on a specific queue:</p>
 <div class="code_container">
@@ -473,10 +473,10 @@ end
 </div>
 <div class="note"><p>Make sure your queueing backend "listens" on your queue name. For some
 backends you need to specify the queues to listen to.</p></div>
-<h3 id="9fdc2cfe374fa5bde1e4e458854875e1709add1c">6 Callbacks</h3>
+<h3 id="callbacks">6 Callbacks</h3>
 <p>Active Job provides hooks during the lifecycle of a job. Callbacks allow you to
 trigger logic during the lifecycle of a job.</p>
-<h4 id="7da4c36a54ae7a349bf4428686c3741afe2a7fa3">6.1 Available callbacks</h4>
+<h4 id="available-callbacks">6.1 Available callbacks</h4>
 <ul>
 <li><code>before_enqueue</code></li>
 <li><code>around_enqueue</code></li>
@@ -485,7 +485,7 @@ trigger logic during the lifecycle of a job.</p>
 <li><code>around_perform</code></li>
 <li><code>after_perform</code></li>
 </ul>
-<h4 id="0bb18642b70b9f8a9c12ccf39487328f306b8e19">6.2 Usage</h4>
+<h4 id="usage">6.2 Usage</h4>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class GuestsCleanupJob &lt; ActiveJob::Base
@@ -508,7 +508,7 @@ end
 
 </pre>
 </div>
-<h3 id="dee6b36ab0339dc74025ff5f4b76f0179f7b8ed2">7 ActionMailer</h3>
+<h3 id="actionmailer">7 ActionMailer</h3>
 <p>One of the most common jobs in a modern web application is sending emails outside
 of the request-response cycle, so the user doesn't have to wait on it. Active Job
 is integrated with Action Mailer so you can easily send emails asynchronously:</p>
@@ -522,7 +522,7 @@ UserMailer.welcome(@user).deliver_later
 
 </pre>
 </div>
-<h3 id="050a77a4626ca8e62779f307f3c63c92c683ac27">8 GlobalID</h3>
+<h3 id="globalid">8 GlobalID</h3>
 <p>Active Job supports GlobalID for parameters. This makes it possible to pass live
 Active Record objects to your job instead of class/id pairs, which you then have
 to manually deserialize. Before, jobs would look like this:</p>
@@ -550,7 +550,7 @@ end
 </div>
 <p>This works with any class that mixes in <code>ActiveModel::GlobalIdentification</code>, which
 by default has been mixed into Active Model classes.</p>
-<h3 id="cd3dfbe79fda3a9d92de67b1bd4f1dc9f60ab723">9 Exceptions</h3>
+<h3 id="exceptions">9 Exceptions</h3>
 <p>Active Job provides a way to catch exceptions raised during the execution of the
 job:</p>
 <div class="code_container">

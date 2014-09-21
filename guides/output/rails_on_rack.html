@@ -189,31 +189,31 @@
             <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
 <ol class="chapters">
-<li><a href="#b10b45ec08f0b166df0731e9de830720dfa05269">Introduction to Rack</a></li>
+<li><a href="#introduction-to-rack">Introduction to Rack</a></li>
 <li>
-<a href="#9bc8267f86f12a15d7a5c0d4fc1b9b14390e4dd2">Rails on Rack</a>
+<a href="#rails-on-rack">Rails on Rack</a>
 
 <ul>
-<li><a href="#30257fb8936a2af02b02ffb1e790de2ed599ec95">Rails Application's Rack Object</a></li>
-<li><a href="#a465db280aedb42cea0ffe211f2d63081f7e82d9"><code>rails server</code></a></li>
-<li><a href="#6bc2045d0bee28a298c8af45e99b003675646ecf"><code>rackup</code></a></li>
+<li><a href="#rails-application's-rack-object">Rails Application's Rack Object</a></li>
+<li><a href="#rails-server"><code>rails server</code></a></li>
+<li><a href="#rackup"><code>rackup</code></a></li>
 </ul>
 </li>
 <li>
-<a href="#0beca974e427e0aef815b9a665425e7bb2b97315">Action Dispatcher Middleware Stack</a>
+<a href="#action-dispatcher-middleware-stack">Action Dispatcher Middleware Stack</a>
 
 <ul>
-<li><a href="#8408bbf7dfd69738c24b99c0074fd7a247613a94">Inspecting Middleware Stack</a></li>
-<li><a href="#530bc6078f3eacad96ee081ab48d4d2eb8d31f98">Configuring Middleware Stack</a></li>
-<li><a href="#dcc5733b7561d603a93c21562214e0c1d33fb1c8">Internal Middleware Stack</a></li>
+<li><a href="#inspecting-middleware-stack">Inspecting Middleware Stack</a></li>
+<li><a href="#configuring-middleware-stack">Configuring Middleware Stack</a></li>
+<li><a href="#internal-middleware-stack">Internal Middleware Stack</a></li>
 </ul>
 </li>
 <li>
-<a href="#87df60de337fb58864343e396696d74611e0d403">Resources</a>
+<a href="#resources">Resources</a>
 
 <ul>
-<li><a href="#a361189388c27c3316f9ffe0894462c23768bd0d">Learning Rack</a></li>
-<li><a href="#5796618103c03fb0bd0dae7ab9cb0306de669eab">Understanding Middlewares</a></li>
+<li><a href="#learning-rack">Learning Rack</a></li>
+<li><a href="#understanding-middlewares">Understanding Middlewares</a></li>
 </ul>
 </li>
 </ol>
@@ -229,18 +229,18 @@
         <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
 <div class="warning"><p>This guide assumes a working knowledge of Rack protocol and Rack concepts such as middlewares, url maps and <code>Rack::Builder</code>.</p></div>
-<h3 id="b10b45ec08f0b166df0731e9de830720dfa05269">1 Introduction to Rack</h3>
+<h3 id="introduction-to-rack">1 Introduction to Rack</h3>
 <p>Rack provides a minimal, modular and adaptable interface for developing web applications in Ruby. By wrapping HTTP requests and responses in the simplest way possible, it unifies and distills the API for web servers, web frameworks, and software in between (the so-called middleware) into a single method call.</p>
 <ul>
 <li><a href="http://rack.rubyforge.org/doc/">Rack API Documentation</a></li>
 </ul>
 <p>Explaining Rack is not really in the scope of this guide. In case you are not familiar with Rack's basics, you should check out the <a href="#resources">Resources</a> section below.</p>
-<h3 id="9bc8267f86f12a15d7a5c0d4fc1b9b14390e4dd2">2 Rails on Rack</h3>
-<h4 id="30257fb8936a2af02b02ffb1e790de2ed599ec95">2.1 Rails Application's Rack Object</h4>
+<h3 id="rails-on-rack">2 Rails on Rack</h3>
+<h4 id="rails-application's-rack-object">2.1 Rails Application's Rack Object</h4>
 <p><code>Rails.application</code> is the primary Rack application object of a Rails
 application. Any Rack compliant web server should be using
 <code>Rails.application</code> object to serve a Rails application.</p>
-<h4 id="a465db280aedb42cea0ffe211f2d63081f7e82d9">2.2 <code>rails server</code>
+<h4 id="rails-server">2.2 <code>rails server</code>
 </h4>
 <p><code>rails server</code> does the basic job of creating a <code>Rack::Server</code> object and starting the webserver.</p>
 <p>Here's how <code>rails server</code> creates an instance of <code>Rack::Server</code></p>
@@ -297,7 +297,7 @@ end
 </tr>
 </tbody>
 </table>
-<h4 id="6bc2045d0bee28a298c8af45e99b003675646ecf">2.3 <code>rackup</code>
+<h4 id="rackup">2.3 <code>rackup</code>
 </h4>
 <p>To use <code>rackup</code> instead of Rails' <code>rails server</code>, you can put the following inside <code>config.ru</code> of your Rails application's root directory:</p>
 <div class="code_container">
@@ -325,10 +325,10 @@ $ rackup --help
 
 </pre>
 </div>
-<h3 id="0beca974e427e0aef815b9a665425e7bb2b97315">3 Action Dispatcher Middleware Stack</h3>
+<h3 id="action-dispatcher-middleware-stack">3 Action Dispatcher Middleware Stack</h3>
 <p>Many of Action Dispatcher's internal components are implemented as Rack middlewares. <code>Rails::Application</code> uses <code>ActionDispatch::MiddlewareStack</code> to combine various internal and external middlewares to form a complete Rails Rack application.</p>
 <div class="note"><p><code>ActionDispatch::MiddlewareStack</code> is Rails equivalent of <code>Rack::Builder</code>, but built for better flexibility and more features to meet Rails' requirements.</p></div>
-<h4 id="8408bbf7dfd69738c24b99c0074fd7a247613a94">3.1 Inspecting Middleware Stack</h4>
+<h4 id="inspecting-middleware-stack">3.1 Inspecting Middleware Stack</h4>
 <p>Rails has a handy rake task for inspecting the middleware stack in use:</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
@@ -367,9 +367,9 @@ run Rails.application.routes
 </pre>
 </div>
 <p>The default middlewares shown here (and some others) are each summarized in the <a href="#internal-middleware-stack">Internal Middlewares</a> section, below.</p>
-<h4 id="530bc6078f3eacad96ee081ab48d4d2eb8d31f98">3.2 Configuring Middleware Stack</h4>
+<h4 id="configuring-middleware-stack">3.2 Configuring Middleware Stack</h4>
 <p>Rails provides a simple configuration interface <code>config.middleware</code> for adding, removing and modifying the middlewares in the middleware stack via <code>application.rb</code> or the environment specific configuration file <code>environments/&lt;environment&gt;.rb</code>.</p>
-<h5 id="d4072b3f0835bf3f594c0ca9045da736a5440e3a">3.2.1 Adding a Middleware</h5>
+<h5 id="adding-a-middleware">3.2.1 Adding a Middleware</h5>
 <p>You can add a new middleware to the middleware stack using any of the following methods:</p>
 <ul>
 <li><p><code>config.middleware.use(new_middleware, args)</code> - Adds the new middleware at the bottom of the middleware stack.</p></li>
@@ -389,7 +389,7 @@ config.middleware.insert_after ActiveRecord::QueryCache, Lifo::Cache, page_cache
 
 </pre>
 </div>
-<h5 id="0a74f5fdda3ace37ed3b1cbae201705b14e97d49">3.2.2 Swapping a Middleware</h5>
+<h5 id="swapping-a-middleware">3.2.2 Swapping a Middleware</h5>
 <p>You can swap an existing middleware in the middleware stack using <code>config.middleware.swap</code>.</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -400,7 +400,7 @@ config.middleware.swap ActionDispatch::ShowExceptions, Lifo::ShowExceptions
 
 </pre>
 </div>
-<h5 id="25030e39c6adcb4e84e3076640289ec5922363e5">3.2.3 Deleting a Middleware</h5>
+<h5 id="deleting-a-middleware">3.2.3 Deleting a Middleware</h5>
 <p>Add the following lines to your application configuration:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -441,7 +441,7 @@ config.middleware.delete "Rack::MethodOverride"
 
 </pre>
 </div>
-<h4 id="dcc5733b7561d603a93c21562214e0c1d33fb1c8">3.3 Internal Middleware Stack</h4>
+<h4 id="internal-middleware-stack">3.3 Internal Middleware Stack</h4>
 <p>Much of Action Controller's functionality is implemented as Middlewares. The following list explains the purpose of each of them:</p>
 <p><strong><code>Rack::Sendfile</code></strong></p>
 <ul>
@@ -536,15 +536,15 @@ config.middleware.delete "Rack::MethodOverride"
 <li>Adds ETag header on all String bodies. ETags are used to validate cache.</li>
 </ul>
 <div class="info"><p>It's possible to use any of the above middlewares in your custom Rack stack.</p></div>
-<h3 id="87df60de337fb58864343e396696d74611e0d403">4 Resources</h3>
-<h4 id="a361189388c27c3316f9ffe0894462c23768bd0d">4.1 Learning Rack</h4>
+<h3 id="resources">4 Resources</h3>
+<h4 id="learning-rack">4.1 Learning Rack</h4>
 <ul>
 <li><a href="http://rack.github.io">Official Rack Website</a></li>
 <li><a href="http://chneukirchen.org/blog/archive/2007/02/introducing-rack.html">Introducing Rack</a></li>
 <li><a href="http://m.onkey.org/ruby-on-rack-1-hello-rack">Ruby on Rack #1 - Hello Rack!</a></li>
 <li><a href="http://m.onkey.org/ruby-on-rack-2-the-builder">Ruby on Rack #2 - The Builder</a></li>
 </ul>
-<h4 id="5796618103c03fb0bd0dae7ab9cb0306de669eab">4.2 Understanding Middlewares</h4>
+<h4 id="understanding-middlewares">4.2 Understanding Middlewares</h4>
 <ul>
 <li><a href="http://railscasts.com/episodes/151-rack-middleware">Railscast on Rack Middlewares</a></li>
 </ul>

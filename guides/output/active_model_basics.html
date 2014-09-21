@@ -184,13 +184,13 @@
 <html><body>
 <ol class="chapters">
 <li>
-<a href="#46a7f4db6a6b07848d6f7dd012f053442547ccc5">はじめに</a>
+<a href="#%E3%81%AF%E3%81%98%E3%82%81%E3%81%AB">はじめに</a>
 
 <ul>
-<li><a href="#6a3753281f370f765a1ca149ec290ae2be748ac3">AttributeMethodsモジュール</a></li>
-<li><a href="#061017d526718a404b8dda2659a650cb0ef5ce89">Callbacksモジュール</a></li>
-<li><a href="#c31f826bfbfddf5e0849a90a8959b543ed3f39cd">Conversionモジュール</a></li>
-<li><a href="#744a3c9ab636c25a4e3f266f7a51086beef6a8d3">Dirtyモジュール</a></li>
+<li><a href="#attributemethods%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB">AttributeMethodsモジュール</a></li>
+<li><a href="#callbacks%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB">Callbacksモジュール</a></li>
+<li><a href="#conversion%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB">Conversionモジュール</a></li>
+<li><a href="#dirty%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB">Dirtyモジュール</a></li>
 </ul>
 </li>
 </ol>
@@ -209,9 +209,9 @@
 <p>このガイドでは、モデルクラスを使用して作業を開始するのに必要なことをすべて解説します。Action Packヘルパーは、Active Modelのおかげで非Active Recordモデルとやりとりすることができます。Active Modelを使用することで、カスタムのORM (オブジェクト/リレーションモデル) を作成してRailsフレームワークの外で使用することもできます。</p>
 <p>このガイドの内容:</p>
 <hr>
-<h3 id="46a7f4db6a6b07848d6f7dd012f053442547ccc5">1 はじめに</h3>
+<h3 id="はじめに">1 はじめに</h3>
 <p>Active Modelは多くのモジュールを含むライブラリであり、それらのモジュールはRailsのAction Packライブラリとやりとりする必要のあるフレームワークで使用されます。Active Modelは、クラスで使用する既知の一連のインターフェイスを提供します。そのうちのいくつかについて以下で説明します。</p>
-<h4 id="6a3753281f370f765a1ca149ec290ae2be748ac3">1.1 AttributeMethodsモジュール</h4>
+<h4 id="attributemethodsモジュール">1.1 AttributeMethodsモジュール</h4>
 <p>AttributeMethodsモジュールは、クラスのメソッドにカスタムのプレフィックスやサフィックスを追加できます。このモジュールを使用するには、プレフィックスまたはサフィックスを定義し、オブジェクト内にあるプレフィックス/サフィックスの追加対象となるメソッドを指定します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -242,7 +242,7 @@ person.age_highest?  # false
 
 </pre>
 </div>
-<h4 id="061017d526718a404b8dda2659a650cb0ef5ce89">1.2 Callbacksモジュール</h4>
+<h4 id="callbacksモジュール">1.2 Callbacksモジュール</h4>
 <p>Callbacksを使用することで、Active Recordスタイルのコールバックを使用できます。これにより、必要なタイミングで実行されるコールバックを定義することができるようになります。コールバックの定義後、それらをカスタムメソッドの実行前(before)、実行後(after)、あるいは実行中(around)にラップすることができます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -266,7 +266,7 @@ end
 
 </pre>
 </div>
-<h4 id="c31f826bfbfddf5e0849a90a8959b543ed3f39cd">1.3 Conversionモジュール</h4>
+<h4 id="conversionモジュール">1.3 Conversionモジュール</h4>
 <p>クラスで<code>persisted?</code>メソッドと<code>id</code>メソッドが定義されていれば、この<code>Conversion</code>モジュールをインクルードしてRailsの変換メソッドをそのクラスのオブジェクトに対して呼び出すことができます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -289,7 +289,7 @@ person.to_param            # =&gt; nil
 
 </pre>
 </div>
-<h4 id="744a3c9ab636c25a4e3f266f7a51086beef6a8d3">1.4 Dirtyモジュール</h4>
+<h4 id="dirtyモジュール">1.4 Dirtyモジュール</h4>
 <p>あるオブジェクトが数度にわたって変更され、保存されていない状態は、「汚れた (dirty)」状態です。このモジュールを使用して、オブジェクトで変更が生じたかどうかを検出できます。属性名に基づいたアクセサメソッドも使用できます。<code>first_name</code>属性と<code>last_name</code>を持つPersonというクラスを例に考えてみましょう。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -325,7 +325,7 @@ end
 
 </pre>
 </div>
-<h5 id="b76c7f8c633cf28de3c0758a6b0df982dfe98149">1.4.1 変更されたすべての属性のリストをオブジェクトから直接取得する</h5>
+<h5 id="変更されたすべての属性のリストをオブジェクトから直接取得する">1.4.1 変更されたすべての属性のリストをオブジェクトから直接取得する</h5>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 person = Person.new
@@ -348,7 +348,7 @@ person.changes # =&gt; {"first_name"=&gt;[nil, "First Name"]}
 
 </pre>
 </div>
-<h5 id="f6b165b74b4854f6c7f71964c086e7ba3d07bb93">1.4.2 属性名に基づいたアクセサメソッド</h5>
+<h5 id="属性名に基づいたアクセサメソッド">1.4.2 属性名に基づいたアクセサメソッド</h5>
 <p>特定の属性が変更されたかどうかを検出します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">

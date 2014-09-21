@@ -202,29 +202,29 @@ Your favorite bird is the Yaffle, and you want to create a plugin that allows ot
 <html><body>
 <ol class="chapters">
 <li>
-<a href="#cdd7bb2816b7a8f88bce0e47be39943bc369516b">Setup</a>
+<a href="#setup">Setup</a>
 
 <ul>
-<li><a href="#e46f9ed284fb384e80320c8562a667f30c23a168">Generate a gemified plugin.</a></li>
+<li><a href="#generate-a-gemified-plugin.">Generate a gemified plugin.</a></li>
 </ul>
 </li>
-<li><a href="#00c9371970622bce1caee73822f975e97fb208f7">Testing Your Newly Generated Plugin</a></li>
-<li><a href="#d6c5d2e4a03ba2cddcff56256d15a08a8e4baee8">Extending Core Classes</a></li>
+<li><a href="#testing-your-newly-generated-plugin">Testing Your Newly Generated Plugin</a></li>
+<li><a href="#extending-core-classes">Extending Core Classes</a></li>
 <li>
-<a href="#ce1a6adbedc69e3e54d8a4307ce05d74c5d47ef7">Add an "acts_as" Method to Active Record</a>
+<a href="#add-an-%22acts_as%22-method-to-active-record">Add an "acts_as" Method to Active Record</a>
 
 <ul>
-<li><a href="#053fe77cf028402e41f0591c27999ef36e2e2f9b">Add a Class Method</a></li>
-<li><a href="#97e48957e35f9855852c924d61b9c7632833ec21">Add an Instance Method</a></li>
+<li><a href="#add-a-class-method">Add a Class Method</a></li>
+<li><a href="#add-an-instance-method">Add an Instance Method</a></li>
 </ul>
 </li>
-<li><a href="#a3e705cc61a19f33d7c9c030f107a70569966485">Generators</a></li>
-<li><a href="#3bfcfc9b926f315d59f1c2460c8d39204626eb8d">Publishing Your Gem</a></li>
+<li><a href="#generators">Generators</a></li>
+<li><a href="#publishing-your-gem">Publishing Your Gem</a></li>
 <li>
-<a href="#cf3a43c784f14e4016e1aa2fb0d9e662677a3853">RDoc Documentation</a>
+<a href="#rdoc-documentation">RDoc Documentation</a>
 
 <ul>
-<li><a href="#5d20d0fee3b91643dd8d272ac33d01ca95179d82">References</a></li>
+<li><a href="#references">References</a></li>
 </ul>
 </li>
 </ol>
@@ -239,9 +239,9 @@ Your favorite bird is the Yaffle, and you want to create a plugin that allows ot
       <div id="mainCol">
         <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
-<h3 id="cdd7bb2816b7a8f88bce0e47be39943bc369516b">1 Setup</h3>
+<h3 id="setup">1 Setup</h3>
 <p>Currently, Rails plugins are built as gems, <em>gemified plugins</em>. They can be shared across different rails applications using RubyGems and Bundler if desired.</p>
-<h4 id="e46f9ed284fb384e80320c8562a667f30c23a168">1.1 Generate a gemified plugin.</h4>
+<h4 id="generate-a-gemified-plugin.">1.1 Generate a gemified plugin.</h4>
 <p>Rails ships with a <code>rails plugin new</code> command which creates a skeleton for developing any kind of Rails extension with the ability to run integration tests using a dummy Rails application. Create your  plugin with the command:</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
@@ -256,7 +256,7 @@ $ rails plugin --help
 
 </pre>
 </div>
-<h3 id="00c9371970622bce1caee73822f975e97fb208f7">2 Testing Your Newly Generated Plugin</h3>
+<h3 id="testing-your-newly-generated-plugin">2 Testing Your Newly Generated Plugin</h3>
 <p>You can navigate to the directory that contains the plugin, run the <code>bundle install</code> command  and run the one generated test using the <code>rake</code> command.</p>
 <p>You should see:</p>
 <div class="code_container">
@@ -266,7 +266,7 @@ $ rails plugin --help
 </pre>
 </div>
 <p>This will tell you that everything got generated properly and you are ready to start adding functionality.</p>
-<h3 id="d6c5d2e4a03ba2cddcff56256d15a08a8e4baee8">3 Extending Core Classes</h3>
+<h3 id="extending-core-classes">3 Extending Core Classes</h3>
 <p>This section will explain how to add a method to String that will be available anywhere in your rails application.</p>
 <p>In this example you will add a method to String named <code>to_squawk</code>. To begin, create a new test file with a few assertions:</p>
 <div class="code_container">
@@ -335,7 +335,7 @@ $ rails console
 
 </pre>
 </div>
-<h3 id="ce1a6adbedc69e3e54d8a4307ce05d74c5d47ef7">4 Add an "acts_as" Method to Active Record</h3>
+<h3 id='add-an-"acts_as"-method-to-active-record'>4 Add an "acts_as" Method to Active Record</h3>
 <p>A common pattern in plugins is to add a method called <code>acts_as_something</code> to models. In this case, you want to write a method called <code>acts_as_yaffle</code> that adds a <code>squawk</code> method to your Active Record models.</p>
 <p>To begin, set up your files so that you have:</p>
 <div class="code_container">
@@ -373,7 +373,7 @@ end
 
 </pre>
 </div>
-<h4 id="053fe77cf028402e41f0591c27999ef36e2e2f9b">4.1 Add a Class Method</h4>
+<h4 id="add-a-class-method">4.1 Add a Class Method</h4>
 <p>This plugin will expect that you've added a method to your model named <code>last_squawk</code>. However, the plugin users might have already defined a method on their model named <code>last_squawk</code> that they use for something else. This plugin will allow the name to be changed by adding a class method called <code>yaffle_text_field</code>.</p>
 <p>To start out, write a failing test that shows the behavior you'd like:</p>
 <div class="code_container">
@@ -524,7 +524,7 @@ ActiveRecord::Base.send :include, Yaffle::ActsAsYaffle
 
 </pre>
 </div>
-<h4 id="97e48957e35f9855852c924d61b9c7632833ec21">4.2 Add an Instance Method</h4>
+<h4 id="add-an-instance-method">4.2 Add an Instance Method</h4>
 <p>This plugin will add a method named 'squawk' to any Active Record object that calls 'acts_as_yaffle'. The 'squawk' method will simply set the value of one of the fields in the database.</p>
 <p>To start out, write a failing test that shows the behavior you'd like:</p>
 <div class="code_container">
@@ -604,9 +604,9 @@ send("#{self.class.yaffle_text_field}=", string.to_squawk)
 
 </pre>
 </div>
-<h3 id="a3e705cc61a19f33d7c9c030f107a70569966485">5 Generators</h3>
+<h3 id="generators">5 Generators</h3>
 <p>Generators can be included in your gem simply by creating them in a lib/generators directory of your plugin. More information about the creation of generators can be found in the <a href="generators.html">Generators Guide</a></p>
-<h3 id="3bfcfc9b926f315d59f1c2460c8d39204626eb8d">6 Publishing Your Gem</h3>
+<h3 id="publishing-your-gem">6 Publishing Your Gem</h3>
 <p>Gem plugins currently in development can easily be shared from any Git repository. To share the Yaffle gem with others, simply commit the code to a Git repository (like GitHub) and add a line to the Gemfile of the application in question:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -617,7 +617,7 @@ gem 'yaffle', git: 'git://github.com/yaffle_watcher/yaffle.git'
 <p>After running <code>bundle install</code>, your gem functionality will be available to the application.</p>
 <p>When the gem is ready to be shared as a formal release, it can be published to <a href="http://www.rubygems.org">RubyGems</a>.
 For more information about publishing gems to RubyGems, see: <a href="http://blog.thepete.net/2010/11/creating-and-publishing-your-first-ruby.html">Creating and Publishing Your First Ruby Gem</a>.</p>
-<h3 id="cf3a43c784f14e4016e1aa2fb0d9e662677a3853">7 RDoc Documentation</h3>
+<h3 id="rdoc-documentation">7 RDoc Documentation</h3>
 <p>Once your plugin is stable and you are ready to deploy, do everyone else a favor and document it! Luckily, writing documentation for your plugin is easy.</p>
 <p>The first step is to update the README file with detailed information about how to use your plugin. A few key things to include are:</p>
 <ul>
@@ -634,7 +634,7 @@ $ rake rdoc
 
 </pre>
 </div>
-<h4 id="5d20d0fee3b91643dd8d272ac33d01ca95179d82">7.1 References</h4>
+<h4 id="references">7.1 References</h4>
 <ul>
 <li><a href="https://github.com/radar/guides/blob/master/gem-development.md">Developing a RubyGem using Bundler</a></li>
 <li><a href="http://yehudakatz.com/2010/04/02/using-gemspecs-as-intended/">Using .gemspecs as Intended</a></li>

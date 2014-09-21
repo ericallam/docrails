@@ -188,22 +188,22 @@
             <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
 <ol class="chapters">
-<li><a href="#f251534d8eca630ae2b00b68cb32de173196711a">RDoc</a></li>
-<li><a href="#2b9d92d6bf70d0ca21c94e2dc999119d5dbe6046">Wording</a></li>
-<li><a href="#649df08a448ee3fa90f3746baaf6b0907df42c91">English</a></li>
-<li><a href="#422445b132a0ddb86add309db860ce13ab867af6">Example Code</a></li>
-<li><a href="#0786cdff946e6084c50bb7df6cacd8ed965599fa">Booleans</a></li>
-<li><a href="#fb7a4b255171595818c7e230dab6fcf171fbaa94">Filenames</a></li>
+<li><a href="#rdoc">RDoc</a></li>
+<li><a href="#wording">Wording</a></li>
+<li><a href="#english">English</a></li>
+<li><a href="#example-code">Example Code</a></li>
+<li><a href="#booleans">Booleans</a></li>
+<li><a href="#filenames">Filenames</a></li>
 <li>
-<a href="#ffe688a5014306635cd935f7169187b7db387cd5">Fonts</a>
+<a href="#fonts">Fonts</a>
 
 <ul>
-<li><a href="#97298b934a648326dad88e17a65e9ad357e776e1">Fixed-width Font</a></li>
-<li><a href="#8e81038837cb4bb8a267629f664ce726b5f4909c">Regular Font</a></li>
+<li><a href="#fixed-width-font">Fixed-width Font</a></li>
+<li><a href="#regular-font">Regular Font</a></li>
 </ul>
 </li>
-<li><a href="#f513ff57839b53b2bd892c4bf2163e91317d4ece">Description Lists</a></li>
-<li><a href="#e006e60f563541dd5f7cfa32ac605d320d83f057">Dynamically Generated Methods</a></li>
+<li><a href="#description-lists">Description Lists</a></li>
+<li><a href="#dynamically-generated-methods">Dynamically Generated Methods</a></li>
 </ol>
 </body></html>
 
@@ -216,9 +216,9 @@
       <div id="mainCol">
         <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
-<h3 id="f251534d8eca630ae2b00b68cb32de173196711a">1 RDoc</h3>
+<h3 id="rdoc">1 RDoc</h3>
 <p>The Rails API documentation is generated with RDoc. Please consult the documentation for help with the <a href="http://rdoc.rubyforge.org/RDoc/Markup.html">markup</a>, and also take into account these <a href="http://rdoc.rubyforge.org/RDoc/Parser/Ruby.html">additional directives</a>.</p>
-<h3 id="2b9d92d6bf70d0ca21c94e2dc999119d5dbe6046">2 Wording</h3>
+<h3 id="wording">2 Wording</h3>
 <p>Write simple, declarative sentences. Brevity is a plus: get to the point.</p>
 <p>Write in present tense: "Returns a hash that...", rather than "Returned a hash that..." or "Will return a hash that...".</p>
 <p>Start comments in upper case. Follow regular punctuation rules:</p>
@@ -259,9 +259,9 @@ If `return` is needed it is recommended to explicitly define a method.
 <li>his or hers... use theirs.</li>
 <li>himself or herself... use themselves.</li>
 </ul>
-<h3 id="649df08a448ee3fa90f3746baaf6b0907df42c91">3 English</h3>
+<h3 id="english">3 English</h3>
 <p>Please use American English (<em>color</em>, <em>center</em>, <em>modularize</em>, etc). See <a href="http://en.wikipedia.org/wiki/American_and_British_English_spelling_differences">a list of American and British English spelling differences here</a>.</p>
-<h3 id="422445b132a0ddb86add309db860ce13ab867af6">4 Example Code</h3>
+<h3 id="example-code">4 Example Code</h3>
 <p>Choose meaningful examples that depict and cover the basics as well as interesting points or gotchas.</p>
 <p>Use two spaces to indent chunks of code--that is, for markup purposes, two spaces with respect to the left margin. The examples themselves should use <a href="contributing_to_ruby_on_rails.html#follow-the-coding-conventions">Rails coding conventions</a>.</p>
 <p>Short docs do not need an explicit "Examples" label to introduce snippets; they just follow paragraphs:</p>
@@ -320,7 +320,7 @@ If `return` is needed it is recommended to explicitly define a method.
 
 </pre>
 </div>
-<h3 id="0786cdff946e6084c50bb7df6cacd8ed965599fa">5 Booleans</h3>
+<h3 id="booleans">5 Booleans</h3>
 <p>In predicates and flags prefer documenting boolean semantics over exact values.</p>
 <p>When "true" or "false" are used as defined in Ruby use regular font. The singletons <code>true</code> and <code>false</code> need fixed-width font. Please avoid terms like "truthy", Ruby defines what is true and false in the language, and thus those words have a technical meaning and need no substitutes.</p>
 <p>As a rule of thumb, do not document singletons unless absolutely necessary. That prevents artificial constructs like <code>!!</code> or ternaries, allows refactors, and the code does not need to rely on the exact values returned by methods being called in the implementation.</p>
@@ -354,7 +354,7 @@ end
 </pre>
 </div>
 <p>The API is careful not to commit to any particular value, the method has predicate semantics, that's enough.</p>
-<h3 id="fb7a4b255171595818c7e230dab6fcf171fbaa94">6 Filenames</h3>
+<h3 id="filenames">6 Filenames</h3>
 <p>As a rule of thumb, use filenames relative to the application root:</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
@@ -364,8 +364,8 @@ RAILS_ROOT/config/routes.rb # NO
 
 </pre>
 </div>
-<h3 id="ffe688a5014306635cd935f7169187b7db387cd5">7 Fonts</h3>
-<h4 id="97298b934a648326dad88e17a65e9ad357e776e1">7.1 Fixed-width Font</h4>
+<h3 id="fonts">7 Fonts</h3>
+<h4 id="fixed-width-font">7.1 Fixed-width Font</h4>
 <p>Use fixed-width fonts for:</p>
 <ul>
 <li>Constants, in particular class and module names.</li>
@@ -396,7 +396,7 @@ $ echo "+:to_param+" | rdoc --pipe
 
 </pre>
 </div>
-<h4 id="8e81038837cb4bb8a267629f664ce726b5f4909c">7.2 Regular Font</h4>
+<h4 id="regular-font">7.2 Regular Font</h4>
 <p>When "true" and "false" are English words rather than Ruby keywords use a regular font:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -416,7 +416,7 @@ end
 
 </pre>
 </div>
-<h3 id="f513ff57839b53b2bd892c4bf2163e91317d4ece">8 Description Lists</h3>
+<h3 id="description-lists">8 Description Lists</h3>
 <p>In lists of options, parameters, etc. use a hyphen between the item and its description (reads better than a colon because normally options are symbols):</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -425,7 +425,7 @@ end
 </pre>
 </div>
 <p>The description starts in upper case and ends with a full stop-it's standard English.</p>
-<h3 id="e006e60f563541dd5f7cfa32ac605d320d83f057">9 Dynamically Generated Methods</h3>
+<h3 id="dynamically-generated-methods">9 Dynamically Generated Methods</h3>
 <p>Methods created with <code>(module|class)_eval(STRING)</code> have a comment by their side with an instance of the generated code. That comment is 2 spaces away from the template:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">

@@ -193,57 +193,57 @@ tables.</p><p>After reading this guide, you will know:</p>
             <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
 <ol class="chapters">
-<li><a href="#849cf5dbd007a2e8d456dd72aa453236b2c87bd3">Migration Overview</a></li>
+<li><a href="#migration-overview">Migration Overview</a></li>
 <li>
-<a href="#b24f80fa4ad665ab4abd2a2a146d875f2b31e910">Creating a Migration</a>
+<a href="#creating-a-migration">Creating a Migration</a>
 
 <ul>
-<li><a href="#7442e6d445257801c7e5f2723be3928b8935afc8">Creating a Standalone Migration</a></li>
-<li><a href="#12bcd30f814db80cb1f7e7a2796b829953df4af8">Model Generators</a></li>
-<li><a href="#0e09483dc036d027309f40ff5bc938f20fe172cd">Passing Modifiers</a></li>
+<li><a href="#creating-a-standalone-migration">Creating a Standalone Migration</a></li>
+<li><a href="#model-generators">Model Generators</a></li>
+<li><a href="#passing-modifiers">Passing Modifiers</a></li>
 </ul>
 </li>
 <li>
-<a href="#29ea0226f4054f1c523a78567eab72f958b90ffb">Writing a Migration</a>
+<a href="#writing-a-migration">Writing a Migration</a>
 
 <ul>
-<li><a href="#3a1783fd50480e52207079fbd8dcc3a16b9db8b5">Creating a Table</a></li>
-<li><a href="#9d85c03e142326ffc9a29a0f666c0e83eb853ef1">Creating a Join Table</a></li>
-<li><a href="#582e771a391d143e0f172e4d4d9bfdfdd7ce0552">Changing Tables</a></li>
-<li><a href="#7c4e46c1697d630c0294a24132d51a63b88ec96b">Changing Columns</a></li>
-<li><a href="#aa7e8c5d82aa2c31713fffa65ba604fcd753ce3d">Column Modifiers</a></li>
-<li><a href="#2ee372205e15d8140654b1f5e4b497dd3fb87773">Foreign Keys</a></li>
-<li><a href="#1133542f262fa103eb88b9fe1c69121d20a64a09">When Helpers aren't Enough</a></li>
-<li><a href="#76ab44f4da80158f9da54c7dd12f0c8276e84497">Using the <code>change</code> Method</a></li>
-<li><a href="#8d541f4a658cf3a37eb4daed00efe60bc8908ae3">Using <code>reversible</code></a></li>
-<li><a href="#284728dd461a5faad4947b8b61a312319ac909b4">Using the <code>up</code>/<code>down</code> Methods</a></li>
-<li><a href="#7b69e3b519933fe9a274a717d94ae48f86fcc74d">Reverting Previous Migrations</a></li>
+<li><a href="#creating-a-table">Creating a Table</a></li>
+<li><a href="#creating-a-join-table">Creating a Join Table</a></li>
+<li><a href="#changing-tables">Changing Tables</a></li>
+<li><a href="#changing-columns">Changing Columns</a></li>
+<li><a href="#column-modifiers">Column Modifiers</a></li>
+<li><a href="#foreign-keys">Foreign Keys</a></li>
+<li><a href="#when-helpers-aren't-enough">When Helpers aren't Enough</a></li>
+<li><a href="#using-the-change-method">Using the <code>change</code> Method</a></li>
+<li><a href="#using-reversible">Using <code>reversible</code></a></li>
+<li><a href="#using-the-up/down-methods">Using the <code>up</code>/<code>down</code> Methods</a></li>
+<li><a href="#reverting-previous-migrations">Reverting Previous Migrations</a></li>
 </ul>
 </li>
 <li>
-<a href="#309084555a84115c15bd76ae9ab2d30a30649897">Running Migrations</a>
+<a href="#running-migrations">Running Migrations</a>
 
 <ul>
-<li><a href="#2f06781b4eb47b42fe449b82afc1ff36eff3e859">Rolling Back</a></li>
-<li><a href="#d201d83c369f5ee001a841aa0c801d28497a110d">Setup the Database</a></li>
-<li><a href="#0a3fe8ee2416f7f751033c0cddff7a48fae05697">Resetting the Database</a></li>
-<li><a href="#664c03058adc0af78630cd934965b5140b343afe">Running Specific Migrations</a></li>
-<li><a href="#7fbfac8a3bac65e594ae377a43aa4a30764eff30">Running Migrations in Different Environments</a></li>
-<li><a href="#c643e55e89a6b2de0e65f36cc2328867b75361d7">Changing the Output of Running Migrations</a></li>
+<li><a href="#rolling-back">Rolling Back</a></li>
+<li><a href="#setup-the-database">Setup the Database</a></li>
+<li><a href="#resetting-the-database">Resetting the Database</a></li>
+<li><a href="#running-specific-migrations">Running Specific Migrations</a></li>
+<li><a href="#running-migrations-in-different-environments">Running Migrations in Different Environments</a></li>
+<li><a href="#changing-the-output-of-running-migrations">Changing the Output of Running Migrations</a></li>
 </ul>
 </li>
-<li><a href="#bb5114af7f11606260b4090f9bf1e88514fec519">Changing Existing Migrations</a></li>
+<li><a href="#changing-existing-migrations">Changing Existing Migrations</a></li>
 <li>
-<a href="#d50727ebadfe5f04ee72e108c53b201060679ecd">Schema Dumping and You</a>
+<a href="#schema-dumping-and-you">Schema Dumping and You</a>
 
 <ul>
-<li><a href="#61980490925b2287fbd6e03eba35fc86d21c4601">What are Schema Files for?</a></li>
-<li><a href="#3aa5d9093670a17ac027519a74e11368f6b450cf">Types of Schema Dumps</a></li>
-<li><a href="#a76237efb830059953cb6c8d2dfea0e748645d8b">Schema Dumps and Source Control</a></li>
+<li><a href="#what-are-schema-files-for?">What are Schema Files for?</a></li>
+<li><a href="#types-of-schema-dumps">Types of Schema Dumps</a></li>
+<li><a href="#schema-dumps-and-source-control">Schema Dumps and Source Control</a></li>
 </ul>
 </li>
-<li><a href="#47d3c681f6b858c792e268cf989a7d5fb87f98d7">Active Record and Referential Integrity</a></li>
-<li><a href="#add41b9c7d182bf31f14e478e595fffc9cc6dbbf">Migrations and Seed Data</a></li>
+<li><a href="#active-record-and-referential-integrity">Active Record and Referential Integrity</a></li>
+<li><a href="#migrations-and-seed-data">Migrations and Seed Data</a></li>
 </ol>
 </body></html>
 
@@ -256,7 +256,7 @@ tables.</p><p>After reading this guide, you will know:</p>
       <div id="mainCol">
         <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
-<h3 id="849cf5dbd007a2e8d456dd72aa453236b2c87bd3">1 Migration Overview</h3>
+<h3 id="migration-overview">1 Migration Overview</h3>
 <p>Migrations are a convenient way to
 <a href="http://en.wikipedia.org/wiki/Schema_migration">alter your database schema over time</a>
 in a consistent and easy way. They use a Ruby DSL so that you don't have to
@@ -336,8 +336,8 @@ end
 
 </pre>
 </div>
-<h3 id="b24f80fa4ad665ab4abd2a2a146d875f2b31e910">2 Creating a Migration</h3>
-<h4 id="7442e6d445257801c7e5f2723be3928b8935afc8">2.1 Creating a Standalone Migration</h4>
+<h3 id="creating-a-migration">2 Creating a Migration</h3>
+<h4 id="creating-a-standalone-migration">2.1 Creating a Standalone Migration</h4>
 <p>Migrations are stored as files in the <code>db/migrate</code> directory, one for each
 migration class. The name of the file is of the form
 <code>YYYYMMDDHHMMSS_create_products.rb</code>, that is to say a UTC timestamp
@@ -510,7 +510,7 @@ end
 
 </pre>
 </div>
-<h4 id="12bcd30f814db80cb1f7e7a2796b829953df4af8">2.2 Model Generators</h4>
+<h4 id="model-generators">2.2 Model Generators</h4>
 <p>The model and scaffold generators will create migrations appropriate for adding
 a new model. This migration will already contain instructions for creating the
 relevant table. If you tell Rails what columns you want, then statements for
@@ -538,7 +538,7 @@ end
 </pre>
 </div>
 <p>You can append as many column name/type pairs as you want.</p>
-<h4 id="0e09483dc036d027309f40ff5bc938f20fe172cd">2.3 Passing Modifiers</h4>
+<h4 id="passing-modifiers">2.3 Passing Modifiers</h4>
 <p>Some commonly used <a href="#column-modifiers">type modifiers</a> can be passed directly on
 the command line. They are enclosed by curly braces and follow the field type:</p>
 <p>For instance, running:</p>
@@ -561,10 +561,10 @@ end
 </pre>
 </div>
 <div class="info"><p>Have a look at the generators help output for further details.</p></div>
-<h3 id="29ea0226f4054f1c523a78567eab72f958b90ffb">3 Writing a Migration</h3>
+<h3 id="writing-a-migration">3 Writing a Migration</h3>
 <p>Once you have created your migration using one of the generators it's time to
 get to work!</p>
-<h4 id="3a1783fd50480e52207079fbd8dcc3a16b9db8b5">3.1 Creating a Table</h4>
+<h4 id="creating-a-table">3.1 Creating a Table</h4>
 <p>The <code>create_table</code> method is one of the most fundamental, but most of the time,
 will be generated for you from using a model or scaffold generator. A typical
 use would be</p>
@@ -593,7 +593,7 @@ end
 </div>
 <p>will append <code>ENGINE=BLACKHOLE</code> to the SQL statement used to create the table
 (when using MySQL, the default is <code>ENGINE=InnoDB</code>).</p>
-<h4 id="9d85c03e142326ffc9a29a0f666c0e83eb853ef1">3.2 Creating a Join Table</h4>
+<h4 id="creating-a-join-table">3.2 Creating a Join Table</h4>
 <p>Migration method <code>create_join_table</code> creates a HABTM join table. A typical use
 would be:</p>
 <div class="code_container">
@@ -634,7 +634,7 @@ end
 
 </pre>
 </div>
-<h4 id="582e771a391d143e0f172e4d4d9bfdfdd7ce0552">3.3 Changing Tables</h4>
+<h4 id="changing-tables">3.3 Changing Tables</h4>
 <p>A close cousin of <code>create_table</code> is <code>change_table</code>, used for changing existing
 tables. It is used in a similar fashion to <code>create_table</code> but the object
 yielded to the block knows more tricks. For example:</p>
@@ -651,7 +651,7 @@ end
 </div>
 <p>removes the <code>description</code> and <code>name</code> columns, creates a <code>part_number</code> string
 column and adds an index on it. Finally it renames the <code>upccode</code> column.</p>
-<h4 id="7c4e46c1697d630c0294a24132d51a63b88ec96b">3.4 Changing Columns</h4>
+<h4 id="changing-columns">3.4 Changing Columns</h4>
 <p>Like the <code>remove_column</code> and <code>add_column</code> Rails provides the <code>change_column</code>
 migration method.</p>
 <div class="code_container">
@@ -675,7 +675,7 @@ change_column_default :products, :approved, false
 value of the <code>:approved</code> field to false.</p>
 <div class="info"><p>Unlike <code>change_column</code> (and <code>change_column_default</code>), <code>change_column_null</code>
 is reversible.</p></div>
-<h4 id="aa7e8c5d82aa2c31713fffa65ba604fcd753ce3d">3.5 Column Modifiers</h4>
+<h4 id="column-modifiers">3.5 Column Modifiers</h4>
 <p>Column modifiers can be applied when creating or changing a column:</p>
 <ul>
 <li>
@@ -699,7 +699,7 @@ the first time (i.e. on the date the migration is applied).</li>
 </ul>
 <p>Some adapters may support additional options; see the adapter specific API docs
 for further information.</p>
-<h4 id="2ee372205e15d8140654b1f5e4b497dd3fb87773">3.6 Foreign Keys</h4>
+<h4 id="foreign-keys">3.6 Foreign Keys</h4>
 <p>While it's not required you might want to add foreign key constraints to
 <a href="#active-record-and-referential-integrity">guarantee referential integrity</a>.</p>
 <div class="code_container">
@@ -731,7 +731,7 @@ remove_foreign_key :accounts, name: :special_fk_name
 
 </pre>
 </div>
-<h4 id="1133542f262fa103eb88b9fe1c69121d20a64a09">3.7 When Helpers aren't Enough</h4>
+<h4 id="when-helpers-aren't-enough">3.7 When Helpers aren't Enough</h4>
 <p>If the helpers provided by Active Record aren't enough you can use the <code>execute</code>
 method to execute arbitrary SQL:</p>
 <div class="code_container">
@@ -749,7 +749,7 @@ In particular the documentation for
 and
 <a href="http://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/Table.html"><code>ActiveRecord::ConnectionAdapters::Table</code></a>
 (which provides the methods available on the object yielded by <code>change_table</code>).</p>
-<h4 id="76ab44f4da80158f9da54c7dd12f0c8276e84497">3.8 Using the <code>change</code> Method</h4>
+<h4 id="using-the-change-method">3.8 Using the <code>change</code> Method</h4>
 <p>The <code>change</code> method is the primary way of writing migrations. It works for the
 majority of cases, where Active Record knows how to reverse the migration
 automatically. Currently, the <code>change</code> method supports only these migration
@@ -776,7 +776,7 @@ definitions:</p>
 <code>change_default</code> or <code>remove</code>.</p>
 <p>If you're going to need to use any other methods, you should use <code>reversible</code>
 or write the <code>up</code> and <code>down</code> methods instead of using the <code>change</code> method.</p>
-<h4 id="8d541f4a658cf3a37eb4daed00efe60bc8908ae3">3.9 Using <code>reversible</code>
+<h4 id="using-reversible">3.9 Using <code>reversible</code>
 </h4>
 <p>Complex migrations may require processing that Active Record doesn't know how
 to reverse. You can use <code>reversible</code> to specify what to do when running a
@@ -822,7 +822,7 @@ example, it might destroy some data. In such cases, you can raise
 <code>ActiveRecord::IrreversibleMigration</code> in your <code>down</code> block. If someone tries
 to revert your migration, an error message will be displayed saying that it
 can't be done.</p>
-<h4 id="284728dd461a5faad4947b8b61a312319ac909b4">3.10 Using the <code>up</code>/<code>down</code> Methods</h4>
+<h4 id="using-the-up/down-methods">3.10 Using the <code>up</code>/<code>down</code> Methods</h4>
 <p>You can also use the old style of migration using <code>up</code> and <code>down</code> methods
 instead of the <code>change</code> method.
 The <code>up</code> method should describe the transformation you'd like to make to your
@@ -870,7 +870,7 @@ end
 <code>ActiveRecord::IrreversibleMigration</code> from your <code>down</code> method. If someone tries
 to revert your migration, an error message will be displayed saying that it
 can't be done.</p>
-<h4 id="7b69e3b519933fe9a274a717d94ae48f86fcc74d">3.11 Reverting Previous Migrations</h4>
+<h4 id="reverting-previous-migrations">3.11 Reverting Previous Migrations</h4>
 <p>You can use Active Record's ability to rollback migrations using the <code>revert</code> method:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -928,7 +928,7 @@ but this would have involved a few more steps: reversing the order
 of <code>create_table</code> and <code>reversible</code>, replacing <code>create_table</code>
 by <code>drop_table</code>, and finally replacing <code>up</code> by <code>down</code> and vice-versa.
 This is all taken care of by <code>revert</code>.</p>
-<h3 id="309084555a84115c15bd76ae9ab2d30a30649897">4 Running Migrations</h3>
+<h3 id="running-migrations">4 Running Migrations</h3>
 <p>Rails provides a set of Rake tasks to run certain sets of migrations.</p>
 <p>The very first migration related Rake task you will use will probably be
 <code>rake db:migrate</code>. In its most basic form it just runs the <code>change</code> or <code>up</code>
@@ -953,7 +953,7 @@ on all migrations up to and
 including 20080906120000, and will not execute any later migrations. If
 migrating downwards, this will run the <code>down</code> method on all the migrations
 down to, but not including, 20080906120000.</p>
-<h4 id="2f06781b4eb47b42fe449b82afc1ff36eff3e859">4.1 Rolling Back</h4>
+<h4 id="rolling-back">4.1 Rolling Back</h4>
 <p>A common task is to rollback the last migration. For example, if you made a
 mistake in it and wish to correct it. Rather than tracking down the version
 number associated with the previous migration you can run:</p>
@@ -985,17 +985,17 @@ $ bin/rake db:migrate:redo STEP=3
 <p>Neither of these Rake tasks do anything you could not do with <code>db:migrate</code>. They
 are simply more convenient, since you do not need to explicitly specify the
 version to migrate to.</p>
-<h4 id="d201d83c369f5ee001a841aa0c801d28497a110d">4.2 Setup the Database</h4>
+<h4 id="setup-the-database">4.2 Setup the Database</h4>
 <p>The <code>rake db:setup</code> task will create the database, load the schema and initialize
 it with the seed data.</p>
-<h4 id="0a3fe8ee2416f7f751033c0cddff7a48fae05697">4.3 Resetting the Database</h4>
+<h4 id="resetting-the-database">4.3 Resetting the Database</h4>
 <p>The <code>rake db:reset</code> task will drop the database and set it up again. This is
 functionally equivalent to <code>rake db:drop db:setup</code>.</p>
 <div class="note"><p>This is not the same as running all the migrations. It will only use the
 contents of the current <code>schema.rb</code> file. If a migration can't be rolled back,
 <code>rake db:reset</code> may not help you. To find out more about dumping the schema see
 <a href="#schema-dumping-and-you">Schema Dumping and You</a> section.</p></div>
-<h4 id="664c03058adc0af78630cd934965b5140b343afe">4.4 Running Specific Migrations</h4>
+<h4 id="running-specific-migrations">4.4 Running Specific Migrations</h4>
 <p>If you need to run a specific migration up or down, the <code>db:migrate:up</code> and
 <code>db:migrate:down</code> tasks will do that. Just specify the appropriate version and
 the corresponding migration will have its <code>change</code>, <code>up</code> or <code>down</code> method
@@ -1010,7 +1010,7 @@ $ bin/rake db:migrate:up VERSION=20080906120000
 <code>up</code> method). This task will
 first check whether the migration is already performed and will do nothing if
 Active Record believes that it has already been run.</p>
-<h4 id="7fbfac8a3bac65e594ae377a43aa4a30764eff30">4.5 Running Migrations in Different Environments</h4>
+<h4 id="running-migrations-in-different-environments">4.5 Running Migrations in Different Environments</h4>
 <p>By default running <code>rake db:migrate</code> will run in the <code>development</code> environment.
 To run migrations against another environment you can specify it using the
 <code>RAILS_ENV</code> environment variable while running the command. For example to run
@@ -1021,7 +1021,7 @@ $ bin/rake db:migrate RAILS_ENV=test
 
 </pre>
 </div>
-<h4 id="c643e55e89a6b2de0e65f36cc2328867b75361d7">4.6 Changing the Output of Running Migrations</h4>
+<h4 id="changing-the-output-of-running-migrations">4.6 Changing the Output of Running Migrations</h4>
 <p>By default migrations tell you exactly what they're doing and how long it took.
 A migration creating a table and adding an index might produce output like this</p>
 <div class="code_container">
@@ -1098,7 +1098,7 @@ end
 </div>
 <p>If you want Active Record to not output anything, then running <code>rake db:migrate
 VERBOSE=false</code> will suppress all output.</p>
-<h3 id="bb5114af7f11606260b4090f9bf1e88514fec519">5 Changing Existing Migrations</h3>
+<h3 id="changing-existing-migrations">5 Changing Existing Migrations</h3>
 <p>Occasionally you will make a mistake when writing a migration. If you have
 already run the migration then you cannot just edit the migration and run the
 migration again: Rails thinks it has already run the migration and so will do
@@ -1115,8 +1115,8 @@ beyond your development machine) is relatively harmless.</p>
 <p>The <code>revert</code> method can be helpful when writing a new migration to undo
 previous migrations in whole or in part
 (see <a href="#reverting-previous-migrations">Reverting Previous Migrations</a> above).</p>
-<h3 id="d50727ebadfe5f04ee72e108c53b201060679ecd">6 Schema Dumping and You</h3>
-<h4 id="61980490925b2287fbd6e03eba35fc86d21c4601">6.1 What are Schema Files for?</h4>
+<h3 id="schema-dumping-and-you">6 Schema Dumping and You</h3>
+<h4 id="what-are-schema-files-for?">6.1 What are Schema Files for?</h4>
 <p>Migrations, mighty as they may be, are not the authoritative source for your
 database schema. That role falls to either <code>db/schema.rb</code> or an SQL file which
 Active Record generates by examining the database. They are not designed to be
@@ -1134,7 +1134,7 @@ summed up in the schema file. The
 <a href="https://github.com/ctran/annotate_models">annotate_models</a> gem automatically
 adds and updates comments at the top of each model summarizing the schema if
 you desire that functionality.</p>
-<h4 id="3aa5d9093670a17ac027519a74e11368f6b450cf">6.2 Types of Schema Dumps</h4>
+<h4 id="types-of-schema-dumps">6.2 Types of Schema Dumps</h4>
 <p>There are two ways to dump the schema. This is set in <code>config/application.rb</code>
 by the <code>config.active_record.schema_format</code> setting, which may be either <code>:sql</code>
 or <code>:ruby</code>.</p>
@@ -1180,14 +1180,14 @@ utility is used. For MySQL, this file will contain the output of
 contain. By definition, this will create a perfect copy of the database's
 structure. Using the <code>:sql</code> schema format will, however, prevent loading the
 schema into a RDBMS other than the one used to create it.</p>
-<h4 id="a76237efb830059953cb6c8d2dfea0e748645d8b">6.3 Schema Dumps and Source Control</h4>
+<h4 id="schema-dumps-and-source-control">6.3 Schema Dumps and Source Control</h4>
 <p>Because schema dumps are the authoritative source for your database schema, it
 is strongly recommended that you check them into source control.</p>
 <p><code>db/schema.rb</code> contains the current version number of the database. This
 ensures conflicts are going to happen in the case of a merge where both
 branches touched the schema. When that happens, solve conflicts manually,
 keeping the highest version number of the two.</p>
-<h3 id="47d3c681f6b858c792e268cf989a7d5fb87f98d7">7 Active Record and Referential Integrity</h3>
+<h3 id="active-record-and-referential-integrity">7 Active Record and Referential Integrity</h3>
 <p>The Active Record way claims that intelligence belongs in your models, not in
 the database. As such, features such as triggers or constraints,
 which push some of that intelligence back into the database, are not heavily
@@ -1200,7 +1200,7 @@ these cannot guarantee referential integrity and so some people augment them
 with <a href="#foreign-keys">foreign key constraints</a> in the database.</p>
 <p>Although Active Record does not provide all the tools for working directly with
 such features, the <code>execute</code> method can be used to execute arbitrary SQL.</p>
-<h3 id="add41b9c7d182bf31f14e478e595fffc9cc6dbbf">8 Migrations and Seed Data</h3>
+<h3 id="migrations-and-seed-data">8 Migrations and Seed Data</h3>
 <p>Some people use migrations to add data to the database:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
