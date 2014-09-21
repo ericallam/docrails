@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
 <head>
@@ -183,40 +182,40 @@
             <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
 <ol class="chapters">
-<li><a href="#3db4de5ad71adaeb23411eb7b6bc2a1e2cecbd83">初期化コードの置き場所</a></li>
-<li><a href="#7c36a2fc0a965c81bc1bd89f8e0cad7eec688d0b">Rails実行前にコードを実行する</a></li>
+<li><a href="#%E5%88%9D%E6%9C%9F%E5%8C%96%E3%82%B3%E3%83%BC%E3%83%89%E3%81%AE%E7%BD%AE%E3%81%8D%E5%A0%B4%E6%89%80">初期化コードの置き場所</a></li>
+<li><a href="#rails%E5%AE%9F%E8%A1%8C%E5%89%8D%E3%81%AB%E3%82%B3%E3%83%BC%E3%83%89%E3%82%92%E5%AE%9F%E8%A1%8C%E3%81%99%E3%82%8B">Rails実行前にコードを実行する</a></li>
 <li>
-<a href="#9cfd8619cb91ad2fd9d59fd4e812b3455f05aa19">Railsコンポーネントを構成する</a>
+<a href="#rails%E3%82%B3%E3%83%B3%E3%83%9D%E3%83%BC%E3%83%8D%E3%83%B3%E3%83%88%E3%82%92%E6%A7%8B%E6%88%90%E3%81%99%E3%82%8B">Railsコンポーネントを構成する</a>
 
 <ul>
-<li><a href="#6d2d5969396b1b6c89dcc8c16e738868e4ec15d2">Rails全般の設定</a></li>
-<li><a href="#bddad1aa7e754d668427219eb811eadd89b6a156">アセットを設定する</a></li>
-<li><a href="#2bb59af94e0737547525d131ab95e828ec2158a8">ジェネレータの設定</a></li>
-<li><a href="#41646c34bf428b9e4b2db9e9fe100694bbb46d99">ミドルウェアを設定する</a></li>
-<li><a href="#b79c9fe19424228784530e9e10e77b9d7891e4de">i18nを設定する</a></li>
-<li><a href="#12dceab102ee1b0fa2ce3dd1cddcbb4baac13cf2">Active Recordを設定する。</a></li>
-<li><a href="#f6c56de4483f57c3fbc67372670a69c8076927ae">Action Controllerを設定する</a></li>
-<li><a href="#6a43cc32f66f1c57928b1fc1131bf9e3730e60e6">Action Dispatchを設定する</a></li>
-<li><a href="#97d5ff961199ead6589b15cb4180b6cce078c2a3">Action Viewを設定する</a></li>
-<li><a href="#01164496311a8bee765d75510da04cd390c83805">Action Mailerを設定する</a></li>
-<li><a href="#fd4b9c0e6d2c73f680e9a4eaf4cfaef1bf6c2d24">Active Supportを設定する</a></li>
-<li><a href="#c94e72246e8278ab4b6995a34e8de2de98b226a3">データベースを設定する</a></li>
-<li><a href="#52ca74314ef64b0d40a169055f4393f7782a706c">接続設定</a></li>
-<li><a href="#b43d09b581f58f21750d3ce668d448a84525f416">Rails環境を作成する</a></li>
-<li><a href="#522889356f055dba017aaf2add09c334b39fcdcc">サブディレクトリにデプロイする (相対URLルートの使用)</a></li>
+<li><a href="#rails%E5%85%A8%E8%88%AC%E3%81%AE%E8%A8%AD%E5%AE%9A">Rails全般の設定</a></li>
+<li><a href="#%E3%82%A2%E3%82%BB%E3%83%83%E3%83%88%E3%82%92%E8%A8%AD%E5%AE%9A%E3%81%99%E3%82%8B">アセットを設定する</a></li>
+<li><a href="#%E3%82%B8%E3%82%A7%E3%83%8D%E3%83%AC%E3%83%BC%E3%82%BF%E3%81%AE%E8%A8%AD%E5%AE%9A">ジェネレータの設定</a></li>
+<li><a href="#%E3%83%9F%E3%83%89%E3%83%AB%E3%82%A6%E3%82%A7%E3%82%A2%E3%82%92%E8%A8%AD%E5%AE%9A%E3%81%99%E3%82%8B">ミドルウェアを設定する</a></li>
+<li><a href="#i18n%E3%82%92%E8%A8%AD%E5%AE%9A%E3%81%99%E3%82%8B">i18nを設定する</a></li>
+<li><a href="#active-record%E3%82%92%E8%A8%AD%E5%AE%9A%E3%81%99%E3%82%8B%E3%80%82">Active Recordを設定する。</a></li>
+<li><a href="#action-controller%E3%82%92%E8%A8%AD%E5%AE%9A%E3%81%99%E3%82%8B">Action Controllerを設定する</a></li>
+<li><a href="#action-dispatch%E3%82%92%E8%A8%AD%E5%AE%9A%E3%81%99%E3%82%8B">Action Dispatchを設定する</a></li>
+<li><a href="#action-view%E3%82%92%E8%A8%AD%E5%AE%9A%E3%81%99%E3%82%8B">Action Viewを設定する</a></li>
+<li><a href="#action-mailer%E3%82%92%E8%A8%AD%E5%AE%9A%E3%81%99%E3%82%8B">Action Mailerを設定する</a></li>
+<li><a href="#active-support%E3%82%92%E8%A8%AD%E5%AE%9A%E3%81%99%E3%82%8B">Active Supportを設定する</a></li>
+<li><a href="#%E3%83%87%E3%83%BC%E3%82%BF%E3%83%99%E3%83%BC%E3%82%B9%E3%82%92%E8%A8%AD%E5%AE%9A%E3%81%99%E3%82%8B">データベースを設定する</a></li>
+<li><a href="#%E6%8E%A5%E7%B6%9A%E8%A8%AD%E5%AE%9A">接続設定</a></li>
+<li><a href="#rails%E7%92%B0%E5%A2%83%E3%82%92%E4%BD%9C%E6%88%90%E3%81%99%E3%82%8B">Rails環境を作成する</a></li>
+<li><a href="#%E3%82%B5%E3%83%96%E3%83%87%E3%82%A3%E3%83%AC%E3%82%AF%E3%83%88%E3%83%AA%E3%81%AB%E3%83%87%E3%83%97%E3%83%AD%E3%82%A4%E3%81%99%E3%82%8B-(%E7%9B%B8%E5%AF%BEurl%E3%83%AB%E3%83%BC%E3%83%88%E3%81%AE%E4%BD%BF%E7%94%A8)">サブディレクトリにデプロイする (相対URLルートの使用)</a></li>
 </ul>
 </li>
-<li><a href="#ed22d0716578be7ec11d0afa71596cca733113e5">Rails環境の設定</a></li>
-<li><a href="#b75594fe77d3bc4efecd1e0ac7fb216a01b11ce5">イニシャライザファイルを使用する</a></li>
+<li><a href="#rails%E7%92%B0%E5%A2%83%E3%81%AE%E8%A8%AD%E5%AE%9A">Rails環境の設定</a></li>
+<li><a href="#%E3%82%A4%E3%83%8B%E3%82%B7%E3%83%A3%E3%83%A9%E3%82%A4%E3%82%B6%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B">イニシャライザファイルを使用する</a></li>
 <li>
-<a href="#a7fbd03793e6d07f2fa5a077d6d8026dc8d2815e">初期化イベント</a>
+<a href="#%E5%88%9D%E6%9C%9F%E5%8C%96%E3%82%A4%E3%83%99%E3%83%B3%E3%83%88">初期化イベント</a>
 
 <ul>
-<li><a href="#5ce76407303b93005449dcbb9f511456b5412fb7"><code>Rails::Railtie#initializer</code></a></li>
-<li><a href="#6640ca79cc0fcfb4d8615c41951535311aae95eb">イニシャライザ</a></li>
+<li><a href="#rails::railtie#initializer"><code>Rails::Railtie#initializer</code></a></li>
+<li><a href="#%E3%82%A4%E3%83%8B%E3%82%B7%E3%83%A3%E3%83%A9%E3%82%A4%E3%82%B6">イニシャライザ</a></li>
 </ul>
 </li>
-<li><a href="#f77f53067adc0948e9137d3260c34b521df24fc5">データベース接続をプールする</a></li>
+<li><a href="#%E3%83%87%E3%83%BC%E3%82%BF%E3%83%99%E3%83%BC%E3%82%B9%E6%8E%A5%E7%B6%9A%E3%82%92%E3%83%97%E3%83%BC%E3%83%AB%E3%81%99%E3%82%8B">データベース接続をプールする</a></li>
 </ol>
 </body></html>
 
@@ -238,7 +237,7 @@
 </ul>
 
 <hr>
-<h3 id="3db4de5ad71adaeb23411eb7b6bc2a1e2cecbd83">1 初期化コードの置き場所</h3>
+<h3 id="初期化コードの置き場所">1 初期化コードの置き場所</h3>
 <p>Railsには初期化コードの置き場所が4箇所あります。</p>
 <ul>
 <li><code>config/application.rb</code></li>
@@ -246,9 +245,9 @@
 <li>イニシャライザ</li>
 <li>アフターイニシャライザ</li>
 </ul>
-<h3 id="7c36a2fc0a965c81bc1bd89f8e0cad7eec688d0b">2 Rails実行前にコードを実行する</h3>
+<h3 id="rails実行前にコードを実行する">2 Rails実行前にコードを実行する</h3>
 <p>アプリケーションで何らかのコードを、Rails自体が読み込まれる前に実行する必要が生じることがまれにあります。その場合は、実行したいコードを<code>config/application.rb</code>ファイルの<code>require 'rails/all'</code>行より前に書いてください。</p>
-<h3 id="9cfd8619cb91ad2fd9d59fd4e812b3455f05aa19">3 Railsコンポーネントを構成する</h3>
+<h3 id="railsコンポーネントを構成する">3 Railsコンポーネントを構成する</h3>
 <p>一般に、Railsの設定作業とはRails自身を設定することでもあると同時に、Railsのコンポーネントを設定することでもあります。<code>config/application.rb</code>および環境固有の設定ファイル(<code>config/environments/production.rb</code>など)に設定を記入することで、Railsのすべてのコンポーネントにそれらの設定を渡すことができます。</p>
 <p>たとえば、<code>config/application.rb</code>ファイルには以下の設定が含まれています。</p>
 <div class="code_container">
@@ -265,7 +264,7 @@ config.active_record.schema_format = :ruby
 </pre>
 </div>
 <p>この設定は、特にActive Recordの設定に使用されます。</p>
-<h4 id="6d2d5969396b1b6c89dcc8c16e738868e4ec15d2">3.1 Rails全般の設定</h4>
+<h4 id="rails全般の設定">3.1 Rails全般の設定</h4>
 <p>Rails全般に対する設定を行うには、<code>Rails::Railtie</code>オブジェクトを呼び出すか、<code>Rails::Engine</code>や<code>Rails::Application</code>のサブクラスを呼び出します。</p>
 <ul>
 <li>
@@ -336,7 +335,7 @@ config.session_store :my_custom_store
 <li>
 <code>config.time_zone</code>はアプリケーションのデフォルトタイムゾーンを設定し、Active Recordで認識できるようにします。</li>
 </ul>
-<h4 id="bddad1aa7e754d668427219eb811eadd89b6a156">3.2 アセットを設定する</h4>
+<h4 id="アセットを設定する">3.2 アセットを設定する</h4>
 <ul>
 <li><p><code>config.assets.enabled</code>は、アセットパイプラインを有効にするかどうかを指定します。デフォルトはtrueです。</p></li>
 <li><p><code>config.assets.raise_runtime_errors</code>を<code>true</code>に設定すると、ランタイムエラーチェックが追加で有効になります。このオプションは<code>production</code>環境で使用するとデプロイ時に思わぬ動作をする可能性がありますので、development環境(<code>config/environments/development.rb</code>)で使用することをお勧めします。</p></li>
@@ -353,7 +352,7 @@ config.session_store :my_custom_store
 <li><p><code>config.assets.compile</code>は、production環境での動的なSprocketsコンパイルをオンにするかどうかをtrue/falseで指定します。</p></li>
 <li><p><code>config.assets.logger</code>はロガーを引数に取ります。このロガーは、Log4のインターフェイスか、Rubyの<code>Logger</code>クラスに従います。デフォルトでは、<code>config.logger</code>と同じ設定が使用されます。<code>config.assets.logger</code>をfalseに設定すると、アセットのログ出力がオフになります</p></li>
 </ul>
-<h4 id="2bb59af94e0737547525d131ab95e828ec2158a8">3.3 ジェネレータの設定</h4>
+<h4 id="ジェネレータの設定">3.3 ジェネレータの設定</h4>
 <p><code>config.generators</code>メソッドを使用して、Railsで使用されるジェネレータを変更できます。このメソッドはブロックを1つ取ります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -393,7 +392,7 @@ end
 <li>
 <code>template_engine</code>はビューのテンプレートエンジン(ERBやHamlなど)を指定します。デフォルトは<code>:erb</code>です。</li>
 </ul>
-<h4 id="41646c34bf428b9e4b2db9e9fe100694bbb46d99">3.4 ミドルウェアを設定する</h4>
+<h4 id="ミドルウェアを設定する">3.4 ミドルウェアを設定する</h4>
 <p>どのRailsアプリケーションの背後にも、いくつかの標準的なミドルウェアが配置されています。development環境では、以下の順序でミドルウェアを使用します。</p>
 <ul>
 <li>
@@ -470,7 +469,7 @@ config.middleware.delete "Rack::MethodOverride"
 
 </pre>
 </div>
-<h4 id="b79c9fe19424228784530e9e10e77b9d7891e4de">3.5 i18nを設定する</h4>
+<h4 id="i18nを設定する">3.5 i18nを設定する</h4>
 <p>以下のオプションはすべて<code>i18n</code>(internationalization: 国際化)ライブラリ用のオプションです。</p>
 <ul>
 <li><p><code>config.i18n.available_locales</code>は、アプリケーションで利用できるロケールをホワイトリスト化します。デフォルトでは、ロケールファイルにあるロケールキーはすべて有効になりますが、新しいアプリケーションの場合、通常は<code>:en</code>だけです。</p></li>
@@ -478,7 +477,7 @@ config.middleware.delete "Rack::MethodOverride"
 <li><p><code>config.i18n.enforce_available_locales</code>がオンになっていると、<code>available_locales</code>リストで宣言されていないロケールはi18nに渡せなくなります。利用できないロケールがある場合は<code>i18n::InvalidLocale</code>例外が発生します。デフォルトは<code>true</code>です。このオプションは、ユーザー入力のロケールが不正である場合のセキュリティ対策であるため、特別な理由がない限り無効にしないでください。</p></li>
 <li><p><code>config.i18n.load_path</code>は、ロケールファイルの探索パスを設定します。デフォルトは<code>config/locales/*.{yml,rb}</code>です。</p></li>
 </ul>
-<h4 id="12dceab102ee1b0fa2ce3dd1cddcbb4baac13cf2">3.6 Active Recordを設定する。</h4>
+<h4 id="active-recordを設定する。">3.6 Active Recordを設定する。</h4>
 <p><code>config.active_record</code>には多くのオプションが含まれています。</p>
 <ul>
 <li><p><code>config.active_record.logger</code>は、Log4rのインターフェイスまたはデフォルトのRuby Loggerクラスに従うロガーを引数として取ります。このロガーは以後作成されるすべての新しいデータベース接続に渡されます。Active Recordのモデルクラスまたはモデルインスタンスに対して<code>logger</code>メソッドを呼び出すと、このロガーを取り出せます。ログ出力を無効にするには<code>nil</code>を設定します。</p></li>
@@ -510,7 +509,7 @@ config.middleware.delete "Rack::MethodOverride"
 <li>
 <code>ActiveRecord::SchemaDumper.ignore_tables</code>はテーブル名の配列を1つ引数に取ります。どのスキーマファイルにも <em>含めたくない</em> テーブル名がある場合はこの配列にテーブル名を含めます。この設定は、<code>config.active_record.schema_format == :ruby</code>で「ない」場合は無視されます。</li>
 </ul>
-<h4 id="f6c56de4483f57c3fbc67372670a69c8076927ae">3.7 Action Controllerを設定する</h4>
+<h4 id="action-controllerを設定する">3.7 Action Controllerを設定する</h4>
 <p><code>config.action_controller</code>には多数の設定が含まれています。</p>
 <ul>
 <li><p><code>config.action_controller.asset_host</code>はアセットを置くためのホストを設定します。これは、アセットをホストする場所としてアプリケーションサーバーの代りにCDN(コンテンツ配信ネットワーク)を使用したい場合に便利です。</p></li>
@@ -524,7 +523,7 @@ config.middleware.delete "Rack::MethodOverride"
 <li><p><code>config.action_controller.permit_all_parameters</code>は、マスアサインメントされるすべてのパラメータをデフォルトで許可することを設定します。デフォルト値は<code>false</code>です。</p></li>
 <li><p><code>config.action_controller.action_on_unpermitted_parameters</code>は、明示的に許可されていないパラメータが見つかった場合にログ出力または例外発生を行なうかどうかを指定します。このオプションは、<code>:log</code>または<code>:raise</code>を指定すると有効になります。test環境とdevelopment環境でのデフォルトは<code>:log</code>であり、それ以外の環境では<code>false</code>が設定されます。</p></li>
 </ul>
-<h4 id="6a43cc32f66f1c57928b1fc1131bf9e3730e60e6">3.8 Action Dispatchを設定する</h4>
+<h4 id="action-dispatchを設定する">3.8 Action Dispatchを設定する</h4>
 <ul>
 <li><p><code>config.action_dispatch.session_store</code>はセッションデータのストア名を設定します。デフォルトのストア名は<code>:cookie_store</code>です。この他に<code>:active_record_store</code>、<code>:mem_cache_store</code>、またはカスタムクラスの名前を指定できます。</p></li>
 <li>
@@ -550,7 +549,7 @@ config.action_dispatch.default_headers = {
 <li><p><code>ActionDispatch::Callbacks.to_prepare</code>には、リクエストより前かつ<code>ActionDispatch::Callbacks.before</code>より後に実行したいコードブロックを1つ引数として与えます。このブロックは、<code>development</code>モードではすべてのリクエストで実行されますが、<code>production</code>モードや、<code>cache_classes</code>が<code>true</code>に設定されている環境では1度しか実行されません。</p></li>
 <li><p><code>ActionDispatch::Callbacks.after</code>には、リクエストの後に実行したいコードブロックを1つ引数として与えます。</p></li>
 </ul>
-<h4 id="97d5ff961199ead6589b15cb4180b6cce078c2a3">3.9 Action Viewを設定する</h4>
+<h4 id="action-viewを設定する">3.9 Action Viewを設定する</h4>
 <p><code>config.action_view</code>にもわすかながら設定があります。</p>
 <ul>
 <li>
@@ -583,7 +582,7 @@ end
 <li>
 <code>config.action_view.raise_on_missing_translations</code>は、i18nで訳文が失われている場合にエラーを発生させるかどうかを指定します。</li>
 </ul>
-<h4 id="01164496311a8bee765d75510da04cd390c83805">3.10 Action Mailerを設定する</h4>
+<h4 id="action-mailerを設定する">3.10 Action Mailerを設定する</h4>
 <p><code>config.action_mailer</code>には多数の設定オプションがあります。</p>
 <ul>
 <li><p><code>config.action_mailer.logger</code>は、Log4rのインターフェイスまたはデフォルトのRuby Loggerクラスに従うロガーを引数として取ります。このロガーは、Action Mailerからの情報をログ出力するために使用されます。ログ出力を無効にするには<code>nil</code>を設定します。</p></li>
@@ -661,7 +660,7 @@ config.action_mailer.interceptors = ["MailInterceptor"]
 </div>
 </li>
 </ul>
-<h4 id="fd4b9c0e6d2c73f680e9a4eaf4cfaef1bf6c2d24">3.11 Active Supportを設定する</h4>
+<h4 id="active-supportを設定する">3.11 Active Supportを設定する</h4>
 <p>Active Supportにもいくつかの設定オプションがあります。</p>
 <ul>
 <li><p><code>config.active_support.bareは、Rails起動時に</code>active_support/all<code>の読み込みを行なうかどうかを指定します。デフォルトは</code>nil<code>であり、この場合</code>active_support/all`は読み込まれます。</p></li>
@@ -674,7 +673,7 @@ config.action_mailer.interceptors = ["MailInterceptor"]
 <li><p><code>ActiveSupport::Deprecation.silence</code>はブロックを1つ引数に取り、すべての非推奨警告メッセージを抑制します。</p></li>
 <li><p><code>ActiveSupport::Deprecation.silenced</code>は、非推奨警告メッセージを表示するかどうかを指定します。</p></li>
 </ul>
-<h4 id="c94e72246e8278ab4b6995a34e8de2de98b226a3">3.12 データベースを設定する</h4>
+<h4 id="データベースを設定する">3.12 データベースを設定する</h4>
 <p>ほぼすべてのRailsアプリケーションは、何らかの形でデータベースにアクセスします。データベースへの接続は、環境変数<code>ENV['DATABASE_URL']</code>を設定するか、<code>config/database.yml</code>というファイルを設定することで行えます。</p>
 <p><code>config/database.yml</code>ファイルを使用することで、データベース接続に必要なすべての情報を指定できます。</p>
 <div class="code_container">
@@ -713,7 +712,7 @@ development:
 </div>
 <p><code>config/database.yml</code>ファイルにはERBタグ<code>&lt;%= %&gt;</code>を含めることができます。タグ内に記載されたものはすべてRubyのコードとして評価されます。このタグを使用して、環境変数から接続情報を取り出したり、接続情報の生成に必要な計算を行なうこともできます。</p>
 <p>ヒント: データベースの接続設定を手動で更新する必要はありません。アプリケーションのジェネレータのオプションを表示してみると、<code>--database</code>というオプションがあるのがわかります。このオプションでは、リレーショナルデータベースで最もよく使用されるアダプタをリストから選択できます。さらに、<code>cd .. &amp;&amp; rails new blog --database=mysql</code>のようにするとジェネレータを繰り返し実行することもできます。<code>config/database.yml</code>ファイルが上書きされることを確認すると、アプリケーションの設定はSQLite用からMySQL用に変更されます。よく使用されるデータベース接続方法の詳細な例については、次で説明します。</p>
-<h4 id="52ca74314ef64b0d40a169055f4393f7782a706c">3.13 接続設定</h4>
+<h4 id="接続設定">3.13 接続設定</h4>
 <p>環境変数を経由してデータベース接続を設定する方法が2とおりあるので、この2つがどのように相互作用するかを理解しておくことが重要です。</p>
 <p><code>config/database.yml</code>ファイルの内容が空で、かつ環境変数<code>ENV['DATABASE_URL']</code>が設定されている場合、データベースへの接続には環境変数が使用されます。</p>
 <div class="code_container">
@@ -800,7 +799,7 @@ production:
 </pre>
 </div>
 <p>以上の説明で動作が明らかになりました。接続情報は絶対にdatabase.ymlに直接書かず、常に<code>ENV['DATABASE_URL']</code>に保存したものを利用してください。</p>
-<h5 id="c120fc98d27a467460a41607161869c3a22560ca">3.13.1 SQLite3データベースを設定する</h5>
+<h5 id="sqlite3データベースを設定する">3.13.1 SQLite3データベースを設定する</h5>
 <p>Railsには<a href="http://www.sqlite.org">SQLite3</a>のサポートがビルトインされています。SQLiteは軽量かつ専用サーバーの不要なデータベースアプリケーションです。SQLiteは開発用・テスト用であれば問題なく使用できますが、本番での使用には耐えられない可能性があります。Railsで新規プロジェクトを作成するとデフォルトでSQLiteが指定されますが、これはいつでも後から変更できます。</p>
 <p>以下はデフォルトの接続設定ファイル(<code>config/database.yml</code>)に含まれる、開発環境用の接続設定です。</p>
 <div class="code_container">
@@ -814,7 +813,7 @@ development:
 </pre>
 </div>
 <div class="note"><p>Railsでデータ保存用にSQLite3データベースが採用されているのは、設定なしですぐに使用できるからです。RailsではSQLiteに代えてMySQLやPostgreSQLなどを使用することもできます。また、データベース接続用のプラグインが多数あります。production環境で何らかのデータベースを使用する場合、そのためのアダプタはたいていの場合探せば見つかります。</p></div>
-<h5 id="43893b5bda6be583d9638871b1d91e5a03fa4f17">3.13.2 MySQLデータベースを設定する</h5>
+<h5 id="mysqlデータベースを設定する">3.13.2 MySQLデータベースを設定する</h5>
 <p>Rails同梱のSQLite3に代えてMySQLを採用した場合、<code>config/database.yml</code>の記述方法を少し変更します。developmentセクションの記述は以下のようになります。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
@@ -830,7 +829,7 @@ development:
 </pre>
 </div>
 <p>開発環境のコンピュータにMySQLがインストールされており、ユーザー名root、パスワードなしで接続できるのであれば、上の設定で接続できるようになるはずです。接続できない場合は、<code>development</code>セクションのユーザー名またはパスワードを適切なものに変更してください。</p>
-<h5 id="6370abdf03041dacacd15e271eb6cf73d624e416">3.13.3 PostgreSQLデータベースを設定する</h5>
+<h5 id="postgresqlデータベースを設定する">3.13.3 PostgreSQLデータベースを設定する</h5>
 <p>PostgreSQLを採用した場合は、<code>config/database.yml</code>の記述は以下のようになります。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
@@ -861,7 +860,7 @@ production:
 </pre>
 </div>
 <p>Prepared Statementsの使用量の増大は、そのままデータベースで必要なメモリー量の増大につながります。PostgreSQLデータベースのメモリー使用量が上限に達した場合は、<code>statement_limit</code>の値を小さくするかPrepared Statementsをオフにしてください。</p>
-<h5 id="db1b52697ec37306db8d2f6327c254aeef8a6bc0">3.13.4 JRubyプラットフォームでSQLite3データベースを設定する</h5>
+<h5 id="jrubyプラットフォームでsqlite3データベースを設定する">3.13.4 JRubyプラットフォームでSQLite3データベースを設定する</h5>
 <p>JRuby環境でSQLite3を採用する場合、<code>config/database.yml</code>の記述方法は少し異なります。developmentセクションは以下のようになります。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
@@ -871,7 +870,7 @@ development:
 
 </pre>
 </div>
-<h5 id="d40ea02552d875338ff504060dc8e4e2c3b32144">3.13.5 JRubyプラットフォームでMySQLデータベースを使用する</h5>
+<h5 id="jrubyプラットフォームでmysqlデータベースを使用する">3.13.5 JRubyプラットフォームでMySQLデータベースを使用する</h5>
 <p>JRuby環境でMySQLを採用する場合、<code>config/database.yml</code>の記述方法は少し異なります。developmentセクションは以下のようになります。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
@@ -883,7 +882,7 @@ development:
 
 </pre>
 </div>
-<h5 id="68ae483d4ed18a91c5b615b7736bdd436674303d">3.13.6 JRubyプラットフォームでPostgreSQLデータベースを使用する</h5>
+<h5 id="jrubyプラットフォームでpostgresqlデータベースを使用する">3.13.6 JRubyプラットフォームでPostgreSQLデータベースを使用する</h5>
 <p>JRuby環境でPostgreSQLを採用する場合、<code>config/database.yml</code>の記述方法は少し異なります。developmentセクションは以下のようになります。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
@@ -897,11 +896,11 @@ development:
 </pre>
 </div>
 <p><code>development</code>セクションのユーザー名とパスワードは適切なものに置き換えてください。</p>
-<h4 id="b43d09b581f58f21750d3ce668d448a84525f416">3.14 Rails環境を作成する</h4>
+<h4 id="rails環境を作成する">3.14 Rails環境を作成する</h4>
 <p>Railsにデフォルトで備わっている環境は、"development"、"test"、"production"の3つです。通常はこの3つの環境で事足りますが、場合によっては環境を追加したくなることもあると思います。</p>
 <p>たとえば、production環境をミラーコピーしたサーバーがあるが、テスト目的でのみ使用したいという場合を想定してみましょう。このようなサーバーは通常「ステージングサーバー(staging server)」と呼ばれます。"staging"環境をサーバーに追加したいのであれば、<code>config/environments/staging.rb</code>というファイルを作成するだけで済みます。その際にはなるべく<code>config/environments</code>にある既存のファイルを流用し、必要な部分のみを変更するようにしてください。</p>
 <p>このようにして追加された環境は、デフォルトの3つの環境と同じように利用できます。<code>rails server -e staging</code>を実行すればステージング環境でサーバーを起動でき、<code>rails console staging</code>や<code>Rails.env.staging?</code>なども動作するようになります。</p>
-<h4 id="522889356f055dba017aaf2add09c334b39fcdcc">3.15 サブディレクトリにデプロイする (相対URLルートの使用)</h4>
+<h4 id="サブディレクトリにデプロイする-(相対urlルートの使用)">3.15 サブディレクトリにデプロイする (相対URLルートの使用)</h4>
 <p>Railsアプリケーションの実行は、アプリケーションのルートディレクトリ(<code>/</code>など)で行なうことが前提となっています。この節では、アプリケーションをディレクトリの下で実行する方法について説明します。</p>
 <p>ここでは、アプリケーションを"/app1"ディレクトリにデプロイしたいとします。これを行なうには、適切なルーティングを生成できるディレクトリをRailsに指示する必要があります。</p>
 <div class="code_container">
@@ -912,11 +911,11 @@ config.relative_url_root = "/app1"
 </div>
 <p>あるいは、<code>RAILS_RELATIVE_URL_ROOT</code>環境変数に設定することもできます。</p>
 <p>これで、リンクが生成される時に"/app1"がディレクトリ名の前に追加されます。</p>
-<h5 id="b4a44af818f6bb76785092cc719633b0a1697606">3.15.1 Passengerを使用する</h5>
+<h5 id="passengerを使用する">3.15.1 Passengerを使用する</h5>
 <p>Passengerを使用すると、アプリケーションをサブディレクトリで実行するのが容易になります。設定方法の詳細については、<a href="http://www.modrails.com/documentation/Users%20guide%20Apache.html#deploying_rails_to_sub_uri">passengerマニュアル</a>を参照してください。</p>
-<h5 id="84eaf45f9e5186609e32f3a3fe96ae2b564001c1">3.15.2 リバースプロキシを使用する</h5>
+<h5 id="リバースプロキシを使用する">3.15.2 リバースプロキシを使用する</h5>
 <p>TODO</p>
-<h5 id="a5df7e8e4fac9601eb6ad05a464e6f9f89bb5dc3">3.15.3 サブディレクトリにデプロイする場合の検討事項</h5>
+<h5 id="サブディレクトリにデプロイする場合の検討事項">3.15.3 サブディレクトリにデプロイする場合の検討事項</h5>
 <p>本番環境でRailsをサブディレクトリにデプロイすると、Railsの多くの部分に影響が生じます。</p>
 <ul>
 <li>開発環境</li>
@@ -924,18 +923,18 @@ config.relative_url_root = "/app1"
 <li>静的アセットの提供</li>
 <li>アセットパイプライン</li>
 </ul>
-<h3 id="ed22d0716578be7ec11d0afa71596cca733113e5">4 Rails環境の設定</h3>
+<h3 id="rails環境の設定">4 Rails環境の設定</h3>
 <p>一部の設定については、Railsの外部から環境変数を与えることで行なうこともできます。以下の環境変数は、Railsの多くの部分で認識されます。</p>
 <ul>
 <li><p><code>ENV["RAILS_ENV"]</code>は、Railsが実行される環境 (production、development、testなど) を定義します。</p></li>
 <li><p><code>ENV["RAILS_RELATIVE_URL_ROOT"]</code>は、<a href="configuring.html#deploy-to-a-subdirectory-relative-url-root">アプリケーションをサブディレクトリにデプロイする</a>ときにルーティングシステムがURLを認識するために使用されます。</p></li>
 <li><p><code>ENV["RAILS_CACHE_ID"]</code>と<code>ENV["RAILS_APP_VERSION"]</code>は、Railsのキャッシュを扱うコードで拡張キャッシュを生成するために使用されます。これにより、This allows you to have multiple separate caches from the same application.</p></li>
 </ul>
-<h3 id="b75594fe77d3bc4efecd1e0ac7fb216a01b11ce5">5 イニシャライザファイルを使用する</h3>
+<h3 id="イニシャライザファイルを使用する">5 イニシャライザファイルを使用する</h3>
 <p>Railsは、フレームワークの読み込みとすべてのgemの読み込みが終わってから、イニシャライザの読み込みを開始します。イニシャライザとは、アプリケーションの<code>config/initializers</code>ディレクトリに保存されるRubyファイルのことです。たとえば各部分のオプション設定をイニシャライザに保存しておき、フレームワークとgemがすべて読み込まれた後に適用することができます。</p>
 <p>メモ: イニシャライザを置くディレクトリにサブフォルダを作ってイニシャライザを整理することもできます。Railsはイニシャライザ用のディレクトリの下のすべての階層を探して実行してくれます。</p>
 <p>ヒント: イニシャライザの実行順序を指定したい場合は、イニシャライザのファイル名を使用して実行順序を制御できます。各フォルダのイニシャライザはアルファベット順に読み込まれます。たとえば<code>01_critical.rb</code>は最初に読み込まれ、<code>02_normal.rb</code>は次に読み込まれます。</p>
-<h3 id="a7fbd03793e6d07f2fa5a077d6d8026dc8d2815e">6 初期化イベント</h3>
+<h3 id="初期化イベント">6 初期化イベント</h3>
 <p>Railsにはフック可能な初期化イベントが5つあります。以下に紹介するこれらのイベントは、実際に実行される順序で掲載しています。</p>
 <ul>
 <li><p><code>before_configuration</code>: これは<code>Rails::Application</code>からアプリケーション定数を継承した直後に実行されます。<code>config</code>呼び出しは、このイベントより前に評価されますので注意してください。</p></li>
@@ -967,7 +966,7 @@ end
 </pre>
 </div>
 <p>警告: アプリケーションの一部、特にルーティング周りでは、<code>after_initialize</code>ブロックが呼び出された時点では設定が完了していないものがあります。</p>
-<h4 id="5ce76407303b93005449dcbb9f511456b5412fb7">6.1 <code>Rails::Railtie#initializer</code>
+<h4 id="rails::railtie#initializer">6.1 <code>Rails::Railtie#initializer</code>
 </h4>
 <p>Railsでは、<code>Rails::Railtie</code>に含まれる<code>initializer</code>メソッドを使用してすべて定義され、起動時に実行されるイニシャライザがいくつもあります。以下はAction Controllerの<code>set_helpers_path</code>イニシャライザから取った例です。</p>
 <div class="code_container">
@@ -983,7 +982,7 @@ end
 <p>警告: イニシャライザが起動される順序は、論理的に矛盾が生じない限りにおいて、beforeやafterを使用していかなる順序に変更することもできます。たとえば、"one"から"four"までの4つのイニシャライザがあり、かつこの順序で定義されたとします。ここで"four"を"four"より <em>前</em> かつ"three"よりも <em>後</em> になるように定義すると論理矛盾が発生し、イニシャライザの実行順を決定できなくなってしまいます。</p>
 <p><code>initializer</code>メソッドのブロック引数は、アプリケーション自身のインスタンスです。そのおかげで、上の例で示したように、<code>config</code>メソッドを使用してアプリケーションの設定にアクセスできます。</p>
 <p>実は<code>Rails::Application</code>は<code>Rails::Railtie</code>を間接的に継承しています。そのおかげで、<code>config/application.rb</code>で<code>initializer</code>メソッドを使用してアプリケーション用のイニシャライザを定義できるのです。</p>
-<h4 id="6640ca79cc0fcfb4d8615c41951535311aae95eb">6.2 イニシャライザ</h4>
+<h4 id="イニシャライザ">6.2 イニシャライザ</h4>
 <p>Railsにあるイニシャライザのリストを以下にまとめました。これらは定義された順序で並んでおり、特記事項のない限り実行されます。●</p>
 <ul>
 <li><p><code>load_environment_hook</code>: これはプレースホルダとして使用されます。具体的には、<code>:load_environment_config</code>を定義してこのイニシャライザより前に実行したい場合に使用します。</p></li>
@@ -1032,7 +1031,7 @@ end
 <li><p><code>set_routes_reloader</code>: <code>ActionDispatch::Callbacks.to_prepare</code>を使用してルーティングを再読み込みするためにAction Dispatchを構成します。</p></li>
 <li><p><code>disable_dependency_loading</code>: <code>config.eager_load</code>がtrueの場合は自動依存性読み込み(automatic dependency loading)を無効にします。</p></li>
 </ul>
-<h3 id="f77f53067adc0948e9137d3260c34b521df24fc5">7 データベース接続をプールする</h3>
+<h3 id="データベース接続をプールする">7 データベース接続をプールする</h3>
 <p>Active Recordのデータベース接続は<code>ActiveRecord::ConnectionAdapters::ConnectionPool</code>によって管理されます。これは、接続数に限りのあるデータベース接続にアクセスする際のスレッド数と接続プールが同期するようにするものです。最大接続数はデフォルトで5ですが、<code>database.yml</code>でカスタマイズ可能です。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">

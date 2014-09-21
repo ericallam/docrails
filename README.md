@@ -2,7 +2,7 @@
 
 本リポジトリは[Ruby on Rails Guides](http://guides.rubyonrails.org/)を日本語に訳したものです。
 
-Railsガイド
+Railsガイド   
 http://railsguide.jp/
 
 Ruby on Rails Tutorialの日本語訳「Railsチュートリアル」も無料で公開されているので，    

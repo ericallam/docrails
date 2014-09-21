@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
 <head>
@@ -191,49 +190,49 @@
             <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
 <ol class="chapters">
-<li><a href="#18753ba5f3591b086952d3a88034a5c0b0c96ea1">What are engines?</a></li>
+<li><a href="#what-are-engines?">What are engines?</a></li>
 <li>
-<a href="#ec455254037451adb2916ab33012ec32ad44e8e2">Generating an engine</a>
+<a href="#generating-an-engine">Generating an engine</a>
 
 <ul>
-<li><a href="#81fc66f02c626e819fce091962b69cd908ed799a">Inside an Engine</a></li>
+<li><a href="#inside-an-engine">Inside an Engine</a></li>
 </ul>
 </li>
 <li>
-<a href="#12a787b7d9a6689c8390805102524cb35c5b851e">Providing engine functionality</a>
+<a href="#providing-engine-functionality">Providing engine functionality</a>
 
 <ul>
-<li><a href="#787d274b6fe78aeeb77a4382be2bc41e33b63091">Generating a Post Resource</a></li>
-<li><a href="#eed33b7478e2efc453671dca69c5627c85bac6e7">Generating a Comments Resource</a></li>
+<li><a href="#generating-a-post-resource">Generating a Post Resource</a></li>
+<li><a href="#generating-a-comments-resource">Generating a Comments Resource</a></li>
 </ul>
 </li>
 <li>
-<a href="#8a6cc2117c9a296d133e57ce52ce82b4dbb17e71">Hooking Into an Application</a>
+<a href="#hooking-into-an-application">Hooking Into an Application</a>
 
 <ul>
-<li><a href="#65e4ece6255d32204ed3ced596b87d73f3245e49">Mounting the Engine</a></li>
-<li><a href="#84e0799d2bf6142c49f0a80de2e01cd120955405">Engine setup</a></li>
-<li><a href="#b879007491eccd6fe1737da3feb44441b98f130d">Using a Class Provided by the Application</a></li>
-<li><a href="#e48947da64d224ef0b1aa38d2d7be367f448d634">Configuring an Engine</a></li>
+<li><a href="#mounting-the-engine">Mounting the Engine</a></li>
+<li><a href="#engine-setup">Engine setup</a></li>
+<li><a href="#using-a-class-provided-by-the-application">Using a Class Provided by the Application</a></li>
+<li><a href="#configuring-an-engine">Configuring an Engine</a></li>
 </ul>
 </li>
 <li>
-<a href="#a4b5aa2573986d4ba08f8799057c1c2d76676552">Testing an engine</a>
+<a href="#testing-an-engine">Testing an engine</a>
 
 <ul>
-<li><a href="#dc8cc17fb9092b97f58b24c8584410fc2ce9317e">Functional Tests</a></li>
+<li><a href="#functional-tests">Functional Tests</a></li>
 </ul>
 </li>
 <li>
-<a href="#25277a4e2d3aab7b020dc767c1fa2cdd12889e2b">Improving engine functionality</a>
+<a href="#improving-engine-functionality">Improving engine functionality</a>
 
 <ul>
-<li><a href="#3270cba4a12bbee17dc198df863938fcecb8dccb">Overriding Models and Controllers</a></li>
-<li><a href="#89b862244aeff64fb478f03c9520e3820b7d2020">Overriding Views</a></li>
-<li><a href="#03730e58401ef5d9e79d1f674df0a5f9cf756e33">Routes</a></li>
-<li><a href="#20e338624cee29d0effead85b0dd0e70de783b4c">Assets</a></li>
-<li><a href="#7b0887a85aa3f2ca8218debe5d0f12cbcb4f8b3d">Separate Assets &amp; Precompiling</a></li>
-<li><a href="#625a1d396eaa80f4cad2a3b6a932959b98568e22">Other Gem Dependencies</a></li>
+<li><a href="#overriding-models-and-controllers">Overriding Models and Controllers</a></li>
+<li><a href="#overriding-views">Overriding Views</a></li>
+<li><a href="#routes">Routes</a></li>
+<li><a href="#assets">Assets</a></li>
+<li><a href="#separate-assets-&amp;-precompiling">Separate Assets &amp; Precompiling</a></li>
+<li><a href="#other-gem-dependencies">Other Gem Dependencies</a></li>
 </ul>
 </li>
 </ol>
@@ -248,7 +247,7 @@
       <div id="mainCol">
         <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
-<h3 id="18753ba5f3591b086952d3a88034a5c0b0c96ea1">1 What are engines?</h3>
+<h3 id="what-are-engines?">1 What are engines?</h3>
 <p>Engines can be considered miniature applications that provide functionality to their host applications. A Rails application is actually just a "supercharged" engine, with the <code>Rails::Application</code> class inheriting a lot of its behavior from <code>Rails::Engine</code>.</p>
 <p>Therefore, engines and applications can be thought of almost the same thing, just with subtle differences, as you'll see throughout this guide. Engines and applications also share a common structure.</p>
 <p>Engines are also closely related to plugins. The two share a common <code>lib</code> directory structure, and are both generated using the <code>rails plugin new</code> generator. The difference is that an engine is considered a "full plugin" by Rails (as indicated by the <code>--full</code> option that's passed to the generator command). This guide will refer to them simply as "engines" throughout. An engine <strong>can</strong> be a plugin, and a plugin <strong>can</strong> be an engine.</p>
@@ -257,7 +256,7 @@
 <p>It's important to keep in mind at all times that the application should <strong>always</strong> take precedence over its engines. An application is the object that has final say in what goes on in the universe (with the universe being the application's environment) where the engine should only be enhancing it, rather than changing it drastically.</p>
 <p>To see demonstrations of other engines, check out <a href="https://github.com/plataformatec/devise">Devise</a>, an engine that provides authentication for its parent applications, or <a href="https://github.com/radar/forem">Forem</a>, an engine that provides forum functionality. There's also <a href="https://github.com/spree/spree">Spree</a> which provides an e-commerce platform, and <a href="https://github.com/refinery/refinerycms">RefineryCMS</a>, a CMS engine.</p>
 <p>Finally, engines would not have been possible without the work of James Adam, Piotr Sarnacki, the Rails Core Team, and a number of other people. If you ever meet them, don't forget to say thanks!</p>
-<h3 id="ec455254037451adb2916ab33012ec32ad44e8e2">2 Generating an engine</h3>
+<h3 id="generating-an-engine">2 Generating an engine</h3>
 <p>To generate an engine, you will need to run the plugin generator and pass it options as appropriate to the need. For the "blorgh" example, you will need to create a "mountable" engine, running this command in a terminal:</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
@@ -335,8 +334,8 @@ mount Blorgh::Engine, at: "blorgh"
 
 </pre>
 </div>
-<h4 id="81fc66f02c626e819fce091962b69cd908ed799a">2.1 Inside an Engine</h4>
-<h5 id="97ab61dacc9040f70734f5e892933de2adeb4f98">2.1.1 Critical Files</h5>
+<h4 id="inside-an-engine">2.1 Inside an Engine</h4>
+<h5 id="critical-files">2.1.1 Critical Files</h5>
 <p>At the root of this brand new engine's directory lives a <code>blorgh.gemspec</code> file. When you include the engine into an application later on, you will do so with this line in the Rails application's <code>Gemfile</code>:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -371,14 +370,14 @@ end
 <div class="note"><p>It is <strong>highly</strong> recommended that the <code>isolate_namespace</code> line be left within the <code>Engine</code> class definition. Without it, classes generated in an engine <strong>may</strong> conflict with an application.</p></div>
 <p>What this isolation of the namespace means is that a model generated by a call to <code>rails g model</code>, such as <code>rails g model post</code>, won't be called <code>Post</code>, but instead be namespaced and called <code>Blorgh::Post</code>. In addition, the table for the model is namespaced, becoming <code>blorgh_posts</code>, rather than simply <code>posts</code>. Similar to the model namespacing, a controller called <code>PostsController</code> becomes <code>Blorgh::PostsController</code> and the views for that controller will not be at <code>app/views/posts</code>, but <code>app/views/blorgh/posts</code> instead. Mailers are namespaced as well.</p>
 <p>Finally, routes will also be isolated within the engine. This is one of the most important parts about namespacing, and is discussed later in the <a href="#routes">Routes</a> section of this guide.</p>
-<h5 id="0ed1797a9fa3443a063ef8e27c5d0ffac89d7866">2.1.2 <code>app</code> Directory</h5>
+<h5 id="app-directory">2.1.2 <code>app</code> Directory</h5>
 <p>Inside the <code>app</code> directory are the standard <code>assets</code>, <code>controllers</code>, <code>helpers</code>, <code>mailers</code>, <code>models</code> and <code>views</code> directories that you should be familiar with from an application. The <code>helpers</code>, <code>mailers</code> and <code>models</code> directories are empty, so they aren't described in this section. We'll look more into models in a future section, when we're writing the engine.</p>
 <p>Within the <code>app/assets</code> directory, there are the <code>images</code>, <code>javascripts</code> and <code>stylesheets</code> directories which, again, you should be familiar with due to their similarity to an application. One difference here, however, is that each directory contains a sub-directory with the engine name. Because this engine is going to be namespaced, its assets should be too.</p>
 <p>Within the <code>app/controllers</code> directory there is a <code>blorgh</code> directory that contains a file called <code>application_controller.rb</code>. This file will provide any common functionality for the controllers of the engine. The <code>blorgh</code> directory is where the other controllers for the engine will go. By placing them within this namespaced directory, you prevent them from possibly clashing with identically-named controllers within other engines or even within the application.</p>
 <div class="note"><p>The <code>ApplicationController</code> class inside an engine is named just like a Rails application in order to make it easier for you to convert your applications into engines.</p></div>
 <p>Lastly, the <code>app/views</code> directory contains a <code>layouts</code> folder, which contains a file at <code>blorgh/application.html.erb</code>. This file allows you to specify a layout for the engine. If this engine is to be used as a stand-alone engine, then you would add any customization to its layout in this file, rather than the application's <code>app/views/layouts/application.html.erb</code> file.</p>
 <p>If you don't want to force a layout on to users of the engine, then you can delete this file and reference a different layout in the controllers of your engine.</p>
-<h5 id="1d54e6c84cd43ac16d0939af4e0d822e659bd37e">2.1.3 <code>bin</code> Directory</h5>
+<h5 id="bin-directory">2.1.3 <code>bin</code> Directory</h5>
 <p>This directory contains one file, <code>bin/rails</code>, which enables you to use the <code>rails</code> sub-commands and generators just like you would within an application. This means that you will be able to generate new controllers and models for this engine very easily by running commands like this:</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
@@ -387,7 +386,7 @@ rails g model
 </pre>
 </div>
 <p>Keep in mind, of course, that anything generated with these commands inside of an engine that has <code>isolate_namespace</code> in the <code>Engine</code> class will be namespaced.</p>
-<h5 id="39a8a8616ee1de56b00d9a4824b68167c64ae958">2.1.4 <code>test</code> Directory</h5>
+<h5 id="test-directory">2.1.4 <code>test</code> Directory</h5>
 <p>The <code>test</code> directory is where tests for the engine will go. To test the engine, there is a cut-down version of a Rails application embedded within it at <code>test/dummy</code>. This application will mount the engine in the <code>test/dummy/config/routes.rb</code> file:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -399,9 +398,9 @@ end
 </div>
 <p>This line mounts the engine at the path <code>/blorgh</code>, which will make it accessible through the application only at that path.</p>
 <p>Inside the test directory there is the <code>test/integration</code> directory, where integration tests for the engine should be placed. Other directories can be created in the <code>test</code> directory as well. For example, you may wish to create a <code>test/models</code> directory for your model tests.</p>
-<h3 id="12a787b7d9a6689c8390805102524cb35c5b851e">3 Providing engine functionality</h3>
+<h3 id="providing-engine-functionality">3 Providing engine functionality</h3>
 <p>The engine that this guide covers provides posting and commenting functionality and follows a similar thread to the <a href="getting_started.html">Getting Started Guide</a>, with some new twists.</p>
-<h4 id="787d274b6fe78aeeb77a4382be2bc41e33b63091">3.1 Generating a Post Resource</h4>
+<h4 id="generating-a-post-resource">3.1 Generating a Post Resource</h4>
 <p>The first thing to generate for a blog engine is the <code>Post</code> model and related controller. To quickly generate this, you can use the Rails scaffold generator.</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
@@ -507,7 +506,7 @@ root to: "posts#index"
 </pre>
 </div>
 <p>Now people will only need to go to the root of the engine to see all the posts, rather than visiting <code>/posts</code>. This means that instead of <code>http://localhost:3000/blorgh/posts</code>, you only need to go to <code>http://localhost:3000/blorgh</code> now.</p>
-<h4 id="eed33b7478e2efc453671dca69c5627c85bac6e7">3.2 Generating a Comments Resource</h4>
+<h4 id="generating-a-comments-resource">3.2 Generating a Comments Resource</h4>
 <p>Now that the engine can create new blog posts, it only makes sense to add commenting functionality as well. To do this, you'll need to generate a comment model, a comment controller and then modify the posts scaffold to display comments and allow people to create new ones.</p>
 <p>From the application root, run the model generator. Tell it to generate a <code>Comment</code> model, with the related table having two columns: a <code>post_id</code> integer and <code>text</code> text column.</p>
 <div class="code_container">
@@ -657,9 +656,9 @@ Missing partial blorgh/comments/comment with {:handlers=&gt;[:erb, :builder],
 </div>
 <p>The <code>comment_counter</code> local variable is given to us by the <code>&lt;%= render @post.comments %&gt;</code> call, which will define it automatically and increment the counter as it iterates through each comment. It's used in this example to display a small number next to each comment when it's created.</p>
 <p>That completes the comment function of the blogging engine. Now it's time to use it within an application.</p>
-<h3 id="8a6cc2117c9a296d133e57ce52ce82b4dbb17e71">4 Hooking Into an Application</h3>
+<h3 id="hooking-into-an-application">4 Hooking Into an Application</h3>
 <p>Using an engine within an application is very easy. This section covers how to mount the engine into an application and the initial setup required, as well as linking the engine to a <code>User</code> class provided by the application to provide ownership for posts and comments within the engine.</p>
-<h4 id="65e4ece6255d32204ed3ced596b87d73f3245e49">4.1 Mounting the Engine</h4>
+<h4 id="mounting-the-engine">4.1 Mounting the Engine</h4>
 <p>First, the engine needs to be specified inside the application's <code>Gemfile</code>. If there isn't an application handy to test this out in, generate one using the <code>rails new</code> command outside of the engine directory like this:</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
@@ -692,7 +691,7 @@ mount Blorgh::Engine, at: "/blog"
 </div>
 <p>This line will mount the engine at <code>/blog</code> in the application. Making it accessible at <code>http://localhost:3000/blog</code> when the application runs with <code>rails server</code>.</p>
 <div class="note"><p>Other engines, such as Devise, handle this a little differently by making you specify custom helpers (such as <code>devise_for</code>) in the routes. These helpers do exactly the same thing, mounting pieces of the engines's functionality at a pre-defined path which may be customizable.</p></div>
-<h4 id="84e0799d2bf6142c49f0a80de2e01cd120955405">4.2 Engine setup</h4>
+<h4 id="engine-setup">4.2 Engine setup</h4>
 <p>The engine contains migrations for the <code>blorgh_posts</code> and <code>blorgh_comments</code> table which need to be created in the application's database so that the engine's models can query them correctly. To copy these migrations into the application use this command:</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
@@ -732,8 +731,8 @@ rake db:migrate SCOPE=blorgh VERSION=0
 
 </pre>
 </div>
-<h4 id="b879007491eccd6fe1737da3feb44441b98f130d">4.3 Using a Class Provided by the Application</h4>
-<h5 id="029b5fa50d5803af0452d216b36e5de06ac02a27">4.3.1 Using a Model Provided by the Application</h5>
+<h4 id="using-a-class-provided-by-the-application">4.3 Using a Class Provided by the Application</h4>
+<h5 id="using-a-model-provided-by-the-application">4.3.1 Using a Model Provided by the Application</h5>
 <p>When an engine is created, it may want to use specific classes from an application to provide links between the pieces of the engine and the pieces of the application. In the case of the <code>blorgh</code> engine, making posts and comments have authors would make a lot of sense.</p>
 <p>A typical application might have a <code>User</code> class that would be used to represent authors for a post or a comment. But there could be a case where the application calls this class something different, such as <code>Person</code>. For this reason, the engine should not hardcode associations specifically for a <code>User</code> class.</p>
 <p>To keep it simple in this case, the application will have a class called <code>User</code> that represents the users of the application. It can be generated using this
@@ -843,7 +842,7 @@ end
 </pre>
 </div>
 <p>Now instead of the ugly Ruby object output, the author's name will be displayed.</p>
-<h5 id="68fe1935df0d311d1ac72be329ff42fe267ef04d">4.3.2 Using a Controller Provided by the Application</h5>
+<h5 id="using-a-controller-provided-by-the-application">4.3.2 Using a Controller Provided by the Application</h5>
 <p>Because Rails controllers generally share code for things like authentication and accessing session variables, they inherit from <code>ApplicationController</code> by default. Rails engines, however are scoped to run independently from the main application, so each engine gets a scoped <code>ApplicationController</code>. This namespace prevents code collisions, but often engine controllers need to access methods in the main application's <code>ApplicationController</code>. An easy way to provide this access is to change the engine's scoped <code>ApplicationController</code> to inherit from the main application's <code>ApplicationController</code>. For our Blorgh engine this would be done by changing <code>app/controllers/blorgh/application_controller.rb</code> to look like:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -854,9 +853,9 @@ end
 </div>
 <p>By default, the engine's controllers inherit from <code>Blorgh::ApplicationController</code>. So, after making this change they will have access to the main application's <code>ApplicationController</code>, as though they were part of the main application.</p>
 <p>This change does require that the engine is run from a Rails application that has an <code>ApplicationController</code>.</p>
-<h4 id="e48947da64d224ef0b1aa38d2d7be367f448d634">4.4 Configuring an Engine</h4>
+<h4 id="configuring-an-engine">4.4 Configuring an Engine</h4>
 <p>This section covers how to make the <code>User</code> class configurable, followed by general configuration tips for the engine.</p>
-<h5 id="7e7b08990a354de3669dbcec370a22fae0f0d256">4.4.1 Setting Configuration Settings in the Application</h5>
+<h5 id="setting-configuration-settings-in-the-application">4.4.1 Setting Configuration Settings in the Application</h5>
 <p>The next step is to make the class that represents a <code>User</code> in the application customizable for the engine. This is because that class may not always be <code>User</code>, as previously explained. To make this setting customizable, the engine will have a configuration setting called <code>author_class</code> that will be used to specify which class represents users inside the application.</p>
 <p>To define this configuration setting, you should use a <code>mattr_accessor</code> inside the <code>Blorgh</code> module for the engine. Add this line to <code>lib/blorgh.rb</code> inside the engine:</p>
 <div class="code_container">
@@ -915,14 +914,14 @@ Blorgh.author_class = "User"
 <div class="warning"><p>It's very important here to use the <code>String</code> version of the class, rather than the class itself. If you were to use the class, Rails would attempt to load that class and then reference the related table. This could lead to problems if the table wasn't already existing. Therefore, a <code>String</code> should be used and then converted to a class using <code>constantize</code> in the engine later on.</p></div>
 <p>Go ahead and try to create a new post. You will see that it works exactly in the same way as before, except this time the engine is using the configuration setting in <code>config/initializers/blorgh.rb</code> to learn what the class is.</p>
 <p>There are now no strict dependencies on what the class is, only what the API for the class must be. The engine simply requires this class to define a <code>find_or_create_by</code> method which returns an object of that class, to be associated with a post when it's created. This object, of course, should have some sort of identifier by which it can be referenced.</p>
-<h5 id="1995385510dbc7ad75f4550e5fdfb579967b9bd6">4.4.2 General Engine Configuration</h5>
+<h5 id="general-engine-configuration">4.4.2 General Engine Configuration</h5>
 <p>Within an engine, there may come a time where you wish to use things such as initializers, internationalization or other configuration options. The great news is that these things are entirely possible, because a Rails engine shares much the same functionality as a Rails application. In fact, a Rails application's functionality is actually a superset of what is provided by engines!</p>
 <p>If you wish to use an initializer - code that should run before the engine is loaded - the place for it is the <code>config/initializers</code> folder. This directory's functionality is explained in the <a href="configuring.html#initializers">Initializers section</a> of the Configuring guide, and works precisely the same way as the <code>config/initializers</code> directory inside an application. The same thing goes if you want to use a standard initializer.</p>
 <p>For locales, simply place the locale files in the <code>config/locales</code> directory, just like you would in an application.</p>
-<h3 id="a4b5aa2573986d4ba08f8799057c1c2d76676552">5 Testing an engine</h3>
+<h3 id="testing-an-engine">5 Testing an engine</h3>
 <p>When an engine is generated, there is a smaller dummy application created inside it at <code>test/dummy</code>. This application is used as a mounting point for the engine, to make testing the engine extremely simple. You may extend this application by generating controllers, models or views from within the directory, and then use those to test your engine.</p>
 <p>The <code>test</code> directory should be treated like a typical Rails testing environment, allowing for unit, functional and integration tests.</p>
-<h4 id="dc8cc17fb9092b97f58b24c8584410fc2ce9317e">5.1 Functional Tests</h4>
+<h4 id="functional-tests">5.1 Functional Tests</h4>
 <p>A matter worth taking into consideration when writing functional tests is that the tests are going to be running on an application - the <code>test/dummy</code> application - rather than your engine. This is due to the setup of the testing environment; an engine needs an application as a host for testing its main
 functionality, especially controllers. This means that if you were to make a typical <code>GET</code> to a controller in a controller's functional test like this:</p>
 <div class="code_container">
@@ -949,12 +948,12 @@ end
 </pre>
 </div>
 <p>This will also ensure url helpers for the engine will work as expected in your tests.</p>
-<h3 id="25277a4e2d3aab7b020dc767c1fa2cdd12889e2b">6 Improving engine functionality</h3>
+<h3 id="improving-engine-functionality">6 Improving engine functionality</h3>
 <p>This section explains how to add and/or override engine MVC functionality in the main Rails application.</p>
-<h4 id="3270cba4a12bbee17dc198df863938fcecb8dccb">6.1 Overriding Models and Controllers</h4>
+<h4 id="overriding-models-and-controllers">6.1 Overriding Models and Controllers</h4>
 <p>Engine model and controller classes can be extended by open classing them in the main Rails application (since model and controller classes are just Ruby classes that inherit Rails specific functionality). Open classing an Engine class redefines it for use in the main application. This is usually implemented by using the decorator pattern.</p>
 <p>For simple class modifications, use <code>Class#class_eval</code>. For complex class modifications, consider using <code>ActiveSupport::Concern</code>.</p>
-<h5 id="2b434741351bdcb7799821ff6283bf01ebb8a509">6.1.1 A note on Decorators and Loading Code</h5>
+<h5 id="a-note-on-decorators-and-loading-code">6.1.1 A note on Decorators and Loading Code</h5>
 <p>Because these decorators are not referenced by your Rails application itself, Rails' autoloading system will not kick in and load your decorators. This means that you need to require them yourself.</p>
 <p>Here is some sample code to do this:</p>
 <div class="code_container">
@@ -975,7 +974,7 @@ end
 </pre>
 </div>
 <p>This doesn't apply to just Decorators, but anything that you add in an engine that isn't referenced by your main application.</p>
-<h5 id="d184cfed3345694f1859d6287bc57e281e88a1a7">6.1.2 Implementing Decorator Pattern Using Class#class_eval</h5>
+<h5 id="implementing-decorator-pattern-using-class#class_eval">6.1.2 Implementing Decorator Pattern Using Class#class_eval</h5>
 <p><strong>Adding</strong> <code>Post#time_since_created</code>:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1025,7 +1024,7 @@ end
 
 </pre>
 </div>
-<h5 id="fce00a53217d9b89f76c0b2278dc2a9b6aa05587">6.1.3 Implementing Decorator Pattern Using ActiveSupport::Concern</h5>
+<h5 id="implementing-decorator-pattern-using-activesupport::concern">6.1.3 Implementing Decorator Pattern Using ActiveSupport::Concern</h5>
 <p>Using <code>Class#class_eval</code> is great for simple adjustments, but for more complex class modifications, you might want to consider using <a href="http://edgeapi.rubyonrails.org/classes/ActiveSupport/Concern.html"><code>ActiveSupport::Concern</code></a>. ActiveSupport::Concern manages load order of interlinked dependent modules and classes at run time allowing you to significantly modularize your code.</p>
 <p><strong>Adding</strong> <code>Post#time_since_created</code> and <strong>Overriding</strong> <code>Post#summary</code>:</p>
 <div class="code_container">
@@ -1091,7 +1090,7 @@ end
 
 </pre>
 </div>
-<h4 id="89b862244aeff64fb478f03c9520e3820b7d2020">6.2 Overriding Views</h4>
+<h4 id="overriding-views">6.2 Overriding Views</h4>
 <p>When Rails looks for a view to render, it will first look in the <code>app/views</code> directory of the application. If it cannot find the view there, it will check in the <code>app/views</code> directories of all engines that have this directory.</p>
 <p>When the application is asked to render the view for <code>Blorgh::PostsController</code>'s index action, it will first look for the path <code>app/views/blorgh/posts/index.html.erb</code> within the application. If it cannot find it, it will look inside the engine.</p>
 <p>You can override this view in the application by simply creating a new file at <code>app/views/blorgh/posts/index.html.erb</code>. Then you can completely change what this view would normally output.</p>
@@ -1109,7 +1108,7 @@ end
 
 </pre>
 </div>
-<h4 id="03730e58401ef5d9e79d1f674df0a5f9cf756e33">6.3 Routes</h4>
+<h4 id="routes">6.3 Routes</h4>
 <p>Routes inside an engine are isolated from the application by default. This is done by the <code>isolate_namespace</code> call inside the <code>Engine</code> class. This essentially means that the application and its engines can have identically named routes and they will not clash.</p>
 <p>Routes inside an engine are drawn on the <code>Engine</code> class within <code>config/routes.rb</code>, like this:</p>
 <div class="code_container">
@@ -1145,7 +1144,7 @@ end
 <p>If you were to use this inside an engine, it would <strong>always</strong> go to the application's root. If you were to leave off the <code>main_app</code> "routing proxy" method call, it could potentially go to the engine's or application's root, depending on where it was called from.</p>
 <p>If a template rendered from within an engine attempts to use one of the application's routing helper methods, it may result in an undefined method call.
 If you encounter such an issue, ensure that you're not attempting to call the application's routing methods without the <code>main_app</code> prefix from within the engine.</p>
-<h4 id="20e338624cee29d0effead85b0dd0e70de783b4c">6.4 Assets</h4>
+<h4 id="assets">6.4 Assets</h4>
 <p>Assets within an engine work in an identical way to a full application. Because the engine class inherits from <code>Rails::Engine</code>, the application will know to look up assets in the engine's 'app/assets' and 'lib/assets' directories.</p>
 <p>Like all of the other components of an engine, the assets should be namespaced. This means that if you have an asset called <code>style.css</code>, it should be placed at <code>app/assets/stylesheets/[engine name]/style.css</code>, rather than <code>app/assets/stylesheets/style.css</code>. If this asset isn't namespaced, there is a possibility that the host application could have an asset named identically, in which case the application's asset would take precedence and the engine's one would be ignored.</p>
 <p>Imagine that you did have an asset located at <code>app/assets/stylesheets/blorgh/style.css</code> To include this asset inside an application, just use <code>stylesheet_link_tag</code> and reference the asset as if it were inside the engine:</p>
@@ -1165,7 +1164,7 @@ If you encounter such an issue, ensure that you're not attempting to call the ap
 </pre>
 </div>
 <div class="info"><p>Remember that in order to use languages like Sass or CoffeeScript, you should add the relevant library to your engine's <code>.gemspec</code>.</p></div>
-<h4 id="7b0887a85aa3f2ca8218debe5d0f12cbcb4f8b3d">6.5 Separate Assets &amp; Precompiling</h4>
+<h4 id="separate-assets-&amp;-precompiling">6.5 Separate Assets &amp; Precompiling</h4>
 <p>There are some situations where your engine's assets are not required by the host application. For example, say that you've created an admin functionality that only exists for your engine. In this case, the host application doesn't need to require <code>admin.css</code> or <code>admin.js</code>. Only the gem's admin layout needs these assets. It doesn't make sense for the host app to include <code>"blorgh/admin.css"</code> in its stylesheets. In this situation, you should explicitly define these assets for precompilation.  This tells sprockets to add your engine assets when <code>rake assets:precompile</code> is triggered.</p>
 <p>You can define assets for precompilation in <code>engine.rb</code>:</p>
 <div class="code_container">
@@ -1177,7 +1176,7 @@ end
 </pre>
 </div>
 <p>For more information, read the <a href="asset_pipeline.html">Asset Pipeline guide</a>.</p>
-<h4 id="625a1d396eaa80f4cad2a3b6a932959b98568e22">6.6 Other Gem Dependencies</h4>
+<h4 id="other-gem-dependencies">6.6 Other Gem Dependencies</h4>
 <p>Gem dependencies inside an engine should be specified inside the <code>.gemspec</code> file at the root of the engine. The reason is that the engine may be installed as a gem. If dependencies were to be specified inside the <code>Gemfile</code>, these would not be recognized by a traditional gem install and so they would not be installed, scausing the engine to malfunction.</p>
 <p>To specify a dependency that should be installed with the engine during a traditional <code>gem install</code>, specify it inside the <code>Gem::Specification</code> block inside the <code>.gemspec</code> file in the engine:</p>
 <div class="code_container">
