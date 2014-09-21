@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
 <head>
@@ -189,15 +188,15 @@
             <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
 <ol class="chapters">
-<li><a href="#ccd65835237571eb2ffcf0e40e7a812e17fce581">The Easy Way</a></li>
+<li><a href="#the-easy-way">The Easy Way</a></li>
 <li>
-<a href="#ac98a844e1680ba3a2c7b96a12a7aab2105019a1">The Hard Way</a>
+<a href="#the-hard-way">The Hard Way</a>
 
 <ul>
-<li><a href="#4be4cde56eaf3cce19ef282873a1bd8fe63503c8">Install Git</a></li>
-<li><a href="#23ea7f2e942c2bc8e6d0ee0aa6ee9e3b2e258ddb">Clone the Ruby on Rails Repository</a></li>
-<li><a href="#551032ad513a4feaba6d46492462b854b4a232dc">Set up and Run the Tests</a></li>
-<li><a href="#c0adda3a5360abb2f4d5ce9ca3aa968d935de6a8">Active Record Setup</a></li>
+<li><a href="#install-git">Install Git</a></li>
+<li><a href="#clone-the-ruby-on-rails-repository">Clone the Ruby on Rails Repository</a></li>
+<li><a href="#set-up-and-run-the-tests">Set up and Run the Tests</a></li>
+<li><a href="#active-record-setup">Active Record Setup</a></li>
 </ul>
 </li>
 </ol>
@@ -212,11 +211,11 @@
       <div id="mainCol">
         <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
-<h3 id="ccd65835237571eb2ffcf0e40e7a812e17fce581">1 The Easy Way</h3>
+<h3 id="the-easy-way">1 The Easy Way</h3>
 <p>The easiest and recommended way to get a development environment ready to hack is to use the <a href="https://github.com/rails/rails-dev-box">Rails development box</a>.</p>
-<h3 id="ac98a844e1680ba3a2c7b96a12a7aab2105019a1">2 The Hard Way</h3>
+<h3 id="the-hard-way">2 The Hard Way</h3>
 <p>In case you can't use the Rails development box, see section above, these are the steps to manually build a development box for Ruby on Rails core development.</p>
-<h4 id="4be4cde56eaf3cce19ef282873a1bd8fe63503c8">2.1 Install Git</h4>
+<h4 id="install-git">2.1 Install Git</h4>
 <p>Ruby on Rails uses Git for source code control. The <a href="http://git-scm.com/">Git homepage</a> has installation instructions. There are a variety of resources on the net that will help you get familiar with Git:</p>
 <ul>
 <li>
@@ -230,7 +229,7 @@
 <li>
 <a href="http://git-scm.com/book">Pro Git</a> is an entire book about Git with a Creative Commons license.</li>
 </ul>
-<h4 id="23ea7f2e942c2bc8e6d0ee0aa6ee9e3b2e258ddb">2.2 Clone the Ruby on Rails Repository</h4>
+<h4 id="clone-the-ruby-on-rails-repository">2.2 Clone the Ruby on Rails Repository</h4>
 <p>Navigate to the folder where you want the Ruby on Rails source code (it will create its own <code>rails</code> subdirectory) and run:</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
@@ -239,7 +238,7 @@ $ cd rails
 
 </pre>
 </div>
-<h4 id="551032ad513a4feaba6d46492462b854b4a232dc">2.3 Set up and Run the Tests</h4>
+<h4 id="set-up-and-run-the-tests">2.3 Set up and Run the Tests</h4>
 <p>The test suite must pass with any submitted code. No matter whether you are writing a new patch, or evaluating someone else's, you need to be able to run the tests.</p>
 <p>Install first libxml2 and libxslt together with their development files for Nokogiri. In Ubuntu that's</p>
 <div class="code_container">
@@ -377,12 +376,12 @@ $ bundle exec ruby -Itest path/to/test.rb -n test_name
 
 </pre>
 </div>
-<h4 id="c0adda3a5360abb2f4d5ce9ca3aa968d935de6a8">2.4 Active Record Setup</h4>
+<h4 id="active-record-setup">2.4 Active Record Setup</h4>
 <p>The test suite of Active Record attempts to run four times: once for SQLite3, once for each of the two MySQL gems (<code>mysql</code> and <code>mysql2</code>), and once for PostgreSQL. We are going to see now how to set up the environment for them.</p>
 <div class="warning"><p>If you're working with Active Record code, you <em>must</em> ensure that the tests pass for at least MySQL, PostgreSQL, and SQLite3. Subtle differences between the various adapters have been behind the rejection of many patches that looked OK when tested only against MySQL.</p></div>
-<h5 id="c2a3520c849de2aed406ae87e97b5971a3153855">2.4.1 Database Configuration</h5>
+<h5 id="database-configuration">2.4.1 Database Configuration</h5>
 <p>The Active Record test suite requires a custom config file: <code>activerecord/test/config.yml</code>. An example is provided in <code>activerecord/test/config.example.yml</code> which can be copied and used as needed for your environment.</p>
-<h5 id="ec368b03d3fdb9ec203e05b5e8d6123fb554c3cd">2.4.2 MySQL and PostgreSQL</h5>
+<h5 id="mysql-and-postgresql">2.4.2 MySQL and PostgreSQL</h5>
 <p>To be able to run the suite for MySQL and PostgreSQL we need their gems. Install first the servers, their client libraries, and their development files. In Ubuntu just run</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
