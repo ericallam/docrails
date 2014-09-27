@@ -63,22 +63,22 @@
                 <dd><a href="getting_started.html">Rails をはじめよう</a></dd>
                 <dt>モデル</dt>
                 <dd><a href="active_record_basics.html">Active Record の基礎</a></dd>
-                <dd><a href="active_record_migrations.html">Active Record Migrations [翻訳中]</a></dd>
-                <dd><a href="active_record_validations.html">Active Record 検証機能 (バリデーション)</a></dd>
+                <dd><a href="active_record_migrations.html">Active Record マイグレーション [翻訳中]</a></dd>
+                <dd><a href="active_record_validations.html">Active Record バリデーション</a></dd>
                 <dd><a href="active_record_callbacks.html">Active Record コールバック</a></dd>
-                <dd><a href="association_basics.html">Active Record の関連付け (アソシエーション)</a></dd>
+                <dd><a href="association_basics.html">Active Record アソシエーション</a></dd>
                 <dd><a href="active_record_querying.html">Active Record クエリインターフェイス</a></dd>
                 <dt>ビュー</dt>
-                <dd><a href="layouts_and_rendering.html">Layouts and Rendering in Rails [翻訳中]</a></dd>
+                <dd><a href="layouts_and_rendering.html">レイアウトとレンダリング [翻訳中]</a></dd>
                 <dd><a href="form_helpers.html">Action View フォームヘルパー</a></dd>
                 <dt>コントローラ</dt>
                 <dd><a href="action_controller_overview.html">Action Controller の概要</a></dd>
-                <dd><a href="routing.html">Rails Routing from the Outside In [翻訳中]</a></dd>
+                <dd><a href="routing.html">Rails ルーティング</a></dd>
               </dl>
               <dl class="R">
                 <dt>高度なトピック</dt>
                 <dd><a href="active_support_core_extensions.html">Active Support コア拡張機能</a></dd>
-                <dd><a href="i18n.html">Rails国際化(I18n) API</a></dd>
+                <dd><a href="i18n.html">Rails 国際化 (i18n) API</a></dd>
                 <dd><a href="action_mailer_basics.html">Action Mailer Basics [未着手]</a></dd>
                 <dd><a href="active_job_basics.html">Active Job Basics [未着手]</a></dd>
                 <dd><a href="security.html">Ruby on Rails セキュリティガイド</a></dd>
@@ -118,23 +118,23 @@
               </optgroup>
               <optgroup label="モデル">
                   <option value="active_record_basics.html">Active Record の基礎</option>
-                  <option value="active_record_migrations.html">Active Record Migrations [翻訳中]</option>
-                  <option value="active_record_validations.html">Active Record 検証機能 (バリデーション)</option>
+                  <option value="active_record_migrations.html">Active Record マイグレーション [翻訳中]</option>
+                  <option value="active_record_validations.html">Active Record バリデーション</option>
                   <option value="active_record_callbacks.html">Active Record コールバック</option>
-                  <option value="association_basics.html">Active Record の関連付け (アソシエーション)</option>
+                  <option value="association_basics.html">Active Record アソシエーション</option>
                   <option value="active_record_querying.html">Active Record クエリインターフェイス</option>
               </optgroup>
               <optgroup label="ビュー">
-                  <option value="layouts_and_rendering.html">Layouts and Rendering in Rails [翻訳中]</option>
+                  <option value="layouts_and_rendering.html">レイアウトとレンダリング [翻訳中]</option>
                   <option value="form_helpers.html">Action View フォームヘルパー</option>
               </optgroup>
               <optgroup label="コントローラ">
                   <option value="action_controller_overview.html">Action Controller の概要</option>
-                  <option value="routing.html">Rails Routing from the Outside In [翻訳中]</option>
+                  <option value="routing.html">Rails ルーティング</option>
               </optgroup>
               <optgroup label="高度なトピック">
                   <option value="active_support_core_extensions.html">Active Support コア拡張機能</option>
-                  <option value="i18n.html">Rails国際化(I18n) API</option>
+                  <option value="i18n.html">Rails 国際化 (i18n) API</option>
                   <option value="action_mailer_basics.html">Action Mailer Basics [未着手]</option>
                   <option value="active_job_basics.html">Active Job Basics [未着手]</option>
                   <option value="security.html">Ruby on Rails セキュリティガイド</option>
@@ -321,7 +321,24 @@ ruby 2.0.0p353
 
 </pre>
 </div>
-<p>自分のPC環境にRubyがインストールされていない場合は、<a href="https://www.ruby-lang.org/ja/installation/">ruby-lang.org</a> を参照して、自分の環境に合うインストール方法を参照してください。</p>
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
+<h2>自分のPC環境にRubyがインストールされていない場合は、<a href="https://www.ruby-lang.org/ja/installation/">ruby-lang.org</a> を参照して、自分の環境に合うインストール方法を参照してください。</h2>
+<p>自分のPC環境にRubyがインストールされていない場合は、<a href="https://www.ruby-lang.org/ja/downloads/">ruby-lang.org</a> を参照して、自分の環境に合うインストール方法を参照してください。</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>29dd63d037d602b0a349a6db8ac5d9461dfb0970</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
 <p>多くのUnix系OSには実用的なバージョンのSQLite3が同梱されています。 Windowsユーザーなどその他の環境の方は<a href="http://www.sqlite.org">SQLite3</a>のインストール方法をさんしょうしてくだs
 正しくインストールされていること、PATH環境変数が正しく通っていることを確認してください。</p>
 <div class="code_container">
@@ -528,7 +545,7 @@ Rails.application.routes.draw do
   resources :articles
 
   root 'welcome#index'
-  end 
+end
 
 </pre>
 </div>
@@ -682,7 +699,24 @@ end
 
 </pre>
 </div>
-<p>ここで<code>render</code>メソッドは非常に単純なハッシュを引数に取ります。ハッシュのキーは<code>plain</code>、ハッシュの値は<code>params[:article].inspect</code>です。<code>params</code>メソッドは、フォームから送信されてきたパラメータ (つまりフォームのフィールド) を表すオブジェクトです。<code>params</code>メソッドは<code>ActiveSupport::HashWithIndifferentAccess</code>オブジェクトを返します。文字列またはシンボルを使用して、このオブジェクトのハッシュのキーを指定できます。今回の場合、必要なのはフォームの値のうちの1つだけです。</p>
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
+<h2>ここで<code>render</code>メソッドは非常に単純なハッシュを引数に取ります。ハッシュのキーは<code>plain</code>、ハッシュの値は<code>params[:article].inspect</code>です。<code>params</code>メソッドは、フォームから送信されてきたパラメータ (つまりフォームのフィールド) を表すオブジェクトです。<code>params</code>メソッドは<code>ActiveSupport::HashWithIndifferentAccess</code>オブジェクトを返します。文字列またはシンボルを使用して、このオブジェクトのハッシュのキーを指定できます。今回の場合、必要なのはフォームの値のうちの1つだけです。</h2>
+<p>ここで<code>render</code>メソッドは非常に単純なハッシュを引数に取ります。ハッシュのキーは<code>text</code>、ハッシュの値は<code>params[:article].inspect</code>です。<code>params</code>メソッドは、フォームから送信されてきたパラメータ (つまりフォームのフィールド) を表すオブジェクトです。<code>params</code>メソッドは<code>ActiveSupport::HashWithIndifferentAccess</code>オブジェクトを返します。文字列またはシンボルを使用して、このオブジェクトのハッシュのキーを指定できます。今回の場合、必要なのはフォームの値のうちの1つだけです。</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>29dd63d037d602b0a349a6db8ac5d9461dfb0970</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
 <p>フォームを再送信してみると、今度はmissing templateエラーが表示されなくなりました。今度は以下が表示されました。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -703,7 +737,7 @@ $ rails generate model Article title:string text:text
 <p>Railsによって多数のファイルが作成されました。ここで必要なのは、<code>app/models/article.rb</code>と<code>db/migrate/20140120191729_create_articles.rb</code>の2つだけです (後者のファイル名には日付が含まれているのでこれと同じにはなりません)。後者のマイグレーションファイルは、データベース構造を作成するためのものであり、この次に説明します。</p>
 <p>ヒント: Active Recordは、データベースのカラム名とモデルの属性を自動的に対応付けるインテリジェントな機能を有しています。このおかげで、Railsのモデルでは属性をいちいち宣言する必要がありません。そうした作業はActive Recordが自動的にやってくれます。</p>
 <h4 id="マイグレーションを実行する">5.5 マイグレーションを実行する</h4>
-<p>既に見たように<code>rails generate model</code>を実行すると <em>データベースマイグレーション</em> ファイルがf<code>db/migrate</code>の下に作成されます。マイグレーションはRubyのクラスであり、データベーステーブルの作成や変更を簡単に行うためのしくみです。マイグレーションを実行するにはrakeコマンドを実行します。マイグレーションを使用して行ったデータベース構成の変更は、後から取り消すことができます。マイグレーションファイルの名前にはタイムスタンプが含まれており、これに基いて、マイグレーションは作成された順に実行されます。</p>
+<p>既に見たように<code>rails generate model</code>を実行すると <em>データベースマイグレーション</em> ファイルが<code>db/migrate</code>の下に作成されます。マイグレーションはRubyのクラスであり、データベーステーブルの作成や変更を簡単に行うためのしくみです。マイグレーションを実行するにはrakeコマンドを実行します。マイグレーションを使用して行ったデータベース構成の変更は、後から取り消すことができます。マイグレーションファイルの名前にはタイムスタンプが含まれており、これに基いて、マイグレーションは作成された順に実行されます。</p>
 <p>ここで<code>db/migrate/20140120191729_create_articles.rb</code> ファイルをエディタで開いてみると (タイムスタンプは各自異なることにご注意ください)、以下のようになっています。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -757,7 +791,7 @@ end
 <p>ヒント: 後に解説しますが、<code>@article.save</code>は保存に成功したかどうかを真偽値 (trueまたはfalse) で返します。</p>
 <p>この時点でブラウザで<a href="http://localhost:3000/articles/new">http://localhost:3000/articles/new</a>を表示すると、記事の作成が <em>ほぼ</em> 可能な状態になっています。実際にやってみましょう。すると、以下のようなエラーが表示されます。</p>
 <p><img src="images/getting_started/forbidden_attributes_for_new_article.png" alt="Forbidden attributes for new article"></p>
-<p>Railsにはセキュリティの高いアプリケーションを開発するのに便利な機能が多数あり、ここではその機能に引っかかったのです。これは<code>[strong_parameters](http://guides.rubyonrails.org/action_controller_overview.html#strong-parameters)</code>と呼ばれるもので、コントローラのアクションで本当に使用してよいパラメータだけを厳密に指定することを強制するものです。</p>
+<p>Railsにはセキュリティの高いアプリケーションを開発するのに便利な機能が多数あり、ここではその機能に引っかかったのです。これは<a href="http://guides.rubyonrails.org/action_controller_overview.html#strong-parameters"><code>strong_parameters</code></a>と呼ばれるもので、コントローラのアクションで本当に使用してよいパラメータだけを厳密に指定することを強制するものです。</p>
 <p>なぜそんな面倒なことをしないといけないのでしょうか。コントローラが受け取ったパラメータをノーチェックでまるごと自動的にモデルに渡せるようにする方が確かに開発は楽なのですが、パラメータの渡し方をこのように便利にしてしまうと、パラメータがチェックされていない点を攻撃者に悪用される可能性があります。たとえば、サーバーへのリクエストに含まれる新規投稿送信フォームに、もともとフォームになかったフィールドが攻撃者によって密かに追加され、それがアプリケーションの整合性を脅かす可能性が考えられます。チェックされていないパラメータをまるごとモデルに保存する行為は、モデルに対する「マスアサインメント」と呼ばれています。これが発生すると、正常なデータの中に悪意のあるデータが含まれてしまう可能性があります。</p>
 <p>そこで、コントローラで渡されるパラメータはホワイトリストでチェックし、不正なマスアサインメントを防止する必要があるのです。この場合、<code>create</code>でパラメータを安全に使用するために、<code>title</code>と<code>text</code>パラメータの利用を「許可」し、かつ「必須」であることを指定したいのです。この指定を文法化するために、<code>require</code>メソッドと<code>permit</code>メソッドが導入されました。これに基いて、該当行を以下のように変更します。</p>
 <div class="code_container">
@@ -1048,7 +1082,25 @@ end
 </div>
 <p>このフォームの送信先は<code>update</code>アクションになります。今の時点では未定義ですが、この後すぐ定義します。</p>
 <p>ここで<code>method: :patch</code>というオプションが指定されていますので、<code>PATCH</code>というHTTPメソッドを使用してこのフォームを送信しようとしていることがRailsに伝わります。PATCHメソッドは、RESTプロトコルに基いてリソースを <strong>更新</strong> するために使用されます。</p>
-<p><code>form_for</code>ヘルパーメソッドの最初のパラメータには<code>@article</code>のようなオブジェクトを使用できます。<code>@article</code>のようなオブジェクトが最初のパラメータとして渡されると、ヘルパーはそのパラメータに含まれているフィールドを使用してフォームの項目を埋めます。ここで面白いのは、<code>@article</code>のようなインスタンス変数の代わりに同じ名前のシンボル (<code>:article</code>など) を渡した場合にも動作はまったく同じであることです。以上がこのコードで行われていることです。詳細については、<a href="http://api.rubyonrails.org/classes/ActionView/Helpers/FormHelper.html#method-i-form_for">form_forに関するドキュメント</a>を参照してください。</p>
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
+<h2>
+<code>form_for</code>ヘルパーメソッドの最初のパラメータには<code>@article</code>のようなオブジェクトを使用できます。<code>@article</code>のようなオブジェクトが最初のパラメータとして渡されると、ヘルパーはそのパラメータに含まれているフィールドを使用してフォームの項目を埋めます。ここで面白いのは、<code>@article</code>のようなインスタンス変数の代わりに同じ名前のシンボル (<code>:article</code>など) を渡した場合にも動作はまったく同じであることです。以上がこのコードで行われていることです。詳細については、<a href="http://api.rubyonrails.org/classes/ActionView/Helpers/FormHelper.html#method-i-form_for">form_forに関するドキュメント</a>を参照してください。</h2>
+<p><code>form_tag</code>ヘルパーメソッドの最初のパラメータには<code>@article</code>のようなオブジェクトを使用できます。<code>@article</code>のようなオブジェクトが最初のパラメータとして渡されると、ヘルパーはそのパラメータに含まれているフィールドを使用してフォームの項目を埋めます。ここで面白いのは、<code>@article</code>のようなインスタンス変数の代わりに同じ名前のシンボル (<code>:article</code>など) を渡した場合にも動作はまったく同じであることです。以上がこのコードで行われていることです。詳細については、<a href="http://api.rubyonrails.org/classes/ActionView/Helpers/FormHelper.html#method-i-form_for">form_forに関するドキュメント</a>を参照してください。</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>29dd63d037d602b0a349a6db8ac5d9461dfb0970</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
 <p>続いて、<code>app/controllers/articles_controller.rb</code>に<code>update</code>アクションを作成しましょう。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1154,7 +1206,7 @@ private
 
 </pre>
 </div>
-<p>Then do the same for the <code>app/views/articles/edit.html.erb</code> view:</p>
+<p>続いて、<code>app/views/articles/edit.html.erb</code>ビューでも同じ作業を行います。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 &lt;h1&gt;Edit article&lt;/h1&gt;
@@ -1718,8 +1770,8 @@ class CommentsController &lt; ApplicationController
 </ul>
 <p>ヒント: <code>doc:guides</code> rakeタスクを使用してRailsガイドをローカル生成するには、RedCloth gemをインストールする必要があります。RedCloth gemを<code>Gemfile</code>に追記して<code>bundle install</code>を実行することで利用できるようになります。</p>
 <h3 id="設定の落とし穴">11 設定の落とし穴</h3>
-<p>Railsでの無用なトラブルを避けるための最も初歩的な方法は、外部データを常にUTF-8で保存することです。このとおりにしないと、RubyライブラリやRailsはネイティブデータをたびたびUTF-8に変換しなければならず、しかもときに失敗することがあります。外部データは常にUTF-8にしておくことをぜひお勧めします。</p>
-<p>外部データのエンコードが不統一な場合によく起きる症状としては、たとえば画面に黒い菱型◆と疑問符が表示されるというものがあります。他にも、"ü"という文字のはずが"Ã¼"という文字に変わっている、などの症状もあります。Railsではこうした問題を緩和するため、問題の原因を自動的に検出して修正するために内部で多くの手順を行っています。しかし、UTF-8で保存されていない外部データがあると、Railsによる自動検出/修正が効かずに文字化けが発生することがあります。</p>
+<p>Railsでの無用なトラブルを避けるための最も初歩的な方法は、外部データを常にUTF-8で保存することです。このとおりにしないと、RubyライブラリやRailsはネイティブデータをたびたびUTF-8に変換しなければならず、しかもときに失敗することがあります。外部データを常にUTF-8にしておくことをぜひお勧めします。</p>
+<p>外部データのエンコードが不統一な場合によく起きる症状としては、たとえば画面に黒い菱型◆と疑問符が表示されるというものがあります。他にも、"ü"という文字のはずが"Ã¼"という文字に変わっている、などの症状もります。Railsではこうした問題を緩和するため、問題の原因を自動的に検出して修正するために内部で多くの手順を行っています。しかし、UTF-8で保存されていない外部データがあると、Railsによる自動検出/修正が効かずに文字化けが発生することがあります。</p>
 <p>UTF-8でないデータの主な原因は以下の2つです。</p>
 <ul>
 <li>テキストエディタ: TextMateを含む多くのテキストエディタは、デフォルトでUTF-8エンコードでテキストを保存してくれます。使用しているテキストエディタがこのようになっていない場合、テンプレートを表示する時にéなどの特殊文字が◆?のような感じでブラウザで表示されることがあります。これはi18n(国際化)用の翻訳ファイルで発生することもあります。一部のDreamweaverのようにUTF-8保存がデフォルトでないエディタであっても、デフォルトをUTF-8に変更する方法は用意されているはずです。エンコードはUTF-8に変えてください。</li>
