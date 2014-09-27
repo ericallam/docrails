@@ -58,7 +58,7 @@ _Fixtures_ is a fancy word for sample data. Fixtures allow you to populate your 
 
 You'll find fixtures under your `test/fixtures` directory. When you run `rails generate model` to create a new model fixture stubs will be automatically created and placed in this directory.
 
-```yaml
+#### YAML
 
 YAML-formatted fixtures are a very human-friendly way to describe your sample data. These types of fixtures have the **.yml** file extension (as in `users.yml`).
 
@@ -99,7 +99,7 @@ one:
 
 ERB allows you to embed Ruby code within templates. The YAML fixture format is pre-processed with ERB when Rails loads fixtures. This allows you to use Ruby to help you generate some sample data. For example, the following code generates a thousand users:
 
-    ```erb
+```erb
 <% 1000.times do |n| %>
 user_<%= n %>:
   username: <%= "user#{n}" %>
@@ -117,7 +117,7 @@ Rails by default automatically loads all fixtures from the `test/fixtures` folde
 
 #### Fixtures are Active Record objects
 
-Fixtures are instances of Active Record. As mentioned in point #3 above, you can access the object directly because it is automatically setup as a local variable of the test case. 例：
+Fixtures are instances of Active Record. As mentioned in point #3 above, you can access the object directly because it is automatically setup as a local variable of the test case. For example:
 
 ```ruby 
 # this will return the User object for the fixture named david
@@ -158,8 +158,8 @@ require 'test_helper'
 class PostTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
-# end
-  end
+  # end
+end
 ```
 
 A line by line examination of this file will help get you oriented to Rails testing code and terminology.
@@ -184,7 +184,7 @@ Rails adds a `test` method that takes a test name and a block. It generates a no
 ```ruby 
 test "the truth" do
   assert true
-  end
+end
 ```
 
 acts as if you had written
@@ -192,7 +192,7 @@ acts as if you had written
 ```ruby 
 def test_the_truth
   assert true
-  end
+end
 ```
 
 only the `test` macro allows a more readable test name. You can still use regular method definitions though.
@@ -257,7 +257,7 @@ Let us run this newly added test.
 
 ```bash
 $ rake test test/models/post_test.rb test_should_not_save_post_without_title
-金
+F
 
 Finished tests in 0.044632s, 22.4054 tests/s, 22.4054 assertions/s.
 
@@ -274,7 +274,7 @@ In the output, `F` denotes a failure. You can see the corresponding trace shown 
 test "should not save post without title" do
   post = Post.new
   assert_not post.save, "Saved the post without a title"
-  end
+end
 ```
 
 Running this test shows the friendlier assertion message:
@@ -290,7 +290,7 @@ Now to get this test to pass we can add a model level validation for the _title_
 ```ruby 
 class Post < ActiveRecord::Base
   validates :title, presence: true
-  end
+end
 ```
 
 Now the test should pass. Let us verify by running the test again:
@@ -315,7 +315,7 @@ test "should report error" do
   # some_undefined_variable is not defined elsewhere in the test case
   some_undefined_variable
   assert true
-  end
+end
 ```
 
 Now you can see even more output in the console from running the tests:
@@ -429,7 +429,7 @@ class PostsControllerTest < ActionController::TestCase
     assert_response :success
     assert_not_nil assigns(:posts)
   end
-  end
+end
 ```
 
 In the `test_should_get_index` test, Rails simulates a request on the action called `index`, making sure the request was successful and also ensuring that it assigns a valid `posts` instance variable.
@@ -464,7 +464,7 @@ test "should create post" do
   end
 
   assert_redirected_to post_path(assigns(:post))
-  end
+end
 ```
 
 Now you can try running all the tests and they should pass.
@@ -493,7 +493,7 @@ After a request has been made using one of the 6 methods (`get`, `post`, etc.) a
 * `flash` - Any objects living in the flash.
 * `session` - Any object living in session variables.
 
-As is the case with normal Hash objects, you can access the values by referencing the keys by string. You can also reference them by symbol name, except for `assigns`. 例：
+As is the case with normal Hash objects, you can access the values by referencing the keys by string. You can also reference them by symbol name, except for `assigns`. For example:
 
 ```ruby 
 flash["gordon"]               flash[:gordon]
@@ -515,7 +515,7 @@ You also have access to three instance variables in your functional tests:
 ### Setting Headers and CGI variables
 
 [HTTP headers](http://tools.ietf.org/search/rfc2616#section-5.3)
-そして友人たち！ 
+and
 [CGI variables](http://tools.ietf.org/search/rfc3875#section-4.1)
 can be set directly on the `@request` instance variable:
 
@@ -539,7 +539,7 @@ test "index should render correct template and layout" do
   get :index
   assert_template :index
   assert_template layout: "layouts/application"
-  end
+end
 ```
 
 Note that you cannot test for template and layout at the same time, with one call to `assert_template` method.
@@ -560,7 +560,7 @@ Hence:
 test "new should render correct layout" do
   get :new
   assert_template layout: "layouts/application", partial: "_form"
-  end
+end
 ```
 
 is the correct way to assert for the layout when the view renders a partial with name `_form`. Omitting the `:partial` key in your `assert_template` call will complain.
@@ -576,7 +576,7 @@ test "should create post" do
   end
   assert_redirected_to post_path(assigns(:post))
   assert_equal 'Post was successfully created.', flash[:notice]
-  end
+end
 ```
 
 ### Testing Views
@@ -602,7 +602,7 @@ You can also use nested `assert_select` blocks. In this case the inner `assert_s
 ```ruby 
 assert_select 'ul.navigation' do
   assert_select 'li.menu_item'
-  end
+end
 ```
 
 Alternatively the collection of elements selected by the outer `assert_select` may be iterated through so that `assert_select` may be called separately for each element. Suppose for example that the response contains two ordered lists, each with four list elements then the following tests will both pass.
@@ -612,11 +612,11 @@ assert_select "ol" do |elements|
   elements.each do |element|
     assert_select element, "li", 4
   end
-  end
+end
 
 assert_select "ol" do
   assert_select "li", 8
-  end
+end
 ```
 
 The `assert_select` assertion is quite powerful. For more advanced usage, refer to its [documentation](http://api.rubyonrails.org/classes/ActionDispatch/Assertions/SelectorAssertions.html).
@@ -636,7 +636,7 @@ Here's an example of using `assert_select_email`:
 ```ruby 
 assert_select_email do
   assert_select 'small', 'Please click the "Unsubscribe" link if you want to opt-out.'
-  end
+end
 ```
 
 Integration Testing
@@ -660,8 +660,8 @@ require 'test_helper'
 class UserFlowsTest < ActionDispatch::IntegrationTest
   # test "the truth" do
   #   assert true
-# end
-  end
+  # end
+end
 ```
 
 Integration tests inherit from `ActionDispatch::IntegrationTest`. This makes available some additional helpers to use in your integration tests. Also you need to explicitly include the fixtures to be made available to the test.
@@ -675,7 +675,7 @@ In addition to the standard testing helpers, there are some additional helpers a
 | `https?`                                                           | Returns `true` if the session is mimicking a secure HTTPS request.|
 | `https!`                                                           | Allows you to mimic a secure HTTPS request.|
 | `host!`                                                            | Allows you to set the host name to use in the next request.|
-### リダイレクト`                                                        | Returns `true` if the last request was a redirect.|
+| `redirect?`                                                        | Returns `true` if the last request was a redirect.|
 | `follow_redirect!`                                                 | Follows a single redirect response.|
 | `request_via_redirect(http_method, path, [parameters], [headers])` | Allows you to make an HTTP request and follow any subsequent redirects.|
 | `post_via_redirect(path, [parameters], [headers])`                 | Allows you to make an HTTP POST request and follow any subsequent redirects.|
@@ -710,7 +710,7 @@ class UserFlowsTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert assigns(:products)
   end
-  end
+end
 ```
 
 As you can see the integration test involves multiple controllers and exercises the entire stack from database to dispatcher. In addition you can have multiple session instances open simultaneously in a test and extend those instances with assertion methods to create a very powerful testing DSL (domain-specific language) just for your application.
@@ -749,8 +749,8 @@ class UserFlowsTest < ActionDispatch::IntegrationTest
         get "/products/all"
         assert_response :success
         assert assigns(:products)
-  end
-  end
+      end
+    end
 
     def login(user)
       open_session do |sess|
@@ -760,9 +760,9 @@ class UserFlowsTest < ActionDispatch::IntegrationTest
         sess.post "/login", username: u.username, password: u.password
         assert_equal '/welcome', sess.path
         sess.https!(false)
-  end
-end 
-  end
+      end
+    end
+end
 ```
 
 Rake Tasks for Running your Tests
@@ -837,7 +837,7 @@ class PostsControllerTest < ActionController::TestCase
     assert_redirected_to posts_path
   end
 
-  end
+end
 ```
 
 Above, the `setup` method is called before each test and so `@post` is available for each of the tests. Rails implements `setup` and `teardown` as `ActiveSupport::Callbacks`. Which essentially means you need not only use `setup` and `teardown` as methods in your tests. You could specify them by using:
@@ -885,7 +885,7 @@ class PostsControllerTest < ActionController::TestCase
     def initialize_post
       @post = posts(:one)
   end
-  end
+end
 ```
 
 Testing Routes
@@ -896,7 +896,7 @@ Like everything else in your Rails application, it is recommended that you test 
 ```ruby 
 test "should route to post" do
   assert_routing '/posts/1', {controller: "posts", action: "show", id: "1"}
-  end
+end
 ```
 
 Testing Your Mailers
@@ -948,7 +948,7 @@ class UserMailerTest < ActionMailer::TestCase
     assert_equal 'You have been invited by me@example.com', email.subject
     assert_equal read_fixture('invite').join, email.body.to_s
   end
-  end
+end
 ```
 
 In the test we send the email and store the returned object in the `email` variable. We then ensure that it was sent (the first assert), then, in the second batch of assertions, we ensure that the email does indeed contain what we expect. The helper `read_fixture` is used to read in the content from this file.
@@ -960,7 +960,7 @@ Hi friend@example.com,
 
 You have been invited.
 
-乾杯!
+Cheers!
 ```
 
 This is the right time to understand a little more about writing tests for your mailers. The line `ActionMailer::Base.delivery_method = :test` in `config/environments/test.rb` sets the delivery method to test mode so that email will not actually be delivered (useful to avoid spamming your users while testing) but instead it will be appended to an array (`ActionMailer::Base.deliveries`).
@@ -985,7 +985,7 @@ class UserControllerTest < ActionController::TestCase
     assert_equal 'friend@example.com', invite_email.to[0]
     assert_match(/Hi friend@example.com/, invite_email.body)
   end
-  end
+end
 ```
 
 Testing helpers
@@ -996,7 +996,7 @@ In order to test helpers, all you need to do is check that the output of the hel
 ```bash
 $ rails generate helper User
       create  app/helpers/user_helper.rb
-invoke    test_unit
+      invoke  test_unit
       create    test/helpers/user_helper_test.rb
 ```
 
@@ -1006,7 +1006,7 @@ The generated test file contains the following code:
 require 'test_helper'
 
 class UserHelperTest < ActionView::TestCase
-  end
+end
 ```
 
 A helper is just a simple module where you can define methods which are available into your views. To test the output of the helper's methods, you just have to use a mixin like this:
@@ -1018,7 +1018,7 @@ class UserHelperTest < ActionView::TestCase
   test "should return the user name" do
     # ...
   end
-  end
+end
 ```
 
 Moreover, since the test class extends from `ActionView::TestCase`, you have access to Rails' helper methods such as `link_to` or `pluralize`.
