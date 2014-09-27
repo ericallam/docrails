@@ -16,7 +16,7 @@
 <meta property="og:type"        content="article" />
 <meta property="og:description" content="Rails 開発のお供に! 日本語版 Rails リファレンスガイド (Rails 4.1 対応)" />
 
-<title>Rails Routing from the Outside In — Ruby on Rails Guides</title>
+<title>Ruby on Rails Guides</title>
 <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
 
@@ -63,22 +63,22 @@
                 <dd><a href="getting_started.html">Rails をはじめよう</a></dd>
                 <dt>モデル</dt>
                 <dd><a href="active_record_basics.html">Active Record の基礎</a></dd>
-                <dd><a href="active_record_migrations.html">Active Record Migrations [翻訳中]</a></dd>
-                <dd><a href="active_record_validations.html">Active Record 検証機能 (バリデーション)</a></dd>
+                <dd><a href="active_record_migrations.html">Active Record マイグレーション [翻訳中]</a></dd>
+                <dd><a href="active_record_validations.html">Active Record バリデーション</a></dd>
                 <dd><a href="active_record_callbacks.html">Active Record コールバック</a></dd>
-                <dd><a href="association_basics.html">Active Record の関連付け (アソシエーション)</a></dd>
+                <dd><a href="association_basics.html">Active Record アソシエーション</a></dd>
                 <dd><a href="active_record_querying.html">Active Record クエリインターフェイス</a></dd>
                 <dt>ビュー</dt>
-                <dd><a href="layouts_and_rendering.html">Layouts and Rendering in Rails [翻訳中]</a></dd>
+                <dd><a href="layouts_and_rendering.html">レイアウトとレンダリング [翻訳中]</a></dd>
                 <dd><a href="form_helpers.html">Action View フォームヘルパー</a></dd>
                 <dt>コントローラ</dt>
                 <dd><a href="action_controller_overview.html">Action Controller の概要</a></dd>
-                <dd><a href="routing.html">Rails Routing from the Outside In [翻訳中]</a></dd>
+                <dd><a href="routing.html">Rails ルーティング</a></dd>
               </dl>
               <dl class="R">
                 <dt>高度なトピック</dt>
                 <dd><a href="active_support_core_extensions.html">Active Support コア拡張機能</a></dd>
-                <dd><a href="i18n.html">Rails国際化(I18n) API</a></dd>
+                <dd><a href="i18n.html">Rails 国際化 (i18n) API</a></dd>
                 <dd><a href="action_mailer_basics.html">Action Mailer Basics [未着手]</a></dd>
                 <dd><a href="active_job_basics.html">Active Job Basics [未着手]</a></dd>
                 <dd><a href="security.html">Ruby on Rails セキュリティガイド</a></dd>
@@ -118,23 +118,23 @@
               </optgroup>
               <optgroup label="モデル">
                   <option value="active_record_basics.html">Active Record の基礎</option>
-                  <option value="active_record_migrations.html">Active Record Migrations [翻訳中]</option>
-                  <option value="active_record_validations.html">Active Record 検証機能 (バリデーション)</option>
+                  <option value="active_record_migrations.html">Active Record マイグレーション [翻訳中]</option>
+                  <option value="active_record_validations.html">Active Record バリデーション</option>
                   <option value="active_record_callbacks.html">Active Record コールバック</option>
-                  <option value="association_basics.html">Active Record の関連付け (アソシエーション)</option>
+                  <option value="association_basics.html">Active Record アソシエーション</option>
                   <option value="active_record_querying.html">Active Record クエリインターフェイス</option>
               </optgroup>
               <optgroup label="ビュー">
-                  <option value="layouts_and_rendering.html">Layouts and Rendering in Rails [翻訳中]</option>
+                  <option value="layouts_and_rendering.html">レイアウトとレンダリング [翻訳中]</option>
                   <option value="form_helpers.html">Action View フォームヘルパー</option>
               </optgroup>
               <optgroup label="コントローラ">
                   <option value="action_controller_overview.html">Action Controller の概要</option>
-                  <option value="routing.html">Rails Routing from the Outside In [翻訳中]</option>
+                  <option value="routing.html">Rails ルーティング</option>
               </optgroup>
               <optgroup label="高度なトピック">
                   <option value="active_support_core_extensions.html">Active Support コア拡張機能</option>
-                  <option value="i18n.html">Rails国際化(I18n) API</option>
+                  <option value="i18n.html">Rails 国際化 (i18n) API</option>
                   <option value="action_mailer_basics.html">Action Mailer Basics [未着手]</option>
                   <option value="active_job_basics.html">Active Job Basics [未着手]</option>
                   <option value="security.html">Ruby on Rails セキュリティガイド</option>
@@ -176,86 +176,78 @@
 
   <div id="feature">
     <div class="wrapper">
-      <h2>Rails Routing from the Outside In</h2><p>This guide covers the user-facing features of Rails routing.</p><p>After reading this guide, you will know:</p>
-<ul>
-<li>How to interpret the code in <code>routes.rb</code>.</li>
-<li>How to construct your own routes, using either the preferred resourceful style or the <code>match</code> method.</li>
-<li>What parameters to expect an action to receive.</li>
-<li>How to automatically create paths and URLs using route helpers.</li>
-<li>Advanced techniques such as constraints and Rack endpoints.</li>
-</ul>
-
+      
                 <div id="subCol">
             <h3 class="chapter"><img src="images/chapters_icon.gif" alt="" />Chapters</h3>
             <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
 <ol class="chapters">
 <li>
-<a href="#the-purpose-of-the-rails-router">The Purpose of the Rails Router</a>
+<a href="#rails%E3%83%AB%E3%83%BC%E3%82%BF%E3%83%BC%E3%81%AE%E7%9B%AE%E7%9A%84">Railsルーターの目的</a>
 
 <ul>
-<li><a href="#connecting-urls-to-code">Connecting URLs to Code</a></li>
-<li><a href="#generating-paths-and-urls-from-code">Generating Paths and URLs from Code</a></li>
+<li><a href="#url%E3%82%92%E5%AE%9F%E9%9A%9B%E3%81%AE%E3%82%B3%E3%83%BC%E3%83%89%E3%81%AB%E5%89%B2%E3%82%8A%E6%8C%AF%E3%82%8B">URLを実際のコードに割り振る</a></li>
+<li><a href="#%E3%82%B3%E3%83%BC%E3%83%89%E3%81%8B%E3%82%89%E3%83%91%E3%82%B9%E3%82%84url%E3%82%92%E7%94%9F%E6%88%90%E3%81%99%E3%82%8B">コードからパスやURLを生成する</a></li>
 </ul>
 </li>
 <li>
-<a href="#resource-routing:-the-rails-default">Resource Routing: the Rails Default</a>
+<a href="#%E3%83%AA%E3%82%BD%E3%83%BC%E3%82%B9%E3%83%99%E3%83%BC%E3%82%B9%E3%81%AE%E3%83%AB%E3%83%BC%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0:-rails%E3%81%AE%E3%83%87%E3%83%95%E3%82%A9%E3%83%AB%E3%83%88">リソースベースのルーティング: Railsのデフォルト</a>
 
 <ul>
-<li><a href="#resources-on-the-web">Resources on the Web</a></li>
-<li><a href="#crud,-verbs,-and-actions">CRUD, Verbs, and Actions</a></li>
-<li><a href="#path-and-url-helpers">Path and URL Helpers</a></li>
-<li><a href="#defining-multiple-resources-at-the-same-time">Defining Multiple Resources at the Same Time</a></li>
-<li><a href="#singular-resources">Singular Resources</a></li>
-<li><a href="#controller-namespaces-and-routing">Controller Namespaces and Routing</a></li>
-<li><a href="#nested-resources">Nested Resources</a></li>
-<li><a href="#routing-concerns">Routing concerns</a></li>
-<li><a href="#creating-paths-and-urls-from-objects">Creating Paths and URLs From Objects</a></li>
-<li><a href="#adding-more-restful-actions">Adding More RESTful Actions</a></li>
+<li><a href="#web%E4%B8%8A%E3%81%AE%E3%83%AA%E3%82%BD%E3%83%BC%E3%82%B9">Web上のリソース</a></li>
+<li><a href="#crud%E3%80%81%E5%8B%95%E8%A9%9E%E3%80%81%E3%82%A2%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3">CRUD、動詞、アクション</a></li>
+<li><a href="#%E3%83%91%E3%82%B9%E3%81%A8url%E7%94%A8%E3%83%98%E3%83%AB%E3%83%91%E3%83%BC">パスとURL用ヘルパー</a></li>
+<li><a href="#%E8%A4%87%E6%95%B0%E3%81%AE%E3%83%AA%E3%82%BD%E3%83%BC%E3%82%B9%E3%82%92%E5%90%8C%E6%99%82%E3%81%AB%E5%AE%9A%E7%BE%A9%E3%81%99%E3%82%8B">複数のリソースを同時に定義する</a></li>
+<li><a href="#%E5%8D%98%E6%95%B0%E5%BD%A2%E3%83%AA%E3%82%BD%E3%83%BC%E3%82%B9">単数形リソース</a></li>
+<li><a href="#%E3%82%B3%E3%83%B3%E3%83%88%E3%83%AD%E3%83%BC%E3%83%A9%E3%81%AE%E5%90%8D%E5%89%8D%E7%A9%BA%E9%96%93%E3%81%A8%E3%83%AB%E3%83%BC%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0">コントローラの名前空間とルーティング</a></li>
+<li><a href="#%E3%83%8D%E3%82%B9%E3%83%88%E3%81%97%E3%81%9F%E3%83%AA%E3%82%BD%E3%83%BC%E3%82%B9">ネストしたリソース</a></li>
+<li><a href="#%E3%83%AB%E3%83%BC%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0%E3%81%AE%E3%80%8Cconcern%E3%80%8D%E6%A9%9F%E8%83%BD">ルーティングの「concern」機能</a></li>
+<li><a href="#%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%81%8B%E3%82%89%E3%83%91%E3%82%B9%E3%81%A8url%E3%82%92%E4%BD%9C%E6%88%90%E3%81%99%E3%82%8B">オブジェクトからパスとURLを作成する</a></li>
+<li><a href="#restful%E3%81%AA%E3%82%A2%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%92%E3%81%95%E3%82%89%E3%81%AB%E8%BF%BD%E5%8A%A0%E3%81%99%E3%82%8B">RESTfulなアクションをさらに追加する</a></li>
 </ul>
 </li>
 <li>
-<a href="#non-resourceful-routes">Non-Resourceful Routes</a>
+<a href="#%E3%83%AA%E3%82%BD%E3%83%BC%E3%82%B9%E3%83%95%E3%83%AB%E3%81%A7%E3%81%AA%E3%81%84%E3%83%AB%E3%83%BC%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0">リソースフルでないルーティング</a>
 
 <ul>
-<li><a href="#bound-parameters">Bound Parameters</a></li>
-<li><a href="#dynamic-segments">Dynamic Segments</a></li>
-<li><a href="#static-segments">Static Segments</a></li>
-<li><a href="#the-query-string">The Query String</a></li>
-<li><a href="#defining-defaults">Defining Defaults</a></li>
-<li><a href="#naming-routes">Naming Routes</a></li>
-<li><a href="#http-verb-constraints">HTTP Verb Constraints</a></li>
-<li><a href="#segment-constraints">Segment Constraints</a></li>
-<li><a href="#request-based-constraints">Request-Based Constraints</a></li>
-<li><a href="#advanced-constraints">Advanced Constraints</a></li>
-<li><a href="#route-globbing-and-wildcard-segments">Route Globbing and Wildcard Segments</a></li>
-<li><a href="#redirection">Redirection</a></li>
-<li><a href="#routing-to-rack-applications">Routing to Rack Applications</a></li>
-<li><a href="#using-root">Using <code>root</code></a></li>
-<li><a href="#unicode-character-routes">Unicode character routes</a></li>
+<li><a href="#%E3%83%91%E3%83%A9%E3%83%A1%E3%83%BC%E3%82%BF%E3%81%AE%E5%89%B2%E3%82%8A%E5%BD%93%E3%81%A6">パラメータの割り当て</a></li>
+<li><a href="#%E5%8B%95%E7%9A%84%E3%81%AA%E3%82%BB%E3%82%B0%E3%83%A1%E3%83%B3%E3%83%88">動的なセグメント</a></li>
+<li><a href="#%E9%9D%99%E7%9A%84%E3%81%AA%E3%82%BB%E3%82%B0%E3%83%A1%E3%83%B3%E3%83%88">静的なセグメント</a></li>
+<li><a href="#%E3%82%AF%E3%82%A8%E3%83%AA%E6%96%87%E5%AD%97%E5%88%97">クエリ文字列</a></li>
+<li><a href="#%E3%83%87%E3%83%95%E3%82%A9%E3%83%AB%E3%83%88%E8%A8%AD%E5%AE%9A%E3%82%92%E5%AE%9A%E7%BE%A9%E3%81%99%E3%82%8B">デフォルト設定を定義する</a></li>
+<li><a href="#%E5%90%8D%E5%89%8D%E4%BB%98%E3%81%8D%E3%83%AB%E3%83%BC%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0">名前付きルーティング</a></li>
+<li><a href="#http%E5%8B%95%E8%A9%9E%E3%82%92%E5%88%B6%E9%99%90%E3%81%99%E3%82%8B">HTTP動詞を制限する</a></li>
+<li><a href="#%E3%82%BB%E3%82%B0%E3%83%A1%E3%83%B3%E3%83%88%E3%82%92%E5%88%B6%E9%99%90%E3%81%99%E3%82%8B">セグメントを制限する</a></li>
+<li><a href="#%E3%83%AA%E3%82%AF%E3%82%A8%E3%82%B9%E3%83%88%E5%86%85%E5%AE%B9%E3%81%AB%E5%BF%9C%E3%81%98%E3%81%A6%E5%88%B6%E9%99%90%E3%82%92%E5%8A%A0%E3%81%88%E3%82%8B">リクエスト内容に応じて制限を加える</a></li>
+<li><a href="#%E9%AB%98%E5%BA%A6%E3%81%AA%E5%88%B6%E9%99%90">高度な制限</a></li>
+<li><a href="#%E3%83%AB%E3%83%BC%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0%E3%82%B0%E3%83%AD%E3%83%96%E3%81%A8%E3%83%AF%E3%82%A4%E3%83%AB%E3%83%89%E3%82%AB%E3%83%BC%E3%83%89%E3%82%BB%E3%82%B0%E3%83%A1%E3%83%B3%E3%83%88">ルーティンググロブとワイルドカードセグメント</a></li>
+<li><a href="#%E3%83%AA%E3%83%80%E3%82%A4%E3%83%AC%E3%82%AF%E3%83%88">リダイレクト</a></li>
+<li><a href="#rack%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%AB%E3%83%AB%E3%83%BC%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0%E3%81%99%E3%82%8B">Rackアプリケーションにルーティングする</a></li>
+<li><a href="#root%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B"><code>root</code>を使用する</a></li>
+<li><a href="#unicode%E6%96%87%E5%AD%97%E5%88%97%E3%82%92%E3%83%AB%E3%83%BC%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0%E3%81%A7%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B">Unicode文字列をルーティングで使用する</a></li>
 </ul>
 </li>
 <li>
-<a href="#customizing-resourceful-routes">Customizing Resourceful Routes</a>
+<a href="#%E3%83%AA%E3%82%BD%E3%83%BC%E3%82%B9%E3%83%95%E3%83%AB%E3%83%AB%E3%83%BC%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0%E3%82%92%E3%82%AB%E3%82%B9%E3%82%BF%E3%83%9E%E3%82%A4%E3%82%BA%E3%81%99%E3%82%8B">リソースフルルーティングをカスタマイズする</a>
 
 <ul>
-<li><a href="#specifying-a-controller-to-use">Specifying a Controller to Use</a></li>
-<li><a href="#specifying-constraints">Specifying Constraints</a></li>
-<li><a href="#overriding-the-named-helpers">Overriding the Named Helpers</a></li>
-<li><a href="#overriding-the-new-and-edit-segments">Overriding the <code>new</code> and <code>edit</code> Segments</a></li>
-<li><a href="#prefixing-the-named-route-helpers">Prefixing the Named Route Helpers</a></li>
-<li><a href="#restricting-the-routes-created">Restricting the Routes Created</a></li>
-<li><a href="#translated-paths">Translated Paths</a></li>
-<li><a href="#overriding-the-singular-form">Overriding the Singular Form</a></li>
-<li><a href="#using-:as-in-nested-resources">Using <code>:as</code> in Nested Resources</a></li>
+<li><a href="#%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B%E3%82%B3%E3%83%B3%E3%83%88%E3%83%AD%E3%83%BC%E3%83%A9%E3%82%92%E6%8C%87%E5%AE%9A%E3%81%99%E3%82%8B">使用するコントローラを指定する</a></li>
+<li><a href="#%E5%88%B6%E9%99%90%E3%82%92%E6%8C%87%E5%AE%9A%E3%81%99%E3%82%8B">制限を指定する</a></li>
+<li><a href="#%E5%90%8D%E5%89%8D%E4%BB%98%E3%81%8D%E3%83%98%E3%83%AB%E3%83%91%E3%83%BC%E3%82%92%E3%82%AA%E3%83%BC%E3%83%90%E3%83%BC%E3%83%A9%E3%82%A4%E3%83%89%E3%81%99%E3%82%8B">名前付きヘルパーをオーバーライドする</a></li>
+<li><a href="#new%E3%82%BB%E3%82%B0%E3%83%A1%E3%83%B3%E3%83%88%E3%82%84edit%E3%82%BB%E3%82%B0%E3%83%A1%E3%83%B3%E3%83%88%E3%82%92%E3%82%AA%E3%83%BC%E3%83%90%E3%83%BC%E3%83%A9%E3%82%A4%E3%83%89%E3%81%99%E3%82%8B"><code>new</code>セグメントや<code>edit</code>セグメントをオーバーライドする</a></li>
+<li><a href="#%E5%90%8D%E5%89%8D%E4%BB%98%E3%81%8D%E3%83%AB%E3%83%BC%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0%E3%83%98%E3%83%AB%E3%83%91%E3%83%BC%E3%81%AB%E3%83%97%E3%83%AC%E3%83%95%E3%82%A3%E3%83%83%E3%82%AF%E3%82%B9%E3%82%92%E8%BF%BD%E5%8A%A0%E3%81%99%E3%82%8B">名前付きルーティングヘルパーにプレフィックスを追加する</a></li>
+<li><a href="#%E3%83%AB%E3%83%BC%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0%E3%81%AE%E4%BD%9C%E6%88%90%E3%82%92%E5%88%B6%E9%99%90%E3%81%99%E3%82%8B">ルーティングの作成を制限する</a></li>
+<li><a href="#%E3%83%91%E3%82%B9%E3%82%92%E5%A4%89%E6%9B%B4%E3%81%99%E3%82%8B">パスを変更する</a></li>
+<li><a href="#%E3%80%8C%E5%8D%98%E6%95%B0%E5%BD%A2%E3%81%AE%E3%83%95%E3%82%A9%E3%83%BC%E3%83%A0%E3%80%8D%E3%82%92%E3%82%AA%E3%83%BC%E3%83%90%E3%83%BC%E3%83%A9%E3%82%A4%E3%83%89%E3%81%99%E3%82%8B">「単数形のフォーム」をオーバーライドする</a></li>
+<li><a href="#%E5%90%8D%E5%89%8D%E4%BB%98%E3%81%8D%E3%83%AA%E3%82%BD%E3%83%BC%E3%82%B9%E3%81%A7:as%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B">名前付きリソースで<code>:as</code>を使用する</a></li>
 </ul>
 </li>
 <li>
-<a href="#inspecting-and-testing-routes">Inspecting and Testing Routes</a>
+<a href="#%E3%83%AB%E3%83%BC%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0%E3%81%AE%E8%AA%BF%E6%9F%BB%E3%81%A8%E3%83%86%E3%82%B9%E3%83%88">ルーティングの調査とテスト</a>
 
 <ul>
-<li><a href="#listing-existing-routes">Listing Existing Routes</a></li>
-<li><a href="#testing-routes">Testing Routes</a></li>
+<li><a href="#%E6%97%A2%E5%AD%98%E3%81%AE%E3%83%AB%E3%83%BC%E3%83%AB%E3%82%92%E4%B8%80%E8%A6%A7%E8%A1%A8%E7%A4%BA%E3%81%99%E3%82%8B">既存のルールを一覧表示する</a></li>
+<li><a href="#%E3%83%AB%E3%83%BC%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0%E3%82%92%E3%83%86%E3%82%B9%E3%83%88%E3%81%99%E3%82%8B">ルーティングをテストする</a></li>
 </ul>
 </li>
 </ol>
@@ -270,82 +262,95 @@
       <div id="mainCol">
         <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
-<h3 id="the-purpose-of-the-rails-router">1 The Purpose of the Rails Router</h3>
-<p>The Rails router recognizes URLs and dispatches them to a controller's action. It can also generate paths and URLs, avoiding the need to hardcode strings in your views.</p>
-<h4 id="connecting-urls-to-code">1.1 Connecting URLs to Code</h4>
-<p>When your Rails application receives an incoming request for:</p>
+<h2>Railsのルーティング</h2>
+<p>このガイドでは、開発者に向けてRailsのルーティング機能を解説します (訳注: routeとrootを区別するため、訳文ではrouteを基本的に「ルーティング」と訳します)。</p>
+<p>このガイドの内容:</p>
+<ul>
+<li>
+<code>routes.rb</code>のコードの読み方</li>
+<li>独自のルーティング作成法 (リソースベースのルーティングが推奨されますが、<code>match</code>メソッドによるルーティングも可能です)</li>
+<li>アクション側で受け取るパラメータ</li>
+<li>ルーティングヘルパーを使用してパスやURLを自動生成する方法</li>
+<li>制限追加やRackエンドポイントなどの高度な手法</li>
+</ul>
+
+<hr>
+<h3 id="railsルーターの目的">1 Railsルーターの目的</h3>
+<p>Railsのルーターは受け取ったURLを認識し、適切なコントローラ内アクションに割り当てます。ルーターは、ビューでこれらのパスやURLを直接ハードコードすることを避けるためにパスやURLを生成することもできます。</p>
+<h4 id="urlを実際のコードに割り振る">1.1 URLを実際のコードに割り振る</h4>
+<p>Railsアプリケーションが以下のHTTPリクエストを受け取ったとします。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 GET /patients/17
 
 </pre>
 </div>
-<p>it asks the router to match it to a controller action. If the first matching route is:</p>
+<p>このリクエストは、特定のコントローラ内アクションにマッチさせるようルーターに要求しています。最初にマッチしたのが以下のルーティングだとします。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 get '/patients/:id', to: 'patients#show'
 
 </pre>
 </div>
-<p>the request is dispatched to the <code>patients</code> controller's <code>show</code> action with <code>{ id: '17' }</code> in <code>params</code>.</p>
-<h4 id="generating-paths-and-urls-from-code">1.2 Generating Paths and URLs from Code</h4>
-<p>You can also generate paths and URLs. If the route above is modified to be:</p>
+<p>このリクエストは<code>patients</code>コントローラの<code>show</code>アクションに割り当てられ、<code>params</code>には<code>{ id: '17' }</code>ハッシュが含まれています。</p>
+<h4 id="コードからパスやurlを生成する">1.2 コードからパスやURLを生成する</h4>
+<p>パスやURLを生成することもできます。たとえば、上のルーティングが以下のように変更されたとします。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 get '/patients/:id', to: 'patients#show', as: 'patient'
 
 </pre>
 </div>
-<p>and your application contains this code in the controller:</p>
+<p>そして、アプリケーションのコントローラに以下のコードがあるとします。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 @patient = Patient.find(17)
 
 </pre>
 </div>
-<p>and this in the corresponding view:</p>
+<p>上記に対応するビューは以下です。</p>
 <div class="code_container">
 <pre class="brush: ruby; html-script: true; gutter: false; toolbar: false">
 &lt;%= link_to 'Patient Record', patient_path(@patient) %&gt;
 
 </pre>
 </div>
-<p>then the router will generate the path <code>/patients/17</code>. This reduces the brittleness of your view and makes your code easier to understand. Note that the id does not need to be specified in the route helper.</p>
-<h3 id="resource-routing:-the-rails-default">2 Resource Routing: the Rails Default</h3>
-<p>Resource routing allows you to quickly declare all of the common routes for a given resourceful controller. Instead of declaring separate routes for your <code>index</code>, <code>show</code>, <code>new</code>, <code>edit</code>, <code>create</code>, <code>update</code> and <code>destroy</code> actions, a resourceful route declares them in a single line of code.</p>
-<h4 id="resources-on-the-web">2.1 Resources on the Web</h4>
-<p>Browsers request pages from Rails by making a request for a URL using a specific HTTP method, such as <code>GET</code>, <code>POST</code>, <code>PATCH</code>, <code>PUT</code> and <code>DELETE</code>. Each method is a request to perform an operation on the resource. A resource route maps a number of related requests to actions in a single controller.</p>
-<p>When your Rails application receives an incoming request for:</p>
+<p>これで、ルーターによって<code>/patients/17</code>というパスが生成されます。これを利用することでビューが改修しやすくなり、コードも読みやすくなります。このルーティングヘルパーではidを指定する必要がない点にご注目ください。</p>
+<h3 id="リソースベースのルーティング:-railsのデフォルト">2 リソースベースのルーティング: Railsのデフォルト</h3>
+<p>リソースベースのルーティング (以下リソースルーティング) を使用することで、リソースベースで構成されたコントローラに対応する共通のルーティングを手軽に宣言できます。リソースフルなルーティングを宣言することで、コントローラの<code>index</code>、<code>show</code>、<code>new</code>、<code>edit</code>、<code>create</code>、<code>update</code>、<code>destroy</code>アクションを個別に宣言しなくても1行で宣言が完了します。</p>
+<h4 id="web上のリソース">2.1 Web上のリソース</h4>
+<p>ブラウザはRailsに対してリクエストを送信する際に、特定のHTTPメソッド (<code>GET</code>、<code>POST</code>、<code>PATCH</code>、<code>PUT</code>、<code>DELETE</code>など) を使用して、URLに対するリクエストを作成します。上に述べたHTTPメソッドは、いずれもリソースに対して特定の操作の実行を指示するリクエストです。リソースルーティングでは、関連するさまざまなリクエストを1つのコントローラ内のアクションに割り当てます。</p>
+<p>Railsアプリケーションが以下のHTTPリクエストを受け取ったとします。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 DELETE /photos/17
 
 </pre>
 </div>
-<p>it asks the router to map it to a controller action. If the first matching route is:</p>
+<p>このリクエストは、特定のコントローラ内アクションにマッピングさせるようルーターに要求しています。最初にマッチしたのが以下のルーティングだとします。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 resources :photos
 
 </pre>
 </div>
-<p>Rails would dispatch that request to the <code>destroy</code> method on the <code>photos</code> controller with <code>{ id: '17' }</code> in <code>params</code>.</p>
-<h4 id="crud,-verbs,-and-actions">2.2 CRUD, Verbs, and Actions</h4>
-<p>In Rails, a resourceful route provides a mapping between HTTP verbs and URLs to controller actions. By convention, each action also maps to particular CRUD operations in a database. A single entry in the routing file, such as:</p>
+<p>Railsはこのリクエストを<code>photos</code>コントローラ内の<code>destroy</code>コントローラに割り当て、<code>params</code>ハッシュに<code>{ id: '17' }</code>を含めます。</p>
+<h4 id="crud、動詞、アクション">2.2 CRUD、動詞、アクション</h4>
+<p>Railsのリソースフルルーティングでは、(GET、PUTなどの) 各種HTTP動詞 (verb) と、コントローラ内アクションを指すURLが対応付けられます。1つのアクションは、データベース上での特定のCRUD (Create/Read/Update/Delete) 操作に対応付けられるルールになっています。たとえば、以下のようなルーティングが1つあるとします。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 resources :photos
 
 </pre>
 </div>
-<p>creates seven different routes in your application, all mapping to the <code>Photos</code> controller:</p>
+<p>上の記述により、アプリケーション内に以下の7つのルーティングが作成され、いずれも<code>Photos</code>コントローラに対応付けられます。</p>
 <table>
 <thead>
 <tr>
-<th>HTTP Verb</th>
-<th>Path</th>
-<th>Controller#Action</th>
-<th>Used for</th>
+<th>HTTP動詞</th>
+<th>パス</th>
+<th>コントローラ#アクション</th>
+<th>目的</th>
 </tr>
 </thead>
 <tbody>
@@ -353,72 +358,70 @@ resources :photos
 <td>GET</td>
 <td>/photos</td>
 <td>photos#index</td>
-<td>display a list of all photos</td>
+<td>すべての写真の一覧を表示</td>
 </tr>
 <tr>
 <td>GET</td>
 <td>/photos/new</td>
 <td>photos#new</td>
-<td>return an HTML form for creating a new photo</td>
+<td>写真を1つ作成するためのHTMLフォームを返す</td>
 </tr>
 <tr>
 <td>POST</td>
 <td>/photos</td>
 <td>photos#create</td>
-<td>create a new photo</td>
+<td>写真を1つ作成する</td>
 </tr>
 <tr>
 <td>GET</td>
 <td>/photos/:id</td>
 <td>photos#show</td>
-<td>display a specific photo</td>
+<td>特定の写真を表示する</td>
 </tr>
 <tr>
 <td>GET</td>
 <td>/photos/:id/edit</td>
 <td>photos#edit</td>
-<td>return an HTML form for editing a photo</td>
+<td>写真編集用のHTMLフォームを1つ返す</td>
 </tr>
 <tr>
 <td>PATCH/PUT</td>
 <td>/photos/:id</td>
 <td>photos#update</td>
-<td>update a specific photo</td>
+<td>特定の写真を更新する</td>
 </tr>
 <tr>
 <td>DELETE</td>
 <td>/photos/:id</td>
 <td>photos#destroy</td>
-<td>delete a specific photo</td>
+<td>特定の写真を削除する</td>
 </tr>
 </tbody>
 </table>
-<div class="note"><p>Because the router uses the HTTP verb and URL to match inbound requests, four URLs map to seven different actions.</p></div>
-<div class="note"><p>Rails routes are matched in the order they are specified, so if you have a <code>resources :photos</code> above a <code>get 'photos/poll'</code> the <code>show</code> action's route for the <code>resources</code> line will be matched before the <code>get</code> line. To fix this, move the <code>get</code> line <strong>above</strong> the <code>resources</code> line so that it is matched first.</p></div>
-<h4 id="path-and-url-helpers">2.3 Path and URL Helpers</h4>
-<p>Creating a resourceful route will also expose a number of helpers to the controllers in your application. In the case of <code>resources :photos</code>:</p>
+<p>メモ: Railsのルーターでは、サーバーへのリクエストをマッチさせる際にHTTP動詞とURLを使用しているため、4種類のURL (GET/POST/PATCH/DELETE) が7種類の異なるアクション (index/new/create/show/edit/update/destroy) に割り当てられています。</p>
+<p>メモ: Railsのルーティングは、ルーティングファイルの「上からの記載順に」マッチします。このため、たとえば<code>resources :photos</code>というルーティングが<code>get 'photos/poll'</code>よりも前の行にあれば、<code>resources</code>行の<code>show</code>アクションが<code>get</code>行の記述よりも優先されますので、<code>get</code>行のルーティングは有効になりません。これを修正するには、<code>get</code>行を<code>resorces</code>行 <strong>よりも上</strong> の行に移動してください。これにより、<code>get</code>行がマッチするようになります。</p>
+<h4 id="パスとurl用ヘルパー">2.3 パスとURL用ヘルパー</h4>
+<p>リソースフルなルーティングを作成すると、アプリケーションのコントローラで多くのヘルパーが利用できるようになります。<code>resources :photos</code>というルーティングを例に取ってみましょう。</p>
 <ul>
 <li>
-<code>photos_path</code> returns <code>/photos</code>
-</li>
+<code>photos_path</code>は<code>/photos</code>を返します</li>
 <li>
-<code>new_photo_path</code> returns <code>/photos/new</code>
-</li>
+<code>new_photo_path</code>は<code>/photos/new</code>を返します</li>
 <li>
-<code>edit_photo_path(:id)</code> returns <code>/photos/:id/edit</code> (for instance, <code>edit_photo_path(10)</code> returns <code>/photos/10/edit</code>)</li>
+<code>edit_photo_path(:id)</code>は<code>/photos/:id/edit</code>を返します (<code>edit_photo_path(10)</code>であれば<code>/photos/10/edit</code>が返されます)</li>
 <li>
-<code>photo_path(:id)</code> returns <code>/photos/:id</code> (for instance, <code>photo_path(10)</code> returns <code>/photos/10</code>)</li>
+<code>photo_path(:id)</code>は<code>/photos/:id</code>を返します。 (<code>photo_path(10)</code>であれば<code>/photos/10</code>が返されます)</li>
 </ul>
-<p>Each of these helpers has a corresponding <code>_url</code> helper (such as <code>photos_url</code>) which returns the same path prefixed with the current host, port and path prefix.</p>
-<h4 id="defining-multiple-resources-at-the-same-time">2.4 Defining Multiple Resources at the Same Time</h4>
-<p>If you need to create routes for more than one resource, you can save a bit of typing by defining them all with a single call to <code>resources</code>:</p>
+<p>これらの_pathヘルパーには、それぞれに対応する<code>_url</code>ヘルパー (<code>photos_url</code>など) があります。_urlヘルパーは、_pathの前に現在のホスト名、ポート番号、パスのプレフィックスが追加されている点が異なります。</p>
+<h4 id="複数のリソースを同時に定義する">2.4 複数のリソースを同時に定義する</h4>
+<p>リソースをいくつも定義しなければならない場合は、以下のような略記法で一度に定義することでタイプ量を節約できます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 resources :photos, :books, :videos
 
 </pre>
 </div>
-<p>This works exactly the same as:</p>
+<p>上の記法は以下と完全に同一です。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 resources :photos
@@ -427,36 +430,36 @@ resources :videos
 
 </pre>
 </div>
-<h4 id="singular-resources">2.5 Singular Resources</h4>
-<p>Sometimes, you have a resource that clients always look up without referencing an ID. For example, you would like <code>/profile</code> to always show the profile of the currently logged in user. In this case, you can use a singular resource to map <code>/profile</code> (rather than <code>/profile/:id</code>) to the <code>show</code> action:</p>
+<h4 id="単数形リソース">2.5 単数形リソース</h4>
+<p>場合によっては、ユーザーがページを表示する時にidを参照することのないリソースが使用されることがあります。たとえば、<code>/profile</code>では常に「現在ログインしているユーザー自身」のプロファイルを表示し、他のユーザーidを参照する必要がないとします。このような場合には、単数形リソース (singular resource) を使用して<code>show</code>アクションに (<code>/profile/:id</code>ではなく) <code>/profile</code>を割り当てることができます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 get 'profile', to: 'users#show'
 
 </pre>
 </div>
-<p>Passing a <code>String</code> to <code>get</code> will expect a <code>controller#action</code> format, while passing a <code>Symbol</code> will map directly to an action:</p>
+<p><code>get</code>の引数に<code>文字列</code>を渡す場合は<code>コントローラ#アクション</code>形式であることが前提ですが、<code>get</code>の引数に<code>シンボル</code>を渡すとアクションに直接割り当てられます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 get 'profile', to: :show
 
 </pre>
 </div>
-<p>This resourceful route:</p>
+<p>上をリソースフルなルーティングで記述すると以下のようになります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 resource :geocoder
 
 </pre>
 </div>
-<p>creates six different routes in your application, all mapping to the <code>Geocoders</code> controller:</p>
+<p>上のルーティングでは以下の6つのルーティングが作成され、すべて<code>Geocoders</code>コントローラに割り当てられます。</p>
 <table>
 <thead>
 <tr>
-<th>HTTP Verb</th>
-<th>Path</th>
-<th>Controller#Action</th>
-<th>Used for</th>
+<th>HTTP動詞</th>
+<th>パス</th>
+<th>コントローラ#アクション</th>
+<th>目的</th>
 </tr>
 </thead>
 <tbody>
@@ -464,63 +467,60 @@ resource :geocoder
 <td>GET</td>
 <td>/geocoder/new</td>
 <td>geocoders#new</td>
-<td>return an HTML form for creating the geocoder</td>
+<td>geocoder作成用のHTMLフォームを返す</td>
 </tr>
 <tr>
 <td>POST</td>
 <td>/geocoder</td>
 <td>geocoders#create</td>
-<td>create the new geocoder</td>
+<td>geocoderを作成する</td>
 </tr>
 <tr>
 <td>GET</td>
 <td>/geocoder</td>
 <td>geocoders#show</td>
-<td>display the one and only geocoder resource</td>
+<td>1つしかないgeocoderリソースを表示する</td>
 </tr>
 <tr>
 <td>GET</td>
 <td>/geocoder/edit</td>
 <td>geocoders#edit</td>
-<td>return an HTML form for editing the geocoder</td>
+<td>geocoder編集用のHTMLフォームを返す</td>
 </tr>
 <tr>
 <td>PATCH/PUT</td>
 <td>/geocoder</td>
 <td>geocoders#update</td>
-<td>update the one and only geocoder resource</td>
+<td>1つしかないgeocoderリソースを更新する</td>
 </tr>
 <tr>
 <td>DELETE</td>
 <td>/geocoder</td>
 <td>geocoders#destroy</td>
-<td>delete the geocoder resource</td>
+<td>geocoderリソースを削除する</td>
 </tr>
 </tbody>
 </table>
-<div class="note"><p>Because you might want to use the same controller for a singular route (<code>/account</code>) and a plural route (<code>/accounts/45</code>), singular resources map to plural controllers. So that, for example, <code>resource :photo</code> and <code>resources :photos</code> creates both singular and plural routes that map to the same controller (<code>PhotosController</code>).</p></div>
-<p>A singular resourceful route generates these helpers:</p>
+<p>メモ: 単数形リソースは複数形のコントローラに割り当てられます。これは、同じコントローラで単数形のルーティング (<code>/account</code>) と複数形のルーティング (<code>/accounts/45</code>) を両方使いたい場合を想定しているためです。従って、<code>resource :photo</code>と<code>resources :photos</code>のどちらも、単数形ルーティングと複数形ルーティングを両方作成し、同一のコントローラ (<code>PhotosController</code>) に割り当てられます。</p>
+<p>単数形のリソースフルなルーティングを使用すると、以下のヘルパーメソッドが生成されます。</p>
 <ul>
 <li>
-<code>new_geocoder_path</code> returns <code>/geocoder/new</code>
-</li>
+<code>new_geocoder_path</code>は<code>/geocoder/new</code>を返します</li>
 <li>
-<code>edit_geocoder_path</code> returns <code>/geocoder/edit</code>
-</li>
+<code>edit_geocoder_path</code>は<code>/geocoder/edit</code>を返します</li>
 <li>
-<code>geocoder_path</code> returns <code>/geocoder</code>
-</li>
+<code>geocoder_path</code>は<code>/geocoder</code>を返します。</li>
 </ul>
-<p>As with plural resources, the same helpers ending in <code>_url</code> will also include the host, port and path prefix.</p>
-<div class="warning"><p>A <a href="https://github.com/rails/rails/issues/1769">long-standing bug</a> prevents <code>form_for</code> from working automatically with singular resources. As a workaround, specify the URL for the form directly, like so:</p></div>
+<p>複数形リソースの場合と同様に、単数形リソースでも_pathヘルパーに対応する<code>_url</code>ヘルパーが使用できます。_urlヘルパーは、_pathの前に現在のホスト名、ポート番号、パスのプレフィックスが追加されている点が異なります。</p>
+<p>警告: ある<a href="https://github.com/rails/rails/issues/1769">長年の未解決バグ</a> が原因で、<code>form_for</code>では単数形リソースを自動的に扱えません。これを解決するには、以下のようにフォームのurlを直接指定します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 form_for @geocoder, url: geocoder_path do |f|
 
 </pre>
 </div>
-<h4 id="controller-namespaces-and-routing">2.6 Controller Namespaces and Routing</h4>
-<p>You may wish to organize groups of controllers under a namespace. Most commonly, you might group a number of administrative controllers under an <code>Admin::</code> namespace. You would place these controllers under the <code>app/controllers/admin</code> directory, and you can group them together in your router:</p>
+<h4 id="コントローラの名前空間とルーティング">2.6 コントローラの名前空間とルーティング</h4>
+<p>コントローラを名前空間によってグループ化することもできます。最もよく使用される名前空間といえば、多数の管理用コントローラ群をまとめる<code>Admin::</code>名前空間でしょう。これらのコントローラを<code>app/controllers/admin</code>ディレクトリに配置し、ルーティングでこれらをグループ化できます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 namespace :admin do
@@ -529,14 +529,14 @@ end
 
 </pre>
 </div>
-<p>This will create a number of routes for each of the <code>posts</code> and <code>comments</code> controller. For <code>Admin::PostsController</code>, Rails will create:</p>
+<p>上のルーティングにより、<code>posts</code>コントローラや<code>comments</code>コントローラへのルーティングが多数生成されます。たとえば、<code>Admin::PostsController</code>によって作成されるルーティングは以下のとおりです。</p>
 <table>
 <thead>
 <tr>
-<th>HTTP Verb</th>
-<th>Path</th>
-<th>Controller#Action</th>
-<th>Named Helper</th>
+<th>HTTP 動詞</th>
+<th>パス</th>
+<th>コントローラ#アクション</th>
+<th>名前付きヘルパー</th>
 </tr>
 </thead>
 <tbody>
@@ -584,7 +584,7 @@ end
 </tr>
 </tbody>
 </table>
-<p>If you want to route <code>/posts</code> (without the prefix <code>/admin</code>) to <code>Admin::PostsController</code>, you could use:</p>
+<p>例外的に、(<code>/admin</code>が前についていない) <code>/posts</code>を<code>Admin::PostsController</code>にルーティングしたい場合は、以下のようにすることもできます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 scope module: 'admin' do
@@ -593,14 +593,14 @@ end
 
 </pre>
 </div>
-<p>or, for a single case:</p>
+<p>以下のようにブロックを使用しない記述も可能です。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 resources :posts, module: 'admin'
 
 </pre>
 </div>
-<p>If you want to route <code>/admin/posts</code> to <code>PostsController</code> (without the <code>Admin::</code> module prefix), you could use:</p>
+<p>逆に、<code>/admin/posts</code>を (<code>Admin::</code>なしの) <code>PostsController</code>にルーティングしたい場合は、以下のようにします。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 scope '/admin' do
@@ -609,21 +609,21 @@ end
 
 </pre>
 </div>
-<p>or, for a single case:</p>
+<p>以下のようにブロックを使用しない記述も可能です。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 resources :posts, path: '/admin/posts'
 
 </pre>
 </div>
-<p>In each of these cases, the named routes remain the same as if you did not use <code>scope</code>. In the last case, the following paths map to <code>PostsController</code>:</p>
+<p>いずれの場合も、名前付きルート (named route)は、<code>scope</code>を使用しなかった場合と同じであることにご注目ください。最後の例の場合は、以下のパスが<code>PostsController</code>に割り当てられます。</p>
 <table>
 <thead>
 <tr>
-<th>HTTP Verb</th>
-<th>Path</th>
-<th>Controller#Action</th>
-<th>Named Helper</th>
+<th>HTTP 動詞</th>
+<th>パス</th>
+<th>コントローラ#アクション</th>
+<th>名前付きヘルパー</th>
 </tr>
 </thead>
 <tbody>
@@ -671,9 +671,9 @@ resources :posts, path: '/admin/posts'
 </tr>
 </tbody>
 </table>
-<div class="info"><p><em>If you need to use a different controller namespace inside a <code>namespace</code> block you can specify an absolute controller path, e.g: <code>get '/foo' =&gt; '/foo#index'</code>.</em></p></div>
-<h4 id="nested-resources">2.7 Nested Resources</h4>
-<p>It's common to have resources that are logically children of other resources. For example, suppose your application includes these models:</p>
+<p>ヒント: <em><code>namespace</code>ブロックの内部で異なるコントローラ名前空間を使用したいのであれば、「<code>get '/foo' =&gt; '/foo#index'</code>」のような絶対コントローラパスを指定することもできます。</em></p>
+<h4 id="ネストしたリソース">2.7 ネストしたリソース</h4>
+<p>論理上、他のリソースの配下に子リソースを配置することはよくあります。たとえば、Railsアプリケーションに以下のモデルがあるとします。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class Magazine &lt; ActiveRecord::Base
@@ -686,7 +686,7 @@ end
 
 </pre>
 </div>
-<p>Nested routes allow you to capture this relationship in your routing. In this case, you could include this route declaration:</p>
+<p>ルーティングをネストする (入れ子にする) ことで、この親子関係をルーティングで表すことができるようになります。上の例の場合、以下のようにルーティングを宣言することができます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 resources :magazines do
@@ -695,14 +695,14 @@ end
 
 </pre>
 </div>
-<p>In addition to the routes for magazines, this declaration will also route ads to an <code>AdsController</code>. The ad URLs require a magazine:</p>
+<p>上のルーティングによって、雑誌 (magazine) へのルーティングに加えて、広告 (ad) を<code>AdsController</code>にルーティングすることもできるようになりました。adへのURLにはmagazineもなければなりません。</p>
 <table>
 <thead>
 <tr>
-<th>HTTP Verb</th>
-<th>Path</th>
-<th>Controller#Action</th>
-<th>Used for</th>
+<th>HTTP動詞</th>
+<th>パス</th>
+<th>コントローラ#アクション</th>
+<th>目的</th>
 </tr>
 </thead>
 <tbody>
@@ -710,49 +710,49 @@ end
 <td>GET</td>
 <td>/magazines/:magazine_id/ads</td>
 <td>ads#index</td>
-<td>display a list of all ads for a specific magazine</td>
+<td>ある雑誌1冊に含まれる広告をすべて表示する</td>
 </tr>
 <tr>
 <td>GET</td>
 <td>/magazines/:magazine_id/ads/new</td>
 <td>ads#new</td>
-<td>return an HTML form for creating a new ad belonging to a specific magazine</td>
+<td>ある1冊の雑誌用の広告を1つ作成するHTMLフォームを返す</td>
 </tr>
 <tr>
 <td>POST</td>
 <td>/magazines/:magazine_id/ads</td>
 <td>ads#create</td>
-<td>create a new ad belonging to a specific magazine</td>
+<td>ある1冊の雑誌用の広告を1つ作成する</td>
 </tr>
 <tr>
 <td>GET</td>
 <td>/magazines/:magazine_id/ads/:id</td>
 <td>ads#show</td>
-<td>display a specific ad belonging to a specific magazine</td>
+<td>ある雑誌1冊に含まれる広告を1つ表示する</td>
 </tr>
 <tr>
 <td>GET</td>
 <td>/magazines/:magazine_id/ads/:id/edit</td>
 <td>ads#edit</td>
-<td>return an HTML form for editing an ad belonging to a specific magazine</td>
+<td>ある雑誌1冊に含まれる広告1つを編集するHTMLフォームを返す</td>
 </tr>
 <tr>
 <td>PATCH/PUT</td>
 <td>/magazines/:magazine_id/ads/:id</td>
 <td>ads#update</td>
-<td>update a specific ad belonging to a specific magazine</td>
+<td>ある雑誌1冊に含まれる広告を1つ更新する</td>
 </tr>
 <tr>
 <td>DELETE</td>
 <td>/magazines/:magazine_id/ads/:id</td>
 <td>ads#destroy</td>
-<td>delete a specific ad belonging to a specific magazine</td>
+<td>ある雑誌1冊に含まれる広告を1つ削除する</td>
 </tr>
 </tbody>
 </table>
-<p>This will also create routing helpers such as <code>magazine_ads_url</code> and <code>edit_magazine_ad_path</code>. These helpers take an instance of Magazine as the first parameter (<code>magazine_ads_url(@magazine)</code>).</p>
-<h5 id="limits-to-nesting">2.7.1 Limits to Nesting</h5>
-<p>You can nest resources within other nested resources if you like. For example:</p>
+<p>ルーティングを作成すると、ルーティングヘルパーも作成されます。ヘルパーは<code>magazine_ads_url</code>や<code>edit_magazine_ad_path</code>のような名前になります。これらのヘルパーは、最初のパラメーターとしてMagazineモデルのインスタンスを1つ取ります (<code>magazine_ads_url(@magazine)</code>)。</p>
+<h5 id="ネスティング回数の限界">2.7.1 ネスティング回数の限界</h5>
+<p>ネストしたリソースの中でさらに別のリソースをネストすることは可能です。例：</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 resources :publishers do
@@ -763,17 +763,17 @@ end
 
 </pre>
 </div>
-<p>Deeply-nested resources quickly become cumbersome. In this case, for example, the application would recognize paths such as:</p>
+<p>すぐ想像が付くと思いますが、ネストが深くなるとたちまち扱いが厄介になります。たとえば、上のルーティングはアプリケーションで以下のようなパスとして認識されます。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 /publishers/1/magazines/2/photos/3
 
 </pre>
 </div>
-<p>The corresponding route helper would be <code>publisher_magazine_photo_url</code>, requiring you to specify objects at all three levels. Indeed, this situation is confusing enough that a popular <a href="http://weblog.jamisbuck.org/2007/2/5/nesting-resources">article</a> by Jamis Buck proposes a rule of thumb for good Rails design:</p>
-<div class="info"><p><em>Resources should never be nested more than 1 level deep.</em></p></div>
-<h5 id="shallow-nesting">2.7.2 Shallow Nesting</h5>
-<p>One way to avoid deep nesting (as recommended above) is to generate the collection actions scoped under the parent, so as to get a sense of the hierarchy, but to not nest the member actions. In other words, to only build routes with the minimal amount of information to uniquely identify the resource, like this:</p>
+<p>このURLに対応するルーティングヘルパーは<code>publisher_magazine_photo_url</code>となります。このヘルパーを使用するには毎回3つの階層すべてでオブジェクトを指定する必要があります。ネスティングが深くなることでルーティングの扱いが困難になる問題については、Jamis Buckの有名な <a href="http://weblog.jamisbuck.org/2007/2/5/nesting-resources">記事</a> を参照してください。JamisはRailsアプリケーション設計上のよい経験則を提案しています。</p>
+<p>ヒント: <em>リソースのネスティングは、ぜひとも1回にとどめて下さい。決して2回以上ネストするべきではありません。</em></p>
+<h5 id="「浅い」ネスト">2.7.2 「浅い」ネスト</h5>
+<p>前述したような深いネストを避けるひとつの方法として、コレクション (index/new/createのような、idを持たないアクション) だけを親のスコープの下で生成するという手法があります。このとき、メンバー (show/edit/update/destroyのような、idを必要とするアクション) をネストに含めないのがポイントです。これによりコレクションだけが階層化のメリットを受けられます。つまり、以下のように最小限の情報でリソースを一意に指定できるルーティングを作成するということです。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 resources :posts do
@@ -783,7 +783,7 @@ resources :comments, only: [:show, :edit, :update, :destroy]
 
 </pre>
 </div>
-<p>This idea strikes a balance between descriptive routes and deep nesting. There exists shorthand syntax to achieve just that, via the <code>:shallow</code> option:</p>
+<p>この方法は、ルーティングの記述を複雑にせず、かつ深いネストを作らないという絶妙なバランスを保っています。<code>:shallow</code>オプションを使用することで、上と同じ内容をさらに簡単に記述できます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 resources :posts do
@@ -792,7 +792,7 @@ end
 
 </pre>
 </div>
-<p>This will generate the exact same routes as the first example. You can also specify the <code>:shallow</code> option in the parent resource, in which case all of the nested resources will be shallow:</p>
+<p>これによって生成されるルーティングは、最初の例と完全に同じです。親リソースで<code>:shallow</code>オプションを指定すると、すべてのネストしたリソースが浅くなります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 resources :posts, shallow: true do
@@ -803,12 +803,12 @@ end
 
 </pre>
 </div>
-<p>The <code>shallow</code> method of the DSL creates a scope inside of which every nesting is shallow. This generates the same routes as the previous example:</p>
+<p>DSL (ドメイン固有言語) である<code>shallow</code>メソッドをルーティングで使用すると、すべてのネストが浅くなるように内側にスコープを1つ作成します。●これによって生成されるルーティングは、最初の例と完全に同じです。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 shallow do
   resources :posts do
-    resources :comments
+  resources :comments
     resources :quotes
     resources :drafts
   end
@@ -816,7 +816,7 @@ end
 
 </pre>
 </div>
-<p>There exist two options for <code>scope</code> to customize shallow routes. <code>:shallow_path</code> prefixes member paths with the specified parameter:</p>
+<p><code>scope</code>メソッドには、「浅い」ルーティングをカスタマイズするためのオプションが2つあります。<code>:shallow_path</code>オプションは、指定されたパラメータをメンバーのパスの冒頭にだけ追加します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 scope shallow_path: "sekret" do
@@ -827,14 +827,14 @@ end
 
 </pre>
 </div>
-<p>The comments resource here will have the following routes generated for it:</p>
+<p>上の場合、commentsリソースのルーティングは以下のようになります。</p>
 <table>
 <thead>
 <tr>
-<th>HTTP Verb</th>
-<th>Path</th>
-<th>Controller#Action</th>
-<th>Named Helper</th>
+<th>HTTP 動詞</th>
+<th>パス</th>
+<th>コントローラ#アクション</th>
+<th>名前付きヘルパー</th>
 </tr>
 </thead>
 <tbody>
@@ -882,7 +882,7 @@ end
 </tr>
 </tbody>
 </table>
-<p>The <code>:shallow_prefix</code> option adds the specified parameter to the named helpers:</p>
+<p><code>:shallow_prefix</code>オプションを使用すると、指定されたパラメータを (パスではなく) 名前付きヘルパー名の冒頭に追加します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 scope shallow_prefix: "sekret" do
@@ -893,14 +893,14 @@ end
 
 </pre>
 </div>
-<p>The comments resource here will have the following routes generated for it:</p>
+<p>上の場合、commentsリソースのルーティングは以下のようになります。</p>
 <table>
 <thead>
 <tr>
-<th>HTTP Verb</th>
-<th>Path</th>
-<th>Controller#Action</th>
-<th>Named Helper</th>
+<th>HTTP 動詞</th>
+<th>パス</th>
+<th>コントローラ#アクション</th>
+<th>名前付きヘルパー</th>
 </tr>
 </thead>
 <tbody>
@@ -948,8 +948,8 @@ end
 </tr>
 </tbody>
 </table>
-<h4 id="routing-concerns">2.8 Routing concerns</h4>
-<p>Routing Concerns allows you to declare common routes that can be reused inside other resources and routes. To define a concern:</p>
+<h4 id="ルーティングの「concern」機能">2.8 ルーティングの「concern」機能</h4>
+<p>concernを使用することで、他のリソースやルーティング内で使いまわすことのできる共通のルーティングを宣言することができます。concernは以下のように定義します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 concern :commentable do
@@ -962,7 +962,7 @@ end
 
 </pre>
 </div>
-<p>These concerns can be used in resources to avoid code duplication and share behavior across routes:</p>
+<p>concernを利用すると、同じようなルーティングを繰り返し記述せずに済み、複数のルーティング間で同じ動作を共有できます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 resources :messages, concerns: :commentable
@@ -971,7 +971,7 @@ resources :posts, concerns: [:commentable, :image_attachable]
 
 </pre>
 </div>
-<p>The above is equivalent to:</p>
+<p>上のコードは以下と同等です。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 resources :messages do
@@ -985,7 +985,7 @@ end
 
 </pre>
 </div>
-<p>Also you can use them in any place that you want inside the routes, for example in a scope or namespace call:</p>
+<p>concernはルーティング内のどのような場所にでも配置することができます。スコープや名前空間呼び出しでの使用法は以下のとおりです。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 namespace :posts do
@@ -994,8 +994,8 @@ end
 
 </pre>
 </div>
-<h4 id="creating-paths-and-urls-from-objects">2.9 Creating Paths and URLs From Objects</h4>
-<p>In addition to using the routing helpers, Rails can also create paths and URLs from an array of parameters. For example, suppose you have this set of routes:</p>
+<h4 id="オブジェクトからパスとurlを作成する">2.9 オブジェクトからパスとURLを作成する</h4>
+<p>ルーティングヘルパーを使用する方法の他に、パラメータの配列からパスやURLを作成することもできます。例として、以下のようなルーティングがあるとします。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 resources :magazines do
@@ -1004,46 +1004,46 @@ end
 
 </pre>
 </div>
-<p>When using <code>magazine_ad_path</code>, you can pass in instances of <code>Magazine</code> and <code>Ad</code> instead of the numeric IDs:</p>
+<p><code>magazine_ad_path</code>を使用すると、idを数字で渡す代りに<code>Magazine</code>と<code>Ad</code>のインスタンスを引数として渡すことができます。</p>
 <div class="code_container">
 <pre class="brush: ruby; html-script: true; gutter: false; toolbar: false">
 &lt;%= link_to 'Ad details', magazine_ad_path(@magazine, @ad) %&gt;
 
 </pre>
 </div>
-<p>You can also use <code>url_for</code> with a set of objects, and Rails will automatically determine which route you want:</p>
+<p>複数のオブジェクトが集まったセットに対して<code>url_for</code>を使用することもできます。複数のオブジェクトを渡しても、適切なルーティングが自動的に決定されます。</p>
 <div class="code_container">
 <pre class="brush: ruby; html-script: true; gutter: false; toolbar: false">
 &lt;%= link_to 'Ad details', url_for([@magazine, @ad]) %&gt;
 
 </pre>
 </div>
-<p>In this case, Rails will see that <code>@magazine</code> is a <code>Magazine</code> and <code>@ad</code> is an <code>Ad</code> and will therefore use the <code>magazine_ad_path</code> helper. In helpers like <code>link_to</code>, you can specify just the object in place of the full <code>url_for</code> call:</p>
+<p>上の場合、Railsは<code>@magazine</code>が<code>Magazine</code>であり、<code>@ad</code>が<code>Ad</code>であることを認識し、それに基づいて<code>magazine_ad_path</code>ヘルパーを呼び出します。<code>link_to</code>などのヘルパーでも、完全な<code>url_for</code>呼び出しの代りに単にオブジェクトを渡すことができます。</p>
 <div class="code_container">
 <pre class="brush: ruby; html-script: true; gutter: false; toolbar: false">
 &lt;%= link_to 'Ad details', [@magazine, @ad] %&gt;
 
 </pre>
 </div>
-<p>If you wanted to link to just a magazine:</p>
+<p>1冊の雑誌にだけリンクしたいのであれば、以下のように書きます。</p>
 <div class="code_container">
 <pre class="brush: ruby; html-script: true; gutter: false; toolbar: false">
 &lt;%= link_to 'Magazine details', @magazine %&gt;
 
 </pre>
 </div>
-<p>For other actions, you just need to insert the action name as the first element of the array:</p>
+<p>それ以外のアクションであれば、配列の最初の要素にアクション名を挿入するだけで済みます。</p>
 <div class="code_container">
 <pre class="brush: ruby; html-script: true; gutter: false; toolbar: false">
 &lt;%= link_to 'Edit Ad', [:edit, @magazine, @ad] %&gt;
 
 </pre>
 </div>
-<p>This allows you to treat instances of your models as URLs, and is a key advantage to using the resourceful style.</p>
-<h4 id="adding-more-restful-actions">2.10 Adding More RESTful Actions</h4>
-<p>You are not limited to the seven routes that RESTful routing creates by default. If you like, you may add additional routes that apply to the collection or individual members of the collection.</p>
-<h5 id="adding-member-routes">2.10.1 Adding Member Routes</h5>
-<p>To add a member route, just add a <code>member</code> block into the resource block:</p>
+<p>これにより、モデルのインスタンスをURLとして扱うことができます。これはリソースフルなスタイルを採用する大きなメリットの1つです。</p>
+<h4 id="restfulなアクションをさらに追加する">2.10 RESTfulなアクションをさらに追加する</h4>
+<p>デフォルトで作成されるRESTfulなルーティングは7つですが、7つでなければならないということはありません。必要であれば、コレクションやコレクションの各メンバーに対して適用されるリソースを追加することもできます。</p>
+<h5 id="メンバールーティングを追加する">2.10.1 メンバールーティングを追加する</h5>
+<p>メンバー (member) ルーティングを追加したい場合は、<code>member</code>ブロックをリソースブロックに1つ追加します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 resources :photos do
@@ -1054,8 +1054,8 @@ end
 
 </pre>
 </div>
-<p>This will recognize <code>/photos/1/preview</code> with GET, and route to the <code>preview</code> action of <code>PhotosController</code>, with the resource id value passed in <code>params[:id]</code>. It will also create the <code>preview_photo_url</code> and <code>preview_photo_path</code> helpers.</p>
-<p>Within the block of member routes, each route name specifies the HTTP verb will be recognized. You can use <code>get</code>, <code>patch</code>, <code>put</code>, <code>post</code>, or <code>delete</code> here. If you don't have multiple <code>member</code> routes, you can also pass <code>:on</code> to a route, eliminating the block:</p>
+<p>上のルーティングはGETリクエストとそれに伴う<code>/photos/1/preview</code>を認識し、リクエストを<code>Photos</code>コントローラの<code>preview</code>アクションにルーティングし、リソースid値を<code>params[:id]</code>に渡します。同時に、<code>preview_photo_url</code>ヘルパーと<code>preview_photo_path</code>ヘルパーも作成されます。</p>
+<p>memberルーティングブロックの内側では、次に述べるHTTP動詞が指定されたルーティング名を認識できます。指定可能な動詞は<code>get</code>、<code>patch</code>、<code>put</code>、<code>post</code>、<code>delete</code>です。<code>member</code>ルーティングが1つだけしかないのであれば、以下のようにルーティングで<code>:on</code>オプションを指定することでブロックを省略できます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 resources :photos do
@@ -1064,9 +1064,9 @@ end
 
 </pre>
 </div>
-<p>You can leave out the <code>:on</code> option, this will create the same member route except that the resource id value will be available in <code>params[:photo_id]</code> instead of <code>params[:id]</code>.</p>
-<h5 id="adding-collection-routes">2.10.2 Adding Collection Routes</h5>
-<p>To add a route to the collection:</p>
+<p><code>:on</code>オプションを省略しても同様のmemberルーティングが生成されます。この場合リソースidの値の取得に<code>params[:id]</code>ではなく<code>params[:photo_id]</code>を使用する点が異なります。</p>
+<h5 id="コレクションルーティングを追加する">2.10.2 コレクションルーティングを追加する</h5>
+<p>ルーティングにコレクション (collection) を追加するには以下のようにします。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 resources :photos do
@@ -1077,8 +1077,8 @@ end
 
 </pre>
 </div>
-<p>This will enable Rails to recognize paths such as <code>/photos/search</code> with GET, and route to the <code>search</code> action of <code>PhotosController</code>. It will also create the <code>search_photos_url</code> and <code>search_photos_path</code> route helpers.</p>
-<p>Just as with member routes, you can pass <code>:on</code> to a route:</p>
+<p>上のルーティングは、GETリクエスト+<code>/photos/search</code>などの (idを伴わない) パスを認識し、リクエストを<code>Photos</code>コントローラの<code>search</code>アクションにルーティングします。このとき<code>search_photos_url</code>や<code>search_photos_path</code>ルーティングヘルパーも同時に作成されます。</p>
+<p>collectionルーティングでもmemberルーティングのときと同様に<code>:on</code>オプションを使用できます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 resources :photos do
@@ -1087,8 +1087,8 @@ end
 
 </pre>
 </div>
-<h5 id="adding-routes-for-additional-new-actions">2.10.3 Adding Routes for Additional New Actions</h5>
-<p>To add an alternate new action using the <code>:on</code> shortcut:</p>
+<h5 id="追加されたアクションへのルーティングを追加する">2.10.3 追加されたアクションへのルーティングを追加する</h5>
+<p><code>:on</code>ショートカットを使用して、たとえば以下のように別のnewアクションを追加できます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 resources :comments do
@@ -1097,130 +1097,130 @@ end
 
 </pre>
 </div>
-<p>This will enable Rails to recognize paths such as <code>/comments/new/preview</code> with GET, and route to the <code>preview</code> action of <code>CommentsController</code>. It will also create the <code>preview_new_comment_url</code> and <code>preview_new_comment_path</code> route helpers.</p>
-<div class="info"><p>If you find yourself adding many extra actions to a resourceful route, it's time to stop and ask yourself whether you're disguising the presence of another resource.</p></div>
-<h3 id="non-resourceful-routes">3 Non-Resourceful Routes</h3>
-<p>In addition to resource routing, Rails has powerful support for routing arbitrary URLs to actions. Here, you don't get groups of routes automatically generated by resourceful routing. Instead, you set up each route within your application separately.</p>
-<p>While you should usually use resourceful routing, there are still many places where the simpler routing is more appropriate. There's no need to try to shoehorn every last piece of your application into a resourceful framework if that's not a good fit.</p>
-<p>In particular, simple routing makes it very easy to map legacy URLs to new Rails actions.</p>
-<h4 id="bound-parameters">3.1 Bound Parameters</h4>
-<p>When you set up a regular route, you supply a series of symbols that Rails maps to parts of an incoming HTTP request. Two of these symbols are special: <code>:controller</code> maps to the name of a controller in your application, and <code>:action</code> maps to the name of an action within that controller. For example, consider this route:</p>
+<p>上のようにすることで、GET + <code>/comments/new/preview</code>のようなパスが認識され、<code>Comments</code>コントローラの<code>preview</code>アクションにルーティングされます。<code>preview_new_comment_url</code>や<code>preview_new_comment_path</code>ルーティングヘルパーも同時に作成されます。</p>
+<p>ヒント: リソースフルなルーティングにアクションが多数追加されていることに気付いたら、それ以上アクションを追加するのをやめて、そこに別のリソースが隠されているのではないかと疑ってみる方がよいでしょう。</p>
+<h3 id="リソースフルでないルーティング">3 リソースフルでないルーティング</h3>
+<p>Railsではリソースルーティングを行なう他に、任意のURLをアクションにルーティングすることもできます。この方式を使用する場合、リソースフルルーティングのような自動的なルーティンググループの生成は行われません。従って、アプリケーションで必要なルーティングを個別に設定することになります。</p>
+<p>基本的にはリソースフルルーティングを使用すべきではありますが、このような単純なルーティングの方が適している箇所も多数あるはずです。リソースフルルーティングでは大袈裟過ぎる場合に、アプリケーションを無理にリソースフルなフレームワークに押し込める必要はありません。</p>
+<p>シンプルルーティングは、特に従来形式のURLを新しいRailsのアクションに割り当てることがずっと簡単に行えるようになります。</p>
+<h4 id="パラメータの割り当て">3.1 パラメータの割り当て</h4>
+<p>通常のルーティングを設定するのであれば、RailsがルーティングをブラウザからのHTTPリクエストに割り当てるためのシンボルをいくつか渡します。それらのシンボルのうち、<code>:controller</code>と<code>:action</code>は特別です。<code>:controller</code>はアプリケーションのコントローラへの割り当てを行い、<code>:action</code>はそのコントローラの中にあるアクションへの割り当てを行います (訳注: 具体的なコントローラ名とアクション名を指定していない点にご注目ください)。以下のルーティングを例にとってみましょう。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 get ':controller(/:action(/:id))'
 
 </pre>
 </div>
-<p>If an incoming request of <code>/photos/show/1</code> is processed by this route (because it hasn't matched any previous route in the file), then the result will be to invoke the <code>show</code> action of the <code>PhotosController</code>, and to make the final parameter <code>"1"</code> available as <code>params[:id]</code>. This route will also route the incoming request of <code>/photos</code> to <code>PhotosController#index</code>, since <code>:action</code> and <code>:id</code> are optional parameters, denoted by parentheses.</p>
-<h4 id="dynamic-segments">3.2 Dynamic Segments</h4>
-<p>You can set up as many dynamic segments within a regular route as you like. Anything other than <code>:controller</code> or <code>:action</code> will be available to the action as part of <code>params</code>. If you set up this route:</p>
+<p>ブラウザからの<code>/photos/show/1</code>リクエストが上のルーティングで処理される (他のルーティング設定にはマッチしなかったとします) と、<code>Photos</code>コントローラの<code>show</code>アクションが呼び出され、URL末尾のパラメータ<code>"1"</code>へのアクセスは<code>params[:id]</code>で行なえます。<code>:action</code>と<code>:id</code>が必須パラメータではないことがかっこ () で示されているので、このルーティングは<code>/photos</code>を<code>PhotosController#index</code>にルーティングすることもできます。</p>
+<h4 id="動的なセグメント">3.2 動的なセグメント</h4>
+<p>通常のルーティングの一部として、文字列を固定しない動的なセグメントを自由に使用できます。<code>:controller</code>や<code>:action</code>を除き、どんなものでも<code>params</code>の一部に含めてアクションに渡すことができます。以下のルーティングを設定したとします。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 get ':controller/:action/:id/:user_id'
 
 </pre>
 </div>
-<p>An incoming path of <code>/photos/show/1/2</code> will be dispatched to the <code>show</code> action of the <code>PhotosController</code>. <code>params[:id]</code> will be <code>"1"</code>, and <code>params[:user_id]</code> will be <code>"2"</code>.</p>
-<div class="note"><p>You can't use <code>:namespace</code> or <code>:module</code> with a <code>:controller</code> path segment. If you need to do this then use a constraint on :controller that matches the namespace you require. e.g:</p></div>
+<p>ブラウザからの<code>/photos/show/1/2</code>パスは<code>Photos</code>コントローラの<code>show</code>アクションに割り当てられます。<code>params[:id]</code>には<code>"1"</code>、<code>params[:user_id]</code>には<code>"2"</code>がそれぞれ保存されます。</p>
+<p>メモ: <code>:controller</code>パスセグメントを使用する場合、<code>:namespace</code>や<code>:module</code>を併用することはできません。どうしても使用したいのであれば、以下のように、必要な名前空間だけにマッチするように<code>:controller</code>に制限を加えます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 get ':controller(/:action(/:id))', controller: /admin\/[^\/]+/
 
 </pre>
 </div>
-<div class="info"><p>By default, dynamic segments don't accept dots - this is because the dot is used as a separator for formatted routes. If you need to use a dot within a dynamic segment, add a constraint that overrides this – for example, <code>id: /[^\/]+/</code> allows anything except a slash.</p></div>
-<h4 id="static-segments">3.3 Static Segments</h4>
-<p>You can specify static segments when creating a route by not prepending a colon to a fragment:</p>
+<p>ヒント: 動的なセグメント分割ではドット<code>.</code>をデフォルトでは使用できません。ドットはフォーマット済みルーティングでは区切り文字として使用されるためです。どうしても動的セグメント内でドットを使用したい場合は、デフォルト設定を上書きする制限を与えます。たとえば<code>id: /[^\/]+/</code>とすると、スラッシュ以外のすべての文字が使用できます。</p>
+<h4 id="静的なセグメント">3.3 静的なセグメント</h4>
+<p>ルート作成時にコロンを付けなかった部分は、静的なセグメントとして固定文字列が指定されます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 get ':controller/:action/:id/with_user/:user_id'
 
 </pre>
 </div>
-<p>This route would respond to paths such as <code>/photos/show/1/with_user/2</code>. In this case, <code>params</code> would be <code>{ controller: 'photos', action: 'show', id: '1', user_id: '2' }</code>.</p>
-<h4 id="the-query-string">3.4 The Query String</h4>
-<p>The <code>params</code> will also include any parameters from the query string. For example, with this route:</p>
+<p>上のルーティングは、<code>/photos/show/1/with_user/2</code>のようなパスにマッチします。<code>with_user</code>の部分は固定されています。このときアクションで使用できる<code>params</code>は <code>{ controller: 'photos', action: 'show', id: '1', user_id: '2' }</code>となります。</p>
+<h4 id="クエリ文字列">3.4 クエリ文字列</h4>
+<p>クエリ文字列 (訳注: <code>?パラメータ名=値</code>の形式でURLの末尾に置かれるパラメータ) で指定されているパラメータもすべて<code>params</code>に含まれます。以下のルーティングを例にとってみましょう。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 get ':controller/:action/:id'
 
 </pre>
 </div>
-<p>An incoming path of <code>/photos/show/1?user_id=2</code> will be dispatched to the <code>show</code> action of the <code>Photos</code> controller. <code>params</code> will be <code>{ controller: 'photos', action: 'show', id: '1', user_id: '2' }</code>.</p>
-<h4 id="defining-defaults">3.5 Defining Defaults</h4>
-<p>You do not need to explicitly use the <code>:controller</code> and <code>:action</code> symbols within a route. You can supply them as defaults:</p>
+<p>ブラウザからのリクエストで<code>/photos/show/1?user_id=2</code>というパスが渡されると、<code>Photos</code>コントローラの<code>show</code>アクションに割り当てられます。このときの<code>params</code>は<code>{ controller: 'photos', action: 'show', id: '1', user_id: '2' }</code>となります。</p>
+<h4 id="デフォルト設定を定義する">3.5 デフォルト設定を定義する</h4>
+<p><code>:controller</code>シンボルや<code>:action</code>シンボルは、ルーティング内で明示的に指定する必要はありません。これらは以下のようにデフォルトとして指定することができます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 get 'photos/:id', to: 'photos#show'
 
 </pre>
 </div>
-<p>With this route, Rails will match an incoming path of <code>/photos/12</code> to the <code>show</code> action of <code>PhotosController</code>.</p>
-<p>You can also define other defaults in a route by supplying a hash for the <code>:defaults</code> option. This even applies to parameters that you do not specify as dynamic segments. For example:</p>
+<p>上のルーティングはブラウザからの<code>/photos/12</code>パスにマッチし、<code>Photos</code>コントローラの<code>show</code>アクションに割り当てられます。</p>
+<p><code>:defaults</code>オプションにハッシュを渡すことで、これ以外のデフォルト設定を定義することもできます。この定義は、動的セグメントとして指定していないパラメータに対しても適用されます。例: </p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 get 'photos/:id', to: 'photos#show', defaults: { format: 'jpg' }
 
 </pre>
 </div>
-<p>Rails would match <code>photos/12</code> to the <code>show</code> action of <code>PhotosController</code>, and set <code>params[:format]</code> to <code>"jpg"</code>.</p>
-<h4 id="naming-routes">3.6 Naming Routes</h4>
-<p>You can specify a name for any route using the <code>:as</code> option:</p>
+<p>上のルーティングは<code>photos/12</code>にマッチし、<code>Photos</code>コントローラの<code>show</code>アクションに割り当てられ、<code>params[:format]</code>には<code>"jpg"</code>が設定されます。</p>
+<h4 id="名前付きルーティング">3.6 名前付きルーティング</h4>
+<p><code>:as</code>オプションを使用することで、どんなルーティングにも名前を指定できます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 get 'exit', to: 'sessions#destroy', as: :logout
 
 </pre>
 </div>
-<p>This will create <code>logout_path</code> and <code>logout_url</code> as named helpers in your application. Calling <code>logout_path</code> will return <code>/exit</code></p>
-<p>You can also use this to override routing methods defined by resources, like this:</p>
+<p>上のルーティングでは<code>logout_path</code>と<code>logout_url</code>がアプリケーションの名前付きヘルパーとして作成されます。<code>logout_path</code>を呼び出すと<code>/exit</code>が返されます。</p>
+<p>この方法を使用して、リソースとして定義されているルーティングを以下のように上書きすることもできます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 get ':username', to: 'users#show', as: :user
 
 </pre>
 </div>
-<p>This will define a <code>user_path</code> method that will be available in controllers, helpers and views that will go to a route such as <code>/bob</code>. Inside the <code>show</code> action of <code>UsersController</code>, <code>params[:username]</code> will contain the username for the user. Change <code>:username</code> in the route definition if you do not want your parameter name to be <code>:username</code>.</p>
-<h4 id="http-verb-constraints">3.7 HTTP Verb Constraints</h4>
-<p>In general, you should use the <code>get</code>, <code>post</code>, <code>put</code>, <code>patch</code>  and <code>delete</code> methods to constrain a route to a particular verb. You can use the <code>match</code> method with the <code>:via</code> option to match multiple verbs at once:</p>
+<p>上のルーティングでは<code>user_path</code>メソッドが生成され、コントローラ・ヘルパー・ビューでそれぞれ使用できるようになります。このメソッドは、<code>/bob</code>のようなユーザー名を持つルーティングに移動します。<code>Users</code>コントローラの<code>show</code>アクションの内部で<code>params[:username]</code>にアクセスすると、ユーザー名を取り出すことができます。パラメータ名を<code>:username</code>にしたくない場合は、ルーティング定義の<code>:username</code>の部分を変更してください。</p>
+<h4 id="http動詞を制限する">3.7 HTTP動詞を制限する</h4>
+<p>あるルーティングを特定のHTTP動詞に割り当てるために、通常は<code>get</code>、<code>post</code>、<code>put</code>、<code>patch</code>、<code>delete</code>メソッドのいずれかを使用する必要があります。<code>match</code>メソッドと<code>:via</code>オプションを使用することで、複数のHTTP動詞に同時にマッチするルーティングを作成できます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 match 'photos', to: 'photos#show', via: [:get, :post]
 
 </pre>
 </div>
-<p>You can match all verbs to a particular route using <code>via: :all</code>:</p>
+<p><code>via: :all</code>を指定すると、すべてのHTTP動詞にマッチする特別なルーティングを作成できます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 match 'photos', to: 'photos#show', via: :all
 
 </pre>
 </div>
-<div class="note"><p>Routing both <code>GET</code> and <code>POST</code> requests to a single action has security implications. In general, you should avoid routing all verbs to an action unless you have a good reason to.</p></div>
-<h4 id="segment-constraints">3.8 Segment Constraints</h4>
-<p>You can use the <code>:constraints</code> option to enforce a format for a dynamic segment:</p>
+<p>メモ: 1つのアクションに<code>GET</code>リクエストと<code>POST</code>リクエストを両方ルーティングすると、セキュリティに影響する可能性があります。本当に必要な理由がない限り、1つのアクションにすべてのHTTP動詞をルーティングすることは避けてください。</p>
+<h4 id="セグメントを制限する">3.8 セグメントを制限する</h4>
+<p><code>:constraints</code>オプションを使用すると、動的セグメントのURLフォーマットを特定の形式に制限するすることができます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 get 'photos/:id', to: 'photos#show', constraints: { id: /[A-Z]\d{5}/ }
 
 </pre>
 </div>
-<p>This route would match paths such as <code>/photos/A12345</code>, but not <code>/photos/893</code>. You can more succinctly express the same route this way:</p>
+<p>上のルーティングは<code>/photos/A12345</code>のようなパスにはマッチしますが、<code>/photos/893</code>にはマッチしません。以下のようにもっと簡潔な方法で記述することもできます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 get 'photos/:id', to: 'photos#show', id: /[A-Z]\d{5}/
 
 </pre>
 </div>
-<p><code>:constraints</code> takes regular expressions with the restriction that regexp anchors can't be used. For example, the following route will not work:</p>
+<p><code>:constraints</code>は正規表現を引数に取りますが、この引数では正規表現の「アンカー」は使用できないという制限があることにご注意ください。たとえば、以下のルーティングは無効です。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 get '/:id', to: 'posts#show', constraints: {id: /^\d/}
 
 </pre>
 </div>
-<p>However, note that you don't need to use anchors because all routes are anchored at the start.</p>
-<p>For example, the following routes would allow for <code>posts</code> with <code>to_param</code> values like <code>1-hello-world</code> that always begin with a number and <code>users</code> with <code>to_param</code> values like <code>david</code> that never begin with a number to share the root namespace:</p>
+<p>対象となるルーティングはすべて初めからアンカーされているので、このようなアンカー表現を使用する必要はないはずです。</p>
+<p>たとえば以下のルーティングでは、ルート (root) 名前空間を共有する際に<code>posts</code>に対して<code>to_param</code>が<code>1-hello-world</code>のように数字で始まる値だけが使用できるようになっており、<code>users</code>に対して<code>to_param</code>が<code>david</code>のように数字で始まらない値だけが使用できるようになっています。●</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 get '/:id', to: 'posts#show', constraints: { id: /\d.+/ }
@@ -1228,16 +1228,16 @@ get '/:username', to: 'users#show'
 
 </pre>
 </div>
-<h4 id="request-based-constraints">3.9 Request-Based Constraints</h4>
-<p>You can also constrain a route based on any method on the <a href="action_controller_overview.html#the-request-object">Request</a> object that returns a <code>String</code>.</p>
-<p>You specify a request-based constraint the same way that you specify a segment constraint:</p>
+<h4 id="リクエスト内容に応じて制限を加える">3.9 リクエスト内容に応じて制限を加える</h4>
+<p>また、<code>String</code>を返す<a href="action_controller_overview.html#the-request-object">Request</a>オブジェクトの任意のメソッドに基いてルーティングを制限することもできます。</p>
+<p>リクエストに応じた制限は、セグメントを制限するときと同様の方法で指定することができます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 get 'photos', constraints: {subdomain: 'admin'}
 
 </pre>
 </div>
-<p>You can also specify constraints in a block form:</p>
+<p>ブロックフォームに対して制限を指定することもできます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 namespace :admin do
@@ -1248,9 +1248,9 @@ end
 
 </pre>
 </div>
-<div class="note"><p>Request constraints work by calling a method on the <a href="action_controller_overview.html#the-request-object">Request object</a> with the same name as the hash key and then compare the return value with the hash value. Therefore, constraint values should match the corresponding Request object method return type. For example: <code>constraints: { subdomain: 'api' }</code> will match an <code>api</code> subdomain as expected, however using a symbol <code>constraints: { subdomain: :api }</code> will not, because <code>request.subdomain</code> returns <code>'api'</code> as a String.</p></div>
-<h4 id="advanced-constraints">3.10 Advanced Constraints</h4>
-<p>If you have a more advanced constraint, you can provide an object that responds to <code>matches?</code> that Rails should use. Let's say you wanted to route all users on a blacklist to the <code>BlacklistController</code>. You could do:</p>
+<p>メモ: リクエストベースの制限は、Requestオブジェクトに対してあるメソッドを呼び出すことで実行されます。メソッド呼び出し時にハッシュキーと同じ名前をメソッドに渡し、返された値をハッシュ値と比較します。従って、制限された値は、対応するRequestオブジェクトメソッドが返す型と一致する必要があります。たとえば、<code>constraints: { subdomain: 'api' }</code>という制限は<code>api</code>サブドメインに期待どおりマッチしますが、<code>constraints: { subdomain: :api }</code>のようにシンボルを使用した場合は<code>api</code>サブドメインに一致しません。<code>request.subdomain</code>が返す<code>'api'</code>は文字列型であるためです。</p>
+<h4 id="高度な制限">3.10 高度な制限</h4>
+<p>より高度な制限を使用したい場合、Railsで必要な<code>matches?</code>に応答できるオブジェクトを渡す方法があります。例として、ブラックリストに記載されているすべてのユーザーを<code>BlacklistController</code>にルーティングしたいとします。この場合、以下のように設定します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class BlacklistConstraint
@@ -1270,7 +1270,7 @@ end
 
 </pre>
 </div>
-<p>You can also specify constraints as a lambda:</p>
+<p>制限をラムダとして指定することもできます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Rails.application.routes.draw do
@@ -1280,62 +1280,62 @@ end
 
 </pre>
 </div>
-<p>Both the <code>matches?</code> method and the lambda gets the <code>request</code> object as an argument.</p>
-<h4 id="route-globbing-and-wildcard-segments">3.11 Route Globbing and Wildcard Segments</h4>
-<p>Route globbing is a way to specify that a particular parameter should be matched to all the remaining parts of a route. For example:</p>
+<p><code>matches?</code>メソッドおよびラムダはいずれも引数として<code>request</code>オブジェクトを取ります。</p>
+<h4 id="ルーティンググロブとワイルドカードセグメント">3.11 ルーティンググロブとワイルドカードセグメント</h4>
+<p>ルーティンググロブ (route globbing) とはワイルドカード展開のことであり、ルーティングのある位置から下のすべての部分に特定のパラメータをマッチさせる際に使用します。例: </p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 get 'photos/*other', to: 'photos#unknown'
 
 </pre>
 </div>
-<p>This route would match <code>photos/12</code> or <code>/photos/long/path/to/12</code>, setting <code>params[:other]</code> to <code>"12"</code> or <code>"long/path/to/12"</code>. The fragments prefixed with a star are called "wildcard segments".</p>
-<p>Wildcard segments can occur anywhere in a route. For example:</p>
+<p>上のルーティングは<code>photos/12</code>や<code>/photos/long/path/to/12</code>にマッチし、<code>params[:other]</code>には<code>"12"</code>や<code>"long/path/to/12"</code>が設定されます。先頭にアスタリスク<code>*</code>が付いている部分を「ワイルドカードセグメント」と呼びます。</p>
+<p>ワイルドカードセグメントはルーティングのどの部分でも使用できます。例: </p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 get 'books/*section/:title', to: 'books#show'
 
 </pre>
 </div>
-<p>would match <code>books/some/section/last-words-a-memoir</code> with <code>params[:section]</code> equals <code>'some/section'</code>, and <code>params[:title]</code> equals <code>'last-words-a-memoir'</code>.</p>
-<p>Technically, a route can have even more than one wildcard segment. The matcher assigns segments to parameters in an intuitive way. For example:</p>
+<p>上は<code>books/some/section/last-words-a-memoir</code>にマッチし、<code>params[:section]</code>には<code>'some/section'</code>が保存され、<code>params[:title]</code>には<code>'last-words-a-memoir'</code>が保存されます。</p>
+<p>技術上は、1つのルーティングに2つ以上のワイルドカードセグメントを含めることは可能です。マッチャがセグメントをパラメータに割り当てる方法は直感的です。例: </p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 get '*a/foo/*b', to: 'test#index'
 
 </pre>
 </div>
-<p>would match <code>zoo/woo/foo/bar/baz</code> with <code>params[:a]</code> equals <code>'zoo/woo'</code>, and <code>params[:b]</code> equals <code>'bar/baz'</code>.</p>
-<div class="note"><p>By requesting <code>'/foo/bar.json'</code>, your <code>params[:pages]</code> will be equals to <code>'foo/bar'</code> with the request format of JSON. If you want the old 3.0.x behavior back, you could supply <code>format: false</code> like this:</p></div>
+<p>上のルーティングは<code>zoo/woo/foo/bar/baz</code>にマッチし、<code>params[:a]</code>には<code>'zoo/woo'</code>が保存され、and <code>params[:b]</code>には<code>'bar/baz'</code>が保存されます。</p>
+<p>メモ: <code>'/foo/bar.json'</code>をリクエストすると<code>params[:pages]</code>には<code>'foo/bar'</code>がJSONリクエストフォーマットで保存されます。Rails 3.0.xの動作に戻したい場合は、以下のように<code>format: false</code>を指定することができます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 get '*pages', to: 'pages#show', format: false
 
 </pre>
 </div>
-<div class="note"><p>If you want to make the format segment mandatory, so it cannot be omitted, you can supply <code>format: true</code> like this:</p></div>
+<p>メモ: このセグメントフォーマットを必須にしたい場合は、以下のように<code>format: true</code>を指定します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 get '*pages', to: 'pages#show', format: true
 
 </pre>
 </div>
-<h4 id="redirection">3.12 Redirection</h4>
-<p>You can redirect any path to another path using the <code>redirect</code> helper in your router:</p>
+<h4 id="リダイレクト">3.12 リダイレクト</h4>
+<p>ルーティングで<code>redirect</code>を使用すると、あるパスを他のあらゆるパスにリダイレクトできます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 get '/stories', to: redirect('/posts')
 
 </pre>
 </div>
-<p>You can also reuse dynamic segments from the match in the path to redirect to:</p>
+<p>パスにマッチする動的セグメントを再利用してリダイレクトすることもできます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 get '/stories/:name', to: redirect('/posts/%{name}')
 
 </pre>
 </div>
-<p>You can also provide a block to redirect, which receives the symbolized path parameters and the request object:</p>
+<p>リダイレクトにブロックを渡すこともできます。このリダイレクトは、シンボル化されたパスパラメーターとrequestオブジェクトを受け取ります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 get '/stories/:name', to: redirect {|path_params, req| "/posts/#{path_params[:name].pluralize}" }
@@ -1343,31 +1343,30 @@ get '/stories', to: redirect {|path_params, req| "/posts/#{req.subdomain}" }
 
 </pre>
 </div>
-<p>Please note that this redirection is a 301 "Moved Permanently" redirect. Keep in mind that some web browsers or proxy servers will cache this type of redirect, making the old page inaccessible.</p>
-<p>In all of these cases, if you don't provide the leading host (<code>http://www.example.com</code>), Rails will take those details from the current request.</p>
-<h4 id="routing-to-rack-applications">3.13 Routing to Rack Applications</h4>
-<p>Instead of a String like <code>'posts#index'</code>, which corresponds to the <code>index</code> action in the <code>PostsController</code>, you can specify any <a href="rails_on_rack.html">Rack application</a> as the endpoint for a matcher:</p>
+<p>ここで行われているリダイレクトは、HTTPステータスで言う「301 "Moved Permanently"」であることにご注意ください。一部のWebブラウザやプロキシサーバーはこの種のリダイレクトをキャッシュすることがあり、その場合リダイレクト前の古いページにはアクセスできなくなります。</p>
+<p>どの場合であっても、ホスト (<code>http://www.example.com</code>など) がURLの冒頭で指定されていない場合は、Railsは (以前のリクエストではなく) 現在のリクエストから詳細を取得します。●</p>
+<h4 id="rackアプリケーションにルーティングする">3.13 Rackアプリケーションにルーティングする</h4>
+<p><code>Post</code>コントローラの<code>index</code>アクションに対応する<code>'posts#index'</code>のような文字列の代りに、任意の<a href="rails_on_rack.html">Rackアプリケーション</a>をマッチャーのエンドポイントとして指定することができます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 match '/application.js', to: Sprockets, via: :all
 
 </pre>
 </div>
-<p>As long as <code>Sprockets</code> responds to <code>call</code> and returns a <code>[status, headers, body]</code>, the router won't know the difference between the Rack application and an action. This is an appropriate use of <code>via: :all</code>, as you will want to allow your Rack application to handle all verbs as it considers appropriate.</p>
-<div class="note"><p>For the curious, <code>'posts#index'</code> actually expands out to <code>PostsController.action(:index)</code>, which returns a valid Rack application.</p></div>
-<h4 id="using-root">3.14 Using <code>root</code>
-</h4>
-<p>You can specify what Rails should route <code>'/'</code> to with the <code>root</code> method:</p>
+<p>Railsルーターから見れば、<code>Sprockets</code>が<code>call</code>に応答して<code>[status, headers, body]</code>を返す限り、ルーティング先がRackアプリケーションであるかアクションであるかは区別できません。これは<code>via: :all</code>の適切な利用法です。というのは、適切と考えられるすべてのHTTP動詞をRackアプリケーションで扱えるようにできるからです。</p>
+<p>メモ: 参考までに、<code>'posts#index'</code>は実際には<code>PostsController.action(:index)</code>という形に展開されます。これは正しいRackアプリケーションを返します。</p>
+<h4 id="rootを使用する">3.14 <code>root</code>を使用する</h4>
+<p><code>root</code>メソッドを使用することで、Railsがルート<code>'/'</code>とすべき場所を指定できます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 root to: 'pages#main'
-root 'pages#main' # shortcut for the above
+root 'pages#main' # 上の省略形
 
 </pre>
 </div>
-<p>You should put the <code>root</code> route at the top of the file, because it is the most popular route and should be matched first.</p>
-<div class="note"><p>The <code>root</code> route only routes <code>GET</code> requests to the action.</p></div>
-<p>You can also use root inside namespaces and scopes as well. For example:</p>
+<p><code>root</code>ルーティングは、ルーティングファイルの先頭に記述してください。rootは最もよく使用されるルーティングであり、最初にマッチする必要があるからです。</p>
+<p>メモ: <code>root</code>ルーティングがアクションに渡せるのは<code>GET</code>リクエストだけです。</p>
+<p>名前空間やスコープの内側にrootを置くこともできます。例: </p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 namespace :admin do
@@ -1378,32 +1377,32 @@ root to: "home#index"
 
 </pre>
 </div>
-<h4 id="unicode-character-routes">3.15 Unicode character routes</h4>
-<p>You can specify unicode character routes directly. For example:</p>
+<h4 id="unicode文字列をルーティングで使用する">3.15 Unicode文字列をルーティングで使用する</h4>
+<p>Unicode文字列をルーティングで直接使用することもできます。例:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 get 'こんにちは', to: 'welcome#index'
 
 </pre>
 </div>
-<h3 id="customizing-resourceful-routes">4 Customizing Resourceful Routes</h3>
-<p>While the default routes and helpers generated by <code>resources :posts</code> will usually serve you well, you may want to customize them in some way. Rails allows you to customize virtually any generic part of the resourceful helpers.</p>
-<h4 id="specifying-a-controller-to-use">4.1 Specifying a Controller to Use</h4>
-<p>The <code>:controller</code> option lets you explicitly specify a controller to use for the resource. For example:</p>
+<h3 id="リソースフルルーティングをカスタマイズする">4 リソースフルルーティングをカスタマイズする</h3>
+<p>ほとんどの場合、<code>resources :posts</code>のような指定を行ってデフォルトのルーティングやヘルパーを生成することで用は足りますが、もう少しルーティングをカスタマイズしたくなることもあります。Railsでは、リソースフルなヘルパーの一般的などの部分であっても事実上自由にカスタマイズ可能です。</p>
+<h4 id="使用するコントローラを指定する">4.1 使用するコントローラを指定する</h4>
+<p><code>:controller</code>オプションは、リソースで使用するコントローラを明示的に指定します。例:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 resources :photos, controller: 'images'
 
 </pre>
 </div>
-<p>will recognize incoming paths beginning with <code>/photos</code> but route to the <code>Images</code> controller:</p>
+<p>上のルーティングは、<code>/photos</code>で始まるパスを認識しますが、ルーティング先を<code>Images</code>コントローラにします。</p>
 <table>
 <thead>
 <tr>
-<th>HTTP Verb</th>
-<th>Path</th>
-<th>Controller#Action</th>
-<th>Named Helper</th>
+<th>HTTP 動詞</th>
+<th>パス</th>
+<th>コントローラ#アクション</th>
+<th>名前付きヘルパー</th>
 </tr>
 </thead>
 <tbody>
@@ -1451,26 +1450,26 @@ resources :photos, controller: 'images'
 </tr>
 </tbody>
 </table>
-<div class="note"><p>Use <code>photos_path</code>, <code>new_photo_path</code>, etc. to generate paths for this resource.</p></div>
-<p>For namespaced controllers you can use the directory notation. For example:</p>
+<p>メモ: このリソースへのパスを生成するには<code>photos_path</code>や<code>new_photo_path</code>などを使用してください。</p>
+<p>名前空間内のコントローラは以下のように直接指定することができます。例: </p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 resources :user_permissions, controller: 'admin/user_permissions'
 
 </pre>
 </div>
-<p>This will route to the <code>Admin::UserPermissions</code> controller.</p>
-<div class="note"><p>Only the directory notation is supported. Specifying the controller with Ruby constant notation (eg. <code>controller: 'Admin::UserPermissions'</code>) can lead to routing problems and results in a warning.</p></div>
-<h4 id="specifying-constraints">4.2 Specifying Constraints</h4>
-<p>You can use the <code>:constraints</code> option to specify a required format on the implicit <code>id</code>. For example:</p>
+<p>上は<code>Admin::UserPermissions</code>にルーティングされます。</p>
+<p>メモ: ここでサポートされている記法は、<code>/</code>で区切る「ディレクトリ式」のみです。Rubyの定数表記法 (<code>controller: 'Admin::UserPermissions'</code>など) をコントローラに対して使用すると、ルーティングで問題が生じ、警告が出力される可能性があります。</p>
+<h4 id="制限を指定する">4.2 制限を指定する</h4>
+<p><code>:constraints</code>オプションを使用すると、暗黙で使用される<code>id</code>に対してフォーマットを指定することができます。例:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 resources :photos, constraints: {id: /[A-Z][A-Z][0-9]+/}
 
 </pre>
 </div>
-<p>This declaration constrains the <code>:id</code> parameter to match the supplied regular expression. So, in this case, the router would no longer match <code>/photos/1</code> to this route. Instead, <code>/photos/RR27</code> would match.</p>
-<p>You can specify a single constraint to apply to a number of routes by using the block form:</p>
+<p>上の宣言は<code>:id</code>パラメータに制限を加え、指定した正規表現にのみマッチするようにします。従って、上の例では<code>/photos/1</code>のようなパスにはマッチしなくなります。代わって、<code>/photos/RR27</code>のようなパスにマッチするようになります。</p>
+<p>ブロックフォームを使用することで、多数のルーティングに対して1つの制限をまとめて与えることもできます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 constraints(id: /[A-Z][A-Z][0-9]+/) do
@@ -1480,24 +1479,24 @@ end
 
 </pre>
 </div>
-<div class="note"><p>Of course, you can use the more advanced constraints available in non-resourceful routes in this context.</p></div>
-<div class="info"><p>By default the <code>:id</code> parameter doesn't accept dots - this is because the dot is used as a separator for formatted routes. If you need to use a dot within an <code>:id</code> add a constraint which overrides this - for example <code>id: /[^\/]+/</code> allows anything except a slash.</p></div>
-<h4 id="overriding-the-named-helpers">4.3 Overriding the Named Helpers</h4>
-<p>The <code>:as</code> option lets you override the normal naming for the named route helpers. For example:</p>
+<p>メモ: もちろん、この場合であれば「リソースフルでない」ルーティングに適用可能な、より高度な制限を加えることもできます。</p>
+<p>ヒント: <code>:id</code>パラメータではドット<code>.</code>をデフォルトでは使用できません。ドットはフォーマット済みルーティングでは区切り文字として使用されるためです。どうしても<code>:id</code>内でドットを使用したい場合は、デフォルト設定を上書きする制限を与えます。たとえば<code>id: /[^\/]+/</code>とすると、スラッシュ以外のすべての文字が使用できます。</p>
+<h4 id="名前付きヘルパーをオーバーライドする">4.3 名前付きヘルパーをオーバーライドする</h4>
+<p><code>:as</code>オプションを使用すると、名前付きルーティングヘルパーを上書きして異なる名前を使用できます。例: </p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 resources :photos, as: 'images'
 
 </pre>
 </div>
-<p>will recognize incoming paths beginning with <code>/photos</code> and route the requests to <code>PhotosController</code>, but use the value of the :as option to name the helpers.</p>
+<p>上のルーティングでは、<code>/photos</code>で始まるブラウザからのパスを認識し、このリクエストを<code>Photos</code>コントローラにルーティングしますが、ヘルパーの命名に<code>:as</code>オプションの値が使用されます。</p>
 <table>
 <thead>
 <tr>
-<th>HTTP Verb</th>
-<th>Path</th>
-<th>Controller#Action</th>
-<th>Named Helper</th>
+<th>HTTP 動詞</th>
+<th>パス</th>
+<th>コントローラ#アクション</th>
+<th>名前付きヘルパー</th>
 </tr>
 </thead>
 <tbody>
@@ -1545,15 +1544,15 @@ resources :photos, as: 'images'
 </tr>
 </tbody>
 </table>
-<h4 id="overriding-the-new-and-edit-segments">4.4 Overriding the <code>new</code> and <code>edit</code> Segments</h4>
-<p>The <code>:path_names</code> option lets you override the automatically-generated "new" and "edit" segments in paths:</p>
+<h4 id="newセグメントやeditセグメントをオーバーライドする">4.4 <code>new</code>セグメントや<code>edit</code>セグメントをオーバーライドする</h4>
+<p><code>:path_names</code>オプションを使用すると、パスに含まれている、自動生成された"new"セグメントや"edit"セグメントをオーバーライドできます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 resources :photos, path_names: { new: 'make', edit: 'change' }
 
 </pre>
 </div>
-<p>This would cause the routing to recognize paths such as:</p>
+<p>これにより、ルーティングで以下のようなパスが認識できるようになります。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 /photos/make
@@ -1561,18 +1560,18 @@ resources :photos, path_names: { new: 'make', edit: 'change' }
 
 </pre>
 </div>
-<div class="note"><p>The actual action names aren't changed by this option. The two paths shown would still route to the <code>new</code> and <code>edit</code> actions.</p></div>
-<div class="info"><p>If you find yourself wanting to change this option uniformly for all of your routes, you can use a scope.</p></div>
+<p>メモ: このオプションを指定しても、実際のアクション名が変更されるわけではありません。変更後のパスを使用しても、ルーティング先は依然として<code>new</code>アクションと<code>edit</code>アクションのままです。</p>
+<p>ヒント: このオプションによる変更をすべてのルーティングに統一的に適用したくなった場合は、スコープを使用できます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 scope path_names: { new: 'make' } do
-  # rest of your routes
+  # 残りすべてのルーティング
 end
 
 </pre>
 </div>
-<h4 id="prefixing-the-named-route-helpers">4.5 Prefixing the Named Route Helpers</h4>
-<p>You can use the <code>:as</code> option to prefix the named route helpers that Rails generates for a route. Use this option to prevent name collisions between routes using a path scope. For example:</p>
+<h4 id="名前付きルーティングヘルパーにプレフィックスを追加する">4.5 名前付きルーティングヘルパーにプレフィックスを追加する</h4>
+<p><code>:as</code>オプションを使用することで、Railsがルーティングに対して生成する名前付きルーティングヘルパー名の冒頭に文字を追加できます (プレフィックス)。パススコープを使用するルーティング同士での名前の衝突を避けたい場合に使用してください。例: </p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 scope 'admin' do
@@ -1583,8 +1582,8 @@ resources :photos
 
 </pre>
 </div>
-<p>This will provide route helpers such as <code>admin_photos_path</code>, <code>new_admin_photo_path</code> etc.</p>
-<p>To prefix a group of route helpers, use <code>:as</code> with <code>scope</code>:</p>
+<p>上のルーティングでは、<code>admin_photos_path</code>や<code>new_admin_photo_path</code>などのルーティングヘルパーが生成されます。</p>
+<p>ルーティングヘルパーのグループにプレフィックスを追加するには、以下のように<code>scope</code>メソッドで<code>:as</code>オプションを使用します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 scope 'admin', as: 'admin' do
@@ -1595,9 +1594,9 @@ resources :photos, :accounts
 
 </pre>
 </div>
-<p>This will generate routes such as <code>admin_photos_path</code> and <code>admin_accounts_path</code> which map to <code>/admin/photos</code> and <code>/admin/accounts</code> respectively.</p>
-<div class="note"><p>The <code>namespace</code> scope will automatically add <code>:as</code> as well as <code>:module</code> and <code>:path</code> prefixes.</p></div>
-<p>You can prefix routes with a named parameter also:</p>
+<p>上によって、<code>admin_photos_path</code>と<code>admin_accounts_path</code>などのルーティングが生成されます。これらは<code>/admin/photos</code>と<code>/admin/accounts</code>にそれぞれ割り当てられます。</p>
+<p>メモ: <code>namespace</code>スコープを使用すると、<code>:module</code>や<code>:path</code>プレフィックスに加えて<code>:as</code>も自動的に追加されます。●</p>
+<p>名前付きパラメータを持つルーティングにプレフィックスを追加することもできます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 scope ':username' do
@@ -1606,27 +1605,27 @@ end
 
 </pre>
 </div>
-<p>This will provide you with URLs such as <code>/bob/posts/1</code> and will allow you to reference the <code>username</code> part of the path as <code>params[:username]</code> in controllers, helpers and views.</p>
-<h4 id="restricting-the-routes-created">4.6 Restricting the Routes Created</h4>
-<p>By default, Rails creates routes for the seven default actions (index, show, new, create, edit, update, and destroy) for every RESTful route in your application. You can use the <code>:only</code> and <code>:except</code> options to fine-tune this behavior. The <code>:only</code> option tells Rails to create only the specified routes:</p>
+<p>上のルーティングにより、<code>/bob/posts/1</code>のような形式のURLを使用できるようになります。さらに、コントローラ、ヘルパー、ビューのいずれにおいても、このパスの<code>username</code>の部分に相当する文字列 (この場合であればbob) を<code>params[:username]</code>で参照できます。</p>
+<h4 id="ルーティングの作成を制限する">4.6 ルーティングの作成を制限する</h4>
+<p>Railsは、アプリケーション内のすべてのRESTfulルーティングに対してデフォルトで7つのアクション (index、show、create、edit、update、destory) へのルーティングを作成します。<code>:only</code>オプションや<code>:except</code>オプションを使用することで、これらのルーティングを微調整できます。<code>:only</code>オプションは、指定されたルーティングだけを生成するよう指示します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 resources :photos, only: [:index, :show]
 
 </pre>
 </div>
-<p>Now, a <code>GET</code> request to <code>/photos</code> would succeed, but a <code>POST</code> request to <code>/photos</code> (which would ordinarily be routed to the <code>create</code> action) will fail.</p>
-<p>The <code>:except</code> option specifies a route or list of routes that Rails should <em>not</em> create:</p>
+<p>これで、<code>/photos</code>への<code>GET</code>リクエストは成功し、<code>/photos</code> への<code>POST</code>リクエスト (通常であれば<code>create</code>アクションにルーティングされます) は失敗します。</p>
+<p><code>:except</code>オプションは逆に、指定したルーティングのみを生成 <em>しない</em> よう指示します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 resources :photos, except: :destroy
 
 </pre>
 </div>
-<p>In this case, Rails will create all of the normal routes except the route for <code>destroy</code> (a <code>DELETE</code> request to <code>/photos/:id</code>).</p>
-<div class="info"><p>If your application has many RESTful routes, using <code>:only</code> and <code>:except</code> to generate only the routes that you actually need can cut down on memory use and speed up the routing process.</p></div>
-<h4 id="translated-paths">4.7 Translated Paths</h4>
-<p>Using <code>scope</code>, we can alter path names generated by resources:</p>
+<p>この場合、<code>destroy</code> (<code>/photos/:id</code>への<code>DELETE</code>リクエスト) を除いて通常のルーティングが生成されます。</p>
+<p>ヒント: アプリケーションでRESTfulルーティングが多数使用されているのであれば、それらに適宜<code>:only</code>や<code>:except</code>を使用して、本当に必要なルーティングのみを生成することで、メモリ使用量の節約とルーティングプロセスの速度向上が見込めます。</p>
+<h4 id="パスを変更する">4.7 パスを変更する</h4>
+<p><code>scope</code>オプションを使用することで、リソースによって生成されたデフォルトのパス名を変更できます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 scope(path_names: { new: 'neu', edit: 'bearbeiten' }) do
@@ -1635,14 +1634,14 @@ end
 
 </pre>
 </div>
-<p>Rails now creates routes to the <code>CategoriesController</code>.</p>
+<p>上のようにすることで、以下のような<code>Categories</code>コントローラへのルーティングが作成されます。</p>
 <table>
 <thead>
 <tr>
-<th>HTTP Verb</th>
-<th>Path</th>
-<th>Controller#Action</th>
-<th>Named Helper</th>
+<th>HTTP 動詞</th>
+<th>パス</th>
+<th>コントローラ#アクション</th>
+<th>名前付きヘルパー</th>
 </tr>
 </thead>
 <tbody>
@@ -1690,8 +1689,8 @@ end
 </tr>
 </tbody>
 </table>
-<h4 id="overriding-the-singular-form">4.8 Overriding the Singular Form</h4>
-<p>If you want to define the singular form of a resource, you should add additional rules to the <code>Inflector</code>:</p>
+<h4 id="「単数形のフォーム」をオーバーライドする">4.8 「単数形のフォーム」をオーバーライドする</h4>
+<p>あるリソースの「単数形のフォーム」を定義したい場合、<code>Inflector</code>に活用形ルールを追加します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 ActiveSupport::Inflector.inflections do |inflect|
@@ -1700,8 +1699,8 @@ end
 
 </pre>
 </div>
-<h4 id="using-:as-in-nested-resources">4.9 Using <code>:as</code> in Nested Resources</h4>
-<p>The <code>:as</code> option overrides the automatically-generated name for the resource in nested route helpers. For example:</p>
+<h4 id="名前付きリソースで:asを使用する">4.9 名前付きリソースで<code>:as</code>を使用する</h4>
+<p><code>:as</code>を使用すると、ネストしたルーティングヘルパー内のリソース用に自動生成された名前をオーバーライドできます。例:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 resources :magazines do
@@ -1710,45 +1709,45 @@ end
 
 </pre>
 </div>
-<p>This will create routing helpers such as <code>magazine_periodical_ads_url</code> and <code>edit_magazine_periodical_ad_path</code>.</p>
-<h3 id="inspecting-and-testing-routes">5 Inspecting and Testing Routes</h3>
-<p>Rails offers facilities for inspecting and testing your routes.</p>
-<h4 id="listing-existing-routes">5.1 Listing Existing Routes</h4>
-<p>To get a complete list of the available routes in your application, visit <code>http://localhost:3000/rails/info/routes</code> in your browser while your server is running in the <strong>development</strong> environment. You can also execute the <code>rake routes</code> command in your terminal to produce the same output.</p>
-<p>Both methods will list all of your routes, in the same order that they appear in <code>routes.rb</code>. For each route, you'll see:</p>
+<p>上のルーティングによって、<code>magazine_periodical_ads_url</code>や<code>edit_magazine_periodical_ad_path</code>などのルーティングヘルパーが生成されます。</p>
+<h3 id="ルーティングの調査とテスト">5 ルーティングの調査とテスト</h3>
+<p>Railsには、ルーティングを調べる機能とテストする機能が備わっています。</p>
+<h4 id="既存のルールを一覧表示する">5.1 既存のルールを一覧表示する</h4>
+<p>現在のアプリケーションで利用可能なルーティングをすべて表示するには、サーバーが <strong>development</strong> 環境で動作している状態で<code>http://localhost:3000/rails/info/routes</code>をブラウザで開きます。ターミナルで<code>rake routes</code>コマンドを実行しても同じ結果を得られます。</p>
+<p>どちらの方法を使用した場合でも、<code>routes.rb</code>ファイルに記載された順にルーティングが表示されます。1つのルーティングについて以下の情報が表示されます。</p>
 <ul>
-<li>The route name (if any)</li>
-<li>The HTTP verb used (if the route doesn't respond to all verbs)</li>
-<li>The URL pattern to match</li>
-<li>The routing parameters for the route</li>
+<li>ルーティング名 (あれば)</li>
+<li>使用されているHTTP動詞 (そのルーティングがすべてのHTTP動詞に応答するのでない場合)</li>
+<li>マッチするURLパターン</li>
+<li>そのルーティングで使用するパラメーター</li>
 </ul>
-<p>For example, here's a small section of the <code>rake routes</code> output for a RESTful route:</p>
+<p>以下は、あるRESTfulルーティングに対して<code>rake routes</code>を実行した結果から抜粋したものです。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
     users GET    /users(.:format)          users#index
           POST   /users(.:format)          users#create
- new_user GET    /users/new(.:format)      users#new
+new_user GET    /users/new(.:format)      users#new
 edit_user GET    /users/:id/edit(.:format) users#edit
 
 </pre>
 </div>
-<p>You may restrict the listing to the routes that map to a particular controller setting the <code>CONTROLLER</code> environment variable:</p>
+<p><code>CONTROLLER</code>環境変数を設定することで、ルーティング一覧の表示を特定のコントローラにマップされたものに制限することもできます。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ CONTROLLER=users rake routes
 
 </pre>
 </div>
-<div class="info"><p>You'll find that the output from <code>rake routes</code> is much more readable if you widen your terminal window until the output lines don't wrap.</p></div>
-<h4 id="testing-routes">5.2 Testing Routes</h4>
-<p>Routes should be included in your testing strategy (just like the rest of your application). Rails offers three <a href="http://api.rubyonrails.org/classes/ActionDispatch/Assertions/RoutingAssertions.html">built-in assertions</a> designed to make testing routes simpler:</p>
+<p>ヒント: 折り返しが発生しないぐらいに十分大きなサイズのターミナルを使用できるのであれば、<code>rake routes</code>コマンドの出力の方がおそらく読みやすいでしょう。</p>
+<h4 id="ルーティングをテストする">5.2 ルーティングをテストする</h4>
+<p>アプリケーションの他の部分と同様、ルーティング部分もテスティング戦略に含めておくべきでしょう。Railsでは、テスティングを容易にするために3つの<a href="http://api.rubyonrails.org/classes/ActionDispatch/Assertions/RoutingAssertions.html">ビルトインアサーション</a> が用意されています。</p>
 <ul>
 <li><code>assert_generates</code></li>
 <li><code>assert_recognizes</code></li>
 <li><code>assert_routing</code></li>
 </ul>
-<h5 id="the-assert_generates-assertion">5.2.1 The <code>assert_generates</code> Assertion</h5>
-<p><code>assert_generates</code> asserts that a particular set of options generate a particular path and can be used with default routes or custom routes. For example:</p>
+<h5 id="assert_generatesアサーション">5.2.1 <code>assert_generates</code>アサーション</h5>
+<p><code>assert_generates</code>は、特定のオプションの組み合わせを使用した場合に特定のパスが生成されること、そしてそれらがデフォルトのルーティングでもカスタムルーティングでも使用できることをテストするアサーション (assert, assertion: 主張・検証とも) です。例:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 assert_generates '/photos/1', { controller: 'photos', action: 'show', id: '1' }
@@ -1756,23 +1755,23 @@ assert_generates '/about', controller: 'pages', action: 'about'
 
 </pre>
 </div>
-<h5 id="the-assert_recognizes-assertion">5.2.2 The <code>assert_recognizes</code> Assertion</h5>
-<p><code>assert_recognizes</code> is the inverse of <code>assert_generates</code>. It asserts that a given path is recognized and routes it to a particular spot in your application. For example:</p>
+<h5 id="assert_recognizesアサーション">5.2.2 <code>assert_recognizes</code>アサーション</h5>
+<p><code>assert_recognizes</code>は<code>assert_generates</code>と逆方向のテスティングを行います。与えられたパスが認識可能であること、アプリケーションの特定の場所にルーティングされることをテストするアサーションです。例:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 assert_recognizes({ controller: 'photos', action: 'show', id: '1' }, '/photos/1')
 
 </pre>
 </div>
-<p>You can supply a <code>:method</code> argument to specify the HTTP verb:</p>
+<p>引数で<code>:method</code>を使用してHTTP動詞を指定することもできます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 assert_recognizes({ controller: 'photos', action: 'create' }, { path: 'photos', method: :post })
 
 </pre>
 </div>
-<h5 id="the-assert_routing-assertion">5.2.3 The <code>assert_routing</code> Assertion</h5>
-<p>The <code>assert_routing</code> assertion checks the route both ways: it tests that the path generates the options, and that the options generate the path. Thus, it combines the functions of <code>assert_generates</code> and <code>assert_recognizes</code>:</p>
+<h5 id="assert_routingアサーション">5.2.3 <code>assert_routing</code>アサーション</h5>
+<p><code>assert_routing</code>アサーションは、ルーティングを2つの観点 (与えられたパスによってオプションが生成されること、そのオプションによって元のパスが生成されること) からチェックします。つまり、<code>assert_generates</code>と<code>assert_recognizes</code>の機能を組み合わせたものになります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 assert_routing({ path: 'photos', method: :post }, { controller: 'photos', action: 'create' })
