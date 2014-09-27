@@ -1,57 +1,58 @@
-Layouts and Rendering in Rails
+﻿
+ビューのレイアウトとレンダリング
 ==============================
 
-This guide covers the basic layout features of Action Controller and Action View.
+本ガイドでは、Action ControllerとAction Viewによる基本的なレイアウト機能について解説します。
 
-After reading this guide, you will know:
+このガイドの内容:
 
-* How to use the various rendering methods built into Rails.
-* How to create layouts with multiple content sections.
-* How to use partials to DRY up your views.
-* How to use nested layouts (sub-templates).
+* Railsに組み込まれているさまざまなレンダリング (=レスポンスの出力) 方法の使い方
+* コンテンツが複数のセクションからなるレイアウト作成法
+* パーシャルを使用してビューをDRYにする方法
+* レイアウトをネストする方法 (サブテンプレート)
 
 --------------------------------------------------------------------------------
 
-Overview: How the Pieces Fit Together
+概要: 部品を組み上げる
 -------------------------------------
 
-This guide focuses on the interaction between Controller and View in the Model-View-Controller triangle. As you know, the Controller is responsible for orchestrating the whole process of handling a request in Rails, though it normally hands off any heavy code to the Model. But then, when it's time to send a response back to the user, the Controller hands things off to the View. It's that handoff that is the subject of this guide.
+本ガイドでは、コントローラ、ビュー、モデルによって形成される三角形のうち、コントローラとビューの間でのやりとりを中心に扱います。御存じのように、Railsのコントローラはリクエストを扱うプロセス全体の流れを組織的に調整する責任を負い、(ビジネスロジックのような) 重い処理はモデルの方で行なわせるのが普通ですモデル側での処理が完了し、ユーザーに結果を表示する時がきたら、コントローラは処理結果をビューに渡します。このときの、コントローラからビューへの結果の渡し方こそが本ガイドの主なトピックです。
 
-In broad strokes, this involves deciding what should be sent as the response and calling an appropriate method to create that response. If the response is a full-blown view, Rails also does some extra work to wrap the view in a layout and possibly to pull in partial views. You'll see all of those paths later in this guide.
+大きな流れとしては、ユーザーへのレスポンスとして送信すべき内容を決定することと、ユーザーへのレスポンスを作成するために適切なメソッドを呼び出すこともこの作業に含まれます。ユーザーに返すレスポンス画面を完全なビューにするのであれば、Railsはそのビューをさらに別のレイアウトでラッピングし、パーシャルビューとして取り出すでしょう。以後本ガイドではこれらの方法をすべて紹介します。
 
-Creating Responses
+レスポンスを作成する
 ------------------
 
-From the controller's point of view, there are three ways to create an HTTP response:
+コントローラ側から見ると、HTTPレスポンスの作成方法は以下の3とおりあります。
 
-* Call `render` to create a full response to send back to the browser
-* Call `redirect_to` to send an HTTP redirect status code to the browser
-* Call `head` to create a response consisting solely of HTTP headers to send back to the browser
+* `render`を呼び出し、ブラウザに返す完全なレスポンスを作成する
+* `redirect_to`を呼び出し、HTTPリダイレクトコードステータスをブラウザに送信する
+* `head`を呼び出し、HTTPヘッダーのみで構成されたレスポンスを作成してブラウザに送信する
 
-### Rendering by Default: Convention Over Configuration in Action
+### デフォルトの出力: アクションにおける「設定より規約」
 
-You've heard that Rails promotes "convention over configuration". Default rendering is an excellent example of this. By default, controllers in Rails automatically render views with names that correspond to valid routes. For example, if you have this code in your `BooksController` class:
+Railsでは「設定より規約 (CoC: convention over configuration)」というポリシーが推奨されていることをご存じかと思います。デフォルトの出力結果は、CoCのよい例でもあります。Railsのコントローラは、デフォルトでは正しいルーティングに対応する名前を持つビューを自動的に選び、それを使用してレスポンスを出力します。たとえば、`BooksController`というコントローラに以下のコードがあるとします。
 
 ```ruby
 class BooksController < ApplicationController
 end
 ```
 
-And the following in your routes file:
+ルーティングファイルに以下が記載されているとします。
 
 ```ruby
-resources :books
+  resources :books
 ```
 
-And you have a view file `app/views/books/index.html.erb`:
+`app/views/books/index.html.erb`ビューファイルの内容が以下のようになっているとします。
 
 ```html+erb
 <h1>Books are coming soon!</h1>
 ```
 
-Rails will automatically render `app/views/books/index.html.erb` when you navigate to `/books` and you will see "Books are coming soon!" on your screen.
+以上のようにすることで、ユーザーがブラウザで`/books`にアクセスすると、Railsは自動的に`app/views/books/index.html.erb`ビューを使用してレスポンスを出力し、その結果「Books are coming soon!」という文字が画面に表示されます。
 
-However a coming soon screen is only minimally useful, so you will soon create your `Book` model and add the index action to `BooksController`:
+しかしこの画面だけではほとんど実用性がないので、`Book`モデルを作成し、`BooksController`にindexアクションを追加してみましょう。
 
 ```ruby
 class BooksController < ApplicationController
@@ -61,9 +62,9 @@ class BooksController < ApplicationController
 end
 ```
 
-Note that we don't have explicit render at the end of the index action in accordance with "convention over configuration" principle. The rule is that if you do not explicitly render something at the end of a controller action, Rails will automatically look for the `action_name.html.erb` template in the controller's view path and render it. So in this case, Rails will render the `app/views/books/index.html.erb` file.
+上のコードでご注目いただきたいのは、「設定より規約」の原則が利いているおかげでindexアクションの最後で明示的に画面出力を指示する必要がないという点です。ここでの原則は、「コントローラのアクションの最終部分で明示的な画面出力が指示されていない場合は、コントローラが使用できるビューのパスから`アクション名.html.erb`というビューテンプレートを探し、それを使用して自動的に出力する」というものです。従って、この場合は`app/views/books/index.html.erb`ファイルが出力されます。
 
-If we want to display the properties of all the books in our view, we can do so with an ERB template like this:
+ビューですべての本の属性を表示したい場合は、以下のようにERBを書くことができます。
 
 ```html+erb
 <h1>Listing Books</h1>
@@ -93,23 +94,23 @@ If we want to display the properties of all the books in our view, we can do so 
 <%= link_to "New book", new_book_path %>
 ```
 
-NOTE: The actual rendering is done by subclasses of `ActionView::TemplateHandlers`. This guide does not dig into that process, but it's important to know that the file extension on your view controls the choice of template handler. Beginning with Rails 2, the standard extensions are `.erb` for ERB (HTML with embedded Ruby), and `.builder` for Builder (XML generator).
+メモ: 実際のレンダリングは、`ActionView::TemplateHandlers`のサブクラスで行われます。本ガイドではレンダリングの詳細については触れませんが、テンプレートハンドラの選択がビューテンプレートファイルの拡張子によって制御されているという重要な点は理解しておいてください。Rails 2以降におけるビューテンプレートの標準拡張子は、ERB (HTML + eMbedded RuBy) でレンダリングする場合は`.erb`、Builder (XMLジェネレータ) でレンダリングする場合は`.builder`です。
 
-### Using `render`
+### `render`を使用する
 
-In most cases, the `ActionController::Base#render` method does the heavy lifting of rendering your application's content for use by a browser. There are a variety of ways to customize the behavior of `render`. You can render the default view for a Rails template, or a specific template, or a file, or inline code, or nothing at all. You can render text, JSON, or XML. You can specify the content type or HTTP status of the rendered response as well.
+アプリケーションがブラウザで表示するコンテンツのレンダリング (出力) という力仕事は、`ActionController::Base#render`メソッドがほぼ一手に引き受けています。`render`メソッドはさまざまな方法でカスタマイズできます。Railsテンプレートのデフォルトビューを出力することもできますし、特定のテンプレート、ファイル、インラインコードを指定して出力したり、何も出力しないこともできます。テキスト、JSON、XMLを出力することもできます。出力されるレスポンスのcontent typeやHTTPステータスを指定することもできます。
 
-TIP: If you want to see the exact results of a call to `render` without needing to inspect it in a browser, you can call `render_to_string`. This method takes exactly the same options as `render`, but it returns a string instead of sending a response back to the browser.
+ヒント: 出力結果をブラウザで表示して調べることなく、`render`呼び出しの正確な結果を取得したい場合は、`render_to_string`を呼び出すことができます。このメソッドの動作は`render`と完全に同じであり、出力結果をブラウザに返さずに文字列を返す点だけが異なります。
 
-#### Rendering Nothing
+#### 何も出力しない方法
 
-Perhaps the simplest thing you can do with `render` is to render nothing at all:
+`render`メソッドでできる最も単純な動作は、何も出力しないことでしょう。
 
 ```ruby
 render nothing: true
 ```
 
-If you look at the response for this using cURL, you will see the following:
+このレスポンスをcurlコマンドを使用して調べてみると以下のようになっています。
 
 ```bash
 $ curl -i 127.0.0.1:3000/books
@@ -125,16 +126,16 @@ Cache-Control: no-cache
 $
 ```
 
-We see there is an empty response (no data after the `Cache-Control` line), but the request was successful because Rails has set the response to 200 OK. You can set the `:status` option on render to change this response. Rendering nothing can be useful for Ajax requests where all you want to send back to the browser is an acknowledgment that the request was completed.
+レスポンスの内容は空欄になっています (`Cache-Control`行以降にデータがない) が、ステータスコートが200 OKになっているのでリクエストが成功していることがわかります。renderメソッドの`:status`オプションを設定することでレスポンスを変更できます。何も出力しないというレスポンスは、Ajaxリクエストを使用する時に便利です。これを使用することで、リクエストが成功したという確認応答だけをブラウザに送り返すことができるからです。
 
-TIP: You should probably be using the `head` method, discussed later in this guide, instead of `render :nothing`. This provides additional flexibility and makes it explicit that you're only generating HTTP headers.
+ヒント: 200 OKヘッダーだけを送信したいのであれば、ここでご紹介した`render :nothing`よりも、本ガイドで後述する`head`メソッドを使用する方がおそらくよいでしょう。`head`メソッドは`render :nothing`よりも柔軟性が高く、HTTPヘッダーだけを生成していることが明確になるからです。
 
-#### Rendering an Action's View
+#### Action Viewを出力する
 
-If you want to render the view that corresponds to a different template within the same controller, you can use `render` with the name of the view:
+同じコントローラで、デフォルトと異なるテンプレートに対応するビューを出力したい場合は、`render`メソッドでビュー名を指定することができます。
 
 ```ruby
-def update
+  def update
   @book = Book.find(params[:id])
   if @book.update(book_params)
     redirect_to(@book)
@@ -144,12 +145,12 @@ def update
 end
 ```
 
-If the call to `update` fails, calling the `update` action in this controller will render the `edit.html.erb` template belonging to the same controller.
+上の`update`アクションでモデルに対する`update`メソッドの呼び出しが失敗すると、同じコントローラに用意しておいた別の`edit.html.erb`テンプレートを使用して出力します。
 
-If you prefer, you can use a symbol instead of a string to specify the action to render:
+出力するアクションを指定するには、文字列の他にシンボルを使用することもできます。
 
 ```ruby
-def update
+  def update
   @book = Book.find(params[:id])
   if @book.update(book_params)
     redirect_to(@book)
@@ -159,45 +160,45 @@ def update
 end
 ```
 
-#### Rendering an Action's Template from Another Controller
+#### 別のコントローラからアクションのテンプレートを出力する
 
-What if you want to render a template from an entirely different controller from the one that contains the action code? You can also do that with `render`, which accepts the full path (relative to `app/views`) of the template to render. For example, if you're running code in an `AdminProductsController` that lives in `app/controllers/admin`, you can render the results of an action to a template in `app/views/products` this way:
+あるコントローラのアクションから、まったく別のコントローラの配下にあるテンプレートを使用して出力することは可能でしょうか。これも`render`メソッドだけで行なうことができます。`render`メソッドには`app/views`を起点とするフルパスを渡すことができますので、出力したいテンプレートをフルパスで指定します。たとえば、`app/controllers/admin`に置かれている`AdminProducts`コントローラのコードを実行しているとすると、`app/views/products`に置かれているビューテンプレートに対するアクションの実行結果を出力するには以下のようにします。
 
 ```ruby
 render "products/show"
 ```
 
-Rails knows that this view belongs to a different controller because of the embedded slash character in the string. If you want to be explicit, you can use the `:template` option (which was required on Rails 2.2 and earlier):
+パスにスラッシュ`/`が含まれていると、Railsによってこのビューは異なるコントローラの配下にあると認識されます。異なるコントローラのテンプレートを指定していることをより明示的にしたい場合は、以下のように`:template`オプションを使用することもできます (Rails 2.2以前ではこのオプションは必須でした)。
 
 ```ruby
 render template: "products/show"
 ```
 
-#### Rendering an Arbitrary File
+#### 任意のファイルを使用して出力する
 
-The `render` method can also use a view that's entirely outside of your application (perhaps you're sharing views between two Rails applications):
+`render`メソッドで指定するビューは、現在のアプリケーションディレクトリの外部にあっても構いません (2つのRailsアプリケーションでビューを共有しているなどの場合)。
 
 ```ruby
 render "/u/apps/warehouse_app/current/app/views/products/show"
 ```
 
-Rails determines that this is a file render because of the leading slash character. To be explicit, you can use the `:file` option (which was required on Rails 2.2 and earlier):
+パスがスラッシュ`/`で始まっている場合、Railsはこのコードがファイルの出力であると認識します。ファイルを出力することをより明示的にしたい場合は、以下のように`:file`オプションを使用することもできます (Rails 2.2以前ではこのオプションは必須でした)。
 
 ```ruby
 render file: "/u/apps/warehouse_app/current/app/views/products/show"
 ```
 
-The `:file` option takes an absolute file-system path. Of course, you need to have rights to the view that you're using to render the content.
+`:file`オプションに与えるパスは、ファイルシステムの絶対パスです。当然ながら、コンテンツを出力したいファイルに対して適切なアクセス権が与えられている必要があります。
 
-NOTE: By default, the file is rendered without using the current layout. If you want Rails to put the file into the current layout, you need to add the `layout: true` option.
+メモ: ファイルを出力する場合、デフォルトでは現在のレイアウトが適用されません。ファイルの出力を現在のレイアウト内で行いたい場合は、`layout: true`オプションを追加する必要があります。
 
-TIP: If you're running Rails on Microsoft Windows, you should use the `:file` option to render a file, because Windows filenames do not have the same format as Unix filenames.
+ヒント: Microsoft Windows上でRailsを実行している場合、ファイルを出力する際に`:file`オプションを省略できません。Windowsのファイル名フォーマットはUnixのファイル名と同じではないためです。
 
-#### Wrapping it up
+#### まとめ
 
-The above three ways of rendering (rendering another template within the controller, rendering a template within another controller and rendering an arbitrary file on the file system) are actually variants of the same action.
+これまでご紹介した3とおりの出力方法 (コントローラ内の別テンプレートを使用、べコントローラのテンプレートを使用、ファイルシステム上の任意のファイルを使用) は、実際には同一のアクションのバリエーションにすぎません。
 
-In fact, in the BooksController class, inside of the update action where we want to render the edit template if the book does not update successfully, all of the following render calls would all render the `edit.html.erb` template in the `views/books` directory:
+実のところ、たとえばBooksControllerクラスのupdateアクション内で、本の更新に失敗したらeditテンプレートを出力したいとすると、以下のどのレンダリング呼び出しを行っても最終的には必ず`views/books`ディレクトリの`edit.html.erb`を使用して出力が行われます。
 
 ```ruby
 render :edit
@@ -216,144 +217,144 @@ render file: "/path/to/rails/app/views/books/edit"
 render file: "/path/to/rails/app/views/books/edit.html.erb"
 ```
 
-Which one you use is really a matter of style and convention, but the rule of thumb is to use the simplest one that makes sense for the code you are writing.
+どの呼び出しを使用するかはコーディングのスタイルと規則の問題でしかありませんが、経験上なるべくシンプルな記法を使用する方がコードがわかりやすくなるでしょう。
 
-#### Using `render` with `:inline`
+#### `render`で`:inline`オプションを使用する
 
-The `render` method can do without a view completely, if you're willing to use the `:inline` option to supply ERB as part of the method call. This is perfectly valid:
+`render`メソッドは、メソッド呼び出しの際に`:inline`オプションを使用してERBを与えると、ビューがまったくない状態でも実行することができます。これは完全に有効な方法です。
 
 ```ruby
 render inline: "<% products.each do |p| %><p><%= p.name %></p><% end %>"
 ```
 
-WARNING: There is seldom any good reason to use this option. Mixing ERB into your controllers defeats the MVC orientation of Rails and will make it harder for other developers to follow the logic of your project. Use a separate erb view instead.
+警告: このオプションを実際に使用する意味はほぼないと思われます。コントローラのコードにERBを混在させると、RailsのMVC指向が崩されるだけでなく、開発者がプロジェクトのロジックを追いかけることが困難になってしまいます。通常のERBビューを使用してください。
 
-By default, inline rendering uses ERB. You can force it to use Builder instead with the `:type` option:
+インラインでは、デフォルトでERBを使用して出力を行います。`:type`オプションで:builderを指定すると、ERBに代えてBuilderが使用されます。
 
 ```ruby
 render inline: "xml.p {'Horrid coding practice!'}", type: :builder
 ```
 
-#### Rendering Text
+#### テキストを出力する
 
-You can send plain text - with no markup at all - back to the browser by using the `:plain` option to `render`:
+`render`で`:plain`オプションを使用すると、平文テキストをマークアップせずにブラウザに送信することができます。
 
 ```ruby
 render plain: "OK"
 ```
 
-TIP: Rendering pure text is most useful when you're responding to Ajax or web service requests that are expecting something other than proper HTML.
+ヒント: 平文テキストの出力は、AjaxやWebサービスリクエストに応答するときに最も有用です。これらではHTML以外の応答を期待しています。
 
-NOTE: By default, if you use the `:plain` option, the text is rendered without using the current layout. If you want Rails to put the text into the current layout, you need to add the `layout: true` option.
+メモ: デフォルトでは、`:plain`オプションを使用すると出力結果に現在のレイアウトが適用されません。テキストの出力を現在のレイアウト内で行いたい場合は、`layout: true`オプションを追加する必要があります。
 
-#### Rendering HTML
+#### HTMLを出力する
 
-You can send a HTML string back to the browser by using the `:html` option to `render`:
+`render`で`:html`オプションを使用すると、HTML文字列を直接ブラウザに送信することができます。
 
-```ruby
+```ruby 
 render html: "<strong>Not Found</strong>".html_safe
 ```
 
-TIP: This is useful when you're rendering a small snippet of HTML code.
-However, you might want to consider moving it to a template file if the markup is complex.
+ヒント: この手法は、HTMLコードのごく小規模なスニペットを出力したい場合に便利です。
+スニペットのマークアップが複雑になるようであれば、早めにテンプレートファイルに移行することをご検討ください。
 
-NOTE: This option will escape HTML entities if the string is not html safe.
+メモ: このオプションを使用すると、文字列が「HTML safe」でない場合にHTML要素をエスケープします。
 
-#### Rendering JSON
+#### JSONを出力する
 
-JSON is a JavaScript data format used by many Ajax libraries. Rails has built-in support for converting objects to JSON and rendering that JSON back to the browser:
+JSONはJavaScriptのデータ形式の一種で、多くのAjaxライブラリで使用されています。Railsでは、オブジェクトからJSON形式への変換と、変換されたJSONをブラウザに送信する機能がビルトインでサポートされています。
 
 ```ruby
 render json: @product
 ```
 
-TIP: You don't need to call `to_json` on the object that you want to render. If you use the `:json` option, `render` will automatically call `to_json` for you.
+ヒント: 出力するオブジェクトに対して`to_json`を呼び出す必要はありません。`:json`オプションが指定されていれば、`render`によって`to_json`が自動的に呼び出されるようになっています。
 
-#### Rendering XML
+#### XMLを出力する
 
-Rails also has built-in support for converting objects to XML and rendering that XML back to the caller:
+Railsでは、オブジェクトからXML形式への変換と、変換されたXMLをブラウザに送信する機能がビルトインでサポートされています。
 
 ```ruby
 render xml: @product
 ```
 
-TIP: You don't need to call `to_xml` on the object that you want to render. If you use the `:xml` option, `render` will automatically call `to_xml` for you.
+ヒント: 出力するオブジェクトに対して`to_xml`を呼び出す必要はありません。`:xml`オプションが指定されていれば、`render`によって`to_xml`が自動的に呼び出されるようになっています。
 
-#### Rendering Vanilla JavaScript
+#### Vanilla JavaScriptを出力する
 
-Rails can render vanilla JavaScript:
+Railsはvanilla JavaScriptを出力することもできます。
 
 ```ruby
 render js: "alert('Hello Rails');"
 ```
 
-This will send the supplied string to the browser with a MIME type of `text/javascript`.
+上のコードは、引数で与えられた文字列をMIMEタイプ`text/javascript`でブラウザに送信します。
 
-#### Rendering raw body
+#### 生のコンテンツを出力する
 
-You can send a raw content back to the browser, without setting any content type, by using the `:body` option to `render`:
+`render`で`:body`オプションを指定することで、content typeを一切指定しない生のコンテンツをブラウザに送信することができます。
 
 ```ruby
 render body: "raw"
 ```
 
-TIP: This option should be used only if you don't care about the content type of the response. Using `:plain` or `:html` might be more appropriate in most of the time.
+ヒント: このオプションを使用するのは、レスポンスのcontent typeがどんなものであってもよい場合のみにしてください。ほとんどの場合、`:plain`や`:html`などを使用する方が適切です。
 
-NOTE: Unless overriden, your response returned from this render option will be `text/html`, as that is the default content type of Action Dispatch response.
+メモ: このオプションを使用してブラウザに送信されるレスポンスは、上書きされない限り`text/html`が使用されます。これはAction Dispatchによるレスポンスのデフォルトのcontent typeであるためです。
 
-#### Options for `render`
+#### `render`のオプション
 
-Calls to the `render` method generally accept four options:
+`render`メソッドに対する呼び出しでは、一般に以下の4つのオプションが使用できます。
 
 * `:content_type`
 * `:layout`
 * `:location`
 * `:status`
 
-##### The `:content_type` Option
+##### `:content_type`オプション
 
-By default, Rails will serve the results of a rendering operation with the MIME content-type of `text/html` (or `application/json` if you use the `:json` option, or `application/xml` for the `:xml` option.). There are times when you might like to change this, and you can do so by setting the `:content_type` option:
+Railsがデフォルトで出力する結果のMIME content-typeは、デフォルトで`text/html`になります (ただし`:json`を指定した場合には`application/json`、`:xml`を使用した場合は`application/xml`になります)。content-typeを変更したい場合は、`:content_type`オプションを指定します。
 
 ```ruby
 render file: filename, content_type: "application/rss"
 ```
 
-##### The `:layout` Option
+##### `:layout`オプション
 
-With most of the options to `render`, the rendered content is displayed as part of the current layout. You'll learn more about layouts and how to use them later in this guide.
+`render`で指定できるほとんどのオプションでは、出力されるコンテンツは現在のレイアウトの一部としてブラウザ上で表示されます。これより、レイアウトの詳細と利用法について本ガイドで説明します。
 
-You can use the `:layout` option to tell Rails to use a specific file as the layout for the current action:
+`:layout`オプションを指定すると、現在のアクションに対して特定のファイルをレイアウトとして使用します。
 
 ```ruby
 render layout: "special_layout"
 ```
 
-You can also tell Rails to render with no layout at all:
+出力時にレイアウトをまったく使用しないよう指定することもできます。
 
 ```ruby
 render layout: false
 ```
 
-##### The `:location` Option
+##### `:location`オプション
 
-You can use the `:location` option to set the HTTP `Location` header:
+`:location`を使用することで、HTTPの`Location`ヘッダーを設定できます。
 
 ```ruby
 render xml: photo, location: photo_url(photo)
 ```
 
-##### The `:status` Option
+##### `:status`オプション
 
-Rails will automatically generate a response with the correct HTTP status code (in most cases, this is `200 OK`). You can use the `:status` option to change this:
+Railsが返すレスポンスのHTTPステータスコードは自動的に生成されます (ほとんどの場合`200 OK`となります)。`:status`オプションを使用することで、レスポンスのステータスコードを変更できます。
 
 ```ruby
 render status: 500
 render status: :forbidden
 ```
 
-Rails understands both numeric status codes and the corresponding symbols shown below.
+ステータスコードは数字で指定する他に、以下に示すシンボルで指定することもできます。
 
-| Response Class      | HTTP Status Code | Symbol                           |
+| レスポンスクラス      | HTTPステータスコード | シンボル                           |
 | ------------------- | ---------------- | -------------------------------- |
 | **Informational**   | 100              | :continue                        |
 |                     | 101              | :switching_protocols             |
@@ -414,13 +415,13 @@ Rails understands both numeric status codes and the corresponding symbols shown 
 |                     | 510              | :not_extended                    |
 |                     | 511              | :network_authentication_required |
 
-#### Finding Layouts
+#### レイアウトの探索順序
 
-To find the current layout, Rails first looks for a file in `app/views/layouts` with the same base name as the controller. For example, rendering actions from the `PhotosController` class will use `app/views/layouts/photos.html.erb` (or `app/views/layouts/photos.builder`). If there is no such controller-specific layout, Rails will use `app/views/layouts/application.html.erb` or `app/views/layouts/application.builder`. If there is no `.erb` layout, Rails will use a `.builder` layout if one exists. Rails also provides several ways to more precisely assign specific layouts to individual controllers and actions.
+Railsはが現在のレイアウトを探索する場合、最初に現在のコントローラと同じ基本名を持つレイアウトが`app/views/layouts`ディレクトリにあるかどうかを調べます。たとえば、`PhotosController`クラスのアクションから出力するのであれば、`app/views/layouts/photos.html.erb`または`app/views/layouts/photos.builder`を探します。該当のコントローラに属するレイアウトがない場合、`app/views/layouts/application.html.erb`または`app/views/layouts/application.builder`を使用します。`.erb`レイアウトがない場合、`.builder`レイアウトがあればそれを使用します。Railsには、各コントローラやアクションに割り当てる特定のレイアウトをもっと正確に指定する方法がいくつも用意されています。
 
-##### Specifying Layouts for Controllers
+##### コントローラ用のレイアウトを指定する
 
-You can override the default layout conventions in your controllers by using the `layout` declaration. For example:
+`layout`宣言を使用することで、デフォルトのレイアウト名ルールを上書きすることができます。例: 
 
 ```ruby
 class ProductsController < ApplicationController
@@ -429,9 +430,9 @@ class ProductsController < ApplicationController
 end
 ```
 
-With this declaration, all of the views rendered by the `ProductsController` will use `app/views/layouts/inventory.html.erb` as their layout.
+この宣言によって、`ProductsController`からの出力で使用されるレイアウトは`app/views/layouts/inventory.html.erb`になります。
 
-To assign a specific layout for the entire application, use a `layout` declaration in your `ApplicationController` class:
+アプリケーション全体で特定のレイアウトを使用したい場合は、`ApplicationController`クラスで`layout`を宣言します。
 
 ```ruby
 class ApplicationController < ActionController::Base
@@ -440,11 +441,11 @@ class ApplicationController < ActionController::Base
 end
 ```
 
-With this declaration, all of the views in the entire application will use `app/views/layouts/main.html.erb` for their layout.
+この宣言によって、アプリケーションのすべてのビューで使用されるレイアウトは`app/views/layouts/main.html.erb`になります。
 
-##### Choosing Layouts at Runtime
+##### 実行時にレイアウトを指定する
 
-You can use a symbol to defer the choice of layout until a request is processed:
+レイアウトの指定にシンボルを使用することで、リクエストが実際に処理されるときまでレイアウトを確定せず、選択を遅延することができます。
 
 ```ruby
 class ProductsController < ApplicationController
@@ -462,9 +463,9 @@ class ProductsController < ApplicationController
 end
 ```
 
-Now, if the current user is a special user, they'll get a special layout when viewing a product.
+上のコードは、現在のユーザーが特別なユーザーの場合、そのユーザーが製品ページを見るときに特別なレイアウトを適用します。
 
-You can even use an inline method, such as a Proc, to determine the layout. For example, if you pass a Proc object, the block you give the Proc will be given the `controller` instance, so the layout can be determined based on the current request:
+レイアウトを決定する際に、Procなどのインラインメソッドを使用することもできます。たとえばProcオブジェクトを渡すと、Procを渡されたブロックには`controller`インスタンスが渡されます。これにより、現在のリクエストを元にしてレイアウトを決定することができます。
 
 ```ruby
 class ProductsController < ApplicationController
@@ -472,9 +473,9 @@ class ProductsController < ApplicationController
 end
 ```
 
-##### Conditional Layouts
+##### 条件付きレイアウト
 
-Layouts specified at the controller level support the `:only` and `:except` options. These options take either a method name, or an array of method names, corresponding to method names within the controller:
+コントローラレベルで指定されたレイアウトでは、`:only`オプションと`:except`オプションがサポートされています。これらのオプションは、単一のメソッド名またはメソッド名の配列を引数として受け取ります。渡すメソッド名はコントローラ内のメソッド名に対応します。
 
 ```ruby
 class ProductsController < ApplicationController
@@ -486,47 +487,47 @@ With this declaration, the `product` layout would be used for everything but the
 
 ##### Layout Inheritance
 
-Layout declarations cascade downward in the hierarchy, and more specific layout declarations always override more general ones. For example:
+Layout declarations cascade downward in the hierarchy, and more specific layout declarations always override more general ones. 例：
 
 * `application_controller.rb`
 
-    ```ruby
-    class ApplicationController < ActionController::Base
+```ruby 
+class ApplicationController < ActionController::Base
       layout "main"
-    end
+  end
     ```
 
 * `posts_controller.rb`
 
-    ```ruby
+```ruby 
     class PostsController < ApplicationController
-    end
+  end
     ```
 
 * `special_posts_controller.rb`
 
-    ```ruby
+```ruby 
     class SpecialPostsController < PostsController
       layout "special"
-    end
+  end
     ```
 
 * `old_posts_controller.rb`
 
-    ```ruby
+```ruby 
     class OldPostsController < SpecialPostsController
       layout false
 
-      def show
+  def show
         @post = Post.find(params[:id])
-      end
+  end
 
-      def index
+  def index
         @old_posts = Post.older
         render layout: "old"
-      end
+  end
       # ...
-    end
+  end
     ```
 
 In this application:
@@ -543,39 +544,39 @@ Sooner or later, most Rails developers will see the error message "Can only rend
 
 For example, here's some code that will trigger this error:
 
-```ruby
-def show
+```ruby 
+  def show
   @book = Book.find(params[:id])
   if @book.special?
     render action: "special_show"
   end
   render action: "regular_show"
-end
+  end
 ```
 
 If `@book.special?` evaluates to `true`, Rails will start the rendering process to dump the `@book` variable into the `special_show` view. But this will _not_ stop the rest of the code in the `show` action from running, and when Rails hits the end of the action, it will start to render the `regular_show` view - and throw an error. The solution is simple: make sure that you have only one call to `render` or `redirect` in a single code path. One thing that can help is `and return`. Here's a patched version of the method:
 
-```ruby
-def show
+```ruby 
+  def show
   @book = Book.find(params[:id])
   if @book.special?
     render action: "special_show" and return
   end
   render action: "regular_show"
-end
+  end
 ```
 
 Make sure to use `and return` instead of `&& return` because `&& return` will not work due to the operator precedence in the Ruby Language.
 
 Note that the implicit render done by ActionController detects if `render` has been called, so the following will work without errors:
 
-```ruby
-def show
+```ruby 
+  def show
   @book = Book.find(params[:id])
   if @book.special?
     render action: "special_show"
   end
-end
+  end
 ```
 
 This will render a book with `special?` set with the `special_show` template, while other books will render with the default `show` template.
@@ -584,21 +585,21 @@ This will render a book with `special?` set with the `special_show` template, wh
 
 Another way to handle returning responses to an HTTP request is with `redirect_to`. As you've seen, `render` tells Rails which view (or other asset) to use in constructing a response. The `redirect_to` method does something completely different: it tells the browser to send a new request for a different URL. For example, you could redirect from wherever you are in your code to the index of photos in your application with this call:
 
-```ruby
+```ruby 
 redirect_to photos_url
 ```
 
 You can use `redirect_to` with any arguments that you could use with `link_to` or `url_for`. There's also a special redirect that sends the user back to the page they just came from:
 
-```ruby
-redirect_to :back
+```ruby 
+      redirect_to :back
 ```
 
 #### Getting a Different Redirect Status Code
 
 Rails uses HTTP status code 302, a temporary redirect, when you call `redirect_to`. If you'd like to use a different status code, perhaps 301, a permanent redirect, you can use the `:status` option:
 
-```ruby
+```ruby 
 redirect_to photos_path, status: 301
 ```
 
@@ -610,32 +611,32 @@ Sometimes inexperienced developers think of `redirect_to` as a sort of `goto` co
 
 Consider these actions to see the difference:
 
-```ruby
-def index
+```ruby 
+  def index
   @books = Book.all
-end
+  end
 
-def show
+  def show
   @book = Book.find_by(id: params[:id])
   if @book.nil?
     render action: "index"
   end
-end
+  end
 ```
 
 With the code in this form, there will likely be a problem if the `@book` variable is `nil`. Remember, a `render :action` doesn't run any code in the target action, so nothing will set up the `@books` variable that the `index` view will probably require. One way to fix this is to redirect instead of rendering:
 
-```ruby
-def index
+```ruby 
+  def index
   @books = Book.all
-end
+  end
 
-def show
+  def show
   @book = Book.find_by(id: params[:id])
   if @book.nil?
     redirect_to action: :index
   end
-end
+  end
 ```
 
 With this code, the browser will make a fresh request for the index page, the code in the `index` method will run, and all will be well.
@@ -644,19 +645,19 @@ The only downside to this code is that it requires a round trip to the browser: 
 
 While in a small application, this added latency might not be a problem, it is something to think about if response time is a concern. We can demonstrate one way to handle this with a contrived example:
 
-```ruby
-def index
+```ruby 
+  def index
   @books = Book.all
-end
+  end
 
-def show
+  def show
   @book = Book.find_by(id: params[:id])
   if @book.nil?
     @books = Book.all
     flash.now[:alert] = "Your book was not found"
     render "index"
   end
-end
+  end
 ```
 
 This would detect that there are no books with the specified ID, populate the `@books` instance variable with all the books in the model, and then directly render the `index.html.erb` template, returning it to the browser with a flash alert message to tell the user what happened.
@@ -665,7 +666,7 @@ This would detect that there are no books with the specified ID, populate the `@
 
 The `head` method can be used to send responses with only headers to the browser. It provides a more obvious alternative to calling `render :nothing`. The `head` method accepts a number or symbol (see [reference table](#the-status-option)) representing a HTTP status code. The options argument is interpreted as a hash of header names and values. For example, you can return only an error header:
 
-```ruby
+```ruby 
 head :bad_request
 ```
 
@@ -684,7 +685,7 @@ Cache-Control: no-cache
 
 Or you can use other HTTP headers to convey other information:
 
-```ruby
+```ruby 
 head :created, location: photo_path(@photo)
 ```
 
@@ -717,7 +718,7 @@ Asset tag helpers provide methods for generating HTML that link views to feeds, 
 
 * `auto_discovery_link_tag`
 * `javascript_include_tag`
-* `stylesheet_link_tag`
+{0}<%={/0} {1}stylesheet_link_tag{/1} {2}.{/2}{1}.{/1}{2}.{/2}
 * `image_tag`
 * `video_tag`
 * `audio_tag`
@@ -730,7 +731,7 @@ WARNING: The asset tag helpers do _not_ verify the existence of the assets at th
 
 The `auto_discovery_link_tag` helper builds HTML that most browsers and feed readers can use to detect the presence of RSS or Atom feeds. It takes the type of the link (`:rss` or `:atom`), a hash of options that are passed through to url_for, and a hash of options for the tag:
 
-```erb
+    ```erb
 <%= auto_discovery_link_tag(:rss, {action: "feed"},
   {title: "RSS Feed"}) %>
 ```
@@ -751,7 +752,7 @@ A JavaScript file within a Rails application or Rails engine goes in one of thre
 
 You can specify a full path relative to the document root, or a URL, if you prefer. For example, to link to a JavaScript file that is inside a directory called `javascripts` inside of one of `app/assets`, `lib/assets` or `vendor/assets`, you would do this:
 
-```erb
+    ```erb
 <%= javascript_include_tag "main" %>
 ```
 
@@ -765,19 +766,19 @@ The request to this asset is then served by the Sprockets gem.
 
 To include multiple files such as `app/assets/javascripts/main.js` and `app/assets/javascripts/columns.js` at the same time:
 
-```erb
+    ```erb
 <%= javascript_include_tag "main", "columns" %>
 ```
 
 To include `app/assets/javascripts/main.js` and `app/assets/javascripts/photos/columns.js`:
 
-```erb
+    ```erb
 <%= javascript_include_tag "main", "/photos/columns" %>
 ```
 
 To include `http://example.com/main.js`:
 
-```erb
+    ```erb
 <%= javascript_include_tag "http://example.com/main.js" %>
 ```
 
@@ -789,31 +790,31 @@ If you are using Rails with the "Asset Pipeline" enabled, this helper will gener
 
 You can specify a full path relative to the document root, or a URL. For example, to link to a stylesheet file that is inside a directory called `stylesheets` inside of one of `app/assets`, `lib/assets` or `vendor/assets`, you would do this:
 
-```erb
+    ```erb
 <%= stylesheet_link_tag "main" %>
 ```
 
 To include `app/assets/stylesheets/main.css` and `app/assets/stylesheets/columns.css`:
 
-```erb
+    ```erb
 <%= stylesheet_link_tag "main", "columns" %>
 ```
 
 To include `app/assets/stylesheets/main.css` and `app/assets/stylesheets/photos/columns.css`:
 
-```erb
+    ```erb
 <%= stylesheet_link_tag "main", "photos/columns" %>
 ```
 
 To include `http://example.com/main.css`:
 
-```erb
+    ```erb
 <%= stylesheet_link_tag "http://example.com/main.css" %>
 ```
 
 By default, the `stylesheet_link_tag` creates links with `media="screen" rel="stylesheet"`. You can override any of these defaults by specifying an appropriate option (`:media`, `:rel`):
 
-```erb
+    ```erb
 <%= stylesheet_link_tag "main_print", media: "print" %>
 ```
 
@@ -823,38 +824,38 @@ The `image_tag` helper builds an HTML `<img />` tag to the specified file. By de
 
 WARNING: Note that you must specify the extension of the image.
 
-```erb
+    ```erb
 <%= image_tag "header.png" %>
 ```
 
 You can supply a path to the image if you like:
 
-```erb
+    ```erb
 <%= image_tag "icons/delete.gif" %>
 ```
 
 You can supply a hash of additional HTML options:
 
-```erb
+    ```erb
 <%= image_tag "icons/delete.gif", {height: 45} %>
 ```
 
 You can supply alternate text for the image which will be used if the user has images turned off in their browser. If you do not specify an alt text explicitly, it defaults to the file name of the file, capitalized and with no extension. For example, these two image tags would return the same code:
 
-```erb
+    ```erb
 <%= image_tag "home.gif" %>
 <%= image_tag "home.gif", alt: "Home" %>
 ```
 
 You can also specify a special size tag, in the format "{width}x{height}":
 
-```erb
+    ```erb
 <%= image_tag "home.gif", size: "50x20" %>
 ```
 
 In addition to the above special tags, you can supply a final hash of standard HTML options, such as `:class`, `:id` or `:name`:
 
-```erb
+    ```erb
 <%= image_tag "home.gif", alt: "Go Home",
                           id: "HomeImage",
                           class: "nav_bar" %>
@@ -864,13 +865,13 @@ In addition to the above special tags, you can supply a final hash of standard H
 
 The `video_tag` helper builds an HTML 5 `<video>` tag to the specified file. By default, files are loaded from `public/videos`.
 
-```erb
+    ```erb
 <%= video_tag "movie.ogg" %>
 ```
 
 Produces
 
-```erb
+    ```erb
 <video src="/videos/movie.ogg" />
 ```
 
@@ -886,13 +887,13 @@ The video tag also supports all of the `<video>` HTML options through the HTML o
 
 You can also specify multiple videos to play by passing an array of videos to the `video_tag`:
 
-```erb
+    ```erb
 <%= video_tag ["trailer.ogg", "movie.ogg"] %>
 ```
 
 This will produce:
 
-```erb
+    ```erb
 <video><source src="trailer.ogg" /><source src="movie.ogg" /></video>
 ```
 
@@ -900,13 +901,13 @@ This will produce:
 
 The `audio_tag` helper builds an HTML 5 `<audio>` tag to the specified file. By default, files are loaded from `public/audios`.
 
-```erb
+    ```erb
 <%= audio_tag "music.mp3" %>
 ```
 
 You can supply a path to the audio file if you like:
 
-```erb
+    ```erb
 <%= audio_tag "music/first_song.mp3" %>
 ```
 
@@ -924,25 +925,25 @@ Within the context of a layout, `yield` identifies a section where content from 
 
 ```html+erb
 <html>
-  <head>
-  </head>
+<head>
+</head>
   <body>
-  <%= yield %>
+{0}<%={/0} {1}yield{/1} {0}%>{/0}
   </body>
-</html>
+</html> 
 ```
 
 You can also create a layout with multiple yielding regions:
 
 ```html+erb
 <html>
-  <head>
+<head>
   <%= yield :head %>
-  </head>
+</head>
   <body>
-  <%= yield %>
+{0}<%={/0} {1}yield{/1} {0}%>{/0}
   </body>
-</html>
+</html> 
 ```
 
 The main body of the view will always render into the unnamed `yield`. To render content into a named `yield`, you use the `content_for` method.
@@ -963,13 +964,13 @@ The result of rendering this page into the supplied layout would be this HTML:
 
 ```html+erb
 <html>
-  <head>
+<head>
   <title>A simple page</title>
-  </head>
+</head>
   <body>
   <p>Hello, Rails!</p>
-  </body>
-</html>
+{0} {/0}{1}</body>{/1}
+</html> 
 ```
 
 The `content_for` method is very helpful when your layout contains distinct regions such as sidebars and footers that should get their own blocks of content inserted. It's also useful for inserting tags that load page-specific JavaScript or css files into the header of an otherwise generic layout.
@@ -982,13 +983,13 @@ Partial templates - usually just called "partials" - are another device for brea
 
 To render a partial as part of a view, you use the `render` method within the view:
 
-```ruby
+```ruby 
 <%= render "menu" %>
 ```
 
 This will render a file named `_menu.html.erb` at that point within the view being rendered. Note the leading underscore character: partials are named with a leading underscore to distinguish them from regular views, even though they are referred to without the underscore. This holds true even when you're pulling in a partial from another folder:
 
-```ruby
+```ruby 
 <%= render "shared/menu" %>
 ```
 
@@ -998,7 +999,7 @@ That code will pull in the partial from `app/views/shared/_menu.html.erb`.
 
 One way to use partials is to treat them as the equivalent of subroutines: as a way to move details out of a view so that you can grasp what's going on more easily. For example, you might have a view that looked like this:
 
-```erb
+    ```erb
 <%= render "shared/ad_banner" %>
 
 <h1>Products</h1>
@@ -1017,7 +1018,7 @@ TIP: For content that is shared among all pages in your application, you can use
 
 A partial can use its own layout file, just as a view can use a layout. For example, you might call a partial like this:
 
-```erb
+    ```erb
 <%= render partial: "link_area", layout: "graybar" %>
 ```
 
@@ -1031,37 +1032,37 @@ You can also pass local variables into partials, making them even more powerful 
 
 * `new.html.erb`
 
-    ```html+erb
+```html+erb
     <h1>New zone</h1>
     <%= render partial: "form", locals: {zone: @zone} %>
     ```
 
 * `edit.html.erb`
 
-    ```html+erb
+```html+erb
     <h1>Editing zone</h1>
     <%= render partial: "form", locals: {zone: @zone} %>
     ```
 
 * `_form.html.erb`
 
-    ```html+erb
+```html+erb
     <%= form_for(zone) do |f| %>
       <p>
         <b>Zone name</b><br>
-        <%= f.text_field :name %>
-      </p>
-      <p>
-        <%= f.submit %>
-      </p>
-    <% end %>
+{0}<%={/0} {1}f{/1}{2}.{/2}{1}text_field{/1} {3}:name{/3} {0}%>{/0}
+</p>
+  <p>
+    <%= f.submit %>
+</p>
+<% end %>
     ```
 
 Although the same partial will be rendered into both views, Action View's submit helper will return "Create Zone" for the new action and "Update Zone" for the edit action.
 
 Every partial also has a local variable with the same name as the partial (minus the underscore). You can pass an object in to this local variable via the `:object` option:
 
-```erb
+    ```erb
 <%= render partial: "customer", object: @new_customer %>
 ```
 
@@ -1069,7 +1070,7 @@ Within the `customer` partial, the `customer` variable will refer to `@new_custo
 
 If you have an instance of a model to render into a partial, you can use a shorthand syntax:
 
-```erb
+    ```erb
 <%= render @customer %>
 ```
 
@@ -1081,14 +1082,14 @@ Partials are very useful in rendering collections. When you pass a collection to
 
 * `index.html.erb`
 
-    ```html+erb
+```html+erb
     <h1>Products</h1>
     <%= render partial: "product", collection: @products %>
     ```
 
 * `_product.html.erb`
 
-    ```html+erb
+```html+erb
     <p>Product Name: <%= product.name %></p>
     ```
 
@@ -1105,20 +1106,20 @@ Rails determines the name of the partial to use by looking at the model name in 
 
 * `index.html.erb`
 
-    ```html+erb
+```html+erb
     <h1>Contacts</h1>
     <%= render [customer1, employee1, customer2, employee2] %>
     ```
 
 * `customers/_customer.html.erb`
 
-    ```html+erb
+```html+erb
     <p>Customer: <%= customer.name %></p>
     ```
 
 * `employees/_employee.html.erb`
 
-    ```html+erb
+```html+erb
     <p>Employee: <%= employee.name %></p>
     ```
 
@@ -1135,7 +1136,7 @@ In the event that the collection is empty, `render` will return nil, so it shoul
 
 To use a custom local variable name within the partial, specify the `:as` option in the call to the partial:
 
-```erb
+    ```erb
 <%= render partial: "product", collection: @products, as: :item %>
 ```
 
@@ -1143,7 +1144,7 @@ With this change, you can access an instance of the `@products` collection as th
 
 You can also pass in arbitrary local variables to any partial you are rendering with the `locals: {}` option:
 
-```erb
+    ```erb
 <%= render partial: "product", collection: @products,
            as: :item, locals: {title: "Products Page"} %>
 ```
@@ -1156,7 +1157,7 @@ You can also specify a second partial to be rendered between instances of the ma
 
 #### Spacer Templates
 
-```erb
+    ```erb
 <%= render partial: @products, spacer_template: "product_ruler" %>
 ```
 
@@ -1166,7 +1167,7 @@ Rails will render the `_product_ruler` partial (with no data passed in to it) be
 
 When rendering collections it is also possible to use the `:layout` option:
 
-```erb
+    ```erb
 <%= render partial: "product", collection: @products, layout: "special_layout" %>
 ```
 
@@ -1174,43 +1175,43 @@ The layout will be rendered together with the partial for each item in the colle
 
 ### Using Nested Layouts
 
-You may find that your application requires a layout that differs slightly from your regular application layout to support one particular controller. Rather than repeating the main layout and editing it, you can accomplish this by using nested layouts (sometimes called sub-templates). Here's an example:
+You may find that your application requires a layout that differs slightly from your regular application layout to support one particular controller. Rather than repeating the main layout and editing it, you can accomplish this by using nested layouts (sometimes called sub-templates). 下が例です：
 
 Suppose you have the following `ApplicationController` layout:
 
 * `app/views/layouts/application.html.erb`
 
-    ```html+erb
-    <html>
-    <head>
+```html+erb
+<html>
+<head>
       <title><%= @page_title or "Page Title" %></title>
       <%= stylesheet_link_tag "layout" %>
       <style><%= yield :stylesheets %></style>
-    </head>
-    <body>
+</head>
+  <body>
       <div id="top_menu">Top menu items here</div>
       <div id="menu">Menu items here</div>
       <div id="content"><%= content_for?(:content) ? yield(:content) : yield %></div>
-    </body>
-    </html>
+  </body>
+</html> 
     ```
 
 On pages generated by `NewsController`, you want to hide the top menu and add a right menu:
 
 * `app/views/layouts/news.html.erb`
 
-    ```html+erb
+```html+erb
     <% content_for :stylesheets do %>
       #top_menu {display: none}
       #right_menu {float: right; background-color: yellow; color: black}
-    <% end %>
+<% end %>
     <% content_for :content do %>
       <div id="right_menu">Right menu items here</div>
       <%= content_for?(:news_content) ? yield(:news_content) : yield %>
-    <% end %>
+<% end %>
     <%= render template: "layouts/application" %>
     ```
 
-That's it. The News views will use the new layout, hiding the top menu and adding a new right menu inside the "content" div.
+これだけなんです。The News views will use the new layout, hiding the top menu and adding a new right menu inside the "content" div.
 
 There are several ways of getting similar results with different sub-templating schemes using this technique. Note that there is no limit in nesting levels. One can use the `ActionView::render` method via `render template: 'layouts/news'` to base a new layout on the News layout. If you are sure you will not subtemplate the `News` layout, you can replace the `content_for?(:news_content) ? yield(:news_content) : yield` with simply `yield`.
