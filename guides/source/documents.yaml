@@ -14,11 +14,11 @@
       url: active_record_basics.html
       description: Active Recordの基礎となるモデル、データベースへの永続的な保存、Active Recordパターンとライブラリについて解説します。
     -
-      name: Active Record Migrations [翻訳中]
+      name: Active Record マイグレーション [翻訳中]
       url: active_record_migrations.html
       description: Active Recordのマイグレーション (migration) を使用して、データベースを構造化された方法で整然と変更する方法について解説します。
     -
-      name: Active Record 検証機能 (バリデーション)
+      name: Active Record バリデーション
       url: active_record_validations.html
       description: Active Recordのバリデーション機能について解説します。
     -
@@ -26,7 +26,7 @@
       url: active_record_callbacks.html
       description: Active Recordのコールバックについて解説します。
     -
-      name: Active Record の関連付け (アソシエーション)
+      name: Active Record アソシエーション
       url: association_basics.html
       description: Active Recordが提供するすべての関連付け機能について解説します。
     -
@@ -42,7 +42,7 @@
       description: Action Viewの概要を紹介し、共通のビューヘルパーについてもある程度解説します。
       work_in_progress: true
     -
-      name: Layouts and Rendering in Rails [翻訳中]
+      name: レイアウトとレンダリング [翻訳中]
       url: layouts_and_rendering.html
       description: Action ControllerとAction Viewが提供する基本的なレイアウト機能について解説します。画面出力 (レンダリング) とリダイレクト、content_forブロックとパーシャル (部分テンプレート) の使用方法についても解説します。
     -
@@ -57,7 +57,7 @@
       url: action_controller_overview.html
       description: コントローラの動作と、アプリケーションのリクエストサイクルでコントローラがどのように使われるかについて解説します。セッション、フィルタ、cookie、データストリーミング、リクエストによって発生する例外、その他多くの話題を取り扱っています。
     -
-      name: Rails Routing from the Outside In [翻訳中]
+      name: Rails ルーティング
       url: routing.html
       description: Railsのルーティング機能について解説しますRailsアプリケーションで行われているルーティングのしくみについて理解したい場合は、ここからお読みください。
 -
@@ -68,7 +68,7 @@
       url: active_support_core_extensions.html
       description: Active Supportで定義されているRubyのコア拡張機能に関するドキュメントです。
     -
-      name: Rails国際化(I18n) API
+      name: Rails 国際化 (i18n) API
       url: i18n.html
       description: Railsアプリケーションを国際化する方法について解説します。これによりアプリケーションを異なる言語に翻訳することができ、さらに単数形/複数形ルールを変更したり、その国に適した日付フォーマットを設定したりできます。
     -
