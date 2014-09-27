@@ -16,7 +16,7 @@
 <meta property="og:type"        content="article" />
 <meta property="og:description" content="Rails 開発のお供に! 日本語版 Rails リファレンスガイド (Rails 4.1 対応)" />
 
-<title>Active Record Migrations — Ruby on Rails Guides</title>
+<title>Ruby on Rails Guides</title>
 <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
 
@@ -63,22 +63,22 @@
                 <dd><a href="getting_started.html">Rails をはじめよう</a></dd>
                 <dt>モデル</dt>
                 <dd><a href="active_record_basics.html">Active Record の基礎</a></dd>
-                <dd><a href="active_record_migrations.html">Active Record Migrations [翻訳中]</a></dd>
-                <dd><a href="active_record_validations.html">Active Record 検証機能 (バリデーション)</a></dd>
+                <dd><a href="active_record_migrations.html">Active Record マイグレーション [翻訳中]</a></dd>
+                <dd><a href="active_record_validations.html">Active Record バリデーション</a></dd>
                 <dd><a href="active_record_callbacks.html">Active Record コールバック</a></dd>
-                <dd><a href="association_basics.html">Active Record の関連付け (アソシエーション)</a></dd>
+                <dd><a href="association_basics.html">Active Record アソシエーション</a></dd>
                 <dd><a href="active_record_querying.html">Active Record クエリインターフェイス</a></dd>
                 <dt>ビュー</dt>
-                <dd><a href="layouts_and_rendering.html">Layouts and Rendering in Rails [翻訳中]</a></dd>
+                <dd><a href="layouts_and_rendering.html">レイアウトとレンダリング [翻訳中]</a></dd>
                 <dd><a href="form_helpers.html">Action View フォームヘルパー</a></dd>
                 <dt>コントローラ</dt>
                 <dd><a href="action_controller_overview.html">Action Controller の概要</a></dd>
-                <dd><a href="routing.html">Rails Routing from the Outside In [翻訳中]</a></dd>
+                <dd><a href="routing.html">Rails ルーティング</a></dd>
               </dl>
               <dl class="R">
                 <dt>高度なトピック</dt>
                 <dd><a href="active_support_core_extensions.html">Active Support コア拡張機能</a></dd>
-                <dd><a href="i18n.html">Rails国際化(I18n) API</a></dd>
+                <dd><a href="i18n.html">Rails 国際化 (i18n) API</a></dd>
                 <dd><a href="action_mailer_basics.html">Action Mailer Basics [未着手]</a></dd>
                 <dd><a href="active_job_basics.html">Active Job Basics [未着手]</a></dd>
                 <dd><a href="security.html">Ruby on Rails セキュリティガイド</a></dd>
@@ -118,23 +118,23 @@
               </optgroup>
               <optgroup label="モデル">
                   <option value="active_record_basics.html">Active Record の基礎</option>
-                  <option value="active_record_migrations.html">Active Record Migrations [翻訳中]</option>
-                  <option value="active_record_validations.html">Active Record 検証機能 (バリデーション)</option>
+                  <option value="active_record_migrations.html">Active Record マイグレーション [翻訳中]</option>
+                  <option value="active_record_validations.html">Active Record バリデーション</option>
                   <option value="active_record_callbacks.html">Active Record コールバック</option>
-                  <option value="association_basics.html">Active Record の関連付け (アソシエーション)</option>
+                  <option value="association_basics.html">Active Record アソシエーション</option>
                   <option value="active_record_querying.html">Active Record クエリインターフェイス</option>
               </optgroup>
               <optgroup label="ビュー">
-                  <option value="layouts_and_rendering.html">Layouts and Rendering in Rails [翻訳中]</option>
+                  <option value="layouts_and_rendering.html">レイアウトとレンダリング [翻訳中]</option>
                   <option value="form_helpers.html">Action View フォームヘルパー</option>
               </optgroup>
               <optgroup label="コントローラ">
                   <option value="action_controller_overview.html">Action Controller の概要</option>
-                  <option value="routing.html">Rails Routing from the Outside In [翻訳中]</option>
+                  <option value="routing.html">Rails ルーティング</option>
               </optgroup>
               <optgroup label="高度なトピック">
                   <option value="active_support_core_extensions.html">Active Support コア拡張機能</option>
-                  <option value="i18n.html">Rails国際化(I18n) API</option>
+                  <option value="i18n.html">Rails 国際化 (i18n) API</option>
                   <option value="action_mailer_basics.html">Action Mailer Basics [未着手]</option>
                   <option value="active_job_basics.html">Active Job Basics [未着手]</option>
                   <option value="security.html">Ruby on Rails セキュリティガイド</option>
@@ -176,14 +176,7 @@
 
   <div id="feature">
     <div class="wrapper">
-      <h2>Active Record Migrations</h2><p>Migrations are a feature of Active Record that allows you to evolve your database schema over time. Rather than write schema modifications in pure SQL, migrations allow you to use an easy Ruby DSL to describe changes to your tables.</p><p>After reading this guide, you will know:</p>
-<ul>
-<li>The generators you can use to create them.</li>
-<li>The methods Active Record provides to manipulate your database.</li>
-<li>The Rake tasks that manipulate migrations and your schema.</li>
-<li>How migrations relate to <code>schema.rb</code>.</li>
-</ul>
-
+      
                 <div id="subCol">
             <h3 class="chapter"><img src="images/chapters_icon.gif" alt="" />Chapters</h3>
             <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
@@ -249,6 +242,17 @@
       <div id="mainCol">
         <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
+<h2>Active Record Migrations</h2>
+<p>Migrations are a feature of Active Record that allows you to evolve your database schema over time. Rather than write schema modifications in pure SQL, migrations allow you to use an easy Ruby DSL to describe changes to your tables.</p>
+<p>このガイドの内容:</p>
+<ul>
+<li>The generators you can use to create them.</li>
+<li>The methods Active Record provides to manipulate your database.</li>
+<li>The Rake tasks that manipulate migrations and your schema.</li>
+<li>How migrations relate to <code>schema.rb</code>.</li>
+</ul>
+
+<hr>
 <h3 id="migration-overview">1 Migration Overview</h3>
 <p>Migrations are a convenient way to <a href="http://en.wikipedia.org/wiki/Schema_migration">alter your database schema over time</a> in a consistent and easy way. They use a Ruby DSL so that you don't have to write SQL by hand, allowing your schema and changes to be database independent.</p>
 <p>You can think of each migration as being a new 'version' of the database. A schema starts off with nothing in it, and each migration modifies it to add or remove tables, columns, or entries. Active Record knows how to update your schema along this timeline, bringing it from whatever point it is in the history to the latest version. Active Record will also update your <code>db/schema.rb</code> file to match the up-to-date structure of your database.</p>
@@ -262,9 +266,9 @@ class CreateProducts &lt; ActiveRecord::Migration
       t.text :description
 
       t.timestamps
-    end
   end
-end
+end 
+  end
 
 </pre>
 </div>
@@ -281,10 +285,10 @@ class ChangeProductsPrice &lt; ActiveRecord::Migration
       change_table :products do |t|
         dir.up   { t.change :price, :string }
         dir.down { t.change :price, :integer }
-      end
-    end
   end
-end
+end 
+end 
+  end
 
 </pre>
 </div>
@@ -295,15 +299,15 @@ class ChangeProductsPrice &lt; ActiveRecord::Migration
   def up
     change_table :products do |t|
       t.change :price, :string
-    end
+  end
   end
 
   def down
     change_table :products do |t|
       t.change :price, :integer
-    end
   end
-end
+end 
+  end
 
 </pre>
 </div>
@@ -325,7 +329,7 @@ $ rails generate migration AddPartNumberToProducts
 class AddPartNumberToProducts &lt; ActiveRecord::Migration
   def change
   end
-end
+  end
 
 </pre>
 </div>
@@ -343,7 +347,7 @@ class AddPartNumberToProducts &lt; ActiveRecord::Migration
   def change
     add_column :products, :part_number, :string
   end
-end
+  end
 
 </pre>
 </div>
@@ -362,7 +366,7 @@ class AddPartNumberToProducts &lt; ActiveRecord::Migration
     add_column :products, :part_number, :string
     add_index :products, :part_number
   end
-end
+  end
 
 </pre>
 </div>
@@ -373,25 +377,25 @@ $ rails generate migration RemovePartNumberFromProducts part_number:string
 
 </pre>
 </div>
-<p>generates</p>
+<p>以下ものを生成します：</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class RemovePartNumberFromProducts &lt; ActiveRecord::Migration
   def change
     remove_column :products, :part_number, :string
   end
-end
+  end
 
 </pre>
 </div>
-<p>You are not limited to one magically generated column. For example:</p>
+<p>You are not limited to one magically generated column. 例：</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ rails generate migration AddDetailsToProducts part_number:string price:decimal
 
 </pre>
 </div>
-<p>generates</p>
+<p>以下ものを生成します：</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class AddDetailsToProducts &lt; ActiveRecord::Migration
@@ -399,18 +403,18 @@ class AddDetailsToProducts &lt; ActiveRecord::Migration
     add_column :products, :part_number, :string
     add_column :products, :price, :decimal
   end
-end
+  end
 
 </pre>
 </div>
-<p>If the migration name is of the form "CreateXXX" and is followed by a list of column names and types then a migration creating the table XXX with the columns listed will be generated. For example:</p>
+<p>If the migration name is of the form "CreateXXX" and is followed by a list of column names and types then a migration creating the table XXX with the columns listed will be generated. 例：</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ rails generate migration CreateProducts name:string part_number:string
 
 </pre>
 </div>
-<p>generates</p>
+<p>以下ものを生成します：</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class CreateProducts &lt; ActiveRecord::Migration
@@ -418,28 +422,28 @@ class CreateProducts &lt; ActiveRecord::Migration
     create_table :products do |t|
       t.string :name
       t.string :part_number
-    end
   end
-end
+end 
+  end
 
 </pre>
 </div>
 <p>As always, what has been generated for you is just a starting point. You can add or remove from it as you see fit by editing the <code>db/migrate/YYYYMMDDHHMMSS_add_details_to_products.rb</code> file.</p>
-<p>Also, the generator accepts column type as <code>references</code>(also available as <code>belongs_to</code>). For instance:</p>
+<p>Also, the generator accepts column type as <code>references</code>(also available as <code>belongs_to</code>). たとえば：</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ rails generate migration AddUserRefToProducts user:references
 
 </pre>
 </div>
-<p>generates</p>
+<p>以下ものを生成します：</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class AddUserRefToProducts &lt; ActiveRecord::Migration
   def change
     add_reference :products, :user, index: true
   end
-end
+  end
 
 </pre>
 </div>
@@ -459,9 +463,9 @@ class CreateJoinTableCustomerProduct &lt; ActiveRecord::Migration
     create_join_table :customers, :products do |t|
       # t.index [:customer_id, :product_id]
       # t.index [:product_id, :customer_id]
-    end
   end
-end
+end 
+  end
 
 </pre>
 </div>
@@ -483,9 +487,9 @@ class CreateProducts &lt; ActiveRecord::Migration
       t.text :description
 
       t.timestamps
-    end
   end
-end
+end 
+  end
 
 </pre>
 </div>
@@ -519,7 +523,7 @@ class AddDetailsToProducts &lt; ActiveRecord::Migration
     add_column :products, :price, :decimal, precision: 5, scale: 2
     add_reference :products, :supplier, polymorphic: true, index: true
   end
-end
+  end
 
 </pre>
 </div>
@@ -530,18 +534,18 @@ end
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 create_table :products do |t|
-  t.string :name
-end
+      t.string :name
+  end
 
 </pre>
 </div>
 <p>which creates a <code>products</code> table with a column called <code>name</code> (and as discussed below, an implicit <code>id</code> column).</p>
-<p>By default, <code>create_table</code> will create a primary key called <code>id</code>. You can change the name of the primary key with the <code>:primary_key</code> option (don't forget to update the corresponding model) or, if you don't want a primary key at all, you can pass the option <code>id: false</code>. If you need to pass database specific options you can place an SQL fragment in the <code>:options</code> option. For example:</p>
+<p>By default, <code>create_table</code> will create a primary key called <code>id</code>. You can change the name of the primary key with the <code>:primary_key</code> option (don't forget to update the corresponding model) or, if you don't want a primary key at all, you can pass the option <code>id: false</code>. If you need to pass database specific options you can place an SQL fragment in the <code>:options</code> option. 例：</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 create_table :products, options: "ENGINE=BLACKHOLE" do |t|
   t.string :name, null: false
-end
+  end
 
 </pre>
 </div>
@@ -562,7 +566,7 @@ create_join_table :products, :categories, column_options: {null: true}
 </pre>
 </div>
 <p>will create the <code>product_id</code> and <code>category_id</code> with the <code>:null</code> option as <code>true</code>.</p>
-<p>You can pass the option <code>:table_name</code> when you want to customize the table name. For example:</p>
+<p>You can pass the option <code>:table_name</code> when you want to customize the table name. 例：</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 create_join_table :products, :categories, table_name: :categorization
@@ -576,20 +580,20 @@ create_join_table :products, :categories, table_name: :categorization
 create_join_table :products, :categories do |t|
   t.index :product_id
   t.index :category_id
-end
+  end
 
 </pre>
 </div>
 <h4 id="changing-tables">3.3 Changing Tables</h4>
-<p>A close cousin of <code>create_table</code> is <code>change_table</code>, used for changing existing tables. It is used in a similar fashion to <code>create_table</code> but the object yielded to the block knows more tricks. For example:</p>
+<p>A close cousin of <code>create_table</code> is <code>change_table</code>, used for changing existing tables. It is used in a similar fashion to <code>create_table</code> but the object yielded to the block knows more tricks. 例：</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 change_table :products do |t|
   t.remove :description, :name
-  t.string :part_number
+      t.string :part_number
   t.index :part_number
   t.rename :upccode, :upc_code
-end
+  end
 
 </pre>
 </div>
@@ -627,14 +631,14 @@ In particular the documentation for <a href="http://api.rubyonrails.org/classes/
 <p>If you're going to need to use any other methods, you should use <code>reversible</code> or write the <code>up</code> and <code>down</code> methods instead of using the <code>change</code> method.</p>
 <h4 id="using-reversible">3.6 Using <code>reversible</code>
 </h4>
-<p>Complex migrations may require processing that Active Record doesn't know how to reverse. You can use <code>reversible</code> to specify what to do when running a migration what else to do when reverting it. For example:</p>
+<p>Complex migrations may require processing that Active Record doesn't know how to reverse. You can use <code>reversible</code> to specify what to do when running a migration what else to do when reverting it. 例：</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class ExampleMigration &lt; ActiveRecord::Migration
   def change
     create_table :products do |t|
       t.references :category
-    end
+  end
 
     reversible do |dir|
       dir.up do
@@ -645,19 +649,19 @@ class ExampleMigration &lt; ActiveRecord::Migration
             FOREIGN KEY (category_id)
             REFERENCES categories(id)
         SQL
-      end
+  end
       dir.down do
         execute &lt;&lt;-SQL
           ALTER TABLE products
             DROP FOREIGN KEY fk_products_categories
         SQL
-      end
-    end
+  end
+  end
 
     add_column :users, :home_page_url, :string
     rename_column :users, :email, :email_address
   end
-end
+  end
 
 </pre>
 </div>
@@ -671,7 +675,7 @@ class ExampleMigration &lt; ActiveRecord::Migration
   def up
     create_table :products do |t|
       t.references :category
-    end
+  end
 
     # add a foreign key
     execute &lt;&lt;-SQL
@@ -696,7 +700,7 @@ class ExampleMigration &lt; ActiveRecord::Migration
 
     drop_table :products
   end
-end
+  end
 
 </pre>
 </div>
@@ -713,9 +717,9 @@ class FixupExampleMigration &lt; ActiveRecord::Migration
 
     create_table(:apples) do |t|
       t.string :variety
-    end
   end
-end
+end 
+  end
 
 </pre>
 </div>
@@ -731,17 +735,17 @@ class SerializeProductListMigration &lt; ActiveRecord::Migration
     reversible do |dir|
       dir.up do
         # transfer data from Products to Category#product_list
-      end
+  end
       dir.down do
         # create Products from Category#product_list
-      end
-    end
+  end
+  end
 
     revert do
       # copy-pasted code from ExampleMigration
       create_table :products do |t|
         t.references :category
-      end
+  end
 
       reversible do |dir|
         dir.up do
@@ -752,19 +756,19 @@ class SerializeProductListMigration &lt; ActiveRecord::Migration
               FOREIGN KEY (category_id)
               REFERENCES categories(id)
           SQL
-        end
+  end
         dir.down do
           execute &lt;&lt;-SQL
             ALTER TABLE products
               DROP FOREIGN KEY fk_products_categories
           SQL
-        end
-      end
+  end
+  end
 
       # The rest of the migration was ok
-    end
   end
-end
+end 
+  end
 
 </pre>
 </div>
@@ -870,11 +874,11 @@ class CreateProducts &lt; ActiveRecord::Migration
   def change
     suppress_messages do
       create_table :products do |t|
-        t.string :name
-        t.text :description
-        t.timestamps
-      end
-    end
+      t.string :name
+      t.text :description
+      t.timestamps
+  end
+  end
 
     say "Created a table"
 
@@ -883,10 +887,10 @@ class CreateProducts &lt; ActiveRecord::Migration
 
     say_with_time 'Waiting for a while' do
       sleep 10
-      250
-    end
+250
   end
-end
+end 
+  end
 
 </pre>
 </div>
@@ -933,7 +937,7 @@ ActiveRecord::Schema.define(version: 20080906171750) do
     t.datetime "updated_at"
     t.string "part_number"
   end
-end
+  end
 
 </pre>
 </div>
@@ -955,13 +959,13 @@ class AddInitialProducts &lt; ActiveRecord::Migration
   def up
     5.times do |i|
       Product.create(name: "Product ##{i}", description: "A product.")
-    end
+  end
   end
 
   def down
     Product.delete_all
   end
-end
+  end
 
 </pre>
 </div>
@@ -970,7 +974,7 @@ end
 <pre class="brush: ruby; gutter: false; toolbar: false">
 5.times do |i|
   Product.create(name: "Product ##{i}", description: "A product.")
-end
+  end
 
 </pre>
 </div>

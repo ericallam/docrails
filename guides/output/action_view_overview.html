@@ -63,22 +63,22 @@
                 <dd><a href="getting_started.html">Rails をはじめよう</a></dd>
                 <dt>モデル</dt>
                 <dd><a href="active_record_basics.html">Active Record の基礎</a></dd>
-                <dd><a href="active_record_migrations.html">Active Record Migrations [翻訳中]</a></dd>
-                <dd><a href="active_record_validations.html">Active Record 検証機能 (バリデーション)</a></dd>
+                <dd><a href="active_record_migrations.html">Active Record マイグレーション [翻訳中]</a></dd>
+                <dd><a href="active_record_validations.html">Active Record バリデーション</a></dd>
                 <dd><a href="active_record_callbacks.html">Active Record コールバック</a></dd>
-                <dd><a href="association_basics.html">Active Record の関連付け (アソシエーション)</a></dd>
+                <dd><a href="association_basics.html">Active Record アソシエーション</a></dd>
                 <dd><a href="active_record_querying.html">Active Record クエリインターフェイス</a></dd>
                 <dt>ビュー</dt>
-                <dd><a href="layouts_and_rendering.html">Layouts and Rendering in Rails [翻訳中]</a></dd>
+                <dd><a href="layouts_and_rendering.html">レイアウトとレンダリング [翻訳中]</a></dd>
                 <dd><a href="form_helpers.html">Action View フォームヘルパー</a></dd>
                 <dt>コントローラ</dt>
                 <dd><a href="action_controller_overview.html">Action Controller の概要</a></dd>
-                <dd><a href="routing.html">Rails Routing from the Outside In [翻訳中]</a></dd>
+                <dd><a href="routing.html">Rails ルーティング</a></dd>
               </dl>
               <dl class="R">
                 <dt>高度なトピック</dt>
                 <dd><a href="active_support_core_extensions.html">Active Support コア拡張機能</a></dd>
-                <dd><a href="i18n.html">Rails国際化(I18n) API</a></dd>
+                <dd><a href="i18n.html">Rails 国際化 (i18n) API</a></dd>
                 <dd><a href="action_mailer_basics.html">Action Mailer Basics [未着手]</a></dd>
                 <dd><a href="active_job_basics.html">Active Job Basics [未着手]</a></dd>
                 <dd><a href="security.html">Ruby on Rails セキュリティガイド</a></dd>
@@ -118,23 +118,23 @@
               </optgroup>
               <optgroup label="モデル">
                   <option value="active_record_basics.html">Active Record の基礎</option>
-                  <option value="active_record_migrations.html">Active Record Migrations [翻訳中]</option>
-                  <option value="active_record_validations.html">Active Record 検証機能 (バリデーション)</option>
+                  <option value="active_record_migrations.html">Active Record マイグレーション [翻訳中]</option>
+                  <option value="active_record_validations.html">Active Record バリデーション</option>
                   <option value="active_record_callbacks.html">Active Record コールバック</option>
-                  <option value="association_basics.html">Active Record の関連付け (アソシエーション)</option>
+                  <option value="association_basics.html">Active Record アソシエーション</option>
                   <option value="active_record_querying.html">Active Record クエリインターフェイス</option>
               </optgroup>
               <optgroup label="ビュー">
-                  <option value="layouts_and_rendering.html">Layouts and Rendering in Rails [翻訳中]</option>
+                  <option value="layouts_and_rendering.html">レイアウトとレンダリング [翻訳中]</option>
                   <option value="form_helpers.html">Action View フォームヘルパー</option>
               </optgroup>
               <optgroup label="コントローラ">
                   <option value="action_controller_overview.html">Action Controller の概要</option>
-                  <option value="routing.html">Rails Routing from the Outside In [翻訳中]</option>
+                  <option value="routing.html">Rails ルーティング</option>
               </optgroup>
               <optgroup label="高度なトピック">
                   <option value="active_support_core_extensions.html">Active Support コア拡張機能</option>
-                  <option value="i18n.html">Rails国際化(I18n) API</option>
+                  <option value="i18n.html">Rails 国際化 (i18n) API</option>
                   <option value="action_mailer_basics.html">Action Mailer Basics [未着手]</option>
                   <option value="active_job_basics.html">Active Job Basics [未着手]</option>
                   <option value="security.html">Ruby on Rails セキュリティガイド</option>
@@ -481,7 +481,7 @@ end
 </div>
 <p>主要な<code>_product</code>パーシャルの合間に、スペーサーとなる<code>_product_ruler</code>パーシャルが出力されます (<code>_product_ruler</code>にはデータは渡していません)。</p>
 <h4 id="レイアウト">3.3 レイアウト</h4>
-<p>Railsにおける「レイアウト」は、多くのコントローラのアクションにわたって共通して使用できるテンプレートのことです。Railsアプリケーションには必ず全体用のレイアウトがあり、ほぼすべてのWebページ出力はこの全体レイアウトの内側で行われますが、これが典型的なレイアウトです。たとえば、あるWebサイトにはユーザーログイン用のレイアウトが使用されていたり、別のWebサイトにはマーケティングやセールス用のレイアウトが使用されていたりします。ログインしたユーザー向けのレイアウトであれば、ナビゲーションツールバーをページのトップレベルに表示し、多くのコントローラ/アクションで共通して使用できるようにするでしょう。SaaSアプリケーションにおけるセールス用のレイアウトであれば、トップレベルのナビゲーションに「お値段」や「お問い合わせ先」を共通して表示するでしょう。レイアウトごとに異なる外観を設定してこれらを使い分けることができます。レイアウトの詳細については、<a href="layouts_and_rendering.html">Railsにおけるレイアウトと出力</a> ガイドを参照してください。</p>
+<p>Railsにおける「レイアウト」は、多くのコントローラのアクションにわたって共通して使用できるテンプレートのことです。Railsアプリケーションには必ず全体用のレイアウトがあり、ほぼすべてのWebページ出力はこの全体レイアウトの内側で行われますが、これが典型的なレイアウトです。たとえば、あるWebサイトにはユーザーログイン用のレイアウトが使用されていたり、別のWebサイトにはマーケティングやセールス用のレイアウトが使用されていたりします。ログインしたユーザー向けのレイアウトであれば、ナビゲーションツールバーをページのトップレベルに表示し、多くのコントローラ/アクションで共通して使用できるようにするでしょう。SaaSアプリケーションにおけるセールス用のレイアウトであれば、トップレベルのナビゲーションに「お値段」や「お問い合わせ先」を共通して表示するでしょう。レイアウトごとに異なる外観を設定してこれらを使い分けることができます。レイアウトの詳細については、<a href="layouts_and_rendering.html">ビューのレイアウトとレンダリング</a> ガイドを参照してください。</p>
 <h3 id="パーシャルレイアウト">4 パーシャルレイアウト</h3>
 <p>パーシャルに独自のレイアウトを適用することができます。パーシャル用のレイアウトは、アクション全体にわたるグローバルなレイアウトとは異なりますが、動作は同じです。</p>
 <p>試しに、ページ上に投稿を1つ表示してみましょう。表示制御のため<code>div</code>タグで囲むことにします。最初に、<code>Post</code>を1つ新規作成します。</p>
