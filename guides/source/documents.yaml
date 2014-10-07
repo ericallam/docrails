@@ -42,7 +42,7 @@
       description: Action Viewの概要を紹介し、共通のビューヘルパーについてもある程度解説します。
       work_in_progress: true
     -
-      name: レイアウトとレンダリング [翻訳中]
+      name: レイアウトとレンダリング
       url: layouts_and_rendering.html
       description: Action ControllerとAction Viewが提供する基本的なレイアウト機能について解説します。画面出力 (レンダリング) とリダイレクト、content_forブロックとパーシャル (部分テンプレート) の使用方法についても解説します。
     -

@@ -16,9 +16,9 @@
 概要: 部品を組み上げる
 -------------------------------------
 
-本ガイドでは、コントローラ、ビュー、モデルによって形成される三角形のうち、コントローラとビューの間でのやりとりを中心に扱います。御存じのように、Railsのコントローラはリクエストを扱うプロセス全体の流れを組織的に調整する責任を負い、(ビジネスロジックのような) 重い処理はモデルの方で行なわせるのが普通ですモデル側での処理が完了し、ユーザーに結果を表示する時がきたら、コントローラは処理結果をビューに渡します。このときの、コントローラからビューへの結果の渡し方こそが本ガイドの主なトピックです。
+本ガイドでは、コントローラ、ビュー、モデルによって形成される三角形のうち、コントローラとビューの間でのやりとりを中心に扱います。ご存じのように、Railsのコントローラはリクエストを扱うプロセス全体の流れを組織的に調整する責任を負い、(ビジネスロジックのような) 重い処理はモデルの方で行なうのが普通です。モデル側での処理が完了し、ユーザーに結果を表示する時がきたら、コントローラは処理結果をビューに渡します。このときの、コントローラからビューへの結果の渡し方こそが本ガイドの主なトピックです。
 
-大きな流れとしては、ユーザーへのレスポンスとして送信すべき内容を決定することと、ユーザーへのレスポンスを作成するために適切なメソッドを呼び出すこともこの作業に含まれます。ユーザーに返すレスポンス画面を完全なビューにするのであれば、Railsはそのビューをさらに別のレイアウトでラッピングし、パーシャルビューとして取り出すでしょう。以後本ガイドではこれらの方法をすべて紹介します。
+大きな流れとしては、ユーザーへのレスポンスとして送信すべき内容を決定することと、ユーザーへのレスポンスを作成するために適切なメソッドを呼び出すこともこの作業に含まれます。ユーザーに返すレスポンス画面を完全なビューにするのであれば、Railsはそのビューをさらに別のレイアウトでラッピングし、パーシャルビューとして取り出すでしょう。以後本ガイドではこれらの方法をすべて紹介します。 訳注: 本ガイドではrenderを一般的な意味では「出力」、具体的な動作を指す場合は「レンダリング」と訳しています。
 
 レスポンスを作成する
 ------------------
@@ -483,194 +483,194 @@ class ProductsController < ApplicationController
 end
 ```
 
-With this declaration, the `product` layout would be used for everything but the `rss` and `index` methods.
+上の宣言によって、`rss`メソッドと`index`メソッド以外のすべてのメソッドに`product`レイアウトが適用されます。
 
-##### Layout Inheritance
+##### レイアウトの継承
 
-Layout declarations cascade downward in the hierarchy, and more specific layout declarations always override more general ones. 例：
+レイアウト宣言は下の階層に継承されます。下の階層、つまりより具体的なレイアウト宣言は、上の階層、つまりより一般的なレイアウトよりも常に優先されます。例: 
 
 * `application_controller.rb`
 
-```ruby 
+```ruby
 class ApplicationController < ActionController::Base
       layout "main"
-  end
+    end
     ```
 
 * `posts_controller.rb`
 
-```ruby 
+```ruby
     class PostsController < ApplicationController
-  end
+    end
     ```
 
 * `special_posts_controller.rb`
 
-```ruby 
+```ruby
     class SpecialPostsController < PostsController
       layout "special"
-  end
+    end
     ```
 
 * `old_posts_controller.rb`
 
-```ruby 
+```ruby
     class OldPostsController < SpecialPostsController
       layout false
 
   def show
         @post = Post.find(params[:id])
-  end
+      end
 
-  def index
+      def index
         @old_posts = Post.older
         render layout: "old"
-  end
+      end
       # ...
-  end
+    end
     ```
 
-In this application:
+上のアプリケーションは以下のように動作します。
 
-* In general, views will be rendered in the `main` layout
-* `PostsController#index` will use the `main` layout
-* `SpecialPostsController#index` will use the `special` layout
-* `OldPostsController#show` will use no layout at all
-* `OldPostsController#index` will use the `old` layout
+* ビューの出力には基本的に`main`レイアウトが使用されます。
+* `PostsController#index`では`main`レイアウトが使用されます。
+* `SpecialPostsController#index`では`special`レイアウトが使用されます。
+* `OldPostsController#show`ではレイアウトが適用されません。
+* `OldPostsController#index`では`old`レイアウトが使用されます。
 
-#### Avoiding Double Render Errors
+#### 二重レンダリングエラーを避ける
 
-Sooner or later, most Rails developers will see the error message "Can only render or redirect once per action". While this is annoying, it's relatively easy to fix. Usually it happens because of a fundamental misunderstanding of the way that `render` works.
+Rails開発をやっていれば、一度は "Can only render or redirect once per action" エラーに遭遇したことがあるでしょう。いまいましいエラーですが、修正は比較的簡単です。このエラーはほとんどの場合、開発者が`render`メソッドの基本的な動作を誤って理解していることが原因です。
 
-For example, here's some code that will trigger this error:
+このエラーを発生する以下のコードを例にとって説明しましょう。
 
-```ruby 
-  def show
+```ruby
+def show
   @book = Book.find(params[:id])
   if @book.special?
     render action: "special_show"
   end
   render action: "regular_show"
-  end
+end
 ```
 
-If `@book.special?` evaluates to `true`, Rails will start the rendering process to dump the `@book` variable into the `special_show` view. But this will _not_ stop the rest of the code in the `show` action from running, and when Rails hits the end of the action, it will start to render the `regular_show` view - and throw an error. The solution is simple: make sure that you have only one call to `render` or `redirect` in a single code path. One thing that can help is `and return`. Here's a patched version of the method:
+`@book.special?`が`true`の場合、Railsはレンダリングを開始し、`@book`変数を`special_show`ビューに転送します。しかし、`show`アクションのコードはそこで _止まらない_ ことにご注意ください。`show`アクションのコードは最終行まで実行され、`regular_show`ビューのレンダリングを行おうとした時点でエラーが発生します。解決法はいたって単純です。1つのコード実行パス内では、`render`メソッドや`redirect`メソッドの実行は1度だけにしてください。ここで非常に便利なのが`and return`というメソッドです。このメソッドを使用して修正したバージョンを以下に示します。
 
-```ruby 
-  def show
+```ruby
+def show
   @book = Book.find(params[:id])
   if @book.special?
     render action: "special_show" and return
   end
   render action: "regular_show"
-  end
+end
 ```
 
-Make sure to use `and return` instead of `&& return` because `&& return` will not work due to the operator precedence in the Ruby Language.
+`&& return`ではなく`and return`を使用してください。`&& return`はRuby言語の&&演算子の優先順位が高すぎてこの文脈では正常に動作しません。
 
-Note that the implicit render done by ActionController detects if `render` has been called, so the following will work without errors:
+RailsにビルトインされているActionControllerが行なう暗黙のレンダリングでは、`render`メソッドが呼び出されたかどうかを確認してからレンダリングを開始します。従って、以下のコードは正常に動作します。
 
-```ruby 
-  def show
+```ruby
+def show
   @book = Book.find(params[:id])
   if @book.special?
     render action: "special_show"
   end
-  end
+end
 ```
 
-This will render a book with `special?` set with the `special_show` template, while other books will render with the default `show` template.
+上のコードは、ある本が`special?`である場合にのみ`special_show`テンプレートを使用して出力します。それ以外の場合は`show`テンプレートを使用して出力します。
 
-### Using `redirect_to`
+### `redirect_to`を使用する
 
-Another way to handle returning responses to an HTTP request is with `redirect_to`. As you've seen, `render` tells Rails which view (or other asset) to use in constructing a response. The `redirect_to` method does something completely different: it tells the browser to send a new request for a different URL. For example, you could redirect from wherever you are in your code to the index of photos in your application with this call:
+HTTPリクエストにレスポンスを返すもう一つの方法は、`redirect_to`を使用することです。前述のとおり、`render`はレスポンス構成時にどのビュー (または他のアセット) を使用するかを指定するためのものです。`redirect_to`メソッドは、この点において`render`メソッドと根本的に異なります。`redirect_to`メソッドは、別のURLに対して改めてリクエストを再送信するよう、ブラウザに指令を出すためのものです。たとえば以下の呼び出しを行なうと、アプリケーションで現在どのページが表示されていても、写真のインデックス表示ページにリダイレクトされます。
 
 ```ruby 
 redirect_to photos_url
 ```
 
-You can use `redirect_to` with any arguments that you could use with `link_to` or `url_for`. There's also a special redirect that sends the user back to the page they just came from:
+`redirect_to`の引数にはどんな値も指定できますが、`link_to`や`url_for`を使用するのが普通です。ユーザーを直前のページに戻す、特殊なリダイレクトも行えます。
 
-```ruby 
+```ruby
       redirect_to :back
 ```
 
-#### Getting a Different Redirect Status Code
+#### リダイレクトのステータスコードを変更する
 
-Rails uses HTTP status code 302, a temporary redirect, when you call `redirect_to`. If you'd like to use a different status code, perhaps 301, a permanent redirect, you can use the `:status` option:
+`redirect_to`を呼び出すと、一時的なリダイレクトを意味するHTTPステータスコード302がブラウザに返され、ブラウザはそれに基いてリダイレクトを行います。別のステータスコード (301: 恒久的なリダイレクトがよく使われます) に変更するには`:status`オプションを使用します。
 
-```ruby 
+```ruby
 redirect_to photos_path, status: 301
 ```
 
-Just like the `:status` option for `render`, `:status` for `redirect_to` accepts both numeric and symbolic header designations.
+`render`の`:status`オプションの場合と同様、`redirect_to`の`:status`もヘッダーを指定する時に数値の他にシンボルも使用できます。
 
-#### The Difference Between `render` and `redirect_to`
+#### `render`と`redirect_to`の違い
 
-Sometimes inexperienced developers think of `redirect_to` as a sort of `goto` command, moving execution from one place to another in your Rails code. This is _not_ correct. Your code stops running and waits for a new request for the browser. It just happens that you've told the browser what request it should make next, by sending back an HTTP 302 status code.
+ときおり、`redirect_to`を一種の`goto`コマンドとして理解している開発初心者を見かけます。Railsコードの実行位置をある場所から別の場所に移動するコマンドであると考えているわけです。これは _正しくありません_ 。`redirect_to`を実行した後、コードはそこで実行を終了し、ブラウザからの次のリクエストを待ちます (通常のスタンバイ状態)。その直後、`redirect_to`でブラウザに送信したHTTPステータスコード302に従って、ブラウザから別のURLへのリクエストがサーバーに送信され、サーバーはそのリクエストを改めて処理します。それ以外のことは行っていません。
 
-Consider these actions to see the difference:
+`render`と`redirect_to`の違いを以下のアクションで比較してみましょう。
 
-```ruby 
-  def index
+```ruby
+def index
   @books = Book.all
-  end
+end
 
-  def show
+def show
   @book = Book.find_by(id: params[:id])
   if @book.nil?
     render action: "index"
   end
-  end
+end
 ```
 
-With the code in this form, there will likely be a problem if the `@book` variable is `nil`. Remember, a `render :action` doesn't run any code in the target action, so nothing will set up the `@books` variable that the `index` view will probably require. One way to fix this is to redirect instead of rendering:
+上のフォームのコードでは、`@book`インスタンス変数が`nil`場合に問題が生じる可能性があります。`render :action`は対象となるアクションのコードを実行しないことを思い出してください。従って、`index`ビューでおそらく必要となる`@books`インスタンス変数には何も設定されず、空の蔵書リストが表示されてしまいます。これを修正する方法のひとつは、renderをredirectに変更することです。
 
-```ruby 
-  def index
+```ruby
+def index
   @books = Book.all
-  end
+end
 
-  def show
+def show
   @book = Book.find_by(id: params[:id])
   if @book.nil?
     redirect_to action: :index
   end
-  end
+end
 ```
 
-With this code, the browser will make a fresh request for the index page, the code in the `index` method will run, and all will be well.
+上のコードであれば、ブラウザから改めてindexページにリクエストが送信されるので、`index`メソッドのコードが正常に実行されます。
 
-The only downside to this code is that it requires a round trip to the browser: the browser requested the show action with `/books/1` and the controller finds that there are no books, so the controller sends out a 302 redirect response to the browser telling it to go to `/books/`, the browser complies and sends a new request back to the controller asking now for the `index` action, the controller then gets all the books in the database and renders the index template, sending it back down to the browser which then shows it on your screen.
+上のコードで1つ残念な点があるとすれば、ブラウザとのやりとりが1往復増えることです。ブラウザから`/books/1`に対してshowアクションが呼び出され、コントローラが本が1冊もないことを検出すると、コントローラはブラウザに対してステータスコード302 (リダイレクト) レスポンスを返し、`/books/`に再度アクセスするようブラウザに指令を出します。ブラウザはこの指令に応じ、このコントローラの`index`アクションを呼び出すためのリクエストを改めてサーバーに送信します。そしてコントローラはこのリクエストを受けてデータベースからすべての蔵書リストを取り出し、indexテンプレートをレンダリングして出力結果をブラウザに送り返すと、ブラウザで蔵書リストが表示されます。
 
-While in a small application, this added latency might not be a problem, it is something to think about if response time is a concern. We can demonstrate one way to handle this with a contrived example:
+このやりとりの増加による遅延は、小規模なアプリケーションであればおそらく問題になりませんが、遅延が甚だしくなってきた場合にはこの点を改める必要があるかもしれません。ブラウザとのやりとりを増やさないように工夫した例を以下に示します。
 
-```ruby 
-  def index
+```ruby
+def index
   @books = Book.all
-  end
+end
 
-  def show
+def show
   @book = Book.find_by(id: params[:id])
   if @book.nil?
     @books = Book.all
     flash.now[:alert] = "Your book was not found"
     render "index"
   end
-  end
+end
 ```
 
-This would detect that there are no books with the specified ID, populate the `@books` instance variable with all the books in the model, and then directly render the `index.html.erb` template, returning it to the browser with a flash alert message to tell the user what happened.
+上のコードの動作は次のとおりです。指定されたidを持つ本が見つからない場合は、モデル内のすべての蔵書リストを`@books`インスタンス変数に保存します。続いてflashによる警告メッセージを追加し、さらに`index.html.erb`テンプレートを直接レンダリングしてから出力結果をブラウザに送り返します。
 
-### Using `head` To Build Header-Only Responses
+### `head`でヘッダのみのレスポンスを生成する
 
-The `head` method can be used to send responses with only headers to the browser. It provides a more obvious alternative to calling `render :nothing`. The `head` method accepts a number or symbol (see [reference table](#the-status-option)) representing a HTTP status code. The options argument is interpreted as a hash of header names and values. For example, you can return only an error header:
+`head`メソッドを使用することで、ヘッダだけで本文 (body) のないレスポンスをブラウザに送信できます。このメソッド名は`render :nothing`よりも動作を明確に表しています。`head`メソッドには、HTTPステータスコードを示す多くのシンボルを引数として指定できます ([参照テーブル](#the-status-option) 参照)。オプションの引数はヘッダ名と値をペアにしたハッシュ値として解釈されます。たとえば、以下のコードはエラーヘッダーのみのレスポンスを返すことができます。
 
-```ruby 
+```ruby
 head :bad_request
 ```
 
-This would produce the following header:
+上のコードによって以下のヘッダーが生成されます。
 
 ```
 HTTP/1.1 400 Bad Request
@@ -683,13 +683,13 @@ Set-Cookie: _blog_session=...snip...; path=/; HttpOnly
 Cache-Control: no-cache
 ```
 
-Or you can use other HTTP headers to convey other information:
+以下のように、ヘッダーに別の情報を含めることもできます。
 
-```ruby 
+```ruby
 head :created, location: photo_path(@photo)
 ```
 
-Which would produce:
+上のコードの結果は以下のようになります。
 
 ```
 HTTP/1.1 201 Created
@@ -703,254 +703,254 @@ Set-Cookie: _blog_session=...snip...; path=/; HttpOnly
 Cache-Control: no-cache
 ```
 
-Structuring Layouts
+レイアウトを構成する
 -------------------
 
-When Rails renders a view as a response, it does so by combining the view with the current layout, using the rules for finding the current layout that were covered earlier in this guide. Within a layout, you have access to three tools for combining different bits of output to form the overall response:
+Railsがビューからレスポンスを出力するときには、そのビューには現在のレイアウトも組み込まれます。現在のレイアウトを探索するときのルールは、本ガイドで既に説明したものが使用されます。レイアウト内では、さまざまな出力の断片を組み合わせて最終的なレスポンス出力を得るための3つのツールを利用できます。
 
 * Asset tags
 * `yield` and `content_for`
 * Partials
 
-### Asset Tag Helpers
+### アセットタグヘルパー
 
-Asset tag helpers provide methods for generating HTML that link views to feeds, JavaScript, stylesheets, images, videos and audios. There are six asset tag helpers available in Rails:
+アセットタグヘルパーが提供するメソッドは、フィード、JavaScript、スタイルシート、画像、動画および音声のビューにリンクするHTMLを生成するためのものです。Railsでは以下の6つのアセットタグヘルパーが利用できます。
 
 * `auto_discovery_link_tag`
 * `javascript_include_tag`
-{0}<%={/0} {1}stylesheet_link_tag{/1} {2}.{/2}{1}.{/1}{2}.{/2}
+* `stylesheet_link_tag`
 * `image_tag`
 * `video_tag`
 * `audio_tag`
 
-You can use these tags in layouts or other views, although the `auto_discovery_link_tag`, `javascript_include_tag`, and `stylesheet_link_tag`, are most commonly used in the `<head>` section of a layout.
+これらのタグは、レイアウトや別のビューで使用することもできます。このうち、`auto_discovery_link_tag`、`javascript_include_tag`、`stylesheet_link_tag`はレイアウトの`<head>`セクションで使用するのが普通です。
 
-WARNING: The asset tag helpers do _not_ verify the existence of the assets at the specified locations; they simply assume that you know what you're doing and generate the link.
+警告: これらのアセットタグヘルパーは、指定の場所にアセットがあるかどうかを _検証しません_ 。
 
-#### Linking to Feeds with the `auto_discovery_link_tag`
+#### `auto_discovery_link_tag`を使用してフィードにリンクする
 
-The `auto_discovery_link_tag` helper builds HTML that most browsers and feed readers can use to detect the presence of RSS or Atom feeds. It takes the type of the link (`:rss` or `:atom`), a hash of options that are passed through to url_for, and a hash of options for the tag:
+`auto_discovery_link_tag`ヘルパーを使用すると、多くのブラウザやフィードリーダーでRSSフィードやAtomフィードを検出できるHTMLが生成されます。このメソッドが受け取れる引数は、リンクの種類 (`:rss`または`:atom`)、url_forで渡されるオプションのハッシュ、およびタグのハッシュです。
 
-    ```erb
+```erb
 <%= auto_discovery_link_tag(:rss, {action: "feed"},
   {title: "RSS Feed"}) %>
 ```
 
-There are three tag options available for the `auto_discovery_link_tag`:
+`auto_discovery_link_tag`では以下の3つのタグオプションが使用できます。
 
-* `:rel` specifies the `rel` value in the link. The default value is "alternate".
-* `:type` specifies an explicit MIME type. Rails will generate an appropriate MIME type automatically.
-* `:title` specifies the title of the link. The default value is the uppercase `:type` value, for example, "ATOM" or "RSS".
+* `:rel`はリンク内の`rel`値を指定します。デフォルト値は "alternate" です。
+* `:type`はMIMEタイプを明示的に指定したい場合に使用します。通常、Railsは適切なMIMEタイプを自動的に生成します。
+* `:title`はリンクのタイトルを指定します。デフォルト値は`:type`値を大文字にしたものです ("ATOM" や "RSS" など)。
 
-#### Linking to JavaScript Files with the `javascript_include_tag`
+#### `javascript_include_tag`を使用してJavaScriptファイルにリンクする
 
-The `javascript_include_tag` helper returns an HTML `script` tag for each source provided.
+`javascript_include_tag`ヘルパーは、指定されたソースごとにHTML `script`タグを返します。
 
-If you are using Rails with the [Asset Pipeline](asset_pipeline.html) enabled, this helper will generate a link to `/assets/javascripts/` rather than `public/javascripts` which was used in earlier versions of Rails. This link is then served by the asset pipeline.
+Railsで[アセットパイプライン](asset_pipeline.html) を有効にしている場合、JavaScriptへのリンク先は旧Railsの`public/javascripts`ではなく`/assets/javascripts/`になります。その後このリンクはアセットパイプラインによって利用可能になります。
 
-A JavaScript file within a Rails application or Rails engine goes in one of three locations: `app/assets`, `lib/assets` or `vendor/assets`. These locations are explained in detail in the [Asset Organization section in the Asset Pipeline Guide](asset_pipeline.html#asset-organization)
+Railsアプリケーション内やRailsエンジン内のJavaScriptファイルは、`app/assets`、`lib/assets`、`vendor/assets`のいずれかの場所に置かれます。これらの置き場所の詳細については、[アセットパイプラインガイドの「アセットの編成」](asset_pipeline.html#asset-organization) を参照してください。
 
-You can specify a full path relative to the document root, or a URL, if you prefer. For example, to link to a JavaScript file that is inside a directory called `javascripts` inside of one of `app/assets`, `lib/assets` or `vendor/assets`, you would do this:
+好みに応じて、ドキュメントルートからの相対フルパスやURLを指定することもできます。たとえば、`app/assets`、`lib/assets`、または`vendor/assets`の下にある`javascripts`の下にあるJavaScriptファイルにリンクしたい場合は以下のようにします。
 
-    ```erb
+```erb
 <%= javascript_include_tag "main" %>
 ```
 
-Rails will then output a `script` tag such as this:
+上のコードにより、以下のような`script`タグが出力されます。
 
 ```html
 <script src='/assets/main.js'></script>
 ```
 
-The request to this asset is then served by the Sprockets gem.
+このアセットへのリクエストは、Sprockets gemによって提供されます。
 
-To include multiple files such as `app/assets/javascripts/main.js` and `app/assets/javascripts/columns.js` at the same time:
+複数のファイルにアクセスしたい場合 (`app/assets/javascripts/main.js`と`app/assets/javascripts/columns.js`など) は以下のようにします。
 
-    ```erb
+```erb
 <%= javascript_include_tag "main", "columns" %>
 ```
 
-To include `app/assets/javascripts/main.js` and `app/assets/javascripts/photos/columns.js`:
+`app/assets/javascripts/main.js`と`app/assets/javascripts/photos/columns.js`を含めたい場合は以下のようにします。
 
-    ```erb
+```erb
 <%= javascript_include_tag "main", "/photos/columns" %>
 ```
 
-To include `http://example.com/main.js`:
+`http://example.com/main.js`を含めるには以下のようにします。
 
-    ```erb
+```erb
 <%= javascript_include_tag "http://example.com/main.js" %>
 ```
 
-#### Linking to CSS Files with the `stylesheet_link_tag`
+#### `stylesheet_link_tag`を使用してCSSファイルにリンクする
 
-The `stylesheet_link_tag` helper returns an HTML `<link>` tag for each source provided.
+`stylesheet_link_tag`ヘルパーは、提供されたソースごとにHTML `<link>`タグを返します。
 
-If you are using Rails with the "Asset Pipeline" enabled, this helper will generate a link to `/assets/stylesheets/`. This link is then processed by the Sprockets gem. A stylesheet file can be stored in one of three locations: `app/assets`, `lib/assets` or `vendor/assets`.
+Railsでアセットパイプラインを有効にしている場合、このヘルパーは`/assets/stylesheets/`へのリンクを生成します。その後このリンクはSprockets gemによって処理されます。スタイルシートファイルは、`app/assets`、`lib/assets`、または`vendor/assets`のいずれかの場所に置かれます。
 
-You can specify a full path relative to the document root, or a URL. For example, to link to a stylesheet file that is inside a directory called `stylesheets` inside of one of `app/assets`, `lib/assets` or `vendor/assets`, you would do this:
+ドキュメントルートからの相対フルパスやURLを指定することもできます。たとえば、`app/assets`、`lib/assets`、または`vendor/assets`の下にある`stylesheets`の下にあるスタイルシートファイルにリンクしたい場合は以下のようにします。
 
-    ```erb
+```erb
 <%= stylesheet_link_tag "main" %>
 ```
 
-To include `app/assets/stylesheets/main.css` and `app/assets/stylesheets/columns.css`:
+`app/assets/stylesheets/main.css`と`app/assets/stylesheets/columns.css`を含めるには、以下のようにします。
 
-    ```erb
+```erb
 <%= stylesheet_link_tag "main", "columns" %>
 ```
 
-To include `app/assets/stylesheets/main.css` and `app/assets/stylesheets/photos/columns.css`:
+`app/assets/stylesheets/main.css`と`app/assets/stylesheets/photos/columns.css`を含めるには以下のようにします。
 
-    ```erb
+```erb
 <%= stylesheet_link_tag "main", "photos/columns" %>
 ```
 
-To include `http://example.com/main.css`:
+`http://example.com/main.css`を含めるには以下のようにします。
 
-    ```erb
+```erb
 <%= stylesheet_link_tag "http://example.com/main.css" %>
 ```
 
-By default, the `stylesheet_link_tag` creates links with `media="screen" rel="stylesheet"`. You can override any of these defaults by specifying an appropriate option (`:media`, `:rel`):
+デフォルトでは、`stylesheet_link_tag`によって作成されるリンクには`media="screen" rel="stylesheet"`という属性が含まれます。適切なオプション (`:media`, `:rel`) を使用することで、これらのデフォルト値を上書きできます。
 
-    ```erb
+```erb
 <%= stylesheet_link_tag "main_print", media: "print" %>
 ```
 
-#### Linking to Images with the `image_tag`
+#### `image_tag`を使用して画像にリンクする
 
-The `image_tag` helper builds an HTML `<img />` tag to the specified file. By default, files are loaded from `public/images`.
+`image_tag`は、特定のファイルを指すHTML `<img />`タグを生成します。デフォルトでは、ファイルは`public/images`以下から読み込まれます。
 
-WARNING: Note that you must specify the extension of the image.
+警告: 画像ファイルの拡張子は省略できません。
 
-    ```erb
+```erb
 <%= image_tag "header.png" %>
 ```
 
-You can supply a path to the image if you like:
+好みに応じて、画像ファイルへのパスを直接指定することもできます。
 
-    ```erb
+```erb
 <%= image_tag "icons/delete.gif" %>
 ```
 
-You can supply a hash of additional HTML options:
+ハッシュ形式で与えられたHTMLオプションを追加することもできます。
 
-    ```erb
+```erb
 <%= image_tag "icons/delete.gif", {height: 45} %>
 ```
 
-You can supply alternate text for the image which will be used if the user has images turned off in their browser. If you do not specify an alt text explicitly, it defaults to the file name of the file, capitalized and with no extension. For example, these two image tags would return the same code:
+ユーザーがブラウザで画像を非表示にしている場合、alt属性のテキストを表示することができます。alt属性が明示的に指定されていない場合は、ファイル名がaltテキストとして使用されます。このときファイル名の先頭は大文字になり、拡張子は取り除かれます。たとえば、以下の2つのimage_tagヘルパーは同じコードを返します。
 
-    ```erb
+```erb
 <%= image_tag "home.gif" %>
 <%= image_tag "home.gif", alt: "Home" %>
 ```
 
-You can also specify a special size tag, in the format "{width}x{height}":
+"{幅}x{高さ}"という形式で特殊なsizeタグを指定することもできます。
 
-    ```erb
+```erb
 <%= image_tag "home.gif", size: "50x20" %>
 ```
 
-In addition to the above special tags, you can supply a final hash of standard HTML options, such as `:class`, `:id` or `:name`:
+上の特殊タグ以外にも、`:class`や`:id`や`:name`などの標準的なHTMLオプションを最終的にハッシュにしたものを引数として与えることができます。
 
-    ```erb
+```erb
 <%= image_tag "home.gif", alt: "Go Home",
                           id: "HomeImage",
                           class: "nav_bar" %>
 ```
 
-#### Linking to Videos with the `video_tag`
+#### `video_tag`を使用してビデオにリンクする
 
-The `video_tag` helper builds an HTML 5 `<video>` tag to the specified file. By default, files are loaded from `public/videos`.
+`video_tag`ヘルパーは、指定されたファイルを指すHTML 5 `<video>`タグを生成します。デフォルトでは、ファイルは`public/videos`から読み込まれます。
 
-    ```erb
+```erb
 <%= video_tag "movie.ogg" %>
 ```
 
-Produces
+上のコードによって以下が生成されます。
 
-    ```erb
+```erb
 <video src="/videos/movie.ogg" />
 ```
 
-Like an `image_tag` you can supply a path, either absolute, or relative to the `public/videos` directory. Additionally you can specify the `size: "#{width}x#{height}"` option just like an `image_tag`. Video tags can also have any of the HTML options specified at the end (`id`, `class` et al).
+`image_tag`の場合と同様、絶対パスまたは`public/videos`ディレクトリからの相対パスを指定できます。さらに、`image_tag`の場合と同様に、`size: "#{幅}x#{高さ}"`オプションを指定することもできます。ビデオタグでは、`id`や`class`などのHTMLオプションを末尾で自由に指定することもできます。
 
-The video tag also supports all of the `<video>` HTML options through the HTML options hash, including:
+ビデオタグでは、`<video>` HTMLオプションを以下のようなHTMLオプションハッシュ形式で指定することもできます。
 
-* `poster: "image_name.png"`, provides an image to put in place of the video before it starts playing.
-* `autoplay: true`, starts playing the video on page load.
-* `loop: true`, loops the video once it gets to the end.
-* `controls: true`, provides browser supplied controls for the user to interact with the video.
-* `autobuffer: true`, the video will pre load the file for the user on page load.
+* `poster: "image_name.png"`は、ビデオ再生前にビデオの位置に表示しておきたい画像を指定します。
+* `autoplay: true`は、ページの読み込み時にビデオを再生します。
+* `loop: true`は、ビデオを最後まで再生し終わったらループします。
+* `controls: true`は、ブラウザが提供するビデオ制御機能を使用できるようにします。
+* `autobuffer: true`は、ページ読み込み時にすぐ再生できるようにビデオを事前に読み込んでおきます。
 
-You can also specify multiple videos to play by passing an array of videos to the `video_tag`:
+`video_tag`ににビデオファイルの配列を渡すことで、複数のビデオを再生することもできます。
 
-    ```erb
+```erb
 <%= video_tag ["trailer.ogg", "movie.ogg"] %>
 ```
 
-This will produce:
+上のコードによって以下が生成されます。
 
-    ```erb
+```erb
 <video><source src="trailer.ogg" /><source src="movie.ogg" /></video>
 ```
 
-#### Linking to Audio Files with the `audio_tag`
+#### `audio_tag`を使用して音声ファイルにリンクする
 
-The `audio_tag` helper builds an HTML 5 `<audio>` tag to the specified file. By default, files are loaded from `public/audios`.
+`audio_tag`は、指定されたファイルを指すHTML 5 `<audio>`タグを生成します。デフォルトでは、これらのファイルは`public/audios`以下から読み込まれます。
 
-    ```erb
+```erb
 <%= audio_tag "music.mp3" %>
 ```
 
-You can supply a path to the audio file if you like:
+好みに応じて、音声ファイルへのパスを直接指定することもできます。
 
-    ```erb
+```erb
 <%= audio_tag "music/first_song.mp3" %>
 ```
 
-You can also supply a hash of additional options, such as `:id`, `:class` etc.
+`:id`や`:class`などのオプションをハッシュ形式で指定することもできます。
 
-Like the `video_tag`, the `audio_tag` has special options:
+`video_tag`の場合と同様、`audio_tag`にも以下の特殊オプションがあります。
 
-* `autoplay: true`, starts playing the audio on page load
-* `controls: true`, provides browser supplied controls for the user to interact with the audio.
-* `autobuffer: true`, the audio will pre load the file for the user on page load.
+* `autoplay: true`はページ読み込み時に音声ファイルを再生します。
+* `controls: true`は、ブラウザが提供する音声ファイル制御機能を使用できるようにします。
+* `autobuffer: true`は、ページ読み込み時にすぐ再生できるように音声ファイルを事前に読み込んでおきます。
 
-### Understanding `yield`
+### `yield`を理解する
 
-Within the context of a layout, `yield` identifies a section where content from the view should be inserted. The simplest way to use this is to have a single `yield`, into which the entire contents of the view currently being rendered is inserted:
+`yield`メソッドは、レイアウトのコンテキストでビューを挿入すべき場所を指定するのに使用します。`yield`の最も単純な使用法は、`yield`を1つだけ使用して、現在レンダリングされているビューのコンテンツ全体をその場所に挿入するというものです。
 
 ```html+erb
 <html>
-<head>
-</head>
+  <head>
+  </head>
   <body>
-{0}<%={/0} {1}yield{/1} {0}%>{/0}
+  <%= yield %>
   </body>
-</html> 
+</html>
 ```
 
-You can also create a layout with multiple yielding regions:
+`yield`を行なう領域を複数使用するレイアウトを作成することもできます。
 
 ```html+erb
 <html>
-<head>
+  <head>
   <%= yield :head %>
-</head>
+  </head>
   <body>
-{0}<%={/0} {1}yield{/1} {0}%>{/0}
+  <%= yield %>
   </body>
-</html> 
+</html>
 ```
 
-The main body of the view will always render into the unnamed `yield`. To render content into a named `yield`, you use the `content_for` method.
+ビューのメイン部分は常に「名前のない」`yield`としてレンダリングされます。コンテンツを名前付きの`yield`としてレンダリングするには、`content_for`メソッドを使用します。
 
-### Using the `content_for` Method
+### `content_for`を使用する
 
-The `content_for` method allows you to insert content into a named `yield` block in your layout. For example, this view would work with the layout that you just saw:
+`content_for`メソッドを使用することで、コンテンツを名前付きの`yield`ブロックとしてレイアウトに挿入できます。たとえば、以下のビューのレンダリング結果は上で紹介したレイアウト内に挿入されます。
 
 ```html+erb
 <% content_for :head do %>
@@ -960,46 +960,46 @@ The `content_for` method allows you to insert content into a named `yield` block
 <p>Hello, Rails!</p>
 ```
 
-The result of rendering this page into the supplied layout would be this HTML:
+このページのレンダリング結果がレイアウトに挿入されると、最終的に以下のHTMLが出力されます。
 
 ```html+erb
 <html>
-<head>
+  <head>
   <title>A simple page</title>
-</head>
+  </head>
   <body>
   <p>Hello, Rails!</p>
-{0} {/0}{1}</body>{/1}
-</html> 
+  </body>
+</html>
 ```
 
-The `content_for` method is very helpful when your layout contains distinct regions such as sidebars and footers that should get their own blocks of content inserted. It's also useful for inserting tags that load page-specific JavaScript or css files into the header of an otherwise generic layout.
+`content_for`メソッドは、たとえばレイアウトが「サイドバー」や「フッター」などの領域に分かれていて、それらに異なるコンテンツを挿入したいような場合に大変便利です。あるいは、多くのページで使用する共通のヘッダーがあり、このヘッダーに特定のページでのみJavaScriptやCSSファイルを挿入したい場合にも便利です。
 
-### Using Partials
+### パーシャルを使用する
 
-Partial templates - usually just called "partials" - are another device for breaking the rendering process into more manageable chunks. With a partial, you can move the code for rendering a particular piece of a response to its own file.
+部分テンプレートは通常単にパーシャルと呼ばれます。パーシャルは、上とは異なる方法でレンダリング処理を扱いやすい単位に分割するためのしくみです。パーシャルを使用すると、レスポンスで表示するページの特定部分をレンダリングするためのコードを別ファイルに保存しておくことができます。
 
-#### Naming Partials
+#### パーシャルに名前を与える
 
-To render a partial as part of a view, you use the `render` method within the view:
+パーシャルをビューの一部に含めて出力するには、ビュー内で`render`メソッドを使用します。
 
-```ruby 
+```ruby
 <%= render "menu" %>
 ```
 
-This will render a file named `_menu.html.erb` at that point within the view being rendered. Note the leading underscore character: partials are named with a leading underscore to distinguish them from regular views, even though they are referred to without the underscore. This holds true even when you're pulling in a partial from another folder:
+レンダリング中のビュー内に置かれている上のコードは、その場所で`_menu.html.erb`という名前のファイルをレンダリングします。パーシャルファイル名の冒頭にはアンダースコアが付いていることにご注意ください。これは通常のビューと区別するために付けられています。ただしrenderで呼び出す際にはこのアンダースコアは不要です。以下のように、他のフォルダの下にあるパーシャルを呼び出す際にもアンダースコアは不要です。
 
-```ruby 
+```ruby
 <%= render "shared/menu" %>
 ```
 
-That code will pull in the partial from `app/views/shared/_menu.html.erb`.
+上のコードは、`app/views/shared/_menu.html.erb`パーシャルの内容をその場所でレンダリングします。
 
-#### Using Partials to Simplify Views
+#### シンプルなビューでパーシャルを使用する
 
-One way to use partials is to treat them as the equivalent of subroutines: as a way to move details out of a view so that you can grasp what's going on more easily. For example, you might have a view that looked like this:
+パーシャルの使用方法の1つは、パーシャルを一種のサブルーチンのようにみなすことです。詳細な表示内容をパーシャル化してビューから追い出し、コードを読みやすくします。例として、以下のようなビューがあるとします。
 
-    ```erb
+```erb
 <%= render "shared/ad_banner" %>
 
 <h1>Products</h1>
@@ -1010,25 +1010,25 @@ One way to use partials is to treat them as the equivalent of subroutines: as a 
 <%= render "shared/footer" %>
 ```
 
-Here, the `_ad_banner.html.erb` and `_footer.html.erb` partials could contain content that is shared among many pages in your application. You don't need to see the details of these sections when you're concentrating on a particular page.
+上のコードの`_ad_banner.html.erb`パーシャルと`_footer.html.erb`パーシャルに含まれるコンテンツは、アプリケーションの多くのページと共有できます。あるページを開発中、パーシャルの部分については詳細を気にせずに済みます。
 
-TIP: For content that is shared among all pages in your application, you can use partials directly from layouts.
+ヒント: すべてのページで共有されているコンテンツであれば、パーシャルをレイアウトで使用することができます。
 
-#### Partial Layouts
+#### パーシャルレイアウト
 
-A partial can use its own layout file, just as a view can use a layout. For example, you might call a partial like this:
+ビューにレイアウトがあるのと同様、パーシャルでも独自のレイアウトファイルを使用することができます。たとえば、以下のようなパーシャルを呼び出すとします。
 
-    ```erb
+```erb
 <%= render partial: "link_area", layout: "graybar" %>
 ```
 
-This would look for a partial named `_link_area.html.erb` and render it using the layout `_graybar.html.erb`. Note that layouts for partials follow the same leading-underscore naming as regular partials, and are placed in the same folder with the partial that they belong to (not in the master `layouts` folder).
+上のコードは、`_link_area.html.erb`という名前のパーシャルを探し、`_graybar.html.erb`という名前のレイアウトを使用してレンダリングを行います。パーシャルレイアウトは、対応する通常のパーシャルと同様、名前の先頭にアンダースコアを追加する必要があります。そして、パーシャルとそれに対応するパーシャルレイアウトは同じディレクトリに置く必要があります。パーシャルレイアウトは`layouts`フォルダーには置けませんのでご注意ください。
 
-Also note that explicitly specifying `:partial` is required when passing additional options such as `:layout`.
+`:layout`などの追加オプションを渡す場合は、`:partial`オプションを明示的に指定する必要がある点にもご注意ください。
 
-#### Passing Local Variables
+#### ローカル変数を渡す
 
-You can also pass local variables into partials, making them even more powerful and flexible. For example, you can use this technique to reduce duplication between new and edit pages, while still keeping a bit of distinct content:
+パーシャルにローカル変数を引数として渡し、パーシャルをさらに強力かつ柔軟にすることもできます。たとえば、newページとeditページの違いがごくわずかしかないのであれば、この手法を使用してコードの重複を解消することができます。
 
 * `new.html.erb`
 
@@ -1039,179 +1039,179 @@ You can also pass local variables into partials, making them even more powerful 
 
 * `edit.html.erb`
 
-```html+erb
+    ```html+erb
     <h1>Editing zone</h1>
     <%= render partial: "form", locals: {zone: @zone} %>
     ```
 
 * `_form.html.erb`
 
-```html+erb
+    ```html+erb
     <%= form_for(zone) do |f| %>
       <p>
         <b>Zone name</b><br>
-{0}<%={/0} {1}f{/1}{2}.{/2}{1}text_field{/1} {3}:name{/3} {0}%>{/0}
-</p>
-  <p>
-    <%= f.submit %>
-</p>
-<% end %>
+        <%= f.text_field :name %>
+      </p>
+      <p>
+        <%= f.submit %>
+      </p>
+    <% end %>
     ```
 
-Although the same partial will be rendered into both views, Action View's submit helper will return "Create Zone" for the new action and "Update Zone" for the edit action.
+上の2つのビューでは同じパーシャルがレンダリングされますが、Action Viewのsubmitヘルパーはnewアクションの場合には"Create Zone"を返し、editアクションの場合は"Update Zone"を返します。
 
-Every partial also has a local variable with the same name as the partial (minus the underscore). You can pass an object in to this local variable via the `:object` option:
+どのパーシャルにも、パーシャル名からアンダースコアを取り除いた名前を持つローカル変数が与えられます。`:object`オプションを使用することで、このローカル変数にオブジェクトを渡すことができます。
 
-    ```erb
+```erb
 <%= render partial: "customer", object: @new_customer %>
 ```
 
-Within the `customer` partial, the `customer` variable will refer to `@new_customer` from the parent view.
+上の`customer`パーシャル呼び出しでは、`customer`ローカル変数は親のビューの`@new_customer`変数を指します。
 
-If you have an instance of a model to render into a partial, you can use a shorthand syntax:
+あるモデルのインスタンスをパーシャルとしてレンダリングするのであれば、以下のような略記法を使用できます。
 
-    ```erb
+```erb
 <%= render @customer %>
 ```
 
-Assuming that the `@customer` instance variable contains an instance of the `Customer` model, this will use `_customer.html.erb` to render it and will pass the local variable `customer` into the partial which will refer to the `@customer` instance variable in the parent view.
+上のコードでは、`@customer`インスタンス変数に`Customer`モデルのインスタンスが含まれているとします。この場合レンダリングには`_customer.html.erb`パーシャルが使用され、このパーシャルには`customer`ローカル変数が渡されます。この`customer`ローカル変数は、親ビューにある`@customer`インスタンス変数を指します。
 
-#### Rendering Collections
+#### コレクションをレンダリングする
 
-Partials are very useful in rendering collections. When you pass a collection to a partial via the `:collection` option, the partial will be inserted once for each member in the collection:
+パーシャルはデータの繰り返し (コレクション) を出力する場合にもきわめて便利です。`:collection`オプションを使用してパーシャルにコレクションを渡すと、コレクションのメンバごとにパーシャルがレンダリングされて挿入されます。
 
 * `index.html.erb`
 
-```html+erb
+    ```html+erb
     <h1>Products</h1>
     <%= render partial: "product", collection: @products %>
     ```
 
 * `_product.html.erb`
 
-```html+erb
+    ```html+erb
     <p>Product Name: <%= product.name %></p>
     ```
 
-When a partial is called with a pluralized collection, then the individual instances of the partial have access to the member of the collection being rendered via a variable named after the partial. In this case, the partial is `_product`, and within the `_product` partial, you can refer to `product` to get the instance that is being rendered.
+パーシャルを呼び出す時に指定するコレクションが複数形の場合、パーシャルの個別のインスタンスから、出力するコレクションの個別のメンバにアクセスが行われます。このとき、パーシャル名に基づいた名前を持つ変数が使用されます。上の場合、パーシャルの名前は`_product`であり、この`_product`パーシャル内で`product`という名前の変数を使用して、出力されるインスタンスを取得できます。
 
-There is also a shorthand for this. Assuming `@products` is a collection of `product` instances, you can simply write this in the `index.html.erb` to produce the same result:
+このメソッドには略記法もあります。`@products`が`product`インスタンスのコレクションであるとすると、`index.html.erb`に以下のように書くことで同じ結果を得られます。
 
 ```html+erb
 <h1>Products</h1>
 <%= render @products %>
 ```
 
-Rails determines the name of the partial to use by looking at the model name in the collection. In fact, you can even create a heterogeneous collection and render it this way, and Rails will choose the proper partial for each member of the collection:
+使用するパーシャル名は、コレクション内のモデル名に基いて決定されます。実は、メンバが一様でない (さまざまな種類のメンバが入り混じった) コレクションにも上の方法を使用できます。この場合、コレクションのメンバに応じて適切なパーシャルが自動的に選択されます。
 
 * `index.html.erb`
 
-```html+erb
+    ```html+erb
     <h1>Contacts</h1>
     <%= render [customer1, employee1, customer2, employee2] %>
     ```
 
 * `customers/_customer.html.erb`
 
-```html+erb
+    ```html+erb
     <p>Customer: <%= customer.name %></p>
     ```
 
 * `employees/_employee.html.erb`
 
-```html+erb
+    ```html+erb
     <p>Employee: <%= employee.name %></p>
     ```
 
-In this case, Rails will use the customer or employee partials as appropriate for each member of the collection.
+上のコードでは、コレクションのメンバに応じて、customerパーシャルまたはemployeeパーシャルが自動的に選択されます。
 
-In the event that the collection is empty, `render` will return nil, so it should be fairly simple to provide alternative content.
+コレクションが空の場合、`render`はnilを返します。以下のような簡単な方法でもよいので、代わりのコンテンツを表示するようにしましょう。
 
 ```html+erb
 <h1>Products</h1>
 <%= render(@products) || "There are no products available." %>
 ```
 
-#### Local Variables
+#### ローカル変数
 
-To use a custom local variable name within the partial, specify the `:as` option in the call to the partial:
+パーシャル内のローカル変数をカスタマイズしたい場合は、パーシャルの呼び出し時に`:as`オプションを指定します。
 
-    ```erb
+```erb
 <%= render partial: "product", collection: @products, as: :item %>
 ```
 
-With this change, you can access an instance of the `@products` collection as the `item` local variable within the partial.
+上のように変更することで、`@products`コレクションのインスタンスに`item`という名前のローカル変数経由でアクセスできます。
 
-You can also pass in arbitrary local variables to any partial you are rendering with the `locals: {}` option:
+`locals: {}`オプションを使用することで、レンダリング中のどのパーシャルにも任意の名前のローカル変数を渡すことができます。
 
-    ```erb
+```erb
 <%= render partial: "product", collection: @products,
            as: :item, locals: {title: "Products Page"} %>
 ```
 
-In this case, the partial will have access to a local variable `title` with the value "Products Page".
+上の場合、`title`という名前のローカル変数に"Products Page"という値が含まれており、パーシャルからこの値にアクセスできます。
 
-TIP: Rails also makes a counter variable available within a partial called by the collection, named after the member of the collection followed by `_counter`. For example, if you're rendering `@products`, within the partial you can refer to `product_counter` to tell you how many times the partial has been rendered. This does not work in conjunction with the `as: :value` option.
+ヒント: コレクションによって呼び出されるパーシャル内でカウンタ変数を使用することもできます。このカウンタ変数は、コレクション名の後ろに`_counter`を追加した名前になります。たとえば、パーシャル内で`@products`をレンダリングした回数を`product_counter`変数で参照できます。ただし、このオプションは`as: :value`オプションと併用できません。
 
-You can also specify a second partial to be rendered between instances of the main partial by using the `:spacer_template` option:
+`:spacer_template`オプションを使用することで、メインパーシャルのインスタンスと交互にレンダリングされるセカンドパーシャルを指定することもできます。
 
-#### Spacer Templates
+#### スペーサーテンプレート
 
-    ```erb
+```erb
 <%= render partial: @products, spacer_template: "product_ruler" %>
 ```
 
-Rails will render the `_product_ruler` partial (with no data passed in to it) between each pair of `_product` partials.
+上のコードでは、`_product`パーシャルと`_product`パーシャルの合間に`_product_ruler`パーシャル (引数なし) をレンダリングします。
 
-#### Collection Partial Layouts
+#### コレクションパーシャルレイアウト
 
-When rendering collections it is also possible to use the `:layout` option:
+コレクションをレンダリングするときにも`:layout`オプションを指定できます。
 
-    ```erb
+```erb
 <%= render partial: "product", collection: @products, layout: "special_layout" %>
 ```
 
-The layout will be rendered together with the partial for each item in the collection. The current object and object_counter variables will be available in the layout as well, the same way they do within the partial.
+このレイアウトは、コレクション内の各項目をレンダリングするたびに一緒にレンダリングされます。パーシャル内の場合と同様、このレイアウトでも現在のオブジェクトと(オブジェクト名)_counter変数を使用できます。
 
-### Using Nested Layouts
+### ネストしたレイアウトを使用する
 
-You may find that your application requires a layout that differs slightly from your regular application layout to support one particular controller. Rather than repeating the main layout and editing it, you can accomplish this by using nested layouts (sometimes called sub-templates). 下が例です：
+特定のコントローラをサポートするために、アプリケーションの標準レイアウトとの違いがごくわずかしかないようなレイアウトを使いたくなることがあります。ネストしたレイアウト (サブテンプレートと呼ばれることもあります) を使用することで、メインのレイアウトを複製して編集したりせずにこれを実現できます。例: 
 
-Suppose you have the following `ApplicationController` layout:
+以下の`ApplicationController`レイアウトがあるとします。
 
 * `app/views/layouts/application.html.erb`
 
-```html+erb
-<html>
-<head>
+    ```html+erb
+    <html>
+    <head>
       <title><%= @page_title or "Page Title" %></title>
       <%= stylesheet_link_tag "layout" %>
       <style><%= yield :stylesheets %></style>
-</head>
-  <body>
+    </head>
+    <body>
       <div id="top_menu">Top menu items here</div>
       <div id="menu">Menu items here</div>
       <div id="content"><%= content_for?(:content) ? yield(:content) : yield %></div>
-  </body>
-</html> 
+    </body>
+    </html>
     ```
 
-On pages generated by `NewsController`, you want to hide the top menu and add a right menu:
+`NewsController`によって生成されるページでは、トップメニューを隠して右メニューを追加したいとします。
 
 * `app/views/layouts/news.html.erb`
 
-```html+erb
+    ```html+erb
     <% content_for :stylesheets do %>
       #top_menu {display: none}
       #right_menu {float: right; background-color: yellow; color: black}
-<% end %>
+    <% end %>
     <% content_for :content do %>
       <div id="right_menu">Right menu items here</div>
       <%= content_for?(:news_content) ? yield(:news_content) : yield %>
-<% end %>
+    <% end %>
     <%= render template: "layouts/application" %>
     ```
 
-これだけなんです。The News views will use the new layout, hiding the top menu and adding a new right menu inside the "content" div.
+以上でおしまいです。Newsビューで新しいレイアウトが使用されるようになり、トップメニューが隠されて"content" divタグ内に右メニューが新しく追加されました。
 
-There are several ways of getting similar results with different sub-templating schemes using this technique. Note that there is no limit in nesting levels. One can use the `ActionView::render` method via `render template: 'layouts/news'` to base a new layout on the News layout. If you are sure you will not subtemplate the `News` layout, you can replace the `content_for?(:news_content) ? yield(:news_content) : yield` with simply `yield`.
+これと同じ結果を得られるサブテンプレートの使用法はこの他にもさまざまなものが考えられます。ネスティングレベルには制限がない点にご注目ください。たとえばNewsレイアウトで新しいレイアウトを使用するために、`render template: 'layouts/news'`経由で`ActionView::render`メソッドを使用することもできます。`News`レイアウトをサブテンプレート化するつもりがないのであれば、`content_for?(:news_content) ? yield(:news_content) : yield`を単に`yield`に置き換えれば済みます。
