@@ -14,7 +14,7 @@
       url: active_record_basics.html
       description: Active Recordの基礎となるモデル、データベースへの永続的な保存、Active Recordパターンとライブラリについて解説します。
     -
-      name: Active Record マイグレーション [翻訳中]
+      name: Active Record マイグレーション
       url: active_record_migrations.html
       description: Active Recordのマイグレーション (migration) を使用して、データベースを構造化された方法で整然と変更する方法について解説します。
     -

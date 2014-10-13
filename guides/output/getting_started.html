@@ -63,7 +63,7 @@
                 <dd><a href="getting_started.html">Rails をはじめよう</a></dd>
                 <dt>モデル</dt>
                 <dd><a href="active_record_basics.html">Active Record の基礎</a></dd>
-                <dd><a href="active_record_migrations.html">Active Record マイグレーション [翻訳中]</a></dd>
+                <dd><a href="active_record_migrations.html">Active Record マイグレーション</a></dd>
                 <dd><a href="active_record_validations.html">Active Record バリデーション</a></dd>
                 <dd><a href="active_record_callbacks.html">Active Record コールバック</a></dd>
                 <dd><a href="association_basics.html">Active Record アソシエーション</a></dd>
@@ -118,7 +118,7 @@
               </optgroup>
               <optgroup label="モデル">
                   <option value="active_record_basics.html">Active Record の基礎</option>
-                  <option value="active_record_migrations.html">Active Record マイグレーション [翻訳中]</option>
+                  <option value="active_record_migrations.html">Active Record マイグレーション</option>
                   <option value="active_record_validations.html">Active Record バリデーション</option>
                   <option value="active_record_callbacks.html">Active Record コールバック</option>
                   <option value="association_basics.html">Active Record アソシエーション</option>
@@ -322,7 +322,7 @@ ruby 2.0.0p353
 </pre>
 </div>
 <p>自分のPC環境にRubyがインストールされていない場合は、<a href="https://www.ruby-lang.org/ja/installation/">ruby-lang.org</a> を参照して、自分の環境に合うインストール方法を参照してください。</p>
-<p>多くのUnix系OSには実用的なバージョンのSQLite3が同梱されています。 Windowsユーザーなどその他の環境の方は<a href="http://www.sqlite.org">SQLite3</a>のインストール方法をさんしょうしてくだs
+<p>多くのUnix系OSには実用的なバージョンのSQLite3が同梱されています。 Windowsユーザーなどその他の環境の方は<a href="http://www.sqlite.org">SQLite3</a>のインストール方法を参照してください。
 正しくインストールされていること、PATH環境変数が正しく通っていることを確認してください。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
@@ -1719,7 +1719,7 @@ class CommentsController &lt; ApplicationController
 <p>ヒント: <code>doc:guides</code> rakeタスクを使用してRailsガイドをローカル生成するには、RedCloth gemをインストールする必要があります。RedCloth gemを<code>Gemfile</code>に追記して<code>bundle install</code>を実行することで利用できるようになります。</p>
 <h3 id="設定の落とし穴">11 設定の落とし穴</h3>
 <p>Railsでの無用なトラブルを避けるための最も初歩的な方法は、外部データを常にUTF-8で保存することです。このとおりにしないと、RubyライブラリやRailsはネイティブデータをたびたびUTF-8に変換しなければならず、しかもときに失敗することがあります。外部データを常にUTF-8にしておくことをぜひお勧めします。</p>
-<p>外部データのエンコードが不統一な場合によく起きる症状としては、たとえば画面に黒い菱型◆と疑問符が表示されるというものがあります。他にも、"ü"という文字のはずが"Ã¼"という文字に変わっている、などの症状もります。Railsではこうした問題を緩和するため、問題の原因を自動的に検出して修正するために内部で多くの手順を行っています。しかし、UTF-8で保存されていない外部データがあると、Railsによる自動検出/修正が効かずに文字化けが発生することがあります。</p>
+<p>外部データのエンコードが不統一な場合によく起きる症状としては、たとえば画面に黒い菱型◆と疑問符が表示されるというものがあります。他にも、"ü"という文字のはずが"Ã¼"という文字に変わっている、などの症状もあります。Railsではこうした問題を緩和するため、問題の原因を自動的に検出して修正するために内部で多くの手順を行っています。しかし、UTF-8で保存されていない外部データがあると、Railsによる自動検出/修正が効かずに文字化けが発生することがあります。</p>
 <p>UTF-8でないデータの主な原因は以下の2つです。</p>
 <ul>
 <li>テキストエディタ: TextMateを含む多くのテキストエディタは、デフォルトでUTF-8エンコードでテキストを保存してくれます。使用しているテキストエディタがこのようになっていない場合、テンプレートを表示する時にéなどの特殊文字が◆?のような感じでブラウザで表示されることがあります。これはi18n(国際化)用の翻訳ファイルで発生することもあります。一部のDreamweaverのようにUTF-8保存がデフォルトでないエディタであっても、デフォルトをUTF-8に変更する方法は用意されているはずです。エンコードはUTF-8に変えてください。</li>

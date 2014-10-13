@@ -16,7 +16,7 @@
 <meta property="og:type"        content="article" />
 <meta property="og:description" content="Rails 開発のお供に! 日本語版 Rails リファレンスガイド (Rails 4.1 対応)" />
 
-<title>Active Record Migrations — Ruby on Rails Guides</title>
+<title>Ruby on Rails Guides</title>
 <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
 
@@ -63,7 +63,7 @@
                 <dd><a href="getting_started.html">Rails をはじめよう</a></dd>
                 <dt>モデル</dt>
                 <dd><a href="active_record_basics.html">Active Record の基礎</a></dd>
-                <dd><a href="active_record_migrations.html">Active Record マイグレーション [翻訳中]</a></dd>
+                <dd><a href="active_record_migrations.html">Active Record マイグレーション</a></dd>
                 <dd><a href="active_record_validations.html">Active Record バリデーション</a></dd>
                 <dd><a href="active_record_callbacks.html">Active Record コールバック</a></dd>
                 <dd><a href="association_basics.html">Active Record アソシエーション</a></dd>
@@ -118,7 +118,7 @@
               </optgroup>
               <optgroup label="モデル">
                   <option value="active_record_basics.html">Active Record の基礎</option>
-                  <option value="active_record_migrations.html">Active Record マイグレーション [翻訳中]</option>
+                  <option value="active_record_migrations.html">Active Record マイグレーション</option>
                   <option value="active_record_validations.html">Active Record バリデーション</option>
                   <option value="active_record_callbacks.html">Active Record コールバック</option>
                   <option value="association_basics.html">Active Record アソシエーション</option>
@@ -176,73 +176,63 @@
 
   <div id="feature">
     <div class="wrapper">
-      <h2>Active Record Migrations</h2><p>Migrations are a feature of Active Record that allows you to evolve your
-database schema over time. Rather than write schema modifications in pure SQL,
-migrations allow you to use an easy Ruby DSL to describe changes to your
-tables.</p><p>After reading this guide, you will know:</p>
-<ul>
-<li>The generators you can use to create them.</li>
-<li>The methods Active Record provides to manipulate your database.</li>
-<li>The Rake tasks that manipulate migrations and your schema.</li>
-<li>How migrations relate to <code>schema.rb</code>.</li>
-</ul>
-
+      
                 <div id="subCol">
             <h3 class="chapter"><img src="images/chapters_icon.gif" alt="" />Chapters</h3>
             <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
 <ol class="chapters">
-<li><a href="#migration-overview">Migration Overview</a></li>
+<li><a href="#%E3%83%9E%E3%82%A4%E3%82%B0%E3%83%AC%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%AE%E6%A6%82%E8%A6%81">マイグレーションの概要</a></li>
 <li>
-<a href="#creating-a-migration">Creating a Migration</a>
+<a href="#%E3%83%9E%E3%82%A4%E3%82%B0%E3%83%AC%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%92%E4%BD%9C%E6%88%90%E3%81%99%E3%82%8B">マイグレーションを作成する</a>
 
 <ul>
-<li><a href="#creating-a-standalone-migration">Creating a Standalone Migration</a></li>
-<li><a href="#model-generators">Model Generators</a></li>
-<li><a href="#passing-modifiers">Passing Modifiers</a></li>
+<li><a href="#%E5%8D%98%E7%8B%AC%E3%81%AE%E3%83%9E%E3%82%A4%E3%82%B0%E3%83%AC%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%92%E4%BD%9C%E6%88%90%E3%81%99%E3%82%8B">単独のマイグレーションを作成する</a></li>
+<li><a href="#%E3%83%A2%E3%83%87%E3%83%AB%E3%82%92%E7%94%9F%E6%88%90%E3%81%99%E3%82%8B">モデルを生成する</a></li>
+<li><a href="#%E3%83%A2%E3%83%87%E3%82%A3%E3%83%95%E3%82%A1%E3%82%A4%E3%82%A2%E3%82%92%E6%B8%A1%E3%81%99">モディファイアを渡す</a></li>
 </ul>
 </li>
 <li>
-<a href="#writing-a-migration">Writing a Migration</a>
+<a href="#%E3%83%9E%E3%82%A4%E3%82%B0%E3%83%AC%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%92%E8%87%AA%E4%BD%9C%E3%81%99%E3%82%8B">マイグレーションを自作する</a>
 
 <ul>
-<li><a href="#creating-a-table">Creating a Table</a></li>
-<li><a href="#creating-a-join-table">Creating a Join Table</a></li>
-<li><a href="#changing-tables">Changing Tables</a></li>
-<li><a href="#changing-columns">Changing Columns</a></li>
-<li><a href="#column-modifiers">Column Modifiers</a></li>
-<li><a href="#foreign-keys">Foreign Keys</a></li>
-<li><a href="#when-helpers-aren't-enough">When Helpers aren't Enough</a></li>
-<li><a href="#using-the-change-method">Using the <code>change</code> Method</a></li>
-<li><a href="#using-reversible">Using <code>reversible</code></a></li>
-<li><a href="#using-the-up/down-methods">Using the <code>up</code>/<code>down</code> Methods</a></li>
-<li><a href="#reverting-previous-migrations">Reverting Previous Migrations</a></li>
+<li><a href="#%E3%83%86%E3%83%BC%E3%83%96%E3%83%AB%E3%82%92%E4%BD%9C%E6%88%90%E3%81%99%E3%82%8B">テーブルを作成する</a></li>
+<li><a href="#%E3%83%86%E3%83%BC%E3%83%96%E3%83%AB%E7%B5%90%E5%90%88%E3%82%92%E4%BD%9C%E6%88%90%E3%81%99%E3%82%8B">テーブル結合を作成する</a></li>
+<li><a href="#%E3%83%86%E3%83%BC%E3%83%96%E3%83%AB%E3%82%92%E5%A4%89%E6%9B%B4%E3%81%99%E3%82%8B">テーブルを変更する</a></li>
+<li><a href="#%E3%83%9E%E3%82%A4%E3%82%B0%E3%83%AC%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%92%E8%87%AA%E4%BD%9C%E3%81%99%E3%82%8B-%E3%82%AB%E3%83%A9%E3%83%A0%E3%82%92%E5%A4%89%E6%9B%B4%E3%81%99%E3%82%8B">カラムを変更する</a></li>
+<li><a href="#%E3%83%9E%E3%82%A4%E3%82%B0%E3%83%AC%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%92%E8%87%AA%E4%BD%9C%E3%81%99%E3%82%8B-%E3%82%AB%E3%83%A9%E3%83%A0%E3%82%92%E5%A4%89%E6%9B%B4%E3%81%99%E3%82%8B">カラムを変更する</a></li>
+<li><a href="#%E5%A4%96%E9%83%A8%E3%82%AD%E3%83%BC">外部キー</a></li>
+<li><a href="#%E3%83%98%E3%83%AB%E3%83%91%E3%83%BC%E3%81%AE%E6%A9%9F%E8%83%BD%E3%81%A0%E3%81%91%E3%81%A7%E3%81%AF%E8%B6%B3%E3%82%8A%E3%81%AA%E3%81%84%E5%A0%B4%E5%90%88">ヘルパーの機能だけでは足りない場合</a></li>
+<li><a href="#change%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B"><code>change</code>メソッドを使用する</a></li>
+<li><a href="#reversible%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B"><code>reversible</code>を使用する</a></li>
+<li><a href="#up/down%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B"><code>up</code>/<code>down</code>メソッドを使用する</a></li>
+<li><a href="#%E4%BB%A5%E5%89%8D%E3%81%AE%E3%83%9E%E3%82%A4%E3%82%B0%E3%83%AC%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%92%E9%80%86%E8%BB%A2%E3%81%99%E3%82%8B">以前のマイグレーションを逆転する</a></li>
 </ul>
 </li>
 <li>
-<a href="#running-migrations">Running Migrations</a>
+<a href="#%E3%83%9E%E3%82%A4%E3%82%B0%E3%83%AC%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%92%E5%AE%9F%E8%A1%8C%E3%81%99%E3%82%8B">マイグレーションを実行する</a>
 
 <ul>
-<li><a href="#rolling-back">Rolling Back</a></li>
-<li><a href="#setup-the-database">Setup the Database</a></li>
-<li><a href="#resetting-the-database">Resetting the Database</a></li>
-<li><a href="#running-specific-migrations">Running Specific Migrations</a></li>
-<li><a href="#running-migrations-in-different-environments">Running Migrations in Different Environments</a></li>
-<li><a href="#changing-the-output-of-running-migrations">Changing the Output of Running Migrations</a></li>
+<li><a href="#%E3%83%AD%E3%83%BC%E3%83%AB%E3%83%90%E3%83%83%E3%82%AF">ロールバック</a></li>
+<li><a href="#%E3%83%87%E3%83%BC%E3%82%BF%E3%83%99%E3%83%BC%E3%82%B9%E3%82%92%E8%A8%AD%E5%AE%9A%E3%81%99%E3%82%8B">データベースを設定する</a></li>
+<li><a href="#%E3%83%87%E3%83%BC%E3%82%BF%E3%83%99%E3%83%BC%E3%82%B9%E3%82%92%E3%83%AA%E3%82%BB%E3%83%83%E3%83%88%E3%81%99%E3%82%8B">データベースをリセットする</a></li>
+<li><a href="#%E7%89%B9%E5%AE%9A%E3%81%AE%E3%83%9E%E3%82%A4%E3%82%B0%E3%83%AC%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%AE%E3%81%BF%E3%82%92%E5%AE%9F%E8%A1%8C%E3%81%99%E3%82%8B">特定のマイグレーションのみを実行する</a></li>
+<li><a href="#%E7%95%B0%E3%81%AA%E3%82%8B%E7%92%B0%E5%A2%83%E3%81%A7%E3%83%9E%E3%82%A4%E3%82%B0%E3%83%AC%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%92%E5%AE%9F%E8%A1%8C%E3%81%99%E3%82%8B">異なる環境でマイグレーションを実行する</a></li>
+<li><a href="#%E3%83%9E%E3%82%A4%E3%82%B0%E3%83%AC%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E5%AE%9F%E8%A1%8C%E7%B5%90%E6%9E%9C%E3%81%AE%E5%87%BA%E5%8A%9B%E3%82%92%E5%A4%89%E6%9B%B4%E3%81%99%E3%82%8B">マイグレーション実行結果の出力を変更する</a></li>
 </ul>
 </li>
-<li><a href="#changing-existing-migrations">Changing Existing Migrations</a></li>
+<li><a href="#%E6%97%A2%E5%AD%98%E3%81%AE%E3%83%9E%E3%82%A4%E3%82%B0%E3%83%AC%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%92%E5%A4%89%E6%9B%B4%E3%81%99%E3%82%8B">既存のマイグレーションを変更する</a></li>
 <li>
-<a href="#schema-dumping-and-you">Schema Dumping and You</a>
+<a href="#%E3%82%B9%E3%82%AD%E3%83%BC%E3%83%9E%E3%83%80%E3%83%B3%E3%83%97%E3%81%AE%E6%84%8F%E7%BE%A9">スキーマダンプの意義</a>
 
 <ul>
-<li><a href="#what-are-schema-files-for?">What are Schema Files for?</a></li>
-<li><a href="#types-of-schema-dumps">Types of Schema Dumps</a></li>
-<li><a href="#schema-dumps-and-source-control">Schema Dumps and Source Control</a></li>
+<li><a href="#%E3%82%B9%E3%82%AD%E3%83%BC%E3%83%9E%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%81%AE%E6%84%8F%E5%91%B3%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6">スキーマファイルの意味について</a></li>
+<li><a href="#%E3%82%B9%E3%82%AD%E3%83%BC%E3%83%9E%E3%83%80%E3%83%B3%E3%83%97%E3%81%AE%E7%A8%AE%E9%A1%9E">スキーマダンプの種類</a></li>
+<li><a href="#%E3%82%B9%E3%82%AD%E3%83%BC%E3%83%9E%E3%83%80%E3%83%B3%E3%83%97%E3%81%A8%E3%82%BD%E3%83%BC%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%89%E7%AE%A1%E7%90%86">スキーマダンプとソースコード管理</a></li>
 </ul>
 </li>
-<li><a href="#active-record-and-referential-integrity">Active Record and Referential Integrity</a></li>
-<li><a href="#migrations-and-seed-data">Migrations and Seed Data</a></li>
+<li><a href="#active-record%E3%81%A8%E5%8F%82%E7%85%A7%E6%95%B4%E5%90%88%E6%80%A7">Active Recordと参照整合性</a></li>
+<li><a href="#%E3%83%9E%E3%82%A4%E3%82%B0%E3%83%AC%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%A8%E3%82%B7%E3%83%BC%E3%83%89%E3%83%87%E3%83%BC%E3%82%BF">マイグレーションとシードデータ</a></li>
 </ol>
 </body></html>
 
@@ -255,18 +245,21 @@ tables.</p><p>After reading this guide, you will know:</p>
       <div id="mainCol">
         <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
-<h3 id="migration-overview">1 Migration Overview</h3>
-<p>Migrations are a convenient way to
-<a href="http://en.wikipedia.org/wiki/Schema_migration">alter your database schema over time</a>
-in a consistent and easy way. They use a Ruby DSL so that you don't have to
-write SQL by hand, allowing your schema and changes to be database independent.</p>
-<p>You can think of each migration as being a new 'version' of the database. A
-schema starts off with nothing in it, and each migration modifies it to add or
-remove tables, columns, or entries. Active Record knows how to update your
-schema along this timeline, bringing it from whatever point it is in the
-history to the latest version. Active Record will also update your
-<code>db/schema.rb</code> file to match the up-to-date structure of your database.</p>
-<p>Here's an example of a migration:</p>
+<h2>Active Recordマイグレーション</h2>
+<p>マイグレーション (migration) はActive Recordの機能の1つであり、データベーススキーマを長期にわたって安定して発展・増築し続けることができるようにするための仕組みです。マイグレーション機能のおかげで、Rubyで作成されたマイグレーション用のDSL (ドメイン固有言語) を使用して、テーブルの変更を簡単に記述できます。スキーマを変更するためにSQLを直に書いて実行する必要がありません。</p>
+<p>このガイドの内容:</p>
+<ul>
+<li>マイグレーション作成で使用されるじぇねれ</li>
+<li>Active Recordが提供するデータベース操作用メソッド群の解説</li>
+<li>マイグレーション実行とスキーマ更新用のRakeタスクの解説</li>
+<li>マイグレーションとスキーマファイル<code>schema.rb</code>の関係</li>
+</ul>
+
+<hr>
+<h3 id="マイグレーションの概要">1 マイグレーションの概要</h3>
+<p>マイグレーションは、<a href="http://en.wikipedia.org/wiki/Schema_migration">データベーススキーマの継続的な変更</a> を、統一的かつ簡単に行なうための便利な手法です。マイグレーションではRubyのDSLを使用しているので、生のSQLを作成する必要がなく、スキーマとスキーマへの変更をデータベースの種類に依存せずに済みます。</p>
+<p>1つ1つのマイグレーションは、データベースの新しい'version'とみなすことができます。スキーマは最初空の状態から始まり、マイグレーションによる変更が加わるたびにテーブル、カラム、エントリが追加または削除されます。Active Recordは時系列に沿ってスキーマを更新する方法を知っているので、履歴のどの時点からでも最新バージョンのスキーマに更新することができます。Active Recordは<code>db/schema.rb</code>ファイルを更新し、データベースの最新の構造と一致するようにします。</p>
+<p>マイグレーションの例を以下に示します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class CreateProducts &lt; ActiveRecord::Migration
@@ -282,25 +275,11 @@ end
 
 </pre>
 </div>
-<p>This migration adds a table called <code>products</code> with a string column called
-<code>name</code> and a text column called <code>description</code>. A primary key column called <code>id</code>
-will also be added implicitly, as it's the default primary key for all Active
-Record models. The <code>timestamps</code> macro adds two columns, <code>created_at</code> and
-<code>updated_at</code>. These special columns are automatically managed by Active Record
-if they exist.</p>
-<p>Note that we define the change that we want to happen moving forward in time.
-Before this migration is run, there will be no table. After, the table will
-exist. Active Record knows how to reverse this migration as well: if we roll
-this migration back, it will remove the table.</p>
-<p>On databases that support transactions with statements that change the schema,
-migrations are wrapped in a transaction. If the database does not support this
-then when a migration fails the parts of it that succeeded will not be rolled
-back. You will have to rollback the changes that were made by hand.</p>
-<div class="note"><p>There are certain queries that can't run inside a transaction. If your
-adapter supports DDL transactions you can use <code>disable_ddl_transaction!</code> to
-disable them for a single migration.</p></div>
-<p>If you wish for a migration to do something that Active Record doesn't know how
-to reverse, you can use <code>reversible</code>:</p>
+<p>上のマイグレーションを実行すると<code>products</code>という名前のテーブルが追加されます。この中には<code>name</code>というstringカラムと、<code>description</code>というtextカラムが含まれています。主キーは<code>id</code>という名前で暗黙に追加されます。<code>id</code>はActive Recordモデルにおけるデフォルトの主キーです。<code>timestamps</code>マクロは、<code>created_at</code>と<code>updated_at</code>という2つのカラムを追加します。これらの特殊なカラムが存在する場合、Active Recordによって自動的に管理されます。</p>
+<p>マイグレーションは、時間を先に進めるときに実行したい動作を定義していることにご注目ください。マイグレーションの実行前にはテーブルは1つもありません。マイグレーションを実行すると、テーブルが作成されます。Active Recordは、このマイグレーションの進行を逆転させる方法も知っています。マイグレーションをロールバックすると、テーブルは削除されます。</p>
+<p>スキーマ変更のステートメントが使用できるトランザクションをサポートするデータベースでは、マイグレーションはトランザクションの内側にラップされて実行されます。これらがデータベースでサポートされていない場合は、マイグレーション中に一部が失敗した場合にロールバックされません。その場合は、変更を手動でロールバックする必要があります。</p>
+<p>メモ: ある種のクエリは、トランザクション内で実行できないことがあります。アダプタがDDLトランザクションをサポートしている場合は、<code>disable_ddl_transaction!</code>を使用して単一のマイグレーションでこれらを無効にすることができます。</p>
+<p>Active Recordで対応できないマイグレーションを行いたい場合は、<code>reversible</code>を使用します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class ChangeProductsPrice &lt; ActiveRecord::Migration
@@ -316,7 +295,7 @@ end
 
 </pre>
 </div>
-<p>Alternatively, you can use <code>up</code> and <code>down</code> instead of <code>change</code>:</p>
+<p><code>change</code>の代りに<code>up</code>と<code>down</code>を使用することもできます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class ChangeProductsPrice &lt; ActiveRecord::Migration
@@ -335,28 +314,17 @@ end
 
 </pre>
 </div>
-<h3 id="creating-a-migration">2 Creating a Migration</h3>
-<h4 id="creating-a-standalone-migration">2.1 Creating a Standalone Migration</h4>
-<p>Migrations are stored as files in the <code>db/migrate</code> directory, one for each
-migration class. The name of the file is of the form
-<code>YYYYMMDDHHMMSS_create_products.rb</code>, that is to say a UTC timestamp
-identifying the migration followed by an underscore followed by the name
-of the migration. The name of the migration class (CamelCased version)
-should match the latter part of the file name. For example
-<code>20080906120000_create_products.rb</code> should define class <code>CreateProducts</code> and
-<code>20080906120001_add_details_to_products.rb</code> should define
-<code>AddDetailsToProducts</code>. Rails uses this timestamp to determine which migration
-should be run and in what order, so if you're copying a migration from another
-application or generate a file yourself, be aware of its position in the order.</p>
-<p>Of course, calculating timestamps is no fun, so Active Record provides a
-generator to handle making it for you:</p>
+<h3 id="マイグレーションを作成する">2 マイグレーションを作成する</h3>
+<h4 id="単独のマイグレーションを作成する">2.1 単独のマイグレーションを作成する</h4>
+<p>マイグレーションは<code>db/migrate</code>ディレクトリに保存されます。1つのファイルが1つのマイグレーションクラスに対応します。マイグレーションファイル名は<code>YYYYMMDDHHMMSS_create_products.rb</code>のような形式になります。ファイル名の日時はマイグレーションを識別するUTCタイムスタンプであり、アンダースコアにつづいてマイグレーション名が記述されます。マイグレーション クラスの名前 (CamelCaseで表されるバージョン) は、ファイル名の後半と一致する必要があります。たとえば、<code>20080906120000_create_products.rb</code>では<code>CreateProducts</code>というクラスが定義され、<code>20080906120001_add_details_to_products.rb</code>では<code>AddDetailsToProducts</code>というクラスが定義される必要があります。Railsではマイグレーションの実行順序をファイル名のタイムスタンプで決定します。従って、マイグレーションを他のアプリケーションからコピーしたり、自分でマイグレーションを生成する場合は、実行順に注意する必要があります。</p>
+<p>タイムスタンプを算出する作業は楽しいものではありませんので、Active Recordにはこれらを扱うためのジェネレータが用意されています。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ bin/rails generate migration AddPartNumberToProducts
 
 </pre>
 </div>
-<p>This will create an empty but appropriately named migration:</p>
+<p>これによって生成されるマイグレーションは中身が空ですが、適切な名前が付けられています。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class AddPartNumberToProducts &lt; ActiveRecord::Migration
@@ -366,16 +334,14 @@ end
 
 </pre>
 </div>
-<p>If the migration name is of the form "AddXXXToYYY" or "RemoveXXXFromYYY" and is
-followed by a list of column names and types then a migration containing the
-appropriate <code>add_column</code> and <code>remove_column</code> statements will be created.</p>
+<p>マイグレーション名が"AddXXXToYYY"や"RemoveXXXFromYYY"の形式になっており、その後にカラム名と種類が続いていれば、マイグレーション内に適切な<code>add_column</code>文と<code>remove_column</code>文が作成されます。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ bin/rails generate migration AddPartNumberToProducts part_number:string
 
 </pre>
 </div>
-<p>will generate</p>
+<p>上を実行すると以下が生成されます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class AddPartNumberToProducts &lt; ActiveRecord::Migration
@@ -386,14 +352,14 @@ end
 
 </pre>
 </div>
-<p>If you'd like to add an index on the new column, you can do that as well:</p>
+<p>新しいカラムにインデックスを追加したい場合は以下のようにします。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ bin/rails generate migration AddPartNumberToProducts part_number:string:index
 
 </pre>
 </div>
-<p>will generate</p>
+<p>上を実行すると以下が生成されます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class AddPartNumberToProducts &lt; ActiveRecord::Migration
@@ -405,14 +371,14 @@ end
 
 </pre>
 </div>
-<p>Similarly, you can generate a migration to remove a column from the command line:</p>
+<p>同様に、カラムを削除するマイグレーションをコマンドラインで生成するには以下のようにします。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ bin/rails generate migration RemovePartNumberFromProducts part_number:string
 
 </pre>
 </div>
-<p>generates</p>
+<p>上を実行すると以下が生成されます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class RemovePartNumberFromProducts &lt; ActiveRecord::Migration
@@ -423,14 +389,14 @@ end
 
 </pre>
 </div>
-<p>You are not limited to one magically generated column. For example:</p>
+<p>自動で生成できるカラムは1つだけではありません。たとえば次のようになります。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ bin/rails generate migration AddDetailsToProducts part_number:string price:decimal
 
 </pre>
 </div>
-<p>generates</p>
+<p>上を実行すると以下が生成されます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class AddDetailsToProducts &lt; ActiveRecord::Migration
@@ -442,16 +408,14 @@ end
 
 </pre>
 </div>
-<p>If the migration name is of the form "CreateXXX" and is
-followed by a list of column names and types then a migration creating the table
-XXX with the columns listed will be generated. For example:</p>
+<p>マイグレーション名が"CreateXXX"のような形式であり、その後にカラム名と種類が続く場合、XXXという名前のテーブルが作成され、指定の種類のカラム名がその中に生成されます。たとえば次のようになります。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ bin/rails generate migration CreateProducts name:string part_number:string
 
 </pre>
 </div>
-<p>generates</p>
+<p>上を実行すると以下が生成されます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class CreateProducts &lt; ActiveRecord::Migration
@@ -465,18 +429,15 @@ end
 
 </pre>
 </div>
-<p>As always, what has been generated for you is just a starting point. You can add
-or remove from it as you see fit by editing the
-<code>db/migrate/YYYYMMDDHHMMSS_add_details_to_products.rb</code> file.</p>
-<p>Also, the generator accepts column type as <code>references</code>(also available as
-<code>belongs_to</code>). For instance:</p>
+<p>これまでと同様、ここまでに生成した内容は単なる出発点でしかありません。<code>db/migrate/YYYYMMDDHHMMSS_add_details_to_products.rb</code>ファイルを編集して、項目の追加や削除を行なうことができます。</p>
+<p>同様に、カラムの種類として<code>references</code> (<code>belongs_to</code> も可) を指定することができます。たとえば次のようになります。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ bin/rails generate migration AddUserRefToProducts user:references
 
 </pre>
 </div>
-<p>generates</p>
+<p>上を実行すると以下が生成されます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class AddUserRefToProducts &lt; ActiveRecord::Migration
@@ -487,15 +448,15 @@ end
 
 </pre>
 </div>
-<p>This migration will create a <code>user_id</code> column and appropriate index.</p>
-<p>There is also a generator which will produce join tables if <code>JoinTable</code> is part of the name:</p>
+<p>このマイグレーションを実行すると、<code>user_id</code>が作成され、適切なインデックスが追加されます。</p>
+<p>名前の一部に<code>JoinTable</code>が含まれているとテーブル結合を生成するジェネレータもあります。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ bin/rails g migration CreateJoinTableCustomerProduct customer product
 
 </pre>
 </div>
-<p>will produce the following migration:</p>
+<p>上によって以下のマイグレーションが生成されます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class CreateJoinTableCustomerProduct &lt; ActiveRecord::Migration
@@ -509,18 +470,15 @@ end
 
 </pre>
 </div>
-<h4 id="model-generators">2.2 Model Generators</h4>
-<p>The model and scaffold generators will create migrations appropriate for adding
-a new model. This migration will already contain instructions for creating the
-relevant table. If you tell Rails what columns you want, then statements for
-adding these columns will also be created. For example, running:</p>
+<h4 id="モデルを生成する">2.2 モデルを生成する</h4>
+<p>モデルのジェネレータとscaffoldジェネレータは、新しいモデルを追加するマイグレーションを生成します。このマイグレーションには、関連するテーブルを作成する命令が既に含まれています。必要なカラムを指定すると、それらのカラムを追加する命令も同時に生成されます。たとえば、以下を実行するとします。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ bin/rails generate model Product name:string description:text
 
 </pre>
 </div>
-<p>will create a migration that looks like this</p>
+<p>このとき、以下のようなマイグレーションが作成されます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class CreateProducts &lt; ActiveRecord::Migration
@@ -536,18 +494,17 @@ end
 
 </pre>
 </div>
-<p>You can append as many column name/type pairs as you want.</p>
-<h4 id="passing-modifiers">2.3 Passing Modifiers</h4>
-<p>Some commonly used <a href="#column-modifiers">type modifiers</a> can be passed directly on
-the command line. They are enclosed by curly braces and follow the field type:</p>
-<p>For instance, running:</p>
+<p>カラム名と種類のペアはいくつでも追加できます。</p>
+<h4 id="モディファイアを渡す">2.3 モディファイアを渡す</h4>
+<p>コマンドラインである種の<a href="#column-modifiers">タイプモディファイア</a> を直接渡すこともできます。これらは波かっこで囲まれ、後ろにフィールドの種類が追加されます。</p>
+<p>たとえば以下を実行したとします。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ bin/rails generate migration AddDetailsToProducts 'price:decimal{5,2}' supplier:references{polymorphic}
 
 </pre>
 </div>
-<p>will produce a migration that looks like this</p>
+<p>これによって以下のようなマイグレーションが生成されます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class AddDetailsToProducts &lt; ActiveRecord::Migration
@@ -559,14 +516,11 @@ end
 
 </pre>
 </div>
-<div class="info"><p>Have a look at the generators help output for further details.</p></div>
-<h3 id="writing-a-migration">3 Writing a Migration</h3>
-<p>Once you have created your migration using one of the generators it's time to
-get to work!</p>
-<h4 id="creating-a-table">3.1 Creating a Table</h4>
-<p>The <code>create_table</code> method is one of the most fundamental, but most of the time,
-will be generated for you from using a model or scaffold generator. A typical
-use would be</p>
+<p>ヒント: 詳細についてはジェネレータのヘルプを参照してください。</p>
+<h3 id="マイグレーションを自作する">3 マイグレーションを自作する</h3>
+<p>ジェネレータでマイグレーションを作成できるようになったら、今度は自分で作成してみましょう。</p>
+<h4 id="テーブルを作成する">3.1 テーブルを作成する</h4>
+<p><code>create_table</code>メソッドは最も基本的なメソッドであり、ほとんどの場合モデルやscaffoldの生成時に使用されます。典型的な利用法を以下に示します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 create_table :products do |t|
@@ -575,13 +529,8 @@ end
 
 </pre>
 </div>
-<p>which creates a <code>products</code> table with a column called <code>name</code> (and as discussed
-below, an implicit <code>id</code> column).</p>
-<p>By default, <code>create_table</code> will create a primary key called <code>id</code>. You can change
-the name of the primary key with the <code>:primary_key</code> option (don't forget to
-update the corresponding model) or, if you don't want a primary key at all, you
-can pass the option <code>id: false</code>. If you need to pass database specific options
-you can place an SQL fragment in the <code>:options</code> option. For example:</p>
+<p>上によって<code>products</code>テーブルが生成され、<code>name</code>という名前のカラムがその中に作成されます (<code>id</code>というカラムも暗黙で生成されますが、これについては後述します)。</p>
+<p>デフォルトでは、<code>create_table</code>によって<code>id</code>という名前の主キーが作成されます。<code>:primary_key</code>オプションを指定することで、主キー名を変更することもできます (その場合は必ず対応するモデル名を変更してください)。 主キーを使用したくない場合は<code>id: false</code>オプションを指定することもできます。特定のデータベースで使用するオプションが必要な場合は、<code>:options</code>オプションに続けてSQLフラグメントを記述します。たとえば次のようになります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 create_table :products, options: "ENGINE=BLACKHOLE" do |t|
@@ -590,40 +539,32 @@ end
 
 </pre>
 </div>
-<p>will append <code>ENGINE=BLACKHOLE</code> to the SQL statement used to create the table
-(when using MySQL, the default is <code>ENGINE=InnoDB</code>).</p>
-<h4 id="creating-a-join-table">3.2 Creating a Join Table</h4>
-<p>Migration method <code>create_join_table</code> creates a HABTM join table. A typical use
-would be:</p>
+<p>上のマイグレーションでは、テーブルを生成するSQLステートメントに<code>ENGINE=BLACKHOLE</code>を指定しています (MySQLを使用する場合、デフォルトは<code>ENGINE=InnoDB</code>です)。</p>
+<h4 id="テーブル結合を作成する">3.2 テーブル結合を作成する</h4>
+<p>マイグレーションの<code>create_join_table</code>メソッドはhas_and_belongs_to_many (HABTM) テーブル結合を作成します。典型的な利用法を以下に示します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 create_join_table :products, :categories
 
 </pre>
 </div>
-<p>which creates a <code>categories_products</code> table with two columns called
-<code>category_id</code> and <code>product_id</code>. These columns have the option <code>:null</code> set to
-<code>false</code> by default. This can be overridden by specifying the <code>:column_options</code>
-option.</p>
+<p>上によって<code>categories_products</code>テーブルが作成され、その中に<code>category_id</code>カラムと<code>product_id</code>カラムが生成されます。これらのカラムには<code>:null</code>オプションがあり、デフォルト値は<code>false</code>です。<code>:column_options</code>オプションを指定することでこれらを上書きできます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 create_join_table :products, :categories, column_options: {null: true}
 
 </pre>
 </div>
-<p>will create the <code>product_id</code> and <code>category_id</code> with the <code>:null</code> option as
-<code>true</code>.</p>
-<p>You can pass the option <code>:table_name</code> when you want to customize the table
-name. For example:</p>
+<p>上によって<code>product_id</code>と<code>category_id</code>が作成され、<code>:null</code>が<code>true</code>に設定されます。</p>
+<p>テーブル名をカスタマイズしたい場合は<code>:table_name</code>オプションを渡すこともできます。たとえば次のようになります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 create_join_table :products, :categories, table_name: :categorization
 
 </pre>
 </div>
-<p>will create a <code>categorization</code> table.</p>
-<p><code>create_join_table</code> also accepts a block, which you can use to add indices
-(which are not created by default) or additional columns:</p>
+<p>上のようにすることで<code>categorization</code>テーブルが作成されます。</p>
+<p><code>create_join_table</code>はブロックを引数に取ることもできます。これはインデックスを追加したり (インデックスはデフォルトでは作成されません)、カラムを追加するのに使用されます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 create_join_table :products, :categories do |t|
@@ -633,10 +574,8 @@ end
 
 </pre>
 </div>
-<h4 id="changing-tables">3.3 Changing Tables</h4>
-<p>A close cousin of <code>create_table</code> is <code>change_table</code>, used for changing existing
-tables. It is used in a similar fashion to <code>create_table</code> but the object
-yielded to the block knows more tricks. For example:</p>
+<h4 id="テーブルを変更する">3.3 テーブルを変更する</h4>
+<p>既存のテーブルを変更する<code>change_table</code>は、<code>create_table</code>とよく似ています。基本的には<code>create_table</code>と同じ要領で使用しますが、ブロックに対してyieldされるオブジェクトではいくつかのテクニックが使用できます。たとえば次のようになります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 change_table :products do |t|
@@ -648,21 +587,17 @@ end
 
 </pre>
 </div>
-<p>removes the <code>description</code> and <code>name</code> columns, creates a <code>part_number</code> string
-column and adds an index on it. Finally it renames the <code>upccode</code> column.</p>
-<h4 id="changing-columns">3.4 Changing Columns</h4>
-<p>Like the <code>remove_column</code> and <code>add_column</code> Rails provides the <code>change_column</code>
-migration method.</p>
+<p>上のマイグレーションでは<code>description</code>と<code>name</code>カラムが削除され、stringカラムである<code>part_number</code>が作成されてインデックスがそこに追加されます。そして最後に<code>upccode</code>カラムをリネームしています。</p>
+<h4 id="マイグレーションを自作する-カラムを変更する">3.4 カラムを変更する</h4>
+<p>マイグレーションでは、<code>remove_column</code>や<code>add_column</code>に加えて<code>change_column</code>メソッドも利用できます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 change_column :products, :part_number, :text
 
 </pre>
 </div>
-<p>This changes the column <code>part_number</code> on products table to be a <code>:text</code> field.</p>
-<p>Besides <code>change_column</code>, the <code>change_column_null</code> and <code>change_column_default</code>
-methods are used specifically to change the null and default values of a
-column.</p>
+<p>productsテーブル上の<code>part_number</code>カラムの種類を<code>:text</code>フィールドに変更しています。</p>
+<p><code>change_column</code>の他に<code>change_column_null</code>メソッドと<code>change_column_default</code>メソッドもあり、カラムをnullにしたりデフォルト値を指定したりするのに使用します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 change_column_null :products, :name, false
@@ -670,89 +605,66 @@ change_column_default :products, :approved, false
 
 </pre>
 </div>
-<p>This sets <code>:name</code> field on products to a <code>NOT NULL</code> column and the default
-value of the <code>:approved</code> field to false.</p>
-<div class="info"><p>Unlike <code>change_column</code> (and <code>change_column_default</code>), <code>change_column_null</code>
-is reversible.</p></div>
-<h4 id="column-modifiers">3.5 Column Modifiers</h4>
-<p>Column modifiers can be applied when creating or changing a column:</p>
+<p>上のマイグレーションはproductsテーブルの<code>:name</code>フィールドを<code>NOT NULL</code>カラムに設定し、<code>:approved</code>フィールドのデフォルト値をfalseに設定します。●</p>
+<p>ヒント: <code>change_column</code> (および<code>change_column_default</code>) と異なる点は、<code>change_column_null</code>が可逆的であることです。</p>
+<h4 id="マイグレーションを自作する-カラムを変更する">3.5 カラムを変更する</h4>
+<p>カラムの作成または変更時にカラムモディファイアを適用できます。</p>
 <ul>
 <li>
-<code>limit</code>        Sets the maximum size of the <code>string/text/binary/integer</code> fields.</li>
+<code>limit</code>        <code>string/text/binary/integer</code>フィールドの最大サイズを設定します。</li>
 <li>
-<code>precision</code>    Defines the precision for the <code>decimal</code> fields, representing the
-total number of digits in the number.</li>
+<code>precision</code>    <code>decimal</code>フィールドの精度 (precision) を定義します。この精度は、その数字の総桁数で表されます。</li>
 <li>
-<code>scale</code>        Defines the scale for the <code>decimal</code> fields, representing the
-number of digits after the decimal point.</li>
+<code>scale</code>        <code>decimal</code>フィールドの精度 (スケール: scale) を指定します。この精度は小数点以下の桁数で表されます。</li>
 <li>
-<code>polymorphic</code>  Adds a <code>type</code> column for <code>belongs_to</code> associations.</li>
+<code>polymorphic</code>  <code>belongs_to</code>関連付けで使用する<code>type</code>カラムを追加します。</li>
 <li>
-<code>null</code>         Allows or disallows <code>NULL</code> values in the column.</li>
+<code>null</code>         カラムで<code>NULL</code>値を許可または禁止します。</li>
 <li>
-<code>default</code>      Allows to set a default value on the column. Note that if you
-are using a dynamic value (such as a date), the default will only be calculated
-the first time (i.e. on the date the migration is applied).</li>
+<code>default</code>      カラムでのデフォルト値の設定を許可します。dateなどの動的な値を使用している場合は、デフォルト値は最初 (マイグレーションが実行された日付など) にしか計算されないことに注意してください。</li>
 <li>
-<code>index</code>        Adds an index for the column.</li>
+<code>index</code>        カラムにインデックスを追加します。</li>
 </ul>
-<p>Some adapters may support additional options; see the adapter specific API docs
-for further information.</p>
-<h4 id="foreign-keys">3.6 Foreign Keys</h4>
-<p>While it's not required you might want to add foreign key constraints to
-<a href="#active-record-and-referential-integrity">guarantee referential integrity</a>.</p>
+<p>アダプタによってはこの他にも使用できるオプションがあるものもあります。詳細については各アダプタ固有のAPIドキュメントを参照してください。</p>
+<h4 id="外部キー">3.6 外部キー</h4>
+<p><a href="#active-record-and-referential-integrity">参照整合性の保証</a> に対して外部キー制約を追加することもできます。これは必須ではありません。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 add_foreign_key :articles, :authors
 
 </pre>
 </div>
-<p>This adds a new foreign key to the <code>author_id</code> column of the <code>articles</code>
-table. The key references the <code>id</code> column of the <code>articles</code> table. If the
-column names can not be derived from the table names, you can use the
-<code>:column</code> and <code>:primary_key</code> options.</p>
-<p>Rails will generate a name for every foreign key starting with
-<code>fk_rails_</code> followed by 10 random characters.
-There is a <code>:name</code> option to specify a different name if needed.</p>
-<div class="note"><p>Active Record only supports single column foreign keys. <code>execute</code> and
-<code>structure.sql</code> are required to use composite foreign keys.</p></div>
-<p>Removing a foreign key is easy as well:</p>
+<p>上によって新たな外部キーが<code>articles</code>テーブルの<code>author_id</code>カラムに追加されます。このキーは<code>articles</code>テーブルの<code>id</code>カラムを参照します。欲しいカラム名をテーブル名から類推できない場合は、<code>:column</code>オプションと<code>:primary_key</code>オプションを使用できます。</p>
+<p>Railsでは、すべての外部キーは<code>fk_rails_</code>という名前で始まり、その後ろに10文字のランダムな文字列が続きます。
+必要であれば、<code>:name</code>オプションを指定することで別の名前を使用できます。</p>
+<p>メモ: Active Recordでは単一カラムの外部キーのみがサポートされています。複合外部キーを使用する場合は<code>execute</code>と<code>structure.sql</code>が必要です。</p>
+<p>外部キーの削除も以下のように簡単に行えます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-# let Active Record figure out the column name
+# 削除するカラム名の決定をActive Recordに任せる場合
 remove_foreign_key :accounts, :branches
 
-# remove foreign key for a specific column
+# カラムを指定して外部キーを削除する場合
 remove_foreign_key :accounts, column: :owner_id
 
-# remove foreign key by name
+# 名前を指定して外部キーを削除する場合
 remove_foreign_key :accounts, name: :special_fk_name
 
 </pre>
 </div>
-<h4 id="when-helpers-aren't-enough">3.7 When Helpers aren't Enough</h4>
-<p>If the helpers provided by Active Record aren't enough you can use the <code>execute</code>
-method to execute arbitrary SQL:</p>
+<h4 id="ヘルパーの機能だけでは足りない場合">3.7 ヘルパーの機能だけでは足りない場合</h4>
+<p>Active Recordが提供するヘルパーの機能だけでは不十分な場合、<code>execute</code>メソッドを使用して任意のSQLを実行できます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Product.connection.execute('UPDATE `products` SET `price`=`free` WHERE 1')
 
 </pre>
 </div>
-<p>For more details and examples of individual methods, check the API documentation.
-In particular the documentation for
-<a href="http://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html"><code>ActiveRecord::ConnectionAdapters::SchemaStatements</code></a>
-(which provides the methods available in the <code>change</code>, <code>up</code> and <code>down</code> methods),
-<a href="http://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/TableDefinition.html"><code>ActiveRecord::ConnectionAdapters::TableDefinition</code></a>
-(which provides the methods available on the object yielded by <code>create_table</code>)
-and
-<a href="http://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/Table.html"><code>ActiveRecord::ConnectionAdapters::Table</code></a>
-(which provides the methods available on the object yielded by <code>change_table</code>).</p>
-<h4 id="using-the-change-method">3.8 Using the <code>change</code> Method</h4>
-<p>The <code>change</code> method is the primary way of writing migrations. It works for the
-majority of cases, where Active Record knows how to reverse the migration
-automatically. Currently, the <code>change</code> method supports only these migration
-definitions:</p>
+<p>個別のメソッドの詳細については、APIドキュメントを確認してください。
+特に、<a href="http://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html"><code>ActiveRecord::ConnectionAdapters::SchemaStatements</code></a>
+(<code>change</code>、<code>up</code>、<code>down</code>メソッドで利用可能なメソッドを提供)、<a href="http://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/TableDefinition.html"><code>ActiveRecord::ConnectionAdapters::TableDefinition</code></a> (<code>create_table</code>で生成されるオブジェクトで使用可能なメソッドを提供)、および<a href="http://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/Table.html"><code>ActiveRecord::ConnectionAdapters::Table</code></a> (<code>change_table</code>で生成されるオブジェクトで使用可能なメソッドを提供) を参照ください。</p>
+<h4 id="changeメソッドを使用する">3.8 <code>change</code>メソッドを使用する</h4>
+<p><code>change</code>メソッドは、マイグレーションを自作する場合に最もよく使用されます。このメソッドを使用すれば、Active Recordがマイグレーションを逆方向に実行 (ロールバック) する方法を自動的に理解してくれるため、多くの場面で使用できます。現時点では、<code>change</code>でサポートされているマイグレーション定義は以下のものだけです。</p>
 <ul>
 <li><code>add_column</code></li>
 <li><code>add_index</code></li>
@@ -771,15 +683,10 @@ definitions:</p>
 <li><code>remove_reference</code></li>
 <li><code>rename_table</code></li>
 </ul>
-<p><code>change_table</code> is also reversible, as long as the block does not call <code>change</code>,
-<code>change_default</code> or <code>remove</code>.</p>
-<p>If you're going to need to use any other methods, you should use <code>reversible</code>
-or write the <code>up</code> and <code>down</code> methods instead of using the <code>change</code> method.</p>
-<h4 id="using-reversible">3.9 Using <code>reversible</code>
-</h4>
-<p>Complex migrations may require processing that Active Record doesn't know how
-to reverse. You can use <code>reversible</code> to specify what to do when running a
-migration what else to do when reverting it. For example:</p>
+<p><code>change_table</code>の逆転は、<code>change</code>、<code>change_default</code>、<code>remove</code>が呼び出されない限り可能です。</p>
+<p>これ以外のメソッドを使用する必要が生じた場合は、<code>change</code>メソッドではなく<code>reversible</code>メソッドを利用するか、<code>up</code>と<code>down</code>メソッドを明示的に書くようにしてください。</p>
+<h4 id="reversibleを使用する">3.9 <code>reversible</code>を使用する</h4>
+<p>マイグレーションが複雑になると、Active Recordがマイグレーションを逆転できないことがあります。<code>reversible</code>メソッドを使用することで、マイグレーションを通常どおり実行する場合と逆転する場合の動作を指定できます。たとえば次のようになります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class ExampleMigration &lt; ActiveRecord::Migration
@@ -790,7 +697,7 @@ class ExampleMigration &lt; ActiveRecord::Migration
 
     reversible do |dir|
       dir.up do
-        # add a CHECK constraint
+        # CHECK制約を追加
         execute &lt;&lt;-SQL
           ALTER TABLE distributors
             ADD CONSTRAINT zipchk
@@ -812,25 +719,11 @@ end
 
 </pre>
 </div>
-<p>Using <code>reversible</code> will ensure that the instructions are executed in the
-right order too. If the previous example migration is reverted,
-the <code>down</code> block will be run after the <code>home_page_url</code> column is removed and
-right before the table <code>distributors</code> is dropped.</p>
-<p>Sometimes your migration will do something which is just plain irreversible; for
-example, it might destroy some data. In such cases, you can raise
-<code>ActiveRecord::IrreversibleMigration</code> in your <code>down</code> block. If someone tries
-to revert your migration, an error message will be displayed saying that it
-can't be done.</p>
-<h4 id="using-the-up/down-methods">3.10 Using the <code>up</code>/<code>down</code> Methods</h4>
-<p>You can also use the old style of migration using <code>up</code> and <code>down</code> methods
-instead of the <code>change</code> method.
-The <code>up</code> method should describe the transformation you'd like to make to your
-schema, and the <code>down</code> method of your migration should revert the
-transformations done by the <code>up</code> method. In other words, the database schema
-should be unchanged if you do an <code>up</code> followed by a <code>down</code>. For example, if you
-create a table in the <code>up</code> method, you should drop it in the <code>down</code> method. It
-is wise to reverse the transformations in precisely the reverse order they were
-made in the <code>up</code> method. The example in the <code>reversible</code> section is equivalent to:</p>
+<p><code>reversible</code>メソッドを使用することで、各命令を正しい順序で実行できます。前述のマイグレーション例を逆転させた場合、<code>down</code>ブロックは必ず<code>home_page_url</code>カラムが削除された直後、そして<code>distributors</code>テーブルがdropされる直前に実行されます。</p>
+<p>自作したマイグレーションがたまたま逆転不可能にするしかない内容の場合、データの一部が失われる可能性があります。そのような場合は、<code>down</code>ブロック内で<code>ActiveRecord::IrreversibleMigration</code>をレイズできます。こうすることで、誰かが後にマイグレーションを逆転させたときに、実行不可能であることを示すエラーが表示されるようになります。</p>
+<h4 id="up/downメソッドを使用する">3.10 <code>up</code>/<code>down</code>メソッドを使用する</h4>
+<p><code>change</code>の代りに、従来の<code>up</code>メソッドと<code>down</code>メソッドを使用することもできます。
+<code>up</code>メソッドにはスキーマに対する変換方法を記述し、<code>down</code>メソッドには<code>up</code>メソッドによって行われた変換を逆転する方法を記述する必要があります。つまり、<code>up</code>の後に<code>down</code>を実行した場合、スキーマが変更されないようにする必要があります。たとえば、<code>up</code>メソッドでテーブルを作成したら、<code>down</code>メソッドではそのテーブルを削除する必要があります。<code>down</code>メソッド内で行なう変換の順序は、<code>up</code>メソッド内で行なうのと逆の順序にするのが賢明と言えます。先の<code>reversible</code>セクションの例は以下と同等になります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class ExampleMigration &lt; ActiveRecord::Migration
@@ -839,7 +732,7 @@ class ExampleMigration &lt; ActiveRecord::Migration
       t.string :zipcode
     end
 
-    # add a CHECK constraint
+        # CHECK制約を追加
     execute &lt;&lt;-SQL
       ALTER TABLE distributors
         ADD CONSTRAINT zipchk
@@ -865,12 +758,9 @@ end
 
 </pre>
 </div>
-<p>If your migration is irreversible, you should raise
-<code>ActiveRecord::IrreversibleMigration</code> from your <code>down</code> method. If someone tries
-to revert your migration, an error message will be displayed saying that it
-can't be done.</p>
-<h4 id="reverting-previous-migrations">3.11 Reverting Previous Migrations</h4>
-<p>You can use Active Record's ability to rollback migrations using the <code>revert</code> method:</p>
+<p>マイグレーションが逆転不可能な場合、<code>down</code>メソッド内に<code>ActiveRecord::IrreversibleMigration</code>を記述しておく必要があります。こうすることで、誰かが後にマイグレーションを逆転させたときに、実行不可能であることを示すエラーが表示されるようになります。</p>
+<h4 id="以前のマイグレーションを逆転する">3.11 以前のマイグレーションを逆転する</h4>
+<p><code>revert</code>メソッドを使用することで、Active Recordのマイグレーションロールバック (逆転) 機能を使用できます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 require_relative '2012121212_example_migration'
@@ -887,11 +777,9 @@ end
 
 </pre>
 </div>
-<p>The <code>revert</code> method also accepts a block of instructions to reverse.
-This could be useful to revert selected parts of previous migrations.
-For example, let's imagine that <code>ExampleMigration</code> is committed and it
-is later decided it would be best to use Active Record validations,
-in place of the <code>CHECK</code> constraint, to verify the zipcode.</p>
+<p><code>revert</code>はブロックを受け取ることもできます。ブロックには逆転のための命令群が含まれます。
+これは、以前のマイグレーションの一部のみを逆転したい場合に便利です。
+たとえば、<code>ExampleMigration</code>がコミット済みになっており、後になって郵便番号を検証するには<code>CHECK</code>制約よりもActive Record検証を使う方がよいことに気付いたとしましょう。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class DontUseConstraintForZipcodeValidationMigration &lt; ActiveRecord::Migration
@@ -900,7 +788,7 @@ class DontUseConstraintForZipcodeValidationMigration &lt; ActiveRecord::Migratio
       # copy-pasted code from ExampleMigration
       reversible do |dir|
         dir.up do
-          # add a CHECK constraint
+          # CHECK制約を追加
           execute &lt;&lt;-SQL
             ALTER TABLE distributors
               ADD CONSTRAINT zipchk
@@ -915,114 +803,77 @@ class DontUseConstraintForZipcodeValidationMigration &lt; ActiveRecord::Migratio
         end
       end
 
-      # The rest of the migration was ok
+      # 以後のマイグレーションはOK
     end
   end
 end
 
 </pre>
 </div>
-<p>The same migration could also have been written without using <code>revert</code>
-but this would have involved a few more steps: reversing the order
-of <code>create_table</code> and <code>reversible</code>, replacing <code>create_table</code>
-by <code>drop_table</code>, and finally replacing <code>up</code> by <code>down</code> and vice-versa.
-This is all taken care of by <code>revert</code>.</p>
-<h3 id="running-migrations">4 Running Migrations</h3>
-<p>Rails provides a set of Rake tasks to run certain sets of migrations.</p>
-<p>The very first migration related Rake task you will use will probably be
-<code>rake db:migrate</code>. In its most basic form it just runs the <code>change</code> or <code>up</code>
-method for all the migrations that have not yet been run. If there are
-no such migrations, it exits. It will run these migrations in order based
-on the date of the migration.</p>
-<p>Note that running the <code>db:migrate</code> task also invokes the <code>db:schema:dump</code> task, which
-will update your <code>db/schema.rb</code> file to match the structure of your database.</p>
-<p>If you specify a target version, Active Record will run the required migrations
-(change, up, down) until it has reached the specified version. The version
-is the numerical prefix on the migration's filename. For example, to migrate
-to version 20080906120000 run:</p>
+<p><code>revert</code>を使用せずに同様のマイグレーションを自作することもできますが、その分余計な手間がかかります (<code>create_table</code>と<code>reversible</code>の順序を逆にし、<code>create_table</code>を<code>drop_table</code>に置き換え、最後に<code>up</code>と<code>down</code>を入れ替える)。
+<code>revert</code>はこれらを一手に引き受けてくれます。</p>
+<h3 id="マイグレーションを実行する">4 マイグレーションを実行する</h3>
+<p>Railsにはマイグレーションを実行するためのRakeタスクがいくつか用意されています。</p>
+<p>最も手っ取り早くマイグレーションを実行するRakeタスクは、ほとんどの場合<code>rake db:migrate</code>でしょう。このRakeタスクは、基本的にこれまで実行されたことのない<code>change</code>または<code>up</code>メソッドを実行します。未実行のマイグレーションがない場合は何もせずに終了します。マイグレーションの実行順序は、マイグレーションの日付に基づきます。</p>
+<p><code>db:migrate</code>タスクを実行すると、<code>db:schema:dump</code>タスクも同時に呼び出される点にご注意ください。このタスクは<code>db/schema.rb</code>スキーマファイルを更新し、スキーマがデータベースの構造に一致するようにします。</p>
+<p>マイグレーションの特定のバージョンを指定すると、Active Recordは指定されたマイグレーションに達するまでマイグレーション (change/up/down) を実行します。マイグレーションのバージョンは、マイグレーションファイル名の冒頭に付いている数字で表されます。たとえば、20080906120000というバージョンまでマイグレーションしたい場合は、以下を実行します。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ bin/rake db:migrate VERSION=20080906120000
 
 </pre>
 </div>
-<p>If version 20080906120000 is greater than the current version (i.e., it is
-migrating upwards), this will run the <code>change</code> (or <code>up</code>) method
-on all migrations up to and
-including 20080906120000, and will not execute any later migrations. If
-migrating downwards, this will run the <code>down</code> method on all the migrations
-down to, but not including, 20080906120000.</p>
-<h4 id="rolling-back">4.1 Rolling Back</h4>
-<p>A common task is to rollback the last migration. For example, if you made a
-mistake in it and wish to correct it. Rather than tracking down the version
-number associated with the previous migration you can run:</p>
+<p>20080906120000というバージョンが現在のバージョンより大きい場合 (新しい方に進む通常のマイグレーションなど)、20080906120000に到達するまで (このマイグレーション自身も実行対象に含まれます) のすべてのマイグレーションの<code>change</code> (または<code>up</code>) メソッドを実行し、それより先のマイグレーションは行いません。過去に遡るマイグレーションの場合、20080906120000に到達するまでのすべてのマイグレーションの<code>down</code>メソッドを実行しますが、上と異なり、20080906120000自身は含まれない点にご注意ください。</p>
+<h4 id="ロールバック">4.1 ロールバック</h4>
+<p>直前に行ったマイグレーションをロールバックする作業はよく発生します。たとえば、マイグレーションに誤りがあって訂正したい場合などです。この場合、バージョン番号を調べて明示的にロールバックを実行しなくても、次を実行するだけで済みます。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ bin/rake db:rollback
 
 </pre>
 </div>
-<p>This will rollback the latest migration, either by reverting the <code>change</code>
-method or by running the <code>down</code> method. If you need to undo
-several migrations you can provide a <code>STEP</code> parameter:</p>
+<p>これにより、直前のマイグレーションがロールバックされます。<code>change</code>メソッドを逆転実行するか<code>down</code>メソッドを実行します。マイグレーションを複数ロールバックしたい場合は、<code>STEP</code>パラメータを指定できます。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ bin/rake db:rollback STEP=3
 
 </pre>
 </div>
-<p>will revert the last 3 migrations.</p>
-<p>The <code>db:migrate:redo</code> task is a shortcut for doing a rollback and then migrating
-back up again. As with the <code>db:rollback</code> task, you can use the <code>STEP</code> parameter
-if you need to go more than one version back, for example:</p>
+<p>これにより、最後に行った3つのマイグレーションがロールバックされます。</p>
+<p><code>db:migrate:redo</code>タスクは、ロールバックと再マイグレーションを一度に実行できるショートカットです。複数バージョンに対してこれを行いたい場合は、<code>db:rollback</code>タスクの場合と同様に<code>STEP</code>パラメータを指定することもできます。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ bin/rake db:migrate:redo STEP=3
 
 </pre>
 </div>
-<p>Neither of these Rake tasks do anything you could not do with <code>db:migrate</code>. They
-are simply more convenient, since you do not need to explicitly specify the
-version to migrate to.</p>
-<h4 id="setup-the-database">4.2 Setup the Database</h4>
-<p>The <code>rake db:setup</code> task will create the database, load the schema and initialize
-it with the seed data.</p>
-<h4 id="resetting-the-database">4.3 Resetting the Database</h4>
-<p>The <code>rake db:reset</code> task will drop the database and set it up again. This is
-functionally equivalent to <code>rake db:drop db:setup</code>.</p>
-<div class="note"><p>This is not the same as running all the migrations. It will only use the
-contents of the current <code>schema.rb</code> file. If a migration can't be rolled back,
-<code>rake db:reset</code> may not help you. To find out more about dumping the schema see
-<a href="#schema-dumping-and-you">Schema Dumping and You</a> section.</p></div>
-<h4 id="running-specific-migrations">4.4 Running Specific Migrations</h4>
-<p>If you need to run a specific migration up or down, the <code>db:migrate:up</code> and
-<code>db:migrate:down</code> tasks will do that. Just specify the appropriate version and
-the corresponding migration will have its <code>change</code>, <code>up</code> or <code>down</code> method
-invoked, for example:</p>
+<p>ただし、<code>db:migrate</code>で実行できないタスクをこれらのタスクで実行することはできません。これらは単に、バージョンを明示的に指定しなくて済むように<code>db:migrate</code>タスクを使いやすくしたものに過ぎません。</p>
+<h4 id="データベースを設定する">4.2 データベースを設定する</h4>
+<p><code>rake db:setup</code>タスクは、データベースの作成、スキーマの読み込み、シードデータを使用したデータベースの初期化を実行します。</p>
+<h4 id="データベースをリセットする">4.3 データベースをリセットする</h4>
+<p><code>rake db:reset</code>タスクは、データベースをdropして再度設定します。このタスクは、<code>rake db:drop db:setup</code>と同等です。</p>
+<p>メモ: このタスクは、すべてのマイグレーションを実行することと等価ではありません。このタスクでは現在の<code>schema.rb</code>の内容をそのまま使い回しているためです。マイグレーションをロールバックできなくなった場合には、<code>rake db:reset</code>を実行しても復旧できないことがあります。スキーマダンプの詳細については、<a href="#schema-dumping-and-you">スキーマダンプの意義</a> セクションを参照してください。</p>
+<h4 id="特定のマイグレーションのみを実行する">4.4 特定のマイグレーションのみを実行する</h4>
+<p>特定のマイグレーションをupまたはdown方向に実行する必要がある場合は、<code>db:migrate:up</code>または<code>db:migrate:down</code>タスクを使用します。以下に示したように、適切なバージョン番号を指定するだけで、該当するマイグレーションに含まれる<code>change</code>、<code>up</code>、<code>down</code>メソッドのいずれかが呼び出されます。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ bin/rake db:migrate:up VERSION=20080906120000
 
 </pre>
 </div>
-<p>will run the 20080906120000 migration by running the <code>change</code> method (or the
-<code>up</code> method). This task will
-first check whether the migration is already performed and will do nothing if
-Active Record believes that it has already been run.</p>
-<h4 id="running-migrations-in-different-environments">4.5 Running Migrations in Different Environments</h4>
-<p>By default running <code>rake db:migrate</code> will run in the <code>development</code> environment.
-To run migrations against another environment you can specify it using the
-<code>RAILS_ENV</code> environment variable while running the command. For example to run
-migrations against the <code>test</code> environment you could run:</p>
+<p>上を実行すると、バージョン番号が20080906120000のマイグレーションに含まれる<code>change</code>メソッド (または<code>up</code>メソッド) が実行されます。このタスクは、最初にそのマイグレーションが実行済みであるかどうかをチェックし、Active Recordによって実行済みであると認定された場合は何も行いません。</p>
+<h4 id="異なる環境でマイグレーションを実行する">4.5 異なる環境でマイグレーションを実行する</h4>
+<p>デフォルトでは、<code>rake db:migrate</code>は<code>development</code>環境で実行されます。
+他の環境に対してマイグレーションを行いたい場合は、コマンド実行時に<code>RAILS_ENV</code>環境変数を指定します。たとえば、<code>test</code>環境でマイグレーションを実行する場合は以下のようにします。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ bin/rake db:migrate RAILS_ENV=test
 
 </pre>
 </div>
-<h4 id="changing-the-output-of-running-migrations">4.6 Changing the Output of Running Migrations</h4>
-<p>By default migrations tell you exactly what they're doing and how long it took.
-A migration creating a table and adding an index might produce output like this</p>
+<h4 id="マイグレーション実行結果の出力を変更する">4.6 マイグレーション実行結果の出力を変更する</h4>
+<p>デフォルトでは、マイグレーション実行後に正確な実行内容とそれぞれの所要時間が出力されます。
+たとえば、テーブル作成とインデックス追加を行なうと次のような出力が得られます。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 ==  CreateProducts: migrating =================================================
@@ -1032,39 +883,39 @@ A migration creating a table and adding an index might produce output like this<
 
 </pre>
 </div>
-<p>Several methods are provided in migrations that allow you to control all this:</p>
+<p>マイグレーションには、これらの出力方法を制御するためのメソッドが提供されています。</p>
 <table>
 <thead>
 <tr>
-<th>Method</th>
-<th>Purpose</th>
+<th>メソッド</th>
+<th>目的</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>suppress_messages</td>
-<td>Takes a block as an argument and suppresses any output generated by the block.</td>
+<td>引数としてブロックを1つ取り、そのブロックによって生成される出力をすべて抑制する。</td>
 </tr>
 <tr>
 <td>say</td>
-<td>Takes a message argument and outputs it as is. A second boolean argument can be passed to specify whether to indent or not.</td>
+<td>引数としてメッセージを1つ受け取り、それをそのまま出力する。2番目の引数として、出力をインデントするかどうかを指定するbooleanを与えられる。</td>
 </tr>
 <tr>
 <td>say_with_time</td>
-<td>Outputs text along with how long it took to run its block. If the block returns an integer it assumes it is the number of rows affected.</td>
+<td>受け取ったブロックを実行するのにかかった時間を示すテキストを出力する。ブロックが整数を1つ返す場合、影響を受けた行数であるとみなす。</td>
 </tr>
 </tbody>
 </table>
-<p>For example, this migration:</p>
+<p>以下のマイグレーションを例に説明します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class CreateProducts &lt; ActiveRecord::Migration
   def change
     suppress_messages do
-      create_table :products do |t|
-        t.string :name
-        t.text :description
-        t.timestamps
+    create_table :products do |t|
+      t.string :name
+      t.text :description
+      t.timestamps
       end
     end
 
@@ -1082,7 +933,7 @@ end
 
 </pre>
 </div>
-<p>generates the following output</p>
+<p>上によって以下の出力が得られます。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 ==  CreateProducts: migrating =================================================
@@ -1095,51 +946,20 @@ end
 
 </pre>
 </div>
-<p>If you want Active Record to not output anything, then running <code>rake db:migrate
-VERBOSE=false</code> will suppress all output.</p>
-<h3 id="changing-existing-migrations">5 Changing Existing Migrations</h3>
-<p>Occasionally you will make a mistake when writing a migration. If you have
-already run the migration then you cannot just edit the migration and run the
-migration again: Rails thinks it has already run the migration and so will do
-nothing when you run <code>rake db:migrate</code>. You must rollback the migration (for
-example with <code>rake db:rollback</code>), edit your migration and then run
-<code>rake db:migrate</code> to run the corrected version.</p>
-<p>In general, editing existing migrations is not a good idea. You will be
-creating extra work for yourself and your co-workers and cause major headaches
-if the existing version of the migration has already been run on production
-machines. Instead, you should write a new migration that performs the changes
-you require. Editing a freshly generated migration that has not yet been
-committed to source control (or, more generally, which has not been propagated
-beyond your development machine) is relatively harmless.</p>
-<p>The <code>revert</code> method can be helpful when writing a new migration to undo
-previous migrations in whole or in part
-(see <a href="#reverting-previous-migrations">Reverting Previous Migrations</a> above).</p>
-<h3 id="schema-dumping-and-you">6 Schema Dumping and You</h3>
-<h4 id="what-are-schema-files-for?">6.1 What are Schema Files for?</h4>
-<p>Migrations, mighty as they may be, are not the authoritative source for your
-database schema. That role falls to either <code>db/schema.rb</code> or an SQL file which
-Active Record generates by examining the database. They are not designed to be
-edited, they just represent the current state of the database.</p>
-<p>There is no need (and it is error prone) to deploy a new instance of an app by
-replaying the entire migration history. It is much simpler and faster to just
-load into the database a description of the current schema.</p>
-<p>For example, this is how the test database is created: the current development
-database is dumped (either to <code>db/schema.rb</code> or <code>db/structure.sql</code>) and then
-loaded into the test database.</p>
-<p>Schema files are also useful if you want a quick look at what attributes an
-Active Record object has. This information is not in the model's code and is
-frequently spread across several migrations, but the information is nicely
-summed up in the schema file. The
-<a href="https://github.com/ctran/annotate_models">annotate_models</a> gem automatically
-adds and updates comments at the top of each model summarizing the schema if
-you desire that functionality.</p>
-<h4 id="types-of-schema-dumps">6.2 Types of Schema Dumps</h4>
-<p>There are two ways to dump the schema. This is set in <code>config/application.rb</code>
-by the <code>config.active_record.schema_format</code> setting, which may be either <code>:sql</code>
-or <code>:ruby</code>.</p>
-<p>If <code>:ruby</code> is selected then the schema is stored in <code>db/schema.rb</code>. If you look
-at this file you'll find that it looks an awful lot like one very big
-migration:</p>
+<p>Active Recordから何も出力したくない場合は、<code>rake db:migrate VERBOSE=false</code>を実行することで出力を完全に抑制できます。</p>
+<h3 id="既存のマイグレーションを変更する">5 既存のマイグレーションを変更する</h3>
+<p>マイグレーションを自作していると、ときにはミスしてしまうこともあります。いったんマイグレーションを実行してしまった後では、既存のマイグレーションを単に編集してもう一度マイグレーションをやり直しても意味がありません。Railsはマイグレーションが既に実行済みであると認識しているので、<code>rake db:migrate</code>を実行しても何も変更されません。このような場合には、マイグレーションをいったんロールバック (<code>rake db:rollback</code>など) してからマイグレーションを修正し、それから修正の完了したバージョンのマイグレーションを実行するために<code>rake db:migrate</code>を実行する必要があります。</p>
+<p>そもそも、既存のマイグレーションを直接変更するのは一般的によい方法とは言えません。既存のマイグレーションを変更すると、自分どころか共同作業者にまで余分な作業を強いることになります。さらに、既存のマイグレーションが本番環境で実行中の場合、ひどい頭痛の種になるでしょう。既存のマイグレーションを直接修正するのではなく、そのためのマイグレーションを新たに作成してそれを実行するのが正しい方法です。これまでコミットされてない (より一般的に言えば、これまでdevelopment環境以外に展開されたことのない) マイグレーションを新たに生成し、それを編集するのが害の少ない方法であると言えます。</p>
+<p><code>revert</code>メソッドは、以前のマイグレーション全体またはその一部を取り消すためのマイグレーションを新たに書くときにも便利です (前述の<a href="#reverting-previous-migrations">以前のマイグレーションを逆転する</a>を参照)。</p>
+<h3 id="スキーマダンプの意義">6 スキーマダンプの意義</h3>
+<h4 id="スキーマファイルの意味について">6.1 スキーマファイルの意味について</h4>
+<p>Railsのマイグレーションはあまりに強力であるため、データベースのスキーマを作成するための信頼できる情報源とするには適切ではありません。スキーマ情報は、<code>db/schema.rb</code>か、Active Recordがデータベースを検査することによって生成されるSQLファイルのどちらかを元にすることになります。これらのファイルは単にデータベースの現在の状態を表すものであり、開発者が編集するものではありません。</p>
+<p>アプリケーションの新しいインスタンスをデプロイするときに、膨大なマイグレーション履歴をすべて再実行する必要はありません。むしろ、そのようなことをすると逆にエラーが発生しやすくなるでしょう。単に現在のスキーマの記述をデータベースに読み込む方がはるかに簡潔かつ高速です。</p>
+<p>例として、Railsでtest環境のデータベースを作成するときの方法を説明します。現在のdevelopmentデータベースからいったん<code>db/schema.rb</code>または<code>db/structure.sql</code>にダンプされ、続いてtest環境のデータベースに読み込まれます。</p>
+<p>スキーマファイルは、Active Recordのオブジェクトにどのような属性があるのかを概観するのにも便利です。スキーマ情報はモデルのコードの中にはありません。スキーマ情報は多くのマイグレーションに分かれて存在しており、そのままでは非常に探しにくいものですが、この情報はスキーマファイルにコンパクトに収まっています。なお、<a href="https://github.com/ctran/annotate_models">annotate_models</a> gemを使用すると、モデルファイルの冒頭にスキーマ情報の要約コメントが自動的に追加・更新されるようになるので便利です。</p>
+<h4 id="スキーマダンプの種類">6.2 スキーマダンプの種類</h4>
+<p>スキーマのダンプ方法は2種類あります。ダンプ方法は<code>config/application.rb</code>の<code>config.active_record.schema_format</code>で設定します。<code>:sql</code>または<code>:ruby</code>を指定できます。</p>
+<p><code>:ruby</code>を指定すると、スキーマは<code>db/schema.rb</code>に保存されます。このファイルを開いてみると、1つの巨大なマイグレーションのように見えるはずです。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 ActiveRecord::Schema.define(version: 20080906171750) do
@@ -1160,47 +980,19 @@ end
 
 </pre>
 </div>
-<p>In many ways this is exactly what it is. This file is created by inspecting the
-database and expressing its structure using <code>create_table</code>, <code>add_index</code>, and so
-on. Because this is database-independent, it could be loaded into any database
-that Active Record supports. This could be very useful if you were to
-distribute an application that is able to run against multiple databases.</p>
-<p>There is however a trade-off: <code>db/schema.rb</code> cannot express database specific
-items such as triggers, or stored procedures. While in a migration you can
-execute custom SQL statements, the schema dumper cannot reconstitute those
-statements from the database. If you are using features like this, then you
-should set the schema format to <code>:sql</code>.</p>
-<p>Instead of using Active Record's schema dumper, the database's structure will
-be dumped using a tool specific to the database (via the <code>db:structure:dump</code>
-Rake task) into <code>db/structure.sql</code>. For example, for PostgreSQL, the <code>pg_dump</code>
-utility is used. For MySQL, this file will contain the output of
-<code>SHOW CREATE TABLE</code> for the various tables.</p>
-<p>Loading these schemas is simply a question of executing the SQL statements they
-contain. By definition, this will create a perfect copy of the database's
-structure. Using the <code>:sql</code> schema format will, however, prevent loading the
-schema into a RDBMS other than the one used to create it.</p>
-<h4 id="schema-dumps-and-source-control">6.3 Schema Dumps and Source Control</h4>
-<p>Because schema dumps are the authoritative source for your database schema, it
-is strongly recommended that you check them into source control.</p>
-<p><code>db/schema.rb</code> contains the current version number of the database. This
-ensures conflicts are going to happen in the case of a merge where both
-branches touched the schema. When that happens, solve conflicts manually,
-keeping the highest version number of the two.</p>
-<h3 id="active-record-and-referential-integrity">7 Active Record and Referential Integrity</h3>
-<p>The Active Record way claims that intelligence belongs in your models, not in
-the database. As such, features such as triggers or constraints,
-which push some of that intelligence back into the database, are not heavily
-used.</p>
-<p>Validations such as <code>validates :foreign_key, uniqueness: true</code> are one way in
-which models can enforce data integrity. The <code>:dependent</code> option on
-associations allows models to automatically destroy child objects when the
-parent is destroyed. Like anything which operates at the application level,
-these cannot guarantee referential integrity and so some people augment them
-with <a href="#foreign-keys">foreign key constraints</a> in the database.</p>
-<p>Although Active Record does not provide all the tools for working directly with
-such features, the <code>execute</code> method can be used to execute arbitrary SQL.</p>
-<h3 id="migrations-and-seed-data">8 Migrations and Seed Data</h3>
-<p>Some people use migrations to add data to the database:</p>
+<p>このスキーマ情報は、見てのとおりその内容を単刀直入に表しています。このファイルは、データベースを詳細に検査し、<code>create_table</code>や<code>add_index</code>などでその構造を表現することによって作成されています。このスキーマ情報はデータベースの種類に依存しないため、Active Recordがサポートしているデータベースであればどんなものにでも読み込むことができます。この特性は、複数の種類のデータベースを実行できるアプリケーションを展開する必要がある場合に特に有用です。</p>
+<p>このような有用な特性を得られる代りに、1つの代償があります。当然ながら、<code>db/schema.rb</code>にはデータベース固有の項目 (トリガーやストアドプロシージャなど) を含めることはできません。マイグレーションにはカスタムSQLを含めることはできますが、スキーマをダンプするときにデータベースからこの構文を再構成することはできないのです。データベース固有の機能を使用するのであれば、スキーマのフォーマットを<code>:sql</code>にする必要があります。</p>
+<p>この場合、Active Recordのスキーマダンプを使用する代りに、データベース固有のツールを使用してデータベースの構造を<code>db/structure.sql</code>にダンプします (<code>db:structure:dump</code> Rakeタスクを使用)。たとえばPostgreSQLの場合は<code>pg_dump</code>ユーティリティが使用されます。MySQLの場合は、多くのテーブルにおいて<code>SHOW CREATE TABLE</code>の出力結果がファイルに含まれます。</p>
+<p>これらのスキーマの読み込みは、そこに含まれるSQL文を実行するだけの非常にシンプルなものです。定義上、これによってデータベース構造の完全なコピーが作成されます。その代わり、<code>:sql</code>スキーマフォーマットを使用した場合は、そのスキーマを作成したRDBMS以外では読み込めないという制限が生じます。</p>
+<h4 id="スキーマダンプとソースコード管理">6.3 スキーマダンプとソースコード管理</h4>
+<p>上述の通り、スキーマダンプはデータベーススキーマの情報源として信頼するに足るものです。従って、スキーマファイルをGitなどのソースコード管理の対象に加えることを強く推奨します。</p>
+<p><code>db/schema.rb</code>にはデータベースの現在のバージョン番号が含まれています。これにより、ソースコード管理の異なるブランチでスキーマが変更されていた場合に、両者をマージすると競合が発生していることが警告されるというメリットもあります。スキーマの競合が発生した場合は手動で解決し、数字の大きい方のバージョン番号を保持する必要があります。</p>
+<h3 id="active-recordと参照整合性">7 Active Recordと参照整合性</h3>
+<p>Active Recordは、知的に動作すべきはモデルであり、データベースではないというコンセプトに基づいています。そして実際、トリガーや制約などの高度なデータベース機能はそれほど使用されていません。</p>
+<p><code>validates :foreign_key, uniqueness: true</code>のようなデータベース検証機能は、データ整合性の強制をモデルが行っている1つの例です。モデルに関連付けの<code>:dependent</code>オプションを指定すると、親オブジェクトが削除されたときに子オブジェクトも自動的に削除されます。アプリケーションレベルで実行される他のものと同様、モデルのこうした機能だけでは参照整合性を維持できないため、データベースの<a href="#foreign-keys">外部キー制約</a>を使用して参照整合性を増大させる開発者もいます。</p>
+<p>Active Recordだけではこうした外部機能を扱うツールをすべて提供することはできませんが、<code>execute</code>メソッドを使用して任意のSQLを実行することができます。</p>
+<h3 id="マイグレーションとシードデータ">8 マイグレーションとシードデータ</h3>
+<p>データベースにデータを追加するのにマイグレーションが使用されることがあります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class AddInitialProducts &lt; ActiveRecord::Migration
@@ -1217,9 +1009,7 @@ end
 
 </pre>
 </div>
-<p>However, Rails has a 'seeds' feature that should be used for seeding a database
-with initial data. It's a really simple feature: just fill up <code>db/seeds.rb</code>
-with some Ruby code, and run <code>rake db:seed</code>:</p>
+<p>しかしRailsには初期データをデータベースに与えるためのシード機能があります。これは、<code>db/seeds.rb</code>ファイルに若干のRubyコードを追加して<code>rake db:seed</code>を実行するだけですぐに利用できます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 5.times do |i|
@@ -1228,8 +1018,7 @@ end
 
 </pre>
 </div>
-<p>This is generally a much cleaner way to set up the database of a blank
-application.</p>
+<p>この方法なら、マイグレーションを使用するよりもずっとクリーンに空のアプリケーションのデータベースを設定できます。</p>
 </body></html>
 
 
