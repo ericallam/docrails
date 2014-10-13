@@ -14,3 +14,9 @@ gem 'activesupport'
 gem 'actionpack'
 gem 'nokogiri'
 
+# Monitoring tools
+gem 'newrelic_rpm'
+configure :production do
+  require 'newrelic_rpm'
+end
+
