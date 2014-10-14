@@ -26,7 +26,7 @@
       url: active_record_callbacks.html
       description: Active Recordのコールバックについて解説します。
     -
-      name: Active Record アソシエーション
+      name: Active Record 関連付け
       url: association_basics.html
       description: Active Recordが提供するすべての関連付け機能について解説します。
     -
@@ -153,7 +153,7 @@
   name: メンテナンスポリシー
   documents:
     -
-      name: Maintenance Policy [未着手]
+      name: メンテナンスポリシー
       url: maintenance_policy.html
       description: 現在サポートされているRuby on Railsのバージョンと、次期バージョンのリリース見込み時期について記載されています。
 -
