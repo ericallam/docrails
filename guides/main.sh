@@ -2,6 +2,6 @@
 
 # Update HTMLs using 'archive.zip' downloaded by GTT
 
-ruby main.rb
+ruby allocate.rb
 rm -rf output
 bundle exec rake guides:generate:html
