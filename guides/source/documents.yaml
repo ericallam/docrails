@@ -26,7 +26,7 @@
       url: active_record_callbacks.html
       description: Active Recordのコールバックについて解説します。
     -
-      name: Active Record 関連付け
+      name: Active Record の関連付け
       url: association_basics.html
       description: Active Recordが提供するすべての関連付け機能について解説します。
     -
