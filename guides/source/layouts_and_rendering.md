@@ -1032,7 +1032,7 @@ Railsでアセットパイプラインを有効にしている場合、このヘ
 
 * `new.html.erb`
 
-```html+erb
+    ```html+erb
     <h1>New zone</h1>
     <%= render partial: "form", locals: {zone: @zone} %>
     ```

@@ -1471,40 +1471,48 @@ Cache-Control: no-cache
 <h5 id="ローカル変数を渡す">3.4.4 ローカル変数を渡す</h5>
 <p>パーシャルにローカル変数を引数として渡し、パーシャルをさらに強力かつ柔軟にすることもできます。たとえば、newページとeditページの違いがごくわずかしかないのであれば、この手法を使用してコードの重複を解消することができます。</p>
 <ul>
-<li><code>new.html.erb</code></li>
-</ul>
+<li>
+<p><code>new.html.erb</code></p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-    &lt;h1&gt;New zone&lt;/h1&gt;
-    &lt;%= render partial: "form", locals: {zone: @zone} %&gt;
-    ```
+&lt;h1&gt;New zone&lt;/h1&gt;
+&lt;%= render partial: "form", locals: {zone: @zone} %&gt;
 
-* `edit.html.erb`
+</pre>
+</div>
+</li>
+<li>
+<p><code>edit.html.erb</code></p>
+<div class="code_container">
+<pre class="brush: plain; gutter: false; toolbar: false">
+&lt;h1&gt;Editing zone&lt;/h1&gt;
+&lt;%= render partial: "form", locals: {zone: @zone} %&gt;
 
-    ```html+erb
-    &lt;h1&gt;Editing zone&lt;/h1&gt;
-    &lt;%= render partial: "form", locals: {zone: @zone} %&gt;
-    ```
+</pre>
+</div>
+</li>
+<li>
+<p><code>_form.html.erb</code></p>
+<div class="code_container">
+<pre class="brush: plain; gutter: false; toolbar: false">
+&lt;%= form_for(zone) do |f| %&gt;
+  &lt;p&gt;
+    &lt;b&gt;Zone name&lt;/b&gt;&lt;br&gt;
+    &lt;%= f.text_field :name %&gt;
+  &lt;/p&gt;
+  &lt;p&gt;
+    &lt;%= f.submit %&gt;
+  &lt;/p&gt;
+&lt;% end %&gt;
 
-* `_form.html.erb`
-
-    ```html+erb
-    &lt;%= form_for(zone) do |f| %&gt;
-      &lt;p&gt;
-        &lt;b&gt;Zone name&lt;/b&gt;&lt;br&gt;
-        &lt;%= f.text_field :name %&gt;
-      &lt;/p&gt;
-      &lt;p&gt;
-        &lt;%= f.submit %&gt;
-      &lt;/p&gt;
-    &lt;% end %&gt;
-    ```
-
-上の2つのビューでは同じパーシャルがレンダリングされますが、Action Viewのsubmitヘルパーはnewアクションの場合には"Create Zone"を返し、editアクションの場合は"Update Zone"を返します。
-
-どのパーシャルにも、パーシャル名からアンダースコアを取り除いた名前を持つローカル変数が与えられます。`:object`オプションを使用することで、このローカル変数にオブジェクトを渡すことができます。
-
-```erb
+</pre>
+</div>
+</li>
+</ul>
+<p>上の2つのビューでは同じパーシャルがレンダリングされますが、Action Viewのsubmitヘルパーはnewアクションの場合には"Create Zone"を返し、editアクションの場合は"Update Zone"を返します。</p>
+<p>どのパーシャルにも、パーシャル名からアンダースコアを取り除いた名前を持つローカル変数が与えられます。<code>:object</code>オプションを使用することで、このローカル変数にオブジェクトを渡すことができます。</p>
+<div class="code_container">
+<pre class="brush: ruby; html-script: true; gutter: false; toolbar: false">
 &lt;%= render partial: "customer", object: @new_customer %&gt;
 
 </pre>
