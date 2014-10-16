@@ -396,13 +396,11 @@ GET /clients?ids[]=1&amp;ids[]=2&amp;ids[]=3
 </div>
 <p>データの送信先が<code>CompaniesController</code>であるとすると、以下のように<code>:company</code>というキーでラップされます。</p>
 <div class="code_container">
-<pre class="brush: plain; gutter: false; toolbar: false">
-```ruby
+<pre class="brush: ruby; gutter: false; toolbar: false">
+{ name: "acme", address: "123 Carrot Street", company: { name: "acme", address: "123 Carrot Street" } }
 
 </pre>
 </div>
-<p>{ name: "acme", address: "123 Carrot Street", company: { name: "acme", address: "123 Carrot Street" } }
-```</p>
 <p>キー名のカスタマイズや、ラップしたい特定のパラメータについては<a href="http://api.rubyonrails.org/classes/ActionController/ParamsWrapper.html">APIドキュメント</a>を参照してください。</p>
 <p>メモ: 従来のXMLパラメータ解析のサポートは、<code>actionpack-xml_parser</code>というgemに書き出されました。</p>
 <h4 id="ルーティングパラメータ">4.3 ルーティングパラメータ</h4>
