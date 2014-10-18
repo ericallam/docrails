@@ -431,19 +431,16 @@ end
 <p>strong parametersを使用することで、Action ControllerのパラメータがActive Modelのマスアサインメントに利用されることを禁止できます。ホワイトリストに追記したもののみ使用できます。これは、多くの属性を一度に更新したいときに、どの属性の更新を許可し、どの属性の更新を禁止するかを明示的に決定しなければならないことを意味します。大雑把にすべての属性の更新をまとめて許可してしまうと、外部に公開する必要のない属性まで誤って公開されてしまう可能性が生じますので、そのような事態を防ぐために行います。</p>
 <p>さらに、パラメータの属性には「必須 (required)」を指定することもでき、事前に定義したraise/rescueフローを実行して400 Bad Requestで終了するようにすることもできます。●</p>
 <div class="code_container">
-<pre class="brush: plain; gutter: false; toolbar: false">
-```ruby
-
-</pre>
-</div>
-<p>class PeopleController &lt; ActionController::Base
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class PeopleController &lt; ActionController::Base
   # 以下のコードはActiveModel::ForbiddenAttributes例外を発生します
   # 明示的な許可を行なわずに、パラメータを一括で渡してしまう
   # 危険な「マスアサインメント」が行われているからです。
   def create
     Person.create(params[:person])
-  end</p>
-<p>  # 以下のコードは、パラメータにpersonキーがあれば成功します。
+  end
+
+  # 以下のコードは、パラメータにpersonキーがあれば成功します。
   # personキーがない場合は
   # ActionController::ParameterMissing例外を発生します。
   # この例外はActionController::Baseにキャッチされ、
@@ -452,8 +449,9 @@ end
     person = current_account.people.find(params[:id])
     person.update!(person_params)
     redirect_to person
-  end</p>
-<p>  private
+  end
+
+  private
     # privateメソッドを使用して、許可するパラメータをカプセル化します。
     # これは非常によい手法であり、createとupdateの両方で使いまわすことで
     # 同じ許可を与えることができます。また、許可する属性をユーザーごとにチェックするよう
@@ -462,7 +460,9 @@ end
       params.require(:person).permit(:name, :age)
     end
 end
-```</p>
+
+</pre>
+</div>
 <h5 id="許可されたスカラー値">4.5.1 許可されたスカラー値</h5>
 <p>以下の例では</p>
 <div class="code_container">
