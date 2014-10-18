@@ -150,7 +150,7 @@ Webサービスアプリケーションを開発していると、パラメー�
 
 データの送信先が`CompaniesController`であるとすると、以下のように`:company`というキーでラップされます。
 
-    ```ruby
+```ruby
 { name: "acme", address: "123 Carrot Street", company: { name: "acme", address: "123 Carrot Street" } }
 ```
 
