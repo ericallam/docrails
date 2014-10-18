@@ -1,4 +1,4 @@
-﻿
+
 ビューのレイアウトとレンダリング
 ==============================
 
@@ -492,7 +492,7 @@ end
 * `application_controller.rb`
 
     ```ruby
-class ApplicationController < ActionController::Base
+    class ApplicationController < ActionController::Base
       layout "main"
     end
     ```
