@@ -342,7 +342,7 @@ $
 <p>同じコントローラで、デフォルトと異なるテンプレートに対応するビューを出力したい場合は、<code>render</code>メソッドでビュー名を指定することができます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-  def update
+def update
   @book = Book.find(params[:id])
   if @book.update(book_params)
     redirect_to(@book)
@@ -357,7 +357,7 @@ end
 <p>出力するアクションを指定するには、文字列の他にシンボルを使用することもできます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-  def update
+def update
   @book = Book.find(params[:id])
   if @book.update(book_params)
     redirect_to(@book)
@@ -918,63 +918,77 @@ end
 <h6 id="レイアウトの継承">2.2.14.4 レイアウトの継承</h6>
 <p>レイアウト宣言は下の階層に継承されます。下の階層、つまりより具体的なレイアウト宣言は、上の階層、つまりより一般的なレイアウトよりも常に優先されます。例: </p>
 <ul>
-<li><code>application_controller.rb</code></li>
-</ul>
+<li>
+<p><code>application_controller.rb</code></p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class ApplicationController &lt; ActionController::Base
-      layout "main"
-    end
-    ```
+  layout "main"
+end
 
-* `posts_controller.rb`
+</pre>
+</div>
+</li>
+<li>
+<p><code>posts_controller.rb</code></p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class PostsController &lt; ApplicationController
+end
 
-```ruby
-    class PostsController &lt; ApplicationController
-    end
-    ```
+</pre>
+</div>
+</li>
+<li>
+<p><code>special_posts_controller.rb</code></p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class SpecialPostsController &lt; PostsController
+  layout "special"
+end
 
-* `special_posts_controller.rb`
-
-```ruby
-    class SpecialPostsController &lt; PostsController
-      layout "special"
-    end
-    ```
-
-* `old_posts_controller.rb`
-
-```ruby
-    class OldPostsController &lt; SpecialPostsController
-      layout false
+</pre>
+</div>
+</li>
+<li>
+<p><code>old_posts_controller.rb</code></p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class OldPostsController &lt; SpecialPostsController
+  layout false
 
   def show
-        @post = Post.find(params[:id])
-      end
+    @post = Post.find(params[:id])
+  end
 
-      def index
-        @old_posts = Post.older
-        render layout: "old"
-      end
-      # ...
-    end
-    ```
+  def index
+    @old_posts = Post.older
+    render layout: "old"
+  end
+  # ...
+end
 
-上のアプリケーションは以下のように動作します。
-
-* ビューの出力には基本的に`main`レイアウトが使用されます。
-* `PostsController#index`では`main`レイアウトが使用されます。
-* `SpecialPostsController#index`では`special`レイアウトが使用されます。
-* `OldPostsController#show`ではレイアウトが適用されません。
-* `OldPostsController#index`では`old`レイアウトが使用されます。
-
-#### 二重レンダリングエラーを避ける
-
-Rails開発をやっていれば、一度は "Can only render or redirect once per action" エラーに遭遇したことがあるでしょう。いまいましいエラーですが、修正は比較的簡単です。このエラーはほとんどの場合、開発者が`render`メソッドの基本的な動作を誤って理解していることが原因です。
-
-このエラーを発生する以下のコードを例にとって説明しましょう。
-
-```ruby
+</pre>
+</div>
+</li>
+</ul>
+<p>上のアプリケーションは以下のように動作します。</p>
+<ul>
+<li>ビューの出力には基本的に<code>main</code>レイアウトが使用されます。</li>
+<li>
+<code>PostsController#index</code>では<code>main</code>レイアウトが使用されます。</li>
+<li>
+<code>SpecialPostsController#index</code>では<code>special</code>レイアウトが使用されます。</li>
+<li>
+<code>OldPostsController#show</code>ではレイアウトが適用されません。</li>
+<li>
+<code>OldPostsController#index</code>では<code>old</code>レイアウトが使用されます。</li>
+</ul>
+<h5 id="二重レンダリングエラーを避ける">2.2.15 二重レンダリングエラーを避ける</h5>
+<p>Rails開発をやっていれば、一度は "Can only render or redirect once per action" エラーに遭遇したことがあるでしょう。いまいましいエラーですが、修正は比較的簡単です。このエラーはほとんどの場合、開発者が<code>render</code>メソッドの基本的な動作を誤って理解していることが原因です。</p>
+<p>このエラーを発生する以下のコードを例にとって説明しましょう。</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
 def show
   @book = Book.find(params[:id])
   if @book.special?
@@ -1023,7 +1037,7 @@ redirect_to photos_url
 <p><code>redirect_to</code>の引数にはどんな値も指定できますが、<code>link_to</code>や<code>url_for</code>を使用するのが普通です。ユーザーを直前のページに戻す、特殊なリダイレクトも行えます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-      redirect_to :back
+redirect_to :back
 
 </pre>
 </div>
@@ -1471,40 +1485,48 @@ Cache-Control: no-cache
 <h5 id="ローカル変数を渡す">3.4.4 ローカル変数を渡す</h5>
 <p>パーシャルにローカル変数を引数として渡し、パーシャルをさらに強力かつ柔軟にすることもできます。たとえば、newページとeditページの違いがごくわずかしかないのであれば、この手法を使用してコードの重複を解消することができます。</p>
 <ul>
-<li><code>new.html.erb</code></li>
-</ul>
+<li>
+<p><code>new.html.erb</code></p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-    &lt;h1&gt;New zone&lt;/h1&gt;
-    &lt;%= render partial: "form", locals: {zone: @zone} %&gt;
-    ```
+&lt;h1&gt;New zone&lt;/h1&gt;
+&lt;%= render partial: "form", locals: {zone: @zone} %&gt;
 
-* `edit.html.erb`
+</pre>
+</div>
+</li>
+<li>
+<p><code>edit.html.erb</code></p>
+<div class="code_container">
+<pre class="brush: plain; gutter: false; toolbar: false">
+&lt;h1&gt;Editing zone&lt;/h1&gt;
+&lt;%= render partial: "form", locals: {zone: @zone} %&gt;
 
-    ```html+erb
-    &lt;h1&gt;Editing zone&lt;/h1&gt;
-    &lt;%= render partial: "form", locals: {zone: @zone} %&gt;
-    ```
+</pre>
+</div>
+</li>
+<li>
+<p><code>_form.html.erb</code></p>
+<div class="code_container">
+<pre class="brush: plain; gutter: false; toolbar: false">
+&lt;%= form_for(zone) do |f| %&gt;
+  &lt;p&gt;
+    &lt;b&gt;Zone name&lt;/b&gt;&lt;br&gt;
+    &lt;%= f.text_field :name %&gt;
+  &lt;/p&gt;
+  &lt;p&gt;
+    &lt;%= f.submit %&gt;
+  &lt;/p&gt;
+&lt;% end %&gt;
 
-* `_form.html.erb`
-
-    ```html+erb
-    &lt;%= form_for(zone) do |f| %&gt;
-      &lt;p&gt;
-        &lt;b&gt;Zone name&lt;/b&gt;&lt;br&gt;
-        &lt;%= f.text_field :name %&gt;
-      &lt;/p&gt;
-      &lt;p&gt;
-        &lt;%= f.submit %&gt;
-      &lt;/p&gt;
-    &lt;% end %&gt;
-    ```
-
-上の2つのビューでは同じパーシャルがレンダリングされますが、Action Viewのsubmitヘルパーはnewアクションの場合には"Create Zone"を返し、editアクションの場合は"Update Zone"を返します。
-
-どのパーシャルにも、パーシャル名からアンダースコアを取り除いた名前を持つローカル変数が与えられます。`:object`オプションを使用することで、このローカル変数にオブジェクトを渡すことができます。
-
-```erb
+</pre>
+</div>
+</li>
+</ul>
+<p>上の2つのビューでは同じパーシャルがレンダリングされますが、Action Viewのsubmitヘルパーはnewアクションの場合には"Create Zone"を返し、editアクションの場合は"Update Zone"を返します。</p>
+<p>どのパーシャルにも、パーシャル名からアンダースコアを取り除いた名前を持つローカル変数が与えられます。<code>:object</code>オプションを使用することで、このローカル変数にオブジェクトを渡すことができます。</p>
+<div class="code_container">
+<pre class="brush: ruby; html-script: true; gutter: false; toolbar: false">
 &lt;%= render partial: "customer", object: @new_customer %&gt;
 
 </pre>

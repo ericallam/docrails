@@ -135,7 +135,7 @@ $
 同じコントローラで、デフォルトと異なるテンプレートに対応するビューを出力したい場合は、`render`メソッドでビュー名を指定することができます。
 
 ```ruby
-  def update
+def update
   @book = Book.find(params[:id])
   if @book.update(book_params)
     redirect_to(@book)
@@ -150,7 +150,7 @@ end
 出力するアクションを指定するには、文字列の他にシンボルを使用することもできます。
 
 ```ruby
-  def update
+def update
   @book = Book.find(params[:id])
   if @book.update(book_params)
     redirect_to(@book)
@@ -491,7 +491,7 @@ end
 
 * `application_controller.rb`
 
-```ruby
+    ```ruby
 class ApplicationController < ActionController::Base
       layout "main"
     end
@@ -499,14 +499,14 @@ class ApplicationController < ActionController::Base
 
 * `posts_controller.rb`
 
-```ruby
+　```ruby
     class PostsController < ApplicationController
     end
     ```
 
 * `special_posts_controller.rb`
 
-```ruby
+　```ruby
     class SpecialPostsController < PostsController
       layout "special"
     end
@@ -514,11 +514,11 @@ class ApplicationController < ActionController::Base
 
 * `old_posts_controller.rb`
 
-```ruby
+    ```ruby
     class OldPostsController < SpecialPostsController
       layout false
 
-  def show
+[W6]def show
         @post = Post.find(params[:id])
       end
 
@@ -592,7 +592,7 @@ redirect_to photos_url
 `redirect_to`の引数にはどんな値も指定できますが、`link_to`や`url_for`を使用するのが普通です。ユーザーを直前のページに戻す、特殊なリダイレクトも行えます。
 
 ```ruby
-      redirect_to :back
+redirect_to :back
 ```
 
 #### リダイレクトのステータスコードを変更する
@@ -1032,7 +1032,7 @@ Railsでアセットパイプラインを有効にしている場合、このヘ
 
 * `new.html.erb`
 
-```html+erb
+    ```html+erb
     <h1>New zone</h1>
     <%= render partial: "form", locals: {zone: @zone} %>
     ```
