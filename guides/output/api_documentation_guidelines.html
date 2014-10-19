@@ -16,7 +16,7 @@
 <meta property="og:type"        content="article" />
 <meta property="og:description" content="Rails 開発のお供に! 日本語版 Rails リファレンスガイド (Rails 4.1 対応)" />
 
-<title>API Documentation Guidelines — Ruby on Rails Guides</title>
+<title>Ruby on Rails Guides</title>
 <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
 
@@ -92,7 +92,7 @@
                 <dd><a href="generators.html">Creating and Customizing Rails Generators [未着手]</a></dd>
                 <dt>Ruby on Rails に貢献する</dt>
                 <dd><a href="contributing_to_ruby_on_rails.html">Contributing to Ruby on Rails [未着手]</a></dd>
-                <dd><a href="api_documentation_guidelines.html">API Documentation Guidelines [未着手]</a></dd>
+                <dd><a href="api_documentation_guidelines.html">APIドキュメント作成ガイドライン</a></dd>
                 <dd><a href="ruby_on_rails_guides_guidelines.html">Ruby on Rails ガイドのガイドライン</a></dd>
                 <dt>メンテナンスポリシー</dt>
                 <dd><a href="maintenance_policy.html">メンテナンスポリシー</a></dd>
@@ -150,7 +150,7 @@
               </optgroup>
               <optgroup label="Ruby on Rails に貢献する">
                   <option value="contributing_to_ruby_on_rails.html">Contributing to Ruby on Rails [未着手]</option>
-                  <option value="api_documentation_guidelines.html">API Documentation Guidelines [未着手]</option>
+                  <option value="api_documentation_guidelines.html">APIドキュメント作成ガイドライン</option>
                   <option value="ruby_on_rails_guides_guidelines.html">Ruby on Rails ガイドのガイドライン</option>
               </optgroup>
               <optgroup label="メンテナンスポリシー">
@@ -176,33 +176,30 @@
 
   <div id="feature">
     <div class="wrapper">
-      <h2>API Documentation Guidelines</h2><p>This guide documents the Ruby on Rails API documentation guidelines.</p><p>After reading this guide, you will know:</p>
-<ul>
-<li>How to write effective prose for documentation purposes.</li>
-<li>Style guidelines for documenting different kinds of Ruby code.</li>
-</ul>
-
+      
                 <div id="subCol">
             <h3 class="chapter"><img src="images/chapters_icon.gif" alt="" />Chapters</h3>
             <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
 <ol class="chapters">
 <li><a href="#rdoc">RDoc</a></li>
-<li><a href="#wording">Wording</a></li>
-<li><a href="#english">English</a></li>
-<li><a href="#example-code">Example Code</a></li>
-<li><a href="#booleans">Booleans</a></li>
-<li><a href="#filenames">Filenames</a></li>
+<li><a href="#%E8%AA%9E%E8%AA%BF">語調</a></li>
+<li><a href="#%E8%8B%B1%E8%AA%9E">英語</a></li>
+<li><a href="#%E3%82%B5%E3%83%B3%E3%83%97%E3%83%AB%E3%82%B3%E3%83%BC%E3%83%89">サンプルコード</a></li>
+<li><a href="#%E8%AB%96%E7%90%86%E5%80%A4">論理値</a></li>
+<li><a href="#%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E5%90%8D">ファイル名</a></li>
 <li>
-<a href="#fonts">Fonts</a>
+<a href="#%E3%83%95%E3%82%A9%E3%83%B3%E3%83%88">フォント</a>
 
 <ul>
-<li><a href="#fixed-width-font">Fixed-width Font</a></li>
-<li><a href="#regular-font">Regular Font</a></li>
+<li><a href="#%E7%AD%89%E5%B9%85%E3%83%95%E3%82%A9%E3%83%B3%E3%83%88">等幅フォント</a></li>
+<li><a href="#regular%E3%83%95%E3%82%A9%E3%83%B3%E3%83%88">Regularフォント</a></li>
 </ul>
 </li>
-<li><a href="#description-lists">Description Lists</a></li>
-<li><a href="#dynamically-generated-methods">Dynamically Generated Methods</a></li>
+<li><a href="#%E8%AA%AC%E6%98%8E%E3%81%AE%E3%83%AA%E3%82%B9%E3%83%88">説明のリスト</a></li>
+<li><a href="#%E5%8B%95%E7%9A%84%E3%81%AB%E7%94%9F%E6%88%90%E3%81%95%E3%82%8C%E3%82%8B%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89">動的に生成されるメソッド</a></li>
+<li><a href="#%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89%E3%81%AE%E5%8F%AF%E8%A6%96%E6%80%A7">メソッドの可視性</a></li>
+<li><a href="#rails%E3%82%B9%E3%82%BF%E3%83%83%E3%82%AF">Railsスタック</a></li>
 </ol>
 </body></html>
 
@@ -215,12 +212,29 @@
       <div id="mainCol">
         <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
+<h2>APIドキュメント作成ガイドライン</h2>
+<p>本ガイドでは、Rails APIドキュメント作成のガイドラインについて解説します。 訳注: APIドキュメントが英語で書かれることを前提とします。また、サンプルのコメントは基本的に英語のままにしています。</p>
+<p>このガイドの内容:</p>
+<ul>
+<li>APIドキュメントを効果的に書く方法</li>
+<li>ドキュメント作成用のスタイルガイド (Rubyコード開発用のスタイルガイドとは別)</li>
+</ul>
+
+<hr>
 <h3 id="rdoc">1 RDoc</h3>
-<p>The Rails API documentation is generated with RDoc. Please consult the documentation for help with the <a href="http://rdoc.rubyforge.org/RDoc/Markup.html">markup</a>, and also take into account these <a href="http://rdoc.rubyforge.org/RDoc/Parser/Ruby.html">additional directives</a>.</p>
-<h3 id="wording">2 Wording</h3>
-<p>Write simple, declarative sentences. Brevity is a plus: get to the point.</p>
-<p>Write in present tense: "Returns a hash that...", rather than "Returned a hash that..." or "Will return a hash that...".</p>
-<p>Start comments in upper case. Follow regular punctuation rules:</p>
+<p><a href="http://api.rubyonrails.org">Rails API ドキュメント</a>は<a href="http://docs.seattlerb.org/rdoc/">RDoc</a>を使用して生成されます。</p>
+<div class="code_container">
+<pre class="brush: plain; gutter: false; toolbar: false">
+  bundle exec rake rdoc
+
+</pre>
+</div>
+<p>生成されたHTMLファイルは./doc/rdocディレクトリに置かれます。</p>
+<p>RDocの記法に関しては、<a href="http://docs.seattlerb.org/rdoc/RDoc/Markup.html">markup</a>を参照してください(訳注: 別ページですが<a href="http://docs.ruby-lang.org/ja/2.1.0/library/rdoc.html">日本語のRDocライブラリ解説</a>があります)。<a href="http://docs.seattlerb.org/rdoc/RDoc/Parser/Ruby.html">追加のディレクティブ</a>にも目を通しておいてください。</p>
+<h3 id="語調">2 語調</h3>
+<p>簡潔かつ宣言的に書くこと。簡潔さはそれだけで長所になります。</p>
+<p>現在形で書くこと。"Returned a hash that..." や "Will return a hash that..." ではなく"Returns a hash that..."のように書く。</p>
+<p>コメントの英語は大文字で始めること。句読点や記号の用法は常識に従うこと。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # Declares an attribute reader backed by an internally-named
@@ -231,39 +245,39 @@ end
 
 </pre>
 </div>
-<p>Communicate to the reader the current way of doing things, both explicitly and implicitly. Use the idioms recommended in edge. Reorder sections to emphasize favored approaches if needed, etc. The documentation should be a model for best practices and canonical, modern Rails usage.</p>
-<p>Documentation has to be concise but comprehensive. Explore and document edge cases. What happens if a module is anonymous? What if a collection is empty? What if an argument is nil?</p>
-<p>The proper names of Rails components have a space in between the words, like "Active Support". <code>ActiveRecord</code> is a Ruby module, whereas Active Record is an ORM. All Rails documentation should consistently refer to Rails components by their proper name, and if in your next blog post or presentation you remember this tidbit and take it into account that'd be phenomenal.</p>
-<p>Spell names correctly: Arel, Test::Unit, RSpec, HTML, MySQL, JavaScript, ERB. When in doubt, please have a look at some authoritative source like their official documentation.</p>
-<p>Use the article "an" for "SQL", as in "an SQL statement". Also "an SQLite database".</p>
-<p>Prefer wordings that avoid "you"s and "your"s. For example, instead of</p>
+<p>読者に現時点の最新の方法が伝わるように書くこと、それも明示的かつ暗黙に。先進的な分野で推奨されている慣用表現を使用すること。●推奨される方法が強調されるようセクションの順序に注意し、必要であれば順序を入れ替えること。作成するドキュメント自身がRailsのベストプラクティスのよいモデルとなるように、そしてRailsの最新かつ模範的な使用法になるように書くこと。</p>
+<p>ドキュメントは簡潔であり、かつ全体を理解できるものであること。例外的なケースについても調査し、ドキュメントに盛り込むこと。あるモジュールが無名であったらどうなるか。あるコレクションの内容が空であったらどうなるか。引数がnilであったらどうなるか。</p>
+<p>Railsのコンポーネント名は語の間にスペースを1つ置く表記を正式なものとする (例: "Active Support")。なお、<code>ActiveRecord</code>はRubyモジュール名だが、Active RecordはORMを指す。Railsドキュメント内でコンポーネントを指す場合には常に正式名称を使用すること。プログ投稿やプレゼンテーションなどでもこの点に留意し、異なる名称で読者などを驚かせないようにすること。●</p>
+<p>正しいスペルを使用すること (Arel、Test::Unit、RSpec、HTML, MySQL、JavaScript、ERBなど)。大文字小文字にも注意すること。疑わしい場合には公式ドキュメントなど、信頼できる情報源を参照すること。</p>
+<p>"SQL" という語の前には冠詞 "an" を付けること (例: "an SQL statement")。同様に、"an SQLite database"のようにすること。</p>
+<p>"you"や"your"を使用する表現を避けること。以下の例文ではyouが3度も使用されている。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 If you need to use `return` statements in your callbacks, it is recommended that you explicitly define them as methods.
 
 </pre>
 </div>
-<p>use this style:</p>
+<p>以下のスタイルで書くこと。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 If `return` is needed it is recommended to explicitly define a method.
 
 </pre>
 </div>
-<p>That said, when using pronouns in reference to a hypothetical person, such as "a user with a session cookie", gender neutral pronouns (they/their/them) should be used. Instead of:</p>
+<p>同様に、説明上何らかの人物を仮定して、その人物を代名詞で呼ぶ場合 ("a user with a session cookie" など)、heやsheのような性別のある代名詞を避け、they/their/themのような性別に影響されない代名詞を使用すること。以下のように言い換える。</p>
 <ul>
-<li>he or she... use they.</li>
-<li>him or her... use them.</li>
-<li>his or her... use their.</li>
-<li>his or hers... use theirs.</li>
-<li>himself or herself... use themselves.</li>
+<li>heまたはshe -&gt; theyに置き換える</li>
+<li>himまたはher -&gt; themに置き換える</li>
+<li>hisまたはher -&gt; theirに置き換える</li>
+<li>hisまたはhers -&gt; theirsに置き換える</li>
+<li>himselfまたはherself -&gt; themselvesに置き換える</li>
 </ul>
-<h3 id="english">3 English</h3>
-<p>Please use American English (<em>color</em>, <em>center</em>, <em>modularize</em>, etc). See <a href="http://en.wikipedia.org/wiki/American_and_British_English_spelling_differences">a list of American and British English spelling differences here</a>.</p>
-<h3 id="example-code">4 Example Code</h3>
-<p>Choose meaningful examples that depict and cover the basics as well as interesting points or gotchas.</p>
-<p>Use two spaces to indent chunks of code--that is, for markup purposes, two spaces with respect to the left margin. The examples themselves should use <a href="contributing_to_ruby_on_rails.html#follow-the-coding-conventions">Rails coding conventions</a>.</p>
-<p>Short docs do not need an explicit "Examples" label to introduce snippets; they just follow paragraphs:</p>
+<h3 id="英語">3 英語</h3>
+<p>アメリカ英語を使用すること ( <em>color</em> 、 <em>center</em> 、 <em>modularize</em> など)。詳細は<a href="http://en.wikipedia.org/wiki/American_and_British_English_spelling_differences">アメリカ英語とイギリス英語のスペルの違い</a>を参照してください。</p>
+<h3 id="サンプルコード">4 サンプルコード</h3>
+<p>意味のあるサンプルコードを選ぶこと。概要と基本を端的に示し、かつ興味深い点や落とし穴も示されているのが理想です。</p>
+<p>サンプルコードのインデントにはスペース2文字を使用すること。マークアップ用には左マージンに合わせてスペース2文字を使用します。●サンプルコードの例は<a href="contributing_to_ruby_on_rails.html#follow-the-coding-conventions">Railsコーディングルールに従う</a>を参照してください。</p>
+<p>短いドキュメントでは、スニペットを紹介する際に"Examples"と明示的にラベルを付ける必要はない。単にパラグラフに従うようにします。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # Converts a collection of elements into a formatted string by
@@ -273,7 +287,7 @@ If `return` is needed it is recommended to explicitly define a method.
 
 </pre>
 </div>
-<p>On the other hand, big chunks of structured documentation may have a separate "Examples" section:</p>
+<p>逆に大きな章で構成されているドキュメントであれば、"Examples"セクションを設けてもよい。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # ==== Examples
@@ -285,7 +299,7 @@ If `return` is needed it is recommended to explicitly define a method.
 
 </pre>
 </div>
-<p>The results of expressions follow them and are introduced by "# =&gt; ", vertically aligned:</p>
+<p>式の実行結果は式に続けて書き、冒頭に "# =&gt; " を追加して縦を揃えること。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # For checking if a fixnum is even or odd.
@@ -297,51 +311,51 @@ If `return` is needed it is recommended to explicitly define a method.
 
 </pre>
 </div>
-<p>If a line is too long, the comment may be placed on the next line:</p>
+<p>1つの行が長くなりすぎる場合はコメントを次の行に置いてもよい</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-#   label(:post, :title)
-#   # =&gt; &lt;label for="post_title"&gt;Title&lt;/label&gt;
+#   label(:article, :title)
+#   # =&gt; &lt;label for="article_title"&gt;Title&lt;/label&gt;
 #
-#   label(:post, :title, "A short title")
-#   # =&gt; &lt;label for="post_title"&gt;A short title&lt;/label&gt;
+#   label(:article, :title, "A short title")
+#   # =&gt; &lt;label for="article_title"&gt;A short title&lt;/label&gt;
 #
-#   label(:post, :title, "A short title", class: "title_label")
-#   # =&gt; &lt;label for="post_title" class="title_label"&gt;A short title&lt;/label&gt;
+#   label(:article, :title, "A short title", class: "title_label")
+#   # =&gt; &lt;label for="article_title" class="title_label"&gt;A short title&lt;/label&gt;
 
 </pre>
 </div>
-<p>Avoid using any printing methods like <code>puts</code> or <code>p</code> for that purpose.</p>
-<p>On the other hand, regular comments do not use an arrow:</p>
+<p>実行結果を示すために<code>puts</code>や<code>p</code>などの印字用メソッドを使用することはなるべく避ける。</p>
+<p>逆に、(実行結果を示さない) 通常のコメントでは矢印を使用しないこと。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 #   polymorphic_url(record)  # same as comment_url(record)
 
 </pre>
 </div>
-<h3 id="booleans">5 Booleans</h3>
-<p>In predicates and flags prefer documenting boolean semantics over exact values.</p>
-<p>When "true" or "false" are used as defined in Ruby use regular font. The singletons <code>true</code> and <code>false</code> need fixed-width font. Please avoid terms like "truthy", Ruby defines what is true and false in the language, and thus those words have a technical meaning and need no substitutes.</p>
-<p>As a rule of thumb, do not document singletons unless absolutely necessary. That prevents artificial constructs like <code>!!</code> or ternaries, allows refactors, and the code does not need to rely on the exact values returned by methods being called in the implementation.</p>
-<p>For example:</p>
+<h3 id="論理値">5 論理値</h3>
+<p>述語やフラグでの論理値の表記は、正確な値表現よりも、論理値の意味を優先すること。</p>
+<p>"true"および"false"をRubyの定義どおりに使用する場合は、通常のフォントで表記すること。シングルトンの<code>true</code>および<code>false</code>は等幅フォントで表記すること。"truthy"のような用語は避けてください。Rubyでは言語レベルでtrueとfalseが定義されているので、これらの用語は技術的に厳密な意味が与えられており、言い方を変える必要はありません。</p>
+<p>経験から申し上げると、どうしても必要な場合を除いて、ドキュメントでシングルトンを使用すべきではありません。シングルトンを避けることで、<code>!!</code>や三項演算子のような人工的な表現を避けることができ、リファクタリングもしやすくなります。さらに、実装で呼び出されるメソッドが返す値の表現が少しでも違うとコードが正常に動作しないという事態も避けられます。</p>
+<p>以下の例で説明します。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-`config.action_mailer.perform_deliveries` specifies whether mail will actually be delivered and is true by default
+`config.action_mailer.perform_deliveries` specifies whether mail will actually be delivered and is true by default (訳: `config.action_mailer.perform_deliveries`は、メールを実際に配信するかどうかを指定します。デフォルト値はtrueです。)
 
 </pre>
 </div>
-<p>the user does not need to know which is the actual default value of the flag, and so we only document its boolean semantics.</p>
-<p>An example with a predicate:</p>
+<p>上の例では、フラグのデフォルト値の実際の表現がどれであるか (訳注: trueなのか<code>true</code>なのかなど) を知る必要はありません。従って、論理値の意味だけをドキュメントに書くべきです。</p>
+<p>以下は述語の例です。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-# Returns true if the collection is empty.
+# Returns true if the collection is empty. (訳:コレクションが空ならtrueを返す)
 #
-# If the collection has been loaded
-# it is equivalent to &lt;tt&gt;collection.size.zero?&lt;/tt&gt;. If the
-# collection has not been loaded, it is equivalent to
-# &lt;tt&gt;collection.exists?&lt;/tt&gt;. If the collection has not already been
-# loaded and you are going to fetch the records anyway it is better to
-# check &lt;tt&gt;collection.length.zero?&lt;/tt&gt;.
+# If the collection has been loaded (コレクションが読み込まれると)
+# it is equivalent to &lt;tt&gt;collection.size.zero?&lt;/tt&gt;. if the (&lt;/tt&gt;. (&lt;tt&gt;collection.size.zero?&lt;/tt&gt;と同値)
+# collection has not been loaded, it is equivalent to (コレクションが読み込まれなかった場合は)
+# &lt;tt&gt;collection.exists?&lt;/tt&gt;. If the collection has not already been (&lt;tt&gt;collection.exists?&lt;/tt&gt;と同値。コレクションが読み込まれておらず、)
+# loaded and you are going to fetch the records anyway it is better to (どうしてもレコードを取り出したい場合は)
+# check &lt;tt&gt;collection.length.zero?&lt;/tt&gt;. (&lt;tt&gt;collection.length.zero?&lt;/tt&gt;をチェックすること)
 def empty?
   if loaded?
     size.zero?
@@ -352,9 +366,9 @@ end
 
 </pre>
 </div>
-<p>The API is careful not to commit to any particular value, the method has predicate semantics, that's enough.</p>
-<h3 id="filenames">6 Filenames</h3>
-<p>As a rule of thumb, use filenames relative to the application root:</p>
+<p>このAPIは特定の値にコミットしないように注意が払われており、メソッドには述語と意味が示されています。これで十分です。</p>
+<h3 id="ファイル名">6 ファイル名</h3>
+<p>経験則からも、ファイル名はRailsアプリケーションのルート・ディレクトリからの相対パスで記述すること。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 config/routes.rb            # YES
@@ -363,16 +377,17 @@ RAILS_ROOT/config/routes.rb # NO
 
 </pre>
 </div>
-<h3 id="fonts">7 Fonts</h3>
-<h4 id="fixed-width-font">7.1 Fixed-width Font</h4>
-<p>Use fixed-width fonts for:</p>
+<h3 id="フォント">7 フォント</h3>
+<h4 id="等幅フォント">7.1 等幅フォント</h4>
+<p>以下の場合は等幅フォントを使用すること。</p>
 <ul>
-<li>Constants, in particular class and module names.</li>
-<li>Method names.</li>
-<li>Literals like <code>nil</code>, <code>false</code>, <code>true</code>, <code>self</code>.</li>
-<li>Symbols.</li>
-<li>Method parameters.</li>
-<li>File names.</li>
+<li>定数、特にクラス名およびモジュール名</li>
+<li>メソッド名</li>
+<li>次のようなリテラル: <code>nil</code>、<code>false</code>、<code>true</code>、<code>self</code>
+</li>
+<li>シンボル</li>
+<li>メソッドのパラメータ</li>
+<li>ファイル名</li>
 </ul>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -386,8 +401,8 @@ end
 
 </pre>
 </div>
-<div class="warning"><p>Using <code>+...+</code> for fixed-width font only works with simple content like ordinary method names, symbols, paths (with forward slashes), etc. Please use <code>&lt;tt&gt;...&lt;/tt&gt;</code> for everything else, notably class or module names with a namespace as in <code>&lt;tt&gt;ActiveRecord::Base&lt;/tt&gt;</code>.</p></div>
-<p>You can quickly test the RDoc output with the following command:</p>
+<p>警告: 等幅フォントを<code>+...+</code>というマークアップで表記できるのは、通常のメソッド名、シンボル、パス (通常のスラッシュを使用しているもの) のようなシンプルなものに限られます。これらよりも複雑なものを表記するときには必ず<code>&lt;tt&gt;...&lt;/tt&gt;</code>でマークアップしてください。特に名前空間を使用しているクラス名やモジュール名では必須です (<code>&lt;tt&gt;ActiveRecord::Base&lt;/tt&gt;</code>など)。</p>
+<p>以下のコマンドで、RDocの出力を手軽に確認できます。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ echo "+:to_param+" | rdoc --pipe
@@ -395,8 +410,8 @@ $ echo "+:to_param+" | rdoc --pipe
 
 </pre>
 </div>
-<h4 id="regular-font">7.2 Regular Font</h4>
-<p>When "true" and "false" are English words rather than Ruby keywords use a regular font:</p>
+<h4 id="regularフォント">7.2 Regularフォント</h4>
+<p>Rubyのキーワードでない、英語としての"true"と"false"にはregularフォント (ItalicやBoldでないフォント) を使用すること。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # Runs all the validations within the specified context.
@@ -415,17 +430,17 @@ end
 
 </pre>
 </div>
-<h3 id="description-lists">8 Description Lists</h3>
-<p>In lists of options, parameters, etc. use a hyphen between the item and its description (reads better than a colon because normally options are symbols):</p>
+<h3 id="説明のリスト">8 説明のリスト</h3>
+<p>項目 (オプションやパラメータのリストなど) とその説明はハイフンでつなぐこと。コロンはシンボルで使用されるので、ハイフンの方が読みやすくなります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # * &lt;tt&gt;:allow_nil&lt;/tt&gt; - Skip validation if attribute is +nil+.
 
 </pre>
 </div>
-<p>The description starts in upper case and ends with a full stop-it's standard English.</p>
-<h3 id="dynamically-generated-methods">9 Dynamically Generated Methods</h3>
-<p>Methods created with <code>(module|class)_eval(STRING)</code> have a comment by their side with an instance of the generated code. That comment is 2 spaces away from the template:</p>
+<p>説明文は通常の英語として大文字で始め、ピリオドで終わること。</p>
+<h3 id="動的に生成されるメソッド">9 動的に生成されるメソッド</h3>
+<p><code>(module|class)_eval(文字列)</code>メソッドで作成されるメソッドには、生成されたコードのインスタンスのそばにコメントが置かれます。このように作成されたコメントには、スペース2文字分のインデントが与えられます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 for severity in Severity.constants
@@ -442,13 +457,13 @@ end
 
 </pre>
 </div>
-<p>If the resulting lines are too wide, say 200 columns or more, put the comment above the call:</p>
+<p>生成された行が多過ぎる (200行を超える) 場合、コメントを呼び出しの上に置いてください。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # def self.find_by_login_and_activated(*args)
 #   options = args.extract_options!
 #   ...
-# end
+  # end
 self.class_eval %{
   def self.#{method_id}(*args)
     options = args.extract_options!
@@ -458,6 +473,42 @@ self.class_eval %{
 
 </pre>
 </div>
+<h3 id="メソッドの可視性">10 メソッドの可視性</h3>
+<p>Railsのドキュメントを作成するにあたり、ユーザー向けのパブリックなAPIと内部APIの違いを理解しておくことが重要です。</p>
+<p>多くのライブラリと同様、Railsでも内部APIの定義にprivateキーワードが使用されます。しかし、パブリックなAPIのルールは若干異なります。Railsでは、すべてのpublicなメソッドがユーザーに公開されて使用されるということを前提にしていません。代りに、そのメソッドが内部APIであることを示すために<code>:nodoc:</code>ディレクティブを使用します。</p>
+<p>つまり、Railsでは可視性が<code>public</code>のメソッドであっても、ユーザーに公開されているとは限らないのです。</p>
+<p><code>ActiveRecord::Core::ClassMethods#arel_table</code>を例に説明します。</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+module ActiveRecord::Core::ClassMethods
+  def arel_table #:nodoc:
+    # 何か書く
+  end
+end
+
+</pre>
+</div>
+<p>このメソッドは一見して<code>ActiveRecord::Core</code>のパブリックなクラスメソッドであり、実際それ自体は間違いではありません。しかしRailsチームはこの種のメソッドに依存して欲しくないと考えています。そのために<code>:nodoc:</code>を指定して、ドキュメントに含まれないようにしています。実際の理由は、Railsチームはこの種の内部メソッドの動作を必要に応じてリリースごとに変更できるようにしたいからです。これらのメソッドは名前や返し値が変更されたり、クラス自体が消滅したりすることもありえます。従ってこれらは外部に対して何も保証されておらず、Railsアプリケーションやプラグインがこの種のAPIに依存すべきではありません。これらのAPIに依存してしまうと、Railsを次のリリースにアップグレードしたときにアプリケーションやGemが壊れる危険性があります。</p>
+<p>Rails貢献者がドキュメントを作成する場合、そのAPIを外部開発者に公開してよいかどうかに常に注意を払う必要があります。Railsチームは、パブリックなAPIに対して重大な変更を行なう際は、必ず非推奨サイクルを経てから行なうことにしています。内部メソッドや内部クラスの可視性がprivateになっていない場合は、<code>:nodoc:</code>オプションを指定することを推奨します (なお可視性がprivateの場合はデフォルトで内部扱いになります)。APIが安定したら可視性を変更できますが、後方互換性を保ちながらパブリックなAPIを変更することは簡単ではありません。</p>
+<p>クラスやモジュールに対して<code>:nodoc:</code>を指定した場合、その中のすべてのメソッドは内部APIであり、直接アクセスすることは許されないことが示されます。</p>
+<p>既存の<code>:nodoc:</code>指定はむやみに変更しないでください。この指定を外す際は、必ずコアチームの誰かかコードの著者に相談してからにしてください。<code>:nodoc</code>が外されてしまうエラーは、docrailsプロジェクトよりもほとんどの場合pull requestで発生します。</p>
+<p><code>:nodoc:</code>の追加は、絶対に無断で行わないでください。ドキュメントからそのメソッドやクラスの記述が失われてしまいます。たとえば、あるメソッドの可視性をprivateからpublicに切り替えた際に、内部のパブリックメソッドに<code>:nodoc:</code>が指定されていなかったという事例がありえます。そのようなケースを見つけたら、必要に応じてpull requestで議論してください。直接docrailsを変更することはくれぐれも行わないでください。</p>
+<p>まとめ: Railsチームは可視性がpublicで内部でのみ使用するメソッドやクラスには<code>:nodoc:</code>を指定します。APIの可視性の変更は慎重に行なわれるべきであり、pull requestでの議論を経てから行なうこと。</p>
+<h3 id="railsスタック">11 Railsスタック</h3>
+<p>Rails APIの一部をドキュメント化する際には、それがRailsスタックのひとつとなることを意識しておくことが重要です。</p>
+<p>つまり、ドキュメント化しようとしているメソッドやクラスのスコープやコンテキストに応じて振る舞いが変化することがあるということです。</p>
+<p>スタック全体を考慮に入れれば、振る舞いの変化するはあちこちに見つかります。<code>ActionView::Helpers::AssetTagHelper#image_tag</code>などが典型です。</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+# image_tag("icon.png")
+#   # =&gt; &lt;img alt="Icon" src="/assets/icon.png" /&gt;
+
+</pre>
+</div>
+<p><code>#image_tag</code>はデフォルトでは常に<code>/images/icon.png</code>を返しますが、アセットパイプラインなどを含むRailsのフルスタックで見ると、上のような結果が返されるところもあります。</p>
+<p>デフォルトのRailsフルスタックを使用している場合、実際に経験する振る舞いに対してしか関心が持てないものです。</p>
+<p>このような場合、特定のメソッドの振る舞いだけではなく、 <em>フレームワーク</em> の振る舞いもドキュメント化するようにしたいと思います。</p>
+<p>Railsチームが特定のAPIをどのように扱っているかを知りたい場合は、お気軽にチケットを発行して<a href="https://github.com/rails/rails/issues">issue tracker</a>にパッチを送ってください。</p>
 </body></html>
 
 

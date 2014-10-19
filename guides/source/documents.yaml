@@ -142,7 +142,7 @@
       url: contributing_to_ruby_on_rails.html
       description: Railsは「どこかで誰かがうまくやってくれているフレームワーク」ではありません。現在も継続しているRailsフレームワーク開発に貢献するさまざまな方法について解説します。
     -
-      name: API Documentation Guidelines [未着手]
+      name: APIドキュメント作成ガイドライン
       url: api_documentation_guidelines.html
       description: Ruby on Rails APIドキュメントのガイドラインについて解説します。
     -
