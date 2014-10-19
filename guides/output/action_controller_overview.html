@@ -1029,7 +1029,7 @@ end
 </table>
 <h5 id="path_parameters、query_parameters、request_parameters">10.1.1 <code>path_parameters</code>、<code>query_parameters</code>、<code>request_parameters</code>
 </h5>
-<p>Railsは、リクエストに関連する<code>params</code>ハッシュに集約してくれます。 collects all of the parameters sent along with the request in the <code>params</code> hash, whether they are sent as part of the query string or the post body. requestオブジェクトには3つのアクセサがあり、パラメータの由来に応じたアクセスを行なうこともできます。<code>query_parameters</code>ハッシュにはクエリ文字列として送信されたパラメータが含まれます。<code>request_parameters</code>ハッシュにはPOST bodyの一部として送信されたパラメータが含まれます。<code>path_parameters</code>には、ルーティング機構によって特定のコントローラとアクションへのパスの一部であると認識されたパラメータがふくまれm hash contains parameters that were recognized by the routing as being part of the path leading to this particular controller and action.</p>
+<p>Railsは、リクエストに関連する<code>params</code>ハッシュに集約してくれます。 collects all of the parameters sent along with the request in the <code>params</code> hash, whether they are sent as part of the query string or the post body. requestオブジェクトには3つのアクセサがあり、パラメータの由来に応じたアクセスを行なうこともできます。<code>query_parameters</code>ハッシュにはクエリ文字列として送信されたパラメータが含まれます。<code>request_parameters</code>ハッシュにはPOST bodyの一部として送信されたパラメータが含まれます。<code>path_parameters</code>には、ルーティング機構によって特定のコントローラとアクションへのパスの一部であると認識されたパラメータが含まれます。</p>
 <h4 id="the-responseオブジェクト">10.2 The <code>response</code>オブジェクト</h4>
 <p>通常、responseオブジェクトを直接使用することはありません。このオブジェクトの内容は、クライアントに送り返される、アクションの実行中およびデータの描画 (レンダリング) ですが、このオブジェクトに直接これらのアクセサの中にはセッターで値を変更できるものもあります。</p>
 <table>

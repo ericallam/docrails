@@ -775,7 +775,7 @@ Railsでは、[formヘルパー](form_helpers.html)を使用して生成され�
 
 #### `path_parameters`、`query_parameters`、`request_parameters`
 
-Railsは、リクエストに関連する`params`ハッシュに集約してくれます。 collects all of the parameters sent along with the request in the `params` hash, whether they are sent as part of the query string or the post body. requestオブジェクトには3つのアクセサがあり、パラメータの由来に応じたアクセスを行なうこともできます。`query_parameters`ハッシュにはクエリ文字列として送信されたパラメータが含まれます。`request_parameters`ハッシュにはPOST bodyの一部として送信されたパラメータが含まれます。`path_parameters`には、ルーティング機構によって特定のコントローラとアクションへのパスの一部であると認識されたパラメータがふくまれm hash contains parameters that were recognized by the routing as being part of the path leading to this particular controller and action.
+Railsは、リクエストに関連する`params`ハッシュに集約してくれます。 collects all of the parameters sent along with the request in the `params` hash, whether they are sent as part of the query string or the post body. requestオブジェクトには3つのアクセサがあり、パラメータの由来に応じたアクセスを行なうこともできます。`query_parameters`ハッシュにはクエリ文字列として送信されたパラメータが含まれます。`request_parameters`ハッシュにはPOST bodyの一部として送信されたパラメータが含まれます。`path_parameters`には、ルーティング機構によって特定のコントローラとアクションへのパスの一部であると認識されたパラメータが含まれます。
 
 ### The `response`オブジェクト
 

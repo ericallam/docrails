@@ -987,7 +987,7 @@ config.action_dispatch.default_headers.clear
 * X-Frame-Options
 _Railsではデフォルトで'SAMEORIGIN'が指定されます。_ - 同一ドメインでのフレーミングを許可します。'DENY'を指定するとすべてのフレーミングが不許可になります。すべてのWebサイトについてフレーミングを許可するには'ALLOWALL'を指定します。
 * X-XSS-Protection
-_Railsではデフォルトで'1; mode=block'が指定されます。_ - XSS攻撃が検出された場合は、XSS Auditorとブロックページを使用してください。XSS Auditorをオフにしたい場合は'0;'を指定します(レスポンスがリクエストパラメータからのスクリプトを含んでいる場合に便利です)。●contentsはcontainsのタイポと解釈
+_Railsではデフォルトで'1; mode=block'が指定されます。_ - XSS攻撃が検出された場合は、XSS Auditorとブロックページを使用してください。XSS Auditorをオフにしたい場合は'0;'を指定します(レスポンスがリクエストパラメータからのスクリプトを含んでいる場合に便利です)。
 * X-Content-Type-Options
 _'nosniff' はRailsではデフォルトです_ - ファイルのMIMEタイプをブラウザが推測しないようにします。
 * X-Content-Security-Policy
