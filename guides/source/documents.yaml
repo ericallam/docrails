@@ -101,7 +101,7 @@
       url: command_line.html
       description: Railsが提供する各種コマンドラインツールとRakeタスクについて解説します。
     -
-      name: Asset Pipeline [未着手]
+      name: アセットパイプライン
       url: asset_pipeline.html
       description: アセットパイプラインに関するドキュメントです。
     -
