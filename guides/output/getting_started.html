@@ -1310,8 +1310,8 @@ $ rake db:migrate
 <h4 id="モデル同士を関連付ける">6.2 モデル同士を関連付ける</h4>
 <p>Active Recordの関連付け機能により、2つのモデルの間にリレーションシップを簡単に宣言することができます。今回の記事とコメントというモデルの場合、以下のいずれかの方法で関連付けを設定できます。</p>
 <ul>
-<li>1つの記事に1つのコメントを関連付ける (Each comment belongs to one article)。</li>
-<li>1つの記事に複数のコメントを関連付ける (One article can have many comments)。</li>
+<li>1つのコメントは1つの記事に属する (Each comment belongs to one article)。</li>
+<li>1つの記事は複数のコメントを持てる (One article can have many comments)。</li>
 </ul>
 <p>そして上の方法(における英語の記述)は、Railsで関連付けを宣言するために使用される文法と非常に似ています。<code>Comment</code> モデル (app/models/comment.rb) 内のコードに既に書かれていたように、1つの記事には1つのコメントが属しています。</p>
 <div class="code_container">

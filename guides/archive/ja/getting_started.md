@@ -1072,8 +1072,8 @@ Railsは、これまで実行されていないマイグレーションだけを
 
 Active Recordの関連付け機能により、2つのモデルの間にリレーションシップを簡単に宣言することができます。今回の記事とコメントというモデルの場合、以下のいずれかの方法で関連付けを設定できます。
 
-* 1つの記事に1つのコメントを関連付ける (Each comment belongs to one article)。
-* 1つの記事に複数のコメントを関連付ける (One article can have many comments)。
+* 1つのコメントは1つの記事に属する (Each comment belongs to one article)。
+* 1つの記事は複数のコメントを持てる (One article can have many comments)。
 
 そして上の方法(における英語の記述)は、Railsで関連付けを宣言するために使用される文法と非常に似ています。`Comment` モデル (app/models/comment.rb) 内のコードに既に書かれていたように、1つの記事には1つのコメントが属しています。
 
