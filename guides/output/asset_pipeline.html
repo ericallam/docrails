@@ -272,29 +272,23 @@ rails new appname --skip-sprockets
 </div>
 <p>Rails 4では<code>sass-rails</code>、<code>coffee-rails</code>、<code>uglifier</code> gemが自動的にGemfileに追加されます。これらはアセット圧縮に使用するSprocketsです。</p>
 <div class="code_container">
-<pre class="brush: plain; gutter: false; toolbar: false">
-```ruby
-
-</pre>
-</div>
-<p>gem 'sass-rails'
+<pre class="brush: ruby; gutter: false; toolbar: false">
+gem 'sass-rails'
 gem 'uglifier'
 gem 'coffee-rails'
-```</p>
-<p><code>--skip-sprockets</code>オプションを使用すると、Rails 4で<code>sass-rails</code>と<code>uglifier</code>がGemfileに追加されなくなります。アセットパイプラインを後から有効にしたい場合は、これらのgemもGemfileに追加する必要があります。同様に、アプリケーション新規作成時に<code>--skip-sprockets</code>オプションを指定すると<code>config/application.rb</code>ファイルの記述内容がデフォルトから若干異なります。具体的にはsprocket railtieで必要となる記述がコメントアウトされます。アセットパイプラインを手動で有効にする場合は、これらのコメントアウトも解除する必要があります。</p>
-<div class="code_container">
-<pre class="brush: plain; gutter: false; toolbar: false">
-```ruby
 
 </pre>
 </div>
-<h2>require "sprockets/railtie"</h2>
+<p><code>--skip-sprockets</code>オプションを使用すると、Rails 4で<code>sass-rails</code>と<code>uglifier</code>がGemfileに追加されなくなります。アセットパイプラインを後から有効にしたい場合は、これらのgemもGemfileに追加する必要があります。同様に、アプリケーション新規作成時に<code>--skip-sprockets</code>オプションを指定すると<code>config/application.rb</code>ファイルの記述内容がデフォルトから若干異なります。具体的にはsprocket railtieで必要となる記述がコメントアウトされます。アセットパイプラインを手動で有効にする場合は、これらのコメントアウトも解除する必要があります。</p>
 <div class="code_container">
-<pre class="brush: plain; gutter: false; toolbar: false">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+# require "sprockets/railtie"
 
-アセット圧縮方式を指定するには、`production.rb`の該当する設定オプションを設定します。`config.assets.css_compressor`はCSSの圧縮方式、`config.assets.js_compressor`はJavaScriptの圧縮方式をそれぞれ指定します。
-
-    ```ruby
+</pre>
+</div>
+<p>アセット圧縮方式を指定するには、<code>production.rb</code>の該当する設定オプションを設定します。<code>config.assets.css_compressor</code>はCSSの圧縮方式、<code>config.assets.js_compressor</code>はJavaScriptの圧縮方式をそれぞれ指定します。</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
 config.assets.css_compressor = :yui
 config.assets.js_compressor = :uglifier
 
@@ -360,15 +354,13 @@ global-908e25f4bf641868d8683022a5b62f54.css
 <p>メモ: CoffeeScriptを使用するには、ExecJSがランタイムでサポートされている必要があります。Mac OS XまたはWindowsを使用している場合は、OSにJavaScriptランタイムをインストールしてください。サポートされているすべてのJavaScriptランタイムに関するドキュメントは、<a href="https://github.com/sstephenson/execjs#readme">ExecJS</a> で参照できます。</p>
 <p><code>config/application.rb</code>設定に以下を追加することで、コントローラ固有のアセットファイル生成を止めることもできます。</p>
 <div class="code_container">
-<pre class="brush: plain; gutter: false; toolbar: false">
-```ruby
+<pre class="brush: ruby; gutter: false; toolbar: false">
+config.generators do |g|
+  g.assets false
+end 
 
 </pre>
 </div>
-<p>  config.generators do |g|
-    g.assets false
-      end 
-```</p>
 <h4 id="アセットの編成">2.2 アセットの編成</h4>
 <p>パイプラインのアセットは、アプリケーション内の<code>app/assets</code>、<code>lib/assets</code>、<code>vendor/assets</code>の3つのディレクトリのいずれかに置くことができます。</p>
 <ul>
@@ -564,7 +556,7 @@ $('#logo').attr src: "&lt;%= asset_path('logo.png') %&gt;"
 <h4 id="プリプロセス">2.5 プリプロセス</h4>
 <p>適用されるプリプロセスの種類は、アセットファイルの拡張子によって決まります。コントローラやscaffoldをデフォルトのgemセットで生成した場合、通常JavaScriptファイルやCSSファイルが置かれる場所にCoffeeScriptファイルとSCSSファイルがそれぞれ生成されます。先の例では、コントローラ名が"projects"で、<code>app/assets/javascripts/projects.js.coffee</code>ファイルと<code>app/assets/stylesheets/projects.css.scss</code>ファイルが生成されます。</p>
 <p>developmentモードの場合、あるいはアセットパイプラインが無効になっている場合は、これらのアセットへのリクエストは<code>coffee-script</code> gemと<code>sass</code> gemが提供するプロセッサによって処理され、それぞれJavaScriptとCSSとしてブラウザへのレスポンスが送信されます。アセットパイプラインが有効になっている場合は、これらのアセットファイルはプリプロセスの対象となり、処理後のファイルが<code>public/assets</code>ディレクトリに置かれてRailsアプリケーションまたはWebサーバーによって利用されます。</p>
-<p>アセットファイル名に別の拡張子を追加することにより、プリプロセス時に別のレイヤを追加でリクエストすることができます。アセットファイル名の拡張子は、「右から左」の順に処理されます。従って、アセットファイル名の拡張子は、これに従って処理を行うべき順序で与える必要があります。たとえば、<code>app/assets/stylesheets/projects.css.scss.erb</code>というスタイルシートでは、最初にERBとして処理され、続いてSCSS、最後にCSSとして処理されます。, and finally served as CSS. The same applies to a JavaScript file - <code>app/assets/javascripts/projects.js.coffee.erb</code> is processed as ERB, then CoffeeScript, and served as JavaScript.</p>
+<p>アセットファイル名に別の拡張子を追加することにより、プリプロセス時に別のレイヤを追加でリクエストすることができます。アセットファイル名の拡張子は、「右から左」の順に処理されます。従って、アセットファイル名の拡張子は、これに従って処理を行うべき順序で与える必要があります。たとえば、<code>app/assets/stylesheets/projects.css.scss.erb</code>というスタイルシートでは、最初にERBとして処理され、続いてSCSS、最後にCSSとして処理されます。同様にして、 <code>app/assets/javascripts/projects.js.coffee.erb</code> というJavaScriptファイルの場合では、ERB → CoffeeScript → JavaScript の順に処理されます。</p>
 <p>このプリプロセス順序は非常に重要ですので、心に留めておいてください。たとえば、仮に<code>app/assets/javascripts/projects.js.erb.coffee</code>というファイルを呼び出すと、最初にCoffeeScriptインタプリタによって処理されます。しかしこれは次のERBで処理できないので問題が発生することがあります。</p>
 <h3 id="development環境の場合">3 development環境の場合</h3>
 <p>developmentモードの場合、アセットは個別のファイルとして、マニフェストファイルの記載順に読み込まれます。</p>
@@ -590,35 +582,29 @@ $('#logo').attr src: "&lt;%= asset_path('logo.png') %&gt;"
 <h4 id="ランタイムエラーをチェックする">3.1 ランタイムエラーをチェックする</h4>
 <p>アセットパイプラインはdevelopmentモードでランタイム時のエラーをデフォルトでチェックします。この動作を無効にするには、以下の設定を使用します。</p>
 <div class="code_container">
-<pre class="brush: plain; gutter: false; toolbar: false">
-```ruby
+<pre class="brush: ruby; gutter: false; toolbar: false">
+config.assets.raise_runtime_errors = false
 
 </pre>
 </div>
-<p>config.assets.raise_runtime_errors = false
-```</p>
 <p>このオプションがtrueになっていると、アプリケーションのアセットが<code>config.assets.precompile</code>に記載されているとおりにすべて読み込まれているかどうかをチェックします。<code>config.assets.digest</code>もtrueになっている場合、アセットへのリクエストにダイジェストを含むことが必須となります。</p>
 <h4 id="ダイジェストをオフにする">3.2 ダイジェストをオフにする</h4>
 <p><code>config/environments/development.rb</code>を更新して以下のようにすることで、ダイジェストをオフにできます。</p>
 <div class="code_container">
-<pre class="brush: plain; gutter: false; toolbar: false">
-```ruby
+<pre class="brush: ruby; gutter: false; toolbar: false">
+config.assets.digest = false
 
 </pre>
 </div>
-<p>config.assets.digest = false
-```</p>
 <p>このオプションがtrueになっていると、ダイジェストが生成されてアセットへのURLに含まれるようになります。</p>
 <h4 id="デバッグをオフにする">3.3 デバッグをオフにする</h4>
 <p>デバッグモードをオフにするには、<code>config/environments/development.rb</code>に以下を追記します。</p>
 <div class="code_container">
-<pre class="brush: plain; gutter: false; toolbar: false">
-```ruby
+<pre class="brush: ruby; gutter: false; toolbar: false">
+config.assets.debug = false
 
 </pre>
 </div>
-<p>config.assets.debug = false
-```</p>
 <p>デバッグモードをオフにすると、Sprocketsはすべてのファイルを結合して、必要なプリプロセッサを実行します。デバッグモードをオフにすると、上のマニフェストファイルによって以下が生成されるようになります。</p>
 <div class="code_container">
 <pre class="brush: xml; gutter: false; toolbar: false">

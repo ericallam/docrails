@@ -31,7 +31,7 @@ rails new appname --skip-sprockets
 
 Rails 4では`sass-rails`、`coffee-rails`、`uglifier` gemが自動的にGemfileに追加されます。これらはアセット圧縮に使用するSprocketsです。
 
-　```ruby
+```ruby
 gem 'sass-rails'
 gem 'uglifier'
 gem 'coffee-rails'
@@ -39,13 +39,13 @@ gem 'coffee-rails'
 
 `--skip-sprockets`オプションを使用すると、Rails 4で`sass-rails`と`uglifier`がGemfileに追加されなくなります。アセットパイプラインを後から有効にしたい場合は、これらのgemもGemfileに追加する必要があります。同様に、アプリケーション新規作成時に`--skip-sprockets`オプションを指定すると`config/application.rb`ファイルの記述内容がデフォルトから若干異なります。具体的にはsprocket railtieで必要となる記述がコメントアウトされます。アセットパイプラインを手動で有効にする場合は、これらのコメントアウトも解除する必要があります。
 
-　```ruby
+```ruby
 # require "sprockets/railtie"
 ```
 
 アセット圧縮方式を指定するには、`production.rb`の該当する設定オプションを設定します。`config.assets.css_compressor`はCSSの圧縮方式、`config.assets.js_compressor`はJavaScriptの圧縮方式をそれぞれ指定します。
 
-　```ruby
+```ruby
 config.assets.css_compressor = :yui
 config.assets.js_compressor = :uglifier
 ```
@@ -134,10 +134,10 @@ Railsでscaffoldやコントローラを生成すると、JavaScriptファイル
 
 `config/application.rb`設定に以下を追加することで、コントローラ固有のアセットファイル生成を止めることもできます。
 
-　```ruby
-  config.generators do |g|
-    g.assets false
-      end 
+```ruby
+config.generators do |g|
+  g.assets false
+end 
 ```
 
 ### アセットの編成
@@ -355,7 +355,7 @@ JavaScriptで使用できるディレクティブはスタイルシートでも�
 
 developmentモードの場合、あるいはアセットパイプラインが無効になっている場合は、これらのアセットへのリクエストは`coffee-script` gemと`sass` gemが提供するプロセッサによって処理され、それぞれJavaScriptとCSSとしてブラウザへのレスポンスが送信されます。アセットパイプラインが有効になっている場合は、これらのアセットファイルはプリプロセスの対象となり、処理後のファイルが`public/assets`ディレクトリに置かれてRailsアプリケーションまたはWebサーバーによって利用されます。
 
-アセットファイル名に別の拡張子を追加することにより、プリプロセス時に別のレイヤを追加でリクエストすることができます。アセットファイル名の拡張子は、「右から左」の順に処理されます。従って、アセットファイル名の拡張子は、これに従って処理を行うべき順序で与える必要があります。たとえば、`app/assets/stylesheets/projects.css.scss.erb`というスタイルシートでは、最初にERBとして処理され、続いてSCSS、最後にCSSとして処理されます。, and finally served as CSS. The same applies to a JavaScript file - `app/assets/javascripts/projects.js.coffee.erb` is processed as ERB, then CoffeeScript, and served as JavaScript.
+アセットファイル名に別の拡張子を追加することにより、プリプロセス時に別のレイヤを追加でリクエストすることができます。アセットファイル名の拡張子は、「右から左」の順に処理されます。従って、アセットファイル名の拡張子は、これに従って処理を行うべき順序で与える必要があります。たとえば、`app/assets/stylesheets/projects.css.scss.erb`というスタイルシートでは、最初にERBとして処理され、続いてSCSS、最後にCSSとして処理されます。同様にして、 `app/assets/javascripts/projects.js.coffee.erb` というJavaScriptファイルの場合では、ERB → CoffeeScript → JavaScript の順に処理されます。
 
 このプリプロセス順序は非常に重要ですので、心に留めておいてください。たとえば、仮に`app/assets/javascripts/projects.js.erb.coffee`というファイルを呼び出すと、最初にCoffeeScriptインタプリタによって処理されます。しかしこれは次のERBで処理できないので問題が発生することがあります。
 
@@ -387,7 +387,7 @@ developmentモードの場合、アセットは個別のファイルとして、
 
 アセットパイプラインはdevelopmentモードでランタイム時のエラーをデフォルトでチェックします。この動作を無効にするには、以下の設定を使用します。
 
-　```ruby
+```ruby
 config.assets.raise_runtime_errors = false
 ```
 
@@ -397,7 +397,7 @@ config.assets.raise_runtime_errors = false
 
 `config/environments/development.rb`を更新して以下のようにすることで、ダイジェストをオフにできます。
 
-　```ruby
+```ruby
 config.assets.digest = false
 ```
 
@@ -407,7 +407,7 @@ config.assets.digest = false
 
 デバッグモードをオフにするには、`config/environments/development.rb`に以下を追記します。
 
-　```ruby
+```ruby
 config.assets.debug = false
 ```
 
