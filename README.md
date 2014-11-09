@@ -35,7 +35,7 @@ http://railstutorial.jp/
 
 - 詳細: [Google Translator Toolkitと翻訳メモリ(ノーカット版) : RubyWorld Conference 2013より](http://techracho.bpsinc.jp/hachi8833/2013_12_16/14889)
 
-### ④ 日本語語のHTMLファイルの生成方法
+### ④ 日本語のHTMLファイルの生成方法
 
 0. `/guides` フォルダに移動する
 1. Google Translator Toolkit から訳文のファイルをダウンロードする (要: ダウンロード権限)
