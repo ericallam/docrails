@@ -39,7 +39,7 @@ http://railstutorial.jp/
 
 0. `/guides` フォルダに移動する
 1. Google Translator Toolkit から訳文のファイルをダウンロードする (要: ダウンロード権限)
-2. `./main.rb` を実行して、訳文のファイルを適切な名前に変更し、`/source` 以下に配置。
+2. `./main.sh` を実行して、訳文のファイルを適切な名前に変更し、`/source` 以下に配置。
 3. `bundle exec rake guides:generate:html`を実行して、`/output`以下にHTMLを生成。
 
 ### ⑤ Herokuにデプロイ
