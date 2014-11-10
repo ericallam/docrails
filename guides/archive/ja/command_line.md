@@ -37,17 +37,17 @@ INFO: まだRailsをインストールしていない場合、`gem install rails
 
 ```bash
 $ rails new commandsapp
-    create
-    create README.rdoc
-    create Rakefile
-    create config.ru
-    create .gitignore
-    create Gemfile
-    create app
-    ...
-    create  tmp/cache
-    ...
-        run bundle install
+　create
+　create README.rdoc
+　create Rakefile
+　create config.ru
+　create .gitignore
+　create Gemfile
+　create app
+　...
+　create  tmp/cache
+　...
+　　run bundle install
 ```
 
 このような短いコマンドをうつだけで、Railsは非常に多くのものを用意してくれます。たったこれだけで、完璧なRailsのディレクトリ構成と、アプリケーションに必要なコードがすべて手に入りました。
@@ -117,11 +117,11 @@ INFO: Railsのすべてのコマンドにはヘルプがついています。多
 $ bin/rails generate controller
 Usage: rails generate controller NAME [action action] [options]
 
-    ...
-    ...
+　...
+　...
 
-    Description:
-    ...
+　Description:
+　...
 
     To create a controller within a module, specify the controller name as a path like 'parent_module/controller_name'.
 
@@ -580,20 +580,20 @@ $ rails new . --git --database=postgresql
       exists
       create  app/controllers
       create  app/helpers
-      ...
-      ...
+[W6]...
+[W6]...
       create  tmp/cache
       create  tmp/pids
-      create Rakefile
-      add 'Rakefile'
-      create README.rdoc
-      add 'README.rdoc'
-      create app/controllers/application_controller.rb
-      add 'app/controllers/application_controller.rb'
-      create app/helpers/application_helper.rb
-      ...
+[W6]create Rakefile
+[W6]add 'Rakefile'
+[W6]create README.rdoc
+[W6]add 'README.rdoc'
+[W6]create app/controllers/application_controller.rb
+[W6]add 'app/controllers/application_controller.rb'
+[W6]create app/helpers/application_helper.rb
+[W6]...
       create  log/test.log
-      add 'log/test.log'
+[W6]add 'log/test.log'
 ```
 
 Railsがgitのリポジトリ内にファイルを作成する前に、**gitapp**ディレクトリを作成し、空のgitリポジトリを初期化する必要があります。Railsがどのようなデータベースの設定ファイルを作ったか見てみましょう。
