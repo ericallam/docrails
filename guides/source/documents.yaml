@@ -97,7 +97,7 @@
       url: configuring.html
       description: Railsアプリケーションの基本的な設定方法について解説します。
     -
-      name: Rails Command Line Tools and Rake Tasks [未着手]
+      name: Railsのコマンドライン
       url: command_line.html
       description: Railsが提供する各種コマンドラインツールとRakeタスクについて解説します。
     -
