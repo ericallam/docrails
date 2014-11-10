@@ -16,7 +16,7 @@
 <meta property="og:type"        content="article" />
 <meta property="og:description" content="Rails 開発のお供に! 日本語版 Rails リファレンスガイド (Rails 4.1 対応)" />
 
-<title>Ruby on Rails Guides</title>
+<title>ビューのレイアウトとレンダリング — Ruby on Rails Guides</title>
 <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
 
@@ -176,7 +176,14 @@
 
   <div id="feature">
     <div class="wrapper">
-      
+      <h2>ビューのレイアウトとレンダリング</h2><p>本ガイドでは、Action ControllerとAction Viewによる基本的なレイアウト機能について解説します。</p><p>このガイドの内容:</p>
+<ul>
+<li>Railsに組み込まれているさまざまなレンダリング (=レスポンスの出力) 方法の使い方</li>
+<li>コンテンツが複数のセクションからなるレイアウト作成法</li>
+<li>パーシャルを使用してビューをDRYにする方法</li>
+<li>レイアウトをネストする方法 (サブテンプレート)</li>
+</ul>
+
                 <div id="subCol">
             <h3 class="chapter"><img src="images/chapters_icon.gif" alt="" />Chapters</h3>
             <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
@@ -216,17 +223,6 @@
       <div id="mainCol">
         <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
-<h2>ビューのレイアウトとレンダリング</h2>
-<p>本ガイドでは、Action ControllerとAction Viewによる基本的なレイアウト機能について解説します。</p>
-<p>このガイドの内容:</p>
-<ul>
-<li>Railsに組み込まれているさまざまなレンダリング (=レスポンスの出力) 方法の使い方</li>
-<li>コンテンツが複数のセクションからなるレイアウト作成法</li>
-<li>パーシャルを使用してビューをDRYにする方法</li>
-<li>レイアウトをネストする方法 (サブテンプレート)</li>
-</ul>
-
-<hr>
 <h3 id="概要:-部品を組み上げる">1 概要: 部品を組み上げる</h3>
 <p>本ガイドでは、コントローラ、ビュー、モデルによって形成される三角形のうち、コントローラとビューの間でのやりとりを中心に扱います。ご存じのように、Railsのコントローラはリクエストを扱うプロセス全体の流れを組織的に調整する責任を負い、(ビジネスロジックのような) 重い処理はモデルの方で行なうのが普通です。モデル側での処理が完了し、ユーザーに結果を表示する時がきたら、コントローラは処理結果をビューに渡します。このときの、コントローラからビューへの結果の渡し方こそが本ガイドの主なトピックです。</p>
 <p>大きな流れとしては、ユーザーへのレスポンスとして送信すべき内容を決定することと、ユーザーへのレスポンスを作成するために適切なメソッドを呼び出すこともこの作業に含まれます。ユーザーに返すレスポンス画面を完全なビューにするのであれば、Railsはそのビューをさらに別のレイアウトでラッピングし、パーシャルビューとして取り出すでしょう。以後本ガイドではこれらの方法をすべて紹介します。 訳注: 本ガイドではrenderを一般的な意味では「出力」、具体的な動作を指す場合は「レンダリング」と訳しています。</p>

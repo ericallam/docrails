@@ -16,7 +16,7 @@
 <meta property="og:type"        content="article" />
 <meta property="og:description" content="Rails 開発のお供に! 日本語版 Rails リファレンスガイド (Rails 4.1 対応)" />
 
-<title>Ruby on Rails Guides</title>
+<title>Rails国際化(I18n) API — Ruby on Rails Guides</title>
 <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
 
@@ -176,7 +176,26 @@
 
   <div id="feature">
     <div class="wrapper">
-      
+      <h2>Rails国際化(I18n) API</h2><p>RubyのI18n (国際化・多言語化を意味する <em>internationalization</em> を短縮したもの) gemはRuby on Rails 2.2以降からRailsに同梱されています。このgemは、アプリケーションの文言を英語以外の <strong>別の1つの言語に翻訳</strong> する機能や <strong>多言語サポート</strong> 機能を簡単かつ拡張可能な方式で導入するためのフレームワークを提供します。</p><p>アプリケーションの「国際化」プロセスといえば、使用されるすべての文言やロケール固有の要素 (日付や通貨フォーマットなど) の抽象化までの作業を指すのが普通です。一方「ローカライズ(localization)」のプロセスは、具体的な翻訳の提供とローカライズ済みフォーマット[<sup>1]などの提供を指します。</sup></p><p>Railsアプリケーションを <em>国際化する</em> プロセスでは以下を行う必要があります。</p>
+<ul>
+<li>i18nを確実にサポートすること。</li>
+<li>ロケール辞書の置き場所をRailsに指示すること。</li>
+<li>ロケールの設定・保存・切替方法をRailsに指示すること。</li>
+</ul>
+<p>Railsアプリケーションを<em>ローカライズする</em> プロセスの場合、おそらく以下の3つの作業が必要となるでしょう。</p>
+<ul>
+<li>Railsのデフォルトロケールの差し替えまたはロケールの追加。日付や時刻のフォーマット、月の呼称、Active Recordモデル名などが対象。</li>
+<li>アプリケーションで使用される文字列を抽象化し、キーで検索できる辞書に保存する。フラッシュメッセージやビュー内の固定テキストなどが対象。</li>
+<li>作成された辞書を別の場所に保存する。</li>
+</ul>
+<p>本ガイドではI18n APIをひととおり概観しており、Railsアプリケーションを国際化する方法を一から解説するチュートリアルも収録しています。</p><p>このガイドの内容:</p>
+<ul>
+<li>Ruby on RailsにおけるI18nのしくみ</li>
+<li>RESTfulなアプリケーションを正しく国際化するための方法を多数紹介</li>
+<li>I18n機能を使用してActiveRecordのエラーやActionMailerのメールタイトルを翻訳する方法</li>
+<li>その他アプリケーションの翻訳に使用できるツールの紹介</li>
+</ul>
+
                 <div id="subCol">
             <h3 class="chapter"><img src="images/chapters_icon.gif" alt="" />Chapters</h3>
             <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
@@ -254,31 +273,6 @@
       <div id="mainCol">
         <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
-<h2>Rails国際化(I18n) API</h2>
-<p>RubyのI18n (国際化・多言語化を意味する <em>internationalization</em> を短縮したもの) gemはRuby on Rails 2.2以降からRailsに同梱されています。このgemは、アプリケーションの文言を英語以外の <strong>別の1つの言語に翻訳</strong> する機能や <strong>多言語サポート</strong> 機能を簡単かつ拡張可能な方式で導入するためのフレームワークを提供します。</p>
-<p>アプリケーションの「国際化」プロセスといえば、使用されるすべての文言やロケール固有の要素 (日付や通貨フォーマットなど) の抽象化までの作業を指すのが普通です。一方「ローカライズ(localization)」のプロセスは、具体的な翻訳の提供とローカライズ済みフォーマット[<sup>1]などの提供を指します。</sup></p>
-<p>Railsアプリケーションを <em>国際化する</em> プロセスでは以下を行う必要があります。</p>
-<ul>
-<li>i18nを確実にサポートすること。</li>
-<li>ロケール辞書の置き場所をRailsに指示すること。</li>
-<li>ロケールの設定・保存・切替方法をRailsに指示すること。</li>
-</ul>
-<p>Railsアプリケーションを<em>ローカライズする</em> プロセスの場合、おそらく以下の3つの作業が必要となるでしょう。</p>
-<ul>
-<li>Railsのデフォルトロケールの差し替えまたはロケールの追加。日付や時刻のフォーマット、月の呼称、Active Recordモデル名などが対象。</li>
-<li>アプリケーションで使用される文字列を抽象化し、キーで検索できる辞書に保存する。フラッシュメッセージやビュー内の固定テキストなどが対象。</li>
-<li>作成された辞書を別の場所に保存する。</li>
-</ul>
-<p>本ガイドではI18n APIをひととおり概観しており、Railsアプリケーションを国際化する方法を一から解説するチュートリアルも収録しています。</p>
-<p>このガイドの内容:</p>
-<ul>
-<li>Ruby on RailsにおけるI18nのしくみ</li>
-<li>RESTfulなアプリケーションを正しく国際化するための方法を多数紹介</li>
-<li>I18n機能を使用してActiveRecordのエラーやActionMailerのメールタイトルを翻訳する方法</li>
-<li>その他アプリケーションの翻訳に使用できるツールの紹介</li>
-</ul>
-
-<hr>
 <p>メモ: RubyのI18nフレームワークでは、Railsアプリケーションの国際化/ローカライズに必要な手段がすべて提供されています。もちろん、さまざまなプラグインや拡張機能を導入してそれ以外の機能を追加しても構いません。詳細についてはRubyの<a href="http://ruby-i18n.org/wiki">I18n Wiki</a>を参照してください(訳注: 翻訳時点ではこのWebサイトにアクセスできませんでした)。</p>
 <h3 id="*-ruby-on-railsにおけるi18nのしくみ">1 * Ruby on RailsにおけるI18nのしくみ</h3>
 <p>国際化は何かと複雑な作業です。自然言語には、たとえば単数形/複数形の違いなどひとつとってもさまざまな違いがあり、すべての問題を一度に解決する魔法のようなツールを提供するのは非常に困難です。このため、Rails I18n APIでは以下の点に絞り込んで問題の解決を図っています。</p>

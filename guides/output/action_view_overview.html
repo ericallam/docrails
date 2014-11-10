@@ -16,7 +16,7 @@
 <meta property="og:type"        content="article" />
 <meta property="og:description" content="Rails 開発のお供に! 日本語版 Rails リファレンスガイド (Rails 4.1 対応)" />
 
-<title>Ruby on Rails Guides</title>
+<title>Action Viewの概要 — Ruby on Rails Guides</title>
 <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
 
@@ -176,7 +176,15 @@
 
   <div id="feature">
     <div class="wrapper">
-      
+      <h2>Action Viewの概要</h2><p>このガイドの内容:</p>
+<ul>
+<li>Action Viewの概要とRailsでの利用法</li>
+<li>テンプレート、パーシャル(部分テンプレート)、レイアウトの最適な利用法</li>
+<li>Action Viewで提供されるヘルパーの紹介と、カスタムヘルパーの作成法</li>
+<li>ビューのローカライズ方法</li>
+<li>Rails以外の環境でAction Viewを使用する方法</li>
+</ul>
+
                 <div id="subCol">
             <h3 class="chapter"><img src="images/chapters_icon.gif" alt="" />Chapters</h3>
             <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
@@ -229,17 +237,6 @@
       <div id="mainCol">
         <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
-<h2>Action Viewの概要</h2>
-<p>このガイドの内容:</p>
-<ul>
-<li>Action Viewの概要とRailsでの利用法</li>
-<li>テンプレート、パーシャル(部分テンプレート)、レイアウトの最適な利用法</li>
-<li>Action Viewで提供されるヘルパーの紹介と、カスタムヘルパーの作成法</li>
-<li>ビューのローカライズ方法</li>
-<li>Rails以外の環境でAction Viewを使用する方法</li>
-</ul>
-
-<hr>
 <h3 id="action-viewについて">1 Action Viewについて</h3>
 <p>Action ViewおよびAction Controllerは、Action Packを構成する2大コンポーネントです。Railsでは、WebリクエストはAction Packで取り扱われます。この動作はコントローラ寄りの部分 (ロジックの実行) とビュー寄りの部分(テンプレートの描画) に分かれます。Action Controllerは、データベースとのやりとりや、必要に応じたCRUD (Create/Read/Update/Delete) アクションの実行にかかわります。Action View はその後レスポンスを実際のWebページにまとめる役割を担います。</p>
 <p>Action Viewのテンプレートは、HTMLタグの合間にERB (Embedded Ruby) を含む形式で書かれます。ビューテンプレートがコードの繰り返しでうずまって乱雑になるのを避けるために、フォーム・日付・文字列に対して共通の動作を提供するヘルパークラスが多数用意されています。アプリケーションの機能向上に応じて独自のヘルパーを追加することも簡単にできます。</p>

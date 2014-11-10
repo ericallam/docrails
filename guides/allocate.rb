@@ -24,8 +24,6 @@ end
 Dir.glob("./source/**.md") do |filename|
   text    = File.read(filename)
   revised = text.gsub("　", "    ").gsub(/\[W(\d)\]/) {' ' * $1.to_i}
+  revised.gsub!(/(\r\n)/, "\n") # Correct: CR＋LF -> LF
   File.write(filename, revised)
 end
-
-
-

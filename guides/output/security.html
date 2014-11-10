@@ -16,7 +16,7 @@
 <meta property="og:type"        content="article" />
 <meta property="og:description" content="Rails 開発のお供に! 日本語版 Rails リファレンスガイド (Rails 4.1 対応)" />
 
-<title>Ruby on Rails Guides</title>
+<title>Ruby on Railsセキュリティガイド — Ruby on Rails Guides</title>
 <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
 
@@ -176,7 +176,16 @@
 
   <div id="feature">
     <div class="wrapper">
-      
+      <h2>Ruby on Railsセキュリティガイド</h2><p>このマニュアルでは、Webアプリケーション全般におけるセキュリティの問題と、Railsでそれらの問題を回避する方法について説明します。</p><p>このガイドの内容:</p>
+<ul>
+<li><em>本ガイドで取り上げられている問題</em> に対するあらゆる対策</li>
+<li>Railsにおけるセッションの概念、セッションに含まれる項目、セッションに対して行われることの多い攻撃</li>
+<li>Webサイトを開くだけでセキュリティ問題が発生するしくみ (CSRF)</li>
+<li>ファイルの取扱い上の注意、管理インターフェイスを提供する際の注意</li>
+<li>いかにユーザーを管理すべきか (ログイン/ログアウトのしくみ、あらゆるレイヤにおける攻撃方法の解説)</li>
+<li>最もよく知られたインジェクション攻撃の手法</li>
+</ul>
+
                 <div id="subCol">
             <h3 class="chapter"><img src="images/chapters_icon.gif" alt="" />Chapters</h3>
             <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
@@ -265,20 +274,6 @@
       <div id="mainCol">
         <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
-<h2>Ruby on Railsセキュリティガイド</h2>
-<p>このマニュアルでは、Webアプリケーション全般におけるセキュリティの問題と、Railsでそれらの問題を回避する方法について説明します。</p>
-<p>このガイドの内容:</p>
-<ul>
-<li>
-<em>本ガイドで取り上げられている問題</em> に対するあらゆる対策</li>
-<li>Railsにおけるセッションの概念、セッションに含まれる項目、セッションに対して行われることの多い攻撃</li>
-<li>Webサイトを開くだけでセキュリティ問題が発生するしくみ (CSRF)</li>
-<li>ファイルの取扱い上の注意、管理インターフェイスを提供する際の注意</li>
-<li>いかにユーザーを管理すべきか (ログイン/ログアウトのしくみ、あらゆるレイヤにおける攻撃方法の解説)</li>
-<li>最もよく知られたインジェクション攻撃の手法</li>
-</ul>
-
-<hr>
 <h3 id="はじめに">1 はじめに</h3>
 <p>Webアプリケーションフレームワークは、Webアプリケーションを容易に開発できるようにするために作られました。その中にはセキュリティを比較的高めやすいフレームワークもあります。実際のところ、あるフレームワークは他のよりも安全であるということは一概には言えません。正しく用いることができているのであれば、たいていのフレームワークで安全なWebアプリケーションを構築できます (逆に言えば、正しく用いられていなければどんなWebアプリケーションを採用しようとも安全を保つことはできません)。Ruby on Railsには、こうした問題が大事に至らないようにセキュリティを保つための便利なヘルパーメソッド (SQLインジェクション対策用など) がいくつか用意されています。筆者がこれまで監査したRailsアプリケーションはいずれもセキュリティの水準を満たしており、誠に喜ばしい限りです。</p>
 <p>一般に、導入するだけでたちまちセキュリティを保つことができるような便利なものはありません。セキュリティは、フレームワークを使用する人間に強く依存します。場合によっては開発方法もセキュリティに影響することがあります。セキュリティは、Webアプリケーションを構成するあらゆる階層 (バックエンドのストレージ、Webサーバー、Webアプリケーション自身、他の階層など) に依存しています。どれか一つの階層に問題があれば、他の階層がどれだけ堅固であっても全体のセキュリティはその問題のある階層のレベルにまで落ちてしまいます。</p>

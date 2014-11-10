@@ -16,7 +16,7 @@
 <meta property="og:type"        content="article" />
 <meta property="og:description" content="Rails 開発のお供に! 日本語版 Rails リファレンスガイド (Rails 4.1 対応)" />
 
-<title>Ruby on Rails Guides</title>
+<title>Active Record Migrations — Ruby on Rails Guides</title>
 <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
 
@@ -176,7 +176,14 @@
 
   <div id="feature">
     <div class="wrapper">
-      
+      <h2>Active Record Migrations</h2><p>Migrations are a feature of Active Record that allows you to evolve your database schema over time. Rather than write schema modifications in pure SQL, migrations allow you to use an easy Ruby DSL to describe changes to your tables.</p><p>このガイドの内容:</p>
+<ul>
+<li>The generators you can use to create them.</li>
+<li>The methods Active Record provides to manipulate your database.</li>
+<li>The Rake tasks that manipulate migrations and your schema.</li>
+<li>How migrations relate to <code>schema.rb</code>.</li>
+</ul>
+
                 <div id="subCol">
             <h3 class="chapter"><img src="images/chapters_icon.gif" alt="" />Chapters</h3>
             <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
@@ -242,17 +249,6 @@
       <div id="mainCol">
         <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
-<h2>Active Record Migrations</h2>
-<p>Migrations are a feature of Active Record that allows you to evolve your database schema over time. Rather than write schema modifications in pure SQL, migrations allow you to use an easy Ruby DSL to describe changes to your tables.</p>
-<p>このガイドの内容:</p>
-<ul>
-<li>The generators you can use to create them.</li>
-<li>The methods Active Record provides to manipulate your database.</li>
-<li>The Rake tasks that manipulate migrations and your schema.</li>
-<li>How migrations relate to <code>schema.rb</code>.</li>
-</ul>
-
-<hr>
 <h3 id="migration-overview">1 Migration Overview</h3>
 <p>Migrations are a convenient way to <a href="http://en.wikipedia.org/wiki/Schema_migration">alter your database schema over time</a> in a consistent and easy way. They use a Ruby DSL so that you don't have to write SQL by hand, allowing your schema and changes to be database independent.</p>
 <p>You can think of each migration as being a new 'version' of the database. A schema starts off with nothing in it, and each migration modifies it to add or remove tables, columns, or entries. Active Record knows how to update your schema along this timeline, bringing it from whatever point it is in the history to the latest version. Active Record will also update your <code>db/schema.rb</code> file to match the up-to-date structure of your database.</p>

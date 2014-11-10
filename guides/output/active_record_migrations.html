@@ -16,7 +16,7 @@
 <meta property="og:type"        content="article" />
 <meta property="og:description" content="Rails 開発のお供に! 日本語版 Rails リファレンスガイド (Rails 4.1 対応)" />
 
-<title>Ruby on Rails Guides</title>
+<title>Active Recordマイグレーション — Ruby on Rails Guides</title>
 <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
 
@@ -176,7 +176,14 @@
 
   <div id="feature">
     <div class="wrapper">
-      
+      <h2>Active Recordマイグレーション</h2><p>マイグレーション (migration) はActive Recordの機能の1つであり、データベーススキーマを長期にわたって安定して発展・増築し続けることができるようにするための仕組みです。マイグレーション機能のおかげで、Rubyで作成されたマイグレーション用のDSL (ドメイン固有言語) を使用して、テーブルの変更を簡単に記述できます。スキーマを変更するためにSQLを直に書いて実行する必要がありません。</p><p>このガイドの内容:</p>
+<ul>
+<li>マイグレーション作成で使用できるジェネレータ</li>
+<li>Active Recordが提供するデータベース操作用メソッド群の解説</li>
+<li>マイグレーション実行とスキーマ更新用のRakeタスクの解説</li>
+<li>マイグレーションとスキーマファイル<code>schema.rb</code>の関係</li>
+</ul>
+
                 <div id="subCol">
             <h3 class="chapter"><img src="images/chapters_icon.gif" alt="" />Chapters</h3>
             <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
@@ -245,17 +252,6 @@
       <div id="mainCol">
         <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
-<h2>Active Recordマイグレーション</h2>
-<p>マイグレーション (migration) はActive Recordの機能の1つであり、データベーススキーマを長期にわたって安定して発展・増築し続けることができるようにするための仕組みです。マイグレーション機能のおかげで、Rubyで作成されたマイグレーション用のDSL (ドメイン固有言語) を使用して、テーブルの変更を簡単に記述できます。スキーマを変更するためにSQLを直に書いて実行する必要がありません。</p>
-<p>このガイドの内容:</p>
-<ul>
-<li>マイグレーション作成で使用できるジェネレータ</li>
-<li>Active Recordが提供するデータベース操作用メソッド群の解説</li>
-<li>マイグレーション実行とスキーマ更新用のRakeタスクの解説</li>
-<li>マイグレーションとスキーマファイル<code>schema.rb</code>の関係</li>
-</ul>
-
-<hr>
 <h3 id="マイグレーションの概要">1 マイグレーションの概要</h3>
 <p>マイグレーションは、<a href="http://en.wikipedia.org/wiki/Schema_migration">データベーススキーマの継続的な変更</a> を、統一的かつ簡単に行なうための便利な手法です。マイグレーションではRubyのDSLを使用しているので、生のSQLを作成する必要がなく、スキーマとスキーマへの変更をデータベースの種類に依存せずに済みます。</p>
 <p>1つ1つのマイグレーションは、データベースの新しい'version'とみなすことができます。スキーマは最初空の状態から始まり、マイグレーションによる変更が加わるたびにテーブル、カラム、エントリが追加または削除されます。Active Recordは時系列に沿ってスキーマを更新する方法を知っているので、履歴のどの時点からでも最新バージョンのスキーマに更新することができます。Active Recordは<code>db/schema.rb</code>ファイルを更新し、データベースの最新の構造と一致するようにします。</p>

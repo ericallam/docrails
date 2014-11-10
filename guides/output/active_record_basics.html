@@ -16,7 +16,7 @@
 <meta property="og:type"        content="article" />
 <meta property="og:description" content="Rails 開発のお供に! 日本語版 Rails リファレンスガイド (Rails 4.1 対応)" />
 
-<title>Ruby on Rails Guides</title>
+<title>Active Recordの基礎 — Ruby on Rails Guides</title>
 <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
 
@@ -176,7 +176,15 @@
 
   <div id="feature">
     <div class="wrapper">
-      
+      <h2>Active Recordの基礎</h2><p>このガイドではActive Recordの基礎について説明します。</p><p>このガイドの内容:</p>
+<ul>
+<li>オブジェクトリレーションマッピング(ORM)とActive Recordについて、およびRailsでの利用方法</li>
+<li>Active RecordとMVC (Model-View-Controller)パラダイムの親和性</li>
+<li>Active Recordモデルを使用してリレーショナルデータベースに保存されたデータを操作する</li>
+<li>Active Recordスキーマにおける名前付けルール</li>
+<li>データベースのマイグレーション、検証(validation)、コールバック</li>
+</ul>
+
                 <div id="subCol">
             <h3 class="chapter"><img src="images/chapters_icon.gif" alt="" />Chapters</h3>
             <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
@@ -226,18 +234,6 @@
       <div id="mainCol">
         <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
-<h2>Active Recordの基礎</h2>
-<p>このガイドではActive Recordの基礎について説明します。</p>
-<p>このガイドの内容:</p>
-<ul>
-<li>オブジェクトリレーションマッピング(ORM)とActive Recordについて、およびRailsでの利用方法</li>
-<li>Active RecordとMVC (Model-View-Controller)パラダイムの親和性</li>
-<li>Active Recordモデルを使用してリレーショナルデータベースに保存されたデータを操作する</li>
-<li>Active Recordスキーマにおける名前付けルール</li>
-<li>データベースのマイグレーション、検証(validation)、コールバック</li>
-</ul>
-
-<hr>
 <h3 id="active-recordについて">1 Active Recordについて</h3>
 <p>Active Recordとは、<a href="getting_started.html#the-mvc-architecture">MVC</a>で言うところのM、つまりモデルに相当するものであり、ビジネスデータとビジネスロジックを表すシステムの階層です。Active Recordは、データベースに恒久的に保存される必要のあるビジネスオブジェクトの作成と利用を円滑に行なえるようにします。Active Recordは、オブジェクトリレーションマッピング(ORM: Object Relation Mapping)システムに記述されている「Active Recordパターン」を実装したものであり、同じ名前が付けられています。</p>
 <h4 id="active-recordパターン">1.1 Active Recordパターン</h4>

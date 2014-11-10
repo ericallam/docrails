@@ -16,7 +16,7 @@
 <meta property="og:type"        content="article" />
 <meta property="og:description" content="Rails 開発のお供に! 日本語版 Rails リファレンスガイド (Rails 4.1 対応)" />
 
-<title>Ruby on Rails Guides</title>
+<title>フォームヘルパー — Ruby on Rails Guides</title>
 <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
 
@@ -176,7 +176,17 @@
 
   <div id="feature">
     <div class="wrapper">
-      
+      <h2>フォームヘルパー</h2><p>Webアプリケーションにおけるフォームは、ユーザー入力を扱うのに不可欠なインターフェイスです。しかしフォームのコントロールの命名法は今ひとつで、しかも多数の属性があるため、フォームのマークアップは作成も保守も退屈な作業になりがちです。そこでRailsでは、フォームのマークアップを生成するビューヘルパーを提供し、これらの煩雑な作業を行わないで済むようにしました。しかしながら現実のユースケースはさまざまであるため、開発者はこれらを実際に使用する前に、これらのよく似たヘルパーメソッド群にどのような違いがあるのかをすべて把握しておく必要があります。</p><p>このガイドの内容:</p>
+<ul>
+<li>検索フォーム、および特定のモデルを表さない一般的なフォームの作成法</li>
+<li>特定のデータベースレコードの作成編集を行なう、モデル中心のフォーム作成法</li>
+<li>複数の種類のデータからセレクトボックスを生成する方法</li>
+<li>Railsが提供する日付時刻関連ヘルパー</li>
+<li>ファイルアップロード用フォームの動作変更方法</li>
+<li>外部リソース向けにフォームを作成する方法</li>
+<li>複雑なフォームの作成方法</li>
+</ul>
+
                 <div id="subCol">
             <h3 class="chapter"><img src="images/chapters_icon.gif" alt="" />Chapters</h3>
             <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
@@ -265,20 +275,6 @@
       <div id="mainCol">
         <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
-<h2>フォームヘルパー</h2>
-<p>Webアプリケーションにおけるフォームは、ユーザー入力を扱うのに不可欠なインターフェイスです。しかしフォームのコントロールの命名法は今ひとつで、しかも多数の属性があるため、フォームのマークアップは作成も保守も退屈な作業になりがちです。そこでRailsでは、フォームのマークアップを生成するビューヘルパーを提供し、これらの煩雑な作業を行わないで済むようにしました。しかしながら現実のユースケースはさまざまであるため、開発者はこれらを実際に使用する前に、これらのよく似たヘルパーメソッド群にどのような違いがあるのかをすべて把握しておく必要があります。</p>
-<p>このガイドの内容:</p>
-<ul>
-<li>検索フォーム、および特定のモデルを表さない一般的なフォームの作成法</li>
-<li>特定のデータベースレコードの作成編集を行なう、モデル中心のフォーム作成法</li>
-<li>複数の種類のデータからセレクトボックスを生成する方法</li>
-<li>Railsが提供する日付時刻関連ヘルパー</li>
-<li>ファイルアップロード用フォームの動作変更方法</li>
-<li>外部リソース向けにフォームを作成する方法</li>
-<li>複雑なフォームの作成方法</li>
-</ul>
-
-<hr>
 <p>メモ: このガイドはフォームヘルパーとその引数について網羅的に説明するものではありません。完全なリファレンスについては<a href="http://api.rubyonrails.org/">Rails APIドキュメント</a>を参照してください。</p>
 <h3 id="基本的なフォームを作成する">1 基本的なフォームを作成する</h3>
 <p>最も基本的なフォームヘルパは<code>form_tag</code>です。</p>

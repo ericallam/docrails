@@ -16,7 +16,7 @@
 <meta property="og:type"        content="article" />
 <meta property="og:description" content="Rails 開発のお供に! 日本語版 Rails リファレンスガイド (Rails 4.1 対応)" />
 
-<title>Ruby on Rails Guides</title>
+<title>Active Recordの関連付け(アソシエーション) — Ruby on Rails Guides</title>
 <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
 
@@ -176,7 +176,13 @@
 
   <div id="feature">
     <div class="wrapper">
-      
+      <h2>Active Recordの関連付け(アソシエーション)</h2><p>このガイドでは、Active Recordの関連付け機能(アソシエーション)について解説します。</p><p>このガイドの内容:</p>
+<ul>
+<li>Active Recordのモデル同士の関連付けを宣言する方法</li>
+<li>Active Recordのモデルを関連付けるさまざまな方法</li>
+<li>関連付けを作成すると自動的に追加されるメソッドの使用方法</li>
+</ul>
+
                 <div id="subCol">
             <h3 class="chapter"><img src="images/chapters_icon.gif" alt="" />Chapters</h3>
             <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
@@ -234,16 +240,6 @@
       <div id="mainCol">
         <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
-<h2>Active Recordの関連付け(アソシエーション)</h2>
-<p>このガイドでは、Active Recordの関連付け機能(アソシエーション)について解説します。</p>
-<p>このガイドの内容:</p>
-<ul>
-<li>Active Recordのモデル同士の関連付けを宣言する方法</li>
-<li>Active Recordのモデルを関連付けるさまざまな方法</li>
-<li>関連付けを作成すると自動的に追加されるメソッドの使用方法</li>
-</ul>
-
-<hr>
 <h3 id="関連付けを使用する理由">1 関連付けを使用する理由</h3>
 <p>モデルとモデルの間には関連付けを行なう必要がありますが、その理由を御存じでしょうか。関連付けを行なうのは、それによってコード内で一般的に行われる操作をはるかに簡単にできるからです。簡単なRailsアプリケーションを例にとって説明しましょう。このアプリケーションには顧客用のモデル(Customer)と注文用のモデル(Order)があります。一人の顧客は、多くの注文を行なうことができます。関連付けを設定していない状態では、モデルの宣言は以下のようになります。</p>
 <div class="code_container">

@@ -16,7 +16,7 @@
 <meta property="og:type"        content="article" />
 <meta property="og:description" content="Rails 開発のお供に! 日本語版 Rails リファレンスガイド (Rails 4.1 対応)" />
 
-<title>Ruby on Rails Guides</title>
+<title>Active Recordコールバック — Ruby on Rails Guides</title>
 <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
 
@@ -176,7 +176,13 @@
 
   <div id="feature">
     <div class="wrapper">
-      
+      <h2>Active Recordコールバック</h2><p>このガイドでは、Active Recordオブジェクトのライフサイクルにフックをかける方法について説明します。</p><p>このガイドの内容:</p>
+<ul>
+<li>Active Recordオブジェクトのライフサイクル</li>
+<li>オブジェクトのライフサイクルにおけるイベントに応答するコールバックメソッドを作成する方法</li>
+<li>コールバックで共通となる振る舞いをカプセル化する特殊なクラスの作成方法</li>
+</ul>
+
                 <div id="subCol">
             <h3 class="chapter"><img src="images/chapters_icon.gif" alt="" />Chapters</h3>
             <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
@@ -229,16 +235,6 @@
       <div id="mainCol">
         <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
-<h2>Active Recordコールバック</h2>
-<p>このガイドでは、Active Recordオブジェクトのライフサイクルにフックをかける方法について説明します。</p>
-<p>このガイドの内容:</p>
-<ul>
-<li>Active Recordオブジェクトのライフサイクル</li>
-<li>オブジェクトのライフサイクルにおけるイベントに応答するコールバックメソッドを作成する方法</li>
-<li>コールバックで共通となる振る舞いをカプセル化する特殊なクラスの作成方法</li>
-</ul>
-
-<hr>
 <h3 id="オブジェクトのライフサイクル">1 オブジェクトのライフサイクル</h3>
 <p>Railsアプリケーションを普通に操作すると、その内部でオブジェクトが作成されたり、更新されたりdestoryされたりします。Active Recordはこの<em>オブジェクトライフライクル</em>へのフックを提供しており、これを使用してアプリケーションやデータを制御できます。</p>
 <p>コールバックは、オブジェクトの状態が切り替わる「前」または「後」にロジックをトリガします。</p>

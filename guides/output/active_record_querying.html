@@ -16,7 +16,7 @@
 <meta property="og:type"        content="article" />
 <meta property="og:description" content="Rails 開発のお供に! 日本語版 Rails リファレンスガイド (Rails 4.1 対応)" />
 
-<title>Ruby on Rails Guides</title>
+<title>Active Recordクエリインターフェイス — Ruby on Rails Guides</title>
 <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
 
@@ -176,7 +176,17 @@
 
   <div id="feature">
     <div class="wrapper">
-      
+      <h2>Active Recordクエリインターフェイス</h2><p>このガイドでは、Active Recordを使用してデータベースからデータを取り出すためのさまざまな方法について解説します。</p><p>このガイドの内容:</p>
+<ul>
+<li>多くのメソッドや条件を駆使してレコードを検索する</li>
+<li>検索されたレコードのソート順、取り出したい属性、グループ化の有無などを指定する</li>
+<li>eager loadingを使用して、データ取り出しに必要なクエリの実行回数を減らす</li>
+<li>動的検索メソッドを使用する</li>
+<li>特定のレコードが存在するかどうかをチェックする</li>
+<li>Active Recordモデルでさまざまな計算を行う</li>
+<li>リレーションでEXPLAINを実行する</li>
+</ul>
+
                 <div id="subCol">
             <h3 class="chapter"><img src="images/chapters_icon.gif" alt="" />Chapters</h3>
             <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
@@ -304,20 +314,6 @@
       <div id="mainCol">
         <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
-<h2>Active Recordクエリインターフェイス</h2>
-<p>このガイドでは、Active Recordを使用してデータベースからデータを取り出すためのさまざまな方法について解説します。</p>
-<p>このガイドの内容:</p>
-<ul>
-<li>多くのメソッドや条件を駆使してレコードを検索する</li>
-<li>検索されたレコードのソート順、取り出したい属性、グループ化の有無などを指定する</li>
-<li>eager loadingを使用して、データ取り出しに必要なクエリの実行回数を減らす</li>
-<li>動的検索メソッドを使用する</li>
-<li>特定のレコードが存在するかどうかをチェックする</li>
-<li>Active Recordモデルでさまざまな計算を行う</li>
-<li>リレーションでEXPLAINを実行する</li>
-</ul>
-
-<hr>
 <p>生のSQLを使用してデータベースのレコードを検索することに慣れきった人がRailsに出会うと、Railsでは同じ操作をずっと洗練された方法で実現できることに気付くでしょう。Active Recordを使用することで、SQLを直に実行する必要はほぼなくなります。</p>
 <p>本ガイドのコード例では、基本的に以下のモデルを使用します。</p>
 <p>メモ: 特に記さない限り、モデル中の<code>id</code>は主キーを表します。</p>

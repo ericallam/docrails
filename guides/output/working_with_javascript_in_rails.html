@@ -16,7 +16,7 @@
 <meta property="og:type"        content="article" />
 <meta property="og:description" content="Rails 開発のお供に! 日本語版 Rails リファレンスガイド (Rails 4.1 対応)" />
 
-<title>Ruby on Rails Guides</title>
+<title>RailsでJavaScriptを使用する — Ruby on Rails Guides</title>
 <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
 
@@ -176,7 +176,15 @@
 
   <div id="feature">
     <div class="wrapper">
-      
+      <h2>RailsでJavaScriptを使用する</h2><p>本ガイドでは、RailsにビルトインされているAjax/JavaScript機能などについて解説します。これらを活用して、リッチな動的Ajaxアプリケーションをお手軽に作ることができます。</p><p>このガイドの内容:</p>
+<ul>
+<li>Ajaxの基礎</li>
+<li>「控えめなJavaScript」について</li>
+<li>Railsのビルトインヘルパーの活用方法</li>
+<li>サーバー側でAjaxを扱う方法</li>
+<li>Turbolinks gem</li>
+</ul>
+
                 <div id="subCol">
             <h3 class="chapter"><img src="images/chapters_icon.gif" alt="" />Chapters</h3>
             <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
@@ -222,18 +230,6 @@
       <div id="mainCol">
         <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
-<h2>RailsでJavaScriptを使用する</h2>
-<p>本ガイドでは、RailsにビルトインされているAjax/JavaScript機能などについて解説します。これらを活用して、リッチな動的Ajaxアプリケーションをお手軽に作ることができます。</p>
-<p>このガイドの内容:</p>
-<ul>
-<li>Ajaxの基礎</li>
-<li>「控えめなJavaScript」について</li>
-<li>Railsのビルトインヘルパーの活用方法</li>
-<li>サーバー側でAjaxを扱う方法</li>
-<li>Turbolinks gem</li>
-</ul>
-
-<hr>
 <h3 id="はじめてのajax">1 はじめてのAjax</h3>
 <p>Ajaxを理解するには、Webブラウザの基本的な動作について理解しておく必要があります。</p>
 <p>ブラウザのアドレスバーに<code>http://localhost:3000</code>と入力して'Go'を押すと、ブラウザ (つまりクライアント) はサーバーに対してリクエストを1つ送信します。ブラウザは、サーバーから受け取ったレスポンスを解析し、続いて必要なすべてのアセット (JavaScriptファイル、スタイルシート、画像) をサーバーから取得します。続いてブラウザはページを組み立てます。ブラウザに表示されているリンクをクリックすると、同じプロセスが実行されます。ブラウザはページを取得し、続いてアセットを取得し、それらをすべてまとめてから結果を表示します。これが、いわゆる「リクエスト-レスポンス」のサイクルです。</p>
