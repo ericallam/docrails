@@ -75,7 +75,7 @@ $ bin/rails plugin --help
   * エンジンで使用するレイアウトビューテンプレート
   * `config/routes.rb`での名前空間分離
 
-  ```ruby
+    ```ruby
     Blorgh::Engine.routes.draw do
     end
     ```

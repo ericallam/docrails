@@ -305,27 +305,32 @@ end
 名前空間化された<code>ApplicationHelper</code>スタブ</li>
 <li>エンジンで使用するレイアウトビューテンプレート</li>
 <li>
-<code>config/routes.rb</code>での名前空間分離</li>
-</ul>
+<p><code>config/routes.rb</code>での名前空間分離</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-    Blorgh::Engine.routes.draw do
-    end
-    ```
+Blorgh::Engine.routes.draw do
+end
 
-  * `lib/blorgh/engine.rb`での名前空間分離
+</pre>
+</div>
+</li>
+<li>
+<p><code>lib/blorgh/engine.rb</code>での名前空間分離</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+module Blorgh
+  class Engine &lt; ::Rails::Engine
+    isolate_namespace Blorgh
+  end
+end
 
-    ```ruby
-    module Blorgh
-      class Engine &lt; ::Rails::Engine
-        isolate_namespace Blorgh
-      end
-    end
-    ```
-
-さらに、`--mountable`オプションはダミーのテスト用アプリケーションを `test/dummy`に配置するようジェネレータに指示します。これは、以下のダミーアプリケーションのルーティングファイルを`test/dummy/config/routes.rb`に追加することによって行います。
-
-```ruby
+</pre>
+</div>
+</li>
+</ul>
+<p>さらに、<code>--mountable</code>オプションはダミーのテスト用アプリケーションを <code>test/dummy</code>に配置するようジェネレータに指示します。これは、以下のダミーアプリケーションのルーティングファイルを<code>test/dummy/config/routes.rb</code>に追加することによって行います。</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
 mount Blorgh::Engine =&gt; "/blorgh"
 
 </pre>
