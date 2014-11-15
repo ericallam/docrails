@@ -275,7 +275,7 @@
       <div id="mainCol">
         <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
-<p>メモ: このガイドはフォームヘルパーとその引数について網羅的に説明するものではありません。完全なリファレンスについては<a href="http://api.rubyonrails.org/">Rails APIドキュメント</a>を参照してください。</p>
+<div class="note"><p>このガイドはフォームヘルパーとその引数について網羅的に説明するものではありません。完全なリファレンスについては<a href="http://api.rubyonrails.org/">Rails APIドキュメント</a>を参照してください。</p></div>
 <h3 id="基本的なフォームを作成する">1 基本的なフォームを作成する</h3>
 <p>最も基本的なフォームヘルパは<code>form_tag</code>です。</p>
 <div class="code_container">
@@ -300,7 +300,7 @@
 </pre>
 </div>
 <p>上のフォームに何か余分なものがあることにお気付きでしょうか。<code>div</code>タグに囲まれた中に、2つの隠しinput要素が置かれています。このdivタグは省略できません。これがないとフォームを正常に送信できないのです。最初の<code>utf8</code>隠しinput要素では、フォームの文字エンコーディングを指定のとおりにブラウザに強制します。これはアクションが"GET"と"POST"のどちらであってもすべてのフォームで生成されます。2番目隠しinput要素である<code>authenticity_token</code>要素は <strong>クロスサイトリクエストフォージェリへの保護</strong> のためのセキュリティ機能です。この要素はGET以外のすべてのフォームで生成されます (セキュリティ機能が有効になっている場合)。詳細については<a href="./security.html#cross-site-request-forgery-csrf">セキュリティガイド</a>を参照してください。</p>
-<p>メモ: 本ガイドでは以後、隠しinput要素の例を簡潔にするため<code>div</code>を省略します。</p>
+<div class="note"><p>本ガイドでは以後、隠しinput要素の例を簡潔にするため<code>div</code>を省略します。</p></div>
 <h4 id="一般的な検索フォーム">1.1 一般的な検索フォーム</h4>
 <p>検索フォームはWebでよく使われています。このフォームには以下のものが含まれています。</p>
 <ul>
@@ -331,9 +331,9 @@
 
 </pre>
 </div>
-<p>ヒント: どのフォームinputを使用した場合でも、id属性はフォームの名前から生成されます (上の例では「q」)。これらのidは、cssでのスタイル追加やJavaScriptいよるフォーム制御で使用するのに便利です。</p>
+<div class="info"><p>どのフォームinputを使用した場合でも、id属性はフォームの名前から生成されます (上の例では「q」)。これらのidは、cssでのスタイル追加やJavaScriptいよるフォーム制御で使用するのに便利です。</p></div>
 <p>HTMLの <strong>すべての</strong> フォームコントロールには、<code>text_field_tag</code>や<code>submit_tag</code>と同様の便利なヘルパーが用意されています。</p>
-<p>重要: フォームを検索に使用する場合は必ず"GET"メソッドを使用してください。こうすることで、検索クエリがURLの一部となるので、ユーザーが検索結果をブックマークすると同じ検索を後でブックマークから実行することができます。Railsでは基本的に、アクションに対応する適切なHTTP verbを常に選ぶようにしてください。(訳注: セキュリティガイドにも記載されていますが、更新フォームでGETメソッドを使用すると重大なセキュリティホールが生じます。)</p>
+<div class="warning"><p>フォームを検索に使用する場合は必ず"GET"メソッドを使用してください。こうすることで、検索クエリがURLの一部となるので、ユーザーが検索結果をブックマークすると同じ検索を後でブックマークから実行することができます。Railsでは基本的に、アクションに対応する適切なHTTP verbを常に選ぶようにしてください。(訳注: セキュリティガイドにも記載されていますが、更新フォームでGETメソッドを使用すると重大なセキュリティホールが生じます。)</p></div>
 <h4 id="フォームヘルパーの呼び出しで複数のハッシュを使用する">1.2 フォームヘルパーの呼び出しで複数のハッシュを使用する</h4>
 <p><code>form_tag</code>ヘルパーは2つの引数を取ります。1つはアクションへのパスで、もう1つはオプションのハッシュです。このハッシュには、フォーム送信のメソッドと、HTMLオプション(フォーム要素のクラスなど)が含まれます。</p>
 <p><code>link_to</code>ヘルパーのときと同様、文字列以外の引数も受け取れます。たとえば、Railsのルーティングメカニズムで認識可能なURLパラメータのハッシュを受け取り、このハッシュを正しいURLに変換することができます。ただし、<code>form_tag</code>の引数を両方ともハッシュにするとたちまち問題が生じるでしょう。たとえば次のようなコードを書いたとします。</p>
@@ -399,7 +399,7 @@ form_tag({controller: "people", action: "search"}, method: "get", class: "nifty_
 </pre>
 </div>
 <p><code>check_box_tag</code>ヘルパーのときと同様、<code>radio_button_tag</code>の2番目のパラメータにはinputの値が使用されます。2つのラジオボタン項目は同じ名前 ('age') を共有しているので、ユーザーはどちらかの値だけを選択できます。そして<code>params[:age]</code>の値は"child"と"adult"のどちらかになります。</p>
-<p>メモ: チェックボックスとラジオボタンには必ずラベルを表示してください。ラベルを表示することで、そのオプションとラベルの名前が関連付けられるだけでなく、ラベルの部分までクリック可能になるのでユーザーにとってクリックしやすくなります。</p>
+<div class="note"><p>チェックボックスとラジオボタンには必ずラベルを表示してください。ラベルを表示することで、そのオプションとラベルの名前が関連付けられるだけでなく、ラベルの部分までクリック可能になるのでユーザーにとってクリックしやすくなります。</p></div>
 <h4 id="その他のヘルパー">1.4 その他のヘルパー</h4>
 <p>これまで紹介した他にも、次のようなフィールドがあります: テキストエリア、パスワード、隠しフィールド、検索フィールド、電話番号フィールド、日付フィールド、時刻フィールド、色フィールド、日時フィールド、ローカル日時フィールド、月フィールド、週フィールド、URLフィールド、メールアドレスフィールド、数値フィールド、範囲フィールド。</p>
 <div class="code_container">
@@ -446,10 +446,10 @@ form_tag({controller: "people", action: "search"}, method: "get", class: "nifty_
 </pre>
 </div>
 <p>隠しフィールドはユーザーには表示されず、事前に与えられた値を種類を問わず保持します。隠しフィールドに含まれている値はJavaScriptを使用して変更できます。</p>
-<p>重要: 「検索、電話、日付、時刻、色、日時、ローカル日時、月、週、URL、メールアドレス、数値、範囲」フィールドはHTML5から利用できるようになったコントロールです。
+<div class="warning"><p>「検索、電話、日付、時刻、色、日時、ローカル日時、月、週、URL、メールアドレス、数値、範囲」フィールドはHTML5から利用できるようになったコントロールです。
 これらのフィールドを古いブラウザでも同じように扱いたいのであれば、CSSやJavaScriptを使用したHTML5ポリフィルが必要になるでしょう。
-古いブラウザでHTML5に対応する方法は<a href="https://github.com/Modernizr/Modernizr/wiki/HTML5-Cross-Browser-Polyfills">山ほどあります</a>が、現時点で代表的なものは<a href="http://www.modernizr.com/">Modernizr</a>と<a href="http://yepnopejs.com/">yepnope</a>でしょう(訳注: yepnopeについては<a href="https://github.com/SlexAxton/yepnope.js#deprecation-notice">非推奨宣言</a>が出されています)。これらは、HTML5の新機能が使用されていることが検出された場合に、機能を追加するためのシンプルな方法を提供します。</p>
-<p>ヒント: パスワード入力フィールドを使用しているのであれば、入力されたパスワードをRailsのログに残さないようにしたいと思うことでしょう。その方法については<a href="security.html#logging">セキュリティガイド</a>を参照してください。</p>
+古いブラウザでHTML5に対応する方法は<a href="https://github.com/Modernizr/Modernizr/wiki/HTML5-Cross-Browser-Polyfills">山ほどあります</a>が、現時点で代表的なものは<a href="http://www.modernizr.com/">Modernizr</a>と<a href="http://yepnopejs.com/">yepnope</a>でしょう(訳注: yepnopeについては<a href="https://github.com/SlexAxton/yepnope.js#deprecation-notice">非推奨宣言</a>が出されています)。これらは、HTML5の新機能が使用されていることが検出された場合に、機能を追加するためのシンプルな方法を提供します。</p></div>
+<div class="info"><p>パスワード入力フィールドを使用しているのであれば、入力されたパスワードをRailsのログに残さないようにしたいと思うことでしょう。その方法については<a href="security.html#logging">セキュリティガイド</a>を参照してください。</p></div>
 <h3 id="モデルオブジェクトの取り扱い">2 モデルオブジェクトの取り扱い</h3>
 <h4 id="モデルオブジェクトの取り扱い-モデルオブジェクトヘルパー">2.1 モデルオブジェクトヘルパー</h4>
 <p>フォームの主な仕事といえば、モデルオブジェクトの作成および修正でしょう。<code>*_tag</code>ヘルパーをモデルオブジェクトの作成/修正に用いることはもちろん可能ですが、1つ1つのタグについて正しいパラメータが使用されているか、入力のデフォルト値は適切に設定されているかなどをいちいちコーディングするのは何とも面倒です。Railsにはまさにこのような作業を軽減するのにうってつけのヘルパーがあります。なお、これらのヘルパー名には<em>tagが付いていません (`text</em>field<code>、</code>text_area`など)</p>
@@ -468,7 +468,7 @@ form_tag({controller: "people", action: "search"}, method: "get", class: "nifty_
 </pre>
 </div>
 <p>このフォームを送信すると、ユーザーが入力した値は<code>params[:person][:name]</code>に保存されます。<code>params[:person]</code>ハッシュは<code>Person.new</code>に渡しやすくなっています。<code>@person</code>がPersonモデルのインスタンスであれば<code>@person.update</code>にも渡しやすくなっています。これらのヘルパーでは2番目のパラメータとして属性名を渡すことがほとんどですが、必ずしもそうでないヘルパーもあります。上の例で言うなら、personオブジェクトに<code>name</code>メソッドと<code>name=</code>メソッドがありさえすればRailsは余分な作業をせずに済みます。</p>
-<p>警告: ヘルパーに渡すのはインスタンス変数の「名前」でなければなりません (シンボル<code>:person</code>や文字列<code>"person"</code>など)。渡すのはモデルオブジェクトのインスタンスそのものではありません。</p>
+<div class="warning"><p>ヘルパーに渡すのはインスタンス変数の「名前」でなければなりません (シンボル<code>:person</code>や文字列<code>"person"</code>など)。渡すのはモデルオブジェクトのインスタンスそのものではありません。</p></div>
 <p>Railsのヘルパーには、モデルオブジェクトに関連する検証 (バリデーション) エラーを自動的に表示する機能もあります。詳細については本ガイドの<a href="./active_record_validations.html#displaying-validation-errors-in-views">Active Record検証 (バリデーション)</a>を参照してください。</p>
 <h4 id="フォームとオブジェクトを結び付ける">2.2 フォームとオブジェクトを結び付ける</h4>
 <p>上のやり方でだいぶコーディングが楽になりましたが、改善の余地はまだまだあります。Personモデルに多数の属性があると、編集されたオブジェクトの名前を何度も繰り返さなければなりません。もっと楽に、フォームとモデルオブジェクトを結び付けるだけで簡単に作れないものか。それがまさに<code>form_for</code>なのです。</p>
@@ -545,7 +545,7 @@ resources :articles
 
 </pre>
 </div>
-<p>ヒント: リソースを宣言すると、自動的に他にも多くの設定が行われます。リソースの設定方法の詳細については、<a href="routing.html#resource-routing-the-rails-default">Railsルーティングガイド</a>を参照してください。</p>
+<div class="info"><p>リソースを宣言すると、自動的に他にも多くの設定が行われます。リソースの設定方法の詳細については、<a href="routing.html#resource-routing-the-rails-default">Railsルーティングガイド</a>を参照してください。</p></div>
 <p>RESTfulなリソースを扱っている場合、レコード識別(record identification)を使用すると<code>form_for</code>の呼び出しがはるかに簡単になります。これは、モデルのインスタンスを渡すだけで、後はRailsがそこからモデル名など必要なものを取り出して処理してくれるというものです。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -565,7 +565,7 @@ form_for(@article)
 </div>
 <p>この短い<code>form_for</code>呼び出しは、レコードの作成・編集のどちらにおいてもまったく同じになっています。これがどれほど便利であるかおわかりいただけると思います。レコード識別は、レコードが新しい場合には<code>record.new_record?</code>が必要とされている、などの適切な推測を行ってくれます。さらに送信用の正しいパスを選択し、オブジェクトのクラスに基づいた名前も選択してくれます。</p>
 <p>Railsはフォームの<code>class</code>と<code>id</code>を自動的に設定してくれます。この場合、記事を作成するフォームには<code>id</code>と、<code>new_article</code>という<code>class</code>が与えられます。もし仮にid23の記事を編集しようとしているのであれば、<code>class</code>は<code>edit_article</code>に設定され、idは<code>edit_article_23</code>に設定されます。なお、煩雑さを避けるため、以後これらの属性の表記は割愛します。</p>
-<p>警告: モデルで単一テーブル継承(STI: single-table inheritance)を使用している場合、親クラスでリソースが宣言されていてもサブクラスでレコード識別を利用することはできません。その場合は、モデル名、<code>:url</code>、<code>:method</code>を明示的に指定する必要があります。</p>
+<div class="warning"><p>モデルで単一テーブル継承(STI: single-table inheritance)を使用している場合、親クラスでリソースが宣言されていてもサブクラスでレコード識別を利用することはできません。その場合は、モデル名、<code>:url</code>、<code>:method</code>を明示的に指定する必要があります。</p></div>
 <h5 id="名前空間を扱う">2.3.1 名前空間を扱う</h5>
 <p>名前空間付きのルーティングを作成してある場合、<code>form_for</code>でもこれを利用した簡潔な表記が利用できます。アプリケーションのルーティングでadmin名前空間が設定されているとします。</p>
 <div class="code_container">
@@ -663,8 +663,8 @@ form_tag(search_path, method: "patch")
 </pre>
 </div>
 <p>生成されるオプション内部の値がこの値とマッチすると、Railsは<code>selected</code>属性を自動的にそのオプションに追加します。</p>
-<p>ヒント: <code>options_for_select</code>の2番目の引数は、必要となる内部の値と正確に一致しなければなりません。特に、値が整数の2である場合、文字列の"2"を<code>options_for_select</code>に渡すことはできません。あくまで整数の2を渡す必要があります。<code>params</code>ハッシュから取り出される値はすべて文字列になるので、注意が必要です。</p>
-<p>警告: <code>:include_blank</code>や<code>:prompt</code>が指定されていなくても、選択属性<code>required</code>がtrue<code>になっていると、</code>:include_blank<code>は強制的にtrueに設定され、表示の</code>size<code>は</code>1になり、<code>multiple</code>はtrueになりません。●</p>
+<div class="info"><p><code>options_for_select</code>の2番目の引数は、必要となる内部の値と正確に一致しなければなりません。特に、値が整数の2である場合、文字列の"2"を<code>options_for_select</code>に渡すことはできません。あくまで整数の2を渡す必要があります。<code>params</code>ハッシュから取り出される値はすべて文字列になるので、注意が必要です。</p></div>
+<div class="warning"><p><code>:include_blank</code>や<code>:prompt</code>が指定されていなくても、選択属性<code>required</code>がtrue<code>になっていると、</code>:include_blank<code>は強制的にtrueに設定され、表示の</code>size<code>は</code>1になり、<code>multiple</code>はtrueになりません。●</p></div>
 <p>ハッシュを使用して任意の値を追加することができます。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
@@ -714,7 +714,7 @@ form_tag(search_path, method: "patch")
 
 </pre>
 </div>
-<p>警告: <code>select</code>ヘルパー(および類似の<code>collection_select</code>ヘルパー、<code>select_tag</code>ヘルパーなど)を使用して<code>belongs_to</code>関連付けを設定する場合は、関連付けそのものの名前ではなく、外部キーの名前(上の例であれば<code>city_id</code>)を渡す必要があります。<code>city_id</code>ではなく<code>city</code>を渡すと、<code>Person.new</code>または<code>Person.update</code>に<code>params</code>ハッシュを渡した時にActive Recordで<code>ActiveRecord::AssociationTypeMismatch: City(#17815740) expected, got String(#1138750)</code>エラーが発生します。さらに、属性の編集のみを行なうフォームヘルパーについても注意が必要です。●ユーザーが外部キーを直接操作できてしまうとセキュリティ上の問題が生じる可能性があるため、十分注意してください。</p>
+<div class="warning"><p><code>select</code>ヘルパー(および類似の<code>collection_select</code>ヘルパー、<code>select_tag</code>ヘルパーなど)を使用して<code>belongs_to</code>関連付けを設定する場合は、関連付けそのものの名前ではなく、外部キーの名前(上の例であれば<code>city_id</code>)を渡す必要があります。<code>city_id</code>ではなく<code>city</code>を渡すと、<code>Person.new</code>または<code>Person.update</code>に<code>params</code>ハッシュを渡した時にActive Recordで<code>ActiveRecord::AssociationTypeMismatch: City(#17815740) expected, got String(#1138750)</code>エラーが発生します。さらに、属性の編集のみを行なうフォームヘルパーについても注意が必要です。●ユーザーが外部キーを直接操作できてしまうとセキュリティ上の問題が生じる可能性があるため、十分注意してください。</p></div>
 <h4 id="任意のオブジェクトのコレクションに対してオプションタグを使用する">3.3 任意のオブジェクトのコレクションに対してオプションタグを使用する</h4>
 <p><code>options_for_select</code>を使用してオプションタグを生成する場合、各オプションのテキストと値を含む配列が作成されている必要があります。ここでCityモデルというものがあるとして、それらのオブジェクトのコレクションからオプションタグを生成するにはどうしたらよいでしょうか。ひとつの方法は、コレクションをイテレートしてネストした配列を作成することです。</p>
 <div class="code_container">
@@ -739,7 +739,7 @@ form_tag(search_path, method: "patch")
 </pre>
 </div>
 <p>要約すると、<code>options_from_collection_for_select</code>ヘルパーは「<code>options_for_select</code>が<code>select</code>するもの」を「<code>collection_select</code>する」ということです。</p>
-<p>メモ: <code>options_for_select</code>に渡されるペアでは、名前が1番目でidが2番目でしたが、<code>options_from_collection_for_select</code>の場合は1番目の引数はvalueメソッドで2番目の引数はtextメソッドです。●</p>
+<div class="note"><p><code>options_for_select</code>に渡されるペアでは、名前が1番目でidが2番目でしたが、<code>options_from_collection_for_select</code>の場合は1番目の引数はvalueメソッドで2番目の引数はtextメソッドです。●</p></div>
 <h4 id="タイムゾーンと国を選択する">3.4 タイムゾーンと国を選択する</h4>
 <p>Railsでタイムゾーンをサポートするために、ユーザーが今どのタイムゾーンにいるのかを何らかの形でユーザーに尋ねなければなりません。そのためには、<code>collection_select</code>ヘルパーを使用して、事前定義済みのTimeZoneオブジェクトのリストからセレクトボックスを作成する必要がありますが、実はこの機能を実現する<code>time_zone_select</code>というそれ専用のヘルパーが既に用意されています。</p>
 <div class="code_container">
@@ -811,7 +811,7 @@ Date.civil(params[:start_date][:year].to_i, params[:start_date][:month].to_i, pa
 <h4 id="共通のオプション">4.3 共通のオプション</h4>
 <p>どちらのヘルパーファミリーでも、個別のセレクトタグを生成するためのコア機能は共通なので、多くのオプションが同じように使えます。特にRailsでは、どちらのファミリーでも年のオプションはデフォルトで現在の年の前後5年が使用されます。この範囲が適切でない場合は<code>:start_year</code>オプションと<code>:end_year</code>オプションを使用して上書きできます。利用できるすべてのオプションを知りたい場合は<a href="http://api.rubyonrails.org/classes/ActionView/Helpers/DateHelper.html">APIドキュメント</a>を参照してください。</p>
 <p>経験則から言うと、モデルオブジェクトを扱うのであれば<code>date_select</code>を使用するのがよく、その他の場合、たとえば日付でフィルタするなどの検索フォームで使用するのであれば<code>select_date</code>を使用するのがよいでしょう。</p>
-<p>メモ: ビルトインのデートピッカー (date picker) は日付と曜日が連動してくれないなど、あまりできがよくないことが多いようです。</p>
+<div class="note"><p>ビルトインのデートピッカー (date picker) は日付と曜日が連動してくれないなど、あまりできがよくないことが多いようです。</p></div>
 <h4 id="個別のコンポーネント">4.4 個別のコンポーネント</h4>
 <p>日付のうち、たとえば年だけ、月だけのコンポーネントを表示したくなることがあります。Railsでは日付/時刻の個別の要素を扱うための<code>select_year</code>、<code>select_month</code>、<code>select_day</code>、<code>select_hour</code>、<code>select_minute</code>、<code>select_second</code>ヘルパーが用意されています。これらのヘルパーは比較的単純なつくりになっています。これらのヘルパーでは、その日付時刻コンポーネントの要素名をそのまま入力フィールド名として生成します。たとえば<code>select_year</code>ヘルパーを使用すれば"year"フィールドが生成され、<code>select_month</code>を使用すれば"month"が生成されるといった具合です。<code>:field_name</code>オプションを使用してこの名前をカスタマイズすることもできます。<code>:prefix</code>オプションの動作は<code>select_date</code>や<code>select_time</code>のときと同じで、デフォルト値も同じです。</p>
 <p>1番目のパラメータでは、選択されるべきパラメータを指定します。使用できるのはDate、Time、DateTimeのいずれかのインスタンスで、それらに応じて関連するコンポーネントまたは数値が取り出されます。例：</p>
@@ -853,7 +853,7 @@ end
 </pre>
 </div>
 <p>ファイルがアップロードされた後にはやらなければならないことがたくさんあります。ファイルをどこに保存するのかの決定 (ローカルディスク上か、Amazon S3か、など)、モデルとの関連付けの他に、画像であればサイズの変更やサムネイルの生成が必要になることもあります。これらの事後処理は本ガイドの範疇を超えるのでここでは扱いませんが、これらの処理を助けるライブラリがいくつもあることは知っておいてよいと思います。その中でも<a href="https://github.com/jnicklas/carrierwave">CarrierWave</a>と<a href="http://www.thoughtbot.com/projects/paperclip">Paperclip</a>の2つが有名です。</p>
-<p>メモ: ユーザーがファイルを選択しないでアップロードを行なうと、対応するパラメータには空文字列が置かれます。</p>
+<div class="note"><p>ユーザーがファイルを選択しないでアップロードを行なうと、対応するパラメータには空文字列が置かれます。</p></div>
 <h4 id="ajaxを扱う">5.2 Ajaxを扱う</h4>
 <p>非同期のファイルアップロードフォームの作成は、他のフォームのように<code>form_for</code>に<code>remote: true</code>を指定すれば済むというわけにはいきません。Ajaxフォームのシリアライズは、ブラウザ内で実行されるJavaScriptによって行われます。そしてブラウザのJavaScriptは(危険を避けるため)ローカルのファイルにアクセスできないようになっているので、JavaScriptからアップロードファイルを読み出すことができません。これを回避する方法として最も一般的なのは、非表示のiframeをフォーム送信の対象として使用することでしょう。</p>
 <h3 id="フォームビルダーをカスタマイズする">6 フォームビルダーをカスタマイズする</h3>
@@ -898,7 +898,7 @@ end
 <h3 id="パラメータの命名ルールを理解する">7 パラメータの命名ルールを理解する</h3>
 <p>ここまで説明したように、フォームから受け取る値は<code>params</code>ハッシュのトップレベルに置かれるか、他のハッシュの中に入れ子になって含まれます。たとえば、Personモデルの標準的な<code>create</code>アクションでは、<code>params[:person]</code>はその人物について作成されるすべての属性のハッシュとなるでしょう。<code>params</code>ハッシュには配列やハッシュの配列などを含めることもできます。</p>
 <p>原則として、HTMLフォームはいかなる構造化データについても関知しません。フォームが生成するのはすべて名前と値のペアであり、これらは単なる文字列です。これらのデータをアプリケーション側で参照した時に配列やハッシュになっているのは、Railsで使用されている命名ルールのパラメータのおかげです。</p>
-<p>ヒント: Rackのパラメータパーサーをコンソールから直接呼び出すことで、この節に記載されている例を即座に確認することができます。例えば、</p>
+<div class="info"><p>Rackのパラメータパーサーをコンソールから直接呼び出すことで、この節に記載されている例を即座に確認することができます。例えば、</p></div>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Rack::Utils.parse_query "name=fred&amp;phone=0123456789"
@@ -958,7 +958,7 @@ Rack::Utils.parse_query "name=fred&amp;phone=0123456789"
 </div>
 <p>上のフォームによって<code>params[:addresses]</code>ハッシュが作成されます。これは<code>line1</code>、<code>line2</code>、<code>city</code>をキーに持つハッシュとなります。入力された名前が現在のハッシュに既にある場合は、新しいハッシュに値が追加されるようになります。</p>
 <p>ただしここで1つ制限があります。ハッシュはいくらでもネストできますが、配列は1階層しか使用できません。配列はたいていの場合ハッシュで置き換えることができます。たとえば、モデルオブジェクトの配列の代わりに、モデルオブジェクトのハッシュを使用することができます。このキーにはid、配列インデックスなどのパラメータが使用できます。</p>
-<p>警告: 配列パラメータは、<code>check_box</code>ヘルパーとの相性がよくありません。HTMLの仕様では、オンになっていないチェックボックスからは値が送信されません。しかし、チェックボックスから常に値が送信される方が何かと便利です。そこで<code>check_box</code>ヘルパーは、同じ名前で予備の隠し入力を作成することで、本来送信されないはずのチェックボックス値が見かけ上送信されるようにしています。チェックボックスがオフになっていると隠し入力値だけが送信され、チェックボックスがオンになっていると本来のチェックボックス値と隠し入力値が両方送信されますが、このとき優先されるのは本来のチェックボックス値の方です。従って、このように重複した値送信に対して配列パラメータを使用するとRailsが混乱することがあります。その理由は、入力名が重複している場合はそこで新しい配列要素が作成されるからです。これを回避するためには、<code>check_box_tag</code>を使用するか、配列をやめてハッシュを使用してください。</p>
+<div class="warning"><p>配列パラメータは、<code>check_box</code>ヘルパーとの相性がよくありません。HTMLの仕様では、オンになっていないチェックボックスからは値が送信されません。しかし、チェックボックスから常に値が送信される方が何かと便利です。そこで<code>check_box</code>ヘルパーは、同じ名前で予備の隠し入力を作成することで、本来送信されないはずのチェックボックス値が見かけ上送信されるようにしています。チェックボックスがオフになっていると隠し入力値だけが送信され、チェックボックスがオンになっていると本来のチェックボックス値と隠し入力値が両方送信されますが、このとき優先されるのは本来のチェックボックス値の方です。従って、このように重複した値送信に対して配列パラメータを使用するとRailsが混乱することがあります。その理由は、入力名が重複している場合はそこで新しい配列要素が作成されるからです。これを回避するためには、<code>check_box_tag</code>を使用するか、配列をやめてハッシュを使用してください。</p></div>
 <h4 id="フォームヘルパーを使用する">7.3 フォームヘルパーを使用する</h4>
 <p>前の節ではRailsのフォームヘルパーをまったく使用していませんでした。もちろん、このように入力名を自分でこしらえて<code>text_field_tag</code>などのヘルパーに渡してもよいのですが、Railsにはさらに高度なサポートがあります。そのための便利な道具は、<code>form_for</code>と<code>fields_for</code>の名前パラメータ、そしてヘルパーが引数に取る<code>:index</code>オプションの2つです。</p>
 <p>複数の住所をそれぞれ編集できるフィールドを持つフォームを作ることもできます。例：</p>

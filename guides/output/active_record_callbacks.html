@@ -324,7 +324,7 @@ end
 <li><code>around_destroy</code></li>
 <li><code>after_destroy</code></li>
 </ul>
-<p>警告: <code>after_save</code>は作成と更新の両方で呼び出されますが、コールバックマクロの呼び出し順にかかわらず、必ず、より具体的な<code>after_create</code>および<code>after_update</code>より <em>後</em> に呼び出してください。</p>
+<div class="warning"><p><code>after_save</code>は作成と更新の両方で呼び出されますが、コールバックマクロの呼び出し順にかかわらず、必ず、より具体的な<code>after_create</code>および<code>after_update</code>より <em>後</em> に呼び出してください。</p></div>
 <h4 id="after_initializeとafter_find">3.4 <code>after_initialize</code>と<code>after_find</code>
 </h4>
 <p><code>after_initialize</code>コールバックは、Active Recordオブジェクトが1つインスタンス化されるたびに呼び出されます。インスタンス化は、直接<code>new</code>を実行する他にデータベースからレコードが読み込まれるときにも行われます。これを利用すれば、Active Recordの<code>initialize</code>メソッドを直接オーバーライドせずに済みます。</p>
@@ -435,7 +435,7 @@ Employeeにタッチされました
 <li><code>last</code></li>
 </ul>
 <p><code>after_initialize</code>コールバックは、そのクラスの新しいオブジェクトが初期化されるたびに呼び出されます。</p>
-<p>メモ: <code>find_by_*</code>メソッドと<code>find_by_*!</code>メソッドは、属性ごとに自動的に生成される動的なfinderメソッドです。詳細については<a href="active_record_querying.html#dynamic-finders">動的finderのセクション</a>を参照してください。</p>
+<div class="note"><p><code>find_by_*</code>メソッドと<code>find_by_*!</code>メソッドは、属性ごとに自動的に生成される動的なfinderメソッドです。詳細については<a href="active_record_querying.html#dynamic-finders">動的finderのセクション</a>を参照してください。</p></div>
 <h3 id="コールバックをスキップする">5 コールバックをスキップする</h3>
 <p>検証(validation)の場合と同様、以下のメソッドを使用するとコールバックをスキップできます。</p>
 <ul>
@@ -456,7 +456,7 @@ Employeeにタッチされました
 <h3 id="コールバックの停止">6 コールバックの停止</h3>
 <p>モデルに新しくコールバックを登録すると、コールバックは実行キューに入ります。このキューには、あらゆるモデルに対する検証、登録済みコールバック、実行待ちのデータベース操作が置かれます。</p>
 <p>コールバックの連鎖の全体は、1つのトランザクションに含まれます。●要検証● <em>before</em> コールバックの1つが<code>false</code>を返すか例外を発生するという動作をする場合、実行の連鎖全体が停止してROLLBACKが発行されます。この場合、 <em>after</em> コールバックは例外を発生することによってのみ完了します。</p>
-<p>警告: <code>ActiveRecord::Rollback</code>を除いて、コールバック連鎖後にRailsによって再発生したあらゆる例外は停止します。<code>ActiveRecord::Rollback</code>以外の例外が発生すると、<code>save</code>や<code>update_attributes</code>などのようにメソッドが例外を発生することを想定していないコード(通常<code>true</code>または<code>false</code>のいずれかを返します)は中断します。</p>
+<div class="warning"><p><code>ActiveRecord::Rollback</code>を除いて、コールバック連鎖後にRailsによって再発生したあらゆる例外は停止します。<code>ActiveRecord::Rollback</code>以外の例外が発生すると、<code>save</code>や<code>update_attributes</code>などのようにメソッドが例外を発生することを想定していないコード(通常<code>true</code>または<code>false</code>のいずれかを返します)は中断します。</p></div>
 <h3 id="リレーションシップのコールバック">7 リレーションシップのコールバック</h3>
 <p>コールバックはモデルのリレーションシップを経由して動作できます。また、リレーションシップを使用してコールバックを定義することすらできます。1人のユーザーが多数のポストを持っている状況を例に取ります。あるユーザーが所有するポストは、そのユーザーがdestroyされたらdestroyされる必要があります。<code>User</code>モデルに<code>after_destroy</code>コールバックを追加し、このコールバックで<code>Post</code>モデルへのリレーションシップを経由すると以下のようになります。</p>
 <div class="code_container">
@@ -601,8 +601,8 @@ end
 
 </pre>
 </div>
-<p>メモ: <code>:on</code>オプションは、コールバックがトリガされる条件を指定します。<code>:on</code>オプションを指定しないと、あらゆるアクションでコールバックがトリガされまくります。</p>
-<p>警告: <code>after_commit</code>コールバックおよび<code>after_rollback</code>コールバックは、1つのトランザクションブロック内におけるあらゆるモデルの作成/更新/destroy時に呼び出されます。これらのコールバックのいずれかで何らかの例外が発生すると、例外は無視されるため、他のコールバックに干渉しません。従って、もし自作のコールバックが例外を発生する可能性がある場合は、自分のコールバック内でrescueし、適切にエラー処理を行なう必要があります。</p>
+<div class="note"><p><code>:on</code>オプションは、コールバックがトリガされる条件を指定します。<code>:on</code>オプションを指定しないと、あらゆるアクションでコールバックがトリガされまくります。</p></div>
+<div class="warning"><p><code>after_commit</code>コールバックおよび<code>after_rollback</code>コールバックは、1つのトランザクションブロック内におけるあらゆるモデルの作成/更新/destroy時に呼び出されます。これらのコールバックのいずれかで何らかの例外が発生すると、例外は無視されるため、他のコールバックに干渉しません。従って、もし自作のコールバックが例外を発生する可能性がある場合は、自分のコールバック内でrescueし、適切にエラー処理を行なう必要があります。</p></div>
 </body></html>
 
 

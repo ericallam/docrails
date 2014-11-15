@@ -393,8 +393,8 @@ resources :photos
 </tr>
 </tbody>
 </table>
-<p>メモ: Railsのルーターでは、サーバーへのリクエストをマッチさせる際にHTTP動詞とURLを使用しているため、4種類のURL (GET/POST/PATCH/DELETE) が7種類の異なるアクション (index/new/create/show/edit/update/destroy) に割り当てられています。</p>
-<p>メモ: Railsのルーティングは、ルーティングファイルの「上からの記載順に」マッチします。このため、たとえば<code>resources :photos</code>というルーティングが<code>get 'photos/poll'</code>よりも前の行にあれば、<code>resources</code>行の<code>show</code>アクションが<code>get</code>行の記述よりも優先されますので、<code>get</code>行のルーティングは有効になりません。これを修正するには、<code>get</code>行を<code>resorces</code>行 <strong>よりも上</strong> の行に移動してください。これにより、<code>get</code>行がマッチするようになります。</p>
+<div class="note"><p>Railsのルーターでは、サーバーへのリクエストをマッチさせる際にHTTP動詞とURLを使用しているため、4種類のURL (GET/POST/PATCH/DELETE) が7種類の異なるアクション (index/new/create/show/edit/update/destroy) に割り当てられています。</p></div>
+<div class="note"><p>Railsのルーティングは、ルーティングファイルの「上からの記載順に」マッチします。このため、たとえば<code>resources :photos</code>というルーティングが<code>get 'photos/poll'</code>よりも前の行にあれば、<code>resources</code>行の<code>show</code>アクションが<code>get</code>行の記述よりも優先されますので、<code>get</code>行のルーティングは有効になりません。これを修正するには、<code>get</code>行を<code>resorces</code>行 <strong>よりも上</strong> の行に移動してください。これにより、<code>get</code>行がマッチするようになります。</p></div>
 <h4 id="パスとurl用ヘルパー">2.3 パスとURL用ヘルパー</h4>
 <p>リソースフルなルーティングを作成すると、アプリケーションのコントローラで多くのヘルパーが利用できるようになります。<code>resources :photos</code>というルーティングを例に取ってみましょう。</p>
 <ul>
@@ -496,7 +496,7 @@ resource :geocoder
 </tr>
 </tbody>
 </table>
-<p>メモ: 単数形リソースは複数形のコントローラに割り当てられます。これは、同じコントローラで単数形のルーティング (<code>/account</code>) と複数形のルーティング (<code>/accounts/45</code>) を両方使いたい場合を想定しているためです。従って、<code>resource :photo</code>と<code>resources :photos</code>のどちらも、単数形ルーティングと複数形ルーティングを両方作成し、同一のコントローラ (<code>PhotosController</code>) に割り当てられます。</p>
+<div class="note"><p>単数形リソースは複数形のコントローラに割り当てられます。これは、同じコントローラで単数形のルーティング (<code>/account</code>) と複数形のルーティング (<code>/accounts/45</code>) を両方使いたい場合を想定しているためです。従って、<code>resource :photo</code>と<code>resources :photos</code>のどちらも、単数形ルーティングと複数形ルーティングを両方作成し、同一のコントローラ (<code>PhotosController</code>) に割り当てられます。</p></div>
 <p>単数形のリソースフルなルーティングを使用すると、以下のヘルパーメソッドが生成されます。</p>
 <ul>
 <li>
@@ -507,7 +507,7 @@ resource :geocoder
 <code>geocoder_path</code>は<code>/geocoder</code>を返します。</li>
 </ul>
 <p>複数形リソースの場合と同様に、単数形リソースでも_pathヘルパーに対応する<code>_url</code>ヘルパーが使用できます。_urlヘルパーは、_pathの前に現在のホスト名、ポート番号、パスのプレフィックスが追加されている点が異なります。</p>
-<p>警告: ある<a href="https://github.com/rails/rails/issues/1769">長年の未解決バグ</a> が原因で、<code>form_for</code>では単数形リソースを自動的に扱えません。これを解決するには、以下のようにフォームのurlを直接指定します。</p>
+<div class="warning"><p>ある<a href="https://github.com/rails/rails/issues/1769">長年の未解決バグ</a> が原因で、<code>form_for</code>では単数形リソースを自動的に扱えません。これを解決するには、以下のようにフォームのurlを直接指定します。</p></div>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 form_for @geocoder, url: geocoder_path do |f|
@@ -666,7 +666,7 @@ resources :posts, path: '/admin/posts'
 </tr>
 </tbody>
 </table>
-<p>ヒント: <em><code>namespace</code>ブロックの内部で異なるコントローラ名前空間を使用したいのであれば、「<code>get '/foo' =&gt; '/foo#index'</code>」のような絶対コントローラパスを指定することもできます。</em></p>
+<div class="info"><p><em><code>namespace</code>ブロックの内部で異なるコントローラ名前空間を使用したいのであれば、「<code>get '/foo' =&gt; '/foo#index'</code>」のような絶対コントローラパスを指定することもできます。</em></p></div>
 <h4 id="ネストしたリソース">2.7 ネストしたリソース</h4>
 <p>論理上、他のリソースの配下に子リソースを配置することはよくあります。たとえば、Railsアプリケーションに以下のモデルがあるとします。</p>
 <div class="code_container">
@@ -766,7 +766,7 @@ end
 </pre>
 </div>
 <p>このURLに対応するルーティングヘルパーは<code>publisher_magazine_photo_url</code>となります。このヘルパーを使用するには毎回3つの階層すべてでオブジェクトを指定する必要があります。ネスティングが深くなることでルーティングの扱いが困難になる問題については、Jamis Buckの有名な <a href="http://weblog.jamisbuck.org/2007/2/5/nesting-resources">記事</a> を参照してください。JamisはRailsアプリケーション設計上のよい経験則を提案しています。</p>
-<p>ヒント: <em>リソースのネスティングは、ぜひとも1回にとどめて下さい。決して2回以上ネストするべきではありません。</em></p>
+<div class="info"><p><em>リソースのネスティングは、ぜひとも1回にとどめて下さい。決して2回以上ネストするべきではありません。</em></p></div>
 <h5 id="「浅い」ネスト">2.7.2 「浅い」ネスト</h5>
 <p>前述したような深いネストを避けるひとつの方法として、コレクション (index/new/createのような、idを持たないアクション) だけを親のスコープの下で生成するという手法があります。このとき、メンバー (show/edit/update/destroyのような、idを必要とするアクション) をネストに含めないのがポイントです。これによりコレクションだけが階層化のメリットを受けられます。つまり、以下のように最小限の情報でリソースを一意に指定できるルーティングを作成するということです。</p>
 <div class="code_container">
@@ -1093,7 +1093,7 @@ end
 </pre>
 </div>
 <p>上のようにすることで、GET + <code>/comments/new/preview</code>のようなパスが認識され、<code>Comments</code>コントローラの<code>preview</code>アクションにルーティングされます。<code>preview_new_comment_url</code>や<code>preview_new_comment_path</code>ルーティングヘルパーも同時に作成されます。</p>
-<p>ヒント: リソースフルなルーティングにアクションが多数追加されていることに気付いたら、それ以上アクションを追加するのをやめて、そこに別のリソースが隠されているのではないかと疑ってみる方がよいでしょう。</p>
+<div class="info"><p>リソースフルなルーティングにアクションが多数追加されていることに気付いたら、それ以上アクションを追加するのをやめて、そこに別のリソースが隠されているのではないかと疑ってみる方がよいでしょう。</p></div>
 <h3 id="リソースフルでないルーティング">3 リソースフルでないルーティング</h3>
 <p>Railsではリソースルーティングを行なう他に、任意のURLをアクションにルーティングすることもできます。この方式を使用する場合、リソースフルルーティングのような自動的なルーティンググループの生成は行われません。従って、アプリケーションで必要なルーティングを個別に設定することになります。</p>
 <p>基本的にはリソースフルルーティングを使用すべきではありますが、このような単純なルーティングの方が適している箇所も多数あるはずです。リソースフルルーティングでは大袈裟過ぎる場合に、アプリケーションを無理にリソースフルなフレームワークに押し込める必要はありません。</p>
@@ -1116,14 +1116,14 @@ get ':controller/:action/:id/:user_id'
 </pre>
 </div>
 <p>ブラウザからの<code>/photos/show/1/2</code>パスは<code>Photos</code>コントローラの<code>show</code>アクションに割り当てられます。<code>params[:id]</code>には<code>"1"</code>、<code>params[:user_id]</code>には<code>"2"</code>がそれぞれ保存されます。</p>
-<p>メモ: <code>:controller</code>パスセグメントを使用する場合、<code>:namespace</code>や<code>:module</code>を併用することはできません。どうしても使用したいのであれば、以下のように、必要な名前空間だけにマッチするように<code>:controller</code>に制限を加えます。</p>
+<div class="note"><p><code>:controller</code>パスセグメントを使用する場合、<code>:namespace</code>や<code>:module</code>を併用することはできません。どうしても使用したいのであれば、以下のように、必要な名前空間だけにマッチするように<code>:controller</code>に制限を加えます。</p></div>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 get ':controller(/:action(/:id))', controller: /admin\/[^\/]+/
 
 </pre>
 </div>
-<p>ヒント: 動的なセグメント分割ではドット<code>.</code>をデフォルトでは使用できません。ドットはフォーマット済みルーティングでは区切り文字として使用されるためです。どうしても動的セグメント内でドットを使用したい場合は、デフォルト設定を上書きする制限を与えます。たとえば<code>id: /[^\/]+/</code>とすると、スラッシュ以外のすべての文字が使用できます。</p>
+<div class="info"><p>動的なセグメント分割ではドット<code>.</code>をデフォルトでは使用できません。ドットはフォーマット済みルーティングでは区切り文字として使用されるためです。どうしても動的セグメント内でドットを使用したい場合は、デフォルト設定を上書きする制限を与えます。たとえば<code>id: /[^\/]+/</code>とすると、スラッシュ以外のすべての文字が使用できます。</p></div>
 <h4 id="静的なセグメント">3.3 静的なセグメント</h4>
 <p>ルート作成時にコロンを付けなかった部分は、静的なセグメントとして固定文字列が指定されます。</p>
 <div class="code_container">
@@ -1191,7 +1191,7 @@ match 'photos', to: 'photos#show', via: :all
 
 </pre>
 </div>
-<p>メモ: 1つのアクションに<code>GET</code>リクエストと<code>POST</code>リクエストを両方ルーティングすると、セキュリティに影響する可能性があります。本当に必要な理由がない限り、1つのアクションにすべてのHTTP動詞をルーティングすることは避けてください。</p>
+<div class="note"><p>1つのアクションに<code>GET</code>リクエストと<code>POST</code>リクエストを両方ルーティングすると、セキュリティに影響する可能性があります。本当に必要な理由がない限り、1つのアクションにすべてのHTTP動詞をルーティングすることは避けてください。</p></div>
 <h4 id="セグメントを制限する">3.8 セグメントを制限する</h4>
 <p><code>:constraints</code>オプションを使用すると、動的セグメントのURLフォーマットを特定の形式に制限するすることができます。</p>
 <div class="code_container">
@@ -1243,7 +1243,7 @@ end
 
 </pre>
 </div>
-<p>メモ: リクエストベースの制限は、Requestオブジェクトに対してあるメソッドを呼び出すことで実行されます。メソッド呼び出し時にハッシュキーと同じ名前をメソッドに渡し、返された値をハッシュ値と比較します。従って、制限された値は、対応するRequestオブジェクトメソッドが返す型と一致する必要があります。たとえば、<code>constraints: { subdomain: 'api' }</code>という制限は<code>api</code>サブドメインに期待どおりマッチしますが、<code>constraints: { subdomain: :api }</code>のようにシンボルを使用した場合は<code>api</code>サブドメインに一致しません。<code>request.subdomain</code>が返す<code>'api'</code>は文字列型であるためです。</p>
+<div class="note"><p>リクエストベースの制限は、Requestオブジェクトに対してあるメソッドを呼び出すことで実行されます。メソッド呼び出し時にハッシュキーと同じ名前をメソッドに渡し、返された値をハッシュ値と比較します。従って、制限された値は、対応するRequestオブジェクトメソッドが返す型と一致する必要があります。たとえば、<code>constraints: { subdomain: 'api' }</code>という制限は<code>api</code>サブドメインに期待どおりマッチしますが、<code>constraints: { subdomain: :api }</code>のようにシンボルを使用した場合は<code>api</code>サブドメインに一致しません。<code>request.subdomain</code>が返す<code>'api'</code>は文字列型であるためです。</p></div>
 <h4 id="高度な制限">3.10 高度な制限</h4>
 <p>より高度な制限を使用したい場合、Railsで必要な<code>matches?</code>に応答できるオブジェクトを渡す方法があります。例として、ブラックリストに記載されているすべてのユーザーを<code>BlacklistController</code>にルーティングしたいとします。この場合、以下のように設定します。</p>
 <div class="code_container">
@@ -1301,14 +1301,14 @@ get '*a/foo/*b', to: 'test#index'
 </pre>
 </div>
 <p>上のルーティングは<code>zoo/woo/foo/bar/baz</code>にマッチし、<code>params[:a]</code>には<code>'zoo/woo'</code>が保存され、and <code>params[:b]</code>には<code>'bar/baz'</code>が保存されます。</p>
-<p>メモ: <code>'/foo/bar.json'</code>をリクエストすると<code>params[:pages]</code>には<code>'foo/bar'</code>がJSONリクエストフォーマットで保存されます。Rails 3.0.xの動作に戻したい場合は、以下のように<code>format: false</code>を指定することができます。</p>
+<div class="note"><p><code>'/foo/bar.json'</code>をリクエストすると<code>params[:pages]</code>には<code>'foo/bar'</code>がJSONリクエストフォーマットで保存されます。Rails 3.0.xの動作に戻したい場合は、以下のように<code>format: false</code>を指定することができます。</p></div>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 get '*pages', to: 'pages#show', format: false
 
 </pre>
 </div>
-<p>メモ: このセグメントフォーマットを必須にしたい場合は、以下のように<code>format: true</code>を指定します。</p>
+<div class="note"><p>このセグメントフォーマットを必須にしたい場合は、以下のように<code>format: true</code>を指定します。</p></div>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 get '*pages', to: 'pages#show', format: true
@@ -1349,7 +1349,7 @@ match '/application.js', to: Sprockets, via: :all
 </pre>
 </div>
 <p>Railsルーターから見れば、<code>Sprockets</code>が<code>call</code>に応答して<code>[status, headers, body]</code>を返す限り、ルーティング先がRackアプリケーションであるかアクションであるかは区別できません。これは<code>via: :all</code>の適切な利用法です。というのは、適切と考えられるすべてのHTTP動詞をRackアプリケーションで扱えるようにできるからです。</p>
-<p>メモ: 参考までに、<code>'posts#index'</code>は実際には<code>PostsController.action(:index)</code>という形に展開されます。これは正しいRackアプリケーションを返します。</p>
+<div class="note"><p>参考までに、<code>'posts#index'</code>は実際には<code>PostsController.action(:index)</code>という形に展開されます。これは正しいRackアプリケーションを返します。</p></div>
 <h4 id="rootを使用する">3.14 <code>root</code>を使用する</h4>
 <p><code>root</code>メソッドを使用することで、Railsがルート<code>'/'</code>とすべき場所を指定できます。</p>
 <div class="code_container">
@@ -1360,7 +1360,7 @@ root 'pages#main' # 上の省略形
 </pre>
 </div>
 <p><code>root</code>ルーティングは、ルーティングファイルの先頭に記述してください。rootは最もよく使用されるルーティングであり、最初にマッチする必要があるからです。</p>
-<p>メモ: <code>root</code>ルーティングがアクションに渡せるのは<code>GET</code>リクエストだけです。</p>
+<div class="note"><p><code>root</code>ルーティングがアクションに渡せるのは<code>GET</code>リクエストだけです。</p></div>
 <p>名前空間やスコープの内側にrootを置くこともできます。例: </p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1445,7 +1445,7 @@ resources :photos, controller: 'images'
 </tr>
 </tbody>
 </table>
-<p>メモ: このリソースへのパスを生成するには<code>photos_path</code>や<code>new_photo_path</code>などを使用してください。</p>
+<div class="note"><p>このリソースへのパスを生成するには<code>photos_path</code>や<code>new_photo_path</code>などを使用してください。</p></div>
 <p>名前空間内のコントローラは以下のように直接指定することができます。例: </p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1454,7 +1454,7 @@ resources :user_permissions, controller: 'admin/user_permissions'
 </pre>
 </div>
 <p>上は<code>Admin::UserPermissions</code>にルーティングされます。</p>
-<p>メモ: ここでサポートされている記法は、<code>/</code>で区切る「ディレクトリ式」のみです。Rubyの定数表記法 (<code>controller: 'Admin::UserPermissions'</code>など) をコントローラに対して使用すると、ルーティングで問題が生じ、警告が出力される可能性があります。</p>
+<div class="note"><p>ここでサポートされている記法は、<code>/</code>で区切る「ディレクトリ式」のみです。Rubyの定数表記法 (<code>controller: 'Admin::UserPermissions'</code>など) をコントローラに対して使用すると、ルーティングで問題が生じ、警告が出力される可能性があります。</p></div>
 <h4 id="制限を指定する">4.2 制限を指定する</h4>
 <p><code>:constraints</code>オプションを使用すると、暗黙で使用される<code>id</code>に対してフォーマットを指定することができます。例:</p>
 <div class="code_container">
@@ -1474,8 +1474,8 @@ end
 
 </pre>
 </div>
-<p>メモ: もちろん、この場合であれば「リソースフルでない」ルーティングに適用可能な、より高度な制限を加えることもできます。</p>
-<p>ヒント: <code>:id</code>パラメータではドット<code>.</code>をデフォルトでは使用できません。ドットはフォーマット済みルーティングでは区切り文字として使用されるためです。どうしても<code>:id</code>内でドットを使用したい場合は、デフォルト設定を上書きする制限を与えます。たとえば<code>id: /[^\/]+/</code>とすると、スラッシュ以外のすべての文字が使用できます。</p>
+<div class="note"><p>もちろん、この場合であれば「リソースフルでない」ルーティングに適用可能な、より高度な制限を加えることもできます。</p></div>
+<div class="info"><p><code>:id</code>パラメータではドット<code>.</code>をデフォルトでは使用できません。ドットはフォーマット済みルーティングでは区切り文字として使用されるためです。どうしても<code>:id</code>内でドットを使用したい場合は、デフォルト設定を上書きする制限を与えます。たとえば<code>id: /[^\/]+/</code>とすると、スラッシュ以外のすべての文字が使用できます。</p></div>
 <h4 id="名前付きヘルパーをオーバーライドする">4.3 名前付きヘルパーをオーバーライドする</h4>
 <p><code>:as</code>オプションを使用すると、名前付きルーティングヘルパーを上書きして異なる名前を使用できます。例: </p>
 <div class="code_container">
@@ -1555,8 +1555,8 @@ resources :photos, path_names: { new: 'make', edit: 'change' }
 
 </pre>
 </div>
-<p>メモ: このオプションを指定しても、実際のアクション名が変更されるわけではありません。変更後のパスを使用しても、ルーティング先は依然として<code>new</code>アクションと<code>edit</code>アクションのままです。</p>
-<p>ヒント: このオプションによる変更をすべてのルーティングに統一的に適用したくなった場合は、スコープを使用できます。</p>
+<div class="note"><p>このオプションを指定しても、実際のアクション名が変更されるわけではありません。変更後のパスを使用しても、ルーティング先は依然として<code>new</code>アクションと<code>edit</code>アクションのままです。</p></div>
+<div class="info"><p>このオプションによる変更をすべてのルーティングに統一的に適用したくなった場合は、スコープを使用できます。</p></div>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 scope path_names: { new: 'make' } do
@@ -1590,7 +1590,7 @@ resources :photos, :accounts
 </pre>
 </div>
 <p>上によって、<code>admin_photos_path</code>と<code>admin_accounts_path</code>などのルーティングが生成されます。これらは<code>/admin/photos</code>と<code>/admin/accounts</code>にそれぞれ割り当てられます。</p>
-<p>メモ: <code>namespace</code>スコープを使用すると、<code>:module</code>や<code>:path</code>プレフィックスに加えて<code>:as</code>も自動的に追加されます。●</p>
+<div class="note"><p><code>namespace</code>スコープを使用すると、<code>:module</code>や<code>:path</code>プレフィックスに加えて<code>:as</code>も自動的に追加されます。●</p></div>
 <p>名前付きパラメータを持つルーティングにプレフィックスを追加することもできます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1618,7 +1618,7 @@ resources :photos, except: :destroy
 </pre>
 </div>
 <p>この場合、<code>destroy</code> (<code>/photos/:id</code>への<code>DELETE</code>リクエスト) を除いて通常のルーティングが生成されます。</p>
-<p>ヒント: アプリケーションでRESTfulルーティングが多数使用されているのであれば、それらに適宜<code>:only</code>や<code>:except</code>を使用して、本当に必要なルーティングのみを生成することで、メモリ使用量の節約とルーティングプロセスの速度向上が見込めます。</p>
+<div class="info"><p>アプリケーションでRESTfulルーティングが多数使用されているのであれば、それらに適宜<code>:only</code>や<code>:except</code>を使用して、本当に必要なルーティングのみを生成することで、メモリ使用量の節約とルーティングプロセスの速度向上が見込めます。</p></div>
 <h4 id="パスを変更する">4.7 パスを変更する</h4>
 <p><code>scope</code>オプションを使用することで、リソースによって生成されたデフォルトのパス名を変更できます。</p>
 <div class="code_container">
@@ -1733,7 +1733,7 @@ $ CONTROLLER=users rake routes
 
 </pre>
 </div>
-<p>ヒント: 折り返しが発生しないぐらいに十分大きなサイズのターミナルを使用できるのであれば、<code>rake routes</code>コマンドの出力の方がおそらく読みやすいでしょう。</p>
+<div class="info"><p>折り返しが発生しないぐらいに十分大きなサイズのターミナルを使用できるのであれば、<code>rake routes</code>コマンドの出力の方がおそらく読みやすいでしょう。</p></div>
 <h4 id="ルーティングをテストする">5.2 ルーティングをテストする</h4>
 <p>アプリケーションの他の部分と同様、ルーティング部分もテスティング戦略に含めておくべきでしょう。Railsでは、テスティングを容易にするために3つの<a href="http://api.rubyonrails.org/classes/ActionDispatch/Assertions/RoutingAssertions.html">ビルトインアサーション</a> が用意されています。</p>
 <ul>
