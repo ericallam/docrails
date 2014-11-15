@@ -273,7 +273,7 @@
       <div id="mainCol">
         <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
-<p>メモ: RubyのI18nフレームワークでは、Railsアプリケーションの国際化/ローカライズに必要な手段がすべて提供されています。もちろん、さまざまなプラグインや拡張機能を導入してそれ以外の機能を追加しても構いません。詳細についてはRubyの<a href="http://ruby-i18n.org/wiki">I18n Wiki</a>を参照してください(訳注: 翻訳時点ではこのWebサイトにアクセスできませんでした)。</p>
+<div class="note"><p>RubyのI18nフレームワークでは、Railsアプリケーションの国際化/ローカライズに必要な手段がすべて提供されています。もちろん、さまざまなプラグインや拡張機能を導入してそれ以外の機能を追加しても構いません。詳細についてはRubyの<a href="http://ruby-i18n.org/wiki">I18n Wiki</a>を参照してください(訳注: 翻訳時点ではこのWebサイトにアクセスできませんでした)。</p></div>
 <h3 id="*-ruby-on-railsにおけるi18nのしくみ">1 * Ruby on RailsにおけるI18nのしくみ</h3>
 <p>国際化は何かと複雑な作業です。自然言語には、たとえば単数形/複数形の違いなどひとつとってもさまざまな違いがあり、すべての問題を一度に解決する魔法のようなツールを提供するのは非常に困難です。このため、Rails I18n APIでは以下の点に絞り込んで問題の解決を図っています。</p>
 <ul>
@@ -288,7 +288,7 @@
 <li>上記メソッドを実装する、デフォルトの <em>シンプルな</em> (あえてこう呼んでいます) バックエンド</li>
 </ul>
 <p>I18nのユーザーとしては、I18nモジュールのパブリックなメソッドにだけアクセスするのが筋ですが、バックエンドの機能についても知っておくと何かと便利です。</p>
-<p>メモ: Rails備え付けの「シンプルな」バックエンドを、より高性能なものに置き換えることもできます(し、その方が望ましいと言えます)。たとえば訳文データをリレーショナル・データベースやGetText(訳注: Unixの国際化ライブラリの1つ)辞書などに保存することができます。詳細についてはこの後の<a href="#using-different-backends">バックエンドを切り替える</a>を参照してください。</p>
+<div class="note"><p>Rails備え付けの「シンプルな」バックエンドを、より高性能なものに置き換えることもできます(し、その方が望ましいと言えます)。たとえば訳文データをリレーショナル・データベースやGetText(訳注: Unixの国際化ライブラリの1つ)辞書などに保存することができます。詳細についてはこの後の<a href="#using-different-backends">バックエンドを切り替える</a>を参照してください。</p></div>
 <h4 id="パブリックi18n-api">1.2 パブリックI18n API</h4>
 <p>I18n APIで最も重要なメソッドを以下に示します。</p>
 <div class="code_container">
@@ -333,9 +333,9 @@ en:
 </div>
 <p>上の例は、「<code>:en</code>というロケールでは、 <em>hello</em> というキーは <em>Hello world</em> という文字列に対応付けられる」という意味です。Rails内部の文字列はすべてこのように国際化されています。具体例については、Active Modelの検証(バリデーション)メッセージ一覧(<a href="https://github.com/rails/rails/blob/master/activemodel/lib/active_model/locale/en.yml"><code>activemodel/lib/active_model/locale/en.yml</code></a> ファイル) や日付時刻フォーマット一覧 (<a href="https://github.com/rails/rails/blob/master/activesupport/lib/active_support/locale/en.yml"><code>activesupport/lib/active_support/locale/en.yml</code></a> ファイル) を参照してください。デフォルトの (シンプルな) バックエンドの訳文は、YAMLや標準のRubyハッシュに保存することができます。</p>
 <p>I18nライブラリでは、 <strong>English</strong> を <strong>デフォルトのロケール</strong> として扱います。デフォルトのロケールに他の言語を指定しなかった場合は、訳文の検索に<code>:en</code>が使用されます。</p>
-<p>メモ: <a href="http://groups.google.com/group/rails-i18n/browse_thread/thread/14dede2c7dbe9470/80eec34395f64f3c?hl=en">いくつかの議論</a> を経た結果、Railsのi18nライブラリではロケールキーの扱いについて <strong>実用に則したアプローチ</strong> を採用しています。つまり、<code>:en</code>や<code>:pl</code>のようないわゆる <em>ロケール</em> (="言語") 部分のみをロケールキーとして採用しました。<code>:en-US</code>や<code>:en-GB</code>のような、言語と地域(あるいは方言)を分離した表記法は、ロケールキーとしては使用されていません。実際、国際化されたアプリケーションの多くは、<code>:cs</code>、<code>:th</code>、<code>:es</code> (それぞれチェコ語、タイ語、スペイン語) のような言語部分のみをロケール表記として採用しています。しかし、同じ言語グループに属していても、地域による違いが重要になることもあります。端的な例として、<code>:en-US</code>の通貨記号は$(ドル)ですが、<code>:en-GB</code>の通貨記号は£(ポンド)です。上のように、このような地域ごとの違いを言語から分離することも可能です。この場合、"English - United Kingdom"というロケールを<code>:en-GB</code>辞書に追加すればよいのです。Railsには<a href="https://github.com/globalize/globalize">Globalize3</a>など多数の<a href="http://rails-i18n.org/wiki">Rails I18nプラグイン</a>があり、実装に役立てることができるでしょう。</p>
+<div class="note"><p><a href="http://groups.google.com/group/rails-i18n/browse_thread/thread/14dede2c7dbe9470/80eec34395f64f3c?hl=en">いくつかの議論</a> を経た結果、Railsのi18nライブラリではロケールキーの扱いについて <strong>実用に則したアプローチ</strong> を採用しています。つまり、<code>:en</code>や<code>:pl</code>のようないわゆる <em>ロケール</em> (="言語") 部分のみをロケールキーとして採用しました。<code>:en-US</code>や<code>:en-GB</code>のような、言語と地域(あるいは方言)を分離した表記法は、ロケールキーとしては使用されていません。実際、国際化されたアプリケーションの多くは、<code>:cs</code>、<code>:th</code>、<code>:es</code> (それぞれチェコ語、タイ語、スペイン語) のような言語部分のみをロケール表記として採用しています。しかし、同じ言語グループに属していても、地域による違いが重要になることもあります。端的な例として、<code>:en-US</code>の通貨記号は$(ドル)ですが、<code>:en-GB</code>の通貨記号は£(ポンド)です。上のように、このような地域ごとの違いを言語から分離することも可能です。この場合、"English - United Kingdom"というロケールを<code>:en-GB</code>辞書に追加すればよいのです。Railsには<a href="https://github.com/globalize/globalize">Globalize3</a>など多数の<a href="http://rails-i18n.org/wiki">Rails I18nプラグイン</a>があり、実装に役立てることができるでしょう。</p></div>
 <p><strong>訳文読み込みパス</strong> (<code>I18n.load_path</code>) は、単に訳文ファイルへのパスをRubyの配列にしたものであり、ここで指定された訳文はアプリケーションで自動的に読み込まれて利用できるようになります。指定するディレクトリやファイル名の命名スキームは、わかりやすいものを自由に使用できます。</p>
-<p>メモ: I18のバックエンドは、訳文が初めて参照されるときに遅延読み込みを行います。これにより、訳文を既に公開した後でもバックエンドを他のものに差し替えることができます。</p>
+<div class="note"><p>I18のバックエンドは、訳文が初めて参照されるときに遅延読み込みを行います。これにより、訳文を既に公開した後でもバックエンドを他のものに差し替えることができます。</p></div>
 <p>デフォルトの<code>application.rb</code>ファイルには、別のディレクトリにあるロケールを追加する方法や、デフォルトのロケールを変更する方法が記載されています。必要な行のコメントアウトを解除して修正することで適用できます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -363,7 +363,7 @@ I18n.default_locale = :pt
 <h4 id="railsアプリケーションを国際化向けに設定する-ロケールの設定と受け渡し">2.3 ロケールの設定と受け渡し</h4>
 <p>Railsアプリケーションを、デフォルトロケールである <strong>英語以外の言語</strong> に設定したい場合は、<code>application.rb</code>ファイル内または上で紹介したイニシャライザでI18n.default_localeを設定します。ここで指定したロケールはリクエスト全体を通じて保たれます。</p>
 <p>しかし、1つのアプリケーションで <strong>2つ以上のロケールをサポートしたい</strong> ことも当然あるでしょう。そのような場合、リクエストとリクエストの間でロケールを設定し、受け渡す必要があります。</p>
-<p>警告: このガイドを読んでいる方の多くは、ロケールを <em>セッション</em> や <em>cookie</em> に保存すれば済むと考えていることでしょう。しかし <strong>これは行わないでください</strong> 。ロケールはセッションやcookieに依存しない透過的なものでなければなりませんし、URLの一部でなければなりません。Webを使用するユーザーはWebについてさまざまなことを前提としていますので、それに逆らうような設計を行うべきではありません。あなたがあるURLを知人に送ったとすると、知人がそのURLで参照できる内容はあなたが見たものとまったく同じページ、同じ内容でなければなりません。言い方を替えれば、アプリケーションを<a href="http://en.wikipedia.org/wiki/Representational_State_Transfer"><em>RESTful</em></a>にするということです。</p>
+<div class="warning"><p>このガイドを読んでいる方の多くは、ロケールを <em>セッション</em> や <em>cookie</em> に保存すれば済むと考えていることでしょう。しかし <strong>これは行わないでください</strong> 。ロケールはセッションやcookieに依存しない透過的なものでなければなりませんし、URLの一部でなければなりません。Webを使用するユーザーはWebについてさまざまなことを前提としていますので、それに逆らうような設計を行うべきではありません。あなたがあるURLを知人に送ったとすると、知人がそのURLで参照できる内容はあなたが見たものとまったく同じページ、同じ内容でなければなりません。言い方を替えれば、アプリケーションを<a href="http://en.wikipedia.org/wiki/Representational_State_Transfer"><em>RESTful</em></a>にするということです。</p></div>
 <p><em>設定部分</em> は簡単です。以下のような方法で、<code>ApplicationController</code>の<code>before_action</code>でロケールを設定できます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -479,7 +479,7 @@ get '/:locale' =&gt; 'dashboard#index'
 </pre>
 </div>
 <p>このルーティング宣言が他のルーティングを「食べてしまう」ようなことのないよう、<strong>ルーティング宣言の順序</strong> には十分ご注意ください。(この記述は<code>root :to</code>の直前に置くこともできます)</p>
-<p>メモ: ルーティングに対してこのような形でシンプルに動作する、以下の2つのプラグインをチェックしてみてもよいかもしれません。Sven Fuchs作 <a href="https://github.com/svenfuchs/routing-filter/tree/master">routing_filter</a> およびRaul Murciano作 <a href="https://github.com/raul/translate_routes/tree/master">translate_routes</a>。</p>
+<div class="note"><p>ルーティングに対してこのような形でシンプルに動作する、以下の2つのプラグインをチェックしてみてもよいかもしれません。Sven Fuchs作 <a href="https://github.com/svenfuchs/routing-filter/tree/master">routing_filter</a> およびRaul Murciano作 <a href="https://github.com/raul/translate_routes/tree/master">translate_routes</a>。</p></div>
 <h4 id="クライアント提供情報を元にロケールを設定する">2.6 クライアント提供情報を元にロケールを設定する</h4>
 <p>場合によっては、URLではなく、クライアントから送信される情報を元にロケールを設定したいこともあるでしょう。クライアントから送信される情報としては、ブラウザに設定されている優先言語設定、IPから推測される範囲での地理情報の他に、ユーザーがアプリケーションの画面でロケールを選択してプロファイルに保存したものなどがあります。このアプローチは、Webサイトよりも、Webベースのアプリケーションやサービスに向いています。上の囲み記事にある <em>セッション</em> 、 <em>cookie</em> 、RESTfulアーキテクチャに関する記述を参照してください。</p>
 <h5 id="accept-languageを使用する">2.6.1 <code>Accept-Language</code>を使用する</h5>
@@ -574,7 +574,7 @@ end
 </div>
 <p>この段階でビューをレンダリングすると、<code>:hello_world</code>と<code>:hello_flash</code>をキーに持つ訳文が見つからないというエラーメッセージが表示されます。</p>
 <p><img src="images/i18n/demo_translation_missing.png" alt="rails i18n demo translation missing"></p>
-<p>メモ: Railsはt<code>(</code>translate<code>) ヘルパーメソッドを自動的にビューに追加してくれるので、</code>I18n.t<code>とフルスペルで書かなくても済みます。さらに、このヘルパーは訳文が見つからない場合にエラーメッセージを</code><span class="translation_missing">` でラップして表示してくれます。</span></p>
+<div class="note"><p>Railsはt<code>(</code>translate<code>) ヘルパーメソッドを自動的にビューに追加してくれるので、</code>I18n.t<code>とフルスペルで書かなくても済みます。さらに、このヘルパーは訳文が見つからない場合にエラーメッセージを</code><span class="translation_missing">` でラップして表示してくれます。</span></p></div>
 <p>続いて、辞書ファイルに訳文を追加しましょう (最もローカリゼーションらしい部分でしょう)。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
@@ -594,7 +594,7 @@ pirate:
 <p><img src="images/i18n/demo_translated_en.png" alt="rails i18n demo translated to English"></p>
 <p>URLを変更して、海賊語のロケールを渡すと (<code>http://localhost:3000?locale=pirate</code>)、以下のように表示されます。</p>
 <p><img src="images/i18n/demo_translated_pirate.png" alt="rails i18n demo translated to pirate"></p>
-<p>メモ: ロケールファイルを新しく追加した場合はサーバーを再起動しないと反映されません。</p>
+<div class="note"><p>ロケールファイルを新しく追加した場合はサーバーを再起動しないと反映されません。</p></div>
 <p>訳文をSimpleStoreに保存する際、YAML (<code>.yml</code>) ファイルまたはRuby (<code>.rb</code>) ファイルのいずれかを選べます。YAMLは多くのRails開発者に好まれている形式です。ただし、YAMLには1つ大きな問題があります。YAMLはホワイトスペースや特殊文字による影響を非常に受けやすいため、アプリケーションが辞書を正しく読み込めないことがあります。Rubyファイル形式を選んだ場合、問題があれば最初のリクエストの時点でアプリケーションがクラッシュするので問題を見つけやすいというメリットがあります。(YAML辞書を使っていて「原因不明の奇妙な問題」が発生した場合は、その部分をRubyファイルに移動してみると問題が解決するかもしれません)</p>
 <h4 id="訳文に変数を渡す">3.2 訳文に変数を渡す</h4>
 <p>訳文メッセージの中に変数を含め、ビューから変数に値を渡すことができます。</p>
@@ -644,7 +644,7 @@ pirate:
 </div>
 <p>出力結果は以下のようになります。</p>
 <p><img src="images/i18n/demo_localized_pirate.png" alt="rails i18n demo localized time to pirate"></p>
-<p>ヒント: 現時点では、I18nバックエンドが (少なくとも海賊ロケールで) 本当に正常に動作するためには、日付・時刻フォーマットを追加する必要があるでしょう。もちろん、誰か親切な人が <strong>Railsのデフォルト文字列をすべて翻訳してくれた</strong> 結果がネット上のどこかに既にあるかもしれません。ロケールファイルのアーカイブがあるかどうか、<a href="https://github.com/svenfuchs/rails-i18n/tree/master/rails/locale">Githubのrails-i18nリポジトリ</a>を探してみるとよいでしょう。運よくそうしたファイルが見つかれば、<code>config/locales/</code>ディレクトリに置くだけで即座に使えるようになります。</p>
+<div class="info"><p>現時点では、I18nバックエンドが (少なくとも海賊ロケールで) 本当に正常に動作するためには、日付・時刻フォーマットを追加する必要があるでしょう。もちろん、誰か親切な人が <strong>Railsのデフォルト文字列をすべて翻訳してくれた</strong> 結果がネット上のどこかに既にあるかもしれません。ロケールファイルのアーカイブがあるかどうか、<a href="https://github.com/svenfuchs/rails-i18n/tree/master/rails/locale">Githubのrails-i18nリポジトリ</a>を探してみるとよいでしょう。運よくそうしたファイルが見つかれば、<code>config/locales/</code>ディレクトリに置くだけで即座に使えるようになります。</p></div>
 <h4 id="活用形ルールを設定する">3.4 活用形ルールを設定する</h4>
 <p>Rails 4.0では、英語以外の言語についても単数形/複数形のような活用形を定義できます。<code>config/initializers/inflections.rb</code>には、複数言語向けの活用形ルールを置くことができます。このイニシャライザには、英語の場合の活用形の追加方法の例が記載されています。他の言語でも同じ要領で活用形ルールを追加できます</p>
 <h4 id="ローカライズ済みビューテンプレート">3.5 ローカライズ済みビューテンプレート</h4>
@@ -679,7 +679,7 @@ pirate:
 </pre>
 </div>
 <p>このようにして、モデル名とモデル属性名をビュー内部のテキストから分離し、そして日付・時刻フォーマットなどすべてをデフォルトから分離することができます。●i18nライブラリ用の他のストアでは、別の方法で分離しているものもあります。</p>
-<p>メモ: Railsのデフォルトのロケール読み込みメカニズムでは、ここで使用したようなネストした辞書に含まれるロケールファイルを読み込みません。従って、これらが読み込まれるようにするためには以下のようにRailsで明示的に指定する必要があります。</p>
+<div class="note"><p>Railsのデフォルトのロケール読み込みメカニズムでは、ここで使用したようなネストした辞書に含まれるロケールファイルを読み込みません。従って、これらが読み込まれるようにするためには以下のようにRailsで明示的に指定する必要があります。</p></div>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
   # config/application.rb
@@ -789,7 +789,7 @@ es:
 
 </pre>
 </div>
-<p>メモ: パーシャルによる自動訳文スコープは、<code>translate</code>ビューヘルパーメソッドでのみ使用できます。</p>
+<div class="note"><p>パーシャルによる自動訳文スコープは、<code>translate</code>ビューヘルパーメソッドでのみ使用できます。</p></div>
 <h4 id="式展開">4.2 式展開</h4>
 <p>訳文を抽象化する際、 <strong>変数の訳文内での展開(interpolate)</strong> が求められることがよくあります。このため、I18n APIには式展開の機能があります。</p>
 <p><code>:default</code>と<code>:scope</code>を除き、<code>#translate</code>に渡されるすべてのオプションは訳文に展開できます。</p>
@@ -877,7 +877,7 @@ en:
 
 </pre>
 </div>
-<p>メモ: 安全なHTML変換への自動変換は、<code>translate</code>ビューヘルパーメソッドでのみ利用可能です。</p>
+<div class="note"><p>安全なHTML変換への自動変換は、<code>translate</code>ビューヘルパーメソッドでのみ利用可能です。</p></div>
 <p><img src="images/i18n/demo_html_safe.png" alt="i18n demo html safe"></p>
 <h4 id="active-recordモデルで翻訳を行なう">4.6 Active Recordモデルで翻訳を行なう</h4>
 <p><code>Model.model_name.human</code>メソッドと<code>Model.human_attribute_name(attribute)</code>メソッドを使用することで、モデル名と属性名を透過的に参照できるようになります。</p>
@@ -1140,7 +1140,7 @@ en:
 
 </pre>
 </div>
-<p>メモ: このヘルパーを使用するには、<a href="https://github.com/joelmoss/dynamic_form">DynamicForm</a> gemをインストールする必要があります。このgemは、Gemfileに<code>gem 'dynamic_form'</code>を追加することでインストールできます。</p>
+<div class="note"><p>このヘルパーを使用するには、<a href="https://github.com/joelmoss/dynamic_form">DynamicForm</a> gemをインストールする必要があります。このgemは、Gemfileに<code>gem 'dynamic_form'</code>を追加することでインストールできます。</p></div>
 <h4 id="action-mailerメールの件名を訳文に置き換える">4.7 Action Mailerメールの件名を訳文に置き換える</h4>
 <p><code>mail</code>メソッドに件名が渡されなかった場合、Action Mailerは既存の訳文を使用しようとします。「<code>&lt;mailer_scope&gt;.&lt;action_name&gt;.subject</code>」というパターンでキーが構築されます。</p>
 <div class="code_container">

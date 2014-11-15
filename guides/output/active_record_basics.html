@@ -309,7 +309,7 @@
 <li>
 <code>テーブル名_count</code> - 関連付けにおいて、所属しているオブジェクトの数をキャッシュするのに使用されます。たとえば、<code>Post</code>クラスに<code>comments_count</code>というカラムがあり、そこに<code>Comment</code>のインスタンスが多数あると、ポストごとのコメント数がここにキャッシュされます。</li>
 </ul>
-<p>メモ: これらのカラム名は必須ではありませんが、Active Recordに予約されています。特殊なことをするのでなければ、これらの予約済みカラム名の使用は避けてください。たとえば、<code>type</code>という語はテーブルでSingle Table Inheritance (STI)を指定するために予約されています。STIを使用しないとしても、予約語より先にまず"context"などのような、モデルのデータを適切に表す語を検討してください。</p>
+<div class="note"><p>これらのカラム名は必須ではありませんが、Active Recordに予約されています。特殊なことをするのでなければ、これらの予約済みカラム名の使用は避けてください。たとえば、<code>type</code>という語はテーブルでSingle Table Inheritance (STI)を指定するために予約されています。STIを使用しないとしても、予約語より先にまず"context"などのような、モデルのデータを適切に表す語を検討してください。</p></div>
 <h3 id="active-recordのモデルを作成する">3 Active Recordのモデルを作成する</h3>
 <p>Active Recordモデルの作成は非常に簡単です。以下のように<code>ActiveRecord::Base</code>クラスのサブクラスを作成するだけで完了します。</p>
 <div class="code_container">

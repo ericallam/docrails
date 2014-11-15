@@ -50,7 +50,7 @@ config.assets.css_compressor = :yui
 config.assets.js_compressor = :uglifier
 ```
 
-メモ: `sass-rails` gemがGemfileに含まれていれば自動的にCSS圧縮に使用されます。この場合`config.assets.css_compressor`オプションは設定されません。
+NOTE: `sass-rails` gemがGemfileに含まれていれば自動的にCSS圧縮に使用されます。この場合`config.assets.css_compressor`オプションは設定されません。
 
 
 ### 主要な機能
@@ -128,9 +128,9 @@ Railsでscaffoldやコントローラを生成すると、JavaScriptファイル
 
 上のコードを使用する際は、`require_tree`ディレクティブを使用していないことを必ず確認してください。`require_tree`と併用すると、アセットが2回以上インクルードされてしまいます。
 
-警告: アセットのプリコンパイルを使用する場合、ページが読み込まれるたびにコントローラのアセットがプリコンパイルされるようにしておく必要があります。デフォルトでは、.coffeeファイルと.scssファイルは自動ではプリコンパイルされません。プリコンパイルの動作の詳細については、[アセットをプリコンパイルする](#precompiling-assets)を参照してください。
+WARNING: アセットのプリコンパイルを使用する場合、ページが読み込まれるたびにコントローラのアセットがプリコンパイルされるようにしておく必要があります。デフォルトでは、.coffeeファイルと.scssファイルは自動ではプリコンパイルされません。プリコンパイルの動作の詳細については、[アセットをプリコンパイルする](#precompiling-assets)を参照してください。
 
-メモ: CoffeeScriptを使用するには、ExecJSがランタイムでサポートされている必要があります。Mac OS XまたはWindowsを使用している場合は、OSにJavaScriptランタイムをインストールしてください。サポートされているすべてのJavaScriptランタイムに関するドキュメントは、[ExecJS](https://github.com/sstephenson/execjs#readme) で参照できます。
+NOTE: CoffeeScriptを使用するには、ExecJSがランタイムでサポートされている必要があります。Mac OS XまたはWindowsを使用している場合は、OSにJavaScriptランタイムをインストールしてください。サポートされているすべてのJavaScriptランタイムに関するドキュメントは、[ExecJS](https://github.com/sstephenson/execjs#readme) で参照できます。
 
 `config/application.rb`設定に以下を追加することで、コントローラ固有のアセットファイル生成を止めることもできます。
 
@@ -150,7 +150,7 @@ end
 
 * `vendor/assets`は、JavaScriptプラグインやCSSフレームワークなど、外部の団体などによって所有されているアセットの置き場所です。
 
-警告: Rails 3からのアップグレードを行なう際には、`lib/assets`と`vendor/assets`の下に置かれているアセットがRails 4ではアプリケーションのマニフェストによってインクルードされて利用可能になること、しかしプリコンパイルアレイの一部には含まれなくなることを考慮に入れてください。ガイダンスについては[アセットをプリコンパイルする](#precompiling-assets)を参照してください。
+WARNING: Rails 3からのアップグレードを行なう際には、`lib/assets`と`vendor/assets`の下に置かれているアセットがRails 4ではアプリケーションのマニフェストによってインクルードされて利用可能になること、しかしプリコンパイルアレイの一部には含まれなくなることを考慮に入れてください。ガイダンスについては[アセットをプリコンパイルする](#precompiling-assets)を参照してください。
 
 #### パスの検索
 
@@ -248,7 +248,7 @@ Sprocketsは`config.assets.paths`で指定したパスも探索します。こ�
 <%= image_tag "icons/rails.png" %>
 ```
 
-警告: アセットのプリコンパイルを行っている場合 ([production環境の場合](#in-production)参照)、存在しないアセットへのリンクを含むページを呼び出すと例外が発生します。空文字へのリンクも同様に例外が発生します。ユーザーから提供されたデータに対して`image_tag`などのヘルパーを使用する場合はご注意ください。
+WARNING: アセットのプリコンパイルを行っている場合 ([production環境の場合](#in-production)参照)、存在しないアセットへのリンクを含むページを呼び出すと例外が発生します。空文字へのリンクも同様に例外が発生します。ユーザーから提供されたデータに対して`image_tag`などのヘルパーを使用する場合はご注意ください。
 
 #### CSSとERB 
 
@@ -333,7 +333,7 @@ JavaScriptで使用できるディレクティブはスタイルシートでも�
 
 上の例では`require_self`が使用されています。このディレクティブは、`require_self`呼び出しが行われたその場所にCSSファイルがあれば読み込みます。
 
-メモ: Sassファイルを複数使用しているのであれば、Sprocketsディレクティブで読み込まずに[Sass `@import`ルール](http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html#import)を使用する必要があります。このような場合にSprocketsディレクティブを使用してしまうと、Sassファイルが自分自身のスコープに置かれるため、その中で定義されている変数やミックスインが他のSassから利用できなくなってしまいます。
+NOTE: Sassファイルを複数使用しているのであれば、Sprocketsディレクティブで読み込まずに[Sass `@import`ルール](http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html#import)を使用する必要があります。このような場合にSprocketsディレクティブを使用してしまうと、Sassファイルが自分自身のスコープに置かれるため、その中で定義されている変数やミックスインが他のSassから利用できなくなってしまいます。
 
 `@import "*"`や`@import "**/*"`などのようにワイルドカードマッチでツリー全体を指定することもできます。これは`require_tree`と同等です。詳細および重要な警告については[sass-railsドキュメント](https://github.com/rails/sass-rails#features)をさんしょうして
 
@@ -453,11 +453,11 @@ MD5はコンパイルされるファイルの内容を元にプリコンパイ�
 <link href="/assets/application-4dd5b109ee3439da54f5bdfd78a80473.css" media="screen" rel="stylesheet" />
 ```
 
-メモ: アセットパイプラインの:cacheオプションと:concatオプションは廃止されました。これらのオプションは`javascript_include_tag`と`stylesheet_link_tag`から削除してください。
+NOTE: アセットパイプラインの:cacheオプションと:concatオプションは廃止されました。これらのオプションは`javascript_include_tag`と`stylesheet_link_tag`から削除してください。
 
 フィンガープリントの振る舞いについては`config.assets.digest`初期化オプションで制御できます。productionモードではデフォルトで`true`、それ以外では`false`です。
 
-メモ: デフォルトの`config.assets.digest`オプションは、通常は変更しないでください。ファイル名にダイジェストが含まれないと、遠い将来にヘッダが設定されたときに (ブラウザなどの) リモートクライアントがファイルの内容変更を検出して再度取得することができなくなってしまいます。
+NOTE: デフォルトの`config.assets.digest`オプションは、通常は変更しないでください。ファイル名にダイジェストが含まれないと、遠い将来にヘッダが設定されたときに (ブラウザなどの) リモートクライアントがファイルの内容変更を検出して再度取得することができなくなってしまいます。
 
 ### アセットをプリコンパイルする
 
@@ -492,7 +492,7 @@ load 'deploy/assets'
 /application.(css|js)$/ ]
 ```
 
-メモ: このマッチャ (および後述するprecompile配列の他のメンバ) が適用されるのは、コンパイル前やコンパイル中のファイル名ではなく、コンパイル後の最終的なファイル名である点にご注意ください。これは、コンパイルされてJavaScriptやCSSになるような中間ファイルはマッチャの対象からすべて除外されるということです●(純粋なJavaScript/CSSと同様)●。たとえば、`.coffee`と`.scss`ファイルはコンパイル後にそれぞれJavaScriptとCSSになるので、これらは自動的にはインクルードされません。
+NOTE: このマッチャ (および後述するprecompile配列の他のメンバ) が適用されるのは、コンパイル前やコンパイル中のファイル名ではなく、コンパイル後の最終的なファイル名である点にご注意ください。これは、コンパイルされてJavaScriptやCSSになるような中間ファイルはマッチャの対象からすべて除外されるということです●(純粋なJavaScript/CSSと同様)●。たとえば、`.coffee`と`.scss`ファイルはコンパイル後にそれぞれJavaScriptとCSSになるので、これらは自動的にはインクルードされません。
 
 他のマニフェストや、個別のスタイルシート/JavaScriptファイルをインクルードしたい場合は、`config/initializers/assets.rb`の`precompile`という配列を使用します。
 
@@ -521,7 +521,7 @@ Rails.application.config.assets.precompile << Proc.new do |path|
 end
 ```
 
-メモ: precompile配列にSassやCoffeeScriptファイルなどを追加する場合にも、必ず.jsや.cssで終わるファイル名 (つまりコンパイル後のファイル名として期待されているファイル名) も指定してください。
+NOTE: precompile配列にSassやCoffeeScriptファイルなどを追加する場合にも、必ず.jsや.cssで終わるファイル名 (つまりコンパイル後のファイル名として期待されているファイル名) も指定してください。
 
 このrakeタスクは、`manifest-md5hash.json`ファイルも生成します。これはすべてのアセットとそれらのフィンガープリントのリストです。Railsヘルパーはこれを使用して、マッピングリクエストがSprocketsへ戻されることを回避します。典型的なマニフェストファイルの内容は以下のような感じになっています。
 
@@ -540,7 +540,7 @@ end
 
 マニフェストのデフォルトの置き場所は、`config.assets.prefix`で指定された場所のルートディレクトリ (デフォルトでは'/assets') です。
 
-メモ: productionモードで見つからないプリコンパイル済みファイルがあると、If there are missing precompiled files in production you will get an `Sprockets::Helpers::RailsHelper::AssetPaths::AssetNotPrecompiledError` exception indicating the name of the missing file(s).
+NOTE: productionモードで見つからないプリコンパイル済みファイルがあると、If there are missing precompiled files in production you will get an `Sprockets::Helpers::RailsHelper::AssetPaths::AssetNotPrecompiledError` exception indicating the name of the missing file(s).
 
 #### 遠い将来に期限切れになるヘッダー
 
@@ -664,7 +664,7 @@ CDNを設定するには、Railsアプリケーションがインターネット
 config.action_controller.asset_host = 'mycdnsubdomain.fictional-cdn.com'
 ```
 
-メモ: ここに記述するのは "ホスト名" (サブドメインとルートドメインを合わせたもの) のみです。`http://`や`https://`などのプロトコルスキームを記述する必要はありません。アセットへのリンクで使用されるプロトコルスキームは、Webページヘのリクエスト発生時に、そのページへのデフォルトのアクセス方法に合わせて適切に生成されます。
+NOTE: ここに記述するのは "ホスト名" (サブドメインとルートドメインを合わせたもの) のみです。`http://`や`https://`などのプロトコルスキームを記述する必要はありません。アセットへのリンクで使用されるプロトコルスキームは、Webページヘのリクエスト発生時に、そのページへのデフォルトのアクセス方法に合わせて適切に生成されます。
 
 この値は[環境変数](http://en.wikipedia.org/wiki/Environment_variable)で設定することもできます。これを使用すると、ステージングサーバー (訳注: 検証用に本番サーバーを複製したサーバー) の実行が楽になります。
 
@@ -674,7 +674,7 @@ config.action_controller.asset_host = ENV['CDN_HOST']
 
 
 
-メモ: 上の設定が有効になるためには、サーバーの`CDN_HOST`環境変数に値 (この場合であれば`mycdnsubdomain .fictional-cdn.com`) を設定しておく必要があります。
+NOTE: 上の設定が有効になるためには、サーバーの`CDN_HOST`環境変数に値 (この場合であれば`mycdnsubdomain .fictional-cdn.com`) を設定しておく必要があります。
 
 サーバーとCDNの設定完了後、以下のアセットを持つWebページにアクセスしたとします。
 
@@ -802,9 +802,9 @@ RailsのGemfileにはデフォルトで[uglifier](https://github.com/lautis/ugli
 config.assets.js_compressor = :uglifier
 ```
 
-メモ: `uglifier`を利用するには[ExecJS](https://github.com/sstephenson/execjs#readme)をサポートするJavaScriptランタイムが必要です。Mac OS XやWindowsを使用している場合は、OSにJavaScriptランタイムをインストールしてください。
+NOTE: `uglifier`を利用するには[ExecJS](https://github.com/sstephenson/execjs#readme)をサポートするJavaScriptランタイムが必要です。Mac OS XやWindowsを使用している場合は、OSにJavaScriptランタイムをインストールしてください。
 
-メモ: CSSやJavaScriptの圧縮を有効にする`config.assets.compress`初期化オプションはRails 4で廃止されました。現在はこのオプションを設定しても何も変わりません。CSSおよびJavaScriptアセットの圧縮を制御するには、`config.assets.css_compressor`および`config.assets.js_compressor`を使用します。
+NOTE: CSSやJavaScriptの圧縮を有効にする`config.assets.compress`初期化オプションはRails 4で廃止されました。現在はこのオプションを設定しても何も変わりません。CSSおよびJavaScriptアセットの圧縮を制御するには、`config.assets.css_compressor`および`config.assets.js_compressor`を使用します。
 
 ### 独自の圧縮機能を使用する
 
@@ -848,9 +848,9 @@ ApacheとNGINXではこのオプションがサポートされており、以下
 # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # NGINX用
 ```
 
-警告: 既存のRailsアプリケーションをアップグレードする際にこの機能を使用することを検討している場合は、このオプションの貼り付け先に十分ご注意ください。このオプションを貼り付けてよいのは`production.rb`と、production環境として振る舞わせたい他の環境ファイルのみです。`application.rb`ではありません。
+WARNING: 既存のRailsアプリケーションをアップグレードする際にこの機能を使用することを検討している場合は、このオプションの貼り付け先に十分ご注意ください。このオプションを貼り付けてよいのは`production.rb`と、production環境として振る舞わせたい他の環境ファイルのみです。`application.rb`ではありません。
 
-ヒント: 詳細については、production環境用Webサーバーのドキュメントを参照してください。
+TIP: 詳細については、production環境用Webサーバーのドキュメントを参照してください。
 - [Apache](https://tn123.org/mod_xsendfile/)
 - [NGINX](http://wiki.nginx.org/XSendfile)
 

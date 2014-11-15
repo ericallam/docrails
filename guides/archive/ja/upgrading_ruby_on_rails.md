@@ -21,7 +21,7 @@ Railsは、そのバージョンがリリースされた時点で最新のバー
 * Rails 3.2.xはRuby 1.8.7の最終ブランチです。
 * Rails 4ではRuby 2.0が推奨されます。Ruby 1.9.3以上が必須です。
 
-ヒント: Ruby 1.8.7 p248およびp249にはRailsをクラッシュさせるマーシャリングバグがあります。Ruby Enterprise Editionでは1.8.7-2010.02以降このバグは修正されています。Ruby 1.9系を使用する場合、Ruby 1.9.1はあからさまなセグメンテーション違反が発生するため使用できません。1.9.3をご使用ください。
+TIP: Ruby 1.8.7 p248およびp249にはRailsをクラッシュさせるマーシャリングバグがあります。Ruby Enterprise Editionでは1.8.7-2010.02以降このバグは修正されています。Ruby 1.9系を使用する場合、Ruby 1.9.1はあからさまなセグメンテーション違反が発生するため使用できません。1.9.3をご使用ください。
 
 Rails 4.0からRails 4.1へのアップグレード
 -------------------------------------
@@ -56,7 +56,7 @@ XmlHttpRequestを明示的にテストしてください。
 2. `bundle install`を実行してSpringをインストールする
 3. `bundle exec spring binstub --all`を実行してbinstubをSpring化する
 
-メモ: ユーザーが定義したRakeタスクはデフォルトでdevelopment環境で動作するようになります。これらのRakeタスクを他の環境でも実行したい場合は[Spring README](https://github.com/rails/spring#rake)を参考にしてください。
+NOTE: ユーザーが定義したRakeタスクはデフォルトでdevelopment環境で動作するようになります。これらのRakeタスクを他の環境でも実行したい場合は[Spring README](https://github.com/rails/spring#rake)を参考にしてください。
 
 ### `config/secrets.yml`
 
@@ -147,7 +147,7 @@ MultiJSONはその役目を終えて [end-of-life](https://github.com/rails/rail
 
 2. `obj.to_json`と`JSON.parse(str)`を使用してMultiJSONから乗り換える
 
-警告: `MultiJson.dump` と `MultiJson.load`をそれぞれ`JSON.dump`と`JSON.load`に単純に置き換えては「いけません」。これらのJSON gem are meant for serializing and deserializing arbitrary Ruby objects and are generally [unsafe]APIは任意のRubyオブジェクトをシリアライズおよびデシリアライズするためのものであり、一般に[安全ではありません](http://www.ruby-doc.org/stdlib-2.0.0/libdoc/json/rdoc/JSON.html#method-i-load)。
+WARNING: `MultiJson.dump` と `MultiJson.load`をそれぞれ`JSON.dump`と`JSON.load`に単純に置き換えては「いけません」。これらのJSON gem are meant for serializing and deserializing arbitrary Ruby objects and are generally [unsafe]APIは任意のRubyオブジェクトをシリアライズおよびデシリアライズするためのものであり、一般に[安全ではありません](http://www.ruby-doc.org/stdlib-2.0.0/libdoc/json/rdoc/JSON.html#method-i-load)。
 
 #### JSON gemの互換性
 

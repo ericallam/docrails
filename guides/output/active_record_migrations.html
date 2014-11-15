@@ -274,7 +274,7 @@ end
 <p>上のマイグレーションを実行すると<code>products</code>という名前のテーブルが追加されます。この中には<code>name</code>というstringカラムと、<code>description</code>というtextカラムが含まれています。主キーは<code>id</code>という名前で暗黙に追加されます。<code>id</code>はActive Recordモデルにおけるデフォルトの主キーです。<code>timestamps</code>マクロは、<code>created_at</code>と<code>updated_at</code>という2つのカラムを追加します。これらの特殊なカラムが存在する場合、Active Recordによって自動的に管理されます。</p>
 <p>マイグレーションは、時間を先に進めるときに実行したい動作を定義していることにご注目ください。マイグレーションの実行前にはテーブルは1つもありません。マイグレーションを実行すると、テーブルが作成されます。Active Recordは、このマイグレーションの進行を逆転させる方法も知っています。マイグレーションをロールバックすると、テーブルは削除されます。</p>
 <p>スキーマ変更のステートメントが使用できるトランザクションをサポートするデータベースでは、マイグレーションはトランザクションの内側にラップされて実行されます。これらがデータベースでサポートされていない場合は、マイグレーション中に一部が失敗した場合にロールバックされません。その場合は、変更を手動でロールバックする必要があります。</p>
-<p>メモ: ある種のクエリは、トランザクション内で実行できないことがあります。アダプタがDDLトランザクションをサポートしている場合は、<code>disable_ddl_transaction!</code>を使用して単一のマイグレーションでこれらを無効にすることができます。</p>
+<div class="note"><p>ある種のクエリは、トランザクション内で実行できないことがあります。アダプタがDDLトランザクションをサポートしている場合は、<code>disable_ddl_transaction!</code>を使用して単一のマイグレーションでこれらを無効にすることができます。</p></div>
 <p>Active Recordで対応できないマイグレーションを行いたい場合は、<code>reversible</code>を使用します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -512,7 +512,7 @@ end
 
 </pre>
 </div>
-<p>ヒント: 詳細についてはジェネレータのヘルプを参照してください。</p>
+<div class="info"><p>詳細についてはジェネレータのヘルプを参照してください。</p></div>
 <h3 id="マイグレーションを自作する">3 マイグレーションを自作する</h3>
 <p>ジェネレータでマイグレーションを作成できるようになったら、今度は自分で作成してみましょう。</p>
 <h4 id="テーブルを作成する">3.1 テーブルを作成する</h4>
@@ -602,7 +602,7 @@ change_column_default :products, :approved, false
 </pre>
 </div>
 <p>上のマイグレーションはproductsテーブルの<code>:name</code>フィールドを<code>NOT NULL</code>カラムに設定し、<code>:approved</code>フィールドのデフォルト値をfalseに設定します。●</p>
-<p>ヒント: <code>change_column</code> (および<code>change_column_default</code>) と異なる点は、<code>change_column_null</code>が可逆的であることです。</p>
+<div class="info"><p><code>change_column</code> (および<code>change_column_default</code>) と異なる点は、<code>change_column_null</code>が可逆的であることです。</p></div>
 <h4 id="マイグレーションを自作する-カラムを変更する">3.5 カラムを変更する</h4>
 <p>カラムの作成または変更時にカラムモディファイアを適用できます。</p>
 <ul>
@@ -633,7 +633,7 @@ add_foreign_key :articles, :authors
 <p>上によって新たな外部キーが<code>articles</code>テーブルの<code>author_id</code>カラムに追加されます。このキーは<code>articles</code>テーブルの<code>id</code>カラムを参照します。欲しいカラム名をテーブル名から類推できない場合は、<code>:column</code>オプションと<code>:primary_key</code>オプションを使用できます。</p>
 <p>Railsでは、すべての外部キーは<code>fk_rails_</code>という名前で始まり、その後ろに10文字のランダムな文字列が続きます。
 必要であれば、<code>:name</code>オプションを指定することで別の名前を使用できます。</p>
-<p>メモ: Active Recordでは単一カラムの外部キーのみがサポートされています。複合外部キーを使用する場合は<code>execute</code>と<code>structure.sql</code>が必要です。</p>
+<div class="note"><p>Active Recordでは単一カラムの外部キーのみがサポートされています。複合外部キーを使用する場合は<code>execute</code>と<code>structure.sql</code>が必要です。</p></div>
 <p>外部キーの削除も以下のように簡単に行えます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -848,7 +848,7 @@ $ bin/rake db:migrate:redo STEP=3
 <p><code>rake db:setup</code>タスクは、データベースの作成、スキーマの読み込み、シードデータを使用したデータベースの初期化を実行します。</p>
 <h4 id="データベースをリセットする">4.3 データベースをリセットする</h4>
 <p><code>rake db:reset</code>タスクは、データベースをdropして再度設定します。このタスクは、<code>rake db:drop db:setup</code>と同等です。</p>
-<p>メモ: このタスクは、すべてのマイグレーションを実行することと等価ではありません。このタスクでは現在の<code>schema.rb</code>の内容をそのまま使い回しているためです。マイグレーションをロールバックできなくなった場合には、<code>rake db:reset</code>を実行しても復旧できないことがあります。スキーマダンプの詳細については、<a href="#schema-dumping-and-you">スキーマダンプの意義</a> セクションを参照してください。</p>
+<div class="note"><p>このタスクは、すべてのマイグレーションを実行することと等価ではありません。このタスクでは現在の<code>schema.rb</code>の内容をそのまま使い回しているためです。マイグレーションをロールバックできなくなった場合には、<code>rake db:reset</code>を実行しても復旧できないことがあります。スキーマダンプの詳細については、<a href="#schema-dumping-and-you">スキーマダンプの意義</a> セクションを参照してください。</p></div>
 <h4 id="特定のマイグレーションのみを実行する">4.4 特定のマイグレーションのみを実行する</h4>
 <p>特定のマイグレーションをupまたはdown方向に実行する必要がある場合は、<code>db:migrate:up</code>または<code>db:migrate:down</code>タスクを使用します。以下に示したように、適切なバージョン番号を指定するだけで、該当するマイグレーションに含まれる<code>change</code>、<code>up</code>、<code>down</code>メソッドのいずれかが呼び出されます。</p>
 <div class="code_container">

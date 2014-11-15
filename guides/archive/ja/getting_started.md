@@ -51,13 +51,13 @@ Railsプロジェクトを新規作成する
 
 本ガイドの手順に従うことで、`blog`という名前の非常にシンプルなブログのRailsプロジェクトを作成できます。Railsアプリケーションを構築する前に、Rails本体がインストールされていることを確認してください。
 
-ヒント: 以下の例では、Unix系OSのプロンプトとして`$`記号を使用していますが、これはカスタマイズ可能であり、自分の環境では異なる記号になっていることもあります。Windowsでは`c:\source_code>`のように表示されます。
+TIP: 以下の例では、Unix系OSのプロンプトとして`$`記号を使用していますが、これはカスタマイズ可能であり、自分の環境では異なる記号になっていることもあります。Windowsでは`c:\source_code>`のように表示されます。
 
 ### Railsのインストール
 
 ターミナル (コマンドプロンプトとも言います) ウィンドウを開いてください。Mac OS Xの場合、ターミナル (Terminal.app) という名前のアプリケーションを実行します。Windowsの場合は[スタート] メニューから [ファイル名を指定して実行] をクリックして'cmd.exe'と入力します。`$`で始まる記述はコマンド行なので、これらはコマンドラインに入力して実行してください。続いて現在インストールされているRubyのバージョンが最新のものであることを確認してください。
 
-ヒント: RubyやRuby on Railsを素早くインストールするためのツールは多数存在します。Windowsユーザーの場合は[Railsインストーラ](http://railsinstaller.org) をお使いください。Mac OS Xユーザーは[Rails One Click](http://railsoneclick.com) をお使いください。(●訳注: これらのリンクは古いか適切でない可能性があります。最新のインストール方法については[Railsチュートリアル](http://railstutorial.jp/chapters/beginning?version=4.0#sec-rubygems) を参照してください)
+TIP: RubyやRuby on Railsを素早くインストールするためのツールは多数存在します。Windowsユーザーの場合は[Railsインストーラ](http://railsinstaller.org) をお使いください。Mac OS Xユーザーは[Rails One Click](http://railsoneclick.com) をお使いください。(●訳注: これらのリンクは古いか適切でない可能性があります。最新のインストール方法については[Railsチュートリアル](http://railstutorial.jp/chapters/beginning?version=4.0#sec-rubygems) を参照してください)
 
 ```bash
 $ ruby -v
@@ -105,7 +105,7 @@ $ rails new blog
 
 これにより、Blogという名前のRails アプリケーションが`blog`ディレクトリに作成され、`Gemfile`というファイルで指定されているgemファイルが`bundle install`コマンドによってインストールされます。
 
-ヒント: `rails new -h`を実行すると、Railsアプリケーションビルダで使用できるすべてのコマンドラインオプションを確認できます。
+TIP: `rails new -h`を実行すると、Railsアプリケーションビルダで使用できるすべてのコマンドラインオプションを確認できます。
 
 ブログアプリケーションを作成したら、そのフォルダ内に移動します。
 
@@ -145,13 +145,13 @@ Hello, Rails!
 $ rails server
 ```
 
-ヒント: CoffeeScriptをJavaScriptにコンパイルするにはJavaScriptランタイムが必要です。ランタイムが環境にない場合は`execjs`エラーが発生します。Mac OS XやWindowsにはJavaScriptランタイムが同梱されています。Railsが新規アプリケーション用に生成する`Gemfile`には`therubyracer`というgemがコメントアウトされた状態で含まれており、必要であればこのgemのコメントアウトを解除して有効にすることもできます。`therubyrhino`はJRubyユーザー向けに推奨されているランタイムであり、JRuby環境下ではデフォルトでアプリケーションの`Gemfile`に追加されます。サポートされているランタイムの詳細については[ExecJS](https://github.com/sstephenson/execjs#readme)で確認できます。
+TIP: CoffeeScriptをJavaScriptにコンパイルするにはJavaScriptランタイムが必要です。ランタイムが環境にない場合は`execjs`エラーが発生します。Mac OS XやWindowsにはJavaScriptランタイムが同梱されています。Railsが新規アプリケーション用に生成する`Gemfile`には`therubyracer`というgemがコメントアウトされた状態で含まれており、必要であればこのgemのコメントアウトを解除して有効にすることもできます。`therubyrhino`はJRubyユーザー向けに推奨されているランタイムであり、JRuby環境下ではデフォルトでアプリケーションの`Gemfile`に追加されます。サポートされているランタイムの詳細については[ExecJS](https://github.com/sstephenson/execjs#readme)で確認できます。
 
 Railsで起動されるWebサーバーは、Rubyにデフォルトで付属しているWEBrickです。Webアプリケーションが実際に動作しているところを確認するには、ブラウザを開いて <http://localhost:3000> を表示してください。以下のようなRailsのデフォルト情報ページが表示されます。
 
 ![Welcome画面のスクリーンショット](images/getting_started/rails_welcome.png)
 
-ヒント: Webサーバーを停止するには、実行されているターミナルのウィンドウでCtrl + Cキーを押します。コマンドプロンプトのカーソルがふたたび表示されれば、サーバーは停止しています。Mac OS Xを含む多くのUnix系OSではプロンプトとしてドル記号`$`が使用されます。一般に、Railsの開発モードではファイルに変更を加えた場合でもサーバーを再起動する必要はありません。ファイルの変更は自動的にサーバーに反映されます(訳注: libファイルやapplication.rbなど一部の設定ファイルなどはサーバーを再起動しないと読み込まれません)。
+TIP: Webサーバーを停止するには、実行されているターミナルのウィンドウでCtrl + Cキーを押します。コマンドプロンプトのカーソルがふたたび表示されれば、サーバーは停止しています。Mac OS Xを含む多くのUnix系OSではプロンプトとしてドル記号`$`が使用されます。一般に、Railsの開発モードではファイルに変更を加えた場合でもサーバーを再起動する必要はありません。ファイルの変更は自動的にサーバーに反映されます(訳注: libファイルやapplication.rbなど一部の設定ファイルなどはサーバーを再起動しないと読み込まれません)。
 
 Railsの初期画面である「Welcome aboard」ページは、新しいRailsアプリケーションの _スモークテスト_ として使えます。このページが表示されれば、サーバーが正常に動作していることまでは確認できたことになります。 _About your application's environment_ リンクをクリックすれば、アプリケーション環境の概要を確認できます。
 
@@ -229,7 +229,7 @@ root 'welcome#index'
 
 ブラウザで<http://localhost:3000>を表示してみましょう (ジェネレータを実行するためにRailsを止めていた場合は`rails server`を再実行してください)。`app/views/welcome/index.html.erb`の中に書いた"Hello, Rails!"という文字がブラウザ上に表示されるはずです。`WelcomeController`の`index`アクションへのルーティングが新たに形成され、ビューが正しく表示されたことがこれで確認できました。
 
-ヒント: ルーティングの詳細については[Railsのルーティング](routing.html) を参照してください。
+TIP: ルーティングの詳細については[Railsのルーティング](routing.html) を参照してください。
 
 アプリケーションの実装と実行
 ----------------------
@@ -293,7 +293,7 @@ end
 
 コントローラは、`ApplicationController`を継承する形で定義されるシンプルなクラスです。コントローラの内側で定義されたメソッドは、コントローラのアクションになります。制作中のブログアプリケーションでは、これらのアクションがarticleに対するCRUD操作を担当します。
 
-メモ: Rubyのメソッドは`public`、`private`、`protected`に分けられますが、コントローラのアクションになれるのは`public`メソッドだけです。詳細については[Programming Ruby](http://www.ruby-doc.org/docs/ProgrammingRuby/) を参照してください。
+NOTE: Rubyのメソッドは`public`、`private`、`protected`に分けられますが、コントローラのアクションになれるのは`public`メソッドだけです。詳細については[Programming Ruby](http://www.ruby-doc.org/docs/ProgrammingRuby/) を参照してください。
 
 ブラウザの<http://localhost:3000/articles/new>を再表示すると、今度は別のエラーが表示されます。
 
@@ -449,7 +449,7 @@ $ rails generate model Article title:string text:text
 
 Railsによって多数のファイルが作成されました。ここで必要なのは、`app/models/article.rb`と`db/migrate/20140120191729_create_articles.rb`の2つだけです (後者のファイル名には日付が含まれているのでこれと同じにはなりません)。後者のマイグレーションファイルは、データベース構造を作成するためのものであり、この次に説明します。
 
-ヒント: Active Recordは、データベースのカラム名とモデルの属性を自動的に対応付けるインテリジェントな機能を有しています。このおかげで、Railsのモデルでは属性をいちいち宣言する必要がありません。そうした作業はActive Recordが自動的にやってくれます。
+TIP: Active Recordは、データベースのカラム名とモデルの属性を自動的に対応付けるインテリジェントな機能を有しています。このおかげで、Railsのモデルでは属性をいちいち宣言する必要がありません。そうした作業はActive Recordが自動的にやってくれます。
 
 ### マイグレーションを実行する
 
@@ -472,7 +472,7 @@ end
 
 上のマイグレーションファイルには`change`という名前のメソッドが作成されており、マイグレーションの実行時に呼び出されます。このメソッドで定義されてる操作は取り消しが可能です。つまり、Railsはchangeメソッドで行われたマイグレーションを必要に応じて元に戻すことができます。このマイグレーションを実行すると、`articles`というテーブルが作成され、文字列カラムとテキストカラムが1つずつ作成されます。Railsは、マイグレーション時に作成日と更新日を追跡するためのタイムスタンプフィールドを2つ作成します。これは指定がなくても自動的に行われます。
 
-ヒント: マイグレーションの詳細については、[Railsのデータベースマイグレーション](migrations.html)を参照してください。
+TIP: マイグレーションの詳細については、[Railsのデータベースマイグレーション](migrations.html)を参照してください。
 
 ここでは、以下のようにrakeコマンドでマイグレーションを実行します。
 
@@ -489,7 +489,7 @@ $ rake db:migrate
 ==  CreateArticles: migrated (0.0020s) =========================================
 ```
 
-メモ. マイグレーションはデフォルトではdevelopment (開発) 環境で実行されます。そのため、`config/database.yml`ファイルの`development`セクションで定義されている開発用データベースに対して実行される点にご注意ください。production (本番) 環境など、development以外の環境に対してもマイグレーションを実行したい場合は、`rake db:migrate RAILS_ENV=production`のように環境変数を明示的に指定する必要があります。
+NOTE. マイグレーションはデフォルトではdevelopment (開発) 環境で実行されます。そのため、`config/database.yml`ファイルの`development`セクションで定義されている開発用データベースに対して実行される点にご注意ください。production (本番) 環境など、development以外の環境に対してもマイグレーションを実行したい場合は、`rake db:migrate RAILS_ENV=production`のように環境変数を明示的に指定する必要があります。
 
 ### コントローラでデータを保存する
 
@@ -506,7 +506,7 @@ end
 
 変更内容を説明します。Railsのすべてのモデルは初期化時に属性(フィールド)を与えられ、それらはデータベースカラムに自動的に対応付けられます。メソッドの1行目ではまさにそれが行われています (取り出したい属性は`params[:article]`の中にあります)。次の`@article.save`で、このモデルをデータベースに保存します。最後に、ユーザーを`show`アクションにリダイレクトします (`show`アクションはこの後定義します)。訳注: モデルを保持している@articleを指定するだけで、そのモデルを表示するための`show`アクションにリダイレクトされる点にご注目ください。
 
-ヒント: 後に解説しますが、`@article.save`は保存に成功したかどうかを真偽値 (trueまたはfalse) で返します。
+TIP: 後に解説しますが、`@article.save`は保存に成功したかどうかを真偽値 (trueまたはfalse) で返します。
 
 この時点でブラウザで<http://localhost:3000/articles/new>を表示すると、記事の作成が *ほぼ* 可能な状態になっています。実際にやってみましょう。すると、以下のようなエラーが表示されます。
 
@@ -539,7 +539,7 @@ private
   end
 ```
 
-ヒント: 詳細については、上に挙げた参考資料に加えて[Strong Parametersに関するブログ記事](http://weblog.rubyonrails.org/2012/3/21/strong-parameters/) を参照してください。
+TIP: 詳細については、上に挙げた参考資料に加えて[Strong Parametersに関するブログ記事](http://weblog.rubyonrails.org/2012/3/21/strong-parameters/) を参照してください。
 
 ### 記事を表示する
 
@@ -668,9 +668,9 @@ end
 <%= link_to 'Back', articles_path %>
 ```
 
-ヒント: 現在と同じコントローラのアクションにリンクする場合は、`controller`の指定は不要です。デフォルトでは現在のコントローラが使用されるからです。
+TIP: 現在と同じコントローラのアクションにリンクする場合は、`controller`の指定は不要です。デフォルトでは現在のコントローラが使用されるからです。
 
-ヒント: developmentモード (これはRailsのデフォルトのモードです) では、Railsはリクエストのたびにアプリケーションを再読み込みします。これは開発をやりやすくするためであり、変更を行なうたびにRailsのWebサーバーを再起動する必要はありません。
+TIP: developmentモード (これはRailsのデフォルトのモードです) では、Railsはリクエストのたびにアプリケーションを再読み込みします。これは開発をやりやすくするためであり、変更を行なうたびにRailsのWebサーバーを再起動する必要はありません。
 
 ### 検証 (バリデーション) の追加
 
@@ -760,7 +760,7 @@ private
 
 `ArticlesController`に`@article = Article.new`を追加した理由は、そうしないとビューで受け取る`@article`が`nil`になってしまい、`@article.errors.any?`を呼び出すところでエラーになってしまうためです。Articleのインスタンス作成に成功したときは@articleが`nil`にならないようにしておきたいわけです。
 
-ヒント: Railsでは、エラーメッセージを含むフィールドは自動的に`field_with_errors`クラスを持つdivタグで囲まれます。これを利用して、エラーメッセージをもっと目立たせるようにcssルールを定義しても構いません。
+TIP: Railsでは、エラーメッセージを含むフィールドは自動的に`field_with_errors`クラスを持つdivタグで囲まれます。これを利用して、エラーメッセージをもっと目立たせるようにcssルールを定義しても構いません。
 
 これで、[(http://localhost:3000/articles/new)](http://localhost:3000/articles/new)のフォームで新しい記事を保存する時にタイトルがなかった場合に、適切なエラーメッセージが表示されるようになりました。
 
@@ -846,7 +846,7 @@ private
 
 createアクションで使用した`article_params`メソッドをここでも使うことにします。
 
-ヒント: `update`に属性をすべて渡す必要はありません。たとえば、`@article.update(title: 'A new title')`を実行した場合、Railsは`title`属性のみを更新し、それ以外の属性は変更しません。
+TIP: `update`に属性をすべて渡す必要はありません。たとえば、`@article.update(title: 'A new title')`を実行した場合、Railsは`title`属性のみを更新し、それ以外の属性は変更しません。
 
 最後に、`edit`アクションへのリンクを全記事の一覧に追加しましょう。`app/views/articles/index.html.erb`に以下のように手を加えて"Show"リンクの隣にEditリンクを追加します。
 
@@ -886,7 +886,7 @@ createアクションで使用した`article_params`メソッドをここでも�
 
 さて、`edit`ページをよく見ると、`new`ページとほとんど違いがありません。実際、フォームを表示するコードはどちらでもまったく同じになっています。パーシャル(部分テンプレートとも呼ばれます)を使用して、このような無駄な重複を取り除きましょう。Rubyの慣例として、パーシャルのファイル名の先頭にはアンダースコアを追加します。
 
-ヒント: パーシャルについての詳細は本ガイドの[Railsにおけるレイアウトと描画](layouts_and_rendering.html)を参照してください。
+TIP: パーシャルについての詳細は本ガイドの[Railsにおけるレイアウトと描画](layouts_and_rendering.html)を参照してください。
 
 `app/views/articles/_form.html.erb`という名前のパーシャルファイルを作成し、以下の内容を入力してください。
 
@@ -1000,7 +1000,7 @@ end
 
 以上で記事の作成、表示、一覧表示、更新、削除をひととおり実装できました。お疲れさまでした!
 
-ヒント: Railsでは、ルーティングを1つずつ手作りするよりもresourcesオブジェクトを使用してルーティングを設定することが推奨されています。
+TIP: Railsでは、ルーティングを1つずつ手作りするよりもresourcesオブジェクトを使用してルーティングを設定することが推奨されています。
 ルーティングの詳細については、本ガイドの[Railsのルーティング](routing.html)を参照してください。
 
 2番目のモデルを追加する
@@ -1095,7 +1095,7 @@ end
 
 2つのモデルで行われているこれらの宣言によって、さまざまな動作が自動化されています。たとえば、`@article`というインスタンス変数に記事が1つ含まれているのであれば、`@article.comments`と書くだけでその記事に関連付けられているコメントをすべて取得することができるのです。
 
-ヒント: Active Recordの関連付けの詳細については、[Active Recordの関連付け(アソシエーション)](association_basics.html)ガイドを参照してください。
+TIP: Active Recordの関連付けの詳細については、[Active Recordの関連付け(アソシエーション)](association_basics.html)ガイドを参照してください。
 
 ### コメントへのルーティングを追加する
 
@@ -1109,7 +1109,7 @@ end
 
 この設定により、`article`の内側に _ネストされたリソース_ として`comments`が作成されます。これは、モデルの記述とは別の視点から、記事とコメントの間のリレーションシップを階層的に捉えたものであると言えます。
 
-ヒント: ルーティングの詳細については[Railsのルーティング](routing.html) を参照してください。
+TIP: ルーティングの詳細については[Railsのルーティング](routing.html) を参照してください。
 
 ### コントローラを生成する
 
@@ -1473,7 +1473,7 @@ Railsには、rakeコマンドラインユーティリティを使用して生�
 * `rake doc:guides`を実行すると、本Railsガイドの完全なコピーがアプリケーションの`doc/guides`フォルダに生成されます。ブラウザで`doc/guides/index.html`を開くことでガイドを参照できます。
 * `rake doc:rails`を実行すると、Rails APIドキュメントの完全なコピーがアプリケーションの`doc/api`フォルダに生成されます。ブラウザで`doc/api/index.html`を開いてAPIドキュメントを参照できます。
 
-ヒント: `doc:guides` rakeタスクを使用してRailsガイドをローカル生成するには、RedCloth gemをインストールする必要があります。RedCloth gemを`Gemfile`に追記して`bundle install`を実行することで利用できるようになります。
+TIP: `doc:guides` rakeタスクを使用してRailsガイドをローカル生成するには、RedCloth gemをインストールする必要があります。RedCloth gemを`Gemfile`に追記して`bundle install`を実行することで利用できるようになります。
 
 設定の落とし穴
 ---------------------

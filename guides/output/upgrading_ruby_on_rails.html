@@ -277,7 +277,7 @@
 <li>Rails 3.2.xはRuby 1.8.7の最終ブランチです。</li>
 <li>Rails 4ではRuby 2.0が推奨されます。Ruby 1.9.3以上が必須です。</li>
 </ul>
-<p>ヒント: Ruby 1.8.7 p248およびp249にはRailsをクラッシュさせるマーシャリングバグがあります。Ruby Enterprise Editionでは1.8.7-2010.02以降このバグは修正されています。Ruby 1.9系を使用する場合、Ruby 1.9.1はあからさまなセグメンテーション違反が発生するため使用できません。1.9.3をご使用ください。</p>
+<div class="info"><p>Ruby 1.8.7 p248およびp249にはRailsをクラッシュさせるマーシャリングバグがあります。Ruby Enterprise Editionでは1.8.7-2010.02以降このバグは修正されています。Ruby 1.9系を使用する場合、Ruby 1.9.1はあからさまなセグメンテーション違反が発生するため使用できません。1.9.3をご使用ください。</p></div>
 <h3 id="rails-4.0からrails-4.1へのアップグレード">2 Rails 4.0からRails 4.1へのアップグレード</h3>
 <h4 id="リモート-&lt;script&gt;-タグにcsrf保護を実施">2.1 リモート <code>&lt;script&gt;</code> タグにCSRF保護を実施</h4>
 <p>これを行わないと、「なぜかテストがとおらない...orz」ということになりかねません。</p>
@@ -308,7 +308,7 @@ xhr :get, :index, format: :js
 <li>
 <code>bundle exec spring binstub --all</code>を実行してbinstubをSpring化する</li>
 </ol>
-<p>メモ: ユーザーが定義したRakeタスクはデフォルトでdevelopment環境で動作するようになります。これらのRakeタスクを他の環境でも実行したい場合は<a href="https://github.com/rails/spring#rake">Spring README</a>を参考にしてください。</p>
+<div class="note"><p>ユーザーが定義したRakeタスクはデフォルトでdevelopment環境で動作するようになります。これらのRakeタスクを他の環境でも実行したい場合は<a href="https://github.com/rails/spring#rake">Spring README</a>を参考にしてください。</p></div>
 <h4 id="config/secrets.yml">2.3 <code>config/secrets.yml</code>
 </h4>
 <p>新しい<code>secrets.yml</code>に秘密鍵を保存したい場合は以下のようにします。</p>
@@ -388,7 +388,7 @@ flash.keys # =&gt; ["string", "symbol"]
 <li><p>'multi_json'をGemfileに追加する。ただしこのGemは将来使えなくなるかもしれません。</p></li>
 <li><p><code>obj.to_json</code>と<code>JSON.parse(str)</code>を使用してMultiJSONから乗り換える</p></li>
 </ol>
-<p>警告: <code>MultiJson.dump</code> と <code>MultiJson.load</code>をそれぞれ<code>JSON.dump</code>と<code>JSON.load</code>に単純に置き換えては「いけません」。これらのJSON gem are meant for serializing and deserializing arbitrary Ruby objects and are generally [unsafe]APIは任意のRubyオブジェクトをシリアライズおよびデシリアライズするためのものであり、一般に<a href="http://www.ruby-doc.org/stdlib-2.0.0/libdoc/json/rdoc/JSON.html#method-i-load">安全ではありません</a>。</p>
+<div class="warning"><p><code>MultiJson.dump</code> と <code>MultiJson.load</code>をそれぞれ<code>JSON.dump</code>と<code>JSON.load</code>に単純に置き換えては「いけません」。これらのJSON gem are meant for serializing and deserializing arbitrary Ruby objects and are generally [unsafe]APIは任意のRubyオブジェクトをシリアライズおよびデシリアライズするためのものであり、一般に<a href="http://www.ruby-doc.org/stdlib-2.0.0/libdoc/json/rdoc/JSON.html#method-i-load">安全ではありません</a>。</p></div>
 <h5 id="json-gemの互換性">2.7.2 JSON gemの互換性</h5>
 <p>これまでのRailsは、JSON gemとの互換性に何らかの問題が生じていました。Railsアプリケーション内の<code>JSON.generate</code>と<code>JSON.dump</code>ではときたまエラーが生じることがありました。</p>
 <p>Rails 4.1では、Rails自身のエンコーダをJSON gemから切り離すことでこれらの問題が修正されました。JSON gem APIは今後正常に動作しますが、その代わりJSON gem APIからRails特有の機能にアクセスすることはできなくなります。例：</p>

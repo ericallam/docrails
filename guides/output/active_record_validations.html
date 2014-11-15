@@ -323,8 +323,8 @@ $ rails console
 </pre>
 </div>
 <p>新規レコードを作成して保存すると、SQLの<code>INSERT</code>操作がデータベースに送信されます。既存のレコードを更新すると、SQLの<code>UPDATE</code>操作が送信されます。検証は、SQLのデータベースへの送信より前に行うのが普通です。検証のいずれかが失敗すると、オブジェクトは無効(invalid)とマークされ、Active Recordでの<code>INSERT</code>や<code>UPDATE</code>操作は行われません。これにより、無効なオブジェクトがデータベースに保存されることを防止します。オブジェクトの作成、保存、更新時に特定の検証を実行することもできます。</p>
-<p>注意: データベース上のオブジェクトの状態を変える方法は1つとは限りません。
-検証をトリガするメソッドもあれば、トリガしないメソッドもあります。このため、検証が設定されていも、気を付けておかないとデータベース上のオブジェクトが無効な状態になってしまう可能性があります。</p>
+<div class="warning"><p>データベース上のオブジェクトの状態を変える方法は1つとは限りません。
+検証をトリガするメソッドもあれば、トリガしないメソッドもあります。このため、検証が設定されていも、気を付けておかないとデータベース上のオブジェクトが無効な状態になってしまう可能性があります。</p></div>
 <p>以下のメソッドでは検証がトリガされ、オブジェクトが有効な場合にのみデータベースに保存されます。</p>
 <ul>
 <li><code>create</code></li>
@@ -461,8 +461,8 @@ end
 </pre>
 </div>
 <p>この検証は、あらゆる種類の関連付けに対して使用できます。</p>
-<p>注意: <code>validates_associated</code>は関連付けの両側のオブジェクトでは実行しないでください。
-関連付けの両側でこのヘルパーを使用すると無限ループになります。</p>
+<div class="warning"><p><code>validates_associated</code>は関連付けの両側のオブジェクトでは実行しないでください。
+関連付けの両側でこのヘルパーを使用すると無限ループになります。</p></div>
 <p><code>validates_associated</code>のデフォルトエラーメッセージは <em>"is invalid"</em> です。関連付けられたオブジェクトにも自分の<code>errors</code>コレクションが含まれるので、エラーは呼び出し元のモデルまでは伝わりません。</p>
 <h4 id="confirmation">2.3 <code>confirmation</code>
 </h4>
@@ -598,7 +598,7 @@ end
 </pre>
 </div>
 <p>上の正規表現を使用して属性の値が検証されます。それ以外の場合は、<code>Float</code>を使用して値を数値に変換して検証しようとします。</p>
-<p>警告: 上の正規表現では末尾に改行記号があってもマッチします。</p>
+<div class="warning"><p>上の正規表現では末尾に改行記号があってもマッチします。</p></div>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class Player &lt; ActiveRecord::Base
@@ -723,7 +723,7 @@ end
 
 </pre>
 </div>
-<p>警告: 一部のデータベースでは、大文字小文字を区別しないように設定されていることがあります。</p>
+<div class="warning"><p>一部のデータベースでは、大文字小文字を区別しないように設定されていることがあります。</p></div>
 <p>デフォルトのエラーメッセージは <em>"has already been taken"</em> です。</p>
 <h4 id="validates_with">2.12 <code>validates_with</code>
 </h4>
@@ -744,7 +744,7 @@ end
 
 </pre>
 </div>
-<p>メモ: <code>record.errors[:base]</code>に追加されるエラーは、概して特定の属性よりもそのレコード全体の状態に関係しているものです。</p>
+<div class="note"><p><code>record.errors[:base]</code>に追加されるエラーは、概して特定の属性よりもそのレコード全体の状態に関係しているものです。</p></div>
 <p><code>validates_with</code>は、検証に使用する1つのクラス、またはクラスのリストを引数に取ります。<code>validates_with</code>にはデフォルトのエラーメッセージはありません。エラーメッセージが必要であれば、検証用クラスのレコードのエラーコレクションに手動で追加する必要があります。</p>
 <p>検証用メソッドを実装するには、定義済みの<code>record</code>パラメータを持つ必要があります。これは検証するレコードです。</p>
 <p>他の検証と同様、<code>validates_with</code>ヘルパーは<code>:if</code>、<code>:unless</code>、<code>:on</code>オプションを取ることができます。これ以外のオプションを渡すと、それらは検証用クラスに<code>options</code>として渡されます。</p>

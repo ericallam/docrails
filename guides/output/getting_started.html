@@ -306,10 +306,10 @@ Rails経験の長い多くの開発者から、おかげでWebアプリケーシ
 <h3 id="railsプロジェクトを新規作成する">3 Railsプロジェクトを新規作成する</h3>
 <p>本ガイドを活用するための最善の方法は、以下の手順を文字どおり1つずつ実行し、手順を取りこぼさないようにすることです。取りこぼしがあると、その後の手順が期待どおりに進まない可能性があります。この手順で作成された完全なRailsプロジェクトのコードは<a href="https://github.com/rails/docrails/tree/master/guides/code/getting_started">ここ</a>を参照してください(●訳注: このリンク先はなく、移動先も不明です)。</p>
 <p>本ガイドの手順に従うことで、<code>blog</code>という名前の非常にシンプルなブログのRailsプロジェクトを作成できます。Railsアプリケーションを構築する前に、Rails本体がインストールされていることを確認してください。</p>
-<p>ヒント: 以下の例では、Unix系OSのプロンプトとして<code>$</code>記号を使用していますが、これはカスタマイズ可能であり、自分の環境では異なる記号になっていることもあります。Windowsでは<code>c:\source_code&gt;</code>のように表示されます。</p>
+<div class="info"><p>以下の例では、Unix系OSのプロンプトとして<code>$</code>記号を使用していますが、これはカスタマイズ可能であり、自分の環境では異なる記号になっていることもあります。Windowsでは<code>c:\source_code&gt;</code>のように表示されます。</p></div>
 <h4 id="railsのインストール">3.1 Railsのインストール</h4>
 <p>ターミナル (コマンドプロンプトとも言います) ウィンドウを開いてください。Mac OS Xの場合、ターミナル (Terminal.app) という名前のアプリケーションを実行します。Windowsの場合は[スタート] メニューから [ファイル名を指定して実行] をクリックして'cmd.exe'と入力します。<code>$</code>で始まる記述はコマンド行なので、これらはコマンドラインに入力して実行してください。続いて現在インストールされているRubyのバージョンが最新のものであることを確認してください。</p>
-<p>ヒント: RubyやRuby on Railsを素早くインストールするためのツールは多数存在します。Windowsユーザーの場合は<a href="http://railsinstaller.org">Railsインストーラ</a> をお使いください。Mac OS Xユーザーは<a href="http://railsoneclick.com">Rails One Click</a> をお使いください。(●訳注: これらのリンクは古いか適切でない可能性があります。最新のインストール方法については<a href="http://railstutorial.jp/chapters/beginning?version=4.0#sec-rubygems">Railsチュートリアル</a> を参照してください)</p>
+<div class="info"><p>RubyやRuby on Railsを素早くインストールするためのツールは多数存在します。Windowsユーザーの場合は<a href="http://railsinstaller.org">Railsインストーラ</a> をお使いください。Mac OS Xユーザーは<a href="http://railsoneclick.com">Rails One Click</a> をお使いください。(●訳注: これらのリンクは古いか適切でない可能性があります。最新のインストール方法については<a href="http://railstutorial.jp/chapters/beginning?version=4.0#sec-rubygems">Railsチュートリアル</a> を参照してください)</p></div>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ ruby -v
@@ -352,7 +352,7 @@ $ rails new blog
 </pre>
 </div>
 <p>これにより、Blogという名前のRails アプリケーションが<code>blog</code>ディレクトリに作成され、<code>Gemfile</code>というファイルで指定されているgemファイルが<code>bundle install</code>コマンドによってインストールされます。</p>
-<p>ヒント: <code>rails new -h</code>を実行すると、Railsアプリケーションビルダで使用できるすべてのコマンドラインオプションを確認できます。</p>
+<div class="info"><p><code>rails new -h</code>を実行すると、Railsアプリケーションビルダで使用できるすべてのコマンドラインオプションを確認できます。</p></div>
 <p>ブログアプリケーションを作成したら、そのフォルダ内に移動します。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
@@ -437,10 +437,10 @@ $ rails server
 
 </pre>
 </div>
-<p>ヒント: CoffeeScriptをJavaScriptにコンパイルするにはJavaScriptランタイムが必要です。ランタイムが環境にない場合は<code>execjs</code>エラーが発生します。Mac OS XやWindowsにはJavaScriptランタイムが同梱されています。Railsが新規アプリケーション用に生成する<code>Gemfile</code>には<code>therubyracer</code>というgemがコメントアウトされた状態で含まれており、必要であればこのgemのコメントアウトを解除して有効にすることもできます。<code>therubyrhino</code>はJRubyユーザー向けに推奨されているランタイムであり、JRuby環境下ではデフォルトでアプリケーションの<code>Gemfile</code>に追加されます。サポートされているランタイムの詳細については<a href="https://github.com/sstephenson/execjs#readme">ExecJS</a>で確認できます。</p>
+<div class="info"><p>CoffeeScriptをJavaScriptにコンパイルするにはJavaScriptランタイムが必要です。ランタイムが環境にない場合は<code>execjs</code>エラーが発生します。Mac OS XやWindowsにはJavaScriptランタイムが同梱されています。Railsが新規アプリケーション用に生成する<code>Gemfile</code>には<code>therubyracer</code>というgemがコメントアウトされた状態で含まれており、必要であればこのgemのコメントアウトを解除して有効にすることもできます。<code>therubyrhino</code>はJRubyユーザー向けに推奨されているランタイムであり、JRuby環境下ではデフォルトでアプリケーションの<code>Gemfile</code>に追加されます。サポートされているランタイムの詳細については<a href="https://github.com/sstephenson/execjs#readme">ExecJS</a>で確認できます。</p></div>
 <p>Railsで起動されるWebサーバーは、Rubyにデフォルトで付属しているWEBrickです。Webアプリケーションが実際に動作しているところを確認するには、ブラウザを開いて <a href="http://localhost:3000">http://localhost:3000</a> を表示してください。以下のようなRailsのデフォルト情報ページが表示されます。</p>
 <p><img src="images/getting_started/rails_welcome.png" alt="Welcome画面のスクリーンショット"></p>
-<p>ヒント: Webサーバーを停止するには、実行されているターミナルのウィンドウでCtrl + Cキーを押します。コマンドプロンプトのカーソルがふたたび表示されれば、サーバーは停止しています。Mac OS Xを含む多くのUnix系OSではプロンプトとしてドル記号<code>$</code>が使用されます。一般に、Railsの開発モードではファイルに変更を加えた場合でもサーバーを再起動する必要はありません。ファイルの変更は自動的にサーバーに反映されます(訳注: libファイルやapplication.rbなど一部の設定ファイルなどはサーバーを再起動しないと読み込まれません)。</p>
+<div class="info"><p>Webサーバーを停止するには、実行されているターミナルのウィンドウでCtrl + Cキーを押します。コマンドプロンプトのカーソルがふたたび表示されれば、サーバーは停止しています。Mac OS Xを含む多くのUnix系OSではプロンプトとしてドル記号<code>$</code>が使用されます。一般に、Railsの開発モードではファイルに変更を加えた場合でもサーバーを再起動する必要はありません。ファイルの変更は自動的にサーバーに反映されます(訳注: libファイルやapplication.rbなど一部の設定ファイルなどはサーバーを再起動しないと読み込まれません)。</p></div>
 <p>Railsの初期画面である「Welcome aboard」ページは、新しいRailsアプリケーションの <em>スモークテスト</em> として使えます。このページが表示されれば、サーバーが正常に動作していることまでは確認できたことになります。 <em>About your application's environment</em> リンクをクリックすれば、アプリケーション環境の概要を確認できます。</p>
 <h4 id='railsに"hello"と挨拶させる'>4.2 Railsに"Hello"と挨拶させる</h4>
 <p>Railsに"Hello"と表示するには、最低でも <em>コントローラ</em> と <em>ビュー</em> が必要です。</p>
@@ -511,7 +511,7 @@ root 'welcome#index'
 </div>
 <p><code>root 'welcome#index'</code>と記述することで、アプリケーションのルートURLへのアクセスをwelcomeコントローラのindexアクションに割り当てるようRailsに指示が伝わります。同様に、<code>get 'welcome/index'</code>は<a href="http://localhost:3000/welcome/index">http://localhost:3000/welcome/index</a>というリクエストをwelcomeコントローラのindexアクションに割り当てます。後者は先ほどコントローラ用ジェネレータ (<code>rails generate controller welcome index</code>) を実行した時に自動的に作成されています。</p>
 <p>ブラウザで<a href="http://localhost:3000">http://localhost:3000</a>を表示してみましょう (ジェネレータを実行するためにRailsを止めていた場合は<code>rails server</code>を再実行してください)。<code>app/views/welcome/index.html.erb</code>の中に書いた"Hello, Rails!"という文字がブラウザ上に表示されるはずです。<code>WelcomeController</code>の<code>index</code>アクションへのルーティングが新たに形成され、ビューが正しく表示されたことがこれで確認できました。</p>
-<p>ヒント: ルーティングの詳細については<a href="routing.html">Railsのルーティング</a> を参照してください。</p>
+<div class="info"><p>ルーティングの詳細については<a href="routing.html">Railsのルーティング</a> を参照してください。</p></div>
 <h3 id="アプリケーションの実装と実行">5 アプリケーションの実装と実行</h3>
 <p>以上で、コントローラとアクションとビューの作成方法を説明いたしました。ここからはもう少しブログらしい体裁を整えていきましょう。</p>
 <p>今度はBlogアプリケーションに新しく <em>リソース</em> を作成します。ここで言う「リソース」とは、記事、人、動物などのよく似たオブジェクト同士が集まったものを指します。
@@ -567,7 +567,7 @@ end
 </pre>
 </div>
 <p>コントローラは、<code>ApplicationController</code>を継承する形で定義されるシンプルなクラスです。コントローラの内側で定義されたメソッドは、コントローラのアクションになります。制作中のブログアプリケーションでは、これらのアクションがarticleに対するCRUD操作を担当します。</p>
-<p>メモ: Rubyのメソッドは<code>public</code>、<code>private</code>、<code>protected</code>に分けられますが、コントローラのアクションになれるのは<code>public</code>メソッドだけです。詳細については<a href="http://www.ruby-doc.org/docs/ProgrammingRuby/">Programming Ruby</a> を参照してください。</p>
+<div class="note"><p>Rubyのメソッドは<code>public</code>、<code>private</code>、<code>protected</code>に分けられますが、コントローラのアクションになれるのは<code>public</code>メソッドだけです。詳細については<a href="http://www.ruby-doc.org/docs/ProgrammingRuby/">Programming Ruby</a> を参照してください。</p></div>
 <p>ブラウザの<a href="http://localhost:3000/articles/new">http://localhost:3000/articles/new</a>を再表示すると、今度は別のエラーが表示されます。</p>
 <p><img src="images/getting_started/unknown_action_new_for_articles.png" alt="Unknown action new for ArticlesController!"></p>
 <p>生成した<code>ArticlesController</code>コントローラに<code>new</code>アクションが見つからないというエラーです。これは、Railsでアクションを指定せずに生成したコントローラは中身が空のままになるためです。</p>
@@ -697,7 +697,7 @@ $ rails generate model Article title:string text:text
 </div>
 <p>このコマンドを実行すると、<code>Article</code>モデルが作成されます。その中にはstring型の <em>title</em> 属性とtext型の <em>text</em> 属性が作成されています。これらの属性は、データベースの<code>articles</code>テーブルに自動的に追加され、<code>Article</code>モデルと対応付けられます (訳注: 実際には後述するマイグレーションを行わないとデータベースとの対応付けは完了しません)。</p>
 <p>Railsによって多数のファイルが作成されました。ここで必要なのは、<code>app/models/article.rb</code>と<code>db/migrate/20140120191729_create_articles.rb</code>の2つだけです (後者のファイル名には日付が含まれているのでこれと同じにはなりません)。後者のマイグレーションファイルは、データベース構造を作成するためのものであり、この次に説明します。</p>
-<p>ヒント: Active Recordは、データベースのカラム名とモデルの属性を自動的に対応付けるインテリジェントな機能を有しています。このおかげで、Railsのモデルでは属性をいちいち宣言する必要がありません。そうした作業はActive Recordが自動的にやってくれます。</p>
+<div class="info"><p>Active Recordは、データベースのカラム名とモデルの属性を自動的に対応付けるインテリジェントな機能を有しています。このおかげで、Railsのモデルでは属性をいちいち宣言する必要がありません。そうした作業はActive Recordが自動的にやってくれます。</p></div>
 <h4 id="マイグレーションを実行する">5.5 マイグレーションを実行する</h4>
 <p>既に見たように<code>rails generate model</code>を実行すると <em>データベースマイグレーション</em> ファイルが<code>db/migrate</code>の下に作成されます。マイグレーションはRubyのクラスであり、データベーステーブルの作成や変更を簡単に行うためのしくみです。マイグレーションを実行するにはrakeコマンドを実行します。マイグレーションを使用して行ったデータベース構成の変更は、後から取り消すことができます。マイグレーションファイルの名前にはタイムスタンプが含まれており、これに基いて、マイグレーションは作成された順に実行されます。</p>
 <p>ここで<code>db/migrate/20140120191729_create_articles.rb</code> ファイルをエディタで開いてみると (タイムスタンプは各自異なることにご注意ください)、以下のようになっています。</p>
@@ -717,7 +717,7 @@ end
 </pre>
 </div>
 <p>上のマイグレーションファイルには<code>change</code>という名前のメソッドが作成されており、マイグレーションの実行時に呼び出されます。このメソッドで定義されてる操作は取り消しが可能です。つまり、Railsはchangeメソッドで行われたマイグレーションを必要に応じて元に戻すことができます。このマイグレーションを実行すると、<code>articles</code>というテーブルが作成され、文字列カラムとテキストカラムが1つずつ作成されます。Railsは、マイグレーション時に作成日と更新日を追跡するためのタイムスタンプフィールドを2つ作成します。これは指定がなくても自動的に行われます。</p>
-<p>ヒント: マイグレーションの詳細については、<a href="migrations.html">Railsのデータベースマイグレーション</a>を参照してください。</p>
+<div class="info"><p>マイグレーションの詳細については、<a href="migrations.html">Railsのデータベースマイグレーション</a>を参照してください。</p></div>
 <p>ここでは、以下のようにrakeコマンドでマイグレーションを実行します。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
@@ -735,7 +735,7 @@ $ rake db:migrate
 
 </pre>
 </div>
-<p>メモ. マイグレーションはデフォルトではdevelopment (開発) 環境で実行されます。そのため、<code>config/database.yml</code>ファイルの<code>development</code>セクションで定義されている開発用データベースに対して実行される点にご注意ください。production (本番) 環境など、development以外の環境に対してもマイグレーションを実行したい場合は、<code>rake db:migrate RAILS_ENV=production</code>のように環境変数を明示的に指定する必要があります。</p>
+<div class="note"><p>マイグレーションはデフォルトではdevelopment (開発) 環境で実行されます。そのため、<code>config/database.yml</code>ファイルの<code>development</code>セクションで定義されている開発用データベースに対して実行される点にご注意ください。production (本番) 環境など、development以外の環境に対してもマイグレーションを実行したい場合は、<code>rake db:migrate RAILS_ENV=production</code>のように環境変数を明示的に指定する必要があります。</p></div>
 <h4 id="コントローラでデータを保存する">5.6 コントローラでデータを保存する</h4>
 <p>ふたたび<code>ArticlesController</code>に戻りましょう。先ほど作成した<code>Article</code>モデルを使用して、<code>create</code>アクションを変更しなければなりません。<code>app/controllers/articles_controller.rb</code>をエディタで開き、<code>create</code>アクションを次のように変更します。</p>
 <div class="code_container">
@@ -750,7 +750,7 @@ end
 </pre>
 </div>
 <p>変更内容を説明します。Railsのすべてのモデルは初期化時に属性(フィールド)を与えられ、それらはデータベースカラムに自動的に対応付けられます。メソッドの1行目ではまさにそれが行われています (取り出したい属性は<code>params[:article]</code>の中にあります)。次の<code>@article.save</code>で、このモデルをデータベースに保存します。最後に、ユーザーを<code>show</code>アクションにリダイレクトします (<code>show</code>アクションはこの後定義します)。訳注: モデルを保持している@articleを指定するだけで、そのモデルを表示するための<code>show</code>アクションにリダイレクトされる点にご注目ください。</p>
-<p>ヒント: 後に解説しますが、<code>@article.save</code>は保存に成功したかどうかを真偽値 (trueまたはfalse) で返します。</p>
+<div class="info"><p>後に解説しますが、<code>@article.save</code>は保存に成功したかどうかを真偽値 (trueまたはfalse) で返します。</p></div>
 <p>この時点でブラウザで<a href="http://localhost:3000/articles/new">http://localhost:3000/articles/new</a>を表示すると、記事の作成が <em>ほぼ</em> 可能な状態になっています。実際にやってみましょう。すると、以下のようなエラーが表示されます。</p>
 <p><img src="images/getting_started/forbidden_attributes_for_new_article.png" alt="Forbidden attributes for new article"></p>
 <p>Railsにはセキュリティの高いアプリケーションを開発するのに便利な機能が多数あり、ここではその機能に引っかかったのです。これは<a href="http://guides.rubyonrails.org/action_controller_overview.html#strong-parameters"><code>strong_parameters</code></a>と呼ばれるもので、コントローラのアクションで本当に使用してよいパラメータだけを厳密に指定することを強制するものです。</p>
@@ -780,7 +780,7 @@ private
 
 </pre>
 </div>
-<p>ヒント: 詳細については、上に挙げた参考資料に加えて<a href="http://weblog.rubyonrails.org/2012/3/21/strong-parameters/">Strong Parametersに関するブログ記事</a> を参照してください。</p>
+<div class="info"><p>詳細については、上に挙げた参考資料に加えて<a href="http://weblog.rubyonrails.org/2012/3/21/strong-parameters/">Strong Parametersに関するブログ記事</a> を参照してください。</p></div>
 <h4 id="記事を表示する">5.7 記事を表示する</h4>
 <p>現時点の状態でフォームを再度送信すると、<code>show</code>アクションがないというメッセージがRailsから返されます。このままでは実用に耐えないので、<code>show</code>アクションを追加して先に進むことにしましょう。</p>
 <p><code>rake routes</code>の出力結果にもあったように<code>show</code>アクションへのルーティングは以下のようになります。</p>
@@ -906,8 +906,8 @@ end
 
 </pre>
 </div>
-<p>ヒント: 現在と同じコントローラのアクションにリンクする場合は、<code>controller</code>の指定は不要です。デフォルトでは現在のコントローラが使用されるからです。</p>
-<p>ヒント: developmentモード (これはRailsのデフォルトのモードです) では、Railsはリクエストのたびにアプリケーションを再読み込みします。これは開発をやりやすくするためであり、変更を行なうたびにRailsのWebサーバーを再起動する必要はありません。</p>
+<div class="info"><p>現在と同じコントローラのアクションにリンクする場合は、<code>controller</code>の指定は不要です。デフォルトでは現在のコントローラが使用されるからです。</p></div>
+<div class="info"><p>developmentモード (これはRailsのデフォルトのモードです) では、Railsはリクエストのたびにアプリケーションを再読み込みします。これは開発をやりやすくするためであり、変更を行なうたびにRailsのWebサーバーを再起動する必要はありません。</p></div>
 <h4 id="検証-(バリデーション)-の追加">5.10 検証 (バリデーション) の追加</h4>
 <p>モデルファイル<code>app/models/article.rb</code>の中身は、以下のように驚くほどシンプルです。</p>
 <div class="code_container">
@@ -992,7 +992,7 @@ private
 <p>何やら目新しいコードが追加されています。ここでは、<code>@article.errors.any?</code>でエラーが発生しているかどうかをチェックしています。そしてエラーの場合は<code>@article.errors.full_messages</code>でエラーメッセージを全文表示します。</p>
 <p><code>pluralize</code>は、数値を受け取ってそれに応じて英語の「単数形/複数形」活用を行ってくれるRailsのヘルパーメソッドです。数値が1より大きい場合は、引数の文字列を自動的に複数形に変更します(訳注:<code>pluralize</code>はたいていの不規則活用にも対応しています)。</p>
 <p><code>ArticlesController</code>に<code>@article = Article.new</code>を追加した理由は、そうしないとビューで受け取る<code>@article</code>が<code>nil</code>になってしまい、<code>@article.errors.any?</code>を呼び出すところでエラーになってしまうためです。Articleのインスタンス作成に成功したときは@articleが<code>nil</code>にならないようにしておきたいわけです。</p>
-<p>ヒント: Railsでは、エラーメッセージを含むフィールドは自動的に<code>field_with_errors</code>クラスを持つdivタグで囲まれます。これを利用して、エラーメッセージをもっと目立たせるようにcssルールを定義しても構いません。</p>
+<div class="info"><p>Railsでは、エラーメッセージを含むフィールドは自動的に<code>field_with_errors</code>クラスを持つdivタグで囲まれます。これを利用して、エラーメッセージをもっと目立たせるようにcssルールを定義しても構いません。</p></div>
 <p>これで、<a href="http://localhost:3000/articles/new">(http://localhost:3000/articles/new)</a>のフォームで新しい記事を保存する時にタイトルがなかった場合に、適切なエラーメッセージが表示されるようになりました。</p>
 <p><img src="images/getting_started/form_with_errors.png" alt="エラーが表示されているフォーム"></p>
 <h4 id="記事を更新する">5.11 記事を更新する</h4>
@@ -1067,7 +1067,7 @@ private
 </div>
 <p>既存のレコードを更新したいときには新たに<code>update</code>アクションを使用します。このアクションには、更新後の属性を含むハッシュを渡すことができます。createのときに既に行ったように、記事の更新に失敗してエラーが発生した場合、そのことをユーザーに伝えるようにしましょう。</p>
 <p>createアクションで使用した<code>article_params</code>メソッドをここでも使うことにします。</p>
-<p>ヒント: <code>update</code>に属性をすべて渡す必要はありません。たとえば、<code>@article.update(title: 'A new title')</code>を実行した場合、Railsは<code>title</code>属性のみを更新し、それ以外の属性は変更しません。</p>
+<div class="info"><p><code>update</code>に属性をすべて渡す必要はありません。たとえば、<code>@article.update(title: 'A new title')</code>を実行した場合、Railsは<code>title</code>属性のみを更新し、それ以外の属性は変更しません。</p></div>
 <p>最後に、<code>edit</code>アクションへのリンクを全記事の一覧に追加しましょう。<code>app/views/articles/index.html.erb</code>に以下のように手を加えて"Show"リンクの隣にEditリンクを追加します。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
@@ -1104,7 +1104,7 @@ private
 <p><img src="images/getting_started/index_action_with_edit_link.png" alt="Editリンクが追加されたindexアクション"></p>
 <h4 id="部分テンプレート(パーシャル)を使用してビューの重複コードをきれいにする">5.12 部分テンプレート(パーシャル)を使用してビューの重複コードをきれいにする</h4>
 <p>さて、<code>edit</code>ページをよく見ると、<code>new</code>ページとほとんど違いがありません。実際、フォームを表示するコードはどちらでもまったく同じになっています。パーシャル(部分テンプレートとも呼ばれます)を使用して、このような無駄な重複を取り除きましょう。Rubyの慣例として、パーシャルのファイル名の先頭にはアンダースコアを追加します。</p>
-<p>ヒント: パーシャルについての詳細は本ガイドの<a href="layouts_and_rendering.html">Railsにおけるレイアウトと描画</a>を参照してください。</p>
+<div class="info"><p>パーシャルについての詳細は本ガイドの<a href="layouts_and_rendering.html">Railsにおけるレイアウトと描画</a>を参照してください。</p></div>
 <p><code>app/views/articles/_form.html.erb</code>という名前のパーシャルファイルを作成し、以下の内容を入力してください。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
@@ -1218,8 +1218,8 @@ end
 <p>上で追加したコードでは、<code>link_to</code>メソッドの使い方がこれまでと違っていることにご注目ください。2番目の引数で名前付きルートを渡している点はこれまでと同じですが、その後に別の引数があります。この<code>:method</code>オプションと<code>:'data-confirm'</code>オプションはHTML5の属性です。このリンクをクリックすると、本当に削除してよいかどうかを確認するメッセージを表示し、その後<code>delete</code>メソッドとリンクを送信します。このダイアログボックスの表示は<code>jquery_ujs</code>というJavaScriptファイルによって自動的に行われます。このファイルはアプリケーションの生成時に自動的にアプリケーションレイアウト (<code>app/views/layouts/application.html.erb</code>) に含まれます。このJavaScriptファイルがないと、ダイアログボックスは表示されなくなります。</p>
 <p><img src="images/getting_started/confirm_dialog.png" alt="Confirm Dialog"></p>
 <p>以上で記事の作成、表示、一覧表示、更新、削除をひととおり実装できました。お疲れさまでした!</p>
-<p>ヒント: Railsでは、ルーティングを1つずつ手作りするよりもresourcesオブジェクトを使用してルーティングを設定することが推奨されています。
-ルーティングの詳細については、本ガイドの<a href="routing.html">Railsのルーティング</a>を参照してください。</p>
+<div class="info"><p>Railsでは、ルーティングを1つずつ手作りするよりもresourcesオブジェクトを使用してルーティングを設定することが推奨されています。
+ルーティングの詳細については、本ガイドの<a href="routing.html">Railsのルーティング</a>を参照してください。</p></div>
 <h3 id="2番目のモデルを追加する">6 2番目のモデルを追加する</h3>
 <p>今度はアプリケーションに第2のモデルを追加しましょう。この第2のモデルでは、記事へのコメントを扱います。</p>
 <h4 id="モデルを生成する">6.1 モデルを生成する</h4>
@@ -1330,7 +1330,7 @@ end
 </pre>
 </div>
 <p>2つのモデルで行われているこれらの宣言によって、さまざまな動作が自動化されています。たとえば、<code>@article</code>というインスタンス変数に記事が1つ含まれているのであれば、<code>@article.comments</code>と書くだけでその記事に関連付けられているコメントをすべて取得することができるのです。</p>
-<p>ヒント: Active Recordの関連付けの詳細については、<a href="association_basics.html">Active Recordの関連付け(アソシエーション)</a>ガイドを参照してください。</p>
+<div class="info"><p>Active Recordの関連付けの詳細については、<a href="association_basics.html">Active Recordの関連付け(アソシエーション)</a>ガイドを参照してください。</p></div>
 <h4 id="コメントへのルーティングを追加する">6.3 コメントへのルーティングを追加する</h4>
 <p><code>welcome</code>コントローラで行ったときと同様、<code>comments</code>を参照するためにRailsが知っておくべきルーティングを追加する必要があります。再び<code>config/routes.rb</code>ファイルを開き、以下のように変更してください。</p>
 <div class="code_container">
@@ -1342,7 +1342,7 @@ end
 </pre>
 </div>
 <p>この設定により、<code>article</code>の内側に <em>ネストされたリソース</em> として<code>comments</code>が作成されます。これは、モデルの記述とは別の視点から、記事とコメントの間のリレーションシップを階層的に捉えたものであると言えます。</p>
-<p>ヒント: ルーティングの詳細については<a href="routing.html">Railsのルーティング</a> を参照してください。</p>
+<div class="info"><p>ルーティングの詳細については<a href="routing.html">Railsのルーティング</a> を参照してください。</p></div>
 <h4 id="コントローラを生成する">6.4 コントローラを生成する</h4>
 <p>モデルを手作りしたのですから、それに合ったコントローラも作ってみたくなります。ということで再びこれまでと同じジェネレータを使用してみましょう。</p>
 <div class="code_container">
@@ -1712,7 +1712,7 @@ class CommentsController &lt; ApplicationController
 <li>
 <code>rake doc:rails</code>を実行すると、Rails APIドキュメントの完全なコピーがアプリケーションの<code>doc/api</code>フォルダに生成されます。ブラウザで<code>doc/api/index.html</code>を開いてAPIドキュメントを参照できます。</li>
 </ul>
-<p>ヒント: <code>doc:guides</code> rakeタスクを使用してRailsガイドをローカル生成するには、RedCloth gemをインストールする必要があります。RedCloth gemを<code>Gemfile</code>に追記して<code>bundle install</code>を実行することで利用できるようになります。</p>
+<div class="info"><p><code>doc:guides</code> rakeタスクを使用してRailsガイドをローカル生成するには、RedCloth gemをインストールする必要があります。RedCloth gemを<code>Gemfile</code>に追記して<code>bundle install</code>を実行することで利用できるようになります。</p></div>
 <h3 id="設定の落とし穴">11 設定の落とし穴</h3>
 <p>Railsでの無用なトラブルを避けるための最も初歩的な方法は、外部データを常にUTF-8で保存することです。このとおりにしないと、RubyライブラリやRailsはネイティブデータをたびたびUTF-8に変換しなければならず、しかもときに失敗することがあります。外部データを常にUTF-8にしておくことをぜひお勧めします。</p>
 <p>外部データのエンコードが不統一な場合によく起きる症状としては、たとえば画面に黒い菱型◆と疑問符が表示されるというものがあります。他にも、"ü"という文字のはずが"Ã¼"という文字に変わっている、などの症状もあります。Railsではこうした問題を緩和するため、問題の原因を自動的に検出して修正するために内部で多くの手順を行っています。しかし、UTF-8で保存されていない外部データがあると、Railsによる自動検出/修正が効かずに文字化けが発生することがあります。</p>
