@@ -34,6 +34,7 @@ http://railstutorial.jp/
 ### ③ GTT上で英語→日本語に翻訳する (訳文は翻訳メモリに格納)
 
 - 詳細: [Google Translator Toolkitと翻訳メモリ(ノーカット版) : RubyWorld Conference 2013より](http://techracho.bpsinc.jp/hachi8833/2013_12_16/14889)
+- ※CSSの関係で、行頭が`(TIP|IMPORTANT|CAUTION|WARNING|NOTE|INFO|TODO)[.:]`から始まる場合、`(TIP|IMPORTANT|CAUTION|WARNING|NOTE|INFO|TODO)`は訳さないでください。
 
 ### ④ 日本語のHTMLファイルの生成方法
 
