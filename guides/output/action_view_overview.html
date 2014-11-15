@@ -544,7 +544,7 @@ Post.create(body: 'Partial Layouts are cool!')
 <h3 id="ビューのパス">5 ビューのパス</h3>
 <p>(執筆予定)</p>
 <h3 id="action-viewが提供するヘルパーの概要">6 Action Viewが提供するヘルパーの概要</h3>
-<p>執筆メモ: このリストにまだ含まれていないヘルパーがあります。完全なリストについては<a href="http://api.rubyonrails.org/classes/ActionView/Helpers.html">APIドキュメント</a>を参照してください。</p>
+<p>WIP: このリストにまだ含まれていないヘルパーがあります。完全なリストについては<a href="http://api.rubyonrails.org/classes/ActionView/Helpers.html">APIドキュメント</a>を参照してください。</p>
 <p>Action Viewで利用できるヘルパーの概要を以下に示します。<a href="http://api.rubyonrails.org/classes/ActionView/Helpers.html">APIドキュメント</a> も参照して調べ直すことをお勧めします。APIドキュメントにはすべてのヘルパーの詳細が記載されており、本ガイドは概要を把握するためのものです。</p>
 <h4 id="recordtaghelper">6.1 RecordTagHelper</h4>
 <p>このモジュールは、<code>div</code>などのコンテナタグを生成するメソッドを提供します。Active Recordオブジェクトを出力するためのコンテナ作成方法にはこれを使うことをお勧めします。この方法であれば、適切なクラスとid属性がコンテナに追加されるからです。これにより、これらのコンテナを通常の方法で簡単に参照でき、どのクラスやどのid属性を使用すべきかどうかを考えずに済みます。</p>
@@ -1777,7 +1777,7 @@ strip_tags("&lt;b&gt;Bold&lt;/b&gt; no more!  &lt;a href='more.html'&gt;See more
 
 </pre>
 </div>
-<p>注意: この出力にはエスケープされていない'&lt;'、'&gt;'、'&amp;'文字が残ることがあり、それにによってブラウザが期待どおりに動作しなくなることがあります。</p>
+<div class="warning"><p>この出力にはエスケープされていない'&lt;'、'&gt;'、'&amp;'文字が残ることがあり、それにによってブラウザが期待どおりに動作しなくなることがあります。</p></div>
 <h4 id="csrfhelper">6.15 CsrfHelper</h4>
 <p>"csrf-param"メタタグと"csrf-token"メタタグを返します。これらの名称はそれぞれ、クロスサイトリクエストフォージェリ (CSRF: cross-site request foregery) のパラメータとトークンが元になっています。</p>
 <div class="code_container">

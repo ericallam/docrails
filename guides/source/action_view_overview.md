@@ -345,7 +345,7 @@ Post.create(body: 'Partial Layouts are cool!')
 Action Viewが提供するヘルパーの概要
 -------------------------------------------
 
-執筆メモ: このリストにまだ含まれていないヘルパーがあります。完全なリストについては[APIドキュメント](http://api.rubyonrails.org/classes/ActionView/Helpers.html)を参照してください。
+WIP: このリストにまだ含まれていないヘルパーがあります。完全なリストについては[APIドキュメント](http://api.rubyonrails.org/classes/ActionView/Helpers.html)を参照してください。
 
 Action Viewで利用できるヘルパーの概要を以下に示します。[APIドキュメント](http://api.rubyonrails.org/classes/ActionView/Helpers.html) も参照して調べ直すことをお勧めします。APIドキュメントにはすべてのヘルパーの詳細が記載されており、本ガイドは概要を把握するためのものです。
 
@@ -1584,7 +1584,7 @@ strip_tags("<b>Bold</b> no more!  <a href='more.html'>See more</a>")
 # => Bold no more!  See more
 ```
 
-注意: この出力にはエスケープされていない'<'、'>'、'&'文字が残ることがあり、それにによってブラウザが期待どおりに動作しなくなることがあります。
+CAUTION: この出力にはエスケープされていない'<'、'>'、'&'文字が残ることがあり、それにによってブラウザが期待どおりに動作しなくなることがあります。
 
 ### CsrfHelper
 

@@ -4111,7 +4111,7 @@ logger.info("&lt;- is the current time")
 <h3 id="nameerrorの拡張">21 <code>NameError</code>の拡張</h3>
 <p>Active Supportは<code>NameError</code>に<code>missing_name?</code>メソッドを追加します。このメソッドは、引数として渡された名前が原因で例外が発生するかどうかをテストします。</p>
 <p>渡される名前はシンボルまたは文字列です。シンボルを渡した場合は単なる定数名をテストし、文字列を渡した場合はフルパス (fully-qualified) の定数名をテストします。</p>
-<p>ヒント: シンボルは<code>:"ActiveRecord::Base"</code>で行なっているのと同じようにフルパスの定数として表すことができます。シンボルがそのように動作するのはそれが便利だからであり、技術的にそうしなければならないというものではありません。</p>
+<div class="info"><p>シンボルは<code>:"ActiveRecord::Base"</code>で行なっているのと同じようにフルパスの定数として表すことができます。シンボルがそのように動作するのはそれが便利だからであり、技術的にそうしなければならないというものではありません。</p></div>
 <p>たとえば、<code>PostsController</code>のアクションが呼び出されると、Railsはその名前からすぐに推測できる<code>PostsHelper</code>を使用しようとします。ここではこのヘルパーモジュールが存在していなくても問題はないので、この定数名で例外が発生しても黙殺します。しかし、実際に不明な定数が原因で<code>posts_helper.rb</code>が<code>NameError</code>エラーを発生することはありえます。そのような場合は、エラーを再度発生させなくてはなりません。<code>missing_name?</code>メソッドは、この2つの場合を区別するために使用されます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">

@@ -349,7 +349,7 @@ end
 
 </pre>
 </div>
-<p>ヒント: エンジンによっては、このファイルをエンジンのためのグローバル設定オプションとして配置したいこともあるでしょう。これは比較的よいアイディアです。設定オプションを提供したい場合は、エンジンで<code>module</code>と呼ばれているファイルを、まさにこれを行なうのにふさわしい場所として定義します。そのモジュールの中にメソッドを置くことで準備は完了します。</p>
+<div class="info"><p>エンジンによっては、このファイルをエンジンのためのグローバル設定オプションとして配置したいこともあるでしょう。これは比較的よいアイディアです。設定オプションを提供したい場合は、エンジンで<code>module</code>と呼ばれているファイルを、まさにこれを行なうのにふさわしい場所として定義します。そのモジュールの中にメソッドを置くことで準備は完了します。</p></div>
 <p>エンジンの基本クラスは<code>lib/blorgh/engine.rb</code>の中にあります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -363,14 +363,14 @@ end
 </div>
 <p><code>Rails::Engine</code>クラスを継承することによって、指定されたパスにエンジンがあることがgemからRailsに通知され、アプリケーションの内部にエンジンが正しくマウントされます。そして、エンジンの<code>app</code>ディレクトリをモデル/メイラー/コントローラ/ビューの読み込みパスに追加します。</p>
 <p>ここで、<code>isolate_namespace</code>メソッドについて特別な注意が必要です。このメソッドの呼び出しは、エンジンのコントローラ/モデル/ルーティングなどが持つ固有の名前空間を、アプリケーション内部のコンポーネントが持つ類似の名前空間から分離する役目を担います。この呼び出しが行われないと、エンジンのコンポーネントがアプリケーション側に「漏れ出す」リスクが生じ、思わぬ動作が発生したり、エンジンの重要なコンポーネントが同じような名前のアプリケーション側コンポーネントによって上書きされてしまったりする可能性があります。名前の衝突の例として、ヘルパーを取り上げましょう。<code>isolate_namespace</code>が呼び出されないと、エンジンのヘルパーがアプリケーションのコントローラにインクルードされてしまう可能性があります。</p>
-<p>メモ: <code>Engine</code>クラスの定義に含まれる<code>isolate_namespace</code>の行を変更/削除しないことを <strong>強く</strong> 推奨します。この行が変更されると、生成されたエンジン内のクラスがアプリケーションと衝突する <strong>可能性があります</strong> 。</p>
+<div class="note"><p><code>Engine</code>クラスの定義に含まれる<code>isolate_namespace</code>の行を変更/削除しないことを <strong>強く</strong> 推奨します。この行が変更されると、生成されたエンジン内のクラスがアプリケーションと衝突する <strong>可能性があります</strong> 。</p></div>
 <p>名前空間を分離するということは、<code>bin/rails g model</code>の実行によって生成されたモデル (ここでは <code>bin/rails g model article</code>を実行したとします) は<code>Article</code>にならず、名前空間化されて<code>Blorgh::Article</code>になるということです。さらにモデルのテーブルも名前空間化され、単なる<code>articles</code>ではなく<code>blorgh_articles</code>になります。コントローラもモデルと同様に名前空間化されます。<code>ArticlesController</code>というコントローラは<code>Blorgh::ArticlesController</code>になり、このコントローラのビューは<code>app/views/articles</code>ではなく<code>app/views/blorgh/articles</code>に置かれます。メイラーも同様に名前空間化されます。</p>
 <p>最後に、ルーティングもエンジン内で分離されます。これは名前空間化の最も肝心な部分であり、これについては本ガイドの<a href="#routes">ルーティング</a>セクションで後述します。</p>
 <h5 id="appディレクトリ">2.1.2 <code>app</code>ディレクトリ</h5>
 <p>エンジンの<code>app</code>ディレクトリの中には、通常のアプリケーションでおなじみの標準の<code>assets</code>、<code>controllers</code>、<code>helpers</code>、<code>mailers</code>、<code>models</code>、<code>views</code>ディレクトリが置かれます。このうち<code>helpers</code>、<code>mailers</code>、<code>models</code>ディレクトリにはデフォルトでは何も置かれないので、本セクションでは解説しません。モデルについては、エンジンの作成について解説するセクションで後述します。</p>
 <p>エンジンの<code>app/assets</code>ディレクトリの下にも、通常のアプリケーションと同様に<code>images</code>、<code>javascripts</code>、<code>stylesheets</code>ディレクトリがそれぞれあります。通常のアプリケーションと異なる点は、これらのディレクトリの下にはさらにエンジン名を持つサブディレクトリがあることです。これは、エンジンが名前空間化されるのと同様、エンジンのアセットも同様に名前空間化される必要があるからです。</p>
 <p><code>app/controllers</code>ディレクトリの下には<code>blorgh</code>ディレクトリが置かれます。この中には<code>application_controller.rb</code>というファイルが1つ置かれます。このファイルはエンジンのコントローラ共通の機能を提供するためのものです。この<code>blorgh</code>ディレクトリには、エンジンで使用するその他のコントローラを置きます。これらのファイルを名前空間化されたディレクトリに配置することで、他のエンジンやアプリケーションに同じ名前のコントローラがあっても名前の衝突を避ける事ができます。</p>
-<p>メモ: あるエンジンに含まれる<code>ApplicationController</code>というクラスの名前は、アプリケーションそのものが持つクラスと同じ名前になっています。これは、アプリケーションをエンジンに変換しやすくするためです。</p>
+<div class="note"><p>あるエンジンに含まれる<code>ApplicationController</code>というクラスの名前は、アプリケーションそのものが持つクラスと同じ名前になっています。これは、アプリケーションをエンジンに変換しやすくするためです。</p></div>
 <p>最後に、<code>app/views</code>ディレクトリの下には<code>layouts</code>フォルダがあります。ここには<code>blorgh/application.html.erb</code>というファイルが置かれます。このファイルは、エンジンで使用するレイアウトを指定するためのものです。エンジンが単体のエンジンとして使用されるのであれば、このファイルを使用していくらでも好きなようにレイアウトをカスタマイズできます。そのためにアプリケーション自身の<code>app/views/layouts/application.html.erb</code>ファイルを変更する必要はありません。</p>
 <p>エンジンのレイアウトをユーザーに強制したくない場合は、このファイルを削除し、エンジンのコントローラでは別のレイアウトを参照するように変更してください。</p>
 <h5 id="binディレクトリ">2.1.3 <code>bin</code>ディレクトリ</h5>
@@ -462,7 +462,7 @@ end
 
 </pre>
 </div>
-<p>メモ: このクラスで継承されている<code>ApplicationController</code>クラスは、実際には<code>ApplicationController</code>ではなく、<code>Blorgh::ApplicationController</code>です。</p>
+<div class="note"><p>このクラスで継承されている<code>ApplicationController</code>クラスは、実際には<code>ApplicationController</code>ではなく、<code>Blorgh::ApplicationController</code>です。</p></div>
 <p><code>app/helpers/blorgh/articles_helper.rb</code>のヘルパーも同様に名前空間化されます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -556,7 +556,7 @@ end
 
 </pre>
 </div>
-<p>メモ: この<code>has_many</code>は<code>Blorgh</code>モジュールの中にあるクラスの中で定義されています。これだけで、これらのオブジェクトに対して<code>Blorgh::Comment</code>モデルを使用したいという意図がRailsに自動的に認識されます。従って、ここで<code>:class_name</code>オプションを使用してクラス名を指定する必要はありません。</p>
+<div class="note"><p>この<code>has_many</code>は<code>Blorgh</code>モジュールの中にあるクラスの中で定義されています。これだけで、これらのオブジェクトに対して<code>Blorgh::Comment</code>モデルを使用したいという意図がRailsに自動的に認識されます。従って、ここで<code>:class_name</code>オプションを使用してクラス名を指定する必要はありません。</p></div>
 <p>続いて、記事を作成するためのフォームを作成する必要があります。フォームを追加するには、<code>app/views/blorgh/articles/show.html.erb</code>の<code>render @article.comments</code>呼び出しの直後に以下の行を追加します。</p>
 <div class="code_container">
 <pre class="brush: ruby; html-script: true; gutter: false; toolbar: false">
@@ -684,7 +684,7 @@ mount Blorgh::Engine, at: "/blog"
 </pre>
 </div>
 <p>この行を記述することで、エンジンがアプリケーションの<code>/blog</code>パスにマウントされます。<code>rails server</code>を実行してRailsを起動すること、<code>http://localhost:3000/blog</code>にアクセスできるようになります。</p>
-<p>メモ: Deviseなどの他のエンジンではこの点が若干異なり、ルーティングで (<code>devise_for</code>などの) カスタムヘルパーを指定するものがあります。これらのヘルパーの動作は完全に同じです。事前に定義されたカスタマイズ可能なパスにエンジンの機能の一部をマウントします。●</p>
+<div class="note"><p>Deviseなどの他のエンジンではこの点が若干異なり、ルーティングで (<code>devise_for</code>などの) カスタムヘルパーを指定するものがあります。これらのヘルパーの動作は完全に同じです。事前に定義されたカスタマイズ可能なパスにエンジンの機能の一部をマウントします。●</p></div>
 <h4 id="エンジンの設定">4.2 エンジンの設定</h4>
 <p>作成したエンジンには<code>blorgh_articles</code>テーブルと<code>blorgh_comments</code>テーブル用のマイグレーションが含まれます。これらのテーブルをアプリケーションのデータベースに作成し、エンジンのモデルからこれらのテーブルにアクセスできるようにする必要があります。これらのマイグレーションをアプリケーションにコピーするには、以下のコマンドを実行します。</p>
 <div class="code_container">
@@ -780,7 +780,7 @@ $ bin/rails g migration add_author_id_to_blorgh_articles author_id:integer
 
 </pre>
 </div>
-<p>メモ: 上のようにコマンドオプションでマイグレーション名とカラムの仕様を指定することで、特定のテーブルに追加しようとしているカラムがRailsによって自動的に認識され、そのためのマイグレーションが作成されます。この他にオプションを指定する必要はありません。</p>
+<div class="note"><p>上のようにコマンドオプションでマイグレーション名とカラムの仕様を指定することで、特定のテーブルに追加しようとしているカラムがRailsによって自動的に認識され、そのためのマイグレーションが作成されます。この他にオプションを指定する必要はありません。</p></div>
 <p>このマイグレーションはアプリケーションに対して実行する必要があります。これを行なうには、最初に以下のコマンドを実行してマイグレーションをエンジンからコピーする必要があります。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
@@ -900,7 +900,7 @@ Blorgh.author_class = "User"
 
 </pre>
 </div>
-<p>警告: このクラス名は必ず<code>String</code>で (=引用符で囲んで) 表してください。クラス自身を使用しないでください。クラス自身が使用されていると、Railsはそのクラスを読み込んで関連するテーブルを参照しようとします。このとき参照先のテーブルが存在しないと問題が発生する可能性があります。このため、クラス名は<code>String</code>で表し、後にエンジンが<code>constantize</code>でクラスに変換する必要があります。</p>
+<div class="warning"><p>このクラス名は必ず<code>String</code>で (=引用符で囲んで) 表してください。クラス自身を使用しないでください。クラス自身が使用されていると、Railsはそのクラスを読み込んで関連するテーブルを参照しようとします。このとき参照先のテーブルが存在しないと問題が発生する可能性があります。このため、クラス名は<code>String</code>で表し、後にエンジンが<code>constantize</code>でクラスに変換する必要があります。</p></div>
 <p>続いて、新しい記事を1つ作成してみることにしましょう。記事の作成はこれまでとまったく同様に行えます。1つだけ異なるのは、今回はクラスの動作を学ぶために<code>config/initializers/blorgh.rb</code>の設定をエンジンで使用する点です。</p>
 <p>使用するクラスがそのためのAPIさえ備えていれば、使用するクラスに厳密に依存することはありません。エンジンで使用するクラスで必須となるメソッドは<code>find_or_create_by</code>のみです。このメソッドはそのクラスのオブジェクトを1つ返します。もちろん、このオブジェクトは何らかの形で参照可能な識別子 (id) を持つ必要があります。</p>
 <h5 id="一般的なエンジンの設定">4.4.2 一般的なエンジンの設定</h5>
