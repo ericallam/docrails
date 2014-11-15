@@ -93,7 +93,7 @@ end
 
 ![belongs_to 関連付けの図](images/belongs_to.png)
 
-メモ: `belongs_to`関連付けで指定するモデル名は必ず「単数形」にしなければなりません。上の場合、`Order`モデルにおける関連付けの`customer`を複数形の`customers`にしてしまうと、"uninitialized constant Order::Customers" エラーが発生します。Railsは、関連付けの名前から自動的にモデルのクラス名を推測します。関連付け名が`customer`ならクラス名を`Customer`と推測します。従って、関連付け名が誤って複数形になってしまっていると、そこから推測されるクラス名も誤って複数形になってしまいます。
+NOTE: `belongs_to`関連付けで指定するモデル名は必ず「単数形」にしなければなりません。上の場合、`Order`モデルにおける関連付けの`customer`を複数形の`customers`にしてしまうと、"uninitialized constant Order::Customers" エラーが発生します。Railsは、関連付けの名前から自動的にモデルのクラス名を推測します。関連付け名が`customer`ならクラス名を`Customer`と推測します。従って、関連付け名が誤って複数形になってしまっていると、そこから推測されるクラス名も誤って複数形になってしまいます。
 
 上の関連付けに対応するマイグレーションは以下のような感じになります。
 
@@ -155,7 +155,7 @@ class Customer < ActiveRecord::Base
 end
 ```
 
-メモ: `has_many`関連付けを宣言する場合、相手のモデル名は「複数形」にする必要があります。
+NOTE: `has_many`関連付けを宣言する場合、相手のモデル名は「複数形」にする必要があります。
 
 ![has_many関連付けの図](images/has_many.png)
 
@@ -234,7 +234,7 @@ physician.patients = patients
 
 このとき、新たに関連付けられたオブジェクトについて、新しい結合モデルが作成されます。結合時に不足している部分があれば、その行は結合モデルから削除され、結合モデルに含まれなくなります。
 
-警告: モデル結合時の不足分自動削除は即座に行われます。さらに、その際にdestroyコールバックはトリガーされませんので注意が必要です。
+WARNING: モデル結合時の不足分自動削除は即座に行われます。さらに、その際にdestroyコールバックはトリガーされませんので注意が必要です。
 
 `has_many :through`関連付けは、ネストした`has_many`関連付けを介して「ショートカット」を設定する場合にも便利です。たとえば、1つのドキュメントに多くの節(section)があり、1つの節の下に多くの段落(paragraph)がある状態で、節をスキップしてドキュメントの下のすべての段落の単純なコレクションが欲しいとします。その場合、以下の方法で設定できます。
 
@@ -382,7 +382,7 @@ class CreateSuppliers < ActiveRecord::Migration
 end
 ```
 
-メモ: マイグレーションで`t.integer :supplier_id`のように「小文字のモデル名_id」と書くと、外部キーを明示的に指定できます。新しいバージョンのRailsでは、同じことを`t.references :supplier`という方法で記述できます。こちらの方が実装の詳細が抽象化され、隠蔽されます。
+NOTE: マイグレーションで`t.integer :supplier_id`のように「小文字のモデル名_id」と書くと、外部キーを明示的に指定できます。新しいバージョンのRailsでは、同じことを`t.references :supplier`という方法で記述できます。こちらの方が実装の詳細が抽象化され、隠蔽されます。
 
 ### `has_many :through`と`has_and_belongs_to_many`のどちらを選ぶか
 
@@ -570,7 +570,7 @@ end
 
 `has_and_belongs_to_many`関連付けを作成した場合は、それに対応する結合(join)テーブルを明示的に作成する必要があります。`:join_table`オプションを使用して明示的に結合テーブルの名前が指定されていない場合、Active Recordは2つのクラス名を辞書の並び順に連結して、適当に結合テーブル名をこしらえます。たとえばCustomerモデルOrderモデルを連結する場合、cはoより辞書で先に出現するので "customers_orders" というデフォルトの結合テーブル名が使用されます。
 
-警告: モデル名の並び順は`String`クラスの`<`演算子を使用して計算されます。これは、2つの文字列の長さが異なり、短い方が長い方の途中まで完全に一致しているような場合、長い方の文字列は短い方よりも辞書上の並び順が前として扱われるということです。たとえば、"paper\_boxes" テーブルと "papers" テーブルがある場合、これらを結合すれば "papers\_paper\_boxes" となると推測されます。 "paper\_boxes" の方が長いので、常識的には並び順が後ろになると予測できるからです。しかし実際の結合テーブル名は "paper\_boxes\_papers" になってしまいます。これはアンダースコア '\_' の方が 's' よりも並びが前になっているためです。
+WARNING: モデル名の並び順は`String`クラスの`<`演算子を使用して計算されます。これは、2つの文字列の長さが異なり、短い方が長い方の途中まで完全に一致しているような場合、長い方の文字列は短い方よりも辞書上の並び順が前として扱われるということです。たとえば、"paper\_boxes" テーブルと "papers" テーブルがある場合、これらを結合すれば "papers\_paper\_boxes" となると推測されます。 "paper\_boxes" の方が長いので、常識的には並び順が後ろになると予測できるからです。しかし実際の結合テーブル名は "paper\_boxes\_papers" になってしまいます。これはアンダースコア '\_' の方が 's' よりも並びが前になっているためです。
 
 生成された名前がどのようなものであれ、適切なマイグレーションを実行して結合テーブルを生成する必要があります。以下の関連付けを例にとって考えてみましょう。
 
@@ -753,7 +753,7 @@ create_customer
 create_customer!
 ```
 
-メモ: 新しく作成した`has_one`関連付けまたは`belongs_to`関連付けを初期化するには、`build_`で始まるメソッドを使用する必要があります。この場合`has_many`関連付けや`has_and_belongs_to_many`関連付けで使用される`association.build`メソッドは使用しないでください。作成するには、`create_`で始まるメソッドを使用してください。
+NOTE: 新しく作成した`has_one`関連付けまたは`belongs_to`関連付けを初期化するには、`build_`で始まるメソッドを使用する必要があります。この場合`has_many`関連付けや`has_and_belongs_to_many`関連付けで使用される`association.build`メソッドは使用しないでください。作成するには、`create_`で始まるメソッドを使用してください。
 
 ##### `association(force_reload = false)`
 
@@ -878,7 +878,7 @@ end
 * `:destroy` -- そのオブジェクトがdestroyされると、関連付けられたオブジェクトに対して`destroy`が呼び出されます。
 * `:delete` -- オブジェクトがdestroyされると、関連付けられたオブジェクトはすべて直接削除されます。このときオブジェクトの`destroy`メソッドは呼び出されません。
 
-警告: `他のクラスの`has_many` 関連付けとつながりのある `belongs_to` 関連付けに対してこのオプションを使用してはいけません。孤立したレコードがデータベースに残ってしまう可能性があります。
+WARNING: `他のクラスの`has_many` 関連付けとつながりのある `belongs_to` 関連付けに対してこのオプションを使用してはいけません。孤立したレコードがデータベースに残ってしまう可能性があります。
 
 ##### `:foreign_key`
 
@@ -891,7 +891,7 @@ class Order < ActiveRecord::Base
 end
 ```
 
-ヒント: Railsは外部キーのカラムを自動的に作ることはありません。外部キーを使用する場合には、マイグレーションで明示的に定義する必要があります。
+TIP: Railsは外部キーのカラムを自動的に作ることはありません。外部キーを使用する場合には、マイグレーションで明示的に定義する必要があります。
 
 ##### `:inverse_of`
 
@@ -1001,7 +1001,7 @@ class Customer < ActiveRecord::Base
 end
 ```
 
-メモ: 直接の関連付けでは`includes`を使用する必要はありません。`Order belongs_to :customer`のような直接の関連付けでは必要に応じて自動的にeager-loadされます。
+NOTE: 直接の関連付けでは`includes`を使用する必要はありません。`Order belongs_to :customer`のような直接の関連付けでは必要に応じて自動的にeager-loadされます。
 
 ##### `readonly`
 
@@ -1011,7 +1011,7 @@ end
 
 `select`メソッドを使用すると、関連付けられたオブジェクトのデータ取り出しに使用されるSQLの`SELECT`句を上書きします。Railsはデフォルトではすべてのカラムを取り出します。
 
-ヒント: `select`を`belongs_to`関連付けで使用する場合、正しい結果を得るために`:foreign_key`オプションを必ず設定してください。
+TIP: `select`を`belongs_to`関連付けで使用する場合、正しい結果を得るために`:foreign_key`オプションを必ず設定してください。
 
 #### 関連付けられたオブジェクトが存在するかどうかを確認する
 
@@ -1059,7 +1059,7 @@ create_account
 create_account!
 ```
 
-メモ: 新しく作成した`has_one`関連付けまたは`belongs_to`関連付けを初期化するには、`build_`で始まるメソッドを使用する必要があります。この場合`has_many`関連付けや`has_and_belongs_to_many`関連付けで使用される`association.build`メソッドは使用しないでください。作成するには、`create_`で始まるメソッドを使用してください。
+NOTE: 新しく作成した`has_one`関連付けまたは`belongs_to`関連付けを初期化するには、`build_`で始まるメソッドを使用する必要があります。この場合`has_many`関連付けや`has_and_belongs_to_many`関連付けで使用される`association.build`メソッドは使用しないでください。作成するには、`create_`で始まるメソッドを使用してください。
 
 ##### `association(force_reload = false)`
 
@@ -1163,7 +1163,7 @@ class Supplier < ActiveRecord::Base
 end
 ```
 
-ヒント: Railsは外部キーのカラムを自動的に作ることはありません。外部キーを使用する場合には、マイグレーションで明示的に定義する必要があります。
+TIP: Railsは外部キーのカラムを自動的に作ることはありません。外部キーを使用する場合には、マイグレーションで明示的に定義する必要があります。
 
 ##### `:inverse_of`
 
@@ -1368,7 +1368,7 @@ orders.create!(attributes = {})`
 @customer.orders.delete(@order1)
 ```
 
-警告: 削除のされ方はこれだけではありません。オブジェクト同士が`dependent: :destroy`で関連付けられている場合はdestroyされますが、オブジェクト同士が`dependent: :delete_all`で関連付けられている場合はdeleteされますのでご注意ください。
+WARNING: 削除のされ方はこれだけではありません。オブジェクト同士が`dependent: :destroy`で関連付けられている場合はdestroyされますが、オブジェクト同士が`dependent: :delete_all`で関連付けられている場合はdeleteされますのでご注意ください。
 
 ##### `collection.destroy(object, ...)`
 
@@ -1378,7 +1378,7 @@ orders.create!(attributes = {})`
 @customer.orders.destroy(@order1)
 ```
 
-警告: この場合オブジェクトは_無条件で_データベースから削除されます。このとき、`:dependent`オプションがどのように設定されていても無視して削除が行われます。
+WARNING: この場合オブジェクトは_無条件で_データベースから削除されます。このとき、`:dependent`オプションがどのように設定されていても無視して削除が行われます。
 
 ##### `collection=objects`
 
@@ -1513,7 +1513,7 @@ end
 * `:restrict_with_exception`を指定すると、関連付けられたレコードが1つでもある場合に例外が発生します。
 * `:restrict_with_error`を指定すると、関連付けられたオブジェクトが1つでもある場合にエラーがオーナーに追加されます。
 
-メモ: その関連付けで`:through`オプションが指定されている場合、このオプションは無効です。
+NOTE: その関連付けで`:through`オプションが指定されている場合、このオプションは無効です。
 
 ##### `:foreign_key`
 
@@ -1525,7 +1525,7 @@ class Customer < ActiveRecord::Base
 end
 ```
 
-ヒント: Railsは外部キーのカラムを自動的に作ることはありません。外部キーを使用する場合には、マイグレーションで明示的に定義する必要があります。
+TIP: Railsは外部キーのカラムを自動的に作ることはありません。外部キーを使用する場合には、マイグレーションで明示的に定義する必要があります。
 
 ##### `:inverse_of`
 
@@ -1702,7 +1702,7 @@ end
 
 `select`メソッドを使用すると、関連付けられたオブジェクトのデータ取り出しに使用されるSQLの`SELECT`句を上書きします。Railsはデフォルトではすべてのカラムを取り出します。
 
-警告: 独自の`select`メソッドを使用する場合には、関連付けられているモデルの主キーカラムと外部キーカラムを必ず含めておいてください。これを行わなかった場合、Railsでエラーが発生します。
+WARNING: 独自の`select`メソッドを使用する場合には、関連付けられているモデルの主キーカラムと外部キーカラムを必ず含めておいてください。これを行わなかった場合、Railsでエラーが発生します。
 
 ##### `distinct`
 
@@ -1822,7 +1822,7 @@ assemblies.create!(attributes = {})`
 
 `has_and_belongs_to_many`関連付けで使用している中間の結合テーブルが、2つの外部キー以外に何かカラムを含んでいる場合、これらのカラムは関連付けを介して取り出されるレコードに属性として追加されます。属性が追加されたレコードは常に読み出し専用になります。このようにして読み出された属性に対する変更は保存できないためです。
 
-警告: `has_and_belongs_to_many`関連付けで使用する結合テーブルにこのような余分なカラムを追加することはお勧めできません。2つのモデルを多対多で結合する結合テーブルでこのような複雑な振る舞いが必要になるのであれば、`has_and_belongs_to_many`ではなく`has_many :through`を使用してください。
+WARNING: `has_and_belongs_to_many`関連付けで使用する結合テーブルにこのような余分なカラムを追加することはお勧めできません。2つのモデルを多対多で結合する結合テーブルでこのような複雑な振る舞いが必要になるのであれば、`has_and_belongs_to_many`ではなく`has_many :through`を使用してください。
 
 
 ##### `collection(force_reload = false)`
@@ -1841,7 +1841,7 @@ assemblies.create!(attributes = {})`
 @part.assemblies << @assembly1
 ```
 
-メモ: このメソッドは`collection.concat`および`collection.push`のエイリアスです。
+NOTE: このメソッドは`collection.concat`および`collection.push`のエイリアスです。
 
 ##### `collection.delete(object, ...)`
 
@@ -1851,7 +1851,7 @@ assemblies.create!(attributes = {})`
 @part.assemblies.delete(@assembly1)
 ```
 
-警告: このメソッドを呼び出しても、結合レコードでコールバックはトリガされません。
+WARNING: このメソッドを呼び出しても、結合レコードでコールバックはトリガされません。
 
 ##### `collection.destroy(object, ...)`
 
@@ -1964,7 +1964,7 @@ end
 
 Railsは、相手のモデルを指す外部キーを保持している結合テーブル上のカラム名については、そのモデル名にサフィックス `_id` を追加した名前が使用されることを前提とします。`:association_foreign_key`オプションを使用すると外部キーの名前を直接指定することができます。
 
-ヒント: `:foreign_key`オプションおよび`:association_foreign_key`オプションは、多対多の自己結合を行いたいときに便利です。例：
+TIP: `:foreign_key`オプションおよび`:association_foreign_key`オプションは、多対多の自己結合を行いたいときに便利です。例：
 
 ```ruby
 class User < ActiveRecord::Base

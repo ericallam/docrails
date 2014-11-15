@@ -20,7 +20,7 @@ Active Recordクエリインターフェイス
 
 本ガイドのコード例では、基本的に以下のモデルを使用します。
 
-メモ: 特に記さない限り、モデル中の`id`は主キーを表します。
+TIP: 特に記さない限り、モデル中の`id`は主キーを表します。
 
 ```ruby
 class Client < ActiveRecord::Base
@@ -129,7 +129,7 @@ SELECT * FROM clients LIMIT 1
 
 モデルにレコードが1つもない場合は`Model.take`は`nil`を返します。このとき例外は発生しません。
 
-メモ: このメソッドでどのレコードが取り出されるかは、使用するデータベースエンジンによって異なることがあります。
+TIP: このメソッドでどのレコードが取り出されるかは、使用するデータベースエンジンによって異なることがあります。
 
 #### `first`
 
@@ -270,7 +270,7 @@ client = Client.find([1, 10]) # Or even Client.find(1, 10)
 SELECT * FROM clients WHERE (clients.id IN (1,10))
 ```
 
-警告: `Model.find(array_of_primary_key)`は、与えられた主キーのうち1つでもマッチしなければ`ActiveRecord::RecordNotFound`例外を発生します。
+WARNING: `Model.find(array_of_primary_key)`は、与えられた主キーのうち1つでもマッチしなければ`ActiveRecord::RecordNotFound`例外を発生します。
 
 #### take
 
@@ -337,7 +337,7 @@ end
 
 Railsでは、メモリを圧迫しないサイズにバッチを分割して処理するための方法を2とおり提供しています。1つ目は`find_each`メソッドを使用する方法です。これは、レコードのバッチを1つ取り出し、次に _各_ レコードを1つのモデルとして個別にブロックにyieldします。2つ目の方法は`find_in_batches`メソッドを使用する方法です。レコードのバッチを1つ取り出し、次に _バッチ全体_ をモデルの配列としてブロックにyieldします。
 
-ヒント: `find_each`メソッドと`find_in_batches`メソッドは、一度にメモリに読み込めないような大量のレコードに対するバッチ処理のためのものです。数千のレコードに対して単にループ処理を行なうのであれば通常の検索メソッドで十分です。
+TIP: `find_each`メソッドと`find_in_batches`メソッドは、一度にメモリに読み込めないような大量のレコードに対するバッチ処理のためのものです。数千のレコードに対して単にループ処理を行なうのであれば通常の検索メソッドで十分です。
 
 #### `find_each`
 
@@ -390,7 +390,7 @@ Invoice.find_in_batches(include: :invoice_lines) do |invoices|
 end
 ```
 
-メモ: `:include`オプションを使用すると、モデルとともに読み込まれる関連付けに名前を付けることができます。
+NOTE: `:include`オプションを使用すると、モデルとともに読み込まれる関連付けに名前を付けることができます。
 
 ##### `find_in_batches`のオプション
 
@@ -405,7 +405,7 @@ end
 
 検索メソッドに条件を追加したい場合、たとえば`Client.where("orders_count = '2'")`のように条件を単純に指定することができます。この場合、`orders_count`フィールドの値が2であるすべてのクライアントが検索されます。
 
-警告: 条件を文字列だけで構成すると、SQLインジェクションの脆弱性が発生する可能性があります。たとえば、`Client.where("first_name LIKE '%#{params[:first_name]}%'")`という書き方は危険です。次で説明するように、配列を使用するのが望ましい方法です。
+WARNING: 条件を文字列だけで構成すると、SQLインジェクションの脆弱性が発生する可能性があります。たとえば、`Client.where("first_name LIKE '%#{params[:first_name]}%'")`という書き方は危険です。次で説明するように、配列を使用するのが望ましい方法です。
 
 ### 配列で表された条件
 
@@ -439,7 +439,7 @@ Client.where("orders_count = #{params[:orders]}")
 
 条件文字列の中に変数を直接置くと、その変数はデータベースに **そのまま** 渡されてしまいます。これは、悪意のある人物がエスケープされていない危険な変数を渡すことができるということです。このようなコードがあると、悪意のある人物がデータベースを意のままにすることができ、データベース全体が危険にさらされます。くれぐれも、条件文字列の中に引数を直接置くことはしないでください。
 
-ヒント: SQLインジェクションの詳細については[Ruby on Railsセキュリティガイド](security.html#sql-injection) を参照してください。
+TIP: SQLインジェクションの詳細については[Ruby on Railsセキュリティガイド](security.html#sql-injection) を参照してください。
 
 #### プレースホルダを使用した条件
 
@@ -456,7 +456,7 @@ Client.where("created_at >= :start_date AND created_at <= :end_date",
 
 Active Recordは条件をハッシュで渡すこともできます。この書式を使用することで条件構文が読みやすくなります。条件をハッシュで渡す場合、ハッシュのキーには条件付けしたいフィールドを、ハッシュの値にはそのフィールドをどのように条件づけするかを、それぞれ指定します。
 
-メモ: ハッシュによる条件は、等値、範囲、サブセットのチェックでのみ使用できます。
+NOTE: ハッシュによる条件は、等値、範囲、サブセットのチェックでのみ使用できます。
 
 #### 等値条件
 
@@ -477,7 +477,7 @@ Post.where(author: author)
 Author.joins(:posts).where(posts: { author: author })
 ```
 
-メモ: この値はシンボルにすることはできません。たとえば`Client.where(status: :active)`のような書き方はできません。
+NOTE: この値はシンボルにすることはできません。たとえば`Client.where(status: :active)`のような書き方はできません。
 
 #### 範囲条件
 
@@ -959,7 +959,7 @@ SELECT clients.* FROM clients LEFT OUTER JOIN addresses ON addresses.client_id =
 
 ### 名前付き関連付けの配列/ハッシュを使用する
 
-警告: このメソッドは`INNER JOIN`でしか使用できません。
+WARNING: このメソッドは`INNER JOIN`でしか使用できません。
 
 Active Recordでは、`joins`メソッドを使用して関連付けで`JOIN`句を指定する際に、モデルで定義された[関連付け](association_basics.html) の名前をショートカットとして使用できます。
 
@@ -1338,7 +1338,7 @@ nameとlockedの両方を検索したいのであれば、2つのフィールド
 新しいオブジェクトを検索またはビルドする
 --------------------------
 
-メモ: Rails 4.0では一部の動的ファインダメソッドが非推奨に指定されました。これらはRails 4.1で削除される予定です。最良の方法は、Active Recordのスコープを代りに使用することです。非推奨になったファインダgemはhttps://github.com/rails/activerecord-deprecated_findersにあります。
+NOTE: Rails 4.0では一部の動的ファインダメソッドが非推奨に指定されました。これらはRails 4.1で削除される予定です。最良の方法は、Active Recordのスコープを代りに使用することです。非推奨になったファインダgemはhttps://github.com/rails/activerecord-deprecated_findersにあります。
 
 レコードを検索し、レコードがなければ作成する、というのはよくある一連の流れです。`find_or_create_by`および`find_or_create_by!`メソッドを使用すればこれらを一度に行なうことができます。
 

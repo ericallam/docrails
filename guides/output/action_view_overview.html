@@ -240,7 +240,7 @@
 <h3 id="action-viewについて">1 Action Viewについて</h3>
 <p>Action ViewおよびAction Controllerは、Action Packを構成する2大コンポーネントです。Railsでは、WebリクエストはAction Packで取り扱われます。この動作はコントローラ寄りの部分 (ロジックの実行) とビュー寄りの部分(テンプレートの描画) に分かれます。Action Controllerは、データベースとのやりとりや、必要に応じたCRUD (Create/Read/Update/Delete) アクションの実行にかかわります。Action View はその後レスポンスを実際のWebページにまとめる役割を担います。</p>
 <p>Action Viewのテンプレートは、HTMLタグの合間にERB (Embedded Ruby) を含む形式で書かれます。ビューテンプレートがコードの繰り返しでうずまって乱雑になるのを避けるために、フォーム・日付・文字列に対して共通の動作を提供するヘルパークラスが多数用意されています。アプリケーションの機能向上に応じて独自のヘルパーを追加することも簡単にできます。</p>
-<p>メモ: Action Viewの一部の機能はActive Recordと結びついていますが、Action ViewがActive Recordに依存しているわけではありません。Action Viewは独立したパッケージであり、どのようなRubyライブラリとでも組み合わせて使用できます。</p>
+<div class="note"><p>Action Viewの一部の機能はActive Recordと結びついていますが、Action ViewがActive Recordに依存しているわけではありません。Action Viewは独立したパッケージであり、どのようなRubyライブラリとでも組み合わせて使用できます。</p></div>
 <h3 id="action-viewをrailsで使用する">2 Action ViewをRailsで使用する</h3>
 <p>アプリケーションの<code>app/views</code>ディレクトリには、1つのコントローラごとに1つのディレクトリが作成され、そこにビューテンプレートファイルが置かれます。このビューテンプレートはそのコントローラと関連付けられています。これらのファイルは、コントローラ内にあるアクションごとに出力された結果をビューで表示するために使用されます。</p>
 <p>scaffoldを使用してリソースを生成するときに、Railsがデフォルトでどんなことを行なうのか見てみましょう。</p>
@@ -1385,7 +1385,7 @@ option_groups_from_collection_for_select(@continents, :countries, :name, :id, :n
 
 </pre>
 </div>
-<p>メモ: 返されるのは<code>optgroup</code>タグと<code>option</code>だけです。従って、出力結果の外側を適切な<code>select</code>タグで囲む必要があります。</p>
+<div class="note"><p>返されるのは<code>optgroup</code>タグと<code>option</code>だけです。従って、出力結果の外側を適切な<code>select</code>タグで囲む必要があります。</p></div>
 <h5 id="options_for_select">6.10.7 options_for_select</h5>
 <p>コンテナ (ハッシュ、配列、enumerable、独自の型) を引数として受け付け、オプションタグの文字列を返します。</p>
 <div class="code_container">
@@ -1395,7 +1395,7 @@ options_for_select([ "VISA", "MasterCard" ])
 
 </pre>
 </div>
-<p>メモ: 返されるのは<code>option</code>だけです。従って、出力結果の外側を適切なHTML <code>select</code>タグで囲む必要があります。</p>
+<div class="note"><p>返されるのは<code>option</code>だけです。従って、出力結果の外側を適切なHTML <code>select</code>タグで囲む必要があります。</p></div>
 <h5 id="options_from_collection_for_select">6.10.8 options_from_collection_for_select</h5>
 <p><code>collection</code>を列挙した結果をoptionタグ化した文字列を返し、呼び出しの結果を<code>value_method</code>にオプション値として割り当て、<code>text_method</code>にオプションテキストとして割り当てます。</p>
 <div class="code_container">
@@ -1412,7 +1412,7 @@ options_from_collection_for_select(@project.people, "id", "name")
 
 </pre>
 </div>
-<p>メモ: 返されるのは<code>option</code>だけです。従って、出力結果の外側を適切なHTML <code>select</code>タグで囲む必要があります。</p>
+<div class="note"><p>返されるのは<code>option</code>だけです。従って、出力結果の外側を適切なHTML <code>select</code>タグで囲む必要があります。</p></div>
 <h5 id="select">6.10.9 select</h5>
 <p>指定されたオブジェクトとメソッドに従って、selectタグの中に一連のoptionタグを含んだものを作成します。</p>
 <p>例：</p>
@@ -1786,7 +1786,7 @@ strip_tags("&lt;b&gt;Bold&lt;/b&gt; no more!  &lt;a href='more.html'&gt;See more
 
 </pre>
 </div>
-<p>メモ: 通常のフォームではそのための隠しフィールドが生成されるので、これらのタグは使用されません。詳細については<a href="./security.html#cross-site-request-forgery-csrf">セキュリティガイド</a>を参照してください。</p>
+<div class="note"><p>通常のフォームではそのための隠しフィールドが生成されるので、これらのタグは使用されません。詳細については<a href="./security.html#cross-site-request-forgery-csrf">セキュリティガイド</a>を参照してください。</p></div>
 <h3 id="ローカライズされたビュー">7 ローカライズされたビュー</h3>
 <p>Action Viewは、現在のロケールに応じてさまざまなテンプレートを出力することができます。</p>
 <p>たとえば、<code>PostsController</code>にshowアクションがあるとしましょう。このshowアクションを呼び出すと、デフォルトでは<code>app/views/posts/show.html.erb</code>が出力されます。ここで<code>I18n.locale = :de</code>を設定すると、代りに<code>app/views/posts/show.de.html.erb</code>が出力されます。ローカライズ版のテンプレートが見当たらない場合は、装飾なしのバージョンが使用されます。つまり、ローカライズ版ビューがなくても動作しますが、ローカライズ版ビューがあればそれが使用されます。</p>

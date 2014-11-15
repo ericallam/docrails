@@ -36,7 +36,7 @@ require 'active_support'
 
 本ガイドでは、コア拡張機能として定義されているすべてのメソッドについて、その定義ファイルの置き場所も示してあります。たとえば`blank?`の場合、以下のようなメモを追加してあります。
 
-メモ: 定義ファイルの場所は`active_support/core_ext/object/blank.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/object/blank.rb`です。
 
 つまり、以下のようにピンポイントでrequireを実行することができます。
 
@@ -96,9 +96,9 @@ Railsアプリケーションは以下の値を空白(blank)とみなします�
 
 * その他、`empty?`メソッドに応答するオブジェクトはすべて空白として扱われます
 
-参考情報: 文字列を判定する述語として、Unicode対応した文字クラスである`[:space:]`が使用されています。そのため、たとえばU+2029 (段落区切り文字)は空白文字と判断されます。
+INFO: 文字列を判定する述語として、Unicode対応した文字クラスである`[:space:]`が使用されています。そのため、たとえばU+2029 (段落区切り文字)は空白文字と判断されます。
 
-警告: 数字については空白であるかどうかは判断されません。特に0および0.0は**空白ではありません**のでご注意ください。
+WARNING: 数字については空白であるかどうかは判断されません。特に0および0.0は**空白ではありません**のでご注意ください。
 
 たとえば、`ActionController::HttpAuthentication::Token::ControllerMethods`にある以下のメソッドでは`blank?`を使用してトークンが存在しているかどうかをチェックしています。
 
@@ -120,7 +120,7 @@ def set_conditional_cache_control!
 end
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/object/blank.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/object/blank.rb`です。
 
 ### `presence`
 
@@ -130,7 +130,7 @@ end
 host = config[:host].presence || 'localhost'
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/object/blank.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/object/blank.rb`です。
 
 ### `duplicable?`
 
@@ -165,9 +165,9 @@ false.duplicable? # => false
 
 デフォルトでは、`nil`、`false`、`true`、シンボル、数値、クラス、モジュールを除くすべてのオブジェクトが`duplicable?` #=> trueです。
 
-警告: どんなクラスでも、`dup`メソッドと`clone`メソッドを除去することでこれらのメソッドを無効にしてしまうことができます。このとき、これらのメソッドが実行されると例外が発生します。このような状態では、どんなオブジェクトについてもそれが複製可能かどうかを確認するには`rescue`を使用する以外に方法はありません。`duplicable?`メソッドは、上のハードコードされたリストに依存しますが、その代わり`rescue`よりずっと高速です。実際のユースケースでハードコードされたリストで十分であることがわかっている場合には、`duplicable?`をお使いください。
+WARNING: どんなクラスでも、`dup`メソッドと`clone`メソッドを除去することでこれらのメソッドを無効にしてしまうことができます。このとき、これらのメソッドが実行されると例外が発生します。このような状態では、どんなオブジェクトについてもそれが複製可能かどうかを確認するには`rescue`を使用する以外に方法はありません。`duplicable?`メソッドは、上のハードコードされたリストに依存しますが、その代わり`rescue`よりずっと高速です。実際のユースケースでハードコードされたリストで十分であることがわかっている場合には、`duplicable?`をお使いください。
 
-メモ: 定義ファイルの場所は`active_support/core_ext/object/duplicable.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/object/duplicable.rb`です。
 
 ### `deep_dup`
 
@@ -212,7 +212,7 @@ duplicate = number.deep_dup
 number.object_id == duplicate.object_id   # => true
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/object/deep_dup.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/object/deep_dup.rb`です。
 
 ### `try`
 
@@ -247,7 +247,7 @@ end
 @person.try { |p| "#{p.first_name} #{p.last_name}" }
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/object/try.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/object/try.rb`です。
 
 ### `class_eval(*args, &block)`
 
@@ -268,7 +268,7 @@ class Proc
 end
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/kernel/singleton_class.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/kernel/singleton_class.rb`です。
 
 ### `acts_like?(duck)`
 
@@ -287,7 +287,7 @@ some_klass.acts_like?(:string)
 
 Railsには`Date`クラスや`Time`クラスと同様に振る舞うクラスがいくつかあり、この手法を使用できます。
 
-メモ: 定義ファイルの場所は`active_support/core_ext/object/acts_like.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/object/acts_like.rb`です。
 
 ### `to_param`
 
@@ -329,9 +329,9 @@ end
 user_path(@user) # => "/users/357-john-smith"
 ```
 
-警告: コントローラ側では、`to_param`メソッドがモデル側で再定義されている可能性があることに常に注意しておく必要があります。上のようなリクエストを受信した場合、`params[:id]`の値が"357-john-smith"になるからです。
+WARNING: コントローラ側では、`to_param`メソッドがモデル側で再定義されている可能性があることに常に注意しておく必要があります。上のようなリクエストを受信した場合、`params[:id]`の値が"357-john-smith"になるからです。
 
-メモ: 定義ファイルの場所は`active_support/core_ext/object/to_param.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/object/to_param.rb`です。
 
 ### `to_query`
 
@@ -380,7 +380,7 @@ account.to_query('company[name]')
 # => "user%5Bid%5D=89&user%5Bname%5D=John+Smith"
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/object/to_query.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/object/to_query.rb`です。
 
 ### `with_options`
 
@@ -419,15 +419,15 @@ I18n.with_options locale: user.locale, scope: "newsletter" do |i18n|
 end
 ```
 
-ヒント: `with_options`はメソッドをレシーバに転送しているので、呼び出しをネストすることもできます。各ネスティングレベルでは、自身の呼び出しに、継承したデフォルト呼び出しをマージします。●
+TIP: `with_options`はメソッドをレシーバに転送しているので、呼び出しをネストすることもできます。各ネスティングレベルでは、自身の呼び出しに、継承したデフォルト呼び出しをマージします。●
 
-メモ: 定義ファイルの場所は`active_support/core_ext/object/with_options.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/object/with_options.rb`です。
 
 ### JSON support
 
 Active Supportが提供する`to_json`メソッドの実装は、通常`json` gemがRubyオブジェクトに対して提供している`to_json`よりも優れています。その理由は、`Hash`や`OrderedHash`、`Process::Status`などのクラスでは、正しいJSON表現を提供するために特別な処理が必要になるためです。
 
-メモ: 定義ファイルの場所は`active_support/core_ext/object/json.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/object/json.rb`です。
 
 ### インスタンス変数
 
@@ -448,7 +448,7 @@ class C
 C.new(0, 1).instance_values # => {"x" => 0, "y" => 1}
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/object/instance_variables.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/object/instance_variables.rb`です。
 
 #### `instance_variable_names`
 
@@ -464,7 +464,7 @@ end
 C.new(0, 1).instance_variable_names # => ["@x", "@y"]
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/object/instance_variables.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/object/instance_variables.rb`です。
 
 ### 警告・ストリーム・例外の抑制
 
@@ -499,7 +499,7 @@ suppress(ActiveRecord::StaleObjectError) do
   end 
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/kernel/reporting.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/kernel/reporting.rb`です。
 
 ### `in?`
 
@@ -514,7 +514,7 @@ suppress(ActiveRecord::StaleObjectError) do
 1.in?(1)            # => ArgumentError
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/object/inclusion.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/object/inclusion.rb`です。
 
 `Module`の拡張
 ----------------------
@@ -567,7 +567,7 @@ end
 
 Railsでは`alias_method_chain`を全面的にコードベースに採用しています。たとえば、`ActiveRecord::Base#save`メソッドに検証 (validation) 機能を追加するために、検証専用の独立したモジュール内でメソッドを上の方法でラップしています。
 
-メモ: 定義ファイルの場所は`active_support/core_ext/module/aliasing.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/module/aliasing.rb`です。
 
 ### 属性
 
@@ -583,7 +583,7 @@ class User < ActiveRecord::Base
 end
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/module/aliasing.rb`です
+NOTE: 定義ファイルの場所は`active_support/core_ext/module/aliasing.rb`です
 
 #### 内部属性
 
@@ -621,7 +621,7 @@ module ActionView
 end
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/module/attr_internal.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/module/attr_internal.rb`です。
 
 #### モジュール属性
 
@@ -648,7 +648,7 @@ module ActiveSupport
 end
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/module/attribute_accessors.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/module/attribute_accessors.rb`です。
 
 ### 親
 
@@ -671,9 +671,9 @@ M.parent       # => X::Y
 
 モジュールが無名またはトップレベルの場合、`parent`は`Object`を返します。
 
-警告: `parent_name`は上の場合でも`nil`を返します。
+WARNING: `parent_name`は上の場合でも`nil`を返します。
 
-メモ: 定義ファイルの場所は`active_support/core_ext/module/introspection.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/module/introspection.rb`です。
 
 #### `parent_name` 
 
@@ -694,9 +694,9 @@ M.parent_name       # => "X::Y"
 
 モジュールが無名またはトップレベルの場合、`parent_name`は`nil`を返します。
 
-警告: `parent`は上の場合でも`Object`を返します。
+WARNING: `parent`は上の場合でも`Object`を返します。
 
-メモ: 定義ファイルの場所は`active_support/core_ext/module/introspection.rb`。
+NOTE: 定義ファイルの場所は`active_support/core_ext/module/introspection.rb`。
 
 #### `parents`
 
@@ -715,7 +715,7 @@ X::Y::Z.parents # => [X::Y, X, Object]
 M.parents       # => [X::Y, X, Object]
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/module/introspection.rb`。
+NOTE: 定義ファイルの場所は`active_support/core_ext/module/introspection.rb`。
 
 ### 定数
 
@@ -737,7 +737,7 @@ X::Y.local_constants # => [:Y1, :X1]
 
 定数名はシンボルとして返されます。
 
-メモ: 定義ファイルの場所は`active_support/core_ext/module/introspection.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/module/introspection.rb`です。
 
 #### フルパスの定数名
 
@@ -787,7 +787,7 @@ N.qualified_const_defined?("C::X")        # => true
 ビルトインメソッドと一貫させるため、相対パスのみを受け付けます。
 `::Math::PI`のような絶対定数名を指定すると`NameError`が発生します。
 
-メモ: 定義ファイルの場所は`active_support/core_ext/module/qualified_const.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/module/qualified_const.rb`です。
 
 ### 到達可能
 
@@ -825,7 +825,7 @@ end
 orphan.reachable? # => false 
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/module/reachable.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/module/reachable.rb`です。
 
 ### 無名モジュール
 
@@ -866,7 +866,7 @@ m.anonymous? # => false
 
 逆に、無名モジュールは、定義上必ず到達不能です。
 
-メモ: 定義ファイルの場所は`active_support/core_ext/module/anonymous.rb`。
+NOTE: 定義ファイルの場所は`active_support/core_ext/module/anonymous.rb`。
 
 ### メソッド委譲
 
@@ -922,7 +922,7 @@ delegate :logger, to: :Rails
 delegate :table_name, to: :class
 ```
 
-警告: `:prefix`オプションが`true`の場合、一般性が低下します (後述)。
+WARNING: `:prefix`オプションが`true`の場合、一般性が低下します (後述)。
 
 委譲時に`NoMethodError`が発生して対象が`nil`の場合、例外が発生します。`:allow_nil`オプションを使用すると、例外の代りに`nil`を返すようにすることができます。
 
@@ -940,7 +940,7 @@ delegate :street, to: :address, prefix: true
 
 上の例では、`street`ではなく`address_street`が生成されます。
 
-警告: この場合、生成されるメソッドの名前では、対象となるオブジェクト名とメソッド名が使用されます。`:to`オプションで指定するのはメソッド名でなければなりません。
+WARNING: この場合、生成されるメソッドの名前では、対象となるオブジェクト名とメソッド名が使用されます。`:to`オプションで指定するのはメソッド名でなければなりません。
 
 プレフィックスをカスタマイズすることもできます。
 
@@ -950,7 +950,7 @@ delegate :size, to: :attachment, prefix: :avatar
 
 上の例では、マクロによって`size`の代わりに`avatar_size`が生成されます。
 
-メモ: 定義ファイルの場所は`active_support/core_ext/module/delegation.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/module/delegation.rb`です。
 
 ### メソッドの再定義
 
@@ -958,7 +958,7 @@ delegate :size, to: :attachment, prefix: :avatar
 
 `redefine_method`メソッドを使用すれば、必要に応じて既存のメソッドが削除されるので、このような警告が表示されることを防止できます。
 
-メモ: 定義ファイルの場所は`active_support/core_ext/module/remove_method.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/module/remove_method.rb`です。
 
 `Class`の拡張
 ---------------------
@@ -1045,7 +1045,7 @@ A.new.x = 1 # NoMethodError
 
 インスタンス述語が不要な場合、`instance_predicate: false`を指定すれば定義されなくなります。
 
-メモ: 定義ファイルの場所は`active_support/core_ext/class/attribute.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/class/attribute.rb`です。
 
 #### `cattr_reader`、`cattr_writer`、`cattr_accessor`
 
@@ -1098,7 +1098,7 @@ end
 
 `:instance_accessor`を`false`に設定すると、モデルの属性設定時にマスアサインメントを防止するのに便利です。
 
-メモ: 定義ファイルの場所は`active_support/core_ext/module/attribute_accessors.rb`です。`active_support/core_ext/class/attribute_accessors.rb`は非推奨であり、Ruby on Rails 4.2では削除される予定です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/module/attribute_accessors.rb`です。`active_support/core_ext/class/attribute_accessors.rb`は非推奨であり、Ruby on Rails 4.2では削除される予定です。
 
 ### サブクラスと子孫
 
@@ -1122,7 +1122,7 @@ C.subclasses # => [B, D]
 
 返されるクラスの順序は一定ではありません。
 
-メモ: 定義ファイルの場所は`active_support/core_ext/class/subclasses.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/class/subclasses.rb`です。
 
 #### `descendants`
 
@@ -1144,7 +1144,7 @@ C.descendants # => [B, A, D]
 
 返されるクラスの順序は一定ではありません。
 
-メモ: 定義ファイルの場所は`active_support/core_ext/class/subclasses.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/class/subclasses.rb`です。
 
 `String`の拡張
 ----------------------
@@ -1220,7 +1220,7 @@ def raw(stringish)
 end
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/string/output_safety.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/string/output_safety.rb`です。
 
 #### 各種変換
 
@@ -1228,7 +1228,7 @@ end
 
 `gsub!`のような破壊的な変換を行なうメソッドを使用すると、レシーバ自体が安全でなくなります。
 
-情報: 安全を表すビットは、実際に変換が行われていてもなくても、こうしたメソッドを実行すれば外されます。
+INFO: 安全を表すビットは、実際に変換が行われていてもなくても、こうしたメソッドを実行すれば外されます。
 
 #### 変換と強制
 
@@ -1248,7 +1248,7 @@ end
 
 このメソッドには破壊的なバージョンの`String#remove!`もあります。
 
-メモ: 定義ファイルの場所は`active_support/core_ext/string/filters.rb`。
+NOTE: 定義ファイルの場所は`active_support/core_ext/string/filters.rb`。
 
 ### `squish`
 
@@ -1262,7 +1262,7 @@ end
 
 このメソッドでは、ASCIIとUnicodeのホワイトスペースを扱えます。これには、たとえばモンゴル語の母音区切り文字 (U+180E) なども含まれます。
 
-メモ: 定義ファイルの場所は`active_support/core_ext/string/filters.rb`。
+NOTE: 定義ファイルの場所は`active_support/core_ext/string/filters.rb`。
 
 ### `truncate`
 
@@ -1300,7 +1300,7 @@ end
 
 上の例では、"dear"という文字で切り落とされそうになるところを、`:separator`によって防いでいます。
 
-メモ: 定義ファイルの場所は`active_support/core_ext/string/filters.rb`。
+NOTE: 定義ファイルの場所は`active_support/core_ext/string/filters.rb`。
 
 ### `inquiry`
 
@@ -1320,7 +1320,7 @@ Active Supportでは、`String#start_with?`と`String#end_with?`を英語的に�
 "foo".ends_with?("o")   # => true
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/string/starts_ends_with.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/string/starts_ends_with.rb`です。
 
 ### `strip_heredoc`
 
@@ -1344,7 +1344,7 @@ USAGEメッセージが左寄せで表示されます。
 
 技術的には、インデントが一番浅い行を探して、そのインデント分だけ行頭のホワイトスペースを全体から削除するという操作を行っています。
 
-メモ: 定義ファイルの場所は`active_support/core_ext/string/strip.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/string/strip.rb`です。
 
 ### `indent`
 
@@ -1381,7 +1381,7 @@ EOS
 
 `indent!`メソッドはインデントをその場で (破壊的に) 行います。
 
-メモ: 定義ファイルの場所は`active_support/core_ext/string/indent.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/string/indent.rb`です。
 
 ### Access
 
@@ -1396,7 +1396,7 @@ EOS
 "hello".at(10) # => nil
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/string/access.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/string/access.rb`です。
 
 #### `from(position)`
 
@@ -1409,7 +1409,7 @@ EOS
 "hello".from(10) # => "" if < 1.9, nil in 1.9
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/string/access.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/string/access.rb`です。
 
 #### `to(position)`
 
@@ -1422,19 +1422,19 @@ EOS
 "hello".to(10) # => "hello"
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/string/access.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/string/access.rb`です。
 
 #### `first(limit = 1)`
 
 `str.first(n)`という呼び出しは、`n` > 0の場合は`str.to(n-1)`と等価です。`n` == 0の場合は空文字列を返します。
 
-定義ファイルの場所は`active_support/core_ext/string/access.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/string/access.rb`です。
 
 #### `last(limit = 1)`
 
 `str.last(n)`という呼び出しは、`n` > 0の場合は`str.from(-n)`と等価です。`n` == 0の場合は空文字列を返します。
 
-メモ: 定義ファイルの場所は`active_support/core_ext/string/access.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/string/access.rb`です。
 
 ### 活用形
 
@@ -1468,7 +1468,7 @@ def undecorated_table_name(class_name = base_class.name)
 end
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/string/inflections.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/string/inflections.rb`です。
 
 #### `singularize`
 
@@ -1491,7 +1491,7 @@ def derive_class_name
 end
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/string/inflections.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/string/inflections.rb`です。
 
 #### `camelize`
 
@@ -1527,7 +1527,7 @@ end
 
 このメソッドは、そのような命名慣習に従っている言語 (JavaScriptなど) で使用される名前を求めるのに便利です。
 
-情報: `camelize`メソッドは、`underscore`メソッドと逆の動作をすると考えるとわかりやすいでしょう。ただし逆は必ずしも真ならずで、`"SSLError".underscore.camelize`の実行結果は`"SslError"`となります。このような場合をサポートするために、Active Supportでは`config/initializers/inflections.rb`の頭字語を指定することができます。
+INFO: `camelize`メソッドは、`underscore`メソッドと逆の動作をすると考えるとわかりやすいでしょう。ただし逆は必ずしも真ならずで、`"SSLError".underscore.camelize`の実行結果は`"SslError"`となります。このような場合をサポートするために、Active Supportでは`config/initializers/inflections.rb`の頭字語を指定することができます。
 
 ```ruby
 ActiveSupport::Inflector.inflections do |inflect|
@@ -1539,7 +1539,7 @@ end
 
 `camelize`は`camelcase`の別名です。
 
-メモ: 定義ファイルの場所は`active_support/core_ext/string/inflections.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/string/inflections.rb`です。
 
 #### `underscore`
 
@@ -1576,9 +1576,9 @@ def load_missing_constant(from_mod, const_name)
 end
 ```
 
-情報: 情報: `underscore`メソッドは、`camelize`メソッドと逆の動作をすると考えるとわかりやすいでしょう。ただし、きれいに逆変換されるとは限りません。たとえば、`"SSLError".underscore.camelize`を実行した結果は`"SslError"`になります。
+INFO: `underscore`メソッドは、`camelize`メソッドと逆の動作をすると考えるとわかりやすいでしょう。ただし、きれいに逆変換されるとは限りません。たとえば、`"SSLError".underscore.camelize`を実行した結果は`"SslError"`になります。
 
-メモ: 定義ファイルの場所は`active_support/core_ext/string/inflections.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/string/inflections.rb`です。
 
 #### `titleize`
 
@@ -1591,7 +1591,7 @@ end
 
 `titleize`メソッドは`titlecase`の別名です。
 
-定義ファイルの場所は`active_support/core_ext/string/inflections.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/string/inflections.rb`です。
 
 #### `dasherize`
 
@@ -1612,7 +1612,7 @@ def reformat_name(name)
 end
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/string/inflections.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/string/inflections.rb`です。
 
 #### `demodulize`
 
@@ -1640,7 +1640,7 @@ def counter_cache_column
 end
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/string/inflections.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/string/inflections.rb`です。
 
 #### `deconstantize`
 
@@ -1665,7 +1665,7 @@ def qualified_const_set(path, value)
 end
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/string/inflections.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/string/inflections.rb`です。
 
 #### `parameterize`
 
@@ -1678,7 +1678,7 @@ end
 
 実際に得られる文字列は、`ActiveSupport::Multibyte::Chars`のインスタンスでラップされています。
 
-メモ: 定義ファイルの場所は`active_support/core_ext/string/inflections.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/string/inflections.rb`です。
 
 #### `tableize`
 
@@ -1692,7 +1692,7 @@ end
 
 単純な場合であれば、モデル名に`tableize`を使用するとモデルのテーブル名を得られます。実際のActive Recordの実装は、単に`tableize`を実行する場合よりも複雑です。Active Recordではクラス名に対して`demodulize`も行っており、返される文字列に影響する可能性のあるオプションもいくつかチェックしています。
 
-メモ: 定義ファイルの場所は`active_support/core_ext/string/inflections.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/string/inflections.rb`です。
 
 #### `classify`
 
@@ -1712,7 +1712,7 @@ end
 
 `classify`が返すクラス名は文字列であることにご注意ください。得られた文字列に対して`constantize` (後述) を実行することで本当のクラスオブジェクトを得られます。
 
-メモ: 定義ファイルの場所は`active_support/core_ext/string/inflections.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/string/inflections.rb`です。
 
 #### `constantize`
 
@@ -1755,7 +1755,7 @@ rescue NameError => e
 end
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/string/inflections.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/string/inflections.rb`です。
 
 #### `humanize`
 
@@ -1790,7 +1790,7 @@ def full_messages
 end
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/string/inflections.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/string/inflections.rb`です。
 
 #### `foreign_key`
 
@@ -1815,7 +1815,7 @@ end
 foreign_key = options[:foreign_key] || reflection.active_record.name.foreign_key
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/string/inflections.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/string/inflections.rb`です。
 
 ### 各種変換
 
@@ -1840,9 +1840,9 @@ foreign_key = options[:foreign_key] || reflection.active_record.name.foreign_key
 
 詳細については`Date._parse`のドキュメントを参照してください。
 
-情報: 3つのメソッドはいずれも、レシーバが空の場合は`nil`を返します。
+INFO: 3つのメソッドはいずれも、レシーバが空の場合は`nil`を返します。
 
-メモ: 定義ファイルの場所は`active_support/core_ext/string/conversions.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/string/conversions.rb`です。
 
 `Numeric`の拡張
 -----------------------
@@ -1876,7 +1876,7 @@ exabytes
 1.megabyte # => 1048576
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/numeric/bytes.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/numeric/bytes.rb`です。
 
 ### Time
 
@@ -1907,7 +1907,7 @@ exabytes
 
 このような場合、日付時刻を正確に計算するにはRubyのコア [Date](http://ruby-doc.org/stdlib/libdoc/date/rdoc/Date.html) および [Time](http://ruby-doc.org/stdlib/libdoc/time/rdoc/Time.html) を使用する必要があります。
 
-メモ: 定義ファイルの場所は`active_support/core_ext/numeric/time.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/numeric/time.rb`です。
 
 ### フォーマッティング
 
@@ -1994,7 +1994,7 @@ exabytes
 1234567890123456.to_s(:human)  # => "1.23 Quadrillion"
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/numeric/conversions.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/numeric/conversions.rb`です。
 
 `Integer`の拡張
 -----------------------
@@ -2008,7 +2008,7 @@ exabytes
 1.multiple_of?(2) # => false
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/integer/multiple.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/integer/multiple.rb`です。
 
 ### `ordinal`
 
@@ -2023,7 +2023,7 @@ exabytes
 -134.ordinal # => "th"
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/integer/inflections.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/integer/inflections.rb`です。
 
 ### `ordinalize`
 
@@ -2038,7 +2038,7 @@ exabytes
 -134.ordinalize # => "-134th"
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/integer/inflections.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/integer/inflections.rb`です。
 
 `BigDecimal`の拡張
 --------------------------
@@ -2110,7 +2110,7 @@ BigDecimal.new(5.00, 6).to_formatted_s("e")  # => "0.5E1"
 [].sum(1) {|n| n**3} # => 1
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/enumerable.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/enumerable.rb`です。
 
 ### `index_by`
 
@@ -2123,9 +2123,9 @@ invoices.index_by(&:number)
 # => {'2009-032' => <Invoice ...>, '2009-008' => <Invoice ...>, ...}
 ```
 
-警告: キーは通常はユニークでなければなりません。異なる要素から同じ値が返されると、そのキーのコレクションは作成されません。返された項目のうち、最後の項目だけが使用されます。
+WARNING: キーは通常はユニークでなければなりません。異なる要素から同じ値が返されると、そのキーのコレクションは作成されません。返された項目のうち、最後の項目だけが使用されます。
 
-メモ: 定義ファイルの場所は`active_support/core_ext/enumerable.rb`です
+NOTE: 定義ファイルの場所は`active_support/core_ext/enumerable.rb`です
 
 ### `many?`
 
@@ -2143,7 +2143,7 @@ invoices.index_by(&:number)
 @see_more = videos.many? {|video| video.category == params[:category]}
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/enumerable.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/enumerable.rb`です。
 
 ### `exclude?`
 
@@ -2153,7 +2153,7 @@ invoices.index_by(&:number)
 to_visit << node if visited.exclude?(node)
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/enumerable.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/enumerable.rb`です。
 
 `Array`の拡張
 ---------------------
@@ -2182,7 +2182,7 @@ Active Supportには配列のAPIが多数追加されており、配列に容易
 %w(a b c d).fifth # => nil
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/array/access.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/array/access.rb`です。
 
 ### 要素を加える
 
@@ -2195,7 +2195,7 @@ Active Supportには配列のAPIが多数追加されており、配列に容易
 [].prepend(10)            # => [10]
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/array/prepend_and_append.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/array/prepend_and_append.rb`です。
 
 #### `append`
 
@@ -2206,7 +2206,7 @@ Active Supportには配列のAPIが多数追加されており、配列に容易
 [].append([1,2])         # => [[1,2]]
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/array/prepend_and_append.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/array/prepend_and_append.rb`です。
 
 ### オプションの展開
 
@@ -2234,7 +2234,7 @@ end
 
 このメソッドは、任意の数のアクション名を引数に取ることができ、引数の末尾項目でオプションハッシュを使用できます。`extract_options!`メソッドを使用すると、このオプションハッシュを取り出し、`actions`から取り除くことが簡単かつ明示的に行えます。
 
-メモ: 定義ファイルの場所は`active_support/core_ext/array/extract_options.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/array/extract_options.rb`です。
 
 ### 各種変換
 
@@ -2263,7 +2263,7 @@ end
 | `:words_connector`     | `support.array.words_connector`     |
 | `:last_word_connector` | `support.array.last_word_connector` |
 
-メモ: 定義ファイルの場所は`active_support/core_ext/array/conversions.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/array/conversions.rb`です。
 
 #### `to_formatted_s`
 
@@ -2279,7 +2279,7 @@ invoice.lines.to_formatted_s(:db) # => "23,567,556,12"
 
 上の例の整数は、`id`への呼び出しによって取り出されたものと考えられます。
 
-メモ: 定義ファイルの場所は`active_support/core_ext/array/conversions.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/array/conversions.rb`です。
 
 #### `to_xml`
 
@@ -2354,7 +2354,7 @@ Contributor.limit(2).order(:rank).to_xml
 # </objects>
 ```
 
-警告: コレクションが空の場合、ルート要素はデフォルトで"nilクラス"になります。ここからわかるように、たとえば上の例でのcontributorsのリストのルート要素は、コレクションがもし空であれば "contributors" ではなく "nilクラス" になってしまうということです。`:root`オプションを使用することで一貫したルート要素を使用することもできます。
+WARNING: コレクションが空の場合、ルート要素はデフォルトで"nilクラス"になります。ここからわかるように、たとえば上の例でのcontributorsのリストのルート要素は、コレクションがもし空であれば "contributors" ではなく "nilクラス" になってしまうということです。`:root`オプションを使用することで一貫したルート要素を使用することもできます。
 
 子ノードの名前は、デフォルトではルートノードを単数形にしたものが使用されます。上の例で言うと"contributor"や"object"がそれです。`:children`オプションを使用すると、これらをノード名として設定できます。
 
@@ -2380,7 +2380,7 @@ Contributor.limit(2).order(:rank).to_xml(skip_types: true)
 # </contributors>
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/array/conversions.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/array/conversions.rb`です。
 
 ### ラッピング
 
@@ -2421,7 +2421,7 @@ Array(foo: :bar)      # => [[:foo, :bar]]
 
 従って、この場合`nil`に対する動作が異なり、上で説明されている、残りの`object`に適用される`Kernel#Array`も異なります。●
 
-メモ: 定義ファイルの場所は`active_support/core_ext/array/wrap.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/array/wrap.rb`です。
 
 ### 複製
 
@@ -2434,7 +2434,7 @@ dup[1][2] = 4
 array[1][2] == nil   # => true
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/object/deep_dup.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/object/deep_dup.rb`です。
 
 ### グループ化
 
@@ -2472,7 +2472,7 @@ array[1][2] == nil   # => true
 
 当然ながら、`false`は空きを埋める値としては使用できないことになります。
 
-メモ: 定義ファイルの場所は`active_support/core_ext/array/grouping.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/array/grouping.rb`です。
 
 #### `in_groups(number, fill_with = nil)`
 
@@ -2510,7 +2510,7 @@ array[1][2] == nil   # => true
 
 当然ながら、`false`は空きを埋める値としては使用できないことになります。
 
-メモ: 定義ファイルの場所は`active_support/core_ext/array/grouping.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/array/grouping.rb`です。
 
 #### `split(value = nil)`
 
@@ -2530,9 +2530,9 @@ array[1][2] == nil   # => true
 # => [[0], [-5], [], ["foo", "bar"]]
 ```
 
-ヒント: 上の例からもわかるように、セパレータが連続すると空の配列になります。
+TIP: 上の例からもわかるように、セパレータが連続すると空の配列になります。
 
-メモ: 定義ファイルの場所は`active_support/core_ext/array/grouping.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/array/grouping.rb`です。
 
 `Hash`の拡張
 --------------------
@@ -2584,7 +2584,7 @@ XML_TYPE_NAMES = {
 
 デフォルトのXMLビルダは、`Builder::XmlMarkup`から直接生成されたインスタンスです。`:builder`オブションを使用することで、独自のビルダを構成できます。このメソッドでは`:dasherize`とその同族と同様のオプションが使用できます。それらのオプションはビルダに転送されます。
 
-メモ: 定義ファイルの場所は`active_support/core_ext/hash/conversions.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/hash/conversions.rb`です。
 
 ### マージ
 
@@ -2617,17 +2617,17 @@ options = options.reverse_merge(length: 30, omission: "...")
 options.reverse_merge!(length: 30, omission: "...")
 ```
 
-警告: `reverse_merge!`は呼び出し元のハッシュを変更する可能性があることにご注意ください。それが意図した副作用であるかそうでないかにかかわらず、注意が必要です。
+WARNING: `reverse_merge!`は呼び出し元のハッシュを変更する可能性があることにご注意ください。それが意図した副作用であるかそうでないかにかかわらず、注意が必要です。
 
-メモ: 定義ファイルの場所は`active_support/core_ext/hash/reverse_merge.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/hash/reverse_merge.rb`です。
 
 #### `reverse_update`
 
 `reverse_update`メソッドは、上で説明した`reverse_merge!`の別名です。
 
-警告: `reverse_update`には破壊的なバージョンはありません。
+WARNING: `reverse_update`には破壊的なバージョンはありません。
 
-メモ: 定義ファイルの場所は`active_support/core_ext/hash/reverse_merge.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/hash/reverse_merge.rb`です。
 
 #### `deep_merge`と`deep_merge!`
 
@@ -2642,7 +2642,7 @@ Active Supportでは`Hash#deep_merge`が定義されています。ディープ�
 
 `deep_merge!`メソッドはディープマージを破壊的に実行します。
 
-メモ: 定義ファイルの場所は`active_support/core_ext/hash/deep_merge.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/hash/deep_merge.rb`です。
 
 ### ディープ複製
 
@@ -2660,7 +2660,7 @@ hash[:b][:e] == nil      # => true
 hash[:b][:d] == [3, 4]   # => true
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/object/deep_dup.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/object/deep_dup.rb`です。
 
 ### ハッシュキーの操作
 
@@ -2681,7 +2681,7 @@ hash[:b][:d] == [3, 4]   # => true
 
 レシーバーからキーを取り除く破壊的な`except!`もあります。
 
-メモ: 定義ファイルの場所は`active_support/core_ext/hash/except.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/hash/except.rb`です。
 
 #### `transform_keys`と`transform_keys!`
 
@@ -2723,7 +2723,7 @@ end
 # => {""=>nil, "1"=>1, "NESTED"=>{"A"=>3, "5"=>5}}
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/hash/keys.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/hash/keys.rb`です。
 
 #### `stringify_keys`と`stringify_keys!`
 
@@ -2765,7 +2765,7 @@ stringify_keysメソッドのおかげで、2行目で"type"キーに安全に�
 # => {""=>nil, "1"=>1, "nested"=>{"a"=>3, "5"=>5}}
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/hash/keys.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/hash/keys.rb`です。
 
 #### `symbolize_keys`と`symbolize_keys!`
 
@@ -2776,7 +2776,7 @@ stringify_keysメソッドのおかげで、2行目で"type"キーに安全に�
 # => {1=>1, nil=>nil, :a=>"a"}
 ```
 
-警告: 上の例では、3つのキーのうち最後の1つしかシンボルに変換されていないことにご注意ください。数字とnilはシンボルになりません。
+WARNING: 上の例では、3つのキーのうち最後の1つしかシンボルに変換されていないことにご注意ください。数字とnilはシンボルになりません。
 
 キーが重複している場合、いずれかの値が優先されます。優先される値は、同じハッシュが与えられた場合であっても一定する保証はありません。
 
@@ -2809,13 +2809,13 @@ symbolize_keysメソッドのおかげで、2行目で`:params`キーに安全�
 # => {nil=>nil, 1=>1, nested:{a:3, 5=>5}}
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/hash/keys.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/hash/keys.rb`です。
 
 #### `to_options`と`to_options!`
 
 `to_options`メソッドと`to_options!`メソッドは、それそれ`symbolize_keys`メソッドと`symbolize_keys!`メソッドの別名です。
 
-メモ: 定義ファイルの場所は`active_support/core_ext/hash/keys.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/hash/keys.rb`です。
 
 #### `assert_valid_keys`
 
@@ -2828,7 +2828,7 @@ symbolize_keysメソッドのおかげで、2行目で`:params`キーに安全�
 
 Active Recordは、たとえば関連付けが行われている場合に未知のオプションを受け付けません。このメソッドでは、`assert_valid_keys`を使用した制御を実装しています。
 
-メモ: 定義ファイルの場所は`active_support/core_ext/hash/keys.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/hash/keys.rb`です。
 
 ### スライス
 
@@ -2849,7 +2849,7 @@ Rubyには、文字列や配列をスライスして一部を取り出すビル�
 # => {:a=>1}
 ```
 
-メモ: スライス処理は、キーのホワイトリストを使用してオプションハッシュをサニタイズするのに便利です。
+NOTE: スライス処理は、キーのホワイトリストを使用してオプションハッシュをサニタイズするのに便利です。
 
 破壊的なスライス操作を行なう`slice!`メソッドもあります。返し値は、取り除かれた要素です。
 
@@ -2859,7 +2859,7 @@ rest = hash.slice!(:a) # => {:b=>2}
 hash                   # => {:a=>1}
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/hash/slice.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/hash/slice.rb`です。
 
 ### 抽出
 
@@ -2879,7 +2879,7 @@ rest = hash.extract!(:a).class
 # => ActiveSupport::HashWithIndifferentAccess
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/hash/slice.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/hash/slice.rb`です。
 
 ### ハッシュキーがシンボルでも文字列でも同様に扱う (indifferent access)
 
@@ -2889,7 +2889,7 @@ rest = hash.extract!(:a).class
 {a: 1}.with_indifferent_access["a"] # => 1
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/hash/indifferent_access.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/hash/indifferent_access.rb`です。
 
 ### コンパクト化
 
@@ -2899,7 +2899,7 @@ rest = hash.extract!(:a).class
 {a: 1, b: 2, c: nil}.compact # => {a: 1, b: 2}
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/hash/compact.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/hash/compact.rb`です。
 
 `Regexp`の拡張
 ----------------------
@@ -2928,7 +2928,7 @@ def assign_route_options(segments, defaults, requirements)
 end
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/regexp.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/regexp.rb`です。
 
 `Range`の拡張
 ---------------------
@@ -2947,7 +2947,7 @@ Active Supportは`Range#to_s`メソッドを拡張してフォーマット引数
 
 上の例でもわかるように、フォーマットに`:db`を指定するとSQLの`BETWEEN`句が生成されます。このフォーマットは、Active Recordで条件の値の範囲をサポートするときに使用されています。
 
-メモ: 定義ファイルの場所は`active_support/core_ext/range/conversions.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/range/conversions.rb`です。
 
 ### `include?`
 
@@ -2971,7 +2971,7 @@ Active Supportではこれらのメソッドを拡張して、他の範囲指定
 (1...9) === (3..9)  # => false
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/range/include_range.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/range/include_range.rb`です。
 
 ### `overlaps?`
 
@@ -2983,7 +2983,7 @@ Active Supportではこれらのメソッドを拡張して、他の範囲指定
 (1..10).overlaps?(11..27) # => false
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/range/overlaps.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/range/overlaps.rb`です。
 
 `Proc`の拡張
 --------------------
@@ -3011,7 +3011,7 @@ Proc.new { size }.bind([]).call # => 0
 
 上のようにメソッドが呼び出し可能になって引数にバインドされたので、返し値は実際に`Method`になりました。●
 
-メモ: 実際には、`Proc#bind`は自身の下にメソッドを作成しています。●`__bind_1256598120_237302`のような気持ち悪い名前のメソッドをスタックトレースで見かけることがあると思いますが、あれはまさにこの方法で作成されたものです。
+NOTE: 実際には、`Proc#bind`は自身の下にメソッドを作成しています。●`__bind_1256598120_237302`のような気持ち悪い名前のメソッドをスタックトレースで見かけることがあると思いますが、あれはまさにこの方法で作成されたものです。
 
 Action Packではこのトリックを`rescue_from`などで使用しています。そこではメソッド名を1つ引数として取り、与えられたレスキュー例外用のコールバックとしてprocも引数として取ります。これらはいずれにせよ呼び出される必要があります。それによってバインドされたメソッドが`handler_for_rescue`から返され、呼び出し元のコードがシンプルになります。
 
@@ -3030,16 +3030,16 @@ def handler_for_rescue(exception)
 end
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/proc.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/proc.rb`です。
 
 `Date`の拡張
 --------------------
 
 ### 計算
 
-メモ: これらはすべて同じ定義ファイル`active_support/core_ext/date/calculations.rb`にあります。
+NOTE: これらはすべて同じ定義ファイル`active_support/core_ext/date/calculations.rb`にあります。
 
-情報: 以下の計算方法の一部では1582年10月を極端な例として使用しています。この月にユリウス暦からグレゴリオ暦への切り替えが行われたため、10月5日から10月14日までが存在しません。本ガイドはこの特殊な月について長々と解説することはしませんが、メソッドがこの月でも期待どおりに動作することについては説明しておきたいと思います。具体的には、たとえば`Date.new(1582, 10, 4).tomorrow`を実行すると`Date.new(1582, 10, 15)`が返されます。期待どおりに動作することは、Active Supportの`test/core_ext/date_ext_test.rb`用のテストスイートで確認できます。
+INFO: 以下の計算方法の一部では1582年10月を極端な例として使用しています。この月にユリウス暦からグレゴリオ暦への切り替えが行われたため、10月5日から10月14日までが存在しません。本ガイドはこの特殊な月について長々と解説することはしませんが、メソッドがこの月でも期待どおりに動作することについては説明しておきたいと思います。具体的には、たとえば`Date.new(1582, 10, 4).tomorrow`を実行すると`Date.new(1582, 10, 15)`が返されます。期待どおりに動作することは、Active Supportの`test/core_ext/date_ext_test.rb`用のテストスイートで確認できます。
 
 #### `Date.current`
 
@@ -3316,7 +3316,7 @@ Date.new(1582, 10, 4) + 1.day
 
 #### タイムスタンプ
 
-情報: 以下のメソッドは可能であれば`Time`オブジェクトを返し、それ以外の場合は`DateTime`を返します。ユーザーのタイムゾーンを設定しておけば配慮されます。
+INFO: 以下のメソッドは可能であれば`Time`オブジェクトを返し、それ以外の場合は`DateTime`を返します。ユーザーのタイムゾーンを設定しておけば配慮されます。
 
 ##### `beginning_of_day`、`end_of_day`
 
@@ -3372,7 +3372,7 @@ date.end_of_minute # => Mon Jun 07 19:55:59 +0200 2010
 
 `beginning_of_minute`は`at_beginning_of_minute`の別名です。
 
-情報: `beginning_of_hour`、`end_of_hour`、`beginning_of_minute`、`end_of_minute`は`Time`および`DateTime`への実装ですが、`Date`への実装では **ありません** 。`Date`インスタンスに対して時間や分の最初や最後を問い合わせる意味はありません。
+INFO: `beginning_of_hour`、`end_of_hour`、`beginning_of_minute`、`end_of_minute`は`Time`および`DateTime`への実装ですが、`Date`への実装では **ありません** 。`Date`インスタンスに対して時間や分の最初や最後を問い合わせる意味はありません。
 
 ##### `ago`、`since`
 
@@ -3397,11 +3397,11 @@ date.since(1)       # => Fri, 11 Jun 2010 00:00:01 EDT -04:00
 `DateTime`の拡張
 ------------------------
 
-警告: `DateTime`は夏時間 (DST) ルールについては関知しません。夏時間の変更が行われた場合、メソッドの一部がこのとおりに動作しないことがあります。たとえば、`seconds_since_midnight`メソッドが返す秒数が実際の総量と合わない可能性があります。
+WARNING: `DateTime`は夏時間 (DST) ルールについては関知しません。夏時間の変更が行われた場合、メソッドの一部がこのとおりに動作しないことがあります。たとえば、`seconds_since_midnight`メソッドが返す秒数が実際の総量と合わない可能性があります。
 
 ### 計算
 
-メモ: これらはすべて同じ定義ファイル`active_support/core_ext/date_time/calculations.rb`にあります。
+NOTE: これらはすべて同じ定義ファイル`active_support/core_ext/date_time/calculations.rb`にあります。
 
 `DateTime`クラスは`Date`のサブクラスであり、`active_support/core_ext/date/calculations.rb`を読み込むことでこれらのメソッドと別名を継承することができます。ただしこれらは常にdatetimesを返す点が異なります。
 
@@ -3516,7 +3516,7 @@ d.advance(seconds: 1).advance(months: 1)
 # => Thu, 01 Apr 2010 00:00:00 +0000
 ```
 
-警告: `DateTime`は夏時間 (DST) については関知しません。算出された時間が最終的に存在しない時間になっても警告やエラーはは is not DST-aware you can end up in a non-existing point in time with no warning or error telling you so.
+WARNING: `DateTime`は夏時間 (DST) については関知しません。算出された時間が最終的に存在しない時間になっても警告やエラーはは is not DST-aware you can end up in a non-existing point in time with no warning or error telling you so.
 
 #### 要素の変更
 
@@ -3575,7 +3575,7 @@ DateTime.new(1582, 10, 4, 23) + 1.hour
 
 ### 計算
 
-メモ: これらはすべて同じ定義ファイル`active_support/core_ext/time/calculations.rb`にあります。
+NOTE: これらはすべて同じ定義ファイル`active_support/core_ext/time/calculations.rb`にあります。
 
 Active Supportは、`DateTime`で使用できるメソッドの多くを`Time`に追加しています。
 
@@ -3723,13 +3723,13 @@ end
 
 `atomic_write`は、処理を完了するために一時的なファイルを作成します。ブロック内のコードが実際に書き込む対象となるのは実際にはこのファイルです。完了時にはこの一時ファイルはリネームされます。リネームは、POSIXシステムのアトミック操作に基いて行われます。書き込み対象ファイル既にが存在する場合、`atomic_write`はそれを上書きしてオーナーとパーミッションを保持します。ただし、`atomic_write`メソッドがファイルのオーナーシップとパーミッションを変更できないケースがまれにあります。このエラーはキャッチされ、そのファイルがそれを必要とするプロセスからアクセスできるようにするために、ユーザーのファイルシステムへの信頼をスキップします。
 
-メモ: `atomic_write`が行なうchmod操作が原因で、書き込み対象ファイルがACLセットを持っているときにそのACLが再計算/変更されます。
+NOTE: `atomic_write`が行なうchmod操作が原因で、書き込み対象ファイルがACLセットを持っているときにそのACLが再計算/変更されます。
 
-警告: `atomic_write`で追記を行なうことはできません。
+WARNING: `atomic_write`で追記を行なうことはできません。
 
 この補助ファイルは標準の一時ファイル用ディレクトリに書き込まれますが、2番目の引数でディレクトリを直接指定することもできます。
 
-メモ: 定義ファイルの場所は`active_support/core_ext/file/atomic.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/file/atomic.rb`です。
 
 `Marshal`の拡張
 -----------------------
@@ -3746,9 +3746,9 @@ File.open(file_name) { |f| Marshal.load(f) }
 
 キャッシュデータが不明な定数を参照している場合、自動読み込みがトリガされます。読み込みに成功した場合は非直列化を透過的に再試行します。
 
-警告: 引数が`IO`の場合、再試行を可能にするために`rewind`に応答する必要があります。通常のファイルは`rewind`に応答します。
+WARNING: 引数が`IO`の場合、再試行を可能にするために`rewind`に応答する必要があります。通常のファイルは`rewind`に応答します。
 
-メモ: 定義ファイルの場所は`active_support/core_ext/marshal.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/marshal.rb`です。
 
 `Logger`の拡張
 ----------------------
@@ -3792,7 +3792,7 @@ logger.formatter = Logger::FormatWithTime
 logger.info("<- is the current time")
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/logger.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/logger.rb`です。
 
 `NameError`の拡張
 -------------------------
@@ -3817,7 +3817,7 @@ rescue NameError => e
 end
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/name_error.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/name_error.rb`です。
 
 `LoadError`の拡張
 -------------------------
@@ -3840,4 +3840,4 @@ rescue NameError => e
 end
 ```
 
-メモ: 定義ファイルの場所は`active_support/core_ext/load_error.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/load_error.rb`です。

@@ -284,11 +284,11 @@
 <p>Action Controllerは、MVCモデルのCに相当します。リクエストを処理するコントローラがルーティング設定によって指名されると、コントローラはリクエストの意味を理解し、適切な出力を行なうための責任を持ちます。幸い、これらの処理はほとんどAction Controllerが行ってくれます。しかも吟味された規則を使用しているので、リクエストの処理は可能な限り素直な方法で行われます。</p>
 <p>従来のいわゆる<a href="http://en.wikipedia.org/wiki/Representational_state_transfer">RESTful</a> なアプリケーションでは、コントローラはリクエストを受け取り (この部分は開発者からは見えないようになっています)、データをモデルから取得したりモデルに保存するなどの作業を行い、最後にビューを使用してHTML出力を生成する、という役割を担います。(自分のコントローラのつくりがこれと少し違っていたりするかもしれませんが、気にする必要はありません。ここではコントローラの一般的な使用法について説明しています。)</p>
 <p>コントローラは、モデルとビューの間に立って仲介を行っているという見方もできます。コントローラはモデルのデータをビューで使用できるようにすることで、データをビューで表示したり、入力されたデータでモデルを更新したりします。</p>
-<p>メモ: ルーティングの詳細については、本ガイドの<a href="routing.html">Railsのルーティング</a>を参照してください。</p>
+<div class="note"><p>ルーティングの詳細については、本ガイドの<a href="routing.html">Railsのルーティング</a>を参照してください。</p></div>
 <h3 id="コントローラの命名規則">2 コントローラの命名規則</h3>
 <p>Railsのコントローラ名(ここでは"Controller"という文字は除きます)は、基本的に名前の最後の部分に「複数形」を使用します。ただしこれは絶対的に守らなければならないというものではありません (実際 <code>ApplicationController</code>はApplicationが単数になっています)。たとえば、<code>ClientsController</code>の方が<code>ClientController</code>より好ましく、<code>SiteAdminsController</code>は<code>SiteAdminController</code>や<code>SitesAdminsController</code>よりも好ましい、といった具合です。</p>
 <p>しかし、この規則には従っておくことをお勧めします。その理由は、<code>resources</code>などのデフォルトのルーティングジェネレータがそのまま利用できるのと、URLやパスヘルパーの用法がアプリケーション全体で一貫するからです。コントローラ名の最後が複数形になっていないと、たとえば<code>resources</code>で簡単に一括ルーティングできず、<code>:path</code>や<code>:controller</code>をいちいち指定しなければなりません。詳細については、<a href="layouts_and_rendering.html">レイアウト・レンダリングガイド</a>を参照してください。</p>
-<p>メモ: モデルの命名規則は「単数形」であり、コントローラの命名規則とは異なります。</p>
+<div class="note"><p>モデルの命名規則は「単数形」であり、コントローラの命名規則とは異なります。</p></div>
 <h3 id="メソッドとアクション">3 メソッドとアクション</h3>
 <p>Railsのコントローラは、<code>ApplicationController</code>を継承したRubyのクラスであり、他のクラスと同様のメソッドが使用できます。アプリケーションがブラウザからのリクエストを受け取ると、ルーティングによってコントローラとアクションが指名され、Railsはそれに応じてコントローラのインスタンスを生成し、アクション名と同じ名前のメソッドを実行します。</p>
 <div class="code_container">
@@ -356,9 +356,9 @@ GET /clients?ids[]=1&amp;ids[]=2&amp;ids[]=3
 
 </pre>
 </div>
-<p>メモ: "["と"]"はURLで使用できない文字なので、この例の実際のURLは "/clients?ids%5b%5d=1&amp;ids%5b%5d=2&amp;ids%5b%5d=3"のようになります。これについては、ブラウザが自動的に面倒を見てくれ、さらにRailsはパラメータ受け取り時に自動的に復元してくれるので、通常は気にする必要はありません。ただし、何らかの理由でサーバーにリクエストを手動送信しなければならない場合には、このことを思い出す必要があります。</p>
+<div class="note"><p>"["と"]"はURLで使用できない文字なので、この例の実際のURLは "/clients?ids%5b%5d=1&amp;ids%5b%5d=2&amp;ids%5b%5d=3"のようになります。これについては、ブラウザが自動的に面倒を見てくれ、さらにRailsはパラメータ受け取り時に自動的に復元してくれるので、通常は気にする必要はありません。ただし、何らかの理由でサーバーにリクエストを手動送信しなければならない場合には、このことを思い出す必要があります。</p></div>
 <p>これで、受け取った<code>params[:ids]</code>の値は<code>["1", "2", "3"]</code>になりました。もう一つ知っておいて欲しいのは、パラメータの値はすべて「文字列型」であることです。Railsはパラメータの型を推測することもしなければ、型変換も行いませんので、必要であれば自分で型を変換する必要があります。パラメータの数字を<code>to_i</code>で整数に変換するのはよく行われます。</p>
-<p>メモ: <code>params</code>の中に<code>[]</code>、<code>[nil]</code>、<code>[nil, nil, ...]</code>という値があると、すべて自動的に<code>nil</code>に置き換えられます。この動作は、デフォルトのセキュリティ上の理由にもとづいています。詳細については <a href="security.html#unsafe-query-generation">セキュリティガイド</a> を参照してください。</p>
+<div class="note"><p><code>params</code>の中に<code>[]</code>、<code>[nil]</code>、<code>[nil, nil, ...]</code>という値があると、すべて自動的に<code>nil</code>に置き換えられます。この動作は、デフォルトのセキュリティ上の理由にもとづいています。詳細については <a href="security.html#unsafe-query-generation">セキュリティガイド</a> を参照してください。</p></div>
 <p>フォームから、中かっこ[]の中にキー名を含めたハッシュを送信するには以下のようにします。</p>
 <div class="code_container">
 <pre class="brush: xml; gutter: false; toolbar: false">
@@ -398,7 +398,7 @@ GET /clients?ids[]=1&amp;ids[]=2&amp;ids[]=3
 </pre>
 </div>
 <p>キー名のカスタマイズや、ラップしたい特定のパラメータについては<a href="http://api.rubyonrails.org/classes/ActionController/ParamsWrapper.html">APIドキュメント</a>を参照してください。</p>
-<p>メモ: 従来のXMLパラメータ解析のサポートは、<code>actionpack-xml_parser</code>というgemに書き出されました。</p>
+<div class="note"><p>従来のXMLパラメータ解析のサポートは、<code>actionpack-xml_parser</code>というgemに書き出されました。</p></div>
 <h4 id="ルーティングパラメータ">4.3 ルーティングパラメータ</h4>
 <p><code>params</code>ハッシュに必ず含まれるキーは<code>:controller</code>キーと<code>:action</code>キーです。ただしこれらの値には直接アクセスせず、<code>controller_name</code>と<code>action_name</code>という専用のメソッドを使用してください。ルーティングで定義されるその他の値パラメータ (<code>id</code>など) にもアクセスできます。例として、「有効」と「無効」のいずれかで表される顧客のリストについて考えてみましょう。「プリティな」URLに含まれる<code>:status</code>パラメータを捉えるためのルートを1つ追加してみましょう。</p>
 <div class="code_container">
@@ -607,10 +607,10 @@ production:
 
 </pre>
 </div>
-<p>メモ: <code>CookieStore</code>を使用中に秘密鍵を変更すると、既存のセッションがすべて無効になります。</p>
+<div class="note"><p><code>CookieStore</code>を使用中に秘密鍵を変更すると、既存のセッションがすべて無効になります。</p></div>
 <h4 id="セッションにアクセスする">5.1 セッションにアクセスする</h4>
 <p>コントローラ内では<code>session</code>インスタンスメソッドを使用してセッションにアクセスできます。</p>
-<p>メモ: セッションは遅延読み込みされます。アクションのコードでセッションにアクセスしなかった場合、セッションは読込されません。従って、アクセスしていないのであればセッションを無効にする必要はまったくありません。アクセスしないことで既にセッションは無効になっています。</p>
+<div class="note"><p>セッションは遅延読み込みされます。アクションのコードでセッションにアクセスしなかった場合、セッションは読込されません。従って、アクセスしていないのであればセッションを無効にする必要はまったくありません。アクセスしないことで既にセッションは無効になっています。</p></div>
 <p>セッションの値は、ハッシュに似たキー/値ペアを使用して保存されます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1071,7 +1071,7 @@ response.headers["Content-Type"] = "application/pdf"
 
 </pre>
 </div>
-<p>メモ: 上のようなことをしたいのであれば、<code>content_type</code>セッターを直接使用する方がずっとわかりやすくなります。</p>
+<div class="note"><p>上のようなことをしたいのであれば、<code>content_type</code>セッターを直接使用する方がずっとわかりやすくなります。</p></div>
 <h3 id="http認証">11 HTTP認証</h3>
 <p>Railsには2とおりのHTTP認証機構がビルトインされています。</p>
 <ul>
@@ -1158,8 +1158,8 @@ end
 </div>
 <p>ファイルは4KBずつ読み出され、ストリーミング送信されます。これは、巨大なファイルを一度にメモリに読み込まないようにするためです。この分割読み出しは<code>:stream</code>オプションでオフにできます。<code>:buffer_size</code>オプションでブロックサイズを調整することもできます。</p>
 <p><code>:type</code>オプションが未指定の場合、<code>:filename</code>で取得したファイル名の拡張子から推測して与えられます。拡張子に該当するContent-TypeがRailsに登録されていない場合、<code>application/octet-stream</code>が使用されます。</p>
-<p>警告: サーバーのディスク上のファイルパスを指定するときに、(paramsやcookieなどの) クライアントから送信されたデータを使用する場合は、十分な注意が必要です。クライアントから邪悪なファイルパスが送り込まれ、開発者が意図しないファイルにアクセスされてしまうというセキュリティ上のリスクがあることを常に念頭に置いてください。</p>
-<p>ヒント: 静的なファイルをわざわざRails経由でストリーミング送信することはお勧めできません。ほとんどの場合、Webサーバーのpublicフォルダに置いてダウンロードさせれば済みます。Railsを経由してストリーミングでダウンロードするよりも、ApacheなどのWebサーバーから直接ファイルをダウンロードする方が遥かに高効率であり、しかもRailsスタック全体を経由する不必要なリクエストを受け付けずに済みます。</p>
+<div class="warning"><p>サーバーのディスク上のファイルパスを指定するときに、(paramsやcookieなどの) クライアントから送信されたデータを使用する場合は、十分な注意が必要です。クライアントから邪悪なファイルパスが送り込まれ、開発者が意図しないファイルにアクセスされてしまうというセキュリティ上のリスクがあることを常に念頭に置いてください。</p></div>
+<div class="info"><p>静的なファイルをわざわざRails経由でストリーミング送信することはお勧めできません。ほとんどの場合、Webサーバーのpublicフォルダに置いてダウンロードさせれば済みます。Railsを経由してストリーミングでダウンロードするよりも、ApacheなどのWebサーバーから直接ファイルをダウンロードする方が遥かに高効率であり、しかもRailsスタック全体を経由する不必要なリクエストを受け付けずに済みます。</p></div>
 <h4 id="restfulなダウンロード">12.2 RESTfulなダウンロード</h4>
 <p><code>send_data</code>だけでも問題なく使用できますが、真にRESTfulなアプリケーションを作ろうとしているのであれば、ファイルダウンロード専用にわざわざアクションを作成する必要は通常はありません。RESTという用語では、上の例で使用されているPDFファイルのようなものは、クライアントリソースを別の形で表現したものであると見なされます。Railsには、これに基づいた"RESTfulダウンロード"を簡単に実現するための洗練された手段も用意されています。PDFダウンロードをストリーミングとして扱わず、<code>show</code>アクションの一部として扱うように上の例を変更したものを以下に示します。</p>
 <div class="code_container">
@@ -1185,7 +1185,7 @@ Mime::Type.register "application/pdf", :pdf
 
 </pre>
 </div>
-<p>メモ: Railsの設定ファイルは、起動時にしか読み込まれません(app/以下のファイルのようにリクエストごとに読み出されたりしません)。上の設定変更を反映するサーバーを再起動する必要があります。</p>
+<div class="note"><p>Railsの設定ファイルは、起動時にしか読み込まれません(app/以下のファイルのようにリクエストごとに読み出されたりしません)。上の設定変更を反映するサーバーを再起動する必要があります。</p></div>
 <p>これで、以下のようにURLに".pdf"を追加するだけでPDF版のclientを取得できます。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
@@ -1332,7 +1332,7 @@ end
 
 </pre>
 </div>
-<p>メモ: <code>ApplicationController</code>クラスでは特定の例外についてはrescueできないものがあります。その理由は、コントローラが初期化されてアクションが実行される前に発生する例外があるからです。詳細については、Pratik Naikによる<a href="http://m.onkey.org/2008/7/20/rescue-from-dispatching">記事</a>を参照してください。</p>
+<div class="note"><p><code>ApplicationController</code>クラスでは特定の例外についてはrescueできないものがあります。その理由は、コントローラが初期化されてアクションが実行される前に発生する例外があるからです。詳細については、Pratik Naikによる<a href="http://m.onkey.org/2008/7/20/rescue-from-dispatching">記事</a>を参照してください。</p></div>
 <h3 id="httpsプロトコルを強制する">15 HTTPSプロトコルを強制する</h3>
 <p>セキュリティ上の理由から、特定のコントローラについてはHTTPSのみでアクセスできるように強制したいことがあります。コントローラ内で<code>force_ssl</code>メソッドを使用することでSSLを強制することができます。</p>
 <div class="code_container">

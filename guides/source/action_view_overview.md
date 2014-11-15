@@ -19,7 +19,7 @@ Action ViewおよびAction Controllerは、Action Packを構成する2大コン�
 
 Action Viewのテンプレートは、HTMLタグの合間にERB (Embedded Ruby) を含む形式で書かれます。ビューテンプレートがコードの繰り返しでうずまって乱雑になるのを避けるために、フォーム・日付・文字列に対して共通の動作を提供するヘルパークラスが多数用意されています。アプリケーションの機能向上に応じて独自のヘルパーを追加することも簡単にできます。
 
-メモ: Action Viewの一部の機能はActive Recordと結びついていますが、Action ViewがActive Recordに依存しているわけではありません。Action Viewは独立したパッケージであり、どのようなRubyライブラリとでも組み合わせて使用できます。
+NOTE: Action Viewの一部の機能はActive Recordと結びついていますが、Action ViewがActive Recordに依存しているわけではありません。Action Viewは独立したパッケージであり、どのようなRubyライブラリとでも組み合わせて使用できます。
 
 Action ViewをRailsで使用する
 ----------------------------
@@ -1186,7 +1186,7 @@ option_groups_from_collection_for_select(@continents, :countries, :name, :id, :n
 </optgroup>
 ```
 
-メモ: 返されるのは`optgroup`タグと`option`だけです。従って、出力結果の外側を適切な`select`タグで囲む必要があります。
+NOTE: 返されるのは`optgroup`タグと`option`だけです。従って、出力結果の外側を適切な`select`タグで囲む必要があります。
 
 #### options_for_select
 
@@ -1197,7 +1197,7 @@ options_for_select([ "VISA", "MasterCard" ])
 # => <option>VISA</option> <option>MasterCard</option>
 ```
 
-メモ: 返されるのは`option`だけです。従って、出力結果の外側を適切なHTML `select`タグで囲む必要があります。
+NOTE: 返されるのは`option`だけです。従って、出力結果の外側を適切なHTML `select`タグで囲む必要があります。
 
 #### options_from_collection_for_select
 
@@ -1214,7 +1214,7 @@ options_from_collection_for_select(@project.people, "id", "name")
 # => <option value="#{person.id}">#{person.name}</option>
 ```
 
-メモ: 返されるのは`option`だけです。従って、出力結果の外側を適切なHTML `select`タグで囲む必要があります。
+NOTE: 返されるのは`option`だけです。従って、出力結果の外側を適切なHTML `select`タグで囲む必要があります。
 
 #### select
 
@@ -1594,7 +1594,7 @@ strip_tags("<b>Bold</b> no more!  <a href='more.html'>See more</a>")
 <%= csrf_meta_tags %>
 ```
 
-メモ: 通常のフォームではそのための隠しフィールドが生成されるので、これらのタグは使用されません。詳細については[セキュリティガイド](./security.html#cross-site-request-forgery-csrf)を参照してください。
+NOTE: 通常のフォームではそのための隠しフィールドが生成されるので、これらのタグは使用されません。詳細については[セキュリティガイド](./security.html#cross-site-request-forgery-csrf)を参照してください。
 
 ローカライズされたビュー
 ---------------

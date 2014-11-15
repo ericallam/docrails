@@ -320,7 +320,7 @@ end
 </pre>
 </div>
 <p><img src="images/belongs_to.png" alt="belongs_to 関連付けの図"></p>
-<p>メモ: <code>belongs_to</code>関連付けで指定するモデル名は必ず「単数形」にしなければなりません。上の場合、<code>Order</code>モデルにおける関連付けの<code>customer</code>を複数形の<code>customers</code>にしてしまうと、"uninitialized constant Order::Customers" エラーが発生します。Railsは、関連付けの名前から自動的にモデルのクラス名を推測します。関連付け名が<code>customer</code>ならクラス名を<code>Customer</code>と推測します。従って、関連付け名が誤って複数形になってしまっていると、そこから推測されるクラス名も誤って複数形になってしまいます。</p>
+<div class="note"><p><code>belongs_to</code>関連付けで指定するモデル名は必ず「単数形」にしなければなりません。上の場合、<code>Order</code>モデルにおける関連付けの<code>customer</code>を複数形の<code>customers</code>にしてしまうと、"uninitialized constant Order::Customers" エラーが発生します。Railsは、関連付けの名前から自動的にモデルのクラス名を推測します。関連付け名が<code>customer</code>ならクラス名を<code>Customer</code>と推測します。従って、関連付け名が誤って複数形になってしまっていると、そこから推測されるクラス名も誤って複数形になってしまいます。</p></div>
 <p>上の関連付けに対応するマイグレーションは以下のような感じになります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -382,7 +382,7 @@ end
 
 </pre>
 </div>
-<p>メモ: <code>has_many</code>関連付けを宣言する場合、相手のモデル名は「複数形」にする必要があります。</p>
+<div class="note"><p><code>has_many</code>関連付けを宣言する場合、相手のモデル名は「複数形」にする必要があります。</p></div>
 <p><img src="images/has_many.png" alt="has_many関連付けの図"></p>
 <p>上の関連付けに対応するマイグレーションは以下のような感じになります。</p>
 <div class="code_container">
@@ -460,7 +460,7 @@ physician.patients = patients
 </pre>
 </div>
 <p>このとき、新たに関連付けられたオブジェクトについて、新しい結合モデルが作成されます。結合時に不足している部分があれば、その行は結合モデルから削除され、結合モデルに含まれなくなります。</p>
-<p>警告: モデル結合時の不足分自動削除は即座に行われます。さらに、その際にdestroyコールバックはトリガーされませんので注意が必要です。</p>
+<div class="warning"><p>モデル結合時の不足分自動削除は即座に行われます。さらに、その際にdestroyコールバックはトリガーされませんので注意が必要です。</p></div>
 <p><code>has_many :through</code>関連付けは、ネストした<code>has_many</code>関連付けを介して「ショートカット」を設定する場合にも便利です。たとえば、1つのドキュメントに多くの節(section)があり、1つの節の下に多くの段落(paragraph)がある状態で、節をスキップしてドキュメントの下のすべての段落の単純なコレクションが欲しいとします。その場合、以下の方法で設定できます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -609,7 +609,7 @@ end
 
 </pre>
 </div>
-<p>メモ: マイグレーションで<code>t.integer :supplier_id</code>のように「小文字のモデル名_id」と書くと、外部キーを明示的に指定できます。新しいバージョンのRailsでは、同じことを<code>t.references :supplier</code>という方法で記述できます。こちらの方が実装の詳細が抽象化され、隠蔽されます。</p>
+<div class="note"><p>マイグレーションで<code>t.integer :supplier_id</code>のように「小文字のモデル名_id」と書くと、外部キーを明示的に指定できます。新しいバージョンのRailsでは、同じことを<code>t.references :supplier</code>という方法で記述できます。こちらの方が実装の詳細が抽象化され、隠蔽されます。</p></div>
 <h4 id="has_many-:throughとhas_and_belongs_to_manyのどちらを選ぶか">2.8 <code>has_many :through</code>と<code>has_and_belongs_to_many</code>のどちらを選ぶか</h4>
 <p>Railsでは、モデル間の多対多リレーションシップを宣言するのに2とおりの方法が使用できます。簡単なのは<code>has_and_belongs_to_many</code>を使用する方法です。この方法では関連付けを直接指定できます。</p>
 <div class="code_container">
@@ -787,7 +787,7 @@ end
 <p>モデルを先に作り、しばらく経過してから関連を追加で設定する場合は、<code>add_column</code>マイグレーションを作成して、必要な外部キーをモデルのテーブルに追加するのを忘れないようにしてください。</p>
 <h5 id="has_and_belongs_to_many関連付けに対応する結合テーブルを作成する">3.3.2 <code>has_and_belongs_to_many</code>関連付けに対応する結合テーブルを作成する</h5>
 <p><code>has_and_belongs_to_many</code>関連付けを作成した場合は、それに対応する結合(join)テーブルを明示的に作成する必要があります。<code>:join_table</code>オプションを使用して明示的に結合テーブルの名前が指定されていない場合、Active Recordは2つのクラス名を辞書の並び順に連結して、適当に結合テーブル名をこしらえます。たとえばCustomerモデルOrderモデルを連結する場合、cはoより辞書で先に出現するので "customers_orders" というデフォルトの結合テーブル名が使用されます。</p>
-<p>警告: モデル名の並び順は<code>String</code>クラスの<code>&lt;</code>演算子を使用して計算されます。これは、2つの文字列の長さが異なり、短い方が長い方の途中まで完全に一致しているような場合、長い方の文字列は短い方よりも辞書上の並び順が前として扱われるということです。たとえば、"paper_boxes" テーブルと "papers" テーブルがある場合、これらを結合すれば "papers_paper_boxes" となると推測されます。 "paper_boxes" の方が長いので、常識的には並び順が後ろになると予測できるからです。しかし実際の結合テーブル名は "paper_boxes_papers" になってしまいます。これはアンダースコア '_' の方が 's' よりも並びが前になっているためです。</p>
+<div class="warning"><p>モデル名の並び順は<code>String</code>クラスの<code>&lt;</code>演算子を使用して計算されます。これは、2つの文字列の長さが異なり、短い方が長い方の途中まで完全に一致しているような場合、長い方の文字列は短い方よりも辞書上の並び順が前として扱われるということです。たとえば、"paper_boxes" テーブルと "papers" テーブルがある場合、これらを結合すれば "papers_paper_boxes" となると推測されます。 "paper_boxes" の方が長いので、常識的には並び順が後ろになると予測できるからです。しかし実際の結合テーブル名は "paper_boxes_papers" になってしまいます。これはアンダースコア '_' の方が 's' よりも並びが前になっているためです。</p></div>
 <p>生成された名前がどのようなものであれ、適切なマイグレーションを実行して結合テーブルを生成する必要があります。以下の関連付けを例にとって考えてみましょう。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -975,7 +975,7 @@ create_customer!
 
 </pre>
 </div>
-<p>メモ: 新しく作成した<code>has_one</code>関連付けまたは<code>belongs_to</code>関連付けを初期化するには、<code>build_</code>で始まるメソッドを使用する必要があります。この場合<code>has_many</code>関連付けや<code>has_and_belongs_to_many</code>関連付けで使用される<code>association.build</code>メソッドは使用しないでください。作成するには、<code>create_</code>で始まるメソッドを使用してください。</p>
+<div class="note"><p>新しく作成した<code>has_one</code>関連付けまたは<code>belongs_to</code>関連付けを初期化するには、<code>build_</code>で始まるメソッドを使用する必要があります。この場合<code>has_many</code>関連付けや<code>has_and_belongs_to_many</code>関連付けで使用される<code>association.build</code>メソッドは使用しないでください。作成するには、<code>create_</code>で始まるメソッドを使用してください。</p></div>
 <h6 id="belongs_toで追加されるメソッド-association(force_reload-=-false)">4.1.1.1 <code>association(force_reload = false)</code>
 </h6>
 <p><code>association</code>メソッドは関連付けられたオブジェクトを返します。関連付けられたオブジェクトがない場合は<code>nil</code>を返します。</p>
@@ -1104,7 +1104,7 @@ end
 <li>
 <code>:delete</code> -- オブジェクトがdestroyされると、関連付けられたオブジェクトはすべて直接削除されます。このときオブジェクトの<code>destroy</code>メソッドは呼び出されません。</li>
 </ul>
-<p>警告: <code>他のクラスの</code>has_many<code>関連付けとつながりのある</code>belongs_to` 関連付けに対してこのオプションを使用してはいけません。孤立したレコードがデータベースに残ってしまう可能性があります。</p>
+<div class="warning"><p><code>他のクラスの</code>has_many<code>関連付けとつながりのある</code>belongs_to` 関連付けに対してこのオプションを使用してはいけません。孤立したレコードがデータベースに残ってしまう可能性があります。</p></div>
 <h6 id="belongs_toのオプション-:foreign_key">4.1.2.5 <code>:foreign_key</code>
 </h6>
 <p>Railsは、相手のモデルを指す外部キーを保持している結合テーブル上のカラム名については、そのモデル名にサフィックス <code>_id</code> を追加した関連付け名が使用されることを前提とします。<code>:foreign_key</code>オプションを使用すると外部キーの名前を直接指定することができます。</p>
@@ -1117,7 +1117,7 @@ end
 
 </pre>
 </div>
-<p>ヒント: Railsは外部キーのカラムを自動的に作ることはありません。外部キーを使用する場合には、マイグレーションで明示的に定義する必要があります。</p>
+<div class="info"><p>Railsは外部キーのカラムを自動的に作ることはありません。外部キーを使用する場合には、マイグレーションで明示的に定義する必要があります。</p></div>
 <h6 id="belongs_toのオプション-:inverse_of">4.1.2.6 <code>:inverse_of</code>
 </h6>
 <p><code>:inverse_of</code>オプションは、その関連付けの逆関連付けとなる<code>has_many</code>関連付けまたは<code>has_one</code>関連付けの名前を指定します。<code>:polymorphic</code>オプションと組み合わせた場合は無効です。</p>
@@ -1230,14 +1230,14 @@ end
 
 </pre>
 </div>
-<p>メモ: 直接の関連付けでは<code>includes</code>を使用する必要はありません。<code>Order belongs_to :customer</code>のような直接の関連付けでは必要に応じて自動的にeager-loadされます。</p>
+<div class="note"><p>直接の関連付けでは<code>includes</code>を使用する必要はありません。<code>Order belongs_to :customer</code>のような直接の関連付けでは必要に応じて自動的にeager-loadされます。</p></div>
 <h6 id="belongs_toのスコープ-readonly">4.1.3.3 <code>readonly</code>
 </h6>
 <p><code>readonly</code>を指定すると、関連付けられたオブジェクトから取り出した内容は読み出し専用になります。</p>
 <h6 id="belongs_toのスコープ-select">4.1.3.4 <code>select</code>
 </h6>
 <p><code>select</code>メソッドを使用すると、関連付けられたオブジェクトのデータ取り出しに使用されるSQLの<code>SELECT</code>句を上書きします。Railsはデフォルトではすべてのカラムを取り出します。</p>
-<p>ヒント: <code>select</code>を<code>belongs_to</code>関連付けで使用する場合、正しい結果を得るために<code>:foreign_key</code>オプションを必ず設定してください。</p>
+<div class="info"><p><code>select</code>を<code>belongs_to</code>関連付けで使用する場合、正しい結果を得るために<code>:foreign_key</code>オプションを必ず設定してください。</p></div>
 <h5 id="belongs_to関連付けの詳細-関連付けられたオブジェクトが存在するかどうかを確認する">4.1.4 関連付けられたオブジェクトが存在するかどうかを確認する</h5>
 <p><code>association.nil?</code>メソッドを使用して、関連付けられたオブジェクトが存在するかどうかを確認できます。</p>
 <div class="code_container">
@@ -1281,7 +1281,7 @@ create_account!
 
 </pre>
 </div>
-<p>メモ: 新しく作成した<code>has_one</code>関連付けまたは<code>belongs_to</code>関連付けを初期化するには、<code>build_</code>で始まるメソッドを使用する必要があります。この場合<code>has_many</code>関連付けや<code>has_and_belongs_to_many</code>関連付けで使用される<code>association.build</code>メソッドは使用しないでください。作成するには、<code>create_</code>で始まるメソッドを使用してください。</p>
+<div class="note"><p>新しく作成した<code>has_one</code>関連付けまたは<code>belongs_to</code>関連付けを初期化するには、<code>build_</code>で始まるメソッドを使用する必要があります。この場合<code>has_many</code>関連付けや<code>has_and_belongs_to_many</code>関連付けで使用される<code>association.build</code>メソッドは使用しないでください。作成するには、<code>create_</code>で始まるメソッドを使用してください。</p></div>
 <h6 id="has_oneで追加されるメソッド-association(force_reload-=-false)">4.2.1.1 <code>association(force_reload = false)</code>
 </h6>
 <p><code>association</code>メソッドは関連付けられたオブジェクトを返します。関連付けられたオブジェクトがない場合は<code>nil</code>を返します。</p>
@@ -1391,7 +1391,7 @@ end
 
 </pre>
 </div>
-<p>ヒント: Railsは外部キーのカラムを自動的に作ることはありません。外部キーを使用する場合には、マイグレーションで明示的に定義する必要があります。</p>
+<div class="info"><p>Railsは外部キーのカラムを自動的に作ることはありません。外部キーを使用する場合には、マイグレーションで明示的に定義する必要があります。</p></div>
 <h6 id="options-for-has_one-:inverse_of">4.2.2.6 <code>:inverse_of</code>
 </h6>
 <p><code>:inverse_of</code>オプションは、その関連付けの逆関連付けとなる<code>belongs_to</code>関連付けの名前を指定します。<code>:through</code>または<code>:as</code>オプションと組み合わせた場合は無効です。</p>
@@ -1590,7 +1590,7 @@ orders.create!(attributes = {})`
 
 </pre>
 </div>
-<p>警告: 削除のされ方はこれだけではありません。オブジェクト同士が<code>dependent: :destroy</code>で関連付けられている場合はdestroyされますが、オブジェクト同士が<code>dependent: :delete_all</code>で関連付けられている場合はdeleteされますのでご注意ください。</p>
+<div class="warning"><p>削除のされ方はこれだけではありません。オブジェクト同士が<code>dependent: :destroy</code>で関連付けられている場合はdestroyされますが、オブジェクト同士が<code>dependent: :delete_all</code>で関連付けられている場合はdeleteされますのでご注意ください。</p></div>
 <h6 id="has_manyで追加されるメソッド-collection.destroy(object,-...)">4.3.1.4 <code>collection.destroy(object, ...)</code>
 </h6>
 <p><code>collection.destroy</code>は、コレクションに関連付けられているオブジェクトに対して<code>destroy</code>を実行することで、コレクションから1つまたは複数のオブジェクトを削除します。</p>
@@ -1600,7 +1600,7 @@ orders.create!(attributes = {})`
 
 </pre>
 </div>
-<p>警告: この場合オブジェクトは<em>無条件で</em>データベースから削除されます。このとき、<code>:dependent</code>オプションがどのように設定されていても無視して削除が行われます。</p>
+<div class="warning"><p>この場合オブジェクトは<em>無条件で</em>データベースから削除されます。このとき、<code>:dependent</code>オプションがどのように設定されていても無視して削除が行われます。</p></div>
 <h6 id="has_manyで追加されるメソッド-collection=objects">4.3.1.5 <code>collection=objects</code>
 </h6>
 <p><code>collection=</code>メソッドは、指定したオブジェクトでそのコレクションの内容を置き換えます。元からあったオブジェクトは削除されます。</p>
@@ -1740,7 +1740,7 @@ end
 <li>
 <code>:restrict_with_error</code>を指定すると、関連付けられたオブジェクトが1つでもある場合にエラーがオーナーに追加されます。</li>
 </ul>
-<p>メモ: その関連付けで<code>:through</code>オプションが指定されている場合、このオプションは無効です。</p>
+<div class="note"><p>その関連付けで<code>:through</code>オプションが指定されている場合、このオプションは無効です。</p></div>
 <h6 id="has_manyのオプション-:foreign_key">4.3.2.5 <code>:foreign_key</code>
 </h6>
 <p>Railsは、外部キーを保持するためのカラム名については、モデル名にサフィックス <code>_id</code> を追加した名前が使用されることを前提とします。<code>:foreign_key</code>オプションを使用すると外部キーの名前を直接指定することができます。</p>
@@ -1752,7 +1752,7 @@ end
 
 </pre>
 </div>
-<p>ヒント: Railsは外部キーのカラムを自動的に作ることはありません。外部キーを使用する場合には、マイグレーションで明示的に定義する必要があります。</p>
+<div class="info"><p>Railsは外部キーのカラムを自動的に作ることはありません。外部キーを使用する場合には、マイグレーションで明示的に定義する必要があります。</p></div>
 <h6 id=":inverse_of">4.3.2.6 <code>:inverse_of</code>
 </h6>
 <p><code>:inverse_of</code>オプションは、その関連付けの逆関連付けとなる<code>belongs_to</code>関連付けの名前を指定します。<code>:through</code>または<code>:as</code>オプションと組み合わせた場合は無効です。</p>
@@ -1925,7 +1925,7 @@ end
 <h6 id="has_manyのスコープについて-select">4.3.3.9 <code>select</code>
 </h6>
 <p><code>select</code>メソッドを使用すると、関連付けられたオブジェクトのデータ取り出しに使用されるSQLの<code>SELECT</code>句を上書きします。Railsはデフォルトではすべてのカラムを取り出します。</p>
-<p>警告: 独自の<code>select</code>メソッドを使用する場合には、関連付けられているモデルの主キーカラムと外部キーカラムを必ず含めておいてください。これを行わなかった場合、Railsでエラーが発生します。</p>
+<div class="warning"><p>独自の<code>select</code>メソッドを使用する場合には、関連付けられているモデルの主キーカラムと外部キーカラムを必ず含めておいてください。これを行わなかった場合、Railsでエラーが発生します。</p></div>
 <h6 id="distinct">4.3.3.10 <code>distinct</code>
 </h6>
 <p><code>distinct</code>メソッドは、コレクション内で重複が発生しないようにします。このメソッドは<code>:through</code>オプションと併用するときに特に便利です。</p>
@@ -2039,7 +2039,7 @@ assemblies.create!(attributes = {})`
 </div>
 <h6 id="追加のカラムメソッド">4.4.1.1 追加のカラムメソッド</h6>
 <p><code>has_and_belongs_to_many</code>関連付けで使用している中間の結合テーブルが、2つの外部キー以外に何かカラムを含んでいる場合、これらのカラムは関連付けを介して取り出されるレコードに属性として追加されます。属性が追加されたレコードは常に読み出し専用になります。このようにして読み出された属性に対する変更は保存できないためです。</p>
-<p>警告: <code>has_and_belongs_to_many</code>関連付けで使用する結合テーブルにこのような余分なカラムを追加することはお勧めできません。2つのモデルを多対多で結合する結合テーブルでこのような複雑な振る舞いが必要になるのであれば、<code>has_and_belongs_to_many</code>ではなく<code>has_many :through</code>を使用してください。</p>
+<div class="warning"><p><code>has_and_belongs_to_many</code>関連付けで使用する結合テーブルにこのような余分なカラムを追加することはお勧めできません。2つのモデルを多対多で結合する結合テーブルでこのような複雑な振る舞いが必要になるのであれば、<code>has_and_belongs_to_many</code>ではなく<code>has_many :through</code>を使用してください。</p></div>
 <h6 id="has_and_belongs_to_manyで追加されるメソッド-collection(force_reload-=-false)">4.4.1.2 <code>collection(force_reload = false)</code>
 </h6>
 <p><code>collection</code>メソッドは、関連付けられたすべてのオブジェクトの配列を返します。関連付けられたオブジェクトがない場合は、空の配列を1つ返します。</p>
@@ -2058,7 +2058,7 @@ assemblies.create!(attributes = {})`
 
 </pre>
 </div>
-<p>メモ: このメソッドは<code>collection.concat</code>および<code>collection.push</code>のエイリアスです。</p>
+<div class="note"><p>このメソッドは<code>collection.concat</code>および<code>collection.push</code>のエイリアスです。</p></div>
 <h6 id="has_and_belongs_to_manyで追加されるメソッド-collection.delete(object,-...)">4.4.1.4 <code>collection.delete(object, ...)</code>
 </h6>
 <p><code>collection.delete</code>メソッドは、結合テーブル上のレコードを削除し、それによって1つまたは複数のオブジェクトをコレクションから削除します。このメソッドを実行してもオブジェクトはdestroyされません。</p>
@@ -2068,7 +2068,7 @@ assemblies.create!(attributes = {})`
 
 </pre>
 </div>
-<p>警告: このメソッドを呼び出しても、結合レコードでコールバックはトリガされません。</p>
+<div class="warning"><p>このメソッドを呼び出しても、結合レコードでコールバックはトリガされません。</p></div>
 <h6 id="has_and_belongs_to_manyで追加されるメソッド-collection.destroy(object,-...)">4.4.1.5 <code>collection.destroy(object, ...)</code>
 </h6>
 <p><code>collection.destroy</code>は、結合テーブル上のレコードに対して<code>destroy</code>を実行する(このときコールバックも実行します)ことで、コレクションから1つまたは複数のオブジェクトを削除します。このメソッドを実行してもオブジェクトはdestroyされません。</p>
@@ -2182,7 +2182,7 @@ end
 <h6 id=":association_foreign_key">4.4.2.1 <code>:association_foreign_key</code>
 </h6>
 <p>Railsは、相手のモデルを指す外部キーを保持している結合テーブル上のカラム名については、そのモデル名にサフィックス <code>_id</code> を追加した名前が使用されることを前提とします。<code>:association_foreign_key</code>オプションを使用すると外部キーの名前を直接指定することができます。</p>
-<p>ヒント: <code>:foreign_key</code>オプションおよび<code>:association_foreign_key</code>オプションは、多対多の自己結合を行いたいときに便利です。例：</p>
+<div class="info"><p><code>:foreign_key</code>オプションおよび<code>:association_foreign_key</code>オプションは、多対多の自己結合を行いたいときに便利です。例：</p></div>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class User &lt; ActiveRecord::Base
