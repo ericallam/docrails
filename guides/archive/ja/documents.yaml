@@ -109,7 +109,7 @@
       url: working_with_javascript_in_rails.html
       description: RailsビルトインのAjax/JavaScriptについて解説します。
     -
-      name: Getting Started with Engines [未着手]
+      name: Rails エンジン入門
       url: engines.html
       description: マウント可能なエンジンの作成方法について解説します。
       work_in_progress: true

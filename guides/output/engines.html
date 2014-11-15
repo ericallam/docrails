@@ -16,7 +16,7 @@
 <meta property="og:type"        content="article" />
 <meta property="og:description" content="Rails 開発のお供に! 日本語版 Rails リファレンスガイド (Rails 4.1 対応)" />
 
-<title>Getting Started with Engines — Ruby on Rails Guides</title>
+<title>Railsエンジン入門 — Ruby on Rails Guides</title>
 <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
 
@@ -176,13 +176,13 @@
 
   <div id="feature">
     <div class="wrapper">
-      <h2>Getting Started with Engines</h2><p>In this guide you will learn about engines and how they can be used to provide additional functionality to their host applications through a clean and very easy-to-use interface.</p><p>After reading this guide, you will know:</p>
+      <h2>Railsエンジン入門</h2><p>本ガイドでは、Railsのエンジンについて、およびエンジンが簡潔で使いやすいインターフェイスを介してホストアプリケーションに提供する追加機能について解説します。</p><p>このガイドの内容:</p>
 <ul>
-<li>What makes an engine.</li>
-<li>How to generate an engine.</li>
-<li>Building features for the engine.</li>
-<li>Hooking the engine into an application.</li>
-<li>Overriding engine functionality in the application.</li>
+<li>エンジンの役割</li>
+<li>エンジンの生成方法</li>
+<li>エンジンのビルド機能</li>
+<li>エンジンをアプリケーションにフックする</li>
+<li>アプリケーションのエンジン機能を上書きする</li>
 </ul>
 
                 <div id="subCol">
@@ -190,49 +190,49 @@
             <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
 <ol class="chapters">
-<li><a href="#what-are-engines?">What are engines?</a></li>
+<li><a href="#rails%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8B%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%B3%E3%81%AE%E5%BD%B9%E5%89%B2">Railsにおけるエンジンの役割</a></li>
 <li>
-<a href="#generating-an-engine">Generating an engine</a>
+<a href="#%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%B3%E3%82%92%E7%94%9F%E6%88%90%E3%81%99%E3%82%8B">エンジンを生成する</a>
 
 <ul>
-<li><a href="#inside-an-engine">Inside an Engine</a></li>
+<li><a href="#%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%B3%E3%81%AE%E5%86%85%E9%83%A8">エンジンの内部</a></li>
 </ul>
 </li>
 <li>
-<a href="#providing-engine-functionality">Providing engine functionality</a>
+<a href="#%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%B3%E3%81%AE%E6%A9%9F%E8%83%BD%E3%82%92%E6%8F%90%E4%BE%9B%E3%81%99%E3%82%8B">エンジンの機能を提供する</a>
 
 <ul>
-<li><a href="#generating-a-post-resource">Generating a Post Resource</a></li>
-<li><a href="#generating-a-comments-resource">Generating a Comments Resource</a></li>
+<li><a href="#article%E3%83%AA%E3%82%BD%E3%83%BC%E3%82%B9%E3%82%92%E7%94%9F%E6%88%90%E3%81%99%E3%82%8B">Articleリソースを生成する</a></li>
+<li><a href="#comments%E3%83%AA%E3%82%BD%E3%83%BC%E3%82%B9%E3%82%92%E7%94%9F%E6%88%90%E3%81%99%E3%82%8B">commentsリソースを生成する</a></li>
 </ul>
 </li>
 <li>
-<a href="#hooking-into-an-application">Hooking Into an Application</a>
+<a href="#%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%AB%E3%83%95%E3%83%83%E3%82%AF%E3%81%99%E3%82%8B">アプリケーションにフックする</a>
 
 <ul>
-<li><a href="#mounting-the-engine">Mounting the Engine</a></li>
-<li><a href="#engine-setup">Engine setup</a></li>
-<li><a href="#using-a-class-provided-by-the-application">Using a Class Provided by the Application</a></li>
-<li><a href="#configuring-an-engine">Configuring an Engine</a></li>
+<li><a href="#%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%B3%E3%82%92%E3%83%9E%E3%82%A6%E3%83%B3%E3%83%88%E3%81%99%E3%82%8B">エンジンをマウントする</a></li>
+<li><a href="#%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%B3%E3%81%AE%E8%A8%AD%E5%AE%9A">エンジンの設定</a></li>
+<li><a href="#%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%8C%E6%8F%90%E4%BE%9B%E3%81%99%E3%82%8B%E3%82%AF%E3%83%A9%E3%82%B9%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B">アプリケーションが提供するクラスを使用する</a></li>
+<li><a href="#%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%B3%E3%82%92%E8%A8%AD%E5%AE%9A%E3%81%99%E3%82%8B">エンジンを設定する</a></li>
 </ul>
 </li>
 <li>
-<a href="#testing-an-engine">Testing an engine</a>
+<a href="#%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%B3%E3%82%92%E3%83%86%E3%82%B9%E3%83%88%E3%81%99%E3%82%8B">エンジンをテストする</a>
 
 <ul>
-<li><a href="#functional-tests">Functional Tests</a></li>
+<li><a href="#%E6%A9%9F%E8%83%BD%E3%83%86%E3%82%B9%E3%83%88">機能テスト</a></li>
 </ul>
 </li>
 <li>
-<a href="#improving-engine-functionality">Improving engine functionality</a>
+<a href="#%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%B3%E3%81%AE%E6%A9%9F%E8%83%BD%E3%82%92%E6%94%B9%E8%89%AF%E3%81%99%E3%82%8B">エンジンの機能を改良する</a>
 
 <ul>
-<li><a href="#overriding-models-and-controllers">Overriding Models and Controllers</a></li>
-<li><a href="#overriding-views">Overriding Views</a></li>
-<li><a href="#routes">Routes</a></li>
-<li><a href="#assets">Assets</a></li>
-<li><a href="#separate-assets-&amp;-precompiling">Separate Assets &amp; Precompiling</a></li>
-<li><a href="#other-gem-dependencies">Other Gem Dependencies</a></li>
+<li><a href="#%E3%83%A2%E3%83%87%E3%83%AB%E3%81%A8%E3%82%B3%E3%83%B3%E3%83%88%E3%83%AD%E3%83%BC%E3%83%A9%E3%82%92%E3%82%AA%E3%83%BC%E3%83%90%E3%83%BC%E3%83%A9%E3%82%A4%E3%83%89%E3%81%99%E3%82%8B">モデルとコントローラをオーバーライドする</a></li>
+<li><a href="#%E3%83%93%E3%83%A5%E3%83%BC%E3%82%92%E3%82%AA%E3%83%BC%E3%83%90%E3%83%BC%E3%83%A9%E3%82%A4%E3%83%89%E3%81%99%E3%82%8B">ビューをオーバーライドする</a></li>
+<li><a href="#%E3%83%AB%E3%83%BC%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0">ルーティング</a></li>
+<li><a href="#%E3%82%A2%E3%82%BB%E3%83%83%E3%83%88">アセット</a></li>
+<li><a href="#%E3%82%A2%E3%82%BB%E3%83%83%E3%83%88%E3%81%A8%E3%83%97%E3%83%AA%E3%82%B3%E3%83%B3%E3%83%91%E3%82%A4%E3%83%AB%E3%82%92%E5%88%86%E9%9B%A2%E3%81%99%E3%82%8B">アセットとプリコンパイルを分離する</a></li>
+<li><a href="#%E4%BB%96%E3%81%AEgem%E3%81%A8%E3%81%AE%E4%BE%9D%E5%AD%98%E9%96%A2%E4%BF%82">他のgemとの依存関係</a></li>
 </ul>
 </li>
 </ol>
@@ -247,35 +247,36 @@
       <div id="mainCol">
         <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
-<h3 id="what-are-engines?">1 What are engines?</h3>
-<p>Engines can be considered miniature applications that provide functionality to their host applications. A Rails application is actually just a "supercharged" engine, with the <code>Rails::Application</code> class inheriting a lot of its behavior from <code>Rails::Engine</code>.</p>
-<p>Therefore, engines and applications can be thought of almost the same thing, just with subtle differences, as you'll see throughout this guide. Engines and applications also share a common structure.</p>
-<p>Engines are also closely related to plugins. The two share a common <code>lib</code> directory structure, and are both generated using the <code>rails plugin new</code> generator. The difference is that an engine is considered a "full plugin" by Rails (as indicated by the <code>--full</code> option that's passed to the generator command). This guide will refer to them simply as "engines" throughout. An engine <strong>can</strong> be a plugin, and a plugin <strong>can</strong> be an engine.</p>
-<p>The engine that will be created in this guide will be called "blorgh". The engine will provide blogging functionality to its host applications, allowing for new posts and comments to be created. At the beginning of this guide, you will be working solely within the engine itself, but in later sections you'll see how to hook it into an application.</p>
-<p>Engines can also be isolated from their host applications. This means that an application is able to have a path provided by a routing helper such as <code>posts_path</code> and use an engine also that provides a path also called <code>posts_path</code>, and the two would not clash. Along with this, controllers, models and table names are also namespaced. You'll see how to do this later in this guide.</p>
-<p>It's important to keep in mind at all times that the application should <strong>always</strong> take precedence over its engines. An application is the object that has final say in what goes on in the universe (with the universe being the application's environment) where the engine should only be enhancing it, rather than changing it drastically.</p>
-<p>To see demonstrations of other engines, check out <a href="https://github.com/plataformatec/devise">Devise</a>, an engine that provides authentication for its parent applications, or <a href="https://github.com/radar/forem">Forem</a>, an engine that provides forum functionality. There's also <a href="https://github.com/spree/spree">Spree</a> which provides an e-commerce platform, and <a href="https://github.com/refinery/refinerycms">RefineryCMS</a>, a CMS engine.</p>
-<p>Finally, engines would not have been possible without the work of James Adam, Piotr Sarnacki, the Rails Core Team, and a number of other people. If you ever meet them, don't forget to say thanks!</p>
-<h3 id="generating-an-engine">2 Generating an engine</h3>
-<p>To generate an engine, you will need to run the plugin generator and pass it options as appropriate to the need. For the "blorgh" example, you will need to create a "mountable" engine, running this command in a terminal:</p>
+<h3 id="railsにおけるエンジンの役割">1 Railsにおけるエンジンの役割</h3>
+<p>エンジン (engine) とは、アプリケーションのミニチュアのようなものであり、ホストアプリケーションに機能を提供します。Railsアプリケーションは実際にはエンジンに「ターボをかけた」ようなものにすぎず、<code>Rails::Application</code>クラスは<code>Rails::Engine</code>から多くの振る舞いを継承しています。</p>
+<p>従って、エンジンとアプリケーションは、細かな違いを除けばほぼ同じものであると考えていただいてよいでしょう。本ガイドでもこの点をたびたび確認します。エンジンとアプリケーションは、同じ構造を共有しています。</p>
+<p>エンジンは、プラグインとも密接に関連します。エンジンもプラグインも、共通の<code>lib</code>ディレクトリ構造を共有し、どちらも<code>rails plugin new</code>ジェネレータを使用して生成されます。両者に違いがあるとすれば、Railsはエンジンを一種の「完全なプラグイン」とみなしている点です。これは、エンジンを生成するにはジェネレータコマンドで<code>--full</code>を与えることからもわかります。実際にはこのガイドでは<code>--mountable</code>オプションを使用します。これは<code>--full</code>のオプション以外にもいくつかの機能を追加してくれます。以後本ガイドでは「完全なプラグイン (full plugin)」を単に「エンジン」と呼びます。エンジンはプラグインになることもでき、プラグインがエンジンになることもできます。</p>
+<p>本ガイドで説明のために作成するエンジンに "blorgh" (blogのもじり) という名前を付けます。このエンジンはブログ機能をホストアプリケーションに追加し、記事とコメントを作成できます。本ガイドでは、最初にこのエンジンを単体で動作するようにし、後にこのエンジンをアプリケーションにフックします。</p>
+<p>エンジンはホストアプリケーションと混じらないよう分離しておくこともできます。これは、あるアプリケーションが<code>articles_path</code>のようなルーティングヘルパーによってパスを提供できるとすると、そのアプリケーションのエンジンも同じく<code>articles_path</code>というヘルパーによってパスを提供でき、しかも両者が衝突しないということを意味します。これにともない、コントローラ名、モデル名、テーブル名はいずれも名前空間化されます。これについては本ガイドで後述します。</p>
+<p>ここが重要です。アプリケーションは <strong>いかなる場合も</strong> エンジンよりも優先されます。ある環境において、最終的な決定権を持つのはアプリケーション自身です。エンジンはアプリケーションの動作を大幅に変更するものではなく、アプリケーションを単に拡張するものです。</p>
+<p>その他のエンジンに関するドキュメントについては、<a href="https://github.com/plataformatec/devise">Devise</a> (親アプリケーションに認証機能を提供するエンジン) や <a href="https://github.com/radar/forem">Forem</a> (フォーラム機能を提供するエンジン) を参照してください。この他に、<a href="https://github.com/spree/spree">Spree</a> (eコマースプラットフォーム) や<a href="https://github.com/refinery/refinerycms">RefineryCMS</a> (CMSエンジン) などもあります。</p>
+<p>追伸。エンジン機能はJames Adam、Piotr Sarnacki、Railsコアチーム、そして多くの人々の助けなしではできあがらなかったでしょう。彼らに会うことがあったら、ぜひお礼を述べてやってください。</p>
+<h3 id="エンジンを生成する">2 エンジンを生成する</h3>
+<p>エンジンを生成するには、プラグインジェネレータを実行し、必要に応じてオプションをジェネレータに渡します。"blorgh"の場合はマウント可能なエンジンとして生成するので、ターミナルで以下のコマンドを実行します。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-$ rails plugin new blorgh --mountable
+$ bin/rails plugin new blorgh --mountable
 
 </pre>
 </div>
-<p>The full list of options for the plugin generator may be seen by typing:</p>
+<p>プラグインジェネレータで利用できるオプションの一覧をすべて表示するには、以下を入力します。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-$ rails plugin --help
+$ bin/rails plugin --help
 
 </pre>
 </div>
-<p>The <code>--full</code> option tells the generator that you want to create an engine, including a skeleton structure that provides the following:</p>
+<p><code>--mountable</code>オプションは、マウント可能かつ名前空間で分離されたエンジンを生成する場合に使用します。このジェネレータで生成したプラグインは、<code>--full</code>オプションを使用した場合と同じスケルトン構造を持ちます。<code>--full</code>オプションは、以下を提供するスケルトン構造を含むエンジンを作成します。</p>
 <ul>
-<li>An <code>app</code> directory tree</li>
 <li>
-<p>A <code>config/routes.rb</code> file:</p>
+<code>app</code>ディレクトリツリー</li>
+<li>
+<p><code>config/routes.rb</code>ファイル</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Rails.application.routes.draw do
@@ -285,7 +286,7 @@ end
 </div>
 </li>
 <li>
-<p>A file at <code>lib/blorgh/engine.rb</code>, which is identical in function to a standard Rails application's <code>config/application.rb</code> file:</p>
+<p><code>lib/blorgh/engine.rb</code>ファイルは、Railsアプリケーションが標準で持つ<code>config/application.rb</code>ファイルと同一の機能を持ちます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 module Blorgh
@@ -297,53 +298,48 @@ end
 </div>
 </li>
 </ul>
-<p>The <code>--mountable</code> option tells the generator that you want to create a "mountable" and namespace-isolated engine. This generator will provide the same skeleton structure as would the <code>--full</code> option, and will add:</p>
+<p><code>--mountable</code>オプションを使用すると、<code>--full</code>オプションに以下が追加されます。</p>
 <ul>
-<li>Asset manifest files (<code>application.js</code> and <code>application.css</code>)</li>
-<li>A namespaced <code>ApplicationController</code> stub</li>
-<li>A namespaced <code>ApplicationHelper</code> stub</li>
-<li>A layout view template for the engine</li>
+<li>アセットマニフェストファイル (<code>application.js</code>および<code>application.css</code>)</li>
+<li>名前空間化された<code>ApplicationController</code>スタブ
+名前空間化された<code>ApplicationHelper</code>スタブ</li>
+<li>エンジンで使用するレイアウトビューテンプレート</li>
 <li>
-<p>Namespace isolation to <code>config/routes.rb</code>:</p>
-<div class="code_container">
-<pre class="brush: ruby; gutter: false; toolbar: false">
-Blorgh::Engine.routes.draw do
-end
-
-</pre>
-</div>
-</li>
-<li>
-<p>Namespace isolation to <code>lib/blorgh/engine.rb</code>:</p>
-<div class="code_container">
-<pre class="brush: ruby; gutter: false; toolbar: false">
-module Blorgh
-  class Engine &lt; ::Rails::Engine
-    isolate_namespace Blorgh
-  end
-end
-
-</pre>
-</div>
-</li>
+<code>config/routes.rb</code>での名前空間分離</li>
 </ul>
-<p>Additionally, the <code>--mountable</code> option tells the generator to mount the engine inside the dummy testing application located at <code>test/dummy</code> by adding the following to the dummy application's routes file at <code>test/dummy/config/routes.rb</code>:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-mount Blorgh::Engine, at: "blorgh"
+    Blorgh::Engine.routes.draw do
+    end
+    ```
+
+  * `lib/blorgh/engine.rb`での名前空間分離
+
+    ```ruby
+    module Blorgh
+      class Engine &lt; ::Rails::Engine
+        isolate_namespace Blorgh
+      end
+    end
+    ```
+
+さらに、`--mountable`オプションはダミーのテスト用アプリケーションを `test/dummy`に配置するようジェネレータに指示します。これは、以下のダミーアプリケーションのルーティングファイルを`test/dummy/config/routes.rb`に追加することによって行います。
+
+```ruby
+mount Blorgh::Engine =&gt; "/blorgh"
 
 </pre>
 </div>
-<h4 id="inside-an-engine">2.1 Inside an Engine</h4>
-<h5 id="critical-files">2.1.1 Critical Files</h5>
-<p>At the root of this brand new engine's directory lives a <code>blorgh.gemspec</code> file. When you include the engine into an application later on, you will do so with this line in the Rails application's <code>Gemfile</code>:</p>
+<h4 id="エンジンの内部">2.1 エンジンの内部</h4>
+<h5 id="重要なファイル">2.1.1 重要なファイル</h5>
+<p>新しく作成したエンジンのルートディレクトリには、<code>blorgh.gemspec</code>というファイルが置かれます。アプリケーションにこのエンジンを後からインクルードするには、<code>Gemfile</code>に以下の行を追加します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 gem 'blorgh', path: "vendor/engines/blorgh"
 
 </pre>
 </div>
-<p>Don't forget to run <code>bundle install</code> as usual. By specifying it as a gem within the <code>Gemfile</code>, Bundler will load it as such, parsing this <code>blorgh.gemspec</code> fil and requiring a file within the <code>lib</code> directory called <code>lib/blorgh.rb</code>. This file requires the <code>blorgh/engine.rb</code> file (located at <code>lib/blorgh/engine.rb</code>) and defines a base module called <code>Blorgh</code>.</p>
+<p>Gemfileを更新したら、いつものように<code>bundle install</code>を実行するのを忘れずに。エンジンを通常のgemと同様に<code>Gemfile</code>に記述すると、Bundlerはgemと同様にエンジンを読み込み、<code>blorgh.gemspec</code>ファイルを解析し、<code>lib</code>以下に置かれているファイル (この場合<code>lib/blorgh.rb</code>) をrequireします。このファイルは、(<code>lib/blorgh/engine.rb</code>に置かれている) <code>blorgh/engine.rb</code>ファイルをrequireし、<code>Blorgh</code>という基本モジュールを定義します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 require "blorgh/engine"
@@ -353,41 +349,41 @@ end
 
 </pre>
 </div>
-<div class="info"><p>Some engines choose to use this file to put global configuration options for their engine. It's a relatively good idea, so if you want to offer configuration options, the file where your engine's <code>module</code> is defined is perfect for that. Place the methods inside the module and you'll be good to go.</p></div>
-<p>Within <code>lib/blorgh/engine.rb</code> is the base class for the engine:</p>
+<p>ヒント: エンジンによっては、このファイルをエンジンのためのグローバル設定オプションとして配置したいこともあるでしょう。これは比較的よいアイディアです。設定オプションを提供したい場合は、エンジンで<code>module</code>と呼ばれているファイルを、まさにこれを行なうのにふさわしい場所として定義します。そのモジュールの中にメソッドを置くことで準備は完了します。</p>
+<p>エンジンの基本クラスは<code>lib/blorgh/engine.rb</code>の中にあります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 module Blorgh
-  class Engine &lt; Rails::Engine
+  class Engine &lt; ::Rails::Engine
     isolate_namespace Blorgh
   end
 end
 
 </pre>
 </div>
-<p>By inheriting from the <code>Rails::Engine</code> class, this gem notifies Rails that there's an engine at the specified path, and will correctly mount the engine inside the application, performing tasks such as adding the <code>app</code> directory of the engine to the load path for models, mailers, controllers and views.</p>
-<p>The <code>isolate_namespace</code> method here deserves special notice. This call is responsible for isolating the controllers, models, routes and other things into their own namespace, away from similar components inside the application. Without this, there is a possibility that the engine's components could "leak" into the application, causing unwanted disruption, or that important engine components could be overridden by similarly named things within the application. One of the examples of such conflicts is helpers. Without calling <code>isolate_namespace</code>, the engine's helpers would be included in an application's controllers.</p>
-<div class="note"><p>It is <strong>highly</strong> recommended that the <code>isolate_namespace</code> line be left within the <code>Engine</code> class definition. Without it, classes generated in an engine <strong>may</strong> conflict with an application.</p></div>
-<p>What this isolation of the namespace means is that a model generated by a call to <code>rails g model</code>, such as <code>rails g model post</code>, won't be called <code>Post</code>, but instead be namespaced and called <code>Blorgh::Post</code>. In addition, the table for the model is namespaced, becoming <code>blorgh_posts</code>, rather than simply <code>posts</code>. Similar to the model namespacing, a controller called <code>PostsController</code> becomes <code>Blorgh::PostsController</code> and the views for that controller will not be at <code>app/views/posts</code>, but <code>app/views/blorgh/posts</code> instead. Mailers are namespaced as well.</p>
-<p>Finally, routes will also be isolated within the engine. This is one of the most important parts about namespacing, and is discussed later in the <a href="#routes">Routes</a> section of this guide.</p>
-<h5 id="app-directory">2.1.2 <code>app</code> Directory</h5>
-<p>Inside the <code>app</code> directory are the standard <code>assets</code>, <code>controllers</code>, <code>helpers</code>, <code>mailers</code>, <code>models</code> and <code>views</code> directories that you should be familiar with from an application. The <code>helpers</code>, <code>mailers</code> and <code>models</code> directories are empty, so they aren't described in this section. We'll look more into models in a future section, when we're writing the engine.</p>
-<p>Within the <code>app/assets</code> directory, there are the <code>images</code>, <code>javascripts</code> and <code>stylesheets</code> directories which, again, you should be familiar with due to their similarity to an application. One difference here, however, is that each directory contains a sub-directory with the engine name. Because this engine is going to be namespaced, its assets should be too.</p>
-<p>Within the <code>app/controllers</code> directory there is a <code>blorgh</code> directory that contains a file called <code>application_controller.rb</code>. This file will provide any common functionality for the controllers of the engine. The <code>blorgh</code> directory is where the other controllers for the engine will go. By placing them within this namespaced directory, you prevent them from possibly clashing with identically-named controllers within other engines or even within the application.</p>
-<div class="note"><p>The <code>ApplicationController</code> class inside an engine is named just like a Rails application in order to make it easier for you to convert your applications into engines.</p></div>
-<p>Lastly, the <code>app/views</code> directory contains a <code>layouts</code> folder, which contains a file at <code>blorgh/application.html.erb</code>. This file allows you to specify a layout for the engine. If this engine is to be used as a stand-alone engine, then you would add any customization to its layout in this file, rather than the application's <code>app/views/layouts/application.html.erb</code> file.</p>
-<p>If you don't want to force a layout on to users of the engine, then you can delete this file and reference a different layout in the controllers of your engine.</p>
-<h5 id="bin-directory">2.1.3 <code>bin</code> Directory</h5>
-<p>This directory contains one file, <code>bin/rails</code>, which enables you to use the <code>rails</code> sub-commands and generators just like you would within an application. This means that you will be able to generate new controllers and models for this engine very easily by running commands like this:</p>
+<p><code>Rails::Engine</code>クラスを継承することによって、指定されたパスにエンジンがあることがgemからRailsに通知され、アプリケーションの内部にエンジンが正しくマウントされます。そして、エンジンの<code>app</code>ディレクトリをモデル/メイラー/コントローラ/ビューの読み込みパスに追加します。</p>
+<p>ここで、<code>isolate_namespace</code>メソッドについて特別な注意が必要です。このメソッドの呼び出しは、エンジンのコントローラ/モデル/ルーティングなどが持つ固有の名前空間を、アプリケーション内部のコンポーネントが持つ類似の名前空間から分離する役目を担います。この呼び出しが行われないと、エンジンのコンポーネントがアプリケーション側に「漏れ出す」リスクが生じ、思わぬ動作が発生したり、エンジンの重要なコンポーネントが同じような名前のアプリケーション側コンポーネントによって上書きされてしまったりする可能性があります。名前の衝突の例として、ヘルパーを取り上げましょう。<code>isolate_namespace</code>が呼び出されないと、エンジンのヘルパーがアプリケーションのコントローラにインクルードされてしまう可能性があります。</p>
+<p>メモ: <code>Engine</code>クラスの定義に含まれる<code>isolate_namespace</code>の行を変更/削除しないことを <strong>強く</strong> 推奨します。この行が変更されると、生成されたエンジン内のクラスがアプリケーションと衝突する <strong>可能性があります</strong> 。</p>
+<p>名前空間を分離するということは、<code>bin/rails g model</code>の実行によって生成されたモデル (ここでは <code>bin/rails g model article</code>を実行したとします) は<code>Article</code>にならず、名前空間化されて<code>Blorgh::Article</code>になるということです。さらにモデルのテーブルも名前空間化され、単なる<code>articles</code>ではなく<code>blorgh_articles</code>になります。コントローラもモデルと同様に名前空間化されます。<code>ArticlesController</code>というコントローラは<code>Blorgh::ArticlesController</code>になり、このコントローラのビューは<code>app/views/articles</code>ではなく<code>app/views/blorgh/articles</code>に置かれます。メイラーも同様に名前空間化されます。</p>
+<p>最後に、ルーティングもエンジン内で分離されます。これは名前空間化の最も肝心な部分であり、これについては本ガイドの<a href="#routes">ルーティング</a>セクションで後述します。</p>
+<h5 id="appディレクトリ">2.1.2 <code>app</code>ディレクトリ</h5>
+<p>エンジンの<code>app</code>ディレクトリの中には、通常のアプリケーションでおなじみの標準の<code>assets</code>、<code>controllers</code>、<code>helpers</code>、<code>mailers</code>、<code>models</code>、<code>views</code>ディレクトリが置かれます。このうち<code>helpers</code>、<code>mailers</code>、<code>models</code>ディレクトリにはデフォルトでは何も置かれないので、本セクションでは解説しません。モデルについては、エンジンの作成について解説するセクションで後述します。</p>
+<p>エンジンの<code>app/assets</code>ディレクトリの下にも、通常のアプリケーションと同様に<code>images</code>、<code>javascripts</code>、<code>stylesheets</code>ディレクトリがそれぞれあります。通常のアプリケーションと異なる点は、これらのディレクトリの下にはさらにエンジン名を持つサブディレクトリがあることです。これは、エンジンが名前空間化されるのと同様、エンジンのアセットも同様に名前空間化される必要があるからです。</p>
+<p><code>app/controllers</code>ディレクトリの下には<code>blorgh</code>ディレクトリが置かれます。この中には<code>application_controller.rb</code>というファイルが1つ置かれます。このファイルはエンジンのコントローラ共通の機能を提供するためのものです。この<code>blorgh</code>ディレクトリには、エンジンで使用するその他のコントローラを置きます。これらのファイルを名前空間化されたディレクトリに配置することで、他のエンジンやアプリケーションに同じ名前のコントローラがあっても名前の衝突を避ける事ができます。</p>
+<p>メモ: あるエンジンに含まれる<code>ApplicationController</code>というクラスの名前は、アプリケーションそのものが持つクラスと同じ名前になっています。これは、アプリケーションをエンジンに変換しやすくするためです。</p>
+<p>最後に、<code>app/views</code>ディレクトリの下には<code>layouts</code>フォルダがあります。ここには<code>blorgh/application.html.erb</code>というファイルが置かれます。このファイルは、エンジンで使用するレイアウトを指定するためのものです。エンジンが単体のエンジンとして使用されるのであれば、このファイルを使用していくらでも好きなようにレイアウトをカスタマイズできます。そのためにアプリケーション自身の<code>app/views/layouts/application.html.erb</code>ファイルを変更する必要はありません。</p>
+<p>エンジンのレイアウトをユーザーに強制したくない場合は、このファイルを削除し、エンジンのコントローラでは別のレイアウトを参照するように変更してください。</p>
+<h5 id="binディレクトリ">2.1.3 <code>bin</code>ディレクトリ</h5>
+<p>このディレクトリには<code>bin/rails</code>というファイルが1つだけ置かれます。これはアプリケーション内で使用しているのと似た<code>rails</code>サブコマンドであり、ジェネレータです。このような構成になっていることで、このエンジンで利用するための独自のコントローラやモデルを以下のように簡単に生成することができます。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-rails g model
+$ bin/rails g model
 
 </pre>
 </div>
-<p>Keep in mind, of course, that anything generated with these commands inside of an engine that has <code>isolate_namespace</code> in the <code>Engine</code> class will be namespaced.</p>
-<h5 id="test-directory">2.1.4 <code>test</code> Directory</h5>
-<p>The <code>test</code> directory is where tests for the engine will go. To test the engine, there is a cut-down version of a Rails application embedded within it at <code>test/dummy</code>. This application will mount the engine in the <code>test/dummy/config/routes.rb</code> file:</p>
+<p>言うまでもなく、<code>Engine</code>クラスに<code>isolate_namespace</code>を持つエンジンでこのbin/railsを使用して生成したものはすべて名前空間化されることにご注意ください。</p>
+<h5 id="testディレクトリ">2.1.4 <code>test</code>ディレクトリ</h5>
+<p><code>test</code>ディレクトリは、エンジンがテストを行なうための場所です。エンジンをテストするために、<code>test/dummy</code>ディレクトリに埋め込まれた縮小版のRailsアプリケーションが用意されます。このアプリケーションはエンジンを<code>test/dummy/config/routes.rb</code>ファイル内で以下のようにマウントします。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Rails.application.routes.draw do
@@ -396,126 +392,126 @@ end
 
 </pre>
 </div>
-<p>This line mounts the engine at the path <code>/blorgh</code>, which will make it accessible through the application only at that path.</p>
-<p>Inside the test directory there is the <code>test/integration</code> directory, where integration tests for the engine should be placed. Other directories can be created in the <code>test</code> directory as well. For example, you may wish to create a <code>test/models</code> directory for your model tests.</p>
-<h3 id="providing-engine-functionality">3 Providing engine functionality</h3>
-<p>The engine that this guide covers provides posting and commenting functionality and follows a similar thread to the <a href="getting_started.html">Getting Started Guide</a>, with some new twists.</p>
-<h4 id="generating-a-post-resource">3.1 Generating a Post Resource</h4>
-<p>The first thing to generate for a blog engine is the <code>Post</code> model and related controller. To quickly generate this, you can use the Rails scaffold generator.</p>
+<p>上の行によって、<code>/blorgh</code>パスにあるエンジンがマウントされ、アプリケーションのこのパスを通じてのみアクセス可能になります。</p>
+<p>testディレクトリの下には<code>test/integration</code>ディレクトリがあります。ここにはエンジンの結合テストが置かれます。<code>test</code>ディレクトリに他のディレクトリを作成することもできます。たとえば、モデルのテスト用に<code>test/models</code>ディレクトリを作成しても構いません。</p>
+<h3 id="エンジンの機能を提供する">3 エンジンの機能を提供する</h3>
+<p>本ガイドで説明のために作成するエンジンには、記事とコメントの送信機能があります。基本的には<a href="getting_started.html">Railsをはじめよう</a>とよく似たスレッドに従いますが、多少の新味も加えられています。</p>
+<h4 id="articleリソースを生成する">3.1 Articleリソースを生成する</h4>
+<p>ブログエンジンで最初に生成すべきは<code>Article</code>モデルとそれに関連するコントローラです。これらを手軽に生成するために、Railsのscaffoldジェネレータを使用します。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-$ rails generate scaffold post title:string text:text
+$ bin/rails generate scaffold article title:string text:text
 
 </pre>
 </div>
-<p>This command will output this information:</p>
+<p>上のコマンドを実行すると以下の情報が出力されます。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 invoke  active_record
-create    db/migrate/[timestamp]_create_blorgh_posts.rb
-create    app/models/blorgh/post.rb
-invoke    test_unit
-create      test/models/blorgh/post_test.rb
-create      test/fixtures/blorgh/posts.yml
+create    db/migrate/[timestamp]_create_blorgh_articles.rb
+create    app/models/blorgh/article.rb
+      invoke  test_unit
+create      test/models/blorgh/article_test.rb
+create      test/fixtures/blorgh/articles.yml
 invoke  resource_route
- route    resources :posts
-invoke  scaffold_controller
-create    app/controllers/blorgh/posts_controller.rb
-invoke    erb
-create      app/views/blorgh/posts
-create      app/views/blorgh/posts/index.html.erb
-create      app/views/blorgh/posts/edit.html.erb
-create      app/views/blorgh/posts/show.html.erb
-create      app/views/blorgh/posts/new.html.erb
-create      app/views/blorgh/posts/_form.html.erb
-invoke    test_unit
-create      test/controllers/blorgh/posts_controller_test.rb
+route    resources :articles
+      invoke  scaffold_controller
+create    app/controllers/blorgh/articles_controller.rb
+      invoke    erb 
+create      app/views/blorgh/articles
+create      app/views/blorgh/articles/index.html.erb
+create      app/views/blorgh/articles/edit.html.erb
+create      app/views/blorgh/articles/show.html.erb
+create      app/views/blorgh/articles/new.html.erb
+create      app/views/blorgh/articles/_form.html.erb
+      invoke  test_unit
+create      test/controllers/blorgh/articles_controller_test.rb
 invoke    helper
-create      app/helpers/blorgh/posts_helper.rb
-invoke      test_unit
-create        test/helpers/blorgh/posts_helper_test.rb
+create      app/helpers/blorgh/articles_helper.rb
 invoke  assets
 invoke    js
-create      app/assets/javascripts/blorgh/posts.js
+create      app/assets/javascripts/blorgh/articles.js
 invoke    css
-create      app/assets/stylesheets/blorgh/posts.css
+create      app/assets/stylesheets/blorgh/articles.css
 invoke  css
 create    app/assets/stylesheets/scaffold.css
 
 </pre>
 </div>
-<p>The first thing that the scaffold generator does is invoke the <code>active_record</code> generator, which generates a migration and a model for the resource. Note here, however, that the migration is called <code>create_blorgh_posts</code> rather than the usual <code>create_posts</code>. This is due to the <code>isolate_namespace</code> method called in the <code>Blorgh::Engine</code> class's definition. The model here is also namespaced, being placed at <code>app/models/blorgh/post.rb</code> rather than <code>app/models/post.rb</code> due to the <code>isolate_namespace</code> call within the <code>Engine</code> class.</p>
-<p>Next, the <code>test_unit</code> generator is invoked for this model, generating a model test at <code>test/models/blorgh/post_test.rb</code> (rather than <code>test/models/post_test.rb</code>) and a fixture at <code>test/fixtures/blorgh/posts.yml</code> (rather than <code>test/fixtures/posts.yml</code>).</p>
-<p>After that, a line for the resource is inserted into the <code>config/routes.rb</code> file for the engine. This line is simply <code>resources :posts</code>, turning the <code>config/routes.rb</code> file for the engine into this:</p>
+<p>scaffoldジェネレータが最初に行なうのは<code>active_record</code>ジェネレータの呼び出しです。これはマイグレーションの生成とそのリソースのモデルを生成します。ここでご注目いただきたいのは、マイグレーションは通常の<code>create_articles</code>ではなく<code>create_blorgh_articles</code>という名前で呼ばれるという点です。これは<code>Blorgh::Engine</code>クラスの定義で呼び出される<code>isolate_namespace</code>メソッドによるものです。このモデルも名前空間化されるので、<code>Engine</code>クラス内のisolate_namespace<code>呼び出しによって、</code>app/models/article.rb<code>ではなく</code>app/models/blorgh/article.rb`に置かれます。</p>
+<p>続いて、そのモデルに対応する<code>test_unit</code>ジェネレータが呼び出され、(<code>test/models/article_test.rb</code>ではなく) <code>test/models/blorgh/article_test.rb</code> にモデルのテストが置かれます (rather than )。フィクスチャも同様に (<code>test/fixtures/articles.yml</code>ではなく) <code>test/fixtures/blorgh/articles.yml</code>に置かれます。</p>
+<p>その後、そのリソースに対応する行が<code>config/routes.rb</code>ファイルに挿入され、エンジンで使用されます。ここで挿入される行は単に<code>resources :articles</code>となっています。これにより、そのエンジンで使用する<code>config/routes.rb</code>ファイルが以下のように変更されます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Blorgh::Engine.routes.draw do
-  resources :posts
+  resources :articles
 end
 
 </pre>
 </div>
-<p>Note here that the routes are drawn upon the <code>Blorgh::Engine</code> object rather than the <code>YourApp::Application</code> class. This is so that the engine routes are confined to the engine itself and can be mounted at a specific point as shown in the <a href="#test-directory">test directory</a> section. It also causes the engine's routes to be isolated from those routes that are within the application. The <a href="#routes">Routes</a> section of this guide describes it in detail.</p>
-<p>Next, the <code>scaffold_controller</code> generator is invoked, generating a controller called <code>Blorgh::PostsController</code> (at <code>app/controllers/blorgh/posts_controller.rb</code>) and its related views at <code>app/views/blorgh/posts</code>. This generator also generates a test for the controller (<code>test/controllers/blorgh/posts_controller_test.rb</code>) and a helper (<code>app/helpers/blorgh/posts_controller.rb</code>).</p>
-<p>Everything this generator has created is neatly namespaced. The controller's class is defined within the <code>Blorgh</code> module:</p>
+<p>このルーティングは、<code>YourApp::Application</code>クラスではなく<code>Blorgh::Engine</code>オブジェクトにもとづいていることにご注目ください。これにより、エンジンのルーティングがエンジン自身に制限され、<a href="#test-directory">testディレクトリ</a>セクションで説明したように特定の位置にマウントできるようになります。ここでは、エンジンのルーティングがアプリケーション内のルーティングから分離されていることにもご注目ください。詳細については本ガイドの<a href="#routes">ルーティング</a>セクションで解説します。</p>
+<p>続いて<code>scaffold_controller</code>ジェネレータが呼ばれ、<code>Blorgh::ArticlesController</code>という名前のコントローラを生成します (生成場所は<code>app/controllers/blorgh/articles_controller.rb</code>です)。このコントローラに関連するビューは<code>app/views/blorgh/articles</code>となります。このジェネレータは、コントローラ用のテスト (<code>test/controllers/blorgh/articles_controller_test.rb</code>) とヘルパー (<code>app/helpers/blorgh/articles_controller.rb</code>).も同時に生成します。</p>
+<p>このジェネレータによって生成されるものはすべて正しく名前空間化されます。このコントローラのクラスは、以下のように<code>Blorgh</code>モジュール内で定義されます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 module Blorgh
-  class PostsController &lt; ApplicationController
+  class ArticlesController &lt; ApplicationController
     ...
   end
 end
 
 </pre>
 </div>
-<div class="note"><p>The <code>ApplicationController</code> class being inherited from here is the <code>Blorgh::ApplicationController</code>, not an application's <code>ApplicationController</code>.</p></div>
-<p>The helper inside <code>app/helpers/blorgh/posts_helper.rb</code> is also namespaced:</p>
+<p>メモ: このクラスで継承されている<code>ApplicationController</code>クラスは、実際には<code>ApplicationController</code>ではなく、<code>Blorgh::ApplicationController</code>です。</p>
+<p><code>app/helpers/blorgh/articles_helper.rb</code>のヘルパーも同様に名前空間化されます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 module Blorgh
-  module PostsHelper
+  module ArticlesHelper
     ...
   end
 end
 
 </pre>
 </div>
-<p>This helps prevent conflicts with any other engine or application that may have a post resource as well.</p>
-<p>Finally, the assets for this resource are generated in two files: <code>app/assets/javascripts/blorgh/posts.js</code> and <code>app/assets/stylesheets/blorgh/posts.css</code>. You'll see how to use these a little later.</p>
-<p>By default, the scaffold styling is not applied to the engine because the engine's layout file, <code>app/views/layouts/blorgh/application.html.erb</code>, doesn't load it. To make the scaffold styling apply, insert this line into the <code>&lt;head&gt;</code> tag of this layout:</p>
+<p>これにより、たとえ他のエンジンやアプリケーションにarticleリソースがあっても衝突を回避できます。</p>
+<p>最後に、以下の2つのファイルがこのリソースのアセットとして生成されます。
+<code>app/assets/javascripts/blorgh/articles.js</code>と
+<code>app/assets/stylesheets/blorgh/articles.css</code>です。これらの使用法についてはこのすぐ後で解説します。</p>
+<p>デフォルトでは、scaffoldで生成されたスタイルは適用されません。これは、エンジンのレイアウトファイル<code>app/views/layouts/blorgh/application.html.erb</code>がデフォルトでは読み込まれないようになっているためです。scaffoldで生成されたスタイルを適用するには、このレイアウトの<code>&lt;head&gt;</code>タグに以下の行を挿入します。</p>
 <div class="code_container">
 <pre class="brush: ruby; html-script: true; gutter: false; toolbar: false">
 &lt;%= stylesheet_link_tag "scaffold" %&gt;
 
 </pre>
 </div>
-<p>You can see what the engine has so far by running <code>rake db:migrate</code> at the root of our engine to run the migration generated by the scaffold generator, and then running <code>rails server</code> in <code>test/dummy</code>. When you open <code>http://localhost:3000/blorgh/posts</code> you will see the default scaffold that has been generated. Click around! You've just generated your first engine's first functions.</p>
-<p>If you'd rather play around in the console, <code>rails console</code> will also work just like a Rails application. Remember: the <code>Post</code> model is namespaced, so to reference it you must call it as <code>Blorgh::Post</code>.</p>
+<p>エンジンのルートディレクトリで<code>rake db:migrate</code>を実行すると、scaffoldジェネレータによって生成されたマイグレーションが実行されます。続いて<code>test/dummy</code>ディレクトリで<code>rails server</code>を実行してみましょう。<code>http://localhost:3000/blorgh/articles</code>をブラウザで表示すると、生成されたデフォルトのscaffoldが表示されます。表示されたものをいろいろクリックしてみてください。これで、最初の機能を備えたエンジンの生成に成功しました。</p>
+<p>コンソールで遊んでみたいのであれば、<code>rails console</code>でRailsアプリケーションをコンソールで動かせます。先ほどから申し上げているように、<code>Article</code>モデルは名前空間化されていますので、このモデルを参照する際には<code>Blorgh::Article</code>と指定する必要があります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-&gt;&gt; Blorgh::Post.find(1)
-=&gt; #&lt;Blorgh::Post id: 1 ...&gt;
+&gt;&gt; Blorgh::Article.find(1)
+=&gt; #&lt;Blorgh::Article id: 1 ...&gt;
 
 </pre>
 </div>
-<p>One final thing is that the <code>posts</code> resource for this engine should be the root of the engine. Whenever someone goes to the root path where the engine is mounted, they should be shown a list of posts. This can be made to happen if this line is inserted into the <code>config/routes.rb</code> file inside the engine:</p>
+<p>最後の作業です。このエンジンの<code>articles</code>リソースはエンジンのルート (root) パスに置くのがふさわしいでしょう。エンジンがマウントされているルートパスに移動したら、記事の一覧が表示されるようにしたいものです。エンジンにある<code>config/routes.rb</code>ファイルに以下の記述を追加することでこれを実現できます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-root to: "posts#index"
+root to: "articles#index"
 
 </pre>
 </div>
-<p>Now people will only need to go to the root of the engine to see all the posts, rather than visiting <code>/posts</code>. This means that instead of <code>http://localhost:3000/blorgh/posts</code>, you only need to go to <code>http://localhost:3000/blorgh</code> now.</p>
-<h4 id="generating-a-comments-resource">3.2 Generating a Comments Resource</h4>
-<p>Now that the engine can create new blog posts, it only makes sense to add commenting functionality as well. To do this, you'll need to generate a comment model, a comment controller and then modify the posts scaffold to display comments and allow people to create new ones.</p>
-<p>From the application root, run the model generator. Tell it to generate a <code>Comment</code> model, with the related table having two columns: a <code>post_id</code> integer and <code>text</code> text column.</p>
+<p>これで、ユーザーが (<code>/articles</code>ではなく) エンジンのルートパスに移動すると記事の一覧が表示されるようになりました。つまり、<code>http://localhost:3000/blorgh/articles</code>に移動しなくても<code>http://localhost:3000/blorgh</code>に移動すれば済むということです。</p>
+<h4 id="commentsリソースを生成する">3.2 commentsリソースを生成する</h4>
+<p>エンジンで記事を新規作成できるようになりましたので、今度は記事にコメントを追加する機能も付けてみましょう。これを行なうには、commentモデルとcommentsコントローラを生成し、articles scaffoldを変更してコメントを表示できるようにし、それから新規コメントを作成できるようにします。</p>
+<p>アプリケーションのルート・ディレクトリで、モデルのジェネレータを実行します。このとき、<code>Comment</code>モデルを生成すること、integer型の<code>article_id</code>カラムとtext型の<code>text</code>カラムを持つテーブルと関連付けることを指示します。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-$ rails generate model Comment post_id:integer text:text
+$ bin/rails generate model Comment article_id:integer text:text
 
 </pre>
 </div>
-<p>This will output the following:</p>
+<p>上によって以下が出力されます。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 invoke  active_record
@@ -527,52 +523,52 @@ create      test/fixtures/blorgh/comments.yml
 
 </pre>
 </div>
-<p>This generator call will generate just the necessary model files it needs, namespacing the files under a <code>blorgh</code> directory and creating a model class called <code>Blorgh::Comment</code>. Now run the migration to create our blorgh_comments table:</p>
+<p>このジェネレータ呼び出しでは必要なモデルファイルだけが生成されます。さらに<code>blorgh</code>ディレクトリの下で名前空間化され、<code>Blorgh::Comment</code>というモデルクラスも作成されます。それではマイグレーションを実行してblorgh_commentsテーブルを生成してみましょう。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ rake db:migrate
 
 </pre>
 </div>
-<p>To show the comments on a post, edit <code>app/views/blorgh/posts/show.html.erb</code> and add this line before the "Edit" link:</p>
+<p>記事のコメントを表示できるようにするために、<code>app/views/blorgh/articles/show.html.erb</code>を編集して以下の行を"Edit"リンクの直前に追加します。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 &lt;h3&gt;Comments&lt;/h3&gt;
-&lt;%= render @post.comments %&gt;
+&lt;%= render @article.comments %&gt;
 
 </pre>
 </div>
-<p>This line will require there to be a <code>has_many</code> association for comments defined on the <code>Blorgh::Post</code> model, which there isn't right now. To define one, open <code>app/models/blorgh/post.rb</code> and add this line into the model:</p>
+<p>上の行では、<code>Blorgh::Article</code>モデルとコメントが<code>has_many</code>関連付けとして定義されている必要がありますが、現時点ではまだありません。この定義を行なうために、<code>app/models/blorgh/article.rb</code>を開いてモデルに以下の行を追加します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 has_many :comments
 
 </pre>
 </div>
-<p>Turning the model into this:</p>
+<p>これにより、モデルは以下のようになります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 module Blorgh
-  class Post &lt; ActiveRecord::Base
+  class Article &lt; ActiveRecord::Base
     has_many :comments
   end
 end
 
 </pre>
 </div>
-<div class="note"><p>Because the <code>has_many</code> is defined inside a class that is inside the <code>Blorgh</code> module, Rails will know that you want to use the <code>Blorgh::Comment</code> model for these objects, so there's no need to specify that using the <code>:class_name</code> option here.</p></div>
-<p>Next, there needs to be a form so that comments can be created on a post. To add this, put this line underneath the call to <code>render @post.comments</code> in <code>app/views/blorgh/posts/show.html.erb</code>:</p>
+<p>メモ: この<code>has_many</code>は<code>Blorgh</code>モジュールの中にあるクラスの中で定義されています。これだけで、これらのオブジェクトに対して<code>Blorgh::Comment</code>モデルを使用したいという意図がRailsに自動的に認識されます。従って、ここで<code>:class_name</code>オプションを使用してクラス名を指定する必要はありません。</p>
+<p>続いて、記事を作成するためのフォームを作成する必要があります。フォームを追加するには、<code>app/views/blorgh/articles/show.html.erb</code>の<code>render @article.comments</code>呼び出しの直後に以下の行を追加します。</p>
 <div class="code_container">
 <pre class="brush: ruby; html-script: true; gutter: false; toolbar: false">
 &lt;%= render "blorgh/comments/form" %&gt;
 
 </pre>
 </div>
-<p>Next, the partial that this line will render needs to exist. Create a new directory at <code>app/views/blorgh/comments</code> and in it a new file called <code>_form.html.erb</code> which has this content to create the required partial:</p>
+<p>続いて、この行を出力に含めるためのパーシャル (部分テンプレート) も必要です。<code>app/views/blorgh/comments</code>にディレクトリを作成し、<code>_form.html.erb</code>というファイルを作成します。このファイルの中に以下のパーシャルを記述します。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 &lt;h3&gt;New comment&lt;/h3&gt;
-&lt;%= form_for [@post, @post.comments.build] do |f| %&gt;
+&lt;%= form_for [@article, @article.comments.build] do |f| %&gt;
   &lt;p&gt;
     &lt;%= f.label :text %&gt;&lt;br&gt;
     &lt;%= f.text_area :text %&gt;
@@ -582,35 +578,33 @@ end
 
 </pre>
 </div>
-<p>When this form is submitted, it is going to attempt to perform a <code>POST</code> request to a route of <code>/posts/:post_id/comments</code> within the engine. This route doesn't exist at the moment, but can be created by changing the <code>resources :posts</code> line inside <code>config/routes.rb</code> into these lines:</p>
+<p>このフォームが送信されると、エンジン内の<code>/articles/:article_id/comments</code>というルーティングに対して<code>POST</code>リクエストを送信しようとします。このルーティングはまだ存在していませんので、<code>config/routes.rb</code>の<code>resources :articles</code>行を以下のように変更します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-resources :posts do
+resources :articles do
   resources :comments
 end
 
 </pre>
 </div>
-<p>This creates a nested route for the comments, which is what the form requires.</p>
-<p>The route now exists, but the controller that this route goes to does not. To create it, run this command from the application root:</p>
+<p>これでcomments用のネストしたルーティングが作成されました。これが上のフォームで必要となります。</p>
+<p>ルーティングは作成しましたが、ルーティング先のコントローラがまだありません。これを作成するには、アプリケーションのルート・ディレクトリで以下のコマンドを実行します。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-$ rails g controller comments
+$ bin/rails g controller comments
 
 </pre>
 </div>
-<p>This will generate the following things:</p>
+<p>上によって以下が生成されます。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 create  app/controllers/blorgh/comments_controller.rb
 invoke  erb
- exist    app/views/blorgh/comments
+exist    app/views/blorgh/comments
 invoke  test_unit
 create    test/controllers/blorgh/comments_controller_test.rb
 invoke  helper
 create    app/helpers/blorgh/comments_helper.rb
-invoke    test_unit
-create      test/helpers/blorgh/comments_helper_test.rb
 invoke  assets
 invoke    js
 create      app/assets/javascripts/blorgh/comments.js
@@ -619,14 +613,14 @@ create      app/assets/stylesheets/blorgh/comments.css
 
 </pre>
 </div>
-<p>The form will be making a <code>POST</code> request to <code>/posts/:post_id/comments</code>, which will correspond with the <code>create</code> action in <code>Blorgh::CommentsController</code>. This action needs to be created, which can be done by putting the following lines inside the class definition in <code>app/controllers/blorgh/comments_controller.rb</code>:</p>
+<p>このフォームは<code>POST</code>リクエストを<code>/articles/:article_id/comments</code>に送信します。これに対応するのは<code>Blorgh::CommentsController</code>の<code>create</code>アクションです。このアクションを作成する必要があります。<code>app/controllers/blorgh/comments_controller.rb</code>のクラス定義の中に以下の行を追加します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-def create
-  @post = Post.find(params[:post_id])
-  @comment = @post.comments.create(comment_params)
+  def create
+  @article = Article.find(params[:article_id])
+  @comment = @article.comments.create(comment_params)
   flash[:notice] = "Comment has been created!"
-  redirect_to posts_path
+  redirect_to articles_path
 end
 
 private
@@ -636,116 +630,114 @@ private
 
 </pre>
 </div>
-<p>This is the final step required to get the new comment form working. Displaying the comments, however, is not quite right yet. If you were to create a comment right now, you would see this error:</p>
+<p>いよいよ、コメントフォームが動作するのに必要な最後の手順を行いましょう。コメントはまだ正常に表示できません。この時点でコメントを作成しようとすると、以下のようなエラーが生じるでしょう。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 Missing partial blorgh/comments/comment with {:handlers=&gt;[:erb, :builder],
 :formats=&gt;[:html], :locale=&gt;[:en, :en]}. Searched in:   *
 "/Users/ryan/Sites/side_projects/blorgh/test/dummy/app/views"   *
-"/Users/ryan/Sites/side_projects/blorgh/app/views" 
+"/Users/ryan/Sites/side_projects/blorgh/app/views"
 
 </pre>
 </div>
-<p>The engine is unable to find the partial required for rendering the comments. Rails looks first in the application's (<code>test/dummy</code>) <code>app/views</code> directory and then in the engine's <code>app/views</code> directory. When it can't find it, it will throw this error. The engine knows to look for <code>blorgh/comments/comment</code> because the model object it is receiving is from the <code>Blorgh::Comment</code> class.</p>
-<p>This partial will be responsible for rendering just the comment text, for now. Create a new file at <code>app/views/blorgh/comments/_comment.html.erb</code> and put this line inside it:</p>
+<p>このエラーは、コメントの表示に必要なパーシャルが見つからないためです。Railsはアプリケーションの (<code>test/dummy</code>) <code>app/views</code>を最初に検索し、続いてエンジンの<code>app/views</code>ディレクトリを検索します。見つからない場合はエラーになります。エンジン自身は<code>blorgh/comments/comment</code>を検索すべきであることを認識しています。これは、エンジンが受け取るモデルオブジェクトが<code>Blorgh::Comment</code>クラスに属しているためです。</p>
+<p>さしあたって、コメントテキストを出力する役目をこのパーシャルに担ってもらわなければなりません。<code>app/views/blorgh/comments/_comment.html.erb</code>ファイルを作成し、以下の記述を追加します。</p>
 <div class="code_container">
 <pre class="brush: ruby; html-script: true; gutter: false; toolbar: false">
 &lt;%= comment_counter + 1 %&gt;. &lt;%= comment.text %&gt;
 
 </pre>
 </div>
-<p>The <code>comment_counter</code> local variable is given to us by the <code>&lt;%= render @post.comments %&gt;</code> call, which will define it automatically and increment the counter as it iterates through each comment. It's used in this example to display a small number next to each comment when it's created.</p>
-<p>That completes the comment function of the blogging engine. Now it's time to use it within an application.</p>
-<h3 id="hooking-into-an-application">4 Hooking Into an Application</h3>
-<p>Using an engine within an application is very easy. This section covers how to mount the engine into an application and the initial setup required, as well as linking the engine to a <code>User</code> class provided by the application to provide ownership for posts and comments within the engine.</p>
-<h4 id="mounting-the-engine">4.1 Mounting the Engine</h4>
-<p>First, the engine needs to be specified inside the application's <code>Gemfile</code>. If there isn't an application handy to test this out in, generate one using the <code>rails new</code> command outside of the engine directory like this:</p>
+<p><code>&lt;%= render @article.comments %&gt;</code>呼び出しによって<code>comment_counter</code>ローカル変数が返されます。この変数は自動的に定義され、コメントをiterateするたびにカウントアップします。この例では、作成されたコメントの横に小さな数字を表示するのに使用しています。</p>
+<p>これでブログエンジンのコメント機能ができました。今度はこの機能をアプリケーションの中で使用してみましょう。</p>
+<h3 id="アプリケーションにフックする">4 アプリケーションにフックする</h3>
+<p>エンジンをアプリケーションで利用するのはきわめて簡単です。本セクションでは、エンジンをアプリケーションにマウントして必要な初期設定を行い、アプリケーションが提供する<code>User</code>クラスにエンジンをリンクして、エンジン内の記事とコメントに所有者を与えるところまでをカバーします。</p>
+<h4 id="エンジンをマウントする">4.1 エンジンをマウントする</h4>
+<p>最初に、使用するエンジンをアプリケーションの<code>Gemfile</code>に記述する必要があります。テストに使用できる手頃なアプリケーションが見当たらない場合は、エンジンのディレクトリの外で以下の<code>rails new</code>コマンドを実行してアプリケーションを作成してください。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ rails new unicorn
 
 </pre>
 </div>
-<p>Usually, specifying the engine inside the Gemfile would be done by specifying it as a normal, everyday gem.</p>
+<p>基本的には、Gemfileでエンジンを指定する方法は他のgemの指定方法と変わりません。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 gem 'devise'
 
 </pre>
 </div>
-<p>However, because you are developing the <code>blorgh</code> engine on your local machine, you will need to specify the <code>:path</code> option in your <code>Gemfile</code>:</p>
+<p>ただし、この<code>blorgh</code>エンジンはローカルPCで開発中でgemリポジトリには存在しないので、<code>Gemfile</code>でエンジンgemへのパスを<code>:path</code>オプションで指定する必要があります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 gem 'blorgh', path: "/path/to/blorgh"
 
 </pre>
 </div>
-<p>Then run <code>bundle</code> to install the gem.</p>
-<p>As described earlier, by placing the gem in the <code>Gemfile</code> it will be loaded when Rails is loaded. It will first require <code>lib/blorgh.rb</code> from the engine, then <code>lib/blorgh/engine.rb</code>, which is the file that defines the major pieces of functionality for the engine.</p>
-<p>To make the engine's functionality accessible from within an application, it needs to be mounted in that application's <code>config/routes.rb</code> file:</p>
+<p>続いて<code>bundle</code>コマンドを実行し、gemをインストールします。</p>
+<p>前述したように、<code>Gemfile</code>に記述したgemはRailsの読み込み時に読み込まれます。このgemは最初にエンジンの<code>lib/blorgh.rb</code>をrequireし、続いて<code>lib/blorgh/engine.rb</code>をrequireします。後者はこのエンジンの機能を担う主要な部品が定義されている場所です。</p>
+<p>アプリケーションからエンジンの機能にアクセスできるようにするには、エンジンをアプリケーションの<code>config/routes.rb</code>ファイルでマウントする必要があります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 mount Blorgh::Engine, at: "/blog"
 
 </pre>
 </div>
-<p>This line will mount the engine at <code>/blog</code> in the application. Making it accessible at <code>http://localhost:3000/blog</code> when the application runs with <code>rails server</code>.</p>
-<div class="note"><p>Other engines, such as Devise, handle this a little differently by making you specify custom helpers (such as <code>devise_for</code>) in the routes. These helpers do exactly the same thing, mounting pieces of the engines's functionality at a pre-defined path which may be customizable.</p></div>
-<h4 id="engine-setup">4.2 Engine setup</h4>
-<p>The engine contains migrations for the <code>blorgh_posts</code> and <code>blorgh_comments</code> table which need to be created in the application's database so that the engine's models can query them correctly. To copy these migrations into the application use this command:</p>
+<p>この行を記述することで、エンジンがアプリケーションの<code>/blog</code>パスにマウントされます。<code>rails server</code>を実行してRailsを起動すること、<code>http://localhost:3000/blog</code>にアクセスできるようになります。</p>
+<p>メモ: Deviseなどの他のエンジンではこの点が若干異なり、ルーティングで (<code>devise_for</code>などの) カスタムヘルパーを指定するものがあります。これらのヘルパーの動作は完全に同じです。事前に定義されたカスタマイズ可能なパスにエンジンの機能の一部をマウントします。●</p>
+<h4 id="エンジンの設定">4.2 エンジンの設定</h4>
+<p>作成したエンジンには<code>blorgh_articles</code>テーブルと<code>blorgh_comments</code>テーブル用のマイグレーションが含まれます。これらのテーブルをアプリケーションのデータベースに作成し、エンジンのモデルからこれらのテーブルにアクセスできるようにする必要があります。これらのマイグレーションをアプリケーションにコピーするには、以下のコマンドを実行します。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ rake blorgh:install:migrations
 
 </pre>
 </div>
-<p>If you have multiple engines that need migrations copied over, use <code>railties:install:migrations</code> instead:</p>
+<p>マイグレーションをコピーする必要のあるエンジンがいくつもある場合は、代りに<code>railties:install:migrations</code>を使用します。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ rake railties:install:migrations
 
 </pre>
 </div>
-<p>This command, when run for the first time, will copy over all the migrations from the engine. When run the next time, it will only copy over migrations that haven't been copied over already. The first run for this command will output something such as this:</p>
+<p>このコマンドは、初回実行時にエンジンからすべてのマイグレーションをコピーします。次回以降の実行時には、コピーされていないマイグレーションのみがコピーされます。このコマンドの初回実行時の出力結果は以下のようになります。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-Copied migration [timestamp_1]_create_blorgh_posts.rb from blorgh
+Copied migration [timestamp_1]_create_blorgh_articles.rb from blorgh
 Copied migration [timestamp_2]_create_blorgh_comments.rb from blorgh
 
 </pre>
 </div>
-<p>The first timestamp (<code>[timestamp_1]</code>) will be the current time, and the second timestamp (<code>[timestamp_2]</code>) will be the current time plus a second. The reason for this is so that the migrations for the engine are run after any existing migrations in the application.</p>
-<p>To run these migrations within the context of the application, simply run <code>rake db:migrate</code>. When accessing the engine through <code>http://localhost:3000/blog</code>, the posts will be empty. This is because the table created inside the application is different from the one created within the engine. Go ahead, play around with the newly mounted engine. You'll find that it's the same as when it was only an engine.</p>
-<p>If you would like to run migrations only from one engine, you can do it by specifying <code>SCOPE</code>:</p>
+<p>最初のタイムスタンプ (<code>[timestamp_1]</code>) が現在時刻、次のタイムスタンプ (<code>[timestamp_2]</code>) が現在時刻に1秒追加した値になります。このようになっているのは、エンジンのマイグレーションはアプリケーションの既存のマイグレーションがすべて終わってから実行する必要があるためです。</p>
+<p>アプリケーションのコンテキストでマイグレーションを実行するには、単に<code>rake db:migirate</code>を実行します。<code>http://localhost:3000/blog</code>でエンジンにアクセスすると、記事は空の状態です。これは、アプリケーションの内部で作成されたテーブルはエンジンの内部で作成されたテーブルとは異なるためです。新しくマウントしたエンジンでもっといろいろやってみましょう。アプリケーションの動作は、エンジンを単体で動かしているときと同じであることに気付くことでしょう。</p>
+<p>エンジンを1つだけマイグレーションしたい場合、以下のように<code>SCOPE</code>を指定します。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 rake db:migrate SCOPE=blorgh
 
 </pre>
 </div>
-<p>This may be useful if you want to revert engine's migrations before removing it.
-To revert all migrations from blorgh engine you can run code such as:</p>
+<p>このオプションは、エンジンを削除する前にマイグレーションを元に戻したい場合などに便利です。blorghエンジンによるすべてのマイグレーションを基に戻したい場合は以下のようなコマンドを実行します。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 rake db:migrate SCOPE=blorgh VERSION=0
 
 </pre>
 </div>
-<h4 id="using-a-class-provided-by-the-application">4.3 Using a Class Provided by the Application</h4>
-<h5 id="using-a-model-provided-by-the-application">4.3.1 Using a Model Provided by the Application</h5>
-<p>When an engine is created, it may want to use specific classes from an application to provide links between the pieces of the engine and the pieces of the application. In the case of the <code>blorgh</code> engine, making posts and comments have authors would make a lot of sense.</p>
-<p>A typical application might have a <code>User</code> class that would be used to represent authors for a post or a comment. But there could be a case where the application calls this class something different, such as <code>Person</code>. For this reason, the engine should not hardcode associations specifically for a <code>User</code> class.</p>
-<p>To keep it simple in this case, the application will have a class called <code>User</code> that represents the users of the application. It can be generated using this
-command inside the application:</p>
+<h4 id="アプリケーションが提供するクラスを使用する">4.3 アプリケーションが提供するクラスを使用する</h4>
+<h5 id="アプリケーションが提供するモデルを使用する">4.3.1 アプリケーションが提供するモデルを使用する</h5>
+<p>エンジンをひとつ作成すると、やがてエンジンの部品とアプリケーションの部品を連携させるために、アプリケーションの特定のクラスをエンジンから利用したくなるでしょう。この<code>blorgh</code>エンジンであれば、記事とコメントの作者の情報がある方がずっとわかりやすくなります。</p>
+<p>普通のアプリケーションであれば、記事やコメントの作者を表すための<code>User</code>クラスが備わっているでしょう。しかしクラス名がUserとは限りません。アプリケーションによっては<code>Person</code>というクラスであるかもしれません。このような状況に対応するために、このエンジンでは<code>User</code>クラスとの関連付けをハードコードしないようにすべきです。</p>
+<p>ここでは話を簡単にするため、アプリケーションがユーザーを表すために持つクラスは<code>User</code>であるとします (この後でもっとカスタマイズしやすくします)。このクラスは、アプリケーションで以下のコマンドを実行して生成できます。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 rails g model user name:string
 
 </pre>
 </div>
-<p>The <code>rake db:migrate</code> command needs to be run here to ensure that our application has the <code>users</code> table for future use.</p>
-<p>Also, to keep it simple, the posts form will have a new text field called <code>author_name</code>, where users can elect to put their name. The engine will then take this name and either create a new <code>User</code> object from it, or find one that already has that name. The engine will then associate the post with the found or created <code>User</code> object.</p>
-<p>First, the <code>author_name</code> text field needs to be added to the <code>app/views/blorgh/posts/_form.html.erb</code> partial inside the engine. This can be added above the <code>title</code> field with this code:</p>
+<p>今後<code>users</code>テーブルをアプリケーションで使用できるようにするために、ここで<code>rake db:migrate</code>を実行する必要があります。</p>
+<p>話を簡単にするため、記事のフォームのテキストフィールドは<code>author_name</code>とすることにします。記事を書くユーザーがここに自分の名前を入れられるようにします。エンジンはこの名前を使用して<code>User</code>オブジェクトを新規作成するか、その名前が既にあるかどうかを調べます。続いて、エンジンは作成または見つけた<code>User</code>オブジェクトを記事と関連付けます。</p>
+<p>最初に、<code>author_name</code>テキストフィールドをエンジンのパーシャル<code>app/views/blorgh/articles/_form.html.erb</code>に追加する必要があります。そこで、以下のコードを<code>title</code>フィールドのすぐ上に追加します。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 &lt;div class="field"&gt;
@@ -755,17 +747,17 @@ rails g model user name:string
 
 </pre>
 </div>
-<p>Next, we need to update our <code>Blorgh::PostController#post_params</code> method to permit the new form parameter:</p>
+<p>続いて、エンジンの<code>Blorgh::ArticleController#article_params</code>メソッドを更新して、新しいフォームパラメータを受け付けるようにする必要もあります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-def post_params
-  params.require(:post).permit(:title, :text, :author_name)
+def article_params
+  params.require(:article).permit(:title, :text, :author_name)
 end
 
 </pre>
 </div>
-<p>The <code>Blorgh::Post</code> model should then have some code to convert the <code>author_name</code> field into an actual <code>User</code> object and associate it as that post's <code>author</code> before the post is saved. It will also need to have an <code>attr_accessor</code> set up for this field, so that the setter and getter methods are defined for it.</p>
-<p>To do all this, you'll need to add the <code>attr_accessor</code> for <code>author_name</code>, the association for the author and the <code>before_save</code> call into <code>app/models/blorgh/post.rb</code>. The <code>author</code> association will be hard-coded to the <code>User</code> class for the time being.</p>
+<p>次に、<code>Blorgh::Article</code>モデルにも<code>author_name</code>フィールドを実際の<code>User</code>オブジェクトに変換し、<code>User</code>オブジェクトを記事の<code>author</code>と関連付けてから記事を保存するコードが必要です。このフィールド用の<code>attr_accessor</code>も設定する必要があります。これにより、このフィールド用のゲッターとセッターが定義されます。</p>
+<p>これらをすべて行なうには、<code>author_name</code>用の<code>attr_accessor</code>と、authorとの関連付け、および<code>before_save</code>呼び出しを<code>app/models/blorgh/article.rb</code>に追加する必要があります。<code>author</code>関連付けは、この時点ではあえて<code>User</code>クラスとハードコードしておきます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 attr_accessor :author_name
@@ -780,59 +772,55 @@ private
 
 </pre>
 </div>
-<p>By representing the <code>author</code> association's object with the <code>User</code> class, a link is established between the engine and the application. There needs to be a way of associating the records in the <code>blorgh_posts</code> table with the records in the <code>users</code> table. Because the association is called <code>author</code>, there should be an <code>author_id</code> column added to the <code>blorgh_posts</code> table.</p>
-<p>To generate this new column, run this command within the engine:</p>
+<p><code>author</code>オブジェクトと<code>User</code>クラスの関連付けを示すことにより、エンジンとアプリケーションの間にリンクが確立されます。<code>blorgh_articles</code>テーブルのレコードと、<code>users</code>テーブルのレコードを関連付けるための方法が必要です。この関連付けは<code>author</code>という名前なので、<code>blorgh_articles</code>テーブルには<code>author_id</code>というカラムが追加される必要があります。</p>
+<p>この新しいカラムを追加するには、エンジンのディレクトリで以下のコマンドを実行する必要があります。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-$ rails g migration add_author_id_to_blorgh_posts author_id:integer
+$ bin/rails g migration add_author_id_to_blorgh_articles author_id:integer
 
 </pre>
 </div>
-<div class="note"><p>Due to the migration's name and the column specification after it, Rails will automatically know that you want to add a column to a specific table and write that into the migration for you. You don't need to tell it any more than this.</p></div>
-<p>This migration will need to be run on the application. To do that, it must first be copied using this command:</p>
+<p>メモ: 上のようにコマンドオプションでマイグレーション名とカラムの仕様を指定することで、特定のテーブルに追加しようとしているカラムがRailsによって自動的に認識され、そのためのマイグレーションが作成されます。この他にオプションを指定する必要はありません。</p>
+<p>このマイグレーションはアプリケーションに対して実行する必要があります。これを行なうには、最初に以下のコマンドを実行してマイグレーションをエンジンからコピーする必要があります。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ rake blorgh:install:migrations
 
 </pre>
 </div>
-<p>Notice that only <em>one</em> migration was copied over here. This is because the first two migrations were copied over the first time this command was run.</p>
+<p>上のコマンドでコピーされるマイグレーションは <em>1つ</em> だけである点にご注意ください。これは、最初の2つのマイグレーションはこのコマンドが初めて実行されたときにコピー済みであるためです。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-NOTE Migration [timestamp]_create_blorgh_posts.rb from blorgh has been
-skipped. Migration with the same name already exists. NOTE Migration
-[timestamp]_create_blorgh_comments.rb from blorgh has been skipped. Migration
-with the same name already exists. Copied migration
-[timestamp]_add_author_id_to_blorgh_posts.rb from blorgh 
+NOTE Migration [timestamp]_create_blorgh_articles.rb from blorgh has been skipped. Migration with the same name already exists. NOTE Migration [timestamp]_create_blorgh_comments.rb from blorgh has been skipped. Migration with the same name already exists. Copied migration [timestamp]_add_author_id_to_blorgh_articles.rb from blorgh
 
 </pre>
 </div>
-<p>Run the migration using:</p>
+<p>このマイグレーションを実行するコマンドは以下のとおりです。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ rake db:migrate
 
 </pre>
 </div>
-<p>Now with all the pieces in place, an action will take place that will associate an author - represented by a record in the <code>users</code> table - with a post, represented by the <code>blorgh_posts</code> table from the engine.</p>
-<p>Finally, the author's name should be displayed on the post's page. Add this code above the "Title" output inside <code>app/views/blorgh/posts/show.html.erb</code>:</p>
+<p>これですべての部品が定位置に置かれ、ある記事 (article) を、<code>users</code>テーブルのレコードで表される作者 (author) に関連付けるアクションが実行されるようになりました。この記事は<code>blorgh_articles</code>テーブルで表されます。</p>
+<p>最後に、作者名を記事のページに表示しましょう。以下のコードを<code>app/views/blorgh/articles/show.html.erb</code>の"Title"出力の上に追加します。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 &lt;p&gt;
   &lt;b&gt;Author:&lt;/b&gt;
-  &lt;%= @post.author %&gt;
+  &lt;%= @article.author %&gt;
 &lt;/p&gt;
 
 </pre>
 </div>
-<p>By outputting <code>@post.author</code> using the <code>&lt;%=</code> tag, the <code>to_s</code> method will be called on the object. By default, this will look quite ugly:</p>
+<p><code>&lt;%=</code>タグを使用して<code>@article.author</code>を出力すると、<code>to_s</code>メソッドがこのオブジェクトに対して呼び出されます。この出力はデフォルトのままでは整形されていません。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 #&lt;User:0x00000100ccb3b0&gt;
 
 </pre>
 </div>
-<p>This is undesirable. It would be much better to have the user's name there. To do this, add a <code>to_s</code> method to the <code>User</code> class within the application:</p>
+<p>これは期待していた結果ではありません。ここにユーザー名が表示される方がずっとよいでしょう。そのためには、<code>to_s</code>メソッドをアプリケーションの<code>User</code>クラスに追加します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 def to_s
@@ -841,9 +829,9 @@ end
 
 </pre>
 </div>
-<p>Now instead of the ugly Ruby object output, the author's name will be displayed.</p>
-<h5 id="using-a-controller-provided-by-the-application">4.3.2 Using a Controller Provided by the Application</h5>
-<p>Because Rails controllers generally share code for things like authentication and accessing session variables, they inherit from <code>ApplicationController</code> by default. Rails engines, however are scoped to run independently from the main application, so each engine gets a scoped <code>ApplicationController</code>. This namespace prevents code collisions, but often engine controllers need to access methods in the main application's <code>ApplicationController</code>. An easy way to provide this access is to change the engine's scoped <code>ApplicationController</code> to inherit from the main application's <code>ApplicationController</code>. For our Blorgh engine this would be done by changing <code>app/controllers/blorgh/application_controller.rb</code> to look like:</p>
+<p>これでRubyの生のオブジェクト出力が整形され、作者名が表示されるようになります。</p>
+<h5 id="アプリケーションのコントローラを使用する">4.3.2 アプリケーションのコントローラを使用する</h5>
+<p>Railsのコントローラでは、認証やセッション変数へのアクセスに関するコードをアプリケーション全体で共有するのが一般的です。従って、このようなコードはデフォルトで<code>ApplicationController</code>から継承します。しかし、Railsのエンジンは基本的にメインとなるアプリケーションから独立しているので、エンジンが利用できる<code>ApplicationController</code>はスコープで制限されています。名前空間が導入されていることでコードの衝突は回避されますが、エンジンのコントローラからメインアプリケーションの<code>ApplicationController</code>のメソッドにアクセスする必要も頻繁に発生します。エンジンのコントローラからメインアプリケーションの<code>ApplicationController</code>へのアクセスを提供するには、エンジンが所有するスコープ付きの<code>ApplicationController</code>に変更を加え、メインアプリケーションの<code>ApplicationController</code>を継承するのが簡単な方法です。Blorghエンジンの場合、<code>app/controllers/blorgh/application_controller.rb</code>を以下のように変更します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class Blorgh::ApplicationController &lt; ApplicationController
@@ -851,35 +839,35 @@ end
 
 </pre>
 </div>
-<p>By default, the engine's controllers inherit from <code>Blorgh::ApplicationController</code>. So, after making this change they will have access to the main application's <code>ApplicationController</code>, as though they were part of the main application.</p>
-<p>This change does require that the engine is run from a Rails application that has an <code>ApplicationController</code>.</p>
-<h4 id="configuring-an-engine">4.4 Configuring an Engine</h4>
-<p>This section covers how to make the <code>User</code> class configurable, followed by general configuration tips for the engine.</p>
-<h5 id="setting-configuration-settings-in-the-application">4.4.1 Setting Configuration Settings in the Application</h5>
-<p>The next step is to make the class that represents a <code>User</code> in the application customizable for the engine. This is because that class may not always be <code>User</code>, as previously explained. To make this setting customizable, the engine will have a configuration setting called <code>author_class</code> that will be used to specify which class represents users inside the application.</p>
-<p>To define this configuration setting, you should use a <code>mattr_accessor</code> inside the <code>Blorgh</code> module for the engine. Add this line to <code>lib/blorgh.rb</code> inside the engine:</p>
+<p>エンジンのコントローラはデフォルトで<code>Blorgh::ApplicationController</code>を継承します。上の変更を行なうことで、あたかもエンジンがアプリケーションの一部であるかのように、エンジンのコントローラで<code>ApplicationController</code>にアクセスできるようになります。</p>
+<p>この変更を行なうには、エンジンをホストするRailsアプリケーションに<code>ApplicationController</code>という名前のコントローラが存在する必要があります。</p>
+<h4 id="エンジンを設定する">4.4 エンジンを設定する</h4>
+<p>このセクションでは、<code>User</code>クラスをカスタマイズ可能にする方法を解説し、続いてエンジンの一般的な設定方法について解説します。</p>
+<h5 id="アプリケーションの設定を行なう">4.4.1 アプリケーションの設定を行なう</h5>
+<p>これより、アプリケーションで<code>User</code>を表すクラスをエンジンからカスタマイズ可能にする方法について説明します。カスタマイズしたいクラスは、前述の<code>User</code>のようなクラスばかりとは限りません。このクラスの設定をカスタマイズ可能にするには、エンジン内部に<code>author_class</code>という名前の設定が必要です。この設定は、親アプリケーション内部でユーザーを表すクラスがどれであるかを指定するためのものです。</p>
+<p>この設定を定義するには、エンジンで使用する<code>Blorgh</code>モジュール内部に<code>mattr_accessor</code>というアクセッサを置く必要があります。エンジンにある<code>lib/blorgh.rb</code>に以下の行を追加します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 mattr_accessor :author_class
 
 </pre>
 </div>
-<p>This method works like its brothers, <code>attr_accessor</code> and <code>cattr_accessor</code>, but provides a setter and getter method on the module with the specified name. To use it, it must be referenced using <code>Blorgh.author_class</code>.</p>
-<p>The next step is to switch the <code>Blorgh::Post</code> model over to this new setting. Change the <code>belongs_to</code> association inside this model (<code>app/models/blorgh/post.rb</code>) to this:</p>
+<p>このメソッドの動作は<code>attr_accessor</code>や<code>cattr_accessor</code>などの兄弟メソッドと似ていますが、モジュールのゲッター名とセッター名に指定された名前を使用します。これらを使用する場合は<code>Blorgh.author_class</code>という名前で参照する必要があります。</p>
+<p>続いて、<code>Blorgh::Article</code>モデルの設定をこの新しい設定に切り替えます。<code>app/models/blorgh/article.rb</code>モデル内の<code>belongs_to</code>関連付けを以下のように変更します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 belongs_to :author, class_name: Blorgh.author_class
 
 </pre>
 </div>
-<p>The <code>set_author</code> method in the <code>Blorgh::Post</code> model should also use this class:</p>
+<p><code>Blorgh::Article</code>モデルの<code>set_author</code>メソッドは以下のクラスも使用する必要があります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 self.author = Blorgh.author_class.constantize.find_or_create_by(name: author_name)
 
 </pre>
 </div>
-<p>To save having to call <code>constantize</code> on the <code>author_class</code> result all the time, you could instead just override the <code>author_class</code> getter method inside the <code>Blorgh</code> module in the <code>lib/blorgh.rb</code> file to always call <code>constantize</code> on the saved value before returning the result:</p>
+<p><code>author_class</code>で保存時に<code>constantize</code>が必ず呼び出されるようにしたい場合は、<code>lib/blorgh.rb</code>の<code>Blorgh</code>モジュール内部の<code>author_class</code>ゲッターメソッドをオーバーライドするだけでできます。これにより、値の保存時に必ず<code>constantize</code>を呼び出してから結果が返されます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 def self.author_class
@@ -888,57 +876,57 @@ end
 
 </pre>
 </div>
-<p>This would then turn the above code for <code>set_author</code> into this:</p>
+<p>これにより、<code>set_author</code>用の上のコードは以下のようになります。●</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 self.author = Blorgh.author_class.find_or_create_by(name: author_name)
 
 </pre>
 </div>
-<p>Resulting in something a little shorter, and more implicit in its behavior. The <code>author_class</code> method should always return a <code>Class</code> object.</p>
-<p>Since we changed the <code>author_class</code> method to return a <code>Class</code> instead of a <code>String</code>, we must also modify our <code>belongs_to</code> definition in the <code>Blorgh::Post</code> model:</p>
+<p>これにより、記述がやや短くなり、動作がやや明示的でなくなります。●この<code>author_class</code>メソッドは常に<code>Class</code>オブジェクトを返す必要があります。</p>
+<p><code>author_class</code>メソッドが<code>String</code>ではなく<code>Class</code>を返すように変更したので、<code>Blorgh::Article</code>の<code>belongs_to</code>定義もそれに合わせて変更する必要があります。
+●</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 belongs_to :author, class_name: Blorgh.author_class.to_s
 
 </pre>
 </div>
-<p>To set this configuration setting within the application, an initializer should be used. By using an initializer, the configuration will be set up before the application starts and calls the engine's models, which may depend on this configuration setting existing.</p>
-<p>Create a new initializer at <code>config/initializers/blorgh.rb</code> inside the application where the <code>blorgh</code> engine is installed and put this content in it:</p>
+<p>この設定をアプリケーション内で行なうには、イニシャライザを使用する必要があります。イニシャライザを使用することで、アプリケーションの設定はアプリケーションが起動してエンジンのモデルを呼び出すまでに完了します。この動作は既存のこの設定に依存する場合があります。</p>
+<p><code>blorgh</code>がインストールされてアプリケーションの<code>config/initializers/blorgh.rb</code>にイニシャライザを作成してみましょう。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Blorgh.author_class = "User"
 
 </pre>
 </div>
-<div class="warning"><p>It's very important here to use the <code>String</code> version of the class, rather than the class itself. If you were to use the class, Rails would attempt to load that class and then reference the related table. This could lead to problems if the table wasn't already existing. Therefore, a <code>String</code> should be used and then converted to a class using <code>constantize</code> in the engine later on.</p></div>
-<p>Go ahead and try to create a new post. You will see that it works exactly in the same way as before, except this time the engine is using the configuration setting in <code>config/initializers/blorgh.rb</code> to learn what the class is.</p>
-<p>There are now no strict dependencies on what the class is, only what the API for the class must be. The engine simply requires this class to define a <code>find_or_create_by</code> method which returns an object of that class, to be associated with a post when it's created. This object, of course, should have some sort of identifier by which it can be referenced.</p>
-<h5 id="general-engine-configuration">4.4.2 General Engine Configuration</h5>
-<p>Within an engine, there may come a time where you wish to use things such as initializers, internationalization or other configuration options. The great news is that these things are entirely possible, because a Rails engine shares much the same functionality as a Rails application. In fact, a Rails application's functionality is actually a superset of what is provided by engines!</p>
-<p>If you wish to use an initializer - code that should run before the engine is loaded - the place for it is the <code>config/initializers</code> folder. This directory's functionality is explained in the <a href="configuring.html#initializers">Initializers section</a> of the Configuring guide, and works precisely the same way as the <code>config/initializers</code> directory inside an application. The same thing goes if you want to use a standard initializer.</p>
-<p>For locales, simply place the locale files in the <code>config/locales</code> directory, just like you would in an application.</p>
-<h3 id="testing-an-engine">5 Testing an engine</h3>
-<p>When an engine is generated, there is a smaller dummy application created inside it at <code>test/dummy</code>. This application is used as a mounting point for the engine, to make testing the engine extremely simple. You may extend this application by generating controllers, models or views from within the directory, and then use those to test your engine.</p>
-<p>The <code>test</code> directory should be treated like a typical Rails testing environment, allowing for unit, functional and integration tests.</p>
-<h4 id="functional-tests">5.1 Functional Tests</h4>
-<p>A matter worth taking into consideration when writing functional tests is that the tests are going to be running on an application - the <code>test/dummy</code> application - rather than your engine. This is due to the setup of the testing environment; an engine needs an application as a host for testing its main
-functionality, especially controllers. This means that if you were to make a typical <code>GET</code> to a controller in a controller's functional test like this:</p>
+<p>警告: このクラス名は必ず<code>String</code>で (=引用符で囲んで) 表してください。クラス自身を使用しないでください。クラス自身が使用されていると、Railsはそのクラスを読み込んで関連するテーブルを参照しようとします。このとき参照先のテーブルが存在しないと問題が発生する可能性があります。このため、クラス名は<code>String</code>で表し、後にエンジンが<code>constantize</code>でクラスに変換する必要があります。</p>
+<p>続いて、新しい記事を1つ作成してみることにしましょう。記事の作成はこれまでとまったく同様に行えます。1つだけ異なるのは、今回はクラスの動作を学ぶために<code>config/initializers/blorgh.rb</code>の設定をエンジンで使用する点です。</p>
+<p>使用するクラスがそのためのAPIさえ備えていれば、使用するクラスに厳密に依存することはありません。エンジンで使用するクラスで必須となるメソッドは<code>find_or_create_by</code>のみです。このメソッドはそのクラスのオブジェクトを1つ返します。もちろん、このオブジェクトは何らかの形で参照可能な識別子 (id) を持つ必要があります。</p>
+<h5 id="一般的なエンジンの設定">4.4.2 一般的なエンジンの設定</h5>
+<p>エンジンを使ううちに、その中でイニシャライザや国際化などの機能オプションを使用したくなることでしょう。うれしいことに、RailsエンジンはRailsアプリケーションと大半の機能を共有しているので、これらは完全に実現可能です。実際、Railsアプリケーションが持つ機能はエンジンが持つ機能のスーパーセットなのです。</p>
+<p>たとえばイニシャライザ (エンジンが読み込まれる前に実行されるコード) を使用したいのであれば、そのための場所である<code>config/initializers</code>フォルダに置きます。このディレクトリの機能については『Railsアプリケーションを設定する』ガイドの<a href="configuring.html#initializers">イニシャライザファイルを使用する</a>を参照してください。エンジンのイニシャライザは、アプリケーションの<code>config/initializers</code>ディレクトリに置かれているイニシャライザとまったく同様に動作します。標準のイニシャライザを使用したい場合も同様です。</p>
+<p>ロケールファイルも、アプリケーションの場合と同様<code>config/locales</code>ディレクトリに置けばよいようになっています。</p>
+<h3 id="エンジンをテストする">5 エンジンをテストする</h3>
+<p>エンジンが生成されると、<code>test/dummy</code>ディレクトリの下に小規模なダミーアプリケーションが自動的に配置されます。このダミーアプリケーションはエンジンのマウント場所として使用されるので、エンジンのテストがきわめてシンプルになります。このディレクトリ内でコントローラやモデル、ビューを生成してアプリケーションを拡張し、続いてこれらを使用してエンジンをテストできます。</p>
+<p><code>test</code>ディレクトリは、通常のRailsにおけるtesting環境と同様に扱う必要があります。Railsのtesting環境では単体テスト、機能テスト、結合テストを行なうことができます。</p>
+<h4 id="機能テスト">5.1 機能テスト</h4>
+<p>特に機能テストを作成する際には、テストが実行されるのはエンジンではなく<code>test/dummy</code>に置かれるダミーアプリケーション上であるという点に留意する必要があります。このようになっているのは、testing環境がそのように設定されているためです。エンジンの主要な機能、特にコントローラをテストするには、エンジンをホストするアプリケーションが必要です。コントローラの機能は、通常であればたとえば以下のように<code>GET</code>をコントローラに送信することでテストするでしょう。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 get :index
 
 </pre>
 </div>
-<p>It may not function correctly. This is because the application doesn't know how to route these requests to the engine unless you explicitly tell it <strong>how</strong>. To do this, you must also pass the <code>:use_route</code> option as a parameter on these requests:</p>
+<p>しかしこれは正常に機能しないでしょう。アプリケーションは、このようなリクエストをエンジンにルーティングする方法を知らないので、明示的にエンジンにルーティングする必要があります。これを行なうには、以下のようにリクエストのパラメータとして<code>:use_route</code>オプションを渡す必要があります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 get :index, use_route: :blorgh
 
 </pre>
 </div>
-<p>This tells the application that you still want to perform a <code>GET</code> request to the <code>index</code> action of this controller, but you want to use the engine's route to get there, rather than the application's one.</p>
-<p>Another way to do this is to assign the <code>@routes</code> instance variable to <code>Engine.routes</code> in your test setup:</p>
+<p>上のようにすることで、このコントローラの<code>index</code>アクションに対して<code>GET</code>リクエストを送信しようとしていることがアプリケーションによって認識され、かつそのためにアプリケーションのルーティングではなくエンジンのルーティングが使用されるようになります。</p>
+<p>別の方法として、テスティング設定で<code>@routes</code>インスタンス変数に<code>Engine.routes</code>を割り当てることもできます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 setup do
@@ -947,15 +935,15 @@ end
 
 </pre>
 </div>
-<p>This will also ensure url helpers for the engine will work as expected in your tests.</p>
-<h3 id="improving-engine-functionality">6 Improving engine functionality</h3>
-<p>This section explains how to add and/or override engine MVC functionality in the main Rails application.</p>
-<h4 id="overriding-models-and-controllers">6.1 Overriding Models and Controllers</h4>
-<p>Engine model and controller classes can be extended by open classing them in the main Rails application (since model and controller classes are just Ruby classes that inherit Rails specific functionality). Open classing an Engine class redefines it for use in the main application. This is usually implemented by using the decorator pattern.</p>
-<p>For simple class modifications, use <code>Class#class_eval</code>. For complex class modifications, consider using <code>ActiveSupport::Concern</code>.</p>
-<h5 id="a-note-on-decorators-and-loading-code">6.1.1 A note on Decorators and Loading Code</h5>
-<p>Because these decorators are not referenced by your Rails application itself, Rails' autoloading system will not kick in and load your decorators. This means that you need to require them yourself.</p>
-<p>Here is some sample code to do this:</p>
+<p>こうすることで、エンジン用のURLヘルパーもテストで期待どおりに動作します。</p>
+<h3 id="エンジンの機能を改良する">6 エンジンの機能を改良する</h3>
+<p>このセクションでは、エンジンのMVC機能をメインのRailsアプリケーションに追加またはオーバーライドする方法について解説します。</p>
+<h4 id="モデルとコントローラをオーバーライドする">6.1 モデルとコントローラをオーバーライドする</h4>
+<p>エンジンのモデルクラスとコントローラクラスは、オープンクラスとしてメインのRailsアプリケーションで拡張可能です。Railsのモデルクラスとコントローラクラスは、Rails特有の機能を継承しているほかは通常のRubyクラスと変わりありません。エンジンのクラスをオープンクラス化 (open classing) することで、メインのアプリケーションで使用できるように再定義されます。これは、デザインパターンで言うdecoratorパターンとして実装するのが普通です。</p>
+<p>クラスの変更内容が単純であれば、<code>Class#class_eval</code>を使用します。クラスの変更が複雑な場合は、<code>ActiveSupport::Concern</code>の使用をご検討ください。</p>
+<h5 id="デコレータとコードの読み込みに関するメモ">6.1.1 デコレータとコードの読み込みに関するメモ</h5>
+<p>Railsアプリケーション自身はこれらのデコレータを参照することはないので、Railsの自動読み込み機能ではこれらのデコレータを読み込んだり起動したりできません。つまり、デコレータは手動でrequireする必要があるということです。</p>
+<p>これを行なうためのサンプルコードをいくつか掲載します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # lib/blorgh/engine.rb
@@ -973,14 +961,14 @@ end
 
 </pre>
 </div>
-<p>This doesn't apply to just Decorators, but anything that you add in an engine that isn't referenced by your main application.</p>
-<h5 id="implementing-decorator-pattern-using-class#class_eval">6.1.2 Implementing Decorator Pattern Using Class#class_eval</h5>
-<p><strong>Adding</strong> <code>Post#time_since_created</code>:</p>
+<p>上のコードは、デコレータだけではなく、メインのアプリケーションから参照されないすべてのエンジンのコードを読み込みます。</p>
+<h5 id="class#class_evalを使用してdecoratorパターンを実装する">6.1.2 Class#class_evalを使用してdecoratorパターンを実装する</h5>
+<p><code>Article#time_since_created</code>を<strong>追加する</strong>場合:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-# MyApp/app/decorators/models/blorgh/post_decorator.rb
+# MyApp/app/decorators/models/blorgh/article_decorator.rb
 
-Blorgh::Post.class_eval do
+Blorgh::Article.class_eval do
   def time_since_created
     Time.current - created_at
   end
@@ -990,20 +978,20 @@ end
 </div>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-# Blorgh/app/models/post.rb
+# Blorgh/app/models/article.rb
 
-class Post &lt; ActiveRecord::Base
+class Article &lt; ActiveRecord::Base
   has_many :comments
 end
 
 </pre>
 </div>
-<p><strong>Overriding</strong> <code>Post#summary</code>:</p>
+<p><code>Article#summary</code>を<strong>オーバーライド</strong>する場合:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-# MyApp/app/decorators/models/blorgh/post_decorator.rb
+# MyApp/app/decorators/models/blorgh/article_decorator.rb
 
-Blorgh::Post.class_eval do
+Blorgh::Article.class_eval do
   def summary
     "#{title} - #{truncate(text)}"
   end
@@ -1013,9 +1001,9 @@ end
 </div>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-# Blorgh/app/models/post.rb
+# Blorgh/app/models/article.rb
 
-class Post &lt; ActiveRecord::Base
+class Article &lt; ActiveRecord::Base
   has_many :comments
   def summary
     "#{title}"
@@ -1024,15 +1012,15 @@ end
 
 </pre>
 </div>
-<h5 id="implementing-decorator-pattern-using-activesupport::concern">6.1.3 Implementing Decorator Pattern Using ActiveSupport::Concern</h5>
-<p>Using <code>Class#class_eval</code> is great for simple adjustments, but for more complex class modifications, you might want to consider using <a href="http://edgeapi.rubyonrails.org/classes/ActiveSupport/Concern.html"><code>ActiveSupport::Concern</code></a>. ActiveSupport::Concern manages load order of interlinked dependent modules and classes at run time allowing you to significantly modularize your code.</p>
-<p><strong>Adding</strong> <code>Post#time_since_created</code> and <strong>Overriding</strong> <code>Post#summary</code>:</p>
+<h5 id="activesupport::concernを使用してdecoratorパターンを実装する">6.1.3 ActiveSupport::Concernを使用してdecoratorパターンを実装する</h5>
+<p><code>Class#class_eval</code>は単純な調整には大変便利ですが、クラスの変更が複雑になるのであれば<a href="http://edgeapi.rubyonrails.org/classes/ActiveSupport/Concern.html"><code>ActiveSupport::Concern</code></a>をご検討ください。ActiveSupport::Concernは、相互にリンクしている依存モジュールおよび依存クラスの実行時読み込み順序を管理し、コードのモジュール化を高めます。</p>
+<p><code>Article#time_since_created</code>を<strong>追加</strong>して<code>Article#summary</code>を<strong>オーバーライド</strong>する場合:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-# MyApp/app/models/blorgh/post.rb
+# MyApp/app/models/blorgh/article.rb
 
-class Blorgh::Post &lt; ActiveRecord::Base
-  include Blorgh::Concerns::Models::Post
+class Blorgh::Article &lt; ActiveRecord::Base
+  include Blorgh::Concerns::Models::Article
 
   def time_since_created
     Time.current - created_at
@@ -1047,24 +1035,24 @@ end
 </div>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-# Blorgh/app/models/post.rb
+# Blorgh/app/models/article.rb
 
-class Post &lt; ActiveRecord::Base
-  include Blorgh::Concerns::Models::Post
+class Article &lt; ActiveRecord::Base
+  include Blorgh::Concerns::Models::Article
 end
 
 </pre>
 </div>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-# Blorgh/lib/concerns/models/post
+# Blorgh/lib/concerns/models/article
 
-module Blorgh::Concerns::Models::Post
+module Blorgh::Concerns::Models::Article
   extend ActiveSupport::Concern
 
-  # 'included do' causes the included code to be evaluated in the
-  # context where it is included (post.rb), rather than being
-  # executed in the module's context (blorgh/concerns/models/post).
+  # 'included do'は、インクルードされたコードを
+  # それがインクルードされている (article.rb) コンテキストで評価する
+  # そのモジュールのコンテキストで実行されている (blorgh/concerns/models/article) は評価しない
   included do
     attr_accessor :author_name
     belongs_to :author, class_name: "User"
@@ -1090,83 +1078,82 @@ end
 
 </pre>
 </div>
-<h4 id="overriding-views">6.2 Overriding Views</h4>
-<p>When Rails looks for a view to render, it will first look in the <code>app/views</code> directory of the application. If it cannot find the view there, it will check in the <code>app/views</code> directories of all engines that have this directory.</p>
-<p>When the application is asked to render the view for <code>Blorgh::PostsController</code>'s index action, it will first look for the path <code>app/views/blorgh/posts/index.html.erb</code> within the application. If it cannot find it, it will look inside the engine.</p>
-<p>You can override this view in the application by simply creating a new file at <code>app/views/blorgh/posts/index.html.erb</code>. Then you can completely change what this view would normally output.</p>
-<p>Try this now by creating a new file at <code>app/views/blorgh/posts/index.html.erb</code> and put this content in it:</p>
+<h4 id="ビューをオーバーライドする">6.2 ビューをオーバーライドする</h4>
+<p>Railsは出力すべきビューを探索する際に、アプリケーションの<code>app/views</code>ディレクトリを最初に探索します。探しているビューがそこにない場合、続いてそのディレクトリを持つすべてのエンジンの<code>app/views</code>ディレクトリを探索します。</p>
+<p>たとえば、アプリケーションが<code>Blorgh::ArticlesController</code>のindexアクションの結果を出力するためのビューを探索する際には、最初にアプリケーション自身の<code>app/views/blorgh/articles/index.html.erb</code>を探索します。そこに見つからない場合は、続いてエンジンの中を探索します。</p>
+<p><code>app/views/blorgh/articles/index.html.erb</code>というファイルを作成することで、上の動作を上書きすることができます。こうすることで、通常のビューでの出力結果を完全に変えることができます。</p>
+<p><code>app/views/blorgh/articles/index.html.erb</code>というファイルを作成して以下のコードを追加するとします。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-&lt;h1&gt;Posts&lt;/h1&gt;
-&lt;%= link_to "New Post", new_post_path %&gt;
-&lt;% @posts.each do |post| %&gt;
-  &lt;h2&gt;&lt;%= post.title %&gt;&lt;/h2&gt;
-  &lt;small&gt;By &lt;%= post.author %&gt;&lt;/small&gt;
-  &lt;%= simple_format(post.text) %&gt;
+&lt;h1&gt;Articles&lt;/h1&gt;
+&lt;%= link_to "New Article", new_article_path %&gt;
+&lt;% @articles.each do |article| %&gt;
+  &lt;h2&gt;&lt;%= article.title %&gt;&lt;/h2&gt;
+  &lt;small&gt;By &lt;%= article.author %&gt;&lt;/small&gt;
+  &lt;%= simple_format(article.text) %&gt;
   &lt;hr&gt;
 &lt;% end %&gt;
 
 </pre>
 </div>
-<h4 id="routes">6.3 Routes</h4>
-<p>Routes inside an engine are isolated from the application by default. This is done by the <code>isolate_namespace</code> call inside the <code>Engine</code> class. This essentially means that the application and its engines can have identically named routes and they will not clash.</p>
-<p>Routes inside an engine are drawn on the <code>Engine</code> class within <code>config/routes.rb</code>, like this:</p>
+<h4 id="ルーティング">6.3 ルーティング</h4>
+<p>デフォルトでは、エンジン内部のルーティングはアプリケーションのルーティングから分離されています。これは、<code>Engine</code>クラス内の<code>isolate_namespace</code>呼び出しによって実現されます。これは本質的に、アプリケーションとエンジンが完全に同一の名前のルーティングを持つことができ、しかも衝突しないということを意味します。</p>
+<p>エンジン内部のルーティングは、以下のように<code>config/routes.rb</code>の<code>Engine</code>クラスによって構成されます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Blorgh::Engine.routes.draw do
-  resources :posts
+  resources :articles
 end
 
 </pre>
 </div>
-<p>By having isolated routes such as this, if you wish to link to an area of an engine from within an application, you will need to use the engine's routing proxy method. Calls to normal routing methods such as <code>posts_path</code> may end up going to undesired locations if both the application and the engine have such a helper defined.</p>
-<p>For instance, the following example would go to the application's <code>posts_path</code> if that template was rendered from the application, or the engine's <code>posts_path</code> if it was rendered from the engine:</p>
+<p>エンジンとアプリケーションのルーティングがこのように分離されているので、アプリケーションの特定の部分をエンジンの特定の部分にリンクしたい場合は、エンジンのルーティングプロキシメソッドを使用する必要があります。<code>articles_path</code>のような通常のルーティングメソッドの呼び出しは、アプリケーションとエンジンの両方でそのようなヘルパーが定義されている場合には期待と異なる場所にリンクされる可能性があります。</p>
+<p>たとえば以下のコード例では、そのテンプレートがアプリケーションでレンダリングされる場合の行き先はアプリケーションの<code>articles_path</code>になり、エンジンでレンダリングされる場合の行き先はエンジンの<code>articles_path</code>になります。</p>
 <div class="code_container">
 <pre class="brush: ruby; html-script: true; gutter: false; toolbar: false">
-&lt;%= link_to "Blog posts", posts_path %&gt;
+&lt;%= link_to "Blog articles", articles_path %&gt;
 
 </pre>
 </div>
-<p>To make this route always use the engine's <code>posts_path</code> routing helper method, we must call the method on the routing proxy method that shares the same name as the engine.</p>
+<p>このルーティングを常にエンジンの<code>articles_path</code>ルーティングヘルパーメソッドで取り扱うようにしたい場合、以下のようにエンジンと同じ名前を共有するルーティングプロキシメソッドを呼び出す必要があります。</p>
 <div class="code_container">
 <pre class="brush: ruby; html-script: true; gutter: false; toolbar: false">
-&lt;%= link_to "Blog posts", blorgh.posts_path %&gt;
+&lt;%= link_to "Blog articles", blorgh.articles_path %&gt;
 
 </pre>
 </div>
-<p>If you wish to reference the application inside the engine in a similar way, use the <code>main_app</code> helper:</p>
+<p>逆にエンジン内部からアプリケーションを参照する場合は、同じ要領で<code>main_app</code>を使用します。</p>
 <div class="code_container">
 <pre class="brush: ruby; html-script: true; gutter: false; toolbar: false">
 &lt;%= link_to "Home", main_app.root_path %&gt;
 
 </pre>
 </div>
-<p>If you were to use this inside an engine, it would <strong>always</strong> go to the application's root. If you were to leave off the <code>main_app</code> "routing proxy" method call, it could potentially go to the engine's or application's root, depending on where it was called from.</p>
-<p>If a template rendered from within an engine attempts to use one of the application's routing helper methods, it may result in an undefined method call.
-If you encounter such an issue, ensure that you're not attempting to call the application's routing methods without the <code>main_app</code> prefix from within the engine.</p>
-<h4 id="assets">6.4 Assets</h4>
-<p>Assets within an engine work in an identical way to a full application. Because the engine class inherits from <code>Rails::Engine</code>, the application will know to look up assets in the engine's 'app/assets' and 'lib/assets' directories.</p>
-<p>Like all of the other components of an engine, the assets should be namespaced. This means that if you have an asset called <code>style.css</code>, it should be placed at <code>app/assets/stylesheets/[engine name]/style.css</code>, rather than <code>app/assets/stylesheets/style.css</code>. If this asset isn't namespaced, there is a possibility that the host application could have an asset named identically, in which case the application's asset would take precedence and the engine's one would be ignored.</p>
-<p>Imagine that you did have an asset located at <code>app/assets/stylesheets/blorgh/style.css</code> To include this asset inside an application, just use <code>stylesheet_link_tag</code> and reference the asset as if it were inside the engine:</p>
+<p>上のコードをエンジン内で使用すると、行き先は<strong>常に</strong>アプリケーションのルートになります。この<code>main_app</code>ルーティングプロキシメソッドを呼び出しを省略すると、行き先は呼び出された場所によってアプリケーションまたはエンジンのいずれかとなって確定しません。</p>
+<p>ルーティングプロキシメソッド呼び出しを省略したこのようなアプリケーションルーティングヘルパーメソッドを、エンジン内でレンダリングされるテンプレートから呼び出そうとすると、未定義メソッド呼び出しエラーが発生することがあります。このような問題が発生した場合は、アプリケーションのルーティングメソッドを、<code>main_app</code>というプレフィックスを付けずにエンジンから呼びだそうとしていないかどうかを確認してください。</p>
+<h4 id="アセット">6.4 アセット</h4>
+<p>エンジンのアセットは、通常のアプリケーションで使用されるアセットとまったく同じように機能します。エンジンのクラスは<code>Rails::Engine</code>を継承しているので、アプリケーションはエンジンの'app/assets'ディレクトリと'lib/assets'ディレクトリを探索対象として認識します。</p>
+<p>エンジン内の他のコンポーネントと同様、アセットも名前空間化される必要があります。たとえば、<code>style.css</code>というアセットは、<code>app/assets/stylesheets/style.css</code>ではなく<code>app/assets/stylesheets/[エンジン名]/style.css</code>に置かれる必要があります。アセットが名前空間化されないと、ホストアプリケーションに同じ名前のアセットが存在する場合にアプリケーションのアセットが使用されてエンジンのアセットが使用されないということが発生する可能性があります。</p>
+<p><code>app/assets/stylesheets/blorgh/style.css</code>というアセットを例にとって説明します。このアセットをアプリケーションに含めるには、<code>stylesheet_link_tag</code>を使用してアセットがあたかもエンジン内部にあるかのように参照します。</p>
 <div class="code_container">
 <pre class="brush: ruby; html-script: true; gutter: false; toolbar: false">
 &lt;%= stylesheet_link_tag "blorgh/style.css" %&gt;
 
 </pre>
 </div>
-<p>You can also specify these assets as dependencies of other assets using Asset Pipeline require statements in processed files:</p>
+<p>処理されるファイルでアセットパイプラインのrequireステートメントを使用して、これらのアセットが他のアセットに依存することを指定することもできます。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 /*
- *= require blorgh/style
+*= require blorgh/style
 */
 
 </pre>
 </div>
-<div class="info"><p>Remember that in order to use languages like Sass or CoffeeScript, you should add the relevant library to your engine's <code>.gemspec</code>.</p></div>
-<h4 id="separate-assets-&amp;-precompiling">6.5 Separate Assets &amp; Precompiling</h4>
-<p>There are some situations where your engine's assets are not required by the host application. For example, say that you've created an admin functionality that only exists for your engine. In this case, the host application doesn't need to require <code>admin.css</code> or <code>admin.js</code>. Only the gem's admin layout needs these assets. It doesn't make sense for the host app to include <code>"blorgh/admin.css"</code> in its stylesheets. In this situation, you should explicitly define these assets for precompilation.  This tells sprockets to add your engine assets when <code>rake assets:precompile</code> is triggered.</p>
-<p>You can define assets for precompilation in <code>engine.rb</code>:</p>
+<p>情報: SassやCoffeeScriptなどの言語を使用する場合は、必要なライブラリを<code>.gemspec</code>に追加する必要があります。</p>
+<h4 id="アセットとプリコンパイルを分離する">6.5 アセットとプリコンパイルを分離する</h4>
+<p>エンジンが持つアセットは、ホスト側のアプリケーションでは必ずしも必要ではないことがあります。たとえば、エンジンでしか使用しない管理機能を作成したとしましょう。この場合、ホストアプリケーションでは<code>admin.css</code>や<code>admin.js</code>は不要です。これらのアセットを必要とするのは、gemのadminレイアウトしかないからです。ホストアプリケーションから見れば、自分が持つスタイルシートに<code>"blorgh/admin.css"</code>を追加する意味はありません。このような場合、これらのアセットを明示的にプリコンパイルする必要があります。それにより、<code>rake assets:precompile</code>が実行されたときにエンジンのアセットを追加するようsprocketsに指示されます。</p>
+<p>プリコンパイルの対象となるアセットは<code>engine.rb</code>で定義できます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 initializer "blorgh.assets.precompile" do |app|
@@ -1175,25 +1162,25 @@ end
 
 </pre>
 </div>
-<p>For more information, read the <a href="asset_pipeline.html">Asset Pipeline guide</a>.</p>
-<h4 id="other-gem-dependencies">6.6 Other Gem Dependencies</h4>
-<p>Gem dependencies inside an engine should be specified inside the <code>.gemspec</code> file at the root of the engine. The reason is that the engine may be installed as a gem. If dependencies were to be specified inside the <code>Gemfile</code>, these would not be recognized by a traditional gem install and so they would not be installed, scausing the engine to malfunction.</p>
-<p>To specify a dependency that should be installed with the engine during a traditional <code>gem install</code>, specify it inside the <code>Gem::Specification</code> block inside the <code>.gemspec</code> file in the engine:</p>
+<p>詳細については、<a href="asset_pipeline.html">アセットパイプライン</a>ガイドを参照してください。</p>
+<h4 id="他のgemとの依存関係">6.6 他のgemとの依存関係</h4>
+<p>エンジンが依存するgemについては、エンジンのルートディレクトリの<code>.gemspec</code>に記述する必要があります。エンジンはgemとしてインストールされるので、このようにする必要があります。依存関係を<code>Gemfile</code>に指定したのでは伝統的なgemインストールで依存関係が認識されないので、必要なgemが自動的にインストールされず、エンジンが正常に機能しなくなります。</p>
+<p>伝統的な<code>gem install</code>コマンド実行時に同時にインストールされる必要のあるgemを指定するには、以下のようにエンジンの<code>.gemspec</code>ファイルにある<code>Gem::Specification</code>ブロックの内側に記述します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 s.add_dependency "moo"
 
 </pre>
 </div>
-<p>To specify a dependency that should only be installed as a development dependency of the application, specify it like this:</p>
+<p>アプリケーションの開発時にのみ必要となるgemのインストールを指定するには、以下のように記述します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 s.add_development_dependency "moo"
 
 </pre>
 </div>
-<p>Both kinds of dependencies will be installed when <code>bundle install</code> is run inside of the application. The development dependencies for the gem will only be used when the tests for the engine are running.</p>
-<p>Note that if you want to immediately require dependencies when the engine is required, you should require them before the engine's initialization. For example:</p>
+<p>どちらの依存gemも、アプリケーションで<code>bundle install</code>を実行するときにインストールされます。開発時にのみ必要となるgemは、エンジンのテスト実行中にのみ使用されます。</p>
+<p>エンジンがrequireされるときに依存gemもすぐにrequireしたい場合は、以下のようエンジンが初期化されるより前にrequireする必要があることにご注意ください。たとえば次のようになります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 require 'other_engine/engine'
