@@ -53,7 +53,7 @@
     <div class="wrapper clearfix">
       <h1><a href="/" title="Return to home page">railsguides.jp</a></h1>
       <ul class="nav">
-        <li><a class="nav-item" href="index.html">ホーム</a></li>
+        <li><a class="nav-item" href="/">ホーム</a></li>
         <li class="guides-index guides-index-large">
           <a href="index.html" id="guidesMenu" class="guides-index-item nav-item">ガイド目次</a>
           <div id="guides" class="clearfix" style="display: none;">
@@ -433,7 +433,7 @@ users = User.where(name: 'David', occupation: 'Code Artist').order('created_at D
 </div>
 <p>Active Recordモデルへのクエリについては<a href="active_record_querying.html">Active Recordクエリインターフェイス</a>ガイドで詳細を説明します。</p>
 <h4 id="update">5.3 Update</h4>
-<p>Active Recordオブジェクトをひとたび取得すると、オブジェクトの属性を変更してデータベースの保存できるようになります。</p>
+<p>Active Recordオブジェクトをひとたび取得すると、オブジェクトの属性を変更してデータベースに保存できるようになります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 user = User.find_by(name: 'David')
