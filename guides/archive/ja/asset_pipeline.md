@@ -540,7 +540,7 @@ NOTE: precompile配列にSassやCoffeeScriptファイルなどを追加する場
 
 マニフェストのデフォルトの置き場所は、`config.assets.prefix`で指定された場所のルートディレクトリ (デフォルトでは'/assets') です。
 
-NOTE: productionモードで見つからないプリコンパイル済みファイルがあると、If there are missing precompiled files in production you will get an `Sprockets::Helpers::RailsHelper::AssetPaths::AssetNotPrecompiledError` exception indicating the name of the missing file(s).
+NOTE: productionモードで見つからないプリコンパイル済みファイルがあると、見つからないファイル名をエラーメッセージに含んだ`Sprockets::Helpers::RailsHelper::AssetPaths::AssetNotPrecompiledError`が発生します。
 
 #### 遠い将来に期限切れになるヘッダー
 

@@ -720,7 +720,7 @@ end
 </pre>
 </div>
 <p>マニフェストのデフォルトの置き場所は、<code>config.assets.prefix</code>で指定された場所のルートディレクトリ (デフォルトでは'/assets') です。</p>
-<div class="note"><p>productionモードで見つからないプリコンパイル済みファイルがあると、If there are missing precompiled files in production you will get an <code>Sprockets::Helpers::RailsHelper::AssetPaths::AssetNotPrecompiledError</code> exception indicating the name of the missing file(s).</p></div>
+<div class="note"><p>productionモードで見つからないプリコンパイル済みファイルがあると、見つからないファイル名をエラーメッセージに含んだ<code>Sprockets::Helpers::RailsHelper::AssetPaths::AssetNotPrecompiledError</code>が発生します。</p></div>
 <h5 id="遠い将来に期限切れになるヘッダー">4.1.1 遠い将来に期限切れになるヘッダー</h5>
 <p>プリコンパイル済みのアセットはファイルシステム上に置かれ、Webサーバーから直接クライアントに提供されます。これらプリコンパイル済みアセットには、いわゆる遠い将来に期限切れになるヘッダ (far-future headers) はデフォルトでは含まれていません。したがって、フィンガープリントのメリットを得るためには、サーバーの設定を更新してこのヘッダを含める必要があります。</p>
 <p>Apacheの設定: </p>
