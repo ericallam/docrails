@@ -1,152 +1,110 @@
-Active Job Basics
+﻿
+Active Jobの基礎
 =================
 
-This guide provides you with all you need to get started in creating,
-enqueueing and executing background jobs.
+本ガイドでは、バックグラウンドで実行するジョブの作成やキュー登録 (エンキュー: enqueue) 、実行方法について解説します。
 
-After reading this guide, you will know:
+このガイドの内容:
 
-* How to create jobs.
-* How to enqueue jobs.
-* How to run jobs in the background.
-* How to send emails from your application async.
+* ジョブの作成方法
+* ジョブの登録方法
+* バックグラウンドでのジョブ実行方法
+* アプリケーションから非同期にメールを送信する方法
 
 --------------------------------------------------------------------------------
 
 
-Introduction
+はじめに
 ------------
 
-Active Job is a framework for declaring jobs and making them run on a variety
-of queueing backends. These jobs can be everything from regularly scheduled
-clean-ups, to billing charges, to mailings. Anything that can be chopped up
-into small units of work and run in parallel, really.
+Active Jobは、ジョブを宣言し、それによってバックエンドでさまざまな方法によるキュー操作を実行するためのフレームワークです。これらのジョブでは、定期的なクリーンアップを始めとして、請求書発行やメール配信など、どんなことでも実行できます。これらのジョブをより細かな作業単位に分割して並列実行することもできます。
 
 
-The Purpose of the Active Job
+Active Jobの目的
 -----------------------------
-The main point is to ensure that all Rails apps will have a job infrastructure
-in place, even if it's in the form of an "immediate runner". We can then have
-framework features and other gems build on top of that, without having to
-worry about API differences between various job runners such as Delayed Job
-and Resque. Picking your queuing backend becomes more of an operational concern,
-then. And you'll be able to switch between them without having to rewrite your jobs.
+Active Jobの主要な目的は、Railsアプリを即席で作成した直後でも使用できる、自前のジョブ管理インフラを持つことです。これにより、Delayed JobとResqueなどのように、さまざまなジョブ実行機能のAPIの違いを気にせずにジョブフレームワーク機能やその他のgemを搭載することができるようになります。バックエンドでのキューイング作業では、操作方法以外のことを気にせずに済みます。さらに、ジョブ管理フレームワークを切り替える際にジョブを書き直さずに済みます。
 
 
-Creating a Job
+ジョブを作成する
 --------------
 
-This section will provide a step-by-step guide to creating a job and enqueuing it.
+このセクションでは、ジョブの作成方法とジョブの登録 (enqueue) 方法を手順を追って説明します。
 
-### Create the Job
+### ジョブを作成する
 
-Active Job provides a Rails generator to create jobs. The following will create a
-job in `app/jobs`:
+Active Jobは、ジョブ作成用のRailsジェネレータを提供しています。以下を実行すると、`app/jobs`にジョブが1つ作成されます。
 
 ```bash
 $ bin/rails generate job guests_cleanup
 create  app/jobs/guests_cleanup_job.rb
 ```
 
-You can also create a job that will run on a specific queue:
+以下のようにすると、特定のキューに対してジョブを1つ作成できます。
 
 ```bash
 $ bin/rails generate job guests_cleanup --queue urgent
 create  app/jobs/guests_cleanup_job.rb
 ```
 
-As you can see, you can generate jobs just like you use other generators with
-Rails.
+上のように、Railsで他のジェネレータを使用するときとまったく同じ方法でジョブを作成できます。
 
-If you don't want to use a generator, you could create your own file inside of
-`app/jobs`, just make sure that it inherits from `ActiveJob::Base`.
+ジェネレータを使用したくないのであれば、`app/jobs`の下に自分でジョブファイルを作成することもできます。ジョブファイルでは必ず`ActiveJob::Base`を継承してください。
 
-Here's what a job looks like:
+作成されたジョブは以下のようになります。
 
 ```ruby
 class GuestsCleanupJob < ActiveJob::Base
   queue_as :default
 
   def perform(*args)
-    # Do something later
+    # 後で実行したい作業をここに書く
   end
 end
 ```
 
-### Enqueue the Job
+### ジョブをキューに登録する
 
-Enqueue a job like so:
+キューへのジョブ登録は以下のように行います。
 
 ```ruby
-MyJob.enqueue record  # Enqueue a job to be performed as soon the queueing system is free.
+MyJob.perform_later record  # キューイングシステムがビジーでなくなり次第ジョブをキューに登録する
 ```
 
 ```ruby
-MyJob.enqueue_at Date.tomorrow.noon, record  # Enqueue a job to be performed tomorrow at noon.
+MyJob.set(wait_until: Date.tomorrow.noon).perform_later(record)  # 明日正午に実行したいジョブをキューに登録する
 ```
 
 ```ruby
-MyJob.enqueue_in 1.week, record # Enqueue a job to be performed 1 week from now.
+MyJob.set(wait: 1.week).perform_later(record) # 一週間後に実行したいジョブをキューに登録する
 ```
 
-That's it!
+以上で終わりです。
 
 
-Job Execution
+ジョブを実行する
 -------------
 
-If no adapter is set, the job is immediately executed.
+アダプタが設定されていない場合、ジョブは直ちに実行されます。
 
-### Backends
+### バックエンド
 
-Active Job has adapters for the following queueing backends:
+Active Jobには、Sidekiq、Resque、Delayed Jobなどさまざまなキューイングバックエンドに接続できるアダプタがビルトインで用意されています。利用可能な最新のアダプタのリストについては、APIドキュメントの[ActiveJob::QueueAdapters](http://api.rubyonrails.org/classes/ActiveJob/QueueAdapters.html) を参照してください。
 
-* [Backburner](https://github.com/nesquena/backburner)
-* [Delayed Job](https://github.com/collectiveidea/delayed_job)
-* [Qu](https://github.com/bkeepers/qu)
-* [Que](https://github.com/chanks/que)
-* [QueueClassic 2.x](https://github.com/ryandotsmith/queue_classic/tree/v2.2.3)
-* [Resque 1.x](https://github.com/resque/resque/tree/1-x-stable)
-* [Sidekiq](https://github.com/mperham/sidekiq)
-* [Sneakers](https://github.com/jondot/sneakers)
-* [Sucker Punch](https://github.com/brandonhilkert/sucker_punch)
+### バックエンドを変更する
 
-#### Backends Features
-
-|                       | Async | Queues | Delayed   | Priorities | Timeout | Retries |
-|-----------------------|-------|--------|-----------|------------|---------|---------|
-| **Backburner**        | Yes   | Yes    | Yes       | Yes        | Job     | Global  |
-| **Delayed Job**       | Yes   | Yes    | Yes       | Job        | Global  | Global  |
-| **Que**               | Yes   | Yes    | Yes       | Job        | No      | Job     |
-| **Queue Classic**     | Yes   | Yes    | No*       | No         | No      | No      |
-| **Resque**            | Yes   | Yes    | Yes (Gem) | Queue      | Global  | Yes     |
-| **Sidekiq**           | Yes   | Yes    | Yes       | Queue      | No      | Job     |
-| **Sneakers**          | Yes   | Yes    | No        | Queue      | Queue   | No      |
-| **Sucker Punch**      | Yes   | Yes    | No        | No         | No      | No      |
-| **Active Job Inline** | No    | Yes    | N/A       | N/A        | N/A     | N/A     |
-| **Active Job**        | Yes   | Yes    | Yes       | No         | No      | No      |
-
-NOTE:
-* Queue Classic does not support Job scheduling. However you can implement this
-yourself or you can use the queue_classic-later gem. See the documentation for
-ActiveJob::QueueAdapters::QueueClassicAdapter.
-
-### Change Backends
-
-You can easily change your adapter:
+キューイングバックエンドは自由に取り替えることができます。
 
 ```ruby
-# be sure to have the adapter gem in your Gemfile and follow the adapter specific
-# installation and deployment instructions
-YourApp::Application.config.active_job.queue_adapter = :sidekiq
+# 必ずアダプタgemをGemfileに追加し、アダプタごとに必要な
+# インストールとデプロイ指示に従ってください。
+Rails.application.config.active_job.queue_adapter = :sidekiq
 ```
 
 
-Queues
+キュー
 ------
 
-Most of the adapters support multiple queues. With Active Job you can schedule
-the job to run on a specific queue:
+多くのアダプタでは複数のキューを扱うことができます。Active Jobを使用することで、特定のキューに入っているジョブをスケジューリングすることができます。
 
 ```ruby
 class GuestsCleanupJob < ActiveJob::Base
@@ -155,13 +113,12 @@ class GuestsCleanupJob < ActiveJob::Base
 end
 ```
 
-Also you can prefix the queue name for all your jobs using
-`config.active_job.queue_name_prefix` in `application.rb`:
+`application.rb`で以下のように`config.active_job.queue_name_prefix`を使用することで、すべてのジョブでキュー名の前に特定の文字列を追加することができます。
 
 ```ruby
 # config/application.rb
 module YourApp
-  class Application < Rails::Application
+class Application < Rails::Application
     config.active_job.queue_name_prefix = Rails.env
   end
 end
@@ -172,21 +129,48 @@ class GuestsCleanupJob < ActiveJob::Base
   #....
 end
 
-# Now your job will run on queue production_low_priority on your production
-# environment and on beta_low_priority on your beta environment
+# 以上で、production環境のproduction_low_priorityというキューをジョブから
+# 実行できるようになり、beta環境のbeta_low_priorityというキューを実行できるようになります
+#
 ```
 
-NOTE: Make sure your queueing backend "listens" on your queue name. For some
-backends you need to specify the queues to listen to.
+ジョブを実行するキューをより詳細に制御したい場合は、#setに`:queue`オプションを追加することもできます。
+
+```ruby
+MyJob.set(queue: :another_queue).perform_later(record)
+```
+
+そのジョブレベルにあるキューを制御するために、queue_asにブロックを渡すこともできます。与えられたブロックは、そのジョブのコンテキストで実行されます (従ってself.argumentsにアクセスできます)。そしてキュー名を返さなくてはなりません。
+
+```ruby
+class ProcessVideoJob < ActiveJob::Base
+  queue_as do
+    video = self.arguments.first
+    if video.owner.premium?
+      :premium_videojobs
+    else
+      :videojobs
+    end
+  end
+
+  def perform(video)
+    # do process video
+  end
+end
+
+ProcessVideoJob.perform_later(Video.last)
+```
 
 
-Callbacks
+NOTE: 設定したキュー名をキューイングバックエンドが「リッスンする」ようにしてください。一部のバックエンドでは、リッスンするキューを指定する必要があるものがあります。
+
+
+コールバック
 ---------
 
-Active Job provides hooks during the lifecycle of a job. Callbacks allow you to
-trigger logic during the lifecycle of a job.
+Active Jobは、ジョブのライフサイクルでのフックを提供します。これによりコールバックが利用できるので、ジョブのライフサイクルの間に特定のロジックをトリガできます。
 
-### Available callbacks
+### 利用可能なコールバック
 
 * `before_enqueue`
 * `around_enqueue`
@@ -195,24 +179,24 @@ trigger logic during the lifecycle of a job.
 * `around_perform`
 * `after_perform`
 
-### Usage
+### 使用法
 
 ```ruby
 class GuestsCleanupJob < ActiveJob::Base
   queue_as :default
 
   before_enqueue do |job|
-    # do something with the job instance
+    # ジョブインスタンスで行なう作業
   end
 
   around_perform do |job, block|
-    # do something before perform
+    # 実行前に行なう作業
     block.call
-    # do something after perform
+    # 実行後に行なう作業
   end
 
   def perform
-    # Do something later
+    # 後で行なう
   end
 end
 ```
@@ -221,24 +205,20 @@ end
 ActionMailer
 ------------
 
-One of the most common jobs in a modern web application is sending emails outside
-of the request-response cycle, so the user doesn't have to wait on it. Active Job
-is integrated with Action Mailer so you can easily send emails asynchronously:
+最近のWebアプリケーションでよく実行されるジョブといえば、リクエスト-レスポンスのサイクルの外でメールを送信することでしょう。これにより、ユーザーが送信を待つ必要がなくなります。Active JobはAction Mailerと統合されているので、非同期メール送信を簡単に行えます。
 
 ```ruby
-# If you want to send the email now use #deliver_now
+# すぐにメール送信したい場合は#deliver_useを使用
 UserMailer.welcome(@user).deliver_now
 
-# If you want to send the email through Active Job use #deliver_later
+# Active Jobを使用して後でメール送信したい場合は#deliver_laterを使用
 UserMailer.welcome(@user).deliver_later
 ```
 
 
 GlobalID
 --------
-Active Job supports GlobalID for parameters. This makes it possible to pass live
-Active Record objects to your job instead of class/id pairs, which you then have
-to manually deserialize. Before, jobs would look like this:
+Active JobではGlobalIDがパラメータとしてサポートされています。GlobalIDを使用すると、動作中のActive Recordオブジェクトをジョブに渡す際にクラスとidを指定する必要がありません。クラスとidを指定する従来の方法では、後で明示的にデシリアライズ (deserialize) する必要がありました。従来のジョブが以下のようなものだったとします。
 
 ```ruby
 class TrashableCleanupJob
@@ -249,7 +229,7 @@ class TrashableCleanupJob
 end
 ```
 
-Now you can simply do:
+現在は以下のように簡潔に書くことができます。
 
 ```ruby
 class TrashableCleanupJob
@@ -259,15 +239,13 @@ class TrashableCleanupJob
 end
 ```
 
-This works with any class that mixes in `ActiveModel::GlobalIdentification`, which
-by default has been mixed into Active Model classes.
+上のコードは、`ActiveModel::GlobalIdentification`をミックスインするすべてのクラスで動作します。このモジュールはActive Modelクラスにデフォルトでミックスインされます。
 
 
-Exceptions
+例外
 ----------
 
-Active Job provides a way to catch exceptions raised during the execution of the
-job:
+Active Jobでは、ジョブ実行時に発生する例外をキャッチする方法が1つ提供されています。
 
 ```ruby
 
@@ -275,11 +253,11 @@ class GuestsCleanupJob < ActiveJob::Base
   queue_as :default
 
   rescue_from(ActiveRecord::RecordNotFound) do |exception|
-   # do something with the exception
+   # ここに例外処理を書く
   end
 
   def perform
-    # Do something later
+    # 後で実行する処理を書く
   end
 end
 ```

@@ -76,7 +76,7 @@
       url: action_mailer_basics.html
       description: Action Mailerを使用してメールを送受信する方法について解説します。
     -
-      name: Active Job Basics [未着手]
+      name: Active Job の基礎
       url: active_job_basics.html
       description: バックグラウンドで動作するジョブの作成・キュー送信・実行方法に必要なすべてを解説します。
     -

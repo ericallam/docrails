@@ -16,7 +16,7 @@
 <meta property="og:type"        content="article" />
 <meta property="og:description" content="Rails 開発のお供に! 日本語版 Rails リファレンスガイド (Rails 4.1 対応)" />
 
-<title>Active Job Basics — Ruby on Rails Guides</title>
+<title>Active Jobの基礎 — Ruby on Rails Guides</title>
 <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
 
@@ -80,7 +80,7 @@
                 <dd><a href="active_support_core_extensions.html">Active Support コア拡張機能</a></dd>
                 <dd><a href="i18n.html">Rails 国際化 (i18n) API</a></dd>
                 <dd><a href="action_mailer_basics.html">Action Mailer Basics [未着手]</a></dd>
-                <dd><a href="active_job_basics.html">Active Job Basics [未着手]</a></dd>
+                <dd><a href="active_job_basics.html">Active Job の基礎</a></dd>
                 <dd><a href="security.html">Ruby on Rails セキュリティガイド</a></dd>
                 <dd><a href="debugging_rails_applications.html">Debugging Rails Applications [未着手]</a></dd>
                 <dd><a href="configuring.html">Rails アプリケーションを設定する</a></dd>
@@ -136,7 +136,7 @@
                   <option value="active_support_core_extensions.html">Active Support コア拡張機能</option>
                   <option value="i18n.html">Rails 国際化 (i18n) API</option>
                   <option value="action_mailer_basics.html">Action Mailer Basics [未着手]</option>
-                  <option value="active_job_basics.html">Active Job Basics [未着手]</option>
+                  <option value="active_job_basics.html">Active Job の基礎</option>
                   <option value="security.html">Ruby on Rails セキュリティガイド</option>
                   <option value="debugging_rails_applications.html">Debugging Rails Applications [未着手]</option>
                   <option value="configuring.html">Rails アプリケーションを設定する</option>
@@ -176,13 +176,12 @@
 
   <div id="feature">
     <div class="wrapper">
-      <h2>Active Job Basics</h2><p>This guide provides you with all you need to get started in creating,
-enqueueing and executing background jobs.</p><p>After reading this guide, you will know:</p>
+      <h2>Active Jobの基礎</h2><p>本ガイドでは、バックグラウンドで実行するジョブの作成やキュー登録 (エンキュー: enqueue) 、実行方法について解説します。</p><p>このガイドの内容:</p>
 <ul>
-<li>How to create jobs.</li>
-<li>How to enqueue jobs.</li>
-<li>How to run jobs in the background.</li>
-<li>How to send emails from your application async.</li>
+<li>ジョブの作成方法</li>
+<li>ジョブの登録方法</li>
+<li>バックグラウンドでのジョブ実行方法</li>
+<li>アプリケーションから非同期にメールを送信する方法</li>
 </ul>
 
                 <div id="subCol">
@@ -190,36 +189,36 @@ enqueueing and executing background jobs.</p><p>After reading this guide, you wi
             <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
 <ol class="chapters">
-<li><a href="#introduction">Introduction</a></li>
-<li><a href="#the-purpose-of-the-active-job">The Purpose of the Active Job</a></li>
+<li><a href="#%E3%81%AF%E3%81%98%E3%82%81%E3%81%AB">はじめに</a></li>
+<li><a href="#active-job%E3%81%AE%E7%9B%AE%E7%9A%84">Active Jobの目的</a></li>
 <li>
-<a href="#creating-a-job">Creating a Job</a>
+<a href="#%E3%82%B8%E3%83%A7%E3%83%96%E3%82%92%E4%BD%9C%E6%88%90%E3%81%99%E3%82%8B">ジョブを作成する</a>
 
 <ul>
-<li><a href="#create-the-job">Create the Job</a></li>
-<li><a href="#enqueue-the-job">Enqueue the Job</a></li>
+<li><a href="#%E3%82%B8%E3%83%A7%E3%83%96%E3%82%92%E4%BD%9C%E6%88%90%E3%81%99%E3%82%8B-%E3%82%B8%E3%83%A7%E3%83%96%E3%82%92%E4%BD%9C%E6%88%90%E3%81%99%E3%82%8B">ジョブを作成する</a></li>
+<li><a href="#%E3%82%B8%E3%83%A7%E3%83%96%E3%82%92%E3%82%AD%E3%83%A5%E3%83%BC%E3%81%AB%E7%99%BB%E9%8C%B2%E3%81%99%E3%82%8B">ジョブをキューに登録する</a></li>
 </ul>
 </li>
 <li>
-<a href="#job-execution">Job Execution</a>
+<a href="#%E3%82%B8%E3%83%A7%E3%83%96%E3%82%92%E5%AE%9F%E8%A1%8C%E3%81%99%E3%82%8B">ジョブを実行する</a>
 
 <ul>
-<li><a href="#backends">Backends</a></li>
-<li><a href="#change-backends">Change Backends</a></li>
+<li><a href="#%E3%83%90%E3%83%83%E3%82%AF%E3%82%A8%E3%83%B3%E3%83%89">バックエンド</a></li>
+<li><a href="#%E3%83%90%E3%83%83%E3%82%AF%E3%82%A8%E3%83%B3%E3%83%89%E3%82%92%E5%A4%89%E6%9B%B4%E3%81%99%E3%82%8B">バックエンドを変更する</a></li>
 </ul>
 </li>
-<li><a href="#queues">Queues</a></li>
+<li><a href="#%E3%82%AD%E3%83%A5%E3%83%BC">キュー</a></li>
 <li>
-<a href="#callbacks">Callbacks</a>
+<a href="#%E3%82%B3%E3%83%BC%E3%83%AB%E3%83%90%E3%83%83%E3%82%AF">コールバック</a>
 
 <ul>
-<li><a href="#available-callbacks">Available callbacks</a></li>
-<li><a href="#usage">Usage</a></li>
+<li><a href="#%E5%88%A9%E7%94%A8%E5%8F%AF%E8%83%BD%E3%81%AA%E3%82%B3%E3%83%BC%E3%83%AB%E3%83%90%E3%83%83%E3%82%AF">利用可能なコールバック</a></li>
+<li><a href="#%E4%BD%BF%E7%94%A8%E6%B3%95">使用法</a></li>
 </ul>
 </li>
 <li><a href="#actionmailer">ActionMailer</a></li>
 <li><a href="#globalid">GlobalID</a></li>
-<li><a href="#exceptions">Exceptions</a></li>
+<li><a href="#%E4%BE%8B%E5%A4%96">例外</a></li>
 </ol>
 </body></html>
 
@@ -232,23 +231,14 @@ enqueueing and executing background jobs.</p><p>After reading this guide, you wi
       <div id="mainCol">
         <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
-<h3 id="introduction">1 Introduction</h3>
-<p>Active Job is a framework for declaring jobs and making them run on a variety
-of queueing backends. These jobs can be everything from regularly scheduled
-clean-ups, to billing charges, to mailings. Anything that can be chopped up
-into small units of work and run in parallel, really.</p>
-<h3 id="the-purpose-of-the-active-job">2 The Purpose of the Active Job</h3>
-<p>The main point is to ensure that all Rails apps will have a job infrastructure
-in place, even if it's in the form of an "immediate runner". We can then have
-framework features and other gems build on top of that, without having to
-worry about API differences between various job runners such as Delayed Job
-and Resque. Picking your queuing backend becomes more of an operational concern,
-then. And you'll be able to switch between them without having to rewrite your jobs.</p>
-<h3 id="creating-a-job">3 Creating a Job</h3>
-<p>This section will provide a step-by-step guide to creating a job and enqueuing it.</p>
-<h4 id="create-the-job">3.1 Create the Job</h4>
-<p>Active Job provides a Rails generator to create jobs. The following will create a
-job in <code>app/jobs</code>:</p>
+<h3 id="はじめに">1 はじめに</h3>
+<p>Active Jobは、ジョブを宣言し、それによってバックエンドでさまざまな方法によるキュー操作を実行するためのフレームワークです。これらのジョブでは、定期的なクリーンアップを始めとして、請求書発行やメール配信など、どんなことでも実行できます。これらのジョブをより細かな作業単位に分割して並列実行することもできます。</p>
+<h3 id="active-jobの目的">2 Active Jobの目的</h3>
+<p>Active Jobの主要な目的は、Railsアプリを即席で作成した直後でも使用できる、自前のジョブ管理インフラを持つことです。これにより、Delayed JobとResqueなどのように、さまざまなジョブ実行機能のAPIの違いを気にせずにジョブフレームワーク機能やその他のgemを搭載することができるようになります。バックエンドでのキューイング作業では、操作方法以外のことを気にせずに済みます。さらに、ジョブ管理フレームワークを切り替える際にジョブを書き直さずに済みます。</p>
+<h3 id="ジョブを作成する">3 ジョブを作成する</h3>
+<p>このセクションでは、ジョブの作成方法とジョブの登録 (enqueue) 方法を手順を追って説明します。</p>
+<h4 id="ジョブを作成する-ジョブを作成する">3.1 ジョブを作成する</h4>
+<p>Active Jobは、ジョブ作成用のRailsジェネレータを提供しています。以下を実行すると、<code>app/jobs</code>にジョブが1つ作成されます。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ bin/rails generate job guests_cleanup
@@ -256,7 +246,7 @@ create  app/jobs/guests_cleanup_job.rb
 
 </pre>
 </div>
-<p>You can also create a job that will run on a specific queue:</p>
+<p>以下のようにすると、特定のキューに対してジョブを1つ作成できます。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ bin/rails generate job guests_cleanup --queue urgent
@@ -264,181 +254,58 @@ create  app/jobs/guests_cleanup_job.rb
 
 </pre>
 </div>
-<p>As you can see, you can generate jobs just like you use other generators with
-Rails.</p>
-<p>If you don't want to use a generator, you could create your own file inside of
-<code>app/jobs</code>, just make sure that it inherits from <code>ActiveJob::Base</code>.</p>
-<p>Here's what a job looks like:</p>
+<p>上のように、Railsで他のジェネレータを使用するときとまったく同じ方法でジョブを作成できます。</p>
+<p>ジェネレータを使用したくないのであれば、<code>app/jobs</code>の下に自分でジョブファイルを作成することもできます。ジョブファイルでは必ず<code>ActiveJob::Base</code>を継承してください。</p>
+<p>作成されたジョブは以下のようになります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class GuestsCleanupJob &lt; ActiveJob::Base
   queue_as :default
 
   def perform(*args)
-    # Do something later
+    # 後で実行したい作業をここに書く
   end
 end
 
 </pre>
 </div>
-<h4 id="enqueue-the-job">3.2 Enqueue the Job</h4>
-<p>Enqueue a job like so:</p>
+<h4 id="ジョブをキューに登録する">3.2 ジョブをキューに登録する</h4>
+<p>キューへのジョブ登録は以下のように行います。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-MyJob.enqueue record  # Enqueue a job to be performed as soon the queueing system is free.
+MyJob.perform_later record  # キューイングシステムがビジーでなくなり次第ジョブをキューに登録する
 
 </pre>
 </div>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-MyJob.enqueue_at Date.tomorrow.noon, record  # Enqueue a job to be performed tomorrow at noon.
+MyJob.set(wait_until: Date.tomorrow.noon).perform_later(record)  # 明日正午に実行したいジョブをキューに登録する
 
 </pre>
 </div>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-MyJob.enqueue_in 1.week, record # Enqueue a job to be performed 1 week from now.
+MyJob.set(wait: 1.week).perform_later(record) # 一週間後に実行したいジョブをキューに登録する
 
 </pre>
 </div>
-<p>That's it!</p>
-<h3 id="job-execution">4 Job Execution</h3>
-<p>If no adapter is set, the job is immediately executed.</p>
-<h4 id="backends">4.1 Backends</h4>
-<p>Active Job has adapters for the following queueing backends:</p>
-<ul>
-<li><a href="https://github.com/nesquena/backburner">Backburner</a></li>
-<li><a href="https://github.com/collectiveidea/delayed_job">Delayed Job</a></li>
-<li><a href="https://github.com/bkeepers/qu">Qu</a></li>
-<li><a href="https://github.com/chanks/que">Que</a></li>
-<li><a href="https://github.com/ryandotsmith/queue_classic/tree/v2.2.3">QueueClassic 2.x</a></li>
-<li><a href="https://github.com/resque/resque/tree/1-x-stable">Resque 1.x</a></li>
-<li><a href="https://github.com/mperham/sidekiq">Sidekiq</a></li>
-<li><a href="https://github.com/jondot/sneakers">Sneakers</a></li>
-<li><a href="https://github.com/brandonhilkert/sucker_punch">Sucker Punch</a></li>
-</ul>
-<h5 id="backends-features">4.1.1 Backends Features</h5>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>Async</th>
-<th>Queues</th>
-<th>Delayed</th>
-<th>Priorities</th>
-<th>Timeout</th>
-<th>Retries</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>Backburner</strong></td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Job</td>
-<td>Global</td>
-</tr>
-<tr>
-<td><strong>Delayed Job</strong></td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Job</td>
-<td>Global</td>
-<td>Global</td>
-</tr>
-<tr>
-<td><strong>Que</strong></td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Job</td>
-<td>No</td>
-<td>Job</td>
-</tr>
-<tr>
-<td><strong>Queue Classic</strong></td>
-<td>Yes</td>
-<td>Yes</td>
-<td>No*</td>
-<td>No</td>
-<td>No</td>
-<td>No</td>
-</tr>
-<tr>
-<td><strong>Resque</strong></td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Yes (Gem)</td>
-<td>Queue</td>
-<td>Global</td>
-<td>Yes</td>
-</tr>
-<tr>
-<td><strong>Sidekiq</strong></td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Queue</td>
-<td>No</td>
-<td>Job</td>
-</tr>
-<tr>
-<td><strong>Sneakers</strong></td>
-<td>Yes</td>
-<td>Yes</td>
-<td>No</td>
-<td>Queue</td>
-<td>Queue</td>
-<td>No</td>
-</tr>
-<tr>
-<td><strong>Sucker Punch</strong></td>
-<td>Yes</td>
-<td>Yes</td>
-<td>No</td>
-<td>No</td>
-<td>No</td>
-<td>No</td>
-</tr>
-<tr>
-<td><strong>Active Job Inline</strong></td>
-<td>No</td>
-<td>Yes</td>
-<td>N/A</td>
-<td>N/A</td>
-<td>N/A</td>
-<td>N/A</td>
-</tr>
-<tr>
-<td><strong>Active Job</strong></td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>No</td>
-<td>No</td>
-<td>No</td>
-</tr>
-</tbody>
-</table>
-<div class="note"><p>* Queue Classic does not support Job scheduling. However you can implement this
-yourself or you can use the queue_classic-later gem. See the documentation for
-ActiveJob::QueueAdapters::QueueClassicAdapter.</p></div>
-<h4 id="change-backends">4.2 Change Backends</h4>
-<p>You can easily change your adapter:</p>
+<p>以上で終わりです。</p>
+<h3 id="ジョブを実行する">4 ジョブを実行する</h3>
+<p>アダプタが設定されていない場合、ジョブは直ちに実行されます。</p>
+<h4 id="バックエンド">4.1 バックエンド</h4>
+<p>Active Jobには、Sidekiq、Resque、Delayed Jobなどさまざまなキューイングバックエンドに接続できるアダプタがビルトインで用意されています。利用可能な最新のアダプタのリストについては、APIドキュメントの<a href="http://api.rubyonrails.org/classes/ActiveJob/QueueAdapters.html">ActiveJob::QueueAdapters</a> を参照してください。</p>
+<h4 id="バックエンドを変更する">4.2 バックエンドを変更する</h4>
+<p>キューイングバックエンドは自由に取り替えることができます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-# be sure to have the adapter gem in your Gemfile and follow the adapter specific
-# installation and deployment instructions
-YourApp::Application.config.active_job.queue_adapter = :sidekiq
+# 必ずアダプタgemをGemfileに追加し、アダプタごとに必要な
+# インストールとデプロイ指示に従ってください。
+Rails.application.config.active_job.queue_adapter = :sidekiq
 
 </pre>
 </div>
-<h3 id="queues">5 Queues</h3>
-<p>Most of the adapters support multiple queues. With Active Job you can schedule
-the job to run on a specific queue:</p>
+<h3 id="キュー">5 キュー</h3>
+<p>多くのアダプタでは複数のキューを扱うことができます。Active Jobを使用することで、特定のキューに入っているジョブをスケジューリングすることができます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class GuestsCleanupJob &lt; ActiveJob::Base
@@ -448,13 +315,12 @@ end
 
 </pre>
 </div>
-<p>Also you can prefix the queue name for all your jobs using
-<code>config.active_job.queue_name_prefix</code> in <code>application.rb</code>:</p>
+<p><code>application.rb</code>で以下のように<code>config.active_job.queue_name_prefix</code>を使用することで、すべてのジョブでキュー名の前に特定の文字列を追加することができます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # config/application.rb
 module YourApp
-  class Application &lt; Rails::Application
+class Application &lt; Rails::Application
     config.active_job.queue_name_prefix = Rails.env
   end
 end
@@ -465,17 +331,45 @@ class GuestsCleanupJob &lt; ActiveJob::Base
   #....
 end
 
-# Now your job will run on queue production_low_priority on your production
-# environment and on beta_low_priority on your beta environment
+# 以上で、production環境のproduction_low_priorityというキューをジョブから
+# 実行できるようになり、beta環境のbeta_low_priorityというキューを実行できるようになります
+#
 
 </pre>
 </div>
-<div class="note"><p>Make sure your queueing backend "listens" on your queue name. For some
-backends you need to specify the queues to listen to.</p></div>
-<h3 id="callbacks">6 Callbacks</h3>
-<p>Active Job provides hooks during the lifecycle of a job. Callbacks allow you to
-trigger logic during the lifecycle of a job.</p>
-<h4 id="available-callbacks">6.1 Available callbacks</h4>
+<p>ジョブを実行するキューをより詳細に制御したい場合は、#setに<code>:queue</code>オプションを追加することもできます。</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+MyJob.set(queue: :another_queue).perform_later(record)
+
+</pre>
+</div>
+<p>そのジョブレベルにあるキューを制御するために、queue_asにブロックを渡すこともできます。与えられたブロックは、そのジョブのコンテキストで実行されます (従ってself.argumentsにアクセスできます)。そしてキュー名を返さなくてはなりません。</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class ProcessVideoJob &lt; ActiveJob::Base
+  queue_as do
+    video = self.arguments.first
+    if video.owner.premium?
+      :premium_videojobs
+    else
+      :videojobs
+    end
+  end
+
+  def perform(video)
+    # do process video
+  end
+end
+
+ProcessVideoJob.perform_later(Video.last)
+
+</pre>
+</div>
+<div class="note"><p>設定したキュー名をキューイングバックエンドが「リッスンする」ようにしてください。一部のバックエンドでは、リッスンするキューを指定する必要があるものがあります。</p></div>
+<h3 id="コールバック">6 コールバック</h3>
+<p>Active Jobは、ジョブのライフサイクルでのフックを提供します。これによりコールバックが利用できるので、ジョブのライフサイクルの間に特定のロジックをトリガできます。</p>
+<h4 id="利用可能なコールバック">6.1 利用可能なコールバック</h4>
 <ul>
 <li><code>before_enqueue</code></li>
 <li><code>around_enqueue</code></li>
@@ -484,47 +378,43 @@ trigger logic during the lifecycle of a job.</p>
 <li><code>around_perform</code></li>
 <li><code>after_perform</code></li>
 </ul>
-<h4 id="usage">6.2 Usage</h4>
+<h4 id="使用法">6.2 使用法</h4>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class GuestsCleanupJob &lt; ActiveJob::Base
   queue_as :default
 
   before_enqueue do |job|
-    # do something with the job instance
+    # ジョブインスタンスで行なう作業
   end
 
   around_perform do |job, block|
-    # do something before perform
+    # 実行前に行なう作業
     block.call
-    # do something after perform
+    # 実行後に行なう作業
   end
 
   def perform
-    # Do something later
+    # 後で行なう
   end
 end
 
 </pre>
 </div>
 <h3 id="actionmailer">7 ActionMailer</h3>
-<p>One of the most common jobs in a modern web application is sending emails outside
-of the request-response cycle, so the user doesn't have to wait on it. Active Job
-is integrated with Action Mailer so you can easily send emails asynchronously:</p>
+<p>最近のWebアプリケーションでよく実行されるジョブといえば、リクエスト-レスポンスのサイクルの外でメールを送信することでしょう。これにより、ユーザーが送信を待つ必要がなくなります。Active JobはAction Mailerと統合されているので、非同期メール送信を簡単に行えます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-# If you want to send the email now use #deliver_now
+# すぐにメール送信したい場合は#deliver_useを使用
 UserMailer.welcome(@user).deliver_now
 
-# If you want to send the email through Active Job use #deliver_later
+# Active Jobを使用して後でメール送信したい場合は#deliver_laterを使用
 UserMailer.welcome(@user).deliver_later
 
 </pre>
 </div>
 <h3 id="globalid">8 GlobalID</h3>
-<p>Active Job supports GlobalID for parameters. This makes it possible to pass live
-Active Record objects to your job instead of class/id pairs, which you then have
-to manually deserialize. Before, jobs would look like this:</p>
+<p>Active JobではGlobalIDがパラメータとしてサポートされています。GlobalIDを使用すると、動作中のActive Recordオブジェクトをジョブに渡す際にクラスとidを指定する必要がありません。クラスとidを指定する従来の方法では、後で明示的にデシリアライズ (deserialize) する必要がありました。従来のジョブが以下のようなものだったとします。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class TrashableCleanupJob
@@ -536,7 +426,7 @@ end
 
 </pre>
 </div>
-<p>Now you can simply do:</p>
+<p>現在は以下のように簡潔に書くことができます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class TrashableCleanupJob
@@ -547,11 +437,9 @@ end
 
 </pre>
 </div>
-<p>This works with any class that mixes in <code>ActiveModel::GlobalIdentification</code>, which
-by default has been mixed into Active Model classes.</p>
-<h3 id="exceptions">9 Exceptions</h3>
-<p>Active Job provides a way to catch exceptions raised during the execution of the
-job:</p>
+<p>上のコードは、<code>ActiveModel::GlobalIdentification</code>をミックスインするすべてのクラスで動作します。このモジュールはActive Modelクラスにデフォルトでミックスインされます。</p>
+<h3 id="例外">9 例外</h3>
+<p>Active Jobでは、ジョブ実行時に発生する例外をキャッチする方法が1つ提供されています。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 
@@ -559,11 +447,11 @@ class GuestsCleanupJob &lt; ActiveJob::Base
   queue_as :default
 
   rescue_from(ActiveRecord::RecordNotFound) do |exception|
-   # do something with the exception
+   # ここに例外処理を書く
   end
 
   def perform
-    # Do something later
+    # 後で実行する処理を書く
   end
 end
 
