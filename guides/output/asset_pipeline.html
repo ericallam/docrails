@@ -753,7 +753,7 @@ location ~ ^/assets/ {
 </pre>
 </div>
 <h5 id="gzip圧縮">4.1.2 GZip圧縮</h5>
-<p>ファイルをプリコンパイルする際に、Sprocketsによって<a href="http://en.wikipedia.org/wiki/Gzip">gzipされた</a> (.gz) アセットも作成されます。Webサーバーによる圧縮はほどほどの圧縮率で行われるのが普通ですが、プリコンパイルが1度発生するとSprocketsによって最大圧縮率で圧縮され、Webサーバーからのデータ転送量が最小化されます。逆に、圧縮されてないファイルを自前で圧縮する代りに、事前に圧縮しておいたコンテンツを直接ディスクに配置しておくようWebsサーバーを設定することもできます。●</p>
+<p>ファイルをプリコンパイルする際に、Sprocketsによって<a href="http://en.wikipedia.org/wiki/Gzip">gzipされた</a> (.gz) アセットも作成されます。Webサーバーによる圧縮はほどほどの圧縮率で行われるのが普通ですが、プリコンパイルが1度発生するとSprocketsによって最大圧縮率で圧縮され、Webサーバーからのデータ転送量が最小化されます。逆に、圧縮されてないファイルを自前で圧縮する代りに、事前に圧縮しておいたコンテンツを直接ディスクに配置しておくようWebサーバーを設定することもできます。●</p>
 <p>NGINXでは<code>gzip_static</code>を使用することでこれを自動的に行なうことができます。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
