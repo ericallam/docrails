@@ -105,7 +105,7 @@
       url: asset_pipeline.html
       description: アセットパイプラインに関するドキュメントです。
     -
-      name: RailsでJavaScriptを使用する
+      name: Rails で JavaScript を使用する
       url: working_with_javascript_in_rails.html
       description: RailsビルトインのAjax/JavaScriptについて解説します。
     -
