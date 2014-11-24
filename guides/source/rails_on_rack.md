@@ -1,41 +1,40 @@
-Rails on Rack
+﻿
+Rails と Rack
 =============
 
-This guide covers Rails integration with Rack and interfacing with other Rack components.
+このガイドでは、RailsとRackの関係、Railsと他のRackコンポーネントとの関係について説明します。
 
-After reading this guide, you will know:
+このガイドの内容:
 
-* How to use Rack Middlewares in your Rails applications.
-* Action Pack's internal Middleware stack.
-* How to define a custom Middleware stack.
+* RackのミドルウェアをRailsで使う方法
+* Action Pack内のミドルウェアスタックについて
+* 独自のミドルウェアスタックを定義する方法
 
 --------------------------------------------------------------------------------
 
-WARNING: This guide assumes a working knowledge of Rack protocol and Rack concepts such as middlewares, url maps and `Rack::Builder`.
+WARNING: このガイドはRackのミドルウェア、urlマップ、`Rack::Builder`といったRackのプロトコルやコンセプトに関する実用的な知識があることを前提にしています。
 
-Introduction to Rack
+Rack入門
 --------------------
 
-Rack provides a minimal, modular and adaptable interface for developing web applications in Ruby. By wrapping HTTP requests and responses in the simplest way possible, it unifies and distills the API for web servers, web frameworks, and software in between (the so-called middleware) into a single method call.
+Rackは、Rubyのウェブアプリケーションに対して、最小限でモジュール化されていて、応用の効くインターフェイスを提供します。RackはHTTPリクエストとレスポンスを可能なかぎり簡単な方法でラッピングすることで、ウェブサーバー、ウェブフレームワーク、その間に位置するソフトウェア (ミドルウェアと呼ばれています) のAPIを一つのメソッド呼び出しの形にまとめます。
 
-- [Rack API Documentation](http://rack.rubyforge.org/doc/)
+* [Rack API ドキュメンテーション](http://rack.github.io/)
 
-Explaining Rack is not really in the scope of this guide. In case you are not familiar with Rack's basics, you should check out the [Resources](#resources) section below.
+Rackに関する解説はこのガイドの範疇を超えてしまいます。Rackに関する基本的な知識が足らない場合、下記の[リソース](#resources) を参照してください。
 
-Rails on Rack
+RailsとRack
 -------------
 
-### Rails Application's Rack Object
+### RackアプリケーションとしてのRailsアプリケーション
 
-`Rails.application` is the primary Rack application object of a Rails
-application. Any Rack compliant web server should be using
-`Rails.application` object to serve a Rails application.
+`Rails.application`はRailsアプリケーションをRackアプリケーションとして実装したものです。Rackに準拠したWebサーバーで、Railsアプリケーションを提供するには、`Rails.application`オブジェクトを使用する必要があります。●
 
-### `rails server`
+### `rails server`コマンド
 
-`rails server` does the basic job of creating a `Rack::Server` object and starting the webserver.
+`rails server`コマンドは`Rack::Server`のオブジェクトを作成し、ウェブサーバーを起動します。
 
-Here's how `rails server` creates an instance of `Rack::Server`
+`rails server`コマンドは以下のようにして、`Rack::Server`のオブジェクトを作成します。
 
 ```ruby
 Rails::Server.new.tap do |server|
@@ -45,7 +44,7 @@ Rails::Server.new.tap do |server|
 end
 ```
 
-The `Rails::Server` inherits from `Rack::Server` and calls the `Rack::Server#start` method this way:
+`Rails::Server`クラスは`Rack::Server`クラスを継承しており、以下のようにして`Rack::Server#start`を呼び出します。
 
 ```ruby
 class Server < ::Rack::Server
@@ -56,7 +55,7 @@ class Server < ::Rack::Server
 end
 ```
 
-Here's how it loads the middlewares:
+また次のようにして、ミドルウェアを読み込みます。
 
 ```ruby
 def middleware
@@ -67,16 +66,16 @@ def middleware
 end
 ```
 
-`Rails::Rack::Debugger` is primarily useful only in the development environment. The following table explains the usage of the loaded middlewares:
+`Rails::Rack::Debugger`は主としてdevelopment環境で役に立ちます。読み込まれたミドルウェアの役割は下表のとおりです。
 
-| Middleware              | Purpose                                                                           |
+| ミドルウェア              | 役割                                                                           |
 | ----------------------- | --------------------------------------------------------------------------------- |
-| `Rails::Rack::Debugger` | Starts Debugger                                                                   |
-| `Rack::ContentLength`   | Counts the number of bytes in the response and set the HTTP Content-Length header |
+| `Rails::Rack::Debugger` | デバッガを起動する                                                                   |
+| `Rack::ContentLength`   | レスポンスのバイト数を計算し、HTTP Content-Length ヘッダーをセットする |
 
-### `rackup`
+### `rackup`コマンド
 
-To use `rackup` instead of Rails' `rails server`, you can put the following inside `config.ru` of your Rails application's root directory:
+Railsの`rails server`コマンドの代わりに`rackup`コマンドを使用するときは、下記の内容を`config.ru`に記述して、Railsアプリケーションのルートディレクトリに保存します。
 
 ```ruby
 # Rails.root/config.ru
@@ -84,39 +83,39 @@ require ::File.expand_path('../config/environment', __FILE__)
 
 use Rails::Rack::Debugger
 use Rack::ContentLength
-run Rails.application
+run Rails.applicatio
 ```
 
-And start the server:
+サーバーを起動します。
 
 ```bash
 $ rackup config.ru
 ```
 
-To find out more about different `rackup` options:
+`rackup`のオプションについて詳しく知りたいときは下記のようにします。
 
 ```bash
 $ rackup --help
 ```
 
-Action Dispatcher Middleware Stack
+Action Dispatcherのミドルウェアスタック
 ----------------------------------
 
-Many of Action Dispatcher's internal components are implemented as Rack middlewares. `Rails::Application` uses `ActionDispatch::MiddlewareStack` to combine various internal and external middlewares to form a complete Rails Rack application.
+Action Dispatcher内部のコンポーネントの多くは、Rackのミドルウェアとして実装されています。Rails内外の様々なミドルウェアを結合して、完全なRailsのRackアプリケーションを作るために、`Rails::Application`は`ActionDispatch::MiddlewareStack`を使用しています。
 
-NOTE: `ActionDispatch::MiddlewareStack` is Rails equivalent of `Rack::Builder`, but built for better flexibility and more features to meet Rails' requirements.
+NOTE: `ActionDispatch::MiddlewareStack`は`Rack::Builder`のRails版ですが、Railsアプリケーションの要求を満たすために、より柔軟性があり、多機能なクラスになっています。
 
-### Inspecting Middleware Stack
+### ミドルウェアスタックを調べる
 
-Rails has a handy rake task for inspecting the middleware stack in use:
+Railsにはミドルウェアスタックを調べるための便利なRakeタスクがあります。
 
 ```bash
-$ rake middleware
+$ bin/rake middleware
 ```
 
-For a freshly generated Rails application, this might produce something like:
+作成したばかりのRailsアプリケーションでは、以下のように出力されるはずです。
 
-```ruby
+  ```ruby
 use Rack::Sendfile
 use ActionDispatch::Static
 use Rack::Lock
@@ -143,58 +142,57 @@ use Rack::ETag
 run Rails.application.routes
 ```
 
-The default middlewares shown here (and some others) are each summarized in the [Internal Middlewares](#internal-middleware-stack) section, below.
+デフォルトのミドルウェア(とその他のうちいくつか)については [Internal Middlewares](#internal-middleware-stack) を参照してください。
 
-### Configuring Middleware Stack
+### ミドルウェアスタックを設定する
 
-Rails provides a simple configuration interface `config.middleware` for adding, removing and modifying the middlewares in the middleware stack via `application.rb` or the environment specific configuration file `environments/<environment>.rb`.
+ミドルウェアスタックにミドルウェアを追加したり、削除したり、変更したりするには`application.rb`もしくは環境ごとの`environments/<environment>.rb`ファイル内で`config.middleware`をいじります。
 
-#### Adding a Middleware
+#### ミドルウェアを追加する
 
-You can add a new middleware to the middleware stack using any of the following methods:
+次のメソッドを使用すると、ミドルウェアスタックに新しいミドルウェアを追加することができます。
 
-* `config.middleware.use(new_middleware, args)` - Adds the new middleware at the bottom of the middleware stack.
+* `config.middleware.use(new_middleware, args)` - ミドルウェアスタックの一番下に新しいミドルウェアを追加します。
 
-* `config.middleware.insert_before(existing_middleware, new_middleware, args)` - Adds the new middleware before the specified existing middleware in the middleware stack.
+* `config.middleware.insert_before(existing_middleware, new_middleware, args)` - (第一引数で)指定されたミドルウェアの前に新しいミドルウェアを追加します。
 
-* `config.middleware.insert_after(existing_middleware, new_middleware, args)` - Adds the new middleware after the specified existing middleware in the middleware stack.
+* `config.middleware.insert_after(existing_middleware, new_middleware, args)` - (第一引数で)指定されたミドルウェアの後に新しいミドルウェアを追加します。
 
 ```ruby
 # config/application.rb
 
-# Push Rack::BounceFavicon at the bottom
+# Rack::BounceFaviconを一番最後に追加する
 config.middleware.use Rack::BounceFavicon
 
-# Add Lifo::Cache after ActiveRecord::QueryCache.
-# Pass { page_cache: false } argument to Lifo::Cache.
+# ActiveRecord::QueryCacheの後にAdd Lifo::Cacheを追加する
+# またLifo::Cacheに{ page_cache: false }を渡す
 config.middleware.insert_after ActiveRecord::QueryCache, Lifo::Cache, page_cache: false
 ```
 
-#### Swapping a Middleware
+#### ミドルウェアを交換する
 
-You can swap an existing middleware in the middleware stack using `config.middleware.swap`.
+`config.middleware.swap`を使用することで、ミドルウェアスタック内のミドルウェアを交換できます。
 
 ```ruby
 # config/application.rb
 
-# Replace ActionDispatch::ShowExceptions with Lifo::ShowExceptions
+# Lifo::ShowExceptionsをActionDispatch::ShowExceptionsで置き換える
 config.middleware.swap ActionDispatch::ShowExceptions, Lifo::ShowExceptions
 ```
 
-#### Deleting a Middleware
+#### ミドルウェアを削除する
 
-Add the following lines to your application configuration:
+アプリケーションの設定に、下記のコードを追加してください。
 
 ```ruby
 # config/application.rb
 config.middleware.delete "Rack::Lock"
 ```
 
-And now if you inspect the middleware stack, you'll find that `Rack::Lock` is
-not a part of it.
+ミドルウェアスタックを調べると、`Rack::Lock`が消えていることが分かります。
 
 ```bash
-$ rake middleware
+$ bin/rake middleware
 (in /Users/lifo/Rails/blog)
 use ActionDispatch::Static
 use #<ActiveSupport::Cache::Strategy::LocalCache::Middleware:0x00000001c304c8>
@@ -203,7 +201,7 @@ use Rack::Runtime
 run Rails.application.routes
 ```
 
-If you want to remove session related middleware, do the following:
+セッション関連のミドルウェアを削除したいときは次のように書きます。
 
 ```ruby
 # config/application.rb
@@ -212,121 +210,121 @@ config.middleware.delete "ActionDispatch::Session::CookieStore"
 config.middleware.delete "ActionDispatch::Flash"
 ```
 
-And to remove browser related middleware,
+ブラウザ関連のミドルウェアを削除するには次のように書きます。●
 
 ```ruby
 # config/application.rb
 config.middleware.delete "Rack::MethodOverride"
 ```
 
-### Internal Middleware Stack
+### ミドルウェアスタックの内容
 
-Much of Action Controller's functionality is implemented as Middlewares. The following list explains the purpose of each of them:
+Action Controllerの機能の多くはミドルウェアとして実装されています。以下のリストでそれぞれの役割を説明します。
 
 **`Rack::Sendfile`**
 
-* Sets server specific X-Sendfile header. Configure this via `config.action_dispatch.x_sendfile_header` option.
+* X-Sendfile headerを設定します。`config.action_dispatch.x_sendfile_header`オプション経由で設定を変更できます。
 
 **`ActionDispatch::Static`**
 
-* Used to serve static assets. Disabled if `config.serve_static_assets` is `false`.
+* 静的ファイルを配信する際に使用します。`config.serve_static_assets`を`false`にするとオフになります。
 
 **`Rack::Lock`**
 
-* Sets `env["rack.multithread"]` flag to `false` and wraps the application within a Mutex.
+* `env["rack.multithread"]`を`false`に設定し、アプリケーションをMutexで包みます。
 
 **`ActiveSupport::Cache::Strategy::LocalCache::Middleware`**
 
-* Used for memory caching. This cache is not thread safe.
+* メモリによるキャッシュを行うために使用します。このキャッシュはスレッドセーフではありません。
 
 **`Rack::Runtime`**
 
-* Sets an X-Runtime header, containing the time (in seconds) taken to execute the request.
+* X-Runtimeヘッダーを生成します。このヘッダーにはリクエストの処理にかかった時間が秒単位で表示されます。
 
 **`Rack::MethodOverride`**
 
-* Allows the method to be overridden if `params[:_method]` is set. This is the middleware which supports the PUT and DELETE HTTP method types.
+* `params[:_method]`が存在するときに、(HTTPの)メソッドを上書きます。HTTPのPUTメソッド、DELETEメソッドを実現するためのミドルウェアです。
 
 **`ActionDispatch::RequestId`**
 
-* Makes a unique `X-Request-Id` header available to the response and enables the `ActionDispatch::Request#uuid` method.
+* ユニークなidを生成して`X-Request-Id`ヘッダーに設定します。`ActionDispatch::Request#uuid`メソッドも同一のidを利用しています。
 
 **`Rails::Rack::Logger`**
 
-* Notifies the logs that the request has began. After request is complete, flushes all the logs.
+* リクエストの処理を開始したことを、ログに書き出します。リクエストが完了すると、すべてのログをフラッシュします。
 
 **`ActionDispatch::ShowExceptions`**
 
-* Rescues any exception returned by the application and calls an exceptions app that will wrap it in a format for the end user.
+* アプリケーションが返してくる例外を捕え、例外処理用のアプリケーションを起動します。例外処理用のアプリケーションは、エンドユーザー向けに例外を整形します。
 
 **`ActionDispatch::DebugExceptions`**
 
-* Responsible for logging exceptions and showing a debugging page in case the request is local.
+* 例外をログに残し、ローカルからのリクエストの場合は、デバッグ用のページを表示します。
 
 **`ActionDispatch::RemoteIp`**
 
-* Checks for IP spoofing attacks.
+* IPスプーフィング攻撃をチェックします。
 
 **`ActionDispatch::Reloader`**
 
-* Provides prepare and cleanup callbacks, intended to assist with code reloading during development.
+* development環境でコードの再読み込みを行うために、prepareコールバックとcleanupコールバックを提供します。
 
 **`ActionDispatch::Callbacks`**
 
-* Runs the prepare callbacks before serving the request.
+* リクエストの処理を開始する前に、prepareコールバックを起動します(訳注: この説明は原文レベルで間違っており、現在原文の修正を行っています)。
 
 **`ActiveRecord::Migration::CheckPending`**
 
-* Checks pending migrations and raises `ActiveRecord::PendingMigrationError` if any migrations are pending.
+* 未実行のマイグレーションがないか確認します。未実行のものがあった場合は、`ActiveRecord::PendingMigrationError`を発生さます。
 
 **`ActiveRecord::ConnectionAdapters::ConnectionManagement`**
 
-* Cleans active connections after each request, unless the `rack.test` key in the request environment is set to `true`.
+* リクエストを処理する度にデータベースへのコネクションをコネクションプールに返します。`env['rack.test']` が `true`でない場合のみ返却が行われます。
 
 **`ActiveRecord::QueryCache`**
 
-* Enables the Active Record query cache.
+* Active Recordのクエリキャッシュを有効にします。
 
 **`ActionDispatch::Cookies`**
 
-* Sets cookies for the request.
+* クッキー機能を提供します。
 
 **`ActionDispatch::Session::CookieStore`**
 
-* Responsible for storing the session in cookies.
+* クッキーにセッションを保存するようにします。
 
 **`ActionDispatch::Flash`**
 
-* Sets up the flash keys. Only available if `config.action_controller.session_store` is set to a value.
+* flash機能を提供します(flashとは連続するリクエスト間で値を共有する機能です)。これは、`config.action_controller.session_store`に値が設定されている場合にのみ有効です。
 
 **`ActionDispatch::ParamsParser`**
 
-* Parses out parameters from the request into `params`.
+* リクエストからパラメータをパースして、`params`を設定します。
 
 **`ActionDispatch::Head`**
 
-* Converts HEAD requests to `GET` requests and serves them as so.
+* HEADリクエストを`GET`に変換して処理します。その上でbodyを空にしたレスポンスを返します(訳注: Rails4.0からはRack::Headを使うように変更されています)。
 
 **`Rack::ConditionalGet`**
 
-* Adds support for "Conditional `GET`" so that server responds with nothing if page wasn't changed.
+* "条件付き `GET`" (Conditional `GET`) 機能を提供します。"条件付き `GET`"が有効になっていると、リクエストされたページに変更がないときに空のbodyを返すようになります。
 
 **`Rack::ETag`**
 
-* Adds ETag header on all String bodies. ETags are used to validate cache.
+* bodyが文字列のみのレスポンスに対して、ETagヘッダを追加します。 ETagはキャッシュの有効性を検証するのに使用されます。
 
-TIP: It's possible to use any of the above middlewares in your custom Rack stack.
+TIP: これらのミドルウェアはいずれも、Rackのミドルウェアスタックに利用できます。
 
-Resources
+参考資料
 ---------
 
-### Learning Rack
+### Rackについて詳しく学ぶ
 
-* [Official Rack Website](http://rack.github.io)
-* [Introducing Rack](http://chneukirchen.org/blog/archive/2007/02/introducing-rack.html)
+* [Rack公式サイト](http://rack.github.io)
+* [Rack入門](http://chneukirchen.org/blog/archive/2007/02/introducing-rack.html)
 * [Ruby on Rack #1 - Hello Rack!](http://m.onkey.org/ruby-on-rack-1-hello-rack)
 * [Ruby on Rack #2 - The Builder](http://m.onkey.org/ruby-on-rack-2-the-builder)
 
-### Understanding Middlewares
+### ミドルウェアを理解する
 
 * [Railscast on Rack Middlewares](http://railscasts.com/episodes/151-rack-middleware)

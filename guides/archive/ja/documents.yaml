@@ -127,7 +127,7 @@
       url: plugins.html
       description: プラグインを作成してRailsの機能を拡張する方法について解説します。
     -
-      name: Rails on Rack [未着手]
+      name: Rails と Rack
       url: rails_on_rack.html
       description: RailsとRackがどのように統合されているか、および他のRackコンポーネントとのインターフェイスについて解説します。
     -
