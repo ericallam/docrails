@@ -66,6 +66,7 @@ and supported by [ヤスラボ](http://yasslab.jp/ja/).
 ## ライセンス
 
 [![CC BY-SA International](https://raw.githubusercontent.com/yasslab/railsguides.jp/japanese/images/CC-BY-SA.png)](https://creativecommons.org/licenses/by-sa/4.0/)
+
 This work is licensed under a [Creative Commons Attribution-Share Alike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/).
 
 "Rails", "Ruby on Rails", and the Rails logo are trademarks of David Heinemeier Hansson. All rights reserved.
