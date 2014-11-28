@@ -310,7 +310,7 @@ end
 </ul>
 <p>本ガイドではこの後、それぞれの関連付けの宣言方法と使用方法について詳しく解説します。その前に、それぞれの関連付けが適切となる状況について簡単にご紹介しましょう。</p>
 <h4 id="belongs_to関連付け">2.1 <code>belongs_to</code>関連付け</h4>
-<p>あるモデルで<code>belongs_to</code>関連付けを行なうと、他方のモデルとの間に「1対1」のつながりが設定されます。このとき、宣言を行ったモデルのすべてのインスタンスは、他方のモデルのインスタンスに「従属(belongs to)」します。たとえば、Railsアプリケーションに顧客(customer)と注文(order)情報が含まれており、1人の顧客につき正確に1つの注文だけを割り当てたいのであれば、Orderモデルで以下のように宣言します。</p>
+<p>あるモデルで<code>belongs_to</code>関連付けを行なうと、他方のモデルとの間に「1対1」のつながりが設定されます。このとき、宣言を行ったモデルのすべてのインスタンスは、他方のモデルのインスタンスに「従属(belongs to)」します。たとえば、Railsアプリケーションに顧客(customer)と注文(order)情報が含まれており、1つの注文につき正確に1人の顧客だけを割り当てたいのであれば、Orderモデルで以下のように宣言します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class Order &lt; ActiveRecord::Base
