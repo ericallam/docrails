@@ -5,6 +5,7 @@
 ruby allocate.rb
 rm -rf output
 bundle exec rake guides:generate:html
+cp ./source/favicon.ico ./output/
 
 # Then, manually type these commands:
 #   $ git add .
