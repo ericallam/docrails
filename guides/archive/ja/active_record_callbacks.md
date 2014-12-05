@@ -124,7 +124,7 @@ WARNING: `after_save`は作成と更新の両方で呼び出されますが、�
 class User < ActiveRecord::Base
   after_initialize do |user|
     puts "オブジェクトは初期化されました"
-  end
+[W2]end
 
   after_find do |user|
     puts "オブジェクトが見つかりました"

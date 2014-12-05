@@ -335,7 +335,7 @@ end
 class User &lt; ActiveRecord::Base
   after_initialize do |user|
     puts "オブジェクトは初期化されました"
-end
+  end
 
   after_find do |user|
     puts "オブジェクトが見つかりました"
