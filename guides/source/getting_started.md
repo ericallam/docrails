@@ -694,7 +694,7 @@ end
 
 このように変更されると、すべての記事にタイトルが存在し、その長さが5文字以上であることが保証されます。そうでない場合には記事はデータベースに保存されません。Railsには豊富な検証機能があり、存在確認、カラムでの重複確認、フォーマット確認、関連付けられたオブジェクトがあるかどうかの確認などが行えます。検証の詳細については[Active Record検証(validation)](active_record_validations.html)を参照してください。
 
-検証機能が追加されたので、検証が通らない内容を持つ@articleに対して`@article.save`を実行すると`false`が返されるようになりました。さて、`app/controllers/articles_controller.rb`を再度開いてみると、残念なことにまだ`create`アクションで`@article.save`の結果を利用するようになっていません。`@article.save`が失敗したらそのことをユーザーに表示してあげないと不親切です。そのためには、`app/controllers/articles_controller.rb`の`new`アクション`と`change`アクションを以下のように変更してください。
+検証機能が追加されたので、検証が通らない内容を持つ@articleに対して`@article.save`を実行すると`false`が返されるようになりました。さて、`app/controllers/articles_controller.rb`を再度開いてみると、残念なことにまだ`create`アクションで`@article.save`の結果を利用するようになっていません。`@article.save`が失敗したらそのことをユーザーに表示してあげないと不親切です。そのためには、`app/controllers/articles_controller.rb`の`new`アクション`と`create`アクションを以下のように変更してください。
 
 ```ruby
 def new
