@@ -1,15 +1,17 @@
 ## 日本語訳について 
 
-本リポジトリは[Ruby on Rails Guides](http://guides.rubyonrails.org/)を日本語に訳したものです。
+本リポジトリは[Ruby on Rails Guides](http://guides.rubyonrails.org/)を日本語に訳したものです。   
+Railsガイドは、Railsの各機能の仕組みや最新の機能、リリース情報などがまとまっている大型リファレンスです。
 
-Railsガイド   
+Ruby on Rails ガイド   
 http://railsguides.jp/
 
-また，[Ruby on Rails Tutorial](https://www.railstutorial.org/)の日本語訳「Railsチュートリアル」も無料で公開されているので，    
-こちらも是非合わせて読んでみてください :)
+これからRailsを勉強する方は「Railsチュートリアル」がオススメです。   
+Railsガイドと同様に、RailsチュートリアルもWeb版は無料で読めます :)
 
-Railsチュートリアル   
+Ruby on Rails チュートリアル：実例を使ってRailsを学ぼう   
 http://railstutorial.jp/
+
 
 
 ## 翻訳の流れ
@@ -47,7 +49,7 @@ http://railstutorial.jp/
 ### ⑤ Herokuにデプロイ
 
 - @yasulab が対応.
-- 手伝ってくれる方がいれば @yasulab まで. collaborator に追加します.
+- 手伝ってくれる方がいれば @yasulab まで. collaborator に追加します。
 
 ## Railsガイド協力者
 
