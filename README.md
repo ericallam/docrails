@@ -1,7 +1,7 @@
 ## 日本語訳について 
 
 本リポジトリは[Ruby on Rails Guides](http://guides.rubyonrails.org/)を日本語に訳したものです。   
-Railsガイドは、Railsの各機能の仕組みや最新の機能、リリース情報などがまとまっている大型リファレンスです。
+Railsガイドでは、Railsの各機能の仕組みや最新の機能、リリース情報などがまとまっています。
 
 Ruby on Rails ガイド   
 http://railsguides.jp/
