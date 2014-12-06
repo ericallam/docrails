@@ -19,8 +19,8 @@ Railsをはじめよう
 本ガイドは、ゼロからRailsアプリケーションを構築したいと考えている初心者を対象にしています。読者がRailsの経験がないことを前提としています。ただし、このドキュメントを最大限に活用するために、以下のソフトウェアがインストールされ、利用可能な状態になっていることを前提としています。
 
 * [Ruby](https://www.ruby-lang.org/ja/downloads/) 1.9.3以降 (訳注: 翻訳時点の最新安定版は2.1.2です)。
-* [RubyGems](http://rubygems.org) パッケージングシステム。これはRuby 1.9以降であればRubyをインストールすると自動的に導入されます。RubyGemsの詳細については、[RubyGemsガイド](http://rubygems-guides-jp.herokuapp.com/) を参照してください。
-* [SQLite3データベース](http://www.sqlite.org) がインストールされ、正常に動作する状態になっていること。
+* [RubyGems](http://rubygems.org)パッケージングシステム。これはRuby 1.9以降であればRubyをインストールすると自動的に導入されます。RubyGemsの詳細については、[RubyGemsガイド](http://rubygems-guides-jp.herokuapp.com/)を参照してください。
+* [SQLite3データベース](http://www.sqlite.org)がインストールされ、正常に動作する状態になっていること。
 
 Ruby on Rails (以下Rails) とは、Rubyプログラミング言語の上で動作するWebアプリケーションフレームワークです。
 Rubyの経験がまったくない場合、Railsを学ぶのはかなり大変な作業になるでしょう。Rubyを学ぶための精選されたオンラインリソース一覧はたくさんありますので、その中から以下をご紹介します。
@@ -229,7 +229,7 @@ root 'welcome#index'
 
 ブラウザで<http://localhost:3000>を表示してみましょう (ジェネレータを実行するためにRailsを止めていた場合は`rails server`を再実行してください)。`app/views/welcome/index.html.erb`の中に書いた"Hello, Rails!"という文字がブラウザ上に表示されるはずです。`WelcomeController`の`index`アクションへのルーティングが新たに形成され、ビューが正しく表示されたことがこれで確認できました。
 
-TIP: ルーティングの詳細については[Railsのルーティング](routing.html) を参照してください。
+TIP: ルーティングの詳細については[Railsのルーティング](routing.html)を参照してください。
 
 アプリケーションの実装と実行
 ----------------------
@@ -293,7 +293,7 @@ end
 
 コントローラは、`ApplicationController`を継承する形で定義されるシンプルなクラスです。コントローラの内側で定義されたメソッドは、コントローラのアクションになります。制作中のブログアプリケーションでは、これらのアクションがarticleに対するCRUD操作を担当します。
 
-NOTE: Rubyのメソッドは`public`、`private`、`protected`に分けられますが、コントローラのアクションになれるのは`public`メソッドだけです。詳細については[Programming Ruby](http://www.ruby-doc.org/docs/ProgrammingRuby/) を参照してください。
+NOTE: Rubyのメソッドは`public`、`private`、`protected`に分けられますが、コントローラのアクションになれるのは`public`メソッドだけです。詳細については[Programming Ruby](http://www.ruby-doc.org/docs/ProgrammingRuby/)を参照してください。
 
 ブラウザの<http://localhost:3000/articles/new>を再表示すると、今度は別のエラーが表示されます。
 
@@ -539,7 +539,7 @@ private
   end
 ```
 
-TIP: 詳細については、上に挙げた参考資料に加えて[Strong Parametersに関するブログ記事](http://weblog.rubyonrails.org/2012/3/21/strong-parameters/) を参照してください。
+TIP: 詳細については、上に挙げた参考資料に加えて[Strong Parametersに関するブログ記事](http://weblog.rubyonrails.org/2012/3/21/strong-parameters/)を参照してください。
 
 ### 記事を表示する
 
@@ -1109,7 +1109,7 @@ end
 
 この設定により、`article`の内側に _ネストされたリソース_ として`comments`が作成されます。これは、モデルの記述とは別の視点から、記事とコメントの間のリレーションシップを階層的に捉えたものであると言えます。
 
-TIP: ルーティングの詳細については[Railsのルーティング](routing.html) を参照してください。
+TIP: ルーティングの詳細については[Railsのルーティング](routing.html)を参照してください。
 
 ### コントローラを生成する
 
@@ -1450,7 +1450,7 @@ class CommentsController < ApplicationController
 
 ![Basic HTTP Authentication Challenge](images/getting_started/challenge.png)
 
-もちろん、Railsでは他の認証方法を使用することもできます。Railsにはさまざまな認証システムがありますが、その中で人気が高い認証システムは[Devise](https://github.com/plataformatec/devise) と[Authlogic](https://github.com/binarylogic/authlogic) gemの2つです。
+もちろん、Railsでは他の認証方法を使用することもできます。Railsにはさまざまな認証システムがありますが、その中で人気が高い認証システムは[Devise](https://github.com/plataformatec/devise)と[Authlogic](https://github.com/binarylogic/authlogic) gemの2つです。
 
 
 ### その他のセキュリティ対策
