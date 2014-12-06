@@ -304,12 +304,12 @@ Rails経験の長い多くの開発者から、おかげでWebアプリケーシ
 <strong>設定より規約が優先される (Convention Over Configuration):</strong> Railsでは、Webアプリケーションで行われるさまざまなことを実現するための最善の方法を明確に思い描いており、Webアプリケーションの各種設定についても従来の経験や慣習を元に、それらのデフォルト値を定めています。このようにある種独断でデフォルト値が決まっているおかげで、開発者の意見をすべて取り入れようとした自由過ぎるWebアプリケーションのように、開発者が延々と設定ファイルを設定して回らずに済みます。</li>
 </ul>
 <h3 id="railsプロジェクトを新規作成する">3 Railsプロジェクトを新規作成する</h3>
-<p>本ガイドを活用するための最善の方法は、以下の手順を文字どおり1つずつ実行し、手順を取りこぼさないようにすることです。取りこぼしがあると、その後の手順が期待どおりに進まない可能性があります。この手順で作成された完全なRailsプロジェクトのコードは<a href="https://github.com/rails/docrails/tree/master/guides/code/getting_started">ここ</a>を参照してください(●訳注: このリンク先はなく、移動先も不明です)。</p>
+<p>本ガイドを活用するための最善の方法は、以下の手順を文字どおり1つずつ実行し、手順を取りこぼさないようにすることです。取りこぼしがあると、その後の手順が期待どおりに進まない可能性があります。なお、この手順で作成された完全なRailsプロジェクトのコードは<a href="https://github.com/yasslab/getting_started">コチラ</a>で公開されているので、必要に応じて参照してください。</p>
 <p>本ガイドの手順に従うことで、<code>blog</code>という名前の非常にシンプルなブログのRailsプロジェクトを作成できます。Railsアプリケーションを構築する前に、Rails本体がインストールされていることを確認してください。</p>
 <div class="info"><p>以下の例では、Unix系OSのプロンプトとして<code>$</code>記号を使用していますが、これはカスタマイズ可能であり、自分の環境では異なる記号になっていることもあります。Windowsでは<code>c:\source_code&gt;</code>のように表示されます。</p></div>
 <h4 id="railsのインストール">3.1 Railsのインストール</h4>
 <p>ターミナル (コマンドプロンプトとも言います) ウィンドウを開いてください。Mac OS Xの場合、ターミナル (Terminal.app) という名前のアプリケーションを実行します。Windowsの場合は[スタート] メニューから [ファイル名を指定して実行] をクリックして'cmd.exe'と入力します。<code>$</code>で始まる記述はコマンド行なので、これらはコマンドラインに入力して実行してください。続いて現在インストールされているRubyのバージョンが最新のものであることを確認してください。</p>
-<div class="info"><p>RubyやRuby on Railsを素早くインストールするためのツールは多数存在します。Windowsユーザーの場合は<a href="http://railsinstaller.org">Railsインストーラ</a> をお使いください。Mac OS Xユーザーは<a href="http://railsoneclick.com">Rails One Click</a> をお使いください。(●訳注: これらのリンクは古いか適切でない可能性があります。最新のインストール方法については<a href="http://railstutorial.jp/chapters/beginning?version=4.0#sec-rubygems">Railsチュートリアル</a> を参照してください)</p></div>
+<div class="info"><p>RubyやRuby on Railsを素早くインストールするためのツールは多数存在します。Windowsユーザーの場合は<a href="http://railsinstaller.org">Railsインストーラ</a>をお使いください。Mac OS Xユーザーは<a href="http://railsoneclick.com">Rails One Click</a>をお使いください。(訳注: これらのリンクは古いか適切でない可能性があります。最新のインストール方法については<a href="http://railstutorial.jp/chapters/beginning?version=4.0#sec-rubygems">Railsチュートリアル</a>を参照してください)</p></div>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ ruby -v

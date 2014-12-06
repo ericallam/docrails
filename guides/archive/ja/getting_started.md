@@ -47,7 +47,7 @@ Railsの哲学には、以下の2つの主要な基本理念があります。
 Railsプロジェクトを新規作成する
 ----------------------------
 
-本ガイドを活用するための最善の方法は、以下の手順を文字どおり1つずつ実行し、手順を取りこぼさないようにすることです。取りこぼしがあると、その後の手順が期待どおりに進まない可能性があります。この手順で作成された完全なRailsプロジェクトのコードは[ここ](https://github.com/rails/docrails/tree/master/guides/code/getting_started)を参照してください(●訳注: このリンク先はなく、移動先も不明です)。
+本ガイドを活用するための最善の方法は、以下の手順を文字どおり1つずつ実行し、手順を取りこぼさないようにすることです。取りこぼしがあると、その後の手順が期待どおりに進まない可能性があります。なお、この手順で作成された完全なRailsプロジェクトのコードは[コチラ](https://github.com/yasslab/getting_started)で公開されているので、必要に応じて参照してください。
 
 本ガイドの手順に従うことで、`blog`という名前の非常にシンプルなブログのRailsプロジェクトを作成できます。Railsアプリケーションを構築する前に、Rails本体がインストールされていることを確認してください。
 
@@ -57,7 +57,7 @@ TIP: 以下の例では、Unix系OSのプロンプトとして`$`記号を使用
 
 ターミナル (コマンドプロンプトとも言います) ウィンドウを開いてください。Mac OS Xの場合、ターミナル (Terminal.app) という名前のアプリケーションを実行します。Windowsの場合は[スタート] メニューから [ファイル名を指定して実行] をクリックして'cmd.exe'と入力します。`$`で始まる記述はコマンド行なので、これらはコマンドラインに入力して実行してください。続いて現在インストールされているRubyのバージョンが最新のものであることを確認してください。
 
-TIP: RubyやRuby on Railsを素早くインストールするためのツールは多数存在します。Windowsユーザーの場合は[Railsインストーラ](http://railsinstaller.org) をお使いください。Mac OS Xユーザーは[Rails One Click](http://railsoneclick.com) をお使いください。(●訳注: これらのリンクは古いか適切でない可能性があります。最新のインストール方法については[Railsチュートリアル](http://railstutorial.jp/chapters/beginning?version=4.0#sec-rubygems) を参照してください)
+TIP: RubyやRuby on Railsを素早くインストールするためのツールは多数存在します。Windowsユーザーの場合は[Railsインストーラ](http://railsinstaller.org)をお使いください。Mac OS Xユーザーは[Rails One Click](http://railsoneclick.com)をお使いください。(訳注: これらのリンクは古いか適切でない可能性があります。最新のインストール方法については[Railsチュートリアル](http://railstutorial.jp/chapters/beginning?version=4.0#sec-rubygems)を参照してください)
 
 ```bash
 $ ruby -v
