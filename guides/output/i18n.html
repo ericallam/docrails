@@ -176,7 +176,7 @@
 
   <div id="feature">
     <div class="wrapper">
-      <h2>Rails国際化(I18n) API</h2><p>RubyのI18n (国際化・多言語化を意味する <em>internationalization</em> を短縮したもの) gemはRuby on Rails 2.2以降からRailsに同梱されています。このgemは、アプリケーションの文言を英語以外の <strong>別の1つの言語に翻訳</strong> する機能や <strong>多言語サポート</strong> 機能を簡単かつ拡張可能な方式で導入するためのフレームワークを提供します。</p><p>アプリケーションの「国際化」プロセスといえば、使用されるすべての文言やロケール固有の要素 (日付や通貨フォーマットなど) の抽象化までの作業を指すのが普通です。一方「ローカライズ(localization)」のプロセスは、具体的な翻訳の提供とローカライズ済みフォーマット[<sup>1]などの提供を指します。</sup></p><p>Railsアプリケーションを <em>国際化する</em> プロセスでは以下を行う必要があります。</p>
+      <h2>Rails国際化(I18n) API</h2><p>RubyのI18n (国際化・多言語化を意味する <em>internationalization</em> を短縮したもの) gemはRuby on Rails 2.2以降からRailsに同梱されています。このgemは、アプリケーションの文言を英語以外の <strong>別の1つの言語に翻訳</strong> する機能や <strong>多言語サポート</strong> 機能を簡単かつ拡張可能な方式で導入するためのフレームワークを提供します。</p><p>アプリケーションの「国際化」プロセスといえば、使用されるすべての文言やロケール固有の要素 (日付や通貨フォーマットなど) の抽象化までの作業を指すのが普通です。一方、「ローカライズ(localization)」とは、具体的な翻訳方法を提供したり、そのためのフォーマットを提供したりすることを指します。<sup class="footnote" id="footnote-1-ref"><a href="#footnote-1">1</a></sup></p><p>Railsアプリケーションを <em>国際化する</em> プロセスでは以下を行う必要があります。</p>
 <ul>
 <li>i18nを確実にサポートすること。</li>
 <li>ロケール辞書の置き場所をRailsに指示すること。</li>
@@ -599,14 +599,12 @@ pirate:
 <h4 id="訳文に変数を渡す">3.2 訳文に変数を渡す</h4>
 <p>訳文メッセージの中に変数を含め、ビューから変数に値を渡すことができます。</p>
 <div class="code_container">
-<pre class="brush: plain; gutter: false; toolbar: false">
-```erb
+<pre class="brush: ruby; html-script: true; gutter: false; toolbar: false">
+# app/views/home/index.html.erb
+&lt;%=t 'greet_username', user: "Bill", message: "Goodbye" %&gt;
 
 </pre>
 </div>
-<h2>app/views/home/index.html.erb</h2>
-<p>&lt;%=t 'greet_username', user: "Bill", message: "Goodbye" %&gt;
-```</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 # config/locales/en.yml
@@ -618,22 +616,17 @@ en:
 <h4 id="日付・時刻フォーマットを追加する">3.3 日付・時刻フォーマットを追加する</h4>
 <p>お疲れさまでした。今度はビューにタイムスタンプを追加し、 <strong>日付・時刻のローカライズ</strong> 機能が動作するところもお目にかけましょう時間のフォーマットをローカライズするには、<code>I18n.l</code>にTimeオブジェクトを渡すか、Railsの<code>#l</code>ヘルパーを使用します(後者がお勧めです)。<code>:format</code>オプションを渡すことでフォーマットを選べます。デフォルトでは<code>:default</code>フォーマットを選べます。</p>
 <div class="code_container">
-<pre class="brush: plain; gutter: false; toolbar: false">
-```erb
+<pre class="brush: ruby; html-script: true; gutter: false; toolbar: false">
+# app/views/home/index.html.erb
+&lt;h1&gt;&lt;%=t :hello_world %&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;%= flash[:notice] %&gt;&lt;/p&gt;●原文でタグが欠けている
+&lt;p&gt;&lt;%= l Time.now, format: :short %&gt;&lt;/p&gt; 
 
 </pre>
 </div>
-<h2>app/views/home/index.html.erb</h2>
-<h1></h1>
-
-<p></p>●原文でタグが欠けている
-<p></p> 
+<p>それでは、 海賊語の訳文ファイルに時刻フォーマットを追加してみましょう (既にデフォルトロケールを英語から海賊語に切り替えているとします)。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-
-それでは、 海賊語の訳文ファイルに時刻フォーマットを追加してみましょう (既にデフォルトロケールを英語から海賊語に切り替えているとします)。
-
-```yaml
 # config/locales/pirate.yml
 pirate:
   time:
@@ -949,7 +942,7 @@ errors.messages.blank
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class Admin &lt; User
   validates :name, presence: true
-  end
+end
 
 </pre>
 </div>
