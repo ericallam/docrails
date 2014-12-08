@@ -1,40 +1,40 @@
 ﻿
-A Guide to Testing Rails Applications
+Railsテスティングガイド
 =====================================
 
-This guide covers built-in mechanisms in Rails for testing your application.
+本ガイドは、アプリケーションをテストするためにRailsに組み込まれているメカニズムについて解説します。
 
 このガイドの内容:
 
-* Rails testing terminology.
-* How to write unit, functional, and integration tests for your application.
-* Other popular testing approaches and plugins.
+* Railsテスティング用語
+* アプリケーションに対する単体テスト、機能テスト、結合テストの実施
+* その他の著名なテスティング方法とプラグインの紹介
 
 --------------------------------------------------------------------------------
 
-Why Write Tests for your Rails Applications?
+Railsアプリケーションでテストを作成しなければならない理由
 --------------------------------------------
 
-Rails makes it super easy to write your tests. It starts by producing skeleton test code while you are creating your models and controllers.
+Railsを使用すれば、テストをきわめて簡単に作成できます。テストの作成は、モデルやコントローラを作成する時点でテストコードのスケルトンを作成することから始まります
 
-By simply running your Rails tests you can ensure your code adheres to the desired functionality even after some major code refactoring.
+Railsのテストが作成されていれば、後はそれを単に実行するだけで、特に大規模なリファクタリングを行なう際にコードが期待どおりに動作していることを即座に確認できます。
 
-Rails tests can also simulate browser requests and thus you can test your application's response without having to test it through your browser.
+Railsのテストはブラウザのリクエストをシミュレートできるので、ブラウザを手動で操作せずにアプリケーションのレスポンスをテストできます。
 
-Introduction to Testing
+テストを導入する
 -----------------------
 
-Testing support was woven into the Rails fabric from the beginning. It wasn't an "oh! let's bolt on support for running tests because they're new and cool" epiphany. Just about every Rails application interacts heavily with a database and, as a result, your tests will need a database to interact with as well. To write efficient tests, you'll need to understand how to set up this database and populate it with sample data.
+テスティングのサポートは最初期からRailsに組み込まれています。決して、最近テスティングが流行っていてクールだから導入してみた、というようなその場の思い付きで導入されたものではありません。Railsアプリケーションは、ほぼ間違いなくデータベースと密接なやりとりを行いますので、テスティングにもデータベースが必要となります。効率のよいテストを作成するには、データベースの設定方法とサンプルデータの導入方法を理解しておく必要があります。
 
-### The Test Environment
+### test環境
 
-By default, every Rails application has three environments: development, test, and production. The database for each one of them is configured in `config/database.yml`.
+デフォルトでは、すべてのRailsアプリケーションにはdevelopment、test、productionの3つの環境があります。それぞれの環境におけるデータベース設定は`config/database.yml`で行います。
 
-A dedicated test database allows you to set up and interact with test data in isolation. Tests can mangle test data with confidence, that won't touch the data in the development or production databases.
+テスティング専用のデータベースがあれば、それを設定して他の環境から切り離された専用のテストデータにアクセスすることができます。テストを実行すればテストデータは確実に元の状態から変わってしまうので、development環境やproduction環境のデータベースにあるデータには決してアクセスしません。
 
-### Rails Sets up for Testing from the Word Go
+### Railsを即座にテスト用に設定する
 
-Rails creates a `test` folder for you as soon as you create a Rails project using `rails new` _application_name_. If you list the contents of this folder then you shall see:
+`rails new` _application_name_でRailsアプリケーションを作成すると、その場で`test`フォルダが作成されます。このフォルダの内容は次のようになっています。
 
 ```bash
 $ ls -F test
@@ -42,30 +42,32 @@ controllers/    helpers/        mailers/        test_helper.rb
 fixtures/       integration/    models/
 ```
 
-The `models` directory is meant to hold tests for your models, the `controllers` directory is meant to hold tests for your controllers and the `integration` directory is meant to hold tests that involve any number of controllers interacting.
+`models`ディレクトリはモデル用のテストの置き場所であり、`controllers`ディレクトリはコントローラ用のテストの置き場所です。`integration`ディレクトリは任意の数のコントローラとやりとりするテストを置く場所です。
 
-Fixtures are a way of organizing test data; they reside in the `fixtures` folder.
+フィクスチャはテストデータを編成する方法の1つであり、`fixtures`フォルダに置かれます。
 
-The `test_helper.rb` file holds the default configuration for your tests.
+`test_helper.rb`にはテスティングのデフォルト設定を記入します。
 
-### The Low-Down on Fixtures
+### フィクスチャのしくみ
 
-For good tests, you'll need to give some thought to setting up test data. In Rails, you can handle this by defining and customizing fixtures.
+よいテストを作成するにはよいテストデータを準備する必要があることを理解しておく必要があります。
+Railsでは、テストデータの定義とカスタマイズはフィクスチャで行うことができます。
+網羅的なドキュメントについては、[フィクスチャAPIドキュメント](http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html)を参照してください。
 
-#### What Are Fixtures?
+#### フィクスチャとは何か
 
-_Fixtures_ is a fancy word for sample data. Fixtures allow you to populate your testing database with predefined data before your tests run. Fixtures are database independent written in YAML. There is one file per model.
+_フィクスチャ (fixture)_とは、いわゆるサンプルデータを言い換えたものです。フィクスチャを使用することで、事前に定義したデータをテスト実行直前にtestデータベースに導入することができます。フィクスチャはYAMLで記述され、特定のデータベースに依存しません。1つのモデルにつき1つのフィクスチャファイルが作成されます。
 
-You'll find fixtures under your `test/fixtures` directory. When you run `rails generate model` to create a new model fixture stubs will be automatically created and placed in this directory.
+フィクスチャファイルは`test/fixtures`の下に置かれます。`rails generate model`を実行すると、モデルのフィクスチャスタブが自動的に作成され、このディレクトリに置かれます。
 
 #### YAML
 
-YAML-formatted fixtures are a very human-friendly way to describe your sample data. These types of fixtures have the **.yml** file extension (as in `users.yml`).
+YAML形式のフィクスチャは人間にとって読みやすく、サンプルデータを容易に記述することができます。この形式のフィクスチャには**.yml**というファイル拡張子が与えられます (`users.yml`など)。
 
-Here's a sample YAML fixture file:
+YAMLフィクスチャファイルのサンプルを以下に示します。
 
 ```yaml
-# lo & behold! I am a YAML comment!
+# この行はYAMLのコメントである
 david:
   name: David Heinemeier Hansson
   birthday: 1979-10-15
@@ -77,27 +79,27 @@ steve:
   profession: guy with keyboard
 ```
 
-Each fixture is given a name followed by an indented list of colon-separated key/value pairs. Records are typically separated by a blank space. You can place comments in a fixture file by using the # character in the first column. Keys which resemble YAML keywords such as 'yes' and 'no' are quoted so that the YAML Parser correctly interprets them.
+各フィクスチャは名前とコロンで始まり、その後にコロンで区切られたキー/値ペアのリストがインデント付きで置かれます。通常、レコード間は空行で区切られます。●行の先頭に#文字を置くことで、フィクスチャファイルにコメントを追加できます。'yes'や'no'などのYAMLキーワードに似たキーについては、引用符で囲むことでYAMLパーサーが正常に動作できます。
 
-If you are working with [associations](/association_basics.html), you can simply
-define a reference node between two different fixtures. Here's an example with
-a belongs_to/has_many association:
+[関連付け](/association_basics.html)を使用している場合は、2つの異なるフィクスチャの間に参照ノードを1つ定義すれば済みます。belongs_to/has_many関連付けの例を以下に示します。
 
 ```yaml
-# In fixtures/categories.yml
+# fixtures/categories.ymlの内容:
 about:
   name: About
 
-# In fixtures/articles.yml
+# fixtures/articles.ymlの内容
 one:
   title: Welcome to Rails!
   body: Hello world!
   category: about
 ```
 
-#### ERB'in It Up
+メモ: 名前で互いを参照する関連付けの場合、フィクスチャで`id:`属性を指定することはできません。Railsはテストの実行中に、一貫性を保つために自動的に主キーを割り当てます。フィクスチャで`id:`属性を指定するとこの自動割り当てがしなくなります。関連付けの詳細な動作については、[フィクスチャAPIドキュメント](http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html)を参照してください。
 
-ERB allows you to embed Ruby code within templates. The YAML fixture format is pre-processed with ERB when Rails loads fixtures. This allows you to use Ruby to help you generate some sample data. For example, the following code generates a thousand users:
+#### ERB
+
+ERBは、テンプレート内にRubyコードを埋め込むのに使用されます。YAMLフィクスチャ形式のファイルは、Railsに読み込まれたときにERBによる事前処理が行われます。ERBを活用すれば、Rubyで一部のサンプルデータを生成できます。たとえば、以下のコードを使用すれば1000人のユーザーを生成できます。
 
 ```erb
 <% 1000.times do |n| %>
@@ -107,121 +109,120 @@ user_<%= n %>:
 <% end %>
 ```
 
-#### Fixtures in Action
+#### フィクスチャの動作
 
-Rails by default automatically loads all fixtures from the `test/fixtures` folder for your models and controllers test. Loading involves three steps:
+Railsはデフォルトで、`test/fixtures`フォルダにあるすべてのフィクスチャを自動的に読み込み、モデルやコントローラのテストで使用します。フィクスチャの読み込みは主に以下の3つの手順からなります。
 
-* Remove any existing data from the table corresponding to the fixture
-* Load the fixture data into the table
-* Dump the fixture data into a variable in case you want to access it directly
+* フィクスチャに対応するテーブルに含まれている既存のデータをすべて削除する
+* フィクスチャのデータをテーブルに読み込む
+* フィクスチャに直接アクセスしたい場合はフィクスチャのデータを変数にダンプする
 
-#### Fixtures are Active Record objects
+#### フィクスチャはActive Recordオブジェクト
 
-Fixtures are instances of Active Record. As mentioned in point #3 above, you can access the object directly because it is automatically setup as a local variable of the test case. For example:
+フィクスチャは、実はActive Recordのインスタンスです。前述の3番目の手順で示したように、フィクスチャはテストケースのローカル変数を自動的に設定してくれるので、フィクスチャのオブジェクトに直接アクセスできます。以下に例を示します。
 
-```ruby 
-# this will return the User object for the fixture named david
+```ruby
+# davidという名前のフィクスチャに対応するUserオブジェクトを返す
 users(:david)
 
-# this will return the property for david called id
+# idで呼び出されたdavidのプロパティを返す
 users(:david).id
 
-# one can also access methods available on the User class
+# Userクラスで利用可能なメソッドにアクセスすることもできる
 email(david.girlfriend.email, david.location_tonight)
 ```
 
-Unit Testing your Models
+モデルに対する単体テスト
 ------------------------
 
-In Rails, models tests are what you write to test your models.
+Railsにおけるモデルのテストとは、モデルをテストするために書いたコードを指します。●
 
-For this guide we will be using Rails _scaffolding_. It will create the model, a migration, controller and views for the new resource in a single operation. It will also create a full test suite following Rails best practices. I will be using examples from this generated code and will be supplementing it with additional examples where necessary.
+本ガイドでは、Railsの _scaffold_ を使用します。scaffoldを使用すれば、1つの操作だけで新しいリソースのモデル、マイグレーション、コントローラ、ビューを一度に作成できます。このときに、Railsのベストプラクティスに準拠した完全なテストスイートも作成されます。本ガイドではこのようにして生成したコードを例として使用し、必要に応じてそこにコードを追加する形式で進めます。
 
-NOTE: For more information on Rails <i>scaffolding</i>, refer to [Getting Started with Rails](getting_started.html)
+メモ: Railsの _scaffold_ の詳細については、[Railsをはじめよう](getting_started.html)を参照してください。
 
-When you use `rails generate scaffold`, for a resource among other things it creates a test stub in the `test/models` folder:
+`rails generate scaffold`を実行すると、生成される多数のファイルの中に、`test/models`フォルダの下に作成されるテストスタブがあります。
 
 ```bash
-$ rails generate scaffold post title:string body:text
+$ bin/rails generate scaffold article title:string body:text
 ...
-create  app/models/post.rb
-create  test/models/post_test.rb
-create  test/fixtures/posts.yml
+create  app/models/article.rb
+create  test/models/article_test.rb
+create  test/fixtures/articles.yml
 ...
 ```
 
-The default test stub in `test/models/post_test.rb` looks like this:
+`test/models/article_test.rb`に含まれるデフォルトのテストスタブの内容は以下のような感じになります。
 
-```ruby 
+```ruby
 require 'test_helper'
 
-class PostTest < ActiveSupport::TestCase
+class ArticleTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end
 end
 ```
 
-A line by line examination of this file will help get you oriented to Rails testing code and terminology.
+Railsにおけるテスティングコードと用語に親しんでいただくために、このファイルに含まれている内容を順にご紹介します。
 
-```ruby 
+```ruby
 require 'test_helper'
 ```
 
-As you know by now, `test_helper.rb` specifies the default configuration to run our tests. This is included with all the tests, so any methods added to this file are available to all your tests.
+既にご存じかと思いますが、`test_helper.rb`はテストを実行するためのデフォルト設定を行なうためのファイルです。このファイルはどのテストにも必ずインクルードされるので、このファイルに追加したメソッドはすべてのテストで利用できます。
 
-```ruby 
-class PostTest < ActiveSupport::TestCase
+```ruby
+class ArticleTest < ActiveSupport::TestCase
 ```
 
-The `PostTest` class defines a _test case_ because it inherits from `ActiveSupport::TestCase`. `PostTest` thus has all the methods available from `ActiveSupport::TestCase`. You'll see those methods a little later in this guide.
+`ArticleTest`クラスは`ActiveSupport::TestCase`を継承することによって、_テストケース_ をひとつ定義しています。これにより、`ActiveSupport::TestCase`のすべてのメソッドを`ArticleTest`で利用できます。これらのメソッドのいくつかについてはこの後ご紹介します。
 
-Any method defined within a class inherited from `MiniTest::Unit::TestCase`
-(which is the superclass of `ActiveSupport::TestCase`) that begins with `test` (case sensitive) is simply called a test. So, `test_password`, `test_valid_password` and `testValidPassword` all are legal test names and are run automatically when the test case is run.
+`ActiveSupport::TestCase`のスーパークラスは`Minitest::Test`です。この`Minitest::Test`を継承したクラスで定義される、`test_`で始まるすべてのメソッドは単に「テスト」と呼ばれます。この`test_`は小文字でなければなりません。従って、`test_password`および`test_valid_password`というメソッド名は正式なテスト名となり、テストケースの実行時に自動的に実行されます。
 
-Rails adds a `test` method that takes a test name and a block. It generates a normal `MiniTest::Unit` test with method names prefixed with `test_`. そのため、次のようにも定義されます。
+Railsは、ブロックとテスト名をそれぞれ1つずつ持つ`test`メソッドを1つ追加します。この時生成されるのは通常の`Minitest::Unit`テストであり、メソッド名の先頭に`test_`が付きます。次のようになります。
 
-```ruby 
+```ruby
 test "the truth" do
   assert true
 end
 ```
 
-acts as if you had written
+上のコードは、以下のように書いた場合と同等に振る舞います。
 
-```ruby 
+```ruby
 def test_the_truth
   assert true
 end
 ```
 
-only the `test` macro allows a more readable test name. You can still use regular method definitions though.
+`test`マクロが適用されることによって、引用符で囲んだ読みやすいテスト名がテストメソッドの定義に変換されます。もちろん、後者のような通常のメソッド定義を使用することもできます。
 
-NOTE: The method name is generated by replacing spaces with underscores. The result does not need to be a valid Ruby identifier though, the name may contain punctuation characters etc. That's because in Ruby technically any string may be a method name. Odd ones need `define_method` and `send` calls, but formally there's no restriction.
+メモ: テスト名からのメソッド名生成は、スペースをアンダースコアに置き換えることによって行われます。生成されたメソッド名はRubyの正規な識別子である必要はありませんが、テスト名にはパンクチュエーションなどの文字を含めることができます。●これが可能なのは、Rubyがメソッド名にあらゆる文字列を使用できるからです。`define_method`や`send`のように一見問題の起きそうな呼び出しが必要になることがあるかもしれません。しかし名前の付け方には公式な制限はありません。
 
-```ruby 
+```ruby
 assert true
 ```
 
-This line of code is called an _assertion_. An assertion is a line of code that evaluates an object (or expression) for expected results. For example, an assertion can check:
+上の行は _アサーション (assertion:「主張」を意味する)_ と呼ばれます。アサーションとは、オブジェクトまたは式を評価して、期待された結果が得られるかどうかをチェックするコードです。アサーションでは以下のようなチェックを行なうことができます。
 
-* does this value = that value?
-* is this object nil?
-* does this line of code throw an exception?
-* is the user's password greater than 5 characters?
+* ある値が別の値と等しいかどうか
+* このオブジェクトはnilかどうか
+* コードのこの行で例外が発生するかどうか
+* ユーザーのパスワードが5文字より多いかどうか
 
-Every test contains one or more assertions. Only when all the assertions are successful will the test pass.
+1つのテストには必ず1つ以上のアサーションが含まれます。すべてのアサーションに成功してはじめてテストがパスします。
 
-### Maintaining the test database schema
+### テストデータベースのスキーマを管理する
 
-In order to run your tests, your test database will need to have the current structure. The test helper checks whether your test database has any pending migrations. If so, it will try to load your `db/schema.rb` or `db/structure.sql` into the test database. If migrations are still pending, an error will be raised.
+テストを実行するには、テストデータベースが最新の状態で構成されている必要があります。テストヘルパーは、テストデータベースに未完了のマイグレーションが残っていないかどうかをチェックします。マイグレーションがすべて終わっている場合、`db/schema.rb`や`db/structure.sql`をテストデータベースに読み込みます。ペンディングされたマイグレーションがある場合、エラーが発生します。
 
-### Running Tests
+### テストを実行する
 
-Running a test is as simple as invoking the file containing the test cases through `rake test` command.
+`rake test`コマンドでテストケースを含むファイルを呼び出すことで、簡単にテストを実行できます。
 
 ```bash
-$ rake test test/models/post_test.rb
+$ bin/rake test test/models/article_test.rb
 .
 
 Finished tests in 0.009262s, 107.9680 tests/s, 107.9680 assertions/s.
@@ -229,10 +230,10 @@ Finished tests in 0.009262s, 107.9680 tests/s, 107.9680 assertions/s.
 1 tests, 1 assertions, 0 failures, 0 errors, 0 skips
 ```
 
-You can also run a particular test method from the test case by running the test and providing the `test method name`.
+テスト実行時にテストメソッド名を与えれば、テストケースに含まれる特定のテストメソッドだけを実行することもできます。
 
 ```bash
-$ rake test test/models/post_test.rb test_the_truth
+$ bin/rake test test/models/article_test.rb test_the_truth
 .
 
 Finished tests in 0.009064s, 110.3266 tests/s, 110.3266 assertions/s.
@@ -240,63 +241,63 @@ Finished tests in 0.009064s, 110.3266 tests/s, 110.3266 assertions/s.
 1 tests, 1 assertions, 0 failures, 0 errors, 0 skips
 ```
 
-This will run all test methods from the test case. Note that `test_helper.rb` is in the `test` directory, hence this directory needs to be added to the load path using the `-I` switch.
+これにより、このテストケースに含まれるすべてのテストメソッドが実行されます。`test_helper.rb`は`test`ディレクトリに置かれているので、このディレクトリは`-I`スイッチを使用して読み込みパスに追加しておく必要があります。
 
-The `.` (dot) above indicates a passing test. When a test fails you see an `F`; when a test throws an error you see an `E` in its place. The last line of the output is the summary.
+`.` (ドット) はテストにパスしたことを表します。テストに失敗すると代りに`F`が表示され、エラー発生時には`E`が表示されます。最後の行は実行結果の要約です。
 
-To see how a test failure is reported, you can add a failing test to the `post_test.rb` test case.
+今度はテストが失敗した場合の結果を見てみましょう。そのためには、`article_test.rb`テストケースに、確実に失敗するテストを以下のように追加してみます。
 
-```ruby 
-test "should not save post without title" do
-  post = Post.new
-  assert_not post.save
-  end
+```ruby
+test "should not save article without title" do
+  article = Article.new
+  assert_not article.save
+end
 ```
 
-Let us run this newly added test.
+それでは、新しく追加したテストを実行してみましょう。
 
 ```bash
-$ rake test test/models/post_test.rb test_should_not_save_post_without_title
+$ bin/rake test test/models/article_test.rb test_should_not_save_article_without_title
 F
 
 Finished tests in 0.044632s, 22.4054 tests/s, 22.4054 assertions/s.
 
   1) Failure:
-test_should_not_save_post_without_title(PostTest) [test/models/post_test.rb:6]:
+test_should_not_save_article_without_title(ArticleTest) [test/models/article_test.rb:6]:
 Failed assertion, no message given.
 
 1 tests, 1 assertions, 1 failures, 0 errors, 0 skips
 ```
 
-In the output, `F` denotes a failure. You can see the corresponding trace shown under `1)` along with the name of the failing test. The next few lines contain the stack trace followed by a message which mentions the actual value and the expected value by the assertion. The default assertion messages provide just enough information to help pinpoint the error. To make the assertion failure message more readable, every assertion provides an optional message parameter, as shown here:
+出力に含まれている単独の文字`F`は失敗を表します。`1)`の後にこの失敗に対応するトレースが、失敗したテスト名とともに表示されています。次の数行はスタックトレースで、アサーションの実際の値と期待されていた値がその後に表示されています。デフォルトのアサーションメッセージには、エラー箇所を特定するのに十分な情報が含まれています。アサーションメッセージをさらに読みやすくするために、すべてのアサーションに以下のようにメッセージをオプションパラメータを渡すことができます。
 
-```ruby 
-test "should not save post without title" do
-  post = Post.new
-  assert_not post.save, "Saved the post without a title"
+```ruby
+test "should not save article without title" do
+  article = Article.new
+  assert_not article.save, "Saved the article without a title"
 end
 ```
 
-Running this test shows the friendlier assertion message:
+テストを実行すると、以下のようにさらに読みやすいメッセージが表示されます。
 
 ```bash
   1) Failure:
-test_should_not_save_post_without_title(PostTest) [test/models/post_test.rb:6]:
-Saved the post without a title
+test_should_not_save_article_without_title(ArticleTest) [test/models/article_test.rb:6]:
+Saved the article without a title
 ```
 
-Now to get this test to pass we can add a model level validation for the _title_ field.
+今度は _title_ フィールドに対してモデルのレベルでバリデーションを行い、テストがパスするようにしてみましょう。
 
-```ruby 
-class Post < ActiveRecord::Base
+```ruby
+class Article < ActiveRecord::Base
   validates :title, presence: true
 end
 ```
 
-Now the test should pass. Let us verify by running the test again:
+このテストはパスするはずです。もう一度テストを実行してみましょう。
 
 ```bash
-$ rake test test/models/post_test.rb test_should_not_save_post_without_title
+$ bin/rake test test/models/article_test.rb test_should_not_save_article_without_title
 .
 
 Finished tests in 0.047721s, 20.9551 tests/s, 20.9551 assertions/s.
@@ -304,13 +305,13 @@ Finished tests in 0.047721s, 20.9551 tests/s, 20.9551 assertions/s.
 1 tests, 1 assertions, 0 failures, 0 errors, 0 skips
 ```
 
-Now, if you noticed, we first wrote a test which fails for a desired functionality, then we wrote some code which adds the functionality and finally we ensured that our test passes. This approach to software development is referred to as _Test-Driven Development_ (TDD).
+お気付きになった方もいるかと思いますが、私たちは欲しい機能が未実装であるために失敗するテストをあえて最初に作成していることにご注目ください。続いてその機能を実装し、それからもう一度実行してテストがパスすることを確認しました。ソフトウェア開発の世界ではこのようなアプローチをテスト駆動開発 ( _Test-Driven Development_ : TDD) と呼んでいます。
 
-TIP: Many Rails developers practice _Test-Driven Development_ (TDD). This is an excellent way to build up a test suite that exercises every part of your application. TDD is beyond the scope of this guide, but one place to start is with [15 TDD steps to create a Rails application](http://andrzejonsoftware.blogspot.com/2007/05/15-tdd-steps-to-create-rails.html).
+ヒント: Rails開発者の多くがTDDを日々実践しています。この手法は、アプリケーションのあらゆる部品に対して動作試験を行なうためのテストスイートを作成する方法として非常に優れています。TDDそのものについては本ガイドの範疇を超えるためこれ以上言及しませんが、TDDを初めて学ぶための資料のひとつとして[Railsアプリケーションを開発するためのTDD 15ステップ](http://andrzejonsoftware.blogspot.com/2007/05/15-tdd-steps-to-create-rails.html)をご紹介します。
 
-To see how an error gets reported, here's a test containing an error:
+エラーがどのように表示されるかを確認するために、以下のようなエラーを含んだテストを作ってみましょう。
 
-```ruby 
+```ruby
 test "should report error" do
   # some_undefined_variable is not defined elsewhere in the test case
   some_undefined_variable
@@ -318,160 +319,168 @@ test "should report error" do
 end
 ```
 
-Now you can see even more output in the console from running the tests:
+これで、このテストを実行するとさらに多くのメッセージがコンソールに表示されるようになりました。
 
 ```bash
-$ rake test test/models/post_test.rb test_should_report_error
+$ bin/rake test test/models/article_test.rb test_should_report_error
 E:
 
 Finished tests in 0.030974s, 32.2851 tests/s, 0.0000 assertions/s.
 
   1) Error:
-test_should_report_error(PostTest):
-NameError: undefined local variable or method `some_undefined_variable' for #<PostTest:0x007fe32e24afe0>
-    test/models/post_test.rb:10:in `block in <class:PostTest>'
+test_should_report_error(ArticleTest):
+NameError: undefined local variable or method `some_undefined_variable' for #<ArticleTest:0x007fe32e24afe0>
+    test/models/article_test.rb:10:in `block in <class:ArticleTest>'
 
 1 tests, 0 assertions, 0 failures, 1 errors, 0 skips
 ```
 
-Notice the 'E' in the output. It denotes a test with error.
+今度は'E'が出力されます。これはエラーが発生したテストが1つあることを示しています。
 
-NOTE: The execution of each test method stops as soon as any error or an assertion failure is encountered, and the test suite continues with the next method. All test methods are executed in alphabetical order.
+メモ: テストスイートに含まれる各テストメソッドは、エラーまたはアサーション失敗が発生するとそこで実行を中止し、次のメソッドに進みます。すべてのテストメソッドはアルファベット順に実行されます。
 
-When a test fails you are presented with the corresponding backtrace. By default Rails filters that backtrace and will only print lines relevant to your application. This eliminates the framework noise and helps to focus on your code. However there are situations when you want to see the full backtrace. simply set the `BACKTRACE` environment variable to enable this behavior:
+テストが失敗すると、それに応じたバックトレースが出力されます。Railsはデフォルトでバックトレースをフィルタし、アプリケーションに関連するバックトレースのみを出力します。これによって、フレームワークから発生する不要な情報を排除して作成中のコードに集中できます。完全なバックトレースを参照しなければならなくなった場合は、`BACKTRACE`環境変数を設定するだけで動作を変更できます。
 
 ```bash
-$ BACKTRACE=1 rake test test/models/post_test.rb
+$ BACKTRACE=1 bin/rake test test/models/article_test.rb
 ```
 
-### What to Include in Your Unit Tests
+### 単体テストに含めるべき項目
 
-Ideally, you would like to include a test for everything which could possibly break. It's a good practice to have at least one test for each of your validations and at least one test for every method in your model.
+テストは、不具合が生じる可能性のあるあらゆる箇所に対して1つずつ含めることができれば理想的です。少なくとも、1つのバリデーションに対して1つ以上のテスト、1つのモデルに対して1つ以上のテストを作成することをお勧めします。
 
-### Available Assertions
+### 利用可能なアサーション
 
-By now you've caught a glimpse of some of the assertions that are available. Assertions are the worker bees of testing. They are the ones that actually perform the checks to ensure that things are going as planned.
+ここまでにいくつかのアサーションをご紹介しましたが、これらはごく一部に過ぎません。アサーションこそは、テストの中心を担う重要な存在です。システムが計画通りに動作していることを実際に確認しているのはアサーションです。
 
-There are a bunch of different types of assertions you can use.
-Here's an extract of the assertions you can use with `minitest`, the default testing library used by Rails. The `[msg]` parameter is an optional string message you can specify to make your test failure messages clearer. It's not required.
+アサーションは非常に多くの種類が使用できるようになっています。
+以下で紹介するのは、[`Minitest`](https://github.com/seattlerb/minitest)で使用できるアサーションからの抜粋です。MinitestはRailsにデフォルトで組み込まれているテスティングライブラリです。`[msg]`パラメータは1つのオプション文字列メッセージであり、テストが失敗したときのメッセージをわかりやすくするにはここで指定します。これは必須ではありません。
 
-| Assertion                                                        | Purpose |
+| アサーション                                                        | 目的 |
 | ---------------------------------------------------------------- | ------- |
-| `assert( test, [msg] )`                                          | Ensures that `test` is true.|
-| `assert_not( test, [msg] )`                                      | Ensures that `test` is false.|
-| `assert_equal( expected, actual, [msg] )`                        | Ensures that `expected == actual` is true.|
-| `assert_not_equal( expected, actual, [msg] )`                    | Ensures that `expected != actual` is true.|
-| `assert_same( expected, actual, [msg] )`                         | Ensures that `expected.equal?(actual)` is true.|
-| `assert_not_same( expected, actual, [msg] )`                     | Ensures that `expected.equal?(actual)` is false.|
-| `assert_nil( obj, [msg] )`                                       | Ensures that `obj.nil?` is true.|
-| `assert_not_nil( obj, [msg] )`                                   | Ensures that `obj.nil?` is false.|
-| `assert_match( regexp, string, [msg] )`                          | Ensures that a string matches the regular expression.|
-| `assert_no_match( regexp, string, [msg] )`                       | Ensures that a string doesn't match the regular expression.|
-| `assert_in_delta( expecting, actual, [delta], [msg] )`           | Ensures that the numbers `expected` and `actual` are within `delta` of each other.|
-| `assert_not_in_delta( expecting, actual, [delta], [msg] )`       | Ensures that the numbers `expected` and `actual` are not within `delta` of each other.|
-| `assert_throws( symbol, [msg] ) { block }`                       | Ensures that the given block throws the symbol.|
-| `assert_raises( exception1, exception2, ... ) { block }`         | Ensures that the given block raises one of the given exceptions.|
-| `assert_nothing_raised( exception1, exception2, ... ) { block }` | Ensures that the given block doesn't raise one of the given exceptions.|
-| `assert_instance_of( class, obj, [msg] )`                        | Ensures that `obj` is an instance of `class`.|
-| `assert_not_instance_of( class, obj, [msg] )`                    | Ensures that `obj` is not an instance of `class`.|
-| `assert_kind_of( class, obj, [msg] )`                            | Ensures that `obj` is or descends from `class`.|
-| `assert_not_kind_of( class, obj, [msg] )`                        | Ensures that `obj` is not an instance of `class` and is not descending from it.|
-| `assert_respond_to( obj, symbol, [msg] )`                        | Ensures that `obj` responds to `symbol`.|
-| `assert_not_respond_to( obj, symbol, [msg] )`                    | Ensures that `obj` does not respond to `symbol`.|
-| `assert_operator( obj1, operator, [obj2], [msg] )`               | Ensures that `obj1.operator(obj2)` is true.|
-| `assert_not_operator( obj1, operator, [obj2], [msg] )`           | Ensures that `obj1.operator(obj2)` is false.|
-| `assert_send( array, [msg] )`                                    | Ensures that executing the method listed in `array[1]` on the object in `array[0]` with the parameters of `array[2 and up]` is true. This one is weird eh?|
-| `flunk( [msg] )`                                                 | Ensures failure. This is useful to explicitly mark a test that isn't finished yet.|
+| `assert( test, [msg] )`                                          | `test`はtrueであると主張する。|
+| `assert_not( test, [msg] )`                                      | `test`はfalseであると主張する。|
+| `assert_equal( expected, actual, [msg] )`                        | `expected == actual`はtrueであると主張する。|
+| `assert_not_equal( expected, actual, [msg] )`                    | `expected != actual`はtrueであると主張する。|
+| `assert_same( expected, actual, [msg] )`                         | `expected.equal?(actual)`はtrueであると主張する。|
+| `assert_not_same( expected, actual, [msg] )`                     | `expected.equal?(actual)`はfalseであると主張する。|
+| `assert_nil( obj, [msg] )`                                       | `obj.nil?`はtrueであると主張する。|
+| `assert_not_nil( obj, [msg] )`                                   | `obj.nil?`はfalseであると主張する。|
+| `assert_empty( obj, [msg] )`                                     | `obj`は`empty?`であると主張する。|
+| `assert_not_empty( obj, [msg] )`                                 | `obj`は`empty?`ではないと主張する。|
+| `assert_match( regexp, string, [msg] )`                          | stringは正規表現 (regexp) にマッチすると主張する。|
+| `assert_no_match( regexp, string, [msg] )`                       | stringは正規表現 (regexp) にマッチしないと主張する。|
+| `assert_includes( collection, obj, [msg] )`                      | `obj`は`collection`に含まれると主張する。|
+| `assert_not_includes( collection, obj, [msg] )`                  | `obj`は`collection`に含まれないと主張する。|
+| `assert_in_delta( expecting, actual, [delta], [msg] )`           | `expected`の個数と`actual`の個数の差分は`delta`以内であると主張する。|
+| `assert_not_in_delta( expecting, actual, [delta], [msg] )`       | `expected`の個数と`actual`の個数の差分は`delta`以内にはないと主張する。|
+| `assert_throws( symbol, [msg] ) { block }`                       | 与えられたブロックはシンボルをスローすると主張する。|
+| `assert_raises( exception1, exception2, ... ) { block }`         | 渡されたブロックから、渡された例外のいずれかが発生すると主張する。|
+| `assert_nothing_raised( exception1, exception2, ... ) { block }` | 渡されたブロックからは、渡されたどの例外も発生しないと主張する。|
+| `assert_instance_of( class, obj, [msg] )`                        | `obj`は`class`のインスタンスであると主張する。|
+| `assert_not_instance_of( class, obj, [msg] )`                    | `obj`は`class`のインスタンスではないと主張する。|
+| `assert_kind_of( class, obj, [msg] )`                            | `obj`は`class`またはそのサブクラスのインスタンスであると主張する。●原文がエラーか古い|
+| `assert_not_kind_of( class, obj, [msg] )`                        | `obj`は`class`またはそのサブクラスのインスタンスではないと主張する。|
+| `assert_respond_to( obj, symbol, [msg] )`                        | `obj`は`symbol`に応答すると主張する。|
+| `assert_not_respond_to( obj, symbol, [msg] )`                    | `obj`は`symbol`に応答しないと主張する。|
+| `assert_operator( obj1, operator, [obj2], [msg] )`               | `obj1.operator(obj2)`はtrueであると主張する。|
+| `assert_not_operator( obj1, operator, [obj2], [msg] )`           | `obj1.operator(obj2)`はfalseであると主張する。|
+| `assert_predicate ( obj, predicate, [msg] )`                     | `obj.predicate`はtrueであると主張する (例:`assert_predicate str, :empty?`)。|
+| `assert_not_predicate ( obj, predicate, [msg] )`                 | `obj.predicate`はfalseであると主張する(例:`assert_not_predicate str, :empty?`)。|
+| `assert_send( array, [msg] )`                                    | `array[0]`のオブジェクトがレシーバ、`array[1]`がメソッド、`array[2以降]`がパラメータである場合の実行結果はtrueであると主張する。(これは奇妙ではないか?)|
+| `flunk( [msg] )`                                                 | 必ず失敗すると主張する。これはテストが未完成であることを示すのに便利。|
 
-Because of the modular nature of the testing framework, it is possible to create your own assertions. In fact, that's exactly what Rails does. It includes some specialized assertions to make your life easier.
+これらはMinitestがサポートするアサーションの一部に過ぎません。最新の完全なアサーションのリストについては[Minitest APIドキュメント](http://docs.seattlerb.org/minitest/)、特に[`Minitest::Assertions`](http://docs.seattlerb.org/minitest/Minitest/Assertions.html)を参照してください。
 
-NOTE: Creating your own assertions is an advanced topic that we won't cover in this tutorial.
+テスティングフレームワークはモジュール化されているので、アサーションを自作して利用することもできます。実際、Railsはまさにそれを行っているのです。Railsには開発を楽にしてくれる特殊なアサーションがいくつも追加されています。
 
-### Rails Specific Assertions
+メモ: アサーションの自作は高度なトピックなので、このチュートリアルでは扱いません。
 
-Rails adds some custom assertions of its own to the `test/unit` framework:
+### Rails固有のアサーション
 
-| Assertion                                                                         | Purpose |
+Railsは`minitest`フレームワークに以下のような独自のカスタムアサーションを追加しています。
+
+| アサーション                                                                         | 目的 |
 | --------------------------------------------------------------------------------- | ------- |
-| `assert_difference(expressions, difference = 1, message = nil) {...}`             | Test numeric difference between the return value of an expression as a result of what is evaluated in the yielded block.|
-| `assert_no_difference(expressions, message = nil, &amp;block)`                    | Asserts that the numeric result of evaluating an expression is not changed before and after invoking the passed in block.|
-| `assert_recognizes(expected_options, path, extras={}, message=nil)`               | Asserts that the routing of the given path was handled correctly and that the parsed options (given in the expected_options hash) match path. Basically, it asserts that Rails recognizes the route given by expected_options.|
-| `assert_generates(expected_path, options, defaults={}, extras = {}, message=nil)` | Asserts that the provided options can be used to generate the provided path. This is the inverse of assert_recognizes. The extras parameter is used to tell the request the names and values of additional request parameters that would be in a query string. The message parameter allows you to specify a custom error message for assertion failures.|
-| `assert_response(type, message = nil)`                                            | Asserts that the response comes with a specific status code. You can specify `:success` to indicate 200-299, `:redirect` to indicate 300-399, `:missing` to indicate 404, or `:error` to match the 500-599 range. You can also pass an explicit status number or its symbolic equivalent. For more information, see [full list of status codes](http://rubydoc.info/github/rack/rack/master/Rack/Utils#HTTP_STATUS_CODES-constant) and how their [mapping](http://rubydoc.info/github/rack/rack/master/Rack/Utils#SYMBOL_TO_STATUS_CODE-constant) works.|
-| `assert_redirected_to(options = {}, message=nil)`                                 | Assert that the redirection options passed in match those of the redirect called in the latest action. This match can be partial, such that `assert_redirected_to(controller: "weblog")` will also match the redirection of `redirect_to(controller: "weblog", action: "show")` and so on. You can also pass named routes such as `assert_redirected_to root_path` and Active Record objects such as `assert_redirected_to @article`.|
-| `assert_template(expected = nil, message=nil)`                                    | Asserts that the request was rendered with the appropriate template file.|
+| `assert_difference(expressions, difference = 1, message = nil) {...}`             | yieldされたブロックで評価された結果である式の返し値における数値の違いをテストする。|
+| `assert_no_difference(expressions, message = nil, &amp;block)`                    | 式を評価した結果の数値は、ブロックで渡されたものを呼び出す前と呼び出した後で違いがないと主張する。|
+| `assert_recognizes(expected_options, path, extras={}, message=nil)`               | 渡されたパスのルーティングが正しく扱われ、(expected_optionsハッシュで渡された) 解析オプションがパスと一致したことを主張する。●基本的にこのアサーションでは、Railsはexpected_optionsで渡されたルーティングを認識すると主張する。|
+| `assert_generates(expected_path, options, defaults={}, extras = {}, message=nil)` | 渡されたオプションは、渡されたパスの生成に使用できるものであると主張する。assert_recognizesと逆の動作。extrasパラメータは、クエリ文字列に追加リクエストがある場合にそのパラメータの名前と値をリクエストに渡すのに使用される。messageパラメータはアサーションが失敗した場合のカスタムエラーメッセージを渡すことができる。|
+| `assert_response(type, message = nil)`                                            | レスポンスが特定のステータスコードを持っていることを主張する。`:success`を指定するとステータスコード200-299を指定したことになり、同様に`:redirect`は300-399、`:missing`は404、`:error`は500-599にそれぞれマッチする。ステータスコードの数字や同等のシンボルを直接渡すこともできる。詳細については[ステータスコードの完全なリスト](http://rubydoc.info/github/rack/rack/master/Rack/Utils#HTTP_STATUS_CODES-constant)および[シンボルとステータスコードの対応リスト](http://rubydoc.info/github/rack/rack/master/Rack/Utils#SYMBOL_TO_STATUS_CODE-constant)を参照のこと。|
+| `assert_redirected_to(options = {}, message=nil)`                                 | 渡されたリダイレクトオプションが、最後に実行されたアクションで呼び出されたリダイレクトのオプションと一致することを主張する。このアサーションは部分マッチ可能。たとえば`assert_redirected_to(controller: "weblog")`は`redirect_to(controller: "weblog", action: "show")`というリダイレクトなどにもマッチする。`assert_redirected_to root_path`などの名前付きルートを渡したり、`assert_redirected_to @article`などのActive Recordオブジェクトを渡すこともできる。|
+| `assert_template(expected = nil, message=nil)`                                    | リクエストが適切なテンプレートファイルを使用してレンダリングされることを主張する。|
 
-You'll see the usage of some of these assertions in the next chapter.
+これらのアサーションのいくつかについては次の章でご説明します。
 
-Functional Tests for Your Controllers
+コントローラの機能テスト
 -------------------------------------
 
-In Rails, testing the various actions of a single controller is called writing functional tests for that controller. Controllers handle the incoming web requests to your application and eventually respond with a rendered view.
+Railsで1つのコントローラに含まれる複数のアクションをテストするには、コントローラに対する機能テスト (functional test) を作成します。コントローラはアプリケーションへのWebリクエストを受信し、最終的にビューをレンダリングしたものをレスポンスとして返します。
 
-### What to Include in your Functional Tests
+### 機能テストに含める項目
 
-You should test for things such as:
+機能テストでは以下のようなテスト項目を実施する必要があります。
 
-* was the web request successful?
-* was the user redirected to the right page?
-* was the user successfully authenticated?
-* was the correct object stored in the response template?
-* was the appropriate message displayed to the user in the view?
+* Webリクエストが成功したか
+* 正しいページにリダイレクトされたか
+* ユーザー認証が成功したか
+* レスポンスのテンプレートに正しいオブジェクトが保存されたか
+* ビューに表示されたメッセージは適切か
 
-Now that we have used Rails scaffold generator for our `Post` resource, it has already created the controller code and tests. You can take look at the file `posts_controller_test.rb` in the `test/controllers` directory.
+`Article`リソースをRailsのscaffoldジェネレータで作成したので、コントローラとそのテストコードも自動的に作成されています。`test/controllers`ディレクトリに`articles_controller_test.rb`ファイルができているはずなので、中がどのようになっているか見てみましょう。
 
-Let me take you through one such test, `test_should_get_index` from the file `posts_controller_test.rb`.
+`articles_controller_test.rb`ファイルの`test_should_get_index`というテストについて見てみます。
 
-```ruby 
-class PostsControllerTest < ActionController::TestCase
+```ruby
+class ArticlesControllerTest < ActionController::TestCase
   test "should get index" do
     get :index
     assert_response :success
-    assert_not_nil assigns(:posts)
+    assert_not_nil assigns(:articles)
   end
 end
 ```
 
-In the `test_should_get_index` test, Rails simulates a request on the action called `index`, making sure the request was successful and also ensuring that it assigns a valid `posts` instance variable.
+`test_should_get_index`というテストでは、Railsが`index`という名前のアクションに対するリクエストをシミュレートします。同時に、有効な`articles`インスタンス変数がコントローラに割り当てられます。
 
-The `get` method kicks off the web request and populates the results into the response. It accepts 4 arguments:
+`get`メソッドはWebリクエストを開始し、結果をレスポンスとして返します。このメソッドには以下の4つの引数を渡すことができます。
 
-* The action of the controller you are requesting. This can be in the form of a string or a symbol.
-* An optional hash of request parameters to pass into the action (eg. query string parameters or post variables).
-* An optional hash of session variables to pass along with the request.
-* An optional hash of flash values.
+* リクエストの対象となる、コントローラ内のアクション。アクション名は文字列またはシンボルで指定できます。
+* アクションに渡すリクエストパラメータに含まれるオプションハッシュ1つ (クエリ文字列パラメータや記事の変数など)。
+* リクエストで渡されるセッション変数のオプションハッシュ1つ。
+* flashメッセージの値のオプションハッシュ1つ。
 
-Example: Calling the `:show` action, passing an `id` of 12 as the `params` and setting a `user_id` of 5 in the session:
+例: `:show`アクションを呼び出し、`id`に12を指定して`params`として渡し、セッションの`user_id`に5を設定する。
 
-```ruby 
+```ruby
 get(:show, {'id' => "12"}, {'user_id' => 5})
 ```
 
-Another example: Calling the `:view` action, passing an `id` of 12 as the `params`, this time with no session, but with a flash message.
+別の例: `:view`アクションを呼び出し、`id`に12を指定して`params`として渡すが、セッションの代りにflashメッセージを1つ使用する。
 
-```ruby 
+```ruby
 get(:view, {'id' => '12'}, nil, {'message' => 'booya!'})
 ```
 
-NOTE: If you try running `test_should_create_post` test from `posts_controller_test.rb` it will fail on account of the newly added model level validation and rightly so.
+メモ: `articles_controller_test.rb`ファイルにある`test_should_create_article`テストを実行してみると、モデルレベルのバリデーションが新たに追加されることによってテストは失敗します。
 
-Let us modify `test_should_create_post` test in `posts_controller_test.rb` so that all our test pass:
+`articles_controller_test.rb`ファイルの`test_should_create_article`テストを変更して、テストがパスするようにしてみましょう。
 
-```ruby 
-test "should create post" do
-  assert_difference('Post.count') do
-    post :create, post: {title: 'Some title'}
+```ruby
+test "should create article" do
+  assert_difference('Article.count') do
+    post :create, article: {title: 'Some title'}
   end
 
-  assert_redirected_to post_path(assigns(:post))
+  assert_redirected_to article_path(assigns(:article))
 end
 ```
 
-Now you can try running all the tests and they should pass.
+これで、すべてのテストを実行するとパスするようになったはずです。
 
-### Available Request Types for Functional Tests
+### 機能テストで利用できるHTTPリクエストの種類
 
-If you're familiar with the HTTP protocol, you'll know that `get` is a type of request. There are 6 request types supported in Rails functional tests:
+HTTPリクエストに精通していれば、`get`がHTTPリクエストの一種であることも既に理解していることでしょう。Railsの機能テストでは以下の6種類のHTTPリクエストがサポートされています。
 
 * `get`
 * `post`
@@ -480,22 +489,22 @@ If you're familiar with the HTTP protocol, you'll know that `get` is a type of r
 * `head`
 * `delete`
 
-All of request types are methods that you can use, however, you'll probably end up using the first two more often than the others.
+これらはすべてメソッドとして利用できますが、実際には最初の2つでほとんどの用が足りるはずです。
 
-NOTE: Functional tests do not verify whether the specified request type should be accepted by the action. Request types in this context exist to make your tests more descriptive.
+メモ: 機能テストは、そのリクエストがアクションで受け付けられるかどうかについては検証するものではありません。機能テストでこれらのリクエストの名前が使用されているのは、リクエストの種類を明示してテストを読みやすくするためです。
 
-### The Four Hashes of the Apocalypse
+### 4つのハッシュ
 
-After a request has been made using one of the 6 methods (`get`, `post`, etc.) and processed, you will have 4 Hash objects ready for use:
+6種類のメソッドのうち、`get`や`post`などいずれかのリクエストが行われて処理されると、以下の4種類のハッシュオブジェクトが使用できるようになります。
 
-* `assigns` - Any objects that are stored as instance variables in actions for use in views.
-* `cookies` - Any cookies that are set.
-* `flash` - Any objects living in the flash.
-* `session` - Any object living in session variables.
+* `assigns` - ビューで使用するためにアクションのインスタンス変数として保存されるすべてのオブジェクト。
+* `cookies` - 設定されているすべてのcookies。
+* `flash` - flash内のすべてのオブジェクト。
+* `session` - セッション変数に含まれるすべてのオブジェクト。
 
-As is the case with normal Hash objects, you can access the values by referencing the keys by string. You can also reference them by symbol name, except for `assigns`. For example:
+これらのハッシュは、通常のHashオブジェクトと同様に文字列をキーとして値を参照できます。シンボル名による参照も可能です (ただし`assigns`は除く)。たとえば次のようになります。
 
-```ruby 
+```ruby
 flash["gordon"]               flash[:gordon]
 session["shmession"]          session[:shmession]
 cookies["are_good_for_u"]     cookies[:are_good_for_u]
@@ -504,37 +513,34 @@ cookies["are_good_for_u"]     cookies[:are_good_for_u]
 assigns["something"]          assigns(:something)
 ```
 
-### Instance Variables Available
+### 利用可能なインスタンス変数
 
-You also have access to three instance variables in your functional tests:
+機能テストでは以下の3つの専用インスタンス変数を使用できます。
 
-* `@controller` - The controller processing the request
-* `@request` - The request
-* `@response` - The response
+* `@controller` - リクエストを処理するコントローラ
+* `@request` - リクエスト
+* `@response` - レスポンス
 
-### Setting Headers and CGI variables
+### HTTPとヘッダーとCGI変数を設定する
 
-[HTTP headers](http://tools.ietf.org/search/rfc2616#section-5.3)
-and
-[CGI variables](http://tools.ietf.org/search/rfc3875#section-4.1)
-can be set directly on the `@request` instance variable:
+[HTTPヘッダー](http://tools.ietf.org/search/rfc2616#section-5.3)と[CGI変数](http://tools.ietf.org/search/rfc3875#section-4.1)は`@request`インスタンス変数で直接設定できます。
 
-```ruby 
-# setting a HTTP Header
+```ruby
+# HTTPヘッダーを設定する
 @request.headers["Accept"] = "text/plain, text/html"
-get :index # simulate the request with custom header
+get :index # ヘッダーをカスタマイズしたリクエストをシミュレートする
 
-# setting a CGI variable
+# CGI変数を設定する
 @request.headers["HTTP_REFERER"] = "http://example.com/home"
-post :create # simulate the request with custom env variable
+post :create # 環境変数をカスタマイズしたリクエストをシミュレートする
 ```
 
-### Testing Templates and Layouts
+### テンプレートとレイアウトをテストする
 
-If you want to make sure that the response rendered the correct template and layout, you can use the `assert_template`
+レスポンスが出力するテンプレートとレイアウトが正しいかどうかを確認したい場合は、`assert_template`メソッドを使用することができます。
 method:
 
-```ruby 
+```ruby
 test "index should render correct template and layout" do
   get :index
   assert_template :index
@@ -542,72 +548,70 @@ test "index should render correct template and layout" do
 end
 ```
 
-Note that you cannot test for template and layout at the same time, with one call to `assert_template` method.
-Also, for the `layout` test, you can give a regular expression instead of a string, but using the string, makes things clearer. On the other hand, you have to include the "layouts" directory name even if you save your layout file in this standard layout directory. Hence,
+テンプレートとレイアウトのテストは、一回の`assert_template`呼び出しで同時に行なうことはできない点にご注意ください。さらに`layout`のテストでは通常の文字列に代えて正規表現を与えることもできますが、文字列を使用する方がテストの内容が明確になります。一方、テストするレイアウトを指定する際には必ずレイアウトが置かれているディレクトリ名もパスに含めなければなりません。これはRails標準の"layouts"ディレクトリを使用している場合であっても必要です。従って
 
-```ruby 
+```ruby
 assert_template layout: "application"
 ```
 
-will not work.
+上のコードは期待どおりに動作しません。
 
-If your view renders any partial, when asserting for the layout, you have to assert for the partial at the same time.
-Otherwise, assertion will fail.
+ビューでパーシャル (部分レイアウト) が使用されている場合は、レイアウトに対するアサーションを行なう際に必ずパーシャルにもアサーションを行なう必要があります。このとおりにしなかった場合、アサーションは失敗します。
 
-Hence:
+従って
 
-```ruby 
+```ruby
 test "new should render correct layout" do
   get :new
   assert_template layout: "layouts/application", partial: "_form"
 end
 ```
 
-is the correct way to assert for the layout when the view renders a partial with name `_form`. Omitting the `:partial` key in your `assert_template` call will complain.
+上のコードでは`_form`というパーシャルを使用しているレイアウトに対して正しいアサーションが行われています。`assert_template`で`:partial`キーを省略してしまうと期待どおりに動作しません。
 
-### A Fuller Functional Test Example
+### 完全な機能テストの例
 
-Here's another example that uses `flash`, `assert_redirected_to`, and `assert_difference`:
+`flash`、`assert_redirected_to`、`assert_difference`を使用した別のテスト例を以下に示します。
 
-```ruby 
-test "should create post" do
-  assert_difference('Post.count') do
-    post :create, post: {title: 'Hi', body: 'This is my first post.'}
+```ruby
+test "should create article" do
+  assert_difference('Article.count') do
+    post :create, article: {title: 'Hi', body: 'This is my first article.'}
   end
-  assert_redirected_to post_path(assigns(:post))
-  assert_equal 'Post was successfully created.', flash[:notice]
+  assert_redirected_to article_path(assigns(:article))
+  assert_equal 'Article was successfully created.', flash[:notice]
 end
 ```
 
-### Testing Views
+### ビューをテストする
 
-Testing the response to your request by asserting the presence of key HTML elements and their content is a useful way to test the views of your application. The `assert_select` assertion allows you to do this by using a simple yet powerful syntax.
+アプリケーションのビューのテストで、あるページで重要なHTML要素とその内容がレスポンスに含まれていることを主張する (アサーションを行なう) のは、リクエストに対するレスポンスをテストする方法として便利です。`assert_select`というアサーションを使用すると、こうしたテストで簡潔かつ強力な文法を利用できるようになります。
 
-NOTE: You may find references to `assert_tag` in other documentation, but this is now deprecated in favor of `assert_select`.
+メモ: 他のドキュメントで`assert_tag`というアサーションを見かけることがあるかもしれません。このアサーションはRails 4.2で削除されました。今後は`assert_select`を使用してください。
 
-There are two forms of `assert_select`:
+`assert_select`には2つの書式があります。
 
-`assert_select(selector, [equality], [message])` ensures that the equality condition is met on the selected elements through the selector. The selector may be a CSS selector expression (String), an expression with substitution values, or an `HTML::Selector` object.
+`assert_select(セレクタ, [条件], [メッセージ])`という書式は、セレクタで指定された要素が条件に一致することを主張します。セレクタにはCSSセレクタの式 (文字列) や代入値を持つ式を使用できます。
 
-`assert_select(element, selector, [equality], [message])` ensures that the equality condition is met on all the selected elements through the selector starting from the _element_ (instance of `HTML::Node`) and its descendants.
+`assert_select(要素, セレクタ, [条件], [メッセージ])` は、選択されたすべての要素が条件に一致することを主張します。選択される要素は、_element_ (`Nokogiri::XML::Node` or `Nokogiri::XML::NodeSet`のインスタンス) からその子孫要素までの範囲から選択されます。
 
-For example, you could verify the contents on the title element in your response with:
+たとえば、レスポンスに含まれるtitle要素の内容を検証するには、以下のアサーションを使用します。
 
-```ruby 
+```ruby
 assert_select 'title', "Welcome to Rails Testing Guide"
 ```
 
-You can also use nested `assert_select` blocks. In this case the inner `assert_select` runs the assertion on the complete collection of elements selected by the outer `assert_select` block:
+ネストした`assert_select`ブロックを使用することもできます。以下の例の場合、外側の`assert_select`で選択されたすべての要素の完全なコレクションに対して、内側の`assert_select`がアサーションを実行します。
 
-```ruby 
+```ruby
 assert_select 'ul.navigation' do
   assert_select 'li.menu_item'
 end
 ```
 
-Alternatively the collection of elements selected by the outer `assert_select` may be iterated through so that `assert_select` may be called separately for each element. Suppose for example that the response contains two ordered lists, each with four list elements then the following tests will both pass.
+あるいは、外側の`assert_select`で選択された要素のコレクションをイテレート (列挙) し、`assert_select`が要素ごとに呼び出されるようにすることもできます。たとえば、レスポンスに2つの順序付きリストがあり、1つの順序付きリストにつき要素が4つあれば、以下のテストはどちらもパスします。
 
-```ruby 
+```ruby
 assert_select "ol" do |elements|
   elements.each do |element|
     assert_select element, "li", 4
@@ -619,42 +623,42 @@ assert_select "ol" do
 end
 ```
 
-The `assert_select` assertion is quite powerful. For more advanced usage, refer to its [documentation](http://api.rubyonrails.org/classes/ActionDispatch/Assertions/SelectorAssertions.html).
+`assert_select`はきわめて強力なアサーションです。このアサーションの高度な利用法については[ドキュメント](https://github.com/rails/rails-dom-testing/blob/master/lib/rails/dom/testing/assertions/selector_assertions.rb)を参照してください。
 
-#### Additional View-Based Assertions
+#### その他のビューベースのアサーション
 
-There are more assertions that are primarily used in testing views:
+主にビューをテストするためのアサーションは他にもあります。
 
-| Assertion                                                 | Purpose |
+| アサーション                                                 | 目的 |
 | --------------------------------------------------------- | ------- |
-| `assert_select_email`                                     | Allows you to make assertions on the body of an e-mail. |
-| `assert_select_encoded`                                   | Allows you to make assertions on encoded HTML. It does this by un-encoding the contents of each element and then calling the block with all the un-encoded elements.|
-| `css_select(selector)` or `css_select(element, selector)` | Returns an array of all the elements selected by the _selector_. In the second variant it first matches the base _element_ and tries to match the _selector_ expression on any of its children. If there are no matches both variants return an empty array.|
+| `assert_select_email`                                     | メールの本文に対するアサーションを行なう。 |
+| `assert_select_encoded`                                   | エンコードされたHTMLに対するアサーションを行なう。各要素の内容はデコードされた後にそれらをブロックとして呼び出す。|
+| `css_select(selector)`または`css_select(element, selector)` | _selector_で選択されたすべての要素を1つの配列にしたものを返す。2番目の書式については、最初に_element_がベース要素としてマッチし、続いてそのすべての子孫に対して_selector_のマッチを試みる。どちらの場合も、何も一致しなかった場合には空の配列を1つ返す。|
 
-Here's an example of using `assert_select_email`:
+`assert_select_email`の利用例を以下に示します。
 
-```ruby 
+```ruby
 assert_select_email do
-  assert_select 'small', 'Please click the "Unsubscribe" link if you want to opt-out.'
+  assert_select 'small', 'オプトアウトしたい場合は "購読停止" をクリックしてください。'
 end
 ```
 
-Integration Testing
+結合テスト
 -------------------
 
-Integration tests are used to test the interaction among any number of controllers. They are generally used to test important work flows within your application.
+結合テスト (integration test) は、複数のコントローラ同士のやりとりをテストします。一般に、アプリケーション内の重要なワークフローのテストに使用されます。
 
-Unlike Unit and Functional tests, integration tests have to be explicitly created under the 'test/integration' folder within your application. Rails provides a generator to create an integration test skeleton for you.
+結合テストは他の単体テストや機能テストと異なり、アプリケーションの`test/integration`フォルダの下に明示的に作成する必要があります。Railsには結合テストのスケルトンを生成するためのジェネレータも用意されています。
 
 ```bash
-$ rails generate integration_test user_flows
+$ bin/rails generate integration_test user_flows
       exists  test/integration/
       create  test/integration/user_flows_test.rb
 ```
 
-Here's what a freshly-generated integration test looks like:
+生成直後の結合テストは以下のような内容になっています。
 
-```ruby 
+```ruby
 require 'test_helper'
 
 class UserFlowsTest < ActionDispatch::IntegrationTest
@@ -664,39 +668,37 @@ class UserFlowsTest < ActionDispatch::IntegrationTest
 end
 ```
 
-Integration tests inherit from `ActionDispatch::IntegrationTest`. This makes available some additional helpers to use in your integration tests. Also you need to explicitly include the fixtures to be made available to the test.
+結合テストは`ActionDispatch::IntegrationTest`から継承されます。これにより、結合テスト内でさまざまなヘルパーが利用できます。テストで使用するフィクスチャーも明示的に作成しておく必要があります。
 
-### Helpers Available for Integration Tests
+### 結合テストで使用できるヘルパー
 
-In addition to the standard testing helpers, there are some additional helpers available to integration tests:
+標準のテスト用ヘルパーの他に、結合テストで利用できるヘルパーを以下に示します。
 
-| Helper                                                             | Purpose |
+| ヘルパー                                                             | 目的 |
 | ------------------------------------------------------------------ | ------- |
-| `https?`                                                           | Returns `true` if the session is mimicking a secure HTTPS request.|
-| `https!`                                                           | Allows you to mimic a secure HTTPS request.|
-| `host!`                                                            | Allows you to set the host name to use in the next request.|
-| `redirect?`                                                        | Returns `true` if the last request was a redirect.|
-| `follow_redirect!`                                                 | Follows a single redirect response.|
-| `request_via_redirect(http_method, path, [parameters], [headers])` | Allows you to make an HTTP request and follow any subsequent redirects.|
-| `post_via_redirect(path, [parameters], [headers])`                 | Allows you to make an HTTP POST request and follow any subsequent redirects.|
-| `get_via_redirect(path, [parameters], [headers])`                  | Allows you to make an HTTP GET request and follow any subsequent redirects.|
-| `patch_via_redirect(path, [parameters], [headers])`                | Allows you to make an HTTP PATCH request and follow any subsequent redirects.|
-| `put_via_redirect(path, [parameters], [headers])`                  | Allows you to make an HTTP PUT request and follow any subsequent redirects.|
-| `delete_via_redirect(path, [parameters], [headers])`               | Allows you to make an HTTP DELETE request and follow any subsequent redirects.|
-| `open_session`                                                     | Opens a new session instance.|
+| `https?`                                                           | セッションがセキュアなHTTPSリクエストを模倣している場合に`true`を返す。|
+| `https!`                                                           | セキュアなHTTPSリクエストを模倣できるようにする。|
+| `host!`                                                            | 以後のリクエストでホスト名を設定できるようにする。|
+| `redirect?`                                                        | 最後のリクエストがリダイレクトされた場合に`true`を返す。|
+| `follow_redirect!`                                                 | 単一のリダイレクトレスポンスに従う。|
+| `request_via_redirect(http_method, path, [parameters], [headers])` | HTTPリクエストを1つ作成し、以後のリダイレクトをすべて実行。|
+| `post_via_redirect(path, [parameters], [headers])`                 | HTTP POSTリクエストを1つ作成し、以後のリダイレクトをすべて実行。|
+| `get_via_redirect(path, [parameters], [headers])`                  | HTTP GETリクエストを1つ作成し、以後のリダイレクトをすべて実行。|
+| `patch_via_redirect(path, [parameters], [headers])`                | HTTP PATCHリクエストを1つ作成し、以後のリダイレクトをすべて実行。|
+| `put_via_redirect(path, [parameters], [headers])`                  | HTTP PUTリクエストを1つ作成し、以後のリダイレクトをすべて実行。|
+| `delete_via_redirect(path, [parameters], [headers])`               | HTTP DELETEリクエストを1つ作成し、以後のリダイレクトをすべて実行。|
+| `open_session`                                                     | 新しいセッションインスタンスを1つ開く。|
 
-### Integration Testing Examples
+### 結合テストの例
 
-A simple integration test that exercises multiple controllers:
+単純な結合テストは、複数の
 
-```ruby 
+```ruby
 require 'test_helper'
 
 class UserFlowsTest < ActionDispatch::IntegrationTest
-  fixtures :users
-
   test "login and browse site" do
-    # login via https
+    # HTTPSでログイン
     https!
     get "/login"
     assert_response :success
@@ -706,40 +708,37 @@ class UserFlowsTest < ActionDispatch::IntegrationTest
     assert_equal 'Welcome david!', flash[:notice]
 
     https!(false)
-    get "/posts/all"
+    get "/articles/all"
     assert_response :success
     assert assigns(:products)
   end
 end
 ```
 
-As you can see the integration test involves multiple controllers and exercises the entire stack from database to dispatcher. In addition you can have multiple session instances open simultaneously in a test and extend those instances with assertion methods to create a very powerful testing DSL (domain-specific language) just for your application.
+上のコード例で、結合テストに複数のコントローラが使用されていること、およびデータベースからディスパッチャまでスタック全体がテストされていることがおわかりいただけると思います。また、1つのテストの中で複数のセッションインスタンスを同時にオープンしたり、それらのインスタンスをアサーションメソッドで拡張することで、自分のアプリケーションだけに特化した非常に強力なテスティングDSLを作り出すこともできます。
 
-Here's an example of multiple sessions and custom DSL in an integration test
+結合テストで複数のセッションとカスタムDSLを使用した例を以下に示します。
 
-```ruby 
+```ruby
 require 'test_helper'
 
 class UserFlowsTest < ActionDispatch::IntegrationTest
-  fixtures :users
-
   test "login and browse site" do
-
-    # User david logs in
+    # davidというユーザーがログイン
     david = login(:david)
-    # User guest logs in
+    # ゲストユーザーがログイン
     guest = login(:guest)
 
-    # Both are now available in different sessions
+    # どちらのユーザーも異なるセッションから利用できる
     assert_equal 'Welcome david!', david.flash[:notice]
     assert_equal 'Welcome guest!', guest.flash[:notice]
 
-    # User david can browse site
+    # davidというユーザーはWebサイトをブラウズできる
     david.browses_site
-    # User guest can browse site as well
+    # ゲストユーザーもWebサイトをブラウズできる
     guest.browses_site
 
-    # Continue with other assertions
+    # 他のアサーションに続く
   end
 
   private
@@ -765,184 +764,174 @@ class UserFlowsTest < ActionDispatch::IntegrationTest
 end
 ```
 
-Rake Tasks for Running your Tests
+Rakeタスクでテストを実行する
 ---------------------------------
 
-You don't need to set up and run your tests by hand on a test-by-test basis.
-Rails comes with a number of commands to help in testing.
-The table below lists all commands that come along in the default Rakefile when you initiate a Rails project.
+作成したテストをひとつひとつ手動で実行する必要はありません。Railsにはテスティングを支援するためのコマンドが多数用意されています。Railsプロジェクトを生成したときのデフォルトのRakefileで利用できるすべてのコマンドを以下に示します。
 
-| Tasks                   | Description |
+| タスク                   | 説明 |
 | ----------------------- | ----------- |
-| `rake test`             | Runs all unit, functional and integration tests. You can also simply run `rake` as Rails will run all the tests by default |
-| `rake test:controllers` | Runs all the controller tests from `test/controllers` |
-| `rake test:functionals` | Runs all the functional tests from `test/controllers`, `test/mailers`, and `test/functional` |
-| `rake test:helpers`     | Runs all the helper tests from `test/helpers` |
-| `rake test:integration` | Runs all the integration tests from `test/integration` |
-| `rake test:mailers`     | Runs all the mailer tests from `test/mailers` |
-| `rake test:models`      | Runs all the model tests from `test/models` |
-| `rake test:units`       | Runs all the unit tests from `test/models`, `test/helpers`, and `test/unit` |
-| `rake test:all`         | Runs all tests quickly by merging all types and not resetting db |
-| `rake test:all:db`      | Runs all tests quickly by merging all types and resetting db |
+| `rake test`             | すべての単体テスト、機能テスト、結合テストを実行します。Railsはデフォルトですべてのテストを実行するので、単に`rake`を実行するだけで済みます。
+| `rake test:controllers` | `test/controllers`以下にあるすべてのコントローラ用テストを実行します。|
+| `rake test:functionals` | `test/controllers`、`test/mailers`、`test/functional`以下にあるすべての機能テストを実行します。|
+| `rake test:helpers`     | `test/helpers`以下にあるすべてのヘルパーテストを実行します。 |
+| `rake test:integration` | `test/integration`以下にあるすべての結合テストを実行します。|
+| `rake test:mailers`     | `test/mailers`以下にあるすべてのメイラーテストを実行します。 |
+| `rake test:models`      | `test/models`以下にあるすべてのモデルテストを実行します。 |
+| `rake test:units`       | `test/models`、`test/helpers`、および`test/unit`以下にあるすべての単体テストを実行します。|
+| `rake test:all`         | すべてのテストを素早く実行します (すべての種類のテストをマージし、dbのリセットは行わない)。 |
+| `rake test:all:db`      | すべてのテストを素早く実行します (すべての種類のテストをマージし、dbをリセットする)。 |
 
 
-Brief Note About `MiniTest`
+`Minitest`に関する簡単なメモ
 -----------------------------
 
+Rubyには、テスティングを含むあらゆる一般的なユースケースのための膨大な標準ライブラリが付属しています。Ruby 1.9からはテスティングフレームワークとして`Minitest`が提供されるようになりました。前述した`assert_equal`などの基本的なアサーションは、実際にはすべて`Minitest::Assertions`で定義されています。テストクラスで継承している`ActiveSupport::TestCase`、`ActionController::TestCase`、`ActionMailer::TestCase`、`ActionView::TestCase`および`ActionDispatch::IntegrationTest`は`Minitest::Assertions`を含んでおり、これによってテスト内で基本的なアサーションがすべて利用できます。
 
+メモ: `Minitest`の詳細については[Minitest](http://ruby-doc.org/stdlib-2.1.0/libdoc/minitest/rdoc/MiniTest.html)を参照してください。
 
-
-
-Ruby ships with a boat load of libraries. Ruby 1.8 provides `Test::Unit`, a framework for unit testing in Ruby. All the basic assertions discussed above are actually defined in `Test::Unit::Assertions`. The class `ActiveSupport::TestCase` which we have been using in our unit and functional tests extends `Test::Unit::TestCase`, allowing us to use all of the basic assertions in our tests.
-
-
-Ruby 1.9 introduced `MiniTest`, an updated version of `Test::Unit` which provides a backwards compatible API for `Test::Unit`. You could also use `MiniTest` in Ruby 1.8 by installing the `minitest` gem.
-
-NOTE: For more information on `Test::Unit`, refer to [test/unit Documentation](http://ruby-doc.org/stdlib/libdoc/test/unit/rdoc/)
-For more information on `MiniTest`, refer to [Minitest](http://www.ruby-doc.org/stdlib-1.9.3/libdoc/minitest/unit/rdoc/)
-
-Setup and Teardown
+SetupとTeardown
 ------------------
 
-If you would like to run a block of code before the start of each test and another block of code after the end of each test you have two special callbacks for your rescue. Let's take note of this by looking at an example for our functional test in `Posts` controller:
+各テストの実行前に特定のコードブロックを1つ実行したり、各テストの実行後に別のコードブロックを1つ実行したりしたい場合は、そのための特殊なコールバックを使用することができます。`Articles`コントローラの機能テストを例にとって詳しく見てみましょう。
 
-```ruby 
+```ruby
 require 'test_helper'
 
-class PostsControllerTest < ActionController::TestCase
+class ArticlesControllerTest < ActionController::TestCase
 
-  # called before every single test
+  # 各テストが実行される直前に呼び出される
   def setup
-    @post = posts(:one)
+    @article = articles(:one)
   end
 
-  # called after every single test
+  # 各テストの実行直後に呼び出される
   def teardown
-    # as we are re-initializing @post before every test
-    # setting it to nil here is not essential but I hope
-    # you understand how you can use the teardown method
-    @post = nil
+    # @article変数は実際にはテストの実行のたびに直前で初期化されるので
+    # ここで値をnilにする意味は実際にはないのですが、
+    # teardownメソッドの動作を理解いただくためにこのようにしています
+    @article = nil
   end
 
-  test "should show post" do
-    get :show, id: @post.id
+  test "should show article" do
+    get :show, id: @article.id
     assert_response :success
   end
 
-  test "should destroy post" do
-    assert_difference('Post.count', -1) do
-      delete :destroy, id: @post.id
-  end
+  test "should destroy article" do
+    assert_difference('Article.count', -1) do
+      delete :destroy, id: @article.id
+    end
 
-    assert_redirected_to posts_path
+    assert_redirected_to articles_path
   end
 
 end
 ```
 
-Above, the `setup` method is called before each test and so `@post` is available for each of the tests. Rails implements `setup` and `teardown` as `ActiveSupport::Callbacks`. Which essentially means you need not only use `setup` and `teardown` as methods in your tests. You could specify them by using:
+上の`setup`メソッドは各テストの実行直前に呼び出されるので、`@article`変数はどのテストでも利用できるようになります。`setup`と`teardown`は`ActiveSupport::Callbacks`に実装されています。つまり、`setup`と`teardown`はテストの中で単なるメソッドとして使用する以外の利用法もあるということです。これらを使用する際に以下のものを指定することができます。
 
-* a block
-* a method (like in the earlier example)
-* a method name as a symbol
-* a lambda
+* ブロック1つ
+* メソッド1つ (前述の例のとおり)
+* シンボルで表されたメソッド名1つ
+* ラムダ1つ
 
-Let's see the earlier example by specifying `setup` callback by specifying a method name as a symbol:
+前述の`setup`コールバックで、メソッド名をシンボルで指定した場合の例を見てみましょう。
 
-```ruby 
+```ruby
 require 'test_helper'
 
-class PostsControllerTest < ActionController::TestCase
+class ArticlesControllerTest < ActionController::TestCase
 
-  # called before every single test
-  setup :initialize_post
+  # 各テストが実行される直前に呼び出される
+  setup :initialize_article
 
-  # called after every single test
+  # 各テストの実行直後に呼び出される
   def teardown
-    @post = nil
+    @article = nil
   end
 
-  test "should show post" do
-    get :show, id: @post.id
+  test "should show article" do
+    get :show, id: @article.id
     assert_response :success
   end
 
-  test "should update post" do
-    patch :update, id: @post.id, post: {}
-    assert_redirected_to post_path(assigns(:post))
+  test "should update article" do
+    patch :update, id: @article.id, article: {}
+    assert_redirected_to article_path(assigns(:article))
   end
 
-  test "should destroy post" do
-    assert_difference('Post.count', -1) do
-      delete :destroy, id: @post.id
-  end
+  test "should destroy article" do
+    assert_difference('Article.count', -1) do
+      delete :destroy, id: @article.id
+    end
 
-    assert_redirected_to posts_path
+    assert_redirected_to articles_path
   end
 
   private
 
-    def initialize_post
-      @post = posts(:one)
-  end
+    def initialize_article
+      @article = articles(:one)
+    end
 end
 ```
 
-Testing Routes
+ルーティングをテストする
 --------------
 
-Like everything else in your Rails application, it is recommended that you test your routes. An example test for a route in the default `show` action of `Posts` controller above should look like:
+Railsアプリケーションの他の部分と同様、ルーティングもテストすることをお勧めします。前述の`Articles`コントローラのデフォルトである`show`アクションへのルーティングをテストする例は以下のようになります。
 
-```ruby 
-test "should route to post" do
-  assert_routing '/posts/1', {controller: "posts", action: "show", id: "1"}
+```ruby
+test "should route to article" do
+  assert_routing '/articles/1', {controller: "articles", action: "show", id: "1"}
 end
 ```
 
-Testing Your Mailers
+メイラーをテストする
 --------------------
 
-Testing mailer classes requires some specific tools to do a thorough job.
+メイラークラスを十分にテストするためには特殊なツールが若干必要になります。
 
-### Keeping the Postman in Check
+### Keeping the Postman in Check●
 
-Your mailer classes - like every other part of your Rails application - should be tested to ensure that it is working as expected.
+Railsアプリケーションの他の部分と同様、メイラークラスについても期待どおり動作するかどうかをテストする必要があります。
 
-The goals of testing your mailer classes are to ensure that:
+メイラークラスをテストする目的は以下を確認することです。
 
-* emails are being processed (created and sent)
-* the email content is correct (subject, sender, body, etc)
-* the right emails are being sent at the right times
+* メールが処理 (作成および送信) されていること
+* メールの内容 (subject, sender, bodyなど) が正しいこと
+* 適切なメールが適切なタイミングで送信されていること
 
-#### From All Sides
+#### あらゆる側面からのチェック
 
-There are two aspects of testing your mailer, the unit tests and the functional tests. In the unit tests, you run the mailer in isolation with tightly controlled inputs and compare the output to a known value (a fixture.) In the functional tests you don't so much test the minute details produced by the mailer; instead, we test that our controllers and models are using the mailer in the right way. You test to prove that the right email was sent at the right time.
+メイラーのテストには単体テストと機能テストの2つの側面があります。単体テストでは、完全に制御された入力を与えた結果の出力と、期待される既知の値 (フィクスチャー) とを比較します。機能テストではメイラーによって作成される詳細部分についてのテストはほとんど行わず、コントローラとモデルがメイラーを正しく利用しているかどうかをテストするのが普通です。メイラーのテストは、最終的に適切なメールが適切なタイミングで送信されたことを立証するために行います。
 
-### Unit Testing
+### 単体テスト
 
-In order to test that your mailer is working as expected, you can use unit tests to compare the actual results of the mailer with pre-written examples of what should be produced.
+メイラーが期待どおりに動作しているかどうかをテストするために、事前に作成しておいた出力例と、メイラーの実際の出力を比較するという単体テストを行なうことができます。
 
-#### Revenge of the Fixtures
+#### フィクスチャーの逆襲
 
-For the purposes of unit testing a mailer, fixtures are used to provide an example of how the output _should_ look. Because these are example emails, and not Active Record data like the other fixtures, they are kept in their own subdirectory apart from the other fixtures. The name of the directory within `test/fixtures` directly corresponds to the name of the mailer. So, for a mailer named `UserMailer`, the fixtures should reside in `test/fixtures/user_mailer` directory.
+メイラーの単体テストを行なうために、フィクスチャーを利用してメイラーが最終的に出力すべき外見の例を与えます。これらのフィクスチャーはメールの出力例であって、通常のフィクスチャーのようなActive Recordデータではないので、通常のフィクスチャーとは別の専用のサブディレクトリに保存します。`test/fixtures`ディレクトリの下のディレクトリ名は、メイラーの名前に対応させてください。たとえば`UserMailer`という名前のメイラーであれば、`test/fixtures/user_mailer`というスネークケースのディレクトリ名にします。
 
-When you generated your mailer, the generator creates stub fixtures for each of the mailers actions. If you didn't use the generator you'll have to make those files yourself.
+メイラーを生成すると、メイラーの各アクションに対応するスタブフィクスチャーが生成されます。Railsのジェネレータを使用しない場合は、自分でこれらのファイルを作成する必要があります。
 
-#### The Basic Test Case
+#### 基本的なテストケース
 
-Here's a unit test to test a mailer named `UserMailer` whose action `invite` is used to send an invitation to a friend. It is an adapted version of the base test created by the generator for an `invite` action.
+`invite`というアクションで知人に招待状を送信する`UserMailer`という名前のメイラーに対する単体テストを以下に示します。これは、`invite`アクションをジェネレータで生成したときに作成される基本的なテストに手を加えたものです。
 
-```ruby 
+```ruby
 require 'test_helper'
 
 class UserMailerTest < ActionMailer::TestCase
   test "invite" do
-    # Send the email, then test that it got queued
+    # メールを送信後キューに追加されるかどうかをテスト
     email = UserMailer.create_invite('me@example.com',
-                                     'friend@example.com', Time.now).deliver
+                                     'friend@example.com', Time.now).deliver_now
     assert_not ActionMailer::Base.deliveries.empty?
 
-    # Test the body of the sent email contains what we expect it to
+    # 送信されたメールの本文が期待どおりの内容であるかどうかをテスト
     assert_equal ['me@example.com'], email.from
     assert_equal ['friend@example.com'], email.to
     assert_equal 'You have been invited by me@example.com', email.subject
@@ -951,67 +940,60 @@ class UserMailerTest < ActionMailer::TestCase
 end
 ```
 
-In the test we send the email and store the returned object in the `email` variable. We then ensure that it was sent (the first assert), then, in the second batch of assertions, we ensure that the email does indeed contain what we expect. The helper `read_fixture` is used to read in the content from this file.
+このテストでは、メールを送信し、その結果返されたオブジェクトを`email`変数に保存します。続いて、このメールが送信されたことを主張します (最初のアサーション)。次のアサーションでは、メールの内容が期待どおりであることを主張します。`read_fixture`ヘルパーを使用してこのファイルの内容を読みだしています。
 
-Here's the content of the `invite` fixture:
+`invite`フィクスチャーは以下のような内容にしておきます。
 
 ```
-Hi friend@example.com,
+friend@example.comさん、こんにちは。
 
-You have been invited.
+招待状を送付いたします。
 
-Cheers!
+どうぞよろしく!
 ```
 
-This is the right time to understand a little more about writing tests for your mailers. The line `ActionMailer::Base.delivery_method = :test` in `config/environments/test.rb` sets the delivery method to test mode so that email will not actually be delivered (useful to avoid spamming your users while testing) but instead it will be appended to an array (`ActionMailer::Base.deliveries`).
+ここでメイラーのテスト作成方法の詳細部分についてご説明したいと思います。`config/environments/test.rb`の`ActionMailer::Base.delivery_method = :test`という行で送信モードをtestに設定しています。これにより、送信したメールが実際に配信されないようにできます。そうしないと、テスト中にユーザーにスパムメールを送りつけてしまうことになります。この設定で送信したメールは、`ActionMailer::Base.deliveries`という配列に追加されます。
 
-NOTE: The `ActionMailer::Base.deliveries` array is only reset automatically in `ActionMailer::TestCase` tests. If you want to have a clean slate outside Action Mailer tests, you can reset it manually with: `ActionMailer::Base.deliveries.clear`
+メモ: この`ActionMailer::Base.deliveries`という配列は、`ActionMailer::TestCase`でのテストを除き、自動的にはリセットされません。Action Mailerテストの外で配列をクリアしたい場合は、`ActionMailer::Base.deliveries.clear`で手動リセットできます。
 
-### Functional Testing
+### 機能テスト
 
-Functional testing for mailers involves more than just checking that the email body, recipients and so forth are correct. In functional mail tests you call the mail deliver methods and check that the appropriate emails have been appended to the delivery list. It is fairly safe to assume that the deliver methods themselves do their job. You are probably more interested in whether your own business logic is sending emails when you expect them to go out. For example, you can check that the invite friend operation is sending an email appropriately:
+メイラーの機能テストでは、メール本文や受取人が正しいことを確認するなど、単体テストでカバーされているようなことは扱いません。メールの機能テストでは、メール配信メソッドを呼び出し、その結果適切なメールが配信リストに追加されるかどうかをチェックします。機能テストでは配信メソッド自体は正常に動作すると仮定することになりますが、これでまず問題ありません。機能テストでは、期待されたタイミングでアプリケーションのビジネスロジックからメールが送信されるかどうかをテストすることがメインになるのが普通だからです。たとえば、友人を招待するという操作によってメールが適切に送信されるかどうかをチェックするには以下のような機能テストを使用します。
 
-```ruby 
+```ruby
 require 'test_helper'
 
 class UserControllerTest < ActionController::TestCase
   test "invite friend" do
     assert_difference 'ActionMailer::Base.deliveries.size', +1 do
       post :invite_friend, email: 'friend@example.com'
-  end
+    end
     invite_email = ActionMailer::Base.deliveries.last
 
     assert_equal "You have been invited by me@example.com", invite_email.subject
     assert_equal 'friend@example.com', invite_email.to[0]
-    assert_match(/Hi friend@example.com/, invite_email.body)
+    assert_match(/Hi friend@example.com/, invite_email.body.to_s)
   end
 end
 ```
 
-Testing helpers
+ヘルパーをテストする
 ---------------
 
-In order to test helpers, all you need to do is check that the output of the helper method matches what you'd expect. Tests related to the helpers are located under the `test/helpers` directory. Rails provides a generator which generates both the helper and the test file:
+ヘルパーのテストについては、ヘルパーメソッドの出力が期待どおりであるかどうかをチェックするだけで十分です。ヘルパー関連のテストは`test/helpers`ディレクトリに置かれます。
 
-```bash
-$ rails generate helper User
-      create  app/helpers/user_helper.rb
-      invoke  test_unit
-      create    test/helpers/user_helper_test.rb
-```
+ヘルパーテストの外枠は以下のような感じです。
 
-The generated test file contains the following code:
-
-```ruby 
+```ruby
 require 'test_helper'
 
 class UserHelperTest < ActionView::TestCase
 end
 ```
 
-A helper is just a simple module where you can define methods which are available into your views. To test the output of the helper's methods, you just have to use a mixin like this:
+ヘルパー自体は単なるモジュールであり、ビューから利用するヘルパーメソッドをこの中に定義します。ヘルパーメソッドの出力をテストするには、以下のようなミックスインを使用する必要があるでしょう。
 
-```ruby 
+```ruby
 class UserHelperTest < ActionView::TestCase
   include UserHelper
 
@@ -1021,17 +1003,16 @@ class UserHelperTest < ActionView::TestCase
 end
 ```
 
-Moreover, since the test class extends from `ActionView::TestCase`, you have access to Rails' helper methods such as `link_to` or `pluralize`.
+さらに、テストクラスは`ActionView::TestCase`をextendしたものなので、`link_to`や`pluralize`などのRailsヘルパーメソッドにアクセスできます。
 
-Other Testing Approaches
+その他のテスティングアプローチ
 ------------------------
 
-The built-in `test/unit` based testing is not the only way to test Rails applications. Rails developers have come up with a wide variety of other approaches and aids for testing, including:
+Railsアプリケーションではビルトインの`minitest`ベースのテスティング以外のテストしか利用できないわけではありません。Rails開発者は以下のような実にさまざまなアプローチでテストの実行や支援を行っています。
 
-* [NullDB](http://avdi.org/projects/nulldb/), a way to speed up testing by avoiding database use.
-* [Factory Girl](https://github.com/thoughtbot/factory_girl/tree/master), a replacement for fixtures.
-* [Machinist](https://github.com/notahat/machinist/tree/master), another replacement for fixtures.
-* [Fixture Builder](https://github.com/rdy/fixture_builder), a tool that compiles Ruby factories into fixtures before a test run.
-* [MiniTest::Spec Rails](https://github.com/metaskills/minitest-spec-rails), use the MiniTest::Spec DSL within your rails tests.
-* [Shoulda](http://www.thoughtbot.com/projects/shoulda), an extension to `test/unit` with additional helpers, macros, and assertions.
-* [RSpec](http://relishapp.com/rspec), a behavior-driven development framework
+* [NullDB](http://avdi.org/projects/nulldb/)はデータベースの利用を避けてテスティングを高速化する方法です。
+* [Factory Girl](https://github.com/thoughtbot/factory_girl/tree/master)はフィクスチャーに代わるテストデータ提供/生成ツールです。
+* [Fixture Builder](https://github.com/rdy/fixture_builder)はテスト実行直前にRubyのファクトリーをコンパイルしてフィクスチャーに変換するツールです。
+* [MiniTest::Spec Rails](https://github.com/metaskills/minitest-spec-rails)、RailsのテストではMiniTest::Spec DSLを利用します。
+* [Shoulda](http://www.thoughtbot.com/projects/shoulda)`test/unit`を拡張してさまざまなヘルパー/マクロ/アサーションを追加します。
+* [RSpec](http://relishapp.com/rspec)はビヘイビア駆動開発用のフレームワークです。

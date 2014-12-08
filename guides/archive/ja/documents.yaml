@@ -80,12 +80,12 @@
       url: active_job_basics.html
       description: バックグラウンドで動作するジョブの作成・キュー送信・実行方法に必要なすべてを解説します。
     -
-      name: Testing Rails Applications [未着手]
+      name: Rails テスティングガイド
       url: testing.html
       work_in_progress: true
       description: Railsで単体テストと機能テストを実行するための総合的な解説を行います。「テスティングとは何か」からテスティングAPIまですべてのトピックを扱います。
     -
-      name: Ruby on Rails セキュリティガイド
+      name: Rails セキュリティガイド
       url: security.html
       description: Webアプリケーション全般におけるセキュリティ問題と、Railsでこれらの問題を回避する方法について解説します。
     -
@@ -146,7 +146,7 @@
       url: api_documentation_guidelines.html
       description: Ruby on Rails APIドキュメントのガイドラインについて解説します。
     -
-      name: Ruby on Rails ガイドのガイドライン
+      name: Rails ガイドのガイドライン
       url: ruby_on_rails_guides_guidelines.html
       description: Ruby on Railsガイド作成方法のガイドラインです。
 -
