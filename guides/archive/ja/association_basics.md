@@ -1099,7 +1099,7 @@ NOTE: 新しく作成した`has_one`関連付けまたは`belongs_to`関連付�
 
 上の`create_association`と同じですが、レコードがinvalidの場合に`ActiveRecord::RecordInvalid`がraiseされる点が異なります。
 
-#### Options for `has_one`
+#### `has_one`のオプション
 
 Railsのデフォルトの`has_one`関連付けは、ほとんどの場合カスタマイズ不要ですが、時には関連付けの動作をカスタマイズしたくなることもあると思います。これは、作成するときにオプションを渡すことで簡単にカスタマイズできます。たとえば、以下のようなオプションを関連付けに追加できます。
 

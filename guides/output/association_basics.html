@@ -1322,8 +1322,7 @@ create_account!
 <h6 id="has_oneで追加されるメソッド-create_association!(attributes-=-{})">4.2.1.5 <code>create_association!(attributes = {})</code>
 </h6>
 <p>上の<code>create_association</code>と同じですが、レコードがinvalidの場合に<code>ActiveRecord::RecordInvalid</code>がraiseされる点が異なります。</p>
-<h5 id="options-for-has_one">4.2.2 Options for <code>has_one</code>
-</h5>
+<h5 id="has_oneのオプション">4.2.2 <code>has_one</code>のオプション</h5>
 <p>Railsのデフォルトの<code>has_one</code>関連付けは、ほとんどの場合カスタマイズ不要ですが、時には関連付けの動作をカスタマイズしたくなることもあると思います。これは、作成するときにオプションを渡すことで簡単にカスタマイズできます。たとえば、以下のようなオプションを関連付けに追加できます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1347,13 +1346,13 @@ end
 <li><code>:through</code></li>
 <li><code>:validate</code></li>
 </ul>
-<h6 id="options-for-has_one-:as">4.2.2.1 <code>:as</code>
+<h6 id="has_oneのオプション-:as">4.2.2.1 <code>:as</code>
 </h6>
 <p>Setting the <code>:as</code> option indicates that this is a polymorphic association. ポリモーフィック関連付けの詳細については<a href="#polymorphic-associations">このガイドの説明</a>を参照してください。</p>
-<h6 id="options-for-has_one-:autosave">4.2.2.2 <code>:autosave</code>
+<h6 id="has_oneのオプション-:autosave">4.2.2.2 <code>:autosave</code>
 </h6>
 <p><code>:autosave</code>オプションを<code>true</code>に設定すると、親オブジェクトが保存されるたびに、読み込まれているすべてのメンバを保存し、destroyフラグが立っているメンバを破棄します。</p>
-<h6 id="options-for-has_one-:class_name">4.2.2.3 <code>:class_name</code>
+<h6 id="has_oneのオプション-:class_name">4.2.2.3 <code>:class_name</code>
 </h6>
 <p>関連名から関連相手のオブジェクト名を生成できない事情がある場合、<code>:class_name</code>オプションを使用してモデル名を直接指定できます。たとえば、Supplierにアカウントが1つあり、アカウントを含むモデルの実際の名前が<code>Account</code>ではなく<code>Billing</code>になっている場合、以下のようにモデル名を指定できます。</p>
 <div class="code_container">
@@ -1364,7 +1363,7 @@ end
 
 </pre>
 </div>
-<h6 id="options-for-has_one-:dependent">4.2.2.4 <code>:dependent</code>
+<h6 id="has_oneのオプション-:dependent">4.2.2.4 <code>:dependent</code>
 </h6>
 <p>オーナーオブジェクトがdestroyされた時に、それに関連付けられたオブジェクトをどうするかを制御します。</p>
 <ul>
@@ -1380,7 +1379,7 @@ end
 <code>:restrict_with_error</code>を指定すると、関連付けられたオブジェクトがある場合にエラーがオーナーに追加されます。</li>
 </ul>
 <p><code>NOT NULL</code>データベース制約のある関連付けでは、<code>:nullify</code>オプションを与えないようにする必要があります。そのような関連付けをdestroyする<code>dependent</code>を設定しなかった場合、関連付けられたオブジェクトを変更できなくなってしまいます。これは、最初に関連付けられたオブジェクトの外部キーが<code>NULL</code>値になってしまい、この値は許されていないためです。</p>
-<h6 id="options-for-has_one-:foreign_key">4.2.2.5 <code>:foreign_key</code>
+<h6 id="has_oneのオプション-:foreign_key">4.2.2.5 <code>:foreign_key</code>
 </h6>
 <p>Railsは、相手のモデル上の外部キーを保持しているカラム名については、そのモデル名にサフィックス <code>_id</code> を追加した関連付け名が使用されることを前提とします。<code>:foreign_key</code>オプションを使用すると外部キーの名前を直接指定することができます。</p>
 <div class="code_container">
@@ -1392,7 +1391,7 @@ end
 </pre>
 </div>
 <div class="info"><p>Railsは外部キーのカラムを自動的に作ることはありません。外部キーを使用する場合には、マイグレーションで明示的に定義する必要があります。</p></div>
-<h6 id="options-for-has_one-:inverse_of">4.2.2.6 <code>:inverse_of</code>
+<h6 id="has_oneのオプション-:inverse_of">4.2.2.6 <code>:inverse_of</code>
 </h6>
 <p><code>:inverse_of</code>オプションは、その関連付けの逆関連付けとなる<code>belongs_to</code>関連付けの名前を指定します。<code>:through</code>または<code>:as</code>オプションと組み合わせた場合は無効です。</p>
 <div class="code_container">
@@ -1407,19 +1406,19 @@ end
 
 </pre>
 </div>
-<h6 id="options-for-has_one-:primary_key">4.2.2.7 <code>:primary_key</code>
+<h6 id="has_oneのオプション-:primary_key">4.2.2.7 <code>:primary_key</code>
 </h6>
 <p>Railsでは、モデルの主キーは<code>id</code>カラムに保存されます。<code>:primary_key</code>オプションで主キーを明示的に指定することでこれを上書きすることができます。</p>
-<h6 id="options-for-has_one-:source">4.2.2.8 <code>:source</code>
+<h6 id="has_oneのオプション-:source">4.2.2.8 <code>:source</code>
 </h6>
 <p><code>:source</code>オプションは、<code>has_one :through</code>関連付けにおける「ソースの」関連付け名、つまり関連付け元の名前を指定します。</p>
-<h6 id="options-for-has_one-:source_type">4.2.2.9 <code>:source_type</code>
+<h6 id="has_oneのオプション-:source_type">4.2.2.9 <code>:source_type</code>
 </h6>
 <p><code>:source_type</code>オプションは、ポリモーフィック関連付けを介して行われる<code>has_one :through</code>関連付けにおける「ソースの」関連付けタイプ、つまり関連付け元のタイプを指定します。</p>
-<h6 id="options-for-has_one-:through">4.2.2.10 <code>:through</code>
+<h6 id="has_oneのオプション-:through">4.2.2.10 <code>:through</code>
 </h6>
 <p><code>:through</code>オプションは、<a href="#the-has-one-through-association">このガイドで既に説明した</a><code>has_one :through</code>関連付けのクエリを実行する際に経由する結合モデルを指定します。</p>
-<h6 id="options-for-has_one-:validate">4.2.2.11 <code>:validate</code>
+<h6 id="has_oneのオプション-:validate">4.2.2.11 <code>:validate</code>
 </h6>
 <p><code>:validate</code>オプションを<code>true</code>に設定すると、関連付けられたオブジェクトが保存時に必ず検証(validation)されます。デフォルトは<code>false</code>であり、この場合関連付けられたオブジェクトは保存時に検証されません。</p>
 <h5 id="has_oneのスコープについて">4.2.3 <code>has_one</code>のスコープについて</h5>
