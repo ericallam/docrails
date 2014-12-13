@@ -221,9 +221,9 @@
 
 <ul>
 <li><a href="#belongs_to%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91%E3%81%AE%E8%A9%B3%E7%B4%B0"><code>belongs_to</code>関連付けの詳細</a></li>
-<li><a href="#has_one%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8B%E5%8F%82%E7%85%A7"><code>has_one</code>関連付けにおける参照</a></li>
-<li><a href="#has_many%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8B%E5%8F%82%E7%85%A7"><code>has_many</code>関連付けにおける参照</a></li>
-<li><a href="#has_and_belongs_to_many%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91%E3%81%AE%E5%8F%82%E7%85%A7"><code>has_and_belongs_to_many</code>関連付けの参照</a></li>
+<li><a href="#has_one%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91%E3%81%AE%E8%A9%B3%E7%B4%B0"><code>has_one</code>関連付けの詳細</a></li>
+<li><a href="#has_many%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91%E3%81%AE%E8%A9%B3%E7%B4%B0"><code>has_many</code>関連付けの詳細</a></li>
+<li><a href="#has_and_belongs_to_many%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91%E3%81%AE%E8%A9%B3%E7%B4%B0"><code>has_and_belongs_to_many</code>関連付けの詳細</a></li>
 <li><a href="#%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91%E3%81%AE%E3%82%B3%E3%83%BC%E3%83%AB%E3%83%90%E3%83%83%E3%82%AF">関連付けのコールバック</a></li>
 <li><a href="#%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91%E3%81%AE%E6%8B%A1%E5%BC%B5">関連付けの拡張</a></li>
 </ul>
@@ -1250,7 +1250,7 @@ end
 </div>
 <h5 id="belongs_to関連付けの詳細-オブジェクトが保存されるタイミング">4.1.5 オブジェクトが保存されるタイミング</h5>
 <p>オブジェクトを<code>belongs_to</code>関連付けに割り当てても、そのオブジェクトが自動的に保存されるわけでは<em>ありません</em>。関連付けられたオブジェクトが保存されることもありません。</p>
-<h4 id="has_one関連付けにおける参照">4.2 <code>has_one</code>関連付けにおける参照</h4>
+<h4 id="has_one関連付けの詳細">4.2 <code>has_one</code>関連付けの詳細</h4>
 <p><code>has_one</code>関連付けは他のモデルと1対1対応します。データベースの観点では、この関連付けでは相手のクラスが外部キーを持ちます。相手ではなく自分のクラスが外部キーを持っているのであれば、<code>belongs_to</code>を使うべきです。</p>
 <h5 id="has_oneで追加されるメソッド">4.2.1 <code>has_one</code>で追加されるメソッド</h5>
 <p><code>has_one</code>関連付けを宣言したクラスでは、以下の5つのメソッドを自動的に利用できるようになります。</p>
@@ -1494,7 +1494,7 @@ end
 <h6 id="has_oneのスコープについて-select">4.2.3.4 <code>select</code>
 </h6>
 <p><code>select</code>メソッドを使用すると、関連付けられたオブジェクトのデータ取り出しに使用されるSQLの<code>SELECT</code>句を上書きします。Railsはデフォルトではすべてのカラムを取り出します。</p>
-<h5 id="has_one関連付けにおける参照-関連付けられたオブジェクトが存在するかどうかを確認する">4.2.4 関連付けられたオブジェクトが存在するかどうかを確認する</h5>
+<h5 id="has_one関連付けの詳細-関連付けられたオブジェクトが存在するかどうかを確認する">4.2.4 関連付けられたオブジェクトが存在するかどうかを確認する</h5>
 <p><code>association.nil?</code>メソッドを使用して、関連付けられたオブジェクトが存在するかどうかを確認できます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1504,12 +1504,12 @@ end
 
 </pre>
 </div>
-<h5 id="has_one関連付けにおける参照-オブジェクトが保存されるタイミング">4.2.5 オブジェクトが保存されるタイミング</h5>
+<h5 id="has_one関連付けの詳細-オブジェクトが保存されるタイミング">4.2.5 オブジェクトが保存されるタイミング</h5>
 <p><code>has_one</code>関連付けにオブジェクトをアサインすると、外部キーを更新するためにそのオブジェクトは自動的に保存されます。さらに、置き換えられるオブジェクトは、これは外部キーが変更されたことによってすべて自動的に保存されます。</p>
 <p>関連付けられているオブジェクト同士のいずれか一方が検証(validation)のために保存に失敗すると、アサインの状態からは<code>false</code>が返され、アサインはキャンセルされます。</p>
 <p>親オブジェクト(<code>has_one</code>関連付けを宣言している側のオブジェクト)が保存されない場合(つまり<code>new_record?</code>が<code>true</code>を返す場合)、子オブジェクトは追加時に保存されません。親オブジェクトが保存された場合は、子オブジェクトは保存されます。</p>
 <p><code>has_one</code>関連付けにオブジェクトをアサインし、しかもそのオブジェクトを保存したくない場合、<code>association.build</code>メソッドを使用してください。</p>
-<h4 id="has_many関連付けにおける参照">4.3 <code>has_many</code>関連付けにおける参照</h4>
+<h4 id="has_many関連付けの詳細">4.3 <code>has_many</code>関連付けの詳細</h4>
 <p><code>has_many</code>関連付けは、他のモデルとの間に「1対多」のつながりを作成します。データベースの観点では、この関連付けにおいては相手のクラスが外部キーを持ちます。この外部キーは相手のクラスのインスタンスを参照します。</p>
 <h5 id="has_manyで追加されるメソッド">4.3.1 <code>has_many</code>で追加されるメソッド</h5>
 <p><code>has_many</code>関連付けを宣言したクラスでは、以下の16のメソッドを自動的に利用できるようになります。</p>
@@ -1978,12 +1978,12 @@ person.posts &lt;&lt; post unless person.posts.include?(post)
 
 </pre>
 </div>
-<h5 id="has_many関連付けにおける参照-オブジェクトが保存されるタイミング">4.3.4 オブジェクトが保存されるタイミング</h5>
+<h5 id="has_many関連付けの詳細-オブジェクトが保存されるタイミング">4.3.4 オブジェクトが保存されるタイミング</h5>
 <p><code>has_many</code>関連付けにオブジェクトをアサインすると、外部キーを更新するためにそのオブジェクトは自動的に保存されます。1つの文で複数のオブジェクトをアサインすると、それらはすべて保存されます。</p>
 <p>関連付けられているオブジェクト同士の1つでも検証(validation)のために保存に失敗すると、アサインの状態からは<code>false</code>が返され、アサインはキャンセルされます。</p>
 <p>親オブジェクト(<code>has_many</code>関連付けを宣言している側のオブジェクト)が保存されない場合(つまり<code>new_record?</code>が<code>true</code>を返す場合)、子オブジェクトは追加時に保存されません。親オブジェクトが保存されると、関連付けられていたオブジェクトのうち保存されていなかったメンバはすべて保存されます。</p>
 <p><code>has_many</code>関連付けにオブジェクトをアサインし、しかもそのオブジェクトを保存したくない場合、<code>collection.build</code>メソッドを使用してください。</p>
-<h4 id="has_and_belongs_to_many関連付けの参照">4.4 <code>has_and_belongs_to_many</code>関連付けの参照</h4>
+<h4 id="has_and_belongs_to_many関連付けの詳細">4.4 <code>has_and_belongs_to_many</code>関連付けの詳細</h4>
 <p><code>has_and_belongs_to_many</code>関連付けは、他のモデルとの間に「多対多」のつながりを作成します。データベースの観点では、2つのクラスは中間で結合テーブルを介して関連付けられます。この結合テーブルには、両方のクラスを指す外部キーがそれぞれ含まれます。</p>
 <h5 id="has_and_belongs_to_manyで追加されるメソッド">4.4.1 <code>has_and_belongs_to_many</code>で追加されるメソッド</h5>
 <p><code>has_and_belongs_to_many</code>関連付けを宣言したクラスでは、以下の16のメソッドを自動的に利用できるようになります。</p>
@@ -2327,7 +2327,7 @@ end
 <h6 id="uniq">4.4.3.10 <code>uniq</code>
 </h6>
 <p><code>uniq</code>メソッドは、コレクション内の重複を削除します。</p>
-<h5 id="has_and_belongs_to_many関連付けの参照-オブジェクトが保存されるタイミング">4.4.4 オブジェクトが保存されるタイミング</h5>
+<h5 id="has_and_belongs_to_many関連付けの詳細-オブジェクトが保存されるタイミング">4.4.4 オブジェクトが保存されるタイミング</h5>
 <p><code>has_and_belongs_to_many</code>関連付けにオブジェクトをアサインすると、結合テーブルを更新するためにそのオブジェクトは自動的に保存されます。1つの文で複数のオブジェクトをアサインすると、それらはすべて保存されます。</p>
 <p>関連付けられているオブジェクト同士の1つでも検証(validation)のために保存に失敗すると、アサインの状態からは<code>false</code>が返され、アサインはキャンセルされます。</p>
 <p>親オブジェクト(<code>has_and_belongs_to_many</code>関連付けを宣言している側のオブジェクト)が保存されない場合(つまり<code>new_record?</code>が<code>true</code>を返す場合)、子オブジェクトは追加時に保存されません。親オブジェクトが保存されると、関連付けられていたオブジェクトのうち保存されていなかったメンバはすべて保存されます。</p>
