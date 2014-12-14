@@ -160,7 +160,7 @@
   name: リリースノート
   documents:
     -
-      name: Ruby on Rails アップグレードガイド
+      name: Rails アップグレードガイド
       url: upgrading_ruby_on_rails.html
       description: アプリケーションのRuby on Railsを最新バージョンにアップグレードする方法について解説します。
     -
