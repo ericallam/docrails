@@ -16,7 +16,7 @@
 <meta property="og:type"        content="article" />
 <meta property="og:description" content="Rails 開発のお供に! 日本語版 Rails リファレンスガイド (Rails 4.1 対応)" />
 
-<title>Active Record検証(validation) — Ruby on Rails Guides</title>
+<title>Active Recordバリデーション — Ruby on Rails Guides</title>
 <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
 
@@ -176,11 +176,11 @@
 
   <div id="feature">
     <div class="wrapper">
-      <h2>Active Record検証(validation)</h2><p>このガイドでは、Active Recordの検証 (バリデーション: validation) 機能を使用して、オブジェクトがデータベースに保存される前にオブジェクトの状態を検証する方法について説明します。</p><p>このガイドの内容:</p>
+      <h2>Active Recordバリデーション</h2><p>このガイドでは、Active Recordのバリデーション (検証: validation) 機能を使用して、オブジェクトがデータベースに保存される前にオブジェクトの状態を検証する方法について説明します。</p><p>このガイドの内容:</p>
 <ul>
-<li>ビルトインのActive Record検証ヘルパーの使用</li>
-<li>カスタムの検証メソッドの作成</li>
-<li>検証プロセスで生成されたエラーメッセージの取り扱い</li>
+<li>ビルトインのActive Recordバリデーションヘルパーの使用</li>
+<li>カスタムのバリデーションメソッドの作成</li>
+<li>バリデーションプロセスで生成されたエラーメッセージの取り扱い</li>
 </ul>
 
                 <div id="subCol">
@@ -189,18 +189,18 @@
 <html><body>
 <ol class="chapters">
 <li>
-<a href="#%E6%A4%9C%E8%A8%BC%E3%81%AE%E6%A6%82%E8%A6%81">検証の概要</a>
+<a href="#%E3%83%90%E3%83%AA%E3%83%87%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%AE%E6%A6%82%E8%A6%81">バリデーションの概要</a>
 
 <ul>
-<li><a href="#%E6%A4%9C%E8%A8%BC%E3%82%92%E8%A1%8C%E3%81%AA%E3%81%86%E7%90%86%E7%94%B1">検証を行なう理由</a></li>
-<li><a href="#%E6%A4%9C%E8%A8%BC%E3%82%92%E8%A1%8C%E3%81%A3%E3%81%9F%E3%81%A8%E3%81%8D%E3%81%AE%E5%8B%95%E4%BD%9C">検証を行ったときの動作</a></li>
-<li><a href="#%E6%A4%9C%E8%A8%BC%E3%81%AE%E3%82%B9%E3%82%AD%E3%83%83%E3%83%97">検証のスキップ</a></li>
+<li><a href="#%E3%83%90%E3%83%AA%E3%83%87%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%92%E8%A1%8C%E3%81%AA%E3%81%86%E7%90%86%E7%94%B1">バリデーションを行なう理由</a></li>
+<li><a href="#%E3%83%90%E3%83%AA%E3%83%87%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E5%AE%9F%E8%A1%8C%E6%99%82%E3%81%AE%E5%8B%95%E4%BD%9C">バリデーション実行時の動作</a></li>
+<li><a href="#%E3%83%90%E3%83%AA%E3%83%87%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%AE%E3%82%B9%E3%82%AD%E3%83%83%E3%83%97">バリデーションのスキップ</a></li>
 <li><a href="#valid?%E3%81%A8invalid?"><code>valid?</code>と<code>invalid?</code></a></li>
-<li><a href="#%E6%A4%9C%E8%A8%BC%E3%81%AE%E6%A6%82%E8%A6%81-errors%5B%5D"><code>errors[]</code></a></li>
+<li><a href="#%E3%83%90%E3%83%AA%E3%83%87%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%AE%E6%A6%82%E8%A6%81-errors%5B%5D"><code>errors[]</code></a></li>
 </ul>
 </li>
 <li>
-<a href="#%E6%A4%9C%E8%A8%BC%E3%83%98%E3%83%AB%E3%83%91%E3%83%BC">検証ヘルパー</a>
+<a href="#%E3%83%90%E3%83%AA%E3%83%87%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%83%98%E3%83%AB%E3%83%91%E3%83%BC">バリデーションヘルパー</a>
 
 <ul>
 <li><a href="#acceptance"><code>acceptance</code></a></li>
@@ -219,7 +219,7 @@
 </ul>
 </li>
 <li>
-<a href="#%E5%85%B1%E9%80%9A%E3%81%AE%E6%A4%9C%E8%A8%BC%E3%82%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3">共通の検証オプション</a>
+<a href="#%E5%85%B1%E9%80%9A%E3%81%AE%E3%83%90%E3%83%AA%E3%83%87%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3">共通のバリデーションオプション</a>
 
 <ul>
 <li><a href="#:allow_nil"><code>:allow_nil</code></a></li>
@@ -228,39 +228,39 @@
 <li><a href="#:on"><code>:on</code></a></li>
 </ul>
 </li>
-<li><a href="#%E5%8E%B3%E5%AF%86%E3%81%AA%E6%A4%9C%E8%A8%BC">厳密な検証</a></li>
+<li><a href="#%E5%8E%B3%E5%AF%86%E3%81%AA%E3%83%90%E3%83%AA%E3%83%87%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3">厳密なバリデーション</a></li>
 <li>
-<a href="#%E6%9D%A1%E4%BB%B6%E4%BB%98%E3%81%8D%E6%A4%9C%E8%A8%BC">条件付き検証</a>
+<a href="#%E6%9D%A1%E4%BB%B6%E4%BB%98%E3%81%8D%E3%83%90%E3%83%AA%E3%83%87%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3">条件付きバリデーション</a>
 
 <ul>
 <li><a href="#:if%E3%82%84:unless%E3%81%A7%E3%82%B7%E3%83%B3%E3%83%9C%E3%83%AB%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B"><code>:if</code>や<code>:unless</code>でシンボルを使用する</a></li>
 <li><a href="#:if%E3%82%84:unless%E3%81%A7%E6%96%87%E5%AD%97%E5%88%97%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B"><code>:if</code>や<code>:unless</code>で文字列を使用する</a></li>
 <li><a href="#:if%E3%82%84:unless%E3%81%A7proc%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B"><code>:if</code>や<code>:unless</code>でProcを使用する</a></li>
-<li><a href="#%E6%9D%A1%E4%BB%B6%E4%BB%98%E3%81%8D%E6%A4%9C%E8%A8%BC%E3%82%92%E3%82%B0%E3%83%AB%E3%83%BC%E3%83%97%E5%8C%96%E3%81%99%E3%82%8B">条件付き検証をグループ化する</a></li>
-<li><a href="#%E6%A4%9C%E8%A8%BC%E3%81%AE%E6%9D%A1%E4%BB%B6%E3%82%92%E7%B5%90%E5%90%88%E3%81%99%E3%82%8B">検証の条件を結合する</a></li>
+<li><a href="#%E6%9D%A1%E4%BB%B6%E4%BB%98%E3%81%8D%E3%83%90%E3%83%AA%E3%83%87%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%92%E3%82%B0%E3%83%AB%E3%83%BC%E3%83%97%E5%8C%96%E3%81%99%E3%82%8B">条件付きバリデーションをグループ化する</a></li>
+<li><a href="#%E3%83%90%E3%83%AA%E3%83%87%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%AE%E6%9D%A1%E4%BB%B6%E3%82%92%E7%B5%90%E5%90%88%E3%81%99%E3%82%8B">バリデーションの条件を結合する</a></li>
 </ul>
 </li>
 <li>
-<a href="#%E3%82%AB%E3%82%B9%E3%82%BF%E3%83%A0%E6%A4%9C%E8%A8%BC%E3%82%92%E5%AE%9F%E8%A1%8C%E3%81%99%E3%82%8B">カスタム検証を実行する</a>
+<a href="#%E3%82%AB%E3%82%B9%E3%82%BF%E3%83%A0%E3%83%90%E3%83%AA%E3%83%87%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%92%E5%AE%9F%E8%A1%8C%E3%81%99%E3%82%8B">カスタムバリデーションを実行する</a>
 
 <ul>
-<li><a href="#%E3%82%AB%E3%82%B9%E3%82%BF%E3%83%A0%E6%A4%9C%E8%A8%BC%E3%82%AF%E3%83%A9%E3%82%B9">カスタム検証クラス</a></li>
+<li><a href="#%E3%82%AB%E3%82%B9%E3%82%BF%E3%83%A0%E3%83%90%E3%83%AA%E3%83%87%E3%83%BC%E3%82%BF">カスタムバリデータ</a></li>
 <li><a href="#%E3%82%AB%E3%82%B9%E3%82%BF%E3%83%A0%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89">カスタムメソッド</a></li>
 </ul>
 </li>
 <li>
-<a href="#%E6%A4%9C%E8%A8%BC%E3%82%A8%E3%83%A9%E3%83%BC%E3%81%AB%E5%AF%BE%E5%BF%9C%E3%81%99%E3%82%8B">検証エラーに対応する</a>
+<a href="#%E3%83%90%E3%83%AA%E3%83%87%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%A8%E3%83%A9%E3%83%BC%E3%81%AB%E5%AF%BE%E5%BF%9C%E3%81%99%E3%82%8B">バリデーションエラーに対応する</a>
 
 <ul>
 <li><a href="#errors"><code>errors</code></a></li>
-<li><a href="#%E6%A4%9C%E8%A8%BC%E3%82%A8%E3%83%A9%E3%83%BC%E3%81%AB%E5%AF%BE%E5%BF%9C%E3%81%99%E3%82%8B-errors%5B%5D"><code>errors[]</code></a></li>
+<li><a href="#%E3%83%90%E3%83%AA%E3%83%87%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%A8%E3%83%A9%E3%83%BC%E3%81%AB%E5%AF%BE%E5%BF%9C%E3%81%99%E3%82%8B-errors%5B%5D"><code>errors[]</code></a></li>
 <li><a href="#errors.add"><code>errors.add</code></a></li>
 <li><a href="#errors%5B:base%5D"><code>errors[:base]</code></a></li>
 <li><a href="#errors.clear"><code>errors.clear</code></a></li>
 <li><a href="#errors.size"><code>errors.size</code></a></li>
 </ul>
 </li>
-<li><a href="#%E6%A4%9C%E8%A8%BC%E3%82%A8%E3%83%A9%E3%83%BC%E3%82%92%E3%83%93%E3%83%A5%E3%83%BC%E3%81%A7%E8%A1%A8%E7%A4%BA%E3%81%99%E3%82%8B">検証エラーをビューで表示する</a></li>
+<li><a href="#%E3%83%90%E3%83%AA%E3%83%87%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%A8%E3%83%A9%E3%83%BC%E3%82%92%E3%83%93%E3%83%A5%E3%83%BC%E3%81%A7%E8%A1%A8%E7%A4%BA%E3%81%99%E3%82%8B">バリデーションエラーをビューで表示する</a></li>
 </ol>
 </body></html>
 
@@ -273,8 +273,8 @@
       <div id="mainCol">
         <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
-<h3 id="検証の概要">1 検証の概要</h3>
-<p>きわめてシンプルな検証の例を以下に紹介します。</p>
+<h3 id="バリデーションの概要">1 バリデーションの概要</h3>
+<p>きわめてシンプルなバリデーションの例を以下に紹介します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class Person &lt; ActiveRecord::Base
@@ -286,18 +286,18 @@ Person.create(name: nil).valid? # =&gt; false
 
 </pre>
 </div>
-<p>上からわかるように、この検証では<code>Person</code>に<code>name</code>属性がない場合に無効であることを知らせます。2つ目の<code>Person</code>はデータベースに保存されません。</p>
-<p>検証の詳細を説明する前に、アプリケーション全体において検証がいかに重要であるかについて説明します。</p>
-<h4 id="検証を行なう理由">1.1 検証を行なう理由</h4>
-<p>検証は、正しいデータだけをデータベースに保存するために行われます。たとえば、自分のアプリケーションで、すべてのユーザーには必ず電子メールアドレスとメーリングリストアドレスが必要だとします。正しいデータだけをデータベースに保存するのであれば、モデルレベルで検証を実行するのが最適です。モデルレベルでの検証は、データベースに依存せず、エンドユーザーがバイパスすることもできず、テストも保守も容易だからです。Railsでは検証を簡単に利用できるよう、一般に利用可能なビルトインヘルパーが用意されており、自前の検証メソッドを作成することもできるようになっています。</p>
-<p>データをデータベースに保存する前に検証する方法は、他にもデータベースネイティブの制約、クライアント側での検証、コントローラレベルの検証など、多くの方法があります。それぞれのメリットとデメリットは以下のとおりです。</p>
+<p>上からわかるように、このバリデーションでは<code>Person</code>に<code>name</code>属性がない場合に無効であることを知らせます。2つ目の<code>Person</code>はデータベースに保存されません。</p>
+<p>バリデーションの詳細を説明する前に、アプリケーション全体においてバリデーションがいかに重要であるかについて説明します。</p>
+<h4 id="バリデーションを行なう理由">1.1 バリデーションを行なう理由</h4>
+<p>バリデーションは、正しいデータだけをデータベースに保存するために行われます。たとえば、自分のアプリケーションで、すべてのユーザーには必ず電子メールアドレスとメーリングリストアドレスが必要だとします。正しいデータだけをデータベースに保存するのであれば、モデルレベルでバリデーションを実行するのが最適です。モデルレベルでのバリデーションは、データベースに依存せず、エンドユーザーがバイパスすることもできず、テストも保守も容易だからです。Railsではバリデーションを簡単に利用できるよう、一般に利用可能なビルトインヘルパーが用意されており、自前のバリデーションメソッドを作成することもできるようになっています。</p>
+<p>データをデータベースに保存する前にバリデーションを実行する方法は、他にもデータベースネイティブの制約機能、クライアント側でのバリデーション、コントローラレベルのバリデーションなど、多くの方法があります。それぞれのメリットとデメリットは以下のとおりです。</p>
 <ul>
-<li>データベース制約やストアドプロシージャを使用すると、検証メカニズムがデータベースに依存してしまい、テストや保守がその分面倒になります。ただし、データベースが他のアプリケーションからも使用されるのであれば、データベースレベルである程度の検証を行なうのはよい方法です。また、データベースレベルの検証の中には、使用頻度がきわめて高いテーブルの一意性検証など、他の方法では実装が困難なものもあります。</li>
-<li>クライアント側での検証は便利ですが、一般に単独では信頼性が不足します。JavaScriptを使用して検証を実装する場合、ユーザーがJavaScriptをオフにしてしまえばバイパスされてしまいます。ただし、他の方法と併用するのであれば、クライアント側での検証はユーザーに即座にフィードバックを返すための便利な方法となるでしょう。</li>
-<li>コントローラレベルの検証は一度はやってみたくなるものですが、たいてい手に負えなくなり、テストも保守も困難になりがちです。アプリケーションの寿命を永らえ、楽しく保守するためには、コントローラのコード量は可能な限り減らすべきです。</li>
+<li>データベース制約やストアドプロシージャを使用すると、バリデーションのメカニズムがデータベースに依存してしまい、テストや保守がその分面倒になります。ただし、データベースが (Rails以外の) 他のアプリケーションからも使用されるのであれば、データベースレベルである程度のバリデーションを行なっておくのはよい方法です。また、データベースレベルのバリデーションの中には、使用頻度がきわめて高いテーブルの一意性バリデーションなど、他の方法では実装が困難なものもあります。</li>
+<li>クライアント側でのバリデーションは扱いやすく便利ですが、一般に単独では信頼性が不足します。JavaScriptを使用してバリデーションを実装する場合、ユーザーがJavaScriptをオフにしてしまえばバイパスされてしまいます。ただし、他の方法と併用するのであれば、クライアント側でのバリデーションはユーザーに即座にフィードバックを返すための便利な方法となるでしょう。</li>
+<li>コントローラレベルのバリデーションは一度はやってみたくなるものですが、たいてい手に負えなくなり、テストも保守も困難になりがちです。アプリケーションの寿命を永らえ、保守作業を苦痛なものにしないようにするためには、コントローラのコード量は可能な限り減らすべきです。</li>
 </ul>
-<p>状況によってはデータベース検証以外の方法を使用することもあるでしょう。Railsチームとしては、モデルレベルの検証がほとんどの場合で最も適切であると考えています。</p>
-<h4 id="検証を行ったときの動作">1.2 検証を行ったときの動作</h4>
+<p>上で紹介したその他のバリデーションについては、特定の状況に応じて適宜追加してください。Railsチームは、ほとんどの場合モデルレベルのバリデーションが最も適切であると考えています。</p>
+<h4 id="バリデーション実行時の動作">1.2 バリデーション実行時の動作</h4>
 <p>Active Recordのオブジェクトには2種類あります。オブジェクトがデータベースの行(row)に対応しているものと、そうでないものです。たとえば、<code>new</code>メソッドを使用して新しくオブジェクトを作成しただけでは、オブジェクトはデータベースに属していません。<code>save</code>メソッドを呼ぶことで、オブジェクトは適切なデータベースのテーブルに保存されます。Active Recordの<code>new_record?</code>インスタンスメソッドを使用して、オブジェクトが既にデータベース上にあるかどうかを確認できます。
 次の単純はActive Recordクラスを例に取ってみましょう。</p>
 <div class="code_container">
@@ -322,10 +322,10 @@ $ rails console
 
 </pre>
 </div>
-<p>新規レコードを作成して保存すると、SQLの<code>INSERT</code>操作がデータベースに送信されます。既存のレコードを更新すると、SQLの<code>UPDATE</code>操作が送信されます。検証は、SQLのデータベースへの送信より前に行うのが普通です。検証のいずれかが失敗すると、オブジェクトは無効(invalid)とマークされ、Active Recordでの<code>INSERT</code>や<code>UPDATE</code>操作は行われません。これにより、無効なオブジェクトがデータベースに保存されることを防止します。オブジェクトの作成、保存、更新時に特定の検証を実行することもできます。</p>
+<p>新規レコードを作成して保存すると、SQLの<code>INSERT</code>操作がデータベースに送信されます。既存のレコードを更新すると、SQLの<code>UPDATE</code>操作が送信されます。バリデーションは、SQLのデータベースへの送信前に行うのが普通です。バリデーションのいずれかが失敗すると、オブジェクトは無効(invalid)とマークされ、Active Recordでの<code>INSERT</code>や<code>UPDATE</code>操作は行われません。これにより、無効なオブジェクトがデータベースに保存されることを防止します。オブジェクトの作成、保存、更新時に特定のバリデーションを実行することもできます。</p>
 <div class="warning"><p>データベース上のオブジェクトの状態を変える方法は1つとは限りません。
-検証をトリガするメソッドもあれば、トリガしないメソッドもあります。このため、検証が設定されていも、気を付けておかないとデータベース上のオブジェクトが無効な状態になってしまう可能性があります。</p></div>
-<p>以下のメソッドでは検証がトリガされ、オブジェクトが有効な場合にのみデータベースに保存されます。</p>
+メソッドには、バリデーションをトリガするものと、しないものがあります。この点に注意しておかないと、バリデーションが設定されているにもかかわらず、データベース上のオブジェクトが無効な状態になってしまう可能性があります。</p></div>
+<p>以下のメソッドではバリデーションがトリガされ、オブジェクトが有効な場合にのみデータベースに保存されます。</p>
 <ul>
 <li><code>create</code></li>
 <li><code>create!</code></li>
@@ -336,8 +336,8 @@ $ rails console
 </ul>
 <p>破壊的なメソッド(<code>save!</code>など)では、レコードが無効な場合に例外が発生します。
 非破壊的なメソッドでは無効な場合に例外を発生しません。<code>save</code>と<code>update</code>は無効な場合に<code>false</code>を返し、<code>create</code>は無効な場合に単にそのオブジェクトを返します。</p>
-<h4 id="検証のスキップ">1.3 検証のスキップ</h4>
-<p>以下のメソッドは検証を行わず、スキップします。オブジェクトの保存は、有効無効にかかわらず行われます。これらのメソッドの使用には注意が必要です。</p>
+<h4 id="バリデーションのスキップ">1.3 バリデーションのスキップ</h4>
+<p>以下のメソッドはバリデーションを行わずにスキップします。オブジェクトの保存は、有効無効にかかわらず行われます。これらのメソッドの使用には注意が必要です。</p>
 <ul>
 <li><code>decrement!</code></li>
 <li><code>decrement_counter</code></li>
@@ -351,14 +351,14 @@ $ rails console
 <li><code>update_columns</code></li>
 <li><code>update_counters</code></li>
 </ul>
-<p>実は、<code>save</code>に<code>validate: false</code>を引数として与えると、<code>save</code>の検証をスキップすることができてしまいます。この手法の使用には注意が必要です。</p>
+<p>実は、<code>save</code>に<code>validate: false</code>を引数として与えると、<code>save</code>のバリデーションをスキップすることができてしまいます。この手法は注意深く使用する必要があります。</p>
 <ul>
 <li><code>save(validate: false)</code></li>
 </ul>
 <h4 id="valid?とinvalid?">1.4 <code>valid?</code>と<code>invalid?</code>
 </h4>
 <p>Railsでオブジェクトが有効(valid)であるかどうかを検証するには、<code>valid?</code>メソッドを使用します。
-このメソッドは単独で使用できます。<code>valid?</code>を実行すると検証がトリガされ、オブジェクトにエラーがない場合はtrueが返され、そうでなければfalseが返されます。
+このメソッドは単独で使用できます。<code>valid?</code>を実行するとバリデーションがトリガされ、オブジェクトにエラーがない場合はtrueが返され、そうでなければfalseが返されます。
 これは以下のように実装できます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -371,9 +371,9 @@ Person.create(name: nil).valid? # =&gt; false
 
 </pre>
 </div>
-<p>Active Recordで検証が行われた後は、<code>errors.messages</code>インスタンスメソッドを使用すると、発生したエラーにアクセスできます。このメソッドはエラーのコレクションを返します。
-定義上は、検証実行後にコレクションが空になった場合は有効です。</p>
-<p><code>new</code>を使用してインスタンス化されたオブジェクトは、仮に技術的に無効であってもエラーは報告されないので、注意が必要です。<code>new</code>では検証は実行されません。</p>
+<p>Active Recordでバリデーションが行われた後は、<code>errors.messages</code>インスタンスメソッドを使用すると、発生したエラーにアクセスできます。このメソッドはエラーのコレクションを返します。
+定義上は、バリデーション実行後にコレクションが空になった場合は有効です。</p>
+<p><code>new</code>を使用してインスタンス化されたオブジェクトは、仮に技術的に無効であってもエラーは報告されないので、注意が必要です。<code>new</code>ではバリデーションは実行されません。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class Person &lt; ActiveRecord::Base
@@ -406,11 +406,11 @@ end
 
 </pre>
 </div>
-<p><code>invalid?</code>は単なる<code>valid?</code>の逆の動作です。このメソッドは検証をトリガし、オブジェクトでエラーが発生した場合はtrueを、そうでなければfalseを返します。</p>
-<h4 id="検証の概要-errors[]">1.5 <code>errors[]</code>
+<p><code>invalid?</code>は単なる<code>valid?</code>の逆の動作です。このメソッドはバリデーションをトリガし、オブジェクトでエラーが発生した場合はtrueを、そうでなければfalseを返します。</p>
+<h4 id="バリデーションの概要-errors[]">1.5 <code>errors[]</code>
 </h4>
 <p><code>errors[:attribute]</code>を使用して、特定のオブジェクトの属性が有効であるかどうかを確認できます。このメソッドは、<code>:attribute</code>のすべてのエラーの配列を返します。指定された属性でエラーが発生しなかった場合は、空の配列が返されます。</p>
-<p>このメソッドが便利なのは、 <em>after</em> で始まる検証を実行する場合だけです。このメソッドはエラーのコレクションを調べるだけで、検証そのものをトリガしないからです。このメソッドは、前述の<code>ActiveRecord::Base#invalid?</code>メソッドとは異なります。このメソッドはオブジェクト全体の正当性については確認しないためです。オブジェクトの個別の属性についてエラーがあるかどうかだけを調べます。</p>
+<p>このメソッドが便利なのは、 <em>after</em> で始まるバリデーションを実行する場合だけです。このメソッドはエラーのコレクションを調べるだけで、バリデーションそのものをトリガしないからです。このメソッドは、前述の<code>ActiveRecord::Base#invalid?</code>メソッドとは異なります。このメソッドはオブジェクト全体の正当性については確認しないためです。オブジェクトの個別の属性についてエラーがあるかどうかだけを調べます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class Person &lt; ActiveRecord::Base
@@ -422,14 +422,14 @@ end
 
 </pre>
 </div>
-<p>より深いレベルでの検証エラーについては、<a href="#working-with-validation-errors">検証エラーの取り扱い</a>セクションを参照してください。それまでは、Railsがデフォルトで提供するビルトインの検証ヘルパーに取り組むことにしましょう。</p>
-<h3 id="検証ヘルパー">2 検証ヘルパー</h3>
-<p>Active Recordには、クラス定義の内側で直接使用できる定義済み検証ヘルパーが多数用意されています。これらのヘルパーは、共通の検証ルールを提供します。検証が失敗するたびに、オブジェクトの<code>errors</code>コレクションにエラーメッセージが追加され、そのメッセージは、検証される属性に関連付けられています。</p>
-<p>どのヘルパーも任意の数の属性を受け付けることができるので、1行のコードを書くだけで多くの属性に対して同じ検証を行なうことができます。</p>
-<p><code>:on</code>オプションと<code>:message</code>オプションはどのヘルパーでも使用できます。これらのオプションはそれぞれ、検証を実行するタイミングと、検証失敗時に<code>errors</code>コレクションに追加するメッセージを指定します。<code>:on</code>オプションは<code>:create</code>または<code>:update</code>のいずれかの値を取ります。検証ヘルパーには、それぞれデフォルトのエラーメッセージが用意されています。<code>:message</code>オプションが使用されていない場合はデフォルトのメッセージが使用されます。利用可能なヘルパーを1つずつ見ていきましょう。</p>
+<p>より高度なレベルでのバリデーションエラーについては、<a href="#working-with-validation-errors">バリデーションエラーの取り扱い</a>セクションを参照してください。それまでは、Railsがデフォルトで提供するビルトインのバリデーションヘルパーを中心に解説します。</p>
+<h3 id="バリデーションヘルパー">2 バリデーションヘルパー</h3>
+<p>Active Recordには、クラス定義の内側で直接使用できる定義済みのバリデーションヘルパーが多数用意されています。これらのヘルパーは、共通のバリデーションルールを提供します。バリデーションが失敗するたびに、オブジェクトの<code>errors</code>コレクションにエラーメッセージが追加され、そのメッセージは、バリデーションが行われる属性に関連付けられます。</p>
+<p>どのヘルパーも任意の数の属性を受け付けることができるので、1行のコードを書くだけで多くの属性に対して同じバリデーションを実行できます。</p>
+<p><code>:on</code>オプションと<code>:message</code>オプションはどのヘルパーでも使用できます。これらのオプションはそれぞれ、バリデーションを実行するタイミングと、バリデーション失敗時に<code>errors</code>コレクションに追加するメッセージを指定します。<code>:on</code>オプションは<code>:create</code>または<code>:update</code>のいずれかの値を取ります。バリデーションヘルパーには、それぞれデフォルトのエラーメッセージが用意されています。<code>:message</code>オプションが使用されていない場合はデフォルトのメッセージが使用されます。利用可能なヘルパーを1つずつ見ていきましょう。</p>
 <h4 id="acceptance">2.1 <code>acceptance</code>
 </h4>
-<p>このメソッドは、フォームが送信されたときにユーザーインターフェイス上のチェックボックスがオンになっているかどうかを検証します。ユーザーにサービス利用条項への同意、何らかの文書に目を通すことなどを義務付けるのに使用するのが典型的な利用法です。この検証はWebアプリケーション特有のものなので、'acceptance'はデータベースに保存する必要はありません。保存用のフィールドを作成しなかった場合、ヘルパーは単に仮想の属性を作成します。</p>
+<p>このメソッドは、フォームが送信されたときにユーザーインターフェイス上のチェックボックスがオンになっているかどうかを検証します。ユーザーにサービス利用条項への同意、何らかの文書に目を通すことなどを義務付けるのに使用するのが典型的な利用法です。このバリデーションはWebアプリケーション特有のものなので、'acceptance'はデータベースに保存する必要はありません。保存用のフィールドを作成しなかった場合、ヘルパーは単に仮想の属性を作成します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class Person &lt; ActiveRecord::Base
@@ -450,7 +450,7 @@ end
 </div>
 <h4 id="validates_associated">2.2 <code>validates_associated</code>
 </h4>
-<p>モデルが他のモデルに関連付けられていて、両方のモデルを検証する必要がある場合はこのヘルパーを使用します。オブジェクトを保存しようとすると、関連付けられているオブジェクトごとに<code>valid?</code>が呼び出されます。</p>
+<p>モデルが他のモデルに関連付けられていて、両方のモデルに対してバリデーションを実行する必要がある場合はこのヘルパーを使用します。オブジェクトを保存しようとすると、関連付けられているオブジェクトごとに<code>valid?</code>が呼び出されます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class Library &lt; ActiveRecord::Base
@@ -460,13 +460,13 @@ end
 
 </pre>
 </div>
-<p>この検証は、あらゆる種類の関連付けに対して使用できます。</p>
+<p>このバリデーションは、あらゆる種類の関連付けに対して使用できます。</p>
 <div class="warning"><p><code>validates_associated</code>は関連付けの両側のオブジェクトでは実行しないでください。
 関連付けの両側でこのヘルパーを使用すると無限ループになります。</p></div>
 <p><code>validates_associated</code>のデフォルトエラーメッセージは <em>"is invalid"</em> です。関連付けられたオブジェクトにも自分の<code>errors</code>コレクションが含まれるので、エラーは呼び出し元のモデルまでは伝わりません。</p>
 <h4 id="confirmation">2.3 <code>confirmation</code>
 </h4>
-<p>このヘルパーは、2つのテキストフィールドが完全に一致する内容を受け取る必要がある場合に使用します。たとえば、メールアドレスやパスワードで、確認フィールドを使用するとします。この検証ヘルパーは仮想の属性を作成します。その属性の名前は、確認したい属性名に "_confirmation" を追加したものになります。</p>
+<p>このヘルパーは、2つのテキストフィールドが完全に一致する内容を受け取る必要がある場合に使用します。たとえば、メールアドレスやパスワードで、確認フィールドを使用するとします。このバリデーションヘルパーは仮想の属性を作成します。その属性の名前は、確認したい属性名に "_confirmation" を追加したものになります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class Person &lt; ActiveRecord::Base
@@ -506,11 +506,11 @@ end
 
 </pre>
 </div>
-<p><code>exclusion</code>ヘルパーの<code>:in</code>オプションには、検証された属性と見なさない値集合を指定します。<code>:in</code>オプションには<code>:within</code>というエイリアスもあり、好みに応じてどちらでも使用できます。上の例では、<code>:message</code>オプションを使用して属性の値を含める方法を示しています。</p>
+<p><code>exclusion</code>ヘルパーの<code>:in</code>オプションには、バリデーションを行った属性の値に含めたくない値の集合を指定します。<code>:in</code>オプションには<code>:within</code>というエイリアスもあり、好みに応じてどちらでも使用できます。上の例では、<code>:message</code>オプションを使用して属性の値を含める方法を示しています。</p>
 <p>デフォルトのエラーメッセージは <em>"is reserved"</em> です。</p>
 <h4 id="format">2.5 <code>format</code>
 </h4>
-<p>このヘルパーは、<code>with</code>オプション与えられた正規表現と属性の値がマッチするかどうかをテストすることによって検証を行います。</p>
+<p>このヘルパーは、<code>with</code>オプションで与えられた正規表現と属性の値がマッチするかどうかをテストすることによってバリデーションを行います。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class Product &lt; ActiveRecord::Base
@@ -561,7 +561,7 @@ end
 <li>
 <code>:is</code> - 属性の長さは与えられた値と等しくなければなりません。</li>
 </ul>
-<p>デフォルトのエラーメッセージは、実行される検証の種類によって異なります。デフォルトのメッセージは<code>:wrong_length</code>、<code>:too_long</code>、<code>:too_short</code>オプションを使用してカスタマイズしたり、<code>%{count}</code>を長さ制限に対応する数値のプレースホルダとして使用したりできます。<code>:message</code>オプションを使用してエラーメッセージを指定することもできます。</p>
+<p>デフォルトのエラーメッセージは、実行されるバリデーションの種類によって異なります。デフォルトのメッセージは<code>:wrong_length</code>、<code>:too_long</code>、<code>:too_short</code>オプションを使用してカスタマイズしたり、<code>%{count}</code>を長さ制限に対応する数値のプレースホルダとして使用したりできます。<code>:message</code>オプションを使用してエラーメッセージを指定することもできます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class Person &lt; ActiveRecord::Base
@@ -597,7 +597,7 @@ end
 
 </pre>
 </div>
-<p>上の正規表現を使用して属性の値が検証されます。それ以外の場合は、<code>Float</code>を使用して値を数値に変換して検証しようとします。</p>
+<p>上の正規表現を使用して属性の値に対するバリデーションが行われます。それ以外の場合は、<code>Float</code>で値を数値に変換してからバリデーションを行おうとします。</p>
 <div class="warning"><p>上の正規表現では末尾に改行記号があってもマッチします。</p></div>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -647,7 +647,7 @@ end
 
 </pre>
 </div>
-<p>存在することが必要な、関連付けられたレコードを検証するには、その関連付けの<code>:inverse_of</code>オプションを指定する必要があります。</p>
+<p>関連付けられたレコードの存在が必須である場合、これを検証するには<code>:inverse_of</code>オプションでその関連付けを指定する必要があります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class Order &lt; ActiveRecord::Base
@@ -656,7 +656,7 @@ end
 
 </pre>
 </div>
-<p>このヘルパーを使用して、<code>has_one</code>または<code>has_many</code>リレーションシップを経由して関連付けられたオブジェクトの存在を検証すると、<code>blank?</code>でもなく<code>marked_for_destruction?</code>(削除するためにマークされている)でもないかどうかがチェックされます。</p>
+<p>このヘルパーを使用して、<code>has_one</code>または<code>has_many</code>リレーションシップを経由して関連付けられたオブジェクトが存在することを検証すると、<code>blank?</code>でもなく<code>marked_for_destruction?</code>(削除するためにマークされている)でもないかどうかがチェックされます。</p>
 <p><code>false.blank?</code>は常にtrueなので、真偽値に対してこのメソッドを使用すると正しい結果が得られません。真偽値の存在をチェックしたい場合は、<code>validates :field_name, inclusion: { in: [true, false] }</code>を使用する必要があります。</p>
 <p>デフォルトのエラーメッセージは <em>"can't be blank"</em> です。</p>
 <h4 id="absence">2.10 <code>absence</code>
@@ -680,7 +680,7 @@ end
 
 </pre>
 </div>
-<p>存在してはならないことが必要な、関連付けられたレコードを検証するには、その関連付けの<code>:inverse_of</code>オプションを指定する必要があります。</p>
+<p>関連付けられたレコードが存在してはならない場合、これを検証するには<code>:inverse_of</code>オプションでその関連付けを指定する必要があります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class Order &lt; ActiveRecord::Base
@@ -703,7 +703,7 @@ end
 
 </pre>
 </div>
-<p>この検証は、モデルのテーブルに対して、その属性と同じ値を持つ既存のレコードがあるかどうかを調べるSQLクエリを実行することによって行われます。</p>
+<p>このバリデーションは、モデルのテーブルに対して、その属性と同じ値を持つ既存のレコードがあるかどうかを調べるSQLクエリを実行することによって行われます。</p>
 <p>このヘルパーには、一意性チェックを制限するために使用される別の属性を指定するための<code>:scope</code>オプションがあります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -727,7 +727,7 @@ end
 <p>デフォルトのエラーメッセージは <em>"has already been taken"</em> です。</p>
 <h4 id="validates_with">2.12 <code>validates_with</code>
 </h4>
-<p>このヘルパーは、検証専用に用意した別のクラスにレコードを渡します。</p>
+<p>このヘルパーは、バリデーション専用の別のクラスにレコードを渡します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class GoodnessValidator &lt; ActiveModel::Validator
@@ -745,9 +745,9 @@ end
 </pre>
 </div>
 <div class="note"><p><code>record.errors[:base]</code>に追加されるエラーは、概して特定の属性よりもそのレコード全体の状態に関係しているものです。</p></div>
-<p><code>validates_with</code>は、検証に使用する1つのクラス、またはクラスのリストを引数に取ります。<code>validates_with</code>にはデフォルトのエラーメッセージはありません。エラーメッセージが必要であれば、検証用クラスのレコードのエラーコレクションに手動で追加する必要があります。</p>
-<p>検証用メソッドを実装するには、定義済みの<code>record</code>パラメータを持つ必要があります。これは検証するレコードです。</p>
-<p>他の検証と同様、<code>validates_with</code>ヘルパーは<code>:if</code>、<code>:unless</code>、<code>:on</code>オプションを取ることができます。これ以外のオプションを渡すと、それらは検証用クラスに<code>options</code>として渡されます。</p>
+<p><code>validates_with</code>は、バリデーションに使用する1つのクラス、またはクラスのリストを引数に取ります。<code>validates_with</code>にはデフォルトのエラーメッセージはありません。エラーメッセージが必要であれば、バリデータクラスのレコードのエラーコレクションに手動で追加する必要があります。</p>
+<p>バリデーションメソッドを実装するには、定義済みの<code>record</code>パラメータを持つ必要があります。このパラメータはバリデーションを行なうレコードです。</p>
+<p>他のバリデーションと同様、<code>validates_with</code>ヘルパーでも<code>:if</code>、<code>:unless</code>、<code>:on</code>オプションを取ることができます。これら以外のオプションを渡すと、バリデータクラスに<code>options</code>として渡されます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class GoodnessValidator &lt; ActiveModel::Validator
@@ -764,8 +764,8 @@ end
 
 </pre>
 </div>
-<p>この検証用クラスは、アプリケーションのライフサイクル内で <em>一度しか初期化されない</em> のでご注意ください。検証が実行されるたびに初期化されるようなことはありません。インスタンス変数の扱いには十分ご注意ください。</p>
-<p>作成した検証用クラスが複雑になってインスタンス変数を使いたくなった場合は、旧来のRubyオブジェクトを簡単に使うことができます。</p>
+<p>このバリデータは、アプリケーションのライフサイクル内で <em>一度しか初期化されない</em> 点にご注意ください。バリデーションが実行されるたびに初期化されるようなことはありません。インスタンス変数の扱いには十分ご注意ください。</p>
+<p>作成したバリデータが複雑になってインスタンス変数を使いたくなった場合は、旧来のRubyオブジェクトを簡単に使うことができます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class Person &lt; ActiveRecord::Base
@@ -792,7 +792,7 @@ end
 </div>
 <h4 id="validates_each">2.13 <code>validates_each</code>
 </h4>
-<p>このヘルパーは、1つのブロックに対して属性を検証します。定義済みの検証用関数はありません。このため、ブロックを使用する検証を自分で作成し、<code>validates_each</code>に渡す属性がすべてブロックに対してテストされるようにする必要があります。以下の例では、苗字と名前が小文字で始まらないようにしたいと考えています。</p>
+<p>このヘルパーは、1つのブロックに対して属性を検証します。定義済みのバリデーション関数はありません。このため、ブロックを使用するバリデーションを自分で作成し、<code>validates_each</code>に渡す属性がすべてブロックに対してテストされるようにする必要があります。以下の例では、苗字と名前が小文字で始まらないようにしたいと考えています。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class Person &lt; ActiveRecord::Base
@@ -803,12 +803,12 @@ end
 
 </pre>
 </div>
-<p>このブロックは、レコードと属性の名前、そして属性の名前を受け取ります。ブロック内でこれらを使用してデータが正しいかどうかを自由にチェックできます。検証に失敗した場合にはモデルにエラーメッセージを追加し、検証が無効になるようにしてください。</p>
-<h3 id="共通の検証オプション">3 共通の検証オプション</h3>
-<p>共通の検証オプションを以下に示します。</p>
+<p>このブロックは、レコードと属性の名前、そして属性の名前を受け取ります。ブロック内でこれらを使用してデータが正しいかどうかを自由にチェックできます。バリデーションに失敗した場合にはモデルにエラーメッセージを追加し、バリデーションが無効になるようにしてください。</p>
+<h3 id="共通のバリデーションオプション">3 共通のバリデーションオプション</h3>
+<p>共通のバリデーションオプションを以下に示します。</p>
 <h4 id=":allow_nil">3.1 <code>:allow_nil</code>
 </h4>
-<p><code>:allow_nil</code>オプションは、検証対象の値が<code>nil</code>の場合に検証をスキップします。</p>
+<p><code>:allow_nil</code>オプションは、対象の値が<code>nil</code>の場合にバリデーションをスキップします。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class Coffee &lt; ActiveRecord::Base
@@ -820,7 +820,7 @@ end
 </div>
 <h4 id=":allow_blank">3.2 <code>:allow_blank</code>
 </h4>
-<p><code>:allow_blank</code>オプションは<code>:allow_nil</code>オプションと似ています。このオプションを指定すると、属性の値が<code>blank?</code>に該当する場合に検証をパスします。<code>blank?</code>には<code>nil</code>と空文字も含まれます。</p>
+<p><code>:allow_blank</code>オプションは<code>:allow_nil</code>オプションと似ています。このオプションを指定すると、属性の値が<code>blank?</code>に該当する場合にバリデーションがパスします。<code>blank?</code>に該当する値には<code>nil</code>と空文字も含まれます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class Topic &lt; ActiveRecord::Base
@@ -834,10 +834,10 @@ Topic.create(title: nil).valid? # =&gt; true
 </div>
 <h4 id=":message">3.3 <code>:message</code>
 </h4>
-<p>既に例示したように、<code>:message</code>オプションを使用することで、検証失敗時に<code>errors</code>コレクションに追加されるカスタムエラーメッセージを指定できます。このオプションを使用しない場合、Active Recordはその検証用ヘルパーのデフォルトのエラーメッセージを使用します。</p>
+<p>既に例示したように、<code>:message</code>オプションを使用することで、バリデーション失敗時に<code>errors</code>コレクションに追加されるカスタムエラーメッセージを指定できます。このオプションを使用しない場合、Active Recordはバリデーションヘルパーのデフォルトのエラーメッセージを使用します。</p>
 <h4 id=":on">3.4 <code>:on</code>
 </h4>
-<p><code>:on</code>オプションは、検証を行なうタイミングを指定します。ビルトインの検証ヘルパーは、デフォルトでは保存時に実行されます。これはレコードの作成時および更新時のどちらの場合にも行われます。検証のタイミングを変更したい場合、<code>on: :create</code>を指定すればレコード新規作成時にのみ検証が行われますし、<code>on: :update</code>を指定すればレコードの更新時にのみ検証が行われます。</p>
+<p><code>:on</code>オプションは、バリデーション実行のタイミングを指定します。ビルトインのバリデーションヘルパーは、デフォルトでは保存時に実行されます。これはレコードの作成時および更新時のどちらの場合にも行われます。バリデーションのタイミングを変更したい場合、<code>on: :create</code>を指定すればレコード新規作成時にのみ検証が行われ、<code>on: :update</code>を指定すればレコードの更新時にのみ検証が行われます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class Person &lt; ActiveRecord::Base
@@ -847,14 +847,14 @@ class Person &lt; ActiveRecord::Base
   # 新規レコード作成時に、数字でない年齢表現を使用できる
   validates :age, numericality: true, on: :update
 
-  # デフォルト (作成時と更新時のどちらの場合にも検証する)
+  # デフォルト (作成時と更新時のどちらの場合にもバリデーションを行なう)
   validates :name, presence: true
 end
 
 </pre>
 </div>
-<h3 id="厳密な検証">4 厳密な検証</h3>
-<p>検証を厳格に行い、オブジェクトが無効だった場合に<code>ActiveModel::StrictValidationFailed</code>が発生するようにすることができます。</p>
+<h3 id="厳密なバリデーション">4 厳密なバリデーション</h3>
+<p>バリデーションを厳密にし、オブジェクトが無効だった場合に<code>ActiveModel::StrictValidationFailed</code>が発生するようにすることができます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class Person &lt; ActiveRecord::Base
@@ -876,10 +876,10 @@ Person.new.valid?  # =&gt; TokenGenerationException: トークンは空欄にで
 
 </pre>
 </div>
-<h3 id="条件付き検証">5 条件付き検証</h3>
-<p>特定の条件を満たす場合にのみ検証を実行したい場合があります。<code>:if</code>オプションや<code>:unless</code>オプションを使用することでこのような条件を指定できます。引数にはシンボル、文字列、<code>Proc</code>または<code>Array</code>を使用できます。<code>:if</code>オプションは、特定の条件で検証を行なう <strong>べき</strong> である場合に使用します。特定の条件では検証を行なう <strong>べきでない</strong> 場合は、<code>:unless</code>オプションを使用します。</p>
+<h3 id="条件付きバリデーション">5 条件付きバリデーション</h3>
+<p>特定の条件を満たす場合にのみバリデーションを実行したい場合があります。<code>:if</code>オプションや<code>:unless</code>オプションを使用することでこのような条件を指定できます。引数にはシンボル、文字列、<code>Proc</code>または<code>Array</code>を使用できます。<code>:if</code>オプションは、特定の条件でバリデーションを行なう <strong>べきである</strong> 場合に使用します。特定の条件ではバリデーションを行なう <strong>べきでない</strong> 場合は、<code>:unless</code>オプションを使用します。</p>
 <h4 id=":ifや:unlessでシンボルを使用する">5.1 <code>:if</code>や<code>:unless</code>でシンボルを使用する</h4>
-<p>検証実行直前に呼び出されるメソッド名をシンボル名で<code>:if</code>や<code>:unless</code>オプションに指定することもできます。
+<p>バリデーションの実行直前に呼び出されるメソッド名をシンボル名で<code>:if</code>や<code>:unless</code>オプションに指定することもできます。
 これは最も頻繁に使用されるオプションです。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -914,8 +914,8 @@ end
 
 </pre>
 </div>
-<h4 id="条件付き検証をグループ化する">5.4 条件付き検証をグループ化する</h4>
-<p>複数の検証で1つの条件を共用できると便利なことがあります。<code>with_options</code>を使用するとこれを簡単に実現できます。</p>
+<h4 id="条件付きバリデーションをグループ化する">5.4 条件付きバリデーションをグループ化する</h4>
+<p>1つの条件を複数のバリデーションで共用できると便利なことがあります。これは<code>with_options</code>を使用することで簡単に実現できます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class User &lt; ActiveRecord::Base
@@ -927,9 +927,9 @@ end
 
 </pre>
 </div>
-<p><code>with_options</code>ブロックの内側にあるすべての検証には、<code>if: :is_admin?</code>という条件が渡されます。</p>
-<h4 id="検証の条件を結合する">5.5 検証の条件を結合する</h4>
-<p>逆に、検証を行なう条件を複数定義したい場合、<code>Array</code>を使用できます。1つの検証に対して、<code>:if</code>および<code>:unless</code>を両方とも使用できます。</p>
+<p><code>with_options</code>ブロックの内側にあるすべてのバリデーションには、<code>if: :is_admin?</code>という条件が渡されます。</p>
+<h4 id="バリデーションの条件を結合する">5.5 バリデーションの条件を結合する</h4>
+<p>逆に、バリデーションを行なう条件を複数定義したい場合、<code>Array</code>を使用できます。同じバリデーションに対して、<code>:if</code>または<code>:unless</code>のどちらでも使用できます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class Computer &lt; ActiveRecord::Base
@@ -940,11 +940,11 @@ end
 
 </pre>
 </div>
-<p>この検証は、<code>:if</code>条件がすべて<code>true</code>になり、かつ<code>:unless</code>が1つも<code>true</code>にならない場合にのみ実行されます。</p>
-<h3 id="カスタム検証を実行する">6 カスタム検証を実行する</h3>
-<p>ビルトインの検証ヘルパーだけでは不足の場合、好みの検証クラスや検証メソッドを作成して使用できます。</p>
-<h4 id="カスタム検証クラス">6.1 カスタム検証クラス</h4>
-<p>カスタム検証クラス (validator) は、<code>ActiveModel::Validator</code>を拡張したクラスです。これらのクラスは、<code>validate</code>メソッドを実装しなければなりません。このメソッドはレコードを1つ引数に取り、それに対して検証を実行します。カスタム検証クラスは<code>validates_with</code>メソッドを使用して呼び出します。</p>
+<p>このバリデーションは、<code>:if</code>条件がすべて<code>true</code>になり、かつ<code>:unless</code>が1つも<code>true</code>にならない場合にのみ実行されます。</p>
+<h3 id="カスタムバリデーションを実行する">6 カスタムバリデーションを実行する</h3>
+<p>ビルトインのバリデーションヘルパーだけでは不足の場合、好みのバリデータやバリデーションメソッドを作成して使用できます。</p>
+<h4 id="カスタムバリデータ">6.1 カスタムバリデータ</h4>
+<p>カスタムバリデータ (validator) は、<code>ActiveModel::Validator</code>を拡張したクラスです。これらのクラスでは、<code>validate</code>メソッドが実装されている必要があります。このメソッドはレコードを1つ引数に取り、それに対してバリデーションを実行します。カスタムバリデータは<code>validates_with</code>メソッドを使用して呼び出します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class MyValidator &lt; ActiveModel::Validator
@@ -962,7 +962,7 @@ end
 
 </pre>
 </div>
-<p>個別の属性を検証するためのカスタム検証クラスを追加するには、<code>ActiveModel::EachValidator</code>を使用するのが最も簡単で便利です。この場合、このカスタム検証クラスは<code>validate_each</code>メソッドを実装する必要があります。このメソッドは3つの引数を取ります。そのインスタンスに対応する「レコードと属性と値」、検証したい属性、そして渡されたインスタンスの属性の値です。</p>
+<p>個別の属性を検証するためのカスタムバリデータを追加するには、<code>ActiveModel::EachValidator</code>を使用するのが最も簡単で便利です。この場合、このカスタムバリデータクラスは<code>validate_each</code>メソッドを実装する必要があります。このメソッドは、そのインスタンスに対応する「レコードと属性と値」、バリデーションを行なう属性、そして渡されたインスタンスの属性の値の3つの引数を取ります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class EmailValidator &lt; ActiveModel::EachValidator
@@ -979,10 +979,10 @@ end
 
 </pre>
 </div>
-<p>上の例に示したように、標準の検証とカスタム検証を結合することもできます。</p>
+<p>上の例に示したように、標準のバリデーションとカスタムバリデーションを組み合わせることもできます。</p>
 <h4 id="カスタムメソッド">6.2 カスタムメソッド</h4>
-<p>モデルの状態を確認し、無効な場合に<code>errors</code>コレクションにメッセージを追加するメソッドを作成することができます。これらのメソッドを作成後、検証メソッド名を指すシンボルを渡し、<code>validate</code>クラスメソッドを使用して登録する必要があります。</p>
-<p>1つのクラスメソッドには複数のシンボルを渡すことができます。検証は、登録されたとおりの順序で実行されます。</p>
+<p>モデルの状態を確認し、無効な場合に<code>errors</code>コレクションにメッセージを追加するメソッドを作成することができます。これらのメソッドを作成後、バリデーションメソッド名を指すシンボルを渡し、<code>validate</code>クラスメソッドを使用して登録する必要があります。</p>
+<p>1つのクラスメソッドには複数のシンボルを渡すことができます。バリデーションは、登録されたとおりの順序で実行されます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class Invoice &lt; ActiveRecord::Base
@@ -1004,7 +1004,7 @@ end
 
 </pre>
 </div>
-<p>これらの検証は、<code>valid?</code>を呼び出すたびに実行されます。カスタム検証が実行されるタイミングは、<code>:on</code>オプションを使用して変更できます。<code>validate</code>に対して<code>on: :create</code>または<code>on: :update</code>を指定します。</p>
+<p>これらのバリデーションは、<code>valid?</code>を呼び出すたびに実行されます。カスタムバリデーションが実行されるタイミングは、<code>:on</code>オプションを使用して変更できます。<code>validate</code>に対して<code>on: :create</code>または<code>on: :update</code>を指定します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class Invoice &lt; ActiveRecord::Base
@@ -1017,7 +1017,7 @@ end
 
 </pre>
 </div>
-<h3 id="検証エラーに対応する">7 検証エラーに対応する</h3>
+<h3 id="バリデーションエラーに対応する">7 バリデーションエラーに対応する</h3>
 <p>既に説明した<code>valid?</code>メソッドや<code>invalid?</code>メソッドの他に、Railsでは<code>errors</code>コレクションに対応し、オブジェクトの正当性を検査するためのメソッドが多数用意されています。</p>
 <p>以下は最もよく使用されるメソッドの一覧です。利用可能なすべてのメソッドについては、<code>ActiveModel::Errors</code>ドキュメントを参照してください。</p>
 <h4 id="errors">7.1 <code>errors</code>
@@ -1040,7 +1040,7 @@ person.errors.messages # =&gt; {}
 
 </pre>
 </div>
-<h4 id="検証エラーに対応する-errors[]">7.2 <code>errors[]</code>
+<h4 id="バリデーションエラーに対応する-errors[]">7.2 <code>errors[]</code>
 </h4>
 <p><code>errors[]</code>は、特定の属性についてエラーメッセージをチェックしたい場合に使用します。指定の属性に関するすべてのエラーメッセージの文字列の配列を返します。1つの文字列が1つのエラーメッセージです。属性に関連するエラーがない場合は空の配列を返します。</p>
 <div class="code_container">
@@ -1119,7 +1119,7 @@ end
 </div>
 <h4 id="errors.clear">7.5 <code>errors.clear</code>
 </h4>
-<p><code>clear</code>メソッドは、<code>errors</code>コレクションに含まれるメッセージをすべてクリアしたい場合に使用できます。無効なオブジェクトに対して<code>errors.clear</code>メソッドを呼び出しても、それだけでオブジェクトが有効になるわけではありません。<code>errors</code>は空になりますが、<code>valid?</code>などのオブジェクトをデータベースに保存しようとするメソッドが次回呼び出されたときに、検証が再実行されます。検証のいずれかが失敗すると、<code>errors</code>コレクションに再びメッセージが格納されます。</p>
+<p><code>clear</code>メソッドは、<code>errors</code>コレクションに含まれるメッセージをすべてクリアしたい場合に使用できます。無効なオブジェクトに対して<code>errors.clear</code>メソッドを呼び出しても、それだけでオブジェクトが有効になるわけではありませんのでご注意ください。<code>errors</code>は空になりますが、<code>valid?</code>などのオブジェクトをデータベースに保存しようとするメソッドが次回呼び出されたときに、バリデーションが再実行されます。そしていずれかのバリデーションが失敗すると、<code>errors</code>コレクションに再びメッセージが格納されます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class Person &lt; ActiveRecord::Base
@@ -1160,10 +1160,10 @@ person.errors.size # =&gt; 0
 
 </pre>
 </div>
-<h3 id="検証エラーをビューで表示する">8 検証エラーをビューで表示する</h3>
-<p>モデルを作成して検証を追加し、Webのフォーム経由でそのモデルが作成できるようになったら、そのモデルで検証が失敗したときにエラーメッセージを表示したくなります。</p>
+<h3 id="バリデーションエラーをビューで表示する">8 バリデーションエラーをビューで表示する</h3>
+<p>モデルを作成してバリデーションを追加し、Webのフォーム経由でそのモデルが作成できるようになったら、そのモデルでバリデーションが失敗したときにエラーメッセージを表示したくなります。</p>
 <p>エラーメッセージの表示方法はアプリケーションごとに異なるため、Railsではこれらのメッセージを直接生成するビューヘルパーは含まれていません。
-しかし、Railsで一般的な検証を行なうメソッドは多数提供されているので、カスタムのメソッドを作成するのは比較的簡単です。また、scaffoldを使用して生成を行なうと、そのモデルのエラーメッセージをすべて表示するERBがRailsによって一部の<code>_form.html.erb</code>ファイルに追加されます。</p>
+しかし、Railsでは一般的なバリデーションメソッドが多数提供されているので、カスタムのメソッドを作成するのは比較的簡単です。また、scaffoldを使用して生成を行なうと、そのモデルのエラーメッセージをすべて表示するERBがRailsによって一部の<code>_form.html.erb</code>ファイルに追加されます。</p>
 <p><code>@post</code>という名前のインスタンス変数に保存されたモデルがあるとすると、以下のようになります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1181,7 +1181,7 @@ person.errors.size # =&gt; 0
 
 </pre>
 </div>
-<p>また、Railsのフォームヘルパーを使用してフォームを生成した場合、あるフィールドで検証エラーが発生すると、そのエントリの周りに追加の<code>&lt;div&gt;</code>が自動的に生成されます。</p>
+<p>また、Railsのフォームヘルパーを使用してフォームを生成した場合、あるフィールドでバリデーションエラーが発生すると、そのエントリの周りに追加の<code>&lt;div&gt;</code>が自動的に生成されます。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 &lt;div class="field_with_errors"&gt;
