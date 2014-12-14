@@ -350,7 +350,7 @@ class CookiesController &lt; ApplicationController
   def set_cookie
     cookies.encrypted[:expiration_date] = Date.tomorrow # =&gt; Thu, 20 Mar 2014
     redirect_to action: 'read_cookie'
-end
+  end
 
   def read_cookie 
     cookies.encrypted[:expiration_date] # =&gt; "2014-03-20"
@@ -395,7 +395,7 @@ flash.keys # =&gt; ["string", "symbol"]
 class FooBar
   def as_json(options = nil)
     { foo: 'bar' }
-end
+  end
 end
 
 &gt;&gt; FooBar.new.to_json # =&gt; "{\"foo\":\"bar\"}"
@@ -457,7 +457,7 @@ end
 class FixtureFileHelpers
   def file_sha(path)
     Digest::SHA2.hexdigest(File.read(Rails.root.join('test/fixtures', path)))
-end
+  end
 end
 ActiveRecord::FixtureSet.context_class.send :include, FixtureFileHelpers
 
@@ -561,7 +561,7 @@ User.inactive
 <code>render :body</code>を実行した場合、content typeヘッダーは「設定されない」</li>
 </ul>
 <p>セキュリティ上の観点から、レスポンスのbodyにマークアップを含めない場合には<code>render :plain</code>を使用すべきです。これによって多くのブラウザが安全でないコンテンツをエスケープできるからです。</p>
-<p>今後のバージョンでは、<code>render :text</code>は非推奨にされる予定です。今のうちに、正しい<code>:plain:</code>、<code>:html</code>、<code>:body</code>オプションに切り替えてください。<code>render :text</code>を使用すると<code>text/html</code>で送信されるため、セキュリティ上のリスクが生じる可能性があります。</p>
+<p>今後のバージョンでは、<code>render :text</code>は非推奨にされる予定です。今のうちに、正しい<code>:plain</code>、<code>:html</code>、<code>:body</code>オプションに切り替えてください。<code>render :text</code>を使用すると<code>text/html</code>で送信されるため、セキュリティ上のリスクが生じる可能性があります。</p>
 <h3 id="rails-3.2からrails-4.0へのアップグレード">3 Rails 3.2からRails 4.0へのアップグレード</h3>
 <p>Railsアプリケーションのバージョンが3.2より前の場合、まず3.2へのアップグレードを完了してからRails 4.0へのアップグレードにとりかかってください。</p>
 <p>以下の変更は、アプリケーションをRails 4.0にアップグレードするためのものです。</p>
@@ -584,7 +584,7 @@ resources :users
 class UsersController &lt; ApplicationController
   def update
     # 変更不要:PATCHが望ましいがPUTも使用できる
-end
+  end
 end
 
 </pre>
@@ -609,7 +609,7 @@ end
 class UsersController &lt; ApplicationController
   def update_name
     # 変更が必要: form_forは、存在しないPATCHルートを探そうとする
-end
+  end
 end
 
 </pre>

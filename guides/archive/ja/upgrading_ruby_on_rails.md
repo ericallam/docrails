@@ -104,7 +104,7 @@ class CookiesController < ApplicationController
   def set_cookie
     cookies.encrypted[:expiration_date] = Date.tomorrow # => Thu, 20 Mar 2014
     redirect_to action: 'read_cookie'
-end
+  end
 
   def read_cookie 
     cookies.encrypted[:expiration_date] # => "2014-03-20"
@@ -159,7 +159,7 @@ Rails 4.1では、Rails自身のエンコーダをJSON gemから切り離すこ�
 class FooBar
   def as_json(options = nil)
     { foo: 'bar' }
-end
+  end
 end
 
 >> FooBar.new.to_json # => "{\"foo\":\"bar\"}"
@@ -223,7 +223,7 @@ Rails 4.1では、各フィクスチャのERBは独立したコンテキスト�
 class FixtureFileHelpers
   def file_sha(path)
     Digest::SHA2.hexdigest(File.read(Rails.root.join('test/fixtures', path)))
-end
+  end
 end
 ActiveRecord::FixtureSet.context_class.send :include, FixtureFileHelpers
 ```
@@ -328,7 +328,7 @@ Rails 4.1の`render`に`:plain`、`:html`、`:body`オプションが導入さ�
 
 セキュリティ上の観点から、レスポンスのbodyにマークアップを含めない場合には`render :plain`を使用すべきです。これによって多くのブラウザが安全でないコンテンツをエスケープできるからです。
 
-今後のバージョンでは、`render :text`は非推奨にされる予定です。今のうちに、正しい`:plain:`、`:html`、`:body`オプションに切り替えてください。`render :text`を使用すると`text/html`で送信されるため、セキュリティ上のリスクが生じる可能性があります。
+今後のバージョンでは、`render :text`は非推奨にされる予定です。今のうちに、正しい`:plain`、`:html`、`:body`オプションに切り替えてください。`render :text`を使用すると`text/html`で送信されるため、セキュリティ上のリスクが生じる可能性があります。
 
 Rails 3.2からRails 4.0へのアップグレード
 -------------------------------------
@@ -353,7 +353,7 @@ resources :users
 class UsersController < ApplicationController
   def update
     # 変更不要:PATCHが望ましいがPUTも使用できる
-end
+  end
 end
 ```
 
@@ -373,7 +373,7 @@ end
 class UsersController < ApplicationController
   def update_name
     # 変更が必要: form_forは、存在しないPATCHルートを探そうとする
-end
+  end
 end
 ```
 
