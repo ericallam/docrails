@@ -988,7 +988,7 @@ create_customer!
 <p>関連付けられたオブジェクトがデータベースから検索されたことがある場合は、キャッシュされたものを返します。キャッシュを読み出さずにデータベースから直接読み込ませたい場合は、<code>force_reload</code>の引数に<code>true</code>を設定します。</p>
 <h6 id="belongs_toで追加されるメソッド-association=(associate)">4.1.1.2 <code>association=(associate)</code>
 </h6>
-<p><code>association=</code>メソッドは、そのオブジェクトに関連付けられたオブジェクトを返します。その背後では、関連付けられたオブジェクトから主キーを取り出し、そのオブジェクトの外部キーにその同じ値を設定しています。</p>
+<p><code>association=</code>メソッドは、引数のオブジェクトをそのオブジェクトに関連付けます。その背後では、関連付けられたオブジェクトから主キーを取り出し、そのオブジェクトの外部キーにその同じ値を設定しています。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 @order.customer = @customer
@@ -1294,7 +1294,7 @@ create_account!
 <p>関連付けられたオブジェクトがデータベースから検索されたことがある場合は、キャッシュされたものを返します。キャッシュを読み出さずにデータベースから直接読み込ませたい場合は、<code>force_reload</code>の引数に<code>true</code>を設定します。</p>
 <h6 id="has_oneで追加されるメソッド-association=(associate)">4.2.1.2 <code>association=(associate)</code>
 </h6>
-<p><code>association=</code>メソッドは、そのオブジェクトに関連付けられたオブジェクトを返します。その背後では、そのオブジェクトから主キーを取り出し、関連付けるオブジェクトの外部キーの値をその主キーと同じ値にします。</p>
+<p><code>association=</code>メソッドは、引数のオブジェクトをそのオブジェクトに関連付けます。その背後では、そのオブジェクトから主キーを取り出し、関連付けるオブジェクトの外部キーの値をその主キーと同じ値にします。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 @supplier.account = @account
