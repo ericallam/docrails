@@ -48,15 +48,16 @@ http://railstutorial.jp/
 
 ### ⑤ Herokuにデプロイ
 
-- @yasulab が対応.
+- 今のところ @yasulab が対応.
 - 手伝ってくれる方がいれば @yasulab まで. collaborator に追加します。
 
-## Railsガイド協力者
+## 協力者
 
-- [@hachi8833](https://github.com/hachi8833)
-- [@yasulab](https://github.com/yasulab)
+- [@hachi8833](https://github.com/hachi8833) (共同発起人)
+- [@yasulab](https://github.com/yasulab) (共同発起人)
+- [@yui-knk](https://github.com/yui-knk) ([@spikeolaf](https://twitter.com/spikeolaf) on Twitter)
 
-and supported by [ヤスラボ](http://yasslab.jp/ja/).
+and supported/sponsored by [YassLab](http://yasslab.jp/).
 
 ### 協力者の相談部屋 (チャットルーム)
 
