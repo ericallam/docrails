@@ -56,6 +56,7 @@ http://railstutorial.jp/
 - [@hachi8833](https://github.com/hachi8833) (共同発起人)
 - [@yasulab](https://github.com/yasulab) (共同発起人)
 - [@yui-knk](https://github.com/yui-knk) ([@spikeolaf](https://twitter.com/spikeolaf) on Twitter)
+- 他，[Issues](https://github.com/yasslab/railsguides.jp/issues?q=) や [Pull Request](https://github.com/yasslab/railsguides.jp/graphs/contributors)  を送ってくださった多くの方々.
 
 and supported/sponsored by [YassLab](http://yasslab.jp/).
 
