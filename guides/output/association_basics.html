@@ -1069,7 +1069,7 @@ end
 
 </pre>
 </div>
-<p>上の宣言のままでは、<code>@customer.orders.size</code>の値を知るためにデータベースに対して<code>COUNT(*)</code>クエリを実行する必要があります。この呼び出しを避けるために、「従属している方のモデル(<code>belongs_to</code>を宣言している方のモデル`)」にカウンタキャッシュを追加することができます。</p>
+<p>上の宣言のままでは、<code>@customer.orders.size</code>の値を知るためにデータベースに対して<code>COUNT(*)</code>クエリを実行する必要があります。この呼び出しを避けるために、「従属している方のモデル(<code>belongs_to</code>を宣言している方のモデル)」にカウンタキャッシュを追加することができます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class Order &lt; ActiveRecord::Base
