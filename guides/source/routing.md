@@ -334,7 +334,7 @@ DSL (ドメイン固有言語) である`shallow`メソッドをルーティン�
 ```ruby
 shallow do
   resources :posts do
-  resources :comments
+    resources :comments
     resources :quotes
     resources :drafts
   end
