@@ -118,7 +118,7 @@ end
 ```ruby
 # config/application.rb
 module YourApp
-class Application < Rails::Application
+  class Application < Rails::Application
     config.active_job.queue_name_prefix = Rails.env
   end
 end

@@ -846,7 +846,7 @@ class Customer < ActiveRecord::Base
 end
 ```
 
-上の宣言のままでは、`@customer.orders.size`の値を知るためにデータベースに対して`COUNT(*)`クエリを実行する必要があります。この呼び出しを避けるために、「従属している方のモデル(`belongs_to`を宣言している方のモデル`)」にカウンタキャッシュを追加することができます。
+上の宣言のままでは、`@customer.orders.size`の値を知るためにデータベースに対して`COUNT(*)`クエリを実行する必要があります。この呼び出しを避けるために、「従属している方のモデル(`belongs_to`を宣言している方のモデル)」にカウンタキャッシュを追加することができます。
 
 ```ruby
 class Order < ActiveRecord::Base
