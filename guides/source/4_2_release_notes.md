@@ -112,8 +112,8 @@ remove_foreign_key :accounts, :branches
 remove_foreign_key :accounts, column: :owner_id
 ```
 
-完全な説明については、APIドキュメントの[add_foreign_key](http://api.rubyonrails.org/v4.2.0/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-add_foreign_key)
-および[remove_foreign_key](http://api.rubyonrails.org/v4.2.0/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-remove_foreign_key)を参照してください。
+完全な説明については、APIドキュメントの [add_foreign_key](http://api.rubyonrails.org/v4.2.0/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-add_foreign_key)
+および [remove_foreign_key](http://api.rubyonrails.org/v4.2.0/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-remove_foreign_key) を参照してください。
 
 
 非互換性
@@ -162,7 +162,7 @@ end
 
 ### `rails server`のデフォルトホスト
 
-[Rackの変更](https://github.com/rack/rack/commit/28b014484a8ac0bbb388e7eaeeef159598ec64fc) により、`rails server`コマンドを実行した際のデフォルトのホストが`0.0.0.0`から`localhost`に変更されました。この変更は標準的なローカルでの開発ワークフローにほとんど影響を与えないはずです。http://127.0.0.1:3000およびhttp://localhost:3000の動作はどちらも以前と同じであるからです。
+[Rackの変更](https://github.com/rack/rack/commit/28b014484a8ac0bbb388e7eaeeef159598ec64fc) により、`rails server`コマンドを実行した際のデフォルトのホストが`0.0.0.0`から`localhost`に変更されました。この変更は標準的なローカルでの開発ワークフローにほとんど影響を与えないはずです。http://127.0.0.1:3000 および http://localhost:3000 の動作はどちらも以前と同じであるからです。
 
 ただし、今回の変更により、別のPCからRailsサーバーへのアクセスは以前と同じようにはできなくなります。たとえば、development環境が仮想マシン上にあり、ホストマシンからこのdevelopment環境にアクセスする場合などがこれに該当します。
 このような場合、サーバーを起動する際に`rails server -b 0.0.0.0`とすることで、以前と同じ動作を再現できます。
@@ -501,7 +501,7 @@ Active Record
 *   非推奨の`ActiveRecord::Migrator.proper_table_name`が削除されました。今後は`ActiveRecord::Migration`の`proper_table_name`インスタンスメソッドを代りに使用してください。
     ([Pull Request](https://github.com/rails/rails/pull/15512))
 
-*   未使用の`:timestamp`タイプが削除されました。今後は常に透過的に`:datetime`にエイリアスされるようになります。●これにより、XMLシリアライズなどでカラムの種類が`ActiveRecord`の外に送信された場合の不整合が修正されます。
+*   未使用の`:timestamp`タイプが削除されました。今後は常に透過的に`:datetime`にエイリアスされるようになります。これにより、XMLシリアライズなどでカラムの種類がActive Recordの外に送信された場合の不整合が修正されます。
     ([Pull Request](https://github.com/rails/rails/pull/15184))
 
 ### 非推奨
@@ -512,10 +512,10 @@ Active Record
 *   `has_many :through` アソシエーションにおけるカウンタキャッシュの自動検知サポートが非推奨になりました (元々壊れていました)。今後は、`has_many`関連付けや`belongs_to`関連付けでレコード全体を手動でカウンタキャッシュする必要があります。
     ([Pull Request](https://github.com/rails/rails/pull/15754))
 
-*   Active Recordオブジェクトに`.find`や`.exists?`を渡すことは非推奨になりました。最初にオブジェクトの`#id`を呼び出すべきです。
-    (Commit [1](https://github.com/rails/rails/commit/d92ae6ccca3bcfd73546d612efaea011270bd270), [2](https://github.com/rails/rails/commit/d35f0033c7dec2b8d8b52058fb8db495d49596f7))
+*   `.find`や`.exists?`にActive Recordオブジェクトを渡すことは非推奨になりました。最初にオブジェクトの`id`を呼び出すべきです。
+    (Commit [1](https://github.com/rails/rails/commit/d92ae6ccca3bcfd73546d612efaea011270bd270)、[2](https://github.com/rails/rails/commit/d35f0033c7dec2b8d8b52058fb8db495d49596f7))
 
-*   PostgreSQLで開始値を除外する範囲値に対する(不十分な)サポートが非推奨になりました。現在はPostgreSQLのRangeをRubyのRangeクラスにマップしています。ただし、RubyのRangeクラスでは開始値が外せないため、この方法は完全には実現できません。
+*   PostgreSQLで開始値を除外する範囲値に対する (不十分な) サポートが非推奨になりました。現在はPostgreSQLのRangeをRubyのRangeクラスにマップしています。ただし、RubyのRangeクラスでは開始値が外せないため、この方法は完全には実現できません。
 
     現時点における、開始値を増分 (increment) する解決方法は正しくないため、非推奨になりました。増分の方法が不明なサブタイプ (例: `#succ`は増分方法が未定義) については、開始値を除外する範囲指定によって`ArgumentError`が発生します。
     ([Commit](https://github.com/rails/rails/commit/91949e48cf41af9f3e4ffba3e5eecf9b0a08bfc3))
@@ -527,7 +527,7 @@ Active Record
     ([Commit](https://github.com/rails/rails/commit/d5902c9e))
 
 *   `:null`オプションを渡さずに`add_timestamps`や`t.timestamps`を使用することが非推奨になりました。現在の初期値は`null: true`ですが、 Rails 5では`null: false`に変更される予定です。
-    ([Pull Request](https://github.com/rails/rails/pull/15819))
+    ([Pull Request](https://github.com/rails/rails/pull/16481))
 
 *   `Reflection#source_macro`が非推奨になりました。今後Active Recordでの必要性がなくなったため、代替はありません。
     ([Pull Request](https://github.com/rails/rails/pull/16373))
@@ -558,13 +558,13 @@ Active Record
 *   レコードが正しくないときに`ActiveRecord::RecordInvalid`を返す`ActiveRecord::Base#validate!`が導入されました。
     ([Pull Request](https://github.com/rails/rails/pull/8639))
 
-*   `#valid?`のエイリアスとして`#validate`が導入されました。
+*   `valid?`のエイリアスとして`validate`が導入されました。
     ([Pull Request](https://github.com/rails/rails/pull/14456))
 
-*   `#touch`が複数の属性を一度に扱えるようになりました。
+*   `touch`が複数の属性を一度に扱えるようになりました。
     ([Pull Request](https://github.com/rails/rails/pull/14423))
 
-*   PostgreSQLアダプターでPostgreSQL 9.4+での`JSONB`データタイプがサポートされました。
+*   PostgreSQLアダプターでPostgreSQL 9.4+の`jsonb`データタイプがサポートされました。
     ([Pull Request](https://github.com/rails/rails/pull/16220))
 
 *   PostgreSQLとSQLiteアダプターで、String型の初期値から255文字制限が外れました。
@@ -581,7 +581,7 @@ Active Record
     ([Pull Request](https://github.com/rails/rails/pull/14569))
 
 *   MySQL 5.6以上で小数点以下の秒数サポートが追加されました。
-    (Pull Request [1](https://github.com/rails/rails/pull/14861), [2](https://github.com/rails/rails/pull/16180))
+    (Pull Request [1](https://github.com/rails/rails/pull/8240)、[2](https://github.com/rails/rails/pull/14359))
 
 *   モデルを整えた形式で出力する`ActiveRecord::Base#pretty_print`が追加されました。
     ([Pull Request](https://github.com/rails/rails/pull/15172))

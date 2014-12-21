@@ -380,8 +380,8 @@ remove_foreign_key :accounts, column: :owner_id
 
 </pre>
 </div>
-<p>完全な説明については、APIドキュメントの<a href="http://api.rubyonrails.org/v4.2.0/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-add_foreign_key">add_foreign_key</a>
-および<a href="http://api.rubyonrails.org/v4.2.0/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-remove_foreign_key">remove_foreign_key</a>を参照してください。</p>
+<p>完全な説明については、APIドキュメントの <a href="http://api.rubyonrails.org/v4.2.0/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-add_foreign_key">add_foreign_key</a>
+および <a href="http://api.rubyonrails.org/v4.2.0/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-remove_foreign_key">remove_foreign_key</a> を参照してください。</p>
 <h3 id="非互換性">3 非互換性</h3>
 <p>前のバージョンで非推奨に指定されていた機能が削除されました。今回のリリースで新たに非推奨指定された機能については個別のコンポーネントの情報を参照してください。</p>
 <p>以下の変更については、アップグレード時に対応が必要となることがあります。</p>
@@ -422,7 +422,7 @@ end
 </pre>
 </div>
 <h4 id="rails-serverのデフォルトホスト">3.3 <code>rails server</code>のデフォルトホスト</h4>
-<p><a href="https://github.com/rack/rack/commit/28b014484a8ac0bbb388e7eaeeef159598ec64fc">Rackの変更</a> により、<code>rails server</code>コマンドを実行した際のデフォルトのホストが<code>0.0.0.0</code>から<code>localhost</code>に変更されました。この変更は標準的なローカルでの開発ワークフローにほとんど影響を与えないはずです。<a href="http://127.0.0.1:3000%E3%81%8A%E3%82%88%E3%81%B3http://localhost:3000%E3%81%AE%E5%8B%95%E4%BD%9C%E3%81%AF%E3%81%A9%E3%81%A1%E3%82%89%E3%82%82%E4%BB%A5%E5%89%8D%E3%81%A8%E5%90%8C%E3%81%98%E3%81%A7%E3%81%82%E3%82%8B%E3%81%8B%E3%82%89%E3%81%A7%E3%81%99%E3%80%82">http://127.0.0.1:3000およびhttp://localhost:3000の動作はどちらも以前と同じであるからです。</a></p>
+<p><a href="https://github.com/rack/rack/commit/28b014484a8ac0bbb388e7eaeeef159598ec64fc">Rackの変更</a> により、<code>rails server</code>コマンドを実行した際のデフォルトのホストが<code>0.0.0.0</code>から<code>localhost</code>に変更されました。この変更は標準的なローカルでの開発ワークフローにほとんど影響を与えないはずです。<a href="http://127.0.0.1:3000">http://127.0.0.1:3000</a> および <a href="http://localhost:3000">http://localhost:3000</a> の動作はどちらも以前と同じであるからです。</p>
 <p>ただし、今回の変更により、別のPCからRailsサーバーへのアクセスは以前と同じようにはできなくなります。たとえば、development環境が仮想マシン上にあり、ホストマシンからこのdevelopment環境にアクセスする場合などがこれに該当します。
 このような場合、サーバーを起動する際に<code>rails server -b 0.0.0.0</code>とすることで、以前と同じ動作を再現できます。</p>
 <p>以前の動作に戻す場合は、必ずファイアウォールを適切に設定し、自社ネットワーク内の信頼できるPCだけが開発用サーバーにアクセスできるようにしてください。</p>
@@ -724,7 +724,7 @@ end
 (<a href="https://github.com/rails/rails/pull/15612">Pull Request</a>)</p></li>
 <li><p>  非推奨の<code>ActiveRecord::Migrator.proper_table_name</code>が削除されました。今後は<code>ActiveRecord::Migration</code>の<code>proper_table_name</code>インスタンスメソッドを代りに使用してください。
 (<a href="https://github.com/rails/rails/pull/15512">Pull Request</a>)</p></li>
-<li><p>  未使用の<code>:timestamp</code>タイプが削除されました。今後は常に透過的に<code>:datetime</code>にエイリアスされるようになります。●これにより、XMLシリアライズなどでカラムの種類が<code>ActiveRecord</code>の外に送信された場合の不整合が修正されます。
+<li><p>  未使用の<code>:timestamp</code>タイプが削除されました。今後は常に透過的に<code>:datetime</code>にエイリアスされるようになります。これにより、XMLシリアライズなどでカラムの種類がActive Recordの外に送信された場合の不整合が修正されます。
 (<a href="https://github.com/rails/rails/pull/15184">Pull Request</a>)</p></li>
 </ul>
 <h4 id="active-record-非推奨">8.2 非推奨</h4>
@@ -733,10 +733,10 @@ end
 (<a href="https://github.com/rails/rails/pull/16537">Pull Request</a>)</p></li>
 <li><p>  <code>has_many :through</code> アソシエーションにおけるカウンタキャッシュの自動検知サポートが非推奨になりました (元々壊れていました)。今後は、<code>has_many</code>関連付けや<code>belongs_to</code>関連付けでレコード全体を手動でカウンタキャッシュする必要があります。
 (<a href="https://github.com/rails/rails/pull/15754">Pull Request</a>)</p></li>
-<li><p>  Active Recordオブジェクトに<code>.find</code>や<code>.exists?</code>を渡すことは非推奨になりました。最初にオブジェクトの<code>#id</code>を呼び出すべきです。
-(Commit <a href="https://github.com/rails/rails/commit/d92ae6ccca3bcfd73546d612efaea011270bd270">1</a>, <a href="https://github.com/rails/rails/commit/d35f0033c7dec2b8d8b52058fb8db495d49596f7">2</a>)</p></li>
+<li><p>  <code>.find</code>や<code>.exists?</code>にActive Recordオブジェクトを渡すことは非推奨になりました。最初にオブジェクトの<code>id</code>を呼び出すべきです。
+(Commit <a href="https://github.com/rails/rails/commit/d92ae6ccca3bcfd73546d612efaea011270bd270">1</a>、<a href="https://github.com/rails/rails/commit/d35f0033c7dec2b8d8b52058fb8db495d49596f7">2</a>)</p></li>
 <li>
-<p>  PostgreSQLで開始値を除外する範囲値に対する(不十分な)サポートが非推奨になりました。現在はPostgreSQLのRangeをRubyのRangeクラスにマップしています。ただし、RubyのRangeクラスでは開始値が外せないため、この方法は完全には実現できません。</p>
+<p>  PostgreSQLで開始値を除外する範囲値に対する (不十分な) サポートが非推奨になりました。現在はPostgreSQLのRangeをRubyのRangeクラスにマップしています。ただし、RubyのRangeクラスでは開始値が外せないため、この方法は完全には実現できません。</p>
 <p>現時点における、開始値を増分 (increment) する解決方法は正しくないため、非推奨になりました。増分の方法が不明なサブタイプ (例: <code>#succ</code>は増分方法が未定義) については、開始値を除外する範囲指定によって<code>ArgumentError</code>が発生します。
 (<a href="https://github.com/rails/rails/commit/91949e48cf41af9f3e4ffba3e5eecf9b0a08bfc3">Commit</a>)</p>
 </li>
@@ -745,7 +745,7 @@ end
 <li><p>  Replacementを使わずに<code>sanitize_sql_hash_for_conditions</code>を使用することが非推奨になりました。クエリを発行したり更新する際には<code>Relation</code>を使用することが、推奨APIとなります。
 (<a href="https://github.com/rails/rails/commit/d5902c9e">Commit</a>)</p></li>
 <li><p>  <code>:null</code>オプションを渡さずに<code>add_timestamps</code>や<code>t.timestamps</code>を使用することが非推奨になりました。現在の初期値は<code>null: true</code>ですが、 Rails 5では<code>null: false</code>に変更される予定です。
-(<a href="https://github.com/rails/rails/pull/15819">Pull Request</a>)</p></li>
+(<a href="https://github.com/rails/rails/pull/16481">Pull Request</a>)</p></li>
 <li><p>  <code>Reflection#source_macro</code>が非推奨になりました。今後Active Recordでの必要性がなくなったため、代替はありません。
 (<a href="https://github.com/rails/rails/pull/16373">Pull Request</a>)</p></li>
 <li><p>  <code>serialized_attributes</code>は非推奨になりました。代替はありません。
@@ -767,11 +767,11 @@ end
 (<a href="https://github.com/rails/rails/commit/e2f232aba15937a4b9d14bd91e0392c6d55be58d">Commit</a>)</p></li>
 <li><p>  レコードが正しくないときに<code>ActiveRecord::RecordInvalid</code>を返す<code>ActiveRecord::Base#validate!</code>が導入されました。
 (<a href="https://github.com/rails/rails/pull/8639">Pull Request</a>)</p></li>
-<li><p>  <code>#valid?</code>のエイリアスとして<code>#validate</code>が導入されました。
+<li><p>  <code>valid?</code>のエイリアスとして<code>validate</code>が導入されました。
 (<a href="https://github.com/rails/rails/pull/14456">Pull Request</a>)</p></li>
-<li><p>  <code>#touch</code>が複数の属性を一度に扱えるようになりました。
+<li><p>  <code>touch</code>が複数の属性を一度に扱えるようになりました。
 (<a href="https://github.com/rails/rails/pull/14423">Pull Request</a>)</p></li>
-<li><p>  PostgreSQLアダプターでPostgreSQL 9.4+での<code>JSONB</code>データタイプがサポートされました。
+<li><p>  PostgreSQLアダプターでPostgreSQL 9.4+の<code>jsonb</code>データタイプがサポートされました。
 (<a href="https://github.com/rails/rails/pull/16220">Pull Request</a>)</p></li>
 <li><p>  PostgreSQLとSQLiteアダプターで、String型の初期値から255文字制限が外れました。
 (<a href="https://github.com/rails/rails/pull/14579">Pull Request</a>)</p></li>
@@ -783,7 +783,7 @@ end
 (従来<code>sqlite3:///some/path</code>は<code>some/path</code>のような相対パスで解決されていましたが、これはRails 4.1で非推奨となっていました)。
 (<a href="https://github.com/rails/rails/pull/14569">Pull Request</a>)</p></li>
 <li><p>  MySQL 5.6以上で小数点以下の秒数サポートが追加されました。
-(Pull Request <a href="https://github.com/rails/rails/pull/14861">1</a>, <a href="https://github.com/rails/rails/pull/16180">2</a>)</p></li>
+(Pull Request <a href="https://github.com/rails/rails/pull/8240">1</a>、<a href="https://github.com/rails/rails/pull/14359">2</a>)</p></li>
 <li><p>  モデルを整えた形式で出力する<code>ActiveRecord::Base#pretty_print</code>が追加されました。
 (<a href="https://github.com/rails/rails/pull/15172">Pull Request</a>)</p></li>
 <li><p>  <code>ActiveRecord::Base#reload</code>の動作が<code>m = Model.find(m.id)</code>と同等になりました。これは、カスタマイズされた<code>select</code>に含まれていた余分な属性が今後は保持されないということを意味しています。
