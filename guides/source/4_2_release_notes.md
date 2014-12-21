@@ -662,7 +662,7 @@ Active Support
 *   `travel_to`テストヘルパーが`usec`コンポーネントをゼロに切り詰めるように変更されました。
     ([Commit](https://github.com/rails/rails/commit/9f6e82ee4783e491c20f5244a613fdeb4024beb5))
 
-*   オブジェクト自身を返す`Object#itself`が導入されました。
+*   オブジェクト自身を返す恒等関数として`Object#itself`が導入されました。
     (Commit [1](https://github.com/rails/rails/commit/702ad710b57bef45b081ebf42e6fa70820fdd810), [2](https://github.com/rails/rails/commit/64d91122222c11ad3918cc8e2e3ebc4b0a03448a))
 
 *   ブロック中で明示的にレシーバーを示さなくても`Object#with_options`が使えるようになりました。
