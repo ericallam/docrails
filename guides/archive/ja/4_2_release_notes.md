@@ -266,7 +266,7 @@ Railties
 *   `web-console`がデフォルトのアプリケーションGemfileに導入されました。
     ([Pull Request](https://github.com/rails/rails/pull/11667))
 
-*   モデル関連付けをおこなジェネレータに`required`オプションが追加されました。
+*   モデル関連付けをおこなうジェネレータに`required`オプションが追加されました。
     ([Pull Request](https://github.com/rails/rails/pull/16062))
 
 *   カスタム設定オプションを定義する時に使用する`x`名前空間が導入されました。
