@@ -33,6 +33,11 @@
       name: Active Record クエリインターフェイス
       url: active_record_querying.html
       description: Active Recordが提供するすべてのデータベースクエリインターフェイスについて解説します。
+    -
+      name: Active Model の基礎
+      url: active_model_basics.html
+      description: Active Recordを使わずにモデルクラスを扱う方法について解説します。
+      work_in_progress: false
 -
   name: ビュー
   documents:
@@ -111,13 +116,17 @@
     -
       name: Rails エンジン入門
       url: engines.html
-      description: マウント可能なエンジンの作成方法について解説します。
+      description: マウント可能なエンジンの作成方法についてかいせつします
       work_in_progress: true
     -
       name: The Rails Initialization Process [未着手]
       work_in_progress: true
       url: initialization.html
       description: Rails 4内部の初期化プロセスについて解説します。
+    -
+      name: Constant Autoloading and Reloading [未着手]
+      url: constant_autoloading_and_reloading.html
+      description: 自動読み込みやリロードの仕組みについて解説します。
 -
   name: Rails を拡張する
   documents:
@@ -135,7 +144,7 @@
       url: generators.html
       description: 新しいジェネレータを拡張に追加したり、ビルトインのRailsジェネレータの要素に別の要素を提供したりする方法 (scaffoldジェネレータに別のテストスタブを提供するなど) について解説します。
 -
-  name: Ruby on Rails に貢献する
+  name: Contributing to Ruby on Rails [未着手]
   documents:
     -
       name: Contributing to Ruby on Rails [未着手]
@@ -164,10 +173,9 @@
       url: upgrading_ruby_on_rails.html
       description: アプリケーションのRuby on Railsを最新バージョンにアップグレードする方法について解説します。
     -
-      name: Ruby on Rails 4.2 Release Notes [未着手]
+      name: Ruby on Rails 4.2 リリースノート
       url: 4_2_release_notes.html
       description: Rails 4.2のリリースノートです。
-      work_in_progress: true
     -
       name: Ruby on Rails 4.1 リリースノート
       url: 4_1_release_notes.html

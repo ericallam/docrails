@@ -70,6 +70,7 @@ Ruby on Rails ガイド
                 <dd><a href="active_record_callbacks.html">Active Record コールバック</a></dd>
                 <dd><a href="association_basics.html">Active Record の関連付け</a></dd>
                 <dd><a href="active_record_querying.html">Active Record クエリインターフェイス</a></dd>
+                <dd><a href="active_model_basics.html">Active Model の基礎</a></dd>
                 <dt>ビュー</dt>
                 <dd><a href="layouts_and_rendering.html">レイアウトとレンダリング</a></dd>
                 <dd><a href="form_helpers.html">Action View フォームヘルパー</a></dd>
@@ -89,10 +90,11 @@ Ruby on Rails ガイド
                 <dd><a href="command_line.html">コマンドラインツールと Rake タスク</a></dd>
                 <dd><a href="asset_pipeline.html">アセットパイプライン</a></dd>
                 <dd><a href="working_with_javascript_in_rails.html">Rails で JavaScript を使用する</a></dd>
+                <dd><a href="constant_autoloading_and_reloading.html">Constant Autoloading and Reloading [未着手]</a></dd>
                 <dt>Rails を拡張する</dt>
                 <dd><a href="rails_on_rack.html">Rails と Rack</a></dd>
                 <dd><a href="generators.html">Creating and Customizing Rails Generators [未着手]</a></dd>
-                <dt>Ruby on Rails に貢献する</dt>
+                <dt>Contributing to Ruby on Rails [未着手]</dt>
                 <dd><a href="contributing_to_ruby_on_rails.html">Contributing to Ruby on Rails [未着手]</a></dd>
                 <dd><a href="api_documentation_guidelines.html">APIドキュメント作成ガイドライン</a></dd>
                 <dd><a href="ruby_on_rails_guides_guidelines.html">Rails ガイドのガイドライン</a></dd>
@@ -100,6 +102,7 @@ Ruby on Rails ガイド
                 <dd><a href="maintenance_policy.html">メンテナンスポリシー</a></dd>
                 <dt>リリースノート</dt>
                 <dd><a href="upgrading_ruby_on_rails.html">Rails アップグレードガイド</a></dd>
+                <dd><a href="4_2_release_notes.html">Ruby on Rails 4.2 リリースノート</a></dd>
                 <dd><a href="4_1_release_notes.html">Ruby on Rails 4.1 リリースノート</a></dd>
                 <dd><a href="4_0_release_notes.html">Ruby on Rails 4.0 Release Notes [未着手]</a></dd>
                 <dd><a href="3_2_release_notes.html">Ruby on Rails 3.2 Release Notes [未着手]</a></dd>
@@ -125,6 +128,7 @@ Ruby on Rails ガイド
                   <option value="active_record_callbacks.html">Active Record コールバック</option>
                   <option value="association_basics.html">Active Record の関連付け</option>
                   <option value="active_record_querying.html">Active Record クエリインターフェイス</option>
+                  <option value="active_model_basics.html">Active Model の基礎</option>
               </optgroup>
               <optgroup label="ビュー">
                   <option value="layouts_and_rendering.html">レイアウトとレンダリング</option>
@@ -145,12 +149,13 @@ Ruby on Rails ガイド
                   <option value="command_line.html">コマンドラインツールと Rake タスク</option>
                   <option value="asset_pipeline.html">アセットパイプライン</option>
                   <option value="working_with_javascript_in_rails.html">Rails で JavaScript を使用する</option>
+                  <option value="constant_autoloading_and_reloading.html">Constant Autoloading and Reloading [未着手]</option>
               </optgroup>
               <optgroup label="Rails を拡張する">
                   <option value="rails_on_rack.html">Rails と Rack</option>
                   <option value="generators.html">Creating and Customizing Rails Generators [未着手]</option>
               </optgroup>
-              <optgroup label="Ruby on Rails に貢献する">
+              <optgroup label="Contributing to Ruby on Rails [未着手]">
                   <option value="contributing_to_ruby_on_rails.html">Contributing to Ruby on Rails [未着手]</option>
                   <option value="api_documentation_guidelines.html">APIドキュメント作成ガイドライン</option>
                   <option value="ruby_on_rails_guides_guidelines.html">Rails ガイドのガイドライン</option>
@@ -160,6 +165,7 @@ Ruby on Rails ガイド
               </optgroup>
               <optgroup label="リリースノート">
                   <option value="upgrading_ruby_on_rails.html">Rails アップグレードガイド</option>
+                  <option value="4_2_release_notes.html">Ruby on Rails 4.2 リリースノート</option>
                   <option value="4_1_release_notes.html">Ruby on Rails 4.1 リリースノート</option>
                   <option value="4_0_release_notes.html">Ruby on Rails 4.0 Release Notes [未着手]</option>
                   <option value="3_2_release_notes.html">Ruby on Rails 3.2 Release Notes [未着手]</option>
@@ -229,6 +235,8 @@ Ruby on Rails ガイド
       Active Recordが提供するすべての関連付け機能について解説します。</dd>
     <dt><a href="active_record_querying.html">Active Record クエリインターフェイス</a></dt><dd>
       Active Recordが提供するすべてのデータベースクエリインターフェイスについて解説します。</dd>
+    <dt><a href="active_model_basics.html">Active Model の基礎</a></dt><dd>
+      Active Recordを使わずにモデルクラスを扱う方法について解説します。</dd>
 <h3>ビュー</h3>
     <dt><a href="action_view_overview.html">Action View の概要</a></dt><dd class="work-in-progress">Work in progress</dd><dd>
       Action Viewの概要を紹介し、共通のビューヘルパーについてもある程度解説します。</dd>
@@ -265,9 +273,11 @@ Ruby on Rails ガイド
     <dt><a href="working_with_javascript_in_rails.html">Rails で JavaScript を使用する</a></dt><dd>
       RailsビルトインのAjax/JavaScriptについて解説します。</dd>
     <dt><a href="engines.html">Rails エンジン入門</a></dt><dd class="work-in-progress">Work in progress</dd><dd>
-      マウント可能なエンジンの作成方法について解説します。</dd>
+      マウント可能なエンジンの作成方法についてかいせつします</dd>
     <dt><a href="initialization.html">The Rails Initialization Process [未着手]</a></dt><dd class="work-in-progress">Work in progress</dd><dd>
       Rails 4内部の初期化プロセスについて解説します。</dd>
+    <dt><a href="constant_autoloading_and_reloading.html">Constant Autoloading and Reloading [未着手]</a></dt><dd>
+      自動読み込みやリロードの仕組みについて解説します。</dd>
 <h3>Rails を拡張する</h3>
     <dt><a href="plugins.html">The Basics of Creating Rails Plugins [未着手]</a></dt><dd class="work-in-progress">Work in progress</dd><dd>
       プラグインを作成してRailsの機能を拡張する方法について解説します。</dd>
@@ -275,7 +285,7 @@ Ruby on Rails ガイド
       RailsとRackがどのように統合されているか、および他のRackコンポーネントとのインターフェイスについて解説します。</dd>
     <dt><a href="generators.html">Creating and Customizing Rails Generators [未着手]</a></dt><dd>
       新しいジェネレータを拡張に追加したり、ビルトインのRailsジェネレータの要素に別の要素を提供したりする方法 (scaffoldジェネレータに別のテストスタブを提供するなど) について解説します。</dd>
-<h3>Ruby on Rails に貢献する</h3>
+<h3>Contributing to Ruby on Rails [未着手]</h3>
     <dt><a href="contributing_to_ruby_on_rails.html">Contributing to Ruby on Rails [未着手]</a></dt><dd>
       Railsは「どこかで誰かがうまくやってくれているフレームワーク」ではありません。現在も継続しているRailsフレームワーク開発に貢献するさまざまな方法について解説します。</dd>
     <dt><a href="api_documentation_guidelines.html">APIドキュメント作成ガイドライン</a></dt><dd>
@@ -288,7 +298,7 @@ Ruby on Rails ガイド
 <h3>リリースノート</h3>
     <dt><a href="upgrading_ruby_on_rails.html">Rails アップグレードガイド</a></dt><dd>
       アプリケーションのRuby on Railsを最新バージョンにアップグレードする方法について解説します。</dd>
-    <dt><a href="4_2_release_notes.html">Ruby on Rails 4.2 Release Notes [未着手]</a></dt><dd class="work-in-progress">Work in progress</dd><dd>
+    <dt><a href="4_2_release_notes.html">Ruby on Rails 4.2 リリースノート</a></dt><dd>
       Rails 4.2のリリースノートです。</dd>
     <dt><a href="4_1_release_notes.html">Ruby on Rails 4.1 リリースノート</a></dt><dd>
       Rails 4.1のリリースノートです。</dd>
