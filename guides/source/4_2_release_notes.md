@@ -586,12 +586,12 @@ Active Record
 *   モデルを整えた形式で出力する`ActiveRecord::Base#pretty_print`が追加されました。
     ([Pull Request](https://github.com/rails/rails/pull/15172))
 
-*   `ActiveRecord::Base#reload`の動作が`m = Model.find(m.id)`と同等になりました。これは、カスタマイズされた`select`に含まれていた余分な属性が今後は保持されないということを意味しています。
+*   `ActiveRecord::Base#reload`の動作が`m = Model.find(m.id)`と同等になりました。これは、カスタマイズされた`SELECT`に含まれていた余分な属性が今後は保持されないということを意味しています。
     ([Pull Request](https://github.com/rails/rails/pull/15866))
 
 *   `ActiveRecord::Base#reflections`が返すハッシュのキーが、シンボルから文字列になりました。([Pull Request](https://github.com/rails/rails/pull/17718))
 
-*   マイグレーションの`#references`メソッドで`type`オプションがサポートされました。外部キーの種類 (`:uuid`など) を指定できます。
+*   マイグレーションの`references`メソッドで`type`オプションがサポートされました。外部キーの種類 (`:uuid`など) を指定できます。
     ([Pull Request](https://github.com/rails/rails/pull/16231))
 
 Active Model
@@ -609,12 +609,12 @@ Active Model
 *   `reset_#{attribute}`が非推奨になりました。今後は`restore_#{attribute}`を使用してください。
     ([Pull Request](https://github.com/rails/rails/pull/16180))
 
-*   `ActiveModel::Dirty#reset_changes`が非推奨になりました。今後は`#clear_changes_information`を使用してください。
+*   `ActiveModel::Dirty#reset_changes`が非推奨になりました。今後は`clear_changes_information`を使用してください。
     ([Pull Request](https://github.com/rails/rails/pull/16180))
 
 ### 主な変更点
 
-*   `#valid?`のエイリアスとして`#validate`が導入されました。
+*   `valid?`のエイリアスとして`#validate`が導入されました。
     ([Pull Request](https://github.com/rails/rails/pull/14456))
 
 *   `ActiveModel::Dirty`に`restore_attributes`メソッドが導入されました。これは、変更されたが保存されていない (dirty) 属性を以前の値に戻すためのものです。
@@ -662,7 +662,7 @@ Active Support
 *   `travel_to`テストヘルパーが`usec`コンポーネントをゼロに切り詰めるように変更されました。
     ([Commit](https://github.com/rails/rails/commit/9f6e82ee4783e491c20f5244a613fdeb4024beb5))
 
-*   オブジェクト自身を返す`Object#itself`が導入されました。●
+*   オブジェクト自身を返す`Object#itself`が導入されました。
     (Commit [1](https://github.com/rails/rails/commit/702ad710b57bef45b081ebf42e6fa70820fdd810), [2](https://github.com/rails/rails/commit/64d91122222c11ad3918cc8e2e3ebc4b0a03448a))
 
 *   ブロック中で明示的にレシーバーを示さなくても`Object#with_options`が使えるようになりました。
@@ -680,12 +680,12 @@ Active Support
 *   `Concern#class_methods`が導入されました。`Kernel#concern`と同様、これは`module ClassMethods`を置き換えるためのものであり、`module Foo; extend ActiveSupport::Concern; end`のような冗長な定形コードを避けるためのものです。
     ([Commit](https://github.com/rails/rails/commit/b16c36e688970df2f96f793a759365b248b582ad))
 
-*   自動読み込みやリロードに関する[新しいガイド](constant_autoloading_and_reloading.html)が追加されました。.
+*   自動読み込みやリロードに関する[新しいガイド](constant_autoloading_and_reloading.html)が追加されました。
 
 クレジット表記
 -------
 
-膨大な時間を費やしてRailsを作り、頑丈かつ安定したフレームワークにしてくれた多くの皆様については、[Railsコントリビューターの完全なリスト](http://contributors.rubyonrails.org/)を参照してください。これらの方々全員に深く敬意を表明いたします。
+Railsを頑丈かつ安定したフレームワークにするために多大な時間を費やしてくださった多くの開発者については、[Railsコントリビューターの完全なリスト](http://contributors.rubyonrails.org/)を参照してください。これらの方々全員に深く敬意を表明いたします。
 
 [railties]:       https://github.com/rails/rails/blob/4-2-stable/railties/CHANGELOG.md
 [action-pack]:    https://github.com/rails/rails/blob/4-2-stable/actionpack/CHANGELOG.md

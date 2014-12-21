@@ -786,10 +786,10 @@ end
 (Pull Request <a href="https://github.com/rails/rails/pull/8240">1</a>、<a href="https://github.com/rails/rails/pull/14359">2</a>)</p></li>
 <li><p>  モデルを整えた形式で出力する<code>ActiveRecord::Base#pretty_print</code>が追加されました。
 (<a href="https://github.com/rails/rails/pull/15172">Pull Request</a>)</p></li>
-<li><p>  <code>ActiveRecord::Base#reload</code>の動作が<code>m = Model.find(m.id)</code>と同等になりました。これは、カスタマイズされた<code>select</code>に含まれていた余分な属性が今後は保持されないということを意味しています。
+<li><p>  <code>ActiveRecord::Base#reload</code>の動作が<code>m = Model.find(m.id)</code>と同等になりました。これは、カスタマイズされた<code>SELECT</code>に含まれていた余分な属性が今後は保持されないということを意味しています。
 (<a href="https://github.com/rails/rails/pull/15866">Pull Request</a>)</p></li>
 <li><p>  <code>ActiveRecord::Base#reflections</code>が返すハッシュのキーが、シンボルから文字列になりました。(<a href="https://github.com/rails/rails/pull/17718">Pull Request</a>)</p></li>
-<li><p>  マイグレーションの<code>#references</code>メソッドで<code>type</code>オプションがサポートされました。外部キーの種類 (<code>:uuid</code>など) を指定できます。
+<li><p>  マイグレーションの<code>references</code>メソッドで<code>type</code>オプションがサポートされました。外部キーの種類 (<code>:uuid</code>など) を指定できます。
 (<a href="https://github.com/rails/rails/pull/16231">Pull Request</a>)</p></li>
 </ul>
 <h3 id="active-model">9 Active Model</h3>
@@ -803,12 +803,12 @@ end
 <ul>
 <li><p>  <code>reset_#{attribute}</code>が非推奨になりました。今後は<code>restore_#{attribute}</code>を使用してください。
 (<a href="https://github.com/rails/rails/pull/16180">Pull Request</a>)</p></li>
-<li><p>  <code>ActiveModel::Dirty#reset_changes</code>が非推奨になりました。今後は<code>#clear_changes_information</code>を使用してください。
+<li><p>  <code>ActiveModel::Dirty#reset_changes</code>が非推奨になりました。今後は<code>clear_changes_information</code>を使用してください。
 (<a href="https://github.com/rails/rails/pull/16180">Pull Request</a>)</p></li>
 </ul>
 <h4 id="active-model-主な変更点">9.3 主な変更点</h4>
 <ul>
-<li><p>  <code>#valid?</code>のエイリアスとして<code>#validate</code>が導入されました。
+<li><p>  <code>valid?</code>のエイリアスとして<code>#validate</code>が導入されました。
 (<a href="https://github.com/rails/rails/pull/14456">Pull Request</a>)</p></li>
 <li><p>  <code>ActiveModel::Dirty</code>に<code>restore_attributes</code>メソッドが導入されました。これは、変更されたが保存されていない (dirty) 属性を以前の値に戻すためのものです。
 (Pull Request <a href="https://github.com/rails/rails/pull/14861">1</a>, <a href="https://github.com/rails/rails/pull/16180">2</a>)</p></li>
@@ -844,7 +844,7 @@ end
 (<a href="https://github.com/rails/rails/commit/5e51bdda59c9ba8e5faf86294e3e431bd45f1830">Commit</a>, <a href="https://github.com/rails/rails/pull/17361">Pull Request</a>)</p></li>
 <li><p>  <code>travel_to</code>テストヘルパーが<code>usec</code>コンポーネントをゼロに切り詰めるように変更されました。
 (<a href="https://github.com/rails/rails/commit/9f6e82ee4783e491c20f5244a613fdeb4024beb5">Commit</a>)</p></li>
-<li><p>  オブジェクト自身を返す<code>Object#itself</code>が導入されました。●
+<li><p>  オブジェクト自身を返す<code>Object#itself</code>が導入されました。
 (Commit <a href="https://github.com/rails/rails/commit/702ad710b57bef45b081ebf42e6fa70820fdd810">1</a>, <a href="https://github.com/rails/rails/commit/64d91122222c11ad3918cc8e2e3ebc4b0a03448a">2</a>)</p></li>
 <li><p>  ブロック中で明示的にレシーバーを示さなくても<code>Object#with_options</code>が使えるようになりました。
 (<a href="https://github.com/rails/rails/pull/16339">Pull Request</a>)</p></li>
@@ -856,10 +856,10 @@ end
 (<a href="https://github.com/rails/rails/commit/daaa21bc7d20f2e4ff451637423a25ff2d5e75c7">Commit</a>)</p></li>
 <li><p>  <code>Concern#class_methods</code>が導入されました。<code>Kernel#concern</code>と同様、これは<code>module ClassMethods</code>を置き換えるためのものであり、<code>module Foo; extend ActiveSupport::Concern; end</code>のような冗長な定形コードを避けるためのものです。
 (<a href="https://github.com/rails/rails/commit/b16c36e688970df2f96f793a759365b248b582ad">Commit</a>)</p></li>
-<li><p>  自動読み込みやリロードに関する<a href="constant_autoloading_and_reloading.html">新しいガイド</a>が追加されました。.</p></li>
+<li><p>  自動読み込みやリロードに関する<a href="constant_autoloading_and_reloading.html">新しいガイド</a>が追加されました。</p></li>
 </ul>
 <h3 id="クレジット表記">11 クレジット表記</h3>
-<p>膨大な時間を費やしてRailsを作り、頑丈かつ安定したフレームワークにしてくれた多くの皆様については、<a href="http://contributors.rubyonrails.org/">Railsコントリビューターの完全なリスト</a>を参照してください。これらの方々全員に深く敬意を表明いたします。</p>
+<p>Railsを頑丈かつ安定したフレームワークにするために多大な時間を費やしてくださった多くの開発者については、<a href="http://contributors.rubyonrails.org/">Railsコントリビューターの完全なリスト</a>を参照してください。これらの方々全員に深く敬意を表明いたします。</p>
 </body></html>
 
 
