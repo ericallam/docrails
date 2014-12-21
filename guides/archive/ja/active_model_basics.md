@@ -4,7 +4,7 @@ Active Modelの基礎
 
 このガイドでは、モデルクラスを使用して作業を開始するのに必要なことをすべて解説します。Action Packヘルパーは、Active Modelのおかげで非Active Recordモデルとやりとりすることができます。Active Modelを使用することで、カスタムのORM (オブジェクト/リレーションモデル) を作成してRailsフレームワークの外で使用することもできます。
 
-このガイドの内容:
+
 
 --------------------------------------------------------------------------------
 
@@ -172,7 +172,7 @@ person.first_name_was # => "First Name"
 # attr_name_change
 person.first_name_change # => [nil, "First Name"]
 person.last_name_change # => nil
-``
+```
 
 ### Validationsモジュール
 

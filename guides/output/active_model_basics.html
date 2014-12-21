@@ -182,7 +182,7 @@
 
   <div id="feature">
     <div class="wrapper">
-      <h2>Active Modelの基礎</h2><p>このガイドでは、モデルクラスを使用して作業を開始するのに必要なことをすべて解説します。Action Packヘルパーは、Active Modelのおかげで非Active Recordモデルとやりとりすることができます。Active Modelを使用することで、カスタムのORM (オブジェクト/リレーションモデル) を作成してRailsフレームワークの外で使用することもできます。</p><p>このガイドの内容:</p>
+      <h2>Active Modelの基礎</h2><p>このガイドでは、モデルクラスを使用して作業を開始するのに必要なことをすべて解説します。Action Packヘルパーは、Active Modelのおかげで非Active Recordモデルとやりとりすることができます。Active Modelを使用することで、カスタムのORM (オブジェクト/リレーションモデル) を作成してRailsフレームワークの外で使用することもできます。</p>
                 <div id="subCol">
             <h3 class="chapter"><img src="images/chapters_icon.gif" alt="" />目次</h3>
             <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
@@ -196,6 +196,7 @@
 <li><a href="#callbacks%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB">Callbacksモジュール</a></li>
 <li><a href="#conversion%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB">Conversionモジュール</a></li>
 <li><a href="#dirty%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB">Dirtyモジュール</a></li>
+<li><a href="#validations%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB">Validationsモジュール</a></li>
 </ul>
 </li>
 </ol>
@@ -373,13 +374,13 @@ person.first_name_was # =&gt; "First Name"
 # attr_name_change
 person.first_name_change # =&gt; [nil, "First Name"]
 person.last_name_change # =&gt; nil
-``
 
-### Validationsモジュール
-
-Validationsモジュールを使用することで、クラスオブジェクトをActive Recordスタイルで検証することができます。
-
-```ruby
+</pre>
+</div>
+<h4 id="validationsモジュール">1.5 Validationsモジュール</h4>
+<p>Validationsモジュールを使用することで、クラスオブジェクトをActive Recordスタイルで検証することができます。</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
 class Person
   include ActiveModel::Validations
 

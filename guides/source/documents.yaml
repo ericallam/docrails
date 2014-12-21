@@ -116,7 +116,7 @@
     -
       name: Rails エンジン入門
       url: engines.html
-      description: マウント可能なエンジンの作成方法についてかいせつします
+      description: マウント可能なエンジンの作成方法について解説します。
       work_in_progress: true
     -
       name: The Rails Initialization Process [未着手]
