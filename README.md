@@ -73,6 +73,6 @@ and supported/sponsored by [YassLab](http://yasslab.jp/).
 
 本ガイドは[クリエイティブ・コモンズ 表示-継承 4.0 国際](https://creativecommons.org/licenses/by-sa/4.0/deed.ja) (CC BY-SA 4.0) ライセンスに基づいて公開されています。
 
-"Rails", "Ruby on Rails", and the Rails logo are trademarks of David Heinemeier Hansson. All rights reserved.
+「Rails」および「Ruby on Rails」という名称、そして Rails のロゴは、David Heinemeier Hansson による登録商標で、すべての権利を有しています。
 
-[Ruby on Rails](http://rubyonrails.org/) is released under the [MIT License](http://www.opensource.org/licenses/MIT).
+[Ruby on Rails](http://rubyonrails.org/)は[MITライセンス](http://www.opensource.org/licenses/MIT)に基づいて公開されています。
