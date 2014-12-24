@@ -959,7 +959,7 @@ c.first_name == o.customer.first_name # =&gt; true
 <li><code>create_association(attributes = {})</code></li>
 <li><code>create_association!(attributes = {})</code></li>
 </ul>
-<p>これらのメソッドのうち、<code>assciation</code>の部分はプレースホルダであり、<code>belongs_to</code>の最初の引数である関連付け名をシンボルにしたものに置き換えられます。以下の例ではcustomerが宣言されています。</p>
+<p>これらのメソッドのうち、<code>association</code>の部分はプレースホルダであり、<code>belongs_to</code>の最初の引数である関連付け名をシンボルにしたものに置き換えられます。以下の例ではcustomerが宣言されています。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class Order &lt; ActiveRecord::Base
@@ -1265,7 +1265,7 @@ end
 <li><code>create_association(attributes = {})</code></li>
 <li><code>create_association!(attributes = {})</code></li>
 </ul>
-<p>これらのメソッドのうち、<code>assciation</code>の部分はプレースホルダであり、<code>has_one</code>の最初の引数である関連付け名をシンボルにしたものに置き換えられます。たとえば以下の宣言を見てみましょう。</p>
+<p>これらのメソッドのうち、<code>association</code>の部分はプレースホルダであり、<code>has_one</code>の最初の引数である関連付け名をシンボルにしたものに置き換えられます。たとえば以下の宣言を見てみましょう。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class Supplier &lt; ActiveRecord::Base

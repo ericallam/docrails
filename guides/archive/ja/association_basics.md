@@ -735,7 +735,7 @@ c.first_name == o.customer.first_name # => true
 * `create_association(attributes = {})`
 * `create_association!(attributes = {})`
 
-これらのメソッドのうち、`assciation`の部分はプレースホルダであり、`belongs_to`の最初の引数である関連付け名をシンボルにしたものに置き換えられます。以下の例ではcustomerが宣言されています。
+これらのメソッドのうち、`association`の部分はプレースホルダであり、`belongs_to`の最初の引数である関連付け名をシンボルにしたものに置き換えられます。以下の例ではcustomerが宣言されています。
 
 ```ruby
 class Order < ActiveRecord::Base
@@ -1041,7 +1041,7 @@ end
 * `create_association(attributes = {})`
 * `create_association!(attributes = {})`
 
-これらのメソッドのうち、`assciation`の部分はプレースホルダであり、`has_one`の最初の引数である関連付け名をシンボルにしたものに置き換えられます。たとえば以下の宣言を見てみましょう。
+これらのメソッドのうち、`association`の部分はプレースホルダであり、`has_one`の最初の引数である関連付け名をシンボルにしたものに置き換えられます。たとえば以下の宣言を見てみましょう。
 
 ```ruby
 class Supplier < ActiveRecord::Base
