@@ -3813,7 +3813,7 @@ now.utc.utc?       # =&gt; true
 </div>
 <h6 id="その他の拡張-advance">16.1.2.4 <code>advance</code>
 </h6>
-<p>日時を移動する最も一般的な方法は<code>advance</code>メソッドを使用することです。このメソッドは<code>:years</code>、<code>:months</code>、<code>:weeks</code>、<code>:days</code>をキーに持つハッシュを受け取り、日時をできるだけ詳細な形式で、現在のキーで示されるとおりに返します。</p>
+<p>日時を移動する最も一般的な方法は<code>advance</code>メソッドを使用することです。このメソッドは<code>:years</code>、<code>:months</code>、<code>:weeks</code>、<code>:days</code>、<code>:hours</code>、<code>:minutes</code>および<code>:seconds</code>をキーに持つハッシュを受け取り、日時をできるだけ詳細な形式で、現在のキーで示されるとおりに返します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 d = DateTime.current
@@ -3823,8 +3823,8 @@ d.advance(years: 1, months: 1, days: 1, hours: 1, minutes: 1, seconds: 1)
 
 </pre>
 </div>
-<p>このメソッドはまず、上で説明されている<code>Date#advance</code>に対する経過年(<code>:years</code>)、経過月 (<code>:months</code>)、経過週 (<code>:weeks</code>)、経過日 (<code>days</code>) を元に移動先の日付を算出します。続いて、算出された時点までの経過秒数を元に<code>since</code>メソッドを呼び出し、時間を補正します。この実行順序には意味があります。もし順序が変わると、This order is relevant, a different ordering would give different datetimes in some edge-cases. これは上の<code>Date#advance</code>で示した例で適用されます。相対的な時間の計算においても計算の順序は同様に重要です。</p>
-<p>もし仮に日付部分を先に進め (前述したとおり、相対的な計算順序があります)、続いて時間部分をすすめるIf we first move the date bits (that have also a relative order of processing, as documented before), and then the time bits we get for example the following computation:</p>
+<p>このメソッドはまず、上で説明されている<code>Date#advance</code>に対する経過年(<code>:years</code>)、経過月 (<code>:months</code>)、経過週 (<code>:weeks</code>)、経過日 (<code>days</code>) を元に移動先の日付を算出します。続いて、算出された時点までの経過秒数を元に<code>since</code>メソッドを呼び出し、時間を補正します。この実行順序には意味があります。極端なケースでは、順序が変わると計算結果も異なる場合があります。これは上の<code>Date#advance</code>で示した例で適用されます。相対的な時間の計算においても計算の順序は同様に重要です。</p>
+<p>もし仮に日付部分を先に進め (前述したとおり、相対的な計算順序があります)、続いて時間の部分も先に進めると、以下のような計算結果が得られます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 d = DateTime.new(2010, 2, 28, 23, 59, 59)
@@ -3842,7 +3842,7 @@ d.advance(seconds: 1).advance(months: 1)
 
 </pre>
 </div>
-<div class="warning"><p><code>DateTime</code>は夏時間 (DST) については関知しません。算出された時間が最終的に存在しない時間になっても警告やエラーはは is not DST-aware you can end up in a non-existing point in time with no warning or error telling you so.</p></div>
+<div class="warning"><p><code>DateTime</code>は夏時間 (DST) を考慮しません。算出された時間が最終的に存在しない時間になっても警告やエラーは発生しません。</p></div>
 <h5 id="datetimeの拡張-計算-要素の変更">16.1.3 要素の変更</h5>
 <p><code>change</code>メソッドを使用して、レシーバの日時の一部の要素だけを更新した新しい日時を得ることができます。変更する要素としては、<code>:year</code>、<code>:month</code>、<code>:day</code>、<code>:hour</code>、<code>:min</code>、<code>:sec</code>、<code>:offset</code>、<code>:start</code>などが指定できます。</p>
 <div class="code_container">

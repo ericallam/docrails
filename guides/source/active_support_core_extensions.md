@@ -3489,7 +3489,7 @@ now.utc.utc?       # => true
 
 ##### `advance`
 
-日時を移動する最も一般的な方法は`advance`メソッドを使用することです。このメソッドは`:years`、`:months`、`:weeks`、`:days`をキーに持つハッシュを受け取り、日時をできるだけ詳細な形式で、現在のキーで示されるとおりに返します。
+日時を移動する最も一般的な方法は`advance`メソッドを使用することです。このメソッドは`:years`、`:months`、`:weeks`、`:days`、`:hours`、`:minutes`および`:seconds`をキーに持つハッシュを受け取り、日時をできるだけ詳細な形式で、現在のキーで示されるとおりに返します。
 
 ```ruby
 d = DateTime.current
@@ -3498,9 +3498,9 @@ d.advance(years: 1, months: 1, days: 1, hours: 1, minutes: 1, seconds: 1)
 # => Tue, 06 Sep 2011 12:34:32 +0000
 ```
 
-このメソッドはまず、上で説明されている`Date#advance`に対する経過年(`:years`)、経過月 (`:months`)、経過週 (`:weeks`)、経過日 (`days`) を元に移動先の日付を算出します。続いて、算出された時点までの経過秒数を元に`since`メソッドを呼び出し、時間を補正します。この実行順序には意味があります。もし順序が変わると、This order is relevant, a different ordering would give different datetimes in some edge-cases. これは上の`Date#advance`で示した例で適用されます。相対的な時間の計算においても計算の順序は同様に重要です。
+このメソッドはまず、上で説明されている`Date#advance`に対する経過年(`:years`)、経過月 (`:months`)、経過週 (`:weeks`)、経過日 (`days`) を元に移動先の日付を算出します。続いて、算出された時点までの経過秒数を元に`since`メソッドを呼び出し、時間を補正します。この実行順序には意味があります。極端なケースでは、順序が変わると計算結果も異なる場合があります。これは上の`Date#advance`で示した例で適用されます。相対的な時間の計算においても計算の順序は同様に重要です。
 
-もし仮に日付部分を先に進め (前述したとおり、相対的な計算順序があります)、続いて時間部分をすすめるIf we first move the date bits (that have also a relative order of processing, as documented before), and then the time bits we get for example the following computation:
+もし仮に日付部分を先に進め (前述したとおり、相対的な計算順序があります)、続いて時間の部分も先に進めると、以下のような計算結果が得られます。
 
 ```ruby
 d = DateTime.new(2010, 2, 28, 23, 59, 59)
@@ -3516,7 +3516,7 @@ d.advance(seconds: 1).advance(months: 1)
 # => Thu, 01 Apr 2010 00:00:00 +0000
 ```
 
-WARNING: `DateTime`は夏時間 (DST) については関知しません。算出された時間が最終的に存在しない時間になっても警告やエラーはは is not DST-aware you can end up in a non-existing point in time with no warning or error telling you so.
+WARNING: `DateTime`は夏時間 (DST) を考慮しません。算出された時間が最終的に存在しない時間になっても警告やエラーは発生しません。
 
 #### 要素の変更
 
