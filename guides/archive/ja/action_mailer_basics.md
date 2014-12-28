@@ -545,23 +545,23 @@ Action Mailerを設定する
 | 設定 | 説明 |
 |---------------|-------------|
 |`logger`|可能であればメール送受信に関する情報を生成します。`nil`を指定するとログ出力を行わなくなります。Ruby自身の`Logger`ロガーおよび`Log4r`ロガーのどちらとも互換性があります。|
-|`smtp_settings`|`:smtp`の配信メソッドの詳細設定を行います。
-<ul><li>`:address` - リモートのメールサーバーの使用を許可する。デフォルトは`"localhost"`であり、必要に応じて変更する。</li>
-<li>`:port` - メールサーバーが万一ポート25番で動作していない場合はここで変更する。</li>
-<li>`:domain` - HELOドメインを指定する必要がある場合はここで行なう。</li>
-<li>`:user_name` - メールサーバーで認証が必要な場合はここでユーザー名を指定する。</li>
-<li>`:password` - メールサーバーで認証が必要な場合はここでパスワードを指定する。</li>
-<li>`:authentication` - メールサーバーで認証が必要な場合はここで認証の種類を指定する。`:plain`、`:login`、`:cram_md5`のいずれかのシンボルを指定する。</li>
+|`smtp_settings`|`:smtp`の配信メソッドの詳細設定を行います。[DLF]
+<ul><li>`:address` - リモートのメールサーバーの使用を許可する。デフォルトは`"localhost"`であり、必要に応じて変更する。</li>[DLF]
+<li>`:port` - メールサーバーが万一ポート25番で動作していない場合はここで変更する。</li>[DLF]
+<li>`:domain` - HELOドメインを指定する必要がある場合はここで行なう。</li>[DLF]
+<li>`:user_name` - メールサーバーで認証が必要な場合はここでユーザー名を指定する。</li>[DLF]
+<li>`:password` - メールサーバーで認証が必要な場合はここでパスワードを指定する。</li>[DLF]
+<li>`:authentication` - メールサーバーで認証が必要な場合はここで認証の種類を指定する。`:plain`、`:login`、`:cram_md5`のいずれかのシンボルを指定する。</li>[DLF]
 <li>`:enable_starttls_auto` - 自力では解決できない証明書問題が発生している場合は`false`を指定する。</li></ul>|
-|`sendmail_settings`|`:sendmail`の配信オプションを上書きします。
-<ul><li>`:location` - sendmailの実行可能ファイルの場所を指定する。デフォルトは`/usr/sbin/sendmail`。</li>
+|`sendmail_settings`|`:sendmail`の配信オプションを上書きします。[DLF]
+<ul><li>`:location` - sendmailの実行可能ファイルの場所を指定する。デフォルトは`/usr/sbin/sendmail`。</li>[DLF]
 <li>`:arguments` - sendmailに渡すコマンドライン引数を指定する。デフォルトは`-i -t`。</li></ul>|
 |`raise_delivery_errors`|メール配信に失敗した場合にエラーを発生するかどうかを指定します。このオプションは、外部のメールサーバーが即時配信を行っている場合にのみ機能します。|
-|`delivery_method`|配信方法を指定します。以下の配信方法を指定可能です。<ul>
-<li>`:smtp` (default) -- `config.action_mailer.smtp_settings`で設定可能。</li>
-<li>`:sendmail` -- `config.action_mailer.sendmail_settings`で設定可能。</li>
-<li>`:file`: -- メールをファイルとして保存する。`config.action_mailer.file_settings`で設定可能。</li>
-<li>`:test`: -- メールを配列`ActionMailer::Base.deliveries`に保存する。</li>
+|`delivery_method`|配信方法を指定します。以下の配信方法を指定可能です。<ul>[DLF]
+<li>`:smtp` (default) -- `config.action_mailer.smtp_settings`で設定可能。</li>[DLF]
+<li>`:sendmail` -- `config.action_mailer.sendmail_settings`で設定可能。</li>[DLF]
+<li>`:file`: -- メールをファイルとして保存する。`config.action_mailer.file_settings`で設定可能。</li>[DLF]
+<li>`:test`: -- メールを配列`ActionMailer::Base.deliveries`に保存する。</li>[DLF]
 </ul>詳細については[APIドキュメント](http://api.rubyonrails.org/classes/ActionMailer/Base.html)を参照。|
 |`perform_deliveries`|Mailのメッセージに`deliver`メソッドを実行したときに実際にメール配信を行なうかどうかを指定します。デフォルトでは配信が行われます。機能テストなどで配信を一時的にオフにしたい場合に便利です。|
 |`deliveries`|`delivery_method :test`を使用してAction Mailerから送信されたメールの配列を保持します。単体テストおよび機能テストで最も便利です。|
