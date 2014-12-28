@@ -16,7 +16,7 @@
 <meta property="og:type"        content="article" />
 <meta property="og:description" content="Ruby on Rails ガイド：体系的に Rails 学ぼう (Rails 4.2 対応)" />
 
-<title>Autoloading and Reloading Constants — Rails ガイド</title>
+<title>定数の自動読み込みと再読み込み — Rails ガイド</title>
 <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
 
@@ -180,14 +180,14 @@
 
   <div id="feature">
     <div class="wrapper">
-      <h2>Autoloading and Reloading Constants</h2><p>This guide documents how constant autoloading and reloading works.</p><p>このガイドの内容:</p>
+      <h2>定数の自動読み込みと再読み込み</h2><p>本書ではRailsの定数が自動読み込みおよび再読み込みされる仕組みについて説明します。</p><p>このガイドの内容:</p>
 <ul>
-<li>Key aspects of Ruby constants</li>
-<li>What is <code>autoload_paths</code></li>
-<li>How constant autoloading works</li>
-<li>What is <code>require_dependency</code></li>
-<li>How constant reloading works</li>
-<li>Solutions to common autoloading gotchas</li>
+<li>Rubyで使用される定数の重要な点</li>
+<li><code>autoload_paths</code>について</li>
+<li>定数が自動読み込みされる仕組み</li>
+<li><code>require_dependency</code>について</li>
+<li>定数が再読み込みされる仕組み</li>
+<li>自動読み込みでよく発生する問題の解決方法</li>
 </ul>
 
                 <div id="subCol">
@@ -195,7 +195,7 @@
             <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
 <ol class="chapters">
-<li><a href="#introduction">Introduction</a></li>
+<li><a href="#%E3%81%AF%E3%81%98%E3%82%81%E3%81%AB">はじめに</a></li>
 <li>
 <a href="#constants-refresher">Constants Refresher</a>
 
@@ -255,9 +255,9 @@
       <div id="mainCol">
         <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
-<h3 id="introduction">1 Introduction</h3>
-<p>Ruby on Rails allows applications to be written as if their code was preloaded.</p>
-<p>In a normal Ruby program classes need to load their dependencies:</p>
+<h3 id="はじめに">1 はじめに</h3>
+<p>Ruby on Railsでコードを書き換えると、開発者がサーバーを再起動しなくても、あたかも既にアプリケーションに読み込み済みであるかのように動作します。</p>
+<p>通常のRubyプログラムのクラスであれば、依存関係のあるプログラムの読み込みは避けられません。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 require 'application_controller'

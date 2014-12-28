@@ -1,29 +1,29 @@
 ﻿
 
 
-Autoloading and Reloading Constants
+定数の自動読み込みと再読み込み
 ===================================
 
-This guide documents how constant autoloading and reloading works.
+本書ではRailsの定数が自動読み込みおよび再読み込みされる仕組みについて説明します。
 
 このガイドの内容:
 
-* Key aspects of Ruby constants
-* What is `autoload_paths`
-* How constant autoloading works
-* What is `require_dependency`
-* How constant reloading works
-* Solutions to common autoloading gotchas
+* Rubyで使用される定数の重要な点
+* `autoload_paths`について
+* 定数が自動読み込みされる仕組み
+* `require_dependency`について
+* 定数が再読み込みされる仕組み
+* 自動読み込みでよく発生する問題の解決方法
 
 --------------------------------------------------------------------------------
 
 
-Introduction
+はじめに
 ------------
 
-Ruby on Rails allows applications to be written as if their code was preloaded.
+Ruby on Railsでコードを書き換えると、開発者がサーバーを再起動しなくても、あたかも既にアプリケーションに読み込み済みであるかのように動作します。
 
-In a normal Ruby program classes need to load their dependencies:
+通常のRubyプログラムのクラスであれば、依存関係のあるプログラムの読み込みは避けられません。
 
 ```ruby
 require 'application_controller'
