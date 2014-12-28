@@ -77,7 +77,7 @@
       url: i18n.html
       description: Railsアプリケーションを国際化する方法について解説します。これによりアプリケーションを異なる言語に翻訳することができ、さらに単数形/複数形ルールを変更したり、その国に適した日付フォーマットを設定したりできます。
     -
-      name: Action Mailer Basics [未着手]
+      name: Action Mailer の基礎
       url: action_mailer_basics.html
       description: Action Mailerを使用してメールを送受信する方法について解説します。
     -
