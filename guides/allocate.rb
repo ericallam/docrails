@@ -24,7 +24,9 @@ end
 Dir.glob("./source/**.md") do |filename|
   text    = File.read(filename)
   revised = text.gsub("　", "    ").gsub(/\[W(\d)\]/) {' ' * $1.to_i}
-  revised.gsub!(/\[BR\]/, "\n") # GTT replaces '\n' with ' '
-  revised.gsub!(/(\r\n)/, "\n") # GTT uses CR＋LF but should be LF
+  revised.gsub!(/\[BR\]/, "\n")  # GTT replaces '\n' with ' '
+  revised.gsub!(/(\r\n)/, "\n")  # GTT uses CR＋LF but should be LF
+  revised.gsub!(/\[DLF\]\n/, "") # Delete new line (LF) after this tag
+  revised.gsub!(/\[DLF\]/, "")   # Delete invalid DLF tags left
   File.write(filename, revised)
 end
