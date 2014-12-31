@@ -9,5 +9,5 @@
 ARGF.each do |line|
   print ARGF.file.path, " ",
     ARGF.file.lineno, ":",
-    line if line.gsub!(/([へにおはがでな])\1/, '[[\&]]')
+    line if line.gsub!(/([へにおはがでな])\1/u, '[[\&]]')
 end
