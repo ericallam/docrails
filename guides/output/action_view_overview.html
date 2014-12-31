@@ -317,7 +317,7 @@ xml.target("name" =&gt; "compile", "option" =&gt; "fast")
 
 </pre>
 </div>
-<p>ブロックを後ろに伴うメソッドはすべて、ブロックの中にネストしたマークップを含むXMLマークアップタグとして扱われます。以下の例で示します。</p>
+<p>ブロックを後ろに伴うメソッドはすべて、ブロックの中にネストしたマークアップを含むXMLマークアップタグとして扱われます。以下の例で示します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 xml.div {
@@ -1781,7 +1781,7 @@ strip_tags("&lt;b&gt;Bold&lt;/b&gt; no more!  &lt;a href='more.html'&gt;See more
 
 </pre>
 </div>
-<div class="warning"><p>この出力にはエスケープされていない'&lt;'、'&gt;'、'&amp;'文字が残ることがあり、それにによってブラウザが期待どおりに動作しなくなることがあります。</p></div>
+<div class="warning"><p>この出力にはエスケープされていない'&lt;'、'&gt;'、'&amp;'文字が残ることがあり、それによってブラウザが期待どおりに動作しなくなることがあります。</p></div>
 <h4 id="csrfhelper">6.15 CsrfHelper</h4>
 <p>"csrf-param"メタタグと"csrf-token"メタタグを返します。これらの名称はそれぞれ、クロスサイトリクエストフォージェリ (CSRF: cross-site request foregery) のパラメータとトークンが元になっています。</p>
 <div class="code_container">
