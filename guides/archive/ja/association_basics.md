@@ -909,7 +909,7 @@ end
 
 ##### `:polymorphic`
 
-`:polymorphic`オプションに`true`を指定すると、ポリモーフィック関連付けを指定できます。ポリモーフィック関連付けの詳細については<a href="#polymorphic-associations">このガイドの説明</a>を参照してください。
+`:polymorphic`オプションに`true`を指定すると、ポリモーフィック関連付けを指定できます。ポリモーフィック関連付けの詳細については<a href="#ポリモーフィック関連付け">このガイドの説明</a>を参照してください。
 
 ##### `:touch`
 
@@ -1125,7 +1125,7 @@ end
 
 ##### `:as`
 
-Setting the `:as` option indicates that this is a polymorphic association. ポリモーフィック関連付けの詳細については<a href="#polymorphic-associations">このガイドの説明</a>を参照してください。
+`:as`オプションに`true`を設定すると、ポリモーフィック関連付けを指定できます。ポリモーフィック関連付けの詳細については<a href="#ポリモーフィック関連付け">このガイドの説明</a>を参照してください。
 
 ##### `:autosave`
 
@@ -1193,7 +1193,7 @@ Railsでは、モデルの主キーは`id`カラムに保存されます。`:pri
 
 ##### `:through`
 
-`:through`オプションは、<a href="#the-has-one-through-association">このガイドで既に説明した</a>`has_one :through`関連付けのクエリを実行する際に経由する結合モデルを指定します。
+`:through`オプションは、<a href="#has_one-:through関連付け">このガイドで既に説明した</a>`has_one :through`関連付けのクエリを実行する際に経由する結合モデルを指定します。
 
 ##### `:validate`
 
@@ -1487,7 +1487,7 @@ end
 
 ##### `:as`
 
-`:as`オプションを設定すると、ポリモーフィック関連付けであることが指定されます。(<a href="#polymorphic-associations">このガイドの説明</a>を参照)
+`:as`オプションを設定すると、ポリモーフィック関連付けであることが指定されます。(<a href="#ポリモーフィック関連付け">このガイドの説明</a>を参照)
 
 ##### `:autosave`
 
@@ -1566,7 +1566,7 @@ end
 
 ##### `:through`
 
-`:through`オプションは、クエリ実行時に経由する結合(join)モデルを指定します。`has_many :through`関連付けは、多対多の関連付けを実装する方法を提供します。(詳細については<a href="#the-has-many-through-association">このガイドの説明</a>を参照)
+`:through`オプションは、クエリ実行時に経由する結合(join)モデルを指定します。`has_many :through`関連付けは、多対多の関連付けを実装する方法を提供します。(詳細については<a href="#has_many-:through関連付け">このガイドの説明</a>を参照)
 
 ##### `:validate`
 
@@ -1619,7 +1619,7 @@ end
 
 ##### `extending`
 
-`extending`メソッドは、関連付けプロキシを拡張する名前付きモジュールを指定します。関連付けの拡張については<a href="#association-extensions">後述します</a>。
+`extending`メソッドは、関連付けプロキシを拡張する名前付きモジュールを指定します。関連付けの拡張については<a href="#関連付けの拡張">後述します</a>。
 
 ##### `group`
 
@@ -2057,7 +2057,7 @@ end
 
 ##### `extending`
 
-`extending`メソッドは、関連付けプロキシを拡張する名前付きモジュールを指定します。関連付けの拡張については<a href="#association-extensions">後述します</a>。
+`extending`メソッドは、関連付けプロキシを拡張する名前付きモジュールを指定します。関連付けの拡張については<a href="#関連付けの拡張">後述します</a>。
 
 ##### `group`
 

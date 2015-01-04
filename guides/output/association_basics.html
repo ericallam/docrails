@@ -1139,7 +1139,7 @@ end
 </div>
 <h6 id=":polymorphic">4.1.2.7 <code>:polymorphic</code>
 </h6>
-<p><code>:polymorphic</code>オプションに<code>true</code>を指定すると、ポリモーフィック関連付けを指定できます。ポリモーフィック関連付けの詳細については<a href="#polymorphic-associations">このガイドの説明</a>を参照してください。</p>
+<p><code>:polymorphic</code>オプションに<code>true</code>を指定すると、ポリモーフィック関連付けを指定できます。ポリモーフィック関連付けの詳細については<a href="#%E3%83%9D%E3%83%AA%E3%83%A2%E3%83%BC%E3%83%95%E3%82%A3%E3%83%83%E3%82%AF%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91">このガイドの説明</a>を参照してください。</p>
 <h6 id=":touch">4.1.2.8 <code>:touch</code>
 </h6>
 <p><code>:touch</code>オプションを<code>:true</code>に設定すると、関連付けられているオブジェクトが保存またはdestroyされるたびに、そのオブジェクトの<code>updated_at</code>または<code>updated_on</code>タイムスタンプが現在時刻に設定されます。</p>
@@ -1352,7 +1352,7 @@ end
 </ul>
 <h6 id="has_oneのオプション-:as">4.2.2.1 <code>:as</code>
 </h6>
-<p>Setting the <code>:as</code> option indicates that this is a polymorphic association. ポリモーフィック関連付けの詳細については<a href="#polymorphic-associations">このガイドの説明</a>を参照してください。</p>
+<p><code>:as</code>オプションに<code>true</code>を設定すると、ポリモーフィック関連付けを指定できます。ポリモーフィック関連付けの詳細については<a href="#%E3%83%9D%E3%83%AA%E3%83%A2%E3%83%BC%E3%83%95%E3%82%A3%E3%83%83%E3%82%AF%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91">このガイドの説明</a>を参照してください。</p>
 <h6 id="has_oneのオプション-:autosave">4.2.2.2 <code>:autosave</code>
 </h6>
 <p><code>:autosave</code>オプションを<code>true</code>に設定すると、親オブジェクトが保存されるたびに、読み込まれているすべてのメンバを保存し、destroyフラグが立っているメンバを破棄します。</p>
@@ -1421,7 +1421,7 @@ end
 <p><code>:source_type</code>オプションは、ポリモーフィック関連付けを介して行われる<code>has_one :through</code>関連付けにおける「ソースの」関連付けタイプ、つまり関連付け元のタイプを指定します。</p>
 <h6 id="has_oneのオプション-:through">4.2.2.10 <code>:through</code>
 </h6>
-<p><code>:through</code>オプションは、<a href="#the-has-one-through-association">このガイドで既に説明した</a><code>has_one :through</code>関連付けのクエリを実行する際に経由する結合モデルを指定します。</p>
+<p><code>:through</code>オプションは、<a href="#has_one-:through%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91">このガイドで既に説明した</a><code>has_one :through</code>関連付けのクエリを実行する際に経由する結合モデルを指定します。</p>
 <h6 id="has_oneのオプション-:validate">4.2.2.11 <code>:validate</code>
 </h6>
 <p><code>:validate</code>オプションを<code>true</code>に設定すると、関連付けられたオブジェクトが保存時に必ず検証(validation)されます。デフォルトは<code>false</code>であり、この場合関連付けられたオブジェクトは保存時に検証されません。</p>
@@ -1713,7 +1713,7 @@ end
 </ul>
 <h6 id="has_manyのオプション-:as">4.3.2.1 <code>:as</code>
 </h6>
-<p><code>:as</code>オプションを設定すると、ポリモーフィック関連付けであることが指定されます。(<a href="#polymorphic-associations">このガイドの説明</a>を参照)</p>
+<p><code>:as</code>オプションを設定すると、ポリモーフィック関連付けであることが指定されます。(<a href="#%E3%83%9D%E3%83%AA%E3%83%A2%E3%83%BC%E3%83%95%E3%82%A3%E3%83%83%E3%82%AF%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91">このガイドの説明</a>を参照)</p>
 <h6 id="has_manyのオプション-:autosave">4.3.2.2 <code>:autosave</code>
 </h6>
 <p><code>:autosave</code>オプションを<code>true</code>に設定すると、親オブジェクトが保存されるたびに、読み込まれているすべてのメンバを保存し、destroyフラグが立っているメンバを破棄します。</p>
@@ -1792,7 +1792,7 @@ end
 <p><code>:source_type</code>オプションは、ポリモーフィック関連付けを介して行われる<code>has_many :through</code>関連付けにおける「ソースの」関連付けタイプ、つまり関連付け元のタイプを指定します。</p>
 <h6 id="has_manyのオプション-:through">4.3.2.10 <code>:through</code>
 </h6>
-<p><code>:through</code>オプションは、クエリ実行時に経由する結合(join)モデルを指定します。<code>has_many :through</code>関連付けは、多対多の関連付けを実装する方法を提供します。(詳細については<a href="#the-has-many-through-association">このガイドの説明</a>を参照)</p>
+<p><code>:through</code>オプションは、クエリ実行時に経由する結合(join)モデルを指定します。<code>has_many :through</code>関連付けは、多対多の関連付けを実装する方法を提供します。(詳細については<a href="#has_many-:through%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91">このガイドの説明</a>を参照)</p>
 <h6 id="has_manyのオプション-:validate">4.3.2.11 <code>:validate</code>
 </h6>
 <p><code>:validate</code>オプションを<code>false</code>に設定すると、関連付けられたオブジェクトは保存時に検証(validation)されません。デフォルトは<code>true</code>であり、この場合関連付けられたオブジェクトは保存時に検証されます。</p>
@@ -1844,7 +1844,7 @@ end
 <p><code>where</code>オプションでハッシュを使用した場合、この関連付けで作成されたレコードは自動的にこのハッシュを使用したスコープに含まれるようになります。この例の場合、<code>@customer.confirmed_orders.create</code>または<code>@customer.confirmed_orders.build</code>を実行すると、comfirmedカラムの値が<code>true</code>の注文(order)が常に作成されます。</p>
 <h6 id="has_manyのスコープについて-extending">4.3.3.2 <code>extending</code>
 </h6>
-<p><code>extending</code>メソッドは、関連付けプロキシを拡張する名前付きモジュールを指定します。関連付けの拡張については<a href="#association-extensions">後述します</a>。</p>
+<p><code>extending</code>メソッドは、関連付けプロキシを拡張する名前付きモジュールを指定します。関連付けの拡張については<a href="#%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91%E3%81%AE%E6%8B%A1%E5%BC%B5">後述します</a>。</p>
 <h6 id="has_manyのスコープについて-group">4.3.3.3 <code>group</code>
 </h6>
 <p><code>group</code>メソッドは、結果をグループ化する際の属性名を1つ指定します。内部的にはSQLの<code>GROUP BY</code>句が使用されます。</p>
@@ -2279,7 +2279,7 @@ end
 <p><code>where</code>オプションでハッシュを使用した場合、この関連付けで作成されたレコードは自動的にこのハッシュを使用したスコープに含まれるようになります。この例の場合、<code>@parts.assemblies.create</code>または<code>@parts.assemblies.build</code>を実行すると、<code>factory</code>カラムの値が<code>Seattle</code>の注文(order)が常に作成されます。</p>
 <h6 id="has_and_belongs_to_manyのスコープについて-extending">4.4.3.2 <code>extending</code>
 </h6>
-<p><code>extending</code>メソッドは、関連付けプロキシを拡張する名前付きモジュールを指定します。関連付けの拡張については<a href="#association-extensions">後述します</a>。</p>
+<p><code>extending</code>メソッドは、関連付けプロキシを拡張する名前付きモジュールを指定します。関連付けの拡張については<a href="#%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91%E3%81%AE%E6%8B%A1%E5%BC%B5">後述します</a>。</p>
 <h6 id="has_and_belongs_to_manyのスコープについて-group">4.4.3.3 <code>group</code>
 </h6>
 <p><code>group</code>メソッドは、結果をグループ化する際の属性名を1つ指定します。内部的にはSQLの<code>GROUP BY</code>句が使用されます。</p>
