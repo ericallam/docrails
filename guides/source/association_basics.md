@@ -1125,7 +1125,7 @@ end
 
 ##### `:as`
 
-Setting the `:as` option indicates that this is a polymorphic association. ポリモーフィック関連付けの詳細については<a href="#ポリモーフィック関連付け">このガイドの説明</a>を参照してください。
+`:as`オプションに`true`を指定すると、ポリモーフィック関連付けを指定できます。ポリモーフィック関連付けの詳細については<a href="#ポリモーフィック関連付け">このガイドの説明</a>を参照してください。
 
 ##### `:autosave`
 
