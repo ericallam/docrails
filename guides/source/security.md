@@ -71,7 +71,7 @@ WARNING: _ユーザーのセッションidが盗まれると、攻撃者がそ�
 
 * クロスサイトスクリプティング (XSS) 攻撃は、多くの場合、ユーザーのcookieを手に入れるのが目的です。<a href="#cross-site-scripting-xss">XSSの詳細</a>も参照してください。
 
-* 攻撃者が自分の知らないcookieをわざわざ盗み取る代りに、自分が知っているcoieのセッションidを固定してしまうという攻撃方法もあります。詳細については後述のセッション固定に関する記述を参照してください。
+* 攻撃者が自分の知らないcookieをわざわざ盗み取る代りに、自分が知っているcookieのセッションidを固定してしまうという攻撃方法もあります。詳細については後述のセッション固定に関する記述を参照してください。
 
 たいていの場合、攻撃者の目的は、金儲けです。[Symantec Global Internet Security Threat Report](http://eval.symantec.com/mktginfo/enterprise/white_papers/b-whitepaper_internet_security_threat_report_xiii_04-2008.en-us.pdf)によると、盗まれた銀行口座アカウントの闇価格は、利用可能な資金にもよりますがだいたい$10から$1000ぐらい、クレジットカード番号が$0.40から$20ぐらい、オンラインオークションサイトのアカウントが$1から$8ぐらい、電子メールのパスワードが$4から$30くらいだそうです。
 
