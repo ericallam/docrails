@@ -13,6 +13,14 @@ Ruby on Rails チュートリアル：実例を使ってRailsを学ぼう
 http://railstutorial.jp/
 
 
+## 翻訳へのフィードバックについて
+
+本ガイドを読んで、誤字・脱字・誤訳などを見かけましたら、本リポジトリの [Issue](https://github.com/yasslab/railsguides.jp/issues) にてお気軽に報告して頂けると幸いです。「直接Pull Request を送りたい!」という場合には、下記の「翻訳の流れ」や「チャットルーム」を参照してください。
+
+なお、原著レベルでの間違いを見つけましたら、原著の [Contributing to the Rails Documentation](http://edgeguides.rubyonrails.org/contributing_to_ruby_on_rails.html#contributing-to-the-rails-documentation) を参考にしてください。
+
+本ガイドの品質向上に向けて、皆さまのご協力が得られれば幸いです。よろしくお願い致します。
+
 
 ## 翻訳の流れ
 
