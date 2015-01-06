@@ -515,11 +515,37 @@ h5 {
   font-weight: bold;
 }
 
+h5 a {
+  color: #333 !important;
+  text-decoration: none !important;
+}
+
+h5 a:hover {
+  text-decoration: underline !important;
+}
+
+h5 code {
+  color: #333 !important;
+}
+
 h6 {
   font-size: 1em;
   line-height: 1.5em;
   margin: 1em 0 .5em;
   font-weight: normal;
+}
+
+h6 a {
+  color: #333 !important;
+  text-decoration: none !important;
+}
+
+h6 a:hover {
+  text-decoration: underline !important;
+}
+
+h6 code {
+  color: #333 !important;
 }
 
 .section {
