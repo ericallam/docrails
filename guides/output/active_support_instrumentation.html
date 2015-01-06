@@ -284,14 +284,14 @@
       <div id="mainCol">
         <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
-<h3 id="introduction-to-instrumentation">1 Introduction to instrumentation</h3>
+<h3 id="introduction-to-instrumentation"><a href="#introduction-to-instrumentation">1 Introduction to instrumentation</a></h3>
 <p>The instrumentation API provided by Active Support allows developers to provide hooks which other developers may hook into. There are several of these within the Rails framework, as described below in <todo: link to section detailing each hook point>. With this API, developers can choose to be notified when certain events occur inside their application or another piece of Ruby code.</todo:></p>
 <p>For example, there is a hook provided within Active Record that is called every time Active Record uses an SQL query on a database. This hook could be <strong>subscribed</strong> to, and used to track the number of queries during a certain action. There's another hook around the processing of an action of a controller. This could be used, for instance, to track how long a specific action has taken.</p>
 <p>You are even able to create your own events inside your application which you can later subscribe to.</p>
-<h3 id="rails-framework-hooks">2 Rails framework hooks</h3>
+<h3 id="rails-framework-hooks"><a href="#rails-framework-hooks">2 Rails framework hooks</a></h3>
 <p>Within the Ruby on Rails framework, there are a number of hooks provided for common events. These are detailed below.</p>
-<h3 id="action-controller">3 Action Controller</h3>
-<h4 id="write_fragment.action_controller">3.1 write_fragment.action_controller</h4>
+<h3 id="action-controller"><a href="#action-controller">3 Action Controller</a></h3>
+<h4 id="write_fragment.action_controller"><a href="#write_fragment.action_controller">3.1 write_fragment.action_controller</a></h4>
 <table>
 <thead>
 <tr>
@@ -314,7 +314,7 @@
 
 </pre>
 </div>
-<h4 id="read_fragment.action_controller">3.2 read_fragment.action_controller</h4>
+<h4 id="read_fragment.action_controller"><a href="#read_fragment.action_controller">3.2 read_fragment.action_controller</a></h4>
 <table>
 <thead>
 <tr>
@@ -337,7 +337,7 @@
 
 </pre>
 </div>
-<h4 id="expire_fragment.action_controller">3.3 expire_fragment.action_controller</h4>
+<h4 id="expire_fragment.action_controller"><a href="#expire_fragment.action_controller">3.3 expire_fragment.action_controller</a></h4>
 <table>
 <thead>
 <tr>
@@ -360,7 +360,7 @@
 
 </pre>
 </div>
-<h4 id="exist_fragment?.action_controller">3.4 exist_fragment?.action_controller</h4>
+<h4 id="exist_fragment?.action_controller"><a href="#exist_fragment?.action_controller">3.4 exist_fragment?.action_controller</a></h4>
 <table>
 <thead>
 <tr>
@@ -383,7 +383,7 @@
 
 </pre>
 </div>
-<h4 id="write_page.action_controller">3.5 write_page.action_controller</h4>
+<h4 id="write_page.action_controller"><a href="#write_page.action_controller">3.5 write_page.action_controller</a></h4>
 <table>
 <thead>
 <tr>
@@ -406,7 +406,7 @@
 
 </pre>
 </div>
-<h4 id="expire_page.action_controller">3.6 expire_page.action_controller</h4>
+<h4 id="expire_page.action_controller"><a href="#expire_page.action_controller">3.6 expire_page.action_controller</a></h4>
 <table>
 <thead>
 <tr>
@@ -429,7 +429,7 @@
 
 </pre>
 </div>
-<h4 id="start_processing.action_controller">3.7 start_processing.action_controller</h4>
+<h4 id="start_processing.action_controller"><a href="#start_processing.action_controller">3.7 start_processing.action_controller</a></h4>
 <table>
 <thead>
 <tr>
@@ -477,7 +477,7 @@
 
 </pre>
 </div>
-<h4 id="process_action.action_controller">3.8 process_action.action_controller</h4>
+<h4 id="process_action.action_controller"><a href="#process_action.action_controller">3.8 process_action.action_controller</a></h4>
 <table>
 <thead>
 <tr>
@@ -532,7 +532,7 @@
 
 </pre>
 </div>
-<h4 id="send_file.action_controller">3.9 send_file.action_controller</h4>
+<h4 id="send_file.action_controller"><a href="#send_file.action_controller">3.9 send_file.action_controller</a></h4>
 <table>
 <thead>
 <tr>
@@ -548,9 +548,9 @@
 </tbody>
 </table>
 <div class="info"><p>Additional keys may be added by the caller.</p></div>
-<h4 id="send_data.action_controller">3.10 send_data.action_controller</h4>
+<h4 id="send_data.action_controller"><a href="#send_data.action_controller">3.10 send_data.action_controller</a></h4>
 <p><code>ActionController</code> does not had any specific information to the payload. All options are passed through to the payload.</p>
-<h4 id="redirect_to.action_controller">3.11 redirect_to.action_controller</h4>
+<h4 id="redirect_to.action_controller"><a href="#redirect_to.action_controller">3.11 redirect_to.action_controller</a></h4>
 <table>
 <thead>
 <tr>
@@ -578,7 +578,7 @@
 
 </pre>
 </div>
-<h4 id="halted_callback.action_controller">3.12 halted_callback.action_controller</h4>
+<h4 id="halted_callback.action_controller"><a href="#halted_callback.action_controller">3.12 halted_callback.action_controller</a></h4>
 <table>
 <thead>
 <tr>
@@ -601,8 +601,8 @@
 
 </pre>
 </div>
-<h3 id="action-view">4 Action View</h3>
-<h4 id="render_template.action_view">4.1 render_template.action_view</h4>
+<h3 id="action-view"><a href="#action-view">4 Action View</a></h3>
+<h4 id="render_template.action_view"><a href="#render_template.action_view">4.1 render_template.action_view</a></h4>
 <table>
 <thead>
 <tr>
@@ -630,7 +630,7 @@
 
 </pre>
 </div>
-<h4 id="render_partial.action_view">4.2 render_partial.action_view</h4>
+<h4 id="render_partial.action_view"><a href="#render_partial.action_view">4.2 render_partial.action_view</a></h4>
 <table>
 <thead>
 <tr>
@@ -653,8 +653,8 @@
 
 </pre>
 </div>
-<h3 id="active-record">5 Active Record</h3>
-<h4 id="sql.active_record">5.1 sql.active_record</h4>
+<h3 id="active-record"><a href="#active-record">5 Active Record</a></h3>
+<h4 id="sql.active_record"><a href="#sql.active_record">5.1 sql.active_record</a></h4>
 <table>
 <thead>
 <tr>
@@ -689,7 +689,7 @@
 
 </pre>
 </div>
-<h4 id="identity.active_record">5.2 identity.active_record</h4>
+<h4 id="identity.active_record"><a href="#identity.active_record">5.2 identity.active_record</a></h4>
 <table>
 <thead>
 <tr>
@@ -712,8 +712,8 @@
 </tr>
 </tbody>
 </table>
-<h3 id="action-mailer">6 Action Mailer</h3>
-<h4 id="receive.action_mailer">6.1 receive.action_mailer</h4>
+<h3 id="action-mailer"><a href="#action-mailer">6 Action Mailer</a></h3>
+<h4 id="receive.action_mailer"><a href="#receive.action_mailer">6.1 receive.action_mailer</a></h4>
 <table>
 <thead>
 <tr>
@@ -774,7 +774,7 @@
 
 </pre>
 </div>
-<h4 id="deliver.action_mailer">6.2 deliver.action_mailer</h4>
+<h4 id="deliver.action_mailer"><a href="#deliver.action_mailer">6.2 deliver.action_mailer</a></h4>
 <table>
 <thead>
 <tr>
@@ -835,8 +835,8 @@
 
 </pre>
 </div>
-<h3 id="activeresource">7 ActiveResource</h3>
-<h4 id="request.active_resource">7.1 request.active_resource</h4>
+<h3 id="activeresource"><a href="#activeresource">7 ActiveResource</a></h3>
+<h4 id="request.active_resource"><a href="#request.active_resource">7.1 request.active_resource</a></h4>
 <table>
 <thead>
 <tr>
@@ -859,8 +859,8 @@
 </tr>
 </tbody>
 </table>
-<h3 id="active-support">8 Active Support</h3>
-<h4 id="cache_read.active_support">8.1 cache_read.active_support</h4>
+<h3 id="active-support"><a href="#active-support">8 Active Support</a></h3>
+<h4 id="cache_read.active_support"><a href="#cache_read.active_support">8.1 cache_read.active_support</a></h4>
 <table>
 <thead>
 <tr>
@@ -884,7 +884,7 @@
 </tr>
 </tbody>
 </table>
-<h4 id="cache_generate.active_support">8.2 cache_generate.active_support</h4>
+<h4 id="cache_generate.active_support"><a href="#cache_generate.active_support">8.2 cache_generate.active_support</a></h4>
 <p>This event is only used when <code>#fetch</code> is called with a block.</p>
 <table>
 <thead>
@@ -909,7 +909,7 @@
 
 </pre>
 </div>
-<h4 id="cache_fetch_hit.active_support">8.3 cache_fetch_hit.active_support</h4>
+<h4 id="cache_fetch_hit.active_support"><a href="#cache_fetch_hit.active_support">8.3 cache_fetch_hit.active_support</a></h4>
 <p>This event is only used when <code>#fetch</code> is called with a block.</p>
 <table>
 <thead>
@@ -934,7 +934,7 @@
 
 </pre>
 </div>
-<h4 id="cache_write.active_support">8.4 cache_write.active_support</h4>
+<h4 id="cache_write.active_support"><a href="#cache_write.active_support">8.4 cache_write.active_support</a></h4>
 <table>
 <thead>
 <tr>
@@ -958,7 +958,7 @@
 
 </pre>
 </div>
-<h4 id="cache_delete.active_support">8.5 cache_delete.active_support</h4>
+<h4 id="cache_delete.active_support"><a href="#cache_delete.active_support">8.5 cache_delete.active_support</a></h4>
 <table>
 <thead>
 <tr>
@@ -981,7 +981,7 @@
 
 </pre>
 </div>
-<h4 id="cache_exist?.active_support">8.6 cache_exist?.active_support</h4>
+<h4 id="cache_exist?.active_support"><a href="#cache_exist?.active_support">8.6 cache_exist?.active_support</a></h4>
 <table>
 <thead>
 <tr>
@@ -1004,8 +1004,8 @@
 
 </pre>
 </div>
-<h3 id="railties">9 Railties</h3>
-<h4 id="load_config_initializer.railties">9.1 load_config_initializer.railties</h4>
+<h3 id="railties"><a href="#railties">9 Railties</a></h3>
+<h4 id="load_config_initializer.railties"><a href="#load_config_initializer.railties">9.1 load_config_initializer.railties</a></h4>
 <table>
 <thead>
 <tr>
@@ -1021,8 +1021,8 @@
 </tr>
 </tbody>
 </table>
-<h3 id="rails">10 Rails</h3>
-<h4 id="deprecation.rails">10.1 deprecation.rails</h4>
+<h3 id="rails"><a href="#rails">10 Rails</a></h3>
+<h4 id="deprecation.rails"><a href="#deprecation.rails">10.1 deprecation.rails</a></h4>
 <table>
 <thead>
 <tr>
@@ -1041,7 +1041,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="subscribing-to-an-event">11 Subscribing to an event</h3>
+<h3 id="subscribing-to-an-event"><a href="#subscribing-to-an-event">11 Subscribing to an event</a></h3>
 <p>Subscribing to an event is easy. Use <code>ActiveSupport::Notifications.subscribe</code> with a block to listen to any notification.</p>
 <p>The block receives the following arguments:</p>
 <ul>
@@ -1093,7 +1093,7 @@ end
 
 </pre>
 </div>
-<h3 id="creating-custom-events">12 Creating custom events</h3>
+<h3 id="creating-custom-events"><a href="#creating-custom-events">12 Creating custom events</a></h3>
 <p>Adding your own events is easy as well. <code>ActiveSupport::Notifications</code> will take care of all the heavy lifting for you. Simply call <code>instrument</code> with a <code>name</code>, <code>payload</code> and a block.
 The notification will be sent after the block returns. <code>ActiveSupport</code> will generate the start and end times as well as the unique ID. All data passed into the <code>instrument</code> call will make it into the payload.</p>
 <p>Here's an example:</p>

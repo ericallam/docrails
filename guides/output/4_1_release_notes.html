@@ -264,10 +264,10 @@
       <div id="mainCol">
         <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
-<h3 id="rails-4.1へのアップグレード">1 Rails 4.1へのアップグレード</h3>
+<h3 id="rails-4.1へのアップグレード"><a href="#rails-4.1%E3%81%B8%E3%81%AE%E3%82%A2%E3%83%83%E3%83%97%E3%82%B0%E3%83%AC%E3%83%BC%E3%83%89">1 Rails 4.1へのアップグレード</a></h3>
 <p>既存のアプリケーションをアップグレードするのであれば、その前に質のよいテストカバレッジを用意するのがよい考えです。アプリケーションがRails 4.0までアップグレードされていない場合は先にそれを完了し、アプリケーションが正常に動作することを十分確認してからRails 4.1にアップデートしてください。アップグレードの注意点などについては<a href="upgrading_ruby_on_rails.html#upgrading-from-rails-4-0-to-rails-4-1">Ruby on Railsアップグレードガイド</a> を参照してください。</p>
-<h3 id="主要な変更">2 主要な変更</h3>
-<h4 id="「spring」アプリケーションプリローダー">2.1 「Spring」アプリケーションプリローダー</h4>
+<h3 id="主要な変更"><a href="#%E4%B8%BB%E8%A6%81%E3%81%AA%E5%A4%89%E6%9B%B4">2 主要な変更</a></h3>
+<h4 id="「spring」アプリケーションプリローダー"><a href="#%E3%80%8Cspring%E3%80%8D%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%83%97%E3%83%AA%E3%83%AD%E3%83%BC%E3%83%80%E3%83%BC">2.1 「Spring」アプリケーションプリローダー</a></h4>
 <p>SpringはRailsアプリケーション用のプリローダーです。アプリケーションをバックグラウンドで常駐させることで開発速度を向上させ、テストやrakeタスク、マイグレーションを実行するたびにRailsを起動しないで済むようにします。</p>
 <p>Rails 4.1アプリケーションに含まれるbinstubは「spring化」されています。これは、アプリケーションのルートディレクトリで<code>bin/rails</code>および<code>bin/rake</code>を実行すると自動的にspring環境をプリロードするということです。</p>
 <p><strong>rakeタスクの実行:</strong></p>
@@ -298,8 +298,7 @@ Spring is running:
 </div>
 <p>Springのすべての機能については<a href="https://github.com/rails/spring/blob/master/README.md">Spring README</a>を参照してください。</p>
 <p><a href="upgrading_ruby_on_rails.html#spring">Ruby on Railsアップグレードガイド</a>には、この機能を既存のアプリケーションと統合する方法について記載されています。</p>
-<h4 id="config/secrets.yml">2.2 <code>config/secrets.yml</code>
-</h4>
+<h4 id="config/secrets.yml"><a href="#config/secrets.yml">2.2 <code>config/secrets.yml</code></a></h4>
 <p>Rails 4.1 generates a new <code>secrets.yml</code> file in the <code>config</code> folder. デフォルトでは、このファイルにはアプリケーションの<code>secret_key_base</code>が含まれていますが、外部API用のアクセスキーなどの秘密キーもここに保存できます。</p>
 <p>このファイルに保存された秘密キーは<code>Rails.application.secrets</code>を使用してアクセスできます。
 たとえば、以下の<code>config/secrets.yml</code>について見てみましょう。</p>
@@ -313,7 +312,7 @@ development:
 </div>
 <p>上の設定にした場合、development環境で<code>Rails.application.secrets.some_api_key</code>を実行すると<code>SOMEKEY</code>が返されます。</p>
 <p>既存のアプリケーションにこの機能を統合する方法については<a href="upgrading_ruby_on_rails.html#config-secrets-yml">Ruby on Railsアップグレードガイド</a>を参照してください。</p>
-<h4 id="action-pack-variant">2.3 Action Pack Variant</h4>
+<h4 id="action-pack-variant"><a href="#action-pack-variant">2.3 Action Pack Variant</a></h4>
 <p>スマートフォン、タブレット、デスクトップブラウザごとに異なるHTML/JSON/XMLテンプレートを使いたいことはよくあります。Variantを使用することで、これを簡単に実現できます。</p>
 <p>リクエストvariantは、<code>:tablet</code>、<code>:phone</code>、<code>:desktop</code>のようなリクエストフォーマットを特殊化したものです。</p>
 <p><code>before_action</code>で以下のvariantを設定できます。</p>
@@ -375,7 +374,7 @@ end
 <p>デフォルトのプレビュークラスは<code>test/mailers/previews</code>に置かれます。
 <code>preview_path</code>オプションを変更することでこれを変更できます。</p>
 <p>詳細については<a href="http://api.rubyonrails.org/v4.1.0/classes/ActionMailer/Base.html">ドキュメント</a>を参照してください。</p>
-<h4 id="active-record-enums">2.4 Active Record enums</h4>
+<h4 id="active-record-enums"><a href="#active-record-enums">2.4 Active Record enums</a></h4>
 <p>データベースで値をintegerにマップしたい場所でenum属性を宣言しますが、名前でクエリを発行することもできます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -394,7 +393,7 @@ Conversation.statuses # =&gt; { "active" =&gt; 0, "archived" =&gt; 1 }
 </pre>
 </div>
 <p>詳細については<a href="http://api.rubyonrails.org/v4.1.0/classes/ActiveRecord/Enum.html">マニュアル</a>を参照してください。</p>
-<h4 id="メッセージベリファイア">2.5 メッセージベリファイア</h4>
+<h4 id="メッセージベリファイア"><a href="#%E3%83%A1%E3%83%83%E3%82%BB%E3%83%BC%E3%82%B8%E3%83%99%E3%83%AA%E3%83%95%E3%82%A1%E3%82%A4%E3%82%A2">2.5 メッセージベリファイア</a></h4>
 <p>メッセージベリファイア (message verifier) は、署名付きメッセージの生成と照合に使用できます。この機能は、「パスワードを保存 (remember me)」トークンや友人リストのような機密データを安全に転送するときに便利です。</p>
 <p><code>Rails.application.message_verifier</code>メソッドは、 secret_key_baseを使用して生成されたキーで署名された新しいメッセージベリファイアと、与えられたメッセージ照合名を返します。</p>
 <div class="code_container">
@@ -407,7 +406,7 @@ Rails.application.message_verifier(:remember_me).verify(tampered_token)
 
 </pre>
 </div>
-<h4 id="module#concerning">2.6 Module#concerning</h4>
+<h4 id="module#concerning"><a href="#module#concerning">2.6 Module#concerning</a></h4>
 <p>自然かつ堅苦しくない方法で、クラスから責任を分離します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -432,12 +431,12 @@ end
 </div>
 <p>この例は、<code>EventTracking</code>モジュールをインラインで定義し、<code>ActiveSupport::Concern</code>でextendし、<code>Todo</code>クラスにミックスインしたのと同等です。</p>
 <p>詳細および想定されるユースケースについては<a href="http://api.rubyonrails.org/v4.1.0/classes/Module/Concerning.html">マニュアル</a> を参照してください。</p>
-<h4 id="リモート-&lt;script&gt;-タグにcsrf保護を実施">2.7 リモート <code>&lt;script&gt;</code> タグにCSRF保護を実施</h4>
+<h4 id="リモート-&lt;script&gt;-タグにcsrf保護を実施"><a href="#%E3%83%AA%E3%83%A2%E3%83%BC%E3%83%88-&lt;script&gt;-%E3%82%BF%E3%82%B0%E3%81%ABcsrf%E4%BF%9D%E8%AD%B7%E3%82%92%E5%AE%9F%E6%96%BD">2.7 リモート <code>&lt;script&gt;</code> タグにCSRF保護を実施</a></h4>
 <p>JavaScriptレスポンスを伴うGETリクエストもクロスサイトリクエストフォージェリ (CSRF) 保護の対象となりました。この保護によって、第三者のサイトが重要なデータの奪取のために自分のサイトのJavaScript URLを参照して実行しようとすることを防止します。</p>
 <p>これは、xhr<code>を使用しない場合、</code>.js<code>URLにヒットするすべてのテストはCSRF保護によって失敗するということです。</code>XmlHttpRequestsを明示的に想定するようにテストをアップグレードしてください。<code>post :create, format: :js</code>の代りに、明示的に<code>xhr :post, :create, format: :js</code>を使用してください。</p>
-<h3 id="railties">3 Railties</h3>
+<h3 id="railties"><a href="#railties">3 Railties</a></h3>
 <p>変更の詳細については<a href="https://github.com/rails/rails/blob/4-1-stable/railties/CHANGELOG.md">Changelog</a> を参照してください。</p>
-<h4 id="railties-削除されたもの">3.1 削除されたもの</h4>
+<h4 id="railties-削除されたもの"><a href="#%E5%89%8A%E9%99%A4%E3%81%95%E3%82%8C%E3%81%9F%E3%82%82%E3%81%AE">3.1 削除されたもの</a></h4>
 <ul>
 <li><p><code>update:application_controller</code> rake taskが削除されました。</p></li>
 <li><p>非推奨の<code>Rails.application.railties.engines</code>が除外されました。</p></li>
@@ -446,7 +445,7 @@ end
 <li><p>非推奨の<code>config.whiny_nils</code>オプションが削除されました。</p></li>
 <li><p>非推奨のテスト実行rakeタスク<code>rake test:uncommitted</code>および<code>rake test:recent</code>が削除されました。</p></li>
 </ul>
-<h4 id="railties-主な変更点">3.2 主な変更点</h4>
+<h4 id="railties-主な変更点"><a href="#%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">3.2 主な変更点</a></h4>
 <ul>
 <li><p><a href="https://github.com/rails/spring">Springアプリケーションプリローダー</a> は新規アプリケーションにデフォルトでインストールされます。Gemfileのdevelopグループにインストールされ、productionグループにはインストールされません。(<a href="https://github.com/rails/rails/pull/12958">Pull Request</a>)</p></li>
 <li><p>テスト失敗時にフィルタされていないバックトレースを表示する<code>BACKTRACE</code>環境変数。(<a href="https://github.com/rails/rails/commit/84eac5dab8b0fe9ee20b51250e52ad7bfea36553">Commit</a>)</p></li>
@@ -455,10 +454,10 @@ end
 <li><p>デフォルトで生成されるテストヘルパーでrequireされる<code>test_help.rb</code>ファイルは、<code>db/schema.rb</code> (または <code>db/structure.sql</code>) を使用して自動的にテストデータベースを最新の状態に保ちます。スキーマを再度読み込んでもペンディング中のマイグレーションをすべて解決できなかった場合はエラーが発生します。<code>config.active_record.maintain_test_schema = false</code>を指定することでエラーを回避できます。(<a href="https://github.com/rails/rails/pull/13528">Pull Request</a>)</p></li>
 <li><p><code>Gem::Version.new(Rails.version)</code>を返す便利なメソッドとして<code>Rails.gem_version</code>が導入されました。より信頼できるバージョン比較法を提供します。(<a href="https://github.com/rails/rails/pull/14103">Pull Request</a>)</p></li>
 </ul>
-<h4 id="action-pack">3.3 Action Pack</h4>
+<h4 id="action-pack"><a href="#action-pack">3.3 Action Pack</a></h4>
 <hr>
 <p>変更の詳細については<a href="https://github.com/rails/rails/blob/4-1-stable/actionpack/CHANGELOG.md">Changelog</a> を参照してください。</p>
-<h4 id="railties-削除されたもの">3.4 削除されたもの</h4>
+<h4 id="railties-削除されたもの"><a href="#railties-%E5%89%8A%E9%99%A4%E3%81%95%E3%82%8C%E3%81%9F%E3%82%82%E3%81%AE">3.4 削除されたもの</a></h4>
 <ul>
 <li><p>非推奨の、結合テスト用Railsアプリケーションフォールバックが削除されました。<code>ActionDispatch.test_app</code>を代りにご使用ください。</p></li>
 <li><p>非推奨の<code>page_cache_extension</code> configが削除されました。</p></li>
@@ -474,7 +473,7 @@ end
   | ActionController::Routing          | ActionDispatch::Routing         |
   | ActionController::Integration      | ActionDispatch::Integration     |
   | ActionController::IntegrationTest  | ActionDispatch::IntegrationTest |</p>
-<h4 id="railties-主な変更点">3.5 主な変更点</h4>
+<h4 id="railties-主な変更点"><a href="#railties-%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">3.5 主な変更点</a></h4>
 <ul>
 <li><p><code>protect_from_forgery</code>によって、クロスオリジン<code>&lt;script&gt;</code>タグも使用できなくなりました。テストをアップデートして、 <code>get :foo, format: :js</code>の代りに<code>xhr :get, :foo, format: :js</code>を使うようにしてください。(<a href="https://github.com/rails/rails/pull/13345">Pull Request</a>)</p></li>
 <li><p><code>#url_for</code>は、オプションのハッシュを配列の中で使用できるようになりました。(<a href="https://github.com/rails/rails/pull/9599">Pull Request</a>)</p></li>
@@ -485,16 +484,16 @@ end
 <li><p>署名及び暗号化されたcookies jarのシリアライザを指定する<code>config.action_dispatch.cookies_serializer</code>configオプションが新たに追加されました。 (Pull Requests <a href="https://github.com/rails/rails/pull/13692">1</a>, <a href="https://github.com/rails/rails/pull/13945">2</a> / <a href="upgrading_ruby_on_rails.html#cookies-serializer">詳細</a>)</p></li>
 <li><p><code>render :plain</code>、<code>render :html</code>、<code>render :body</code>が追加されました。(<a href="https://github.com/rails/rails/pull/14062">Pull Request</a> / <a href="upgrading_ruby_on_rails.html#rendering-content-from-string">詳細</a>)</p></li>
 </ul>
-<h3 id="action-mailer">4 Action Mailer</h3>
+<h3 id="action-mailer"><a href="#action-mailer">4 Action Mailer</a></h3>
 <p>変更の詳細については<a href="https://github.com/rails/rails/blob/4-1-stable/actionmailer/CHANGELOG.md">Changelog</a> を参照してください。</p>
-<h4 id="action-mailer-主な変更点">4.1 主な変更点</h4>
+<h4 id="action-mailer-主な変更点"><a href="#%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">4.1 主な変更点</a></h4>
 <ul>
 <li><p>37 Signals社のmail_view gemを元にメイラーのプレビュー機能が追加されました。(<a href="https://github.com/rails/rails/commit/d6dec7fcb6b8fddf8c170182d4fe64ecfc7b2261">Commit</a>)</p></li>
 <li><p>Action Mailerメッセージの生成が計測されるようになりました。メッセージを生成するのにかかった時間がログに記録されます。(<a href="https://github.com/rails/rails/pull/12556">Pull Request</a>)</p></li>
 </ul>
-<h3 id="active-record">5 Active Record</h3>
+<h3 id="active-record"><a href="#active-record">5 Active Record</a></h3>
 <p>変更の詳細については<a href="https://github.com/rails/rails/blob/4-1-stable/activerecord/CHANGELOG.md">Changelog</a> を参照してください。</p>
-<h4 id="active-record-削除されたもの">5.1 削除されたもの</h4>
+<h4 id="active-record-削除されたもの"><a href="#%E5%89%8A%E9%99%A4%E3%81%95%E3%82%8C%E3%81%9F%E3%82%82%E3%81%AE">5.1 削除されたもの</a></h4>
 <ul>
 <li><p><code>SchemaCache</code>メソッド (<code>primary_keys</code>、<code>tables</code>、<code>columns</code>、<code>columns_hash</code>) にnilを渡す非推奨機能が削除されました。</p></li>
 <li><p>非推奨のブロックフィルタが<code>ActiveRecord::Migrator#migrate</code>から削除されました。</p></li>
@@ -521,14 +520,14 @@ end
 <li><p>依存関係としての<code>activerecord-deprecated_finders</code>が削除されました。詳細については<a href="https://github.com/rails/activerecord-deprecated_finders#active-record-deprecated-finders">gem README</a>を参照してください。</p></li>
 <li><p><code>implicit_readonly</code>の用法が削除されました。明示的に<code>readonly</code>メソッドを使用してレコードを<code>readonly</code>に設定してください。(<a href="https://github.com/rails/rails/pull/10769">Pull Request</a>)</p></li>
 </ul>
-<h4 id="active-record-非推奨">5.2 非推奨</h4>
+<h4 id="active-record-非推奨"><a href="#%E9%9D%9E%E6%8E%A8%E5%A5%A8">5.2 非推奨</a></h4>
 <ul>
 <li><p><code>quoted_locking_column</code>メソッドは非推奨です。現在使われている場所はありません。</p></li>
 <li><p><code>ConnectionAdapters::SchemaStatements#distinct</code>は内部で使用されなくなったため非推奨です。(<a href="https://github.com/rails/rails/pull/10556">Pull Request</a>)</p></li>
 <li><p><code>rake db:test:*</code>タスクは非推奨となりました。データベースは自動的にメンテナンスされます。railtiesのリリースノートを参照してください。(<a href="https://github.com/rails/rails/pull/13528">Pull Request</a>)</p></li>
 <li><p>使用されていない<code>ActiveRecord::Base.symbolized_base_class</code>、および置き換えのない<code>ActiveRecord::Base.symbolized_sti_name</code>は非推奨になりました。<a href="https://github.com/rails/rails/commit/97e7ca48c139ea5cce2fa9b4be631946252a1ebd">Commit</a></p></li>
 </ul>
-<h4 id="active-record-主な変更点">5.3 主な変更点</h4>
+<h4 id="active-record-主な変更点"><a href="#active-record-%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">5.3 主な変更点</a></h4>
 <p>デフォルトのスコープは、条件を連鎖した場合にオーバーライドされなくなりました。</p>
 <p>  今回の変更より前にモデルで<code>default_scope</code>を定義していた場合、同じフィールドで条件が連鎖している場合にはオーバーライドされていました。現在は、他のスコープと同様、マージされるようになりました。<a href="upgrading_ruby_on_rails.html#changes-on-default-scopes">詳細</a></p>
 <ul>
@@ -561,22 +560,22 @@ end
 <li><p><code>change_column_null</code>が復元可能になりました。(<a href="https://github.com/rails/rails/commit/724509a9d5322ff502aefa90dd282ba33a281a96">Commit</a>)</p></li>
 <li><p>マイグレーション後無効になったスキーマダンプにフラグが追加されました。これは新しいアプリケーションのproduction環境ではデフォルトで<code>false</code>に設定されます。(<a href="https://github.com/rails/rails/pull/13948">Pull Request</a>)</p></li>
 </ul>
-<h3 id="active-model">6 Active Model</h3>
+<h3 id="active-model"><a href="#active-model">6 Active Model</a></h3>
 <p>変更の詳細については<a href="https://github.com/rails/rails/blob/4-1-stable/activemodel/CHANGELOG.md">Changelog</a> を参照してください。</p>
-<h4 id="active-model-非推奨">6.1 非推奨</h4>
+<h4 id="active-model-非推奨"><a href="#active-model-%E9%9D%9E%E6%8E%A8%E5%A5%A8">6.1 非推奨</a></h4>
 <ul>
 <li>
 <code>Validator#setup</code>は非推奨です。今後はバリデーターのコンストラクタ内で手動で行なう必要があります。(<a href="https://github.com/rails/rails/commit/7d84c3a2f7ede0e8d04540e9c0640de7378e9b3a">Commit</a>)</li>
 </ul>
-<h4 id="active-model-主な変更点">6.2 主な変更点</h4>
+<h4 id="active-model-主な変更点"><a href="#%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">6.2 主な変更点</a></h4>
 <ul>
 <li><p><code>ActiveModel::Dirty</code>に、状態を制御する新しいAPI<code>reset_changes</code> および<code>changes_applied</code>が追加されました。</p></li>
 <li><p>検証の定義時に複数のコンテキストを指定できるようになりました。(<a href="https://github.com/rails/rails/pull/13754">Pull Request</a>)</p></li>
 <li><p><code>attribute_changed?</code>がハッシュを受け付けるようになり、属性が与えられた値<code>に</code>変更されたか(または与えられた値<code>から</code>変更されたか)どうかをチェックするようになりました。(<a href="https://github.com/rails/rails/pull/13131">Pull Request</a>)</p></li>
 </ul>
-<h3 id="active-support">7 Active Support</h3>
+<h3 id="active-support"><a href="#active-support">7 Active Support</a></h3>
 <p>変更の詳細については<a href="https://github.com/rails/rails/blob/4-1-stable/activesupport/CHANGELOG.md">Changelog</a> を参照してください。</p>
-<h4 id="active-support-削除されたもの">7.1 削除されたもの</h4>
+<h4 id="active-support-削除されたもの"><a href="#active-support-%E5%89%8A%E9%99%A4%E3%81%95%E3%82%8C%E3%81%9F%E3%82%82%E3%81%AE">7.1 削除されたもの</a></h4>
 <ul>
 <li><p><code>MultiJSON</code>依存が削除されました。これにより、<code>ActiveSupport::JSON.decode</code>は<code>MultiJSON</code>のオプションハッシュを受け付けなくなりました。(<a href="https://github.com/rails/rails/pull/10576">Pull Request</a> / <a href="upgrading_ruby_on_rails.html#changes-in-json-handling">詳細</a>)</p></li>
 <li><p>カスタムオブジェクトをJSONにエンコードする<code>encode_json</code>フックのサポートが削除されました。この機能は<a href="https://github.com/rails/activesupport-json_encoder">activesupport-json_encoder</a> gemに書き出されました。
@@ -597,7 +596,7 @@ end
 <li><p>フィルタオブジェクト用の非推奨<code>#filter</code>メソッドが削除されました。対応する別のメソッドを使用してください。(before filterの<code>#before</code>など)</p></li>
 <li><p>デフォルトの活用形から不規則活用の'cow' =&gt; 'kine'が削除されました。(<a href="https://github.com/rails/rails/commit/c300dca9963bda78b8f358dbcb59cabcdc5e1dc9">Commit</a>)</p></li>
 </ul>
-<h4 id="非推奨">7.2 非推奨</h4>
+<h4 id="非推奨"><a href="#%E9%9D%9E%E6%8E%A8%E5%A5%A8">7.2 非推奨</a></h4>
 <ul>
 <li><p>時間表現<code>Numeric#{ago,until,since,from_now}</code>が非推奨になりました。この値はAS::Durationに明示的に変換してください。例: <code>5.ago</code> =&gt; <code>5.seconds.ago</code> (<a href="https://github.com/rails/rails/pull/12389">Pull Request</a>)</p></li>
 <li><p>requireパス<code>active_support/core_ext/object/to_json</code>が非推奨になりました。<code>active_support/core_ext/object/json</code>を代りにrequireしてください。(<a href="https://github.com/rails/rails/pull/12203">Pull Request</a>)</p></li>
@@ -606,7 +605,7 @@ end
 (<a href="https://github.com/rails/rails/pull/13060">Pull Request</a> / <a href="upgrading_ruby_on_rails.html#changes-in-json-handling">詳細</a>)</p></li>
 <li><p>カスタムの<code>BigDecimal</code>シリアライズが非推奨になりました。(<a href="https://github.com/rails/rails/pull/13911">Pull Request</a>)</p></li>
 </ul>
-<h4 id="active-support-主な変更点">7.3 主な変更点</h4>
+<h4 id="active-support-主な変更点"><a href="#active-support-%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">7.3 主な変更点</a></h4>
 <ul>
 <li><p><code>ActiveSupport</code>のJSONエンコーダーが書き直され、pure-RubyのカスタムエンコーディングではなくJSON gemを利用するようになりました。
 (<a href="https://github.com/rails/rails/pull/12183">Pull Request</a> / <a href="upgrading_ruby_on_rails.html#changes-in-json-handling">詳細</a>)</p></li>
@@ -628,7 +627,7 @@ end
 <li>
 <code>Object#presence_in</code>が追加されました。値のホワイトリスト化を簡略化します。(<a href="https://github.com/rails/rails/commit/4edca106daacc5a159289eae255207d160f22396">Commit</a>)</li>
 </ul>
-<h3 id="クレジット表記">8 クレジット表記</h3>
+<h3 id="クレジット表記"><a href="#%E3%82%AF%E3%83%AC%E3%82%B8%E3%83%83%E3%83%88%E8%A1%A8%E8%A8%98">8 クレジット表記</a></h3>
 <p>膨大な時間を費やしてRailsを作り、頑丈かつ安定したフレームワークにしてくれた多くの皆様については、<a href="http://contributors.rubyonrails.org/">Railsコントリビューターの完全なリスト</a>を参照してください。これらの方々全員に敬意を表明いたします。</p>
 </body></html>
 

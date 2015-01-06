@@ -242,9 +242,9 @@ Your favorite bird is the Yaffle, and you want to create a plugin that allows ot
       <div id="mainCol">
         <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
-<h3 id="setup">1 Setup</h3>
+<h3 id="setup"><a href="#setup">1 Setup</a></h3>
 <p>Currently, Rails plugins are built as gems, <em>gemified plugins</em>. They can be shared across different rails applications using RubyGems and Bundler if desired.</p>
-<h4 id="generate-a-gemified-plugin.">1.1 Generate a gemified plugin.</h4>
+<h4 id="generate-a-gemified-plugin."><a href="#generate-a-gemified-plugin.">1.1 Generate a gemified plugin.</a></h4>
 <p>Rails ships with a <code>rails plugin new</code> command which creates a skeleton for developing any kind of Rails extension with the ability to run integration tests using a dummy Rails application. Create your  plugin with the command:</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
@@ -259,7 +259,7 @@ $ rails plugin --help
 
 </pre>
 </div>
-<h3 id="testing-your-newly-generated-plugin">2 Testing Your Newly Generated Plugin</h3>
+<h3 id="testing-your-newly-generated-plugin"><a href="#testing-your-newly-generated-plugin">2 Testing Your Newly Generated Plugin</a></h3>
 <p>You can navigate to the directory that contains the plugin, run the <code>bundle install</code> command  and run the one generated test using the <code>rake</code> command.</p>
 <p>You should see:</p>
 <div class="code_container">
@@ -269,7 +269,7 @@ $ rails plugin --help
 </pre>
 </div>
 <p>This will tell you that everything got generated properly and you are ready to start adding functionality.</p>
-<h3 id="extending-core-classes">3 Extending Core Classes</h3>
+<h3 id="extending-core-classes"><a href="#extending-core-classes">3 Extending Core Classes</a></h3>
 <p>This section will explain how to add a method to String that will be available anywhere in your rails application.</p>
 <p>In this example you will add a method to String named <code>to_squawk</code>. To begin, create a new test file with a few assertions:</p>
 <div class="code_container">
@@ -338,7 +338,7 @@ $ rails console
 
 </pre>
 </div>
-<h3 id='add-an-"acts_as"-method-to-active-record'>4 Add an "acts_as" Method to Active Record</h3>
+<h3 id='add-an-"acts_as"-method-to-active-record'><a href="#add-an-%22acts_as%22-method-to-active-record">4 Add an "acts_as" Method to Active Record</a></h3>
 <p>A common pattern in plugins is to add a method called <code>acts_as_something</code> to models. In this case, you want to write a method called <code>acts_as_yaffle</code> that adds a <code>squawk</code> method to your Active Record models.</p>
 <p>To begin, set up your files so that you have:</p>
 <div class="code_container">
@@ -376,7 +376,7 @@ end
 
 </pre>
 </div>
-<h4 id="add-a-class-method">4.1 Add a Class Method</h4>
+<h4 id="add-a-class-method"><a href="#add-a-class-method">4.1 Add a Class Method</a></h4>
 <p>This plugin will expect that you've added a method to your model named <code>last_squawk</code>. However, the plugin users might have already defined a method on their model named <code>last_squawk</code> that they use for something else. This plugin will allow the name to be changed by adding a class method called <code>yaffle_text_field</code>.</p>
 <p>To start out, write a failing test that shows the behavior you'd like:</p>
 <div class="code_container">
@@ -527,7 +527,7 @@ ActiveRecord::Base.send :include, Yaffle::ActsAsYaffle
 
 </pre>
 </div>
-<h4 id="add-an-instance-method">4.2 Add an Instance Method</h4>
+<h4 id="add-an-instance-method"><a href="#add-an-instance-method">4.2 Add an Instance Method</a></h4>
 <p>This plugin will add a method named 'squawk' to any Active Record object that calls 'acts_as_yaffle'. The 'squawk' method will simply set the value of one of the fields in the database.</p>
 <p>To start out, write a failing test that shows the behavior you'd like:</p>
 <div class="code_container">
@@ -607,9 +607,9 @@ send("#{self.class.yaffle_text_field}=", string.to_squawk)
 
 </pre>
 </div>
-<h3 id="generators">5 Generators</h3>
+<h3 id="generators"><a href="#generators">5 Generators</a></h3>
 <p>Generators can be included in your gem simply by creating them in a lib/generators directory of your plugin. More information about the creation of generators can be found in the <a href="generators.html">Generators Guide</a></p>
-<h3 id="publishing-your-gem">6 Publishing Your Gem</h3>
+<h3 id="publishing-your-gem"><a href="#publishing-your-gem">6 Publishing Your Gem</a></h3>
 <p>Gem plugins currently in development can easily be shared from any Git repository. To share the Yaffle gem with others, simply commit the code to a Git repository (like GitHub) and add a line to the Gemfile of the application in question:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -620,7 +620,7 @@ gem 'yaffle', git: 'git://github.com/yaffle_watcher/yaffle.git'
 <p>After running <code>bundle install</code>, your gem functionality will be available to the application.</p>
 <p>When the gem is ready to be shared as a formal release, it can be published to <a href="http://www.rubygems.org">RubyGems</a>.
 For more information about publishing gems to RubyGems, see: <a href="http://blog.thepete.net/2010/11/creating-and-publishing-your-first-ruby.html">Creating and Publishing Your First Ruby Gem</a>.</p>
-<h3 id="rdoc-documentation">7 RDoc Documentation</h3>
+<h3 id="rdoc-documentation"><a href="#rdoc-documentation">7 RDoc Documentation</a></h3>
 <p>Once your plugin is stable and you are ready to deploy, do everyone else a favor and document it! Luckily, writing documentation for your plugin is easy.</p>
 <p>The first step is to update the README file with detailed information about how to use your plugin. A few key things to include are:</p>
 <ul>
@@ -637,7 +637,7 @@ $ rake rdoc
 
 </pre>
 </div>
-<h4 id="references">7.1 References</h4>
+<h4 id="references"><a href="#references">7.1 References</a></h4>
 <ul>
 <li><a href="https://github.com/radar/guides/blob/master/gem-development.md">Developing a RubyGem using Bundler</a></li>
 <li><a href="http://yehudakatz.com/2010/04/02/using-gemspecs-as-intended/">Using .gemspecs as Intended</a></li>

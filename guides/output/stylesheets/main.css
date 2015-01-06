@@ -468,6 +468,20 @@ h3 {
   font-weight: bold;
 }
 
+h3 a {
+  color: #333 !important;
+  background: none !important;
+  text-decoration: none !important;
+}
+
+h3 a:hover {
+  text-decoration: underline !important;
+}
+
+h3 code {
+  color: #333 !important;
+}
+
 @media screen and (max-width: 480px) {
   h3 {
     font-size: 1.45em;
@@ -479,6 +493,19 @@ h4 {
   line-height: 1.2em;
   margin: 1.6667em 0 .3887em;
   font-weight: bold;
+}
+
+h4 a {
+  color: #333 !important;
+  text-decoration: none !important;
+}
+
+h4 a:hover {
+  text-decoration: underline !important;
+}
+
+h4 code {
+  color: #333 !important;
 }
 
 h5 {

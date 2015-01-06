@@ -237,10 +237,9 @@
 <p>This guide goes through every method call that is required to boot up the Ruby on Rails stack for a default Rails 4 application, explaining each part in detail along the way. For this guide, we will be focusing on what happens when you execute <code>rails server</code> to boot your app.</p>
 <div class="note"><p>Paths in this guide are relative to Rails or a Rails application unless otherwise specified.</p></div>
 <div class="info"><p>If you want to follow along while browsing the Rails <a href="https://github.com/rails/rails">source code</a>, we recommend that you use the <code>t</code> key binding to open the file finder inside GitHub and find files quickly.</p></div>
-<h3 id="launch!">1 Launch!</h3>
+<h3 id="launch!"><a href="#launch!">1 Launch!</a></h3>
 <p>Let's start to boot and initialize the app. A Rails application is usually started by running <code>rails console</code> or <code>rails server</code>.</p>
-<h4 id="railties/bin/rails">1.1 <code>railties/bin/rails</code>
-</h4>
+<h4 id="railties/bin/rails"><a href="#railties/bin/rails">1.1 <code>railties/bin/rails</code></a></h4>
 <p>The <code>rails</code> in the command <code>rails server</code> is a ruby executable in your load path. This executable contains the following lines:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -257,8 +256,7 @@ require "rails/cli"
 </pre>
 </div>
 <p>The file <code>railties/lib/rails/cli</code> in turn calls <code>Rails::AppRailsLoader.exec_app_rails</code>.</p>
-<h4 id="railties/lib/rails/app_rails_loader.rb">1.2 <code>railties/lib/rails/app_rails_loader.rb</code>
-</h4>
+<h4 id="railties/lib/rails/app_rails_loader.rb"><a href="#railties/lib/rails/app_rails_loader.rb">1.2 <code>railties/lib/rails/app_rails_loader.rb</code></a></h4>
 <p>The primary goal of the function <code>exec_app_rails</code> is to execute your app's <code>bin/rails</code>. If the current directory does not have a <code>bin/rails</code>, it will navigate upwards until it finds a <code>bin/rails</code> executable. Thus one can invoke a <code>rails</code> command from anywhere inside a rails application.</p>
 <p>For <code>rails server</code> the equivalent of the following command is executed:</p>
 <div class="code_container">
@@ -267,8 +265,7 @@ $ exec ruby bin/rails server
 
 </pre>
 </div>
-<h4 id="bin/rails">1.3 <code>bin/rails</code>
-</h4>
+<h4 id="bin/rails"><a href="#bin/rails">1.3 <code>bin/rails</code></a></h4>
 <p>This file is as follows:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -280,8 +277,7 @@ require 'rails/commands'
 </pre>
 </div>
 <p>The <code>APP_PATH</code> constant will be used later in <code>rails/commands</code>. The <code>config/boot</code> file referenced here is the <code>config/boot.rb</code> file in our application which is responsible for loading Bundler and setting it up.</p>
-<h4 id="config/boot.rb">1.4 <code>config/boot.rb</code>
-</h4>
+<h4 id="config/boot.rb"><a href="#config/boot.rb">1.4 <code>config/boot.rb</code></a></h4>
 <p><code>config/boot.rb</code> contains:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -321,8 +317,7 @@ require 'bundler/setup' if File.exist?(ENV['BUNDLE_GEMFILE'])
 <li>treetop</li>
 <li>tzinfo</li>
 </ul>
-<h4 id="rails/commands.rb">1.5 <code>rails/commands.rb</code>
-</h4>
+<h4 id="rails/commands.rb"><a href="#rails/commands.rb">1.5 <code>rails/commands.rb</code></a></h4>
 <p>Once <code>config/boot.rb</code> has finished, the next file that is required is <code>rails/commands</code>, which helps in expanding aliases. In the current case, the <code>ARGV</code> array simply contains <code>server</code> which will be passed over:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -348,8 +343,7 @@ Rails::CommandsTasks.new(ARGV).run_command!(command)
 </div>
 <div class="info"><p>As you can see, an empty ARGV list will make Rails show the help snippet.</p></div>
 <p>If we had used <code>s</code> rather than <code>server</code>, Rails would have used the <code>aliases</code> defined here to find the matching command.</p>
-<h4 id="rails/commands/command_tasks.rb">1.6 <code>rails/commands/command_tasks.rb</code>
-</h4>
+<h4 id="rails/commands/command_tasks.rb"><a href="#rails/commands/command_tasks.rb">1.6 <code>rails/commands/command_tasks.rb</code></a></h4>
 <p>When one types an incorrect rails command, the <code>run_command</code> is responsible for throwing an error message. If the command is valid, a method of the same name is called.</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -406,12 +400,10 @@ module Rails
 </pre>
 </div>
 <p><code>fileutils</code> and <code>optparse</code> are standard Ruby libraries which provide helper functions for working with files and parsing options.</p>
-<h4 id="actionpack/lib/action_dispatch.rb">1.7 <code>actionpack/lib/action_dispatch.rb</code>
-</h4>
+<h4 id="actionpack/lib/action_dispatch.rb"><a href="#actionpack/lib/action_dispatch.rb">1.7 <code>actionpack/lib/action_dispatch.rb</code></a></h4>
 <p>Action Dispatch is the routing component of the Rails framework.
 It adds functionality like routing, session, and common middlewares.</p>
-<h4 id="rails/commands/server.rb">1.8 <code>rails/commands/server.rb</code>
-</h4>
+<h4 id="rails/commands/server.rb"><a href="#rails/commands/server.rb">1.8 <code>rails/commands/server.rb</code></a></h4>
 <p>The <code>Rails::Server</code> class is defined in this file by inheriting from <code>Rack::Server</code>. When <code>Rails::Server.new</code> is called, this calls the <code>initialize</code> method in <code>rails/commands/server.rb</code>:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -423,8 +415,7 @@ end
 </pre>
 </div>
 <p>Firstly, <code>super</code> is called which calls the <code>initialize</code> method on <code>Rack::Server</code>.</p>
-<h4 id="launch!-rack:-lib/rack/server.rb">1.9 Rack: <code>lib/rack/server.rb</code>
-</h4>
+<h4 id="launch!-rack:-lib/rack/server.rb"><a href="#rack:-lib/rack/server.rb">1.9 Rack: <code>lib/rack/server.rb</code></a></h4>
 <p><code>Rack::Server</code> is responsible for providing a common server interface for all Rack-based applications, which Rails is now a part of.</p>
 <p>The <code>initialize</code> method in <code>Rack::Server</code> simply sets a couple of variables:</p>
 <div class="code_container">
@@ -516,11 +507,9 @@ def parse!(args)
 </pre>
 </div>
 <p>This method will set up keys for the <code>options</code> which Rails will then be able to use to determine how its server should run. After <code>initialize</code> has finished, we jump back into <code>rails/server</code> where <code>APP_PATH</code> (which was set earlier) is required.</p>
-<h4 id="config/application">1.10 <code>config/application</code>
-</h4>
+<h4 id="config/application"><a href="#config/application">1.10 <code>config/application</code></a></h4>
 <p>When <code>require APP_PATH</code> is executed, <code>config/application.rb</code> is loaded (recall that <code>APP_PATH</code> is defined in <code>bin/rails</code>). This file exists in your application and it's free for you to change based on your needs.</p>
-<h4 id="rails::server#start">1.11 <code>Rails::Server#start</code>
-</h4>
+<h4 id="rails::server#start"><a href="#rails::server#start">1.11 <code>Rails::Server#start</code></a></h4>
 <p>After <code>config/application</code> is loaded, <code>server.start</code> is called. This method is defined like this:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -671,8 +660,7 @@ require ::File.expand_path('../config/environment', __FILE__)
 
 </pre>
 </div>
-<h4 id="config/environment.rb">1.12 <code>config/environment.rb</code>
-</h4>
+<h4 id="config/environment.rb"><a href="#config/environment.rb">1.12 <code>config/environment.rb</code></a></h4>
 <p>This file is the common file required by <code>config.ru</code> (<code>rails server</code>) and Passenger. This is where these two ways to run the server meet; everything before this point has been Rack and Rails setup.</p>
 <p>This file begins with requiring <code>config/application.rb</code>:</p>
 <div class="code_container">
@@ -681,8 +669,7 @@ require File.expand_path('../application', __FILE__)
 
 </pre>
 </div>
-<h4 id="config/application.rb">1.13 <code>config/application.rb</code>
-</h4>
+<h4 id="config/application.rb"><a href="#config/application.rb">1.13 <code>config/application.rb</code></a></h4>
 <p>This file requires <code>config/boot.rb</code>:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -693,7 +680,7 @@ require File.expand_path('../boot', __FILE__)
 <p>But only if it hasn't been required before, which would be the case in <code>rails server</code>
 but <strong>wouldn't</strong> be the case with Passenger.</p>
 <p>Then the fun begins!</p>
-<h3 id="loading-rails">2 Loading Rails</h3>
+<h3 id="loading-rails"><a href="#loading-rails">2 Loading Rails</a></h3>
 <p>The next line in <code>config/application.rb</code> is:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -701,8 +688,7 @@ require 'rails/all'
 
 </pre>
 </div>
-<h4 id="railties/lib/rails/all.rb">2.1 <code>railties/lib/rails/all.rb</code>
-</h4>
+<h4 id="railties/lib/rails/all.rb"><a href="#railties/lib/rails/all.rb">2.1 <code>railties/lib/rails/all.rb</code></a></h4>
 <p>This file is responsible for requiring all the individual frameworks of Rails:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -726,8 +712,7 @@ end
 </div>
 <p>This is where all the Rails frameworks are loaded and thus made available to the application. We won't go into detail of what happens inside each of those frameworks, but you're encouraged to try and explore them on your own.</p>
 <p>For now, just keep in mind that common functionality like Rails engines, I18n and Rails configuration are all being defined here.</p>
-<h4 id="back-to-config/environment.rb">2.2 Back to <code>config/environment.rb</code>
-</h4>
+<h4 id="back-to-config/environment.rb"><a href="#back-to-config/environment.rb">2.2 Back to <code>config/environment.rb</code></a></h4>
 <p>The rest of <code>config/application.rb</code> defines the configuration for the
 <code>Rails::Application</code> which will be used once the application is fully
 initialized. When <code>config/application.rb</code> has finished loading Rails and defined
@@ -735,8 +720,7 @@ the application namespace, we go back to <code>config/environment.rb</code>,
 where the application is initialized. For example, if the application was called
 <code>Blog</code>, here we would find <code>Rails.application.initialize!</code>, which is
 defined in <code>rails/application.rb</code></p>
-<h4 id="railties/lib/rails/application.rb">2.3 <code>railties/lib/rails/application.rb</code>
-</h4>
+<h4 id="railties/lib/rails/application.rb"><a href="#railties/lib/rails/application.rb">2.3 <code>railties/lib/rails/application.rb</code></a></h4>
 <p>The <code>initialize!</code> method looks like this:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -766,7 +750,7 @@ end
 For example, the <code>Engine</code> class will make all the engines available by providing an <code>initializers</code> method on them.</p>
 <p>The <code>Rails::Application</code> class, as defined in <code>railties/lib/rails/application.rb</code> defines <code>bootstrap</code>, <code>railtie</code>, and <code>finisher</code> initializers. The <code>bootstrap</code> initializers prepare the application (like initializing the logger) while the <code>finisher</code> initializers (like building the middleware stack) are run last. The <code>railtie</code> initializers are the initializers which have been defined on the <code>Rails::Application</code> itself and are run between the <code>bootstrap</code> and <code>finishers</code>.</p>
 <p>After this is done we go back to <code>Rack::Server</code>.</p>
-<h4 id="loading-rails-rack:-lib/rack/server.rb">2.4 Rack: lib/rack/server.rb</h4>
+<h4 id="loading-rails-rack:-lib/rack/server.rb"><a href="#loading-rails-rack:-lib/rack/server.rb">2.4 Rack: lib/rack/server.rb</a></h4>
 <p>Last time we left when the <code>app</code> method was being defined:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">

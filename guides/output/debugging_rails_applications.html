@@ -252,15 +252,14 @@
       <div id="mainCol">
         <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
-<h3 id="view-helpers-for-debugging">1 View Helpers for Debugging</h3>
+<h3 id="view-helpers-for-debugging"><a href="#view-helpers-for-debugging">1 View Helpers for Debugging</a></h3>
 <p>One common task is to inspect the contents of a variable. In Rails, you can do this with three methods:</p>
 <ul>
 <li><code>debug</code></li>
 <li><code>to_yaml</code></li>
 <li><code>inspect</code></li>
 </ul>
-<h4 id="debug">1.1 <code>debug</code>
-</h4>
+<h4 id="debug"><a href="#debug">1.1 <code>debug</code></a></h4>
 <p>The <code>debug</code> helper will return a &lt;pre&gt; tag that renders the object using the YAML format. This will generate human-readable data from any object. For example, if you have this code in a view:</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
@@ -290,8 +289,7 @@ Title: Rails debugging guide
 
 </pre>
 </div>
-<h4 id="to_yaml">1.2 <code>to_yaml</code>
-</h4>
+<h4 id="to_yaml"><a href="#to_yaml">1.2 <code>to_yaml</code></a></h4>
 <p>Displaying an instance variable, or any other object or method, in YAML format can be achieved this way:</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
@@ -321,8 +319,7 @@ Title: Rails debugging guide
 
 </pre>
 </div>
-<h4 id="inspect">1.3 <code>inspect</code>
-</h4>
+<h4 id="inspect"><a href="#inspect">1.3 <code>inspect</code></a></h4>
 <p>Another useful method for displaying object values is <code>inspect</code>, especially when working with arrays or hashes. This will print the object value as a string. For example:</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
@@ -343,9 +340,9 @@ Title: Rails debugging guide
 
 </pre>
 </div>
-<h3 id="the-logger">2 The Logger</h3>
+<h3 id="the-logger"><a href="#the-logger">2 The Logger</a></h3>
 <p>It can also be useful to save information to log files at runtime. Rails maintains a separate log file for each runtime environment.</p>
-<h4 id="what-is-the-logger?">2.1 What is the Logger?</h4>
+<h4 id="what-is-the-logger?"><a href="#what-is-the-logger?">2.1 What is the Logger?</a></h4>
 <p>Rails makes use of the <code>ActiveSupport::Logger</code> class to write log information. You can also substitute another logger such as <code>Log4r</code> if you wish.</p>
 <p>You can specify an alternative logger in your <code>environment.rb</code> or any environment file:</p>
 <div class="code_container">
@@ -364,7 +361,7 @@ config.logger = Log4r::Logger.new("Application Log")
 </pre>
 </div>
 <div class="info"><p>By default, each log is created under <code>Rails.root/log/</code> and the log file is named after the environment in which the application is running.</p></div>
-<h4 id="log-levels">2.2 Log Levels</h4>
+<h4 id="log-levels"><a href="#log-levels">2.2 Log Levels</a></h4>
 <p>When something is logged it's printed into the corresponding log if the log level of the message is equal or higher than the configured log level. If you want to know the current log level you can call the <code>Rails.logger.level</code> method.</p>
 <p>The available log levels are: <code>:debug</code>, <code>:info</code>, <code>:warn</code>, <code>:error</code>, <code>:fatal</code>, and <code>:unknown</code>, corresponding to the log level numbers from 0 up to 5 respectively. To change the default log level, use</p>
 <div class="code_container">
@@ -376,7 +373,7 @@ Rails.logger.level = 0 # at any time
 </div>
 <p>This is useful when you want to log under development or staging, but you don't want to flood your production log with unnecessary information.</p>
 <div class="info"><p>The default Rails log level is <code>info</code> in production mode and <code>debug</code> in development and test mode.</p></div>
-<h4 id="sending-messages">2.3 Sending Messages</h4>
+<h4 id="sending-messages"><a href="#sending-messages">2.3 Sending Messages</a></h4>
 <p>To write in the current log use the <code>logger.(debug|info|warn|error|fatal)</code> method from within a controller, model or mailer:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -433,7 +430,7 @@ Completed in 0.01224 (81 reqs/sec) | DB: 0.00044 (3%) | 302 Found [http://localh
 </pre>
 </div>
 <p>Adding extra logging like this makes it easy to search for unexpected or unusual behavior in your logs. If you add extra logging, be sure to make sensible use of log levels to avoid filling your production logs with useless trivia.</p>
-<h4 id="tagged-logging">2.4 Tagged Logging</h4>
+<h4 id="tagged-logging"><a href="#tagged-logging">2.4 Tagged Logging</a></h4>
 <p>When running multi-user, multi-account applications, it's often useful to be able to filter the logs using some custom rules. <code>TaggedLogging</code> in Active Support helps in doing exactly that by stamping log lines with subdomains, request ids, and anything else to aid debugging such applications.</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -444,7 +441,7 @@ logger.tagged("BCX") { logger.tagged("Jason") { logger.info "Stuff" } } # Logs "
 
 </pre>
 </div>
-<h4 id="impact-of-logs-on-performance">2.5 Impact of Logs on Performance</h4>
+<h4 id="impact-of-logs-on-performance"><a href="#impact-of-logs-on-performance">2.5 Impact of Logs on Performance</a></h4>
 <p>Logging will always have a small impact on performance of your rails app,
 particularly when logging to disk.However, there are a few subtleties:</p>
 <p>Using the <code>:debug</code> level will have a greater performance penalty than <code>:fatal</code>, as a far greater number of strings are being evaluated and written to the log output (e.g. disk).</p>
@@ -463,7 +460,7 @@ logger.debug {"Person attributes hash: #{@person.attributes.inspect}"}
 </pre>
 </div>
 <p>The contents of the block, and therefore the string interpolation, is only  evaluated if debug is enabled. This performance savings is only really noticeable with large amounts of logging, but it's a good practice to employ.</p>
-<h3 id="debugging-with-the-byebug-gem">3 Debugging with the <code>byebug</code> gem</h3>
+<h3 id="debugging-with-the-byebug-gem"><a href="#debugging-with-the-byebug-gem">3 Debugging with the <code>byebug</code> gem</a></h3>
 <p>When your code is behaving in unexpected ways, you can try printing to logs or
 the console to diagnose the problem. Unfortunately, there are times when this
 sort of error tracking is not effective in finding the root cause of a problem.
@@ -473,7 +470,7 @@ is your best companion.</p>
 but don't know where to start. Just debug any request to your application and
 use this guide to learn how to move from the code you have written deeper into
 Rails code.</p>
-<h4 id="setup">3.1 Setup</h4>
+<h4 id="setup"><a href="#setup">3.1 Setup</a></h4>
 <p>You can use the <code>byebug</code> gem to set breakpoints and step through live code in
 Rails. To install it, just run:</p>
 <div class="code_container">
@@ -496,7 +493,7 @@ end
 
 </pre>
 </div>
-<h4 id="the-shell">3.2 The Shell</h4>
+<h4 id="the-shell"><a href="#the-shell">3.2 The Shell</a></h4>
 <p>As soon as your application calls the <code>byebug</code> method, the debugger will be
 started in a debugger shell inside the terminal window where you launched your
 application server, and you will be placed at the debugger's prompt <code>(byebug)</code>.
@@ -622,7 +619,7 @@ the code again you can type <code>list=</code></p>
 
 </pre>
 </div>
-<h4 id="the-context">3.3 The Context</h4>
+<h4 id="the-context"><a href="#the-context">3.3 The Context</a></h4>
 <p>When you start debugging your application, you will be placed in different
 contexts as you go through the different parts of the stack.</p>
 <p>The debugger creates a context when a stopping point or an event is reached. The
@@ -679,7 +676,7 @@ line. After all, that's what debugging is.</p>
 to change the context <em>n</em> frames up or down the stack respectively. <em>n</em> defaults
 to one. Up in this case is towards higher-numbered stack frames, and down is
 towards lower-numbered stack frames.</p>
-<h4 id="threads">3.4 Threads</h4>
+<h4 id="threads"><a href="#threads">3.4 Threads</a></h4>
 <p>The debugger can list, stop, resume and switch between running threads by using
 the <code>thread</code> command (or the abbreviated <code>th</code>). This command has a handful of
 options:</p>
@@ -699,7 +696,7 @@ character and the number indicates the current thread of execution.</li>
 <p>This command is very helpful, among other occasions, when you are debugging
 concurrent threads and need to verify that there are no race conditions in your
 code.</p>
-<h4 id="inspecting-variables">3.5 Inspecting Variables</h4>
+<h4 id="inspecting-variables"><a href="#inspecting-variables">3.5 Inspecting Variables</a></h4>
 <p>Any expression can be evaluated in the current context. To evaluate an
 expression, just type it!</p>
 <p>This example shows how you can print the instance variables defined within the
@@ -811,7 +808,7 @@ tracking the values of a variable while the execution goes on.</p>
 <p>The variables inside the displaying list will be printed with their values after
 you move in the stack. To stop displaying a variable use <code>undisplay _n_</code> where
 <em>n</em> is the variable number (1 in the last example).</p>
-<h4 id="step-by-step">3.6 Step by Step</h4>
+<h4 id="step-by-step"><a href="#step-by-step">3.6 Step by Step</a></h4>
 <p>Now you should know where you are in the running trace and be able to print the
 available variables. But lets continue and move on with the application
 execution.</p>
@@ -891,7 +888,7 @@ instruction to be executed. In this case, the activesupport's <code>week</code> 
 </div>
 <p>This is one of the best ways to find bugs in your code, or perhaps in Ruby on
 Rails.</p>
-<h4 id="breakpoints">3.7 Breakpoints</h4>
+<h4 id="breakpoints"><a href="#breakpoints">3.7 Breakpoints</a></h4>
 <p>A breakpoint makes your application stop whenever a certain point in the program
 is reached. The debugger shell is invoked in that line.</p>
 <p>You can add breakpoints dynamically with the command <code>break</code> (or just <code>b</code>).
@@ -959,12 +956,12 @@ breakpoint.</li>
 <li>
 <code>disable breakpoints</code>: the <em>breakpoints</em> will have no effect on your program.</li>
 </ul>
-<h4 id="catching-exceptions">3.8 Catching Exceptions</h4>
+<h4 id="catching-exceptions"><a href="#catching-exceptions">3.8 Catching Exceptions</a></h4>
 <p>The command <code>catch exception-name</code> (or just <code>cat exception-name</code>) can be used to
 intercept an exception of type <em>exception-name</em> when there would otherwise be no
 handler for it.</p>
 <p>To list all active catchpoints use <code>catch</code>.</p>
-<h4 id="resuming-execution">3.9 Resuming Execution</h4>
+<h4 id="resuming-execution"><a href="#resuming-execution">3.9 Resuming Execution</a></h4>
 <p>There are two ways to resume execution of an application that is stopped in the
 debugger:</p>
 <ul>
@@ -982,19 +979,19 @@ most-recent frame or 0 if no frame positioning (e.g up, down or frame) has been
 performed. If a frame number is given it will run until the specified frame
 returns.</li>
 </ul>
-<h4 id="editing">3.10 Editing</h4>
+<h4 id="editing"><a href="#editing">3.10 Editing</a></h4>
 <p>Two commands allow you to open code from the debugger into an editor:</p>
 <ul>
 <li>
 <code>edit [file:line]</code>: edit <em>file</em> using the editor specified by the EDITOR
 environment variable. A specific <em>line</em> can also be given.</li>
 </ul>
-<h4 id="quitting">3.11 Quitting</h4>
+<h4 id="quitting"><a href="#quitting">3.11 Quitting</a></h4>
 <p>To exit the debugger, use the <code>quit</code> command (abbreviated <code>q</code>), or its alias
 <code>exit</code>.</p>
 <p>A simple quit tries to terminate all threads in effect. Therefore your server
 will be stopped and you will have to start it again.</p>
-<h4 id="settings">3.12 Settings</h4>
+<h4 id="settings"><a href="#settings">3.12 Settings</a></h4>
 <p><code>byebug</code> has a few available options to tweak its behaviour:</p>
 <ul>
 <li>
@@ -1019,12 +1016,12 @@ set listsize 25
 
 </pre>
 </div>
-<h3 id="debugging-memory-leaks">4 Debugging Memory Leaks</h3>
+<h3 id="debugging-memory-leaks"><a href="#debugging-memory-leaks">4 Debugging Memory Leaks</a></h3>
 <p>A Ruby application (on Rails or not), can leak memory - either in the Ruby code
 or at the C code level.</p>
 <p>In this section, you will learn how to find and fix such leaks by using tool
 such as Valgrind.</p>
-<h4 id="valgrind">4.1 Valgrind</h4>
+<h4 id="valgrind"><a href="#valgrind">4.1 Valgrind</a></h4>
 <p><a href="http://valgrind.org/">Valgrind</a> is a Linux-only application for detecting
 C-based memory leaks and race conditions.</p>
 <p>There are Valgrind tools that can automatically detect many memory management
@@ -1034,7 +1031,7 @@ extension in the interpreter calls <code>malloc()</code> but doesn't properly ca
 <p>For further information on how to install Valgrind and use with Ruby, refer to
 <a href="http://blog.evanweaver.com/articles/2008/02/05/valgrind-and-ruby/">Valgrind and Ruby</a>
 by Evan Weaver.</p>
-<h3 id="plugins-for-debugging">5 Plugins for Debugging</h3>
+<h3 id="plugins-for-debugging"><a href="#plugins-for-debugging">5 Plugins for Debugging</a></h3>
 <p>There are some Rails plugins to help you to find errors and debug your
 application. Here is a list of useful plugins for debugging:</p>
 <ul>
@@ -1065,7 +1062,7 @@ about your Rails app requests in the browser - in the Developer Tools panel.
 Provides insight to db/rendering/total times, parameter list, rendered views and
 more.</li>
 </ul>
-<h3 id="references">6 References</h3>
+<h3 id="references"><a href="#references">6 References</a></h3>
 <ul>
 <li><a href="http://bashdb.sourceforge.net/ruby-debug/home-page.html">ruby-debug Homepage</a></li>
 <li><a href="https://github.com/cldwalker/debugger">debugger Homepage</a></li>

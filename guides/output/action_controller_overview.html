@@ -284,16 +284,16 @@
       <div id="mainCol">
         <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
-<h3 id="コントローラの役割">1 コントローラの役割</h3>
+<h3 id="コントローラの役割"><a href="#%E3%82%B3%E3%83%B3%E3%83%88%E3%83%AD%E3%83%BC%E3%83%A9%E3%81%AE%E5%BD%B9%E5%89%B2">1 コントローラの役割</a></h3>
 <p>Action Controllerは、MVCモデルのCに相当します。リクエストを処理するコントローラがルーティング設定によって指名されると、コントローラはリクエストの意味を理解し、適切な出力を行なうための責任を持ちます。幸い、これらの処理はほとんどAction Controllerが行ってくれます。しかも吟味された規則を使用しているので、リクエストの処理は可能な限り素直な方法で行われます。</p>
 <p>従来のいわゆる<a href="http://en.wikipedia.org/wiki/Representational_state_transfer">RESTful</a> なアプリケーションでは、コントローラはリクエストを受け取り (この部分は開発者からは見えないようになっています)、データをモデルから取得したりモデルに保存するなどの作業を行い、最後にビューを使用してHTML出力を生成する、という役割を担います。(自分のコントローラのつくりがこれと少し違っていたりするかもしれませんが、気にする必要はありません。ここではコントローラの一般的な使用法について説明しています。)</p>
 <p>コントローラは、モデルとビューの間に立って仲介を行っているという見方もできます。コントローラはモデルのデータをビューで使用できるようにすることで、データをビューで表示したり、入力されたデータでモデルを更新したりします。</p>
 <div class="note"><p>ルーティングの詳細については、本ガイドの<a href="routing.html">Railsのルーティング</a>を参照してください。</p></div>
-<h3 id="コントローラの命名規則">2 コントローラの命名規則</h3>
+<h3 id="コントローラの命名規則"><a href="#%E3%82%B3%E3%83%B3%E3%83%88%E3%83%AD%E3%83%BC%E3%83%A9%E3%81%AE%E5%91%BD%E5%90%8D%E8%A6%8F%E5%89%87">2 コントローラの命名規則</a></h3>
 <p>Railsのコントローラ名(ここでは"Controller"という文字は除きます)は、基本的に名前の最後の部分に「複数形」を使用します。ただしこれは絶対的に守らなければならないというものではありません (実際 <code>ApplicationController</code>はApplicationが単数になっています)。たとえば、<code>ClientsController</code>の方が<code>ClientController</code>より好ましく、<code>SiteAdminsController</code>は<code>SiteAdminController</code>や<code>SitesAdminsController</code>よりも好ましい、といった具合です。</p>
 <p>しかし、この規則には従っておくことをお勧めします。その理由は、<code>resources</code>などのデフォルトのルーティングジェネレータがそのまま利用できるのと、URLやパスヘルパーの用法がアプリケーション全体で一貫するからです。コントローラ名の最後が複数形になっていないと、たとえば<code>resources</code>で簡単に一括ルーティングできず、<code>:path</code>や<code>:controller</code>をいちいち指定しなければなりません。詳細については、<a href="layouts_and_rendering.html">レイアウト・レンダリングガイド</a>を参照してください。</p>
 <div class="note"><p>モデルの命名規則は「単数形」であり、コントローラの命名規則とは異なります。</p></div>
-<h3 id="メソッドとアクション">3 メソッドとアクション</h3>
+<h3 id="メソッドとアクション"><a href="#%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89%E3%81%A8%E3%82%A2%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3">3 メソッドとアクション</a></h3>
 <p>Railsのコントローラは、<code>ApplicationController</code>を継承したRubyのクラスであり、他のクラスと同様のメソッドが使用できます。アプリケーションがブラウザからのリクエストを受け取ると、ルーティングによってコントローラとアクションが指名され、Railsはそれに応じてコントローラのインスタンスを生成し、アクション名と同じ名前のメソッドを実行します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -316,7 +316,7 @@ end
 <p>この詳細については、<a href="layouts_and_rendering.html">レイアウト・レンダリングガイド</a>で説明されています。</p>
 <p><code>ApplicationController</code>は、便利なメソッドが多数定義されている<code>ActionController::Base</code>を継承しています。本ガイドではそれらの一部について説明しますが、もっと知りたい場合はAPIドキュメントかRailsのソースコードを参照してください。</p>
 <p>publicなメソッドでないとアクションとして呼び出すことはできません。補助メソッドやフィルタのような、アクションとして扱われたくないメソッドはprivateを指定するのが定石です。</p>
-<h3 id="パラメータ">4 パラメータ</h3>
+<h3 id="パラメータ"><a href="#%E3%83%91%E3%83%A9%E3%83%A1%E3%83%BC%E3%82%BF">4 パラメータ</a></h3>
 <p>コントローラのアクションでは、ユーザーから送信されたデータやその他のパラメータにアクセスして何か作業を行なうのが普通です。Railsに限らず、一般にWebアプリケーションでは2種類のパラメータを扱うことができます。1番目は、URLの一部として送信されるパラメータで、「クエリ文字列パラメータ」と呼ばれます。クエリ文字列は、常にURLの"?"の後に置かれます。2番目のパラメータは、「POSTデータ」と呼ばれるものです。POSTデータは通常、ユーザーが記入したHTMLフォームから受け取ります。これがPOSTデータと呼ばれているのは、HTTP POSTリクエストの一部として送信されるからです。Railsでは、クエリ文字列パラメータの受け取り方とPOSTデータの受け取り方に違いはありません。どちらもコントローラ内では<code>params</code>という名前のハッシュでアクセスできます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -352,7 +352,7 @@ end
 
 </pre>
 </div>
-<h4 id="ハッシュと配列のパラメータ">4.1 ハッシュと配列のパラメータ</h4>
+<h4 id="ハッシュと配列のパラメータ"><a href="#%E3%83%8F%E3%83%83%E3%82%B7%E3%83%A5%E3%81%A8%E9%85%8D%E5%88%97%E3%81%AE%E3%83%91%E3%83%A9%E3%83%A1%E3%83%BC%E3%82%BF">4.1 ハッシュと配列のパラメータ</a></h4>
 <p><code>params</code>ハッシュは、一次元のキー・値ペアしか格納できないということはありません。配列や、ネストしたハッシュを格納することもできます。値の配列をフォームから送信したい場合は、以下のように空の角かっこ[]をキー名に追加してください。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
@@ -377,7 +377,7 @@ GET /clients?ids[]=1&amp;ids[]=2&amp;ids[]=3
 </div>
 <p>このフォームを送信すると、<code>params[:client]</code>の値は<code>{ "name" =&gt; "Acme", "phone" =&gt; "12345", "address" =&gt; { "postcode" =&gt; "12345", "city" =&gt; "Carrot City" } }</code>になります。<code>params[:client][:address]</code>のハッシュがネストしていることにご注目ください。</p>
 <p>この<code>params</code>ハッシュは、実は<code>ActiveSupport::HashWithIndifferentAccess</code>のインスタンスです。これはハッシュのように振る舞いますが、キーとしてシンボルと文字列のどちらを指定してもよい (交換可能) 点が異なります。</p>
-<h4 id="jsonパラメータ">4.2 JSONパラメータ</h4>
+<h4 id="jsonパラメータ"><a href="#json%E3%83%91%E3%83%A9%E3%83%A1%E3%83%BC%E3%82%BF">4.2 JSONパラメータ</a></h4>
 <p>Webサービスアプリケーションを開発していると、パラメータをJSONフォーマットで受け取れたら便利なのにと思うことがあります。Railsでは、リクエストの"Content-Type"に"application/json"が指定されていれば、自動的にパラメータを<code>params</code>ハッシュに変換してくれます。以後は通常の<code>params</code>ハッシュと同様に操作できます。</p>
 <p>たとえば、以下のJSONコンテンツを送信したとします。</p>
 <div class="code_container">
@@ -403,7 +403,7 @@ GET /clients?ids[]=1&amp;ids[]=2&amp;ids[]=3
 </div>
 <p>キー名のカスタマイズや、ラップしたい特定のパラメータについては<a href="http://api.rubyonrails.org/classes/ActionController/ParamsWrapper.html">APIドキュメント</a>を参照してください。</p>
 <div class="note"><p>従来のXMLパラメータ解析のサポートは、<code>actionpack-xml_parser</code>というgemに書き出されました。</p></div>
-<h4 id="ルーティングパラメータ">4.3 ルーティングパラメータ</h4>
+<h4 id="ルーティングパラメータ"><a href="#%E3%83%AB%E3%83%BC%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0%E3%83%91%E3%83%A9%E3%83%A1%E3%83%BC%E3%82%BF">4.3 ルーティングパラメータ</a></h4>
 <p><code>params</code>ハッシュに必ず含まれるキーは<code>:controller</code>キーと<code>:action</code>キーです。ただしこれらの値には直接アクセスせず、<code>controller_name</code>と<code>action_name</code>という専用のメソッドを使用してください。ルーティングで定義されるその他の値パラメータ (<code>id</code>など) にもアクセスできます。例として、「有効」と「無効」のいずれかで表される顧客のリストについて考えてみましょう。「プリティな」URLに含まれる<code>:status</code>パラメータを捉えるためのルートを1つ追加してみましょう。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -412,8 +412,7 @@ get '/clients/:status' =&gt; 'clients#index', foo: 'bar'
 </pre>
 </div>
 <p>この場合、ブラウザで<code>/clients/active</code>というURLを開くと、<code>params[:status]</code>が"active" (有効) に設定されます。このルーティングを使用すると、あたかもクエリ文字列で渡したかのように<code>params[:foo]</code>にも"bar"が設定されます。同様に、<code>params[:action]</code>には"index"が含まれます。</p>
-<h4 id="default_url_options">4.4 <code>default_url_options</code>
-</h4>
+<h4 id="default_url_options"><a href="#default_url_options">4.4 <code>default_url_options</code></a></h4>
 <p>コントローラで<code>default_url_options</code>という名前のメソッドを定義すると、URL生成用のグローバルなデフォルトパラメータを設定できます。このようなメソッドは、必要なデフォルト値を持つハッシュを返さねばならず、キーはシンボルでなければなりません。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -427,7 +426,7 @@ end
 </div>
 <p>これらのオプションはURL生成の開始点として使用でき、<code>url_for</code>呼び出しで渡されるオプションで上書きすることもできます。</p>
 <p><code>ApplicationController</code>で<code>default_url_options</code>を定義すると、上の例で示したように、すべてのURL生成で使用されるようになります。このメソッドを特定のコントローラで定義すれば、そのコントローラで生成されるURLにだけ影響します。</p>
-<h4 id="strong-parameters">4.5 Strong Parameters</h4>
+<h4 id="strong-parameters"><a href="#strong-parameters">4.5 Strong Parameters</a></h4>
 <p>strong parametersを使用することで、Action ControllerのパラメータがActive Modelのマスアサインメントに利用されることを禁止できます。ホワイトリストに追記したもののみ使用できます。これは、多くの属性を一度に更新したいときに、どの属性の更新を許可し、どの属性の更新を禁止するかを明示的に決定しなければならないことを意味します。大雑把にすべての属性の更新をまとめて許可してしまうと、外部に公開する必要のない属性まで誤って公開されてしまう可能性が生じますので、そのような事態を防ぐために行います。</p>
 <p>さらに、パラメータの属性には「必須 (required)」を指定することもでき、事前に定義したraise/rescueフローを実行して400 Bad Requestで終了するようにすることもできます。●</p>
 <div class="code_container">
@@ -463,7 +462,7 @@ end
 
 </pre>
 </div>
-<h5 id="許可されたスカラー値">4.5.1 許可されたスカラー値</h5>
+<h5 id="許可されたスカラー値"><a href="#%E8%A8%B1%E5%8F%AF%E3%81%95%E3%82%8C%E3%81%9F%E3%82%B9%E3%82%AB%E3%83%A9%E3%83%BC%E5%80%A4">4.5.1 許可されたスカラー値</a></h5>
 <p>以下の例では</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -488,7 +487,7 @@ params.require(:log_entry).permit!
 </pre>
 </div>
 <p>こうすることで、<code>:log_entry</code>パラメータハッシュとすべてのサブハッシュが「許可」としてマーキングされます。ただし、<code>permit!</code>は属性を一括で許可してしまうものなので、くれぐれも慎重に使用してください。現在のモデルはもちろんのこと、将来属性が追加されたときにそこにマスアサインメントの脆弱性が生じる可能性があるからです。</p>
-<h5 id="ネストしたパラメータ">4.5.2 ネストしたパラメータ</h5>
+<h5 id="ネストしたパラメータ"><a href="#%E3%83%8D%E3%82%B9%E3%83%88%E3%81%97%E3%81%9F%E3%83%91%E3%83%A9%E3%83%A1%E3%83%BC%E3%82%BF">4.5.2 ネストしたパラメータ</a></h5>
 <p>ネストしたパラメータに対しても以下のように許可を与えることができます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -499,7 +498,7 @@ params.permit(:name, { emails: [] },
 </pre>
 </div>
 <p>この宣言では、<code>name</code>、<code>emails</code>、<code>friends</code>属性がホワイトリスト化されます。ここでは、<code>emails</code>は許可を受けたスカラー値の配列であることが期待され、<code>friends</code>は特定の属性を持つリソースの配列であることが期待され、どちらも<code>name</code>属性(許可を受けたあらゆるスカラー値を受け付ける)を持ちます。また、<code>hobbies</code>属性(許可を受けたスカラー値の配列)を持ち、<code>family</code>属性(同じく、許可を受けたあらゆるスカラー値を受け付ける)を持つことも期待されます。</p>
-<h5 id="その他の事例">4.5.3 その他の事例</h5>
+<h5 id="その他の事例"><a href="#%E3%81%9D%E3%81%AE%E4%BB%96%E3%81%AE%E4%BA%8B%E4%BE%8B">4.5.3 その他の事例</a></h5>
 <p>今度は<code>new</code>アクションでも許可済み属性を使用したいところです。しかし今度は<code>new</code>を呼び出す時点ではルートキーがないので、ルートキーに対して<code>require</code>を指定することができないという問題があります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -529,7 +528,7 @@ params.require(:book).permit(:title, chapters_attributes: [:title])
 
 </pre>
 </div>
-<h5 id="strong-parametersのスコープ外">4.5.4 Strong Parametersのスコープ外</h5>
+<h5 id="strong-parametersのスコープ外"><a href="#strong-parameters%E3%81%AE%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%97%E5%A4%96">4.5.4 Strong Parametersのスコープ外</a></h5>
 <p>strong parameter APIは、最も一般的な使用状況を念頭に置いて設計されています。つまり、あらゆるホワイトリスト化問題を扱えるような万能性があるわけではないということです。しかし、このAPIを自分のコードに混在させることで、状況に対応しやすくすることはできます。</p>
 <p>次のような状況を想像してみましょう。製品名と、その製品名に関連する任意のデータを表すパラメータがあるとします。そして、この製品名もデータハッシュ全体もまとめてホワイトリスト化したいとします。strong parameters APIは、任意のキーを持つネストしたハッシュ全体を直接ホワイトリスト化することはしませんが、ネストしたハッシュのキーを使用して、ホワイトリスト化する対象を宣言することはできます。</p>
 <div class="code_container">
@@ -540,7 +539,7 @@ end
 
 </pre>
 </div>
-<h3 id="セッション">5 セッション</h3>
+<h3 id="セッション"><a href="#%E3%82%BB%E3%83%83%E3%82%B7%E3%83%A7%E3%83%B3">5 セッション</a></h3>
 <p>Railsアプリケーションにはユーザーごとにセッションが設定されます。前のリクエストの情報を次のリクエストでも利用するためにセッションに少量のデータが保存されます。セッションはコントローラとビューでのみ使用可能です。また、以下のように複数のストレージから選ぶことができます。</p>
 <ul>
 <li>
@@ -612,7 +611,7 @@ production:
 </pre>
 </div>
 <div class="note"><p><code>CookieStore</code>を使用中に秘密鍵を変更すると、既存のセッションがすべて無効になります。</p></div>
-<h4 id="セッションにアクセスする">5.1 セッションにアクセスする</h4>
+<h4 id="セッションにアクセスする"><a href="#%E3%82%BB%E3%83%83%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%AB%E3%82%A2%E3%82%AF%E3%82%BB%E3%82%B9%E3%81%99%E3%82%8B">5.1 セッションにアクセスする</a></h4>
 <p>コントローラ内では<code>session</code>インスタンスメソッドを使用してセッションにアクセスできます。</p>
 <div class="note"><p>セッションは遅延読み込みされます。アクションのコードでセッションにアクセスしなかった場合、セッションは読込されません。従って、アクセスしていないのであればセッションを無効にする必要はまったくありません。アクセスしないことで既にセッションは無効になっています。</p></div>
 <p>セッションの値は、ハッシュに似たキー/値ペアを使用して保存されます。</p>
@@ -666,7 +665,7 @@ end
 </pre>
 </div>
 <p>セッション全体をリセットするには<code>reset_session</code>を使用します。</p>
-<h4 id="flash">5.2 Flash</h4>
+<h4 id="flash"><a href="#flash">5.2 Flash</a></h4>
 <p>flashはセッションの中の特殊な部分であり、リクエストごとにクリアされます。この特徴から、flashは「直後のリクエスト」でのみ参照可能になります。これはエラーメッセージを渡したりするのに便利です。</p>
 <p>flashのアクセス方法はセッションとほとんど同じで、ハッシュとしてアクセスします (これを<a href="http://api.rubyonrails.org/classes/ActionDispatch/Flash/FlashHash.html">FlashHash</a> インスタンスと呼びます)。</p>
 <p>例として、ログアウトする動作を扱ってみましょう。コントローラでflashを使用することで、次のリクエストで表示するメッセージを送信できます。</p>
@@ -738,8 +737,7 @@ end
 
 </pre>
 </div>
-<h5 id="flash.now">5.2.1 <code>flash.now</code>
-</h5>
+<h5 id="flash.now"><a href="#flash.now">5.2.1 <code>flash.now</code></a></h5>
 <p>デフォルトでは、flashに値を追加すると直後のリクエストでその値を利用できますが、場合によっては、次のリクエストを待たずに同じリクエスト内でこれらのflash値にアクセスしたくなることがあります。たとえば、<code>create</code>アクションに失敗してリソースが保存されなかった場合に、<code>new</code>テンプレートを直接描画するとします。このとき新しいリクエストは行われませんが、この状態でもflashを使用してメッセージを表示したいこともあります。このような場合、<code>flash.now</code>を使用すれば通常の<code>flash</code>と同じ要領でメッセージを表示できます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -757,7 +755,7 @@ end
 
 </pre>
 </div>
-<h3 id="cookies">6 Cookies</h3>
+<h3 id="cookies"><a href="#cookies">6 Cookies</a></h3>
 <p>Webアプリケーションでは、cookieと呼ばれる少量のデータをクライアントのブラウザに保存することができます。HTTPでは基本的にリクエストとリクエストの間には何の関連もありませんが、cookieを使用することでリクエスト同士の間で (あるいはセッション同士の間であっても) このデータが保持されるようになります。Railsでは<code>cookies</code>メソッドを使用してcookieに簡単にアクセスできます。アクセス方法はセッションの場合とよく似ていて、ハッシュのように動作します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -826,7 +824,7 @@ end
 <p>cookieには文字列や数字などの単純なデータだけを保存することをお勧めします。
 cookieに複雑なオブジェクトを保存しなければならない場合は、後続のリクエストでcookieから値を読み出す場合の変換については自分で面倒を見る必要があります。</p>
 <p>cookieセッションストアを使用する場合、<code>session</code>や<code>flash</code>ハッシュについてもこのことは該当します。</p>
-<h3 id="xmlとjsonデータを描画する">7 XMLとJSONデータを描画する</h3>
+<h3 id="xmlとjsonデータを描画する"><a href="#xml%E3%81%A8json%E3%83%87%E3%83%BC%E3%82%BF%E3%82%92%E6%8F%8F%E7%94%BB%E3%81%99%E3%82%8B">7 XMLとJSONデータを描画する</a></h3>
 <p>ActionControllerのおかげで、<code>XML</code>データや<code>JSON</code>データの出力 (レンダリング) は非常に簡単に行えます。scaffoldを使用して生成したコントローラは以下のようになっているはずです。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -844,7 +842,7 @@ end
 </pre>
 </div>
 <p>上のコードでは、<code>render xml: @users.to_xml</code>ではなく<code>render xml: @users</code>となっていることにご注目ください。Railsは、オブジェクトが文字列型でない場合は自動的に<code>to_xml</code>を呼んでくれます。</p>
-<h3 id="フィルタ">8 フィルタ</h3>
+<h3 id="フィルタ"><a href="#%E3%83%95%E3%82%A3%E3%83%AB%E3%82%BF">8 フィルタ</a></h3>
 <p>フィルタは、アクションの直前 (before)、直後 (after)、あるいはその両方 (around) に実行されるメソッドです。</p>
 <p>フィルタは継承可能であるため、<code>ApplicationController</code>でフィルタを設定すればアプリケーションのすべてのコントローラでフィルタが有効になります。</p>
 <p>"Before"フィルタは、リクエストサイクルを止めてしまう可能性があることに留意してください。"before"フィルタのよくある使われ方として、ユーザーがアクションを実行する前にログインを要求するというのがあります。このフィルタメソッドは以下のような感じになるでしょう。</p>
@@ -876,7 +874,7 @@ end
 </pre>
 </div>
 <p>上のようにすることで、<code>LoginsController</code>の<code>new</code>アクションと<code>create</code>アクションをこれまでどおり認証不要にすることができました。特定のアクションについてだけフィルタをスキップしたい場合には<code>:only</code>オプションを使用します。逆に特定のアクションについてだけフィルタをスキップしたくない場合は<code>:except</code>オプションを使用します。これらのオプションはフィルタを追加するときにも使用できるので、最初の場所で選択したアクションに対してだけ実行されるフィルタを追加することもできます。</p>
-<h4 id="afterフィルタとaroundフィルタ">8.1 afterフィルタとaroundフィルタ</h4>
+<h4 id="afterフィルタとaroundフィルタ"><a href="#after%E3%83%95%E3%82%A3%E3%83%AB%E3%82%BF%E3%81%A8around%E3%83%95%E3%82%A3%E3%83%AB%E3%82%BF">8.1 afterフィルタとaroundフィルタ</a></h4>
 <p>"before"フィルタ以外に、アクションの実行後に実行されるフィルタや、実行前実行後の両方で実行されるフィルタを使用することもできます。</p>
 <p>"After"フィルタは"before"フィルタと似ていますが、Afterの場合はアクションは既に実行済みであり、クライアントに送信されようとしている応答データにアクセスできる点がbeforeとは異なります。当然ながら、"after"フィルタをどのように書いても、アクションの実行が中断するようなことはありません。</p>
 <p>"Around"フィルタを使用する場合は、フィルタ内のどこかで必ず<code>yield</code>を実行して、関連付けられたアクションを実行してやる義務が生じます。これはRackミドルウェアの動作と似ています。</p>
@@ -903,7 +901,7 @@ end
 </div>
 <p>"around"フィルタの場合、画面出力 (レンダリング) もその作業に含まれていることにご注意ください。特に、上の例で言うとビュー自身がデータベースから (スコープなどを使用して) 読み出しを行うとすると、その読み出しはトランザクション内で行われ、データはプレビューに表示されます。</p>
 <p>あえてyieldを実行せず、自分で応答を作成するという方法もあります。この場合、アクションは実行されません。</p>
-<h4 id="その他のフィルタ使用法">8.2 その他のフィルタ使用法</h4>
+<h4 id="その他のフィルタ使用法"><a href="#%E3%81%9D%E3%81%AE%E4%BB%96%E3%81%AE%E3%83%95%E3%82%A3%E3%83%AB%E3%82%BF%E4%BD%BF%E7%94%A8%E6%B3%95">8.2 その他のフィルタ使用法</a></h4>
 <p>最も一般的なフィルタの使用法は、privateメソッドを作成し、*_action を使用してそのメソッドを追加することですが、同じ結果を得られるフィルタ使用法が他にも2とおりあります。</p>
 <p>1番目は、*<em>actionメソッドに対して直接ブロックを与えることです。このブロックはコントローラを引数として受け取り、その上の`require</em>login`フィルタを書き換えて、ブロックを使用するようにします。●</p>
 <div class="code_container">
@@ -939,7 +937,7 @@ end
 </pre>
 </div>
 <p>繰り返しますが、この例はフィルタとして理想的なものではありません。その理由は、このフィルタがコントローラのスコープで動作せず、コントローラが引数として渡されるからです。このフィルタクラスには、フィルタと同じ名前のメソッドを実装する必要があります。従って、<code>before_action</code>フィルタの場合、クラスに<code>before</code>メソッドを実装しなければならない、という具合です。<code>around</code>メソッド内では<code>yield</code>を呼んでアクションを実行してやる必要があります。</p>
-<h3 id="リクエストフォージェリからの保護">9 リクエストフォージェリからの保護</h3>
+<h3 id="リクエストフォージェリからの保護"><a href="#%E3%83%AA%E3%82%AF%E3%82%A8%E3%82%B9%E3%83%88%E3%83%95%E3%82%A9%E3%83%BC%E3%82%B8%E3%82%A7%E3%83%AA%E3%81%8B%E3%82%89%E3%81%AE%E4%BF%9D%E8%AD%B7">9 リクエストフォージェリからの保護</a></h3>
 <p>クロスサイトリクエストフォージェリは攻撃手法の一種です。邪悪なWebサイトがユーザーをだまし、攻撃目標となるWebサイトへの危険なリクエストを知らないうちに作成させるというものです。攻撃者は標的ユーザーに関する知識や権限を持っていなくても、目標サイトに対してデータの追加/変更/削除を行わせることができてしまいます。</p>
 <p>この攻撃を防ぐために必要な手段の第一歩は、「create/update/destroyのような破壊的な操作に対して絶対にGETリクエストでアクセスできない」ようにすることです。WebアプリケーションがRESTful規則に従っていれば、これは守られているはずです。しかし、邪悪なWebサイトはGET以外のリクエストを目標サイトに送信することなら簡単にできてしまいます。リクエストフォージェリの保護はまさにここを守るためのものです。文字どおり、リクエストの偽造(forgery)から保護するのです。</p>
 <p>その具体的な保護方法は、推測不可能なトークンをすべてのリクエストに追加することです。このトークンはサーバーだけが知っています。これにより、リクエストに含まれているトークンが不正であればアクセスが拒否されます。</p>
@@ -968,9 +966,9 @@ end
 <p>Railsでは、<a href="form_helpers.html">formヘルパー</a>を使用して生成されたあらゆるフォームにトークンを追加します。従って、この攻撃を心配する必要はほとんどありません。formヘルパーを使用せずに手作りした場合や、別の理由でトークンが必要な場合には、<code>form_authenticity_token</code>メソッドでトークンを生成できます。</p>
 <p><code>form_authenticity_token</code>メソッドは、有効な認証トークンを生成します。このメソッドは、カスタムAjax呼び出しなどのように、Railsが自動的にトークンを追加してくれない箇所で使用するのに便利です。</p>
 <p>本ガイドの<a href="security.html">セキュリティガイド</a>では、この話題を含む多くのセキュリティ問題について言及しており、いずれもWebアプリケーションを開発するうえで必読です。</p>
-<h3 id="リクエストオブジェクトとレスポンスオブジェクト">10 リクエストオブジェクトとレスポンスオブジェクト</h3>
+<h3 id="リクエストオブジェクトとレスポンスオブジェクト"><a href="#%E3%83%AA%E3%82%AF%E3%82%A8%E3%82%B9%E3%83%88%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%81%A8%E3%83%AC%E3%82%B9%E3%83%9D%E3%83%B3%E3%82%B9%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88">10 リクエストオブジェクトとレスポンスオブジェクト</a></h3>
 <p>すべてのコントローラには、現在実行中のリクエストサイクルに関連するリクエストオブジェクトとレスポンスオブジェクトを指す、2つのアクセサメソッドがあります。<code>request</code>メソッドは<code>AbstractRequest</code>クラスのインスタンスを含み、<code>response</code>メソッドは、今クライアントに戻されようとしている内容を表すレスポンスオブジェクトを返します。</p>
-<h4 id="requestオブジェクト">10.1 <code>request</code>オブジェクト</h4>
+<h4 id="requestオブジェクト"><a href="#request%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88">10.1 <code>request</code>オブジェクト</a></h4>
 <p>リクエストオブジェクトには、クライアントブラウザから返されるリクエストに関する有用な情報が多数含まれています。利用可能なメソッドをすべて知りたい場合は<a href="http://api.rubyonrails.org/classes/ActionDispatch/Request.html">APIドキュメント</a>を参照してください。その中から、このオブジェクトでアクセス可能なメソッドを紹介します。</p>
 <table>
 <thead>
@@ -1027,10 +1025,9 @@ end
 </tr>
 </tbody>
 </table>
-<h5 id="path_parameters、query_parameters、request_parameters">10.1.1 <code>path_parameters</code>、<code>query_parameters</code>、<code>request_parameters</code>
-</h5>
+<h5 id="path_parameters、query_parameters、request_parameters"><a href="#path_parameters%E3%80%81query_parameters%E3%80%81request_parameters">10.1.1 <code>path_parameters</code>、<code>query_parameters</code>、<code>request_parameters</code></a></h5>
 <p>Railsは、リクエストに関連する<code>params</code>ハッシュに集約してくれます。 collects all of the parameters sent along with the request in the <code>params</code> hash, whether they are sent as part of the query string or the post body. requestオブジェクトには3つのアクセサがあり、パラメータの由来に応じたアクセスを行なうこともできます。<code>query_parameters</code>ハッシュにはクエリ文字列として送信されたパラメータが含まれます。<code>request_parameters</code>ハッシュにはPOST bodyの一部として送信されたパラメータが含まれます。<code>path_parameters</code>には、ルーティング機構によって特定のコントローラとアクションへのパスの一部であると認識されたパラメータが含まれます。</p>
-<h4 id="the-responseオブジェクト">10.2 The <code>response</code>オブジェクト</h4>
+<h4 id="the-responseオブジェクト"><a href="#the-response%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88">10.2 The <code>response</code>オブジェクト</a></h4>
 <p>通常、responseオブジェクトを直接使用することはありません。このオブジェクトの内容は、クライアントに送り返される、アクションの実行中およびデータの描画 (レンダリング) ですが、このオブジェクトに直接これらのアクセサの中にはセッターで値を変更できるものもあります。</p>
 <table>
 <thead>
@@ -1067,7 +1064,7 @@ end
 </tr>
 </tbody>
 </table>
-<h5 id="カスタムヘッダーの設定">10.2.1 カスタムヘッダーの設定</h5>
+<h5 id="カスタムヘッダーの設定"><a href="#%E3%82%AB%E3%82%B9%E3%82%BF%E3%83%A0%E3%83%98%E3%83%83%E3%83%80%E3%83%BC%E3%81%AE%E8%A8%AD%E5%AE%9A">10.2.1 カスタムヘッダーの設定</a></h5>
 <p>レスポンスでカスタムヘッダーを使用したいのであれば、<code>response.headers</code>が利用できます。このヘッダー属性はハッシュであり、ヘッダ名と値がその中でマップされています。一分の値はRailsによって自動的に設定されます。ヘッダに追加・変更を行いたい場合は以下のように<code>response.headers</code>に割り当てます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1076,13 +1073,13 @@ response.headers["Content-Type"] = "application/pdf"
 </pre>
 </div>
 <div class="note"><p>上のようなことをしたいのであれば、<code>content_type</code>セッターを直接使用する方がずっとわかりやすくなります。</p></div>
-<h3 id="http認証">11 HTTP認証</h3>
+<h3 id="http認証"><a href="#http%E8%AA%8D%E8%A8%BC">11 HTTP認証</a></h3>
 <p>Railsには2とおりのHTTP認証機構がビルトインされています。</p>
 <ul>
 <li>BASIC認証</li>
 <li>ダイジェスト認証</li>
 </ul>
-<h4 id="http-basic認証">11.1 HTTP BASIC認証</h4>
+<h4 id="http-basic認証"><a href="#http-basic%E8%AA%8D%E8%A8%BC">11.1 HTTP BASIC認証</a></h4>
 <p>HTTP BASIC認証は認証スキームの一種であり、非常に多くのブラウザおよびHTTPクライアントによってサポートされています。例として、Webアプリケーションに管理画面があり、ブラウザのHTTP BASIC認証ダイアログウィンドウでユーザー名とパスワードを入力しないとアクセスできないようにしたいとします。このビルトイン認証メカニズムはとても簡単に利用できます。必要なのは<code>http_basic_authenticate_with</code>だけです。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1093,7 +1090,7 @@ end
 </pre>
 </div>
 <p>このとき、<code>AdminsController</code>を継承した名前空間付きのコントローラを作成することもできます。このフィルタは、該当するコントローラのすべてのアクションで実行されるので、それらをHTTP BASIC認証で保護することができます。</p>
-<h4 id="httpダイジェスト認証">11.2 HTTPダイジェスト認証</h4>
+<h4 id="httpダイジェスト認証"><a href="#http%E3%83%80%E3%82%A4%E3%82%B8%E3%82%A7%E3%82%B9%E3%83%88%E8%AA%8D%E8%A8%BC">11.2 HTTPダイジェスト認証</a></h4>
 <p>HTTPダイジェスト認証は、BASIC認証よりも高度な認証システムであり、暗号化されていない平文パスワードをネットワークに送信しなくて済む利点があります (BASIC認証も、HTTPS上で行えば安全になります)。Railsではダイジェスト認証も簡単に使用できます。必要なのは<code>authenticate_or_request_with_http_digest</code>メソッドだけです。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1114,7 +1111,7 @@ end
 </pre>
 </div>
 <p>上の例で示したように、<code>authenticate_or_request_with_http_digest</code>のブロックでは、引数を1つ (ユーザー名) しか取りません。そしてブロックからはパスワードが返されます。<code>authenticate_or_request_with_http_digest</code>から<code>nil</code>または<code>false</code>が返された場合は、認証が失敗します。</p>
-<h3 id="ストリーミングとファイルダウンロード">12 ストリーミングとファイルダウンロード</h3>
+<h3 id="ストリーミングとファイルダウンロード"><a href="#%E3%82%B9%E3%83%88%E3%83%AA%E3%83%BC%E3%83%9F%E3%83%B3%E3%82%B0%E3%81%A8%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%83%80%E3%82%A6%E3%83%B3%E3%83%AD%E3%83%BC%E3%83%89">12 ストリーミングとファイルダウンロード</a></h3>
 <p>HTMLを出力するのではなく、ユーザーにファイルを直接送信したい場合があります。<code>send_data</code>メソッドと<code>send_file</code>メソッドはRailsのすべてのコントローラで利用でき、いずれもストリームデータをクライアントに送信するために使用します。<code>send_file</code>は、ディスク上のファイル名を取得したり、ファイルの内容をストリーミングしたりできる、便利なメソッドです。</p>
 <p>クライアントにデータをストリーミングするには、<code>send_data</code>を使用します。</p>
 <div class="code_container">
@@ -1144,7 +1141,7 @@ end
 </pre>
 </div>
 <p>上の例の<code>download_pdf</code>アクションから、privateメソッドが呼び出され、実際のPDF生成はprivateメソッド側で行われます。PDFは文字列として返されます。続いてこの文字列はクライアントに対してファイルダウンロードとしてストリーミング送信されます。このときに保存用のファイル名もクライアントに示されます。ストリーミング送信するファイルを、クライアント側でファイルとしてダウンロードして欲しくない (ファイルを保存して欲しくない) 場合があります。たとえば、HTMLページに埋め込める画像ファイルを撮影したとします。このときブラウザに対して、このファイルはダウンロード用ではないということを伝えるには、<code>:disposition</code>オプションに"inline"を指定します。逆のオプションは"attachment"で、こちらはストリーミングのデフォルト設定です。</p>
-<h4 id="ファイルを送信する">12.1 ファイルを送信する</h4>
+<h4 id="ファイルを送信する"><a href="#%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E9%80%81%E4%BF%A1%E3%81%99%E3%82%8B">12.1 ファイルを送信する</a></h4>
 <p>サーバーのディスク上にすでにあるファイルを送信するには、<code>send_file</code>メソッドを使用します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1164,7 +1161,7 @@ end
 <p><code>:type</code>オプションが未指定の場合、<code>:filename</code>で取得したファイル名の拡張子から推測して与えられます。拡張子に該当するContent-TypeがRailsに登録されていない場合、<code>application/octet-stream</code>が使用されます。</p>
 <div class="warning"><p>サーバーのディスク上のファイルパスを指定するときに、(paramsやcookieなどの) クライアントから送信されたデータを使用する場合は、十分な注意が必要です。クライアントから邪悪なファイルパスが送り込まれ、開発者が意図しないファイルにアクセスされてしまうというセキュリティ上のリスクがあることを常に念頭に置いてください。</p></div>
 <div class="info"><p>静的なファイルをわざわざRails経由でストリーミング送信することはお勧めできません。ほとんどの場合、Webサーバーのpublicフォルダに置いてダウンロードさせれば済みます。Railsを経由してストリーミングでダウンロードするよりも、ApacheなどのWebサーバーから直接ファイルをダウンロードする方が遥かに高効率であり、しかもRailsスタック全体を経由する不必要なリクエストを受け付けずに済みます。</p></div>
-<h4 id="restfulなダウンロード">12.2 RESTfulなダウンロード</h4>
+<h4 id="restfulなダウンロード"><a href="#restful%E3%81%AA%E3%83%80%E3%82%A6%E3%83%B3%E3%83%AD%E3%83%BC%E3%83%89">12.2 RESTfulなダウンロード</a></h4>
 <p><code>send_data</code>だけでも問題なく使用できますが、真にRESTfulなアプリケーションを作ろうとしているのであれば、ファイルダウンロード専用にわざわざアクションを作成する必要は通常はありません。RESTという用語では、上の例で使用されているPDFファイルのようなものは、クライアントリソースを別の形で表現したものであると見なされます。Railsには、これに基づいた"RESTfulダウンロード"を簡単に実現するための洗練された手段も用意されています。PDFダウンロードをストリーミングとして扱わず、<code>show</code>アクションの一部として扱うように上の例を変更したものを以下に示します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1197,9 +1194,9 @@ GET /clients/1.pdf
 
 </pre>
 </div>
-<h4 id="任意のデータをライブストリーミングする">12.3 任意のデータをライブストリーミングする</h4>
+<h4 id="任意のデータをライブストリーミングする"><a href="#%E4%BB%BB%E6%84%8F%E3%81%AE%E3%83%87%E3%83%BC%E3%82%BF%E3%82%92%E3%83%A9%E3%82%A4%E3%83%96%E3%82%B9%E3%83%88%E3%83%AA%E3%83%BC%E3%83%9F%E3%83%B3%E3%82%B0%E3%81%99%E3%82%8B">12.3 任意のデータをライブストリーミングする</a></h4>
 <p>Railsは、ファイル以外のものをストリーミング送信することもできます。実際、responseオブジェクトに含まれるものなら何でもストリーミング送信できます。<code>ActionController::Live</code>モジュールを使用すると、ブラウザとの永続的な接続を作成することができます。これにより、いつでも好きなタイミングで任意のデータをブラウザに送信することができます。</p>
-<h5 id="ライブストリーミングを組み込む">12.3.1 ライブストリーミングを組み込む</h5>
+<h5 id="ライブストリーミングを組み込む"><a href="#%E3%83%A9%E3%82%A4%E3%83%96%E3%82%B9%E3%83%88%E3%83%AA%E3%83%BC%E3%83%9F%E3%83%B3%E3%82%B0%E3%82%92%E7%B5%84%E3%81%BF%E8%BE%BC%E3%82%80">12.3.1 ライブストリーミングを組み込む</a></h5>
 <p>コントローラクラスの内部に<code>ActionController::Live</code>を組み込むと、そのコントローラのすべてのアクションでデータをストリーミングできるようになります。このモジュールを以下のようにミックスインできます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1221,7 +1218,7 @@ end
 </div>
 <p>上のコードでは、ブラウザとの間に永続的な接続を確立し、1秒おきに<code>"hello world\n"</code>を100個ずつ送信しています。</p>
 <p>上の例には注意点がいくつもあります。レスポンスのストリームは確実に閉じられるようにする必要があります。ストリームを閉じ忘れると、ソケットが永久に開いたままになってしまいます。レスポンスストリームへの書き込みを行う前に、Content-Typeを<code>text/event-stream</code>に設定する必要もあります。その理由は、レスポンスがコミットされてしまうと (<code>response.committed</code>がtrueに相当する値を返したとき)、以後ヘッダーに書き込みできないからです。これは、レスポンスストリームに対して<code>write</code>または<code>commit</code>を行った場合に発生します。</p>
-<h5 id="使用例">12.3.2 使用例</h5>
+<h5 id="使用例"><a href="#%E4%BD%BF%E7%94%A8%E4%BE%8B">12.3.2 使用例</a></h5>
 <p>今あなたはカラオケマシンを開発中です。ユーザーは曲の歌詞を見たいと思っています。それぞれの<code>Song</code>には特定の数の行があり、その行1つ1つに、「曲が終わるまで後何拍あるか」を表す<code>num_beats</code>が記入されています。</p>
 <p>歌詞を「カラオケスタイル」でユーザーに表示したいので、直前の歌詞を歌い終わってから次の歌詞を表示することになります。そこで、以下のように<code>ActionController::Live</code>を使用します。</p>
 <div class="code_container">
@@ -1245,16 +1242,16 @@ end
 </pre>
 </div>
 <p>上のコードでは、お客さんが直前の歌詞を歌い終わった時に限って次の歌詞を送信しています。</p>
-<h5 id="ストリーミングを行う場合の考慮事項">12.3.3 ストリーミングを行う場合の考慮事項</h5>
+<h5 id="ストリーミングを行う場合の考慮事項"><a href="#%E3%82%B9%E3%83%88%E3%83%AA%E3%83%BC%E3%83%9F%E3%83%B3%E3%82%B0%E3%82%92%E8%A1%8C%E3%81%86%E5%A0%B4%E5%90%88%E3%81%AE%E8%80%83%E6%85%AE%E4%BA%8B%E9%A0%85">12.3.3 ストリーミングを行う場合の考慮事項</a></h5>
 <p>任意のデータをストリーミング送信できることは、きわめて強力なツールとなります。これまでの例でご紹介したように、好きな時に好きなものをレスポンスストリームに流すことができます。ただし、以下の点についてご注意ください。</p>
 <ul>
 <li>レスポンスストリームが1つ作成されるたびに新しいスレッドが作成され、元のスレッドからスレッドローカルな変数がコピーされます。スレッドローカルな変数が増えすぎるとパフォーマンスに悪影響が生じます。また、スレッド数が多すぎても同様にパフォーマンスが低下します。</li>
 <li>レスポンスストリームを閉じることに失敗すると、対応するソケットが永久に開いたままになってしまいます。レスポンスストリームを使用する場合は、<code>close</code>が確実に呼び出されるようにしてください。</li>
 <li>WEBrickサーバーはすべてのレスポンスをバッファリングするため、<code>ActionController::Live</code>をインクルードしても動作しません。このため、レスポンスを自動的にバッファリングしないWebサーバーを使用する必要があります。</li>
 </ul>
-<h3 id="ログをフィルタする">13 ログをフィルタする</h3>
+<h3 id="ログをフィルタする"><a href="#%E3%83%AD%E3%82%B0%E3%82%92%E3%83%95%E3%82%A3%E3%83%AB%E3%82%BF%E3%81%99%E3%82%8B">13 ログをフィルタする</a></h3>
 <p>Railsのログファイルは、環境ごとに<code>log</code>フォルダの下に出力されます。デバッグ時にアプリケーションで何が起こっているかをログで確認できると非常に便利なのですが、その一方で本番のアプリケーションでは顧客のパスワードのような重要な情報をログファイルに出力したくないこともあります。</p>
-<h4 id="パラメータをフィルタする">13.1 パラメータをフィルタする</h4>
+<h4 id="パラメータをフィルタする"><a href="#%E3%83%91%E3%83%A9%E3%83%A1%E3%83%BC%E3%82%BF%E3%82%92%E3%83%95%E3%82%A3%E3%83%AB%E3%82%BF%E3%81%99%E3%82%8B">13.1 パラメータをフィルタする</a></h4>
 <p>Railsアプリケーションの設定ファイル config.filter_parameters に、特定のリクエストパラメータをログ出力時にフィルタする設定を追加することができます。フィルタされたパラメータはログ内で [FILTERED] という文字に置き換えられます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1262,7 +1259,7 @@ config.filter_parameters &lt;&lt; :password
 
 </pre>
 </div>
-<h4 id="リダイレクトをフィルタする">13.2 リダイレクトをフィルタする</h4>
+<h4 id="リダイレクトをフィルタする"><a href="#%E3%83%AA%E3%83%80%E3%82%A4%E3%83%AC%E3%82%AF%E3%83%88%E3%82%92%E3%83%95%E3%82%A3%E3%83%AB%E3%82%BF%E3%81%99%E3%82%8B">13.2 リダイレクトをフィルタする</a></h4>
 <p>アプリケーションからのリダイレクト先となるURLのいくつかは、場合によってはログに出力しない方がよいことがあります。
 設定の<code>config.filter_redirect</code>オプションを使用して、リダイレクト先をログに出力しないようにすることができます。</p>
 <div class="code_container">
@@ -1279,13 +1276,12 @@ config.filter_redirect.concat ['s3.amazonaws.com', /private_path/]
 </pre>
 </div>
 <p>マッチしたURLはログで'[FILTERED]'という文字に置き換えられます。</p>
-<h3 id="rescue">14 Rescue</h3>
+<h3 id="rescue"><a href="#rescue">14 Rescue</a></h3>
 <p>どんなアプリケーションにもどこかにバグが潜んでいたり、適切に扱う必要のある例外をスローすることがあるものです。たとえば、データベースに既に存在しなくなったリソースに対してユーザーがアクセスした場合、Active Recordは<code>ActiveRecord::RecordNotFound</code>例外をスローします。</p>
 <p>Railsのデフォルトの例外ハンドリングでは、例外の種類にかかわらず"500 Server Error"を表示します。リクエストがローカルのブラウザから行われた場合、詳細なトレースバックや追加情報が表示されますので、問題点を把握して対応することができます。リクエストがリモートブラウザの場合、Railsは"500 Server Error"というメッセージだけをユーザーに表示したり、ルーティングやレコードがない場合は"404 Not Found"と表示したりします。このままではあまりにそっけないので、エラーのキャッチ方法やユーザーへの表示方法をカスタマイズしたくなるものです。Railsアプリケーションでは、例外ハンドリングをさまざまなレベルで実行できます。</p>
-<h4 id="デフォルトの500・404テンプレート">14.1 デフォルトの500・404テンプレート</h4>
+<h4 id="デフォルトの500・404テンプレート"><a href="#%E3%83%87%E3%83%95%E3%82%A9%E3%83%AB%E3%83%88%E3%81%AE500%E3%83%BB404%E3%83%86%E3%83%B3%E3%83%97%E3%83%AC%E3%83%BC%E3%83%88">14.1 デフォルトの500・404テンプレート</a></h4>
 <p>デフォルトでは、本番のRailsアプリケーションは404または500エラーメッセージを表示します。これらのメッセージは<code>public</code>フォルダ以下に置かれている静的なHTMLファイルです。それぞれ<code>404.html</code>および<code>500.html</code>という名前です。これらのファイルをカスタマイズして、情報を追加したりレイアウトを整えたりできます。ただし、これらはあくまで静的なHTMLファイルなので、RHTMLやERBは使用でいません。</p>
-<h4 id="rescue_from">14.2 <code>rescue_from</code>
-</h4>
+<h4 id="rescue_from"><a href="#rescue_from">14.2 <code>rescue_from</code></a></h4>
 <p>エラーをキャッチしたときの動作をもう少し洗練されたものにしたい場合は、<code>rescue_from</code>を使用できます。これは、特定の種類または複数の種類の例外を1つのコントローラ全体およびそのサブクラスで扱えるようにするものです。</p>
 <p><code>rescue_from</code>命令でキャッチできる例外が発生すると、ハンドラに例外オブジェクトが渡されます。このハンドラはメソッドか、<code>:with</code>オプション付きで渡された<code>Proc</code>オブジェクトのいずれかです。明示的に<code>Proc</code>オブジェクトを使用する代りに、ブロックを直接使用することもできます。</p>
 <p><code>rescue_from</code>を使用してすべての<code>ActiveRecord::RecordNotFound</code>エラーを奪い取り、処理を行なう方法を以下に示します。</p>
@@ -1337,7 +1333,7 @@ end
 </pre>
 </div>
 <div class="note"><p><code>ApplicationController</code>クラスでは特定の例外についてはrescueできないものがあります。その理由は、コントローラが初期化されてアクションが実行される前に発生する例外があるからです。詳細については、Pratik Naikによる<a href="http://m.onkey.org/2008/7/20/rescue-from-dispatching">記事</a>を参照してください。</p></div>
-<h3 id="httpsプロトコルを強制する">15 HTTPSプロトコルを強制する</h3>
+<h3 id="httpsプロトコルを強制する"><a href="#https%E3%83%97%E3%83%AD%E3%83%88%E3%82%B3%E3%83%AB%E3%82%92%E5%BC%B7%E5%88%B6%E3%81%99%E3%82%8B">15 HTTPSプロトコルを強制する</a></h3>
 <p>セキュリティ上の理由から、特定のコントローラについてはHTTPSのみでアクセスできるように強制したいことがあります。コントローラ内で<code>force_ssl</code>メソッドを使用することでSSLを強制することができます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">

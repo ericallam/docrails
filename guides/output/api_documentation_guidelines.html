@@ -221,7 +221,7 @@
       <div id="mainCol">
         <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
-<h3 id="rdoc">1 RDoc</h3>
+<h3 id="rdoc"><a href="#rdoc">1 RDoc</a></h3>
 <p><a href="http://api.rubyonrails.org">Rails API ドキュメント</a>は<a href="http://docs.seattlerb.org/rdoc/">RDoc</a>を使用して生成されます。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
@@ -231,7 +231,7 @@
 </div>
 <p>生成されたHTMLファイルは./doc/rdocディレクトリに置かれます。</p>
 <p>RDocの記法に関しては、<a href="http://docs.seattlerb.org/rdoc/RDoc/Markup.html">markup</a>を参照してください(訳注: 別ページですが<a href="http://docs.ruby-lang.org/ja/2.1.0/library/rdoc.html">日本語のRDocライブラリ解説</a>があります)。<a href="http://docs.seattlerb.org/rdoc/RDoc/Parser/Ruby.html">追加のディレクティブ</a>にも目を通しておいてください。</p>
-<h3 id="語調">2 語調</h3>
+<h3 id="語調"><a href="#%E8%AA%9E%E8%AA%BF">2 語調</a></h3>
 <p>簡潔かつ宣言的に書くこと。簡潔さはそれだけで長所になります。</p>
 <p>現在形で書くこと。"Returned a hash that..." や "Will return a hash that..." ではなく"Returns a hash that..."のように書く。</p>
 <p>コメントの英語は大文字で始めること。句読点や記号の用法は常識に従うこと。</p>
@@ -272,9 +272,9 @@ If `return` is needed it is recommended to explicitly define a method.
 <li>hisまたはhers -&gt; theirsに置き換える</li>
 <li>himselfまたはherself -&gt; themselvesに置き換える</li>
 </ul>
-<h3 id="英語">3 英語</h3>
+<h3 id="英語"><a href="#%E8%8B%B1%E8%AA%9E">3 英語</a></h3>
 <p>アメリカ英語を使用すること ( <em>color</em> 、 <em>center</em> 、 <em>modularize</em> など)。詳細は<a href="http://en.wikipedia.org/wiki/American_and_British_English_spelling_differences">アメリカ英語とイギリス英語のスペルの違い</a>を参照してください。</p>
-<h3 id="サンプルコード">4 サンプルコード</h3>
+<h3 id="サンプルコード"><a href="#%E3%82%B5%E3%83%B3%E3%83%97%E3%83%AB%E3%82%B3%E3%83%BC%E3%83%89">4 サンプルコード</a></h3>
 <p>意味のあるサンプルコードを選ぶこと。概要と基本を端的に示し、かつ興味深い点や落とし穴も示されているのが理想です。</p>
 <p>サンプルコードのインデントにはスペース2文字を使用すること。マークアップ用には左マージンに合わせてスペース2文字を使用します。●サンプルコードの例は<a href="contributing_to_ruby_on_rails.html#follow-the-coding-conventions">Railsコーディングルールに従う</a>を参照してください。</p>
 <p>短いドキュメントでは、スニペットを紹介する際に"Examples"と明示的にラベルを付ける必要はない。単にパラグラフに従うようにします。</p>
@@ -333,7 +333,7 @@ If `return` is needed it is recommended to explicitly define a method.
 
 </pre>
 </div>
-<h3 id="論理値">5 論理値</h3>
+<h3 id="論理値"><a href="#%E8%AB%96%E7%90%86%E5%80%A4">5 論理値</a></h3>
 <p>述語やフラグでの論理値の表記は、正確な値表現よりも、論理値の意味を優先すること。</p>
 <p>"true"および"false"をRubyの定義どおりに使用する場合は、通常のフォントで表記すること。シングルトンの<code>true</code>および<code>false</code>は等幅フォントで表記すること。"truthy"のような用語は避けてください。Rubyでは言語レベルでtrueとfalseが定義されているので、これらの用語は技術的に厳密な意味が与えられており、言い方を変える必要はありません。</p>
 <p>経験から申し上げると、どうしても必要な場合を除いて、ドキュメントでシングルトンを使用すべきではありません。シングルトンを避けることで、<code>!!</code>や三項演算子のような人工的な表現を避けることができ、リファクタリングもしやすくなります。さらに、実装で呼び出されるメソッドが返す値の表現が少しでも違うとコードが正常に動作しないという事態も避けられます。</p>
@@ -367,7 +367,7 @@ end
 </pre>
 </div>
 <p>このAPIは特定の値にコミットしないように注意が払われており、メソッドには述語と意味が示されています。これで十分です。</p>
-<h3 id="ファイル名">6 ファイル名</h3>
+<h3 id="ファイル名"><a href="#%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E5%90%8D">6 ファイル名</a></h3>
 <p>経験則からも、ファイル名はRailsアプリケーションのルート・ディレクトリからの相対パスで記述すること。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
@@ -377,8 +377,8 @@ RAILS_ROOT/config/routes.rb # NO
 
 </pre>
 </div>
-<h3 id="フォント">7 フォント</h3>
-<h4 id="等幅フォント">7.1 等幅フォント</h4>
+<h3 id="フォント"><a href="#%E3%83%95%E3%82%A9%E3%83%B3%E3%83%88">7 フォント</a></h3>
+<h4 id="等幅フォント"><a href="#%E7%AD%89%E5%B9%85%E3%83%95%E3%82%A9%E3%83%B3%E3%83%88">7.1 等幅フォント</a></h4>
 <p>以下の場合は等幅フォントを使用すること。</p>
 <ul>
 <li>定数、特にクラス名およびモジュール名</li>
@@ -410,7 +410,7 @@ $ echo "+:to_param+" | rdoc --pipe
 
 </pre>
 </div>
-<h4 id="regularフォント">7.2 Regularフォント</h4>
+<h4 id="regularフォント"><a href="#regular%E3%83%95%E3%82%A9%E3%83%B3%E3%83%88">7.2 Regularフォント</a></h4>
 <p>Rubyのキーワードでない、英語としての"true"と"false"にはregularフォント (ItalicやBoldでないフォント) を使用すること。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -430,7 +430,7 @@ end
 
 </pre>
 </div>
-<h3 id="説明のリスト">8 説明のリスト</h3>
+<h3 id="説明のリスト"><a href="#%E8%AA%AC%E6%98%8E%E3%81%AE%E3%83%AA%E3%82%B9%E3%83%88">8 説明のリスト</a></h3>
 <p>項目 (オプションやパラメータのリストなど) とその説明はハイフンでつなぐこと。コロンはシンボルで使用されるので、ハイフンの方が読みやすくなります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -439,7 +439,7 @@ end
 </pre>
 </div>
 <p>説明文は通常の英語として大文字で始め、ピリオドで終わること。</p>
-<h3 id="動的に生成されるメソッド">9 動的に生成されるメソッド</h3>
+<h3 id="動的に生成されるメソッド"><a href="#%E5%8B%95%E7%9A%84%E3%81%AB%E7%94%9F%E6%88%90%E3%81%95%E3%82%8C%E3%82%8B%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89">9 動的に生成されるメソッド</a></h3>
 <p><code>(module|class)_eval(文字列)</code>メソッドで作成されるメソッドには、生成されたコードのインスタンスのそばにコメントが置かれます。このように作成されたコメントには、スペース2文字分のインデントが与えられます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -473,7 +473,7 @@ self.class_eval %{
 
 </pre>
 </div>
-<h3 id="メソッドの可視性">10 メソッドの可視性</h3>
+<h3 id="メソッドの可視性"><a href="#%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89%E3%81%AE%E5%8F%AF%E8%A6%96%E6%80%A7">10 メソッドの可視性</a></h3>
 <p>Railsのドキュメントを作成するにあたり、ユーザー向けのパブリックなAPIと内部APIの違いを理解しておくことが重要です。</p>
 <p>多くのライブラリと同様、Railsでも内部APIの定義にprivateキーワードが使用されます。しかし、パブリックなAPIのルールは若干異なります。Railsでは、すべてのpublicなメソッドがユーザーに公開されて使用されるということを前提にしていません。代りに、そのメソッドが内部APIであることを示すために<code>:nodoc:</code>ディレクティブを使用します。</p>
 <p>つまり、Railsでは可視性が<code>public</code>のメソッドであっても、ユーザーに公開されているとは限らないのです。</p>
@@ -494,7 +494,7 @@ end
 <p>既存の<code>:nodoc:</code>指定はむやみに変更しないでください。この指定を外す際は、必ずコアチームの誰かかコードの著者に相談してからにしてください。<code>:nodoc</code>が外されてしまうエラーは、docrailsプロジェクトよりもほとんどの場合pull requestで発生します。</p>
 <p><code>:nodoc:</code>の追加は、絶対に無断で行わないでください。ドキュメントからそのメソッドやクラスの記述が失われてしまいます。たとえば、あるメソッドの可視性をprivateからpublicに切り替えた際に、内部のパブリックメソッドに<code>:nodoc:</code>が指定されていなかったという事例がありえます。そのようなケースを見つけたら、必要に応じてpull requestで議論してください。直接docrailsを変更することはくれぐれも行わないでください。</p>
 <p>まとめ: Railsチームは可視性がpublicで内部でのみ使用するメソッドやクラスには<code>:nodoc:</code>を指定します。APIの可視性の変更は慎重に行なわれるべきであり、pull requestでの議論を経てから行なうこと。</p>
-<h3 id="railsスタック">11 Railsスタック</h3>
+<h3 id="railsスタック"><a href="#rails%E3%82%B9%E3%82%BF%E3%83%83%E3%82%AF">11 Railsスタック</a></h3>
 <p>Rails APIの一部をドキュメント化する際には、それがRailsスタックのひとつとなることを意識しておくことが重要です。</p>
 <p>つまり、ドキュメント化しようとしているメソッドやクラスのスコープやコンテキストに応じて振る舞いが変化することがあるということです。</p>
 <p>スタック全体を考慮に入れれば、振る舞いの変化するはあちこちに見つかります。<code>ActionView::Helpers::AssetTagHelper#image_tag</code>などが典型です。</p>

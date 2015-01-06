@@ -222,11 +222,11 @@
       <div id="mainCol">
         <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
-<h3 id="マークダウン-(markdown)">1 マークダウン (Markdown)</h3>
+<h3 id="マークダウン-(markdown)"><a href="#%E3%83%9E%E3%83%BC%E3%82%AF%E3%83%80%E3%82%A6%E3%83%B3-(markdown)">1 マークダウン (Markdown)</a></h3>
 <p>ガイドは <a href="http://github.github.com/github-flavored-markdown/">GitHub Flavored Markdown</a> で書かれています。まとまった<a href="http://daringfireball.net/projects/markdown/syntax">Markdownドキュメント</a>、<a href="http://daringfireball.net/projects/markdown/basics">チートシート</a>、通常のMarkdownとの違いに関する<a href="http://github.github.com/github-flavored-markdown/">追加ドキュメント</a> がそれぞれあります。</p>
-<h3 id="プロローグ">2 プロローグ</h3>
+<h3 id="プロローグ"><a href="#%E3%83%97%E3%83%AD%E3%83%AD%E3%83%BC%E3%82%B0">2 プロローグ</a></h3>
 <p>ガイドの冒頭には、読者の開発意欲を高めるような文を置いてください。ガイドの青い部分がこれに該当します。プロローグでは、そのガイドの概要と、ガイドで学ぶ項目について記載してください。例については<a href="routing.html">ルーティングガイド</a>を参照してください。</p>
-<h3 id="タイトル">3 タイトル</h3>
+<h3 id="タイトル"><a href="#%E3%82%BF%E3%82%A4%E3%83%88%E3%83%AB">3 タイトル</a></h3>
 <p>ガイドのタイトルには<code>h1</code>、ガイドのセクションには<code>h2</code>、ガイドのサブセクションには<code>h3</code>をそれぞれ使用してください。なお、実際に生成されるHTMLの見出しは<code>&lt;h2&gt;</code>から始まります。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
@@ -255,7 +255,7 @@
 
 </pre>
 </div>
-<h3 id="apiドキュメントの書き方">4 APIドキュメントの書き方</h3>
+<h3 id="apiドキュメントの書き方"><a href="#api%E3%83%89%E3%82%AD%E3%83%A5%E3%83%A1%E3%83%B3%E3%83%88%E3%81%AE%E6%9B%B8%E3%81%8D%E6%96%B9">4 APIドキュメントの書き方</a></h3>
 <p>ガイドとAPIは、必要な箇所が互いに首尾一貫している必要があります。<a href="api_documentation_guidelines.html">APIドキュメント作成ガイドライン</a>の以下のセクションを参照してください</p>
 <ul>
 <li><a href="api_documentation_guidelines.html#wording">言葉遣い</a></li>
@@ -264,10 +264,10 @@
 <li><a href="api_documentation_guidelines.html#fonts">フォント</a></li>
 </ul>
 <p>上記のガイドラインは、ガイドについても適用されます。</p>
-<h3 id="htmlガイド">5 HTMLガイド</h3>
+<h3 id="htmlガイド"><a href="#html%E3%82%AC%E3%82%A4%E3%83%89">5 HTMLガイド</a></h3>
 <p>ガイドを生成する前に、システムに最新のBundlerがインストールされていることを確認してください。現時点であれば、Bundler 1.3.5がインストールされている必要があります。</p>
 <p>最新のBundlerをインストールするには<code>gem install bundler</code>コマンドを実行してください。</p>
-<h4 id="htmlガイド-生成">5.1 生成</h4>
+<h4 id="htmlガイド-生成"><a href="#%E7%94%9F%E6%88%90">5.1 生成</a></h4>
 <p>すべてのガイドを生成するには、<code>cd</code>コマンドで<code>guides</code>ディレクトリに移動し、<code>bundle install</code>を実行してから以下のいずれかを実行します。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
@@ -307,7 +307,7 @@ rake
 
 </pre>
 </div>
-<h4 id="検証">5.2 検証</h4>
+<h4 id="検証"><a href="#%E6%A4%9C%E8%A8%BC">5.2 検証</a></h4>
 <p>生成されたHTMLを検証するには以下を実行します。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
@@ -316,8 +316,8 @@ bundle exec rake guides:validate
 </pre>
 </div>
 <p>特に、タイトルを元にIDが生成される関係上、タイトルでの重複が生じやすくなっています。重複を検出するには、ガイド生成時に<code>WARNINGS=1</code>を指定してください。警告に解決方法が出力されます。</p>
-<h3 id="kindleガイド">6 Kindleガイド</h3>
-<h4 id="kindleガイド-生成">6.1 生成</h4>
+<h3 id="kindleガイド"><a href="#kindle%E3%82%AC%E3%82%A4%E3%83%89">6 Kindleガイド</a></h3>
+<h4 id="kindleガイド-生成"><a href="#kindle%E3%82%AC%E3%82%A4%E3%83%89-%E7%94%9F%E6%88%90">6.1 生成</a></h4>
 <p>Kindle向けにガイドを生成するには、以下のrakeタスクを実行します。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
