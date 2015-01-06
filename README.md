@@ -13,7 +13,7 @@ Ruby on Rails チュートリアル：実例を使ってRailsを学ぼう
 http://railstutorial.jp/
 
 
-## 翻訳へのフィードバックについて
+## フィードバックについて
 
 本ガイドを読んで、誤字・脱字・誤訳などを見かけましたら、本リポジトリの [Issue](https://github.com/yasslab/railsguides.jp/issues) にてお気軽に報告して頂けると幸いです。「直接Pull Request を送りたい!」という場合には、下記の「翻訳の流れ」や「チャットルーム」を参照してください。
 
