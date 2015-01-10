@@ -477,7 +477,7 @@ class GoodnessValidator < ActiveModel::Validator
   def validate(record)
     if record.first_name == "Evil"
       record.errors[:base] << "これは悪人だ"
-end
+    end
   end
 end
 
