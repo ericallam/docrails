@@ -1101,7 +1101,7 @@ end
 </ul>
 <div class="warning"><p><code>他のクラスの</code>has_many<code>関連付けとつながりのある</code>belongs_to` 関連付けに対してこのオプションを使用してはいけません。孤立したレコードがデータベースに残ってしまう可能性があります。</p></div>
 <h6 id="belongs_toのオプション-:foreign_key"><a href="#:foreign_key">4.1.2.5 <code>:foreign_key</code></a></h6>
-<p>Railsは、相手のモデルを指す外部キーを保持している結合テーブル上のカラム名については、そのモデル名にサフィックス <code>_id</code> を追加した関連付け名が使用されることを前提とします。<code>:foreign_key</code>オプションを使用すると外部キーの名前を直接指定することができます。</p>
+<p>Railsの慣例では、相手のモデルを指す外部キーを保持している結合テーブル上のカラム名については、そのモデル名にサフィックス <code>_id</code> を追加した関連付け名が使用されることを前提とします。<code>:foreign_key</code>オプションを使用すると外部キーの名前を直接指定することができます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class Order &lt; ActiveRecord::Base
@@ -1357,7 +1357,7 @@ end
 </ul>
 <p><code>NOT NULL</code>データベース制約のある関連付けでは、<code>:nullify</code>オプションを与えないようにする必要があります。そのような関連付けをdestroyする<code>dependent</code>を設定しなかった場合、関連付けられたオブジェクトを変更できなくなってしまいます。これは、最初に関連付けられたオブジェクトの外部キーが<code>NULL</code>値になってしまい、この値は許されていないためです。</p>
 <h6 id="has_oneのオプション-:foreign_key"><a href="#has_one%E3%81%AE%E3%82%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3-:foreign_key">4.2.2.5 <code>:foreign_key</code></a></h6>
-<p>Railsは、相手のモデル上の外部キーを保持しているカラム名については、そのモデル名にサフィックス <code>_id</code> を追加した関連付け名が使用されることを前提とします。<code>:foreign_key</code>オプションを使用すると外部キーの名前を直接指定することができます。</p>
+<p>Railsの慣例では、相手のモデル上の外部キーを保持しているカラム名については、そのモデル名にサフィックス <code>_id</code> を追加した関連付け名が使用されることを前提とします。<code>:foreign_key</code>オプションを使用すると外部キーの名前を直接指定することができます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class Supplier &lt; ActiveRecord::Base
@@ -1382,7 +1382,7 @@ end
 </pre>
 </div>
 <h6 id="has_oneのオプション-:primary_key"><a href="#:primary_key">4.2.2.7 <code>:primary_key</code></a></h6>
-<p>Railsでは、モデルの主キーは<code>id</code>カラムに保存されます。<code>:primary_key</code>オプションで主キーを明示的に指定することでこれを上書きすることができます。</p>
+<p>Railsの慣例では、モデルの主キーは<code>id</code>カラムに保存されていることを前提とします。<code>:primary_key</code>オプションで主キーを明示的に指定することでこれを上書きすることができます。</p>
 <h6 id="has_oneのオプション-:source"><a href="#:source">4.2.2.8 <code>:source</code></a></h6>
 <p><code>:source</code>オプションは、<code>has_one :through</code>関連付けにおける「ソースの」関連付け名、つまり関連付け元の名前を指定します。</p>
 <h6 id="has_oneのオプション-:source_type"><a href="#:source_type">4.2.2.9 <code>:source_type</code></a></h6>
@@ -1687,7 +1687,7 @@ end
 </ul>
 <div class="note"><p>その関連付けで<code>:through</code>オプションが指定されている場合、このオプションは無効です。</p></div>
 <h6 id="has_manyのオプション-:foreign_key"><a href="#:foreign_key">4.3.2.5 <code>:foreign_key</code></a></h6>
-<p>Railsは、外部キーを保持するためのカラム名については、モデル名にサフィックス <code>_id</code> を追加した名前が使用されることを前提とします。<code>:foreign_key</code>オプションを使用すると外部キーの名前を直接指定することができます。</p>
+<p>Railsの慣例では、外部キーを保持するためのカラム名については、モデル名にサフィックス <code>_id</code> を追加した名前が使用されることを前提とします。<code>:foreign_key</code>オプションを使用すると外部キーの名前を直接指定することができます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class Customer &lt; ActiveRecord::Base
@@ -1712,7 +1712,7 @@ end
 </pre>
 </div>
 <h6 id="has_manyのオプション-:primary_key"><a href="#has_many%E3%81%AE%E3%82%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3-:primary_key">4.3.2.7 <code>:primary_key</code></a></h6>
-<p>Railsでは、関連付けの主キーは<code>id</code>カラムに保存されます。<code>:primary_key</code>オプションで主キーを明示的に指定することでこれを上書きすることができます。</p>
+<p>Railsの慣例では、関連付けの主キーは<code>id</code>カラムに保存されていることを前提とします。<code>:primary_key</code>オプションで主キーを明示的に指定することでこれを上書きすることができます。</p>
 <p><code>users</code>テーブルに主キーとして<code>id</code>カラムがあり、その他に<code>guid</code>カラムもあるとします。さらに、<code>todos</code>テーブルでは<code>users</code>テーブルの<code>id</code>カラムの値ではなく<code>guid</code>カラムの値を保持したいとします。これは以下のようにすることで実現できます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -2092,7 +2092,7 @@ end
 <li><code>:readonly</code></li>
 </ul>
 <h6 id=":association_foreign_key"><a href="#:association_foreign_key">4.4.2.1 <code>:association_foreign_key</code></a></h6>
-<p>Railsは、相手のモデルを指す外部キーを保持している結合テーブル上のカラム名については、そのモデル名にサフィックス <code>_id</code> を追加した名前が使用されることを前提とします。<code>:association_foreign_key</code>オプションを使用すると外部キーの名前を直接指定することができます。</p>
+<p>Railsの慣例では、相手のモデルを指す外部キーを保持している結合テーブル上のカラム名については、そのモデル名にサフィックス <code>_id</code> を追加した名前が使用されることを前提とします。<code>:association_foreign_key</code>オプションを使用すると外部キーの名前を直接指定することができます。</p>
 <div class="info"><p><code>:foreign_key</code>オプションおよび<code>:association_foreign_key</code>オプションは、多対多の自己結合を行いたいときに便利です。例：</p></div>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -2118,7 +2118,7 @@ end
 </pre>
 </div>
 <h6 id="has_and_belongs_to_manyのオプション-:foreign_key"><a href="#has_and_belongs_to_many%E3%81%AE%E3%82%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3-:foreign_key">4.4.2.4 <code>:foreign_key</code></a></h6>
-<p>Railsは、そのモデルを指す外部キーを保持している結合テーブル上のカラム名については、そのモデル名にサフィックス <code>_id</code> を追加した名前が使用されることを前提とします。<code>:foreign_key</code>オプションを使用すると外部キーの名前を直接指定することができます。</p>
+<p>Railsの慣例では、そのモデルを指す外部キーを保持している結合テーブル上のカラム名については、そのモデル名にサフィックス <code>_id</code> を追加した名前が使用されることを前提とします。<code>:foreign_key</code>オプションを使用すると外部キーの名前を直接指定することができます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class User &lt; ActiveRecord::Base
