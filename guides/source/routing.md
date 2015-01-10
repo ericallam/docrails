@@ -674,7 +674,7 @@ get '/:username', to: 'users#show'
 
 ### リクエスト内容に応じて制限を加える
 
-また、`String`を返す<a href="action_controller_overview.html#the-request-object">Request</a>オブジェクトの任意のメソッドに基いてルーティングを制限することもできます。
+また、`String`を返す<a href="action_controller_overview.html#requestオブジェクト">Request</a>オブジェクトの任意のメソッドに基いてルーティングを制限することもできます。
 
 リクエストに応じた制限は、セグメントを制限するときと同様の方法で指定することができます。
 
