@@ -144,7 +144,7 @@
       url: generators.html
       description: 新しいジェネレータを拡張に追加したり、ビルトインのRailsジェネレータの要素に別の要素を提供したりする方法 (scaffoldジェネレータに別のテストスタブを提供するなど) について解説します。
 -
-  name: Contributing to Ruby on Rails [未着手]
+  name: Ruby on Rails に貢献する
   documents:
     -
       name: Contributing to Ruby on Rails [未着手]
