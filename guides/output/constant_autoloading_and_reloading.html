@@ -86,11 +86,11 @@
                 <dd><a href="command_line.html">コマンドラインツールと Rake タスク</a></dd>
                 <dd><a href="asset_pipeline.html">アセットパイプライン</a></dd>
                 <dd><a href="working_with_javascript_in_rails.html">Rails で JavaScript を使用する</a></dd>
-                <dd><a href="constant_autoloading_and_reloading.html">Constant Autoloading and Reloading [未着手]</a></dd>
+                <dd><a href="constant_autoloading_and_reloading.html">定数の自動読み込みと再読み込み</a></dd>
                 <dt>Rails を拡張する</dt>
                 <dd><a href="rails_on_rack.html">Rails と Rack</a></dd>
                 <dd><a href="generators.html">Creating and Customizing Rails Generators [未着手]</a></dd>
-                <dt>Contributing to Ruby on Rails [未着手]</dt>
+                <dt>Ruby on Rails に貢献する</dt>
                 <dd><a href="contributing_to_ruby_on_rails.html">Contributing to Ruby on Rails [未着手]</a></dd>
                 <dd><a href="api_documentation_guidelines.html">APIドキュメント作成ガイドライン</a></dd>
                 <dd><a href="ruby_on_rails_guides_guidelines.html">Rails ガイドのガイドライン</a></dd>
@@ -145,13 +145,13 @@
                   <option value="command_line.html">コマンドラインツールと Rake タスク</option>
                   <option value="asset_pipeline.html">アセットパイプライン</option>
                   <option value="working_with_javascript_in_rails.html">Rails で JavaScript を使用する</option>
-                  <option value="constant_autoloading_and_reloading.html">Constant Autoloading and Reloading [未着手]</option>
+                  <option value="constant_autoloading_and_reloading.html">定数の自動読み込みと再読み込み</option>
               </optgroup>
               <optgroup label="Rails を拡張する">
                   <option value="rails_on_rack.html">Rails と Rack</option>
                   <option value="generators.html">Creating and Customizing Rails Generators [未着手]</option>
               </optgroup>
-              <optgroup label="Contributing to Ruby on Rails [未着手]">
+              <optgroup label="Ruby on Rails に貢献する">
                   <option value="contributing_to_ruby_on_rails.html">Contributing to Ruby on Rails [未着手]</option>
                   <option value="api_documentation_guidelines.html">APIドキュメント作成ガイドライン</option>
                   <option value="ruby_on_rails_guides_guidelines.html">Rails ガイドのガイドライン</option>
@@ -197,50 +197,50 @@
 <ol class="chapters">
 <li><a href="#%E3%81%AF%E3%81%98%E3%82%81%E3%81%AB">はじめに</a></li>
 <li>
-<a href="#constants-refresher">Constants Refresher</a>
+<a href="#%E5%AE%9A%E6%95%B0%E6%9B%B4%E6%96%B0">定数更新</a>
 
 <ul>
-<li><a href="#nesting">Nesting</a></li>
-<li><a href="#class-and-module-definitions-are-constant-assignments">Class and Module Definitions are Constant Assignments</a></li>
-<li><a href="#constants-are-stored-in-modules">Constants are Stored in Modules</a></li>
-<li><a href="#resolution-algorithms">Resolution Algorithms</a></li>
+<li><a href="#%E3%83%8D%E3%82%B9%E3%83%88">ネスト</a></li>
+<li><a href="#%E3%82%AF%E3%83%A9%E3%82%B9%E3%82%84%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%E3%81%AE%E5%AE%9A%E7%BE%A9%E3%81%A8%E3%81%AF%E5%AE%9A%E6%95%B0%E3%81%B8%E3%81%AE%E4%BB%A3%E5%85%A5%E3%81%AE%E3%81%93%E3%81%A8">クラスやモジュールの定義とは定数への代入のこと</a></li>
+<li><a href="#%E5%AE%9A%E6%95%B0%E3%81%AF%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%E3%81%AB%E4%BF%9D%E5%AD%98%E3%81%95%E3%82%8C%E3%82%8B">定数はモジュールに保存される</a></li>
+<li><a href="#%E8%A7%A3%E6%B1%BA%E3%82%A2%E3%83%AB%E3%82%B4%E3%83%AA%E3%82%BA%E3%83%A0">解決アルゴリズム</a></li>
 </ul>
 </li>
 <li>
-<a href="#vocabulary">Vocabulary</a>
+<a href="#%E7%94%A8%E8%AA%9E%E8%AA%AC%E6%98%8E">用語説明</a>
 
 <ul>
-<li><a href="#parent-namespaces">Parent Namespaces</a></li>
-<li><a href="#loading-mechanism">Loading Mechanism</a></li>
+<li><a href="#%E8%A6%AA%E3%81%AE%E5%90%8D%E5%89%8D%E7%A9%BA%E9%96%93">親の名前空間</a></li>
+<li><a href="#%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF%E3%81%AE%E3%83%A1%E3%82%AB%E3%83%8B%E3%82%BA%E3%83%A0">読み込みのメカニズム</a></li>
 </ul>
 </li>
-<li><a href="#autoloading-availability">Autoloading Availability</a></li>
+<li><a href="#%E8%87%AA%E5%8B%95%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF%E3%81%8C%E5%8F%AF%E8%83%BD%E3%81%A8%E3%81%AA%E3%82%8B%E7%8A%B6%E6%B3%81">自動読み込みが可能となる状況</a></li>
 <li><a href="#autoload_paths">autoload_paths</a></li>
 <li>
-<a href="#autoloading-algorithms">Autoloading Algorithms</a>
+<a href="#%E8%87%AA%E5%8B%95%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF%E3%81%AE%E3%82%A2%E3%83%AB%E3%82%B4%E3%83%AA%E3%82%BA%E3%83%A0">自動読み込みのアルゴリズム</a>
 
 <ul>
-<li><a href="#autoloading-algorithms-relative-references">Relative References</a></li>
-<li><a href="#autoloading-algorithms-qualified-references">Qualified References</a></li>
-<li><a href="#automatic-modules">Automatic Modules</a></li>
-<li><a href="#generic-procedure">Generic Procedure</a></li>
+<li><a href="#%E8%87%AA%E5%8B%95%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF%E3%81%AE%E3%82%A2%E3%83%AB%E3%82%B4%E3%83%AA%E3%82%BA%E3%83%A0-%E7%9B%B8%E5%AF%BE%E5%8F%82%E7%85%A7">相対参照</a></li>
+<li><a href="#%E8%87%AA%E5%8B%95%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF%E3%81%AE%E3%82%A2%E3%83%AB%E3%82%B4%E3%83%AA%E3%82%BA%E3%83%A0-%E4%BF%AE%E9%A3%BE%E6%B8%88%E3%81%BF%E5%8F%82%E7%85%A7">修飾済み参照</a></li>
+<li><a href="#%E8%87%AA%E5%8B%95%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB">自動モジュール</a></li>
+<li><a href="#%E4%B8%80%E8%88%AC%E7%9A%84%E3%81%AA%E6%89%8B%E9%A0%86">一般的な手順</a></li>
 </ul>
 </li>
 <li><a href="#require_dependency">require_dependency</a></li>
-<li><a href="#constant-reloading">Constant Reloading</a></li>
-<li><a href="#module#autoload-isn't-involved">Module#autoload isn't Involved</a></li>
+<li><a href="#%E5%AE%9A%E6%95%B0%E3%81%AE%E5%86%8D%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF">定数の再読み込み</a></li>
+<li><a href="#module#autoload%E3%81%8C%E9%96%A2%E4%B8%8E%E3%81%97%E3%81%AA%E3%81%84%E5%A0%B4%E5%90%88">Module#autoloadが関与しない場合</a></li>
 <li>
-<a href="#common-gotchas">Common Gotchas</a>
+<a href="#%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%90%BD%E3%81%A8%E3%81%97%E7%A9%B4">よくある落とし穴</a>
 
 <ul>
-<li><a href="#nesting-and-qualified-constants">Nesting and Qualified Constants</a></li>
-<li><a href="#autoloading-and-sti">Autoloading and STI</a></li>
-<li><a href="#autoloading-and-require">Autoloading and <code>require</code></a></li>
-<li><a href="#autoloading-and-initializers">Autoloading and Initializers</a></li>
-<li><a href="#require_dependency-and-initializers"><code>require_dependency</code> and Initializers</a></li>
-<li><a href="#when-constants-aren't-missed">When Constants aren't Missed</a></li>
-<li><a href="#autoloading-within-singleton-classes">Autoloading within Singleton Classes</a></li>
-<li><a href="#autoloading-in-basicobject">Autoloading in <code>BasicObject</code></a></li>
+<li><a href="#%E3%83%8D%E3%82%B9%E3%83%88%E3%81%A8%E4%BF%AE%E9%A3%BE%E6%B8%88%E3%81%BF%E5%AE%9A%E6%95%B0">ネストと修飾済み定数</a></li>
+<li><a href="#%E8%87%AA%E5%8B%95%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF%E3%81%A8sti">自動読み込みとSTI</a></li>
+<li><a href="#%E8%87%AA%E5%8B%95%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF%E3%81%A8require">自動読み込みと<code>require</code></a></li>
+<li><a href="#%E8%87%AA%E5%8B%95%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF%E3%81%A8%E3%82%A4%E3%83%8B%E3%82%B7%E3%83%A3%E3%83%A9%E3%82%A4%E3%82%B6">自動読み込みとイニシャライザ</a></li>
+<li><a href="#require_dependency%E3%81%A8%E3%82%A4%E3%83%8B%E3%82%B7%E3%83%A3%E3%83%A9%E3%82%A4%E3%82%B6"><code>require_dependency</code>とイニシャライザ</a></li>
+<li><a href="#%E5%AE%9A%E6%95%B0%E3%81%8C%E3%83%88%E3%83%AA%E3%82%AC%E3%83%BC%E3%81%95%E3%82%8C%E3%81%AA%E3%81%84%E5%A0%B4%E5%90%88">定数がトリガーされない場合</a></li>
+<li><a href="#%E7%89%B9%E7%95%B0%E3%82%AF%E3%83%A9%E3%82%B9%E5%86%85%E3%81%A7%E8%87%AA%E5%8B%95%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF%E3%82%92%E8%A1%8C%E3%81%86">特異クラス内で自動読み込みを行う</a></li>
+<li><a href="#basicobject%E3%81%AE%E4%B8%AD%E3%81%A7%E8%87%AA%E5%8B%95%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF%E3%81%99%E3%82%8B"><code>BasicObject</code>の中で自動読み込みする</a></li>
 </ul>
 </li>
 </ol>
@@ -257,7 +257,7 @@
 <html><body>
 <h3 id="はじめに"><a href="#%E3%81%AF%E3%81%98%E3%82%81%E3%81%AB">1 はじめに</a></h3>
 <p>Ruby on Railsでコードを書き換えると、開発者がサーバーを再起動しなくても、あたかも既にアプリケーションに読み込み済みであるかのように動作します。</p>
-<p>通常のRubyプログラムのクラスであれば、依存関係のあるプログラムの読み込みは避けられません。</p>
+<p>通常のRubyプログラムのクラスであれば、依存関係のあるプログラムを明示的に読み込む必要があります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 require 'application_controller'
@@ -271,9 +271,9 @@ end
 
 </pre>
 </div>
-<p>Our Rubyist instinct quickly sees some redundancy in there: If classes were defined in files matching their name, couldn't their loading be automated somehow? We could save scanning the file for dependencies, which is brittle.</p>
-<p>Moreover, <code>Kernel#require</code> loads files once, but development is much more smooth if code gets refreshed when it changes without restarting the server. It would be nice to be able to use <code>Kernel#load</code> in development, and <code>Kernel#require</code> in production.</p>
-<p>Indeed, those features are provided by Ruby on Rails, where we just write</p>
+<p>Rubyistとしての本能は、上のコードを見た瞬間にそこに冗長な部分があることを察知するでしょう。クラスが、それが保存されているファイル名と同じ名前で定義されるのであれば、どうにかしてそれらを自動的に読み込めないものでしょうか。依存するファイルを探索してその結果を保存しておけばよいのですが、こうした依存関係は何かと不安定です</p>
+<p>さらに、<code>Kernel#require</code>はファイルを一度しか読み込みませんが、読み込んだファイルが更新された時にサーバーを再起動せずに更新を反映できれば、開発はずっと楽になるでしょう。開発時には<code>Kernel#load</code>を利用し、本番では<code>Kernel#require</code>を都合よく利用できれば便利です。</p>
+<p>そしてまさに、Ruby on Railsでは以下のように書くだけでこのような便利な機能を利用することができます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class PostsController &lt; ApplicationController
@@ -284,12 +284,12 @@ end
 
 </pre>
 </div>
-<p>This guide documents how that works.</p>
-<h3 id="constants-refresher"><a href="#constants-refresher">2 Constants Refresher</a></h3>
-<p>While constants are trivial in most programming languages, they are a rich topic in Ruby.</p>
-<p>It is beyond the scope of this guide to document Ruby constants, but we are nevertheless going to highlight a few key topics. Truly grasping the following sections is instrumental to understanding constant autoloading and reloading.</p>
-<h4 id="nesting"><a href="#nesting">2.1 Nesting</a></h4>
-<p>Class and module definitions can be nested to create namespaces:</p>
+<p>本章ではこの機能の仕組みについて解説します。</p>
+<h3 id="定数更新"><a href="#%E5%AE%9A%E6%95%B0%E6%9B%B4%E6%96%B0">2 定数更新</a></h3>
+<p>多くのプログラミング言語において、定数はさほど重要な位置を占めていませんが、ことRubyにおいては定数に関する話題が非常に豊富です。</p>
+<p>Ruby言語の定数についての解説は本ガイドの範疇を超えますので深入りはしませんが、定数に関してはいくつかの重要な点にスポットライトを当てたいと思います。以降の章を十分に理解することは、Railsにおける定数の自動読み込みと再読み込みを理解するための頼もしい武器となることでしょう。</p>
+<h4 id="ネスト"><a href="#%E3%83%8D%E3%82%B9%E3%83%88">2.1 ネスト</a></h4>
+<p>クラスおよびモジュールの定義をネストすることで名前空間を作成できます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 module XML
@@ -300,15 +300,15 @@ end
 
 </pre>
 </div>
-<p>The <em>nesting</em> at any given place is the collection of enclosing nested class and module objects outwards. For example, in the previous example, the nesting at (1) is</p>
+<p><em>ネスト</em>はどの位置で行われる場合であっても、ネストしたクラスオブジェクトと、上位にあるモジュールオブジェクトを含むコレクションとなります。●前述の例における(1)の位置のネストは以下のようになります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 [XML::SAXParser, XML]
 
 </pre>
 </div>
-<p>It is important to understand that the nesting is composed of class and module <em>objects</em>, it has nothing to do with the constants used to access them, and is also unrelated to their names.</p>
-<p>For instance, while this definition is similar to the previous one:</p>
+<p>ネストはクラスやモジュールの「オブジェクト」で構成されるという点を理解することが重要です。ネストはそれにアクセスするための定数とは何の関係もなく、ネストの名前とも関係ありません。</p>
+<p>たとえば、以下の定義は前述の定義と似ています。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class XML::SAXParser
@@ -317,16 +317,16 @@ end
 
 </pre>
 </div>
-<p>the nesting in (2) is different:</p>
+<p>(2)でネストを行った結果は異なります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 [XML::SAXParser]
 
 </pre>
 </div>
-<p><code>XML</code> does not belong to it.</p>
-<p>We can see in this example that the name of a class or module that belongs to a certain nesting does not necessarily correlate with the namespaces at the spot.</p>
-<p>Even more, they are totally independent, take for instance</p>
+<p>単体の<code>XML</code>はネストに含まれていません。</p>
+<p>この例からわかるように、ある特定のネストに属するクラス名やモジュール名は、ネストの位置における名前空間と必ずしも相関していません。</p>
+<p>さらに、両者は相関どころか互いに完全に独立しています。以下の例で考察してみましょう。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 module X::Y
@@ -337,26 +337,26 @@ end
 
 </pre>
 </div>
-<p>The nesting in (3) consists of two module objects:</p>
+<p>(3)の位置で行われるネストは、以下のように2つのモジュールオブジェクトで構成されます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 [A::B, X::Y]
 
 </pre>
 </div>
-<p>So, it not only doesn't end in <code>A</code>, which does not even belong to the nesting, but it also contains <code>X::Y</code>, which is independent from <code>A::B</code>.</p>
-<p>The nesting is an internal stack maintained by the interpreter, and it gets modified according to these rules:</p>
+<p>このネストは<code>A</code>で終わっていないだけでなく (そもそもこの<code>A</code>はネストに属してすらいません)、ネストに<code>X::Y</code>も含まれています。この<code>X::Y</code>と<code>A::B</code>は互いに独立しています。</p>
+<p>このネストは、Rubyインタプリタによって維持されている内部スタックであり、以下のルールに従って変更されます。</p>
 <ul>
-<li><p>The class object following a <code>class</code> keyword gets pushed when its body is executed, and popped after it.</p></li>
-<li><p>The module object following a <code>module</code> keyword gets pushed when its body is executed, and popped after it.</p></li>
-<li><p>A singleton class opened with <code>class &lt;&lt; object</code> gets pushed, and popped later.</p></li>
-<li><p>When any of the <code>*_eval</code> family of methods is called using a string argument, the singleton class of the receiver is pushed to the nesting of the eval'ed code.</p></li>
-<li><p>The nesting at the top-level of code interpreted by <code>Kernel#load</code> is empty unless the <code>load</code> call receives a true value as second argument, in which case a newly created anonymous module is pushed by Ruby.</p></li>
+<li><p><code>class</code>キーワードに続けて記述されるクラスオブジェクトは、その内容が実行される時にスタックにプッシュされ、実行完了後にスタックからポップされる。</p></li>
+<li><p><code>module</code>キーワードに続けて記述されるモジュールオブジェクトは、その内容が実行される時にスタックにプッシュされ、実行完了後にスタックからポップされる。</p></li>
+<li><p>特異クラスは<code>class &lt;&lt; object</code>でオープンされるときにスタックにプッシュされ、後でスタックからポップされる。</p></li>
+<li><p><code>*_eval</code>で終わるメソッドが文字列を1つ引数に取って呼び出されると、そのレシーバの特異クラスはevalされたコードのネストにプッシュされる。</p></li>
+<li><p><code>Kernel#load</code>によって解釈されるコードのトップレベルにあるネストは空になる。ただし<code>load</code>呼び出しが第2引数としてtrueという値を受け取る場合を除く。この値が指定されると、無名モジュールが新たに作成されてRubyによってスタックにプッシュされる。</p></li>
 </ul>
-<p>It is interesting to observe that blocks do not modify the stack. In particular the blocks that may be passed to <code>Class.new</code> and <code>Module.new</code> do not get the class or module being defined pushed to their nesting. That's one of the differences between defining classes and modules in one way or another.</p>
-<p>The nesting at any given place can be inspected with <code>Module.nesting</code>.</p>
-<h4 id="class-and-module-definitions-are-constant-assignments"><a href="#class-and-module-definitions-are-constant-assignments">2.2 Class and Module Definitions are Constant Assignments</a></h4>
-<p>Let's suppose the following snippet creates a class (rather than reopening it):</p>
+<p>ここで興味深いのは、ブロックがスタックに何の影響も与えないという事実です。特に、<code>Class.new</code>や<code>Module.new</code>にブロックを渡しても、そこで定義されるクラスやモジュールはネストにプッシュされません。この点が、ブロックを使用せずに何らかの形でクラスやモジュールを定義する場合と異なる点の一つです。●</p>
+<p><code>Module.nesting</code>を使用することで、任意の位置にあるネストを検査 (inspect) することができます。</p>
+<h4 id="クラスやモジュールの定義とは定数への代入のこと"><a href="#%E3%82%AF%E3%83%A9%E3%82%B9%E3%82%84%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%E3%81%AE%E5%AE%9A%E7%BE%A9%E3%81%A8%E3%81%AF%E5%AE%9A%E6%95%B0%E3%81%B8%E3%81%AE%E4%BB%A3%E5%85%A5%E3%81%AE%E3%81%93%E3%81%A8">2.2 クラスやモジュールの定義とは定数への代入のこと</a></h4>
+<p>以下のスニペットを実行するとクラスが (再オープンではなく) 新規作成されるとします。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class C
@@ -364,8 +364,8 @@ end
 
 </pre>
 </div>
-<p>Ruby creates a constant <code>C</code> in <code>Object</code> and stores in that constant a class object. The name of the class instance is "C", a string, named after the constant.</p>
-<p>That is,</p>
+<p>Rubyは<code>Object</code>に<code>C</code>という定数を作成し、その定数にクラスオブジェクトを保存します。このクラスインスタンスの名前は"C"という文字列であり、この定数の名前から付けられたものです。</p>
+<p>すなわち、</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class Project &lt; ActiveRecord::Base
@@ -373,23 +373,23 @@ end
 
 </pre>
 </div>
-<p>performs a constant assignment equivalent to</p>
+<p>上のコードは定数代入 (constant assignment) を行います。これは以下のコードと同等です。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Project = Class.new(ActiveRecord::Base)
 
 </pre>
 </div>
-<p>including setting the name of the class as a side-effect:</p>
+<p>このとき、以下のようにクラスの名前は副作用として設定されます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Project.name # =&gt; "Project"
 
 </pre>
 </div>
-<p>Constant assignment has a special rule to make that happen: if the object being assigned is an anonymous class or module, Ruby sets the object's name to the name of the constant.</p>
-<div class="info"><p>From then on, what happens to the constant and the instance does not matter. For example, the constant could be deleted, the class object could be assigned to a different constant, be stored in no constant anymore, etc. Once the name is set, it doesn't change.</p></div>
-<p>Similarly, module creation using the <code>module</code> keyword as in</p>
+<p>この動作を実現するために、定数代入には1つの特殊なルールが設定されています。代入されるオブジェクトが無名のクラスまたはモジュールである場合、Rubyはそれらのオブジェクトの名前をその定数の名前から引用して命名します。</p>
+<div class="info"><p>これより先、定数とインスタンスで何が起きるかは問題ではありません。たとえば、定数を削除することもできますし、クラスオブジェクトを別の定数に代入したりどの定数にも保存しないでおくこともできます。名前はいったん設定された後は変化しなくなります。</p></div>
+<p><code>module</code>キーワードを指定して以下のようにモジュールを作成する場合も、クラスの場合と同様に考えることができます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 module Admin
@@ -397,23 +397,23 @@ end
 
 </pre>
 </div>
-<p>performs a constant assignment equivalent to</p>
+<p>上のコードは定数代入を行います。これは以下のコードと同等です。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Admin = Module.new
 
 </pre>
 </div>
-<p>including setting the name as a side-effect:</p>
+<p>このとき、以下のようにモジュールの名前は副作用として設定されます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Admin.name # =&gt; "Admin"
 
 </pre>
 </div>
-<div class="warning"><p>The execution context of a block passed to <code>Class.new</code> or <code>Module.new</code> is not entirely equivalent to the one of the body of the definitions using the <code>class</code> and <code>module</code> keywords. But both idioms result in the same constant assignment.</p></div>
-<p>Thus, when one informally says "the <code>String</code> class", that really means: the class object stored in the constant called "String" in the class object stored in the <code>Object</code> constant. <code>String</code> is otherwise an ordinary Ruby constant and everything related to constants such as resolution algorithms applies to it.</p>
-<p>Likewise, in the controller</p>
+<div class="warning"><p><code>Class.new</code>や<code>Module.new</code>に渡されるブロックの実行コンテキストは、<code>class</code>および<code>module</code>キーワードを使用する定義の本文の実行コンテキストと完全に同等ではないことがあります。しかし定数代入はどちらのイディオムを使用した場合にも同様に行われます。</p></div>
+<p>何かが非公式に "<code>String</code>クラス" と呼ばれる場合、その本当の意味はこういうことです。"<code>String</code>クラス" とは、<code>Object</code>という定数があり、その中にクラスオブジェクトが保存されていて、さらにその中に"String"と呼ばれる定数があり、さらにその中に保存されているクラスオブジェクトのことなのです。そうでなければ、<code>String</code>はRubyのありふれた定数であり、解決アルゴリズムなどそれに関連するあらゆるものがこの<code>String</code>という定数に適用されます。</p>
+<p>コントローラについても同様に考えることができます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class PostsController &lt; ApplicationController
@@ -424,12 +424,12 @@ end
 
 </pre>
 </div>
-<p><code>Post</code> is not syntax for a class. Rather, <code>Post</code> is a regular Ruby constant. If all is good, the constant evaluates to an object that responds to <code>all</code>.</p>
-<p>That is why we talk about <em>constant</em> autoloading, Rails has the ability to load constants on the fly.</p>
-<h4 id="constants-are-stored-in-modules"><a href="#constants-are-stored-in-modules">2.3 Constants are Stored in Modules</a></h4>
-<p>Constants belong to modules in a very literal sense. Classes and modules have a constant table; think of it as a hash table.</p>
-<p>Let's analyze an example to really understand what that means. While common abuses of language like "the <code>String</code> class" are convenient, the exposition is going to be precise here for didactic purposes.</p>
-<p>Let's consider the following module definition:</p>
+<p>上のコードの<code>Post</code>はクラスのための文法ではありません。そうではなく、<code>Post</code>はRubyにおける通常の定数です。何も問題がなければ、この定数は<code>all</code>に応答するオブジェクトとして評価されます。</p>
+<p>ここまで<em>定数</em>の自動読み込みについて詳細に解説したのはこのような理由からです。Railsは定数を必要に応じて読み込む機能を持っています。</p>
+<h4 id="定数はモジュールに保存される"><a href="#%E5%AE%9A%E6%95%B0%E3%81%AF%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%E3%81%AB%E4%BF%9D%E5%AD%98%E3%81%95%E3%82%8C%E3%82%8B">2.3 定数はモジュールに保存される</a></h4>
+<p>Rubyの定数は、まったく文字通りに「モジュールに属します」。クラスとモジュールには定数テーブルがあります。これはハッシュテーブルのようなものと考えることができます。</p>
+<p>これがどういうことなのかを十分理解するために、ひとつ例を示して分析してみましょう。"この<code>String</code>クラス"のようなあいまいな表現は説明する側にとっては便利ですが、ここでは教育的な見地から厳密に説明することにします。</p>
+<p>以下のモジュール定義について考察してみましょう。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 module Colors
@@ -438,58 +438,58 @@ end
 
 </pre>
 </div>
-<p>First, when the <code>module</code> keyword is processed, the interpreter creates a new entry in the constant table of the class object stored in the <code>Object</code> constant.
-Said entry associates the name "Colors" to a newly created module object.
-Furthermore, the interpreter sets the name of the new module object to be the string "Colors".</p>
-<p>Later, when the body of the module definition is interpreted, a new entry is created in the constant table of the module object stored in the <code>Colors</code> constant. That entry maps the name "RED" to the string "0xff0000".</p>
-<p>In particular, <code>Colors::RED</code> is totally unrelated to any other <code>RED</code> constant that may live in any other class or module object. If there were any, they would have separate entries in their respective constant tables.</p>
-<p>Pay special attention in the previous paragraphs to the distinction between class and module objects, constant names, and value objects associated to them in constant tables.</p>
-<h4 id="resolution-algorithms"><a href="#resolution-algorithms">2.4 Resolution Algorithms</a></h4>
-<h5 id="resolution-algorithm-for-relative-constants"><a href="#resolution-algorithm-for-relative-constants">2.4.1 Resolution Algorithm for Relative Constants</a></h5>
-<p>At any given place in the code, let's define <em>cref</em> to be the first element of the nesting if it is not empty, or <code>Object</code> otherwise.</p>
-<p>Without getting too much into the details, the resolution algorithm for relative constant references goes like this:</p>
+<p>最初に<code>module</code>キーワードが処理されると、Rubyインタプリタは<code>Object</code>定数に保存されているクラスオブジェクトの定数テーブルに新しいエントリを1つ作成します。
+このエントリは、"Colors"という名前と、新しく作られたモジュールオブジェクトを関連付けます。
+さらに、Rubyインタプリタは新しいモジュールオブジェクトの名前を"Colors"という文字列として設定します。</p>
+<p>後に、このモジュール定義の本体がRubyインタプリタによって解釈されると、<code>Colors</code>定数の中に保存されたモジュールオブジェクトの定数テーブルの中に新しいエントリが1つ作成されます。このエントリは、"RED"という名前を"0xff0000"という文字列に対応付けます。</p>
+<p>特にこの<code>Colors::RED</code>は、他のクラスオブジェクトやモジュールオブジェクトの中にあるかもしれない他の<code>RED</code>定数とは何の関連もないことにご注意ください。もし仮に他の<code>RED</code>定数がたまたま存在しているとしたら、それは独自の定数テーブルの中に異なるエントリとして存在するはずです。</p>
+<p>前述の段落の説明を読む際には、クラスオブジェクト、モジュールオブジェクト、定数名、定数テーブルに関連付けられている値オブジェクトをそれぞれ混同しないように十分注意してください。</p>
+<h4 id="解決アルゴリズム"><a href="#%E8%A7%A3%E6%B1%BA%E3%82%A2%E3%83%AB%E3%82%B4%E3%83%AA%E3%82%BA%E3%83%A0">2.4 解決アルゴリズム</a></h4>
+<h5 id="相対定数を解決するアルゴリズム"><a href="#%E7%9B%B8%E5%AF%BE%E5%AE%9A%E6%95%B0%E3%82%92%E8%A7%A3%E6%B1%BA%E3%81%99%E3%82%8B%E3%82%A2%E3%83%AB%E3%82%B4%E3%83%AA%E3%82%BA%E3%83%A0">2.4.1 相対定数を解決するアルゴリズム</a></h5>
+<p>コードの任意の場所で<em>cref</em>を定義し、それが空でないか<code>Object</code>である場合にネストの最初の要素となるようにしてみましょう (訳注: Rubyの定数が持つ暗黙のコンテキストをcrefと呼ぶようです -- <a href="http://yugui.jp/articles/846">関連記事</a> )。</p>
+<p>詳細についてはここでは述べませんが、相対的な定数参照を解決するアルゴリズムは以下のようになります。</p>
 <ol>
-<li><p>If the nesting is not empty the constant is looked up in its elements and in order. The ancestors of those elements are ignored.</p></li>
-<li><p>If not found, then the algorithm walks up the ancestor chain of the cref.</p></li>
-<li><p>If not found, <code>const_missing</code> is invoked on the cref. The default implementation of <code>const_missing</code> raises <code>NameError</code>, but it can be overridden.</p></li>
+<li><p>ネストが存在する場合、この定数は自身の要素の中で順に探索される。それらの要素の先祖は探索されない。</p></li>
+<li><p>見つからない場合は、crefのチェーンを先祖の方向に探索する。</p></li>
+<li><p>見つからない場合、crefに対して<code>const_missing</code>が呼び出される。<code>const_missing</code>のデフォルトの実装は<code>NameError</code>を発生するが、これはオーバーライド可能。</p></li>
 </ol>
-<p>Rails autoloading <strong>does not emulate this algorithm</strong>, but its starting point is the name of the constant to be autoloaded, and the cref. See more in <a href="#autoloading-algorithms-relative-references">Relative References</a>.</p>
-<h5 id="resolution-algorithm-for-qualified-constants"><a href="#resolution-algorithm-for-qualified-constants">2.4.2 Resolution Algorithm for Qualified Constants</a></h5>
-<p>Qualified constants look like this:</p>
+<p>Railsの自動読み込みは<strong>このアルゴリズムをエミュレートしているわけではない</strong>ことにご注意ください。ただし探索の開始ポイントは、自動読み込みされる定数の名前と、cref自身です。詳細については<a href="#%E8%87%AA%E5%8B%95%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF%E3%81%AE%E3%82%A2%E3%83%AB%E3%82%B4%E3%83%AA%E3%82%BA%E3%83%A0-%E7%9B%B8%E5%AF%BE%E5%8F%82%E7%85%A7">相対参照</a>を参照してください。</p>
+<h5 id="修飾済み定数を解決するアルゴリズム"><a href="#%E4%BF%AE%E9%A3%BE%E6%B8%88%E3%81%BF%E5%AE%9A%E6%95%B0%E3%82%92%E8%A7%A3%E6%B1%BA%E3%81%99%E3%82%8B%E3%82%A2%E3%83%AB%E3%82%B4%E3%83%AA%E3%82%BA%E3%83%A0">2.4.2 修飾済み定数を解決するアルゴリズム</a></h5>
+<p>修飾済み (qualified) 定数は以下のようなものです。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Billing::Invoice
 
 </pre>
 </div>
-<p><code>Billing::Invoice</code> is composed of two constants: <code>Billing</code> is relative and is resolved using the algorithm of the previous section.</p>
-<div class="info"><p>Leading colons would make the first segment absolute rather than relative: <code>::Billing::Invoice</code>. That would force <code>Billing</code> to be looked up only as a top-level constant.</p></div>
-<p><code>Invoice</code> on the other hand is qualified by <code>Billing</code> and we are going to see its resolution next. Let's call <em>parent</em> to that qualifying class or module object, that is, <code>Billing</code> in the example above. The algorithm for qualified constants goes like this:</p>
+<p><code>Billing::Invoice</code>には2つの定数が含まれています。最初の<code>Billing</code>の方は相対的な定数であり、直前のセクションで解説したアルゴリズムに基いて解決されます。</p>
+<div class="info"><p><code>::Billing::Invoice</code>のように先頭にコロンを2つ置くことで、最初のセグメントを相対から絶対に変えることができます。このようにすると、この<code>Billing</code>はトップレベルの定数としてのみ参照されるようになります。</p></div>
+<p>2番目の<code>Invoice</code>定数の方は<code>Billing</code>で修飾されています。この定数の解決方法についてはこの後で説明します。ここで、修飾する側のクラスやモジュールオブジェクト (上の例で言う<code>Billing</code>) を<em>親(parent)</em>と定義します。定数を修飾するアルゴリズムは以下のようになります。</p>
 <ol>
-<li><p>The constant is looked up in the parent and its ancestors.</p></li>
-<li><p>If the lookup fails, <code>const_missing</code> is invoked in the parent. The default implementation of <code>const_missing</code> raises <code>NameError</code>, but it can be overridden.</p></li>
+<li><p>この定数はその親と先祖の中から探索される。</p></li>
+<li><p>探索の結果何も見つからない場合、親の<code>const_missing</code>が呼び出される。<code>const_missing</code>のデフォルトの実装は<code>NameError</code>を発生するが、これはオーバーライド可能。</p></li>
 </ol>
-<p>As you see, this algorithm is simpler than the one for relative constants. In particular, the nesting plays no role here, and modules are not special-cased, if neither they nor their ancestors have the constants, <code>Object</code> is <strong>not</strong> checked.</p>
-<p>Rails autoloading <strong>does not emulate this algorithm</strong>, but its starting point is the name of the constant to be autoloaded, and the parent. See more in <a href="#qualified-references">Qualified References</a>.</p>
-<h3 id="vocabulary"><a href="#vocabulary">3 Vocabulary</a></h3>
-<h4 id="parent-namespaces"><a href="#parent-namespaces">3.1 Parent Namespaces</a></h4>
-<p>Given a string with a constant path we define its <em>parent namespace</em> to be the string that results from removing its rightmost segment.</p>
-<p>For example, the parent namespace of the string "A::B::C" is the string "A::B", the parent namespace of "A::B" is "A", and the parent namespace of "A" is "".</p>
-<p>The interpretation of a parent namespace when thinking about classes and modules is tricky though. Let's consider a module M named "A::B":</p>
+<p>見てのとおり、この探索アルゴリズムは相対定数の場合よりもシンプルです。特に、ネストが何の影響も与えていない点にご注意ください。また、モジュールは特別扱いされておらず、モジュール自身またはモジュールの先祖のどちらにも定数がない場合には<code>Object</code>は<strong>チェックされない</strong>点にもご注意ください。</p>
+<p>Railsの自動読み込みは<strong>このアルゴリズムをエミュレートしているわけではない</strong>ことにご注意ください。ただし探索の開始ポイントは、自動読み込みされる定数の名前と、その親です。詳細については<a href="#%E8%87%AA%E5%8B%95%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF%E3%81%AE%E3%82%A2%E3%83%AB%E3%82%B4%E3%83%AA%E3%82%BA%E3%83%A0-%E4%BF%AE%E9%A3%BE%E6%B8%88%E3%81%BF%E5%8F%82%E7%85%A7">修飾済み参照</a>を参照してください。</p>
+<h3 id="用語説明"><a href="#%E7%94%A8%E8%AA%9E%E8%AA%AC%E6%98%8E">3 用語説明</a></h3>
+<h4 id="親の名前空間"><a href="#%E8%A6%AA%E3%81%AE%E5%90%8D%E5%89%8D%E7%A9%BA%E9%96%93">3.1 親の名前空間</a></h4>
+<p>定数パスで与えられた文字列を使用して、<em>親の名前空間</em> (parent namespace) が定義されます。親の名前空間は、定数パスからその右端のセグメントのみを除去した文字列になります。</p>
+<p>たとえば、"A::B::C" という文字列の親の名前空間は "A::B" という文字列となり、"A::B" という文字列の親の名前空間は "A" となり、"A" という文字列の親の名前空間は "" となります。</p>
+<p>しかし、クラスやモジュールについて考察する場合、親の名前空間の解釈にトリッキーな点が生じるので注意が必要です。例として、"A::B"という名前を持つモジュールMについて考察してみましょう。</p>
 <ul>
-<li><p>The parent namespace, "A", may not reflect nesting at a given spot.</p></li>
-<li><p>The constant <code>A</code> may no longer exist, some code could have removed it from <code>Object</code>.</p></li>
-<li><p>If <code>A</code> exists, the class or module that was originally in <code>A</code> may not be there anymore. For example, if after a constant removal there was another constant assignment there would generally be a different object in there.</p></li>
-<li><p>In such case, it could even happen that the reassigned <code>A</code> held a new class or module called also "A"!</p></li>
-<li><p>In the previous scenarios M would no longer be reachable through <code>A::B</code> but the module object itself could still be alive somewhere and its name would still be "A::B".</p></li>
+<li><p>親の名前空間 "A" は、与えられた位置におけるネストの状態を反映していない可能性がある。</p></li>
+<li><p><code>A</code>という定数は既に存在しなくなっている可能性がある。この定数は何らかのコードによって<code>Object</code>から削除されているかもしれない。</p></li>
+<li><p>たとえ<code>A</code>という定数が存在するとしても、かつて<code>A</code>という名前を持っていたクラスまたはモジュールは既に存在しなくなっている可能性がある。たとえば、定数が1つ削除された後に別の定数代入 (constant assignment) が行われたとすると、一般的にはそれは別のオブジェクトを指していると考えるべき。</p></li>
+<li><p>そのような状況で<code>A</code>という同じ名前の定数が再度代入されると、その<code>A</code>は同じく"A"という名前を持つ別の新しいクラスまたはモジュールを指す可能性すらありうる。</p></li>
+<li><p>上述のシナリオが発生した場合、<code>A::B</code>という名前でMというモジュールを参照することはできなくなってしまうが、Mというモジュールオブジェクト自身は"A::B"という名前を持ったまま、削除されることもなくどこかに生きている可能性がある。</p></li>
 </ul>
-<p>The idea of a parent namespace is at the core of the autoloading algorithms and helps explain and understand their motivation intuitively, but as you see that metaphor leaks easily. Given an edge case to reason about, take always into account that by "parent namespace" the guide means exactly that specific string derivation.</p>
-<h4 id="loading-mechanism"><a href="#loading-mechanism">3.2 Loading Mechanism</a></h4>
-<p>Rails autoloads files with <code>Kernel#load</code> when <code>config.cache_classes</code> is false, the default in development mode, and with <code>Kernel#require</code> otherwise, the default in production mode.</p>
-<p><code>Kernel#load</code> allows Rails to execute files more than once if <a href="#constant-reloading">constant reloading</a> is enabled.</p>
-<p>This guide uses the word "load" freely to mean a given file is interpreted, but the actual mechanism can be <code>Kernel#load</code> or <code>Kernel#require</code> depending on that flag.</p>
-<h3 id="autoloading-availability"><a href="#autoloading-availability">4 Autoloading Availability</a></h3>
-<p>Rails is always able to autoload provided its environment is in place. For example the <code>runner</code> command autoloads:</p>
+<p>この「親の名前空間」は自動読み込みアルゴリズムの中核となるアイディアであり、アルゴリズム開発上の意図を直感的に説明するのに役立ちますが、このメタファーだけでは説明しきれない部分が多くあります。エッジケースでどのようなことが起きるかを十分理解するために、本章で説明されている「親の名前空間」という概念とその意味を正確に理解したうえで、親の名前空間を常に意識しながら読み進めてください。</p>
+<h4 id="読み込みのメカニズム"><a href="#%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF%E3%81%AE%E3%83%A1%E3%82%AB%E3%83%8B%E3%82%BA%E3%83%A0">3.2 読み込みのメカニズム</a></h4>
+<p><code>config.cache_classes</code>がfalseに設定されていると、<code>Kernel#load</code>を使用して読み込みが行われます。これはdevelopmentモードにおけるデフォルトの設定です。他方、<code>Kernel#require</code>を使用する読み込みは、productionモードにおけるデフォルトの設定です。</p>
+<p><a href="#%E5%AE%9A%E6%95%B0%E3%81%AE%E5%86%8D%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF">定数の再読み込み</a>が有効になっていると、<code>Kernel#load</code>はファイルを繰り返し読み込めるようになります。</p>
+<p>本章では「読み込み」(load)という言葉を、指定されたファイルがRailsによって解釈されるという程度の緩やかな意味で使用していますが、実際のメカニズムとしてはフラグに応じて<code>Kernel#load</code>や<code>Kernel#require</code>が使用されます。</p>
+<h3 id="自動読み込みが可能となる状況"><a href="#%E8%87%AA%E5%8B%95%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF%E3%81%8C%E5%8F%AF%E8%83%BD%E3%81%A8%E3%81%AA%E3%82%8B%E7%8A%B6%E6%B3%81">4 自動読み込みが可能となる状況</a></h3>
+<p>Railsは、そのための環境が設定されていれば常に自動読み込みを行います。たとえば、以下の<code>runner</code>コマンドを実行すると自動読み込みが行われます。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ bin/rails runner 'p User.column_names'
@@ -497,9 +497,9 @@ $ bin/rails runner 'p User.column_names'
 
 </pre>
 </div>
-<p>The console autoloads, the test suite autoloads, and of course the application autoloads.</p>
-<p>By default, Rails eager loads the application files when it boots in production mode, so most of the autoloading going on in development does not happen. But autoloading may still be triggered during eager loading.</p>
-<p>たとえば</p>
+<p>この場合、コンソール、テストスイート、アプリケーションのすべてについて自動読み込みが行われます。</p>
+<p>productionモードで起動された場合は、デフォルトでファイルの事前一括読み込み (eager loading) が行われるため、developmentモードのような自動読み込みはほとんど発生しません。ただし、一括読み込みにおいても自動読み込みが発生することがあります。</p>
+<p>以下の例で考察してみましょう。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class BeachHouse &lt; House
@@ -507,31 +507,31 @@ end
 
 </pre>
 </div>
-<p>if <code>House</code> is still unknown when <code>app/models/beach_house.rb</code> is being eager loaded, Rails autoloads it.</p>
+<p><code>app/models/beach_house.rb</code>は事前一括読み込みされているにもかかわらず<code>House</code>が見つからなかった場合、Railsはこれについて自動読み込みを行います。</p>
 <h3 id="autoload_paths"><a href="#autoload_paths">5 autoload_paths</a></h3>
-<p>As you probably know, when <code>require</code> gets a relative file name:</p>
+<p>これについてはご存じの方も多いことでしょう。以下のように<code>require</code>で相対的なファイル名を指定したとします。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 require 'erb'
 
 </pre>
 </div>
-<p>Ruby looks for the file in the directories listed in <code>$LOAD_PATH</code>. That is, Ruby iterates over all its directories and for each one of them checks whether they have a file called "erb.rb", or "erb.so", or "erb.o", or "erb.dll". If it finds any of them, the interpreter loads it and ends the search. Otherwise, it tries again in the next directory of the list. If the list gets exhausted, <code>LoadError</code> is raised.</p>
-<p>We are going to cover how constant autoloading works in more detail later, but the idea is that when a constant like <code>Post</code> is hit and missing, if there's a <code>post.rb</code> file for example in <code>app/models</code> Rails is going to find it, evaluate it, and have <code>Post</code> defined as a side-effect.</p>
-<p>Alright, Rails has a collection of directories similar to <code>$LOAD_PATH</code> in which to look up <code>post.rb</code>. That collection is called <code>autoload_paths</code> and by default it contains:</p>
+<p>このとき、Rubyは<code>$LOAD_PATH</code>で指定されているディレクトリ内でこのファイルを探索します。具体的には、Rubyは指定されたすべてのディレクトリについて反復処理を行い、それらの中に"erb.rb"や"erb.so"や"erb.o"や"erb.dll"などの名前を持つファイルがあるかどうかを調べます。いずれかの名前を持つファイルがディレクトリで見つかれば、Rubyインタプリタは探索をそこで終了します。見つからない場合はリストにある次のディレクトリで同じ処理を繰り返します。リストをすべて探索しても見つからない場合は<code>LoadError</code>が発生します。</p>
+<p>ここから定数の自動読み込みについて詳細を説明しますが、その中核となるアイディアは次のとおりです。たとえば<code>app/models</code>ディレクトリに<code>post.rb</code>というファイルがあり、<code>Post</code>のような定数がいったん見つかった後に見つからなくなると、Railsはこの定数を探索・評価し、その結果<code>Post</code>という定数を「副作用として」定義します。</p>
+<p>ところで、Railsには<code>post.rb</code>のようなファイルを探索する<code>$LOAD_PATH</code>に似た、ディレクトリのコレクションがあります。このコレクションは<code>autoload_paths</code>と呼ばれており、デフォルトで以下が含まれます。</p>
 <ul>
-<li><p>All subdirectories of <code>app</code> in the application and engines. For example, <code>app/controllers</code>. They do not need to be the default ones, any custom directories like <code>app/workers</code> belong automatically to <code>autoload_paths</code>.</p></li>
-<li><p>Any existing second level directories called <code>app/*/concerns</code> in the application and engines.</p></li>
-<li><p>The directory <code>test/mailers/previews</code>.</p></li>
+<li><p>アプリケーションとエンジンの<code>app</code>ディレクトリ以下にあるすべてのサブディレクトリ。<code>app/controllers</code>などが対象。<code>app</code>以下に置かれる<code>app/workers</code>などのカスタムディレクトリはすべて<code>autoload_paths</code>に自動的に属するので、デフォルトのディレクトリとする必要はない。</p></li>
+<li><p>アプリケーションとエンジンのすべての<code>app/*/concerns</code>第2サブディレクトリ。</p></li>
+<li><p><code>test/mailers/previews</code>ディレクトリ。</p></li>
 </ul>
-<p>Also, this collection is configurable via <code>config.autoload_paths</code>. For example, <code>lib</code> was in the list years ago, but no longer is. An application can opt-in by adding this to <code>config/application.rb</code>:</p>
+<p>このコレクションは<code>config.autoload_paths</code>で設定できます。たとえば<code>lib</code>ディレクトリは以前はコレクションに含まれていましたが、現在は含まれていません。必要であれば、以下のように<code>config/application.rb</code>に<code>lib</code>をあえて追加する (オプトイン) こともできます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 config.autoload_paths += "#{Rails.root}/lib"
 
 </pre>
 </div>
-<p>The value of <code>autoload_paths</code> can be inspected. In a just generated application it is (edited):</p>
+<p><code>autoload_paths</code>の値を検査することもできます。生成したRailsアプリケーションでは以下のようになります (ただし編集済み)。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ bin/rails r 'puts ActiveSupport::Dependencies.autoload_paths'
@@ -546,10 +546,10 @@ $ bin/rails r 'puts ActiveSupport::Dependencies.autoload_paths'
 
 </pre>
 </div>
-<div class="info"><p><code>autoload_paths</code> is computed and cached during the initialization process. The application needs to be restarted to reflect any changes in the directory structure.</p></div>
-<h3 id="autoloading-algorithms"><a href="#autoloading-algorithms">6 Autoloading Algorithms</a></h3>
-<h4 id="autoloading-algorithms-relative-references"><a href="#relative-references">6.1 Relative References</a></h4>
-<p>A relative constant reference may appear in several places, for example, in</p>
+<div class="info"><p><code>autoload_paths</code>は初期化中に算出され、キャッシュされます。ディレクトリ構造が少しでも変更された場合、変更を反映するにはアプリケーションを再起動する必要があります。</p></div>
+<h3 id="自動読み込みのアルゴリズム"><a href="#%E8%87%AA%E5%8B%95%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF%E3%81%AE%E3%82%A2%E3%83%AB%E3%82%B4%E3%83%AA%E3%82%BA%E3%83%A0">6 自動読み込みのアルゴリズム</a></h3>
+<h4 id="自動読み込みのアルゴリズム-相対参照"><a href="#%E7%9B%B8%E5%AF%BE%E5%8F%82%E7%85%A7">6.1 相対参照</a></h4>
+<p>定数の相対的な参照は、以下のようにさまざまな場所で行われます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class PostsController &lt; ApplicationController
@@ -560,25 +560,25 @@ end
 
 </pre>
 </div>
-<p>all three constant references are relative.</p>
-<h5 id="constants-after-the-class-and-module-keywords"><a href="#constants-after-the-class-and-module-keywords">6.1.1 Constants after the <code>class</code> and <code>module</code> Keywords</a></h5>
-<p>Ruby performs a lookup for the constant that follows a <code>class</code> or <code>module</code> keyword because it needs to know if the class or module is going to be created or reopened.</p>
-<p>If the constant is not defined at that point it is not considered to be a missing constant, autoloading is <strong>not</strong> triggered.</p>
-<p>So, in the previous example, if <code>PostsController</code> is not defined when the file is interpreted Rails autoloading is not going to be triggered, Ruby will just define the controller.</p>
-<h5 id="top-level-constants"><a href="#top-level-constants">6.1.2 Top-Level Constants</a></h5>
-<p>On the contrary, if <code>ApplicationController</code> is unknown, the constant is considered missing and an autoload is going to be attempted by Rails.</p>
-<p>In order to load <code>ApplicationController</code>, Rails iterates over <code>autoload_paths</code>. First checks if <code>app/assets/application_controller.rb</code> exists. If it does not, which is normally the case, it continues and finds <code>app/controllers/application_controller.rb</code>.</p>
-<p>If the file defines the constant <code>ApplicationController</code> all is fine, otherwise <code>LoadError</code> is raised:</p>
+<p>上のコードで使用されている3つの定数はすべて相対参照されています。</p>
+<h5 id="classおよびmoduleキーワードの後に置かれる定数"><a href="#class%E3%81%8A%E3%82%88%E3%81%B3module%E3%82%AD%E3%83%BC%E3%83%AF%E3%83%BC%E3%83%89%E3%81%AE%E5%BE%8C%E3%81%AB%E7%BD%AE%E3%81%8B%E3%82%8C%E3%82%8B%E5%AE%9A%E6%95%B0">6.1.1 <code>class</code>および<code>module</code>キーワードの後に置かれる定数</a></h5>
+<p>Rubyは<code>class</code>や<code>module</code>キーワードの後ろに置かれる定数を探索します。その目的は、それらのクラスやモジュールがその場所で初めて作成されるのか、再度オープンされるのかを確認することです。</p>
+<p>その時点で定数が未定義である場合、Rubyは定数が見つからないとは見なさないので、自動読み込みはトリガーされません。</p>
+<p>前述の例で言うと、ファイルがRubyインタプリタによって解釈される時点で<code>PostsController</code>が定義されていない場合、Railsの自動読み込みはトリガーされず、Rubyは単にコントローラを定義します。</p>
+<h5 id="トップレベルの定数"><a href="#%E3%83%88%E3%83%83%E3%83%97%E3%83%AC%E3%83%99%E3%83%AB%E3%81%AE%E5%AE%9A%E6%95%B0">6.1.2 トップレベルの定数</a></h5>
+<p>逆に、<code>ApplicationController</code>がそれまでに出現していなかった場合、この定数は「見つからない」ものと見なされ、Railsによって自動読み込みがトリガーされます。</p>
+<p>Railsは、<code>ApplicationController</code>を読み込むために<code>autoload_paths</code>にあるパスを順に処理します。最初に<code>app/assets/application_controller.rb</code>が存在するかどうかを確認します。見つからない場合 (これが通常です)、次のパスで<code>app/controllers/application_controller.rb</code>の探索を続行します。</p>
+<p>見つかったファイルで<code>ApplicationController</code>が定義されていればOKです。定義されていない場合は<code>LoadError</code>が発生します。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-unable to autoload constant ApplicationController, expected &lt;full path to application_controller.rb&gt; to define it (LoadError)
+unable to autoload constant ApplicationController, expected &lt;application_controller.rbへのフルパス&gt; to define it (LoadError)
 
 </pre>
 </div>
-<div class="info"><p>Rails does not require the value of autoloaded constants to be a class or module object. For example, if the file <code>app/models/max_clients.rb</code> defines <code>MAX_CLIENTS = 100</code> autoloading <code>MAX_CLIENTS</code> works just fine.</p></div>
-<h5 id="namespaces"><a href="#namespaces">6.1.3 Namespaces</a></h5>
-<p>Autoloading <code>ApplicationController</code> looks directly under the directories of <code>autoload_paths</code> because the nesting in that spot is empty. The situation of <code>Post</code> is different, the nesting in that line is <code>[PostsController]</code> and support for namespaces comes into play.</p>
-<p>The basic idea is that given</p>
+<div class="info"><p>Railsでは、自動読み込みされた定数の値がクラスオブジェクトやモジュールオブジェクトである必要はありません。たとえば、<code>app/models/max_clients.rb</code>というファイルで<code>MAX_CLIENTS = 100</code>と定義されている場合、<code>MAX_CLIENTS</code>の自動読み込みは問題なく行われます。</p></div>
+<h5 id="名前空間"><a href="#%E5%90%8D%E5%89%8D%E7%A9%BA%E9%96%93">6.1.3 名前空間</a></h5>
+<p><code>ApplicationController</code>の自動読み込みは、それが行われる箇所のネストが空であるため、<code>autoload_paths</code>のディレクトリの下で直接行われているように見えます。<code>Post</code>の状況はこれとは異なります。その行におけるネストは<code>[PostsController]</code>であり、名前空間のサポートが効力を発揮し始めます。</p>
+<p>基本的な考え方を以下に示します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 module Admin
@@ -589,7 +589,7 @@ end
 
 </pre>
 </div>
-<p>to autoload <code>Role</code> we are going to check if it is defined in the current or parent namespaces, one at a time. So, conceptually we want to try to autoload any of</p>
+<p><code>Role</code>を自動読み込みするにあたり、<code>Role</code>が定義済みであるかどうかを自身あるいは親の名前空間でひとつずつチェックします。つまり、概念上は自動読み込みのいずれかを以下の順で行いたいわけです。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 Admin::BaseController::Role
@@ -598,7 +598,7 @@ Role
 
 </pre>
 </div>
-<p>その順番通りにThat's the idea. To do so, Rails looks in <code>autoload_paths</code> respectively for file names like these:</p>
+<p>ここが肝心です。これを行なうために、Railsは<code>autoload_paths</code>のパスをファイル名順で以下のように探索します。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 admin/base_controller/role.rb
@@ -607,10 +607,10 @@ role.rb
 
 </pre>
 </div>
-<p>modulus some additional directory lookups we are going to cover soon.</p>
-<div class="info"><p><code>'Constant::Name'.underscore</code> gives the relative path without extension of the file name where <code>Constant::Name</code> is expected to be defined.</p></div>
-<p>Let's see how Rails autoloads the <code>Post</code> constant in the <code>PostsController</code> above assuming the application has a <code>Post</code> model defined in <code>app/models/post.rb</code>.</p>
-<p>First it checks for <code>posts_controller/post.rb</code> in <code>autoload_paths</code>:</p>
+<p>モジュールの探索対象となるその他のディレクトリについては後述します。●</p>
+<div class="info"><p>`<code>Constant::Name</code>.underscore<code>は、</code>Constant::Name`が定義されていると期待されている場所でファイル拡張子抜きの相対パスを返します。</p></div>
+<p>Railsが<code>Post</code>定数をどのようにして前述の<code>PostsController</code>で自動読み込みするのかを詳しく見てみましょう。このアプリケーションには<code>app/models/post.rb</code>に<code>Post</code>モデルがあるとします。</p>
+<p>最初に、<code>autoload_paths</code>のパスの中に<code>posts_controller/post.rb</code>が見つかるかどうかをチェックします。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 app/assets/posts_controller/post.rb
@@ -621,7 +621,7 @@ test/mailers/previews/posts_controller/post.rb
 
 </pre>
 </div>
-<p>Since the lookup is exhausted without success, a similar search for a directory is performed, we are going to see why in the <a href="#automatic-modules">next section</a>:</p>
+<p>この探索は失敗に終わるので、今度はディレクトリの有無を探索します。その理由については<a href="#%E8%87%AA%E5%8B%95%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB">次のセクション</a>で説明します。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 app/assets/posts_controller/post
@@ -632,7 +632,7 @@ test/mailers/previews/posts_controller/post
 
 </pre>
 </div>
-<p>If all those attempts fail, then Rails starts the lookup again in the parent namespace. In this case only the top-level remains:</p>
+<p>これらの探索がすべて失敗すると、Railsは親の名前空間で探索を続行します。この例の場合、親はトップレベルしかありません。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 app/assets/post.rb
@@ -643,10 +643,10 @@ app/models/post.rb
 
 </pre>
 </div>
-<p>A matching file is found in <code>app/models/post.rb</code>. The lookup stops there and the file is loaded. If the file actually defines <code>Post</code> all is fine, otherwise <code>LoadError</code> is raised.</p>
-<h4 id="autoloading-algorithms-qualified-references"><a href="#qualified-references">6.2 Qualified References</a></h4>
-<p>When a qualified constant is missing Rails does not look for it in the parent namespaces. But there is a caveat: When a constant is missing, Rails is unable to tell if the trigger was a relative reference or a qualified one.</p>
-<p>For example, consider</p>
+<p>やっとマッチするファイル<code>app/models/post.rb</code>が見つかりました。探索はここで終了し、ファイルが読み込まれます。<code>Post</code>がこのファイルで実際に定義されていればすべてOKです。定義されていない場合は<code>LoadError</code>が発生します。</p>
+<h4 id="自動読み込みのアルゴリズム-修飾済み参照"><a href="#%E4%BF%AE%E9%A3%BE%E6%B8%88%E3%81%BF%E5%8F%82%E7%85%A7">6.2 修飾済み参照</a></h4>
+<p>修飾済み (qualified) 定数が見つからない場合、この定数は親の名前空間では探索されません。しかしここで注意すべき点がひとつあります。定数が見つからない場合、Railsはそのトリガーが相対的な参照であるか、修飾済み参照であるかを判定できなくなります。</p>
+<p>以下の例について考察してみましょう。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 module Admin
@@ -655,26 +655,26 @@ end
 
 </pre>
 </div>
-<p>and</p>
+<p>以下についても考察します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Admin::User
 
 </pre>
 </div>
-<p>If <code>User</code> is missing, in either case all Rails knows is that a constant called "User" was missing in a module called "Admin".</p>
-<p>If there is a top-level <code>User</code> Ruby would resolve it in the former example, but wouldn't in the latter. In general, Rails does not emulate the Ruby constant resolution algorithms, but in this case it tries using the following heuristic:</p>
+<p><code>User</code>が見つからなければ、上のどちらの場合にも、Railsは "User" という定数が "Admin" というモジュールの中にはないということだけを認識します。</p>
+<p>この<code>User</code>がトップレベルにあるとすると、1番目の例はRubyによって解決されますが2番目の例は解決されません。Railsは、一般にRubyの定数解決アルゴリズムをエミュレートしませんが、このような場合には以下のヒューリスティックを利用して解決を図ります。</p>
 <blockquote>
-<p>If none of the parent namespaces of the class or module has the missing constant then Rails assumes the reference is relative. Otherwise qualified.</p>
+<p>見つからない定数がそのクラスまたはモジュールの親の名前空間にもない場合、Railsはこの定数を相対参照であると仮定する。そうでない場合は修飾済み参照であると仮定する。</p>
 </blockquote>
-<p>For example, if this code triggers autoloading</p>
+<p>たとえば、以下のコードが自動読み込みを行い、</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Admin::User
 
 </pre>
 </div>
-<p>and the <code>User</code> constant is already present in <code>Object</code>, it is not possible that the situation is</p>
+<p>かつ<code>User</code>定数が<code>Object</code>に既にある場合、以下のコードでは同じ状況になりません。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 module Admin
@@ -683,25 +683,25 @@ end
 
 </pre>
 </div>
-<p>because otherwise Ruby would have resolved <code>User</code> and no autoloading would have been triggered in the first place. Thus, Rails assumes a qualified reference and considers the file <code>admin/user.rb</code> and directory <code>admin/user</code> to be the only valid options.</p>
-<p>In practice, this works quite well as long as the nesting matches all parent namespaces respectively and the constants that make the rule apply are known at that time.</p>
-<p>However, autoloading happens on demand. If by chance the top-level <code>User</code> was not yet loaded, then Rails assumes a relative reference by contract.</p>
-<p>Naming conflicts of this kind are rare in practice, but if one occurs, <code>require_dependency</code> provides a solution by ensuring that the constant needed to trigger the heuristic is defined in the conflicting place.</p>
-<h4 id="automatic-modules"><a href="#automatic-modules">6.3 Automatic Modules</a></h4>
-<p>When a module acts as a namespace, Rails does not require the application to defines a file for it, a directory matching the namespace is enough.</p>
-<p>Suppose an application has a back office whose controllers are stored in <code>app/controllers/admin</code>. If the <code>Admin</code> module is not yet loaded when <code>Admin::UsersController</code> is hit, Rails needs first to autoload the constant <code>Admin</code>.</p>
-<p>If <code>autoload_paths</code> has a file called <code>admin.rb</code> Rails is going to load that one, but if there's no such file and a directory called <code>admin</code> is found, Rails creates an empty module and assigns it to the <code>Admin</code> constant on the fly.</p>
-<h4 id="generic-procedure"><a href="#generic-procedure">6.4 Generic Procedure</a></h4>
-<p>Relative references are reported to be missing in the cref where they were hit, and qualified references are reported to be missing in their parent. (See <a href="#resolution-algorithm-for-relative-constants">Resolution Algorithm for Relative Constants</a> at the beginning of this guide for the definition of <em>cref</em>, and <a href="#resolution-algorithm-for-qualified-constants">Resolution Algorithm for Qualified Constants</a> for the definition of <em>parent</em>.)</p>
-<p>The procedure to autoload constant <code>C</code> in an arbitrary situation is as follows:</p>
+<p>そうでなければRubyは<code>User</code>を解決でき、そもそも最初の位置で自動読み込みは行われないはずです。この場合Railsはこの定数が修飾済み参照であると仮定し、<code>admin/user.rb</code>ファイルと<code>admin/user</code>ディレクトリが唯一の正当なオプションであるとみなします。</p>
+<p>そのネストがすべての親名前空間にそれぞれマッチし、かつそのルールを適用させる定数の存在がその時点でRubyに認識されていれば、この方法は実用上機能します。</p>
+<p>しかし、自動読み込みは要求に応じて発生するものです。その時点でたまたまトップレベルの<code>User</code>が読み込まれていなければ、Railsはこのヒューリスティックに従って定数を相対参照であると仮定します。</p>
+<p>このような名前の競合は実際にはめったに発生しませんが、もし発生した場合は、<code>require_dependency</code>を使用して、競合の発生する場所でこのヒューリスティックを発動する必要のある定数が定義されるようにできます。</p>
+<h4 id="自動モジュール"><a href="#%E8%87%AA%E5%8B%95%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB">6.3 自動モジュール</a></h4>
+<p>モジュールがひとつの名前空間のように振る舞う場合、Railsアプリケーションではそのモジュールのためのファイルを定義する必要はありません。その名前空間にマッチするディレクトリがあれば十分です。</p>
+<p>あるRailsアプリケーションに管理機能があり、そのためのコントローラが<code>app/controllers/admin</code>に保存されているとします。この<code>Admin</code>モジュールが読み込まれていない状態で<code>Admin::UsersController</code>へのアクセスが発生する場合は、Railsは最初に<code>Admin</code>という定数を自動読み込みしておく必要があります。</p>
+<p><code>admin.rb</code>というファイルが<code>autoload_paths</code>のパスに含まれている場合は、Railsによって読み込まれます。しかしそのようなファイルが見つからず、<code>admin</code>というディレクトリが見つかった場合は、Railsによって空のモジュールがひとつ作成され、<code>Admin</code>定数にその場で代入されます。</p>
+<h4 id="一般的な手順"><a href="#%E4%B8%80%E8%88%AC%E7%9A%84%E3%81%AA%E6%89%8B%E9%A0%86">6.4 一般的な手順</a></h4>
+<p>相対参照は、それらがヒットしたcrefからは見つからないと報告されます。修飾済み参照はその親からは見つからないと報告されます。●(<em>cref</em>の定義については本章の<a href="#%E7%9B%B8%E5%AF%BE%E5%AE%9A%E6%95%B0%E3%82%92%E8%A7%A3%E6%B1%BA%E3%81%99%E3%82%8B%E3%82%A2%E3%83%AB%E3%82%B4%E3%83%AA%E3%82%BA%E3%83%A0">相対定数を解決するアルゴリズム</a>を、<em>parent</em>の定義については同じく<a href="#%E4%BF%AE%E9%A3%BE%E6%B8%88%E3%81%BF%E5%AE%9A%E6%95%B0%E3%82%92%E8%A7%A3%E6%B1%BA%E3%81%99%E3%82%8B%E3%82%A2%E3%83%AB%E3%82%B4%E3%83%AA%E3%82%BA%E3%83%A0">修飾済み定数を解決するアルゴリズム</a>を参照してください)</p>
+<p>定数<code>C</code>を任意の状況で自動読み込みする手順を擬似言語で表現すると以下のようになります。●擬似言語の表現をチェック●</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-if the class or module in which C is missing is Object
+if「定数Cが見つからないクラスまたはモジュール」がオブジェクトである
   let ns = ''
 else
-  let M = the class or module in which C is missing
+  let M = 定数Cが見つからないクラスまたはモジュール
 
-  if M is anonymous
+  if Mが無名である
     let ns = ''
   else
     let ns = M.name
@@ -709,12 +709,12 @@ else
 end
 
 loop do
-  # Look for a regular file.
+  # 正規のファイルを探索する
   for dir in autoload_paths
-    if the file "#{dir}/#{ns.underscore}/c.rb" exists
+    if "#{dir}/#{ns.underscore}/c.rb"ファイルが存在する
       load/require "#{dir}/#{ns.underscore}/c.rb"
 
-      if C is now defined
+      if 定数Cが定義済みである
         return
       else
         raise LoadError
@@ -722,10 +722,10 @@ loop do
     end
   end
 
-  # Look for an automatic module.
+  # 自動モジュールを探索する
   for dir in autoload_paths
-    if the directory "#{dir}/#{ns.underscore}/c" exists
-      if ns is an empty string
+    if "#{dir}/#{ns.underscore}/c"ディレクトリが存在する
+      if nsが空文字列である
         let C = Module.new in Object and return
       else
         let C = Module.new in ns.constantize and return
@@ -733,16 +733,16 @@ loop do
     end
   end
 
-  if ns is empty
-    # We reached the top-level without finding the constant.
+  if nsが空である
+    # 定数が見つからないままトップレベルに到着
     raise NameError
   else
-    if C exists in any of the parent namespaces
-      # Qualified constants heuristic.
+    if Cが親の名前空間のどこかに存在する
+      # 修飾済み定数のヒューリスティック
       raise NameError
     else
-      # Try again in the parent namespace.
-      let ns = the parent namespace of ns and retry
+      # 親の名前空間で探索を再試行する
+      let ns = nsの親の名前空間 and retry
     end
   end
 end
@@ -750,40 +750,40 @@ end
 </pre>
 </div>
 <h3 id="require_dependency"><a href="#require_dependency">7 require_dependency</a></h3>
-<p>Constant autoloading is triggered on demand and therefore code that uses a certain constant may have it already defined or may trigger an autoload. That depends on the execution path and it may vary between runs.</p>
-<p>There are times, however, in which you want to make sure a certain constant is known when the execution reaches some code. <code>require_dependency</code> provides a way to load a file using the current <a href="#loading-mechanism">loading mechanism</a>, and keeping track of constants defined in that file as if they were autoloaded to have them reloaded as needed.</p>
-<p><code>require_dependency</code> is rarely needed, but see a couple of use-cases in <a href="#autoloading-and-sti">Autoloading and STI</a> and <a href="#when-constants-aren-t-missed">When Constants aren't Triggered</a>.</p>
-<div class="warning"><p>Unlike autoloading, <code>require_dependency</code> does not expect the file to define any particular constant. Exploiting this behavior would be a bad practice though, file and constant paths should match.</p></div>
-<h3 id="constant-reloading"><a href="#constant-reloading">8 Constant Reloading</a></h3>
-<p>When <code>config.cache_classes</code> is false Rails is able to reload autoloaded constants.</p>
-<p>For example, in you're in a console session and edit some file behind the scenes, the code can be reloaded with the <code>reload!</code> command:</p>
+<p>定数の自動読み込みは必要に応じて自動的に行なわれるので、利用の際に定義済みである定数もあれば自動読み込みをトリガーする定数もあり、その動作は一定ではありません。自動読み込みは実行パスに依存しますが、実行パスはアプリケーションの実行中に変わることもありますのでやはり一定ではありません。</p>
+<p>しかし、こうした定数の動作を確定させたくなることもしばしばあります。特定のコードを実行する時にそこにある定数が既知となるようにし、自動読み込みが発生しないようにできないものでしょうか。このような場合には<code>require_dependency</code>を使用します。これはその時点での<a href="#%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF%E3%81%AE%E3%83%A1%E3%82%AB%E3%83%8B%E3%82%BA%E3%83%A0">読み込みのメカニズム</a>を使用してファイルを読み込むことができ、必要に応じてそのファイルで定義されている定数をあたかも事前に読み込み済みであるかのように追跡することもできます。</p>
+<p><code>require_dependency</code>が必要になることはめったにありませんが、<a href="#%E8%87%AA%E5%8B%95%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF%E3%81%A8sti">自動読み込みとSTI</a>や<a href="#%E5%AE%9A%E6%95%B0%E3%81%8C%E3%83%88%E3%83%AA%E3%82%AC%E3%83%BC%E3%81%95%E3%82%8C%E3%81%AA%E3%81%84%E5%A0%B4%E5%90%88">定数がトリガーされない場合</a>でいくつかの実例を参照できます。</p>
+<div class="warning"><p><code>require_dependency</code>は自動読み込みと異なり、そのファイルで特定の定数が定義されていることを前提としません。この動作に依存するのはよくありませんが、ファイルと定数のパスは一致する必要があります。</p></div>
+<h3 id="定数の再読み込み"><a href="#%E5%AE%9A%E6%95%B0%E3%81%AE%E5%86%8D%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF">8 定数の再読み込み</a></h3>
+<p><code>config.cache_classes</code>がfalseの場合、Railsは自動読み込み済みの定数を再読み込みできるようになります。</p>
+<p>たとえば、Railsのコンソールセッションを開いている状態で、いくつかのファイルがバックグラウンドで更新された場合、<code>reload!</code>コマンドを使用して定数を再読み込みできます。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 &gt; reload!
 
 </pre>
 </div>
-<p>When the application runs, code is reloaded when something relevant to this logic changes. In order to do that, Rails monitors a number of things:</p>
+<p>アプリケーションの実行中に、関連するロジックが変更されると、再読み込みが行われます。これを実現するために、Railsでは以下のさまざまな要素を監視しています。</p>
 <ul>
-<li><p><code>config/routes.rb</code>.</p></li>
-<li><p>Locales.</p></li>
-<li><p>Ruby files under <code>autoload_paths</code>.</p></li>
-<li><p><code>db/schema.rb</code> and <code>db/structure.sql</code>.</p></li>
+<li><p><code>config/routes.rb</code></p></li>
+<li><p>ロケール</p></li>
+<li><p><code>autoload_paths</code>以下のパスにあるRubyファイル</p></li>
+<li><p><code>db/schema.rb</code>および<code>db/structure.sql</code>ファイル</p></li>
 </ul>
-<p>If anything in there changes, there is a middleware that detects it and reloads the code.</p>
-<p>Autoloading keeps track of autoloaded constants. Reloading is implemented by removing them all from their respective classes and modules using <code>Module#remove_const</code>. That way, when the code goes on, those constants are going to be unknown again, and files reloaded on demand.</p>
-<div class="info"><p>This is an all-or-nothing operation, Rails does not attempt to reload only what changed since dependencies between classes makes that really tricky. Instead, everything is wiped.</p></div>
-<h3 id="module#autoload-isn't-involved"><a href="#module#autoload-isn" t-involved>9 Module#autoload isn't Involved</a></h3>
-<p><code>Module#autoload</code> provides a lazy way to load constants that is fully integrated with the Ruby constant lookup algorithms, dynamic constant API, etc. It is quite transparent.</p>
-<p>Rails internals make extensive use of it to defer as much work as possible from the boot process. But constant autoloading in Rails is <strong>not</strong> implemented with <code>Module#autoload</code>.</p>
-<p>One possible implementation based on <code>Module#autoload</code> would be to walk the application tree and issue <code>autoload</code> calls that map existing file names to their conventional constant name.</p>
-<p>There are a number of reasons that prevent Rails from using that implementation.</p>
-<p>For example, <code>Module#autoload</code> is only capable of loading files using <code>require</code>, so reloading would not be possible. Not only that, it uses an internal <code>require</code> which is not <code>Kernel#require</code>.</p>
-<p>Then, it provides no way to remove declarations in case a file is deleted. If a constant gets removed with <code>Module#remove_const</code> its <code>autoload</code> is not triggered again. Also, it doesn't support qualified names, so files with namespaces should be interpreted during the walk tree to install their own <code>autoload</code> calls, but those files could have constant references not yet configured.</p>
-<p>An implementation based on <code>Module#autoload</code> would be awesome but, as you see, at least as of today it is not possible. Constant autoloading in Rails is implemented with <code>Module#const_missing</code>, and that's why it has its own contract, documented in this guide.</p>
-<h3 id="common-gotchas"><a href="#common-gotchas">10 Common Gotchas</a></h3>
-<h4 id="nesting-and-qualified-constants"><a href="#nesting-and-qualified-constants">10.1 Nesting and Qualified Constants</a></h4>
-<p>Let's consider</p>
+<p>これらのいずれかで変更が発生すると、ミドルウェアが変更を検出してコードを再読み込みします。</p>
+<p>自動読み込みされた定数は、自動読み込みのインフラによって監視されます。再読み込みの具体的な実装では、<code>Module#remove_const</code>メソッドを呼び出して関連するクラスとモジュールをいったんすべて削除します。これにより、そのコードが実行されるとそれらの定数が再び未知の状態になり、必要に応じてファイルが再読み込みされます。</p>
+<div class="info"><p>この動作は「オール・オア・ナッシング」です。Railsのクラスやモジュールの間にはきわめて微妙な依存関係があるため、変更が生じたクラスやモジュールだけを部分的に再読み込みすることはありません。クラスやモジュールは、変更が検出されるたびにすべてクリーンアップされます。</p></div>
+<h3 id="module#autoloadが関与しない場合"><a href="#module#autoload%E3%81%8C%E9%96%A2%E4%B8%8E%E3%81%97%E3%81%AA%E3%81%84%E5%A0%B4%E5%90%88">9 Module#autoloadが関与しない場合</a></h3>
+<p><code>Module#autoload</code>は定数の遅延読み込み機能を提供します。この機能はRubyの定数探索アルゴリズムや動的定数APIなどと完全に統合されています。この動作はきわめて透過的です。</p>
+<p>Rails内部では、ブートプロセス以後の作業を可能な限り遅延するためにこの機能が広く使用されています。ただし、Railsの定数自動読み込みでは<code>Module#autoload</code>を使用して実装されているわけでは<strong>ありません</strong>。</p>
+<p>実装で<code>Module#autoload</code>を使用するのであれば、たとえばアプリケーションのツリーをすべてスキャンし、既存のファイル名と従来の定数名を関連付けるために<code>autoload</code>を呼び出すという方法が考えられます。</p>
+<p>Railsでこのような実装を避けているのにはいくつかの理由があります。</p>
+<p>たとえば、<code>Module#autoload</code>は<code>require</code>を使用するファイル読み込みしか行えないため、再読み込みには利用できないことがあります。しかも、このモジュールの内部では<code>Kernel#require</code>とは別の<code>require</code>が使用されています。</p>
+<p>そのため、このモジュールではファイルが削除された場合にその宣言を削除する方法が提供されていません。定数を<code>Module#remove_const</code>で削除すると、以後<code>autoload</code>がトリガーされなくなってしまいます。また、このモジュールでは修飾名がサポートされていません。アプリケーションのツリーをスキャンして個別の<code>autoload</code>呼び出しをインストールする際に名前空間を解釈する必要がありますが、それらのファイルの定数参照がその時点でまだ構成されていない可能性があります。</p>
+<p><code>Module#autoload</code>を使用して素直に自動読み込みを実装できればよいのですが、上述のとおり現時点では不可能です。実際にはRailsの定数自動読み込みは<code>Module#const_missing</code>を使用して実装されています。そのような独自の用法がある理由は本章で述べているとおりです。</p>
+<h3 id="よくある落とし穴"><a href="#%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E8%90%BD%E3%81%A8%E3%81%97%E7%A9%B4">10 よくある落とし穴</a></h3>
+<h4 id="ネストと修飾済み定数"><a href="#%E3%83%8D%E3%82%B9%E3%83%88%E3%81%A8%E4%BF%AE%E9%A3%BE%E6%B8%88%E3%81%BF%E5%AE%9A%E6%95%B0">10.1 ネストと修飾済み定数</a></h4>
+<p>以下の2つについて考察してみましょう。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 module Admin
@@ -796,7 +796,7 @@ end
 
 </pre>
 </div>
-<p>and</p>
+<p>および</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class Admin::UsersController &lt; ApplicationController
@@ -807,9 +807,9 @@ end
 
 </pre>
 </div>
-<p>To resolve <code>User</code> Ruby checks <code>Admin</code> in the former case, but it does not in the latter because it does not belong to the nesting. (See <a href="#nesting">Nesting</a> and <a href="#resolution-algorithms">Resolution Algorithms</a>.)</p>
-<p>Unfortunately Rails autoloading does not know the nesting in the spot where the constant was missing and so it is not able to act as Ruby would. In particular, <code>Admin::User</code> will get autoloaded in either case.</p>
-<p>Albeit qualified constants with <code>class</code> and <code>module</code> keywords may technically work with autoloading in some cases, it is preferable to use relative constants instead:</p>
+<p>Rubyは<code>User</code>を解決するために、1番目の例では<code>Admin</code>をチェックしますが、2番目の例はネストに属していないので<code>Admin</code>をチェックしません。(<a href="#%E3%83%8D%E3%82%B9%E3%83%88">ネスト</a>および<a href="#%E8%A7%A3%E6%B1%BA%E3%82%A2%E3%83%AB%E3%82%B4%E3%83%AA%E3%82%BA%E3%83%A0">解決アルゴリズム</a>を参照)</p>
+<p>残念ながら、Railsの自動読み込みはこの定数が見つからない箇所でネストが発生しているかどうかを認識しないので、通常のRubyと同じように振る舞うことができません。特に<code>Admin::User</code>はどちらの場合にも自動読み込みされます。</p>
+<p><code>class</code>キーワードや<code>module</code>キーワードの修飾済み定数は自動読み込みのいくつかのケースで動作することもありますが、修飾済み定数よりも以下のように相対定数を使用することをお勧めします。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 module Admin
@@ -822,8 +822,8 @@ end
 
 </pre>
 </div>
-<h4 id="autoloading-and-sti"><a href="#autoloading-and-sti">10.2 Autoloading and STI</a></h4>
-<p>Single Table Inheritance (STI) is a feature of Active Record that enables storing a hierarchy of models in one single table. The API of such models is aware of the hierarchy and encapsulates some common needs. For example, given these classes:</p>
+<h4 id="自動読み込みとsti"><a href="#%E8%87%AA%E5%8B%95%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF%E3%81%A8sti">10.2 自動読み込みとSTI</a></h4>
+<p>単一テーブル継承 (STI: Single Table Inheritance) はActive Recordの機能のひとつであり、モデルの階層構造を1つのテーブルに保存することができます。このようなモデルのAPIは階層構造を認識し、よく使われる要素がそこにカプセル化されます。たとえば以下のクラスがあるとします。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # app/models/polygon.rb
@@ -840,12 +840,12 @@ end
 
 </pre>
 </div>
-<p><code>Triangle.create</code> creates a row that represents a triangle, and <code>Rectangle.create</code> creates a row that represents a rectangle. If <code>id</code> is the ID of an existing record, <code>Polygon.find(id)</code> returns an object of the correct type.</p>
-<p>Methods that operate on collections are also aware of the hierarchy. For example, <code>Polygon.all</code> returns all the records of the table, because all rectangles and triangles are polygons. Active Record takes care of returning instances of their corresponding class in the result set.</p>
-<p>Types are autoloaded as needed. For example, if <code>Polygon.first</code> is a rectangle and <code>Rectangle</code> has not yet been loaded, Active Record autoloads it and the record is correctly instantiated.</p>
-<p>All good, but if instead of performing queries based on the root class we need to work on some subclass, things get interesting.</p>
-<p>While working with <code>Polygon</code> you do not need to be aware of all its descendants, because anything in the table is by definition a polygon, but when working with subclasses Active Record needs to be able to enumerate the types it is looking for. Let’s see an example.</p>
-<p><code>Rectangle.all</code> only loads rectangles by adding a type constraint to the query:</p>
+<p><code>Triangle.create</code>は三角形を表す行をひとつ作成し、<code>Rectangle.create</code>は四角形を表す行をひとつ作成します。<code>id</code>が既存レコードのIDであれば、<code>Polygon.find(id)</code>は正しい種類のオブジェクトを返します。</p>
+<p>コレクションに対して実行されるメソッドは、階層構造も認識します。たとえば、三角形と四角形はどちらも多角形 (polygon) に含まれるため、<code>Polygon.all</code>はテーブル内のすべてのレコードを返します。Active Recordが返す結果セットでは、結果ごとに対応するクラスのインスタンスを返すように配慮されています。</p>
+<p>種類は必要に応じて自動読み込みされます。たとえば、<code>Polygon.first</code>の結果が四角形 (rectangle) であり、<code>Rectangle</code>がその時点で読み込まれていなければ、Active Recordによって<code>Rectangle</code>が読み込まれ、そのレコードは正しくインスタンス化されます。</p>
+<p>ここまでは何の問題もありません。しかし、ルートクラスに基づいたクエリではなく、何らかのサブクラスを使用しなければならない場合には事情が異なってきます。</p>
+<p><code>Polygon</code>に対して操作を行なうのであれば、テーブル内のすべてのエントリはpolygonとして定義されているので、どの子孫についても特別な配慮は必要はありません。しかし<code>Polygon</code>のサブクラスに対して操作を行う場合、Active Recordが探索しようとしている種類をそのサブクラスで列挙可能である必要があります。以下の例で考察してみましょう。</p>
+<p>以下のように、取得する種類の制限をクエリに加えると、<code>Rectangle.all</code>はrectangleだけを読み込みます。</p>
 <div class="code_container">
 <pre class="brush: sql; gutter: false; toolbar: false">
 SELECT "polygons".* FROM "polygons"
@@ -853,7 +853,7 @@ WHERE "polygons"."type" IN ("Rectangle")
 
 </pre>
 </div>
-<p>Let’s introduce now a subclass of <code>Rectangle</code>:</p>
+<p>今度は<code>Rectangle</code>のサブクラスを導入してみましょう。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # app/models/square.rb
@@ -862,7 +862,7 @@ end
 
 </pre>
 </div>
-<p><code>Rectangle.all</code> should now return rectangles <strong>and</strong> squares:</p>
+<p><code>Rectangle.all</code>は四角形と正方形の<strong>両方</strong>を返します。</p>
 <div class="code_container">
 <pre class="brush: sql; gutter: false; toolbar: false">
 SELECT "polygons".* FROM "polygons"
@@ -870,8 +870,8 @@ WHERE "polygons"."type" IN ("Rectangle", "Square")
 
 </pre>
 </div>
-<p>But there’s a caveat here: How does Active Record know that the class <code>Square</code> exists at all?</p>
-<p>Even if the file <code>app/models/square.rb</code> exists and defines the <code>Square</code> class, if no code yet used that class, <code>Rectangle.all</code> issues the query</p>
+<p>ただしここで注意が必要です。Active Recordは<code>Square</code>クラスの存在をいったいどのようにして認識しているのでしょうか。</p>
+<p><code>app/models/square.rb</code>というファイルが存在して<code>Square</code>クラスがその中で定義されていたとしても、クラス内のコードがその時点で利用されたことがなかった場合は<code>Rectangle.all</code>によって以下のクエリが発行されます。</p>
 <div class="code_container">
 <pre class="brush: sql; gutter: false; toolbar: false">
 SELECT "polygons".* FROM "polygons"
@@ -879,8 +879,8 @@ WHERE "polygons"."type" IN ("Rectangle")
 
 </pre>
 </div>
-<p>That is not a bug, the query includes all <em>known</em> descendants of <code>Rectangle</code>.</p>
-<p>A way to ensure this works correctly regardless of the order of execution is to load the leaves of the tree by hand at the bottom of the file that defines the root class:</p>
+<p>これはバグではありません。<code>Rectangle</code>クラスのその時点で<em>既知</em>である子孫はクエリにすべて含まれています。</p>
+<p>コードの実行順序にかかわらず常に期待どおりに動作させる手段として、ルートクラスが定義されているファイルの最終行で、ツリーの末端 (leaf) を明示的に読み込むという方法があります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # app/models/polygon.rb
@@ -890,12 +890,12 @@ require_dependency ‘square’
 
 </pre>
 </div>
-<p>Only the leaves that are <strong>at least grandchildren</strong> need to be loaded this way. Direct subclasses do not need to be preloaded. If the hierarchy is deeper, intermediate classes will be autoloaded recursively from the bottom because their constant will appear in the class definitions as superclass.</p>
-<h4 id="autoloading-and-require"><a href="#autoloading-and-require">10.3 Autoloading and <code>require</code></a></h4>
-<p>Files defining constants to be autoloaded should never be <code>require</code>d:</p>
+<p>この方法で明示的に読み込む必要があるのは、<strong>孫またはそれ以下</strong>のleafだけで十分です。直下のサブクラスである子については事前読み込みは不要です。階層構造が子よりも深い場合、階層の途中にあるクラスの定義で定数がスーパークラスとして記述されているので、途中のクラスは再帰的に自動読み込みされます。</p>
+<h4 id="自動読み込みとrequire"><a href="#%E8%87%AA%E5%8B%95%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF%E3%81%A8require">10.3 自動読み込みと<code>require</code></a></h4>
+<p>自動読み込みされる定数を定義するファイルは<code>require</code>すべきではありません。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-require 'user' # DO NOT DO THIS
+require 'user' # これを行ってはならない
 
 class UsersController &lt; ApplicationController
   ...
@@ -903,15 +903,15 @@ end
 
 </pre>
 </div>
-<p>There are two possible gotchas here in development mode:</p>
+<p>これはdevelopmentモードで以下の2つの落とし穴の原因となる可能性があります。</p>
 <ol>
-<li><p>If <code>User</code> is autoloaded before reaching the <code>require</code>, <code>app/models/user.rb</code> runs again because <code>load</code> does not update <code>$LOADED_FEATURES</code>.</p></li>
-<li><p>If the <code>require</code> runs first Rails does not mark <code>User</code> as an autoloaded constant and changes to <code>app/models/user.rb</code> aren't reloaded.</p></li>
+<li><p>この<code>require</code>が実行されるより前に<code>User</code>が自動読み込みされると、<code>$LOADED_FEATURES</code>が<code>load</code>によって更新されないので、<code>app/models/user.rb</code>が再度実行されてしまいます。</p></li>
+<li><p>この<code>require</code>が最初に実行されると、Railsは<code>User</code>を自動読み込み済み定数としてマーキングしないので、<code>app/models/user.rb</code>の変更は再読み込みされなくなってしまいます。</p></li>
 </ol>
-<p>Just follow the flow and use constant autoloading always, never mix autoloading and <code>require</code>. As a last resort, if some file absolutely needs to load a certain file use <code>require_dependency</code> to play nice with constant autoloading. This option is rarely needed in practice, though.</p>
-<p>Of course, using <code>require</code> in autoloaded files to load ordinary 3rd party libraries is fine, and Rails is able to distinguish their constants, they are not marked as autoloaded.</p>
-<h4 id="autoloading-and-initializers"><a href="#autoloading-and-initializers">10.4 Autoloading and Initializers</a></h4>
-<p>Consider this assignment in <code>config/initializers/set_auth_service.rb</code>:</p>
+<p>フローに従って、「常に」定数の自動読み込みを使用してください。自動読み込みと<code>require</code>は決して併用してはいけません。やむを得ない事情から、ファイルに特定のファイルをどうしても読み込んでおきたい場合は、最後の手段として、<code>require_dependency</code>を使用して定数の自動読み込みと調和させてください。このオプションが実際に必要になることはほぼないはずです。</p>
+<p>もちろん、通常のサードパーティのライブラリについては、自動読み込みされるファイルの中で<code>require</code>で読み込んでも問題ありません。Railsはサードパーティのライブラリの定数を区別するので、これらは自動読み込みの対象としてマークされません。</p>
+<h4 id="自動読み込みとイニシャライザ"><a href="#%E8%87%AA%E5%8B%95%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF%E3%81%A8%E3%82%A4%E3%83%8B%E3%82%B7%E3%83%A3%E3%83%A9%E3%82%A4%E3%82%B6">10.4 自動読み込みとイニシャライザ</a></h4>
+<p><code>config/initializers/set_auth_service.rb</code>で以下の代入を行った場合について考察してみましょう。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 AUTH_SERVICE = if Rails.env.production?
@@ -922,10 +922,10 @@ end
 
 </pre>
 </div>
-<p>The purpose of this setup would be that the application uses the class that corresponds to the environment via <code>AUTH_SERVICE</code>. In development mode <code>MockedAuthService</code> gets autoloaded when the initializer runs. Let’s suppose we do some requests, change its implementation, and hit the application again.
-To our surprise the changes are not reflected. なぜ？</p>
-<p>As <a href="#constant-reloading">we saw earlier</a>, Rails removes autoloaded constants, but <code>AUTH_SERVICE</code> stores the original class object. Stale, non-reachable using the original constant, but perfectly functional.</p>
-<p>The following code summarizes the situation:</p>
+<p>この設定の目的は、<code>AUTH_SERVICE</code>で示される環境に対応するクラスをRailsアプリケーションから使用できるようにすることです。developmentモードでは、イニシャライザ実行時に<code>MockedAuthService</code>が自動読み込みされます。ここで、アプリケーションでいくつかのリクエストを処理した後、実装に変更を加え、再度アプリケーションにアクセスしたとしましょう。
+驚くことに、変更したはずの実装が反映されていません。これはどういうことなのでしょう。</p>
+<p><a href="#%E5%AE%9A%E6%95%B0%E3%81%AE%E5%86%8D%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF">前述</a>のとおり、自動読み込みされた定数はRailsによって削除されるのですが、<code>AUTH_SERVICE</code>には元のクラスオブジェクトが保存されています。このオブジェクトは最新の状態ではなくなっており、元の定数を使用してアクセスすることはできなくなっていますが、完全に機能します。</p>
+<p>以下のコードはこの状況をまとめたものです。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class C
@@ -942,8 +942,8 @@ C           # =&gt; uninitialized constant C (NameError)
 
 </pre>
 </div>
-<p>Because of that, it is not a good idea to autoload constants on application initialization.</p>
-<p>In the case above we could implement a dynamic access point:</p>
+<p>こうした理由から、Railsアプリケーションの初期化時に定数を自動読み込みするのはよいアイディアとは言えません。</p>
+<p>上のような場合には、以下のように動的なアクセスポイントを実装し、</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # app/models/auth_service.rb
@@ -961,15 +961,15 @@ end
 
 </pre>
 </div>
-<p>and have the application use <code>AuthService.instance</code> instead. <code>AuthService</code> would be loaded on demand and be autoload-friendly.</p>
-<h4 id="require_dependency-and-initializers"><a href="#require_dependency-and-initializers">10.5 <code>require_dependency</code> and Initializers</a></h4>
-<p>As we saw before, <code>require_dependency</code> loads files in an autoloading-friendly way. Normally, though, such a call does not make sense in an initializer.</p>
-<p>One could think about doing some <a href="#require-dependency"><code>require_dependency</code></a> calls in an initializer to make sure certain constants are loaded upfront, for example as an attempt to address the <a href="#autoloading-and-sti">gotcha with STIs</a>.</p>
-<p>Problem is, in development mode <a href="#constant-reloading">autoloaded constants are wiped</a> if there is any relevant change in the file system. If that happens then we are in the very same situation the initializer wanted to avoid!</p>
-<p>Calls to <code>require_dependency</code> have to be strategically written in autoloaded spots.</p>
-<h4 id="when-constants-aren't-missed"><a href="#when-constants-aren" t-missed>10.6 When Constants aren't Missed</a></h4>
-<h5 id="when-constants-aren't-missed-relative-references"><a href="#when-constants-aren" t-missed-relative-references>10.6.1 Relative References</a></h5>
-<p>Let's consider a flight simulator. The application has a default flight model</p>
+<p>さらにアプリケーションで<code>AuthService.instance</code>を代りに使用するという方法があります。<code>AuthService</code>は必要に応じて読み込まれ、自動読み込みとよく調和します。</p>
+<h4 id="require_dependencyとイニシャライザ"><a href="#require_dependency%E3%81%A8%E3%82%A4%E3%83%8B%E3%82%B7%E3%83%A3%E3%83%A9%E3%82%A4%E3%82%B6">10.5 <code>require_dependency</code>とイニシャライザ</a></h4>
+<p>前述のとおり、<code>require_dependency</code>は自動読み込みと調和するようにファイルを読み込みます。しかし、このような呼び出しはイニシャライザ内では意味がないのが普通です。</p>
+<p>イニシャライザ内で<a href="#require_dependency"><code>require_dependency</code></a>呼び出しを使用することで、たとえば<a href="#%E8%87%AA%E5%8B%95%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF%E3%81%A8sti">自動読み込みとSTI</a>の問題を修正しようとしたときと同様に特定の定数を確実に事前読み込みできます。</p>
+<p>この方法の問題は、developmentモードでは、関連する変更がファイルシステム上で生じていなかった場合に<a href="#%E5%AE%9A%E6%95%B0%E3%81%AE%E5%86%8D%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF">自動読み込みされた定数が完全にクリーンアップされてしまう</a>という点です。イニシャライザでのこのような定数の完全削除はぜひとも避けたいところです。</p>
+<p>自動読み込みが行われる箇所で<code>require_dependency</code>を使用する場合は、十分戦略を練っておく必要があります。</p>
+<h4 id="定数がトリガーされない場合"><a href="#%E5%AE%9A%E6%95%B0%E3%81%8C%E3%83%88%E3%83%AA%E3%82%AC%E3%83%BC%E3%81%95%E3%82%8C%E3%81%AA%E3%81%84%E5%A0%B4%E5%90%88">10.6 定数がトリガーされない場合</a></h4>
+<h5 id="定数がトリガーされない場合-相対参照"><a href="#%E5%AE%9A%E6%95%B0%E3%81%8C%E3%83%88%E3%83%AA%E3%82%AC%E3%83%BC%E3%81%95%E3%82%8C%E3%81%AA%E3%81%84%E5%A0%B4%E5%90%88-%E7%9B%B8%E5%AF%BE%E5%8F%82%E7%85%A7">10.6.1 相対参照</a></h5>
+<p>フライトシミュレータについて考察してみましょう。このアプリケーションには以下のデフォルトのフライトモデルが1つあります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # app/models/flight_model.rb
@@ -978,7 +978,7 @@ end
 
 </pre>
 </div>
-<p>that can be overridden by each airplane, for instance</p>
+<p>これは、以下のようにそれぞれの飛行機で上書きすることができます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # app/models/bell_x1/flight_model.rb
@@ -998,9 +998,9 @@ end
 
 </pre>
 </div>
-<p>The initializer wants to create a <code>BellX1::FlightModel</code> and nesting has <code>BellX1</code>, that looks good. But if the default flight model is loaded and the one for the Bell-X1 is not, the interpreter is able to resolve the top-level <code>FlightModel</code> and autoloading is thus not triggered for <code>BellX1::FlightModel</code>.</p>
-<p>That code depends on the execution path.</p>
-<p>These kind of ambiguities can often be resolved using qualified constants:</p>
+<p>イニシャライザは<code>BellX1::FlightModel</code>をひとつ作成しようとし、ネストには<code>BellX1</code>があります。一見したところ問題はなさそうにみえます。しかしここで、デフォルトのフライトモデルが読み込まれ、Bell-X1のフライトモデルが読み込まれていなかったとします。このとき、Rubyインタプリタはトップレベルの<code>FlightModel</code>を解決できるので、<code>BellX1::FlightModel</code>の自動読み込みはトリガーされません。</p>
+<p>このコードの振る舞いは、実行パスの内容に依存します。</p>
+<p>この種のあいまいさの解決には、以下のような修飾済み定数が役に立つことがしばしばあります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 module BellX1
@@ -1013,7 +1013,7 @@ end
 
 </pre>
 </div>
-<p>Also, <code>require_dependency</code> is a solution:</p>
+<p>以下のように<code>require_dependency</code>を使用して解決することもできます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 require_dependency 'bell_x1/flight_model'
@@ -1028,8 +1028,8 @@ end
 
 </pre>
 </div>
-<h5 id="when-constants-aren't-missed-qualified-references"><a href="#when-constants-aren" t-missed-qualified-references>10.6.2 Qualified References</a></h5>
-<p>以下の例では</p>
+<h5 id="定数がトリガーされない場合-修飾済み参照"><a href="#%E5%AE%9A%E6%95%B0%E3%81%8C%E3%83%88%E3%83%AA%E3%82%AC%E3%83%BC%E3%81%95%E3%82%8C%E3%81%AA%E3%81%84%E5%A0%B4%E5%90%88-%E4%BF%AE%E9%A3%BE%E6%B8%88%E3%81%BF%E5%8F%82%E7%85%A7">10.6.2 修飾済み参照</a></h5>
+<p>以下の例について考察します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # app/models/hotel.rb
@@ -1048,24 +1048,24 @@ end
 
 </pre>
 </div>
-<p>the expression <code>Hotel::Image</code> is ambiguous because it depends on the execution path.</p>
-<p>As <a href="#resolution-algorithm-for-qualified-constants">we saw before</a>, Ruby looks up the constant in <code>Hotel</code> and its ancestors. If <code>app/models/image.rb</code> has been loaded but <code>app/models/hotel/image.rb</code> hasn't, Ruby does not find <code>Image</code> in <code>Hotel</code>, but it does in <code>Object</code>:</p>
+<p><code>Hotel::Image</code>は実行パスに依存するので、この記法にはあいまいさが生じます。</p>
+<p><a href="#%E4%BF%AE%E9%A3%BE%E6%B8%88%E3%81%BF%E5%AE%9A%E6%95%B0%E3%82%92%E8%A7%A3%E6%B1%BA%E3%81%99%E3%82%8B%E3%82%A2%E3%83%AB%E3%82%B4%E3%83%AA%E3%82%BA%E3%83%A0">前述</a>のとおり、Rubyは<code>Hotel</code>とその先祖の定数を探索します。<code>app/models/image.rb</code>が読み込まれているが<code>app/models/hotel/image.rb</code>が読み込まれていない状況になった場合、Rubyは<code>Image</code>を<code>Hotel</code>内ではなく<code>Object</code>内で探索します。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ bin/rails r 'Image; p Hotel::Image' 2&gt;/dev/null
-Image # NOT Hotel::Image!
+Image # これはHotel::Imageではない
 
 </pre>
 </div>
-<p>The code evaluating <code>Hotel::Image</code> needs to make sure <code>app/models/hotel/image.rb</code> has been loaded, possibly with <code>require_dependency</code>.</p>
-<p>In these cases the interpreter issues a warning though:</p>
+<p><code>Hotel::Image</code>を評価するコードは、(おそらく<code>require_dependency</code>を使用して) <code>app/models/hotel/image.rb</code>を事前に読み込み済みの状態にしておく必要があります。</p>
+<p>ただしこの方法を使用する場合、Rubyインタプリタは以下のような警告を出力します。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 warning: toplevel constant Image referenced by Hotel::Image
 
 </pre>
 </div>
-<p>This surprising constant resolution can be observed with any qualifying class:</p>
+<p>この驚くべき定数解決方法は、実はどのクラスを修飾するときにも観察できます。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 2.1.5 :001 &gt; String::Array
@@ -1074,9 +1074,9 @@ warning: toplevel constant Image referenced by Hotel::Image
 
 </pre>
 </div>
-<div class="warning"><p>To find this gotcha the qualifying namespace has to be a class, <code>Object</code> is not an ancestor of modules.</p></div>
-<h4 id="autoloading-within-singleton-classes"><a href="#autoloading-within-singleton-classes">10.7 Autoloading within Singleton Classes</a></h4>
-<p>Let's suppose we have these class definitions:</p>
+<div class="warning"><p>この落とし穴を実際に観察するのであれば、名前空間の修飾はクラスである必要があります。<code>Object</code>はモジュールの先祖ではないからです。</p></div>
+<h4 id="特異クラス内で自動読み込みを行う"><a href="#%E7%89%B9%E7%95%B0%E3%82%AF%E3%83%A9%E3%82%B9%E5%86%85%E3%81%A7%E8%87%AA%E5%8B%95%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF%E3%82%92%E8%A1%8C%E3%81%86">10.7 特異クラス内で自動読み込みを行う</a></h4>
+<p>以下のクラス定義があるとしましょう。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # app/models/hotel/services.rb
@@ -1096,10 +1096,10 @@ end
 
 </pre>
 </div>
-<p>If <code>Hotel::Services</code> is known by the time <code>app/models/hotel/geo_location.rb</code> is being loaded, <code>Services</code> is resolved by Ruby because <code>Hotel</code> belongs to the nesting when the singleton class of <code>Hotel::GeoLocation</code> is opened.</p>
-<p>But if <code>Hotel::Services</code> is not known, Rails is not able to autoload it, the application raises <code>NameError</code>.</p>
-<p>The reason is that autoloading is triggered for the singleton class, which is anonymous, and as <a href="#generic-procedure">we saw before</a>, Rails only checks the top-level namespace in that edge case.</p>
-<p>An easy solution to this caveat is to qualify the constant:</p>
+<p><code>app/models/hotel/geo_location.rb</code>が読み込まれているときより前に<code>Hotel::Services</code>が認識されていれば、<code>Services</code>はRubyによって解決されます。これは、<code>Hotel::GeoLocation</code>の特異クラスがオープンされていると<code>Hotel</code>がネストに属するからです。</p>
+<p>しかし<code>Hotel::Services</code>がその時点で認識されていなければ、Railsは<code>Hotel::Services</code>を自動読み込みできず、<code>NameError</code>が発生します。</p>
+<p>その理由は、自動読み込みは特異クラスのためにトリガーされるからです。特異クラスは無名であり、Railsは<a href="#%E4%B8%80%E8%88%AC%E7%9A%84%E3%81%AA%E6%89%8B%E9%A0%86">前述</a>のような極端な状況においてはトップレベルの名前空間しかチェックしません。</p>
+<p>この警告を解決する簡単な方法のひとつに、定数を修飾するという方法があります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 module Hotel
@@ -1112,8 +1112,8 @@ end
 
 </pre>
 </div>
-<h4 id="autoloading-in-basicobject"><a href="#autoloading-in-basicobject">10.8 Autoloading in <code>BasicObject</code></a></h4>
-<p>Direct descendants of <code>BasicObject</code> do not have <code>Object</code> among their ancestors and cannot resolve top-level constants:</p>
+<h4 id="basicobjectの中で自動読み込みする"><a href="#basicobject%E3%81%AE%E4%B8%AD%E3%81%A7%E8%87%AA%E5%8B%95%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF%E3%81%99%E3%82%8B">10.8 <code>BasicObject</code>の中で自動読み込みする</a></h4>
+<p><code>BasicObject</code>の直系の子孫については、その先祖に<code>Object</code>がないためトップレベルの定数を解決できません。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class C &lt; BasicObject
@@ -1122,35 +1122,35 @@ end
 
 </pre>
 </div>
-<p>When autoloading is involved that plot has a twist. Let's consider:</p>
+<p>ここに自動読み込みが絡んでくると事態が複雑になります。以下について考察してみましょう。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class C &lt; BasicObject
   def user
-    User # WRONG
+    User # 誤り
   end
 end
 
 </pre>
 </div>
-<p>Since Rails checks the top-level namespace <code>User</code> gets autoloaded just fine the first time the <code>user</code> method is invoked. You only get the exception if the <code>User</code> constant is known at that point, in particular in a <em>second</em> call to <code>user</code>:</p>
+<p>Railsはトップレベルの名前空間をチェックするので、自動読み込みされた<code>User</code>は<code>user</code>メソッドが「最初に」呼び出されるときには問題なく動作します。その時点で<code>User</code>定数が既知の場合、特に<code>user</code>を<em>2度目に</em>呼び出した場合は例外が発生します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 c = C.new
-c.user # surprisingly fine, User
+c.user # 驚くべきことにUserで問題が生じない
 c.user # NameError: uninitialized constant C::User
 
 </pre>
 </div>
-<p>because it detects that a parent namespace already has the constant (see <a href="#autoloading-algorithms-qualified-references">Qualified References</a>.)</p>
-<p>As with pure Ruby, within the body of a direct descendant of <code>BasicObject</code> use always absolute constant paths:</p>
+<p>これは、親の名前空間に既に定数が存在していることが検出されたためです。(<a href="#%E8%87%AA%E5%8B%95%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF%E3%81%AE%E3%82%A2%E3%83%AB%E3%82%B4%E3%83%AA%E3%82%BA%E3%83%A0-%E4%BF%AE%E9%A3%BE%E6%B8%88%E3%81%BF%E5%8F%82%E7%85%A7">修飾済み参照</a>を参照)</p>
+<p>純粋なRubyの場合と同様、<code>BasicObject</code>の直系の子孫オブジェクトの中では常に絶対定数パスを使用してください。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class C &lt; BasicObject
-  ::String # RIGHT
+  ::String # 正しい
 
   def user
-    ::User # RIGHT
+    ::User # 正しい
   end
 end
 

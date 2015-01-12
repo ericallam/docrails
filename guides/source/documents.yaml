@@ -124,7 +124,7 @@
       url: initialization.html
       description: Rails 4内部の初期化プロセスについて解説します。
     -
-      name: Constant Autoloading and Reloading [未着手]
+      name: 定数の自動読み込みと再読み込み
       url: constant_autoloading_and_reloading.html
       description: 自動読み込みやリロードの仕組みについて解説します。
 -
