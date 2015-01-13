@@ -769,7 +769,7 @@ Railsでは、[formヘルパー](form_helpers.html)を使用して生成され�
 | headers                                   | リクエストに関連付けられたヘッダーを含むハッシュを返す               |
 | port                                      | リクエストで使用されたポート番号 (整数)                                  |
 | protocol                                  | プロトコル名に"://"を加えたものを返す ("http://"など) |
-| query_string                              | ウRThe query string part of the URL, i.e., everything after "?".                    |
+| query_string                              | URLの一部で使用されているクエリ文字 ("?"より後の部分)                    |
 | remote_ip                                 | クライアントのipアドレス                                                    |
 | url                                       | リクエストで使用されているURL全体                                             |
 
