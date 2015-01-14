@@ -265,7 +265,7 @@ end
 `app/assets/javascripts/blorgh/articles.js`と
 `app/assets/stylesheets/blorgh/articles.css`です。これらの使用法についてはこのすぐ後で解説します。
 
-デフォルトでは、scaffoldで生成されたスタイルは適用されません。これは、エンジンのレイアウトファイル`app/views/layouts/blorgh/application.html.erb`がデフォルトでは読み込まれないようになっているためです。scaffoldで生成されたスタイルを適用するには、このレイアウトの`<head>`タグに以下の行を挿入します。
+デフォルトでは、scaffoldで生成されたスタイルはエンジンに適用されません。これは、エンジンのレイアウトファイル`app/views/layouts/blorgh/application.html.erb`がscaffoldのスタイルを読み込んでいないためです。scaffoldで生成されたスタイルを適用するには、このレイアウトの`<head>`タグに以下の行を挿入します。
 
 ```erb
 <%= stylesheet_link_tag "scaffold" %>

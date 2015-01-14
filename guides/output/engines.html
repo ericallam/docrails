@@ -487,7 +487,7 @@ end
 <p>最後に、以下の2つのファイルがこのリソースのアセットとして生成されます。
 <code>app/assets/javascripts/blorgh/articles.js</code>と
 <code>app/assets/stylesheets/blorgh/articles.css</code>です。これらの使用法についてはこのすぐ後で解説します。</p>
-<p>デフォルトでは、scaffoldで生成されたスタイルは適用されません。これは、エンジンのレイアウトファイル<code>app/views/layouts/blorgh/application.html.erb</code>がデフォルトでは読み込まれないようになっているためです。scaffoldで生成されたスタイルを適用するには、このレイアウトの<code>&lt;head&gt;</code>タグに以下の行を挿入します。</p>
+<p>デフォルトでは、scaffoldで生成されたスタイルはエンジンに適用されません。これは、エンジンのレイアウトファイル<code>app/views/layouts/blorgh/application.html.erb</code>がscaffoldのスタイルを読み込んでいないためです。scaffoldで生成されたスタイルを適用するには、このレイアウトの<code>&lt;head&gt;</code>タグに以下の行を挿入します。</p>
 <div class="code_container">
 <pre class="brush: ruby; html-script: true; gutter: false; toolbar: false">
 &lt;%= stylesheet_link_tag "scaffold" %&gt;
