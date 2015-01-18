@@ -435,9 +435,9 @@ admin/role.rb
 role.rb
 ```
 
-モジュールの探索対象となるその他のディレクトリについては後述します。●
+探索対象となるその他の標準的なディレクトリについては後述します。
 
-INFO. `'Constant::Name'.underscore`は、`Constant::Name`が定義されていると期待されている場所でファイル拡張子抜きの相対パスを返します。
+INFO. `'Constant::Name'.underscore`は、`Constant::Name`が定義されていると期待されているファイルへの相対パスを返します。このファイル名には拡張子は含まれません。
 
 Railsが`Post`定数をどのようにして前述の`PostsController`で自動読み込みするのかを詳しく見てみましょう。このアプリケーションには`app/models/post.rb`に`Post`モデルがあるとします。
 
