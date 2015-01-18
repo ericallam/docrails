@@ -431,7 +431,7 @@ require 'active_support/core_ext/object/blank'
 <p>Active Supportの改訂は注意深く行われていますので、あるファイルを選んだ場合、本当に必要な依存ファイルだけが同時に読み込まれます(依存関係がある場合)。</p>
 <h5 id="コア拡張機能をグループ化して読み込む"><a href="#%E3%82%B3%E3%82%A2%E6%8B%A1%E5%BC%B5%E6%A9%9F%E8%83%BD%E3%82%92%E3%82%B0%E3%83%AB%E3%83%BC%E3%83%97%E5%8C%96%E3%81%97%E3%81%A6%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%82%80">1.1.2 コア拡張機能をグループ化して読み込む</a></h5>
 <p>次の段階として、<code>Object</code>に対するすべての拡張機能を単に読み込んでみましょう。経験則として、<code>SomeClass</code>というクラスがあれば、<code>active_support/core_ext/some_class</code>というパスを指定することで一度に読み込めます。</p>
-<p>Thus, to load all extensions to <code>Object</code> (including <code>blank?</code>):</p>
+<p>従って、(<code>blank?</code>を含む)<code>Object</code>に対するすべての拡張機能を読み込む場合には以下のようにします。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 require 'active_support'
