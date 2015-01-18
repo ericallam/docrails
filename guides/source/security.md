@@ -98,7 +98,7 @@ Rails 2でCookieStoreという新しいデフォルトセッションストレ�
 
 `secrets.secret_key_base`メソッドは、改竄防止のために、アプリケーションのセッションを既知の秘密キーと照合するためのキーを指定するときに使います。アプリケーションは`secrets.secret_key_base`を使用して、`config/secrets.yml`などに保存されるキーをランダムに初期化します。
 
-development:
+    development:
       secret_key_base: a75d...
 
     test:
