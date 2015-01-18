@@ -51,7 +51,7 @@ Active Supportの改訂は注意深く行われていますので、あるファ
 
 次の段階として、`Object`に対するすべての拡張機能を単に読み込んでみましょう。経験則として、`SomeClass`というクラスがあれば、`active_support/core_ext/some_class`というパスを指定することで一度に読み込めます。
 
-Thus, to load all extensions to `Object` (including `blank?`):
+従って、(`blank?`を含む)`Object`に対するすべての拡張機能を読み込む場合には以下のようにします。
 
 ```ruby
 require 'active_support'
