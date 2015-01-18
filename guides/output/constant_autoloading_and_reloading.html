@@ -608,7 +608,7 @@ role.rb
 </pre>
 </div>
 <p>モジュールの探索対象となるその他のディレクトリについては後述します。●</p>
-<div class="info"><p>`<code>Constant::Name</code>.underscore<code>は、</code>Constant::Name`が定義されていると期待されている場所でファイル拡張子抜きの相対パスを返します。</p></div>
+<div class="info"><p><code>'Constant::Name'.underscore</code>は、<code>Constant::Name</code>が定義されていると期待されている場所でファイル拡張子抜きの相対パスを返します。</p></div>
 <p>Railsが<code>Post</code>定数をどのようにして前述の<code>PostsController</code>で自動読み込みするのかを詳しく見てみましょう。このアプリケーションには<code>app/models/post.rb</code>に<code>Post</code>モデルがあるとします。</p>
 <p>最初に、<code>autoload_paths</code>のパスの中に<code>posts_controller/post.rb</code>が見つかるかどうかをチェックします。</p>
 <div class="code_container">
