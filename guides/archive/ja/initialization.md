@@ -227,34 +227,34 @@ def set_environment
 end
 ```
 
-In fact, the `options` method here does quite a lot. This method is defined in `Rack::Server` like this:
+実際にはこの`options`メソッドではきわめて多くの処理を実行しています。このメソッド定義は`Rack::Server`にあり、以下のようになっています。
 
-  ```ruby
+```ruby
 def options
   @options ||= parse_options(ARGV)
-      end 
+end
 ```
 
-Then `parse_options` is defined like this:
+そして`parse_options`は以下のように定義されています。
 
-  ```ruby
+```ruby
 def parse_options(args)
   options = default_options
 
-  # Don't evaluate CGI ISINDEX parameters.
+  # CGI ISINDEXパラメータをevaluateしないこと
   # http://www.meb.uni-bonn.de/docs/cgi/cl.html
   args.clear if ENV.include?("REQUEST_METHOD")
 
   options.merge! opt_parser.parse!(args)
   options[:config] = ::File.expand_path(options[:config])
   ENV["RACK_ENV"] = options[:environment]
-いくつかあります。 
-      end 
+  options
+end
 ```
 
-With the `default_options` set to this:
+`default_options`では以下を設定します。
 
-  ```ruby
+```ruby
 def default_options
   environment  = ENV['RACK_ENV'] || 'development'
   default_host = environment == 'development' ? 'localhost' : '0.0.0.0'
@@ -267,20 +267,20 @@ def default_options
     :AccessLog   => [],
     :config      => "config.ru"
   }
-      end 
+end
 ```
 
-There is no `REQUEST_METHOD` key in `ENV` so we can skip over that line. The next line merges in the options from `opt_parser` which is defined plainly in `Rack::Server`:
+`ENV`に`REQUEST_METHOD`キーがないので、その行はスキップできます。次の行では`opt_parser`からのオプションをマージします。`opt_parser`は`Rack::Server`で明確に定義されています。
 
-  ```ruby
+```ruby
 def opt_parser
   Options.new
-      end 
+end
 ```
 
-The class **is** defined in `Rack::Server`, but is overwritten in `Rails::Server` to take different arguments. Its `parse!` method begins like this:
+このクラスは`Rack::Server`で定義されていますが、異なる引数を扱うために`Rails::Server`で上書きされます。`Rails::Server`の`parse!`の冒頭部分は以下のようになっています。
 
-  ```ruby
+```ruby
 def parse!(args)
   args, options = args.dup, {}
 
@@ -291,70 +291,70 @@ def parse!(args)
   ...
 ```
 
-This method will set up keys for the `options` which Rails will then be able to use to determine how its server should run. After `initialize` has finished, we jump back into `rails/server` where `APP_PATH` (which was set earlier) is required.
+このメソッドは`options`のキーを設定します。Railsはこれを使用して、どのようにサーバーを実行するかを決定します。`initialize`が完了すると、`rails/server`に戻ります。ここでは先ほど設定された`APP_PATH`がrequireされます。
 
 ### `config/application`
 
-When `require APP_PATH` is executed, `config/application.rb` is loaded (recall that `APP_PATH` is defined in `bin/rails`). This file exists in your application and it's free for you to change based on your needs.
+`require APP_PATH`が実行されると、続いて`config/application.rb`が読み込まれます (`APP_PATH`が`bin/rails`で定義されていることを思い出しましょう)。この設定ファイルはRailsアプリケーションの中にあり、必要に応じて自由に変更することができます。
 
 ### `Rails::Server#start`
 
-After `config/application` is loaded, `server.start` is called. This method is defined like this:
+`config/application`が読み込まれると、続いて`server.start`が呼び出されます。このメソッド定義は以下のようになっています。
 
-  ```ruby
+```ruby
 def start
   print_boot_information
   trap(:INT) { exit }
   create_tmp_directories
   log_to_stdout if options[:log_stdout]
 
-          super
+  super
   ...
-      end 
+end
 
-  private
+private
 
   def print_boot_information
     ...
     puts "=> Run `rails server -h` for more startup options"
     ...
     puts "=> Ctrl-C to shutdown server" unless options[:daemonize]
-      end 
+  end
 
   def create_tmp_directories
     %w(cache pids sessions sockets).each do |dir_to_make|
       FileUtils.mkdir_p(File.join(Rails.root, 'tmp', dir_to_make))
-      end 
-      end 
+    end
+  end
 
   def log_to_stdout
-    wrapped_app # touch the app so the logger is set up
+    wrapped_app # アプリにタッチしてロガーを設定
 
     console = ActiveSupport::Logger.new($stdout)
     console.formatter = Rails.logger.formatter
     console.level = Rails.logger.level
 
     Rails.logger.extend(ActiveSupport::Logger.broadcast(console))
-      end 
+  end
 ```
 
-This is where the first output of the Rails initialization happens. This method creates a trap for `INT` signals, so if you `CTRL-C` the server, it will exit the process. As we can see from the code here, it will create the `tmp/cache`, `tmp/pids`, `tmp/sessions` and `tmp/sockets` directories. It then calls `wrapped_app` which is responsible for creating the Rack app, before creating and assigning an instance of `ActiveSupport::Logger`.
+Rails初期化の最初の出力が行われるのがこの箇所です。このメソッドでは`INT`シグナルのトラップが作成され、`CTRL-C`キーを押すことでサーバープロセスが終了するようになります。コードに示されているように、ここでは`tmp/cache`、`tmp/pids`、`tmp/sessions`および`tmp/sockets`ディレクトリが作成されます。続いて`wrapped_app`が呼び出されます。このメソッドは、`ActiveSupport::Logger`のインスタンスの作成とアサインが行われる前に、Rackアプリを作成する役割を担います。
 
-The `super` method will call `Rack::Server.start` which begins its definition like this:
+`super`メソッドは`Rack::Server.start`を呼び出します。このメソッド定義の冒頭は以下のようになっています。
 
-  ```ruby
+```ruby
 def start &blk
   if options[:warn]
     $-w = true
-      end 
+  end
 
   if includes = options[:include]
     $LOAD_PATH.unshift(*includes)
-      end 
+  end
 
   if library = options[:require]
     require library
-      end 
+  end
 
   if options[:debug]
     $DEBUG = true
@@ -362,12 +362,12 @@ def start &blk
     p options[:server]
     pp wrapped_app
     pp app
-      end 
+  end
 
   check_pid! if options[:pid]
 
-  # Touch the wrapped app, so that the config.ru is loaded before
-  # daemonization (i.e. before chdir, etc).
+  # ラップされたアプリにタッチすることで、config.ruが読み込まれてから
+  # デーモン化されるようにする (chdirなど).
   wrapped_app
 
   daemonize_app if options[:daemonize]
@@ -377,57 +377,57 @@ def start &blk
   trap(:INT) do
     if server.respond_to?(:shutdown)
       server.shutdown
-  else
-出口
-      end 
-      end 
+    else
+      exit
+    end
+  end
 
   server.run wrapped_app, options, &blk
-      end 
+end
 ```
 
-The interesting part for a Rails app is the last line, `server.run`. Here we encounter the `wrapped_app` method again, which this time we're going to explore more (even though it was executed before, and thus memoized by now).
+Railsアプリケーションとして興味深いのは、最終行にある`server.run`でしょう。ここでも`wrapped_app`メソッドが再び使用されています。今度はこのメソッドをもう少し詳しく調べてみましょう (既に一度実行され、メモ化されてはいますが)。
 
-  ```ruby
+```ruby
 @wrapped_app ||= build_app app
 ```
 
-The `app` method here is defined like so:
+この`app`メソッドの定義は以下のようになっています。
 
-  ```ruby
+```ruby
 def app
   @app ||= options[:builder] ? build_app_from_string : build_app_and_options_from_config
-      end 
+end
 ...
-  private
+private
   def build_app_and_options_from_config
     if !::File.exist? options[:config]
       abort "configuration #{options[:config]} not found"
-      end 
+    end
 
     app, options = Rack::Builder.parse_file(self.options[:config], opt_parser)
-    self.options.merge! いくつかあります。 
-app
-      end 
+    self.options.merge! options
+    app
+  end
 
   def build_app_from_string
     Rack::Builder.new_from_string(self.options[:builder])
-      end 
+  end
 ```
 
-The `options[:config]` value defaults to `config.ru` which contains this:
+`options[:config]`の値はデフォルトでは`config.ru`です。`config.ru`には以下が含まれています。
 
-  ```ruby
-# This file is used by Rack-based servers to start the application.
+```ruby
+# このファイルはRackベースのサーバーでアプリケーションの起動に使用される
 
 require ::File.expand_path('../config/environment', __FILE__)
 run <%= app_const %>
 ```
 
 
-The `Rack::Builder.parse_file` method here takes the content from this `config.ru` file and parses it using this code:
+上のコードの`Rack::Builder.parse_file`メソッドは、この`config.ru`ファイルの内容を取り出し、以下のコードを使用して解析 (parse) します。
 
-  ```ruby
+```ruby
 app = new_from_string cfgfile, config
 
 ...
@@ -435,51 +435,51 @@ app = new_from_string cfgfile, config
 def self.new_from_string(builder_script, file="(rackup)")
   eval "Rack::Builder.new {\n" + builder_script + "\n}.to_app",
     TOPLEVEL_BINDING, file, 0
-      end 
+end
 ```
 
-The `initialize` method of `Rack::Builder` will take the block here and execute it within an instance of `Rack::Builder`. This is where the majority of the initialization process of Rails happens. The `require` line for `config/environment.rb` in `config.ru` is the first to run:
+`Rack::Builder`の`initialize`メソッドはこのブロックを受け取り、`Rack::Builder`のインスタンスの中で実行します。Railsの初期化プロセスの大半がこの場所で実行されます。`config.ru`の`config/environment.rb`の`require`行が最初に実行されます。
 
-  ```ruby
+```ruby
 require ::File.expand_path('../config/environment', __FILE__)
 ```
 
 ### `config/environment.rb`
 
-This file is the common file required by `config.ru` (`rails server`) and Passenger. This is where these two ways to run the server meet; everything before this point has been Rack and Rails setup.
+このファイルは`config.ru` (`rails server`)とPassengerの両方で必要となるファイルです。サーバーを実行するためのこれら2種類の方法はここで出会います。ここより前の部分はすべてRackとRailsの設定です。
 
-This file begins with requiring `config/application.rb`:
+このファイルの冒頭部分では`config/application.rb`がrequireされます。
 
-  ```ruby
+```ruby
 require File.expand_path('../application', __FILE__)
 ```
 
 ### `config/application.rb`
 
-This file requires `config/boot.rb`:
+このファイルでは`config/boot.rb`がrequireされます。
 
-  ```ruby
+```ruby
 require File.expand_path('../boot', __FILE__)
 ```
 
-But only if it hasn't been required before, which would be the case in `rails server` but **wouldn't** be the case with Passenger.
+それまでにboot.rbがrequireされていなかった場合に限り、`rails server`の場合にはboot.rbがrequireされます。ただしPassengerを使用する場合にはboot.rbがrequire**されません**。●
 
-Then the fun begins!
+ここからいよいよ面白くなってきます。
 
-Loading Rails
+Railsを読み込む
 -------------
 
-The next line in `config/application.rb` is:
+`config/application.rb`の次の行は以下のようになっています。
 
-  ```ruby
+```ruby
 require 'rails/all'
 ```
 
 ### `railties/lib/rails/all.rb`
 
-This file is responsible for requiring all the individual frameworks of Rails:
+このファイルはRailsのすべてのフレームワークをrequireする役目を担当します。
 
-  ```ruby
+```ruby
 require "rails"
 
 %w(
@@ -490,101 +490,101 @@ require "rails"
   rails/test_unit
   sprockets
 ).each do |framework|
-      begin
+  begin
     require "#{framework}/railtie"
-    rescue LoadError
-      end 
-      end 
+  rescue LoadError
+  end
+end
 ```
 
-This is where all the Rails frameworks are loaded and thus made available to the application. We won't go into detail of what happens inside each of those frameworks, but you're encouraged to try and explore them on your own.
+ここでRailsのすべてのフレームワークが読み込まれ、アプリケーションから利用できるようになります。本章ではこれらのフレームワークの詳細については触れませんが、皆様にはぜひ自分でこれらのフレームワークを探索してみることをお勧めいたします。
 
-For now, just keep in mind that common functionality like Rails engines, I18n and Rails configuration are all being defined here.
+現時点では、Railsエンジン、I18n、Rails設定などの共通機能がここで定義されていることを押さえておいてください。
 
-### Back to `config/environment.rb`
+### `config/environment.rb`に戻る
 
-The rest of `config/application.rb` defines the configuration for the `Rails::Application` which will be used once the application is fully initialized. When `config/application.rb` has finished loading Rails and defined the application namespace, we go back to `config/environment.rb`, where the application is initialized. For example, if the application was called `Blog`, here we would find `Rails.application.initialize!`, which is defined in `rails/application.rb`.
+`config/application.rb`の残りの行では`Rails::Application`の設定を行います。この設定はアプリケーションの初期化が完全に完了してから使用されます。`config/application.rb`がRailsの読み込みを完了し、アプリケーションの名前空間が定義されると、制御はふたたび`config/environment.rb`に戻ります。ここではアプリケーションの初期化が行われます。たとえばアプリケーションの名前が`Blog`であれば、environment.rbに`Rails.application.initialize!`という行があります。これは`rails/application.rb`で定義されています。
 
 ### `railties/lib/rails/application.rb`
 
-The `initialize!` method looks like this:
+その`initialize!`メソッドは以下のようなコードです。
 
-  ```ruby
+```ruby
 def initialize!(group=:default) #:nodoc:
   raise "Application has been already initialized." if @initialized
   run_initializers(group, self)
   @initialized = true
-self
-      end 
+  self
+end
 ```
 
-As you can see, you can only initialize an app once. The initializers are run through the `run_initializers` method which is defined in `railties/lib/rails/initializable.rb`:
+見てのとおり、アプリケーションの初期化は一度だけ行うことができます。`railties/lib/rails/initializable.rb`で定義されている`run_initializers`メソッドによって各種イニシャライザが実行されます。
 
-  ```ruby
+```ruby
 def run_initializers(group=:default, *args)
   return if instance_variable_defined?(:@ran)
   initializers.tsort_each do |initializer|
     initializer.run(*args) if initializer.belongs_to?(group)
-      end 
+  end
   @ran = true
-      end 
+end
 ```
 
-The `run_initializers` code itself is tricky. What Rails is doing here is traversing all the class ancestors looking for those that respond to an `initializers` method. It then sorts the ancestors by name, and runs them. For example, the `Engine` class will make all the engines available by providing an `initializers` method on them.
+この`run_initializers`のコードはややトリッキーな作りになっています。Railsはここで、あらゆるクラス先祖をくまなく調べ、あるひとつの`initializers`メソッドに応答するものを探しだしています。続いてそれらを名前でソートし、その順序で実行します。たとえば、`Engine`クラスは`initializers`メソッドを提供しているので、あらゆるエンジンが利用できるようになります。
 
-The `Rails::Application` class, as defined in `railties/lib/rails/application.rb` defines `bootstrap`, `railtie`, and `finisher` initializers. The `bootstrap` initializers prepare the application (like initializing the logger) while the `finisher` initializers (like building the middleware stack) are run last. The `railtie` initializers are the initializers which have been defined on the `Rails::Application` itself and are run between the `bootstrap` and `finishers`.
+`Rails::Application`クラスは`railties/lib/rails/application.rb`ファイルで定義されており、その中で`bootstrap`、`railtie`、`finisher`イニシャライザをそれぞれ定義しています。`bootstrap`イニシャライザは、ロガーの初期化などアプリケーションの準備を行います。一方、最後に実行される`finisher`イニシャライザはミドルウェアスタックのビルドなどを行います。`railtie`イニシャライザは`Rails::Application`自身で定義されており、`bootstrap`と`finishers`の間に実行されます。
 
-After this is done we go back to `Rack::Server`.
+これが完了したら、制御は`Rack::Server`に移ります。
 
 ### Rack: lib/rack/server.rb
 
-Last time we left when the `app` method was being defined:
+`app`メソッドが定義されている箇所は、最後に見た時は以下のようになっていました。
 
-  ```ruby
+```ruby
 def app
   @app ||= options[:builder] ? build_app_from_string : build_app_and_options_from_config
-      end 
+end
 ...
-  private
+private
   def build_app_and_options_from_config
-    if !::File.exist? options[:config]
+    if !::File.exist?options[:config]
       abort "configuration #{options[:config]} not found"
-      end 
+    end
 
     app, options = Rack::Builder.parse_file(self.options[:config], opt_parser)
-    self.options.merge! いくつかあります。 
-app
-      end 
+    self.options.merge! options
+    app
+  end
 
   def build_app_from_string
     Rack::Builder.new_from_string(self.options[:builder])
-      end 
+  end
 ```
 
-At this point `app` is the Rails app itself (a middleware), and what
-happens next is Rack will call all the provided middlewares:
+このコードにおける`app`とは、Railsアプリケーション自身 (ミドルウェア) であり、
+その後では、提供されているすべてのミドルウェアをRackが呼び出します。
 
-  ```ruby
+```ruby
 def build_app(app)
   middleware[options[:environment]].reverse_each do |middleware|
     middleware = middleware.call(self) if middleware.respond_to?(:call)
     next unless middleware
     klass = middleware.shift
     app = klass.new(app, *middleware)
-      end 
-app
-      end 
+  end
+  app
+end
 ```
 
-Remember, `build_app` was called (by `wrapped_app`) in the last line of `Server#start`. Here's how it looked like when we left:
+ここで、`Server#start`の最終行で`build_app`が (`wrapped_app`によって) 呼び出されていたことを思い出してください。最後に見かけたときのコードは以下のようになっていました。
 
-  ```ruby
+```ruby
 server.run wrapped_app, options, &blk
 ```
 
-At this point, the implementation of `server.run` will depend on the server you're using. For example, if you were using Puma, here's what the `run` method would look like:
+ここで使用している`server.run`の実装は、アプリケーションで使用しているサーバーに依存します。たとえばPumaを使用している場合、`run`メソッドは以下のようになります。
 
-  ```ruby
+```ruby
 ...
 DEFAULT_OPTIONS = {
   :Host => '0.0.0.0',
@@ -598,11 +598,11 @@ def self.run(app, options = {})
 
   if options[:Verbose]
     app = Rack::CommonLogger.new(app, STDOUT)
-      end 
+  end
 
   if options[:environment]
     ENV['RACK_ENV'] = options[:environment].to_s
-      end 
+  end
 
   server   = ::Puma::Server.new(app)
   min, max = options[:Threads].split(':', 2)
@@ -617,17 +617,17 @@ def self.run(app, options = {})
   server.max_threads = max
   yield server if block_given?
 
-      begin
+  begin
     server.run.join
   rescue Interrupt
     puts "* Gracefully stopping, waiting for requests to finish"
     server.stop(true)
     puts "* Goodbye!"
-      end 
+  end
 
-      end 
+end
 ```
 
-We won't dig into the server configuration itself, but this is the last piece of our journey in the Rails initialization process.
+本章ではサーバーの設定自体については深く立ち入ることはしませんが、この箇所はRailsの初期化プロセスという長い旅の最後のピースです。
 
-This high level overview will help you understand when your code is executed and how, and overall become a better Rails developer. If you still want to know more, the Rails source code itself is probably the best place to go next.
+本章で解説した高度な概要は、自分が開発したコードがいつどのように実行されるかを理解するためにも、そしてより優れたRails開発者になるためにも役に立つことでしょう。もっと詳しく知りたいのであれば、次のステップとしてRailsのソースコード自身を追うのがおそらく最適でしょう。

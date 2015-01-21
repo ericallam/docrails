@@ -119,7 +119,7 @@
       description: マウント可能なエンジンの作成方法について解説します。
       work_in_progress: true
     -
-      name: The Rails Initialization Process [未着手]
+      name: Rails の初期化プロセス
       work_in_progress: true
       url: initialization.html
       description: Rails 4内部の初期化プロセスについて解説します。
