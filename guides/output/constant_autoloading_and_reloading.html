@@ -467,8 +467,8 @@ end
 <p>ネストが空でなければその最初の要素、空の場合には<code>Object</code>を、コードの任意の場所での<em>cref</em>というようにしましょう (訳注: crefはRuby内部におけるクラス参照 (class reference) の略であり、Rubyの定数が持つ暗黙のコンテキストです -- <a href="http://yugui.jp/articles/846">関連記事</a> )。</p>
 <p>詳細についてはここでは述べませんが、相対的な定数参照を解決するアルゴリズムは以下のようになります。</p>
 <ol>
-<li><p>ネストが存在する場合、この定数は自身の要素の中で順に探索される。それらの要素の先祖は探索されない (訳注: 本章で言う先祖 (ancestors) とは<a href="http://docs.ruby-lang.org/ja/2.2.0/method/Module/i/ancestors.html">クラス、モジュールのスーパークラスとインクルードしているモジュール</a>のことです)。</p></li>
-<li><p>見つからない場合は、crefのチェーンを先祖の方向に探索する。</p></li>
+<li><p>ネストが存在する場合、この定数はそのネストの要素の中で順に探索される。それらの要素の先祖は探索されない (訳注: 本章で言う先祖 (ancestors) とは<a href="http://docs.ruby-lang.org/ja/2.2.0/method/Module/i/ancestors.html">クラス、モジュールのスーパークラスとインクルードしているモジュール</a>のことです)。</p></li>
+<li><p>見つからない場合は、crefの先祖チェーン (継承チェーン) を探索する。</p></li>
 <li><p>見つからない場合、crefに対して<code>const_missing</code>が呼び出される。<code>const_missing</code>のデフォルトの実装は<code>NameError</code>を発生するが、これはオーバーライド可能。</p></li>
 </ol>
 <p>Railsの自動読み込みは<strong>このアルゴリズムをエミュレートしているわけではない</strong>ことにご注意ください。ただし探索の開始ポイントは、自動読み込みされる定数の名前と、cref自身です。詳細については<a href="#%E8%87%AA%E5%8B%95%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF%E3%81%AE%E3%82%A2%E3%83%AB%E3%82%B4%E3%83%AA%E3%82%BA%E3%83%A0-%E7%9B%B8%E5%AF%BE%E5%8F%82%E7%85%A7">相対参照</a>を参照してください。</p>
@@ -482,7 +482,7 @@ Billing::Invoice
 </div>
 <p><code>Billing::Invoice</code>には2つの定数が含まれています。最初の<code>Billing</code>の方は相対的な定数であり、直前のセクションで解説したアルゴリズムに基いて解決されます。</p>
 <div class="info"><p><code>::Billing::Invoice</code>のように先頭にコロンを2つ置くことで、最初のセグメントを相対から絶対に変えることができます。このようにすると、この<code>Billing</code>はトップレベルの定数としてのみ参照されるようになります。</p></div>
-<p>2番目の<code>Invoice</code>定数の方は<code>Billing</code>で修飾されています。この定数の解決方法についてはこの後で説明します。ここで、修飾する側のクラスやモジュールオブジェクト (上の例で言う<code>Billing</code>) を<em>親(parent)</em>と定義します。定数を修飾するアルゴリズムは以下のようになります。</p>
+<p>2番目の<code>Invoice</code>定数の方は<code>Billing</code>で修飾されています。この定数の解決方法についてはこの後で説明します。ここで、修飾する側のクラスやモジュールオブジェクト (上の例で言う<code>Billing</code>) を<em>親(parent)</em>と定義します。修飾済み定数を解決するアルゴリズムは以下のようになります。"</p>
 <ol>
 <li><p>この定数はその親と先祖の中から探索される。</p></li>
 <li><p>探索の結果何も見つからない場合、親の<code>const_missing</code>が呼び出される。<code>const_missing</code>のデフォルトの実装は<code>NameError</code>を発生するが、これはオーバーライド可能。</p></li>

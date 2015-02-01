@@ -346,7 +346,7 @@ end
 <li><code>around_destroy</code></li>
 <li><code>after_destroy</code></li>
 </ul>
-<div class="warning"><p><code>after_save</code>は作成と更新の両方で呼び出されますが、コールバックマクロの呼び出し順にかかわらず、必ず、より具体的な<code>after_create</code>および<code>after_update</code>より <em>後</em> に呼び出してください。</p></div>
+<div class="warning"><p><code>after_save</code>は作成と更新の両方で呼び出されますが、コールバックマクロの呼び出し順にかかわらず、必ず、より具体的なafter_createおよびafter_updateより <em>後</em> に呼び出されます。</p></div>
 <h4 id="after_initializeとafter_find"><a href="#after_initialize%E3%81%A8after_find">3.4 <code>after_initialize</code>と<code>after_find</code></a></h4>
 <p><code>after_initialize</code>コールバックは、Active Recordオブジェクトが1つインスタンス化されるたびに呼び出されます。インスタンス化は、直接<code>new</code>を実行する他にデータベースからレコードが読み込まれるときにも行われます。これを利用すれば、Active Recordの<code>initialize</code>メソッドを直接オーバーライドせずに済みます。</p>
 <p><code>after_find</code>コールバックは、Active Recordがデータベースからレコードを1つ読み込むたびに呼び出されます。<code>after_find</code>と<code>after_initialize</code>が両方定義されている場合は、<code>after_find</code>が先に実行されます。</p>
