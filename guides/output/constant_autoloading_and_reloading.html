@@ -482,7 +482,7 @@ Billing::Invoice
 </div>
 <p><code>Billing::Invoice</code>には2つの定数が含まれています。最初の<code>Billing</code>の方は相対的な定数であり、直前のセクションで解説したアルゴリズムに基いて解決されます。</p>
 <div class="info"><p><code>::Billing::Invoice</code>のように先頭にコロンを2つ置くことで、最初のセグメントを相対から絶対に変えることができます。このようにすると、この<code>Billing</code>はトップレベルの定数としてのみ参照されるようになります。</p></div>
-<p>2番目の<code>Invoice</code>定数の方は<code>Billing</code>で修飾されています。この定数の解決方法についてはこの後で説明します。ここで、修飾する側のクラスやモジュールオブジェクト (上の例で言う<code>Billing</code>) を<em>親(parent)</em>と定義します。修飾済み定数を解決するアルゴリズムは以下のようになります。"</p>
+<p>2番目の<code>Invoice</code>定数の方は<code>Billing</code>で修飾されています。この定数の解決方法についてはこの後で説明します。ここで、修飾する側のクラスやモジュールオブジェクト (上の例で言う<code>Billing</code>) を<em>親(parent)</em>と定義します。修飾済み定数を解決するアルゴリズムは以下のようになります。</p>
 <ol>
 <li><p>この定数はその親と先祖の中から探索される。</p></li>
 <li><p>探索の結果何も見つからない場合、親の<code>const_missing</code>が呼び出される。<code>const_missing</code>のデフォルトの実装は<code>NameError</code>を発生するが、これはオーバーライド可能。</p></li>
