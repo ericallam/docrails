@@ -385,7 +385,7 @@ I18n.default_locale = :pt
 <h4 id="railsアプリケーションを国際化向けに設定する-ロケールの設定と受け渡し"><a href="#%E3%83%AD%E3%82%B1%E3%83%BC%E3%83%AB%E3%81%AE%E8%A8%AD%E5%AE%9A%E3%81%A8%E5%8F%97%E3%81%91%E6%B8%A1%E3%81%97">2.3 ロケールの設定と受け渡し</a></h4>
 <p>Railsアプリケーションを、デフォルトロケールである <strong>英語以外の言語</strong> に設定したい場合は、<code>application.rb</code>ファイル内または上で紹介したイニシャライザでI18n.default_localeを設定します。ここで指定したロケールはリクエスト全体を通じて保たれます。</p>
 <p>しかし、1つのアプリケーションで <strong>2つ以上のロケールをサポートしたい</strong> ことも当然あるでしょう。そのような場合、リクエストとリクエストの間でロケールを設定し、受け渡す必要があります。</p>
-<div class="warning"><p>このガイドを読んでいる方の多くは、ロケールを <em>セッション</em> や <em>cookie</em> に保存すれば済むと考えていることでしょう。しかし <strong>これは行わないでください</strong> 。ロケールはセッションやcookieに依存しない透過的なものでなければなりませんし、URLの一部でなければなりません。Webを使用するユーザーはWebについてさまざまなことを前提としていますので、それに逆らうような設計を行うべきではありません。あなたがあるURLを知人に送ったとすると、知人がそのURLで参照できる内容はあなたが見たものとまったく同じページ、同じ内容でなければなりません。言い方を替えれば、アプリケーションを<a href="http://en.wikipedia.org/wiki/Representational_State_Transfer"><em>RESTful</em></a>にするということです。</p></div>
+<div class="warning"><p>このガイドを読んでいる方の多くは、ロケールを <em>セッション</em> や <em>cookie</em> に保存すれば済むと考えていることでしょう。しかし <strong>これは行わないでください</strong> 。ロケールはセッションやcookieに依存しない透過的なものでなければなりませんし、URLの一部でなければなりません。Webを使用するユーザーはWebについてさまざまなことを前提としていますので、それに逆らうような設計を行うべきではありません。あなたがあるURLを知人に送ったとすると、知人がそのURLで参照できる内容はあなたが見たものとまったく同じページ、同じ内容でなければなりません。言い方を替えれば、アプリケーションを<a href="http://ja.wikipedia.org/wiki/REST"><em>RESTful</em></a>にするということです。</p></div>
 <p><em>設定部分</em> は簡単です。以下のような方法で、<code>ApplicationController</code>の<code>before_action</code>でロケールを設定できます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1345,7 +1345,7 @@ I18n.t :foo, raise: true # always re-raises exceptions from the backend
 </ul>
 <p>本ガイドがお役に立ったのであれば、<a href="http://www.workingwithrails.com">workingwithrails</a> でこれらの作者を推奨いただければ幸いです(訳注: 翻訳時点ではこのサイトは引退したと表示されていました)。</p>
 <h3 id="脚注"><a href="#%E8%84%9A%E6%B3%A8">11 脚注</a></h3>
-<p class="footnote" id="footnote-1"><a href="#footnote-1-ref"><sup>1</sup></a> あるいは、<a href="http://en.wikipedia.org/wiki/Internationalization_and_localization">Wikipedia</a> によれば「国際化とは、技術上の実装変更を伴わずに多数の言語や地域への適合を行なうための、ソフトウェアアプリケーションの設計プロセスである。ローカライズとは、ロケール固有のコンポーネントを追加したりテキストを翻訳したりすることによってソフトウェアを特定の言語や地域に適合させるプロセスである。」となっています。</p>
+<p class="footnote" id="footnote-1"><a href="#footnote-1-ref"><sup>1</sup></a> あるいは、<a href="http://ja.wikipedia.org/wiki/%E5%9B%BD%E9%9A%9B%E5%8C%96%E3%81%A8%E5%9C%B0%E5%9F%9F%E5%8C%96">Wikipedia</a> によれば「国際化とは、技術上の実装変更を伴わずに多数の言語や地域への適合を行なうための、ソフトウェアアプリケーションの設計プロセスである。ローカライズとは、ロケール固有のコンポーネントを追加したりテキストを翻訳したりすることによってソフトウェアを特定の言語や地域に適合させるプロセスである。」となっています。</p>
 </body></html>
 
 

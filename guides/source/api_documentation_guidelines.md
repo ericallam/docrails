@@ -74,7 +74,7 @@ If `return` is needed it is recommended to explicitly define a method.
 英語
 -------
 
-アメリカ英語を使用すること ( *color* 、 *center* 、 *modularize* など)。詳細は[アメリカ英語とイギリス英語のスペルの違い](http://en.wikipedia.org/wiki/American_and_British_English_spelling_differences)を参照してください。
+アメリカ英語を使用すること ( *color* 、 *center* 、 *modularize* など)。詳細は[アメリカ英語とイギリス英語のスペルの違い](http://en.wikipedia.org/wiki/American_and_British_English_spelling_differences) (英語) を参照してください。
 
 サンプルコード
 ------------

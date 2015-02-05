@@ -995,7 +995,7 @@ _'nosniff' はRailsではデフォルトです_ - ファイルのMIMEタイプ�
 * Access-Control-Allow-Origin
 同一生成元ポリシーのバイパスとクロスオリジン(cross-origin)リクエストをサイトごとに許可します。
 * Strict-Transport-Security
-[ブラウザからサイトへの接続をセキュアなものに限って許可するかどうかを指定します](http://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security)
+[ブラウザからサイトへの接続をセキュアなものに限って許可するかどうかを指定します](http://ja.wikipedia.org/wiki/HTTP_Strict_Transport_Security)
 
 利用環境のセキュリティ
 ----------------------

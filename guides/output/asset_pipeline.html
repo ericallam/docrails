@@ -489,7 +489,7 @@ config.assets.paths &lt;&lt; Rails.root.join("lib", "videoplayer", "flash")
 </pre>
 </div>
 <p>これは、指定されたアセットへのパスを記述します。上の例では、アセット読み込みパスのいずれかにある画像ファイル (<code>app/assets/images/image.png</code>など) が指定されたと解釈されます。この画像が既にフィンガープリント付きで<code>public/assets</code>にあれば、このパスによる参照は有効になります。</p>
-<p><a href="http://en.wikipedia.org/wiki/Data_URI_scheme">data URI scheme</a> (CSSファイルにデータを直接埋め込む手法) を使用したい場合は、<code>asset_data_uri</code>を使用できます。</p>
+<p><a href="http://ja.wikipedia.org/wiki/Data_URI_scheme">データURIスキーム</a> (CSSファイルにデータを直接埋め込む手法) を使用したい場合は、<code>asset_data_uri</code>を使用できます。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 #logo { background: url(&lt;%= asset_data_uri 'logo.png' %&gt;) }
@@ -775,7 +775,7 @@ location ~ ^/assets/ {
 </pre>
 </div>
 <h5 id="gzip圧縮"><a href="#gzip%E5%9C%A7%E7%B8%AE">4.1.2 GZip圧縮</a></h5>
-<p>ファイルをプリコンパイルする際に、Sprocketsによって<a href="http://en.wikipedia.org/wiki/Gzip">gzipされた</a> (.gz) アセットも作成されます。Webサーバーによる圧縮はほどほどの圧縮率で行われるのが普通ですが、プリコンパイルが1度発生するとSprocketsによって最大圧縮率で圧縮され、Webサーバーからのデータ転送量が最小化されます。逆に、圧縮されてないファイルを自前で圧縮する代りに、事前に圧縮しておいたコンテンツを直接ディスクに配置しておくようWebサーバーを設定することもできます。●</p>
+<p>ファイルをプリコンパイルする際に、Sprocketsによって<a href="http://ja.wikipedia.org/wiki/Gzip">gzipされた</a> (.gz) アセットも作成されます。Webサーバーによる圧縮はほどほどの圧縮率で行われるのが普通ですが、プリコンパイルが1度発生するとSprocketsによって最大圧縮率で圧縮され、Webサーバーからのデータ転送量が最小化されます。逆に、圧縮されてないファイルを自前で圧縮する代りに、事前に圧縮しておいたコンテンツを直接ディスクに配置しておくようWebサーバーを設定することもできます。●</p>
 <p>NGINXでは<code>gzip_static</code>を使用することでこれを自動的に行なうことができます。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
@@ -842,7 +842,7 @@ end
 </pre>
 </div>
 <h4 id="cdn"><a href="#cdn">4.4 CDN</a></h4>
-<p>CDN (<a href="http://en.wikipedia.org/wiki/Content_delivery_network">コンテンツデリバリーネットワーク</a>)は、全世界を対象としてアセットをキャッシュすることを主な目的として設計されています。それにより、ブラウザからアセットをリクエストすると、ネットワーク上で最も近くにあるキャッシュのコピーが使用されます。production環境のRailsサーバーから (中間キャッシュを使用せずに) 直接アセットを提供しているのであれば、アプリケーションとブラウザの間でCDNを使用するのがベストプラクティスです。</p>
+<p>CDN (<a href="http://ja.wikipedia.org/wiki/%E3%82%B3%E3%83%B3%E3%83%86%E3%83%B3%E3%83%84%E3%83%87%E3%83%AA%E3%83%90%E3%83%AA%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF">コンテンツデリバリーネットワーク</a>)は、全世界を対象としてアセットをキャッシュすることを主な目的として設計されています。それにより、ブラウザからアセットをリクエストすると、ネットワーク上で最も近くにあるキャッシュのコピーが使用されます。production環境のRailsサーバーから (中間キャッシュを使用せずに) 直接アセットを提供しているのであれば、アプリケーションとブラウザの間でCDNを使用するのがベストプラクティスです。</p>
 <p>CDNの典型的な利用法は、productionサーバーを "origin" サーバーとして設定することです。つまり、ブラウザがCDN上のアセットをリクエストしてキャッシュが見つからない場合、オンデマンドでサーバーからアセットファイルを取得してキャッシュするということです。たとえば、Railsアプリケーションを<code>example.com</code>というドメインで運用しており、<code>mycdnsubdomain.fictional-cdn.com</code>というCDNが設定済みであるとします。<code>mycdnsubdomain.fictional-cdn.com/assets/smile.png</code>がリクエストされると、CDNはいったん元のサーバーの<code>example.com/assets/smile.png</code>にアクセスしてこのリクエストをキャッシュします。CDN上の同じURLに対して次のリクエストが発生すると、キャッシュされたコピーがヒットします。CDNがアセットを直接提供する場合、ブラウザからのリクエストが直接Railsサーバーに達することはありません。CDNが提供するアセットはネットワーク上でブラウザに近い位置にあるので、リクエストは高速化されます。また、サーバーはアセットの送信に使う時間を節約できるので、アプリケーション本来のコードをより高速で提供することに集中できます。</p>
 <h5 id="cdnで静的なアセットを提供する"><a href="#cdn%E3%81%A7%E9%9D%99%E7%9A%84%E3%81%AA%E3%82%A2%E3%82%BB%E3%83%83%E3%83%88%E3%82%92%E6%8F%90%E4%BE%9B%E3%81%99%E3%82%8B">4.4.1 CDNで静的なアセットを提供する</a></h5>
 <p>CDNを設定するには、Railsアプリケーションがインターネット上でproductionモードで運用されており、<code>example.com</code>などのように誰でもアクセスできるURLがある必要があります。続いて、クラウドホスティングプロバイダーが提供するCDNサービスと契約を結ぶ必要もあります。その際、CDNの"origin"設定をRailsアプリケーションのWebサイト<code>example.com</code>にする必要もあります。originサーバーの設定方法のドキュメントについてはプロバイダーにお問い合わせください。</p>
@@ -854,7 +854,7 @@ config.action_controller.asset_host = 'mycdnsubdomain.fictional-cdn.com'
 </pre>
 </div>
 <div class="note"><p>ここに記述するのは "ホスト名" (サブドメインとルートドメインを合わせたもの) のみです。<code>http://</code>や<code>https://</code>などのプロトコルスキームを記述する必要はありません。アセットへのリンクで使用されるプロトコルスキームは、Webページヘのリクエスト発生時に、そのページへのデフォルトのアクセス方法に合わせて適切に生成されます。</p></div>
-<p>この値は<a href="http://en.wikipedia.org/wiki/Environment_variable">環境変数</a>で設定することもできます。これを使用すると、ステージングサーバー (訳注: 検証用に本番サーバーを複製したサーバー) の実行が楽になります。</p>
+<p>この値は<a href="http://ja.wikipedia.org/wiki/%E7%92%B0%E5%A2%83%E5%A4%89%E6%95%B0">環境変数</a>で設定することもできます。これを使用すると、ステージングサーバー (訳注: 検証用に本番サーバーを複製したサーバー) の実行が楽になります。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 config.action_controller.asset_host = ENV['CDN_HOST']
