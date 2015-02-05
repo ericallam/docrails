@@ -110,7 +110,7 @@ Active Recordで利用可能なコールバックの一覧を以下に示しま�
 * `around_destroy`
 * `after_destroy`
 
-WARNING: `after_save`は作成と更新の両方で呼び出されますが、コールバックマクロの呼び出し順にかかわらず、必ず、より具体的なafter_createおよびafter_updateより _後_ に呼び出されます。
+WARNING: `after_save`は作成と更新の両方で呼び出されますが、コールバックマクロの呼び出し順にかかわらず、必ず、より具体的な`after_create`および`after_update`より _後_ に呼び出されます。
 
 ### `after_initialize`と`after_find`
 
