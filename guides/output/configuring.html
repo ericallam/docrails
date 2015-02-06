@@ -644,21 +644,16 @@ parts_order:  ["text/plain", "text/enriched", "text/html"]
 
 </pre>
 </div>
-</li>
-</ul>
 <p>ハッシュを1つ指定してオプションを追加することもできます。</p>
 <div class="code_container">
-<pre class="brush: plain; gutter: false; toolbar: false">
-```ruby
+<pre class="brush: ruby; gutter: false; toolbar: false">
 config.action_mailer.default_options = {
   from: "noreply@example.com"
 }
-```
 
 </pre>
 </div>
-
-<ul>
+</li>
 <li>
 <p><code>config.action_mailer.observers</code>は、メールを配信したときに通知を受けるオブザーバーを指定します。</p>
 <div class="code_container">
