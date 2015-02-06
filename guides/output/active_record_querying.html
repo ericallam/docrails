@@ -1261,7 +1261,7 @@ SELECT clients.* FROM clients LEFT OUTER JOIN addresses ON addresses.client_id =
 </div>
 <h4 id="名前付き関連付けの配列/ハッシュを使用する"><a href="#%E5%90%8D%E5%89%8D%E4%BB%98%E3%81%8D%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91%E3%81%AE%E9%85%8D%E5%88%97/%E3%83%8F%E3%83%83%E3%82%B7%E3%83%A5%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B">12.2 名前付き関連付けの配列/ハッシュを使用する</a></h4>
 <div class="warning"><p>このメソッドは<code>INNER JOIN</code>でしか使用できません。</p></div>
-<p>Active Recordでは、<code>joins</code>メソッドを使用して関連付けで<code>JOIN</code>句を指定する際に、モデルで定義された<a href="association_basics.html">関連付け</a> の名前をショートカットとして使用できます。</p>
+<p>Active Recordでは、<code>joins</code>メソッドを使用して関連付けで<code>JOIN</code>句を指定する際に、モデルで定義された<a href="association_basics.html">関連付け</a>の名前をショートカットとして使用できます。</p>
 <p>たとえば、以下の<code>Category</code>、<code>Post</code>、<code>Comment</code>、<code>Guest</code>、<code>Tag</code>モデルについて考えてみましょう。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1433,7 +1433,7 @@ Category.includes(posts: [{ comments: :guest }, :tags]).find(1)
 </div>
 <p>上のコードは、id=1のカテゴリを検索し、関連付けられたすべての投稿およびそのタグとコメント、およびすべてのコメントのゲスト関連付けを一括読み込みします。</p>
 <h4 id="関連付けの一括読み込みで条件を指定する"><a href="#%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91%E3%81%AE%E4%B8%80%E6%8B%AC%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF%E3%81%A7%E6%9D%A1%E4%BB%B6%E3%82%92%E6%8C%87%E5%AE%9A%E3%81%99%E3%82%8B">13.2 関連付けの一括読み込みで条件を指定する</a></h4>
-<p>Active Recordでは、<code>joins</code>のように事前読み込みされた関連付けに対して条件を指定することができますが、<a href="#%E7%B5%90%E5%90%88%E3%81%99%E3%82%8B%E3%83%86%E3%83%BC%E3%83%96%E3%83%AB">joins</a> という方法を使用することをお勧めします。</p>
+<p>Active Recordでは、<code>joins</code>のように事前読み込みされた関連付けに対して条件を指定することができますが、<a href="#%E3%83%86%E3%83%BC%E3%83%96%E3%83%AB%E3%82%92%E7%B5%90%E5%90%88%E3%81%99%E3%82%8B">joins</a> という方法を使用することをお勧めします。</p>
 <p>しかし、このようにせざるを得ない場合は、<code>where</code>を通常どおりに使用することができます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">

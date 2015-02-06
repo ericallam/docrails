@@ -961,7 +961,7 @@ SELECT clients.* FROM clients LEFT OUTER JOIN addresses ON addresses.client_id =
 
 WARNING: このメソッドは`INNER JOIN`でしか使用できません。
 
-Active Recordでは、`joins`メソッドを使用して関連付けで`JOIN`句を指定する際に、モデルで定義された[関連付け](association_basics.html) の名前をショートカットとして使用できます。
+Active Recordでは、`joins`メソッドを使用して関連付けで`JOIN`句を指定する際に、モデルで定義された[関連付け](association_basics.html)の名前をショートカットとして使用できます。
 
 たとえば、以下の`Category`、`Post`、`Comment`、`Guest`、`Tag`モデルについて考えてみましょう。
 
@@ -1136,7 +1136,7 @@ Category.includes(posts: [{ comments: :guest }, :tags]).find(1)
 
 ### 関連付けの一括読み込みで条件を指定する
 
-Active Recordでは、`joins`のように事前読み込みされた関連付けに対して条件を指定することができますが、[joins](#結合するテーブル) という方法を使用することをお勧めします。
+Active Recordでは、`joins`のように事前読み込みされた関連付けに対して条件を指定することができますが、[joins](#テーブルを結合する) という方法を使用することをお勧めします。
 
 しかし、このようにせざるを得ない場合は、`where`を通常どおりに使用することができます。
 
