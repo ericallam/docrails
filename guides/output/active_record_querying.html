@@ -1724,7 +1724,7 @@ nick.save
 </pre>
 </div>
 <h3 id="sqlで検索する"><a href="#sql%E3%81%A7%E6%A4%9C%E7%B4%A2%E3%81%99%E3%82%8B">17 SQLで検索する</a></h3>
-<p>独自のSQLを使用してレコードを検索したい場合、<code>find_by_sql</code>メソッドを強いようできます。この<code>find_by_sql</code>メソッドは、オブジェクトの配列を1つ返します。クエリがレコードを1つしか返さなかった場合にも配列が返されますのでご注意ください。たとえば、以下のクエリを実行したとします。</p>
+<p>独自のSQLを使用してレコードを検索したい場合、<code>find_by_sql</code>メソッドを使用できます。この<code>find_by_sql</code>メソッドは、オブジェクトの配列を1つ返します。クエリがレコードを1つしか返さなかった場合にも配列が返されますのでご注意ください。たとえば、以下のクエリを実行したとします。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Client.find_by_sql("SELECT * FROM clients
