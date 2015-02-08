@@ -1293,7 +1293,7 @@ end
 <%= link_to 'Back to Articles', articles_path %>
 ```
 
-これにより、`app/views/comments/_comment.html.erb`パーシャルが、@article.comments`コレクションに含まれているコメントをすべて出力するようになりました。`render`メソッドが`@article.comments`コレクションに含まれる要素を1つ1つ列挙するときに、各コメントをパーシャルと同じ名前のローカル変数に自動的に割り当てます。この場合は`comment`というローカル変数が使用され、これはパーシャルでの表示に使用されます。
+これにより、`app/views/comments/_comment.html.erb`パーシャルが、`@article.comments`コレクションに含まれているコメントをすべて出力するようになりました。`render`メソッドが`@article.comments`コレクションに含まれる要素を1つ1つ列挙するときに、各コメントをパーシャルと同じ名前のローカル変数に自動的に割り当てます。この場合は`comment`というローカル変数が使用され、これはパーシャルでの表示に使用されます。
 
 ### パーシャルのフォームを描画する
 

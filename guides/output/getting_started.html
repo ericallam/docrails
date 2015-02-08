@@ -1569,7 +1569,7 @@ end
 
 </pre>
 </div>
-<p>これにより、<code>app/views/comments/_comment.html.erb</code>パーシャルが、@article.comments<code>コレクションに含まれているコメントをすべて出力するようになりました。</code>render<code>メソッドが</code>@article.comments<code>コレクションに含まれる要素を1つ1つ列挙するときに、各コメントをパーシャルと同じ名前のローカル変数に自動的に割り当てます。この場合は</code>comment`というローカル変数が使用され、これはパーシャルでの表示に使用されます。</p>
+<p>これにより、<code>app/views/comments/_comment.html.erb</code>パーシャルが、<code>@article.comments</code>コレクションに含まれているコメントをすべて出力するようになりました。<code>render</code>メソッドが<code>@article.comments</code>コレクションに含まれる要素を1つ1つ列挙するときに、各コメントをパーシャルと同じ名前のローカル変数に自動的に割り当てます。この場合は<code>comment</code>というローカル変数が使用され、これはパーシャルでの表示に使用されます。</p>
 <h4 id="パーシャルのフォームを描画する"><a href="#%E3%83%91%E3%83%BC%E3%82%B7%E3%83%A3%E3%83%AB%E3%81%AE%E3%83%95%E3%82%A9%E3%83%BC%E3%83%A0%E3%82%92%E6%8F%8F%E7%94%BB%E3%81%99%E3%82%8B">7.2 パーシャルのフォームを描画する</a></h4>
 <p>今度はコメント作成部分もパーシャルに追い出してみましょう。<code>app/views/comments/_form.html.erb</code>ファイルを作成し、以下のように入力します。</p>
 <div class="code_container">
