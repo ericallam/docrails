@@ -140,7 +140,7 @@
       url: rails_on_rack.html
       description: RailsとRackがどのように統合されているか、および他のRackコンポーネントとのインターフェイスについて解説します。
     -
-      name: Creating and Customizing Rails Generators [未着手]
+      name: Rails ジェネレータとテンプレート入門
       url: generators.html
       description: 新しいジェネレータを拡張に追加したり、ビルトインのRailsジェネレータの要素に別の要素を提供したりする方法 (scaffoldジェネレータに別のテストスタブを提供するなど) について解説します。
 -
