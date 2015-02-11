@@ -756,7 +756,7 @@ Post.find(10).comments.reorder('name')
 SELECT * FROM posts WHERE id = 10 ORDER BY name
 ```
 
-In case the `reorder` clause is not used, the SQL executed would be:
+`reorder`を実行しなかった場合に実行されるSQLは以下のようなものになります。
 
 ```sql
 SELECT * FROM posts WHERE id = 10 ORDER BY posted_at DESC
@@ -788,7 +788,7 @@ Client.where("orders_count > 10").reverse_order
 SELECT * FROM clients WHERE orders_count > 10 ORDER BY clients.id DESC
 ```
 
-This method accepts **no** arguments.
+このメソッドは引数を**取りません**。
 
 ### `rewhere`
 
