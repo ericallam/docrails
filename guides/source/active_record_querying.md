@@ -491,7 +491,7 @@ Client.where(created_at: (Time.now.midnight - 1.day)..Time.now.midnight)
 SELECT * FROM clients WHERE (clients.created_at BETWEEN '2008-12-21 00:00:00' AND '2008-12-22 00:00:00')
 ```
 
-[配列による条件](#array-conditions) ではさらに簡潔な文例をご紹介しています。
+[配列による条件](#配列で表された条件) ではさらに簡潔な文例をご紹介しています。
 
 #### サブセット条件
 
@@ -1057,7 +1057,7 @@ SELECT categories.* FROM categories
 
 ### 結合されたテーブルで条件を指定する
 
-標準の[配列](#array-conditions)および[文字列](#pure-string-conditions)条件を使用して、結合テーブルに条件を指定することができます。[ハッシュ条件](#hash-conditions) の場合、結合テーブルで条件を指定する場合に特殊な構文を使用します。
+標準の[配列](#配列で表された条件)および[文字列](#文字列だけで表された条件)条件を使用して、結合テーブルに条件を指定することができます。[ハッシュ条件](#ハッシュを使用した条件) の場合、結合テーブルで条件を指定する場合に特殊な構文を使用します。
 
 ```ruby
 time_range = (Time.now.midnight - 1.day).Time.now.midnight
@@ -1617,7 +1617,7 @@ SELECT count(DISTINCT clients.id) AS count_all FROM clients
 
 モデルのテーブルに含まれるレコードの個数を数えるには`Client.count`を使用できます。返されるのはレコードの個数です。特定の年齢のクライアントの数を数えるのであれば、`Client.count(:age)`とします。
 
-オプションについては、1つ上の[計算](#calculations)セクションを参照してください。
+オプションについては、1つ上の[計算](#計算)セクションを参照してください。
 
 ### 平均
 
@@ -1629,7 +1629,7 @@ Client.average("orders_count")
 
 返される値は、そのフィールドの平均値です。通常3.14159265のような浮動小数点になります。
 
-オプションについては、1つ上の[計算](#calculations)セクションを参照してください。
+オプションについては、1つ上の[計算](#計算)セクションを参照してください。
 
 ### 最小値
 
@@ -1639,7 +1639,7 @@ Client.average("orders_count")
 Client.minimum("age")
 ```
 
-オプションについては、1つ上の[計算](#calculations)セクションを参照してください。
+オプションについては、1つ上の[計算](#計算)セクションを参照してください。
 
 ### 最大値
 
@@ -1649,7 +1649,7 @@ Client.minimum("age")
 Client.maximum("age")
 ```
 
-オプションについては、1つ上の[計算](#calculations)セクションを参照してください。
+オプションについては、1つ上の[計算](#計算)セクションを参照してください。
 
 ### 合計
 
@@ -1659,7 +1659,7 @@ Client.maximum("age")
 Client.sum("orders_count")
 ```
 
-オプションについては、1つ上の[計算](#calculations)セクションを参照してください。
+オプションについては、1つ上の[計算](#計算)セクションを参照してください。
 
 EXPLAINを実行する
 ---------------
