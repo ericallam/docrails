@@ -49,10 +49,13 @@ http://railstutorial.jp/
 
 ### ④ 日本語のHTMLファイルの生成方法
 
-0. `/guides` フォルダに移動する
-1. Google Translator Toolkit から訳文のファイルをダウンロードする (要: ダウンロード権限)
-2. `./main.sh` を実行して、訳文のファイルを適切な名前に変更し、`/source` 以下に配置。
-3. `bundle exec rake guides:generate:html`を実行して、`/output`以下にHTMLを生成。
+1. `/guides` フォルダに移動する
+2. Google Translator Toolkit から訳文のファイルをダウンロードする (要: ダウンロード権限)
+3. `./main.sh` を実行して、`archive.zip`の展開からHTML生成までの必要な処理します。例えば、
+   - 適切なファイル名/拡張子に変換
+   - 翻訳専用の特殊タグの置換
+   - MDファイルからHTMLファイルを生成、など
+   - 詳細は `main.sh` を参照してください
 
 ### ⑤ Herokuにデプロイ
 
