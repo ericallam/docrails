@@ -135,7 +135,7 @@ NOTE: `Engine`クラスの定義に含まれる`isolate_namespace`の行を変�
 
 名前空間を分離するということは、`bin/rails g model`の実行によって生成されたモデル (ここでは `bin/rails g model article`を実行したとします) は`Article`にならず、名前空間化されて`Blorgh::Article`になるということです。さらにモデルのテーブルも名前空間化され、単なる`articles`ではなく`blorgh_articles`になります。コントローラもモデルと同様に名前空間化されます。`ArticlesController`というコントローラは`Blorgh::ArticlesController`になり、このコントローラのビューは`app/views/articles`ではなく`app/views/blorgh/articles`に置かれます。メイラーも同様に名前空間化されます。
 
-最後に、ルーティングもエンジン内で分離されます。これは名前空間化の最も肝心な部分であり、これについては本ガイドの[ルーティング](#routes)セクションで後述します。
+最後に、ルーティングもエンジン内で分離されます。これは名前空間化の最も肝心な部分であり、これについては本ガイドの[ルーティング](#ルーティング)セクションで後述します。
 
 #### `app`ディレクトリ
 
@@ -233,7 +233,7 @@ Blorgh::Engine.routes.draw do
 end
 ```
 
-このルーティングは、`YourApp::Application`クラスではなく`Blorgh::Engine`オブジェクトにもとづいていることにご注目ください。これにより、エンジンのルーティングがエンジン自身に制限され、[testディレクトリ](#test-directory)セクションで説明したように特定の位置にマウントできるようになります。ここでは、エンジンのルーティングがアプリケーション内のルーティングから分離されていることにもご注目ください。詳細については本ガイドの[ルーティング](#routes)セクションで解説します。
+このルーティングは、`YourApp::Application`クラスではなく`Blorgh::Engine`オブジェクトにもとづいていることにご注目ください。これにより、エンジンのルーティングがエンジン自身に制限され、[testディレクトリ](#testディレクトリ)セクションで説明したように特定の位置にマウントできるようになります。ここでは、エンジンのルーティングがアプリケーション内のルーティングから分離されていることにもご注目ください。詳細については本ガイドの[ルーティング](#ルーティング)セクションで解説します。
 
 続いて`scaffold_controller`ジェネレータが呼ばれ、`Blorgh::ArticlesController`という名前のコントローラを生成します (生成場所は`app/controllers/blorgh/articles_controller.rb`です)。このコントローラに関連するビューは`app/views/blorgh/articles`となります。このジェネレータは、コントローラ用のテスト (`test/controllers/blorgh/articles_controller_test.rb`) とヘルパー (`app/helpers/blorgh/articles_controller.rb`).も同時に生成します。
 

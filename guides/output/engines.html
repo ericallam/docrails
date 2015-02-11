@@ -392,7 +392,7 @@ end
 <p>ここで、<code>isolate_namespace</code>メソッドについて特別な注意が必要です。このメソッドの呼び出しは、エンジンのコントローラ/モデル/ルーティングなどが持つ固有の名前空間を、アプリケーション内部のコンポーネントが持つ類似の名前空間から分離する役目を担います。この呼び出しが行われないと、エンジンのコンポーネントがアプリケーション側に「漏れ出す」リスクが生じ、思わぬ動作が発生したり、エンジンの重要なコンポーネントが同じような名前のアプリケーション側コンポーネントによって上書きされてしまったりする可能性があります。名前の衝突の例として、ヘルパーを取り上げましょう。<code>isolate_namespace</code>が呼び出されないと、エンジンのヘルパーがアプリケーションのコントローラにインクルードされてしまう可能性があります。</p>
 <div class="note"><p><code>Engine</code>クラスの定義に含まれる<code>isolate_namespace</code>の行を変更/削除しないことを <strong>強く</strong> 推奨します。この行が変更されると、生成されたエンジン内のクラスがアプリケーションと衝突する <strong>可能性があります</strong> 。</p></div>
 <p>名前空間を分離するということは、<code>bin/rails g model</code>の実行によって生成されたモデル (ここでは <code>bin/rails g model article</code>を実行したとします) は<code>Article</code>にならず、名前空間化されて<code>Blorgh::Article</code>になるということです。さらにモデルのテーブルも名前空間化され、単なる<code>articles</code>ではなく<code>blorgh_articles</code>になります。コントローラもモデルと同様に名前空間化されます。<code>ArticlesController</code>というコントローラは<code>Blorgh::ArticlesController</code>になり、このコントローラのビューは<code>app/views/articles</code>ではなく<code>app/views/blorgh/articles</code>に置かれます。メイラーも同様に名前空間化されます。</p>
-<p>最後に、ルーティングもエンジン内で分離されます。これは名前空間化の最も肝心な部分であり、これについては本ガイドの<a href="#routes">ルーティング</a>セクションで後述します。</p>
+<p>最後に、ルーティングもエンジン内で分離されます。これは名前空間化の最も肝心な部分であり、これについては本ガイドの<a href="#%E3%83%AB%E3%83%BC%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0">ルーティング</a>セクションで後述します。</p>
 <h5 id="appディレクトリ"><a href="#app%E3%83%87%E3%82%A3%E3%83%AC%E3%82%AF%E3%83%88%E3%83%AA">2.1.2 <code>app</code>ディレクトリ</a></h5>
 <p>エンジンの<code>app</code>ディレクトリの中には、通常のアプリケーションでおなじみの標準の<code>assets</code>、<code>controllers</code>、<code>helpers</code>、<code>mailers</code>、<code>models</code>、<code>views</code>ディレクトリが置かれます。このうち<code>helpers</code>、<code>mailers</code>、<code>models</code>ディレクトリにはデフォルトでは何も置かれないので、本セクションでは解説しません。モデルについては、エンジンの作成について解説するセクションで後述します。</p>
 <p>エンジンの<code>app/assets</code>ディレクトリの下にも、通常のアプリケーションと同様に<code>images</code>、<code>javascripts</code>、<code>stylesheets</code>ディレクトリがそれぞれあります。通常のアプリケーションと異なる点は、これらのディレクトリの下にはさらにエンジン名を持つサブディレクトリがあることです。これは、エンジンが名前空間化されるのと同様、エンジンのアセットも同様に名前空間化される必要があるからです。</p>
@@ -476,7 +476,7 @@ end
 
 </pre>
 </div>
-<p>このルーティングは、<code>YourApp::Application</code>クラスではなく<code>Blorgh::Engine</code>オブジェクトにもとづいていることにご注目ください。これにより、エンジンのルーティングがエンジン自身に制限され、<a href="#test-directory">testディレクトリ</a>セクションで説明したように特定の位置にマウントできるようになります。ここでは、エンジンのルーティングがアプリケーション内のルーティングから分離されていることにもご注目ください。詳細については本ガイドの<a href="#routes">ルーティング</a>セクションで解説します。</p>
+<p>このルーティングは、<code>YourApp::Application</code>クラスではなく<code>Blorgh::Engine</code>オブジェクトにもとづいていることにご注目ください。これにより、エンジンのルーティングがエンジン自身に制限され、<a href="#test%E3%83%87%E3%82%A3%E3%83%AC%E3%82%AF%E3%83%88%E3%83%AA">testディレクトリ</a>セクションで説明したように特定の位置にマウントできるようになります。ここでは、エンジンのルーティングがアプリケーション内のルーティングから分離されていることにもご注目ください。詳細については本ガイドの<a href="#%E3%83%AB%E3%83%BC%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0">ルーティング</a>セクションで解説します。</p>
 <p>続いて<code>scaffold_controller</code>ジェネレータが呼ばれ、<code>Blorgh::ArticlesController</code>という名前のコントローラを生成します (生成場所は<code>app/controllers/blorgh/articles_controller.rb</code>です)。このコントローラに関連するビューは<code>app/views/blorgh/articles</code>となります。このジェネレータは、コントローラ用のテスト (<code>test/controllers/blorgh/articles_controller_test.rb</code>) とヘルパー (<code>app/helpers/blorgh/articles_controller.rb</code>).も同時に生成します。</p>
 <p>このジェネレータによって生成されるものはすべて正しく名前空間化されます。このコントローラのクラスは、以下のように<code>Blorgh</code>モジュール内で定義されます。</p>
 <div class="code_container">

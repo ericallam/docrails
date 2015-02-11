@@ -534,7 +534,7 @@ SELECT * FROM clients ORDER BY clients.id ASC LIMIT 1
 
 </pre>
 </div>
-<p><code>Model.first!マッチするレコードが見つからない場合、</code>ActiveRecord::RecordNotFound`例外が発生します。</p>
+<p><code>Model.first!</code>マッチするレコードが見つからない場合、<code>ActiveRecord::RecordNotFound</code>例外が発生します。</p>
 <h5 id="last!"><a href="#last!">1.1.8 <code>last!</code></a></h5>
 <p><code>Model.last!</code>は、主キー順の最後のレコードを取り出します。例：</p>
 <div class="code_container">
@@ -793,7 +793,7 @@ SELECT * FROM clients WHERE (clients.created_at BETWEEN '2008-12-21 00:00:00' AN
 
 </pre>
 </div>
-<p><a href="#array-conditions">配列による条件</a> ではさらに簡潔な文例をご紹介しています。</p>
+<p><a href="#%E9%85%8D%E5%88%97%E3%81%A7%E8%A1%A8%E3%81%95%E3%82%8C%E3%81%9F%E6%9D%A1%E4%BB%B6">配列による条件</a> ではさらに簡潔な文例をご紹介しています。</p>
 <h5 id="サブセット条件"><a href="#%E3%82%B5%E3%83%96%E3%82%BB%E3%83%83%E3%83%88%E6%9D%A1%E4%BB%B6">2.3.3 サブセット条件</a></h5>
 <p>SQLの<code>IN</code>式を使用してレコードを検索したい場合、条件ハッシュにそのための配列を1つ渡すことができます。</p>
 <div class="code_container">
@@ -1059,7 +1059,7 @@ SELECT * FROM posts WHERE id = 10 ORDER BY name
 
 </pre>
 </div>
-<p>In case the <code>reorder</code> clause is not used, the SQL executed would be:</p>
+<p><code>reorder</code>を実行しなかった場合に実行されるSQLは以下のようなものになります。</p>
 <div class="code_container">
 <pre class="brush: sql; gutter: false; toolbar: false">
 SELECT * FROM posts WHERE id = 10 ORDER BY posted_at DESC
@@ -1095,7 +1095,7 @@ SELECT * FROM clients WHERE orders_count &gt; 10 ORDER BY clients.id DESC
 
 </pre>
 </div>
-<p>This method accepts <strong>no</strong> arguments.</p>
+<p>このメソッドは引数を<strong>取りません</strong>。</p>
 <h4 id="rewhere"><a href="#rewhere">8.5 <code>rewhere</code></a></h4>
 <p><code>rewhere</code>メソッドは、既存のwhere条件を上書きします。例：</p>
 <div class="code_container">
@@ -1360,7 +1360,7 @@ SELECT categories.* FROM categories
 </pre>
 </div>
 <h4 id="結合されたテーブルで条件を指定する"><a href="#%E7%B5%90%E5%90%88%E3%81%95%E3%82%8C%E3%81%9F%E3%83%86%E3%83%BC%E3%83%96%E3%83%AB%E3%81%A7%E6%9D%A1%E4%BB%B6%E3%82%92%E6%8C%87%E5%AE%9A%E3%81%99%E3%82%8B">12.3 結合されたテーブルで条件を指定する</a></h4>
-<p>標準の<a href="#array-conditions">配列</a>および<a href="#pure-string-conditions">文字列</a>条件を使用して、結合テーブルに条件を指定することができます。<a href="#hash-conditions">ハッシュ条件</a> の場合、結合テーブルで条件を指定する場合に特殊な構文を使用します。</p>
+<p>標準の<a href="#%E9%85%8D%E5%88%97%E3%81%A7%E8%A1%A8%E3%81%95%E3%82%8C%E3%81%9F%E6%9D%A1%E4%BB%B6">配列</a>および<a href="#%E6%96%87%E5%AD%97%E5%88%97%E3%81%A0%E3%81%91%E3%81%A7%E8%A1%A8%E3%81%95%E3%82%8C%E3%81%9F%E6%9D%A1%E4%BB%B6">文字列</a>条件を使用して、結合テーブルに条件を指定することができます。<a href="#%E3%83%8F%E3%83%83%E3%82%B7%E3%83%A5%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%97%E3%81%9F%E6%9D%A1%E4%BB%B6">ハッシュ条件</a> の場合、結合テーブルで条件を指定する場合に特殊な構文を使用します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 time_range = (Time.now.midnight - 1.day).Time.now.midnight
@@ -1918,7 +1918,7 @@ SELECT count(DISTINCT clients.id) AS count_all FROM clients
 </div>
 <h4 id="個数を数える"><a href="#%E5%80%8B%E6%95%B0%E3%82%92%E6%95%B0%E3%81%88%E3%82%8B">19.1 個数を数える</a></h4>
 <p>モデルのテーブルに含まれるレコードの個数を数えるには<code>Client.count</code>を使用できます。返されるのはレコードの個数です。特定の年齢のクライアントの数を数えるのであれば、<code>Client.count(:age)</code>とします。</p>
-<p>オプションについては、1つ上の<a href="#calculations">計算</a>セクションを参照してください。</p>
+<p>オプションについては、1つ上の<a href="#%E8%A8%88%E7%AE%97">計算</a>セクションを参照してください。</p>
 <h4 id="平均"><a href="#%E5%B9%B3%E5%9D%87">19.2 平均</a></h4>
 <p>テーブルに含まれる特定の数値の平均を得るには、そのテーブルを持つクラスに対して<code>average</code>メソッドを呼び出します。このメソッド呼び出しは以下のようなものになります。</p>
 <div class="code_container">
@@ -1928,7 +1928,7 @@ Client.average("orders_count")
 </pre>
 </div>
 <p>返される値は、そのフィールドの平均値です。通常3.14159265のような浮動小数点になります。</p>
-<p>オプションについては、1つ上の<a href="#calculations">計算</a>セクションを参照してください。</p>
+<p>オプションについては、1つ上の<a href="#%E8%A8%88%E7%AE%97">計算</a>セクションを参照してください。</p>
 <h4 id="最小値"><a href="#%E6%9C%80%E5%B0%8F%E5%80%A4">19.3 最小値</a></h4>
 <p>テーブルに含まれるフィールドの最小値を得るには、そのテーブルを持つクラスに対して<code>minimum</code>メソッドを呼び出します。このメソッド呼び出しは以下のようなものになります。</p>
 <div class="code_container">
@@ -1937,7 +1937,7 @@ Client.minimum("age")
 
 </pre>
 </div>
-<p>オプションについては、1つ上の<a href="#calculations">計算</a>セクションを参照してください。</p>
+<p>オプションについては、1つ上の<a href="#%E8%A8%88%E7%AE%97">計算</a>セクションを参照してください。</p>
 <h4 id="最大値"><a href="#%E6%9C%80%E5%A4%A7%E5%80%A4">19.4 最大値</a></h4>
 <p>テーブルに含まれるフィールドの最大値を得るには、そのテーブルを持つクラスに対して<code>maximum</code>メソッドを呼び出します。このメソッド呼び出しは以下のようなものになります。</p>
 <div class="code_container">
@@ -1946,7 +1946,7 @@ Client.maximum("age")
 
 </pre>
 </div>
-<p>オプションについては、1つ上の<a href="#calculations">計算</a>セクションを参照してください。</p>
+<p>オプションについては、1つ上の<a href="#%E8%A8%88%E7%AE%97">計算</a>セクションを参照してください。</p>
 <h4 id="合計"><a href="#%E5%90%88%E8%A8%88">19.5 合計</a></h4>
 <p>テーブルに含まれるフィールドのすべてのレコードにおける合計を得るには、そのテーブルを持つクラスに対して<code>sum</code>メソッドを呼び出します。このメソッド呼び出しは以下のようなものになります。</p>
 <div class="code_container">
@@ -1955,7 +1955,7 @@ Client.sum("orders_count")
 
 </pre>
 </div>
-<p>オプションについては、1つ上の<a href="#calculations">計算</a>セクションを参照してください。</p>
+<p>オプションについては、1つ上の<a href="#%E8%A8%88%E7%AE%97">計算</a>セクションを参照してください。</p>
 <h3 id="explainを実行する"><a href="#explain%E3%82%92%E5%AE%9F%E8%A1%8C%E3%81%99%E3%82%8B">20 EXPLAINを実行する</a></h3>
 <p>リレーションによってトリガされるクエリでEXPLAINを実行することができます。たとえば、以下のコードでは、</p>
 <div class="code_container">
