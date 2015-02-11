@@ -215,7 +215,7 @@ client = Client.first!
 SELECT * FROM clients ORDER BY clients.id ASC LIMIT 1
 ```
 
-`Model.first!マッチするレコードが見つからない場合、`ActiveRecord::RecordNotFound`例外が発生します。
+`Model.first!`でマッチするレコードが見つからない場合、`ActiveRecord::RecordNotFound`例外が発生します。
 
 #### `last!`
 
