@@ -24,7 +24,7 @@
 <meta name="twitter:image" content="http://railsguides.jp/images/cover_for_twitter.png" />
 <meta name="twitter:url"   content="http://railsguides.jp/" />
 
-<title>Creating and Customizing Rails Generators & Templates — Rails ガイド</title>
+<title>Railsジェネレータとテンプレート入門 — Rails ガイド</title>
 <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
 
@@ -198,15 +198,16 @@
 
   <div id="feature">
     <div class="wrapper">
-      <h2>Creating and Customizing Rails Generators &amp; Templates</h2><p>Rails generators are an essential tool if you plan to improve your workflow. With this guide you will learn how to create generators and customize existing ones.</p><p>After reading this guide, you will know:</p>
+      <h2>Railsジェネレータとテンプレート入門</h2><p>Railsの各種ジェネレータは、ワークフローを改善するために欠かせないツールです。本ガイドは、Railsジェネレータの作成方法および既存のジェネレータのカスタマイズ方法について解説します。</p><p>このガイドの内容:</p>
 <ul>
-<li>How to see which generators are available in your application.</li>
-<li>How to create a generator using templates.</li>
-<li>How Rails searches for generators before invoking them.</li>
-<li>How to customize your scaffold by creating new generators.</li>
-<li>How to customize your scaffold by changing generator templates.</li>
-<li>How to use fallbacks to avoid overwriting a huge set of generators.</li>
-<li>How to create an application template.</li>
+<li>アプリケーションで利用できるジェネレータを確認する方法</li>
+<li>テンプレートを使用してジェネレータを作成する方法</li>
+<li>Railsがジェネレータの起動前に探索するときの方法</li>
+<li>RailsがテンプレートからRailsコードを内部的に生成する方法</li>
+<li>ジェネレータを自作することでscaffoldをカスタマイズする方法</li>
+<li>ジェネレータのテンプレートを変更することでscaffoldをカスタマイズする方法</li>
+<li>多数のジェネレータをうっかり上書きしないためのフォールバック使用法</li>
+<li>アプリケーションテンプレートの作成方法</li>
 </ul>
 
                 <div id="subCol">
@@ -214,16 +215,16 @@
             <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
 <ol class="chapters">
-<li><a href="#first-contact">First Contact</a></li>
-<li><a href="#creating-your-first-generator">Creating Your First Generator</a></li>
-<li><a href="#creating-generators-with-generators">Creating Generators with Generators</a></li>
-<li><a href="#generators-lookup">Generators Lookup</a></li>
-<li><a href="#customizing-your-workflow">Customizing Your Workflow</a></li>
-<li><a href="#customizing-your-workflow-by-changing-generators-templates">Customizing Your Workflow by Changing Generators Templates</a></li>
-<li><a href="#adding-generators-fallbacks">Adding Generators Fallbacks</a></li>
-<li><a href="#application-templates">Application Templates</a></li>
+<li><a href="#%E3%82%B8%E3%82%A7%E3%83%8D%E3%83%AC%E3%83%BC%E3%82%BF%E3%81%A8%E3%81%AE%E6%9C%80%E5%88%9D%E3%81%AE%E5%87%BA%E4%BC%9A%E3%81%84">ジェネレータとの最初の出会い</a></li>
+<li><a href="#%E5%88%9D%E3%82%81%E3%81%A6%E3%82%B8%E3%82%A7%E3%83%8D%E3%83%AC%E3%83%BC%E3%82%BF%E3%82%92%E4%BD%9C%E6%88%90%E3%81%99%E3%82%8B">初めてジェネレータを作成する</a></li>
+<li><a href="#%E3%82%B8%E3%82%A7%E3%83%8D%E3%83%AC%E3%83%BC%E3%82%BF%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%97%E3%81%A6%E3%82%B8%E3%82%A7%E3%83%8D%E3%83%AC%E3%83%BC%E3%82%BF%E3%82%92%E7%94%9F%E6%88%90%E3%81%99%E3%82%8B">ジェネレータを使用してジェネレータを生成する</a></li>
+<li><a href="#%E3%82%B8%E3%82%A7%E3%83%8D%E3%83%AC%E3%83%BC%E3%82%BF%E3%81%8C%E5%8F%82%E7%85%A7%E3%81%99%E3%82%8B%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB">ジェネレータが参照するファイル</a></li>
+<li><a href="#%E3%83%AF%E3%83%BC%E3%82%AF%E3%83%95%E3%83%AD%E3%83%BC%E3%82%92%E3%82%AB%E3%82%B9%E3%82%BF%E3%83%9E%E3%82%A4%E3%82%BA%E3%81%99%E3%82%8B">ワークフローをカスタマイズする</a></li>
+<li><a href="#%E3%82%B8%E3%82%A7%E3%83%8D%E3%83%AC%E3%83%BC%E3%82%BF%E3%81%AE%E3%83%86%E3%83%B3%E3%83%97%E3%83%AC%E3%83%BC%E3%83%88%E3%82%92%E5%A4%89%E6%9B%B4%E3%81%97%E3%81%A6%E3%83%AF%E3%83%BC%E3%82%AF%E3%83%95%E3%83%AD%E3%83%BC%E3%82%92%E3%82%AB%E3%82%B9%E3%82%BF%E3%83%9E%E3%82%A4%E3%82%BA%E3%81%99%E3%82%8B">ジェネレータのテンプレートを変更してワークフローをカスタマイズする</a></li>
+<li><a href="#%E3%82%B8%E3%82%A7%E3%83%8D%E3%83%AC%E3%83%BC%E3%82%BF%E3%81%AB%E3%83%95%E3%82%A9%E3%83%BC%E3%83%AB%E3%83%90%E3%83%83%E3%82%AF%E3%82%92%E8%BF%BD%E5%8A%A0%E3%81%99%E3%82%8B">ジェネレータにフォールバックを追加する</a></li>
+<li><a href="#%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%83%86%E3%83%B3%E3%83%97%E3%83%AC%E3%83%BC%E3%83%88">アプリケーションテンプレート</a></li>
 <li>
-<a href="#generator-methods">Generator methods</a>
+<a href="#%E3%82%B8%E3%82%A7%E3%83%8D%E3%83%AC%E3%83%BC%E3%82%BF%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89">ジェネレータメソッド</a>
 
 <ul>
 <li><a href="#gem"><code>gem</code></a></li>
@@ -256,26 +257,26 @@
       <div id="mainCol">
         <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
-<h3 id="first-contact"><a href="#first-contact">1 First Contact</a></h3>
-<p>When you create an application using the <code>rails</code> command, you are in fact using a Rails generator. After that, you can get a list of all available generators by just invoking <code>rails generate</code>:</p>
+<h3 id="ジェネレータとの最初の出会い"><a href="#%E3%82%B8%E3%82%A7%E3%83%8D%E3%83%AC%E3%83%BC%E3%82%BF%E3%81%A8%E3%81%AE%E6%9C%80%E5%88%9D%E3%81%AE%E5%87%BA%E4%BC%9A%E3%81%84">1 ジェネレータとの最初の出会い</a></h3>
+<p><code>rails</code>コマンドでRailsアプリケーションを作成すると、実はRailsのジェネレータを利用したことになります。続いて、単に<code>rails generate</code>と入力して実行すると、その時点でアプリケーションから利用可能なすべてのジェネレータのリストが表示されます。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ rails new myapp
 $ cd myapp
-$ rails generate
+$ bin/rails generate
 
 </pre>
 </div>
-<p>You will get a list of all generators that comes with Rails. If you need a detailed description of the helper generator, for example, you can simply do:</p>
+<p>Railsで利用可能なすべてのジェネレータのリストが表示されます。たとえばヘルパージェネレータの詳細な説明が知りたい場合は以下のように入力します。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-$ rails generate helper --help
+$ bin/rails generate helper --help
 
 </pre>
 </div>
-<h3 id="creating-your-first-generator"><a href="#creating-your-first-generator">2 Creating Your First Generator</a></h3>
-<p>Since Rails 3.0, generators are built on top of <a href="https://github.com/erikhuda/thor">Thor</a>. Thor provides powerful options parsing and a great API for manipulating files. For instance, let's build a generator that creates an initializer file named <code>initializer.rb</code> inside <code>config/initializers</code>.</p>
-<p>The first step is to create a file at <code>lib/generators/initializer_generator.rb</code> with the following content:</p>
+<h3 id="初めてジェネレータを作成する"><a href="#%E5%88%9D%E3%82%81%E3%81%A6%E3%82%B8%E3%82%A7%E3%83%8D%E3%83%AC%E3%83%BC%E3%82%BF%E3%82%92%E4%BD%9C%E6%88%90%E3%81%99%E3%82%8B">2 初めてジェネレータを作成する</a></h3>
+<p>Railsのジェネレータは、Rails 3.0以降は<a href="https://github.com/erikhuda/thor">Thor</a>の上に構築されています。Thorは強力な解析オプションと優れたファイル操作APIを提供しています。具体例として、<code>config/initializers</code>ディレクトリの下に<code>initializer.rb</code>という名前のイニシャライザファイルを1つ作成するジェネレータを構成してみましょう。</p>
+<p>最初の手順として、以下の内容を持つ<code>lib/generators/initializer_generator.rb</code>というファイルを1つ作成します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class InitializerGenerator &lt; Rails::Generators::Base
@@ -286,40 +287,40 @@ end
 
 </pre>
 </div>
-<div class="note"><p><code>create_file</code> is a method provided by <code>Thor::Actions</code>. Documentation for <code>create_file</code> and other Thor methods can be found in <a href="http://rdoc.info/github/erikhuda/thor/master/Thor/Actions.html">Thor's documentation</a></p></div>
-<p>Our new generator is quite simple: it inherits from <code>Rails::Generators::Base</code> and has one method definition. When a generator is invoked, each public method in the generator is executed sequentially in the order that it is defined. Finally, we invoke the <code>create_file</code> method that will create a file at the given destination with the given content. If you are familiar with the Rails Application Templates API, you'll feel right at home with the new generators API.</p>
-<p>To invoke our new generator, we just need to do:</p>
+<div class="note"><p><code>create_file</code>メソッドは<code>Thor::Actions</code>によって提供されています。<code>create_file</code>およびその他のThorのメソッドのドキュメントについては<a href="http://rdoc.info/github/erikhuda/thor/master/Thor/Actions.html">Thorドキュメント</a>を参照してください。</p></div>
+<p>今作成した新しいジェネレータはきわめてシンプルです。<code>Rails::Generators::Base</code>を継承しており、メソッド定義はひとつだけです。ジェネレータが起動されると、ジェネレータ内で定義されているパブリックメソッドが定義順に実行されます。最終的に<code>create_file</code>メソッドが呼び出され、指定の内容を持つファイルが指定のディレクトリに1つ作成されます。RailsのアプリケーションテンプレートAPIを使い慣れている開発者であれば、すぐにも新しいジェネレータAPIに熟達できることでしょう。</p>
+<p>以下を実行するだけで、この新しいジェネレータを呼び出すことができます。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-$ rails generate initializer
+$ bin/rails generate initializer
 
 </pre>
 </div>
-<p>Before we go on, let's see our brand new generator description:</p>
+<p>次に進む前に、今作成したばかりのジェネレータの説明を表示してみましょう。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-$ rails generate initializer --help
+$ bin/rails generate initializer --help
 
 </pre>
 </div>
-<p>Rails is usually able to generate good descriptions if a generator is namespaced, as <code>ActiveRecord::Generators::ModelGenerator</code>, but not in this particular case. We can solve this problem in two ways. The first one is calling <code>desc</code> inside our generator:</p>
+<p>Railsでは、ジェネレータが<code>ActiveRecord::Generators::ModelGenerator</code>のように名前空間化されていれば実用的な説明文を生成できますが、この場合は残念ながらそのようになっていません。この問題は2とおりの方法で解決することができます。1つ目の方法は、ジェネレータ内で<code>desc</code>メソッドを呼び出すというものです。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class InitializerGenerator &lt; Rails::Generators::Base
-  desc "This generator creates an initializer file at config/initializers"
+  desc "このジェネレータはconfig/initializersにイニシャライザファイルを作成する"
   def create_initializer_file
-    create_file "config/initializers/initializer.rb", "# Add initialization content here"
+    create_file "config/initializers/initializer.rb", "# イニシャライザの内容をここに記述"
   end
 end
 
 </pre>
 </div>
-<p>Now we can see the new description by invoking <code>--help</code> on the new generator. The second way to add a description is by creating a file named <code>USAGE</code> in the same directory as our generator. We are going to do that in the next step.</p>
-<h3 id="creating-generators-with-generators"><a href="#creating-generators-with-generators">3 Creating Generators with Generators</a></h3>
-<p>Generators themselves have a generator:</p>
+<p>これで、<code>--help</code>を付けて新しいジェネレータを呼び出すと新しい説明文が表示されるようになりました。説明文を追加する2番目の方法は、ジェネレータと同じディレクトリに<code>USAGE</code>という名前のファイルを作成することです。次に、この方法で実際に説明文を追加してみましょう。</p>
+<h3 id="ジェネレータを使用してジェネレータを生成する"><a href="#%E3%82%B8%E3%82%A7%E3%83%8D%E3%83%AC%E3%83%BC%E3%82%BF%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%97%E3%81%A6%E3%82%B8%E3%82%A7%E3%83%8D%E3%83%AC%E3%83%BC%E3%82%BF%E3%82%92%E7%94%9F%E6%88%90%E3%81%99%E3%82%8B">3 ジェネレータを使用してジェネレータを生成する</a></h3>
+<p>Railsには、ジェネレータを生成するためのジェネレータもあります。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-$ rails generate generator initializer
+$ bin/rails generate generator initializer
       create  lib/generators/initializer
       create  lib/generators/initializer/initializer_generator.rb
       create  lib/generators/initializer/USAGE
@@ -327,7 +328,7 @@ $ rails generate generator initializer
 
 </pre>
 </div>
-<p>This is the generator just created:</p>
+<p>上で作成したジェネレータの内容は以下のとおりです。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class InitializerGenerator &lt; Rails::Generators::NamedBase
@@ -336,25 +337,25 @@ end
 
 </pre>
 </div>
-<p>First, notice that we are inheriting from <code>Rails::Generators::NamedBase</code> instead of <code>Rails::Generators::Base</code>. This means that our generator expects at least one argument, which will be the name of the initializer, and will be available in our code in the variable <code>name</code>.</p>
-<p>We can see that by invoking the description of this new generator (don't forget to delete the old generator file):</p>
+<p>上のジェネレータを見て最初に気付く点は、<code>Rails::Generators::Base</code>ではなく<code>Rails::Generators::NamedBase</code>を継承していることでしょう。これは、このジェネレータを生成するためには少なくとも1つの引数が必要であることを意味します。この引数はイニシャライザの名前であり、コードではこのイニシャライザ名を<code>name</code>という変数で参照できます。</p>
+<p>新しいジェネレータを呼び出せば説明文が表示されます。なお、古いジェネレータファイルは必ず削除しておいてください。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-$ rails generate initializer --help
+$ bin/rails generate initializer --help
 Usage:
   rails generate initializer NAME [options]
 
 </pre>
 </div>
-<p>We can also see that our new generator has a class method called <code>source_root</code>. This method points to where our generator templates will be placed, if any, and by default it points to the created directory <code>lib/generators/initializer/templates</code>.</p>
-<p>In order to understand what a generator template means, let's create the file <code>lib/generators/initializer/templates/initializer.rb</code> with the following content:</p>
+<p>新しいジェネレータには<code>source_root</code>という名前のクラスメソッドも含まれています。このメソッドは、ジェネレータのテンプレートの置き場所を指定する場合に使用します。デフォルトでは、作成された<code>lib/generators/initializer/templates</code>ディレクトリを指します。</p>
+<p>ジェネレータのテンプレートの機能を理解するために、<code>lib/generators/initializer/templates/initializer.rb</code>を作成して以下の内容を追加してみましょう。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-# Add initialization content here
+# 初期化内容をここに追記する
 
 </pre>
 </div>
-<p>And now let's change the generator to copy this template when invoked:</p>
+<p>続いてジェネレータを変更し、呼び出されたときにこのテンプレートをコピーするようにします。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class InitializerGenerator &lt; Rails::Generators::NamedBase
@@ -367,17 +368,17 @@ end
 
 </pre>
 </div>
-<p>And let's execute our generator:</p>
+<p>それではこのジェネレータを実行してみましょう。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-$ rails generate initializer core_extensions
+$ bin/rails generate initializer core_extensions
 
 </pre>
 </div>
-<p>We can see that now an initializer named core_extensions was created at <code>config/initializers/core_extensions.rb</code> with the contents of our template. That means that <code>copy_file</code> copied a file in our source root to the destination path we gave. The method <code>file_name</code> is automatically created when we inherit from <code>Rails::Generators::NamedBase</code>.</p>
-<p>The methods that are available for generators are covered in the <a href="#generator-methods">final section</a> of this guide.</p>
-<h3 id="generators-lookup"><a href="#generators-lookup">4 Generators Lookup</a></h3>
-<p>When you run <code>rails generate initializer core_extensions</code> Rails requires these files in turn until one is found:</p>
+<p><code>config/initializers/core_extensions.rb</code>にcore_extensionsという名前のイニシャライザが作成され、そこにさっきのテンプレートが反映されていることが確認できます。<code>copy_file</code>メソッドはコピー元のルートディレクトリから、指定のパスにファイルをひとつコピーしています。<code>file_name</code>メソッドは<code>Rails::Generators::NamedBase</code>を継承したことで自動的に作成されます。</p>
+<p>ジェネレータ関連で利用できるメソッドについては、本章の<a href="#%E3%82%B8%E3%82%A7%E3%83%8D%E3%83%AC%E3%83%BC%E3%82%BF%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89">最終セクション</a>で扱っています。</p>
+<h3 id="ジェネレータが参照するファイル"><a href="#%E3%82%B8%E3%82%A7%E3%83%8D%E3%83%AC%E3%83%BC%E3%82%BF%E3%81%8C%E5%8F%82%E7%85%A7%E3%81%99%E3%82%8B%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB">4 ジェネレータが参照するファイル</a></h3>
+<p><code>rails generate initializer core_extensions</code>を実行するとき、Railsは以下のファイルを上から順に見つかるまでrequireします。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 rails/generators/initializer/initializer_generator.rb
@@ -387,47 +388,45 @@ generators/initializer_generator.rb
 
 </pre>
 </div>
-<p>If none is found you get an error message.</p>
-<div class="info"><p>The examples above put files under the application's <code>lib</code> because said directory belongs to <code>$LOAD_PATH</code>.</p></div>
-<h3 id="customizing-your-workflow"><a href="#customizing-your-workflow">5 Customizing Your Workflow</a></h3>
-<p>Rails own generators are flexible enough to let you customize scaffolding. They can be configured in <code>config/application.rb</code>, these are some defaults:</p>
+<p>どのファイルも見つからない場合はエラーメッセージが表示されます。</p>
+<div class="info"><p>上の例ではアプリケーションの<code>lib</code>ディレクトリの下にファイルを置いていますが、これらのディレクトリは<code>$LOAD_PATH</code>に属していることがその理由です。</p></div>
+<h3 id="ワークフローをカスタマイズする"><a href="#%E3%83%AF%E3%83%BC%E3%82%AF%E3%83%95%E3%83%AD%E3%83%BC%E3%82%92%E3%82%AB%E3%82%B9%E3%82%BF%E3%83%9E%E3%82%A4%E3%82%BA%E3%81%99%E3%82%8B">5 ワークフローをカスタマイズする</a></h3>
+<p>Rails自身が持つジェネレータはscaffoldを柔軟にカスタマイズできます。設定は<code>config/application.rb</code>で行います。デフォルトのコードを以下にいくつか示します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 config.generators do |g|
-  g.orm             :active_record
+  g.orm :active_record
   g.template_engine :erb
   g.test_framework  :test_unit, fixture: true
 end
 
 </pre>
 </div>
-<p>Before we customize our workflow, let's first see what our scaffold looks like:</p>
+<p>ワークフローをカスタマイズする前のscaffoldは以下のように動作します。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-$ rails generate scaffold User name:string
+$ bin/rails generate scaffold User name:string
       invoke  active_record
       create    db/migrate/20130924151154_create_users.rb
       create    app/models/user.rb
-      invoke    test_unit
+      invoke  test_unit
       create      test/models/user_test.rb
       create      test/fixtures/users.yml
       invoke  resource_route
        route    resources :users
       invoke  scaffold_controller
       create    app/controllers/users_controller.rb
-      invoke    erb
+      invoke    erb 
       create      app/views/users
       create      app/views/users/index.html.erb
       create      app/views/users/edit.html.erb
       create      app/views/users/show.html.erb
       create      app/views/users/new.html.erb
       create      app/views/users/_form.html.erb
-      invoke    test_unit
+      invoke  test_unit
       create      test/controllers/users_controller_test.rb
       invoke    helper
       create      app/helpers/users_helper.rb
-      invoke      test_unit
-      create        test/helpers/users_helper_test.rb
       invoke    jbuilder
       create      app/views/users/index.json.jbuilder
       create      app/views/users/show.json.jbuilder
@@ -441,12 +440,12 @@ $ rails generate scaffold User name:string
 
 </pre>
 </div>
-<p>Looking at this output, it's easy to understand how generators work in Rails 3.0 and above. The scaffold generator doesn't actually generate anything, it just invokes others to do the work. This allows us to add/replace/remove any of those invocations. For instance, the scaffold generator invokes the scaffold_controller generator, which invokes erb, test_unit and helper generators. Since each generator has a single responsibility, they are easy to reuse, avoiding code duplication.</p>
-<p>Our first customization on the workflow will be to stop generating stylesheets, javascripts and test fixtures for scaffolds. We can achieve that by changing our configuration to the following:</p>
+<p>この出力結果から、Rails 3.0以降のジェネレータの動作を容易に理解できます。実はscaffoldジェネレータ自身は何も生成していません。生成に必要なメソッドを順に呼び出しているだけです。このような仕組みになっているので、呼び出しを自由に追加/置換/削除できます。たとえば、scaffoldジェネレータはscaffold_controllerというジェネレータを呼び出しています。これはerbのジェネレータ、test_unitのジェネレータ、そしてヘルパーのジェネレータを呼び出します。ジェネレータごとに役割がひとつずつ割り当てられているので、コードを再利用しやすく、コードの重複も防げます。</p>
+<p>最初のカスタマイズとして、ワークフローでスタイルシートとJavaScriptとテストフィクスチャファイルをscaffoldで生成しないようにしてみましょう。これは、以下のように設定を変更することで行うことができます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 config.generators do |g|
-  g.orm             :active_record
+  g.orm :active_record
   g.template_engine :erb
   g.test_framework  :test_unit, fixture: false
   g.stylesheets     false
@@ -455,11 +454,11 @@ end
 
 </pre>
 </div>
-<p>If we generate another resource with the scaffold generator, we can see that stylesheets, javascripts and fixtures are not created anymore. If you want to customize it further, for example to use DataMapper and RSpec instead of Active Record and TestUnit, it's just a matter of adding their gems to your application and configuring your generators.</p>
-<p>To demonstrate this, we are going to create a new helper generator that simply adds some instance variable readers. First, we create a generator within the rails namespace, as this is where rails searches for generators used as hooks:</p>
+<p>scaffoldジェネレータでふたたびリソースを生成してみると、今度はスタイルシートとJavaScriptファイルとフィクスチャが生成されなくなります。ジェネレータをさらにカスタマイズしたい場合 (Active RecordとTestUnitをDataMapperとRSpecに置き換えるなど) は、必要なgemをアプリケーションに追加してジェネレータを設定するだけで済みます。</p>
+<p>ジェネレータのカスタマイズ例を説明するために、ここで新しくヘルパージェネレータをひとつ作成してみましょう。このジェネレータはインスタンス変数を読み出すメソッドをいくつか追加するだけのシンプルなものです。最初に、Railsの名前空間の内側でジェネレータをひとつ作成します。名前空間の内側にする理由は、Railsはフックとして使用されるジェネレータを名前空間内で探索するからです。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-$ rails generate generator rails/my_helper
+$ bin/rails generate generator rails/my_helper
       create  lib/generators/rails/my_helper
       create  lib/generators/rails/my_helper/my_helper_generator.rb
       create  lib/generators/rails/my_helper/USAGE
@@ -467,7 +466,7 @@ $ rails generate generator rails/my_helper
 
 </pre>
 </div>
-<p>After that, we can delete both the <code>templates</code> directory and the <code>source_root</code> class method call from our new generator, because we are not going to need them. Add the method below, so our generator looks like the following:</p>
+<p>続いて、<code>templates</code>ディレクトリと<code>source_root</code>クラスメソッド呼び出しは使う予定がないのでジェネレータから削除します。ジェネレータにメソッドを追加して以下のようにしましょう。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # lib/generators/rails/my_helper/my_helper_generator.rb
@@ -483,15 +482,15 @@ end
 
 </pre>
 </div>
-<p>We can try out our new generator by creating a helper for users:</p>
+<p>新しく作ったジェネレータでproductsのヘルパーを実際に作成してみましょう。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-$ rails generate my_helper products
+$ bin/rails generate my_helper products
       create  app/helpers/products_helper.rb
 
 </pre>
 </div>
-<p>And it will generate the following helper file in <code>app/helpers</code>:</p>
+<p>上を実行すると<code>app/helpers</code>に以下の内容を持つヘルパーが作成されます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 module ProductsHelper
@@ -500,11 +499,11 @@ end
 
 </pre>
 </div>
-<p>Which is what we expected. We can now tell scaffold to use our new helper generator by editing <code>config/application.rb</code> once again:</p>
+<p>期待どおりの結果が得られました。上で生成したヘルパージェネレータをscaffoldで実際に使ってみるために、今度は<code>config/application.rb</code>を編集して以下のように変更してみましょう。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 config.generators do |g|
-  g.orm             :active_record
+  g.orm :active_record
   g.template_engine :erb
   g.test_framework  :test_unit, fixture: false
   g.stylesheets     false
@@ -514,19 +513,19 @@ end
 
 </pre>
 </div>
-<p>and see it in action when invoking the generator:</p>
+<p>scaffoldを実行すると、ジェネレータの呼び出し時に以下のようになることが確認できます。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-$ rails generate scaffold Post body:text
+$ bin/rails generate scaffold Article body:text
       [...]
       invoke    my_helper
-      create      app/helpers/posts_helper.rb
+      create      app/helpers/articles_helper.rb
 
 </pre>
 </div>
-<p>We can notice on the output that our new helper was invoked instead of the Rails default. However one thing is missing, which is tests for our new generator and to do that, we are going to reuse old helpers test generators.</p>
-<p>Since Rails 3.0, this is easy to do due to the hooks concept. Our new helper does not need to be focused in one specific test framework, it can simply provide a hook and a test framework just needs to implement this hook in order to be compatible.</p>
-<p>To do that, we can change the generator this way:</p>
+<p>出力結果がRailsのデフォルトではなくなり、新しいヘルパーに従っていることがわかります。しかしここでもうひとつやっておかなければならないことがあります。新しいジェネレータにもテストを作成しておかなければなりません。そのために、元のヘルパーのテストジェネレータを再利用することにします。</p>
+<p>Rails 3.0以降では「フック」という概念が利用できるので、このような再利用が簡単に行えます。今作ったヘルパーは特定のテストフレームワークのみに限定する必要はないため、ヘルパーがフックをひとつ提供し、テストフレームワークでそのフックを実装して互換性を得れば十分です。</p>
+<p>これを実現するために、ジェネレータを以下のように変更しましょう。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # lib/generators/rails/my_helper/my_helper_generator.rb
@@ -544,18 +543,18 @@ end
 
 </pre>
 </div>
-<p>Now, when the helper generator is invoked and TestUnit is configured as the test framework, it will try to invoke both <code>Rails::TestUnitGenerator</code> and <code>TestUnit::MyHelperGenerator</code>. Since none of those are defined, we can tell our generator to invoke <code>TestUnit::Generators::HelperGenerator</code> instead, which is defined since it's a Rails generator. To do that, we just need to add:</p>
+<p>これで、ヘルパージェネレータが呼び出されてTestUnitがテストフレームワークとして設定されると、<code>Rails::TestUnitGenerator</code>と<code>TestUnit::MyHelperGenerator</code>を両方とも呼びだそうとします。しかしどちらも未定義なので、Railsのジェネレータとして実際に定義されている<code>TestUnit::Generators::HelperGenerator</code>を代わりに呼び出すようジェネレータに指定することができます。具体的には、以下を追加するだけで済みます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-# Search for :helper instead of :my_helper
+# :my_helperではなく:helperを探索する
 hook_for :test_framework, as: :helper
 
 </pre>
 </div>
-<p>And now you can re-run scaffold for another resource and see it generating tests as well!</p>
-<h3 id="customizing-your-workflow-by-changing-generators-templates"><a href="#customizing-your-workflow-by-changing-generators-templates">6 Customizing Your Workflow by Changing Generators Templates</a></h3>
-<p>In the step above we simply wanted to add a line to the generated helper, without adding any extra functionality. There is a simpler way to do that, and it's by replacing the templates of already existing generators, in that case <code>Rails::Generators::HelperGenerator</code>.</p>
-<p>In Rails 3.0 and above, generators don't just look in the source root for templates, they also search for templates in other paths. And one of them is <code>lib/templates</code>. Since we want to customize <code>Rails::Generators::HelperGenerator</code>, we can do that by simply making a template copy inside <code>lib/templates/rails/helper</code> with the name <code>helper.rb</code>. So let's create that file with the following content:</p>
+<p>これでscaffldを再実行すれば、作成されたリソースにテストも含まれているはずです。</p>
+<h3 id="ジェネレータのテンプレートを変更してワークフローをカスタマイズする"><a href="#%E3%82%B8%E3%82%A7%E3%83%8D%E3%83%AC%E3%83%BC%E3%82%BF%E3%81%AE%E3%83%86%E3%83%B3%E3%83%97%E3%83%AC%E3%83%BC%E3%83%88%E3%82%92%E5%A4%89%E6%9B%B4%E3%81%97%E3%81%A6%E3%83%AF%E3%83%BC%E3%82%AF%E3%83%95%E3%83%AD%E3%83%BC%E3%82%92%E3%82%AB%E3%82%B9%E3%82%BF%E3%83%9E%E3%82%A4%E3%82%BA%E3%81%99%E3%82%8B">6 ジェネレータのテンプレートを変更してワークフローをカスタマイズする</a></h3>
+<p>上でご紹介した手順では、生成されたヘルパーに一行追加しただけで、それ以外に何の機能も追加されていませんでした。同じことをもっと簡単に行う方法があります。それには、既存のジェネレータ (ここでは<code>Rails::Generators::HelperGenerator</code>) のテンプレートを置き換えます。</p>
+<p>Rails 3.0以降では、ジェネレータはソースルート・ディレクトリでテンプレートがあるかどうかを単に探すだけではなく、他のパスでもテンプレートを探します。<code>lib/templates</code>ディレクトリもこの探索対象に含まれています。<code>Rails::Generators::HelperGenerator</code>をカスタマイズするには、<code>lib/templates/rails/helper</code>ディレクトリの中に<code>helper.rb</code>というテンプレートのコピーを作成します。このファイルを作成後、以下のコードを追加します。</p>
 <div class="code_container">
 <pre class="brush: ruby; html-script: true; gutter: false; toolbar: false">
 module &lt;%= class_name %&gt;Helper
@@ -564,11 +563,11 @@ end
 
 </pre>
 </div>
-<p>and revert the last change in <code>config/application.rb</code>:</p>
+<p>次に、<code>config/application.rb</code>の変更を元に戻します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 config.generators do |g|
-  g.orm             :active_record
+  g.orm :active_record
   g.template_engine :erb
   g.test_framework  :test_unit, fixture: false
   g.stylesheets     false
@@ -577,10 +576,25 @@ end
 
 </pre>
 </div>
-<p>If you generate another resource, you can see that we get exactly the same result! This is useful if you want to customize your scaffold templates and/or layout by just creating <code>edit.html.erb</code>, <code>index.html.erb</code> and so on inside <code>lib/templates/erb/scaffold</code>.</p>
-<h3 id="adding-generators-fallbacks"><a href="#adding-generators-fallbacks">7 Adding Generators Fallbacks</a></h3>
-<p>One last feature about generators which is quite useful for plugin generators is fallbacks. For example, imagine that you want to add a feature on top of TestUnit like <a href="https://github.com/thoughtbot/shoulda">shoulda</a> does. Since TestUnit already implements all generators required by Rails and shoulda just wants to overwrite part of it, there is no need for shoulda to reimplement some generators again, it can simply tell Rails to use a <code>TestUnit</code> generator if none was found under the <code>Shoulda</code> namespace.</p>
-<p>We can easily simulate this behavior by changing our <code>config/application.rb</code> once again:</p>
+<p>リソースをもう一度作成してみると、最初の手順のときとまったく同じ結果が得られます。この方法は、<code>lib/templates/erb/scaffold</code>ディレクトリの下に<code>edit.html.erb</code>や<code>index.html.erb</code>を作成することでscaffoldテンプレートやレイアウトをカスタマイズしたい場合に便利です。</p>
+<p>RailsのscaffoldテンプレートではERBタグが多用されますが、これらが正常に生成されるためにはERBタグをエスケープしておく必要があります。</p>
+<p>たとえば、テンプレートで以下のようなエスケープ済みERBタグが必要になることがあります (<code>%</code>文字が1つ多い点にご注目ください)。</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+&lt;%%= stylesheet_include_tag :application %&gt;
+
+</pre>
+</div>
+<p>上のコードから以下の出力が生成されます。</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+&lt;%= stylesheet_include_tag :application %&gt;
+
+</pre>
+</div>
+<h3 id="ジェネレータにフォールバックを追加する"><a href="#%E3%82%B8%E3%82%A7%E3%83%8D%E3%83%AC%E3%83%BC%E3%82%BF%E3%81%AB%E3%83%95%E3%82%A9%E3%83%BC%E3%83%AB%E3%83%90%E3%83%83%E3%82%AF%E3%82%92%E8%BF%BD%E5%8A%A0%E3%81%99%E3%82%8B">7 ジェネレータにフォールバックを追加する</a></h3>
+<p>最後にご紹介するジェネレータの機能はフォールバックです。これはプラグインのジェネレータを使用する場合に便利です。たとえば、TestUnitに<a href="https://github.com/thoughtbot/shoulda">shoulda</a>のような機能を追加したいとします。TestUnitはRailsでrequireされるすべてのジェネレータで実装済みであり、shouldではその一部を上書きするだけでよいはずです。このように、shouldaで実装する必要のないジェネレータの機能がいくつもあるので、Railsでは<code>Shoulda</code>の名前空間で見つからないものについてはすべて<code>TestUnit</code>ジェネレータのものを使用するように指定するだけでフォールバックを実現できます。</p>
+<p>先に変更を加えた<code>config/application.rb</code>にふたたび変更を加えることで、この動作を簡単にシミュレートできます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 config.generators do |g|
@@ -590,16 +604,16 @@ config.generators do |g|
   g.stylesheets     false
   g.javascripts     false
 
-  # Add a fallback!
+  # フォールバックを追加する
   g.fallbacks[:shoulda] = :test_unit
 end
 
 </pre>
 </div>
-<p>Now, if you create a Comment scaffold, you will see that the shoulda generators are being invoked, and at the end, they are just falling back to TestUnit generators:</p>
+<p>これで、scaffoldでCommentを生成するとshouldaジェネレータが呼び出され、最終的にTestUnitジェネレータにフォールバックされるようになります。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-$ rails generate scaffold Comment body:text
+$ bin/rails generate scaffold Comment body:text
       invoke  active_record
       create    db/migrate/20130924143118_create_comments.rb
       create    app/models/comment.rb
@@ -621,8 +635,6 @@ $ rails generate scaffold Comment body:text
       create      test/controllers/comments_controller_test.rb
       invoke    my_helper
       create      app/helpers/comments_helper.rb
-      invoke      shoulda
-      create        test/helpers/comments_helper_test.rb
       invoke    jbuilder
       create      app/views/comments/index.json.jbuilder
       create      app/views/comments/show.json.jbuilder
@@ -633,9 +645,9 @@ $ rails generate scaffold Comment body:text
 
 </pre>
 </div>
-<p>Fallbacks allow your generators to have a single responsibility, increasing code reuse and reducing the amount of duplication.</p>
-<h3 id="application-templates"><a href="#application-templates">8 Application Templates</a></h3>
-<p>Now that you've seen how generators can be used <em>inside</em> an application, did you know they can also be used to <em>generate</em> applications too? This kind of generator is referred as a "template". This is a brief overview of the Templates API. For detailed documentation see the <a href="rails_application_templates.html">Rails Application Templates guide</a>.</p>
+<p>フォールバックを利用するとジェネレータの役割がひとつで済み、コードの重複を防いで再利用性を高めることができます。</p>
+<h3 id="アプリケーションテンプレート"><a href="#%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%83%86%E3%83%B3%E3%83%97%E3%83%AC%E3%83%BC%E3%83%88">8 アプリケーションテンプレート</a></h3>
+<p>ここまでで、Railsアプリケーション <em>内部</em> でのジェネレータの動作を解説しましたが、ジェネレータを使用して独自のRailsアプリケーション自身を生成することもできることをご存じでしょうか。このような目的で使用されるジェネレータは「アプリケーションテンプレート」と呼ばれます。ここではTemplates APIを簡単にご紹介します。詳細については<a href="rails_application_templates.html">Railsアプリケーションテンプレート入門</a>を参照してください。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 gem "rspec-rails", group: "test"
@@ -651,28 +663,28 @@ end
 
 </pre>
 </div>
-<p>In the above template we specify that the application relies on the <code>rspec-rails</code> and <code>cucumber-rails</code> gem so these two will be added to the <code>test</code> group in the <code>Gemfile</code>. Then we pose a question to the user about whether or not they would like to install Devise. If the user replies "y" or "yes" to this question, then the template will add Devise to the <code>Gemfile</code> outside of any group and then runs the <code>devise:install</code> generator. This template then takes the users input and runs the <code>devise</code> generator, with the user's answer from the last question being passed to this generator.</p>
-<p>Imagine that this template was in a file called <code>template.rb</code>. We can use it to modify the outcome of the <code>rails new</code> command by using the <code>-m</code> option and passing in the filename:</p>
+<p>上のテンプレートでは、Railsアプリケーションが<code>rspec-rails</code>と<code>cucumber-rails</code> gemに依存するように指定しています。この指定により、これらのgemは<code>Gemfile</code>の<code>test</code>グループに追加されます。続いて、Devise gemをインストールするかどうかをユーザーに問い合わせます。ユーザーが "y" または "yes" を入力すると<code>Gemfile</code>にDevise gemが追加され (特定のgemグループには含まれません)、<code>devise:install</code>ジェネレータが実行されます。さらに続いてユーザー入力を受け付け、<code>devise</code>のジェネレータにその入力結果を渡してジェネレータを実行します。</p>
+<p>このテンプレートが<code>template.rb</code>という名前のファイルの中に含まれているとします。<code>-m</code>オプションでテンプレートのファイル名を渡すことにより、<code>rails new</code>コマンドの実行結果を変更することができます。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ rails new thud -m template.rb
 
 </pre>
 </div>
-<p>This command will generate the <code>Thud</code> application, and then apply the template to the generated output.</p>
-<p>Templates don't have to be stored on the local system, the <code>-m</code> option also supports online templates:</p>
+<p>上のコマンドを実行すると<code>Thud</code>というアプリケーションが生成され、その結果にテンプレートが適用されます。</p>
+<p>テンプレートの保存先はローカルでなくてもかまいません。<code>-m</code>で指定するテンプレートの保存先としてオンライン上もサポートされています。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ rails new thud -m https://gist.github.com/radar/722911/raw/
 
 </pre>
 </div>
-<p>Whilst the final section of this guide doesn't cover how to generate the most awesome template known to man, it will take you through the methods available at your disposal so that you can develop it yourself. These same methods are also available for generators.</p>
-<h3 id="generator-methods"><a href="#generator-methods">9 Generator methods</a></h3>
-<p>The following are methods available for both generators and templates for Rails.</p>
-<div class="note"><p>Methods provided by Thor are not covered this guide and can be found in <a href="http://rdoc.info/github/erikhuda/thor/master/Thor/Actions.html">Thor's documentation</a></p></div>
+<p>本章の最後のセクションでは、テンプレートで自由に使えるメソッドを多数紹介していますので、これを使用して自分好みのテンプレートを開発することができます。よく知られた素晴らしいアプリケーションテンプレートの数々を実際に生成する方法までは紹介しきれませんでしたが、何とぞご了承ください。これらのメソッドはジェネレータでも同じように使用できます。</p>
+<h3 id="ジェネレータメソッド"><a href="#%E3%82%B8%E3%82%A7%E3%83%8D%E3%83%AC%E3%83%BC%E3%82%BF%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89">9 ジェネレータメソッド</a></h3>
+<p>以下のメソッドはRailsのジェネレータとテンプレートのどちらでも同じように使用できます。</p>
+<div class="note"><p>Thorが提供するメソッドについては本章では扱いません。<a href="http://rdoc.info/github/erikhuda/thor/master/Thor/Actions.html">Thorのドキュメント</a>を参照してください。</p></div>
 <h4 id="gem"><a href="#gem">9.1 <code>gem</code></a></h4>
-<p>Specifies a gem dependency of the application.</p>
+<p>Railsアプリケーションのgem依存を指定します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 gem "rspec", group: "test", version: "2.1.0"
@@ -680,23 +692,23 @@ gem "devise", "1.1.5"
 
 </pre>
 </div>
-<p>Available options are:</p>
+<p>以下のオプションを利用できます。</p>
 <ul>
 <li>
-<code>:group</code> - The group in the <code>Gemfile</code> where this gem should go.</li>
+<code>:group</code> - gemを追加する<code>Gemfile</code>内のグループを指定します。</li>
 <li>
-<code>:version</code> - The version string of the gem you want to use. Can also be specified as the second argument to the method.</li>
+<code>:version</code> - 使用するgemのバージョンを指定します。<code>version</code>オプションを明記せずに、メソッドの第2引数としてバージョンを指定することもできます。</li>
 <li>
-<code>:git</code> - The URL to the git repository for this gem.</li>
+<code>:git</code> - gemが置かれているgitリポジトリを指すURLを指定します。</li>
 </ul>
-<p>Any additional options passed to this method are put on the end of the line:</p>
+<p>メソッドでこれら以外のオプションも使用する場合は、以下のように行の最後に記述します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 gem "devise", git: "git://github.com/plataformatec/devise", branch: "master"
 
 </pre>
 </div>
-<p>The above code will put the following line into <code>Gemfile</code>:</p>
+<p>上のコードが実行されると、<code>Gemfile</code>に以下の行が追加されます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 gem "devise", git: "git://github.com/plataformatec/devise", branch: "master"
@@ -704,7 +716,7 @@ gem "devise", git: "git://github.com/plataformatec/devise", branch: "master"
 </pre>
 </div>
 <h4 id="gem_group"><a href="#gem_group">9.2 <code>gem_group</code></a></h4>
-<p>Wraps gem entries inside a group:</p>
+<p>gemのエントリを指定のグループに含めます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 gem_group :development, :test do
@@ -714,7 +726,7 @@ end
 </pre>
 </div>
 <h4 id="add_source"><a href="#add_source">9.3 <code>add_source</code></a></h4>
-<p>Adds a specified source to <code>Gemfile</code>:</p>
+<p>指定のソースを<code>Gemfile</code>に追加します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 add_source "http://gems.github.com"
@@ -722,10 +734,10 @@ add_source "http://gems.github.com"
 </pre>
 </div>
 <h4 id="inject_into_file"><a href="#inject_into_file">9.4 <code>inject_into_file</code></a></h4>
-<p>Injects a block of code into a defined position in your file.</p>
+<p>ファイル内の指定の場所にコードブロックをひとつ挿入します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-inject_into_file 'name_of_file.rb', after: "#The code goes below this line. Don't forget the Line break at the end\n" do &lt;&lt;-'RUBY'
+inject_into_file 'name_of_file.rb', after: "#挿入したいコードを次の行に置く。最後のend\nの後ろには必ず改行を入れること。" do &lt;&lt;-'RUBY'
   puts "Hello World"
 RUBY
 end
@@ -733,23 +745,23 @@ end
 </pre>
 </div>
 <h4 id="gsub_file"><a href="#gsub_file">9.5 <code>gsub_file</code></a></h4>
-<p>Replaces text inside a file.</p>
+<p>ファイル内のテキストを置き換えます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 gsub_file 'name_of_file.rb', 'method.to_be_replaced', 'method.the_replacing_code'
 
 </pre>
 </div>
-<p>Regular Expressions can be used to make this method more precise. You can also use append_file and prepend_file in the same way to place code at the beginning and end of a file respectively.</p>
+<p>正規表現を使用して置き換え方法を精密に指定できます。<code>append_file</code>を使用してコードをファイルの末尾に追加したり、<code>prepend_file</code>を使用してコードをファイルの冒頭に挿入したりすることもできます。</p>
 <h4 id="application"><a href="#application">9.6 <code>application</code></a></h4>
-<p>Adds a line to <code>config/application.rb</code> directly after the application class definition.</p>
+<p><code>config/application.rb</code>ファイル内でアプリケーションクラス定義の直後に指定の行を追加します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 application "config.asset_host = 'http://example.com'"
 
 </pre>
 </div>
-<p>This method can also take a block:</p>
+<p>このメソッドにはブロックを渡すこともできます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 application do
@@ -758,10 +770,10 @@ end
 
 </pre>
 </div>
-<p>Available options are:</p>
+<p>以下のオプションを利用できます。</p>
 <ul>
 <li>
-<code>:env</code> - Specify an environment for this configuration option. If you wish to use this option with the block syntax the recommended syntax is as follows:</li>
+<code>:env</code> - 設定オプションの環境を指定します。ブロック構文を使用する場合は以下のようにすることが推奨されます。</li>
 </ul>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -772,7 +784,7 @@ end
 </pre>
 </div>
 <h4 id="git"><a href="#git">9.7 <code>git</code></a></h4>
-<p>Runs the specified git command:</p>
+<p>gitコマンドを実行します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 git :init
@@ -782,16 +794,16 @@ git add: "onefile.rb", rm: "badfile.cxx"
 
 </pre>
 </div>
-<p>The values of the hash here being the arguments or options passed to the specific git command. As per the final example shown here, multiple git commands can be specified at a time, but the order of their running is not guaranteed to be the same as the order that they were specified in.</p>
+<p>引数またはオプションとなるハッシュの値は、指定のgitコマンドに渡されます。上の最後の行で示しているように、一行に複数のgitコマンドを記述することができますが、この場合コマンドの実行順序は記載順になるとは限らないので注意が必要です。</p>
 <h4 id="vendor"><a href="#vendor">9.8 <code>vendor</code></a></h4>
-<p>Places a file into <code>vendor</code> which contains the specified code.</p>
+<p>指定のコードを含むファイルを<code>vendor</code>ディレクトリに置きます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-vendor "sekrit.rb", '#top secret stuff'
+vendor "sekrit.rb", '#極秘
 
 </pre>
 </div>
-<p>This method also takes a block:</p>
+<p>このメソッドにはブロックをひとつ渡すこともできます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 vendor "seeds.rb" do
@@ -801,14 +813,14 @@ end
 </pre>
 </div>
 <h4 id="lib"><a href="#lib">9.9 <code>lib</code></a></h4>
-<p>Places a file into <code>lib</code> which contains the specified code.</p>
+<p>指定のコードを含むファイルを<code>lib</code>ディレクトリに置きます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 lib "special.rb", "p Rails.root"
 
 </pre>
 </div>
-<p>This method also takes a block:</p>
+<p>このメソッドにはブロックをひとつ渡すこともできます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 lib "super_special.rb" do
@@ -818,14 +830,14 @@ end
 </pre>
 </div>
 <h4 id="rakefile"><a href="#rakefile">9.10 <code>rakefile</code></a></h4>
-<p>Creates a Rake file in the <code>lib/tasks</code> directory of the application.</p>
+<p>Railsアプリケーションの<code>lib/tasks</code>ディレクトリにRakeファイルをひとつ作成します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 rakefile "test.rake", "hello there"
 
 </pre>
 </div>
-<p>This method also takes a block:</p>
+<p>このメソッドにはブロックをひとつ渡すこともできます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 rakefile "test.rake" do
@@ -839,14 +851,14 @@ end
 </pre>
 </div>
 <h4 id="initializer"><a href="#initializer">9.11 <code>initializer</code></a></h4>
-<p>Creates an initializer in the <code>config/initializers</code> directory of the application:</p>
+<p>Railsアプリケーションの<code>lib/initializers</code>ディレクトリにイニシャライザファイルをひとつ作成します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-initializer "begin.rb", "puts 'this is the beginning'"
+initializer "begin.rb", "puts 'ここが最初の部分'"
 
 </pre>
 </div>
-<p>This method also takes a block, expected to return a string:</p>
+<p>このメソッドにはブロックをひとつ渡すこともでき、文字列が返されます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 initializer "begin.rb" do
@@ -856,7 +868,7 @@ end
 </pre>
 </div>
 <h4 id="generate"><a href="#generate">9.12 <code>generate</code></a></h4>
-<p>Runs the specified generator where the first argument is the generator name and the remaining arguments are passed directly to the generator.</p>
+<p>指定のジェネレータを実行します。第1引数は実行するジェネレータ名で、残りの引数はジェネレータにそのまま渡されます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 generate "scaffold", "forums title:string description:text"
@@ -864,22 +876,22 @@ generate "scaffold", "forums title:string description:text"
 </pre>
 </div>
 <h4 id="rake"><a href="#rake">9.13 <code>rake</code></a></h4>
-<p>Runs the specified Rake task.</p>
+<p>Rakeタスクを実行します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 rake "db:migrate"
 
 </pre>
 </div>
-<p>Available options are:</p>
+<p>以下のオプションを利用できます。</p>
 <ul>
 <li>
-<code>:env</code> - Specifies the environment in which to run this rake task.</li>
+<code>:env</code> - rakeタスクを実行するときの環境を指定します。</li>
 <li>
-<code>:sudo</code> - Whether or not to run this task using <code>sudo</code>. Defaults to <code>false</code>.</li>
+<code>:sudo</code> - rakeタスクで<code>sudo</code>を使用するかどうかを指定します。デフォルトは<code>false</code>です。</li>
 </ul>
 <h4 id="capify!"><a href="#capify!">9.14 <code>capify!</code></a></h4>
-<p>Runs the <code>capify</code> command from Capistrano at the root of the application which generates Capistrano configuration.</p>
+<p>Capistranoの<code>capify</code>コマンドをアプリケーションのルートディレクトリで実行し、Capistranoの設定を生成します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 capify!
@@ -887,7 +899,7 @@ capify!
 </pre>
 </div>
 <h4 id="route"><a href="#route">9.15 <code>route</code></a></h4>
-<p>Adds text to the <code>config/routes.rb</code> file:</p>
+<p><code>config/routes.rb</code>ファイルにテキストを追加します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 route "resources :people"
@@ -895,7 +907,7 @@ route "resources :people"
 </pre>
 </div>
 <h4 id="readme"><a href="#readme">9.16 <code>readme</code></a></h4>
-<p>Output the contents of a file in the template's <code>source_path</code>, usually a README.</p>
+<p>テンプレートの<code>source_path</code>にあるファイルの内容を出力します。通常このファイルはREADMEです。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 readme "README"

@@ -137,7 +137,7 @@ $ bin/rails generate initializer core_extensions
 
 `config/initializers/core_extensions.rb`にcore_extensionsという名前のイニシャライザが作成され、そこにさっきのテンプレートが反映されていることが確認できます。`copy_file`メソッドはコピー元のルートディレクトリから、指定のパスにファイルをひとつコピーしています。`file_name`メソッドは`Rails::Generators::NamedBase`を継承したことで自動的に作成されます。
 
-ジェネレータ関連で利用できるメソッドについては、本章の[最終セクション](#generator-methods)で扱っています。
+ジェネレータ関連で利用できるメソッドについては、本章の[最終セクション](#ジェネレータメソッド)で扱っています。
 
 ジェネレータが参照するファイル
 -----------------
@@ -219,9 +219,9 @@ config.generators do |g|
 end
 ```
 
-scaffoldジェネレータでふたたびリソースを生成してみると、今度はスタイルシートとJavaScriptファイルとフィクスチャが生成されなくなります。If you want to customize it further, for example to use DataMapper and RSpec instead of Active Record and TestUnit, it's just a matter of adding their gems to your application and configuring your generators.
+scaffoldジェネレータでふたたびリソースを生成してみると、今度はスタイルシートとJavaScriptファイルとフィクスチャが生成されなくなります。ジェネレータをさらにカスタマイズしたい場合 (Active RecordとTestUnitをDataMapperとRSpecに置き換えるなど) は、必要なgemをアプリケーションに追加してジェネレータを設定するだけで済みます。
 
-To demonstrate this, we are going to create a new helper generator that simply adds some instance variable readers. First, we create a generator within the rails namespace, as this is where rails searches for generators used as hooks:
+ジェネレータのカスタマイズ例を説明するために、ここで新しくヘルパージェネレータをひとつ作成してみましょう。このジェネレータはインスタンス変数を読み出すメソッドをいくつか追加するだけのシンプルなものです。最初に、Railsの名前空間の内側でジェネレータをひとつ作成します。名前空間の内側にする理由は、Railsはフックとして使用されるジェネレータを名前空間内で探索するからです。
 
 ```bash
 $ bin/rails generate generator rails/my_helper
@@ -231,39 +231,39 @@ $ bin/rails generate generator rails/my_helper
       create  lib/generators/rails/my_helper/templates
 ```
 
-After that, we can delete both the `templates` directory and the `source_root` class method call from our new generator, because we are not going to need them. Add the method below, so our generator looks like the following:
+続いて、`templates`ディレクトリと`source_root`クラスメソッド呼び出しは使う予定がないのでジェネレータから削除します。ジェネレータにメソッドを追加して以下のようにしましょう。
 
-  ```ruby
+```ruby
 # lib/generators/rails/my_helper/my_helper_generator.rb
 class Rails::MyHelperGenerator < Rails::Generators::NamedBase
   def create_helper_file
     create_file "app/helpers/#{file_name}_helper.rb", <<-FILE
 module #{class_name}Helper
   attr_reader :#{plural_name}, :#{plural_name.singularize}
-      end 
-FILE 
-      end 
-      end 
+end
+    FILE
+  end
+end
 ```
 
-We can try out our new generator by creating a helper for products:
+新しく作ったジェネレータでproductsのヘルパーを実際に作成してみましょう。
 
 ```bash
 $ bin/rails generate my_helper products
       create  app/helpers/products_helper.rb
 ```
 
-And it will generate the following helper file in `app/helpers`:
+上を実行すると`app/helpers`に以下の内容を持つヘルパーが作成されます。
 
-  ```ruby
+```ruby
 module ProductsHelper
   attr_reader :products, :product
-      end 
+end
 ```
 
-Which is what we expected. We can now tell scaffold to use our new helper generator by editing `config/application.rb` once again:
+期待どおりの結果が得られました。上で生成したヘルパージェネレータをscaffoldで実際に使ってみるために、今度は`config/application.rb`を編集して以下のように変更してみましょう。
 
-  ```ruby
+```ruby
 config.generators do |g|
   g.orm :active_record
   g.template_engine :erb
@@ -271,10 +271,10 @@ config.generators do |g|
   g.stylesheets     false
   g.javascripts     false
   g.helper          :my_helper
-      end 
+end
 ```
 
-and see it in action when invoking the generator:
+scaffoldを実行すると、ジェネレータの呼び出し時に以下のようになることが確認できます。
 
 ```bash
 $ bin/rails generate scaffold Article body:text
@@ -283,98 +283,98 @@ $ bin/rails generate scaffold Article body:text
       create      app/helpers/articles_helper.rb
 ```
 
-We can notice on the output that our new helper was invoked instead of the Rails default. However one thing is missing, which is tests for our new generator and to do that, we are going to reuse old helpers test generators.
+出力結果がRailsのデフォルトではなくなり、新しいヘルパーに従っていることがわかります。しかしここでもうひとつやっておかなければならないことがあります。新しいジェネレータにもテストを作成しておかなければなりません。そのために、元のヘルパーのテストジェネレータを再利用することにします。
 
-Since Rails 3.0, this is easy to do due to the hooks concept. Our new helper does not need to be focused in one specific test framework, it can simply provide a hook and a test framework just needs to implement this hook in order to be compatible.
+Rails 3.0以降では「フック」という概念が利用できるので、このような再利用が簡単に行えます。今作ったヘルパーは特定のテストフレームワークのみに限定する必要はないため、ヘルパーがフックをひとつ提供し、テストフレームワークでそのフックを実装して互換性を得れば十分です。
 
-To do that, we can change the generator this way:
+これを実現するために、ジェネレータを以下のように変更しましょう。
 
-  ```ruby
+```ruby
 # lib/generators/rails/my_helper/my_helper_generator.rb
 class Rails::MyHelperGenerator < Rails::Generators::NamedBase
   def create_helper_file
     create_file "app/helpers/#{file_name}_helper.rb", <<-FILE
 module #{class_name}Helper
   attr_reader :#{plural_name}, :#{plural_name.singularize}
-      end 
-FILE 
-      end 
+end
+    FILE
+  end
 
   hook_for :test_framework
-      end 
+end
 ```
 
-Now, when the helper generator is invoked and TestUnit is configured as the test framework, it will try to invoke both `Rails::TestUnitGenerator` and `TestUnit::MyHelperGenerator`. Since none of those are defined, we can tell our generator to invoke `TestUnit::Generators::HelperGenerator` instead, which is defined since it's a Rails generator. To do that, we just need to add:
+これで、ヘルパージェネレータが呼び出されてTestUnitがテストフレームワークとして設定されると、`Rails::TestUnitGenerator`と`TestUnit::MyHelperGenerator`を両方とも呼びだそうとします。しかしどちらも未定義なので、Railsのジェネレータとして実際に定義されている`TestUnit::Generators::HelperGenerator`を代わりに呼び出すようジェネレータに指定することができます。具体的には、以下を追加するだけで済みます。
 
-  ```ruby
-# Search for :helper instead of :my_helper
+```ruby
+# :my_helperではなく:helperを探索する
 hook_for :test_framework, as: :helper
 ```
 
-And now you can re-run scaffold for another resource and see it generating tests as well!
+これでscaffldを再実行すれば、作成されたリソースにテストも含まれているはずです。
 
-Customizing Your Workflow by Changing Generators Templates
+ジェネレータのテンプレートを変更してワークフローをカスタマイズする
 ----------------------------------------------------------
 
-In the step above we simply wanted to add a line to the generated helper, without adding any extra functionality. There is a simpler way to do that, and it's by replacing the templates of already existing generators, in that case `Rails::Generators::HelperGenerator`.
+上でご紹介した手順では、生成されたヘルパーに一行追加しただけで、それ以外に何の機能も追加されていませんでした。同じことをもっと簡単に行う方法があります。それには、既存のジェネレータ (ここでは`Rails::Generators::HelperGenerator`) のテンプレートを置き換えます。
 
-In Rails 3.0 and above, generators don't just look in the source root for templates, they also search for templates in other paths. And one of them is `lib/templates`. Since we want to customize `Rails::Generators::HelperGenerator`, we can do that by simply making a template copy inside `lib/templates/rails/helper` with the name `helper.rb`. So let's create that file with the following content:
+Rails 3.0以降では、ジェネレータはソースルート・ディレクトリでテンプレートがあるかどうかを単に探すだけではなく、他のパスでもテンプレートを探します。`lib/templates`ディレクトリもこの探索対象に含まれています。`Rails::Generators::HelperGenerator`をカスタマイズするには、`lib/templates/rails/helper`ディレクトリの中に`helper.rb`というテンプレートのコピーを作成します。このファイルを作成後、以下のコードを追加します。
 
 ```erb
 module <%= class_name %>Helper
   attr_reader :<%= plural_name %>, :<%= plural_name.singularize %>
-      end 
+end
 ```
 
-and revert the last change in `config/application.rb`:
+次に、`config/application.rb`の変更を元に戻します。
 
-  ```ruby
+```ruby
 config.generators do |g|
   g.orm :active_record
   g.template_engine :erb
   g.test_framework  :test_unit, fixture: false
   g.stylesheets     false
   g.javascripts     false
-      end 
+end
 ```
 
-If you generate another resource, you can see that we get exactly the same result! This is useful if you want to customize your scaffold templates and/or layout by just creating `edit.html.erb`, `index.html.erb` and so on inside `lib/templates/erb/scaffold`.
+リソースをもう一度作成してみると、最初の手順のときとまったく同じ結果が得られます。この方法は、`lib/templates/erb/scaffold`ディレクトリの下に`edit.html.erb`や`index.html.erb`を作成することでscaffoldテンプレートやレイアウトをカスタマイズしたい場合に便利です。
 
-Scaffold templates in Rails frequently use ERB tags; these tags need to be escaped so that the generated output is valid ERB code.
+RailsのscaffoldテンプレートではERBタグが多用されますが、これらが正常に生成されるためにはERBタグをエスケープしておく必要があります。
 
-For example, the following escaped ERB tag would be needed in the template (note the extra `%`)...
+たとえば、テンプレートで以下のようなエスケープ済みERBタグが必要になることがあります (`%`文字が1つ多い点にご注目ください)。
 
-  ```ruby
+```ruby
 <%%= stylesheet_include_tag :application %>
 ```
 
-...to generate the following output:
+上のコードから以下の出力が生成されます。
 
-  ```ruby
+```ruby
 <%= stylesheet_include_tag :application %>
 ```
 
-Adding Generators Fallbacks
+ジェネレータにフォールバックを追加する
 ---------------------------
 
-One last feature about generators which is quite useful for plugin generators is fallbacks. For example, imagine that you want to add a feature on top of TestUnit like [shoulda](https://github.com/thoughtbot/shoulda) does. Since TestUnit already implements all generators required by Rails and shoulda just wants to overwrite part of it, there is no need for shoulda to reimplement some generators again, it can simply tell Rails to use a `TestUnit` generator if none was found under the `Shoulda` namespace.
+最後にご紹介するジェネレータの機能はフォールバックです。これはプラグインのジェネレータを使用する場合に便利です。たとえば、TestUnitに[shoulda](https://github.com/thoughtbot/shoulda)のような機能を追加したいとします。TestUnitはRailsでrequireされるすべてのジェネレータで実装済みであり、shouldではその一部を上書きするだけでよいはずです。このように、shouldaで実装する必要のないジェネレータの機能がいくつもあるので、Railsでは`Shoulda`の名前空間で見つからないものについてはすべて`TestUnit`ジェネレータのものを使用するように指定するだけでフォールバックを実現できます。
 
-We can easily simulate this behavior by changing our `config/application.rb` once again:
+先に変更を加えた`config/application.rb`にふたたび変更を加えることで、この動作を簡単にシミュレートできます。
 
-  ```ruby
+```ruby
 config.generators do |g|
-  g.orm :active_record
+  g.orm             :active_record
   g.template_engine :erb
   g.test_framework  :shoulda, fixture: false
   g.stylesheets     false
   g.javascripts     false
 
-  # Add a fallback!
+  # フォールバックを追加する
   g.fallbacks[:shoulda] = :test_unit
-      end 
+end
 ```
 
-Now, if you create a Comment scaffold, you will see that the shoulda generators are being invoked, and at the end, they are just falling back to TestUnit generators:
+これで、scaffoldでCommentを生成するとshouldaジェネレータが呼び出され、最終的にTestUnitジェネレータにフォールバックされるようになります。
 
 ```bash
 $ bin/rails generate scaffold Comment body:text
@@ -388,7 +388,7 @@ $ bin/rails generate scaffold Comment body:text
        route    resources :comments
       invoke  scaffold_controller
       create    app/controllers/comments_controller.rb
-      invoke    erb 
+      invoke    erb
       create      app/views/comments
       create      app/views/comments/index.html.erb
       create      app/views/comments/edit.html.erb
@@ -402,20 +402,20 @@ $ bin/rails generate scaffold Comment body:text
       invoke    jbuilder
       create      app/views/comments/index.json.jbuilder
       create      app/views/comments/show.json.jbuilder
-invoke  assets
-invoke    coffee
+      invoke  assets
+      invoke    coffee
       create      app/assets/javascripts/comments.js.coffee
-invoke    scss
+      invoke    scss
 ```
 
-Fallbacks allow your generators to have a single responsibility, increasing code reuse and reducing the amount of duplication.
+フォールバックを利用するとジェネレータの役割がひとつで済み、コードの重複を防いで再利用性を高めることができます。
 
-Application Templates
+アプリケーションテンプレート
 ---------------------
 
-Now that you've seen how generators can be used _inside_ an application, did you know they can also be used to _generate_ applications too? This kind of generator is referred as a "template". This is a brief overview of the Templates API. For detailed documentation see the [Rails Application Templates guide](rails_application_templates.html).
+ここまでで、Railsアプリケーション _内部_ でのジェネレータの動作を解説しましたが、ジェネレータを使用して独自のRailsアプリケーション自身を生成することもできることをご存じでしょうか。このような目的で使用されるジェネレータは「アプリケーションテンプレート」と呼ばれます。ここではTemplates APIを簡単にご紹介します。詳細については[Railsアプリケーションテンプレート入門](rails_application_templates.html)を参照してください。
 
-  ```ruby
+```ruby
 gem "rspec-rails", group: "test"
 gem "cucumber-rails", group: "test"
 
@@ -425,249 +425,249 @@ if yes?("Would you like to install Devise?")
   model_name = ask("What would you like the user model to be called? [user]")
   model_name = "user" if model_name.blank?
   generate "devise", model_name
-      end 
+end
 ```
 
-In the above template we specify that the application relies on the `rspec-rails` and `cucumber-rails` gem so these two will be added to the `test` group in the `Gemfile`. Then we pose a question to the user about whether or not they would like to install Devise. If the user replies "y" or "yes" to this question, then the template will add Devise to the `Gemfile` outside of any group and then runs the `devise:install` generator. This template then takes the users input and runs the `devise` generator, with the user's answer from the last question being passed to this generator.
+上のテンプレートでは、Railsアプリケーションが`rspec-rails`と`cucumber-rails` gemに依存するように指定しています。この指定により、これらのgemは`Gemfile`の`test`グループに追加されます。続いて、Devise gemをインストールするかどうかをユーザーに問い合わせます。ユーザーが "y" または "yes" を入力すると`Gemfile`にDevise gemが追加され (特定のgemグループには含まれません)、`devise:install`ジェネレータが実行されます。さらに続いてユーザー入力を受け付け、`devise`のジェネレータにその入力結果を渡してジェネレータを実行します。
 
-Imagine that this template was in a file called `template.rb`. We can use it to modify the outcome of the `rails new` command by using the `-m` option and passing in the filename:
+このテンプレートが`template.rb`という名前のファイルの中に含まれているとします。`-m`オプションでテンプレートのファイル名を渡すことにより、`rails new`コマンドの実行結果を変更することができます。
 
 ```bash
 $ rails new thud -m template.rb
 ```
 
-This command will generate the `Thud` application, and then apply the template to the generated output.
+上のコマンドを実行すると`Thud`というアプリケーションが生成され、その結果にテンプレートが適用されます。
 
-Templates don't have to be stored on the local system, the `-m` option also supports online templates:
+テンプレートの保存先はローカルでなくてもかまいません。`-m`で指定するテンプレートの保存先としてオンライン上もサポートされています。
 
 ```bash
 $ rails new thud -m https://gist.github.com/radar/722911/raw/
 ```
 
-Whilst the final section of this guide doesn't cover how to generate the most awesome template known to man, it will take you through the methods available at your disposal so that you can develop it yourself. These same methods are also available for generators.
+本章の最後のセクションでは、テンプレートで自由に使えるメソッドを多数紹介していますので、これを使用して自分好みのテンプレートを開発することができます。よく知られた素晴らしいアプリケーションテンプレートの数々を実際に生成する方法までは紹介しきれませんでしたが、何とぞご了承ください。これらのメソッドはジェネレータでも同じように使用できます。
 
-Generator methods
+ジェネレータメソッド
 -----------------
 
-The following are methods available for both generators and templates for Rails.
+以下のメソッドはRailsのジェネレータとテンプレートのどちらでも同じように使用できます。
 
-NOTE: Methods provided by Thor are not covered this guide and can be found in [Thor's documentation](http://rdoc.info/github/erikhuda/thor/master/Thor/Actions.html)
+NOTE: Thorが提供するメソッドについては本章では扱いません。[Thorのドキュメント](http://rdoc.info/github/erikhuda/thor/master/Thor/Actions.html)を参照してください。
 
 ### `gem`
 
-Specifies a gem dependency of the application.
+Railsアプリケーションのgem依存を指定します。
 
-  ```ruby
+```ruby
 gem "rspec", group: "test", version: "2.1.0"
 gem "devise", "1.1.5"
 ```
 
-Available options are:
+以下のオプションを利用できます。
 
-* `:group` - The group in the `Gemfile` where this gem should go.
-* `:version` - The version string of the gem you want to use. Can also be specified as the second argument to the method.
-* `:git` - The URL to the git repository for this gem.
+* `:group` - gemを追加する`Gemfile`内のグループを指定します。
+* `:version` - 使用するgemのバージョンを指定します。`version`オプションを明記せずに、メソッドの第2引数としてバージョンを指定することもできます。
+* `:git` - gemが置かれているgitリポジトリを指すURLを指定します。
 
-Any additional options passed to this method are put on the end of the line:
+メソッドでこれら以外のオプションも使用する場合は、以下のように行の最後に記述します。
 
-  ```ruby
+```ruby
 gem "devise", git: "git://github.com/plataformatec/devise", branch: "master"
 ```
 
-The above code will put the following line into `Gemfile`:
+上のコードが実行されると、`Gemfile`に以下の行が追加されます。
 
-  ```ruby
+```ruby
 gem "devise", git: "git://github.com/plataformatec/devise", branch: "master"
 ```
 
 ### `gem_group`
 
-Wraps gem entries inside a group:
+gemのエントリを指定のグループに含めます。
 
-  ```ruby
+```ruby
 gem_group :development, :test do
   gem "rspec-rails"
-      end 
+end
 ```
 
 ### `add_source`
 
-Adds a specified source to `Gemfile`:
+指定のソースを`Gemfile`に追加します。
 
-  ```ruby
+```ruby
 add_source "http://gems.github.com"
 ```
 
 ### `inject_into_file`
 
-Injects a block of code into a defined position in your file.
+ファイル内の指定の場所にコードブロックをひとつ挿入します。
 
-  ```ruby
-inject_into_file 'name_of_file.rb', after: "#The code goes below this line. Don't forget the Line break at the end\n" do <<-'RUBY'
+```ruby
+inject_into_file 'name_of_file.rb', after: "#挿入したいコードを次の行に置く。最後のend\nの後ろには必ず改行を入れること。" do <<-'RUBY'
   puts "Hello World"
 RUBY
-      end 
+end
 ```
 
 ### `gsub_file`
 
-Replaces text inside a file.
+ファイル内のテキストを置き換えます。
 
-  ```ruby
+```ruby
 gsub_file 'name_of_file.rb', 'method.to_be_replaced', 'method.the_replacing_code'
 ```
 
-Regular Expressions can be used to make this method more precise. You can also use `append_file` and `prepend_file` in the same way to place code at the beginning and end of a file respectively.
+正規表現を使用して置き換え方法を精密に指定できます。`append_file`を使用してコードをファイルの末尾に追加したり、`prepend_file`を使用してコードをファイルの冒頭に挿入したりすることもできます。
 
 ### `application`
 
-Adds a line to `config/application.rb` directly after the application class definition.
+`config/application.rb`ファイル内でアプリケーションクラス定義の直後に指定の行を追加します。
 
-  ```ruby
+```ruby
 application "config.asset_host = 'http://example.com'"
 ```
 
-This method can also take a block:
+このメソッドにはブロックを渡すこともできます。
 
-  ```ruby
+```ruby
 application do
   "config.asset_host = 'http://example.com'"
-      end 
+end
 ```
 
-Available options are:
+以下のオプションを利用できます。
 
-* `:env` - Specify an environment for this configuration option. If you wish to use this option with the block syntax the recommended syntax is as follows:
+* `:env` - 設定オプションの環境を指定します。ブロック構文を使用する場合は以下のようにすることが推奨されます。
 
-  ```ruby
+```ruby
 application(nil, env: "development") do
   "config.asset_host = 'http://localhost:3000'"
-      end 
+end
 ```
 
 ### `git`
 
-Runs the specified git command:
+gitコマンドを実行します。
 
-  ```ruby
+```ruby
 git :init
 git add: "."
 git commit: "-m First commit!"
 git add: "onefile.rb", rm: "badfile.cxx"
 ```
 
-The values of the hash here being the arguments or options passed to the specific git command. As per the final example shown here, multiple git commands can be specified at a time, but the order of their running is not guaranteed to be the same as the order that they were specified in.
+引数またはオプションとなるハッシュの値は、指定のgitコマンドに渡されます。上の最後の行で示しているように、一行に複数のgitコマンドを記述することができますが、この場合コマンドの実行順序は記載順になるとは限らないので注意が必要です。
 
 ### `vendor`
 
-Places a file into `vendor` which contains the specified code.
+指定のコードを含むファイルを`vendor`ディレクトリに置きます。
 
-  ```ruby
-vendor "sekrit.rb", '#top secret stuff'
+```ruby
+vendor "sekrit.rb", '#極秘
 ```
 
-This method also takes a block:
+このメソッドにはブロックをひとつ渡すこともできます。
 
-  ```ruby
+```ruby
 vendor "seeds.rb" do
   "puts 'in your app, seeding your database'"
-      end 
+end
 ```
 
 ### `lib`
 
-Places a file into `lib` which contains the specified code.
+指定のコードを含むファイルを`lib`ディレクトリに置きます。
 
-  ```ruby
+```ruby
 lib "special.rb", "p Rails.root"
 ```
 
-This method also takes a block:
+このメソッドにはブロックをひとつ渡すこともできます。
 
-  ```ruby
+```ruby
 lib "super_special.rb" do
   puts "Super special!"
-      end 
+end
 ```
 
 ### `rakefile`
 
-Creates a Rake file in the `lib/tasks` directory of the application.
+Railsアプリケーションの`lib/tasks`ディレクトリにRakeファイルをひとつ作成します。
 
-  ```ruby
+```ruby
 rakefile "test.rake", "hello there"
 ```
 
-This method also takes a block:
+このメソッドにはブロックをひとつ渡すこともできます。
 
-  ```ruby
+```ruby
 rakefile "test.rake" do
   %Q{
     task rock: :environment do
       puts "Rockin'"
-      end 
+    end
   }
-      end 
+end
 ```
 
 ### `initializer`
 
-Creates an initializer in the `config/initializers` directory of the application:
+Railsアプリケーションの`lib/initializers`ディレクトリにイニシャライザファイルをひとつ作成します。
 
-  ```ruby
-initializer "begin.rb", "puts 'this is the beginning'"
+```ruby
+initializer "begin.rb", "puts 'ここが最初の部分'"
 ```
 
-This method also takes a block, expected to return a string:
+このメソッドにはブロックをひとつ渡すこともでき、文字列が返されます。
 
-  ```ruby
+```ruby
 initializer "begin.rb" do
   "puts 'this is the beginning'"
-      end 
+end
 ```
 
 ### `generate`
 
-Runs the specified generator where the first argument is the generator name and the remaining arguments are passed directly to the generator.
+指定のジェネレータを実行します。第1引数は実行するジェネレータ名で、残りの引数はジェネレータにそのまま渡されます。
 
-  ```ruby
+```ruby
 generate "scaffold", "forums title:string description:text"
 ```
 
 
 ### `rake`
 
-Runs the specified Rake task.
+Rakeタスクを実行します。
 
-  ```ruby
+```ruby
 rake "db:migrate"
 ```
 
-Available options are:
+以下のオプションを利用できます。
 
-* `:env` - Specifies the environment in which to run this rake task.
-* `:sudo` - Whether or not to run this task using `sudo`. デフォルトは`false`です。
+* `:env` - rakeタスクを実行するときの環境を指定します。
+* `:sudo` - rakeタスクで`sudo`を使用するかどうかを指定します。デフォルトは`false`です。
 
 ### `capify!`
 
-Runs the `capify` command from Capistrano at the root of the application which generates Capistrano configuration.
+Capistranoの`capify`コマンドをアプリケーションのルートディレクトリで実行し、Capistranoの設定を生成します。
 
-  ```ruby
+```ruby
 capify!
 ```
 
 ### `route`
 
-Adds text to the `config/routes.rb` file:
+`config/routes.rb`ファイルにテキストを追加します。
 
-  ```ruby
+```ruby
 route "resources :people"
 ```
 
 ### `readme`
 
-Output the contents of a file in the template's `source_path`, usually a README.
+テンプレートの`source_path`にあるファイルの内容を出力します。通常このファイルはREADMEです。
 
-  ```ruby
+```ruby
 readme "README"
 ```
