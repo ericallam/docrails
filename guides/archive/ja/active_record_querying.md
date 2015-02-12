@@ -1732,8 +1732,8 @@ EXPLAIN for: SELECT `posts`.* FROM `posts`  WHERE `posts`.`user_id` IN (1)
 
 EXPLAINの出力を解釈することは、本ガイドの範疇を超えます。以下の情報を参考にしてください。
 
-* SQLite3: [EXPLAIN QUERY PLAN](http://www.sqlite.org/eqp.html)
+* SQLite3: [EXPLAIN QUERY PLAN](http://www.sqlite.org/eqp.html) (英語)
 
-* MySQL: [EXPLAIN Output Format](http://dev.mysql.com/doc/refman/5.6/en/explain-output.html)
+* MySQL: [EXPLAIN Output Format](http://dev.mysql.com/doc/refman/5.6/en/explain-output.html) (英語)
 
-* PostgreSQL: [Using EXPLAIN](http://www.postgresql.org/docs/current/static/using-explain.html)
+* PostgreSQL: [EXPLAINの利用](https://www.postgresql.jp/document/9.3/html/using-explain.html)

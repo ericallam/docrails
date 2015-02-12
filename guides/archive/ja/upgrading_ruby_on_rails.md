@@ -686,11 +686,11 @@ Rails 4.0 では `vendor/plugins` 読み込みのサポートは完全に終了�
 * 動的なメソッドは、`find_by_...`と`find_by_...!`を除いて非推奨となりました。
   以下のように変更してください。
 
-      * `find_all_by_...`           becomes `where(...)`.
-      * `find_last_by_...`          becomes `where(...).last`.
-      * `scoped_by_...`             becomes `where(...)`
-      * `find_or_initialize_by_...` に代えて`find_or_initialize_by(...)`を使用`
-      * `find_or_create_by_...`   に代えて`find_or_create_by(...)`を使用`
+      * `find_all_by_...`           に代えて `where(...)` を使用
+      * `find_last_by_...`          に代えて `where(...).last` を使用
+      * `scoped_by_...`             に代えて `where(...)` を使用
+      * `find_or_initialize_by_...` に代えて`find_or_initialize_by(...)`を使用
+      * `find_or_create_by_...`   に代えて`find_or_create_by(...)`を使用
 
 * 旧来のfinderが配列を返していたのに対し、`where(...)`はリレーションを返します。`Array`が必要な場合は, `where(...).to_a`を使用してください。
 

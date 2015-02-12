@@ -703,7 +703,7 @@ end
 <p><code>false.present?</code>は常にfalseなので、真偽値に対してこのメソッドを使用すると正しい結果が得られません。真偽値が存在しないことをチェックしたい場合は、<code>validates :field_name, exclusion: { in: [true, false] }</code>を使用する必要があります。</p>
 <p>デフォルトのエラーメッセージは <em>"must be blank"</em> です。</p>
 <h4 id="uniqueness"><a href="#uniqueness">2.11 <code>uniqueness</code></a></h4>
-<p>このヘルパーは、オブジェクトが保存される直前に、属性の値が一意であり重複していないことを検証します。このヘルパーはデータベース自体に一意性の制約を作成するわけではないので、2つのデータベース接続がたまたま、一意であってほしいカラムについて同じ値を持つレコードを2つ作成するようなことが起こり得ます。これを避けるには、データベースの両方のカラムに一意インデックスを作成する必要があります。複合インデックスの詳細については<a href="http://dev.mysql.com/doc/refman/5.1/ja/multiple-column-indexes.html">MySQLのマニュアル</a> を参照してください。</p>
+<p>このヘルパーは、オブジェクトが保存される直前に、属性の値が一意であり重複していないことを検証します。このヘルパーはデータベース自体に一意性の制約を作成するわけではないので、2つのデータベース接続がたまたま、一意であってほしいカラムについて同じ値を持つレコードを2つ作成するようなことが起こり得ます。これを避けるには、データベースの両方のカラムに一意インデックスを作成する必要があります。複合インデックスの詳細については<a href="http://dev.mysql.com/doc/refman/5.6/en/multiple-column-indexes.html">MySQLのマニュアル</a> (英語) を参照してください。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class Account &lt; ActiveRecord::Base

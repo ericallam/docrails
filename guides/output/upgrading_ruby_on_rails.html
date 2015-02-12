@@ -932,16 +932,15 @@ Bundler.require(:default, Rails.env)
 以下のように変更してください。</p>
 <ul>
 <li>
-<code>find_all_by_...</code>           becomes <code>where(...)</code>.</li>
+<code>find_all_by_...</code>           に代えて <code>where(...)</code> を使用</li>
 <li>
-<code>find_last_by_...</code>          becomes <code>where(...).last</code>.</li>
+<code>find_last_by_...</code>          に代えて <code>where(...).last</code> を使用</li>
 <li>
-<code>scoped_by_...</code>             becomes <code>where(...)</code>
-</li>
+<code>scoped_by_...</code>             に代えて <code>where(...)</code> を使用</li>
 <li>
-<code>find_or_initialize_by_...</code> に代えて<code>find_or_initialize_by(...)</code>を使用`</li>
+<code>find_or_initialize_by_...</code> に代えて<code>find_or_initialize_by(...)</code>を使用</li>
 <li>
-<code>find_or_create_by_...</code>   に代えて<code>find_or_create_by(...)</code>を使用`</li>
+<code>find_or_create_by_...</code>   に代えて<code>find_or_create_by(...)</code>を使用</li>
 </ul>
 </li>
 <li><p>旧来のfinderが配列を返していたのに対し、<code>where(...)</code>はリレーションを返します。<code>Array</code>が必要な場合は, <code>where(...).to_a</code>を使用してください。</p></li>
