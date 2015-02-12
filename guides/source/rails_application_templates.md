@@ -1,36 +1,39 @@
-Rails Application Templates
+﻿
+
+
+Railsのアプリケーションテンプレート
 ===========================
 
-Application templates are simple Ruby files containing DSL for adding gems/initializers etc. to your freshly created Rails project or an existing Rails project.
+Railsのアプリケーションテンプレートは単純なRubyファイルであり、新規または既存のRailsプロジェクトにgemやイニシャライザを追加するためのDSL (ドメイン固有言語) を含んでいます。
 
-After reading this guide, you will know:
+このガイドの内容:
 
-* How to use templates to generate/customize Rails applications.
-* How to write your own reusable application templates using the Rails template API.
+* テンプレートを使用してRailsアプリケーションの生成/カスタマイズを行う方法
+* RailsテンプレートAPIを使用して再利用可能なアプリケーションテンプレートを開発する方法
 
 --------------------------------------------------------------------------------
 
-Usage
+### 使用法
 -----
 
-To apply a template, you need to provide the Rails generator with the location of the template you wish to apply using the -m option. This can either be a path to a file or a URL.
+アプリケーションテンプレートを適用するためには、-mオプションを使用してテンプレートの場所を指定する必要があります。ファイルパスまたはURLのどちらでも使用できます。
 
 ```bash
 $ rails new blog -m ~/template.rb
 $ rails new blog -m http://example.com/template.rb
 ```
 
-You can use the rake task `rails:template` to apply templates to an existing Rails application. The location of the template needs to be passed in to an environment variable named LOCATION. Again, this can either be path to a file or a URL.
+rakeタスク`rails:template`を使用して、既存のRailsアプリケーションにテンプレートを適用することもできます。テンプレートの場所はLOCATION環境変数を使用して渡す必要があります。ここでも、ファイルパスまたはURLのどちらを使用してもかまいません。
 
 ```bash
-$ rake rails:template LOCATION=~/template.rb
-$ rake rails:template LOCATION=http://example.com/template.rb
+$ bin/rake rails:template LOCATION=~/template.rb
+$ bin/rake rails:template LOCATION=http://example.com/template.rb
 ```
 
-Template API
+テンプレートAPI
 ------------
 
-The Rails templates API is easy to understand. Here's an example of a typical Rails template:
+RailsのテンプレートAPIはわかりやすく設計されています。以下は代表的なRailsアプリケーションテンプレートです。
 
 ```ruby
 # template.rb
@@ -38,25 +41,27 @@ generate(:scaffold, "person name:string")
 route "root to: 'people#index'"
 rake("db:migrate")
 
-git :init
-git add: "."
-git commit: %Q{ -m 'Initial commit' }
+after_bundle do
+  git :init
+  git add: "."
+  git commit: %Q{ -m 'Initial commit' }
+end
 ```
 
-The following sections outline the primary methods provided by the API:
+以下のセクションで、APIで提供される主なメソッドの概要を解説します。
 
 ### gem(*args)
 
-Adds a `gem` entry for the supplied gem to the generated application's `Gemfile`.
+生成された`Gemfile`ファイルに、指定された`gem`のエントリを追加します。
 
-For example, if your application depends on the gems `bj` and `nokogiri`:
+たとえば、Railsアプリケーションが`bj`と`nokogiri` gemに依存しているとします。
 
 ```ruby
 gem "bj"
 gem "nokogiri"
 ```
 
-Please note that this will NOT install the gems for you and you will have to run `bundle install` to do that.
+Gemfileでgemを指定しただけではインストールされないのでご注意ください。指定したgemをインストールするためには`bundle install`を実行する必要があります。
 
 ```bash
 bundle install
@@ -64,9 +69,9 @@ bundle install
 
 ### gem_group(*names, &block)
 
-Wraps gem entries inside a group.
+gemのエントリを指定のグループに含めます。
 
-For example, if you want to load `rspec-rails` only in the `development` and `test` groups:
+たとえば、`rspec-rails` gemを`development`グループと`test`グループだけで読み込みたい場合は以下のようにします。
 
 ```ruby
 gem_group :development, :test do
@@ -76,9 +81,9 @@ end
 
 ### add_source(source, options = {})
 
-Adds the given source to the generated application's `Gemfile`.
+生成された`Gemfile`ファイルに、指定されたソースを追加します。
 
-For example, if you need to source a gem from `"http://code.whytheluckystiff.net"`:
+たとえば、`"http://code.whytheluckystiff.net"`にあるgemをソースとして使用したい場合は以下のようにします。
 
 ```ruby
 add_source "http://code.whytheluckystiff.net"
@@ -86,21 +91,21 @@ add_source "http://code.whytheluckystiff.net"
 
 ### environment/application(data=nil, options={}, &block)
 
-Adds a line inside the `Application` class for `config/application.rb`.
+`config/application.rb`ファイルの`Application`クラスの内側に指定の行を追加します。
 
-If `options[:env]` is specified, the line is appended to the corresponding file in `config/environments`.
+`options[:env]`が指定されている場合は、`config/environments`ディレクトリに置かれている同等のファイルに追加します。
 
 ```ruby
 environment 'config.action_mailer.default_url_options = {host: "http://yourwebsite.example.com"}', env: 'production'
 ```
 
-A block can be used in place of the `data` argument.
+`data`引数の代わりにブロックをひとつ渡すこともできます。
 
 ### vendor/lib/file/initializer(filename, data = nil, &block)
 
-Adds an initializer to the generated application's `config/initializers` directory.
+生成されたRailsアプリケーションの`config/initializers`ディレクトリにイニシャライザをひとつ追加します。
 
-Let's say you like using `Object#not_nil?` and `Object#not_blank?`:
+たとえば、`Object#not_nil?`と`Object#not_blank?`というメソッドを使用したい場合は以下のようにします。
 
 ```ruby
 initializer 'bloatlol.rb', <<-CODE
@@ -116,9 +121,9 @@ initializer 'bloatlol.rb', <<-CODE
 CODE
 ```
 
-Similarly, `lib()` creates a file in the `lib/` directory and `vendor()` creates a file in the `vendor/` directory.
+同様に、`lib()`は`lib/`ディレクトリに、`vendor()`は`vendor/`ディレクトリにそれぞれファイルをひとつ作成します。
 
-There is even `file()`, which accepts a relative path from `Rails.root` and creates all the directories/files needed:
+`file()`メソッドを使用すれば、`Rails.root`からの相対パスを渡してディレクトリやファイルを自在に作成することもできます。
 
 ```ruby
 file 'app/components/foo.rb', <<-CODE
@@ -127,11 +132,11 @@ file 'app/components/foo.rb', <<-CODE
 CODE
 ```
 
-That'll create the `app/components` directory and put `foo.rb` in there.
+上のコードは`app/components`ディレクトリを作成し、その中に`foo.rb`ファイルを置きます。
 
 ### rakefile(filename, data = nil, &block)
 
-Creates a new rake file under `lib/tasks` with the supplied tasks:
+指定されたタスクを含むrakeファイルを`lib/tasks`の下に作成します。
 
 ```ruby
 rakefile("bootstrap.rake") do
@@ -145,11 +150,11 @@ rakefile("bootstrap.rake") do
 end
 ```
 
-The above creates `lib/tasks/bootstrap.rake` with a `boot:strap` rake task.
+上のコードは`lib/tasks/bootstrap.rake`ファイルを作成し、その中に`boot:strap` rakeタスクを置きます。
 
 ### generate(what, *args)
 
-Runs the supplied rails generator with given arguments.
+引数を渡してRailsジェネレータを実行します。
 
 ```ruby
 generate(:scaffold, "person", "name:string", "address:text", "age:number")
@@ -157,7 +162,7 @@ generate(:scaffold, "person", "name:string", "address:text", "age:number")
 
 ### run(command)
 
-Executes an arbitrary command. Just like the backticks. Let's say you want to remove the `README.rdoc` file:
+任意のコマンドを実行します。いわゆるバッククォートと同等です。たとえば`README.rdoc`ファイルを削除する場合は以下のようにします。
 
 ```ruby
 run "rm README.rdoc"
@@ -165,13 +170,13 @@ run "rm README.rdoc"
 
 ### rake(command, options = {})
 
-Runs the supplied rake tasks in the Rails application. Let's say you want to migrate the database:
+Railsアプリケーション内にあるtakeタスクを指定して実行します。たとえばデータベースのマイグレーションを行うには以下のように書きます。
 
 ```ruby
 rake "db:migrate"
 ```
 
-You can also run rake tasks with a different Rails environment:
+Railsの環境を指定してrakeタスクを実行することもできます。
 
 ```ruby
 rake "db:migrate", env: 'production'
@@ -183,7 +188,7 @@ Adds a routing entry to the `config/routes.rb` file. In the steps above, we gene
 
 ```ruby
 route "root to: 'person#index'"
-```
+``` 
 
 ### inside(dir)
 
@@ -192,8 +197,8 @@ Enables you to run a command from the given directory. For example, if you have 
 ```ruby
 inside('vendor') do
   run "ln -s ~/commit-rails/rails rails"
-end
-```
+  end
+``` 
 
 ### ask(question)
 
@@ -207,7 +212,7 @@ lib lib_name, <<-CODE
   class Shiny
   end
 CODE
-```
+``` 
 
 ### yes?(question) or no?(question)
 
@@ -216,27 +221,42 @@ These methods let you ask questions from templates and decide the flow based on 
 ```ruby
 rake("rails:freeze:gems") if yes?("Freeze rails gems?")
 # no?(question) acts just the opposite.
-```
+``` 
 
 ### git(:command)
 
 Rails templates let you run any git command:
 
 ```ruby
-git :init
-git add: "."
+  git :init
+  git add: "."
 git commit: "-a -m 'Initial commit'"
-```
+``` 
+
+### after_bundle(&block)
+
+Registers a callback to be executed after the gems are bundled and binstubs are generated. Useful for all generated files to version control:
+
+```ruby
+after_bundle do
+  git :init
+  git add: "."
+  git commit: "-a -m 'Initial commit'"
+  end
+``` 
+
+The callbacks gets executed even if `--skip-bundle` and/or `--skip-spring` has been passed.
 
 Advanced Usage
 --------------
 
-The application template is evaluated in the context of a `Rails::Generators::AppGenerator` instance. It uses the `apply` action provided by [Thor](https://github.com/erikhuda/thor/blob/master/lib/thor/actions.rb#L207). This means you can extend and change the instance to match your needs.
+The application template is evaluated in the context of a `Rails::Generators::AppGenerator` instance. It uses the `apply` action provided by [Thor](https://github.com/erikhuda/thor/blob/master/lib/thor/actions.rb#L207).
+This means you can extend and change the instance to match your needs.
 
 For example by overwriting the `source_paths` method to contain the location of your template. Now methods like `copy_file` will accept relative paths to your template's location.
 
 ```ruby
 def source_paths
   [File.expand_path(File.dirname(__FILE__))]
-end
+  end
 ```

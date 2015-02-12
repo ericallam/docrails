@@ -24,7 +24,7 @@
 <meta name="twitter:image" content="http://railsguides.jp/images/cover_for_twitter.png" />
 <meta name="twitter:url"   content="http://railsguides.jp/" />
 
-<title>Rails Application Templates — Rails ガイド</title>
+<title>Railsのアプリケーションテンプレート — Rails ガイド</title>
 <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
 
@@ -198,20 +198,26 @@
 
   <div id="feature">
     <div class="wrapper">
-      <h2>Rails Application Templates</h2><p>Application templates are simple Ruby files containing DSL for adding gems/initializers etc. to your freshly created Rails project or an existing Rails project.</p><p>After reading this guide, you will know:</p>
+      <h2>Railsのアプリケーションテンプレート</h2><p>Railsのアプリケーションテンプレートは単純なRubyファイルであり、新規または既存のRailsプロジェクトにgemやイニシャライザを追加するためのDSL (ドメイン固有言語) を含んでいます。</p><p>このガイドの内容:</p>
 <ul>
-<li>How to use templates to generate/customize Rails applications.</li>
-<li>How to write your own reusable application templates using the Rails template API.</li>
+<li>テンプレートを使用してRailsアプリケーションの生成/カスタマイズを行う方法</li>
+<li>RailsテンプレートAPIを使用して再利用可能なアプリケーションテンプレートを開発する方法</li>
 </ul>
 
                 <div id="subCol">
             <h3 class="chapter"><img src="images/chapters_icon.gif" alt="" />目次</h3>
             <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
+<div class="code_container">
+<pre class="brush: plain; gutter: false; toolbar: false">
+* [使用法](#使用法)
+
+</pre>
+</div>
+
 <ol class="chapters">
-<li><a href="#usage">Usage</a></li>
 <li>
-<a href="#template-api">Template API</a>
+<a href="#%E3%83%86%E3%83%B3%E3%83%97%E3%83%AC%E3%83%BC%E3%83%88api">テンプレートAPI</a>
 
 <ul>
 <li><a href="#gem(*args)">gem(*args)</a></li>
@@ -228,6 +234,7 @@
 <li><a href="#ask(question)">ask(question)</a></li>
 <li><a href="#yes?(question)-or-no?(question)">yes?(question) or no?(question)</a></li>
 <li><a href="#git(:command)">git(:command)</a></li>
+<li><a href="#after_bundle(&amp;block)">after_bundle(&amp;block)</a></li>
 </ul>
 </li>
 <li><a href="#advanced-usage">Advanced Usage</a></li>
@@ -243,8 +250,9 @@
       <div id="mainCol">
         <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
-<h3 id="usage"><a href="#usage">1 Usage</a></h3>
-<p>To apply a template, you need to provide the Rails generator with the location of the template you wish to apply using the -m option. This can either be a path to a file or a URL.</p>
+<h4 id="使用法"><a href="#%E4%BD%BF%E7%94%A8%E6%B3%95">1 使用法</a></h4>
+<hr>
+<p>アプリケーションテンプレートを適用するためには、-mオプションを使用してテンプレートの場所を指定する必要があります。ファイルパスまたはURLのどちらでも使用できます。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ rails new blog -m ~/template.rb
@@ -252,16 +260,16 @@ $ rails new blog -m http://example.com/template.rb
 
 </pre>
 </div>
-<p>You can use the rake task <code>rails:template</code> to apply templates to an existing Rails application. The location of the template needs to be passed in to an environment variable named LOCATION. Again, this can either be path to a file or a URL.</p>
+<p>rakeタスク<code>rails:template</code>を使用して、既存のRailsアプリケーションにテンプレートを適用することもできます。テンプレートの場所はLOCATION環境変数を使用して渡す必要があります。ここでも、ファイルパスまたはURLのどちらを使用してもかまいません。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-$ rake rails:template LOCATION=~/template.rb
-$ rake rails:template LOCATION=http://example.com/template.rb
+$ bin/rake rails:template LOCATION=~/template.rb
+$ bin/rake rails:template LOCATION=http://example.com/template.rb
 
 </pre>
 </div>
-<h3 id="template-api"><a href="#template-api">2 Template API</a></h3>
-<p>The Rails templates API is easy to understand. Here's an example of a typical Rails template:</p>
+<h3 id="テンプレートapi"><a href="#%E3%83%86%E3%83%B3%E3%83%97%E3%83%AC%E3%83%BC%E3%83%88api">2 テンプレートAPI</a></h3>
+<p>RailsのテンプレートAPIはわかりやすく設計されています。以下は代表的なRailsアプリケーションテンプレートです。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # template.rb
@@ -269,16 +277,18 @@ generate(:scaffold, "person name:string")
 route "root to: 'people#index'"
 rake("db:migrate")
 
-git :init
-git add: "."
-git commit: %Q{ -m 'Initial commit' }
+after_bundle do
+  git :init
+  git add: "."
+  git commit: %Q{ -m 'Initial commit' }
+end
 
 </pre>
 </div>
-<p>The following sections outline the primary methods provided by the API:</p>
+<p>以下のセクションで、APIで提供される主なメソッドの概要を解説します。</p>
 <h4 id="gem(*args)"><a href="#gem(*args)">2.1 gem(*args)</a></h4>
-<p>Adds a <code>gem</code> entry for the supplied gem to the generated application's <code>Gemfile</code>.</p>
-<p>For example, if your application depends on the gems <code>bj</code> and <code>nokogiri</code>:</p>
+<p>生成された<code>Gemfile</code>ファイルに、指定された<code>gem</code>のエントリを追加します。</p>
+<p>たとえば、Railsアプリケーションが<code>bj</code>と<code>nokogiri</code> gemに依存しているとします。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 gem "bj"
@@ -286,7 +296,7 @@ gem "nokogiri"
 
 </pre>
 </div>
-<p>Please note that this will NOT install the gems for you and you will have to run <code>bundle install</code> to do that.</p>
+<p>Gemfileでgemを指定しただけではインストールされないのでご注意ください。指定したgemをインストールするためには<code>bundle install</code>を実行する必要があります。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 bundle install
@@ -294,8 +304,8 @@ bundle install
 </pre>
 </div>
 <h4 id="gem_group(*names,-&amp;block)"><a href="#gem_group(*names,-&amp;block)">2.2 gem_group(*names, &amp;block)</a></h4>
-<p>Wraps gem entries inside a group.</p>
-<p>For example, if you want to load <code>rspec-rails</code> only in the <code>development</code> and <code>test</code> groups:</p>
+<p>gemのエントリを指定のグループに含めます。</p>
+<p>たとえば、<code>rspec-rails</code> gemを<code>development</code>グループと<code>test</code>グループだけで読み込みたい場合は以下のようにします。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 gem_group :development, :test do
@@ -305,8 +315,8 @@ end
 </pre>
 </div>
 <h4 id="add_source(source,-options-=-{})"><a href="#add_source(source,-options-=-%7B%7D)">2.3 add_source(source, options = {})</a></h4>
-<p>Adds the given source to the generated application's <code>Gemfile</code>.</p>
-<p>For example, if you need to source a gem from <code>"http://code.whytheluckystiff.net"</code>:</p>
+<p>生成された<code>Gemfile</code>ファイルに、指定されたソースを追加します。</p>
+<p>たとえば、<code>"http://code.whytheluckystiff.net"</code>にあるgemをソースとして使用したい場合は以下のようにします。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 add_source "http://code.whytheluckystiff.net"
@@ -314,18 +324,18 @@ add_source "http://code.whytheluckystiff.net"
 </pre>
 </div>
 <h4 id="environment/application(data=nil,-options={},-&amp;block)"><a href="#environment/application(data=nil,-options=%7B%7D,-&amp;block)">2.4 environment/application(data=nil, options={}, &amp;block)</a></h4>
-<p>Adds a line inside the <code>Application</code> class for <code>config/application.rb</code>.</p>
-<p>If <code>options[:env]</code> is specified, the line is appended to the corresponding file in <code>config/environments</code>.</p>
+<p><code>config/application.rb</code>ファイルの<code>Application</code>クラスの内側に指定の行を追加します。</p>
+<p><code>options[:env]</code>が指定されている場合は、<code>config/environments</code>ディレクトリに置かれている同等のファイルに追加します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 environment 'config.action_mailer.default_url_options = {host: "http://yourwebsite.example.com"}', env: 'production'
 
 </pre>
 </div>
-<p>A block can be used in place of the <code>data</code> argument.</p>
+<p><code>data</code>引数の代わりにブロックをひとつ渡すこともできます。</p>
 <h4 id="vendor/lib/file/initializer(filename,-data-=-nil,-&amp;block)"><a href="#vendor/lib/file/initializer(filename,-data-=-nil,-&amp;block)">2.5 vendor/lib/file/initializer(filename, data = nil, &amp;block)</a></h4>
-<p>Adds an initializer to the generated application's <code>config/initializers</code> directory.</p>
-<p>Let's say you like using <code>Object#not_nil?</code> and <code>Object#not_blank?</code>:</p>
+<p>生成されたRailsアプリケーションの<code>config/initializers</code>ディレクトリにイニシャライザをひとつ追加します。</p>
+<p>たとえば、<code>Object#not_nil?</code>と<code>Object#not_blank?</code>というメソッドを使用したい場合は以下のようにします。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 initializer 'bloatlol.rb', &lt;&lt;-CODE
@@ -342,8 +352,8 @@ CODE
 
 </pre>
 </div>
-<p>Similarly, <code>lib()</code> creates a file in the <code>lib/</code> directory and <code>vendor()</code> creates a file in the <code>vendor/</code> directory.</p>
-<p>There is even <code>file()</code>, which accepts a relative path from <code>Rails.root</code> and creates all the directories/files needed:</p>
+<p>同様に、<code>lib()</code>は<code>lib/</code>ディレクトリに、<code>vendor()</code>は<code>vendor/</code>ディレクトリにそれぞれファイルをひとつ作成します。</p>
+<p><code>file()</code>メソッドを使用すれば、<code>Rails.root</code>からの相対パスを渡してディレクトリやファイルを自在に作成することもできます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 file 'app/components/foo.rb', &lt;&lt;-CODE
@@ -353,9 +363,9 @@ CODE
 
 </pre>
 </div>
-<p>That'll create the <code>app/components</code> directory and put <code>foo.rb</code> in there.</p>
+<p>上のコードは<code>app/components</code>ディレクトリを作成し、その中に<code>foo.rb</code>ファイルを置きます。</p>
 <h4 id="rakefile(filename,-data-=-nil,-&amp;block)"><a href="#rakefile(filename,-data-=-nil,-&amp;block)">2.6 rakefile(filename, data = nil, &amp;block)</a></h4>
-<p>Creates a new rake file under <code>lib/tasks</code> with the supplied tasks:</p>
+<p>指定されたタスクを含むrakeファイルを<code>lib/tasks</code>の下に作成します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 rakefile("bootstrap.rake") do
@@ -370,9 +380,9 @@ end
 
 </pre>
 </div>
-<p>The above creates <code>lib/tasks/bootstrap.rake</code> with a <code>boot:strap</code> rake task.</p>
+<p>上のコードは<code>lib/tasks/bootstrap.rake</code>ファイルを作成し、その中に<code>boot:strap</code> rakeタスクを置きます。</p>
 <h4 id="generate(what,-*args)"><a href="#generate(what,-*args)">2.7 generate(what, *args)</a></h4>
-<p>Runs the supplied rails generator with given arguments.</p>
+<p>引数を渡してRailsジェネレータを実行します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 generate(:scaffold, "person", "name:string", "address:text", "age:number")
@@ -380,7 +390,7 @@ generate(:scaffold, "person", "name:string", "address:text", "age:number")
 </pre>
 </div>
 <h4 id="run(command)"><a href="#run(command)">2.8 run(command)</a></h4>
-<p>Executes an arbitrary command. Just like the backticks. Let's say you want to remove the <code>README.rdoc</code> file:</p>
+<p>任意のコマンドを実行します。いわゆるバッククォートと同等です。たとえば<code>README.rdoc</code>ファイルを削除する場合は以下のようにします。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 run "rm README.rdoc"
@@ -388,14 +398,14 @@ run "rm README.rdoc"
 </pre>
 </div>
 <h4 id="rake(command,-options-=-{})"><a href="#rake(command,-options-=-%7B%7D)">2.9 rake(command, options = {})</a></h4>
-<p>Runs the supplied rake tasks in the Rails application. Let's say you want to migrate the database:</p>
+<p>Railsアプリケーション内にあるtakeタスクを指定して実行します。たとえばデータベースのマイグレーションを行うには以下のように書きます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 rake "db:migrate"
 
 </pre>
 </div>
-<p>You can also run rake tasks with a different Rails environment:</p>
+<p>Railsの環境を指定してrakeタスクを実行することもできます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 rake "db:migrate", env: 'production'
@@ -416,7 +426,7 @@ route "root to: 'person#index'"
 <pre class="brush: ruby; gutter: false; toolbar: false">
 inside('vendor') do
   run "ln -s ~/commit-rails/rails rails"
-end
+  end
 
 </pre>
 </div>
@@ -447,20 +457,34 @@ rake("rails:freeze:gems") if yes?("Freeze rails gems?")
 <p>Rails templates let you run any git command:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-git :init
-git add: "."
+  git :init
+  git add: "."
 git commit: "-a -m 'Initial commit'"
 
 </pre>
 </div>
+<h4 id="after_bundle(&amp;block)"><a href="#after_bundle(&amp;block)">2.15 after_bundle(&amp;block)</a></h4>
+<p>Registers a callback to be executed after the gems are bundled and binstubs are generated. Useful for all generated files to version control:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+after_bundle do
+  git :init
+  git add: "."
+  git commit: "-a -m 'Initial commit'"
+  end
+
+</pre>
+</div>
+<p>The callbacks gets executed even if <code>--skip-bundle</code> and/or <code>--skip-spring</code> has been passed.</p>
 <h3 id="advanced-usage"><a href="#advanced-usage">3 Advanced Usage</a></h3>
-<p>The application template is evaluated in the context of a <code>Rails::Generators::AppGenerator</code> instance. It uses the <code>apply</code> action provided by <a href="https://github.com/erikhuda/thor/blob/master/lib/thor/actions.rb#L207">Thor</a>. This means you can extend and change the instance to match your needs.</p>
+<p>The application template is evaluated in the context of a <code>Rails::Generators::AppGenerator</code> instance. It uses the <code>apply</code> action provided by <a href="https://github.com/erikhuda/thor/blob/master/lib/thor/actions.rb#L207">Thor</a>.
+This means you can extend and change the instance to match your needs.</p>
 <p>For example by overwriting the <code>source_paths</code> method to contain the location of your template. Now methods like <code>copy_file</code> will accept relative paths to your template's location.</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 def source_paths
   [File.expand_path(File.dirname(__FILE__))]
-end
+  end
 
 </pre>
 </div>
