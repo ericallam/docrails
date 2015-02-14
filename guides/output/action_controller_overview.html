@@ -921,7 +921,7 @@ end
 <p>あえてyieldを実行せず、自分で応答を作成するという方法もあります。この場合、アクションは実行されません。</p>
 <h4 id="その他のフィルタ使用法"><a href="#%E3%81%9D%E3%81%AE%E4%BB%96%E3%81%AE%E3%83%95%E3%82%A3%E3%83%AB%E3%82%BF%E4%BD%BF%E7%94%A8%E6%B3%95">8.2 その他のフィルタ使用法</a></h4>
 <p>最も一般的なフィルタの使用法は、privateメソッドを作成し、*_action を使用してそのメソッドを追加することですが、同じ結果を得られるフィルタ使用法が他にも2とおりあります。</p>
-<p>1番目は、*<em>actionメソッドに対して直接ブロックを与えることです。このブロックはコントローラを引数として受け取り、その上の`require</em>login`フィルタを書き換えて、ブロックを使用するようにします。●</p>
+<p>1番目は、*_actionメソッドに対して直接ブロックを与えることです。このブロックはコントローラを引数として受け取り、その上の<code>require_login</code>フィルタを書き換えて、ブロックを使用するようにします。●</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class ApplicationController &lt; ActionController::Base

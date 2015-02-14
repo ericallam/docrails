@@ -335,7 +335,7 @@ JavaScriptで使用できるディレクティブはスタイルシートでも�
 
 NOTE: Sassファイルを複数使用しているのであれば、Sprocketsディレクティブで読み込まずに[Sass `@import`ルール](http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html#import)を使用する必要があります。このような場合にSprocketsディレクティブを使用してしまうと、Sassファイルが自分自身のスコープに置かれるため、その中で定義されている変数やミックスインが他のSassから利用できなくなってしまいます。
 
-`@import "*"`や`@import "**/*"`などのようにワイルドカードマッチでツリー全体を指定することもできます。これは`require_tree`と同等です。詳細および重要な警告については[sass-railsドキュメント](https://github.com/rails/sass-rails#features)をさんしょうして
+`@import "*"`や`@import "**/*"`などのようにワイルドカードマッチでツリー全体を指定することもできます。これは`require_tree`と同等です。詳細および重要な警告については[sass-railsドキュメント](https://github.com/rails/sass-rails#features)を参照してください。
 
 マニフェストファイルは必要に応じていくつでも使用できます。たとえば、アプリケーションのadminセクションで使用するJSファイルとCSSファイルを`admin.css`と`admin.js`マニフェストにそれぞれ記載することができます。
 

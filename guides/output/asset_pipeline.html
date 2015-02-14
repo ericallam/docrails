@@ -558,7 +558,7 @@ $('#logo').attr src: "&lt;%= asset_path('logo.png') %&gt;"
 <p>JavaScriptで使用できるディレクティブはスタイルシートでも使用できます (なおJavaScriptと異なりスタイルシートは明示的にインクルードされるという違いがあります)。●CSSマニフェストにおける<code>require_tree</code>ディレクティブの動作はJavaScriptの場合と同様に現在のディレクトリにあるすべてのスタイルシートをrequireします。</p>
 <p>上の例では<code>require_self</code>が使用されています。このディレクティブは、<code>require_self</code>呼び出しが行われたその場所にCSSファイルがあれば読み込みます。</p>
 <div class="note"><p>Sassファイルを複数使用しているのであれば、Sprocketsディレクティブで読み込まずに<a href="http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html#import">Sass <code>@import</code>ルール</a>を使用する必要があります。このような場合にSprocketsディレクティブを使用してしまうと、Sassファイルが自分自身のスコープに置かれるため、その中で定義されている変数やミックスインが他のSassから利用できなくなってしまいます。</p></div>
-<p><code>@import "*"</code>や<code>@import "**/*"</code>などのようにワイルドカードマッチでツリー全体を指定することもできます。これは<code>require_tree</code>と同等です。詳細および重要な警告については<a href="https://github.com/rails/sass-rails#features">sass-railsドキュメント</a>をさんしょうして</p>
+<p><code>@import "*"</code>や<code>@import "**/*"</code>などのようにワイルドカードマッチでツリー全体を指定することもできます。これは<code>require_tree</code>と同等です。詳細および重要な警告については<a href="https://github.com/rails/sass-rails#features">sass-railsドキュメント</a>を参照してください。</p>
 <p>マニフェストファイルは必要に応じていくつでも使用できます。たとえば、アプリケーションのadminセクションで使用するJSファイルとCSSファイルを<code>admin.css</code>と<code>admin.js</code>マニフェストにそれぞれ記載することができます。</p>
 <p>読み込み順についても前述のとおり反映されます。特に、個別に指定したファイルは、そのとおりの順序でコンパイルされます。たとえば、以下では3つのCSSファイルを結合しています。</p>
 <div class="code_container">
