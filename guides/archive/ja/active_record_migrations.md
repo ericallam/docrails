@@ -1,5 +1,5 @@
 ﻿
-Active Recordマイグレーション
+Active Record マイグレーション
 ========================
 
 マイグレーション (migration) はActive Recordの機能の1つであり、データベーススキーマを長期にわたって安定して発展・増築し続けることができるようにするための仕組みです。マイグレーション機能のおかげで、Rubyで作成されたマイグレーション用のDSL (ドメイン固有言語) を使用して、テーブルの変更を簡単に記述できます。スキーマを変更するためにSQLを直に書いて実行する必要がありません。
@@ -363,7 +363,7 @@ change_column_null :products, :name, false
 change_column_default :products, :approved, false
 ```
 
-上のマイグレーションはproductsテーブルの`:name`フィールドを`NOT NULL`カラムに設定し、`:approved`フィールドのデフォルト値をfalseに設定します。●
+[REVIEW]上のマイグレーションはproductsテーブルの`:name`フィールドを`NOT NULL`カラムに設定し、`:approved`フィールドのデフォルト値をfalseに設定します。
 
 TIP: `change_column` (および`change_column_default`) と異なる点は、`change_column_null`が可逆的であることです。
 

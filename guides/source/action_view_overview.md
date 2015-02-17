@@ -1,5 +1,5 @@
 ﻿
-Action Viewの概要
+Action View の概要
 ====================
 
 このガイドの内容:
@@ -256,7 +256,7 @@ Railsは、デフォルトですべてのビューテンプレートをコンパ
 <%= render @products %>
 ```
 
-使用されるパーシャル名は、コレクションの中にある「モデル名」を参照して決定されます。この場合のモデル名は`Product`です。作成するコレクションの各要素が不揃い (訳注: 要素ごとにモデルが異なる場合を指すと考えられる●) であっても、Railsはコレクションのメンバごとに適切なパーシャルを選んで出力してくれます。
+使用されるパーシャル名は、コレクションの中にある「モデル名」を参照して決定されます。この場合のモデル名は`Product`です。作成するコレクションの各要素が不揃い (訳注: 要素ごとにモデルが異なる場合を指すと考えられる) であっても、Railsはコレクションのメンバごとに適切なパーシャルを選んで出力してくれます。
 
 #### スペーサーテンプレート
 
@@ -301,7 +301,7 @@ Post.create(body: 'Partial Layouts are cool!')
 </div>
 ```
 
-その`_post`パーシャルは、投稿の本文(`body`)を`div`タグに内包し、`div_for`を使用して投稿の`id`を与えます。●
+その`_post`パーシャルは、投稿の本文(`body`)を`div`タグに内包し、`div_for`を使用して投稿の`id`を与えます。
 
 **posts/_post.html.erb**
 
@@ -680,7 +680,7 @@ end
 
 #### content_for
 
-`content_for`を呼び出すと、後の利用に備えて、idに対応するマークアップのブロックが保存されます。●以後、保存されたコンテンツを他のテンプレートやレイアウトで呼び出すことができます。呼び出しの際には、`yield`の引数となるidを渡します。●
+`content_for`を呼び出すと、後の利用に備えて、idに対応するマークアップのブロックが保存されます。以後、保存されたコンテンツを他のテンプレートやレイアウトで呼び出すことができます。呼び出しの際には、`yield`の引数となるidを渡します。
 
 たとえば、あるRailsアプリケーション全体にわたって標準のアプリケーションレイアウトを使用しているが、特定のページでのみ特定のJavaScriptコードが必要となり、他のページではこのJavaScriptはまったく不要であるとします。このようなときには`content_for`を使用します。これにより、そのJavaScriptコードを特定のページにだけインクルードし、サイトの他の部分でインクルードされることのないようにできます。
 
@@ -785,7 +785,7 @@ select_hour(Time.now + 6.hours)
 0から59までの分をオプションに持ち、現在時刻の分が選択されているselectタグを返します。
 
 ```ruby
-# 指定された分をデフォルト値として持つセレクトボックスを生成する●以下の例が時の場合のままになっている
+# 指定された分をデフォルト値として持つセレクトボックスを生成する以下の例が時の場合のままになっている
 select_minute(Time.now + 6.hours)
 ```
 
@@ -1204,7 +1204,7 @@ NOTE: 返されるのは`option`だけです。従って、出力結果の外側
 `collection`を列挙した結果をoptionタグ化した文字列を返し、呼び出しの結果を`value_method`にオプション値として割り当て、`text_method`にオプションテキストとして割り当てます。
 
 ```ruby
-options_from_collection_for_select(collection, value_method, text_method, selected = nil)●原文がコメントアウトされているのは誤り
+options_from_collection_for_select(collection, value_method, text_method, selected = nil)
 ```
 
 たとえば、@project.peopleに入っているpersonをループですべて列挙してinputタグを作成するのであれば、以下のようになります。
@@ -1348,7 +1348,7 @@ password_field_tag 'pass'
 
 #### radio_button_tag
 
-ラジオボタンを作成します。ユーザーが同じオプショングループ内から選択できるよう、同じ名前でラジオボタンをグループ化してください。●
+ラジオボタンを作成します。ユーザーが同じオプショングループ内から選択できるよう、同じ名前でラジオボタンをグループ化してください。
 
 ```ruby
 radio_button_tag 'gender', 'male'
@@ -1440,7 +1440,7 @@ end
 
 #### escape_javascript
 
-JavaScriptセグメントから改行 (CR) と一重引用符と二重引用符をエスケープします。●原文のcarrierはcarriageが正しい
+JavaScriptセグメントから改行 (CR) と一重引用符と二重引用符をエスケープします。
 
 #### javascript_tag
 
@@ -1533,7 +1533,7 @@ sanitizeヘルパーメソッドは、すべてのタグ文字をHTMLエンコ�
 sanitize @article.body
 ```
 
-:attributesオプションまたは:tagsオプションが渡されると、そこで指定されたタグおよび属性のみが処理の対象外となります。●
+:attributesオプションまたは:tagsオプションが渡されると、そこで指定されたタグおよび属性のみが処理の対象外となります。
 
 ```ruby
 sanitize @article.body, tags: %w(table tr td), attributes: %w(id class style)

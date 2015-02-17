@@ -28,7 +28,7 @@ RailsとRack
 
 ### RackアプリケーションとしてのRailsアプリケーション
 
-`Rails.application`はRailsアプリケーションをRackアプリケーションとして実装したものです。Rackに準拠したWebサーバーで、Railsアプリケーションを提供するには、`Rails.application`オブジェクトを使用する必要があります。●
+`Rails.application`はRailsアプリケーションをRackアプリケーションとして実装したものです。Rackに準拠したWebサーバーで、Railsアプリケーションを提供するには、`Rails.application`オブジェクトを使用する必要があります。
 
 ### `rails server`コマンド
 
@@ -210,7 +210,7 @@ config.middleware.delete "ActionDispatch::Session::CookieStore"
 config.middleware.delete "ActionDispatch::Flash"
 ```
 
-ブラウザ関連のミドルウェアを削除するには次のように書きます。●
+ブラウザ関連のミドルウェアを削除するには次のように書きます。
 
 ```ruby
 # config/application.rb

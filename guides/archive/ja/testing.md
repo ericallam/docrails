@@ -79,7 +79,7 @@ steve:
   profession: guy with keyboard
 ```
 
-各フィクスチャは名前とコロンで始まり、その後にコロンで区切られたキー/値ペアのリストがインデント付きで置かれます。通常、レコード間は空行で区切られます。●行の先頭に#文字を置くことで、フィクスチャファイルにコメントを追加できます。'yes'や'no'などのYAMLキーワードに似たキーについては、引用符で囲むことでYAMLパーサーが正常に動作できます。
+各フィクスチャは名前とコロンで始まり、その後にコロンで区切られたキー/値ペアのリストがインデント付きで置かれます。[REVIEW]通常、レコード間は空行で区切られます。行の先頭に#文字を置くことで、フィクスチャファイルにコメントを追加できます。'yes'や'no'などのYAMLキーワードに似たキーについては、引用符で囲むことでYAMLパーサーが正常に動作できます。
 
 [関連付け](/association_basics.html)を使用している場合は、2つの異なるフィクスチャの間に参照ノードを1つ定義すれば済みます。belongs_to/has_many関連付けの例を以下に示します。
 
@@ -135,7 +135,7 @@ email(david.girlfriend.email, david.location_tonight)
 モデルに対する単体テスト
 ------------------------
 
-Railsにおけるモデルのテストとは、モデルをテストするために書いたコードを指します。●
+[REVIEW]Railsにおけるモデルのテストとは、モデルをテストするために書いたコードを指します。
 
 本ガイドでは、Railsの _scaffold_ を使用します。scaffoldを使用すれば、1つの操作だけで新しいリソースのモデル、マイグレーション、コントローラ、ビューを一度に作成できます。このときに、Railsのベストプラクティスに準拠した完全なテストスイートも作成されます。本ガイドではこのようにして生成したコードを例として使用し、必要に応じてそこにコードを追加する形式で進めます。
 
@@ -198,7 +198,7 @@ end
 
 `test`マクロが適用されることによって、引用符で囲んだ読みやすいテスト名がテストメソッドの定義に変換されます。もちろん、後者のような通常のメソッド定義を使用することもできます。
 
-メモ: テスト名からのメソッド名生成は、スペースをアンダースコアに置き換えることによって行われます。生成されたメソッド名はRubyの正規な識別子である必要はありませんが、テスト名にはパンクチュエーションなどの文字を含めることができます。●これが可能なのは、Rubyがメソッド名にあらゆる文字列を使用できるからです。`define_method`や`send`のように一見問題の起きそうな呼び出しが必要になることがあるかもしれません。しかし名前の付け方には公式な制限はありません。
+メモ: テスト名からのメソッド名生成は、スペースをアンダースコアに置き換えることによって行われます。[REVIEW]生成されたメソッド名はRubyの正規な識別子である必要はありませんが、テスト名にはパンクチュエーションなどの文字を含めることができます。これが可能なのは、Rubyがメソッド名にあらゆる文字列を使用できるからです。`define_method`や`send`のように一見問題の起きそうな呼び出しが必要になることがあるかもしれません。しかし名前の付け方には公式な制限はありません。
 
 ```ruby
 assert true
@@ -379,7 +379,7 @@ $ BACKTRACE=1 bin/rake test test/models/article_test.rb
 | `assert_nothing_raised( exception1, exception2, ... ) { block }` | 渡されたブロックからは、渡されたどの例外も発生しないと主張する。|
 | `assert_instance_of( class, obj, [msg] )`                        | `obj`は`class`のインスタンスであると主張する。|
 | `assert_not_instance_of( class, obj, [msg] )`                    | `obj`は`class`のインスタンスではないと主張する。|
-| `assert_kind_of( class, obj, [msg] )`                            | `obj`は`class`またはそのサブクラスのインスタンスであると主張する。●原文がエラーか古い|
+| `assert_kind_of( class, obj, [msg] )`                            | `obj`は`class`またはそのサブクラスのインスタンスであると主張する。[REVIEW: 原文がエラーか古い]|
 | `assert_not_kind_of( class, obj, [msg] )`                        | `obj`は`class`またはそのサブクラスのインスタンスではないと主張する。|
 | `assert_respond_to( obj, symbol, [msg] )`                        | `obj`は`symbol`に応答すると主張する。|
 | `assert_not_respond_to( obj, symbol, [msg] )`                    | `obj`は`symbol`に応答しないと主張する。|
@@ -404,7 +404,7 @@ Railsは`minitest`フレームワークに以下のような独自のカスタ�
 | --------------------------------------------------------------------------------- | ------- |
 | `assert_difference(expressions, difference = 1, message = nil) {...}`             | yieldされたブロックで評価された結果である式の返し値における数値の違いをテストする。|
 | `assert_no_difference(expressions, message = nil, &amp;block)`                    | 式を評価した結果の数値は、ブロックで渡されたものを呼び出す前と呼び出した後で違いがないと主張する。|
-| `assert_recognizes(expected_options, path, extras={}, message=nil)`               | 渡されたパスのルーティングが正しく扱われ、(expected_optionsハッシュで渡された) 解析オプションがパスと一致したことを主張する。●基本的にこのアサーションでは、Railsはexpected_optionsで渡されたルーティングを認識すると主張する。|
+| `assert_recognizes(expected_options, path, extras={}, message=nil)`               | [REVIEW]渡されたパスのルーティングが正しく扱われ、(expected_optionsハッシュで渡された) 解析オプションがパスと一致したことを主張する。基本的にこのアサーションでは、Railsはexpected_optionsで渡されたルーティングを認識すると主張する。|
 | `assert_generates(expected_path, options, defaults={}, extras = {}, message=nil)` | 渡されたオプションは、渡されたパスの生成に使用できるものであると主張する。assert_recognizesと逆の動作。extrasパラメータは、クエリ文字列に追加リクエストがある場合にそのパラメータの名前と値をリクエストに渡すのに使用される。messageパラメータはアサーションが失敗した場合のカスタムエラーメッセージを渡すことができる。|
 | `assert_response(type, message = nil)`                                            | レスポンスが特定のステータスコードを持っていることを主張する。`:success`を指定するとステータスコード200-299を指定したことになり、同様に`:redirect`は300-399、`:missing`は404、`:error`は500-599にそれぞれマッチする。ステータスコードの数字や同等のシンボルを直接渡すこともできる。詳細については[ステータスコードの完全なリスト](http://rubydoc.info/github/rack/rack/master/Rack/Utils#HTTP_STATUS_CODES-constant)および[シンボルとステータスコードの対応リスト](http://rubydoc.info/github/rack/rack/master/Rack/Utils#SYMBOL_TO_STATUS_CODE-constant)を参照のこと。|
 | `assert_redirected_to(options = {}, message=nil)`                                 | 渡されたリダイレクトオプションが、最後に実行されたアクションで呼び出されたリダイレクトのオプションと一致することを主張する。このアサーションは部分マッチ可能。たとえば`assert_redirected_to(controller: "weblog")`は`redirect_to(controller: "weblog", action: "show")`というリダイレクトなどにもマッチする。`assert_redirected_to root_path`などの名前付きルートを渡したり、`assert_redirected_to @article`などのActive Recordオブジェクトを渡すこともできる。|

@@ -428,7 +428,7 @@ HTMLマークアップは通常であれば以下のような感じになりま�
 
 TIP: `options_for_select`の2番目の引数は、必要となる内部の値と正確に一致しなければなりません。特に、値が整数の2である場合、文字列の"2"を`options_for_select`に渡すことはできません。あくまで整数の2を渡す必要があります。`params`ハッシュから取り出される値はすべて文字列になるので、注意が必要です。
 
-WARNING: `:include_blank`や`:prompt`が指定されていなくても、選択属性`required`がtrue`になっていると、`:include_blank`は強制的にtrueに設定され、表示の`size`は`1になり、`multiple`はtrueになりません。●
+WARNING: [REVIEW]`:include_blank`や`:prompt`が指定されていなくても、選択属性`required`がtrue`になっていると、`:include_blank`は強制的にtrueに設定され、表示の`size`は`1になり、`multiple`はtrueになりません。
 
 ハッシュを使用して任意の値を追加することができます。
 
@@ -456,7 +456,7 @@ WARNING: `:include_blank`や`:prompt`が指定されていなくても、選択�
 <%= select(:person, :city_id, [['Lisbon', 1], ['Madrid', 2], ...]) %>
 ```
 
-第3のパラメータであるオプション配列は、`options_for_select`に渡した引数と同じ種類のものです。このヘルパーのメリットの1つは、正しい街名が既に選ばれている場合、正しい街名が事前選択されているかどうかを気にする必要がないという点です。●Railsは`@person.city_id`属性を読み出してこれらを肩代わりしてくれます。
+第3のパラメータであるオプション配列は、`options_for_select`に渡した引数と同じ種類のものです。このヘルパーのメリットの1つは、正しい街名が既に選ばれている場合、正しい街名が事前選択されているかどうかを気にする必要がないという点です。[REVIEW]Railsは`@person.city_id`属性を読み出してこれらを肩代わりしてくれます。
 
 他のヘルパーのときと同様、`@person`オブジェクトを対象としたフォームビルダーで`select`ヘルパーを使用するのであれば、以下のような文法になります。
 
@@ -475,7 +475,7 @@ WARNING: `:include_blank`や`:prompt`が指定されていなくても、選択�
 <% end %>
 ```
 
-WARNING: `select`ヘルパー(および類似の`collection_select`ヘルパー、`select_tag`ヘルパーなど)を使用して`belongs_to`関連付けを設定する場合は、関連付けそのものの名前ではなく、外部キーの名前(上の例であれば`city_id`)を渡す必要があります。`city_id`ではなく`city`を渡すと、`Person.new`または`Person.update`に`params`ハッシュを渡した時にActive Recordで` ActiveRecord::AssociationTypeMismatch: City(#17815740) expected, got String(#1138750)`エラーが発生します。さらに、属性の編集のみを行なうフォームヘルパーについても注意が必要です。●ユーザーが外部キーを直接操作できてしまうとセキュリティ上の問題が生じる可能性があるため、十分注意してください。
+WARNING: `select`ヘルパー(および類似の`collection_select`ヘルパー、`select_tag`ヘルパーなど)を使用して`belongs_to`関連付けを設定する場合は、関連付けそのものの名前ではなく、外部キーの名前(上の例であれば`city_id`)を渡す必要があります。`city_id`ではなく`city`を渡すと、`Person.new`または`Person.update`に`params`ハッシュを渡した時にActive Recordで` ActiveRecord::AssociationTypeMismatch: City(#17815740) expected, got String(#1138750)`エラーが発生します。[REVIEW]さらに、属性の編集のみを行なうフォームヘルパーについても注意が必要です。ユーザーが外部キーを直接操作できてしまうとセキュリティ上の問題が生じる可能性があるため、十分注意してください。
 
 ### 任意のオブジェクトのコレクションに対してオプションタグを使用する
 
@@ -486,7 +486,7 @@ WARNING: `select`ヘルパー(および類似の`collection_select`ヘルパー�
 <%= options_for_select(cities_array) %>
 ```
 
-これはこれでまったく正当な方法ですが、Railsにはもっと簡潔な`options_from_collection_for_select`ヘルパーがあります。このヘルパーは、任意のオブジェクトのコレクションの他に2つの引数 ( **value** オプションと **text** オプションをそれぞれ読み出すためのメソッド名) を取ります。●
+これはこれでまったく正当な方法ですが、Railsにはもっと簡潔な`options_from_collection_for_select`ヘルパーがあります。[REVIEW]このヘルパーは、任意のオブジェクトのコレクションの他に2つの引数 ( **value** オプションと **text** オプションをそれぞれ読み出すためのメソッド名) を取ります。
 
 ```erb
 <%= options_from_collection_for_select(City.all, :id, :name) %>
@@ -500,7 +500,7 @@ WARNING: `select`ヘルパー(および類似の`collection_select`ヘルパー�
 
 要約すると、`options_from_collection_for_select`ヘルパーは「`options_for_select`が`select`するもの」を「`collection_select`する」ということです。
 
-NOTE: `options_for_select`に渡されるペアでは、名前が1番目でidが2番目でしたが、`options_from_collection_for_select`の場合は1番目の引数はvalueメソッドで2番目の引数はtextメソッドです。●
+NOTE: [REVIEW] `options_for_select`に渡されるペアでは、名前が1番目でidが2番目でしたが、`options_from_collection_for_select`の場合は1番目の引数はvalueメソッドで2番目の引数はtextメソッドです。
 
 ### タイムゾーンと国を選択する
 
@@ -546,7 +546,7 @@ HTML5標準の日付/時刻入力フィールドを生成するヘルパーの�
 Date.civil(params[:start_date][:year].to_i, params[:start_date][:month].to_i, params[:start_date][:day].to_i)
 ```
 
-`:prefix`オプションは、`params`ハッシュから日付コンポーネントのハッシュを取り出すのに使用されるキーです。これで`start_date`に設定されました。省略すると`date`に設定されます。●
+`:prefix`オプションは、`params`ハッシュから日付コンポーネントのハッシュを取り出すのに使用されるキーです。[REVIEW]これで`start_date`に設定されました。省略すると`date`に設定されます。
 
 ### モデルオブジェクトヘルパー
 

@@ -1,5 +1,5 @@
 ﻿
-Railsアップグレードガイド
+Rails アップグレードガイド
 ===================================
 
 本章では、アプリケーションで使用されているRuby on Railsのバージョンを、新しいバージョンにアップグレードする際の手順について示します。アップグレードの手順は、Railsのバージョンごとに個別に記載されています。
@@ -114,7 +114,7 @@ end
 
 ### シリアル化属性
 
-`serialize :metadata, JSON`などのカスタムコーダーを使用している場合に、シリアル化属性 (serialized attribute) に`nil`を割り当てると、コーダー内で`nil`値を渡すのではなく、データベースに`NULL`として保存されるようになりました (`JSON`コーダーを使用している場合の`"null"`など)。●
+[REVIEW]`serialize :metadata, JSON`などのカスタムコーダーを使用している場合に、シリアル化属性 (serialized attribute) に`nil`を割り当てると、コーダー内で`nil`値を渡すのではなく、データベースに`NULL`として保存されるようになりました (`JSON`コーダーを使用している場合の`"null"`など)。
 
 ### Productionログのレベル
 
@@ -662,7 +662,7 @@ Rails 4.0 では `vendor/plugins` 読み込みのサポートは完全に終了�
 
 * Rails 4.0の`serialized_attributes`メソッドと`attr_readonly`メソッドは、クラスメソッドとしてのみ使用するように変更されました。これらのメソッドをインスタンスメソッドとして使用することは非推奨となったため、行わないでください。たとえば`self.serialized_attributes`は`self.class.serialized_attributes`のようにクラスメソッドとして使用してください。
 
-* デフォルトのコーダーを使用する場合、シリアル化属性に`nil`を渡すと、YAML全体にわたって (`nil`値を渡す代わりに) `NULL`としてデータベースに保存されます (`"--- \n...\n"`)。●
+* [REVIEW]デフォルトのコーダーを使用する場合、シリアル化属性に`nil`を渡すと、YAML全体にわたって (`nil`値を渡す代わりに) `NULL`としてデータベースに保存されます (`"--- \n...\n"`)。
 
 * Rails 4.0ではStrong Parametersの導入に伴い、`attr_accessible`と`attr_protected`が廃止されました。これらを引き続き使用したい場合は、[Protected Attributes gem](https://github.com/rails/protected_attributes) を導入することでスムーズにアップグレードすることができます。
 

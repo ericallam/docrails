@@ -1,5 +1,5 @@
 ﻿
-Active Recordの基礎
+Active Record の基礎
 ====================
 
 このガイドではActive Recordの基礎について説明します。

@@ -1,5 +1,5 @@
 ﻿
-Railsの初期化プロセス
+Rails の初期化プロセス
 ================================
 
 本章は、Rails 4におけるRails初期化プロセスの内部について解説します。上級Rails開発者向けに推奨される、きわめて高度な内容を扱っています。
@@ -202,7 +202,7 @@ def initialize(*)
 end
 ```
 
-最初に`super`が呼び出され、そこから`Rack::Server`の`initialize`メソッドを呼び出します。●
+最初に`super`が呼び出され、そこから`Rack::Server`の`initialize`メソッドを呼び出します。
 
 ### Rack: `lib/rack/server.rb`
 
@@ -462,7 +462,7 @@ require File.expand_path('../application', __FILE__)
 require File.expand_path('../boot', __FILE__)
 ```
 
-それまでにboot.rbがrequireされていなかった場合に限り、`rails server`の場合にはboot.rbがrequireされます。ただしPassengerを使用する場合にはboot.rbがrequire**されません**。●
+それまでにboot.rbがrequireされていなかった場合に限り、`rails server`の場合にはboot.rbがrequireされます。ただしPassengerを使用する場合にはboot.rbがrequire**されません**。
 
 ここからいよいよ面白くなってきます。
 
