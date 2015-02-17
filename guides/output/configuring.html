@@ -24,7 +24,7 @@
 <meta name="twitter:image" content="http://railsguides.jp/images/cover_for_twitter.png" />
 <meta name="twitter:url"   content="http://railsguides.jp/" />
 
-<title>Railsアプリケーションを設定する — Rails ガイド</title>
+<title>Rails アプリケーションを設定する — Rails ガイド</title>
 <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
 
@@ -198,7 +198,7 @@
 
   <div id="feature">
     <div class="wrapper">
-      <h2>Railsアプリケーションを設定する</h2><p>このガイドではRailsアプリケーションで利用可能な設定と初期化機能について説明いたします。</p><p>このガイドの内容:</p>
+      <h2>Rails アプリケーションを設定する</h2><p>このガイドではRailsアプリケーションで利用可能な設定と初期化機能について説明いたします。</p><p>このガイドの内容:</p>
 <ul>
 <li>Railsアプリケーションの動作を調整する方法</li>
 <li>アプリケーション開始時に実行したいコードを追加する方法</li>
@@ -297,7 +297,7 @@ end
 </div>
 </li>
 <li><p><code>config.asset_host</code>はアセットを置くホストを設定します。この設定は、アセットの置き場所がCDN (Contents Delivery Network) の場合や、別のドメインエイリアスを使用するとブラウザの同時実行制限にひっかかるのを避けたい場合に便利です。このメソッドは<code>config.action_controller.asset_host</code>を短縮したものです。</p></li>
-<li><p><code>config.autoload_once_paths</code>は、サーバーへのリクエストごとにクリアされない定数を自動読込するパスの配列を引数に取ります。この設定は<code>config.cache_classes</code>がfalseの場合に影響を受けます。<code>config.cache_classes</code>はdevelopmentモードでは<code>config.cache_classes</code>はデフォルトでオフです。●<code>config.cache_classes</code>がtrueの場合、すべての<code>config.autoload_once_paths</code>自動読み込みは一度しか行われません。<code>config.autoload_once_paths</code>の配列に含まれる要素は、次で説明する<code>autoload_paths</code>にもまったく同じように含めておく必要があります。<code>config.autoload_once_paths</code>のデフォルト値は、空の配列です。●</p></li>
+<li><p><code>config.autoload_once_paths</code>は、サーバーへのリクエストごとにクリアされない定数を自動読込するパスの配列を引数に取ります。この設定は<code>config.cache_classes</code>がfalseの場合に影響を受けます。<code>config.cache_classes</code>はdevelopmentモードでは<code>config.cache_classes</code>はデフォルトでオフです。<code>config.cache_classes</code>がtrueの場合、すべての<code>config.autoload_once_paths</code>自動読み込みは一度しか行われません。<code>config.autoload_once_paths</code>の配列に含まれる要素は、次で説明する<code>autoload_paths</code>にもまったく同じように含めておく必要があります。<code>config.autoload_once_paths</code>のデフォルト値は、空の配列です。</p></li>
 <li><p><code>config.autoload_paths</code>はRailsが定数を自動読込するパスを含む配列を引数に取ります。<code>config.autoload_paths</code>のデフォルト値は、<code>app</code>以下のすべてのディレクトリです(訳注: Rails3からはautoload_pathの設定はデフォルトでは無効です)。</p></li>
 <li><p><code>config.cache_classes</code>は、アプリケーションのクラスやモジュールをリクエストごとに再読み込みするか(=キャッシュしないかどうか)どうかを指定します。config.cache_classes<code>のデフォルト値は、developmentモードではfalseなのでコードの更新がすぐ反映され、testモードとproductionモードではtrueなので動作が高速になります。同時に</code>threadsafe!`をオンにすることもできます。</p></li>
 <li><p><code>config.action_view.cache_template_loading</code>は、リクエストのたびにビューテンプレートを再読み込みするか(=キャッシュしないか)を指定します。</p></li>
@@ -322,7 +322,7 @@ end
 <li><p><code>config.dependency_loading</code>をfalseに設定すると、定数自動読み込み設定をオフにします。このオプションが効くのは<code>config.cache_classes</code>がtrueの場合のみです(<code>config.cache_classes</code>はproductionモードではデフォルトでtrueです)。<code>config.threadsafe!</code>を使用するとこのフラグはfalseになります。</p></li>
 <li><p><code>config.eager_load</code>をtrueにすると、<code>config.eager_load_namespaces</code>に登録された事前一括読み込み(eager loading)用の名前空間をすべて読み込みます。ここにはアプリケーション、エンジン、Railsフレームワークを含むあらゆる登録済み名前空間が含まれます。</p></li>
 <li><p><code>config.eager_load_namespaces</code>を使用して登録した名前は、<code>config.eager_load</code>がtrueのときに読み込まれます。登録された名前空間は、必ず<code>eager_load!</code>メソッドに応答しなければなりません。</p></li>
-<li><p><code>config.eager_load_paths</code>は、パスの配列を引数に取ります。Railsは、cache_classesがオンの場合に●これは「eager_loadがオンの場合に」のつもりと思われる●このパスから事前一括読み込み(eager load)します。デフォルトではアプリケーションの<code>app</code>ディレクトリ以下のすべてのディレクトリが対象です。</p></li>
+<li><p><code>config.eager_load_paths</code>は、パスの配列を引数に取ります。Railsは、cache_classesがオンの場合にこのパスから事前一括読み込み(eager load)します。デフォルトではアプリケーションの<code>app</code>ディレクトリ以下のすべてのディレクトリが対象です。</p></li>
 <li><p><code>config.encoding</code>はアプリケーション全体のエンコーディングを指定します。デフォルトはUTF-8です。</p></li>
 <li><p><code>config.exceptions_app</code>は、例外が発生したときにShowExceptionミドルウェアによって呼び出されるアプリケーション例外を設定します。デフォルトは<code>ActionDispatch::PublicExceptions.new(Rails.public_path)</code>です。</p></li>
 <li><p><code>config.file_watcher</code>は、<code>config.reload_classes_only_on_change</code>がtrueの場合にファイルシステム上のファイル更新検出に使用されるクラスを指定します。<code>ActiveSupport::FileUpdateChecker</code> APIに従う必要があります。</p></li>
@@ -424,7 +424,7 @@ end
 <li>
 <code>Rack::Runtime</code>は<code>X-Runtime</code>ヘッダーを設定します。このヘッダーには、リクエストの実行にかかる時間(秒)が含まれます。</li>
 <li>
-<code>Rails::Rack::Logger</code>は、リクエストが開始されたことをログに通知します。リクエストが完了すると、すべてのログをフラッシュします。●</li>
+<code>Rails::Rack::Logger</code>は、リクエストが開始されたことをログに通知します。リクエストが完了すると、すべてのログをフラッシュします。</li>
 <li>
 <code>ActionDispatch::ShowExceptions</code>は、アプリケーションから返されるすべての例外をrescueし、リクエストがローカルであるか<code>config.consider_all_requests_local</code>が<code>true</code>に設定されている場合に適切な例外ページを出力します。<code>config.action_dispatch.show_exceptions</code>が<code>false</code>に設定されていると、常に例外が出力されます。</li>
 <li>
@@ -584,7 +584,7 @@ end
 <li><p><code>config.action_view.default_form_builder</code>は、Railsでデフォルトで使用するフォームビルダーを指定します。デフォルトは、<code>ActionView::Helpers::FormBuilder</code>です。フォームビルダーを初期化処理の後に読み込みたい場合(こうすることでdevelopmentモードではフォームビルダーがリクエストのたびに再読込されます)、<code>String</code>として渡すこともできます。</p></li>
 <li><p><code>config.action_view.logger</code>は、Log4rのインターフェイスまたはデフォルトのRuby Loggerクラスに従うロガーを引数としてとります。このロガーは、Action Viewからの情報をログ出力するために使用されます。ログ出力を無効にするには<code>nil</code>を設定します。</p></li>
 <li><p><code>config.action_view.erb_trim_mode</code>は、ERBで使用するトリムモードを指定します。デフォルトは<code>'-'</code>で、<code>&lt;%= -%&gt;</code>または<code>&lt;%= =%&gt;</code>の場合に末尾スペースを削除して改行します。詳細については<a href="http://www.kuwata-lab.com/erubis/users-guide.06.html#topics-trimspaces">Erubisドキュメント</a>を参照してください。</p></li>
-<li><p><code>config.action_view.embed_authenticity_token_in_remote_forms</code>は、フォームで<code>:remote =&gt; true</code>を使用した場合の<code>authenticity_token</code>のデフォルトの動作を設定します。デフォルトではfalseであり、この場合リモートフォームには<code>authenticity_token</code>フォームが含まれません。これはフォームでフラグメントキャッシュを使用している場合に便利です。リモートフォームは<code>meta</code>タグから認証を受け取るので、JavaScriptの動作しないブラウザをサポートしなければならないのでなければトークンの埋め込みは不要です。JavaScriptが動かないブラウザのサポートが必要な場合は●、<code>:authenticity_token =&gt; true</code>をフォームオプションとして渡すか、この設定を<code>true</code>にします。</p></li>
+<li><p><code>config.action_view.embed_authenticity_token_in_remote_forms</code>は、フォームで<code>:remote =&gt; true</code>を使用した場合の<code>authenticity_token</code>のデフォルトの動作を設定します。デフォルトではfalseであり、この場合リモートフォームには<code>authenticity_token</code>フォームが含まれません。これはフォームでフラグメントキャッシュを使用している場合に便利です。リモートフォームは<code>meta</code>タグから認証を受け取るので、JavaScriptの動作しないブラウザをサポートしなければならないのでなければトークンの埋め込みは不要です。JavaScriptが動かないブラウザのサポートが必要な場合は、<code>:authenticity_token =&gt; true</code>をフォームオプションとして渡すか、この設定を<code>true</code>にします。</p></li>
 <li>
 <p><code>config.action_view.prefix_partial_path_with_controller_namespace</code>は、名前空間化されたコントローラから出力されたテンプレートにあるサブディレクトリから、パーシャル(部分テンプレート)を探索するかどうかを指定します。たとえば、<code>Admin::PostsController</code>というコントローラがあり、以下のテンプレートを出力するとします。</p>
 <div class="code_container">
@@ -854,7 +854,7 @@ development:
 
 </pre>
 </div>
-<p>PostgreSQLのPrepared Statements●はデフォルトでオンになります。<code>prepared_statements</code>を<code>false</code>に設定することでPrepared Statementsをオフにできます。</p>
+<p>PostgreSQLのPrepared Statementsはデフォルトでオンになります。<code>prepared_statements</code>を<code>false</code>に設定することでPrepared Statementsをオフにできます。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 production:
@@ -995,7 +995,7 @@ end
 <p><code>initializer</code>メソッドのブロック引数は、アプリケーション自身のインスタンスです。そのおかげで、上の例で示したように、<code>config</code>メソッドを使用してアプリケーションの設定にアクセスできます。</p>
 <p>実は<code>Rails::Application</code>は<code>Rails::Railtie</code>を間接的に継承しています。そのおかげで、<code>config/application.rb</code>で<code>initializer</code>メソッドを使用してアプリケーション用のイニシャライザを定義できるのです。</p>
 <h4 id="イニシャライザ"><a href="#%E3%82%A4%E3%83%8B%E3%82%B7%E3%83%A3%E3%83%A9%E3%82%A4%E3%82%B6">6.2 イニシャライザ</a></h4>
-<p>Railsにあるイニシャライザのリストを以下にまとめました。これらは定義された順序で並んでおり、特記事項のない限り実行されます。●</p>
+<p>Railsにあるイニシャライザのリストを以下にまとめました。これらは定義された順序で並んでおり、特記事項のない限り実行されます。</p>
 <ul>
 <li><p><code>load_environment_hook</code>: これはプレースホルダとして使用されます。具体的には、<code>:load_environment_config</code>を定義してこのイニシャライザより前に実行したい場合に使用します。</p></li>
 <li><p><code>load_active_support</code>: Active Supportの基本部分を設定する<code>active_support/dependencies</code>が必要です。デフォルトの<code>config.active_support.bare</code>が信用できない場合には<code>active_support/all</code>も必要です。</p></li>
@@ -1009,19 +1009,19 @@ end
 <li><p><code>active_support.initialize_time_zone</code>: <code>config.time_zone</code>の設定に基いてアプリケーションのデフォルトタイムゾーンを設定します。デフォルト値は"UTC"です。</p></li>
 <li><p><code>active_support.initialize_beginning_of_week</code>: <code>config.beginning_of_week</code>の設定に基づいてアプリケーションのデフォルトの週開始日を設定します。デフォルト値は<code>:monday</code>です。</p></li>
 <li><p><code>action_dispatch.configure</code>: <code>ActionDispatch::Http::URL.tld_length</code>を構成して、<code>config.action_dispatch.tld_length</code>の値(トップレベルドメイン名の長さ)が設定されるようにします。</p></li>
-<li><p><code>action_view.set_configs</code>: <code>config.action_view</code>の設定を使用してAction Viewを設定します。使用される<code>config.action_view</code>の設定は、メソッド名が<code>ActionView::Base</code>に対するセッターとして<code>send</code>され、それを経由して値が渡されることによって行われます。●</p></li>
+<li><p><code>action_view.set_configs</code>: <code>config.action_view</code>の設定を使用してAction Viewを設定します。使用される<code>config.action_view</code>の設定は、メソッド名が<code>ActionView::Base</code>に対するセッターとして<code>send</code>され、それを経由して値が渡されることによって行われます。</p></li>
 <li><p><code>action_controller.logger</code>: <code>Rails.logger</code>に対する設定が行われていない場合に<code>ActionController::Base.logger</code>を設定します。</p></li>
 <li><p><code>action_controller.initialize_framework_caches</code>: <code>Rails.cache</code>に対する設定が行われていない場合に<code>ActionController::Base.cache_store</code>を設定します。</p></li>
-<li><p><code>action_controller.set_configs</code>: <code>config.action_controller</code>の設定を使用してAction Controllerを設定します。使用される<code>config.action_controller</code>の設定は、メソッド名が<code>ActionController::Base</code>に対するセッターとして<code>send</code>され、それを経由して値が渡されることによって行われます。●</p></li>
+<li><p><code>action_controller.set_configs</code>: <code>config.action_controller</code>の設定を使用してAction Controllerを設定します。使用される<code>config.action_controller</code>の設定は、メソッド名が<code>ActionController::Base</code>に対するセッターとして<code>send</code>され、それを経由して値が渡されることによって行われます。</p></li>
 <li><p><code>action_controller.compile_config_methods</code>: 指定された設定用メソッドを初期化し、より高速にアクセスできるようにします。</p></li>
 <li><p><code>active_record.initialize_timezone</code>: <code>ActiveRecord::Base.time_zone_aware_attributes</code>をtrueに設定し、<code>ActiveRecord::Base.default_timezone</code>をUTCに設定します。属性がデータベースから読み込まれた場合、それらの属性は<code>Time.zone</code>で指定されたタイムゾーンに変換されます。</p></li>
 <li><p><code>active_record.logger</code>: <code>Rails.logger</code>に対する設定が行われていない場合に<code>ActiveRecord::Base.logger</code>を設定します。</p></li>
-<li><p><code>active_record.set_configs</code>: <code>config.active_record</code>の設定を使用してActive Recordを設定します。使用される<code>config.active_record</code>の設定は、メソッド名が<code>ActiveRecord::Base</code>に対するセッターとして<code>send</code>され、それを経由して値が渡されることによって行われます。●</p></li>
+<li><p><code>active_record.set_configs</code>: <code>config.active_record</code>の設定を使用してActive Recordを設定します。使用される<code>config.active_record</code>の設定は、メソッド名が<code>ActiveRecord::Base</code>に対するセッターとして<code>send</code>され、それを経由して値が渡されることによって行われます。</p></li>
 <li><p><code>active_record.initialize_database</code>: データベース設定を<code>config/database.yml</code>(デフォルトの読み込み元)から読み込み、現在の環境で接続を確立します。</p></li>
-<li><p><code>active_record.log_runtime</code>: <code>ActiveRecord::Railties::ControllerRuntime</code>をインクルードします。これは、リクエストでActive Record呼び出しにかかった時間をロガーにレポートする役割を担います。●</p></li>
+<li><p><code>active_record.log_runtime</code>: <code>ActiveRecord::Railties::ControllerRuntime</code>をインクルードします。これは、リクエストでActive Record呼び出しにかかった時間をロガーにレポートする役割を担います。</p></li>
 <li><p><code>active_record.set_dispatch_hooks</code>: <code>config.cache_classes</code>が<code>false</code>に設定されている場合、再読み込み可能なデータベース接続をすべてリセットします。</p></li>
 <li><p><code>action_mailer.logger</code>: <code>Rails.logger</code>に対する設定が行われていない場合に<code>ActionMailer::Base.logger</code>を設定します。</p></li>
-<li><p><code>action_mailer.set_configs</code>: <code>config.action_mailer</code>の設定を使用してAction Mailerを設定します。使用される<code>config.action_mailer</code>の設定は、メソッド名が<code>ActiveRecord::Base</code>に対するセッターとして<code>send</code>され、それを経由して値が渡されることによって行われます。●</p></li>
+<li><p><code>action_mailer.set_configs</code>: <code>config.action_mailer</code>の設定を使用してAction Mailerを設定します。使用される<code>config.action_mailer</code>の設定は、メソッド名が<code>ActiveRecord::Base</code>に対するセッターとして<code>send</code>され、それを経由して値が渡されることによって行われます。</p></li>
 <li><p><code>action_mailer.compile_config_methods</code>: 指定された設定用メソッドを初期化し、より高速にアクセスできるようにします。</p></li>
 <li><p><code>set_load_path</code>: このイニシャライザは<code>bootstrap_hook</code>より前に実行されます。<code>vendor</code>、<code>lib</code>、<code>app</code>以下のすべてのディレクトリ、<code>config.load_paths</code>で指定されるすべてのパスが<code>$LOAD_PATH</code>に追加されます。</p></li>
 <li><p><code>set_autoload_paths</code>: このイニシャライザは<code>bootstrap_hook</code>より前に実行されます。<code>app</code>以下のすべてのサブディレクトリと、<code>config.autoload_paths</code>で指定したすべてのパスが<code>ActiveSupport::Dependencies.autoload_paths</code>に追加されます。</p></li>
@@ -1035,9 +1035,9 @@ end
 <li><p><code>engines_blank_point</code>: エンジンの読み込みが完了する前に行いたい処理がある場合に使用できる初期化ポイントへのフックを提供します。初期化処理がここまで進むと、railtiesやエンジンイニシャライザはすべて起動しています。</p></li>
 <li><p><code>add_generator_templates</code>: アプリケーションやrailtiesやエンジンにある<code>lib/templates</code>ディレクトリにあるジェネレータ用のテンプレートを探し、それらを<code>config.generators.templates</code>設定に追加します。この設定によって、すべてのジェネレータからテンプレートを参照できるようになります。</p></li>
 <li><p><code>ensure_autoload_once_paths_as_subset</code>: <code>config.autoload_once_paths</code>に、<code>config.autoload_paths</code>以外のパスが含まれないようにします。それ以外のパスが含まれている場合は例外が発生します。</p></li>
-<li><p><code>add_to_prepare_blocks</code>: アプリケーションやrailtiesやエンジンのすべての<code>config.to_prepare</code>呼び出しにおけるブロックが、Action Dispatchの<code>to_prepare</code>に追加されます。Action Dispatchはdevelopmentモードではリクエストごとに実行され、productionモードでは最初のリクエストより前に実行されます。●</p></li>
+<li><p><code>add_to_prepare_blocks</code>: アプリケーションやrailtiesやエンジンのすべての<code>config.to_prepare</code>呼び出しにおけるブロックが、Action Dispatchの<code>to_prepare</code>に追加されます。Action Dispatchはdevelopmentモードではリクエストごとに実行され、productionモードでは最初のリクエストより前に実行されます。</p></li>
 <li><p><code>add_builtin_route</code>: アプリケーションがdevelopment環境で動作している場合、<code>rails/info/properties</code>へのルーティングをアプリケーションのルーティングに追加します。このルーティングにアクセスすると、デフォルトのRailsアプリケーションで<code>public/index.html</code>に表示されるのと同様の詳細情報(RailsやRubyのバージョンなど)が表示されます。</p></li>
-<li><p><code>build_middleware_stack</code>: アプリケーションのミドルウェアスタックを構成し、<code>call</code>メソッドを持つオブジェクトを返します。この<code>call</code>メソッドは、リクエストに対するRack環境のオブジェクトを引数に取ります。●</p></li>
+<li><p><code>build_middleware_stack</code>: アプリケーションのミドルウェアスタックを構成し、<code>call</code>メソッドを持つオブジェクトを返します。この<code>call</code>メソッドは、リクエストに対するRack環境のオブジェクトを引数に取ります。</p></li>
 <li><p><code>eager_load!</code>: <code>config.eager_load</code>がtrueに設定されている場合、<code>config.before_eager_load</code>フックを実行し、続いて<code>eager_load!</code>を呼び出します。この呼び出しにより、すべての<code>config.eager_load_namespaces</code>が呼び出されます。</p></li>
 <li><p><code>finisher_hook</code>: アプリケーションの初期化プロセス完了後に実行されるフックを提供し、アプリケーションやrailtiesやエンジンの<code>config.after_initialize</code>ブロックもすべて実行します。</p></li>
 <li><p><code>set_routes_reloader</code>: <code>ActionDispatch::Callbacks.to_prepare</code>を使用してルーティングを再読み込みするためにAction Dispatchを構成します。</p></li>
@@ -1056,7 +1056,7 @@ development:
 </pre>
 </div>
 <p>接続プールはデフォルトではActive Recordで取り扱われるため、アプリケーションサーバーの動作は、ThinやmongrelやUnicornなどどれであっても同じ振る舞いになります。最初はデータベース接続のプールは空で、必要に応じて追加接続が作成され、接続プールの上限に達するまで接続が追加されます。</p>
-<p>1つのリクエストの中での接続は常に次のような流れになります: 初回はデータベースアクセスの必要な接続を確保し、以後はその接続があることを再確認します。リクエストの終わりでは、キューで待機する次以降のリクエストに備えて接続スロットが追加で利用できるようになります。●</p>
+<p>1つのリクエストの中での接続は常に次のような流れになります: 初回はデータベースアクセスの必要な接続を確保し、以後はその接続があることを再確認します。リクエストの終わりでは、キューで待機する次以降のリクエストに備えて接続スロットが追加で利用できるようになります。</p>
 <p>利用可能な数よりも多くの接続を使用しようとすると、Active Recordは接続をブロックし、プールからの接続を待ちます。接続が行えなくなると、以下のようなタイムアウトエラーがスローされます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">

@@ -24,7 +24,7 @@
 <meta name="twitter:image" content="http://railsguides.jp/images/cover_for_twitter.png" />
 <meta name="twitter:url"   content="http://railsguides.jp/" />
 
-<title>Action Controllerの概要 — Rails ガイド</title>
+<title>Action Controller の概要 — Rails ガイド</title>
 <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
 
@@ -198,7 +198,7 @@
 
   <div id="feature">
     <div class="wrapper">
-      <h2>Action Controllerの概要</h2><p>本ガイドでは、コントローラの動作と、アプリケーションのリクエストサイクルでコントローラがどのように使われるかについて説明します。</p><p>このガイドの内容:</p>
+      <h2>Action Controller の概要</h2><p>本ガイドでは、コントローラの動作と、アプリケーションのリクエストサイクルでコントローラがどのように使われるかについて説明します。</p><p>このガイドの内容:</p>
 <ul>
 <li>コントローラを経由するリクエストの流れを理解する</li>
 <li>コントローラに渡されるパラメータを制限する方法</li>
@@ -405,7 +405,7 @@ GET /clients?ids[]=1&amp;ids[]=2&amp;ids[]=3
 </pre>
 </div>
 <p><code>params[:company]</code>で受け取る値は<code>{ "name" =&gt; "acme", "address" =&gt; "123 Carrot Street" }</code>になります。</p>
-<p>同様に、初期化設定で<code>config.wrap_parameters</code>をオンにした場合や、コントローラで<code>wrap_parameters</code>を呼び出した場合、JSONパラメータのルート要素を安全に取り除くことができます。このパラメータは、デフォルトではコントローラ名に応じて複製およびラップされます。●従って、上のパラメータは以下のように書けます。</p>
+<p>同様に、初期化設定で<code>config.wrap_parameters</code>をオンにした場合や、コントローラで<code>wrap_parameters</code>を呼び出した場合、JSONパラメータのルート要素を安全に取り除くことができます。このパラメータは、デフォルトではコントローラ名に応じて複製およびラップされます。従って、上のパラメータは以下のように書けます。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 { "name": "acme", "address": "123 Carrot Street" }
@@ -446,7 +446,7 @@ end
 <p><code>ApplicationController</code>で<code>default_url_options</code>を定義すると、上の例で示したように、すべてのURL生成で使用されるようになります。このメソッドを特定のコントローラで定義すれば、そのコントローラで生成されるURLにだけ影響します。</p>
 <h4 id="strong-parameters"><a href="#strong-parameters">4.5 Strong Parameters</a></h4>
 <p>strong parametersを使用することで、Action ControllerのパラメータがActive Modelのマスアサインメントに利用されることを禁止できます。ホワイトリストに追記したもののみ使用できます。これは、多くの属性を一度に更新したいときに、どの属性の更新を許可し、どの属性の更新を禁止するかを明示的に決定しなければならないことを意味します。大雑把にすべての属性の更新をまとめて許可してしまうと、外部に公開する必要のない属性まで誤って公開されてしまう可能性が生じますので、そのような事態を防ぐために行います。</p>
-<p>さらに、パラメータの属性には「必須 (required)」を指定することもでき、事前に定義したraise/rescueフローを実行して400 Bad Requestで終了するようにすることもできます。●</p>
+<p>さらに、パラメータの属性には「必須 (required)」を指定することもでき、事前に定義したraise/rescueフローを実行して400 Bad Requestで終了するようにすることもできます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class PeopleController &lt; ActionController::Base
@@ -488,7 +488,7 @@ params.permit(:id)
 
 </pre>
 </div>
-<p><code>:id</code>キーが<code>params</code>にあり、それに関連付けられた許可済みスカラー値があれば、ホワイトリストチェックをパスします。●でなければ、このキーはフィルタによって除外されます。従って、ハッシュやその他のオブジェクトを外部から注入することはできなくなります。</p>
+<p><code>:id</code>キーが<code>params</code>にあり、それに関連付けられた許可済みスカラー値があれば、ホワイトリストチェックをパスします。でなければ、このキーはフィルタによって除外されます。従って、ハッシュやその他のオブジェクトを外部から注入することはできなくなります。</p>
 <p>許可されるスカラー型は<code>String</code>、<code>Symbol</code>、<code>NilClass</code>、<code>Numeric</code>、<code>TrueClass</code>、<code>FalseClass</code>、<code>Date</code>、<code>Time</code>、<code>DateTime</code>、<code>StringIO</code>、<code>IO</code>、<code>ActionDispatch::Http::UploadedFile</code>、<code>Rack::Test::UploadedFile</code>です。</p>
 <p><code>params</code>の値が、許可されたスカラー値の配列でなければならないことを宣言するには、以下のようにキーを空の配列にマップします。</p>
 <div class="code_container">
@@ -921,7 +921,7 @@ end
 <p>あえてyieldを実行せず、自分で応答を作成するという方法もあります。この場合、アクションは実行されません。</p>
 <h4 id="その他のフィルタ使用法"><a href="#%E3%81%9D%E3%81%AE%E4%BB%96%E3%81%AE%E3%83%95%E3%82%A3%E3%83%AB%E3%82%BF%E4%BD%BF%E7%94%A8%E6%B3%95">8.2 その他のフィルタ使用法</a></h4>
 <p>最も一般的なフィルタの使用法は、privateメソッドを作成し、*_action を使用してそのメソッドを追加することですが、同じ結果を得られるフィルタ使用法が他にも2とおりあります。</p>
-<p>1番目は、*_actionメソッドに対して直接ブロックを与えることです。このブロックはコントローラを引数として受け取り、その上の<code>require_login</code>フィルタを書き換えて、ブロックを使用するようにします。●</p>
+<p>1番目は、*_actionメソッドに対して直接ブロックを与えることです。このブロックはコントローラを引数として受け取り、その上の<code>require_login</code>フィルタを書き換えて、ブロックを使用するようにします。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class ApplicationController &lt; ActionController::Base

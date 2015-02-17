@@ -24,7 +24,7 @@
 <meta name="twitter:image" content="http://railsguides.jp/images/cover_for_twitter.png" />
 <meta name="twitter:url"   content="http://railsguides.jp/" />
 
-<title>Railsアップグレードガイド — Rails ガイド</title>
+<title>Rails アップグレードガイド — Rails ガイド</title>
 <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
 
@@ -198,7 +198,7 @@
 
   <div id="feature">
     <div class="wrapper">
-      <h2>Railsアップグレードガイド</h2><p>本章では、アプリケーションで使用されているRuby on Railsのバージョンを、新しいバージョンにアップグレードする際の手順について示します。アップグレードの手順は、Railsのバージョンごとに個別に記載されています。</p>
+      <h2>Rails アップグレードガイド</h2><p>本章では、アプリケーションで使用されているRuby on Railsのバージョンを、新しいバージョンにアップグレードする際の手順について示します。アップグレードの手順は、Railsのバージョンごとに個別に記載されています。</p>
                 <div id="subCol">
             <h3 class="chapter"><img src="images/chapters_icon.gif" alt="" />目次</h3>
             <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
@@ -400,7 +400,7 @@ end
 </pre>
 </div>
 <h4 id="シリアル化属性"><a href="#%E3%82%B7%E3%83%AA%E3%82%A2%E3%83%AB%E5%8C%96%E5%B1%9E%E6%80%A7">2.5 シリアル化属性</a></h4>
-<p><code>serialize :metadata, JSON</code>などのカスタムコーダーを使用している場合に、シリアル化属性 (serialized attribute) に<code>nil</code>を割り当てると、コーダー内で<code>nil</code>値を渡すのではなく、データベースに<code>NULL</code>として保存されるようになりました (<code>JSON</code>コーダーを使用している場合の<code>"null"</code>など)。●</p>
+<p><code>serialize :metadata, JSON</code>などのカスタムコーダーを使用している場合に、シリアル化属性 (serialized attribute) に<code>nil</code>を割り当てると、コーダー内で<code>nil</code>値を渡すのではなく、データベースに<code>NULL</code>として保存されるようになりました (<code>JSON</code>コーダーを使用している場合の<code>"null"</code>など)。</p>
 <h4 id="productionログのレベル"><a href="#production%E3%83%AD%E3%82%B0%E3%81%AE%E3%83%AC%E3%83%99%E3%83%AB">2.6 Productionログのレベル</a></h4>
 <p>Rails 5のproduction環境では、デフォルトのログレベルが<code>:info</code>から<code>:debug</code>に変更される予定です。現在のログレベルを変更したくない場合は<code>production.rb</code>に以下の行を追加してください。</p>
 <div class="code_container">
@@ -908,7 +908,7 @@ Bundler.require(:default, Rails.env)
 <li><p>コレクション関連付けの<code>delete</code>メソッドは、<code>Fixnum</code>や<code>String</code>引数をレコードの他にレコードIDとしても受け付けるようになりました。これにより<code>destroy</code>メソッドの動作にかなり近くなりました。以前はこのような引数を使用すると<code>ActiveRecord::AssociationTypeMismatch</code>例外が発生しました。Rails 4.0からは、<code>delete</code>メソッドを使用すると、与えられたIDにマッチするレコードを自動的に探すようになりました。</p></li>
 <li><p>Rails 4.0では、カラムやテーブルの名前を変更すると、関連するインデックスも自動的にリネームされるようになりました。インデックス名を変更するためだけのマイグレーションは今後不要になりました。</p></li>
 <li><p>Rails 4.0の<code>serialized_attributes</code>メソッドと<code>attr_readonly</code>メソッドは、クラスメソッドとしてのみ使用するように変更されました。これらのメソッドをインスタンスメソッドとして使用することは非推奨となったため、行わないでください。たとえば<code>self.serialized_attributes</code>は<code>self.class.serialized_attributes</code>のようにクラスメソッドとして使用してください。</p></li>
-<li><p>デフォルトのコーダーを使用する場合、シリアル化属性に<code>nil</code>を渡すと、YAML全体にわたって (<code>nil</code>値を渡す代わりに) <code>NULL</code>としてデータベースに保存されます (<code>"--- \n...\n"</code>)。●</p></li>
+<li><p>デフォルトのコーダーを使用する場合、シリアル化属性に<code>nil</code>を渡すと、YAML全体にわたって (<code>nil</code>値を渡す代わりに) <code>NULL</code>としてデータベースに保存されます (<code>"--- \n...\n"</code>)。</p></li>
 <li><p>Rails 4.0ではStrong Parametersの導入に伴い、<code>attr_accessible</code>と<code>attr_protected</code>が廃止されました。これらを引き続き使用したい場合は、<a href="https://github.com/rails/protected_attributes">Protected Attributes gem</a> を導入することでスムーズにアップグレードすることができます。</p></li>
 <li><p>Protected Attributesを使用していないのであれば、<code>whitelist_attributes</code>や<code>mass_assignment_sanitizer</code>オプションなど、このgemに関連するすべてのオプションを削除できます。</p></li>
 <li><p>Rails 4.0のスコープでは、Procやlambdaなどの呼び出し可能なオブジェクトの使用が必須となりました。</p></li>

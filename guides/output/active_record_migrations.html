@@ -24,7 +24,7 @@
 <meta name="twitter:image" content="http://railsguides.jp/images/cover_for_twitter.png" />
 <meta name="twitter:url"   content="http://railsguides.jp/" />
 
-<title>Active Recordマイグレーション — Rails ガイド</title>
+<title>Active Record マイグレーション — Rails ガイド</title>
 <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
 
@@ -198,7 +198,7 @@
 
   <div id="feature">
     <div class="wrapper">
-      <h2>Active Recordマイグレーション</h2><p>マイグレーション (migration) はActive Recordの機能の1つであり、データベーススキーマを長期にわたって安定して発展・増築し続けることができるようにするための仕組みです。マイグレーション機能のおかげで、Rubyで作成されたマイグレーション用のDSL (ドメイン固有言語) を使用して、テーブルの変更を簡単に記述できます。スキーマを変更するためにSQLを直に書いて実行する必要がありません。</p><p>このガイドの内容:</p>
+      <h2>Active Record マイグレーション</h2><p>マイグレーション (migration) はActive Recordの機能の1つであり、データベーススキーマを長期にわたって安定して発展・増築し続けることができるようにするための仕組みです。マイグレーション機能のおかげで、Rubyで作成されたマイグレーション用のDSL (ドメイン固有言語) を使用して、テーブルの変更を簡単に記述できます。スキーマを変更するためにSQLを直に書いて実行する必要がありません。</p><p>このガイドの内容:</p>
 <ul>
 <li>マイグレーション作成で使用できるジェネレータ</li>
 <li>Active Recordが提供するデータベース操作用メソッド群の解説</li>
@@ -623,7 +623,7 @@ change_column_default :products, :approved, false
 
 </pre>
 </div>
-<p>上のマイグレーションはproductsテーブルの<code>:name</code>フィールドを<code>NOT NULL</code>カラムに設定し、<code>:approved</code>フィールドのデフォルト値をfalseに設定します。●</p>
+<p>上のマイグレーションはproductsテーブルの<code>:name</code>フィールドを<code>NOT NULL</code>カラムに設定し、<code>:approved</code>フィールドのデフォルト値をfalseに設定します。</p>
 <div class="info"><p><code>change_column</code> (および<code>change_column_default</code>) と異なる点は、<code>change_column_null</code>が可逆的であることです。</p></div>
 <h4 id="マイグレーションを自作する-カラムを変更する"><a href="#%E3%83%9E%E3%82%A4%E3%82%B0%E3%83%AC%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%92%E8%87%AA%E4%BD%9C%E3%81%99%E3%82%8B-%E3%82%AB%E3%83%A9%E3%83%A0%E3%82%92%E5%A4%89%E6%9B%B4%E3%81%99%E3%82%8B">3.5 カラムを変更する</a></h4>
 <p>カラムの作成または変更時にカラムモディファイアを適用できます。</p>

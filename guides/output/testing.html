@@ -327,7 +327,7 @@ steve:
 
 </pre>
 </div>
-<p>各フィクスチャは名前とコロンで始まり、その後にコロンで区切られたキー/値ペアのリストがインデント付きで置かれます。通常、レコード間は空行で区切られます。●行の先頭に#文字を置くことで、フィクスチャファイルにコメントを追加できます。'yes'や'no'などのYAMLキーワードに似たキーについては、引用符で囲むことでYAMLパーサーが正常に動作できます。</p>
+<p>各フィクスチャは名前とコロンで始まり、その後にコロンで区切られたキー/値ペアのリストがインデント付きで置かれます。通常、レコード間は空行で区切られます。行の先頭に#文字を置くことで、フィクスチャファイルにコメントを追加できます。'yes'や'no'などのYAMLキーワードに似たキーについては、引用符で囲むことでYAMLパーサーが正常に動作できます。</p>
 <p><a href="/association_basics.html">関連付け</a>を使用している場合は、2つの異なるフィクスチャの間に参照ノードを1つ定義すれば済みます。belongs_to/has_many関連付けの例を以下に示します。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
@@ -379,7 +379,7 @@ email(david.girlfriend.email, david.location_tonight)
 </pre>
 </div>
 <h3 id="モデルに対する単体テスト"><a href="#%E3%83%A2%E3%83%87%E3%83%AB%E3%81%AB%E5%AF%BE%E3%81%99%E3%82%8B%E5%8D%98%E4%BD%93%E3%83%86%E3%82%B9%E3%83%88">3 モデルに対する単体テスト</a></h3>
-<p>Railsにおけるモデルのテストとは、モデルをテストするために書いたコードを指します。●</p>
+<p>Railsにおけるモデルのテストとは、モデルをテストするために書いたコードを指します。</p>
 <p>本ガイドでは、Railsの <em>scaffold</em> を使用します。scaffoldを使用すれば、1つの操作だけで新しいリソースのモデル、マイグレーション、コントローラ、ビューを一度に作成できます。このときに、Railsのベストプラクティスに準拠した完全なテストスイートも作成されます。本ガイドではこのようにして生成したコードを例として使用し、必要に応じてそこにコードを追加する形式で進めます。</p>
 <p>メモ: Railsの <em>scaffold</em> の詳細については、<a href="getting_started.html">Railsをはじめよう</a>を参照してください。</p>
 <p><code>rails generate scaffold</code>を実行すると、生成される多数のファイルの中に、<code>test/models</code>フォルダの下に作成されるテストスタブがあります。</p>
@@ -442,7 +442,7 @@ end
 </pre>
 </div>
 <p><code>test</code>マクロが適用されることによって、引用符で囲んだ読みやすいテスト名がテストメソッドの定義に変換されます。もちろん、後者のような通常のメソッド定義を使用することもできます。</p>
-<p>メモ: テスト名からのメソッド名生成は、スペースをアンダースコアに置き換えることによって行われます。生成されたメソッド名はRubyの正規な識別子である必要はありませんが、テスト名にはパンクチュエーションなどの文字を含めることができます。●これが可能なのは、Rubyがメソッド名にあらゆる文字列を使用できるからです。<code>define_method</code>や<code>send</code>のように一見問題の起きそうな呼び出しが必要になることがあるかもしれません。しかし名前の付け方には公式な制限はありません。</p>
+<p>メモ: テスト名からのメソッド名生成は、スペースをアンダースコアに置き換えることによって行われます。生成されたメソッド名はRubyの正規な識別子である必要はありませんが、テスト名にはパンクチュエーションなどの文字を含めることができます。これが可能なのは、Rubyがメソッド名にあらゆる文字列を使用できるからです。<code>define_method</code>や<code>send</code>のように一見問題の起きそうな呼び出しが必要になることがあるかもしれません。しかし名前の付け方には公式な制限はありません。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 assert true
@@ -708,7 +708,7 @@ $ BACKTRACE=1 bin/rake test test/models/article_test.rb
 <tr>
 <td><code>assert_kind_of( class, obj, [msg] )</code></td>
 <td>
-<code>obj</code>は<code>class</code>またはそのサブクラスのインスタンスであると主張する。●原文がエラーか古い</td>
+<code>obj</code>は<code>class</code>またはそのサブクラスのインスタンスであると主張する。</td>
 </tr>
 <tr>
 <td><code>assert_not_kind_of( class, obj, [msg] )</code></td>
@@ -779,7 +779,7 @@ $ BACKTRACE=1 bin/rake test test/models/article_test.rb
 </tr>
 <tr>
 <td><code>assert_recognizes(expected_options, path, extras={}, message=nil)</code></td>
-<td>渡されたパスのルーティングが正しく扱われ、(expected_optionsハッシュで渡された) 解析オプションがパスと一致したことを主張する。●基本的にこのアサーションでは、Railsはexpected_optionsで渡されたルーティングを認識すると主張する。</td>
+<td>渡されたパスのルーティングが正しく扱われ、(expected_optionsハッシュで渡された) 解析オプションがパスと一致したことを主張する。基本的にこのアサーションでは、Railsはexpected_optionsで渡されたルーティングを認識すると主張する。</td>
 </tr>
 <tr>
 <td><code>assert_generates(expected_path, options, defaults={}, extras = {}, message=nil)</code></td>

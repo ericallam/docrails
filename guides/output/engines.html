@@ -24,7 +24,7 @@
 <meta name="twitter:image" content="http://railsguides.jp/images/cover_for_twitter.png" />
 <meta name="twitter:url"   content="http://railsguides.jp/" />
 
-<title>Railsエンジン入門 — Rails ガイド</title>
+<title>Rails エンジン入門 — Rails ガイド</title>
 <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
 
@@ -198,7 +198,7 @@
 
   <div id="feature">
     <div class="wrapper">
-      <h2>Railsエンジン入門</h2><p>本ガイドでは、Railsのエンジンについて解説します。また、簡潔で使いやすいインターフェイスを使った、ホストアプリケーション向け追加機能についても解説します。</p><p>このガイドの内容:</p>
+      <h2>Rails エンジン入門</h2><p>本ガイドでは、Railsのエンジンについて解説します。また、簡潔で使いやすいインターフェイスを使った、ホストアプリケーション向け追加機能についても解説します。</p><p>このガイドの内容:</p>
 <ul>
 <li>エンジンの役割</li>
 <li>エンジンの生成方法</li>
@@ -711,7 +711,7 @@ mount Blorgh::Engine, at: "/blog"
 </pre>
 </div>
 <p>この行を記述することで、エンジンがアプリケーションの<code>/blog</code>パスにマウントされます。<code>rails server</code>を実行してRailsを起動すること、<code>http://localhost:3000/blog</code>にアクセスできるようになります。</p>
-<div class="note"><p>Deviseなどの他のエンジンではこの点が若干異なり、ルーティングで (<code>devise_for</code>などの) カスタムヘルパーを指定するものがあります。これらのヘルパーの動作は完全に同じです。事前に定義されたカスタマイズ可能なパスにエンジンの機能の一部をマウントします。●</p></div>
+<div class="note"><p>Deviseなどの他のエンジンではこの点が若干異なり、ルーティングで (<code>devise_for</code>などの) カスタムヘルパーを指定するものがあります。これらのヘルパーの動作は完全に同じです。事前に定義されたカスタマイズ可能なパスにエンジンの機能の一部をマウントします。</p></div>
 <h4 id="エンジンの設定"><a href="#%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%B3%E3%81%AE%E8%A8%AD%E5%AE%9A">4.2 エンジンの設定</a></h4>
 <p>作成したエンジンには<code>blorgh_articles</code>テーブルと<code>blorgh_comments</code>テーブル用のマイグレーションが含まれます。これらのテーブルをアプリケーションのデータベースに作成し、エンジンのモデルからこれらのテーブルにアクセスできるようにする必要があります。これらのマイグレーションをアプリケーションにコピーするには、以下のコマンドを実行します。</p>
 <div class="code_container">
@@ -903,16 +903,15 @@ end
 
 </pre>
 </div>
-<p>これにより、<code>set_author</code>用の上のコードは以下のようになります。●</p>
+<p>これにより、<code>set_author</code>用の上のコードは以下のようになります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 self.author = Blorgh.author_class.find_or_create_by(name: author_name)
 
 </pre>
 </div>
-<p>これにより、記述がやや短くなり、動作がやや明示的でなくなります。●この<code>author_class</code>メソッドは常に<code>Class</code>オブジェクトを返す必要があります。</p>
-<p><code>author_class</code>メソッドが<code>String</code>ではなく<code>Class</code>を返すように変更したので、<code>Blorgh::Article</code>の<code>belongs_to</code>定義もそれに合わせて変更する必要があります。
-●</p>
+<p>これにより、記述がやや短くなり、動作がやや明示的でなくなります。この<code>author_class</code>メソッドは常に<code>Class</code>オブジェクトを返す必要があります。</p>
+<p><code>author_class</code>メソッドが<code>String</code>ではなく<code>Class</code>を返すように変更したので、<code>Blorgh::Article</code>の<code>belongs_to</code>定義もそれに合わせて変更する必要があります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 belongs_to :author, class_name: Blorgh.author_class.to_s

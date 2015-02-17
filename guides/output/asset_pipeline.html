@@ -317,10 +317,10 @@ config.assets.js_compressor = :uglifier
 <p>アセットパイプラインの第一の機能はアセットを連結することです。これにより、ブラウザがWebページをレンダリングするためのリクエスト数を減らすことができます。Webブラウザが同時に処理できるリクエスト数には限りがあるため、同時リクエスト数を減らすことができればその分読み込みが高速になります。</p>
 <p>SprocketsはすべてのJavaScriptファイルを1つのマスター<code>.js</code>ファイルに連結し、すべてのCSSファイルを1つのマスター<code>.css</code>ファイルに連結します。本ガイドで後述するように、アセットファイルをグループ化する方法は自由にカスタマイズできます。production環境では、アセットファイル名にMD5フィンガープリントを挿入し、アセットファイルがWebブラウザでキャッシュされるようにしています。このフィンガープリントを変更することでブラウザでキャッシュされていた既存のアセットを無効にすることができます。フィンガープリントの変更は、アセットファイルの内容が変更された時に自動的に行われます。</p>
 <p>アセットパイプラインのもうひとつの機能はアセットの最小化 (一種の圧縮) です。CSSファイルの最小化は、ホワイトスペースとコメントを削除することによって行われます。JavaScriptの最小化プロセスはもう少し複雑です。最小化方法はビルトインのオプションから選んだり、独自に指定したりすることができます。</p>
-<p>アセットパイプラインの第3の機能は、より高級な言語を使用したコーディングのサポートです。これらの言語で記述されたコードはプリコンパイルされ、実際のアセットになります。デフォルトでサポートされている言語は、CSSに代わるSASS、JavaScriptに代わるCoffeeScript、CSS/JavaScriptに代わるERBです。●</p>
+<p>アセットパイプラインの第3の機能は、より高級な言語を使用したコーディングのサポートです。これらの言語で記述されたコードはプリコンパイルされ、実際のアセットになります。デフォルトでサポートされている言語は、CSSに代わるSASS、JavaScriptに代わるCoffeeScript、CSS/JavaScriptに代わるERBです。</p>
 <h4 id="フィンガープリントと注意点"><a href="#%E3%83%95%E3%82%A3%E3%83%B3%E3%82%AC%E3%83%BC%E3%83%97%E3%83%AA%E3%83%B3%E3%83%88%E3%81%A8%E6%B3%A8%E6%84%8F%E7%82%B9">1.2 フィンガープリントと注意点</a></h4>
 <p>アセットファイル名で使用されるフィンガープリントは、アセットファイルの内容に応じて変わります。アセットファイルの内容が少しでも変わると、アセットファイル名も必ずそれに応じて変わります (訳注: MD5の性質により、異なるファイルからたまたま同じフィンガープリントが生成されることはほぼありません)。変更されていないファイルやめったに変更されないファイルがある場合、フィンガープリントも変化しないので、ファイルの内容が完全に同一であることが容易に確認できます。これはサーバーやデプロイ日が異なっていても有効です。</p>
-<p>アセットファイル名は内容が変わると必ず変化するので、CDN、ISP、ネットワーク機器、Webブラウザなどあらゆる場面で有効なキャッシュをHTTPヘッダに設定することができます。ファイルの内容が更新されると、フィンガープリントも更新されます。これにより、リモートクライアントは (訳注: 既存のキャッシュを使用せずに) コンテンツの新しいコピーをサーバーにリクエストします。この手法を一般に <em>キャッシュ破棄 (cache busting)</em> と呼びます。●</p>
+<p>アセットファイル名は内容が変わると必ず変化するので、CDN、ISP、ネットワーク機器、Webブラウザなどあらゆる場面で有効なキャッシュをHTTPヘッダに設定することができます。ファイルの内容が更新されると、フィンガープリントも更新されます。これにより、リモートクライアントは (訳注: 既存のキャッシュを使用せずに) コンテンツの新しいコピーをサーバーにリクエストします。この手法を一般に <em>キャッシュ破棄 (cache busting)</em> と呼びます。</p>
 <p>Sprocketsがフィンガープリントを使用する際には、ファイルの内容をハッシュ化したものをファイル名 (通常は末尾) に追加します。たとえば、<code>global.css</code>というCSSファイル名は以下のようになります。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
@@ -555,7 +555,7 @@ $('#logo').attr src: "&lt;%= asset_path('logo.png') %&gt;"
 </pre>
 </div>
 <p>Rails 4は<code>app/assets/javascripts/application.js</code>と<code>app/assets/stylesheets/application.css</code>ファイルを両方作成します。これはRailsアプリケーション新規作成時に--skip-sprocketsを指定するかどうかにかかわらず行われます。これにより、必要に応じて後からアセットパイプラインを追加することもできます。</p>
-<p>JavaScriptで使用できるディレクティブはスタイルシートでも使用できます (なおJavaScriptと異なりスタイルシートは明示的にインクルードされるという違いがあります)。●CSSマニフェストにおける<code>require_tree</code>ディレクティブの動作はJavaScriptの場合と同様に現在のディレクトリにあるすべてのスタイルシートをrequireします。</p>
+<p>JavaScriptで使用できるディレクティブはスタイルシートでも使用できます (なおJavaScriptと異なりスタイルシートは明示的にインクルードされるという違いがあります)。CSSマニフェストにおける<code>require_tree</code>ディレクティブの動作はJavaScriptの場合と同様に現在のディレクトリにあるすべてのスタイルシートをrequireします。</p>
 <p>上の例では<code>require_self</code>が使用されています。このディレクティブは、<code>require_self</code>呼び出しが行われたその場所にCSSファイルがあれば読み込みます。</p>
 <div class="note"><p>Sassファイルを複数使用しているのであれば、Sprocketsディレクティブで読み込まずに<a href="http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html#import">Sass <code>@import</code>ルール</a>を使用する必要があります。このような場合にSprocketsディレクティブを使用してしまうと、Sassファイルが自分自身のスコープに置かれるため、その中で定義されている変数やミックスインが他のSassから利用できなくなってしまいます。</p></div>
 <p><code>@import "*"</code>や<code>@import "**/*"</code>などのようにワイルドカードマッチでツリー全体を指定することもできます。これは<code>require_tree</code>と同等です。詳細および重要な警告については<a href="https://github.com/rails/sass-rails#features">sass-railsドキュメント</a>を参照してください。</p>
@@ -641,7 +641,7 @@ config.assets.debug = false
 </pre>
 </div>
 <p>デバッグモードが既にオンの場合、<code>:debug</code>オプションは冗長です。</p>
-<p>developmentモードで健全性チェックの一環として圧縮をオンにしたり、デバッグの必要性に応じてオンデマンドで無効にしたりすることもできます。●</p>
+<p>developmentモードで健全性チェックの一環として圧縮をオンにしたり、デバッグの必要性に応じてオンデマンドで無効にしたりすることもできます。</p>
 <h3 id="production環境の場合"><a href="#production%E7%92%B0%E5%A2%83%E3%81%AE%E5%A0%B4%E5%90%88">4 production環境の場合</a></h3>
 <p>Sprocketsは、production環境では前述のフィンガープリントによるスキームを使用します。デフォルトでは、Railsのアセットはプリコンパイル済みかつ静的なアセットとしてWebサーバーから提供されることが前提になっています。</p>
 <p>MD5はコンパイルされるファイルの内容を元にプリコンパイル中に生成され、ファイル名に挿入されてディスクに保存されます。マニフェスト名はRailsヘルパーによってこれらのフィンガープリント名と置き換えられて使用されます。</p>
@@ -686,7 +686,7 @@ load 'deploy/assets'
 <p>これにより、<code>config.assets.prefix</code>で指定されたフォルダが<code>shared/assets</code>にリンクされます。
 既にこの共有フォルダを使用しているのであれば、独自のデプロイ用タスクを作成する必要があります。</p>
 <p>このフォルダは、複数のデプロイによって共有されている点が重要です。これは、サーバー以外の離れた場所でキャッシュされているページが古いコンパイル済みアセットを参照している場合でも、キャッシュ済みページの寿命が来て削除されるまではその古いページへの参照が有効になるようにするためです。</p>
-<p>ファイルをコンパイルする際のデフォルトのマッチャによって、<code>app/assets</code>フォルダ以下の<code>application.js</code>、<code>application.css</code>、およびすべての非JS/CSSファイル (これにより画像ファイルもすべて自動的にインクルードされます) がインクルードされます。<code>app/assets</code>フォルダにあるgemも含まれます。●</p>
+<p>ファイルをコンパイルする際のデフォルトのマッチャによって、<code>app/assets</code>フォルダ以下の<code>application.js</code>、<code>application.css</code>、およびすべての非JS/CSSファイル (これにより画像ファイルもすべて自動的にインクルードされます) がインクルードされます。<code>app/assets</code>フォルダにあるgemも含まれます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 [ Proc.new { |filename, path| path =~ /app\/assets/ &amp;&amp; !%w(.js .css).include?(File.extname(filename)) },
@@ -694,7 +694,7 @@ load 'deploy/assets'
 
 </pre>
 </div>
-<div class="note"><p>このマッチャ (および後述するprecompile配列の他のメンバ) が適用されるのは、コンパイル前やコンパイル中のファイル名ではなく、コンパイル後の最終的なファイル名である点にご注意ください。これは、コンパイルされてJavaScriptやCSSになるような中間ファイルはマッチャの対象からすべて除外されるということです●(純粋なJavaScript/CSSと同様)●。たとえば、<code>.coffee</code>と<code>.scss</code>ファイルはコンパイル後にそれぞれJavaScriptとCSSになるので、これらは自動的にはインクルードされません。</p></div>
+<div class="note"><p>このマッチャ (および後述するprecompile配列の他のメンバ) が適用されるのは、コンパイル前やコンパイル中のファイル名ではなく、コンパイル後の最終的なファイル名である点にご注意ください。これは、コンパイルされてJavaScriptやCSSになるような中間ファイルはマッチャの対象からすべて除外されるということです (純粋なJavaScript/CSSと同様)。たとえば、<code>.coffee</code>と<code>.scss</code>ファイルはコンパイル後にそれぞれJavaScriptとCSSになるので、これらは自動的にはインクルードされません。</p></div>
 <p>他のマニフェストや、個別のスタイルシート/JavaScriptファイルをインクルードしたい場合は、<code>config/initializers/assets.rb</code>の<code>precompile</code>という配列を使用します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -751,7 +751,7 @@ end
 # Expires* ディレクティブを使用する場合はApacheの
 # `mod_expires`モジュールを有効にする必要あり
 &lt;Location /assets/&gt;
-  # Last-Modifiedフィールドが存在する場合はETagの使用が妨げられる●
+  # Last-Modifiedフィールドが存在する場合はETagの使用が妨げられる
   Header unset ETag
   FileETag None
   # RFCによるとキャッシュは最長1年まで
@@ -775,7 +775,7 @@ location ~ ^/assets/ {
 </pre>
 </div>
 <h5 id="gzip圧縮"><a href="#gzip%E5%9C%A7%E7%B8%AE">4.1.2 GZip圧縮</a></h5>
-<p>ファイルをプリコンパイルする際に、Sprocketsによって<a href="http://ja.wikipedia.org/wiki/Gzip">gzipされた</a> (.gz) アセットも作成されます。Webサーバーによる圧縮はほどほどの圧縮率で行われるのが普通ですが、プリコンパイルが1度発生するとSprocketsによって最大圧縮率で圧縮され、Webサーバーからのデータ転送量が最小化されます。逆に、圧縮されてないファイルを自前で圧縮する代りに、事前に圧縮しておいたコンテンツを直接ディスクに配置しておくようWebサーバーを設定することもできます。●</p>
+<p>ファイルをプリコンパイルする際に、Sprocketsによって<a href="http://ja.wikipedia.org/wiki/Gzip">gzipされた</a> (.gz) アセットも作成されます。Webサーバーによる圧縮はほどほどの圧縮率で行われるのが普通ですが、プリコンパイルが1度発生するとSprocketsによって最大圧縮率で圧縮され、Webサーバーからのデータ転送量が最小化されます。逆に、圧縮されてないファイルを自前で圧縮する代りに、事前に圧縮しておいたコンテンツを直接ディスクに配置しておくようWebサーバーを設定することもできます。</p>
 <p>NGINXでは<code>gzip_static</code>を使用することでこれを自動的に行なうことができます。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">

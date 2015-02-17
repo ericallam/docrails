@@ -24,7 +24,7 @@
 <meta name="twitter:image" content="http://railsguides.jp/images/cover_for_twitter.png" />
 <meta name="twitter:url"   content="http://railsguides.jp/" />
 
-<title>Active Supportコア拡張機能 — Rails ガイド</title>
+<title>Active Support コア拡張機能 — Rails ガイド</title>
 <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
 
@@ -198,7 +198,7 @@
 
   <div id="feature">
     <div class="wrapper">
-      <h2>Active Supportコア拡張機能</h2><p>Active SupportはRuby on Railsのコンポーネントであり、Ruby言語の拡張、ユーティリティ、その他横断的な作業を担っています。</p><p>Active Supportは言語レベルで基本部分を底上げして豊かなものにし、Railsアプリケーションの開発とRuby on Railsそれ自体の開発に役立てるべく作られています。</p><p>このガイドの内容:</p>
+      <h2>Active Support コア拡張機能</h2><p>Active SupportはRuby on Railsのコンポーネントであり、Ruby言語の拡張、ユーティリティ、その他横断的な作業を担っています。</p><p>Active Supportは言語レベルで基本部分を底上げして豊かなものにし、Railsアプリケーションの開発とRuby on Railsそれ自体の開発に役立てるべく作られています。</p><p>このガイドの内容:</p>
 <ul>
 <li>コア拡張機能について</li>
 <li>すべての拡張機能を読み込む方法</li>
@@ -809,7 +809,7 @@ end
 
 </pre>
 </div>
-<div class="info"><p><code>with_options</code>はメソッドをレシーバに転送しているので、呼び出しをネストすることもできます。各ネスティングレベルでは、自身の呼び出しに、継承したデフォルト呼び出しをマージします。●</p></div>
+<div class="info"><p><code>with_options</code>はメソッドをレシーバに転送しているので、呼び出しをネストすることもできます。各ネスティングレベルでは、自身の呼び出しに、継承したデフォルト呼び出しをマージします。</p></div>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/object/with_options.rb</code>です。</p></div>
 <h4 id="json-support"><a href="#json-support">2.11 JSON support</a></h4>
 <p>Active Supportが提供する<code>to_json</code>メソッドの実装は、通常<code>json</code> gemがRubyオブジェクトに対して提供している<code>to_json</code>よりも優れています。その理由は、<code>Hash</code>や<code>OrderedHash</code>、<code>Process::Status</code>などのクラスでは、正しいJSON表現を提供するために特別な処理が必要になるためです。</p>
@@ -817,7 +817,7 @@ end
 <h4 id="インスタンス変数"><a href="#%E3%82%A4%E3%83%B3%E3%82%B9%E3%82%BF%E3%83%B3%E3%82%B9%E5%A4%89%E6%95%B0">2.12 インスタンス変数</a></h4>
 <p>Active Supportは、インスタンス変数に簡単にアクセスするためのメソッドを多数提供しています。</p>
 <h5 id="instance_values"><a href="#instance_values">2.12.1 <code>instance_values</code></a></h5>
-<p><code>instance_values</code>メソッドはハッシュを返します。インスタンス変数名から"@"を除いたものがハッシュのキーにマップされ、インスタンス変数の値がハッシュの値にマップされます。●</p>
+<p><code>instance_values</code>メソッドはハッシュを返します。インスタンス変数名から"@"を除いたものがハッシュのキーにマップされ、インスタンス変数の値がハッシュの値にマップされます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class C
@@ -871,7 +871,7 @@ quietly { system 'bundle install' }
 </pre>
 </div>
 <p>たとえば、railtiesテストスイートではこのメソッドを数箇所で使用することで、echoされたコマンドメッセージが進捗ステータスと混じって表示されることのないようにしています。</p>
-<p><code>suppress</code>メソッドを使用すると例外の発生を止めることもできます。このメソッドは、例外クラスを表す任意の数値を受け取ります。<code>suppress</code>は、あるブロックの実行時に例外が発生し、その例外が(<code>kind_of?</code>による判定で●)いずれかの引数に一致する場合、それをキャプチャして例外を発生せずに戻ります。一致しない場合、あらためて例外を発生します。</p>
+<p><code>suppress</code>メソッドを使用すると例外の発生を止めることもできます。このメソッドは、例外クラスを表す任意の数値を受け取ります。<code>suppress</code>は、あるブロックの実行時に例外が発生し、その例外が(<code>kind_of?</code>による判定で)いずれかの引数に一致する場合、それをキャプチャして例外を発生せずに戻ります。一致しない場合、あらためて例外を発生します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # ユーザーがロックされていればインクリメントは失われるが、重要ではない
@@ -946,7 +946,7 @@ end
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/module/aliasing.rb</code>です。</p></div>
 <h4 id="属性"><a href="#%E5%B1%9E%E6%80%A7">3.2 属性</a></h4>
 <h5 id="alias_attribute"><a href="#alias_attribute">3.2.1 <code>alias_attribute</code></a></h5>
-<p>モデルの属性には、リーダー (reader)、ライター (writer)、述語 (predicate) があります。上に対応する3つのメソッドを持つ、モデルの属性の別名 (alias) を一度に作成することができます。他の別名作成メソッドと同様、1つ目の引数には新しい名前、2つ目の引数には元の名前を指定します (割り当てを行ったのと同様に、指定と同じ順序でエイリアスが作成されるはずです●)。</p>
+<p>モデルの属性には、リーダー (reader)、ライター (writer)、述語 (predicate) があります。上に対応する3つのメソッドを持つ、モデルの属性の別名 (alias) を一度に作成することができます。他の別名作成メソッドと同様、1つ目の引数には新しい名前、2つ目の引数には元の名前を指定します (割り当てを行ったのと同様に、指定と同じ順序でエイリアスが作成されるはずです)。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class User &lt; ActiveRecord::Base
@@ -1266,7 +1266,7 @@ delegate :name, :age, :address, :twitter, to: :profile
 
 </pre>
 </div>
-<p>文字列に式展開すると、<code>:to</code>はメソッドが異常されるオブジェクトに対して評価される式になります。●通常は文字列またはシンボルになります。そのような式は、レシーバのコンテキストで評価されます。</p>
+<p>文字列に式展開すると、<code>:to</code>はメソッドが異常されるオブジェクトに対して評価される式になります。通常は文字列またはシンボルになります。そのような式は、レシーバのコンテキストで評価されます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # Rails定数を委譲する
@@ -2048,7 +2048,7 @@ end
 
 </pre>
 </div>
-<p>従って、一般的にはこのメソッドは、Rubyが同じ場所 (評価される実際の定数がある) に対して行なうものと等価ではありません。●</p>
+<p>従って、一般的にはこのメソッドは、Rubyが同じ場所 (評価される実際の定数がある) に対して行なうものと等価ではありません。</p>
 <p>メイラー (mailer) のテストケースでは、テストされるクラスの名前からテストされるメイラーを取得するのに<code>constantize</code>メソッドを使用します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -2349,7 +2349,7 @@ BigDecimal.new(5.00, 6).to_s  # =&gt; "5.0"
 </pre>
 </div>
 <h4 id="bigdecimalの拡張-to_formatted_s"><a href="#to_formatted_s">8.2 <code>to_formatted_s</code></a></h4>
-<p>この<code>to_formatted_s</code>メソッドは、"F"のデフォルトの指定部 (specifier) を提供します。●これは、<code>to_formatted_s</code>または<code>to_s</code>を単に呼び出すと、エンジニアリング記法 ('0.5E1'のような記法) ではなく浮動小数点記法を得られるということです。</p>
+<p>この<code>to_formatted_s</code>メソッドは、"F"のデフォルトの指定部 (specifier) を提供します。これは、<code>to_formatted_s</code>または<code>to_s</code>を単に呼び出すと、エンジニアリング記法 ('0.5E1'のような記法) ではなく浮動小数点記法を得られるということです。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 BigDecimal.new(5.00, 6).to_formatted_s  # =&gt; "5.0"
@@ -2414,7 +2414,7 @@ BigDecimal.new(5.00, 6).to_formatted_s("e")  # =&gt; "0.5E1"
 </div>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/enumerable.rb</code>です。</p></div>
 <h4 id="index_by"><a href="#index_by">9.2 <code>index_by</code></a></h4>
-<p><code>index_by</code>メソッドは、何らかのキーによってインデックス化されたenumerableの要素を持つハッシュを生成します。●</p>
+<p><code>index_by</code>メソッドは、何らかのキーによってインデックス化されたenumerableの要素を持つハッシュを生成します。</p>
 <p>このメソッドはコレクションを列挙し、各要素をブロックに渡します。この要素は、ブロックから返された値によってキーとなります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -2703,7 +2703,7 @@ Array.wrap(0)         # =&gt; [0]
 <li>引数が<code>to_ary</code>に応答する場合、このメソッドが呼び出されます。<code>nil</code>が返された場合、<code>Kernel#Array</code>は<code>to_a</code>を適用しようと動作を続けますが、<code>Array.wrap</code>はすぐさま<code>nil</code>を返します。</li>
 <li>
 <code>to_ary</code>から返された値が<code>nil</code>でも<code>Array</code>オブジェクトでもない場合、<code>Kernel#Array</code>は例外を発生しますが、<code>Array.wrap</code>は例外を発生せずに単にその値を返します。</li>
-<li>このメソッドは引数に対して<code>to_a</code>を呼び出しませんが、特殊なケースとして<code>nil</code>は空の配列を返します。●</li>
+<li>このメソッドは引数に対して<code>to_a</code>を呼び出しませんが、特殊なケースとして<code>nil</code>は空の配列を返します。</li>
 </ul>
 <p>最後の性質は、列挙型同士を比較する場合に特に便利です。</p>
 <div class="code_container">
@@ -2720,8 +2720,8 @@ Array(foo: :bar)      # =&gt; [[:foo, :bar]]
 
 </pre>
 </div>
-<p>上はRuby 1.8の場合、<code>nil</code>に対して<code>[nil]</code>を返し、それ以外の場合には<code>Array(object)</code>を呼び出します。(1.9のcontact機能の正確な動作について知っている前提とします●)</p>
-<p>従って、この場合<code>nil</code>に対する動作が異なり、上で説明されている、残りの<code>object</code>に適用される<code>Kernel#Array</code>も異なります。●</p>
+<p>上はRuby 1.8の場合、<code>nil</code>に対して<code>[nil]</code>を返し、それ以外の場合には<code>Array(object)</code>を呼び出します。(1.9のcontact機能の正確な動作について知っている前提とします)</p>
+<p>従って、この場合<code>nil</code>に対する動作が異なり、上で説明されている、残りの<code>object</code>に適用される<code>Kernel#Array</code>も異なります。</p>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/array/wrap.rb</code>です。</p></div>
 <h4 id="複製"><a href="#%E8%A4%87%E8%A3%BD">10.6 複製</a></h4>
 <p><code>Array.deep_dup</code>メソッドは、自分自身を複製すると同時に、その中のすべてのオブジェクトをActive Supportの<code>Object#deep_dup</code>メソッドによって再帰的に複製します。この動作は、<code>Array#map</code>を使用して<code>deep_dup</code>メソッドを内部の各オブジェクトに適用するのと似ています。</p>
@@ -3273,8 +3273,8 @@ Proc.new { size }.bind([]).call # =&gt; 0
 
 </pre>
 </div>
-<p>上のようにメソッドが呼び出し可能になって引数にバインドされたので、返し値は実際に<code>Method</code>になりました。●</p>
-<div class="note"><p>実際には、<code>Proc#bind</code>は自身の下にメソッドを作成しています。●<code>__bind_1256598120_237302</code>のような気持ち悪い名前のメソッドをスタックトレースで見かけることがあると思いますが、あれはまさにこの方法で作成されたものです。</p></div>
+<p>上のようにメソッドが呼び出し可能になって引数にバインドされたので、返し値は実際に<code>Method</code>になりました。</p>
+<div class="note"><p>実際には、<code>Proc#bind</code>は自身の下にメソッドを作成しています。<code>__bind_1256598120_237302</code>のような気持ち悪い名前のメソッドをスタックトレースで見かけることがあると思いますが、あれはまさにこの方法で作成されたものです。</p></div>
 <p>Action Packではこのトリックを<code>rescue_from</code>などで使用しています。そこではメソッド名を1つ引数として取り、与えられたレスキュー例外用のコールバックとしてprocも引数として取ります。これらはいずれにせよ呼び出される必要があります。それによってバインドされたメソッドが<code>handler_for_rescue</code>から返され、呼び出し元のコードがシンプルになります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -3884,8 +3884,8 @@ t.advance(seconds: 1)
 <code>since</code>や<code>ago</code>の移動先の時間が<code>Time</code>で表現できない場合、<code>DateTime</code>オブジェクトが代わりに返されます。</li>
 </ul>
 <h5 id="time.current"><a href="#time.current">17.1.1 <code>Time.current</code></a></h5>
-<p>Active Supportでは、<code>Time.current</code>を定義して現在のタイムゾーンにおける「今日」を定めています。このメソッドは<code>Time.now</code>と似ていますが、ユーザー定義のタイムゾーンがある場合にそれを考慮する点が異なります。Active Supportでは<code>Time.yesterday</code>メソッドと<code>Time.tomorrow</code>も定義しています。インスタンスでは<code>past?</code>、<code>today?</code>、<code>future?</code>を使用でき、これらはすべて<code>Time.current</code>を起点として導かれます。●原文エラー(Time.yesterdayとTime.tomorrowはない)</p>
-<p>ユーザー定義のタイムゾーンを考慮するメソッドを使用して日付を比較したい場合、<code>TIme.now</code>ではなく必ず<code>Time.current</code>を使用してください。将来、ユーザー定義のタイムゾーンがシステムのタイムゾーンと比較されることがありえます。システムのタイムゾーンではデフォルトで<code>Time.today</code>が使用されます。●原文エラー(Time.todayはない)つまり、<code>Time.now</code>が<code>Time.yesterday</code>と等しくなることがありえるということです。●原文エラー(Time.yesterdayはない)</p>
+<p>Active Supportでは、<code>Time.current</code>を定義して現在のタイムゾーンにおける「今日」を定めています。このメソッドは<code>Time.now</code>と似ていますが、ユーザー定義のタイムゾーンがある場合にそれを考慮する点が異なります。Active Supportでは<code>Time#yesterday</code>メソッドと<code>Time#tomorrow</code>も定義しています。インスタンスでは<code>past?</code>、<code>today?</code>、<code>future?</code>を使用でき、これらはすべて<code>Time.current</code>を起点にして導入されています。</p>
+<p>ユーザー定義のタイムゾーンを考慮するメソッドを使用して日付を比較したい場合、<code>TIme.now</code>ではなく必ず<code>Time.current</code>を使用してください。将来、ユーザー定義のタイムゾーンがシステムのタイムゾーンと比較されることがありえます。システムのタイムゾーンではデフォルトで<code>Time#today</code>が使用されます。つまり、<code>Time.now</code>が<code>Time.current.yesterday</code>と等しくなることがありえるということです。</p>
 <h5 id="all_day、all_week、all_month、all_quarter、all_year"><a href="#all_day%E3%80%81all_week%E3%80%81all_month%E3%80%81all_quarter%E3%80%81all_year">17.1.2 <code>all_day</code>、<code>all_week</code>、<code>all_month</code>、<code>all_quarter</code>、<code>all_year</code></a></h5>
 <p><code>all_day</code>メソッドは、現在時刻を含むその日一日を表す範囲を返します。</p>
 <div class="code_container">
@@ -3916,7 +3916,7 @@ now.all_year
 </pre>
 </div>
 <h4 id="time-constructors"><a href="#time-constructors">17.2 Time Constructors</a></h4>
-<p>Active Supportは、<code>Time.current</code>の値が<code>Time.zone.now</code>の値と同じになるように定義しています。ユーザータイムゾーンが定義されていれば<code>Time.now</code>と同じになります。●</p>
+<p>Active Supportは、<code>Time.current</code>の値が<code>Time.zone.now</code>の値と同じになるように定義しています。ユーザータイムゾーンが定義されていれば<code>Time.now</code>と同じになります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Time.zone_default

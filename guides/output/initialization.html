@@ -24,7 +24,7 @@
 <meta name="twitter:image" content="http://railsguides.jp/images/cover_for_twitter.png" />
 <meta name="twitter:url"   content="http://railsguides.jp/" />
 
-<title>Railsの初期化プロセス — Rails ガイド</title>
+<title>Rails の初期化プロセス — Rails ガイド</title>
 <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
 
@@ -198,7 +198,7 @@
 
   <div id="feature">
     <div class="wrapper">
-      <h2>Railsの初期化プロセス</h2><p>本章は、Rails 4におけるRails初期化プロセスの内部について解説します。上級Rails開発者向けに推奨される、きわめて高度な内容を扱っています。</p><p>このガイドの内容:</p>
+      <h2>Rails の初期化プロセス</h2><p>本章は、Rails 4におけるRails初期化プロセスの内部について解説します。上級Rails開発者向けに推奨される、きわめて高度な内容を扱っています。</p><p>このガイドの内容:</p>
 <ul>
 <li><code>rails server</code>の使用法</li>
 <li>Rails初期化シーケンスのタイムライン</li>
@@ -429,7 +429,7 @@ end
 
 </pre>
 </div>
-<p>最初に<code>super</code>が呼び出され、そこから<code>Rack::Server</code>の<code>initialize</code>メソッドを呼び出します。●</p>
+<p>最初に<code>super</code>が呼び出され、そこから<code>Rack::Server</code>の<code>initialize</code>メソッドを呼び出します。</p>
 <h4 id="起動!-rack:-lib/rack/server.rb"><a href="#rack:-lib/rack/server.rb">1.9 Rack: <code>lib/rack/server.rb</code></a></h4>
 <p><code>Rack::Server</code>は、あらゆるRackベースのアプリケーション (Railsもその中に含まれます) のための共通のサーバーインターフェイスを提供する役割を担います。</p>
 <p><code>Rack::Server</code>の<code>initialize</code>は、いくつかの変数を設定しているだけの簡単なメソッドです。</p>
@@ -692,7 +692,7 @@ require File.expand_path('../boot', __FILE__)
 
 </pre>
 </div>
-<p>それまでにboot.rbがrequireされていなかった場合に限り、<code>rails server</code>の場合にはboot.rbがrequireされます。ただしPassengerを使用する場合にはboot.rbがrequire*<em>されません</em>*。●</p>
+<p>それまでにboot.rbがrequireされていなかった場合に限り、<code>rails server</code>の場合にはboot.rbがrequireされます。ただしPassengerを使用する場合にはboot.rbがrequire*<em>されません</em>*。</p>
 <p>ここからいよいよ面白くなってきます。</p>
 <h3 id="railsを読み込む"><a href="#rails%E3%82%92%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%82%80">2 Railsを読み込む</a></h3>
 <p><code>config/application.rb</code>の次の行は以下のようになっています。</p>

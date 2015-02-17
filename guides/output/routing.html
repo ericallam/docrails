@@ -24,7 +24,7 @@
 <meta name="twitter:image" content="http://railsguides.jp/images/cover_for_twitter.png" />
 <meta name="twitter:url"   content="http://railsguides.jp/" />
 
-<title>Railsのルーティング — Rails ガイド</title>
+<title>Rails のルーティング — Rails ガイド</title>
 <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
 
@@ -198,7 +198,7 @@
 
   <div id="feature">
     <div class="wrapper">
-      <h2>Railsのルーティング</h2><p>このガイドでは、開発者に向けてRailsのルーティング機能を解説します (訳注: routeとrootを区別するため、訳文ではrouteを基本的に「ルーティング」と訳します)。</p><p>このガイドの内容:</p>
+      <h2>Rails のルーティング</h2><p>このガイドでは、開発者に向けてRailsのルーティング機能を解説します (訳注: routeとrootを区別するため、訳文ではrouteを基本的に「ルーティング」と訳します)。</p><p>このガイドの内容:</p>
 <ul>
 <li><code>routes.rb</code>のコードの読み方</li>
 <li>独自のルーティング作成法 (リソースベースのルーティングが推奨されますが、<code>match</code>メソッドによるルーティングも可能です)</li>
@@ -820,7 +820,7 @@ end
 
 </pre>
 </div>
-<p>DSL (ドメイン固有言語) である<code>shallow</code>メソッドをルーティングで使用すると、すべてのネストが浅くなるように内側にスコープを1つ作成します。●これによって生成されるルーティングは、最初の例と完全に同じです。</p>
+<p>DSL (ドメイン固有言語) である<code>shallow</code>メソッドをルーティングで使用すると、すべてのネストが浅くなるように内側にスコープを1つ作成します。これによって生成されるルーティングは、最初の例と完全に同じです。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 shallow do
@@ -1237,7 +1237,7 @@ get '/:id', to: 'posts#show', constraints: {id: /^\d/}
 </pre>
 </div>
 <p>対象となるルーティングはすべて初めからアンカーされているので、このようなアンカー表現を使用する必要はないはずです。</p>
-<p>たとえば以下のルーティングでは、ルート (root) 名前空間を共有する際に<code>posts</code>に対して<code>to_param</code>が<code>1-hello-world</code>のように数字で始まる値だけが使用できるようになっており、<code>users</code>に対して<code>to_param</code>が<code>david</code>のように数字で始まらない値だけが使用できるようになっています。●</p>
+<p>たとえば以下のルーティングでは、ルート (root) 名前空間を共有する際に<code>posts</code>に対して<code>to_param</code>が<code>1-hello-world</code>のように数字で始まる値だけが使用できるようになっており、<code>users</code>に対して<code>to_param</code>が<code>david</code>のように数字で始まらない値だけが使用できるようになっています。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 get '/:id', to: 'posts#show', constraints: { id: /\d.+/ }
@@ -1361,7 +1361,7 @@ get '/stories', to: redirect {|path_params, req| "/posts/#{req.subdomain}" }
 </pre>
 </div>
 <p>ここで行われているリダイレクトは、HTTPステータスで言う「301 "Moved Permanently"」であることにご注意ください。一部のWebブラウザやプロキシサーバーはこの種のリダイレクトをキャッシュすることがあり、その場合リダイレクト前の古いページにはアクセスできなくなります。</p>
-<p>どの場合であっても、ホスト (<code>http://www.example.com</code>など) がURLの冒頭で指定されていない場合は、Railsは (以前のリクエストではなく) 現在のリクエストから詳細を取得します。●</p>
+<p>どの場合であっても、ホスト (<code>http://www.example.com</code>など) がURLの冒頭で指定されていない場合は、Railsは (以前のリクエストではなく) 現在のリクエストから詳細を取得します。</p>
 <h4 id="rackアプリケーションにルーティングする"><a href="#rack%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%AB%E3%83%AB%E3%83%BC%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0%E3%81%99%E3%82%8B">3.13 Rackアプリケーションにルーティングする</a></h4>
 <p><code>Post</code>コントローラの<code>index</code>アクションに対応する<code>'posts#index'</code>のような文字列の代りに、任意の<a href="rails_on_rack.html">Rackアプリケーション</a>をマッチャーのエンドポイントとして指定することができます。</p>
 <div class="code_container">
@@ -1612,7 +1612,7 @@ resources :photos, :accounts
 </pre>
 </div>
 <p>上によって、<code>admin_photos_path</code>と<code>admin_accounts_path</code>などのルーティングが生成されます。これらは<code>/admin/photos</code>と<code>/admin/accounts</code>にそれぞれ割り当てられます。</p>
-<div class="note"><p><code>namespace</code>スコープを使用すると、<code>:module</code>や<code>:path</code>プレフィックスに加えて<code>:as</code>も自動的に追加されます。●</p></div>
+<div class="note"><p><code>namespace</code>スコープを使用すると、<code>:module</code>や<code>:path</code>プレフィックスに加えて<code>:as</code>も自動的に追加されます。</p></div>
 <p>名前付きパラメータを持つルーティングにプレフィックスを追加することもできます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">

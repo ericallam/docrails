@@ -24,7 +24,7 @@
 <meta name="twitter:image" content="http://railsguides.jp/images/cover_for_twitter.png" />
 <meta name="twitter:url"   content="http://railsguides.jp/" />
 
-<title>RailsでJavaScriptを使用する — Rails ガイド</title>
+<title>Rails で JavaScript を使用する — Rails ガイド</title>
 <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
 
@@ -198,7 +198,7 @@
 
   <div id="feature">
     <div class="wrapper">
-      <h2>RailsでJavaScriptを使用する</h2><p>本ガイドでは、RailsにビルトインされているAjax/JavaScript機能などについて解説します。これらを活用して、リッチな動的Ajaxアプリケーションをお手軽に作ることができます。</p><p>このガイドの内容:</p>
+      <h2>Rails で JavaScript を使用する</h2><p>本ガイドでは、RailsにビルトインされているAjax/JavaScript機能などについて解説します。これらを活用して、リッチな動的Ajaxアプリケーションをお手軽に作ることができます。</p><p>このガイドの内容:</p>
 <ul>
 <li>Ajaxの基礎</li>
 <li>「控えめなJavaScript」について</li>
@@ -516,7 +516,7 @@ $("&lt;%= escape_javascript(render @user) %&gt;").appendTo("#users");
 <h3 id="turbolinks"><a href="#turbolinks">5 Turbolinks</a></h3>
 <p>Rails 4には<a href="https://github.com/rails/turbolinks">Turbolinks gem</a>が同梱されています。このgemでは、ページのレンダリングを多くのページで高速化するのにAjaxを使用しています。</p>
 <h4 id="turbolinksの動作原理"><a href="#turbolinks%E3%81%AE%E5%8B%95%E4%BD%9C%E5%8E%9F%E7%90%86">5.1 Turbolinksの動作原理</a></h4>
-<p>Turbolinksは、ページにあるすべての<code>&lt;a&gt;</code>にクリックハンドラを1つずつ追加します。ブラウザで<a href="https://developer.mozilla.org/en-US/docs/Web/Guide/API/DOM/Manipulating_the_browser_history#The_pushState().C2.A0method">PushState</a>がサポートされている場合、Turbolinksはそのページ用のAjaxリクエストを生成し、サーバーからのレスポンスを解析し、そのページの<code>&lt;body&gt;</code>全体をレスポンスの<code>&lt;body&gt;</code>で置き換えます。続いて、TurbolinksはPushStateを使用してURLを正しいものに書き換え、リフレッシュのセマンティクスを維持しながらプリティURLを与えます。●</p>
+<p>Turbolinksは、ページにあるすべての<code>&lt;a&gt;</code>にクリックハンドラを1つずつ追加します。ブラウザで<a href="https://developer.mozilla.org/en-US/docs/Web/Guide/API/DOM/Manipulating_the_browser_history#The_pushState().C2.A0method">PushState</a>がサポートされている場合、Turbolinksはそのページ用のAjaxリクエストを生成し、サーバーからのレスポンスを解析し、そのページの<code>&lt;body&gt;</code>全体をレスポンスの<code>&lt;body&gt;</code>で置き換えます。続いて、TurbolinksはPushStateを使用してURLを正しいものに書き換え、リフレッシュのセマンティクスを維持しながらプリティURLを与えます。</p>
 <p>Turbolinksを有効にするには、TurbolinksをGemfileに追加し、CoffeeScriptのマニフェスト (通常は<code>app/assets/javascripts/application.js</code>) に<code>//= require turbolinks</code>を追加します。</p>
 <p>Turbolinksを特定のリンクでのみ無効にしたい場合は、タグに<code>data-no-turbolink</code>属性を追加します。</p>
 <div class="code_container">
