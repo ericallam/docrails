@@ -184,79 +184,79 @@ rake "db:migrate", env: 'production'
 
 ### route(routing_code)
 
-Adds a routing entry to the `config/routes.rb` file. In the steps above, we generated a person scaffold and also removed `README.rdoc`. Now, to make `PeopleController#index` the default page for the application:
+ルーティングエントリを`config/routes.rb`ファイルにひとつ追加します。上の手順では、scaffoldでpersonを生成し、続けて`README.rdoc`を削除しました。今度は以下のようにして`PeopleController#index`をアプリケーションのデフォルトページにします。
 
 ```ruby
 route "root to: 'person#index'"
-``` 
+```
 
 ### inside(dir)
 
-Enables you to run a command from the given directory. For example, if you have a copy of edge rails that you wish to symlink from your new apps, you can do this:
+ディレクトリを指定してコマンドをひとつ実行します。たとえば、edge railsのコピーがあり、アプリケーションからそこにシンボリックリンクを張るには以下のようにします。
 
 ```ruby
 inside('vendor') do
   run "ln -s ~/commit-rails/rails rails"
-[W2]end
-``` 
+end
+```
 
 ### ask(question)
 
-`ask()` gives you a chance to get some feedback from the user and use it in your templates. Let's say you want your user to name the new shiny library you're adding:
+`ask()`はユーザーからのフィードバックを受け取ってテンプレートで利用するのに使用します。たとえば、追加される新品のライブラリに付ける名前をユーザーに入力してもらうには、以下のようにします。
 
 ```ruby
-lib_name = ask("What do you want to call the shiny library ?")
+lib_name = ask("ライブラリに付ける名前を入力してください")
 lib_name << ".rb" unless lib_name.index(".rb")
 
 lib lib_name, <<-CODE
   class Shiny
   end
 CODE
-``` 
+```
 
 ### yes?(question) or no?(question)
 
-These methods let you ask questions from templates and decide the flow based on the user's answer. Let's say you want to freeze rails only if the user wants to:
+テンプレートでユーザーからの入力に基いて処理の流れを変えたい場合に使用します。たとえば、指定があった場合にのみrailsをfreezeしたい場合は以下のようにします。
 
 ```ruby
 rake("rails:freeze:gems") if yes?("Freeze rails gems?")
-# no?(question) acts just the opposite.
-``` 
+# no?(question) はyes?と逆の動作
+```
 
 ### git(:command)
 
-Rails templates let you run any git command:
+Railsテンプレートで任意のgitコマンドを実行します。
 
 ```ruby
-  git :init
-  git add: "."
+git :init
+git add: "."
 git commit: "-a -m 'Initial commit'"
-``` 
+```
 
 ### after_bundle(&block)
 
-Registers a callback to be executed after the gems are bundled and binstubs are generated. Useful for all generated files to version control:
+gemのバンドルとbinstub生成の完了後に実行したいコールバックを登録します。生成したファイルをバージョン管理するところまで自動化したい場合に便利です。
 
 ```ruby
 after_bundle do
   git :init
   git add: "."
   git commit: "-a -m 'Initial commit'"
-[W2]end
-``` 
+end
+```
 
-The callbacks gets executed even if `--skip-bundle` and/or `--skip-spring` has been passed.
+これらのコールバックは`--skip-bundle`や`--skip-spring`を指定した場合でもスキップされずに実行されます。
 
-Advanced Usage
+高度な利用法
 --------------
 
-The application template is evaluated in the context of a `Rails::Generators::AppGenerator` instance. It uses the `apply` action provided by [Thor](https://github.com/erikhuda/thor/blob/master/lib/thor/actions.rb#L207).
-This means you can extend and change the instance to match your needs.
+アプリケーションテンプレートは、`Rails::Generators::AppGenerator`インスタンスのコンテキストで評価されます。ここで使用される`apply`アクションは[Thor](https://github.com/erikhuda/thor/blob/master/lib/thor/actions.rb#L207)が提供しています。
+これにより、このインスタンスを必要に応じて拡張したり変更したりできます。
 
-For example by overwriting the `source_paths` method to contain the location of your template. Now methods like `copy_file` will accept relative paths to your template's location.
+たとえば、`source_paths`メソッドを上書きしてテンプレートの位置を指定することができます。これにより、`copy_file`などのメソッドでテンプレートの位置からの相対パスを指定できるようになります。
 
 ```ruby
 def source_paths
   [File.expand_path(File.dirname(__FILE__))]
-[W2]end
+end
 ```

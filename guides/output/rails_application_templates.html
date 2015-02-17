@@ -237,7 +237,7 @@
 <li><a href="#after_bundle(&amp;block)">after_bundle(&amp;block)</a></li>
 </ul>
 </li>
-<li><a href="#advanced-usage">Advanced Usage</a></li>
+<li><a href="#%E9%AB%98%E5%BA%A6%E3%81%AA%E5%88%A9%E7%94%A8%E6%B3%95">高度な利用法</a></li>
 </ol>
 </body></html>
 
@@ -413,7 +413,7 @@ rake "db:migrate", env: 'production'
 </pre>
 </div>
 <h4 id="route(routing_code)"><a href="#route(routing_code)">2.10 route(routing_code)</a></h4>
-<p>Adds a routing entry to the <code>config/routes.rb</code> file. In the steps above, we generated a person scaffold and also removed <code>README.rdoc</code>. Now, to make <code>PeopleController#index</code> the default page for the application:</p>
+<p>ルーティングエントリを<code>config/routes.rb</code>ファイルにひとつ追加します。上の手順では、scaffoldでpersonを生成し、続けて<code>README.rdoc</code>を削除しました。今度は以下のようにして<code>PeopleController#index</code>をアプリケーションのデフォルトページにします。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 route "root to: 'person#index'"
@@ -421,20 +421,20 @@ route "root to: 'person#index'"
 </pre>
 </div>
 <h4 id="inside(dir)"><a href="#inside(dir)">2.11 inside(dir)</a></h4>
-<p>Enables you to run a command from the given directory. For example, if you have a copy of edge rails that you wish to symlink from your new apps, you can do this:</p>
+<p>ディレクトリを指定してコマンドをひとつ実行します。たとえば、edge railsのコピーがあり、アプリケーションからそこにシンボリックリンクを張るには以下のようにします。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 inside('vendor') do
   run "ln -s ~/commit-rails/rails rails"
-  end
+end
 
 </pre>
 </div>
 <h4 id="ask(question)"><a href="#ask(question)">2.12 ask(question)</a></h4>
-<p><code>ask()</code> gives you a chance to get some feedback from the user and use it in your templates. Let's say you want your user to name the new shiny library you're adding:</p>
+<p><code>ask()</code>はユーザーからのフィードバックを受け取ってテンプレートで利用するのに使用します。たとえば、追加される新品のライブラリに付ける名前をユーザーに入力してもらうには、以下のようにします。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-lib_name = ask("What do you want to call the shiny library ?")
+lib_name = ask("ライブラリに付ける名前を入力してください")
 lib_name &lt;&lt; ".rb" unless lib_name.index(".rb")
 
 lib lib_name, &lt;&lt;-CODE
@@ -445,46 +445,46 @@ CODE
 </pre>
 </div>
 <h4 id="yes?(question)-or-no?(question)"><a href="#yes?(question)-or-no?(question)">2.13 yes?(question) or no?(question)</a></h4>
-<p>These methods let you ask questions from templates and decide the flow based on the user's answer. Let's say you want to freeze rails only if the user wants to:</p>
+<p>テンプレートでユーザーからの入力に基いて処理の流れを変えたい場合に使用します。たとえば、指定があった場合にのみrailsをfreezeしたい場合は以下のようにします。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 rake("rails:freeze:gems") if yes?("Freeze rails gems?")
-# no?(question) acts just the opposite.
+# no?(question) はyes?と逆の動作
 
 </pre>
 </div>
 <h4 id="git(:command)"><a href="#git(:command)">2.14 git(:command)</a></h4>
-<p>Rails templates let you run any git command:</p>
+<p>Railsテンプレートで任意のgitコマンドを実行します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-  git :init
-  git add: "."
+git :init
+git add: "."
 git commit: "-a -m 'Initial commit'"
 
 </pre>
 </div>
 <h4 id="after_bundle(&amp;block)"><a href="#after_bundle(&amp;block)">2.15 after_bundle(&amp;block)</a></h4>
-<p>Registers a callback to be executed after the gems are bundled and binstubs are generated. Useful for all generated files to version control:</p>
+<p>gemのバンドルとbinstub生成の完了後に実行したいコールバックを登録します。生成したファイルをバージョン管理するところまで自動化したい場合に便利です。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 after_bundle do
   git :init
   git add: "."
   git commit: "-a -m 'Initial commit'"
-  end
+end
 
 </pre>
 </div>
-<p>The callbacks gets executed even if <code>--skip-bundle</code> and/or <code>--skip-spring</code> has been passed.</p>
-<h3 id="advanced-usage"><a href="#advanced-usage">3 Advanced Usage</a></h3>
-<p>The application template is evaluated in the context of a <code>Rails::Generators::AppGenerator</code> instance. It uses the <code>apply</code> action provided by <a href="https://github.com/erikhuda/thor/blob/master/lib/thor/actions.rb#L207">Thor</a>.
-This means you can extend and change the instance to match your needs.</p>
-<p>For example by overwriting the <code>source_paths</code> method to contain the location of your template. Now methods like <code>copy_file</code> will accept relative paths to your template's location.</p>
+<p>これらのコールバックは<code>--skip-bundle</code>や<code>--skip-spring</code>を指定した場合でもスキップされずに実行されます。</p>
+<h3 id="高度な利用法"><a href="#%E9%AB%98%E5%BA%A6%E3%81%AA%E5%88%A9%E7%94%A8%E6%B3%95">3 高度な利用法</a></h3>
+<p>アプリケーションテンプレートは、<code>Rails::Generators::AppGenerator</code>インスタンスのコンテキストで評価されます。ここで使用される<code>apply</code>アクションは<a href="https://github.com/erikhuda/thor/blob/master/lib/thor/actions.rb#L207">Thor</a>が提供しています。
+これにより、このインスタンスを必要に応じて拡張したり変更したりできます。</p>
+<p>たとえば、<code>source_paths</code>メソッドを上書きしてテンプレートの位置を指定することができます。これにより、<code>copy_file</code>などのメソッドでテンプレートの位置からの相対パスを指定できるようになります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 def source_paths
   [File.expand_path(File.dirname(__FILE__))]
-  end
+end
 
 </pre>
 </div>
