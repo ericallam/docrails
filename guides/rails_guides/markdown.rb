@@ -18,9 +18,11 @@ module RailsGuides
     def render(body)
       @raw_body = body
       extract_raw_header_and_body
+      extract_raw_body_and_references
       generate_header
       generate_title
       generate_body
+      generate_references
       generate_structure
       generate_index
       render_page
@@ -68,12 +70,22 @@ module RailsGuides
         end
       end
 
+      def extract_raw_body_and_references
+        if @raw_body =~ /^references\-{40,}$/
+          @raw_body, _, @raw_references = @raw_body.partition(/^references\-{40,}$/).map(&:strip)
+        end
+      end
+
       def generate_body
         @body = engine.render(@raw_body)
       end
 
       def generate_header
         @header = engine.render(@raw_header).html_safe
+      end
+
+      def generate_references
+        @references = engine.render(@raw_references).html_safe if @raw_references
       end
 
       def generate_structure
@@ -157,6 +169,7 @@ module RailsGuides
         @view.content_for(:header_section) { @header }
         @view.content_for(:page_title) { @title }
         @view.content_for(:index_section) { @index }
+        @view.content_for(:references) { @references }
         @view.render(:layout => @layout, :text => @body)
       end
   end

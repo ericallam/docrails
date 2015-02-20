@@ -202,12 +202,34 @@ module RailsGuides
           result = view.render(:layout => layout, :formats => [$1], :file => $`)
         else
           body = File.read(File.join(source_dir, guide))
+          body = body << references_md(guide) if references?(guide)
           result = RailsGuides::Markdown.new(view, layout).render(body)
 
           warn_about_broken_links(result) if @warnings
         end
 
         f.write(result)
+      end
+    end
+
+    def yml
+      @yml ||= YAML.load(File.read(File.join(source_dir, "references.yml")))
+    end
+
+    def references?(guide)
+      yml[guide.sub(".md", "")]
+    end
+
+    def references_md(guide)
+      md = <<-MD
+
+参考資料
+---------
+
+references#{"-" * 80}
+      MD
+      yml[guide.sub(".md", "")].each_with_object(md) do |link, str|
+        str << "* [#{link['title']}](#{link['url']})\n"
       end
     end
 
