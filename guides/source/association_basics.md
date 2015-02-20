@@ -1566,7 +1566,7 @@ end
 
 ##### `:through`
 
-`:through`オプションは、クエリ実行時に経由する結合(join)モデルを指定します。`has_many :through`関連付けは、多対多の関連付けを実装する方法を提供します。(詳細については<a href="#has_many-:through関連付け">このガイドの説明</a>を参照)
+`:through`オプションは、クエリ実行時に経由する結合(join)モデルを指定します。`has_many :through`関連付けは、多対多の関連付けを実装する方法を提供します(詳細については<a href="#has_many-:through関連付け">このガイドの説明</a>を参照)。
 
 ##### `:validate`
 
