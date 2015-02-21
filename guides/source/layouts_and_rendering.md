@@ -748,7 +748,7 @@ WARNING: これらのアセットタグヘルパーは、指定の場所にア�
 
 Railsで[アセットパイプライン](asset_pipeline.html) を有効にしている場合、JavaScriptへのリンク先は旧Railsの`public/javascripts`ではなく`/assets/javascripts/`になります。その後このリンクはアセットパイプラインによって利用可能になります。
 
-Railsアプリケーション内やRailsエンジン内のJavaScriptファイルは、`app/assets`、`lib/assets`、`vendor/assets`のいずれかの場所に置かれます。これらの置き場所の詳細については、[アセットパイプラインガイドの「アセットの編成」](asset_pipeline.html#asset-organization) を参照してください。
+Railsアプリケーション内やRailsエンジン内のJavaScriptファイルは、`app/assets`、`lib/assets`、`vendor/assets`のいずれかの場所に置かれます。これらの置き場所の詳細については、[アセットパイプラインガイドの「アセットの編成」](asset_pipeline.html#アセットの編成) を参照してください。
 
 好みに応じて、ドキュメントルートからの相対フルパスやURLを指定することもできます。たとえば、`app/assets`、`lib/assets`、または`vendor/assets`の下にある`javascripts`の下にあるJavaScriptファイルにリンクしたい場合は以下のようにします。
 
