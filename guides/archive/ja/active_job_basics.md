@@ -208,7 +208,7 @@ ActionMailer
 最近のWebアプリケーションでよく実行されるジョブといえば、リクエスト-レスポンスのサイクルの外でメールを送信することでしょう。これにより、ユーザーが送信を待つ必要がなくなります。Active JobはAction Mailerと統合されているので、非同期メール送信を簡単に行えます。
 
 ```ruby
-# すぐにメール送信したい場合は#deliver_useを使用
+# すぐにメール送信したい場合は#deliver_nowを使用
 UserMailer.welcome(@user).deliver_now
 
 # Active Jobを使用して後でメール送信したい場合は#deliver_laterを使用
