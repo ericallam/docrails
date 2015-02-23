@@ -520,6 +520,7 @@ User.inactive
 ### 文字列からのコンテンツ描出
 
 Rails 4.1の`render`に`:plain`、`:html`、`:body`オプションが導入されました。以下のようにコンテンツタイプを指定できるため、文字列ベースのコンテンツ表示にはこれらのオプションの使用が推奨されます。
+
 * `render :plain`を実行するとcontent typeは`text/plain`に設定される
 * `render :html`を実行するとcontent typeは`text/html`に設定される
 * `render :body`を実行した場合、content typeヘッダーは「設定されない」
