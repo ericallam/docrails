@@ -200,7 +200,7 @@
     <div class="wrapper">
       <h2>Active Record の基礎</h2><p>このガイドではActive Recordの基礎について説明します。</p><p>このガイドの内容:</p>
 <ul>
-<li>オブジェクトリレーションマッピング(ORM)とActive Recordについて、およびRailsでの利用方法</li>
+<li>ORM (オブジェクトリレーショナルマッピング) とActive Recordについて、およびRailsでの利用方法</li>
 <li>Active RecordとMVC (Model-View-Controller)パラダイムの親和性</li>
 <li>Active Recordモデルを使用してリレーショナルデータベースに保存されたデータを操作する</li>
 <li>Active Recordスキーマにおける名前付けルール</li>
@@ -257,11 +257,11 @@
         <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>
 <h3 id="active-recordについて"><a href="#active-record%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6">1 Active Recordについて</a></h3>
-<p>Active Recordとは、<a href="getting_started.html#the-mvc-architecture">MVC</a>で言うところのM、つまりモデルに相当するものであり、ビジネスデータとビジネスロジックを表すシステムの階層です。Active Recordは、データベースに恒久的に保存される必要のあるビジネスオブジェクトの作成と利用を円滑に行なえるようにします。Active Recordは、オブジェクトリレーションマッピング(ORM: Object Relation Mapping)システムに記述されている「Active Recordパターン」を実装したものであり、同じ名前が付けられています。</p>
+<p>Active Recordとは、<a href="getting_started.html#the-mvc-architecture">MVC</a>で言うところのM、つまりモデルに相当するものであり、ビジネスデータとビジネスロジックを表すシステムの階層です。Active Recordは、データベースに恒久的に保存される必要のあるビジネスオブジェクトの作成と利用を円滑に行なえるようにします。Active Recordは、ORM (オブジェクトリレーショナルマッピング) システムに記述されている「Active Recordパターン」を実装したものであり、同じ名前が付けられています。</p>
 <h4 id="active-recordパターン"><a href="#active-record%E3%83%91%E3%82%BF%E3%83%BC%E3%83%B3">1.1 Active Recordパターン</a></h4>
 <p><a href="http://www.martinfowler.com/eaaCatalog/activeRecord.html">Active RecordはMartin Fowlerによって</a> <em>Patterns of Enterprise Application Architecture</em> という書籍で記述されました。Active Recordにおいて、オブジェクトとは永続的なデータであり、そのデータに対する振る舞いでもあります。Active Recordでは、データアクセスのロジックを確実なものにすることは、そのオブジェクトの利用者にデータベースへの読み書き方法を教育することの一部である、という意見を採用しています。</p>
 <h4 id="o/rマッピング"><a href="#o/r%E3%83%9E%E3%83%83%E3%83%94%E3%83%B3%E3%82%B0">1.2 O/Rマッピング</a></h4>
-<p>オブジェクトリレーションマッピング(O/RマッピングやORMと略されることもあります)とは、アプリケーションが持つリッチなオブジェクトをリレーショナルデータベース(RDBMS)のテーブルに接続するものです。ORMを使用することで、SQL文を直接書く代りにわずかなアクセスコードを書くだけで、アプリケーションにおけるオブジェクトの属性やリレーションシップをデータベースに保存したりデータベースから読み出したりすることができるようになります。</p>
+<p>オブジェクトリレーショナルマッピング (O/RマッピングやORMと略されることもあります)とは、アプリケーションが持つリッチなオブジェクトをリレーショナルデータベース(RDBMS)のテーブルに接続するものです。ORMを使用することで、SQL文を直接書く代りにわずかなアクセスコードを書くだけで、アプリケーションにおけるオブジェクトの属性やリレーションシップをデータベースに保存したりデータベースから読み出したりすることができるようになります。</p>
 <h4 id="ormフレームワークとしてのactive-record"><a href="#orm%E3%83%95%E3%83%AC%E3%83%BC%E3%83%A0%E3%83%AF%E3%83%BC%E3%82%AF%E3%81%A8%E3%81%97%E3%81%A6%E3%81%AEactive-record">1.3 ORMフレームワークとしてのActive Record</a></h4>
 <p>Active Recordにはさまざまな機能が搭載されており、その中でも以下のものが特に重要です。</p>
 <ul>

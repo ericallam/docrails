@@ -179,7 +179,7 @@ end
 * `integration_tool`は、使用する統合ツールを定義します。デフォルトは`nil`です。
 * `javascripts`は、生成時にJavaScriptファイルへのフックをオンにするかどうかを指定します。この設定は`scaffold`ジェネレータの実行中に使用されます。デフォルトは`true`です。
 * `javascript_engine`は、アセット生成時に(coffeeなどで)使用するエンジンを設定します。デフォルトは`nil`です。
-* `orm`は、使用するO/RMを指定します。デフォルトは`false`であり、この場合はActive Recordが'使用されます。
+* `orm`は、使用するORM (オブジェクトリレーショナルマッピング) を指定します。デフォルトは`false`であり、この場合はActive Recordが'使用されます。
 * `resource_controller`は、`rails generate resource`の実行時にどのジェネレータを使用してコントローラを生成するかを指定します。デフォルトは`:controller`です。
 * `scaffold_controller`は`resource_controller`と同じではありません。`scaffold_controller`は _scaffold_ でどのジェネレータを使用してコントローラを生成するか(`rails generate scaffold`の実行時)を指定します。デフォルトは`:scaffold_controller`です。
 * `stylesheets`は、ジェネレータでスタイルシートのフックを行なうかどうかを指定します。この設定は`scaffold`ジェネレータの実行時に使用されますが。このフックは他のジェネレータでも使用されます。デフォルトは`true`です。
@@ -273,7 +273,7 @@ config.middleware.delete "Rack::MethodOverride"
 
 * `config.active_record.default_timezone`は、データベースから日付・時刻を取り出した際のタイムゾーンを`Time.local` (`:local`を指定した場合)と`Time.utc` (`:utc`を指定した場合)のどちらにするかを指定します。デフォルトは`:utc`です。
 
-* `config.active_record.schema_format`は、データベーススキーマをファイルに書き出す際のフォーマットを指定します。デフォルトは`:ruby`で、データベースには依存せず、マイグレーションに依存します。`:sql`を指定するとSQL文で書き出されますが、この場合潜在的にデータベース依存する可能性があります。
+* `config.active_record.schema_format`は、データベーススキーマをファイルに書き出す際のフォーマットを指定します。デフォルトは`:ruby`で、データベースには依存せず、マイグレーションに依存します。`:sql`を指定するとSQL文で書き出されますが、この場合潜在的にデータベースに依存する可能性があります。
 
 * `config.active_record.timestamped_migrations`は、マイグレーションファイル名にシリアル番号とタイムスタンプのどちらを与えるかを指定します。デフォルトはtrueで、タイムスタンプが使用されます。開発者が複数の場合は、タイムスタンプの使用をお勧めします。
 

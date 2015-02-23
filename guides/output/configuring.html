@@ -396,7 +396,7 @@ end
 <li>
 <code>javascript_engine</code>は、アセット生成時に(coffeeなどで)使用するエンジンを設定します。デフォルトは<code>nil</code>です。</li>
 <li>
-<code>orm</code>は、使用するO/RMを指定します。デフォルトは<code>false</code>であり、この場合はActive Recordが'使用されます。</li>
+<code>orm</code>は、使用するORM (オブジェクトリレーショナルマッピング) を指定します。デフォルトは<code>false</code>であり、この場合はActive Recordが'使用されます。</li>
 <li>
 <code>resource_controller</code>は、<code>rails generate resource</code>の実行時にどのジェネレータを使用してコントローラを生成するかを指定します。デフォルトは<code>:controller</code>です。</li>
 <li>
@@ -507,7 +507,7 @@ config.middleware.delete "Rack::MethodOverride"
 <li><p><code>config.active_record.schema_migrations_table_name</code>は、スキーママイグレーションテーブルの名前として使用する文字列を指定します。</p></li>
 <li><p><code>config.active_record.pluralize_table_names</code>は、Railsが探すデータベースのテーブル名を単数形にするか複数形にするかを指定します。trueに設定すると、Customerクラスが使用するテーブル名は複数形の<code>customers</code>になります(デフォルト)。falseに設定すると、Customerクラスが使用するテーブル名は単数形の<code>customer</code>になります。</p></li>
 <li><p><code>config.active_record.default_timezone</code>は、データベースから日付・時刻を取り出した際のタイムゾーンを<code>Time.local</code> (<code>:local</code>を指定した場合)と<code>Time.utc</code> (<code>:utc</code>を指定した場合)のどちらにするかを指定します。デフォルトは<code>:utc</code>です。</p></li>
-<li><p><code>config.active_record.schema_format</code>は、データベーススキーマをファイルに書き出す際のフォーマットを指定します。デフォルトは<code>:ruby</code>で、データベースには依存せず、マイグレーションに依存します。<code>:sql</code>を指定するとSQL文で書き出されますが、この場合潜在的にデータベース依存する可能性があります。</p></li>
+<li><p><code>config.active_record.schema_format</code>は、データベーススキーマをファイルに書き出す際のフォーマットを指定します。デフォルトは<code>:ruby</code>で、データベースには依存せず、マイグレーションに依存します。<code>:sql</code>を指定するとSQL文で書き出されますが、この場合潜在的にデータベースに依存する可能性があります。</p></li>
 <li><p><code>config.active_record.timestamped_migrations</code>は、マイグレーションファイル名にシリアル番号とタイムスタンプのどちらを与えるかを指定します。デフォルトはtrueで、タイムスタンプが使用されます。開発者が複数の場合は、タイムスタンプの使用をお勧めします。</p></li>
 <li><p><code>config.active_record.lock_optimistically</code>は、Active Recordで楽観的ロック(optimistic locking)を使用するかどうかを指定します。デフォルトはtrue(使用する)です。</p></li>
 <li><p><code>config.active_record.cache_timestamp_format</code>は、キャッシュキーに含まれるタイムスタンプ値の形式を指定します。デフォルトは<code>:number</code>です。</p></li>
