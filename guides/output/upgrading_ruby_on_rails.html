@@ -772,10 +772,15 @@ User.inactive
 </pre>
 </div>
 <h4 id="文字列からのコンテンツ描出"><a href="#%E6%96%87%E5%AD%97%E5%88%97%E3%81%8B%E3%82%89%E3%81%AE%E3%82%B3%E3%83%B3%E3%83%86%E3%83%B3%E3%83%84%E6%8F%8F%E5%87%BA">3.13 文字列からのコンテンツ描出</a></h4>
-<p>Rails 4.1の<code>render</code>に<code>:plain</code>、<code>:html</code>、<code>:body</code>オプションが導入されました。以下のようにコンテンツタイプを指定できるため、文字列ベースのコンテンツ表示にはこれらのオプションの使用が推奨されます。
-* <code>render :plain</code>を実行するとcontent typeは<code>text/plain</code>に設定される
-* <code>render :html</code>を実行するとcontent typeは<code>text/html</code>に設定される
-* <code>render :body</code>を実行した場合、content typeヘッダーは「設定されない」</p>
+<p>Rails 4.1の<code>render</code>に<code>:plain</code>、<code>:html</code>、<code>:body</code>オプションが導入されました。以下のようにコンテンツタイプを指定できるため、文字列ベースのコンテンツ表示にはこれらのオプションの使用が推奨されます。</p>
+<ul>
+<li>
+<code>render :plain</code>を実行するとcontent typeは<code>text/plain</code>に設定される</li>
+<li>
+<code>render :html</code>を実行するとcontent typeは<code>text/html</code>に設定される</li>
+<li>
+<code>render :body</code>を実行した場合、content typeヘッダーは「設定されない」</li>
+</ul>
 <p>セキュリティ上の観点から、レスポンスのbodyにマークアップを含めない場合には<code>render :plain</code>を使用すべきです。これによって多くのブラウザが安全でないコンテンツをエスケープできるからです。</p>
 <p>今後のバージョンでは、<code>render :text</code>は非推奨にされる予定です。今のうちに、正しい<code>:plain</code>、<code>:html</code>、<code>:body</code>オプションに切り替えてください。
 <code>render :text</code>を使用すると<code>text/html</code>で送信されるため、セキュリティ上のリスクが生じる可能性があります。</p>
