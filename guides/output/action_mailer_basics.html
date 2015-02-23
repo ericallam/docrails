@@ -683,10 +683,9 @@ end
 </div>
 <h3 id="メールを受信する"><a href="#%E3%83%A1%E3%83%BC%E3%83%AB%E3%82%92%E5%8F%97%E4%BF%A1%E3%81%99%E3%82%8B">3 メールを受信する</a></h3>
 <p>Action Mailerを使用するメールの受信と解析は、メール送信に比べてやや複雑です。Railsアプリケーションでメールを受信できるようにするためには、その前にメール受信待ちするRailsアプリケーションに何らかの形でメールが転送されるようにしてく必要があります。Railsアプリケーションでメールを受信できるようにするためには、以下の作業が必要になります。</p>
-<p>。* メイラーに<code>receive</code>メソッドを実装する</p>
 <ul>
-<li>
-<code>/(アプリのパス)/bin/rails runner 'UserMailer.receive(STDIN.read)'</code>でメールを受信するアプリケーションに、メールサーバーからメールを転送する。</li>
+<li><p>メイラーに<code>receive</code>メソッドを実装する</p></li>
+<li><p><code>/(アプリのパス)/bin/rails runner 'UserMailer.receive(STDIN.read)'</code>でメールを受信するアプリケーションに、メールサーバーからメールを転送する。</p></li>
 </ul>
 <p>いずれかのメイラーに<code>receive</code>メソッドを定義すると、受信した生のメールはAction Mailerによって解析され、emailオブジェクトに変換されてデコードされた後、メイラーが新たにインスタンス化され、そのメイラーの<code>receive</code>インスタンスメソッドに渡されます。以下に例を示します。</p>
 <div class="code_container">
