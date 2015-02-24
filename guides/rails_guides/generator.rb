@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # ---------------------------------------------------------------------------
 #
 # This script generates the guides. It can be invoked via the
@@ -222,6 +223,7 @@ module RailsGuides
 
     def references_md(guide)
       md = <<-MD
+
 
 参考資料
 ---------
