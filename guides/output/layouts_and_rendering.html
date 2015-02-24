@@ -1716,7 +1716,7 @@ Cache-Control: no-cache
 <p>これと同じ結果を得られるサブテンプレートの使用法はこの他にもさまざまなものが考えられます。ネスティングレベルには制限がない点にご注目ください。たとえばNewsレイアウトで新しいレイアウトを使用するために、<code>render template: 'layouts/news'</code>経由で<code>ActionView::render</code>メソッドを使用することもできます。<code>News</code>レイアウトをサブテンプレート化するつもりがないのであれば、<code>content_for?(:news_content) ? yield(:news_content) : yield</code>を単に<code>yield</code>に置き換えれば済みます。</p>
 </body></html>
 
-
+        
         <h3>フィードバックについて</h3>
         <p>
           本ガイドの訳文およびソースコードは、GitHub上の <a href="https://github.com/yasslab/railsguides.jp">yasslab/railsguides.jp</a> で管理・公開されております。
