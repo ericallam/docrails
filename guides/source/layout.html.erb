@@ -112,7 +112,7 @@
     <div class="wrapper">
       <div id="mainCol">
         <%= yield.html_safe %>
-
+        <%= yield :references %>
         <h3>フィードバックについて</h3>
         <p>
           本ガイドの訳文およびソースコードは、GitHub上の <%= link_to 'yasslab/railsguides.jp', 'https://github.com/yasslab/railsguides.jp' %> で管理・公開されております。
