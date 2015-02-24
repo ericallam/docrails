@@ -1,69 +1,70 @@
-The Basics of Creating Rails Plugins
+﻿
+Rails プラグイン作成入門
 ====================================
 
-A Rails plugin is either an extension or a modification of the core framework. Plugins provide:
+Railsのプラグインは、コアフレームワークを拡張したり変更したりするのに使用されます。プラグインは以下の機能を提供します。
 
-* A way for developers to share bleeding-edge ideas without hurting the stable code base.
-* A segmented architecture so that units of code can be fixed or updated on their own release schedule.
-* An outlet for the core developers so that they don't have to include every cool new feature under the sun.
+* 安定版コードベースに手を加えることなく最先端のアイディアを開発者同士で共有する手段を提供します。
+* アーキテクチャを分割し、それらのコード単位ごとに異なるスケジュールで修正や更新を進められるようにします。
+* コア開発者が商品価値のある機能をオープンにすることなく販売できるようにします。
 
-After reading this guide, you will know:
+このガイドの内容:
 
-* How to create a plugin from scratch.
-* How to write and run tests for the plugin.
+* プラグインをゼロから作成する方法
+* プラグイン用のテストの作成方法と実行方法
 
-This guide describes how to build a test-driven plugin that will:
+本ガイドでは、以下を理解することを目的として、プラグインをテスト駆動方式で開発する方法を解説します。
 
-* Extend core Ruby classes like Hash and String.
-* Add methods to `ActiveRecord::Base` in the tradition of the `acts_as` plugins.
-* Give you information about where to put generators in your plugin.
+* HashやStringなどのコアRubyクラスを拡張する
+* `acts_as`プラグインと同様の手法で`ActiveRecord::Base`にメソッドを追加する
+* プラグインのどこにジェネレータを配置すべきかを理解する
 
-For the purpose of this guide pretend for a moment that you are an avid bird watcher.
-Your favorite bird is the Yaffle, and you want to create a plugin that allows other developers to share in the Yaffle goodness.
+ここからは説明上の便宜のため、自分がひとりの熱心なバードウォッチャーであるとお考えください。
+あなたは鳥の中でも特に Yaffle (ヨーロッパアオゲラ) が大好きで、この鳥がいかに素晴らしいかを他の開発者と共有するためのプラグインを作成したいと考えています。
 
 --------------------------------------------------------------------------------
 
-Setup
+設定
 -----
 
-Currently, Rails plugins are built as gems, _gemified plugins_. They can be shared across different rails applications using RubyGems and Bundler if desired.
+以前と異なり、現在Railsのプラグインはgemとしてビルドします。gem形式を取っているので、必要であればRubygemsとBunderを使用してプラグインを他のRailsアプリケーションと共有することもできます。
 
-### Generate a gemified plugin.
+### gem形式のプラグインを生成する
 
 
-Rails ships with a `rails plugin new` command which creates a skeleton for developing any kind of Rails extension with the ability to run integration tests using a dummy Rails application. Create your  plugin with the command:
-
-```bash
-$ rails plugin new yaffle
-```
-
-See usage and options by asking for help:
+RailsにはあらゆるRails拡張機能の開発用スケルトンを作成する`rails plugin new`というコマンドが最初から装備されています。これで作成したスケルトンはダミーのRailsアプリケーションを使用して結合テストを実行することもできます。プラグインを作成するには以下のコマンドを実行します。
 
 ```bash
-$ rails plugin --help
+$ bin/rails plugin new yaffle
 ```
 
-Testing Your Newly Generated Plugin
+使用法とオプションは以下の方法で表示できます。
+
+```bash
+$ bin/rails plugin new --help
+```
+
+新しく生成したプラグインをテストする
 -----------------------------------
 
-You can navigate to the directory that contains the plugin, run the `bundle install` command  and run the one generated test using the `rake` command.
+プラグインを作成したディレクトリに移動して`bundle install`コマンドを実行し、自動生成されたテストを`rake`コマンドで実行します。
 
-You should see:
+実行結果は以下のようになります。
 
 ```bash
-  2 tests, 2 assertions, 0 failures, 0 errors, 0 skips
+  1 runs, 1 assertions, 0 failures, 0 errors, 0 skips
 ```
 
-This will tell you that everything got generated properly and you are ready to start adding functionality.
+生成が無事完了し、いつでも機能を追加できる状態であることがわかります。
 
-Extending Core Classes
+コアクラスを拡張する
 ----------------------
 
-This section will explain how to add a method to String that will be available anywhere in your rails application.
+このセクションでは、Railsアプリケーションのどこでも利用できるメソッドをStringクラスに追加する方法を解説します。
 
-In this example you will add a method to String named `to_squawk`. To begin, create a new test file with a few assertions:
+この例では、`to_squawk`(ガーガー鳴くの意)という名前のメソッドをStringクラスに追加します。最初に、テストファイルをひとつ作成してそこにアサーションをいくつか追加しましょう。
 
-```ruby
+  ```ruby
 # yaffle/test/core_ext_test.rb
 
 require 'test_helper'
@@ -75,18 +76,18 @@ class CoreExtTest < ActiveSupport::TestCase
 end
 ```
 
-Run `rake` to run the test. This test should fail because we haven't implemented the `to_squawk` method:
+`rake`を実行してテストします。`to_squawk`は実装されていないので、当然テストは失敗します。
 
 ```bash
     1) Error:
-  test_to_squawk_prepends_the_word_squawk(CoreExtTest):
-  NoMethodError: undefined method `to_squawk' for [Hello World](String)
-      test/core_ext_test.rb:5:in `test_to_squawk_prepends_the_word_squawk'
+  CoreExtTest#test_to_squawk_prepends_the_word_squawk:
+  NoMethodError: undefined method `to_squawk' for "Hello World":String
+    /path/to/yaffle/test/core_ext_test.rb:5:in `test_to_squawk_prepends_the_word_squawk'
 ```
 
-Great - now you are ready to start development.
+ここまで準備できれば、いよいよコーディング開始です。
 
-In `lib/yaffle.rb`, add `require 'yaffle/core_ext'`:
+`lib/yaffle.rb`に`require 'yaffle/core_ext'`を追加します。
 
 ```ruby
 # yaffle/lib/yaffle.rb
@@ -97,7 +98,7 @@ module Yaffle
 end
 ```
 
-Finally, create the `core_ext.rb` file and add the `to_squawk` method:
+最後に`core_ext.rb`ファイルを作成して`to_squawk`メソッドを追加します。
 
 ```ruby
 # yaffle/lib/yaffle/core_ext.rb
@@ -109,26 +110,26 @@ String.class_eval do
 end
 ```
 
-To test that your method does what it says it does, run the unit tests with `rake` from your plugin directory.
+プラグインのあるディレクトリで`rake`テストを実行して、メソッドがテストにパスすることを確認します。
 
 ```bash
-  3 tests, 3 assertions, 0 failures, 0 errors, 0 skips
+  2 runs, 2 assertions, 0 failures, 0 errors, 0 skips
 ```
 
-To see this in action, change to the test/dummy directory, fire up a console and start squawking:
+最後にメソッドを実際に使ってみましょう。test/dummyディレクトリに移動してガーガー鳴いてみましょう(squawk)。
 
 ```bash
-$ rails console
+$ bin/rails console
 >> "Hello World".to_squawk
 => "squawk! Hello World"
 ```
 
-Add an "acts_as" Method to Active Record
+"acts_as"メソッドをActive Recordに追加する
 ----------------------------------------
 
-A common pattern in plugins is to add a method called `acts_as_something` to models. In this case, you want to write a method called `acts_as_yaffle` that adds a `squawk` method to your Active Record models.
+プラグインでは、`acts_as_何とか`という名前のメソッドをモデルに追加することがよく行われます。この例ではそれにならって`acts_as_yaffle`というメソッドを追加してみます。これは`squawk`メソッドを自分のActive Recordモデルに追加するメソッドです。
 
-To begin, set up your files so that you have:
+最初に以下のファイルを準備します。
 
 ```ruby
 # yaffle/test/acts_as_yaffle_test.rb
@@ -154,16 +155,16 @@ end
 
 module Yaffle
   module ActsAsYaffle
-    # your code will go here
+    # ここにコードを書く
   end
 end
 ```
 
-### Add a Class Method
+### クラスメソッドを追加する
 
-This plugin will expect that you've added a method to your model named `last_squawk`. However, the plugin users might have already defined a method on their model named `last_squawk` that they use for something else. This plugin will allow the name to be changed by adding a class method called `yaffle_text_field`.
+このプラグインはモデルに`last_squawk`という名前のメソッドが追加されていることを前提にしています。しかし、プラグインがインストールされた環境には、そのモデルに目的の異なる`last_squawk`という名前のメソッドが既にあるかもしれません。そこで、このプラグインでは`yaffle_text_field`という名前のクラスメソッドをひとつ追加することによって名前を変更できるようにしたいと思います。
 
-To start out, write a failing test that shows the behavior you'd like:
+最初に、以下のように振る舞う、失敗するテストをひとつ作成します。
 
 ```ruby
 # yaffle/test/acts_as_yaffle_test.rb
@@ -183,39 +184,38 @@ class ActsAsYaffleTest < ActiveSupport::TestCase
 end
 ```
 
-When you run `rake`, you should see the following:
+`rake`を実行すると以下が出力されます。
 
 ```
     1) Error:
-  test_a_hickwalls_yaffle_text_field_should_be_last_squawk(ActsAsYaffleTest):
+  ActsAsYaffleTest#test_a_hickwalls_yaffle_text_field_should_be_last_squawk:
   NameError: uninitialized constant ActsAsYaffleTest::Hickwall
-      test/acts_as_yaffle_test.rb:6:in `test_a_hickwalls_yaffle_text_field_should_be_last_squawk'
+    /path/to/yaffle/test/acts_as_yaffle_test.rb:6:in `test_a_hickwalls_yaffle_text_field_should_be_last_squawk'
 
     2) Error:
-  test_a_wickwalls_yaffle_text_field_should_be_last_tweet(ActsAsYaffleTest):
+  ActsAsYaffleTest#test_a_wickwalls_yaffle_text_field_should_be_last_tweet:
   NameError: uninitialized constant ActsAsYaffleTest::Wickwall
-      test/acts_as_yaffle_test.rb:10:in `test_a_wickwalls_yaffle_text_field_should_be_last_tweet'
+    /path/to/yaffle/test/acts_as_yaffle_test.rb:10:in `test_a_wickwalls_yaffle_text_field_should_be_last_tweet'
 
-  5 tests, 3 assertions, 0 failures, 2 errors, 0 skips
+  4 runs, 2 assertions, 0 failures, 2 errors, 0 skips
 ```
 
-This tells us that we don't have the necessary models (Hickwall and Wickwall) that we are trying to test.
-We can easily generate these models in our "dummy" Rails application by running the following commands from the test/dummy directory:
+この結果から、テストの対象となるモデル (Hickwall and Wickwall) がそもそもないことがわかります。必要なモデルはダミーのRailsアプリケーションで簡単に作成できます。test/dummyディレクトリに移動して以下のコマンドを実行します。
 
 ```bash
 $ cd test/dummy
-$ rails generate model Hickwall last_squawk:string
-$ rails generate model Wickwall last_squawk:string last_tweet:string
+$ bin/rails generate model Hickwall last_squawk:string
+$ bin/rails generate model Wickwall last_squawk:string last_tweet:string
 ```
 
-Now you can create the necessary database tables in your testing database by navigating to your dummy app and migrating the database. First, run:
+これで必要なデータベーステーブルをテストデータベース内に作成するための準備が整いました。作成は、ダミーアプリケーションのディレクトリに移動してデータベースのマイグレーションを実行することで行います。最初に以下を実行します。
 
 ```bash
 $ cd test/dummy
-$ rake db:migrate
+$ bin/rake db:migrate
 ```
 
-While you are here, change the Hickwall and Wickwall models so that they know that they are supposed to act like yaffles.
+続いて、このディレクトリでHickwallモデルとWickwallモデルを変更し、これらのモデルにyafflesとしての振る舞いが期待されていることが伝わるようにします。
 
 ```ruby
 # test/dummy/app/models/hickwall.rb
@@ -232,7 +232,7 @@ end
 
 ```
 
-We will also add code to define the `acts_as_yaffle` method.
+`acts_as_yaffle`メソッドを定義するコードも追加します。
 
 ```ruby
 # yaffle/lib/yaffle/acts_as_yaffle.rb
@@ -245,7 +245,7 @@ module Yaffle
 
     module ClassMethods
       def acts_as_yaffle(options = {})
-        # your code will go here
+        # ここにコードを書く
       end
     end
   end
@@ -254,26 +254,26 @@ end
 ActiveRecord::Base.send :include, Yaffle::ActsAsYaffle
 ```
 
-You can then return to the root directory (`cd ../..`) of your plugin and rerun the tests using `rake`.
+終わったら`cd ../..`を実行してプラグインのルートディレクトリに戻り、`rake`を実行してテストを再実行します。
 
 ```
     1) Error:
-  test_a_hickwalls_yaffle_text_field_should_be_last_squawk(ActsAsYaffleTest):
-  NoMethodError: undefined method `yaffle_text_field' for #<Class:0x000001016661b8>
-      /Users/xxx/.rvm/gems/ruby-1.9.2-p136@xxx/gems/activerecord-3.0.3/lib/active_record/base.rb:1008:in `method_missing'
-      test/acts_as_yaffle_test.rb:5:in `test_a_hickwalls_yaffle_text_field_should_be_last_squawk'
+  ActsAsYaffleTest#test_a_hickwalls_yaffle_text_field_should_be_last_squawk:
+  NoMethodError: undefined method `yaffle_text_field' for #<Class:0x007fd105e3b218>
+    activerecord (4.1.5) lib/active_record/dynamic_matchers.rb:26:in `method_missing'
+    /path/to/yaffle/test/acts_as_yaffle_test.rb:6:in `test_a_hickwalls_yaffle_text_field_should_be_last_squawk'
 
     2) Error:
-  test_a_wickwalls_yaffle_text_field_should_be_last_tweet(ActsAsYaffleTest):
-  NoMethodError: undefined method `yaffle_text_field' for #<Class:0x00000101653748>
-      Users/xxx/.rvm/gems/ruby-1.9.2-p136@xxx/gems/activerecord-3.0.3/lib/active_record/base.rb:1008:in `method_missing'
-      test/acts_as_yaffle_test.rb:9:in `test_a_wickwalls_yaffle_text_field_should_be_last_tweet'
+  ActsAsYaffleTest#test_a_wickwalls_yaffle_text_field_should_be_last_tweet:
+  NoMethodError: undefined method `yaffle_text_field' for #<Class:0x007fd105e409c0>
+    activerecord (4.1.5) lib/active_record/dynamic_matchers.rb:26:in `method_missing'
+    /path/to/yaffle/test/acts_as_yaffle_test.rb:10:in `test_a_wickwalls_yaffle_text_field_should_be_last_tweet'
 
-  5 tests, 3 assertions, 0 failures, 2 errors, 0 skips
+  4 runs, 2 assertions, 0 failures, 2 errors, 0 skips
 
 ```
 
-Getting closer... Now we will implement the code of the `acts_as_yaffle` method to make the tests pass.
+開発がだいぶ進んできました。今度は`acts_as_yaffle`メソッドを実装し、テストがパスするようにしましょう。
 
 ```ruby
 # yaffle/lib/yaffle/acts_as_yaffle.rb
@@ -297,17 +297,17 @@ end
 ActiveRecord::Base.send :include, Yaffle::ActsAsYaffle
 ```
 
-When you run `rake`, you should see the tests all pass:
+`rake`を実行すると、今度のテストはすべてパスします。
 
 ```bash
-  5 tests, 5 assertions, 0 failures, 0 errors, 0 skips
+  4 runs, 4 assertions, 0 failures, 0 errors, 0 skips
 ```
 
-### Add an Instance Method
+### インスタンスメソッドを追加する
 
-This plugin will add a method named 'squawk' to any Active Record object that calls 'acts_as_yaffle'. The 'squawk' method will simply set the value of one of the fields in the database.
+今度はこのプラグインに'squawk'というメソッドを追加して、'acts_as_yaffle'を呼び出すすべてのActive Recordオブジェクトに追加しましょう'squawk'メソッドはデータベースのフィールドにある値のいずれかひとつを設定するだけのシンプルなものです。
 
-To start out, write a failing test that shows the behavior you'd like:
+最初に、以下のように振る舞う、失敗するテストをひとつ作成します。
 
 ```ruby
 # yaffle/test/acts_as_yaffle_test.rb
@@ -337,7 +337,7 @@ class ActsAsYaffleTest < ActiveSupport::TestCase
 end
 ```
 
-Run the test to make sure the last two tests fail with an error that contains "NoMethodError: undefined method `squawk'", then update 'acts_as_yaffle.rb' to look like this:
+テストを実行して、最後に追加した2つのテストが失敗することを確認します。失敗のメッセージには"NoMethodError: undefined method `squawk'"が含まれているので、'acts_as_yaffle.rb'を以下のように更新します。
 
 ```ruby
 # yaffle/lib/yaffle/acts_as_yaffle.rb
@@ -369,60 +369,60 @@ end
 ActiveRecord::Base.send :include, Yaffle::ActsAsYaffle
 ```
 
-Run `rake` one final time and you should see:
+最後に`rake`を実行すると以下の結果が表示されます。
 
 ```
-  7 tests, 7 assertions, 0 failures, 0 errors, 0 skips
+  6 runs, 6 assertions, 0 failures, 0 errors, 0 skips
 ```
 
-NOTE: The use of `write_attribute` to write to the field in model is just one example of how a plugin can interact with the model, and will not always be the right method to use. For example, you could also use:
+NOTE: 上のコードでは`write_attribute`を使用してモデルのフィールドへの書き出しを行っていますが、これはあくまでプラグインからモデルとやりとりする際の書き方を示すための一例にすぎません。この書き方が適切とは限らないこともあるのでご注意ください。たとえば同じコードを以下のように書くこともできます。
 
 ```ruby
 send("#{self.class.yaffle_text_field}=", string.to_squawk)
 ```
 
-Generators
+ジェネレータ
 ----------
 
-Generators can be included in your gem simply by creating them in a lib/generators directory of your plugin. More information about the creation of generators can be found in the [Generators Guide](generators.html)
+gemにジェネレータを含めるには、単にジェネレータを作成してプラグインのlib/generatorsディレクトリに置くだけでもかまいません。ジェネレータの作成方法の詳細については[Rails ジェネレータとテンプレート入門](generators.html)を参照してください。
 
-Publishing Your Gem
+gemを公開する
 -------------------
 
-Gem plugins currently in development can easily be shared from any Git repository. To share the Yaffle gem with others, simply commit the code to a Git repository (like GitHub) and add a line to the Gemfile of the application in question:
+開発中のgemであってもGitリポジトリで簡単に共有できます。今回のYaffle gemを他の開発者と共有するには、コードをGithubなどのGitリポジトリにコミットしておき、gemを使用したいアプリケーションのGemfileに一行書くだけで済みます。
 
 ```ruby
 gem 'yaffle', git: 'git://github.com/yaffle_watcher/yaffle.git'
 ```
 
-After running `bundle install`, your gem functionality will be available to the application.
+後は`bundle install`を実行すればgemの機能をアプリケーションで利用できるようになります。
 
-When the gem is ready to be shared as a formal release, it can be published to [RubyGems](http://www.rubygems.org).
-For more information about publishing gems to RubyGems, see: [Creating and Publishing Your First Ruby Gem](http://blog.thepete.net/2010/11/creating-and-publishing-your-first-ruby.html).
+gemを正式なリリースとして一般公開するのであれば[RubyGems](http://www.rubygems.org)でパブリッシュします。
+RubyGemsサイトでgemを公開する方法の詳細については、[はじめてのRuby Gem作成・パブリッシュ方法](http://blog.thepete.net/2010/11/creating-and-publishing-your-first-ruby.html)(英語) を参照してください。
 
-RDoc Documentation
+RDocドキュメント
 ------------------
 
-Once your plugin is stable and you are ready to deploy, do everyone else a favor and document it! Luckily, writing documentation for your plugin is easy.
+プラグインの開発が一段落してデプロイする段階になったら、プラグインの利用者のためにちゃんとしたドキュメントを作成しましょう。幸い、プラグインのドキュメント作成は簡単です。
 
-The first step is to update the README file with detailed information about how to use your plugin. A few key things to include are:
+最初に、プラグインの使用法をREADMEファイルに詳しく記載します。以下の項目は忘れずに記入してください。
 
-* Your name
-* How to install
-* How to add the functionality to the app (several examples of common use cases)
-* Warnings, gotchas or tips that might help users and save them time
+* 自分の名前
+* インストール方法
+* アプリケーションに機能を追加する具体的な方法 (一般的なユースケースもいくつか例として追加)
+* 警告、注意点、ヒントなど (ユーザーが無駄な時間を使わずに済むように)
 
-Once your README is solid, go through and add rdoc comments to all of the methods that developers will use. It's also customary to add '#:nodoc:' comments to those parts of the code that are not included in the public API.
+READMEの内容が固まってきたら、コードをひととおりチェックしてすべてのメソッドにrdoc形式のコメントを追加します。このコメントは開発者にとって役立つ情報となります。パブリックAPIにしたくない箇所には'#:nodoc:'というコメントを追加します。
 
-Once your comments are good to go, navigate to your plugin directory and run:
+コメントを付け終わったらプラグインのルートディレクトリに移動して以下を実行します。
 
 ```bash
-$ rake rdoc
+$ bin/rake rdoc
 ```
 
-### References
+### 参考資料
 
-* [Developing a RubyGem using Bundler](https://github.com/radar/guides/blob/master/gem-development.md)
-* [Using .gemspecs as Intended](http://yehudakatz.com/2010/04/02/using-gemspecs-as-intended/)
-* [Gemspec Reference](http://docs.rubygems.org/read/chapter/20)
-* [GemPlugins: A Brief Introduction to the Future of Rails Plugins](http://www.intridea.com/blog/2008/6/11/gemplugins-a-brief-introduction-to-the-future-of-rails-plugins)
+* [Bundlerを使用してRubyGemを開発する](https://github.com/radar/guides/blob/master/gem-development.md)(英語)
+* [gemspecsを意図したとおりに使う](http://yehudakatz.com/2010/04/02/using-gemspecs-as-intended/)(英語)
+* [Gemspecリファレンス](http://guides.rubygems.org/specification-reference/)(英語)
+* [GemPlugin: Railsプラグインの今後の見通し](http://www.intridea.com/blog/2008/6/11/gemplugins-a-brief-introduction-to-the-future-of-rails-plugins)(英語)

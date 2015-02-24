@@ -131,7 +131,7 @@
   name: Rails を拡張する
   documents:
     -
-      name: The Basics of Creating Rails Plugins [未着手]
+      name: Rails プラグイン作成入門
       work_in_progress: true
       url: plugins.html
       description: プラグインを作成してRailsの機能を拡張する方法について解説します。
