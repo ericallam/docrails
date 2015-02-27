@@ -83,7 +83,7 @@ require ::File.expand_path('../config/environment', __FILE__)
 
 use Rails::Rack::Debugger
 use Rack::ContentLength
-run Rails.applicatio
+run Rails.application
 ```
 
 サーバーを起動します。
