@@ -1094,7 +1094,7 @@ class B
     cattr_accessor :surname, instance_accessor: false
   end
 end
-```j
+```
 
 `:instance_accessor`を`false`に設定すると、モデルの属性設定時にマスアサインメントを防止するのに便利です。
 

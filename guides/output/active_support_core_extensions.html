@@ -258,6 +258,7 @@
 
 <ul>
 <li><a href="#class%E5%B1%9E%E6%80%A7">Class属性</a></li>
+<li><a href="#%E3%82%B5%E3%83%96%E3%82%AF%E3%83%A9%E3%82%B9%E3%81%A8%E5%AD%90%E5%AD%AB">サブクラスと子孫</a></li>
 </ul>
 </li>
 <li>
@@ -1439,19 +1440,16 @@ class B
     cattr_accessor :surname, instance_accessor: false
   end
 end
-```j
 
-`:instance_accessor`を`false`に設定すると、モデルの属性設定時にマスアサインメントを防止するのに便利です。
-
-NOTE: 定義ファイルの場所は`active_support/core_ext/module/attribute_accessors.rb`です。`active_support/core_ext/class/attribute_accessors.rb`は非推奨であり、Ruby on Rails 4.2では削除される予定です。
-
-### サブクラスと子孫
-
-#### `subclasses`
-
-`subclasses`メソッドはレシーバのサブクラスを返します。
-
-```ruby
+</pre>
+</div>
+<p><code>:instance_accessor</code>を<code>false</code>に設定すると、モデルの属性設定時にマスアサインメントを防止するのに便利です。</p>
+<div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/module/attribute_accessors.rb</code>です。<code>active_support/core_ext/class/attribute_accessors.rb</code>は非推奨であり、Ruby on Rails 4.2では削除される予定です。</p></div>
+<h4 id="サブクラスと子孫"><a href="#%E3%82%B5%E3%83%96%E3%82%AF%E3%83%A9%E3%82%B9%E3%81%A8%E5%AD%90%E5%AD%AB">4.2 サブクラスと子孫</a></h4>
+<h5 id="subclasses"><a href="#subclasses">4.2.1 <code>subclasses</code></a></h5>
+<p><code>subclasses</code>メソッドはレシーバのサブクラスを返します。</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
 class C; end
 C.subclasses # =&gt; []
 
@@ -1468,7 +1466,7 @@ C.subclasses # =&gt; [B, D]
 </div>
 <p>返されるクラスの順序は一定ではありません。</p>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/class/subclasses.rb</code>です。</p></div>
-<h5 id="descendants"><a href="#descendants">4.1.3 <code>descendants</code></a></h5>
+<h5 id="descendants"><a href="#descendants">4.2.2 <code>descendants</code></a></h5>
 <p><code>descendants</code>メソッドは、そのレシーバより下位にあるすべてのクラスを返します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
