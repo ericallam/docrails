@@ -977,7 +977,7 @@ end
 
 ### ルーティングの作成を制限する
 
-Railsは、アプリケーション内のすべてのRESTfulルーティングに対してデフォルトで7つのアクション (index、show、create、edit、update、destory) へのルーティングを作成します。`:only`オプションや`:except`オプションを使用することで、これらのルーティングを微調整できます。`:only`オプションは、指定されたルーティングだけを生成するよう指示します。
+Railsは、アプリケーション内のすべてのRESTfulルーティングに対してデフォルトで7つのアクション (index、show、new、create、edit、update、destory) へのルーティングを作成します。`:only`オプションや`:except`オプションを使用することで、これらのルーティングを微調整できます。`:only`オプションは、指定されたルーティングだけを生成するよう指示します。
 
 ```ruby
 resources :photos, only: [:index, :show]

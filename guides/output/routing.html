@@ -1624,7 +1624,7 @@ end
 </div>
 <p>上のルーティングにより、<code>/bob/posts/1</code>のような形式のURLを使用できるようになります。さらに、コントローラ、ヘルパー、ビューのいずれにおいても、このパスの<code>username</code>の部分に相当する文字列 (この場合であればbob) を<code>params[:username]</code>で参照できます。</p>
 <h4 id="ルーティングの作成を制限する"><a href="#%E3%83%AB%E3%83%BC%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0%E3%81%AE%E4%BD%9C%E6%88%90%E3%82%92%E5%88%B6%E9%99%90%E3%81%99%E3%82%8B">4.6 ルーティングの作成を制限する</a></h4>
-<p>Railsは、アプリケーション内のすべてのRESTfulルーティングに対してデフォルトで7つのアクション (index、show、create、edit、update、destory) へのルーティングを作成します。<code>:only</code>オプションや<code>:except</code>オプションを使用することで、これらのルーティングを微調整できます。<code>:only</code>オプションは、指定されたルーティングだけを生成するよう指示します。</p>
+<p>Railsは、アプリケーション内のすべてのRESTfulルーティングに対してデフォルトで7つのアクション (index、show、new、create、edit、update、destory) へのルーティングを作成します。<code>:only</code>オプションや<code>:except</code>オプションを使用することで、これらのルーティングを微調整できます。<code>:only</code>オプションは、指定されたルーティングだけを生成するよう指示します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 resources :photos, only: [:index, :show]
