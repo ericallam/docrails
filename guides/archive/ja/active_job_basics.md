@@ -129,8 +129,8 @@ class GuestsCleanupJob < ActiveJob::Base
   #....
 end
 
-# 以上で、production環境のproduction_low_priorityというキューをジョブから
-# 実行できるようになり、beta環境のbeta_low_priorityというキューを実行できるようになります
+# 以上で、production環境ではproduction_low_priorityというキューでジョブが
+# 実行されるようになり、beta環境ではbeta_low_priorityというキューでジョブが実行されるようになります
 #
 ```
 
