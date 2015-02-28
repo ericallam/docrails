@@ -553,7 +553,7 @@ Action Mailerを設定する
 |`deliveries`|`delivery_method :test`を使用してAction Mailerから送信されたメールの配列を保持します。単体テストおよび機能テストで最も便利です。|
 |`default_options`|`mail`メソッドオプション (`:from`、`:reply_to`など)のデフォルト値を設定します。|
 
-設定オプションの完全な説明については「Railsアプリケーションを設定する」ガイドの[Action Mailerを設定する](configuring.html#configuring-action-mailer)を参照してください。
+設定オプションの完全な説明については「Railsアプリケーションを設定する」ガイドの[Action Mailerを設定する](configuring.html#action-mailerを設定する)を参照してください。
 
 ### Action Mailerの設定例
 
@@ -611,4 +611,4 @@ end
 ActionMailer::Base.register_interceptor(SandboxEmailInterceptor) if Rails.env.staging?
 ```
 
-NOTE: 上の例では"staging"というカスタマイズした環境を使用しています。これは本番 (production環境) に準じた状態でテストを行うための環境です。Railsのカスタム環境については[Rails環境を作成する](configuring.html#creating-rails-environments)を参照してください。
+NOTE: 上の例では"staging"というカスタマイズした環境を使用しています。これは本番 (production環境) に準じた状態でテストを行うための環境です。Railsのカスタム環境については[Rails環境を作成する](configuring.html#rails環境を作成する)を参照してください。
