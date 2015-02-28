@@ -8,11 +8,9 @@ step '表示されている内部リンクは、すべて有効である' do
   same_pages.each do |link|
     expect(link).to_not be_dead_fragment(page)
   end
-
   other_pages.each do |link|
     file, _ = link[:href].split("#", 2)
-    original_page_path = page.current_path
     visit file
-    expect(link).to_not be_dead_fragment(page, original_page_path)
+    expect(link).to_not be_dead_fragment(page)
   end
 end
