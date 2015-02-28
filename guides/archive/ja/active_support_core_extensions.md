@@ -625,7 +625,7 @@ NOTE: 定義ファイルの場所は`active_support/core_ext/module/attr_interna
 
 #### モジュール属性
 
-`mattr_reader`、`mattr_writer`、`mattr_accessor`という3つのマクロは、クラス用に定義される`cattr_*`マクロと同じです。実際、`cattr_*`マクロは単なる`mattr_*`マクロの別名です。[クラス属性](#class-attributes)も参照してください。
+`mattr_reader`、`mattr_writer`、`mattr_accessor`という3つのマクロは、クラス用に定義される`cattr_*`マクロと同じです。実際、`cattr_*`マクロは単なる`mattr_*`マクロの別名です。[クラス属性](#class属性)も参照してください。
 
 たとえば、これらのマクロは以下のDependenciesモジュールで使用されています。
 

@@ -762,7 +762,7 @@ Rails 4.0ではActive Resourceがgem化されました。この機能が必要�
   get 'clashing/:id' => 'test#example', as: :example
 ```
 
-最初の例では、複数のルーティングで同じ名前を使用しないようにすれば回避できます。次の例では、`only`または`except`オプションを`resources`メソッドで使用することで、作成されるルーティングを制限することができます。詳細は [Routing Guide](routing.html#restricting-the-routes-created) を参照。
+最初の例では、複数のルーティングで同じ名前を使用しないようにすれば回避できます。次の例では、`only`または`except`オプションを`resources`メソッドで使用することで、作成されるルーティングを制限することができます。詳細は [Routing Guide](routing.html#ルーティングの作成を制限する) を参照。
 
 * Rails 4.0ではunicode文字のルーティングの描出方法が変更されました。unicode文字を使用するルーティングを直接描出できるようになりました。既にこのようなルーティングを使用している場合は、以下の変更が必要です。
 

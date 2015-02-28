@@ -275,9 +275,9 @@ Railties
 
 * セキュリティ脆弱性CVE-2013-0155に対応するため、パラメータのdeep_munge化を回避する`config.action_dispatch.perform_deep_munge`configオプションが新たに追加されました。([Pull Request](https://github.com/rails/rails/pull/13188))
 
-* 署名及び暗号化されたcookies jarのシリアライザを指定する`config.action_dispatch.cookies_serializer`configオプションが新たに追加されました。 (Pull Requests [1](https://github.com/rails/rails/pull/13692), [2](https://github.com/rails/rails/pull/13945) / [詳細](upgrading_ruby_on_rails.html#cookies-serializer))
+* 署名及び暗号化されたcookies jarのシリアライザを指定する`config.action_dispatch.cookies_serializer`configオプションが新たに追加されました。 (Pull Requests [1](https://github.com/rails/rails/pull/13692), [2](https://github.com/rails/rails/pull/13945) / [詳細](upgrading_ruby_on_rails.html#cookiesシリアライザ))
 
-* `render :plain`、`render :html`、`render :body`が追加されました。([Pull Request](https://github.com/rails/rails/pull/14062) / [詳細](upgrading_ruby_on_rails.html#rendering-content-from-string))
+* `render :plain`、`render :html`、`render :body`が追加されました。([Pull Request](https://github.com/rails/rails/pull/14062) / [詳細](upgrading_ruby_on_rails.html#文字列からのコンテンツ描出))
 
 
 Action Mailer
@@ -361,7 +361,7 @@ Active Record
 
 デフォルトのスコープは、条件を連鎖した場合にオーバーライドされなくなりました。
 
-  今回の変更より前にモデルで`default_scope`を定義していた場合、同じフィールドで条件が連鎖している場合にはオーバーライドされていました。現在は、他のスコープと同様、マージされるようになりました。[詳細](upgrading_ruby_on_rails.html#changes-on-default-scopes)
+  今回の変更より前にモデルで`default_scope`を定義していた場合、同じフィールドで条件が連鎖している場合にはオーバーライドされていました。現在は、他のスコープと同様、マージされるようになりました。[詳細](upgrading_ruby_on_rails.html#デフォルトスコープの変更)
 
 * モデルの属性やメソッドから派生する便利な "pretty" URL用に`ActiveRecord::Base.to_param`が追加されました。([Pull Request](https://github.com/rails/rails/pull/12891))
 
@@ -441,7 +441,7 @@ Active Support
 
 ### 削除されたもの
 
-* `MultiJSON`依存が削除されました。これにより、`ActiveSupport::JSON.decode`は`MultiJSON`のオプションハッシュを受け付けなくなりました。([Pull Request](https://github.com/rails/rails/pull/10576) / [詳細](upgrading_ruby_on_rails.html#changes-in-json-handling))
+* `MultiJSON`依存が削除されました。これにより、`ActiveSupport::JSON.decode`は`MultiJSON`のオプションハッシュを受け付けなくなりました。([Pull Request](https://github.com/rails/rails/pull/10576) / [詳細](upgrading_ruby_on_rails.html#jsonの扱いの変更点))
 
 * カスタムオブジェクトをJSONにエンコードする`encode_json`フックのサポートが削除されました。この機能は[activesupport-json_encoder](https://github.com/rails/activesupport-json_encoder) gemに書き出されました。
 この機能は[activesupport-json_encoder](https://github.com/rails/activesupport-json_encoder) gemに書き出されました。
@@ -482,20 +482,20 @@ Active Support
 
 * requireパス`active_support/core_ext/object/to_json`が非推奨になりました。`active_support/core_ext/object/json`を代りにrequireしてください。([Pull Request](https://github.com/rails/rails/pull/12203))
 
-* `ActiveSupport::JSON::Encoding::CircularReferenceError`が非推奨になりました。この機能は[activesupport-json_encoder](https://github.com/rails/activesupport-json_encoder) gemに書き出されました。([Pull Request](https://github.com/rails/rails/pull/10785) / [詳細](upgrading_ruby_on_rails.html#changes-in-json-handling))
+* `ActiveSupport::JSON::Encoding::CircularReferenceError`が非推奨になりました。この機能は[activesupport-json_encoder](https://github.com/rails/activesupport-json_encoder) gemに書き出されました。([Pull Request](https://github.com/rails/rails/pull/10785) / [詳細](upgrading_ruby_on_rails.html#jsonの扱いの変更点))
 
 * `ActiveSupport.encode_big_decimal_as_string`オプションが非推奨になりました。この機能は[activesupport-json_encoder](https://github.com/rails/activesupport-json_encoder) gemに書き出されました。
-([Pull Request](https://github.com/rails/rails/pull/13060) / [詳細](upgrading_ruby_on_rails.html#changes-in-json-handling))
+([Pull Request](https://github.com/rails/rails/pull/13060) / [詳細](upgrading_ruby_on_rails.html#jsonの扱いの変更点))
 
 * カスタムの`BigDecimal`シリアライズが非推奨になりました。([Pull Request](https://github.com/rails/rails/pull/13911))
 
 ### 主な変更点
 
 * `ActiveSupport`のJSONエンコーダーが書き直され、pure-RubyのカスタムエンコーディングではなくJSON gemを利用するようになりました。
-([Pull Request](https://github.com/rails/rails/pull/12183) / [詳細](upgrading_ruby_on_rails.html#changes-in-json-handling))
+([Pull Request](https://github.com/rails/rails/pull/12183) / [詳細](upgrading_ruby_on_rails.html#jsonの扱いの変更点))
 
 * JSON gemとの互換性が向上しました。
-([Pull Request](https://github.com/rails/rails/pull/12862) / [詳細](upgrading_ruby_on_rails.html#changes-in-json-handling))
+([Pull Request](https://github.com/rails/rails/pull/12862) / [詳細](upgrading_ruby_on_rails.html#jsonの扱いの変更点))
 
 * `ActiveSupport::Testing::TimeHelpers#travel`および`#travel_to`が追加されました。これらのメソッドは、`Time.now`および`Date.today`をスタブ化することによって、現在時刻を指定の時刻または時間に変換します。
 

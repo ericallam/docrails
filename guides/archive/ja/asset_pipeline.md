@@ -120,7 +120,7 @@ Railsは、productionモードではデフォルトで`public/assets`ファイ�
 
 Railsでscaffoldやコントローラを生成すると、JavaScriptファイル (`coffee-rails` gemが`Gemfile`で有効になっている場合はCoffeeScript) とCSS (`sass-rails` gemが`Gemfile`で有効になっている場合はSCSS) もそのコントローラ用に生成されます。scaffold生成時には、さらにscaffolds.css (`sass-rails` gemが`Gemfile`で有効になっている場合はscaffolds.css.scss) も生成されます。
 
-たとえば`ProjectsController`を生成すると、`app/assets/javascripts/projects.js.coffee`ファイルと`app/assets/stylesheets/projects.css.scss`ファイルが新しく作成されます。`require_tree`ディレクティブを使用すると、これらのファイルを即座にアプリケーションから利用できます。require_treeの詳細については[マニフェストファイルとディレクティブ](#manifest-files-and-directives)を参照してください。
+たとえば`ProjectsController`を生成すると、`app/assets/javascripts/projects.js.coffee`ファイルと`app/assets/stylesheets/projects.css.scss`ファイルが新しく作成されます。`require_tree`ディレクティブを使用すると、これらのファイルを即座にアプリケーションから利用できます。require_treeの詳細については[マニフェストファイルとディレクティブ](#マニフェストファイルとディレクティブ)を参照してください。
 
 関連するコントローラで以下のコードを使用することで、コントローラ固有のスタイルシートやJavaScriptファイルをそのコントローラだけで使用できます。
 
@@ -128,7 +128,7 @@ Railsでscaffoldやコントローラを生成すると、JavaScriptファイル
 
 上のコードを使用する際は、`require_tree`ディレクティブを使用していないことを必ず確認してください。`require_tree`と併用すると、アセットが2回以上インクルードされてしまいます。
 
-WARNING: アセットのプリコンパイルを使用する場合、ページが読み込まれるたびにコントローラのアセットがプリコンパイルされるようにしておく必要があります。デフォルトでは、.coffeeファイルと.scssファイルは自動ではプリコンパイルされません。プリコンパイルの動作の詳細については、[アセットをプリコンパイルする](#precompiling-assets)を参照してください。
+WARNING: アセットのプリコンパイルを使用する場合、ページが読み込まれるたびにコントローラのアセットがプリコンパイルされるようにしておく必要があります。デフォルトでは、.coffeeファイルと.scssファイルは自動ではプリコンパイルされません。プリコンパイルの動作の詳細については、[アセットをプリコンパイルする](#アセットをプリコンパイルする)を参照してください。
 
 NOTE: CoffeeScriptを使用するには、ExecJSがランタイムでサポートされている必要があります。Mac OS XまたはWindowsを使用している場合は、OSにJavaScriptランタイムをインストールしてください。サポートされているすべてのJavaScriptランタイムに関するドキュメントは、[ExecJS](https://github.com/sstephenson/execjs#readme) で参照できます。
 
@@ -150,7 +150,7 @@ end
 
 * `vendor/assets`は、JavaScriptプラグインやCSSフレームワークなど、外部の団体などによって所有されているアセットの置き場所です。
 
-WARNING: Rails 3からのアップグレードを行なう際には、`lib/assets`と`vendor/assets`の下に置かれているアセットがRails 4ではアプリケーションのマニフェストによってインクルードされて利用可能になること、しかしプリコンパイルアレイの一部には含まれなくなることを考慮に入れてください。ガイダンスについては[アセットをプリコンパイルする](#precompiling-assets)を参照してください。
+WARNING: Rails 3からのアップグレードを行なう際には、`lib/assets`と`vendor/assets`の下に置かれているアセットがRails 4ではアプリケーションのマニフェストによってインクルードされて利用可能になること、しかしプリコンパイルアレイの一部には含まれなくなることを考慮に入れてください。ガイダンスについては[アセットをプリコンパイルする](#アセットをプリコンパイルする)を参照してください。
 
 #### パスの検索
 
@@ -914,7 +914,7 @@ Sprockets.register_engine '.bang', BangBang::Template
 古いバージョンのRailsからアップグレードする
 ------------------------------------
 
-Rails 3.0やRails 2.xからのアップグレードの際には、いくつかの作業を行う必要があります。最初に、`public/`ディレクトリ以下のファイルを新しい場所に移動します。ファイルの種類ごとの正しい置き場所については、[アセットの編成](#asset-organization)を参照してください。
+Rails 3.0やRails 2.xからのアップグレードの際には、いくつかの作業を行う必要があります。最初に、`public/`ディレクトリ以下のファイルを新しい場所に移動します。ファイルの種類ごとの正しい置き場所については、[アセットの編成](#アセットの編成)を参照してください。
 
 続いて、JavaScriptファイルの重複を解消します。jQueryはRails 3.1以降におけるデフォルトのJavaScriptライブラリなので、`jquery.js`を`app/assets`に置かなくても自動的に読み込まれます。
 

@@ -112,7 +112,7 @@ Rails全般に対する設定を行うには、`Rails::Railtie`オブジェク�
 
 * `config.logger`は、ロガーを指定します。指定されるロガーは、Log4rまたはRubyのデフォルトの`Logger`クラスのインターフェイスに従います。デフォルトでは`ActiveSupport::Logger`のログが指定されます。これはproductionモードでは自動的にログを出力します。
 
-* `config.middleware`は、アプリケーションで使用するミドルウェアをカスタマイズできます。詳細については[ミドルウェアを構成する](#configuring-middleware)の節を参照してください。
+* `config.middleware`は、アプリケーションで使用するミドルウェアをカスタマイズできます。詳細については[ミドルウェアを構成する](#ミドルウェアを設定する)の節を参照してください。
 
 * `config.reload_classes_only_on_change`は、監視しているファイルが変更された場合にのみクラスを再読み込みするかどうかを指定します。デフォルトでは、autoload_pathで指定されたすべてのファイルが監視対象となり、デフォルトでtrueが設定されます。`config.cache_classes`がオンの場合はこのオプションは無視されます。
 

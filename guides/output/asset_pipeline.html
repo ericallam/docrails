@@ -364,11 +364,11 @@ global-908e25f4bf641868d8683022a5b62f54.css
 <p>Railsは、productionモードではデフォルトで<code>public/assets</code>ファイルをプリコンパイルします。このプリコンパイルされたファイルがWebサーバーによって静的なアセットとして扱われます。<code>app/assets</code>に置かれたファイルがそのままの形でproduction環境で使用されることは決してありません。</p>
 <h4 id="コントローラ固有のアセット"><a href="#%E3%82%B3%E3%83%B3%E3%83%88%E3%83%AD%E3%83%BC%E3%83%A9%E5%9B%BA%E6%9C%89%E3%81%AE%E3%82%A2%E3%82%BB%E3%83%83%E3%83%88">2.1 コントローラ固有のアセット</a></h4>
 <p>Railsでscaffoldやコントローラを生成すると、JavaScriptファイル (<code>coffee-rails</code> gemが<code>Gemfile</code>で有効になっている場合はCoffeeScript) とCSS (<code>sass-rails</code> gemが<code>Gemfile</code>で有効になっている場合はSCSS) もそのコントローラ用に生成されます。scaffold生成時には、さらにscaffolds.css (<code>sass-rails</code> gemが<code>Gemfile</code>で有効になっている場合はscaffolds.css.scss) も生成されます。</p>
-<p>たとえば<code>ProjectsController</code>を生成すると、<code>app/assets/javascripts/projects.js.coffee</code>ファイルと<code>app/assets/stylesheets/projects.css.scss</code>ファイルが新しく作成されます。<code>require_tree</code>ディレクティブを使用すると、これらのファイルを即座にアプリケーションから利用できます。require_treeの詳細については<a href="#manifest-files-and-directives">マニフェストファイルとディレクティブ</a>を参照してください。</p>
+<p>たとえば<code>ProjectsController</code>を生成すると、<code>app/assets/javascripts/projects.js.coffee</code>ファイルと<code>app/assets/stylesheets/projects.css.scss</code>ファイルが新しく作成されます。<code>require_tree</code>ディレクティブを使用すると、これらのファイルを即座にアプリケーションから利用できます。require_treeの詳細については<a href="#%E3%83%9E%E3%83%8B%E3%83%95%E3%82%A7%E3%82%B9%E3%83%88%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%81%A8%E3%83%87%E3%82%A3%E3%83%AC%E3%82%AF%E3%83%86%E3%82%A3%E3%83%96">マニフェストファイルとディレクティブ</a>を参照してください。</p>
 <p>関連するコントローラで以下のコードを使用することで、コントローラ固有のスタイルシートやJavaScriptファイルをそのコントローラだけで使用できます。</p>
 <p><code>&lt;%= javascript_include_tag params[:controller] %&gt;</code> または <code>&lt;%= stylesheet_link_tag params[:controller] %&gt;</code></p>
 <p>上のコードを使用する際は、<code>require_tree</code>ディレクティブを使用していないことを必ず確認してください。<code>require_tree</code>と併用すると、アセットが2回以上インクルードされてしまいます。</p>
-<div class="warning"><p>アセットのプリコンパイルを使用する場合、ページが読み込まれるたびにコントローラのアセットがプリコンパイルされるようにしておく必要があります。デフォルトでは、.coffeeファイルと.scssファイルは自動ではプリコンパイルされません。プリコンパイルの動作の詳細については、<a href="#precompiling-assets">アセットをプリコンパイルする</a>を参照してください。</p></div>
+<div class="warning"><p>アセットのプリコンパイルを使用する場合、ページが読み込まれるたびにコントローラのアセットがプリコンパイルされるようにしておく必要があります。デフォルトでは、.coffeeファイルと.scssファイルは自動ではプリコンパイルされません。プリコンパイルの動作の詳細については、<a href="#%E3%82%A2%E3%82%BB%E3%83%83%E3%83%88%E3%82%92%E3%83%97%E3%83%AA%E3%82%B3%E3%83%B3%E3%83%91%E3%82%A4%E3%83%AB%E3%81%99%E3%82%8B">アセットをプリコンパイルする</a>を参照してください。</p></div>
 <div class="note"><p>CoffeeScriptを使用するには、ExecJSがランタイムでサポートされている必要があります。Mac OS XまたはWindowsを使用している場合は、OSにJavaScriptランタイムをインストールしてください。サポートされているすべてのJavaScriptランタイムに関するドキュメントは、<a href="https://github.com/sstephenson/execjs#readme">ExecJS</a> で参照できます。</p></div>
 <p><code>config/application.rb</code>設定に以下を追加することで、コントローラ固有のアセットファイル生成を止めることもできます。</p>
 <div class="code_container">
@@ -386,7 +386,7 @@ end
 <li><p><code>lib/assets</code>は、1つのアプリケーションの範疇に収まらないライブラリのコードや、複数のアプリケーションで共有されるライブラリのコードを置く場所です。</p></li>
 <li><p><code>vendor/assets</code>は、JavaScriptプラグインやCSSフレームワークなど、外部の団体などによって所有されているアセットの置き場所です。</p></li>
 </ul>
-<div class="warning"><p>Rails 3からのアップグレードを行なう際には、<code>lib/assets</code>と<code>vendor/assets</code>の下に置かれているアセットがRails 4ではアプリケーションのマニフェストによってインクルードされて利用可能になること、しかしプリコンパイルアレイの一部には含まれなくなることを考慮に入れてください。ガイダンスについては<a href="#precompiling-assets">アセットをプリコンパイルする</a>を参照してください。</p></div>
+<div class="warning"><p>Rails 3からのアップグレードを行なう際には、<code>lib/assets</code>と<code>vendor/assets</code>の下に置かれているアセットがRails 4ではアプリケーションのマニフェストによってインクルードされて利用可能になること、しかしプリコンパイルアレイの一部には含まれなくなることを考慮に入れてください。ガイダンスについては<a href="#%E3%82%A2%E3%82%BB%E3%83%83%E3%83%88%E3%82%92%E3%83%97%E3%83%AA%E3%82%B3%E3%83%B3%E3%83%91%E3%82%A4%E3%83%AB%E3%81%99%E3%82%8B">アセットをプリコンパイルする</a>を参照してください。</p></div>
 <h5 id="パスの検索"><a href="#%E3%83%91%E3%82%B9%E3%81%AE%E6%A4%9C%E7%B4%A2">2.2.1 パスの検索</a></h5>
 <p>ファイルがマニフェストやヘルパーから参照される場合、Sprocketsはデフォルトのアセットの置き場所である3つのディレクトリからファイルを探します。</p>
 <p>3つのディレクトリとは、<code>app/assets</code>の下にある<code>images</code>、<code>javascripts</code>、<code>stylesheets</code>ディレクトリです。ただしこれらのサブディレクトリは特殊なものではなく、実際には<code>assets/*</code>以下のすべてのパスが検索対象になります。</p>
@@ -1082,7 +1082,7 @@ Sprockets.register_engine '.bang', BangBang::Template
 </pre>
 </div>
 <h3 id="古いバージョンのrailsからアップグレードする"><a href="#%E5%8F%A4%E3%81%84%E3%83%90%E3%83%BC%E3%82%B8%E3%83%A7%E3%83%B3%E3%81%AErails%E3%81%8B%E3%82%89%E3%82%A2%E3%83%83%E3%83%97%E3%82%B0%E3%83%AC%E3%83%BC%E3%83%89%E3%81%99%E3%82%8B">9 古いバージョンのRailsからアップグレードする</a></h3>
-<p>Rails 3.0やRails 2.xからのアップグレードの際には、いくつかの作業を行う必要があります。最初に、<code>public/</code>ディレクトリ以下のファイルを新しい場所に移動します。ファイルの種類ごとの正しい置き場所については、<a href="#asset-organization">アセットの編成</a>を参照してください。</p>
+<p>Rails 3.0やRails 2.xからのアップグレードの際には、いくつかの作業を行う必要があります。最初に、<code>public/</code>ディレクトリ以下のファイルを新しい場所に移動します。ファイルの種類ごとの正しい置き場所については、<a href="#%E3%82%A2%E3%82%BB%E3%83%83%E3%83%88%E3%81%AE%E7%B7%A8%E6%88%90">アセットの編成</a>を参照してください。</p>
 <p>続いて、JavaScriptファイルの重複を解消します。jQueryはRails 3.1以降におけるデフォルトのJavaScriptライブラリなので、<code>jquery.js</code>を<code>app/assets</code>に置かなくても自動的に読み込まれます。</p>
 <p>3番目に、多くの環境設定ファイルを正しいデフォルトオプションに更新します。</p>
 <p><code>application.rb</code>の場合。</p>

@@ -499,8 +499,8 @@ end
 <li><p>Action ViewはAction Packから完全に分離されました。(<a href="https://github.com/rails/rails/pull/11032">Pull Request</a>)</p></li>
 <li><p>deep_mungeに影響されているキーがログ出力されるようになりました。(<a href="https://github.com/rails/rails/pull/13813">Pull Request</a>)</p></li>
 <li><p>セキュリティ脆弱性CVE-2013-0155に対応するため、パラメータのdeep_munge化を回避する<code>config.action_dispatch.perform_deep_munge</code>configオプションが新たに追加されました。(<a href="https://github.com/rails/rails/pull/13188">Pull Request</a>)</p></li>
-<li><p>署名及び暗号化されたcookies jarのシリアライザを指定する<code>config.action_dispatch.cookies_serializer</code>configオプションが新たに追加されました。 (Pull Requests <a href="https://github.com/rails/rails/pull/13692">1</a>, <a href="https://github.com/rails/rails/pull/13945">2</a> / <a href="upgrading_ruby_on_rails.html#cookies-serializer">詳細</a>)</p></li>
-<li><p><code>render :plain</code>、<code>render :html</code>、<code>render :body</code>が追加されました。(<a href="https://github.com/rails/rails/pull/14062">Pull Request</a> / <a href="upgrading_ruby_on_rails.html#rendering-content-from-string">詳細</a>)</p></li>
+<li><p>署名及び暗号化されたcookies jarのシリアライザを指定する<code>config.action_dispatch.cookies_serializer</code>configオプションが新たに追加されました。 (Pull Requests <a href="https://github.com/rails/rails/pull/13692">1</a>, <a href="https://github.com/rails/rails/pull/13945">2</a> / <a href="upgrading_ruby_on_rails.html#cookies%E3%82%B7%E3%83%AA%E3%82%A2%E3%83%A9%E3%82%A4%E3%82%B6">詳細</a>)</p></li>
+<li><p><code>render :plain</code>、<code>render :html</code>、<code>render :body</code>が追加されました。(<a href="https://github.com/rails/rails/pull/14062">Pull Request</a> / <a href="upgrading_ruby_on_rails.html#%E6%96%87%E5%AD%97%E5%88%97%E3%81%8B%E3%82%89%E3%81%AE%E3%82%B3%E3%83%B3%E3%83%86%E3%83%B3%E3%83%84%E6%8F%8F%E5%87%BA">詳細</a>)</p></li>
 </ul>
 <h3 id="action-mailer"><a href="#action-mailer">4 Action Mailer</a></h3>
 <p>変更の詳細については<a href="https://github.com/rails/rails/blob/4-1-stable/actionmailer/CHANGELOG.md">Changelog</a> を参照してください。</p>
@@ -547,7 +547,7 @@ end
 </ul>
 <h4 id="active-record-主な変更点"><a href="#active-record-%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">5.3 主な変更点</a></h4>
 <p>デフォルトのスコープは、条件を連鎖した場合にオーバーライドされなくなりました。</p>
-<p>  今回の変更より前にモデルで<code>default_scope</code>を定義していた場合、同じフィールドで条件が連鎖している場合にはオーバーライドされていました。現在は、他のスコープと同様、マージされるようになりました。<a href="upgrading_ruby_on_rails.html#changes-on-default-scopes">詳細</a></p>
+<p>  今回の変更より前にモデルで<code>default_scope</code>を定義していた場合、同じフィールドで条件が連鎖している場合にはオーバーライドされていました。現在は、他のスコープと同様、マージされるようになりました。<a href="upgrading_ruby_on_rails.html#%E3%83%87%E3%83%95%E3%82%A9%E3%83%AB%E3%83%88%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%97%E3%81%AE%E5%A4%89%E6%9B%B4">詳細</a></p>
 <ul>
 <li><p>モデルの属性やメソッドから派生する便利な "pretty" URL用に<code>ActiveRecord::Base.to_param</code>が追加されました。(<a href="https://github.com/rails/rails/pull/12891">Pull Request</a>)</p></li>
 <li><p><code>ActiveRecord::Base.no_touching</code>が追加されました。モデルへのタッチを無視します。(<a href="https://github.com/rails/rails/pull/12772">Pull Request</a>)</p></li>
@@ -595,7 +595,7 @@ end
 <p>変更の詳細については<a href="https://github.com/rails/rails/blob/4-1-stable/activesupport/CHANGELOG.md">Changelog</a> を参照してください。</p>
 <h4 id="active-support-削除されたもの"><a href="#active-support-%E5%89%8A%E9%99%A4%E3%81%95%E3%82%8C%E3%81%9F%E3%82%82%E3%81%AE">7.1 削除されたもの</a></h4>
 <ul>
-<li><p><code>MultiJSON</code>依存が削除されました。これにより、<code>ActiveSupport::JSON.decode</code>は<code>MultiJSON</code>のオプションハッシュを受け付けなくなりました。(<a href="https://github.com/rails/rails/pull/10576">Pull Request</a> / <a href="upgrading_ruby_on_rails.html#changes-in-json-handling">詳細</a>)</p></li>
+<li><p><code>MultiJSON</code>依存が削除されました。これにより、<code>ActiveSupport::JSON.decode</code>は<code>MultiJSON</code>のオプションハッシュを受け付けなくなりました。(<a href="https://github.com/rails/rails/pull/10576">Pull Request</a> / <a href="upgrading_ruby_on_rails.html#json%E3%81%AE%E6%89%B1%E3%81%84%E3%81%AE%E5%A4%89%E6%9B%B4%E7%82%B9">詳細</a>)</p></li>
 <li><p>カスタムオブジェクトをJSONにエンコードする<code>encode_json</code>フックのサポートが削除されました。この機能は<a href="https://github.com/rails/activesupport-json_encoder">activesupport-json_encoder</a> gemに書き出されました。
 この機能は<a href="https://github.com/rails/activesupport-json_encoder">activesupport-json_encoder</a> gemに書き出されました。</p></li>
 <li><p>非推奨の<code>ActiveSupport::JSON::Variable</code>が代替なしで削除されました。</p></li>
@@ -618,17 +618,17 @@ end
 <ul>
 <li><p>時間表現<code>Numeric#{ago,until,since,from_now}</code>が非推奨になりました。この値はAS::Durationに明示的に変換してください。例: <code>5.ago</code> =&gt; <code>5.seconds.ago</code> (<a href="https://github.com/rails/rails/pull/12389">Pull Request</a>)</p></li>
 <li><p>requireパス<code>active_support/core_ext/object/to_json</code>が非推奨になりました。<code>active_support/core_ext/object/json</code>を代りにrequireしてください。(<a href="https://github.com/rails/rails/pull/12203">Pull Request</a>)</p></li>
-<li><p><code>ActiveSupport::JSON::Encoding::CircularReferenceError</code>が非推奨になりました。この機能は<a href="https://github.com/rails/activesupport-json_encoder">activesupport-json_encoder</a> gemに書き出されました。(<a href="https://github.com/rails/rails/pull/10785">Pull Request</a> / <a href="upgrading_ruby_on_rails.html#changes-in-json-handling">詳細</a>)</p></li>
+<li><p><code>ActiveSupport::JSON::Encoding::CircularReferenceError</code>が非推奨になりました。この機能は<a href="https://github.com/rails/activesupport-json_encoder">activesupport-json_encoder</a> gemに書き出されました。(<a href="https://github.com/rails/rails/pull/10785">Pull Request</a> / <a href="upgrading_ruby_on_rails.html#json%E3%81%AE%E6%89%B1%E3%81%84%E3%81%AE%E5%A4%89%E6%9B%B4%E7%82%B9">詳細</a>)</p></li>
 <li><p><code>ActiveSupport.encode_big_decimal_as_string</code>オプションが非推奨になりました。この機能は<a href="https://github.com/rails/activesupport-json_encoder">activesupport-json_encoder</a> gemに書き出されました。
-(<a href="https://github.com/rails/rails/pull/13060">Pull Request</a> / <a href="upgrading_ruby_on_rails.html#changes-in-json-handling">詳細</a>)</p></li>
+(<a href="https://github.com/rails/rails/pull/13060">Pull Request</a> / <a href="upgrading_ruby_on_rails.html#json%E3%81%AE%E6%89%B1%E3%81%84%E3%81%AE%E5%A4%89%E6%9B%B4%E7%82%B9">詳細</a>)</p></li>
 <li><p>カスタムの<code>BigDecimal</code>シリアライズが非推奨になりました。(<a href="https://github.com/rails/rails/pull/13911">Pull Request</a>)</p></li>
 </ul>
 <h4 id="active-support-主な変更点"><a href="#active-support-%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">7.3 主な変更点</a></h4>
 <ul>
 <li><p><code>ActiveSupport</code>のJSONエンコーダーが書き直され、pure-RubyのカスタムエンコーディングではなくJSON gemを利用するようになりました。
-(<a href="https://github.com/rails/rails/pull/12183">Pull Request</a> / <a href="upgrading_ruby_on_rails.html#changes-in-json-handling">詳細</a>)</p></li>
+(<a href="https://github.com/rails/rails/pull/12183">Pull Request</a> / <a href="upgrading_ruby_on_rails.html#json%E3%81%AE%E6%89%B1%E3%81%84%E3%81%AE%E5%A4%89%E6%9B%B4%E7%82%B9">詳細</a>)</p></li>
 <li><p>JSON gemとの互換性が向上しました。
-(<a href="https://github.com/rails/rails/pull/12862">Pull Request</a> / <a href="upgrading_ruby_on_rails.html#changes-in-json-handling">詳細</a>)</p></li>
+(<a href="https://github.com/rails/rails/pull/12862">Pull Request</a> / <a href="upgrading_ruby_on_rails.html#json%E3%81%AE%E6%89%B1%E3%81%84%E3%81%AE%E5%A4%89%E6%9B%B4%E7%82%B9">詳細</a>)</p></li>
 <li><p><code>ActiveSupport::Testing::TimeHelpers#travel</code>および<code>#travel_to</code>が追加されました。これらのメソッドは、<code>Time.now</code>および<code>Date.today</code>をスタブ化することによって、現在時刻を指定の時刻または時間に変換します。</p></li>
 <li><p><code>ActiveSupport::Testing::TimeHelpers#travel_back</code>が追加されました。このメソッドは、<code>travel</code>および<code>travel_to</code>メソッドによって追加されたスタブを削除することで、現在時刻を元の状態に戻します。(<a href="https://github.com/rails/rails/pull/13884">Pull Request</a>)</p></li>
 <li><p><code>Numeric#in_milliseconds</code>が追加されました。<code>1.hour.in_milliseconds</code>のように使用でき、これを<code>getTime()</code>などのJavaScript関数に渡すことができます。(<a href="https://github.com/rails/rails/commit/423249504a2b468d7a273cbe6accf4f21cb0e643">Commit</a>)</p></li>
