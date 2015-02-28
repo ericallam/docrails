@@ -657,7 +657,7 @@ get 'photos/:id', to: 'photos#show', constraints: { id: /[A-Z]\d{5}/ }
 get 'photos/:id', to: 'photos#show', id: /[A-Z]\d{5}/
 ```
 
-`:constraints`は正規表現を引数に取りますが、この引数では正規表現の「アンカー」は使用できないという制限があることにご注意ください。たとえば、以下のルーティングは無効です。
+`:constraints`では正規表現を使用できますが、ここでは正規表現の「アンカー」は使用できないという制限があることにご注意ください。たとえば、以下のルーティングは無効です。
 
 ```ruby
 get '/:id', to: 'posts#show', constraints: {id: /^\d/}
