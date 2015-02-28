@@ -251,15 +251,15 @@ Action Pack
 
 * 以下の非推奨の定数がAction Controllerから削除されました。
 
-  | 削除された                            | 今後使用する                       |
-  |:-----------------------------------|:--------------------------------|
-  | ActionController::AbstractRequest  | ActionDispatch::Request         |
-  | ActionController::Request          | ActionDispatch::Request         |
-  | ActionController::AbstractResponse | ActionDispatch::Response        |
-  | ActionController::Response         | ActionDispatch::Response        |
-  | ActionController::Routing          | ActionDispatch::Routing         |
-  | ActionController::Integration      | ActionDispatch::Integration     |
-  | ActionController::IntegrationTest  | ActionDispatch::IntegrationTest |
+| 削除された                            | 今後使用する                       |
+|:-----------------------------------|:--------------------------------|
+| ActionController::AbstractRequest  | ActionDispatch::Request         |
+| ActionController::Request          | ActionDispatch::Request         |
+| ActionController::AbstractResponse | ActionDispatch::Response        |
+| ActionController::Response         | ActionDispatch::Response        |
+| ActionController::Routing          | ActionDispatch::Routing         |
+| ActionController::Integration      | ActionDispatch::Integration     |
+| ActionController::IntegrationTest  | ActionDispatch::IntegrationTest |
 
 ### 主な変更点
 
