@@ -236,7 +236,7 @@ Railties
 * `Gem::Version.new(Rails.version)`を返す便利なメソッドとして`Rails.gem_version`が導入されました。より信頼できるバージョン比較法を提供します。([Pull Request](https://github.com/rails/rails/pull/14103))
 
 
-### Action Pack
+Action Pack
 -----------
 
 変更の詳細については[Changelog](https://github.com/rails/rails/blob/4-1-stable/actionpack/CHANGELOG.md) を参照してください。
@@ -251,15 +251,15 @@ Railties
 
 * 以下の非推奨の定数がAction Controllerから削除されました。
 
-  | 削除された                            | 今後使用する                       |
-  |:-----------------------------------|:--------------------------------|
-  | ActionController::AbstractRequest  | ActionDispatch::Request         |
-  | ActionController::Request          | ActionDispatch::Request         |
-  | ActionController::AbstractResponse | ActionDispatch::Response        |
-  | ActionController::Response         | ActionDispatch::Response        |
-  | ActionController::Routing          | ActionDispatch::Routing         |
-  | ActionController::Integration      | ActionDispatch::Integration     |
-  | ActionController::IntegrationTest  | ActionDispatch::IntegrationTest |
+| 削除された                            | 今後使用する                       |
+|:-----------------------------------|:--------------------------------|
+| ActionController::AbstractRequest  | ActionDispatch::Request         |
+| ActionController::Request          | ActionDispatch::Request         |
+| ActionController::AbstractResponse | ActionDispatch::Response        |
+| ActionController::Response         | ActionDispatch::Response        |
+| ActionController::Routing          | ActionDispatch::Routing         |
+| ActionController::Integration      | ActionDispatch::Integration     |
+| ActionController::IntegrationTest  | ActionDispatch::IntegrationTest |
 
 ### 主な変更点
 
