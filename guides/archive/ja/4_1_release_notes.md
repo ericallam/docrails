@@ -236,7 +236,7 @@ Railties
 * `Gem::Version.new(Rails.version)`を返す便利なメソッドとして`Rails.gem_version`が導入されました。より信頼できるバージョン比較法を提供します。([Pull Request](https://github.com/rails/rails/pull/14103))
 
 
-### Action Pack
+Action Pack
 -----------
 
 変更の詳細については[Changelog](https://github.com/rails/rails/blob/4-1-stable/actionpack/CHANGELOG.md) を参照してください。
