@@ -470,7 +470,7 @@ config.assets.paths &lt;&lt; Rails.root.join("lib", "videoplayer", "flash")
 </pre>
 </div>
 <p>パイプラインが有効でかつ現在の環境で無効になっていない場合、このファイルはSprocketsによって扱われます。ファイルが<code>public/assets/rails.png</code>に置かれている場合、Webサーバーによって扱われます。</p>
-<p><code>public/assets/rails-af27b6a414e6da00003503148be9b409.png</code>など、ファイル名にMD5ハッシュを含むファイルへのリクエストについても同様に扱われます。ハッシュの生成法については、本ガイドの<a href="#in-production">production環境の場合</a>で後述します。</p>
+<p><code>public/assets/rails-af27b6a414e6da00003503148be9b409.png</code>など、ファイル名にMD5ハッシュを含むファイルへのリクエストについても同様に扱われます。ハッシュの生成法については、本ガイドの<a href="#production%E7%92%B0%E5%A2%83%E3%81%AE%E5%A0%B4%E5%90%88">production環境の場合</a>で後述します。</p>
 <p>Sprocketsは<code>config.assets.paths</code>で指定したパスも探索します。このパスには、標準的なアプリケーションパスと、Railsエンジンによって追加されるすべてのパスが含まれます。</p>
 <p>必要であれば画像ファイルをサブディレクトリに置いて整理することもできます。この画像にアクセスするには、ディレクトリ名を含めて以下のようにタグで指定します。</p>
 <div class="code_container">
@@ -479,7 +479,7 @@ config.assets.paths &lt;&lt; Rails.root.join("lib", "videoplayer", "flash")
 
 </pre>
 </div>
-<div class="warning"><p>アセットのプリコンパイルを行っている場合 (<a href="#in-production">production環境の場合</a>参照)、存在しないアセットへのリンクを含むページを呼び出すと例外が発生します。空文字へのリンクも同様に例外が発生します。ユーザーから提供されたデータに対して<code>image_tag</code>などのヘルパーを使用する場合はご注意ください。</p></div>
+<div class="warning"><p>アセットのプリコンパイルを行っている場合 (<a href="#production%E7%92%B0%E5%A2%83%E3%81%AE%E5%A0%B4%E5%90%88">production環境の場合</a>参照)、存在しないアセットへのリンクを含むページを呼び出すと例外が発生します。空文字へのリンクも同様に例外が発生します。ユーザーから提供されたデータに対して<code>image_tag</code>などのヘルパーを使用する場合はご注意ください。</p></div>
 <h5 id="cssとerb"><a href="#css%E3%81%A8erb">2.3.1 CSSとERB</a></h5>
 <p>アセットパイプラインは自動的にERBを評価します。たとえば、cssアセットファイルに<code>erb</code>という拡張子を追加すると (<code>application.css.erb</code>など)、CSSルール内で<code>asset_path</code>などのヘルパーが使用できるようになります。</p>
 <div class="code_container">

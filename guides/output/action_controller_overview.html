@@ -380,7 +380,7 @@ GET /clients?ids[]=1&amp;ids[]=2&amp;ids[]=3
 </div>
 <div class="note"><p>"["と"]"はURLで使用できない文字なので、この例の実際のURLは "/clients?ids%5b%5d=1&amp;ids%5b%5d=2&amp;ids%5b%5d=3"のようになります。これについては、ブラウザが自動的に面倒を見てくれ、さらにRailsはパラメータ受け取り時に自動的に復元してくれるので、通常は気にする必要はありません。ただし、何らかの理由でサーバーにリクエストを手動送信しなければならない場合には、このことを思い出す必要があります。</p></div>
 <p>これで、受け取った<code>params[:ids]</code>の値は<code>["1", "2", "3"]</code>になりました。もう一つ知っておいて欲しいのは、パラメータの値はすべて「文字列型」であることです。Railsはパラメータの型を推測することもしなければ、型変換も行いませんので、必要であれば自分で型を変換する必要があります。パラメータの数字を<code>to_i</code>で整数に変換するのはよく行われます。</p>
-<div class="note"><p><code>params</code>の中に<code>[]</code>、<code>[nil]</code>、<code>[nil, nil, ...]</code>という値があると、すべて自動的に<code>nil</code>に置き換えられます。この動作は、デフォルトのセキュリティ上の理由にもとづいています。詳細については <a href="security.html#unsafe-query-generation">セキュリティガイド</a> を参照してください。</p></div>
+<div class="note"><p><code>params</code>の中に<code>[]</code>、<code>[nil]</code>、<code>[nil, nil, ...]</code>という値があると、すべて自動的に<code>nil</code>に置き換えられます。この動作は、デフォルトのセキュリティ上の理由にもとづいています。詳細については <a href="security.html#%E5%AE%89%E5%85%A8%E3%81%A7%E3%81%AA%E3%81%84%E3%82%AF%E3%82%A8%E3%83%AA%E7%94%9F%E6%88%90">セキュリティガイド</a> を参照してください。</p></div>
 <p>フォームから、中かっこ[]の中にキー名を含めたハッシュを送信するには以下のようにします。</p>
 <div class="code_container">
 <pre class="brush: xml; gutter: false; toolbar: false">
