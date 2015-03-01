@@ -217,7 +217,7 @@
 
 <ul>
 <li><a href="#gem%E3%81%AB%E7%A7%BB%E8%A1%8C%E3%81%99%E3%82%8B">gemに移行する</a></li>
-<li><a href="#%E6%9C%80%E6%96%B0%E3%81%AEgem%E3%82%92%E4%BB%95%E6%A7%98%E3%81%99%E3%82%8B">最新のgemを仕様する</a></li>
+<li><a href="#%E6%9C%80%E6%96%B0%E3%81%AEgem%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B">最新のgemを使用する</a></li>
 </ul>
 </li>
 <li>
@@ -302,7 +302,7 @@ $ cd myapp
 <h4 id="gemに移行する"><a href="#gem%E3%81%AB%E7%A7%BB%E8%A1%8C%E3%81%99%E3%82%8B">2.1 gemに移行する</a></h4>
 <p>Rails 4.0からは、アプリケーションのルートディレクトリに置かれる<code>Gemfile</code>を使用して、アプリケーションの起動に必要なgemを指定するようになりました。この<code>Gemfile</code>は<a href="https://github.com/carlhuda/bundler">Bundler</a>というgemによって処理され、依存関係のある必要なgemをすべてインストールします。依存するgemをそのアプリケーションの中にだけインストールして、OS環境にある既存のgemに影響を与えないようにすることもできます。</p>
 <p>詳細情報: <a href="http://gembundler.com">Bundlerホームページ</a></p>
-<h4 id="最新のgemを仕様する"><a href="#%E6%9C%80%E6%96%B0%E3%81%AEgem%E3%82%92%E4%BB%95%E6%A7%98%E3%81%99%E3%82%8B">2.2 最新のgemを仕様する</a></h4>
+<h4 id="最新のgemを使用する"><a href="#%E6%9C%80%E6%96%B0%E3%81%AEgem%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B">2.2 最新のgemを使用する</a></h4>
 <p><code>Bundler</code>と<code>Gemfile</code>のおかげで、専用の<code>bundle</code>コマンド一発でRailsアプリケーションのgemを簡単に安定させることができます。Gitリポジトリから直接bundleしたい場合は<code>--edge</code>フラグを追加します。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">

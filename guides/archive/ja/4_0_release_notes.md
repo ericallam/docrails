@@ -36,7 +36,7 @@ Rails 4.0からは、アプリケーションのルートディレクトリに�
 
 詳細情報: [Bundlerホームページ](http://gembundler.com)
 
-### 最新のgemを仕様する
+### 最新のgemを使用する
 
 `Bundler`と`Gemfile`のおかげで、専用の`bundle`コマンド一発でRailsアプリケーションのgemを簡単に安定させることができます。Gitリポジトリから直接bundleしたい場合は`--edge`フラグを追加します。
 
