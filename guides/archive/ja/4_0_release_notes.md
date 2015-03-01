@@ -69,7 +69,7 @@ $ ruby /path/to/rails/railties/bin/rails new myapp --dev
 ### ActionPack
 
 * **Strong Parameters** ([コミット](https://github.com/rails/rails/commit/a8f6d5c6450a7fe058348a7f10a908352bb6c7fc)) - ホワイトリストで明示的に許可されたパラメータ (`params.permit(:title, :text)`) を使用しないとモデルオブジェクトを更新できないようにする。
-* **ルーティングでの配慮** ([コミット](https://github.com/rails/rails/commit/0dd24728a088fcb4ae616bb5d62734aca5276b1b)) - DSLをルーティングする際に、共通となるサブルーティング (subroutes) を除外する (`/posts/1/comments`と`/videos/1/comments`における`comments`など)。
+* **ルーティングの「concern」機能** ([コミット](https://github.com/rails/rails/commit/0dd24728a088fcb4ae616bb5d62734aca5276b1b)) - ルーティング用のDSLで、共通となるサブルーティング (subroutes) を除外する (`/posts/1/comments`と`/videos/1/comments`における`comments`など)。
 * **ActionController::Live** ([コミット](https://github.com/rails/rails/commit/af0a9f9eefaee3a8120cfd8d05cbc431af376da3)) - JSONを`response.stream`でストリーミングする。
 * **「宣言的 (declarative)」ETag** ([コミット](https://github.com/rails/rails/commit/ed5c938fa36995f06d4917d9543ba78ed506bb8d)) - コントローラレベルのetagを追加する。これはアクションでのetag算出にも使用される。
 * **[ロシアンドールキャッシュ](http://37signals.com/svn/posts/3113-how-key-based-cache-expiration-works)** ([コミット](https://github.com/rails/rails/commit/4154bf012d2bec2aae79e4a49aa94a70d3e91d49)) - ビューで、ネストしたコード断片をキャッシュする。各断片は依存関係のセット (キャッシュキー) に応じて期限切れになる。通常、このキャッシュキーにはテンプレートのバージョン番号とモデルオブジェクトが使用される。
@@ -80,7 +80,7 @@ $ ruby /path/to/rails/railties/bin/rails new myapp --dev
 ### 一般
 
 * **ActiveModel::Model** ([commit](https://github.com/rails/rails/commit/3b822e91d1a6c4eab0064989bbd07aae3a6d0d08)) - `ActiveModel::Model`は通常のRubyオブジェクトでもActionPackの機能を利用できるようにする (`form_for`など) ためのミックスイン。 
-* **新しい「スコープAPI」** ([コミット](https://github.com/rails/rails/commit/50cbc03d18c5984347965a94027879623fc44cce)) - スコープは常に呼び出し可能でなければならない。
+* **新しい「スコープAPI」** ([コミット](https://github.com/rails/rails/commit/50cbc03d18c5984347965a94027879623fc44cce)) - scopeメソッドの引数は常にcallメソッドを実装していなくてはならない。
 * **スキーマキャッシュダンプ** ([コミット](https://github.com/rails/rails/commit/5ca4fc95818047108e69e22d200e7a4a22969477)) - Railsの起動時間短縮のため、スキーマをデータベースから直接読み込むのではなくダンプファイルから読み込む。
 * **トランザクション分離レベル指定のサポート** ([コミット](https://github.com/rails/rails/commit/392eeecc11a291e406db927a18b75f41b2658253)) - 読み出しを頻繁に行うか、書き込みのパフォーマンスを重視してロックを減らすかを選択できる。
 * **Dalli** ([コミット](https://github.com/rails/rails/commit/82663306f428a5bbc90c511458432afb26d2f238)) - memcacheストアにはDalliのmemcacheクライアントを使用すること。
@@ -90,7 +90,7 @@ $ ruby /path/to/rails/railties/bin/rails new myapp --dev
 
 ### セキュリティ
 
-* **matchだけですべてをまかなわないこと** ([コミット](https://github.com/rails/rails/commit/90d2802b71a6e89aedfe40564a37bd35f777e541)) - DSLルーティングで match を使用する場合には HTTP 動詞 (verb) を明示的にひとつまたは複数指定する必要があります。
+* **matchだけですべてをまかなわないこと** ([コミット](https://github.com/rails/rails/commit/90d2802b71a6e89aedfe40564a37bd35f777e541)) - ルーティング用のDSLで match を使用する場合には HTTP 動詞 (verb) を明示的にひとつまたは複数指定する必要があります。
 * **htmlエンティティをデフォルトでエスケープ** ([コミット](https://github.com/rails/rails/commit/5f189f41258b83d49012ec5a0678d827327e7543)) - ERB内でレンダリングされる文字列は、`raw`や`html_safe`メソッドでラップしない限り常にエスケープされます。
 * **新しいセキュリティヘッダー** ([コメント](https://github.com/rails/rails/commit/6794e92b204572d75a07bd6413bdae6ae22d5a82)) - Railsから送信されるあらゆるHTTPリクエストに次のヘッダーが含まれるようになりました: `X-Frame-Options` (クリックジャック防止のため、フレーム内へのページ埋め込みを禁止するようブラウザに指示する)、`X-XSS-Protection` (スクリプト注入を停止するようブラウザに指示する)、`X-Content-Type-Options` (jpegファイルをexeとして開かないようブラウザに指示する)。
 

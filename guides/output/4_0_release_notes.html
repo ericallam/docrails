@@ -348,7 +348,7 @@ $ ruby /path/to/rails/railties/bin/rails new myapp --dev
 <li>
 <strong>Strong Parameters</strong> (<a href="https://github.com/rails/rails/commit/a8f6d5c6450a7fe058348a7f10a908352bb6c7fc">コミット</a>) - ホワイトリストで明示的に許可されたパラメータ (<code>params.permit(:title, :text)</code>) を使用しないとモデルオブジェクトを更新できないようにする。</li>
 <li>
-<strong>ルーティングでの配慮</strong> (<a href="https://github.com/rails/rails/commit/0dd24728a088fcb4ae616bb5d62734aca5276b1b">コミット</a>) - DSLをルーティングする際に、共通となるサブルーティング (subroutes) を除外する (<code>/posts/1/comments</code>と<code>/videos/1/comments</code>における<code>comments</code>など)。</li>
+<strong>ルーティングの「concern」機能</strong> (<a href="https://github.com/rails/rails/commit/0dd24728a088fcb4ae616bb5d62734aca5276b1b">コミット</a>) - ルーティング用のDSLで、共通となるサブルーティング (subroutes) を除外する (<code>/posts/1/comments</code>と<code>/videos/1/comments</code>における<code>comments</code>など)。</li>
 <li>
 <strong>ActionController::Live</strong> (<a href="https://github.com/rails/rails/commit/af0a9f9eefaee3a8120cfd8d05cbc431af376da3">コミット</a>) - JSONを<code>response.stream</code>でストリーミングする。</li>
 <li>
@@ -367,7 +367,7 @@ $ ruby /path/to/rails/railties/bin/rails new myapp --dev
 <li>
 <strong>ActiveModel::Model</strong> (<a href="https://github.com/rails/rails/commit/3b822e91d1a6c4eab0064989bbd07aae3a6d0d08">commit</a>) - <code>ActiveModel::Model</code>は通常のRubyオブジェクトでもActionPackの機能を利用できるようにする (<code>form_for</code>など) ためのミックスイン。 </li>
 <li>
-<strong>新しい「スコープAPI」</strong> (<a href="https://github.com/rails/rails/commit/50cbc03d18c5984347965a94027879623fc44cce">コミット</a>) - スコープは常に呼び出し可能でなければならない。</li>
+<strong>新しい「スコープAPI」</strong> (<a href="https://github.com/rails/rails/commit/50cbc03d18c5984347965a94027879623fc44cce">コミット</a>) - scopeメソッドの引数は常にcallメソッドを実装していなくてはならない。</li>
 <li>
 <strong>スキーマキャッシュダンプ</strong> (<a href="https://github.com/rails/rails/commit/5ca4fc95818047108e69e22d200e7a4a22969477">コミット</a>) - Railsの起動時間短縮のため、スキーマをデータベースから直接読み込むのではなくダンプファイルから読み込む。</li>
 <li>
@@ -384,7 +384,7 @@ $ ruby /path/to/rails/railties/bin/rails new myapp --dev
 <h4 id="セキュリティ"><a href="#%E3%82%BB%E3%82%AD%E3%83%A5%E3%83%AA%E3%83%86%E3%82%A3">3.4 セキュリティ</a></h4>
 <ul>
 <li>
-<strong>matchだけですべてをまかなわないこと</strong> (<a href="https://github.com/rails/rails/commit/90d2802b71a6e89aedfe40564a37bd35f777e541">コミット</a>) - DSLルーティングで match を使用する場合には HTTP 動詞 (verb) を明示的にひとつまたは複数指定する必要があります。</li>
+<strong>matchだけですべてをまかなわないこと</strong> (<a href="https://github.com/rails/rails/commit/90d2802b71a6e89aedfe40564a37bd35f777e541">コミット</a>) - ルーティング用のDSLで match を使用する場合には HTTP 動詞 (verb) を明示的にひとつまたは複数指定する必要があります。</li>
 <li>
 <strong>htmlエンティティをデフォルトでエスケープ</strong> (<a href="https://github.com/rails/rails/commit/5f189f41258b83d49012ec5a0678d827327e7543">コミット</a>) - ERB内でレンダリングされる文字列は、<code>raw</code>や<code>html_safe</code>メソッドでラップしない限り常にエスケープされます。</li>
 <li>
