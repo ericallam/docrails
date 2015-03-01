@@ -453,7 +453,7 @@ $ ruby /path/to/rails/railties/bin/rails new myapp --dev
 </div>
 <h4 id="active-support-非推奨"><a href="#active-support-%E9%9D%9E%E6%8E%A8%E5%A5%A8">9.2 非推奨</a></h4>
 <ul>
-<li><p>Deprecate <code>ActiveSupport::TestCase#pending</code>メソッドが非推奨になりました。今後はMiniTestの<code>skip</code>をご利用ください。</p></li>
+<li><p><code>ActiveSupport::TestCase#pending</code>メソッドが非推奨になりました。今後はMiniTestの<code>skip</code>をご利用ください。</p></li>
 <li><p><code>ActiveSupport::Benchmarkable#silence</code>はスレッドセーフでないため非推奨となりました。Rails 4.1では代替されることなく削除される予定です。</p></li>
 <li><p><code>ActiveSupport::JSON::Variable</code>は非推奨になりました。カスタムのJSON文字列リテラルを扱いたい場合は、<code>#as_json</code>と#encode_json`メソッドを自分で定義してください。</p></li>
 <li><p>互換用の<code>Module#local_constant_names</code>メソッドは非推奨になりました。今後はシンボルを返す<code>Module#local_constants</code>をご利用ください。</p></li>

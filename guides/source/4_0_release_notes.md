@@ -188,7 +188,7 @@ Active Support
 
 ### 非推奨
 
-* Deprecate `ActiveSupport::TestCase#pending`メソッドが非推奨になりました。今後はMiniTestの`skip`をご利用ください。
+* `ActiveSupport::TestCase#pending`メソッドが非推奨になりました。今後はMiniTestの`skip`をご利用ください。
 
 * `ActiveSupport::Benchmarkable#silence`はスレッドセーフでないため非推奨となりました。Rails 4.1では代替されることなく削除される予定です。
 
