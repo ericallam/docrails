@@ -66,7 +66,7 @@ $ ruby /path/to/rails/railties/bin/rails new myapp --dev
 * **ActiveResource** ([コミット](https://github.com/rails/rails/commit/f1637bf2bb00490203503fbd943b73406e043d1d)) - ActiveResourceは個別のgemに分離された。ActiveResourceの使用頻度が低いため。
 * **vendor/plugins の削除** ([コミット](https://github.com/rails/rails/commit/853de2bd9ac572735fa6cf59fcf827e485a231c3)) - 今後はGemfileでgemのインストールを管理すること。
 
-### Action Pack
+### ActionPack
 
 * **Strong Parameters** ([コミット](https://github.com/rails/rails/commit/a8f6d5c6450a7fe058348a7f10a908352bb6c7fc)) - ホワイトリストで明示的に許可されたパラメータ (`params.permit(:title, :text)`) を使用しないとモデルオブジェクトを更新できないようにする。
 * **ルーティングでの配慮** ([コミット](https://github.com/rails/rails/commit/0dd24728a088fcb4ae616bb5d62734aca5276b1b)) - DSLをルーティングする際に、共通となるサブルーティング (subroutes) を除外する (`/posts/1/comments`と`/videos/1/comments`における`comments`など)。
@@ -192,7 +192,7 @@ Active Support
 
 * `ActiveSupport::Benchmarkable#silence`はスレッドセーフでないため非推奨となりました。Rails 4.1では代替されることなく削除される予定です。
 
-* `ActiveSupport::JSON::Variable`は非推奨になりました。カスタムのJSON文字列リテラルを扱いたい場合は、`#as_json`と#encode_json`メソッドを自分で定義してください。
+* `ActiveSupport::JSON::Variable`は非推奨になりました。カスタムのJSON文字列リテラルを扱いたい場合は、`#as_json`と`#encode_json`メソッドを自分で定義してください。
 
 * 互換用の`Module#local_constant_names`メソッドは非推奨になりました。今後はシンボルを返す`Module#local_constants`をご利用ください。
 
@@ -200,7 +200,7 @@ Active Support
 
 * `assert_present`および`assert_blank`は非推奨になりました。今後は`assert object.blank?`や`assert object.present?`をご利用ください。
 
-### Action Pack
+Action Pack
 -----------
 
 変更の詳細については[Changelog](https://github.com/rails/rails/blob/4-0-stable/actionpack/CHANGELOG.md) を参照してください。

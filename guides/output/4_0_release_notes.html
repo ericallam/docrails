@@ -225,7 +225,7 @@
 
 <ul>
 <li><a href="#%E3%82%A2%E3%83%83%E3%83%97%E3%82%B0%E3%83%AC%E3%83%BC%E3%83%89">アップグレード</a></li>
-<li><a href="#%E4%B8%BB%E8%A6%81%E3%81%AA%E5%A4%89%E6%9B%B4-action-pack">Action Pack</a></li>
+<li><a href="#actionpack">ActionPack</a></li>
 <li><a href="#%E4%B8%80%E8%88%AC">一般</a></li>
 <li><a href="#%E3%82%BB%E3%82%AD%E3%83%A5%E3%83%AA%E3%83%86%E3%82%A3">セキュリティ</a></li>
 </ul>
@@ -262,9 +262,14 @@
 <ul>
 <li><a href="#active-support-%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">主な変更点</a></li>
 <li><a href="#active-support-%E9%9D%9E%E6%8E%A8%E5%A5%A8">非推奨</a></li>
-<li><a href="#active-support-action-pack">Action Pack</a></li>
-<li><a href="#active-support-%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">主な変更点</a></li>
-<li><a href="#active-support-%E9%9D%9E%E6%8E%A8%E5%A5%A8">非推奨</a></li>
+</ul>
+</li>
+<li>
+<a href="#action-pack">Action Pack</a>
+
+<ul>
+<li><a href="#action-pack-%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">主な変更点</a></li>
+<li><a href="#action-pack-%E9%9D%9E%E6%8E%A8%E5%A5%A8">非推奨</a></li>
 </ul>
 </li>
 <li>
@@ -338,7 +343,7 @@ $ ruby /path/to/rails/railties/bin/rails new myapp --dev
 <li>
 <strong>vendor/plugins の削除</strong> (<a href="https://github.com/rails/rails/commit/853de2bd9ac572735fa6cf59fcf827e485a231c3">コミット</a>) - 今後はGemfileでgemのインストールを管理すること。</li>
 </ul>
-<h4 id="主要な変更-action-pack"><a href="#action-pack">3.2 Action Pack</a></h4>
+<h4 id="actionpack"><a href="#actionpack">3.2 ActionPack</a></h4>
 <ul>
 <li>
 <strong>Strong Parameters</strong> (<a href="https://github.com/rails/rails/commit/a8f6d5c6450a7fe058348a7f10a908352bb6c7fc">コミット</a>) - ホワイトリストで明示的に許可されたパラメータ (<code>params.permit(:title, :text)</code>) を使用しないとモデルオブジェクトを更新できないようにする。</li>
@@ -455,22 +460,21 @@ $ ruby /path/to/rails/railties/bin/rails new myapp --dev
 <ul>
 <li><p><code>ActiveSupport::TestCase#pending</code>メソッドが非推奨になりました。今後はMiniTestの<code>skip</code>をご利用ください。</p></li>
 <li><p><code>ActiveSupport::Benchmarkable#silence</code>はスレッドセーフでないため非推奨となりました。Rails 4.1では代替されることなく削除される予定です。</p></li>
-<li><p><code>ActiveSupport::JSON::Variable</code>は非推奨になりました。カスタムのJSON文字列リテラルを扱いたい場合は、<code>#as_json</code>と#encode_json`メソッドを自分で定義してください。</p></li>
+<li><p><code>ActiveSupport::JSON::Variable</code>は非推奨になりました。カスタムのJSON文字列リテラルを扱いたい場合は、<code>#as_json</code>と<code>#encode_json</code>メソッドを自分で定義してください。</p></li>
 <li><p>互換用の<code>Module#local_constant_names</code>メソッドは非推奨になりました。今後はシンボルを返す<code>Module#local_constants</code>をご利用ください。</p></li>
 <li><p><code>BufferedLogger</code>は非推奨になりました。今後は<code>ActiveSupport::Logger</code>またはRuby標準ライブラリのロガーをご利用ください。</p></li>
 <li><p><code>assert_present</code>および<code>assert_blank</code>は非推奨になりました。今後は<code>assert object.blank?</code>や<code>assert object.present?</code>をご利用ください。</p></li>
 </ul>
-<h4 id="active-support-action-pack"><a href="#active-support-action-pack">9.3 Action Pack</a></h4>
-<hr>
+<h3 id="action-pack"><a href="#action-pack">10 Action Pack</a></h3>
 <p>変更の詳細については<a href="https://github.com/rails/rails/blob/4-0-stable/actionpack/CHANGELOG.md">Changelog</a> を参照してください。</p>
-<h4 id="active-support-主な変更点"><a href="#%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">9.4 主な変更点</a></h4>
+<h4 id="action-pack-主な変更点"><a href="#%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">10.1 主な変更点</a></h4>
 <ul>
 <li>developmentモードでの例外ページのスタイルシートが変更されました。また、例外ページにはその例外が実際に発生したコードの行や断片も常に表示されるようになりました。</li>
 </ul>
-<h4 id="active-support-非推奨"><a href="#%E9%9D%9E%E6%8E%A8%E5%A5%A8">9.5 非推奨</a></h4>
-<h3 id="active-record"><a href="#active-record">10 Active Record</a></h3>
+<h4 id="action-pack-非推奨"><a href="#%E9%9D%9E%E6%8E%A8%E5%A5%A8">10.2 非推奨</a></h4>
+<h3 id="active-record"><a href="#active-record">11 Active Record</a></h3>
 <p>変更の詳細については<a href="https://github.com/rails/rails/blob/4-0-stable/activerecord/CHANGELOG.md">Changelog</a> を参照してください。</p>
-<h4 id="active-record-主な変更点"><a href="#active-record-%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">10.1 主な変更点</a></h4>
+<h4 id="active-record-主な変更点"><a href="#active-record-%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">11.1 主な変更点</a></h4>
 <ul>
 <li>
 <p>マイグレーションで<code>change</code>を書く方法が改良され、以前のように<code>up</code>や<code>down</code>メソッドを使用する必要がなくなりました。</p>
@@ -507,7 +511,7 @@ store :settings, accessors: [ :color, :homepage ], coder: JSON
 <li><p><code>create_join_table</code>マイグレーションヘルパーが追加されました。これはHABTM (Has And Belongs To Many) 結合テーブルを作成します。</p></li>
 <li><p>PostgreSQL hstoreレコードを作成できるようになりました。</p></li>
 </ul>
-<h4 id="active-record-非推奨"><a href="#active-record-%E9%9D%9E%E6%8E%A8%E5%A5%A8">10.2 非推奨</a></h4>
+<h4 id="active-record-非推奨"><a href="#active-record-%E9%9D%9E%E6%8E%A8%E5%A5%A8">11.2 非推奨</a></h4>
 <ul>
 <li><p>従来のハッシュベースのfind関連APIメソッドは非推奨になりました。これにより、従来利用できた「findオプション」はサポートされなくなりました。</p></li>
 <li>
@@ -528,7 +532,7 @@ store :settings, accessors: [ :color, :homepage ], coder: JSON
 </ul>
 </li>
 </ul>
-<h3 id="クレジット表記"><a href="#%E3%82%AF%E3%83%AC%E3%82%B8%E3%83%83%E3%83%88%E8%A1%A8%E8%A8%98">11 クレジット表記</a></h3>
+<h3 id="クレジット表記"><a href="#%E3%82%AF%E3%83%AC%E3%82%B8%E3%83%83%E3%83%88%E8%A1%A8%E8%A8%98">12 クレジット表記</a></h3>
 <p>Railsを頑丈かつ安定したフレームワークにするために多大な時間を費やしてくださった多くの開発者については、<a href="http://contributors.rubyonrails.org/">Railsコントリビューターの完全なリスト</a>を参照してください。これらの方々全員に敬意を表明いたします。</p>
 </body></html>
 
