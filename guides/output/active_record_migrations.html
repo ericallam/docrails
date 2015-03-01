@@ -218,7 +218,7 @@
 <ul>
 <li><a href="#%E5%8D%98%E7%8B%AC%E3%81%AE%E3%83%9E%E3%82%A4%E3%82%B0%E3%83%AC%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%92%E4%BD%9C%E6%88%90%E3%81%99%E3%82%8B">単独のマイグレーションを作成する</a></li>
 <li><a href="#%E3%83%A2%E3%83%87%E3%83%AB%E3%82%92%E7%94%9F%E6%88%90%E3%81%99%E3%82%8B">モデルを生成する</a></li>
-<li><a href="#%E3%83%A2%E3%83%87%E3%82%A3%E3%83%95%E3%82%A1%E3%82%A4%E3%82%A2%E3%82%92%E6%B8%A1%E3%81%99">モディファイアを渡す</a></li>
+<li><a href="#%E4%BF%AE%E9%A3%BE%E5%AD%90%E3%82%92%E6%B8%A1%E3%81%99">修飾子を渡す</a></li>
 </ul>
 </li>
 <li>
@@ -228,8 +228,8 @@
 <li><a href="#%E3%83%86%E3%83%BC%E3%83%96%E3%83%AB%E3%82%92%E4%BD%9C%E6%88%90%E3%81%99%E3%82%8B">テーブルを作成する</a></li>
 <li><a href="#%E3%83%86%E3%83%BC%E3%83%96%E3%83%AB%E7%B5%90%E5%90%88%E3%82%92%E4%BD%9C%E6%88%90%E3%81%99%E3%82%8B">テーブル結合を作成する</a></li>
 <li><a href="#%E3%83%86%E3%83%BC%E3%83%96%E3%83%AB%E3%82%92%E5%A4%89%E6%9B%B4%E3%81%99%E3%82%8B">テーブルを変更する</a></li>
-<li><a href="#%E3%83%9E%E3%82%A4%E3%82%B0%E3%83%AC%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%92%E8%87%AA%E4%BD%9C%E3%81%99%E3%82%8B-%E3%82%AB%E3%83%A9%E3%83%A0%E3%82%92%E5%A4%89%E6%9B%B4%E3%81%99%E3%82%8B">カラムを変更する</a></li>
-<li><a href="#%E3%83%9E%E3%82%A4%E3%82%B0%E3%83%AC%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%92%E8%87%AA%E4%BD%9C%E3%81%99%E3%82%8B-%E3%82%AB%E3%83%A9%E3%83%A0%E3%82%92%E5%A4%89%E6%9B%B4%E3%81%99%E3%82%8B">カラムを変更する</a></li>
+<li><a href="#%E3%82%AB%E3%83%A9%E3%83%A0%E3%82%92%E5%A4%89%E6%9B%B4%E3%81%99%E3%82%8B">カラムを変更する</a></li>
+<li><a href="#%E3%82%AB%E3%83%A9%E3%83%A0%E4%BF%AE%E9%A3%BE%E5%AD%90">カラム修飾子</a></li>
 <li><a href="#%E5%A4%96%E9%83%A8%E3%82%AD%E3%83%BC">外部キー</a></li>
 <li><a href="#%E3%83%98%E3%83%AB%E3%83%91%E3%83%BC%E3%81%AE%E6%A9%9F%E8%83%BD%E3%81%A0%E3%81%91%E3%81%A7%E3%81%AF%E8%B6%B3%E3%82%8A%E3%81%AA%E3%81%84%E5%A0%B4%E5%90%88">ヘルパーの機能だけでは足りない場合</a></li>
 <li><a href="#change%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B"><code>change</code>メソッドを使用する</a></li>
@@ -513,8 +513,8 @@ end
 </pre>
 </div>
 <p>カラム名と種類のペアはいくつでも追加できます。</p>
-<h4 id="モディファイアを渡す"><a href="#%E3%83%A2%E3%83%87%E3%82%A3%E3%83%95%E3%82%A1%E3%82%A4%E3%82%A2%E3%82%92%E6%B8%A1%E3%81%99">2.3 モディファイアを渡す</a></h4>
-<p>コマンドラインである種の<a href="#column-modifiers">タイプモディファイア</a> を直接渡すこともできます。これらは波かっこで囲まれ、後ろにフィールドの種類が追加されます。</p>
+<h4 id="修飾子を渡す"><a href="#%E4%BF%AE%E9%A3%BE%E5%AD%90%E3%82%92%E6%B8%A1%E3%81%99">2.3 修飾子を渡す</a></h4>
+<p>コマンドラインである種の<a href="#column-modifiers">型修飾子</a> を直接渡すこともできます。これらは波かっこで囲まれ、後ろにフィールドの種類が追加されます。</p>
 <p>たとえば以下を実行したとします。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
@@ -606,7 +606,7 @@ end
 </pre>
 </div>
 <p>上のマイグレーションでは<code>description</code>と<code>name</code>カラムが削除され、stringカラムである<code>part_number</code>が作成されてインデックスがそこに追加されます。そして最後に<code>upccode</code>カラムをリネームしています。</p>
-<h4 id="マイグレーションを自作する-カラムを変更する"><a href="#%E3%82%AB%E3%83%A9%E3%83%A0%E3%82%92%E5%A4%89%E6%9B%B4%E3%81%99%E3%82%8B">3.4 カラムを変更する</a></h4>
+<h4 id="カラムを変更する"><a href="#%E3%82%AB%E3%83%A9%E3%83%A0%E3%82%92%E5%A4%89%E6%9B%B4%E3%81%99%E3%82%8B">3.4 カラムを変更する</a></h4>
 <p>マイグレーションでは、<code>remove_column</code>や<code>add_column</code>に加えて<code>change_column</code>メソッドも利用できます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -625,8 +625,8 @@ change_column_default :products, :approved, false
 </div>
 <p>上のマイグレーションはproductsテーブルの<code>:name</code>フィールドを<code>NOT NULL</code>カラムに設定し、<code>:approved</code>フィールドのデフォルト値をfalseに設定します。</p>
 <div class="info"><p><code>change_column</code> (および<code>change_column_default</code>) と異なる点は、<code>change_column_null</code>が可逆的であることです。</p></div>
-<h4 id="マイグレーションを自作する-カラムを変更する"><a href="#%E3%83%9E%E3%82%A4%E3%82%B0%E3%83%AC%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%92%E8%87%AA%E4%BD%9C%E3%81%99%E3%82%8B-%E3%82%AB%E3%83%A9%E3%83%A0%E3%82%92%E5%A4%89%E6%9B%B4%E3%81%99%E3%82%8B">3.5 カラムを変更する</a></h4>
-<p>カラムの作成または変更時にカラムモディファイアを適用できます。</p>
+<h4 id="カラム修飾子"><a href="#%E3%82%AB%E3%83%A9%E3%83%A0%E4%BF%AE%E9%A3%BE%E5%AD%90">3.5 カラム修飾子</a></h4>
+<p>カラムの作成または変更時に、カラムの修飾子を適用できます。</p>
 <ul>
 <li>
 <code>limit</code>        <code>string/text/binary/integer</code>フィールドの最大サイズを設定します。</li>
