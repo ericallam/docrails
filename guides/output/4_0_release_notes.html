@@ -442,10 +442,10 @@ $ ruby /path/to/rails/railties/bin/rails new myapp --dev
 <li><p><code>ActiveSupport::Cache::Entry</code>が最適化され、メモリ使用量と処理のオーバーヘッドが軽減されました。</p></li>
 <li><p>語の活用形 (inflection) をロケールごとに設定できるようになり、<code>singularize</code>や<code>pluralize</code>メソッドの引数にロケールも指定できるようになりました。</p></li>
 <li><p><code>Object#try</code>に渡したオブジェクトにメソッドが実装されていなかった場合に、NoMethodErrorエラーを発生する代わりにnilを返すようになりました。新しい<code>Object#try!</code>を使用すれば従来と同じ動作になります。</p></li>
-<li><p><code>String#to_date</code>に無効な日付を渡した場合に発生するエラーが<code>NoMethodError: undefined method 'div' for nil:NilClass</code>から<code>ArgumentError: invalid date</code>に変更されました。これによって<code>Date.parse</code>と同じ動作になり、以下のように3.xよりも日付を適切に扱えるようになりました</p></li>
+<li><p><code>String#to_date</code>に無効な日付を渡した場合に発生するエラーが<code>NoMethodError: undefined method 'div' for nil:NilClass</code>から<code>ArgumentError: invalid date</code>に変更されました。これによって<code>Date.parse</code>と同じ動作になり、以下のように3.xよりも日付を適切に扱えるようになりました。</p></li>
 </ul>
 <div class="code_container">
-<pre class="brush: plain; gutter: false; toolbar: false">
+<pre class="brush: ruby; gutter: false; toolbar: false">
   # ActiveSupport 3.x
   "asdf".to_date # =&gt; NoMethodError: undefined method `div' for nil:NilClass
   "333".to_date # =&gt; NoMethodError: undefined method `div' for nil:NilClass

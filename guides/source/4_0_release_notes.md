@@ -174,9 +174,9 @@ Active Support
 
 * `Object#try`に渡したオブジェクトにメソッドが実装されていなかった場合に、NoMethodErrorエラーを発生する代わりにnilを返すようになりました。新しい`Object#try!`を使用すれば従来と同じ動作になります。
 
-* `String#to_date`に無効な日付を渡した場合に発生するエラーが`NoMethodError: undefined method 'div' for nil:NilClass`から`ArgumentError: invalid date`に変更されました。これによって`Date.parse`と同じ動作になり、以下のように3.xよりも日付を適切に扱えるようになりました
+* `String#to_date`に無効な日付を渡した場合に発生するエラーが`NoMethodError: undefined method 'div' for nil:NilClass`から`ArgumentError: invalid date`に変更されました。これによって`Date.parse`と同じ動作になり、以下のように3.xよりも日付を適切に扱えるようになりました。
 
-  ```
+  ```ruby
   # ActiveSupport 3.x
   "asdf".to_date # => NoMethodError: undefined method `div' for nil:NilClass
   "333".to_date # => NoMethodError: undefined method `div' for nil:NilClass
