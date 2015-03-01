@@ -64,7 +64,7 @@ $ ruby /path/to/rails/railties/bin/rails new myapp --dev
 * **ActiveRecordセッションストア** ([コミット](https://github.com/rails/rails/commit/0ffe19056c8e8b2f9ae9d487b896cad2ce9387ad)) - ActiveRecordセッションストアは個別のgemに分離された。セッションをSQLに保存するのはコストがかさむ傾向がある。今後はcookiesセッション、memcacheセッション、または独自のセッションストアを使用のこと。
 * **ActiveModelマスアサインメント保護** ([コミット](https://github.com/rails/rails/commit/f8c9a4d3e88181cee644f91e1342bfe896ca64c6)) - Rails 3のマスアサインメント保護は非推奨に指定された。今後はStrong Parametersを使用のこと。
 * **ActiveResource** ([コミット](https://github.com/rails/rails/commit/f1637bf2bb00490203503fbd943b73406e043d1d)) - ActiveResourceは個別のgemに分離された。ActiveResourceの使用頻度が低いため。
-* **vendor/plugins removed** ([コミット](https://github.com/rails/rails/commit/853de2bd9ac572735fa6cf59fcf827e485a231c3)) - 今後はGemfileでgemのインストールを管理すること。
+* **vendor/plugins の削除** ([コミット](https://github.com/rails/rails/commit/853de2bd9ac572735fa6cf59fcf827e485a231c3)) - 今後はGemfileでgemのインストールを管理すること。
 
 ### Action Pack
 
