@@ -1,198 +1,57 @@
 # language: ja
 
 フィーチャ: 内部リンクはすべて有効である
-  シナリオ: トップページにアクセスしてログインする
-    前提 "2_2_release_notes" を表示する
+  シナリオアウトライン: <ページ>にアクセスする
+    前提 "<ページ>" を表示する
     ならば 表示されている内部リンクは、すべて有効である
-
-  シナリオ: トップページにアクセスしてログインする
-    前提 "2_3_release_notes" を表示する
-    ならば 表示されている内部リンクは、すべて有効である
-
-  シナリオ: トップページにアクセスしてログインする
-    前提 "3_0_release_notes" を表示する
-    ならば 表示されている内部リンクは、すべて有効である
-
-  シナリオ: トップページにアクセスしてログインする
-    前提 "3_1_release_notes" を表示する
-    ならば 表示されている内部リンクは、すべて有効である
-
-  シナリオ: トップページにアクセスしてログインする
-    前提 "3_2_release_notes" を表示する
-    ならば 表示されている内部リンクは、すべて有効である
-
-  シナリオ: トップページにアクセスしてログインする
-    前提 "4_0_release_notes" を表示する
-    ならば 表示されている内部リンクは、すべて有効である
-
-  シナリオ: トップページにアクセスしてログインする
-    前提 "4_1_release_notes" を表示する
-    ならば 表示されている内部リンクは、すべて有効である
-
-  シナリオ: トップページにアクセスしてログインする
-    前提 "4_2_release_notes" を表示する
-    ならば 表示されている内部リンクは、すべて有効である
-
-  シナリオ: トップページにアクセスしてログインする
-    前提 "action_controller_overview" を表示する
-    ならば 表示されている内部リンクは、すべて有効である
-
-  シナリオ: トップページにアクセスしてログインする
-    前提 "action_mailer_basics" を表示する
-    ならば 表示されている内部リンクは、すべて有効である
-
-  シナリオ: トップページにアクセスしてログインする
-    前提 "action_view_overview" を表示する
-    ならば 表示されている内部リンクは、すべて有効である
-
-  シナリオ: トップページにアクセスしてログインする
-    前提 "active_job_basics" を表示する
-    ならば 表示されている内部リンクは、すべて有効である
-
-  シナリオ: トップページにアクセスしてログインする
-    前提 "active_model_basics" を表示する
-    ならば 表示されている内部リンクは、すべて有効である
-
-  シナリオ: トップページにアクセスしてログインする
-    前提 "active_record_basics" を表示する
-    ならば 表示されている内部リンクは、すべて有効である
-
-  シナリオ: トップページにアクセスしてログインする
-    前提 "active_record_callbacks" を表示する
-    ならば 表示されている内部リンクは、すべて有効である
-
-  シナリオ: トップページにアクセスしてログインする
-    前提 "active_record_migrations" を表示する
-    ならば 表示されている内部リンクは、すべて有効である
-
-  シナリオ: トップページにアクセスしてログインする
-    前提 "active_record_querying" を表示する
-    ならば 表示されている内部リンクは、すべて有効である
-
-  シナリオ: トップページにアクセスしてログインする
-    前提 "active_record_validations" を表示する
-    ならば 表示されている内部リンクは、すべて有効である
-
-  シナリオ: トップページにアクセスしてログインする
-    前提 "active_support_core_extensions" を表示する
-    ならば 表示されている内部リンクは、すべて有効である
-
-  シナリオ: トップページにアクセスしてログインする
-    前提 "active_support_instrumentation" を表示する
-    ならば 表示されている内部リンクは、すべて有効である
-
-  シナリオ: トップページにアクセスしてログインする
-    前提 "api_documentation_guidelines" を表示する
-    ならば 表示されている内部リンクは、すべて有効である
-
-  シナリオ: トップページにアクセスしてログインする
-    前提 "asset_pipeline" を表示する
-    ならば 表示されている内部リンクは、すべて有効である
-
-  シナリオ: トップページにアクセスしてログインする
-    前提 "association_basics" を表示する
-    ならば 表示されている内部リンクは、すべて有効である
-
-  シナリオ: トップページにアクセスしてログインする
-    前提 "caching_with_rails" を表示する
-    ならば 表示されている内部リンクは、すべて有効である
-
-  シナリオ: トップページにアクセスしてログインする
-    前提 "command_line" を表示する
-    ならば 表示されている内部リンクは、すべて有効である
-
-  シナリオ: トップページにアクセスしてログインする
-    前提 "configuring" を表示する
-    ならば 表示されている内部リンクは、すべて有効である
-
-  シナリオ: トップページにアクセスしてログインする
-    前提 "constant_autoloading_and_reloading" を表示する
-    ならば 表示されている内部リンクは、すべて有効である
-
-  シナリオ: トップページにアクセスしてログインする
-    前提 "contributing_to_ruby_on_rails" を表示する
-    ならば 表示されている内部リンクは、すべて有効である
-
-  シナリオ: トップページにアクセスしてログインする
-    前提 "debugging_rails_applications" を表示する
-    ならば 表示されている内部リンクは、すべて有効である
-
-  シナリオ: トップページにアクセスしてログインする
-    前提 "development_dependencies_install" を表示する
-    ならば 表示されている内部リンクは、すべて有効である
-
-  シナリオ: トップページにアクセスしてログインする
-    前提 "engines" を表示する
-    ならば 表示されている内部リンクは、すべて有効である
-
-  シナリオ: トップページにアクセスしてログインする
-    前提 "form_helpers" を表示する
-    ならば 表示されている内部リンクは、すべて有効である
-
-  シナリオ: トップページにアクセスしてログインする
-    前提 "generators" を表示する
-    ならば 表示されている内部リンクは、すべて有効である
-
-  シナリオ: トップページにアクセスしてログインする
-    前提 "getting_started" を表示する
-    ならば 表示されている内部リンクは、すべて有効である
-
-  シナリオ: トップページにアクセスしてログインする
-    前提 "i18n" を表示する
-    ならば 表示されている内部リンクは、すべて有効である
-
-  シナリオ: トップページにアクセスしてログインする
-    前提 "initialization" を表示する
-    ならば 表示されている内部リンクは、すべて有効である
-
-  シナリオ: トップページにアクセスしてログインする
-    前提 "layouts_and_rendering" を表示する
-    ならば 表示されている内部リンクは、すべて有効である
-
-  シナリオ: トップページにアクセスしてログインする
-    前提 "maintenance_policy" を表示する
-    ならば 表示されている内部リンクは、すべて有効である
-
-  シナリオ: トップページにアクセスしてログインする
-    前提 "migrations" を表示する
-    ならば 表示されている内部リンクは、すべて有効である
-
-  シナリオ: トップページにアクセスしてログインする
-    前提 "nested_model_forms" を表示する
-    ならば 表示されている内部リンクは、すべて有効である
-
-  シナリオ: トップページにアクセスしてログインする
-    前提 "plugins" を表示する
-    ならば 表示されている内部リンクは、すべて有効である
-
-  シナリオ: トップページにアクセスしてログインする
-    前提 "rails_application_templates" を表示する
-    ならば 表示されている内部リンクは、すべて有効である
-
-  シナリオ: トップページにアクセスしてログインする
-    前提 "rails_on_rack" を表示する
-    ならば 表示されている内部リンクは、すべて有効である
-
-  シナリオ: トップページにアクセスしてログインする
-    前提 "routing" を表示する
-    ならば 表示されている内部リンクは、すべて有効である
-
-  シナリオ: トップページにアクセスしてログインする
-    前提 "ruby_on_rails_guides_guidelines" を表示する
-    ならば 表示されている内部リンクは、すべて有効である
-
-  シナリオ: トップページにアクセスしてログインする
-    前提 "security" を表示する
-    ならば 表示されている内部リンクは、すべて有効である
-
-  シナリオ: トップページにアクセスしてログインする
-    前提 "testing" を表示する
-    ならば 表示されている内部リンクは、すべて有効である
-
-  シナリオ: トップページにアクセスしてログインする
-    前提 "upgrading_ruby_on_rails" を表示する
-    ならば 表示されている内部リンクは、すべて有効である
-
-  シナリオ: トップページにアクセスしてログインする
-    前提 "working_with_javascript_in_rails" を表示する
-    ならば 表示されている内部リンクは、すべて有効である
+    例:
+      | ページ             |
+      | 2_2_release_notes |
+      | 2_3_release_notes |
+      | 3_0_release_notes |
+      | 3_1_release_notes |
+      | 3_2_release_notes |
+      | 4_0_release_notes |
+      | 4_1_release_notes |
+      | 4_2_release_notes |
+      | action_controller_overview |
+      | action_mailer_basics |
+      | action_view_overview |
+      | active_job_basics |
+      | active_model_basics |
+      | active_record_basics |
+      | active_record_callbacks |
+      | active_record_migrations |
+      | active_record_querying |
+      | active_record_validations |
+      | active_support_core_extensions |
+      | active_support_instrumentation |
+      | api_documentation_guidelines |
+      | asset_pipeline |
+      | association_basics |
+      | caching_with_rails |
+      | command_line |
+      | configuring |
+      | constant_autoloading_and_reloading |
+      | contributing_to_ruby_on_rails |
+      | debugging_rails_applications |
+      | development_dependencies_install |
+      | engines |
+      | form_helpers |
+      | generators |
+      | getting_started |
+      | i18n |
+      | initialization |
+      | layouts_and_rendering |
+      | maintenance_policy |
+      | migrations |
+      | nested_model_forms |
+      | plugins |
+      | rails_application_templates |
+      | rails_on_rack |
+      | routing |
+      | ruby_on_rails_guides_guidelines |
+      | security |
+      | testing |
+      | upgrading_ruby_on_rails |
+      | working_with_javascript_in_rails |
