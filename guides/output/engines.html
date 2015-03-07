@@ -919,7 +919,7 @@ belongs_to :author, class_name: Blorgh.author_class.to_s
 </pre>
 </div>
 <p>この設定をアプリケーション内で行なうには、イニシャライザを使用する必要があります。イニシャライザを使用することで、アプリケーションの設定はアプリケーションが起動してエンジンのモデルを呼び出すまでに完了します。この動作は既存のこの設定に依存する場合があります。</p>
-<p><code>blorgh</code>がインストールされてアプリケーションの<code>config/initializers/blorgh.rb</code>にイニシャライザを作成してみましょう。</p>
+<p><code>blorgh</code>がインストールされているアプリケーションの<code>config/initializers/blorgh.rb</code>にイニシャライザを作成して、以下の記述を追加します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Blorgh.author_class = "User"
