@@ -605,7 +605,7 @@ form_for [:admin, :management, @article]
 </div>
 <p>Railsのルーティングシステムの詳細と、関連するルールについては<a href="routing.html">ルーティングガイド</a>を参照してください。</p>
 <h4 id="フォームにおけるpatch・put・deleteメソッドの動作"><a href="#%E3%83%95%E3%82%A9%E3%83%BC%E3%83%A0%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8Bpatch%E3%83%BBput%E3%83%BBdelete%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89%E3%81%AE%E5%8B%95%E4%BD%9C">2.4 フォームにおけるPATCH・PUT・DELETEメソッドの動作</a></h4>
-<p>Railsのフレームワークは、開発者がアプリケーションをRESTfulなデザインで構築するように働きかけています。これは design of your applications, which means you'll be making a lot of "PATCH" and "DELETE" requests (besides "GET" and "POST"). しかしながら、現実には多くのブラウザはフォーム送信時にGETとPOST以外のHTTPメソッドを <em>サポートしていません</em> 。</p>
+<p>Railsのフレームワークは、開発者がアプリケーションをRESTfulなデザインで構築するように働きかけています。すなわち、開発者はGETやPOSTリクエストだけでなく、PATCHやDELETEリクエストをたくさん作成・送信することになります。しかしながら、現実には多くのブラウザはフォーム送信時にGETとPOST以外のHTTPメソッドを <em>サポートしていません</em> 。</p>
 <p>そこでRailsでは、POSTメソッド上でこれらのメソッドをエミュレートすることによってこの問題を解決しています。具体的には、<code>"_method"</code>という名前の隠し入力をフォームに用意し、使いたいメソッドをここで指定します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">

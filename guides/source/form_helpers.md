@@ -344,7 +344,7 @@ Railsのルーティングシステムの詳細と、関連するルールにつ
 
 ### フォームにおけるPATCH・PUT・DELETEメソッドの動作
 
-Railsのフレームワークは、開発者がアプリケーションをRESTfulなデザインで構築するように働きかけています。これは design of your applications, which means you'll be making a lot of "PATCH" and "DELETE" requests (besides "GET" and "POST"). しかしながら、現実には多くのブラウザはフォーム送信時にGETとPOST以外のHTTPメソッドを _サポートしていません_ 。
+Railsのフレームワークは、開発者がアプリケーションをRESTfulなデザインで構築するように働きかけています。すなわち、開発者はGETやPOSTリクエストだけでなく、PATCHやDELETEリクエストをたくさん作成・送信することになります。しかしながら、現実には多くのブラウザはフォーム送信時にGETとPOST以外のHTTPメソッドを _サポートしていません_ 。
 
 そこでRailsでは、POSTメソッド上でこれらのメソッドをエミュレートすることによってこの問題を解決しています。具体的には、`"_method"`という名前の隠し入力をフォームに用意し、使いたいメソッドをここで指定します。
 
