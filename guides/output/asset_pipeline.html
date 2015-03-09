@@ -542,7 +542,7 @@ $('#logo').attr src: "&lt;%= asset_path('logo.png') %&gt;"
 </pre>
 </div>
 <p>JavaScriptのSprocketsディレクティブは<code>//=</code>で始まります。上の例では<code>require</code>と<code>require_tree</code>というディレクティブが使用されています。<code>require</code>は、必要なファイルをSprocketsに指定するのに使用します。ここでは<code>jquery.js</code>と<code>jquery_ujs.js</code>を必要なファイルとして指定しています。これらのファイルはSprocketsの検索パスのどこかから読み込み可能になっています。このディレクティブでは拡張子を明示的に指定する必要はありません。ディレクティブが<code>.js</code>ファイルに書かれていれば、Sprocketsによって自動的に<code>.js</code>ファイルが必要ファイルとして指定されます。</p>
-<p><code>require_tree</code>ディレクティブは、指定されたディレクトリ以下の <em>すべての</em> JavaScriptファイルを再帰的にインクルードし、出力に含めます。このパスは、マニフェストファイルからの相対パスとして指定する必要があります。<code>require_directory</code>ディレクトリを使用すると、指定されたディレクトリの直下にあるすべてのJavaScriptファイルのみをインクルードします。この場合サブディレクトリを再帰的に探索しません。</p>
+<p><code>require_tree</code>ディレクティブは、指定されたディレクトリ以下の <em>すべての</em> JavaScriptファイルを再帰的にインクルードし、出力に含めます。このパスは、マニフェストファイルからの相対パスとして指定する必要があります。<code>require_directory</code>ディレクティブを使用すると、指定されたディレクトリの直下にあるすべてのJavaScriptファイルのみをインクルードします。この場合サブディレクトリを再帰的に探索しません。</p>
 <p>ディレクティブは記載した順に実行されますが、<code>require_tree</code>でインクルードされるファイルの読み込み順序は指定できません。従って、特定の読み込み順に依存しないようにする必要があります。もしどうしても特定のJavaScriptファイルを他のJavaScriptファイルよりも結合順を先にしたい場合、そのファイルへのrequireディレクティブをマニフェストの最初に置きます。<code>require</code>および類似のディレクティブは、出力時に同じファイルを2回以上インクルードしないようになっています。</p>
 <p>Railsは以下の行を含むデフォルトの<code>app/assets/stylesheets/application.css</code>ファイルも作成します。</p>
 <div class="code_container">
