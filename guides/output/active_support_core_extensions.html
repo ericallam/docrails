@@ -1267,7 +1267,7 @@ delegate :name, :age, :address, :twitter, to: :profile
 
 </pre>
 </div>
-<p>文字列に式展開すると、<code>:to</code>はメソッドが異常されるオブジェクトに対して評価される式になります。通常は文字列またはシンボルになります。そのような式は、レシーバのコンテキストで評価されます。</p>
+<p>文字列に式展開すると、<code>:to</code>はメソッドが委譲されるオブジェクトに対して評価される式になります。通常は文字列またはシンボルになります。そのような式は、レシーバのコンテキストで評価されます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # Rails定数を委譲する
