@@ -85,7 +85,11 @@ $ ruby /path/to/rails/railties/bin/rails new myapp --dev
 * **トランザクション分離レベル指定のサポート** ([コミット](https://github.com/rails/rails/commit/392eeecc11a291e406db927a18b75f41b2658253)) - 読み出しを頻繁に行うか、書き込みのパフォーマンスを重視してロックを減らすかを選択できる。
 * **Dalli** ([コミット](https://github.com/rails/rails/commit/82663306f428a5bbc90c511458432afb26d2f238)) - memcacheストアにはDalliのmemcacheクライアントを使用すること。
 * **通知の開始と終了** ([コミット](https://github.com/rails/rails/commit/f08f8750a512f741acb004d0cebe210c5f949f28)) - Active Support の内部フック機構 (instrumentation) によってサブスクライバへの通知の開始と終了が報告されます。
-* **デフォルトでのスレッドセーフ提供** ([コミット](https://github.com/rails/rails/commit/5d416b907864d99af55ebaa400fff217e17570cd)) - Railsは追加設定なしでスレッド化されます。Note: 追加したgemも同様にスレッドセーフであるかどうかをチェックしておいてください。
+* **デフォルトでのスレッドセーフ提供** ([コミット](https://github.com/rails/rails/commit/5d416b907864d99af55ebaa400fff217e17570cd)) - Railsは追加設定なしでスレッド化されます。
+
+NOTE: 追加したgemも同様にスレッドセーフであるかどうかをチェックしておいてください。
+
+
 * **PATCH 動詞** ([コミット](https://github.com/rails/rails/commit/eed9f2539e3ab5a68e798802f464b8e4e95e619e)) - 従来の HTTP 動詞であるPUTはPATCHに置き換えられました。PATCHはリソースの部分的な更新に使用されます。
 
 ### セキュリティ
