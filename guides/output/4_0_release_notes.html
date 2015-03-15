@@ -413,14 +413,14 @@ $ ruby /path/to/rails/railties/bin/rails new myapp --dev
 </ul>
 <h3 id="railties"><a href="#railties">6 Railties</a></h3>
 <p>変更の詳細については<a href="https://github.com/rails/rails/blob/4-0-stable/railties/CHANGELOG.md">Changelog</a> を参照してください。</p>
-<h4 id="railties-主な変更点"><a href="#%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">6.1 主な変更点</a></h4>
+<h4 id="railties-主な変更点"><a href="railties-%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">6.1 主な変更点</a></h4>
 <ul>
 <li><p>テスト用ディレクトリが追加されました: <code>test/models</code>、<code>test/helpers</code>、<code>test/controllers</code>、<code>test/mailers</code>これらに対応するrakeタスクも追加されました。(<a href="https://github.com/rails/rails/pull/7878">Pull Request</a>)</p></li>
 <li><p>アプリケーション内の実行ファイルは<code>bin/</code>ディレクトリに置かれるようになりました。<code>rake rails:update:bin</code>を実行すると<code>bin/bundle</code>、<code>bin/rails</code>、<code>bin/rake</code>を取得します。</p></li>
 <li><p>デフォルトでスレッドセーフになりました。</p></li>
 <li><p><code>rails new</code>に<code>--builder</code>または<code>-b</code>を渡すことでカスタムビルダーを使用できる機能は削除されました。今後はアプリケーションテンプレートの利用をご検討ください。(<a href="https://github.com/rails/rails/pull/9401">Pull Request</a>)</p></li>
 </ul>
-<h4 id="railties-非推奨"><a href="#%E9%9D%9E%E6%8E%A8%E5%A5%A8">6.2 非推奨</a></h4>
+<h4 id="railties-非推奨"><a href="railties-%E9%9D%9E%E6%8E%A8%E5%A5%A8">6.2 非推奨</a></h4>
 <ul>
 <li><p><code>config.threadsafe!</code>は非推奨になりました。今後は<code>config.eager_load</code>をご利用ください。後者は一括読み込み (eager load) の対象をさらに細かい粒度で制御できます。</p></li>
 <li><p><code>Rails::Plugin</code>は廃止されました。今後は<code>vendor/plugins</code>にプラグインを追加する代わりに、gemやbundlerでパスやgit依存関係を指定してご利用ください。</p></li>
@@ -431,12 +431,12 @@ $ ruby /path/to/rails/railties/bin/rails new myapp --dev
 <h4 id="action-mailer-非推奨"><a href="#action-mailer-%E9%9D%9E%E6%8E%A8%E5%A5%A8">7.2 非推奨</a></h4>
 <h3 id="active-model"><a href="#active-model">8 Active Model</a></h3>
 <p>変更の詳細については<a href="https://github.com/rails/rails/blob/4-0-stable/activemodel/CHANGELOG.md">Changelog</a> を参照してください。</p>
-<h4 id="active-model-主な変更点"><a href="#%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">8.1 主な変更点</a></h4>
+<h4 id="active-model-主な変更点"><a href="active-model-%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">8.1 主な変更点</a></h4>
 <ul>
 <li><p><code>ActiveModel::ForbiddenAttributesProtection</code>を追加しました。許可されていない属性が渡された場合にマスアサインメントから属性を保護するためのシンプルなモジュールです。</p></li>
 <li><p><code>ActiveModel::Model</code>を追加しました。RubyオブジェクトをAction Packですぐに使えるようにするためのミックスインです。</p></li>
 </ul>
-<h4 id="active-model-非推奨"><a href="#%E9%9D%9E%E6%8E%A8%E5%A5%A8">8.2 非推奨</a></h4>
+<h4 id="active-model-非推奨"><a href="active-model-%E9%9D%9E%E6%8E%A8%E5%A5%A8">8.2 非推奨</a></h4>
 <h3 id="active-support"><a href="#active-support">9 Active Support</a></h3>
 <p>変更の詳細については<a href="https://github.com/rails/rails/blob/4-0-stable/activesupport/CHANGELOG.md">Changelog</a> を参照してください。</p>
 <h4 id="active-support-主な変更点"><a href="#active-support-%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">9.1 主な変更点</a></h4>
@@ -470,11 +470,11 @@ $ ruby /path/to/rails/railties/bin/rails new myapp --dev
 </ul>
 <h3 id="action-pack"><a href="#action-pack">10 Action Pack</a></h3>
 <p>変更の詳細については<a href="https://github.com/rails/rails/blob/4-0-stable/actionpack/CHANGELOG.md">Changelog</a> を参照してください。</p>
-<h4 id="action-pack-主な変更点"><a href="#%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">10.1 主な変更点</a></h4>
+<h4 id="action-pack-主な変更点"><a href="action-pack-%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">10.1 主な変更点</a></h4>
 <ul>
 <li>developmentモードでの例外ページのスタイルシートが変更されました。また、例外ページにはその例外が実際に発生したコードの行や断片も常に表示されるようになりました。</li>
 </ul>
-<h4 id="action-pack-非推奨"><a href="#%E9%9D%9E%E6%8E%A8%E5%A5%A8">10.2 非推奨</a></h4>
+<h4 id="action-pack-非推奨"><a href="action-pack-%E9%9D%9E%E6%8E%A8%E5%A5%A8">10.2 非推奨</a></h4>
 <h3 id="active-record"><a href="#active-record">11 Active Record</a></h3>
 <p>変更の詳細については<a href="https://github.com/rails/rails/blob/4-0-stable/activerecord/CHANGELOG.md">Changelog</a> を参照してください。</p>
 <h4 id="active-record-主な変更点"><a href="#active-record-%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">11.1 主な変更点</a></h4>

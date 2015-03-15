@@ -1562,7 +1562,7 @@ end
 </pre>
 </div>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/string/output_safety.rb</code>です。</p></div>
-<h5 id="安全な出力-各種変換"><a href="#%E5%90%84%E7%A8%AE%E5%A4%89%E6%8F%9B">5.1.3 各種変換</a></h5>
+<h5 id="安全な出力-各種変換"><a href="%E5%AE%89%E5%85%A8%E3%81%AA%E5%87%BA%E5%8A%9B-%E5%90%84%E7%A8%AE%E5%A4%89%E6%8F%9B">5.1.3 各種変換</a></h5>
 <p>経験上、上で説明したような連結 (concatenation) 操作を除き、どんなメソッドでも潜在的には文字列を安全でないものに変換してしまう可能性があることにご注意ください。そのようなメソッドには<code>downcase</code>、<code>gsub</code>、<code>strip</code>、<code>chomp</code>、<code>underscore</code>などがあります。</p>
 <p><code>gsub!</code>のような破壊的な変換を行なうメソッドを使用すると、レシーバ自体が安全でなくなります。</p>
 <div class="info"><p>安全を表すビットは、実際に変換が行われていてもなくても、こうしたメソッドを実行すれば外されます。</p></div>
@@ -2338,7 +2338,7 @@ exabytes
 </div>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/integer/inflections.rb</code>です。</p></div>
 <h3 id="bigdecimalの拡張"><a href="#bigdecimal%E3%81%AE%E6%8B%A1%E5%BC%B5">8 <code>BigDecimal</code>の拡張</a></h3>
-<h4 id="bigdecimalの拡張-to_s"><a href="#to_s">8.1 <code>to_s</code></a></h4>
+<h4 id="bigdecimalの拡張-to_s"><a href="bigdecimal%E3%81%AE%E6%8B%A1%E5%BC%B5-to_s">8.1 <code>to_s</code></a></h4>
 <p>この<code>to_s</code>メソッドは、<code>to_formatted_s</code>メソッドの別名です。このメソッドは、浮動小数点記法のBigDecimal値を簡単に表示するための便利な方法を提供します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -2346,7 +2346,7 @@ BigDecimal.new(5.00, 6).to_s  # =&gt; "5.0"
 
 </pre>
 </div>
-<h4 id="bigdecimalの拡張-to_formatted_s"><a href="#to_formatted_s">8.2 <code>to_formatted_s</code></a></h4>
+<h4 id="bigdecimalの拡張-to_formatted_s"><a href="bigdecimal%E3%81%AE%E6%8B%A1%E5%BC%B5-to_formatted_s">8.2 <code>to_formatted_s</code></a></h4>
 <p>この<code>to_formatted_s</code>メソッドは、"F"のデフォルトの指定部 (specifier) を提供します。これは、<code>to_formatted_s</code>または<code>to_s</code>を単に呼び出すと、エンジニアリング記法 ('0.5E1'のような記法) ではなく浮動小数点記法を得られるということです。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -2523,7 +2523,7 @@ end
 </div>
 <p>このメソッドは、任意の数のアクション名を引数に取ることができ、引数の末尾項目でオプションハッシュを使用できます。<code>extract_options!</code>メソッドを使用すると、このオプションハッシュを取り出し、<code>actions</code>から取り除くことが簡単かつ明示的に行えます。</p>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/array/extract_options.rb</code>です。</p></div>
-<h4 id="arrayの拡張-各種変換"><a href="#%E5%90%84%E7%A8%AE%E5%A4%89%E6%8F%9B">10.4 各種変換</a></h4>
+<h4 id="arrayの拡張-各種変換"><a href="array%E3%81%AE%E6%8B%A1%E5%BC%B5-%E5%90%84%E7%A8%AE%E5%A4%89%E6%8F%9B">10.4 各種変換</a></h4>
 <h5 id="to_sentence"><a href="#to_sentence">10.4.1 <code>to_sentence</code></a></h5>
 <p><code>to_sentence</code>メソッドは、配列を変換して、要素を列挙する英文にします。</p>
 <div class="code_container">
@@ -2581,7 +2581,7 @@ invoice.lines.to_formatted_s(:db) # =&gt; "23,567,556,12"
 </div>
 <p>上の例の整数は、<code>id</code>への呼び出しによって取り出されたものと考えられます。</p>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/array/conversions.rb</code>です。</p></div>
-<h5 id="arrayの拡張-各種変換-to_xml"><a href="#to_xml">10.4.3 <code>to_xml</code></a></h5>
+<h5 id="arrayの拡張-各種変換-to_xml"><a href="array%E3%81%AE%E6%8B%A1%E5%BC%B5-%E5%90%84%E7%A8%AE%E5%A4%89%E6%8F%9B-to_xml">10.4.3 <code>to_xml</code></a></h5>
 <p><code>to_xml</code>メソッドは、レシーバのXML表現を含む文字列を返します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -3293,7 +3293,7 @@ end
 </div>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/proc.rb</code>です。</p></div>
 <h3 id="dateの拡張"><a href="#date%E3%81%AE%E6%8B%A1%E5%BC%B5">15 <code>Date</code>の拡張</a></h3>
-<h4 id="dateの拡張-計算"><a href="#%E8%A8%88%E7%AE%97">15.1 計算</a></h4>
+<h4 id="dateの拡張-計算"><a href="date%E3%81%AE%E6%8B%A1%E5%BC%B5-%E8%A8%88%E7%AE%97">15.1 計算</a></h4>
 <div class="note"><p>これらはすべて同じ定義ファイル<code>active_support/core_ext/date/calculations.rb</code>にあります。</p></div>
 <div class="info"><p>以下の計算方法の一部では1582年10月を極端な例として使用しています。この月にユリウス暦からグレゴリオ暦への切り替えが行われたため、10月5日から10月14日までが存在しません。本ガイドはこの特殊な月について長々と解説することはしませんが、メソッドがこの月でも期待どおりに動作することについては説明しておきたいと思います。具体的には、たとえば<code>Date.new(1582, 10, 4).tomorrow</code>を実行すると<code>Date.new(1582, 10, 15)</code>が返されます。期待どおりに動作することは、Active Supportの<code>test/core_ext/date_ext_test.rb</code>用のテストスイートで確認できます。</p></div>
 <h5 id="date.current"><a href="#date.current">15.1.1 <code>Date.current</code></a></h5>
@@ -3498,7 +3498,7 @@ Date.new(2010, 5, 24).weeks_ago(2)    # =&gt; Mon, 10 May 2010
 
 </pre>
 </div>
-<h6 id="その他の日付計算メソッド-advance"><a href="#advance">15.1.3.4 <code>advance</code></a></h6>
+<h6 id="その他の日付計算メソッド-advance"><a href="%E3%81%9D%E3%81%AE%E4%BB%96%E3%81%AE%E6%97%A5%E4%BB%98%E8%A8%88%E7%AE%97%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89-advance">15.1.3.4 <code>advance</code></a></h6>
 <p>日付を移動する最も一般的な方法は<code>advance</code>メソッドを使用することです。このメソッドは<code>:years</code>、<code>:months</code>、<code>:weeks</code>、<code>:days</code>をキーに持つハッシュを受け取り、日付をできるだけ詳細な形式で、現在のキーで示されるとおりに返します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -3526,7 +3526,7 @@ Date.new(2010, 2, 28).advance(days: 1).advance(months: 1)
 
 </pre>
 </div>
-<h5 id="dateの拡張-計算-要素の変更"><a href="#%E8%A6%81%E7%B4%A0%E3%81%AE%E5%A4%89%E6%9B%B4">15.1.4 要素の変更</a></h5>
+<h5 id="dateの拡張-計算-要素の変更"><a href="date%E3%81%AE%E6%8B%A1%E5%BC%B5-%E8%A8%88%E7%AE%97-%E8%A6%81%E7%B4%A0%E3%81%AE%E5%A4%89%E6%9B%B4">15.1.4 要素の変更</a></h5>
 <p><code>change</code>メソッドは、与えられた年、月、日に応じてレシーバの日付を変更し、与えられなかった部分はそのままにしてその日付を返します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -3543,7 +3543,7 @@ Date.new(2010, 1, 31).change(month: 2)
 
 </pre>
 </div>
-<h5 id="dateの拡張-計算-期間"><a href="#%E6%9C%9F%E9%96%93">15.1.5 期間</a></h5>
+<h5 id="dateの拡張-計算-期間"><a href="date%E3%81%AE%E6%8B%A1%E5%BC%B5-%E8%A8%88%E7%AE%97-%E6%9C%9F%E9%96%93">15.1.5 期間</a></h5>
 <p>日付に対して期間を加減算できます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
