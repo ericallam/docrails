@@ -1161,7 +1161,7 @@ private
 </pre>
 </div>
 <p>このコードをよく観察してみると、<code>form_for</code>の宣言部分以外には元のコードとの違いがないことがわかります。他のフォーム内のコードを置き換えるパーシャル内での<code>form_for</code>宣言がこのように短くて簡潔で済むのは、<code>@article</code>がRESTfulルーティングの完全なセットに対応する <strong>リソース</strong> であり、必要なURIとメソッドをRailsがそれに基いて推測できるからです。
-<code>form_for</code>の使用法の詳細については、<a href="//api.rubyonrails.org/classes/ActionView/Helpers/FormHelper.html#method-i-form_for-label-Resource-oriented+style">リソース指向のスタイル</a>を参照してください。</p>
+<code>form_for</code>の使用法の詳細については、<a href="http://api.rubyonrails.org/classes/ActionView/Helpers/FormHelper.html#method-i-form_for-label-Resource-oriented+style">リソース指向のスタイル</a>を参照してください。</p>
 <p>今度は<code>app/views/articles/new.html.erb</code>ビューを完全に書き直して、今作成したパーシャルをここで使ってみましょう。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
