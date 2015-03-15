@@ -1,5 +1,5 @@
 step '表示されている内部リンクは、すべて有効である' do
-  _, internal_links = all('a').partition {|link| link[:href].start_with? 'http' }
+  _, internal_links = all('a').partition {|link| link[:href].start_with?('http') || link[:href].start_with?('irc') }
   fragment_links = internal_links.select {|link| link[:href] =~ /#/ }
 
   # ["#active-record-enums"], ["/asset_pipeline.html#css%E3%81%A8erb"]
