@@ -537,7 +537,7 @@ config.middleware.delete "Rack::MethodOverride"
 <li><p><code>config.action_controller.logger</code>は、Log4rのインターフェイスまたはデフォルトのRuby Loggerクラスに従うロガーを引数として取ります。このロガーは、Action Controllerからの情報をログ出力するために使用されます。ログ出力を無効にするには<code>nil</code>を設定します。</p></li>
 <li><p><code>config.action_controller.request_forgery_protection_token</code>は、RequestForgery対策用のトークンパラメータ名を設定します。Calling <code>protect_from_forgery</code>を呼び出すと、デフォルトで<code>:authenticity_token</code>が設定されます。</p></li>
 <li><p><code>config.action_controller.allow_forgery_protection</code>は、CSRF保護をオンにするかどうかを指定します。testモードではデフォルトで<code>false</code>に設定され、それ以外では<code>true</code>に設定されます。</p></li>
-<li><p><code>config.action_controller.relative_url_root</code>は、<a href="configuring.html#deploy-to-a-subdirectory-relative-url-root">サブディレクトリへのデプロイ</a>を行うことをRailsに伝えるために使用できます。デフォルトは<code>ENV['RAILS_RELATIVE_URL_ROOT']</code>です。</p></li>
+<li><p><code>config.action_controller.relative_url_root</code>は、<a href="configuring.html#%E3%82%B5%E3%83%96%E3%83%87%E3%82%A3%E3%83%AC%E3%82%AF%E3%83%88%E3%83%AA%E3%81%AB%E3%83%87%E3%83%97%E3%83%AD%E3%82%A4%E3%81%99%E3%82%8B-(%E7%9B%B8%E5%AF%BEurl%E3%83%AB%E3%83%BC%E3%83%88%E3%81%AE%E4%BD%BF%E7%94%A8)">サブディレクトリへのデプロイ</a>を行うことをRailsに伝えるために使用できます。デフォルトは<code>ENV['RAILS_RELATIVE_URL_ROOT']</code>です。</p></li>
 <li><p><code>config.action_controller.permit_all_parameters</code>は、マスアサインメントされるすべてのパラメータをデフォルトで許可することを設定します。デフォルト値は<code>false</code>です。</p></li>
 <li><p><code>config.action_controller.action_on_unpermitted_parameters</code>は、明示的に許可されていないパラメータが見つかった場合にログ出力または例外発生を行なうかどうかを指定します。このオプションは、<code>:log</code>または<code>:raise</code>を指定すると有効になります。test環境とdevelopment環境でのデフォルトは<code>:log</code>であり、それ以外の環境では<code>false</code>が設定されます。</p></li>
 </ul>
@@ -562,7 +562,7 @@ config.action_dispatch.default_headers = {
 <li><p><code>config.action_dispatch.signed_cookie_salt</code>は、署名済みcookie用のsalt値を設定します。デフォルトは<code>'signed cookie'</code>です。</p></li>
 <li><p><code>config.action_dispatch.encrypted_cookie_salt</code>は、暗号化済みcookie用のsalt値を設定します。デフォルトは<code>'encrypted cookie'</code>です。</p></li>
 <li><p><code>config.action_dispatch.encrypted_signed_cookie_salt</code>は、署名暗号化済みcookie用のsalt値を設定します。デフォルトは<code>'signed encrypted cookie'</code>です。</p></li>
-<li><p><code>config.action_dispatch.perform_deep_munge</code>は、パラメータに対して<code>deep_munge</code>メソッドを実行すべきかどうかを指定します。詳細については<a href="security.html#unsafe-query-generation">セキュリティガイド</a>を参照してください。デフォルトはtrueです。</p></li>
+<li><p><code>config.action_dispatch.perform_deep_munge</code>は、パラメータに対して<code>deep_munge</code>メソッドを実行すべきかどうかを指定します。詳細については<a href="security.html#%E5%AE%89%E5%85%A8%E3%81%A7%E3%81%AA%E3%81%84%E3%82%AF%E3%82%A8%E3%83%AA%E7%94%9F%E6%88%90">セキュリティガイド</a>を参照してください。デフォルトはtrueです。</p></li>
 <li><p><code>ActionDispatch::Callbacks.before</code>には、リクエストより前に実行したいコードブロックを1つ引数として与えます。</p></li>
 <li><p><code>ActionDispatch::Callbacks.to_prepare</code>には、リクエストより前かつ<code>ActionDispatch::Callbacks.before</code>より後に実行したいコードブロックを1つ引数として与えます。このブロックは、<code>development</code>モードではすべてのリクエストで実行されますが、<code>production</code>モードや、<code>cache_classes</code>が<code>true</code>に設定されている環境では1度しか実行されません。</p></li>
 <li><p><code>ActionDispatch::Callbacks.after</code>には、リクエストの後に実行したいコードブロックを1つ引数として与えます。</p></li>
@@ -940,7 +940,7 @@ config.relative_url_root = "/app1"
 <p>一部の設定については、Railsの外部から環境変数を与えることで行なうこともできます。以下の環境変数は、Railsの多くの部分で認識されます。</p>
 <ul>
 <li><p><code>ENV["RAILS_ENV"]</code>は、Railsが実行される環境 (production、development、testなど) を定義します。</p></li>
-<li><p><code>ENV["RAILS_RELATIVE_URL_ROOT"]</code>は、<a href="configuring.html#deploy-to-a-subdirectory-relative-url-root">アプリケーションをサブディレクトリにデプロイする</a>ときにルーティングシステムがURLを認識するために使用されます。</p></li>
+<li><p><code>ENV["RAILS_RELATIVE_URL_ROOT"]</code>は、<a href="configuring.html#%E3%82%B5%E3%83%96%E3%83%87%E3%82%A3%E3%83%AC%E3%82%AF%E3%83%88%E3%83%AA%E3%81%AB%E3%83%87%E3%83%97%E3%83%AD%E3%82%A4%E3%81%99%E3%82%8B-(%E7%9B%B8%E5%AF%BEurl%E3%83%AB%E3%83%BC%E3%83%88%E3%81%AE%E4%BD%BF%E7%94%A8)">アプリケーションをサブディレクトリにデプロイする</a>ときにルーティングシステムがURLを認識するために使用されます。</p></li>
 <li><p><code>ENV["RAILS_CACHE_ID"]</code>と<code>ENV["RAILS_APP_VERSION"]</code>は、Railsのキャッシュを扱うコードで拡張キャッシュを生成するために使用されます。これにより、This allows you to have multiple separate caches from the same application.</p></li>
 </ul>
 <h3 id="イニシャライザファイルを使用する"><a href="#%E3%82%A4%E3%83%8B%E3%82%B7%E3%83%A3%E3%83%A9%E3%82%A4%E3%82%B6%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B">5 イニシャライザファイルを使用する</a></h3>
