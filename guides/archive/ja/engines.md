@@ -677,7 +677,7 @@ belongs_to :author, class_name: Blorgh.author_class.to_s
 
 この設定をアプリケーション内で行なうには、イニシャライザを使用する必要があります。イニシャライザを使用することで、アプリケーションの設定はアプリケーションが起動してエンジンのモデルを呼び出すまでに完了します。この動作は既存のこの設定に依存する場合があります。
 
-`blorgh`がインストールされてアプリケーションの`config/initializers/blorgh.rb`にイニシャライザを作成してみましょう。
+`blorgh`がインストールされているアプリケーションの`config/initializers/blorgh.rb`にイニシャライザを作成して、以下の記述を追加します。
 
 ```ruby
 Blorgh.author_class = "User"

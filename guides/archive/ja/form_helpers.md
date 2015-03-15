@@ -103,7 +103,7 @@ form_tag({controller: "people", action: "search"}, method: "get", class: "nifty_
 
 Railsには、チェックボックス/テキストフィールド/ラジオボタンなどのフォーム要素を生成するためのヘルパーが多数用意されています。これらの基本的なヘルパーは名前が"_tag"で終わっており (`text_field_tag`や`check_box_tag`など)、それぞれただ1つの`<input>`要素を生成します。これらのヘルパーの1番目のパラメータは、inputの名前と決まっています。フォームが送信されると、この名前がフォームデータに含まれて渡され、ユーザーが入力した値とともに、コントローラ内で`params`ハッシュとなってアクセス可能になります。たとえば、フォームに`<%= text_field_tag(:query) %>`というコードが含まれていたとすると、コントローラで`params[:query]`と指定することによってこのフィールドの値にアクセスできます。
 
-Railsは、inputに名前を与えるときに一定のルールに従っています。これにより、配列やハッシュのような「非スカラー値」のパラメータをフォームから送信できるようになり、その結果`params`としてコントローラでアクセスできるようになるのです。詳細については[本ガイドの7章](#understanding-parameter-naming-conventions)を参照してください。これらのヘルパーの正確な使用法については[APIドキュメント](http://api.rubyonrails.org/classes/ActionView/Helpers/FormTagHelper.html)を参照してください。
+Railsは、inputに名前を与えるときに一定のルールに従っています。これにより、配列やハッシュのような「非スカラー値」のパラメータをフォームから送信できるようになり、その結果`params`としてコントローラでアクセスできるようになるのです。詳細については[本ガイドの7章](#パラメータの命名ルールを理解する)を参照してください。これらのヘルパーの正確な使用法については[APIドキュメント](http://api.rubyonrails.org/classes/ActionView/Helpers/FormTagHelper.html)を参照してください。
 
 #### チェックボックス
 
@@ -344,7 +344,7 @@ Railsのルーティングシステムの詳細と、関連するルールにつ
 
 ### フォームにおけるPATCH・PUT・DELETEメソッドの動作
 
-Railsのフレームワークは、開発者がアプリケーションをRESTfulなデザインで構築するように働きかけています。これは design of your applications, which means you'll be making a lot of "PATCH" and "DELETE" requests (besides "GET" and "POST"). しかしながら、現実には多くのブラウザはフォーム送信時にGETとPOST以外のHTTPメソッドを _サポートしていません_ 。
+Railsのフレームワークは、開発者がアプリケーションをRESTfulなデザインで構築するように働きかけています。すなわち、開発者はGETやPOSTリクエストだけでなく、PATCHやDELETEリクエストをたくさん作成・送信することになります。しかしながら、現実には多くのブラウザはフォーム送信時にGETとPOST以外のHTTPメソッドを _サポートしていません_ 。
 
 そこでRailsでは、POSTメソッド上でこれらのメソッドをエミュレートすることによってこの問題を解決しています。具体的には、`"_method"`という名前の隠し入力をフォームに用意し、使いたいメソッドをここで指定します。
 

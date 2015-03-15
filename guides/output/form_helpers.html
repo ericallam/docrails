@@ -113,7 +113,7 @@
                 <dd><a href="upgrading_ruby_on_rails.html">Rails アップグレードガイド</a></dd>
                 <dd><a href="4_2_release_notes.html">Ruby on Rails 4.2 リリースノート</a></dd>
                 <dd><a href="4_1_release_notes.html">Ruby on Rails 4.1 リリースノート</a></dd>
-                <dd><a href="4_0_release_notes.html">Ruby on Rails 4.0 Release Notes [未着手]</a></dd>
+                <dd><a href="4_0_release_notes.html">Ruby on Rails 4.0 リリースノート</a></dd>
                 <dd><a href="3_2_release_notes.html">Ruby on Rails 3.2 Release Notes [未着手]</a></dd>
                 <dd><a href="3_1_release_notes.html">Ruby on Rails 3.1 Release Notes [未着手]</a></dd>
                 <dd><a href="3_0_release_notes.html">Ruby on Rails 3.0 Release Notes [未着手]</a></dd>
@@ -181,7 +181,7 @@
                   <option value="upgrading_ruby_on_rails.html">Rails アップグレードガイド</option>
                   <option value="4_2_release_notes.html">Ruby on Rails 4.2 リリースノート</option>
                   <option value="4_1_release_notes.html">Ruby on Rails 4.1 リリースノート</option>
-                  <option value="4_0_release_notes.html">Ruby on Rails 4.0 Release Notes [未着手]</option>
+                  <option value="4_0_release_notes.html">Ruby on Rails 4.0 リリースノート</option>
                   <option value="3_2_release_notes.html">Ruby on Rails 3.2 Release Notes [未着手]</option>
                   <option value="3_1_release_notes.html">Ruby on Rails 3.1 Release Notes [未着手]</option>
                   <option value="3_0_release_notes.html">Ruby on Rails 3.0 Release Notes [未着手]</option>
@@ -376,7 +376,7 @@ form_tag({controller: "people", action: "search"}, method: "get", class: "nifty_
 </div>
 <h4 id="フォーム要素生成に使用するヘルパー"><a href="#%E3%83%95%E3%82%A9%E3%83%BC%E3%83%A0%E8%A6%81%E7%B4%A0%E7%94%9F%E6%88%90%E3%81%AB%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B%E3%83%98%E3%83%AB%E3%83%91%E3%83%BC">1.3 フォーム要素生成に使用するヘルパー</a></h4>
 <p>Railsには、チェックボックス/テキストフィールド/ラジオボタンなどのフォーム要素を生成するためのヘルパーが多数用意されています。これらの基本的なヘルパーは名前が"<em>tag"で終わっており (<code>text_field_tag</code>や<code>check_box_tag</code>など)、それぞれただ1つの<code>&lt;input&gt;</code>要素を生成します。これらのヘルパーの1番目のパラメータは、inputの名前と決まっています。フォームが送信されると、この名前がフォームデータに含まれて渡され、ユーザーが入力した値とともに、コントローラ内で<code>params</code>ハッシュとなってアクセス可能になります。たとえば、フォームに`&lt;%= text</em>field_tag(:query) %&gt;<code>というコードが含まれていたとすると、コントローラで</code>params[:query]`と指定することによってこのフィールドの値にアクセスできます。</p>
-<p>Railsは、inputに名前を与えるときに一定のルールに従っています。これにより、配列やハッシュのような「非スカラー値」のパラメータをフォームから送信できるようになり、その結果<code>params</code>としてコントローラでアクセスできるようになるのです。詳細については<a href="#understanding-parameter-naming-conventions">本ガイドの7章</a>を参照してください。これらのヘルパーの正確な使用法については<a href="http://api.rubyonrails.org/classes/ActionView/Helpers/FormTagHelper.html">APIドキュメント</a>を参照してください。</p>
+<p>Railsは、inputに名前を与えるときに一定のルールに従っています。これにより、配列やハッシュのような「非スカラー値」のパラメータをフォームから送信できるようになり、その結果<code>params</code>としてコントローラでアクセスできるようになるのです。詳細については<a href="#%E3%83%91%E3%83%A9%E3%83%A1%E3%83%BC%E3%82%BF%E3%81%AE%E5%91%BD%E5%90%8D%E3%83%AB%E3%83%BC%E3%83%AB%E3%82%92%E7%90%86%E8%A7%A3%E3%81%99%E3%82%8B">本ガイドの7章</a>を参照してください。これらのヘルパーの正確な使用法については<a href="http://api.rubyonrails.org/classes/ActionView/Helpers/FormTagHelper.html">APIドキュメント</a>を参照してください。</p>
 <h5 id="チェックボックス"><a href="#%E3%83%81%E3%82%A7%E3%83%83%E3%82%AF%E3%83%9C%E3%83%83%E3%82%AF%E3%82%B9">1.3.1 チェックボックス</a></h5>
 <p>チェックボックスはフォームコントロールの一種で、ユーザーがオプションをオンまたはオフにできるようにするためのものです。</p>
 <div class="code_container">
@@ -605,7 +605,7 @@ form_for [:admin, :management, @article]
 </div>
 <p>Railsのルーティングシステムの詳細と、関連するルールについては<a href="routing.html">ルーティングガイド</a>を参照してください。</p>
 <h4 id="フォームにおけるpatch・put・deleteメソッドの動作"><a href="#%E3%83%95%E3%82%A9%E3%83%BC%E3%83%A0%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8Bpatch%E3%83%BBput%E3%83%BBdelete%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89%E3%81%AE%E5%8B%95%E4%BD%9C">2.4 フォームにおけるPATCH・PUT・DELETEメソッドの動作</a></h4>
-<p>Railsのフレームワークは、開発者がアプリケーションをRESTfulなデザインで構築するように働きかけています。これは design of your applications, which means you'll be making a lot of "PATCH" and "DELETE" requests (besides "GET" and "POST"). しかしながら、現実には多くのブラウザはフォーム送信時にGETとPOST以外のHTTPメソッドを <em>サポートしていません</em> 。</p>
+<p>Railsのフレームワークは、開発者がアプリケーションをRESTfulなデザインで構築するように働きかけています。すなわち、開発者はGETやPOSTリクエストだけでなく、PATCHやDELETEリクエストをたくさん作成・送信することになります。しかしながら、現実には多くのブラウザはフォーム送信時にGETとPOST以外のHTTPメソッドを <em>サポートしていません</em> 。</p>
 <p>そこでRailsでは、POSTメソッド上でこれらのメソッドをエミュレートすることによってこの問題を解決しています。具体的には、<code>"_method"</code>という名前の隠し入力をフォームに用意し、使いたいメソッドをここで指定します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">

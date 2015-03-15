@@ -113,7 +113,7 @@
                 <dd><a href="upgrading_ruby_on_rails.html">Rails アップグレードガイド</a></dd>
                 <dd><a href="4_2_release_notes.html">Ruby on Rails 4.2 リリースノート</a></dd>
                 <dd><a href="4_1_release_notes.html">Ruby on Rails 4.1 リリースノート</a></dd>
-                <dd><a href="4_0_release_notes.html">Ruby on Rails 4.0 Release Notes [未着手]</a></dd>
+                <dd><a href="4_0_release_notes.html">Ruby on Rails 4.0 リリースノート</a></dd>
                 <dd><a href="3_2_release_notes.html">Ruby on Rails 3.2 Release Notes [未着手]</a></dd>
                 <dd><a href="3_1_release_notes.html">Ruby on Rails 3.1 Release Notes [未着手]</a></dd>
                 <dd><a href="3_0_release_notes.html">Ruby on Rails 3.0 Release Notes [未着手]</a></dd>
@@ -181,7 +181,7 @@
                   <option value="upgrading_ruby_on_rails.html">Rails アップグレードガイド</option>
                   <option value="4_2_release_notes.html">Ruby on Rails 4.2 リリースノート</option>
                   <option value="4_1_release_notes.html">Ruby on Rails 4.1 リリースノート</option>
-                  <option value="4_0_release_notes.html">Ruby on Rails 4.0 Release Notes [未着手]</option>
+                  <option value="4_0_release_notes.html">Ruby on Rails 4.0 リリースノート</option>
                   <option value="3_2_release_notes.html">Ruby on Rails 3.2 Release Notes [未着手]</option>
                   <option value="3_1_release_notes.html">Ruby on Rails 3.1 Release Notes [未着手]</option>
                   <option value="3_0_release_notes.html">Ruby on Rails 3.0 Release Notes [未着手]</option>
@@ -247,7 +247,7 @@
 <html><body>
 <h3 id="概要:-部品を組み上げる"><a href="#%E6%A6%82%E8%A6%81:-%E9%83%A8%E5%93%81%E3%82%92%E7%B5%84%E3%81%BF%E4%B8%8A%E3%81%92%E3%82%8B">1 概要: 部品を組み上げる</a></h3>
 <p>本ガイドでは、コントローラ、ビュー、モデルによって形成される三角形のうち、コントローラとビューの間でのやりとりを中心に扱います。ご存じのように、Railsのコントローラはリクエストを扱うプロセス全体の流れを組織的に調整する責任を負い、(ビジネスロジックのような) 重い処理はモデルの方で行なうのが普通です。モデル側での処理が完了し、ユーザーに結果を表示する時がきたら、コントローラは処理結果をビューに渡します。このときの、コントローラからビューへの結果の渡し方こそが本ガイドの主なトピックです。</p>
-<p>大きな流れとしては、ユーザーへのレスポンスとして送信すべき内容を決定することと、ユーザーへのレスポンスを作成するために適切なメソッドを呼び出すこともこの作業に含まれます。ユーザーに返すレスポンス画面を完全なビューにするのであれば、Railsはそのビューをさらに別のレイアウトでラッピングし、パーシャルビューとして取り出すでしょう。以後本ガイドではこれらの方法をすべて紹介します。 訳注: 本ガイドではrenderを一般的な意味では「出力」、具体的な動作を指す場合は「レンダリング」と訳しています。</p>
+<p>大きな流れとしては、ユーザーへのレスポンスとして送信すべき内容を決定することと、ユーザーへのレスポンスを作成するために適切なメソッドを呼び出すこともこの作業に含まれます。ユーザーに返すレスポンス画面を完全なビューにするのであれば、Railsはそのビューをさらに別のレイアウトでラッピングし、パーシャルビューとして取り出すでしょう。以後本ガイドではこれらの方法をすべて紹介します(訳注: 本ガイドではrenderを一般的な意味では「出力」、具体的な動作を指す場合は「レンダリング」と訳しています)。</p>
 <h3 id="レスポンスを作成する"><a href="#%E3%83%AC%E3%82%B9%E3%83%9D%E3%83%B3%E3%82%B9%E3%82%92%E4%BD%9C%E6%88%90%E3%81%99%E3%82%8B">2 レスポンスを作成する</a></h3>
 <p>コントローラ側から見ると、HTTPレスポンスの作成方法は以下の3とおりあります。</p>
 <ul>

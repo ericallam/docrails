@@ -113,7 +113,7 @@
                 <dd><a href="upgrading_ruby_on_rails.html">Rails アップグレードガイド</a></dd>
                 <dd><a href="4_2_release_notes.html">Ruby on Rails 4.2 リリースノート</a></dd>
                 <dd><a href="4_1_release_notes.html">Ruby on Rails 4.1 リリースノート</a></dd>
-                <dd><a href="4_0_release_notes.html">Ruby on Rails 4.0 Release Notes [未着手]</a></dd>
+                <dd><a href="4_0_release_notes.html">Ruby on Rails 4.0 リリースノート</a></dd>
                 <dd><a href="3_2_release_notes.html">Ruby on Rails 3.2 Release Notes [未着手]</a></dd>
                 <dd><a href="3_1_release_notes.html">Ruby on Rails 3.1 Release Notes [未着手]</a></dd>
                 <dd><a href="3_0_release_notes.html">Ruby on Rails 3.0 Release Notes [未着手]</a></dd>
@@ -181,7 +181,7 @@
                   <option value="upgrading_ruby_on_rails.html">Rails アップグレードガイド</option>
                   <option value="4_2_release_notes.html">Ruby on Rails 4.2 リリースノート</option>
                   <option value="4_1_release_notes.html">Ruby on Rails 4.1 リリースノート</option>
-                  <option value="4_0_release_notes.html">Ruby on Rails 4.0 Release Notes [未着手]</option>
+                  <option value="4_0_release_notes.html">Ruby on Rails 4.0 リリースノート</option>
                   <option value="3_2_release_notes.html">Ruby on Rails 3.2 Release Notes [未着手]</option>
                   <option value="3_1_release_notes.html">Ruby on Rails 3.1 Release Notes [未着手]</option>
                   <option value="3_0_release_notes.html">Ruby on Rails 3.0 Release Notes [未着手]</option>
@@ -470,7 +470,7 @@ config.assets.paths &lt;&lt; Rails.root.join("lib", "videoplayer", "flash")
 </pre>
 </div>
 <p>パイプラインが有効でかつ現在の環境で無効になっていない場合、このファイルはSprocketsによって扱われます。ファイルが<code>public/assets/rails.png</code>に置かれている場合、Webサーバーによって扱われます。</p>
-<p><code>public/assets/rails-af27b6a414e6da00003503148be9b409.png</code>など、ファイル名にMD5ハッシュを含むファイルへのリクエストについても同様に扱われます。ハッシュの生成法については、本ガイドの<a href="#in-production">production環境の場合</a>で後述します。</p>
+<p><code>public/assets/rails-af27b6a414e6da00003503148be9b409.png</code>など、ファイル名にMD5ハッシュを含むファイルへのリクエストについても同様に扱われます。ハッシュの生成法については、本ガイドの<a href="#production%E7%92%B0%E5%A2%83%E3%81%AE%E5%A0%B4%E5%90%88">production環境の場合</a>で後述します。</p>
 <p>Sprocketsは<code>config.assets.paths</code>で指定したパスも探索します。このパスには、標準的なアプリケーションパスと、Railsエンジンによって追加されるすべてのパスが含まれます。</p>
 <p>必要であれば画像ファイルをサブディレクトリに置いて整理することもできます。この画像にアクセスするには、ディレクトリ名を含めて以下のようにタグで指定します。</p>
 <div class="code_container">
@@ -479,7 +479,7 @@ config.assets.paths &lt;&lt; Rails.root.join("lib", "videoplayer", "flash")
 
 </pre>
 </div>
-<div class="warning"><p>アセットのプリコンパイルを行っている場合 (<a href="#in-production">production環境の場合</a>参照)、存在しないアセットへのリンクを含むページを呼び出すと例外が発生します。空文字へのリンクも同様に例外が発生します。ユーザーから提供されたデータに対して<code>image_tag</code>などのヘルパーを使用する場合はご注意ください。</p></div>
+<div class="warning"><p>アセットのプリコンパイルを行っている場合 (<a href="#production%E7%92%B0%E5%A2%83%E3%81%AE%E5%A0%B4%E5%90%88">production環境の場合</a>参照)、存在しないアセットへのリンクを含むページを呼び出すと例外が発生します。空文字へのリンクも同様に例外が発生します。ユーザーから提供されたデータに対して<code>image_tag</code>などのヘルパーを使用する場合はご注意ください。</p></div>
 <h5 id="cssとerb"><a href="#css%E3%81%A8erb">2.3.1 CSSとERB</a></h5>
 <p>アセットパイプラインは自動的にERBを評価します。たとえば、cssアセットファイルに<code>erb</code>という拡張子を追加すると (<code>application.css.erb</code>など)、CSSルール内で<code>asset_path</code>などのヘルパーが使用できるようになります。</p>
 <div class="code_container">
@@ -542,7 +542,7 @@ $('#logo').attr src: "&lt;%= asset_path('logo.png') %&gt;"
 </pre>
 </div>
 <p>JavaScriptのSprocketsディレクティブは<code>//=</code>で始まります。上の例では<code>require</code>と<code>require_tree</code>というディレクティブが使用されています。<code>require</code>は、必要なファイルをSprocketsに指定するのに使用します。ここでは<code>jquery.js</code>と<code>jquery_ujs.js</code>を必要なファイルとして指定しています。これらのファイルはSprocketsの検索パスのどこかから読み込み可能になっています。このディレクティブでは拡張子を明示的に指定する必要はありません。ディレクティブが<code>.js</code>ファイルに書かれていれば、Sprocketsによって自動的に<code>.js</code>ファイルが必要ファイルとして指定されます。</p>
-<p><code>require_tree</code>ディレクティブは、指定されたディレクトリ以下の <em>すべての</em> JavaScriptファイルを再帰的にインクルードし、出力に含めます。このパスは、マニフェストファイルからの相対パスとして指定する必要があります。<code>require_directory</code>ディレクトリを使用すると、指定されたディレクトリの直下にあるすべてのJavaScriptファイルのみをインクルードします。この場合サブディレクトリを再帰的に探索しません。</p>
+<p><code>require_tree</code>ディレクティブは、指定されたディレクトリ以下の <em>すべての</em> JavaScriptファイルを再帰的にインクルードし、出力に含めます。このパスは、マニフェストファイルからの相対パスとして指定する必要があります。<code>require_directory</code>ディレクティブを使用すると、指定されたディレクトリの直下にあるすべてのJavaScriptファイルのみをインクルードします。この場合サブディレクトリを再帰的に探索しません。</p>
 <p>ディレクティブは記載した順に実行されますが、<code>require_tree</code>でインクルードされるファイルの読み込み順序は指定できません。従って、特定の読み込み順に依存しないようにする必要があります。もしどうしても特定のJavaScriptファイルを他のJavaScriptファイルよりも結合順を先にしたい場合、そのファイルへのrequireディレクティブをマニフェストの最初に置きます。<code>require</code>および類似のディレクティブは、出力時に同じファイルを2回以上インクルードしないようになっています。</p>
 <p>Railsは以下の行を含むデフォルトの<code>app/assets/stylesheets/application.css</code>ファイルも作成します。</p>
 <div class="code_container">

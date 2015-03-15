@@ -113,7 +113,7 @@
                 <dd><a href="upgrading_ruby_on_rails.html">Rails アップグレードガイド</a></dd>
                 <dd><a href="4_2_release_notes.html">Ruby on Rails 4.2 リリースノート</a></dd>
                 <dd><a href="4_1_release_notes.html">Ruby on Rails 4.1 リリースノート</a></dd>
-                <dd><a href="4_0_release_notes.html">Ruby on Rails 4.0 Release Notes [未着手]</a></dd>
+                <dd><a href="4_0_release_notes.html">Ruby on Rails 4.0 リリースノート</a></dd>
                 <dd><a href="3_2_release_notes.html">Ruby on Rails 3.2 Release Notes [未着手]</a></dd>
                 <dd><a href="3_1_release_notes.html">Ruby on Rails 3.1 Release Notes [未着手]</a></dd>
                 <dd><a href="3_0_release_notes.html">Ruby on Rails 3.0 Release Notes [未着手]</a></dd>
@@ -181,7 +181,7 @@
                   <option value="upgrading_ruby_on_rails.html">Rails アップグレードガイド</option>
                   <option value="4_2_release_notes.html">Ruby on Rails 4.2 リリースノート</option>
                   <option value="4_1_release_notes.html">Ruby on Rails 4.1 リリースノート</option>
-                  <option value="4_0_release_notes.html">Ruby on Rails 4.0 Release Notes [未着手]</option>
+                  <option value="4_0_release_notes.html">Ruby on Rails 4.0 リリースノート</option>
                   <option value="3_2_release_notes.html">Ruby on Rails 3.2 Release Notes [未着手]</option>
                   <option value="3_1_release_notes.html">Ruby on Rails 3.1 Release Notes [未着手]</option>
                   <option value="3_0_release_notes.html">Ruby on Rails 3.0 Release Notes [未着手]</option>
@@ -1808,7 +1808,7 @@ strip_tags("&lt;b&gt;Bold&lt;/b&gt; no more!  &lt;a href='more.html'&gt;See more
 
 </pre>
 </div>
-<div class="note"><p>通常のフォームではそのための隠しフィールドが生成されるので、これらのタグは使用されません。詳細については<a href="./security.html#cross-site-request-forgery-csrf">セキュリティガイド</a>を参照してください。</p></div>
+<div class="note"><p>通常のフォームではそのための隠しフィールドが生成されるので、これらのタグは使用されません。詳細については<a href="security.html#cross-site-request-forgery-csrf">セキュリティガイド</a>を参照してください。</p></div>
 <h3 id="ローカライズされたビュー"><a href="#%E3%83%AD%E3%83%BC%E3%82%AB%E3%83%A9%E3%82%A4%E3%82%BA%E3%81%95%E3%82%8C%E3%81%9F%E3%83%93%E3%83%A5%E3%83%BC">7 ローカライズされたビュー</a></h3>
 <p>Action Viewは、現在のロケールに応じてさまざまなテンプレートを出力することができます。</p>
 <p>たとえば、<code>PostsController</code>にshowアクションがあるとしましょう。このshowアクションを呼び出すと、デフォルトでは<code>app/views/posts/show.html.erb</code>が出力されます。ここで<code>I18n.locale = :de</code>を設定すると、代りに<code>app/views/posts/show.de.html.erb</code>が出力されます。ローカライズ版のテンプレートが見当たらない場合は、装飾なしのバージョンが使用されます。つまり、ローカライズ版ビューがなくても動作しますが、ローカライズ版ビューがあればそれが使用されます。</p>
