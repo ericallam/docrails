@@ -6,11 +6,6 @@
     ならば 表示されている内部リンクは、すべて有効である
     例:
       | ページ             |
-      | 2_2_release_notes |
-      | 2_3_release_notes |
-      | 3_0_release_notes |
-      | 3_1_release_notes |
-      | 3_2_release_notes |
       | 4_0_release_notes |
       | 4_1_release_notes |
       | 4_2_release_notes |
@@ -44,7 +39,6 @@
       | initialization |
       | layouts_and_rendering |
       | maintenance_policy |
-      | migrations |
       | nested_model_forms |
       | plugins |
       | rails_application_templates |
