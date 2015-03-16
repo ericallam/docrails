@@ -784,7 +784,7 @@ User.inactive
 <p>セキュリティ上の観点から、レスポンスのbodyにマークアップを含めない場合には<code>render :plain</code>を使用すべきです。これによって多くのブラウザが安全でないコンテンツをエスケープできるからです。</p>
 <p>今後のバージョンでは、<code>render :text</code>は非推奨にされる予定です。今のうちに、正しい<code>:plain</code>、<code>:html</code>、<code>:body</code>オプションに切り替えてください。
 <code>render :text</code>を使用すると<code>text/html</code>で送信されるため、セキュリティ上のリスクが生じる可能性があります。</p>
-<h4 id="postgresqlのデータ型'json'と'hstore'について"><a href="#postgresql%E3%81%AE%E3%83%87%E3%83%BC%E3%82%BF%E5%9E%8B" json>3.14 PostgreSQLのデータ型'json'と'hstore'について</a></h4>
+<h4 id="postgresqlのデータ型'json'と'hstore'について"><a href="#postgresql%E3%81%AE%E3%83%87%E3%83%BC%E3%82%BF%E5%9E%8B'json'%E3%81%A8'hstore'%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6">3.14 PostgreSQLのデータ型'json'と'hstore'について</a></h4>
 <p>Rails 4.1では、PostgreSQLの<code>json</code>カラムと<code>hstore</code>カラムを、文字列をキーとするRubyの<code>Hash</code>に対応付けるようになりました。
 なお、以前のバージョンでは<code>HashWithIndifferentAccess</code>が使用されていました。この変更は、Rails 4.1以降ではシンボルを使用してこれらのデータ型にアクセスできなくなるということを意味します。<code>store_accessors</code>メソッドは<code>json</code>カラムや<code>hstore</code>カラムに依存しているので、同様にシンボルでのアクセスが行えなくなります。今後は常に文字列をキーにするようにしてください。</p>
 <h4 id="activesupport::callbacksでは明示的にブロックを使用すること"><a href="#activesupport::callbacks%E3%81%A7%E3%81%AF%E6%98%8E%E7%A4%BA%E7%9A%84%E3%81%AB%E3%83%96%E3%83%AD%E3%83%83%E3%82%AF%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B%E3%81%93%E3%81%A8">3.15 <code>ActiveSupport::Callbacks</code>では明示的にブロックを使用すること</a></h4>
