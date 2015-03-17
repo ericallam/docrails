@@ -409,7 +409,7 @@ rails g scaffold Post title:string:index author:uniq price:decimal{7,2}
 <li><p>Remove old plugin generator <code>rails generate plugin</code> in favor of <code>rails plugin new</code> command.</p></li>
 <li><p>Remove old <code>config.paths.app.controller</code> API in favor of <code>config.paths["app/controller"]</code>.</p></li>
 </ul>
-<h5 id="railties-deprecations"><a href="#deprecations">5.1 Deprecations</a></h5>
+<h5 id="railties-deprecations"><a href="railties-deprecations">5.1 Deprecations</a></h5>
 <ul>
 <li>
 <code>Rails::Plugin</code> is deprecated and will be removed in Rails 4.0. Instead of adding plugins to <code>vendor/plugins</code> use gems or bundler with path or git dependencies.</li>
@@ -497,7 +497,7 @@ end
 <li><p>The <code>ShowExceptions</code> middleware now accepts an exceptions application that is responsible to render an exception when the application fails. The application is invoked with a copy of the exception in <code>env["action_dispatch.exception"]</code> and with the <code>PATH_INFO</code> rewritten to the status code.</p></li>
 <li><p>Allow rescue responses to be configured through a railtie as in <code>config.action_dispatch.rescue_responses</code>.</p></li>
 </ul>
-<h5 id="action-dispatch-deprecations"><a href="#deprecations">7.2.1 Deprecations</a></h5>
+<h5 id="action-dispatch-deprecations"><a href="action-dispatch-deprecations">7.2.1 Deprecations</a></h5>
 <ul>
 <li>Deprecated the ability to set a default charset at the controller level, use the new <code>config.action_dispatch.default_charset</code> instead.</li>
 </ul>
@@ -679,7 +679,7 @@ end
 </div>
 </li>
 </ul>
-<h4 id="active-record-deprecations"><a href="#deprecations">8.1 Deprecations</a></h4>
+<h4 id="active-record-deprecations"><a href="active-record-deprecations">8.1 Deprecations</a></h4>
 <ul>
 <li>
 <p>Automatic closure of connections in threads is deprecated. For example the following code is deprecated:</p>

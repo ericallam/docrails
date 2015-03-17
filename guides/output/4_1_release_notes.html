@@ -459,7 +459,7 @@ end
 <p>これは、xhr<code>を使用しない場合、</code>.js<code>URLにヒットするすべてのテストはCSRF保護によって失敗するということです。</code>XmlHttpRequestsを明示的に想定するようにテストをアップグレードしてください。<code>post :create, format: :js</code>の代りに、明示的に<code>xhr :post, :create, format: :js</code>を使用してください。</p>
 <h3 id="railties"><a href="#railties">3 Railties</a></h3>
 <p>変更の詳細については<a href="https://github.com/rails/rails/blob/4-1-stable/railties/CHANGELOG.md">Changelog</a> を参照してください。</p>
-<h4 id="railties-削除されたもの"><a href="#%E5%89%8A%E9%99%A4%E3%81%95%E3%82%8C%E3%81%9F%E3%82%82%E3%81%AE">3.1 削除されたもの</a></h4>
+<h4 id="railties-削除されたもの"><a href="railties-%E5%89%8A%E9%99%A4%E3%81%95%E3%82%8C%E3%81%9F%E3%82%82%E3%81%AE">3.1 削除されたもの</a></h4>
 <ul>
 <li><p><code>update:application_controller</code> rake taskが削除されました。</p></li>
 <li><p>非推奨の<code>Rails.application.railties.engines</code>が除外されました。</p></li>
@@ -468,7 +468,7 @@ end
 <li><p>非推奨の<code>config.whiny_nils</code>オプションが削除されました。</p></li>
 <li><p>非推奨のテスト実行rakeタスク<code>rake test:uncommitted</code>および<code>rake test:recent</code>が削除されました。</p></li>
 </ul>
-<h4 id="railties-主な変更点"><a href="#%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">3.2 主な変更点</a></h4>
+<h4 id="railties-主な変更点"><a href="railties-%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">3.2 主な変更点</a></h4>
 <ul>
 <li><p><a href="https://github.com/rails/spring">Springアプリケーションプリローダー</a> は新規アプリケーションにデフォルトでインストールされます。Gemfileのdevelopグループにインストールされ、productionグループにはインストールされません。(<a href="https://github.com/rails/rails/pull/12958">Pull Request</a>)</p></li>
 <li><p>テスト失敗時にフィルタされていないバックトレースを表示する<code>BACKTRACE</code>環境変数。(<a href="https://github.com/rails/rails/commit/84eac5dab8b0fe9ee20b51250e52ad7bfea36553">Commit</a>)</p></li>
@@ -538,14 +538,14 @@ end
 </ul>
 <h3 id="action-mailer"><a href="#action-mailer">5 Action Mailer</a></h3>
 <p>変更の詳細については<a href="https://github.com/rails/rails/blob/4-1-stable/actionmailer/CHANGELOG.md">Changelog</a> を参照してください。</p>
-<h4 id="action-mailer-主な変更点"><a href="#%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">5.1 主な変更点</a></h4>
+<h4 id="action-mailer-主な変更点"><a href="action-mailer-%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">5.1 主な変更点</a></h4>
 <ul>
 <li><p>37 Signals社のmail_view gemを元にメイラーのプレビュー機能が追加されました。(<a href="https://github.com/rails/rails/commit/d6dec7fcb6b8fddf8c170182d4fe64ecfc7b2261">Commit</a>)</p></li>
 <li><p>Action Mailerメッセージの生成が計測されるようになりました。メッセージを生成するのにかかった時間がログに記録されます。(<a href="https://github.com/rails/rails/pull/12556">Pull Request</a>)</p></li>
 </ul>
 <h3 id="active-record"><a href="#active-record">6 Active Record</a></h3>
 <p>変更の詳細については<a href="https://github.com/rails/rails/blob/4-1-stable/activerecord/CHANGELOG.md">Changelog</a> を参照してください。</p>
-<h4 id="active-record-削除されたもの"><a href="#%E5%89%8A%E9%99%A4%E3%81%95%E3%82%8C%E3%81%9F%E3%82%82%E3%81%AE">6.1 削除されたもの</a></h4>
+<h4 id="active-record-削除されたもの"><a href="active-record-%E5%89%8A%E9%99%A4%E3%81%95%E3%82%8C%E3%81%9F%E3%82%82%E3%81%AE">6.1 削除されたもの</a></h4>
 <ul>
 <li><p><code>SchemaCache</code>メソッド (<code>primary_keys</code>、<code>tables</code>、<code>columns</code>、<code>columns_hash</code>) にnilを渡す非推奨機能が削除されました。</p></li>
 <li><p>非推奨のブロックフィルタが<code>ActiveRecord::Migrator#migrate</code>から削除されました。</p></li>
@@ -572,7 +572,7 @@ end
 <li><p>依存関係としての<code>activerecord-deprecated_finders</code>が削除されました。詳細については<a href="https://github.com/rails/activerecord-deprecated_finders#active-record-deprecated-finders">gem README</a>を参照してください。</p></li>
 <li><p><code>implicit_readonly</code>の用法が削除されました。明示的に<code>readonly</code>メソッドを使用してレコードを<code>readonly</code>に設定してください。(<a href="https://github.com/rails/rails/pull/10769">Pull Request</a>)</p></li>
 </ul>
-<h4 id="active-record-非推奨"><a href="#%E9%9D%9E%E6%8E%A8%E5%A5%A8">6.2 非推奨</a></h4>
+<h4 id="active-record-非推奨"><a href="active-record-%E9%9D%9E%E6%8E%A8%E5%A5%A8">6.2 非推奨</a></h4>
 <ul>
 <li><p><code>quoted_locking_column</code>メソッドは非推奨です。現在使われている場所はありません。</p></li>
 <li><p><code>ConnectionAdapters::SchemaStatements#distinct</code>は内部で使用されなくなったため非推奨です。(<a href="https://github.com/rails/rails/pull/10556">Pull Request</a>)</p></li>
@@ -619,7 +619,7 @@ end
 <li>
 <code>Validator#setup</code>は非推奨です。今後はバリデーターのコンストラクタ内で手動で行なう必要があります。(<a href="https://github.com/rails/rails/commit/7d84c3a2f7ede0e8d04540e9c0640de7378e9b3a">Commit</a>)</li>
 </ul>
-<h4 id="active-model-主な変更点"><a href="#%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">7.2 主な変更点</a></h4>
+<h4 id="active-model-主な変更点"><a href="active-model-%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">7.2 主な変更点</a></h4>
 <ul>
 <li><p><code>ActiveModel::Dirty</code>に、状態を制御する新しいAPI<code>reset_changes</code> および<code>changes_applied</code>が追加されました。</p></li>
 <li><p>検証の定義時に複数のコンテキストを指定できるようになりました。(<a href="https://github.com/rails/rails/pull/13754">Pull Request</a>)</p></li>
