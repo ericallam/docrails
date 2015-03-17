@@ -998,7 +998,7 @@ create_customer!
 </pre>
 </div>
 <div class="note"><p>新しく作成した<code>has_one</code>関連付けまたは<code>belongs_to</code>関連付けを初期化するには、<code>build_</code>で始まるメソッドを使用する必要があります。この場合<code>has_many</code>関連付けや<code>has_and_belongs_to_many</code>関連付けで使用される<code>association.build</code>メソッドは使用しないでください。作成するには、<code>create_</code>で始まるメソッドを使用してください。</p></div>
-<h6 id="belongs_toで追加されるメソッド-association(force_reload-=-false)"><a href="#association(force_reload-=-false)">4.1.1.1 <code>association(force_reload = false)</code></a></h6>
+<h6 id="belongs_toで追加されるメソッド-association(force_reload-=-false)"><a href="belongs_to%E3%81%A7%E8%BF%BD%E5%8A%A0%E3%81%95%E3%82%8C%E3%82%8B%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89-association(force_reload-=-false)">4.1.1.1 <code>association(force_reload = false)</code></a></h6>
 <p><code>association</code>メソッドは関連付けられたオブジェクトを返します。関連付けられたオブジェクトがない場合は<code>nil</code>を返します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1007,7 +1007,7 @@ create_customer!
 </pre>
 </div>
 <p>関連付けられたオブジェクトがデータベースから検索されたことがある場合は、キャッシュされたものを返します。キャッシュを読み出さずにデータベースから直接読み込ませたい場合は、<code>force_reload</code>の引数に<code>true</code>を設定します。</p>
-<h6 id="belongs_toで追加されるメソッド-association=(associate)"><a href="#association=(associate)">4.1.1.2 <code>association=(associate)</code></a></h6>
+<h6 id="belongs_toで追加されるメソッド-association=(associate)"><a href="belongs_to%E3%81%A7%E8%BF%BD%E5%8A%A0%E3%81%95%E3%82%8C%E3%82%8B%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89-association=(associate)">4.1.1.2 <code>association=(associate)</code></a></h6>
 <p><code>association=</code>メソッドは、引数のオブジェクトをそのオブジェクトに関連付けます。その背後では、関連付けられたオブジェクトから主キーを取り出し、そのオブジェクトの外部キーにその同じ値を設定しています。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1015,7 +1015,7 @@ create_customer!
 
 </pre>
 </div>
-<h6 id="belongs_toで追加されるメソッド-build_association(attributes-=-{})"><a href="#build_association(attributes-=-%7B%7D)">4.1.1.3 <code>build_association(attributes = {})</code></a></h6>
+<h6 id="belongs_toで追加されるメソッド-build_association(attributes-=-{})"><a href="belongs_to%E3%81%A7%E8%BF%BD%E5%8A%A0%E3%81%95%E3%82%8C%E3%82%8B%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89-build_association(attributes-=-%7B%7D)">4.1.1.3 <code>build_association(attributes = {})</code></a></h6>
 <p><code>build_association</code>メソッドは、関連付けられた型の新しいオブジェクトを返します。返されるオブジェクトは、渡された属性に基いてインスタンス化され、外部キーを経由するリンクが設定されます。関連付けられたオブジェクトは、値が返された時点ではまだ保存されて<em>いない</em>ことにご注意ください。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1024,7 +1024,7 @@ create_customer!
 
 </pre>
 </div>
-<h6 id="belongs_toで追加されるメソッド-create_association(attributes-=-{})"><a href="#create_association(attributes-=-%7B%7D)">4.1.1.4 <code>create_association(attributes = {})</code></a></h6>
+<h6 id="belongs_toで追加されるメソッド-create_association(attributes-=-{})"><a href="belongs_to%E3%81%A7%E8%BF%BD%E5%8A%A0%E3%81%95%E3%82%8C%E3%82%8B%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89-create_association(attributes-=-%7B%7D)">4.1.1.4 <code>create_association(attributes = {})</code></a></h6>
 <p><code>create_association</code>メソッドは、関連付けられた型の新しいオブジェクトを返します。このオブジェクトは、渡された属性を使用してインスタンス化され、そのオブジェクトの外部キーを介してリンクが設定されます。そして、関連付けられたモデルで指定されている検証がすべてパスすると、この関連付けられたオブジェクトは保存されます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1033,7 +1033,7 @@ create_customer!
 
 </pre>
 </div>
-<h6 id="belongs_toで追加されるメソッド-create_association!(attributes-=-{})"><a href="#create_association!(attributes-=-%7B%7D)">4.1.1.5 <code>create_association!(attributes = {})</code></a></h6>
+<h6 id="belongs_toで追加されるメソッド-create_association!(attributes-=-{})"><a href="belongs_to%E3%81%A7%E8%BF%BD%E5%8A%A0%E3%81%95%E3%82%8C%E3%82%8B%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89-create_association!(attributes-=-%7B%7D)">4.1.1.5 <code>create_association!(attributes = {})</code></a></h6>
 <p>上の<code>create_association</code>と同じですが、レコードがinvalidの場合に<code>ActiveRecord::RecordInvalid</code>がraiseされる点が異なります。</p>
 <h5 id="belongs_toのオプション"><a href="#belongs_to%E3%81%AE%E3%82%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3">4.1.2 <code>belongs_to</code>のオプション</a></h5>
 <p>Railsのデフォルトの<code>belongs_to</code>関連付けは、ほとんどの場合カスタマイズ不要ですが、時には関連付けの動作をカスタマイズしたくなることもあると思います。これは、作成するときに渡すオプションとスコープブロックで簡単にカスタマイズできます。たとえば、以下のようなオプションを関連付けに追加できます。</p>
@@ -1058,9 +1058,9 @@ end
 <li><code>:touch</code></li>
 <li><code>:validate</code></li>
 </ul>
-<h6 id="belongs_toのオプション-:autosave"><a href="#:autosave">4.1.2.1 <code>:autosave</code></a></h6>
+<h6 id="belongs_toのオプション-:autosave"><a href="belongs_to%E3%81%AE%E3%82%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3-:autosave">4.1.2.1 <code>:autosave</code></a></h6>
 <p><code>:autosave</code>オプションを<code>true</code>に設定すると、親オブジェクトが保存されるたびに、読み込まれているすべてのメンバを保存し、destroyフラグが立っているメンバを破棄します。</p>
-<h6 id="belongs_toのオプション-:class_name"><a href="#:class_name">4.1.2.2 <code>:class_name</code></a></h6>
+<h6 id="belongs_toのオプション-:class_name"><a href="belongs_to%E3%81%AE%E3%82%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3-:class_name">4.1.2.2 <code>:class_name</code></a></h6>
 <p>関連名から関連相手のオブジェクト名を生成できない事情がある場合、<code>:class_name</code>オプションを使用してモデル名を直接指定できます。たとえば、注文(order)が顧客(customer)に従属しているが、実際の顧客モデル名が<code>Patron</code>である場合には以下のように指定します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1109,7 +1109,7 @@ end
 </pre>
 </div>
 <p>カウンタキャッシュ用のカラムは、<code>attr_readonly</code>によって読み出し専用属性となるモデルのリストに追加されます。</p>
-<h6 id="belongs_toのオプション-:dependent"><a href="#:dependent">4.1.2.4 <code>:dependent</code></a></h6>
+<h6 id="belongs_toのオプション-:dependent"><a href="belongs_to%E3%81%AE%E3%82%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3-:dependent">4.1.2.4 <code>:dependent</code></a></h6>
 <p><code>:dependent</code>オプションの動作は以下のように対象によって異なります。</p>
 <ul>
 <li>
@@ -1118,7 +1118,7 @@ end
 <code>:delete</code> -- オブジェクトがdestroyされると、関連付けられたオブジェクトはすべて直接削除されます。このときオブジェクトの<code>destroy</code>メソッドは呼び出されません。</li>
 </ul>
 <div class="warning"><p><code>他のクラスの</code>has_many<code>関連付けとつながりのある</code>belongs_to` 関連付けに対してこのオプションを使用してはいけません。孤立したレコードがデータベースに残ってしまう可能性があります。</p></div>
-<h6 id="belongs_toのオプション-:foreign_key"><a href="#:foreign_key">4.1.2.5 <code>:foreign_key</code></a></h6>
+<h6 id="belongs_toのオプション-:foreign_key"><a href="belongs_to%E3%81%AE%E3%82%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3-:foreign_key">4.1.2.5 <code>:foreign_key</code></a></h6>
 <p>Railsの慣例では、相手のモデルを指す外部キーを保持している結合テーブル上のカラム名については、そのモデル名にサフィックス <code>_id</code> を追加した関連付け名が使用されることを前提とします。<code>:foreign_key</code>オプションを使用すると外部キーの名前を直接指定することができます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1130,7 +1130,7 @@ end
 </pre>
 </div>
 <div class="info"><p>Railsは外部キーのカラムを自動的に作ることはありません。外部キーを使用する場合には、マイグレーションで明示的に定義する必要があります。</p></div>
-<h6 id="belongs_toのオプション-:inverse_of"><a href="#:inverse_of">4.1.2.6 <code>:inverse_of</code></a></h6>
+<h6 id="belongs_toのオプション-:inverse_of"><a href="belongs_to%E3%81%AE%E3%82%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3-:inverse_of">4.1.2.6 <code>:inverse_of</code></a></h6>
 <p><code>:inverse_of</code>オプションは、その関連付けの逆関連付けとなる<code>has_many</code>関連付けまたは<code>has_one</code>関連付けの名前を指定します。<code>:polymorphic</code>オプションと組み合わせた場合は無効です。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1169,7 +1169,7 @@ end
 
 </pre>
 </div>
-<h6 id="belongs_toのオプション-:validate"><a href="#:validate">4.1.2.9 <code>:validate</code></a></h6>
+<h6 id="belongs_toのオプション-:validate"><a href="belongs_to%E3%81%AE%E3%82%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3-:validate">4.1.2.9 <code>:validate</code></a></h6>
 <p><code>:validate</code>オプションを<code>true</code>に設定すると、関連付けられたオブジェクトが保存時に必ず検証(validation)されます。デフォルトは<code>false</code>であり、この場合関連付けられたオブジェクトは保存時に検証されません。</p>
 <h5 id="belongs_toのスコープ"><a href="#belongs_to%E3%81%AE%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%97">4.1.3 <code>belongs_to</code>のスコープ</a></h5>
 <p>場合によっては<code>belongs_to</code>で使用されるクエリをカスタマイズしたくなることがあります。スコープブロックを使用してこのようなカスタマイズを行うことができます。例：</p>
@@ -1189,7 +1189,7 @@ end
 <li><code>readonly</code></li>
 <li><code>select</code></li>
 </ul>
-<h6 id="belongs_toのスコープ-where"><a href="#where">4.1.3.1 <code>where</code></a></h6>
+<h6 id="belongs_toのスコープ-where"><a href="belongs_to%E3%81%AE%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%97-where">4.1.3.1 <code>where</code></a></h6>
 <p><code>where</code>は、関連付けられるオブジェクトが満たすべき条件を指定します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1199,7 +1199,7 @@ end
 
 </pre>
 </div>
-<h6 id="belongs_toのスコープ-includes"><a href="#includes">4.1.3.2 <code>includes</code></a></h6>
+<h6 id="belongs_toのスコープ-includes"><a href="belongs_to%E3%81%AE%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%97-includes">4.1.3.2 <code>includes</code></a></h6>
 <p><code>includes</code>メソッドを使用すると、その関連付けが使用されるときにeager-load (訳注:preloadとは異なる)しておきたい第2関連付けを指定することができます。以下のモデルを例にとって考えてみましょう。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1237,12 +1237,12 @@ end
 </pre>
 </div>
 <div class="note"><p>直接の関連付けでは<code>includes</code>を使用する必要はありません。<code>Order belongs_to :customer</code>のような直接の関連付けでは必要に応じて自動的にeager-loadされます。</p></div>
-<h6 id="belongs_toのスコープ-readonly"><a href="#readonly">4.1.3.3 <code>readonly</code></a></h6>
+<h6 id="belongs_toのスコープ-readonly"><a href="belongs_to%E3%81%AE%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%97-readonly">4.1.3.3 <code>readonly</code></a></h6>
 <p><code>readonly</code>を指定すると、関連付けられたオブジェクトから取り出した内容は読み出し専用になります。</p>
-<h6 id="belongs_toのスコープ-select"><a href="#select">4.1.3.4 <code>select</code></a></h6>
+<h6 id="belongs_toのスコープ-select"><a href="belongs_to%E3%81%AE%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%97-select">4.1.3.4 <code>select</code></a></h6>
 <p><code>select</code>メソッドを使用すると、関連付けられたオブジェクトのデータ取り出しに使用されるSQLの<code>SELECT</code>句を上書きします。Railsはデフォルトではすべてのカラムを取り出します。</p>
 <div class="info"><p><code>select</code>を<code>belongs_to</code>関連付けで使用する場合、正しい結果を得るために<code>:foreign_key</code>オプションを必ず設定してください。</p></div>
-<h5 id="belongs_to関連付けの詳細-関連付けられたオブジェクトが存在するかどうかを確認する"><a href="#%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91%E3%82%89%E3%82%8C%E3%81%9F%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%81%8C%E5%AD%98%E5%9C%A8%E3%81%99%E3%82%8B%E3%81%8B%E3%81%A9%E3%81%86%E3%81%8B%E3%82%92%E7%A2%BA%E8%AA%8D%E3%81%99%E3%82%8B">4.1.4 関連付けられたオブジェクトが存在するかどうかを確認する</a></h5>
+<h5 id="belongs_to関連付けの詳細-関連付けられたオブジェクトが存在するかどうかを確認する"><a href="belongs_to%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91%E3%81%AE%E8%A9%B3%E7%B4%B0-%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91%E3%82%89%E3%82%8C%E3%81%9F%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%81%8C%E5%AD%98%E5%9C%A8%E3%81%99%E3%82%8B%E3%81%8B%E3%81%A9%E3%81%86%E3%81%8B%E3%82%92%E7%A2%BA%E8%AA%8D%E3%81%99%E3%82%8B">4.1.4 関連付けられたオブジェクトが存在するかどうかを確認する</a></h5>
 <p><code>association.nil?</code>メソッドを使用して、関連付けられたオブジェクトが存在するかどうかを確認できます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1252,7 +1252,7 @@ end
 
 </pre>
 </div>
-<h5 id="belongs_to関連付けの詳細-オブジェクトが保存されるタイミング"><a href="#%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%81%8C%E4%BF%9D%E5%AD%98%E3%81%95%E3%82%8C%E3%82%8B%E3%82%BF%E3%82%A4%E3%83%9F%E3%83%B3%E3%82%B0">4.1.5 オブジェクトが保存されるタイミング</a></h5>
+<h5 id="belongs_to関連付けの詳細-オブジェクトが保存されるタイミング"><a href="belongs_to%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91%E3%81%AE%E8%A9%B3%E7%B4%B0-%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%81%8C%E4%BF%9D%E5%AD%98%E3%81%95%E3%82%8C%E3%82%8B%E3%82%BF%E3%82%A4%E3%83%9F%E3%83%B3%E3%82%B0">4.1.5 オブジェクトが保存されるタイミング</a></h5>
 <p>オブジェクトを<code>belongs_to</code>関連付けに割り当てても、そのオブジェクトが自動的に保存されるわけでは<em>ありません</em>。関連付けられたオブジェクトが保存されることもありません。</p>
 <h4 id="has_one関連付けの詳細"><a href="#has_one%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91%E3%81%AE%E8%A9%B3%E7%B4%B0">4.2 <code>has_one</code>関連付けの詳細</a></h4>
 <p><code>has_one</code>関連付けは他のモデルと1対1対応します。データベースの観点では、この関連付けでは相手のクラスが外部キーを持ちます。相手ではなく自分のクラスが外部キーを持っているのであれば、<code>belongs_to</code>を使うべきです。</p>
@@ -1345,7 +1345,7 @@ end
 <li><code>:through</code></li>
 <li><code>:validate</code></li>
 </ul>
-<h6 id="has_oneのオプション-:as"><a href="#:as">4.2.2.1 <code>:as</code></a></h6>
+<h6 id="has_oneのオプション-:as"><a href="has_one%E3%81%AE%E3%82%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3-:as">4.2.2.1 <code>:as</code></a></h6>
 <p><code>:as</code>オプションに<code>true</code>を設定すると、ポリモーフィック関連付けを指定できます。ポリモーフィック関連付けの詳細については<a href="#%E3%83%9D%E3%83%AA%E3%83%A2%E3%83%BC%E3%83%95%E3%82%A3%E3%83%83%E3%82%AF%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91">このガイドの説明</a>を参照してください。</p>
 <h6 id="has_oneのオプション-:autosave"><a href="#has_one%E3%81%AE%E3%82%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3-:autosave">4.2.2.2 <code>:autosave</code></a></h6>
 <p><code>:autosave</code>オプションを<code>true</code>に設定すると、親オブジェクトが保存されるたびに、読み込まれているすべてのメンバを保存し、destroyフラグが立っているメンバを破棄します。</p>
@@ -1399,13 +1399,13 @@ end
 
 </pre>
 </div>
-<h6 id="has_oneのオプション-:primary_key"><a href="#:primary_key">4.2.2.7 <code>:primary_key</code></a></h6>
+<h6 id="has_oneのオプション-:primary_key"><a href="has_one%E3%81%AE%E3%82%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3-:primary_key">4.2.2.7 <code>:primary_key</code></a></h6>
 <p>Railsの慣例では、モデルの主キーは<code>id</code>カラムに保存されていることを前提とします。<code>:primary_key</code>オプションで主キーを明示的に指定することでこれを上書きすることができます。</p>
-<h6 id="has_oneのオプション-:source"><a href="#:source">4.2.2.8 <code>:source</code></a></h6>
+<h6 id="has_oneのオプション-:source"><a href="has_one%E3%81%AE%E3%82%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3-:source">4.2.2.8 <code>:source</code></a></h6>
 <p><code>:source</code>オプションは、<code>has_one :through</code>関連付けにおける「ソースの」関連付け名、つまり関連付け元の名前を指定します。</p>
-<h6 id="has_oneのオプション-:source_type"><a href="#:source_type">4.2.2.9 <code>:source_type</code></a></h6>
+<h6 id="has_oneのオプション-:source_type"><a href="has_one%E3%81%AE%E3%82%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3-:source_type">4.2.2.9 <code>:source_type</code></a></h6>
 <p><code>:source_type</code>オプションは、ポリモーフィック関連付けを介して行われる<code>has_one :through</code>関連付けにおける「ソースの」関連付けタイプ、つまり関連付け元のタイプを指定します。</p>
-<h6 id="has_oneのオプション-:through"><a href="#:through">4.2.2.10 <code>:through</code></a></h6>
+<h6 id="has_oneのオプション-:through"><a href="has_one%E3%81%AE%E3%82%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3-:through">4.2.2.10 <code>:through</code></a></h6>
 <p><code>:through</code>オプションは、<a href="#has_one-:through%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91">このガイドで既に説明した</a><code>has_one :through</code>関連付けのクエリを実行する際に経由する結合モデルを指定します。</p>
 <h6 id="has_oneのオプション-:validate"><a href="#has_one%E3%81%AE%E3%82%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3-:validate">4.2.2.11 <code>:validate</code></a></h6>
 <p><code>:validate</code>オプションを<code>true</code>に設定すると、関連付けられたオブジェクトが保存時に必ず検証(validation)されます。デフォルトは<code>false</code>であり、この場合関連付けられたオブジェクトは保存時に検証されません。</p>
@@ -1546,7 +1546,7 @@ orders.create!(attributes = {})`
 
 </pre>
 </div>
-<h6 id="has_manyで追加されるメソッド-collection(force_reload-=-false)"><a href="#collection(force_reload-=-false)">4.3.1.1 <code>collection(force_reload = false)</code></a></h6>
+<h6 id="has_manyで追加されるメソッド-collection(force_reload-=-false)"><a href="has_many%E3%81%A7%E8%BF%BD%E5%8A%A0%E3%81%95%E3%82%8C%E3%82%8B%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89-collection(force_reload-=-false)">4.3.1.1 <code>collection(force_reload = false)</code></a></h6>
 <p><code>collection</code>メソッドは、関連付けられたすべてのオブジェクトの配列を返します。関連付けられたオブジェクトがない場合は、空の配列を1つ返します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1554,7 +1554,7 @@ orders.create!(attributes = {})`
 
 </pre>
 </div>
-<h6 id="has_manyで追加されるメソッド-collection&lt;&lt;(object,-...)"><a href="#collection&lt;&lt;(object,-...)">4.3.1.2 <code>collection&lt;&lt;(object, ...)</code></a></h6>
+<h6 id="has_manyで追加されるメソッド-collection&lt;&lt;(object,-...)"><a href="has_many%E3%81%A7%E8%BF%BD%E5%8A%A0%E3%81%95%E3%82%8C%E3%82%8B%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89-collection&lt;&lt;(object,-...)">4.3.1.2 <code>collection&lt;&lt;(object, ...)</code></a></h6>
 <p><code>collection&lt;&lt;</code>メソッドは、1つ以上のオブジェクトをコレクションに追加します。このとき、追加されるオブジェクトの外部キーは、呼び出し側モデルの主キーに設定されます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1562,7 +1562,7 @@ orders.create!(attributes = {})`
 
 </pre>
 </div>
-<h6 id="has_manyで追加されるメソッド-collection.delete(object,-...)"><a href="#collection.delete(object,-...)">4.3.1.3 <code>collection.delete(object, ...)</code></a></h6>
+<h6 id="has_manyで追加されるメソッド-collection.delete(object,-...)"><a href="has_many%E3%81%A7%E8%BF%BD%E5%8A%A0%E3%81%95%E3%82%8C%E3%82%8B%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89-collection.delete(object,-...)">4.3.1.3 <code>collection.delete(object, ...)</code></a></h6>
 <p><code>collection.delete</code>メソッドは、外部キーを<code>NULL</code>に設定することで、コレクションから1つまたは複数のオブジェクトを削除します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1571,7 +1571,7 @@ orders.create!(attributes = {})`
 </pre>
 </div>
 <div class="warning"><p>削除のされ方はこれだけではありません。オブジェクト同士が<code>dependent: :destroy</code>で関連付けられている場合はdestroyされますが、オブジェクト同士が<code>dependent: :delete_all</code>で関連付けられている場合はdeleteされますのでご注意ください。</p></div>
-<h6 id="has_manyで追加されるメソッド-collection.destroy(object,-...)"><a href="#collection.destroy(object,-...)">4.3.1.4 <code>collection.destroy(object, ...)</code></a></h6>
+<h6 id="has_manyで追加されるメソッド-collection.destroy(object,-...)"><a href="has_many%E3%81%A7%E8%BF%BD%E5%8A%A0%E3%81%95%E3%82%8C%E3%82%8B%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89-collection.destroy(object,-...)">4.3.1.4 <code>collection.destroy(object, ...)</code></a></h6>
 <p><code>collection.destroy</code>は、コレクションに関連付けられているオブジェクトに対して<code>destroy</code>を実行することで、コレクションから1つまたは複数のオブジェクトを削除します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1580,9 +1580,9 @@ orders.create!(attributes = {})`
 </pre>
 </div>
 <div class="warning"><p>この場合オブジェクトは<em>無条件で</em>データベースから削除されます。このとき、<code>:dependent</code>オプションがどのように設定されていても無視して削除が行われます。</p></div>
-<h6 id="has_manyで追加されるメソッド-collection=objects"><a href="#collection=objects">4.3.1.5 <code>collection=objects</code></a></h6>
+<h6 id="has_manyで追加されるメソッド-collection=objects"><a href="has_many%E3%81%A7%E8%BF%BD%E5%8A%A0%E3%81%95%E3%82%8C%E3%82%8B%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89-collection=objects">4.3.1.5 <code>collection=objects</code></a></h6>
 <p><code>collection=</code>メソッドは、指定したオブジェクトでそのコレクションの内容を置き換えます。元からあったオブジェクトは削除されます。</p>
-<h6 id="has_manyで追加されるメソッド-collection_singular_ids"><a href="#collection_singular_ids">4.3.1.6 <code>collection_singular_ids</code></a></h6>
+<h6 id="has_manyで追加されるメソッド-collection_singular_ids"><a href="has_many%E3%81%A7%E8%BF%BD%E5%8A%A0%E3%81%95%E3%82%8C%E3%82%8B%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89-collection_singular_ids">4.3.1.6 <code>collection_singular_ids</code></a></h6>
 <p><code>collection_singular_ids</code>メソッドは、そのコレクションに含まれるオブジェクトのidを配列にしたものを返します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1590,11 +1590,11 @@ orders.create!(attributes = {})`
 
 </pre>
 </div>
-<h6 id="has_manyで追加されるメソッド-collection_singular_ids=ids"><a href="#collection_singular_ids=ids">4.3.1.7 <code>collection_singular_ids=ids</code></a></h6>
+<h6 id="has_manyで追加されるメソッド-collection_singular_ids=ids"><a href="has_many%E3%81%A7%E8%BF%BD%E5%8A%A0%E3%81%95%E3%82%8C%E3%82%8B%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89-collection_singular_ids=ids">4.3.1.7 <code>collection_singular_ids=ids</code></a></h6>
 <p><code>collection_singular_ids=</code>メソッドは、指定された主キーidを持つオブジェクトの集まりでコレクションの内容を置き換えます。元からあったオブジェクトは削除されます。</p>
-<h6 id="has_manyで追加されるメソッド-collection.clear"><a href="#collection.clear">4.3.1.8 <code>collection.clear</code></a></h6>
+<h6 id="has_manyで追加されるメソッド-collection.clear"><a href="has_many%E3%81%A7%E8%BF%BD%E5%8A%A0%E3%81%95%E3%82%8C%E3%82%8B%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89-collection.clear">4.3.1.8 <code>collection.clear</code></a></h6>
 <p><code>collection.clear</code>メソッドは、コレクションからすべてのオブジェクトを削除します。<code>dependent: :destroy</code>で関連付けられたオブジェクトがある場合は、それらのオブジェクトはdestroyされます。<code>dependent: :delete_all</code>で関連付けられたオブジェクトがある場合は、データベースから直接deleteされます。それ以外の場合は単に外部キーが<code>NULL</code>に設定されます。</p>
-<h6 id="has_manyで追加されるメソッド-collection.empty?"><a href="#collection.empty?">4.3.1.9 <code>collection.empty?</code></a></h6>
+<h6 id="has_manyで追加されるメソッド-collection.empty?"><a href="has_many%E3%81%A7%E8%BF%BD%E5%8A%A0%E3%81%95%E3%82%8C%E3%82%8B%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89-collection.empty?">4.3.1.9 <code>collection.empty?</code></a></h6>
 <p><code>collection.empty?</code>メソッドは、関連付けられたオブジェクトがコレクションの中に1つもない場合に<code>true</code>を返します。</p>
 <div class="code_container">
 <pre class="brush: ruby; html-script: true; gutter: false; toolbar: false">
@@ -1604,7 +1604,7 @@ orders.create!(attributes = {})`
 
 </pre>
 </div>
-<h6 id="has_manyで追加されるメソッド-collection.size"><a href="#collection.size">4.3.1.10 <code>collection.size</code></a></h6>
+<h6 id="has_manyで追加されるメソッド-collection.size"><a href="has_many%E3%81%A7%E8%BF%BD%E5%8A%A0%E3%81%95%E3%82%8C%E3%82%8B%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89-collection.size">4.3.1.10 <code>collection.size</code></a></h6>
 <p><code>collection.size</code>メソッドは、コレクションに含まれるオブジェクトの数を返します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1612,7 +1612,7 @@ orders.create!(attributes = {})`
 
 </pre>
 </div>
-<h6 id="has_manyで追加されるメソッド-collection.find(...)"><a href="#collection.find(...)">4.3.1.11 <code>collection.find(...)</code></a></h6>
+<h6 id="has_manyで追加されるメソッド-collection.find(...)"><a href="has_many%E3%81%A7%E8%BF%BD%E5%8A%A0%E3%81%95%E3%82%8C%E3%82%8B%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89-collection.find(...)">4.3.1.11 <code>collection.find(...)</code></a></h6>
 <p><code>collection.find</code>メソッドは、コレクションに含まれるオブジェクトを検索します。このメソッドで使用される文法は、<code>ActiveRecord::Base.find</code>で使用されているものと同じです。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1620,7 +1620,7 @@ orders.create!(attributes = {})`
 
 </pre>
 </div>
-<h6 id="has_manyで追加されるメソッド-collection.where(...)"><a href="#collection.where(...)">4.3.1.12 <code>collection.where(...)</code></a></h6>
+<h6 id="has_manyで追加されるメソッド-collection.where(...)"><a href="has_many%E3%81%A7%E8%BF%BD%E5%8A%A0%E3%81%95%E3%82%8C%E3%82%8B%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89-collection.where(...)">4.3.1.12 <code>collection.where(...)</code></a></h6>
 <p><code>collection.where</code>メソッドは、コレクションに含まれているメソッドを指定された条件に基いて検索します。このメソッドではオブジェクトは遅延読み込み(lazy load)される点にご注意ください。つまり、オブジェクトに実際にアクセスが行われる時にだけデータベースへのクエリが発生します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1629,7 +1629,7 @@ orders.create!(attributes = {})`
 
 </pre>
 </div>
-<h6 id="has_manyで追加されるメソッド-collection.exists?(...)"><a href="#collection.exists?(...)">4.3.1.13 <code>collection.exists?(...)</code></a></h6>
+<h6 id="has_manyで追加されるメソッド-collection.exists?(...)"><a href="has_many%E3%81%A7%E8%BF%BD%E5%8A%A0%E3%81%95%E3%82%8C%E3%82%8B%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89-collection.exists?(...)">4.3.1.13 <code>collection.exists?(...)</code></a></h6>
 <p><code>collection.exists?</code>メソッドは、指定された条件に合うオブジェクトがコレクションの中に存在するかどうかをチェックします。このメソッドで使用される文法は、<code>ActiveRecord::Base.exists?</code>で使用されているものと同じです。`.</p>
 <h6 id="collection.build(attributes-=-{},-...)"><a href="#collection.build(attributes-=-%7B%7D,-...)">4.3.1.14 <code>collection.build(attributes = {}, ...)</code></a></h6>
 <p><code>collection.build</code>メソッドは、関連付けが行われたオブジェクトを1つまたは複数返します。返されるオブジェクトは、渡された属性に基いてインスタンス化され、外部キーを経由するリンクが作成されます。関連付けられたオブジェクトは、値が返された時点ではまだ保存されて<em>いない</em>ことにご注意ください。</p>
@@ -1640,7 +1640,7 @@ orders.create!(attributes = {})`
 
 </pre>
 </div>
-<h6 id="has_manyで追加されるメソッド-collection.create(attributes-=-{})"><a href="#collection.create(attributes-=-%7B%7D)">4.3.1.15 <code>collection.create(attributes = {})</code></a></h6>
+<h6 id="has_manyで追加されるメソッド-collection.create(attributes-=-{})"><a href="has_many%E3%81%A7%E8%BF%BD%E5%8A%A0%E3%81%95%E3%82%8C%E3%82%8B%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89-collection.create(attributes-=-%7B%7D)">4.3.1.15 <code>collection.create(attributes = {})</code></a></h6>
 <p><code>collection.create</code>メソッドは、関連付けが行われたオブジェクトを1つ返します。このオブジェクトは、渡された属性を使用してインスタンス化され、そのオブジェクトの外部キーを介してリンクが作成されます。そして、関連付けられたモデルで指定されている検証がすべてパスすると、この関連付けられたオブジェクトは保存されます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1649,7 +1649,7 @@ orders.create!(attributes = {})`
 
 </pre>
 </div>
-<h6 id="has_manyで追加されるメソッド-collection.create!(attributes-=-{})"><a href="#collection.create!(attributes-=-%7B%7D)">4.3.1.16 <code>collection.create!(attributes = {})</code></a></h6>
+<h6 id="has_manyで追加されるメソッド-collection.create!(attributes-=-{})"><a href="has_many%E3%81%A7%E8%BF%BD%E5%8A%A0%E3%81%95%E3%82%8C%E3%82%8B%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89-collection.create!(attributes-=-%7B%7D)">4.3.1.16 <code>collection.create!(attributes = {})</code></a></h6>
 <p>上の<code>collection.create</code>と同じですが、レコードがinvalidの場合に<code>ActiveRecord::RecordInvalid</code>がraiseされる点が異なります。</p>
 <h5 id="has_manyのオプション"><a href="#has_many%E3%81%AE%E3%82%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3">4.3.2 <code>has_many</code>のオプション</a></h5>
 <p>Railsのデフォルトの<code>has_many</code>関連付けは、ほとんどの場合カスタマイズ不要ですが、時には関連付けの動作をカスタマイズしたくなることもあると思います。これは、作成するときにオプションを渡すことで簡単にカスタマイズできます。たとえば、以下のようなオプションを関連付けに追加できます。</p>
@@ -1677,9 +1677,9 @@ end
 </ul>
 <h6 id="has_manyのオプション-:as"><a href="#has_many%E3%81%AE%E3%82%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3-:as">4.3.2.1 <code>:as</code></a></h6>
 <p><code>:as</code>オプションを設定すると、ポリモーフィック関連付けであることが指定されます。(<a href="#%E3%83%9D%E3%83%AA%E3%83%A2%E3%83%BC%E3%83%95%E3%82%A3%E3%83%83%E3%82%AF%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91">このガイドの説明</a>を参照)</p>
-<h6 id="has_manyのオプション-:autosave"><a href="#:autosave">4.3.2.2 <code>:autosave</code></a></h6>
+<h6 id="has_manyのオプション-:autosave"><a href="has_many%E3%81%AE%E3%82%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3-:autosave">4.3.2.2 <code>:autosave</code></a></h6>
 <p><code>:autosave</code>オプションを<code>true</code>に設定すると、親オブジェクトが保存されるたびに、読み込まれているすべてのメンバを保存し、destroyフラグが立っているメンバを破棄します。</p>
-<h6 id="has_manyのオプション-:class_name"><a href="#:class_name">4.3.2.3 <code>:class_name</code></a></h6>
+<h6 id="has_manyのオプション-:class_name"><a href="has_many%E3%81%AE%E3%82%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3-:class_name">4.3.2.3 <code>:class_name</code></a></h6>
 <p>関連名から関連相手のオブジェクト名を生成できない事情がある場合、<code>:class_name</code>オプションを使用してモデル名を直接指定できます。たとえば、1人の顧客(customer)が複数の注文(order)を持っているが、実際の注文モデル名が<code>Transaction</code>である場合には以下のように指定します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1704,7 +1704,7 @@ end
 <code>:restrict_with_error</code>を指定すると、関連付けられたオブジェクトが1つでもある場合にエラーがオーナーに追加されます。</li>
 </ul>
 <div class="note"><p>その関連付けで<code>:through</code>オプションが指定されている場合、このオプションは無効です。</p></div>
-<h6 id="has_manyのオプション-:foreign_key"><a href="#:foreign_key">4.3.2.5 <code>:foreign_key</code></a></h6>
+<h6 id="has_manyのオプション-:foreign_key"><a href="has_many%E3%81%AE%E3%82%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3-:foreign_key">4.3.2.5 <code>:foreign_key</code></a></h6>
 <p>Railsの慣例では、外部キーを保持するためのカラム名については、モデル名にサフィックス <code>_id</code> を追加した名前が使用されることを前提とします。<code>:foreign_key</code>オプションを使用すると外部キーの名前を直接指定することができます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1747,7 +1747,7 @@ end
 <p><code>:source_type</code>オプションは、ポリモーフィック関連付けを介して行われる<code>has_many :through</code>関連付けにおける「ソースの」関連付けタイプ、つまり関連付け元のタイプを指定します。</p>
 <h6 id="has_manyのオプション-:through"><a href="#has_many%E3%81%AE%E3%82%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3-:through">4.3.2.10 <code>:through</code></a></h6>
 <p><code>:through</code>オプションは、クエリ実行時に経由する結合(join)モデルを指定します。<code>has_many :through</code>関連付けは、多対多の関連付けを実装する方法を提供します(詳細については<a href="#has_many-:through%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91">このガイドの説明</a>を参照)。</p>
-<h6 id="has_manyのオプション-:validate"><a href="#:validate">4.3.2.11 <code>:validate</code></a></h6>
+<h6 id="has_manyのオプション-:validate"><a href="has_many%E3%81%AE%E3%82%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3-:validate">4.3.2.11 <code>:validate</code></a></h6>
 <p><code>:validate</code>オプションを<code>false</code>に設定すると、関連付けられたオブジェクトは保存時に検証(validation)されません。デフォルトは<code>true</code>であり、この場合関連付けられたオブジェクトは保存時に検証されます。</p>
 <h5 id="has_manyのスコープについて"><a href="#has_many%E3%81%AE%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%97%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6">4.3.3 <code>has_many</code>のスコープについて</a></h5>
 <p>場合によっては<code>has_many</code>で使用されるクエリをカスタマイズしたくなることがあります。スコープブロックを使用してこのようなカスタマイズを行うことができます。例：</p>
@@ -1772,7 +1772,7 @@ end
 <li><code>select</code></li>
 <li><code>uniq</code></li>
 </ul>
-<h6 id="has_manyのスコープについて-where"><a href="#where">4.3.3.1 <code>where</code></a></h6>
+<h6 id="has_manyのスコープについて-where"><a href="has_many%E3%81%AE%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%97%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6-where">4.3.3.1 <code>where</code></a></h6>
 <p><code>where</code>は、関連付けられるオブジェクトが満たすべき条件を指定します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1794,9 +1794,9 @@ end
 </pre>
 </div>
 <p><code>where</code>オプションでハッシュを使用した場合、この関連付けで作成されたレコードは自動的にこのハッシュを使用したスコープに含まれるようになります。この例の場合、<code>@customer.confirmed_orders.create</code>または<code>@customer.confirmed_orders.build</code>を実行すると、comfirmedカラムの値が<code>true</code>の注文(order)が常に作成されます。</p>
-<h6 id="has_manyのスコープについて-extending"><a href="#extending">4.3.3.2 <code>extending</code></a></h6>
+<h6 id="has_manyのスコープについて-extending"><a href="has_many%E3%81%AE%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%97%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6-extending">4.3.3.2 <code>extending</code></a></h6>
 <p><code>extending</code>メソッドは、関連付けプロキシを拡張する名前付きモジュールを指定します。関連付けの拡張については<a href="#%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91%E3%81%AE%E6%8B%A1%E5%BC%B5">後述します</a>。</p>
-<h6 id="has_manyのスコープについて-group"><a href="#group">4.3.3.3 <code>group</code></a></h6>
+<h6 id="has_manyのスコープについて-group"><a href="has_many%E3%81%AE%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%97%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6-group">4.3.3.3 <code>group</code></a></h6>
 <p><code>group</code>メソッドは、結果をグループ化する際の属性名を1つ指定します。内部的にはSQLの<code>GROUP BY</code>句が使用されます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1807,7 +1807,7 @@ end
 
 </pre>
 </div>
-<h6 id="has_manyのスコープについて-includes"><a href="#includes">4.3.3.4 <code>includes</code></a></h6>
+<h6 id="has_manyのスコープについて-includes"><a href="has_many%E3%81%AE%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%97%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6-includes">4.3.3.4 <code>includes</code></a></h6>
 <p><code>includes</code>メソッドを使用すると、その関連付けが使用されるときにeager-load (訳注:preloadとは異なる)しておきたい第2関連付けを指定することができます。以下のモデルを例にとって考えてみましょう。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1844,7 +1844,7 @@ end
 
 </pre>
 </div>
-<h6 id="has_manyのスコープについて-limit"><a href="#limit">4.3.3.5 <code>limit</code></a></h6>
+<h6 id="has_manyのスコープについて-limit"><a href="has_many%E3%81%AE%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%97%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6-limit">4.3.3.5 <code>limit</code></a></h6>
 <p><code>limit</code>メソッドは、関連付けを使用して取得できるオブジェクトの総数を制限するのに使用します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1856,9 +1856,9 @@ end
 
 </pre>
 </div>
-<h6 id="has_manyのスコープについて-offset"><a href="#offset">4.3.3.6 <code>offset</code></a></h6>
+<h6 id="has_manyのスコープについて-offset"><a href="has_many%E3%81%AE%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%97%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6-offset">4.3.3.6 <code>offset</code></a></h6>
 <p><code>offset</code>メソッドは、関連付けを使用してオブジェクトを取得する際の開始オフセットを指定します。たとえば、<code>-&gt; { offset(11) }</code>と指定すると、最初の11レコードはスキップされ、12レコード目から返されるようになります。</p>
-<h6 id="has_manyのスコープについて-order"><a href="#order">4.3.3.7 <code>order</code></a></h6>
+<h6 id="has_manyのスコープについて-order"><a href="has_many%E3%81%AE%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%97%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6-order">4.3.3.7 <code>order</code></a></h6>
 <p><code>order</code>メソッドは、関連付けられたオブジェクトに与えられる順序を指定します。内部的にはSQLの<code>ORDER BY</code>句が使用されます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1868,9 +1868,9 @@ end
 
 </pre>
 </div>
-<h6 id="has_manyのスコープについて-readonly"><a href="#readonly">4.3.3.8 <code>readonly</code></a></h6>
+<h6 id="has_manyのスコープについて-readonly"><a href="has_many%E3%81%AE%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%97%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6-readonly">4.3.3.8 <code>readonly</code></a></h6>
 <p><code>readonly</code>を指定すると、関連付けられたオブジェクトを取り出すときに読み出し専用になります。</p>
-<h6 id="has_manyのスコープについて-select"><a href="#select">4.3.3.9 <code>select</code></a></h6>
+<h6 id="has_manyのスコープについて-select"><a href="has_many%E3%81%AE%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%97%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6-select">4.3.3.9 <code>select</code></a></h6>
 <p><code>select</code>メソッドを使用すると、関連付けられたオブジェクトのデータ取り出しに使用されるSQLの<code>SELECT</code>句を上書きします。Railsはデフォルトではすべてのカラムを取り出します。</p>
 <div class="warning"><p>独自の<code>select</code>メソッドを使用する場合には、関連付けられているモデルの主キーカラムと外部キーカラムを必ず含めておいてください。これを行わなかった場合、Railsでエラーが発生します。</p></div>
 <h6 id="distinct"><a href="#distinct">4.3.3.10 <code>distinct</code></a></h6>
@@ -1924,7 +1924,7 @@ person.posts &lt;&lt; post unless person.posts.include?(post)
 
 </pre>
 </div>
-<h5 id="has_many関連付けの詳細-オブジェクトが保存されるタイミング"><a href="#%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%81%8C%E4%BF%9D%E5%AD%98%E3%81%95%E3%82%8C%E3%82%8B%E3%82%BF%E3%82%A4%E3%83%9F%E3%83%B3%E3%82%B0">4.3.4 オブジェクトが保存されるタイミング</a></h5>
+<h5 id="has_many関連付けの詳細-オブジェクトが保存されるタイミング"><a href="has_many%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91%E3%81%AE%E8%A9%B3%E7%B4%B0-%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%81%8C%E4%BF%9D%E5%AD%98%E3%81%95%E3%82%8C%E3%82%8B%E3%82%BF%E3%82%A4%E3%83%9F%E3%83%B3%E3%82%B0">4.3.4 オブジェクトが保存されるタイミング</a></h5>
 <p><code>has_many</code>関連付けにオブジェクトをアサインすると、外部キーを更新するためにそのオブジェクトは自動的に保存されます。1つの文で複数のオブジェクトをアサインすると、それらはすべて保存されます。</p>
 <p>関連付けられているオブジェクト同士の1つでも検証(validation)のために保存に失敗すると、アサインの状態からは<code>false</code>が返され、アサインはキャンセルされます。</p>
 <p>親オブジェクト(<code>has_many</code>関連付けを宣言している側のオブジェクト)が保存されない場合(つまり<code>new_record?</code>が<code>true</code>を返す場合)、子オブジェクトは追加時に保存されません。親オブジェクトが保存されると、関連付けられていたオブジェクトのうち保存されていなかったメンバはすべて保存されます。</p>

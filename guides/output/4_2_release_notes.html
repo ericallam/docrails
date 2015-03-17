@@ -510,14 +510,14 @@ assert_select('p', 'AT&amp;amp;T')  # =&gt; false
 </ul>
 <h3 id="railties"><a href="#railties">4 Railties</a></h3>
 <p>変更の詳細については<a href="https://github.com/rails/rails/blob/4-2-stable/railties/CHANGELOG.md">Changelog</a>を参照してください。</p>
-<h4 id="railties-削除されたもの"><a href="#%E5%89%8A%E9%99%A4%E3%81%95%E3%82%8C%E3%81%9F%E3%82%82%E3%81%AE">4.1 削除されたもの</a></h4>
+<h4 id="railties-削除されたもの"><a href="railties-%E5%89%8A%E9%99%A4%E3%81%95%E3%82%8C%E3%81%9F%E3%82%82%E3%81%AE">4.1 削除されたもの</a></h4>
 <ul>
 <li><p>  アプリケーションのジェネレータから<code>--skip-action-view</code>オプションが削除されました。
 (<a href="https://github.com/rails/rails/pull/17042">Pull Request</a>)</p></li>
 <li><p>  <code>rails application</code>コマンドは削除されました。他のコマンドへの置き換えは行われていません。
 (<a href="https://github.com/rails/rails/pull/11616">Pull Request</a>)</p></li>
 </ul>
-<h4 id="railties-非推奨"><a href="#%E9%9D%9E%E6%8E%A8%E5%A5%A8">4.2 非推奨</a></h4>
+<h4 id="railties-非推奨"><a href="railties-%E9%9D%9E%E6%8E%A8%E5%A5%A8">4.2 非推奨</a></h4>
 <ul>
 <li><p>  production環境で<code>config.log_level</code>を未設定のままにすることが非推奨になりました。
 (<a href="https://github.com/rails/rails/pull/16622">Pull Request</a>)</p></li>
@@ -528,7 +528,7 @@ assert_select('p', 'AT&amp;amp;T')  # =&gt; false
 <li><p>  <code>Rails::Rack::LogTailer</code>は非推奨になりました。代替はありません。
 (<a href="https://github.com/rails/rails/commit/84a13e019e93efaa8994b3f8303d635a7702dbce">Commit</a>)</p></li>
 </ul>
-<h4 id="railties-主な変更点"><a href="#%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">4.3 主な変更点</a></h4>
+<h4 id="railties-主な変更点"><a href="railties-%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">4.3 主な変更点</a></h4>
 <ul>
 <li><p>  <code>web-console</code>がデフォルトのアプリケーションGemfileに導入されました。
 (<a href="https://github.com/rails/rails/pull/11667">Pull Request</a>)</p></li>
@@ -692,7 +692,7 @@ end
 </ul>
 <h3 id="action-view"><a href="#action-view">6 Action View</a></h3>
 <p>変更の詳細については<a href="https://github.com/rails/rails/blob/4-2-stable/actionview/CHANGELOG.md">Changelog</a>を参照してください。</p>
-<h4 id="action-view-非推奨"><a href="#%E9%9D%9E%E6%8E%A8%E5%A5%A8">6.1 非推奨</a></h4>
+<h4 id="action-view-非推奨"><a href="action-view-%E9%9D%9E%E6%8E%A8%E5%A5%A8">6.1 非推奨</a></h4>
 <ul>
 <li><p>  <code>AbstractController::Base.parent_prefixes</code>は非推奨になりました。ビューの検索対象を変更したい場合は<code>AbstractController::Base.local_prefixes</code>をオーバーライドしてください。
 (<a href="https://github.com/rails/rails/pull/15026">Pull Request</a>)</p></li>
@@ -700,7 +700,7 @@ end
 今後、引数は1つのハッシュとして渡す必要があります。
 (<a href="https://github.com/rails/rails/pull/14243">Pull Request</a>)</p></li>
 </ul>
-<h4 id="action-view-主な変更点"><a href="#%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">6.2 主な変更点</a></h4>
+<h4 id="action-view-主な変更点"><a href="action-view-%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">6.2 主な変更点</a></h4>
 <ul>
 <li><p>  <code>render "foo/bar"</code>が拡張され、<code>render file: "foo/bar"</code>ではなく<code>render template: "foo/bar"</code>を実行するようになりました。
 (<a href="https://github.com/rails/rails/pull/16888">Pull Request</a>)</p></li>
@@ -731,7 +731,7 @@ end
 </ul>
 <h3 id="active-record"><a href="#active-record">8 Active Record</a></h3>
 <p>変更の詳細については、<a href="https://github.com/rails/rails/blob/4-2-stable/activerecord/CHANGELOG.md">Changelog</a>を参照してください。</p>
-<h4 id="active-record-削除されたもの"><a href="#%E5%89%8A%E9%99%A4%E3%81%95%E3%82%8C%E3%81%9F%E3%82%82%E3%81%AE">8.1 削除されたもの</a></h4>
+<h4 id="active-record-削除されたもの"><a href="active-record-%E5%89%8A%E9%99%A4%E3%81%95%E3%82%8C%E3%81%9F%E3%82%82%E3%81%AE">8.1 削除されたもの</a></h4>
 <ul>
 <li><p>  <code>cache_attributes</code>およびその同類が削除されました。すべての属性は常にキャッシュされるようになりました。
 (<a href="https://github.com/rails/rails/pull/15429">Pull Request</a>)</p></li>
@@ -742,7 +742,7 @@ end
 <li><p>  未使用の<code>:timestamp</code>タイプが削除されました。今後は常に透過的に<code>:datetime</code>にエイリアスされるようになります。これにより、XMLシリアライズなどでカラムの種類がActive Recordの外に送信された場合の不整合が修正されます。
 (<a href="https://github.com/rails/rails/pull/15184">Pull Request</a>)</p></li>
 </ul>
-<h4 id="active-record-非推奨"><a href="#%E9%9D%9E%E6%8E%A8%E5%A5%A8">8.2 非推奨</a></h4>
+<h4 id="active-record-非推奨"><a href="active-record-%E9%9D%9E%E6%8E%A8%E5%A5%A8">8.2 非推奨</a></h4>
 <ul>
 <li><p>  <code>after_commit</code>と<code>after_rollback</code>内でのエラーの抑制が非推奨になりました。
 (<a href="https://github.com/rails/rails/pull/16537">Pull Request</a>)</p></li>
@@ -770,7 +770,7 @@ end
 <li><p>  Replacementを使わずに、インスタンスの状態に依存するアソシエーション (例: 引数をとるスコープと共に定義される場合) において、<code>.joins</code>や<code>.preload</code>、<code>.eager_load</code>を使うことが非推奨になりました。
 (<a href="https://github.com/rails/rails/commit/ed56e596a0467390011bc9d56d462539776adac1">Commit</a>)</p></li>
 </ul>
-<h4 id="active-record-主な変更点"><a href="#%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">8.3 主な変更点</a></h4>
+<h4 id="active-record-主な変更点"><a href="active-record-%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">8.3 主な変更点</a></h4>
 <ul>
 <li><p>  <code>create_table</code>が実行されるとき、<code>SchemaDumper</code>が<code>force: :cascade</code>を使うようになりました。これにより、外部キーが適切であればスキーマが再読み込みできるようになります。</p></li>
 <li><p>  単独の関連付けに対する<code>:required</code>オプションが追加されました。これは関連付けの存在確認の検証 (validation) を定義します。

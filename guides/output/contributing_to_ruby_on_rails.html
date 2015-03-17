@@ -305,9 +305,9 @@ if the bug happens in the master branch.</p>
 <p>If you'd like feedback on an idea for a feature before doing the work for make a patch, please send an email to the <a href="https://groups.google.com/forum/?fromgroups#!forum/rubyonrails-core">rails-core mailing list</a>. You might get no response, which means that everyone is indifferent. You might find someone who's also interested in building that feature. You might get a "This won't be accepted." But it's the proper place to discuss new ideas. GitHub Issues are not a particularly good venue for the sometimes long and involved discussions new features require.</p>
 <h3 id="setting-up-a-development-environment"><a href="#setting-up-a-development-environment">2 Setting Up a Development Environment</a></h3>
 <p>To move on from submitting bugs to helping resolve existing issues or contributing your own code to Ruby on Rails, you <em>must</em> be able to run its test suite. In this section of the guide you'll learn how to set up the tests on your own computer.</p>
-<h4 id="setting-up-a-development-environment-the-easy-way"><a href="#the-easy-way">2.1 The Easy Way</a></h4>
+<h4 id="setting-up-a-development-environment-the-easy-way"><a href="setting-up-a-development-environment-the-easy-way">2.1 The Easy Way</a></h4>
 <p>The easiest and recommended way to get a development environment ready to hack is to use the <a href="https://github.com/rails/rails-dev-box">Rails development box</a>.</p>
-<h4 id="setting-up-a-development-environment-the-hard-way"><a href="#the-hard-way">2.2 The Hard Way</a></h4>
+<h4 id="setting-up-a-development-environment-the-hard-way"><a href="setting-up-a-development-environment-the-hard-way">2.2 The Hard Way</a></h4>
 <p>In case you can't use the Rails development box, see section above, check <a href="development_dependencies_install.html">this other guide</a>.</p>
 <h3 id="running-an-application-against-your-local-branch"><a href="#running-an-application-against-your-local-branch">3 Running an Application Against Your Local Branch</a></h3>
 <p>The <code>--dev</code> flag of <code>rails new</code> generates an application that uses your local
@@ -354,7 +354,7 @@ $ ARCONN=sqlite3 ruby -Itest test/cases/associations/has_many_associations_test.
 </pre>
 </div>
 <p>You can invoke <code>test_jdbcmysql</code>, <code>test_jdbcsqlite3</code> or <code>test_jdbcpostgresql</code> also. See the file <code>activerecord/RUNNING_UNIT_TESTS.rdoc</code> for information on running more targeted database tests, or the file <code>ci/travis.rb</code> for the test suite run by the continuous integration server.</p>
-<h4 id="testing-active-record-warnings"><a href="#warnings">4.1 Warnings</a></h4>
+<h4 id="testing-active-record-warnings"><a href="testing-active-record-warnings">4.1 Warnings</a></h4>
 <p>The test suite runs with warnings enabled. Ideally, Ruby on Rails should issue no warnings, but there may be a few, as well as some from third-party libraries. Please ignore (or fix!) them, if any, and submit patches that do not issue new warnings.</p>
 <p>If you are sure about what you are doing and would like to have a more clear output, there's a way to override the flag:</p>
 <div class="code_container">
@@ -363,7 +363,7 @@ $ RUBYOPT=-W0 bundle exec rake test
 
 </pre>
 </div>
-<h4 id="testing-active-record-older-versions-of-ruby-on-rails"><a href="#older-versions-of-ruby-on-rails">4.2 Older Versions of Ruby on Rails</a></h4>
+<h4 id="testing-active-record-older-versions-of-ruby-on-rails"><a href="testing-active-record-older-versions-of-ruby-on-rails">4.2 Older Versions of Ruby on Rails</a></h4>
 <p>If you want to add a fix to older versions of Ruby on Rails, you'll need to set up and switch to your own local tracking branch. Here is an example to switch to the 3-0-stable branch:</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
