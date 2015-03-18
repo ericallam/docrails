@@ -430,7 +430,7 @@ SELECT * FROM clients WHERE (clients.id = 10) LIMIT 1
 </pre>
 </div>
 <p><code>Model.find(primary_key)</code>でマッチするレコードが見つからない場合、<code>ActiveRecord::RecordNotFound</code>例外が発生します。</p>
-<h5 id="単一のオブジェクトを取り出す-take"><a href="%E5%8D%98%E4%B8%80%E3%81%AE%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E5%8F%96%E3%82%8A%E5%87%BA%E3%81%99-take">1.1.2 <code>take</code></a></h5>
+<h5 id="単一のオブジェクトを取り出す-take"><a href="#%E5%8D%98%E4%B8%80%E3%81%AE%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E5%8F%96%E3%82%8A%E5%87%BA%E3%81%99-take">1.1.2 <code>take</code></a></h5>
 <p><code>Model.take</code>はレコードを1つ取り出します。このとき、どのレコードが取り出されるかは指定されません。例：</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -448,7 +448,7 @@ SELECT * FROM clients LIMIT 1
 </div>
 <p>モデルにレコードが1つもない場合は<code>Model.take</code>は<code>nil</code>を返します。このとき例外は発生しません。</p>
 <div class="info"><p>このメソッドでどのレコードが取り出されるかは、使用するデータベースエンジンによって異なることがあります。</p></div>
-<h5 id="単一のオブジェクトを取り出す-first"><a href="%E5%8D%98%E4%B8%80%E3%81%AE%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E5%8F%96%E3%82%8A%E5%87%BA%E3%81%99-first">1.1.3 <code>first</code></a></h5>
+<h5 id="単一のオブジェクトを取り出す-first"><a href="#%E5%8D%98%E4%B8%80%E3%81%AE%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E5%8F%96%E3%82%8A%E5%87%BA%E3%81%99-first">1.1.3 <code>first</code></a></h5>
 <p><code>Model.first</code>は、主キー順の最初のレコードを取り出します。例：</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -465,7 +465,7 @@ SELECT * FROM clients ORDER BY clients.id ASC LIMIT 1
 </pre>
 </div>
 <p>モデルにレコードが1つもない場合は<code>Model.first</code>は<code>nil</code>を返します。このとき例外は発生しません。</p>
-<h5 id="単一のオブジェクトを取り出す-last"><a href="%E5%8D%98%E4%B8%80%E3%81%AE%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E5%8F%96%E3%82%8A%E5%87%BA%E3%81%99-last">1.1.4 <code>last</code></a></h5>
+<h5 id="単一のオブジェクトを取り出す-last"><a href="#%E5%8D%98%E4%B8%80%E3%81%AE%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E5%8F%96%E3%82%8A%E5%87%BA%E3%81%99-last">1.1.4 <code>last</code></a></h5>
 <p><code>Model.last</code>は、主キー順の最後のレコードを取り出します。例：</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
