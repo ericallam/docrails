@@ -17,3 +17,8 @@ gem 'nokogiri'
 # Monitoring tools
 gem 'newrelic_rpm'
 
+# for test
+gem 'capybara'
+gem 'rack'
+gem 'rspec'
+gem 'turnip'
