@@ -17,7 +17,7 @@ Active Record の基礎
 Active Recordについて
 ----------------------
 
-Active Recordとは、[MVC](getting_started.html#the-mvc-architecture)で言うところのM、つまりモデルに相当するものであり、ビジネスデータとビジネスロジックを表すシステムの階層です。Active Recordは、データベースに恒久的に保存される必要のあるビジネスオブジェクトの作成と利用を円滑に行なえるようにします。Active Recordは、ORM (オブジェクトリレーショナルマッピング) システムに記述されている「Active Recordパターン」を実装したものであり、同じ名前が付けられています。
+Active Recordとは、[MVC](http://ja.wikipedia.org/wiki/Model_View_Controller)で言うところのM、つまりモデルに相当するものであり、ビジネスデータとビジネスロジックを表すシステムの階層です。Active Recordは、データベースに恒久的に保存される必要のあるビジネスオブジェクトの作成と利用を円滑に行なえるようにします。Active Recordは、ORM (オブジェクトリレーショナルマッピング) システムに記述されている「Active Recordパターン」を実装したものであり、同じ名前が付けられています。
 
 ### Active Recordパターン
 

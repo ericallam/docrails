@@ -226,13 +226,13 @@ TIP: パスワード入力フィールドを使用しているのであれば、
 
 WARNING: ヘルパーに渡すのはインスタンス変数の「名前」でなければなりません (シンボル`:person`や文字列`"person"`など)。渡すのはモデルオブジェクトのインスタンスそのものではありません。
 
-Railsのヘルパーには、モデルオブジェクトに関連する検証 (バリデーション) エラーを自動的に表示する機能もあります。詳細については本ガイドの[Active Record検証 (バリデーション)](./active_record_validations.html#displaying-validation-errors-in-views)を参照してください。
+Railsのヘルパーには、モデルオブジェクトに関連する検証 (バリデーション) エラーを自動的に表示する機能もあります。詳細については本ガイドの[Active Record検証 (バリデーション)](./active_record_validations.html#バリデーションエラーをビューで表示する)を参照してください。
 
 ### フォームとオブジェクトを結び付ける
 
 上のやり方でだいぶコーディングが楽になりましたが、改善の余地はまだまだあります。Personモデルに多数の属性があると、編集されたオブジェクトの名前を何度も繰り返さなければなりません。もっと楽に、フォームとモデルオブジェクトを結び付けるだけで簡単に作れないものか。それがまさに`form_for`なのです。
 
-記事を扱うArticlesコントローラA`app/controllers/articles_controller.rb`があるとします。
+記事を扱うArticlesコントローラ`app/controllers/articles_controller.rb`があるとします。
 
 ```ruby
 def new
@@ -301,7 +301,7 @@ end
 resources :articles
 ```
 
-TIP: リソースを宣言すると、自動的に他にも多くの設定が行われます。リソースの設定方法の詳細については、[Railsルーティングガイド](routing.html#resource-routing-the-rails-default)を参照してください。
+TIP: リソースを宣言すると、自動的に他にも多くの設定が行われます。リソースの設定方法の詳細については、[Railsルーティングガイド](routing.html#リソースベースのルーティング:-railsのデフォルト)を参照してください。
 
 RESTfulなリソースを扱っている場合、レコード識別(record identification)を使用すると`form_for`の呼び出しがはるかに簡単になります。これは、モデルのインスタンスを渡すだけで、後はRailsがそこからモデル名など必要なものを取り出して処理してくれるというものです。
 
