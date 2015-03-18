@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/yasslab/railsguides.jp.svg?branch=japanese)](https://travis-ci.org/yasslab/railsguides.jp)
+
 ## 日本語訳について 
 
 本リポジトリは[Ruby on Rails Guides](http://guides.rubyonrails.org/)を日本語に訳したものです。   
