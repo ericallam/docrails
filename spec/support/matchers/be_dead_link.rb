@@ -38,3 +38,18 @@ RSpec::Matchers.define :be_dead_fragment do |page|
     end
   end
 end
+
+RSpec::Matchers.define :be_dead_link do |status_code|
+  match do |link|
+    @link = link
+    status_code != 200
+  end
+
+  failure_message_when_negated do |link|
+    "Link(link: #{@link[:href]}) is dead link"
+  end
+
+  failure_message do |link|
+    "Link(link: #{@link[:href]}) is not dead link"
+  end
+end
