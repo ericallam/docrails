@@ -219,6 +219,7 @@
 <li><a href="#%E3%80%8Cspring%E3%80%8D%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%83%97%E3%83%AA%E3%83%AD%E3%83%BC%E3%83%80%E3%83%BC">「Spring」アプリケーションプリローダー</a></li>
 <li><a href="#config/secrets.yml"><code>config/secrets.yml</code></a></li>
 <li><a href="#action-pack-variant">Action Pack Variant</a></li>
+<li><a href="#action-mailer%E3%83%97%E3%83%AC%E3%83%93%E3%83%A5%E3%83%BC">Action Mailerプレビュー</a></li>
 <li><a href="#active-record-enums">Active Record enums</a></li>
 <li><a href="#%E3%83%A1%E3%83%83%E3%82%BB%E3%83%BC%E3%82%B8%E3%83%99%E3%83%AA%E3%83%95%E3%82%A1%E3%82%A4%E3%82%A2">メッセージベリファイア</a></li>
 <li><a href="#module#concerning">Module#concerning</a></li>
@@ -300,7 +301,7 @@ bin/rake test:models
 
 </pre>
 </div>
-<p><strong>RRailsコマンドの実行:</strong></p>
+<p><strong>Railsコマンドの実行:</strong></p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 bin/rails console
@@ -377,10 +378,7 @@ end
 
 </pre>
 </div>
-
-<ul>
-<li>Action Mailerプレビュー</li>
-</ul>
+<h4 id="action-mailerプレビュー"><a href="#action-mailer%E3%83%97%E3%83%AC%E3%83%93%E3%83%A5%E3%83%BC">2.4 Action Mailerプレビュー</a></h4>
 <p>Action Mailerプレビューは、特定のURLにアクセスすることで、送信されるメールがどんなふうに見えるかをレンダリングしてプレビューします。</p>
 <p>チェックしたいメールオブジェクトを返すメソッドを持つプレビュークラスを定義してください。</p>
 <div class="code_container">
@@ -397,7 +395,7 @@ end
 <p>デフォルトのプレビュークラスは<code>test/mailers/previews</code>に置かれます。
 <code>preview_path</code>オプションを変更することでこれを変更できます。</p>
 <p>詳細については<a href="http://api.rubyonrails.org/v4.1.0/classes/ActionMailer/Base.html">ドキュメント</a>を参照してください。</p>
-<h4 id="active-record-enums"><a href="#active-record-enums">2.4 Active Record enums</a></h4>
+<h4 id="active-record-enums"><a href="#active-record-enums">2.5 Active Record enums</a></h4>
 <p>データベースで値をintegerにマップしたい場所でenum属性を宣言しますが、名前でクエリを発行することもできます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -416,7 +414,7 @@ Conversation.statuses # =&gt; { "active" =&gt; 0, "archived" =&gt; 1 }
 </pre>
 </div>
 <p>詳細については<a href="http://api.rubyonrails.org/v4.1.0/classes/ActiveRecord/Enum.html">マニュアル</a>を参照してください。</p>
-<h4 id="メッセージベリファイア"><a href="#%E3%83%A1%E3%83%83%E3%82%BB%E3%83%BC%E3%82%B8%E3%83%99%E3%83%AA%E3%83%95%E3%82%A1%E3%82%A4%E3%82%A2">2.5 メッセージベリファイア</a></h4>
+<h4 id="メッセージベリファイア"><a href="#%E3%83%A1%E3%83%83%E3%82%BB%E3%83%BC%E3%82%B8%E3%83%99%E3%83%AA%E3%83%95%E3%82%A1%E3%82%A4%E3%82%A2">2.6 メッセージベリファイア</a></h4>
 <p>メッセージベリファイア (message verifier) は、署名付きメッセージの生成と照合に使用できます。この機能は、「パスワードを保存 (remember me)」トークンや友人リストのような機密データを安全に転送するときに便利です。</p>
 <p><code>Rails.application.message_verifier</code>メソッドは、 secret_key_baseを使用して生成されたキーで署名された新しいメッセージベリファイアと、与えられたメッセージ照合名を返します。</p>
 <div class="code_container">
@@ -429,7 +427,7 @@ Rails.application.message_verifier(:remember_me).verify(tampered_token)
 
 </pre>
 </div>
-<h4 id="module#concerning"><a href="#module#concerning">2.6 Module#concerning</a></h4>
+<h4 id="module#concerning"><a href="#module#concerning">2.7 Module#concerning</a></h4>
 <p>自然かつ堅苦しくない方法で、クラスから責任を分離します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -454,7 +452,7 @@ end
 </div>
 <p>この例は、<code>EventTracking</code>モジュールをインラインで定義し、<code>ActiveSupport::Concern</code>でextendし、<code>Todo</code>クラスにミックスインしたのと同等です。</p>
 <p>詳細および想定されるユースケースについては<a href="http://api.rubyonrails.org/v4.1.0/classes/Module/Concerning.html">マニュアル</a> を参照してください。</p>
-<h4 id="リモート-&lt;script&gt;-タグにcsrf保護を実施"><a href="#%E3%83%AA%E3%83%A2%E3%83%BC%E3%83%88-&lt;script&gt;-%E3%82%BF%E3%82%B0%E3%81%ABcsrf%E4%BF%9D%E8%AD%B7%E3%82%92%E5%AE%9F%E6%96%BD">2.7 リモート <code>&lt;script&gt;</code> タグにCSRF保護を実施</a></h4>
+<h4 id="リモート-&lt;script&gt;-タグにcsrf保護を実施"><a href="#%E3%83%AA%E3%83%A2%E3%83%BC%E3%83%88-&lt;script&gt;-%E3%82%BF%E3%82%B0%E3%81%ABcsrf%E4%BF%9D%E8%AD%B7%E3%82%92%E5%AE%9F%E6%96%BD">2.8 リモート <code>&lt;script&gt;</code> タグにCSRF保護を実施</a></h4>
 <p>JavaScriptレスポンスを伴うGETリクエストもクロスサイトリクエストフォージェリ (CSRF) 保護の対象となりました。この保護によって、第三者のサイトが重要なデータの奪取のために自分のサイトのJavaScript URLを参照して実行しようとすることを防止します。</p>
 <p>これは、xhr<code>を使用しない場合、</code>.js<code>URLにヒットするすべてのテストはCSRF保護によって失敗するということです。</code>XmlHttpRequestsを明示的に想定するようにテストをアップグレードしてください。<code>post :create, format: :js</code>の代りに、明示的に<code>xhr :post, :create, format: :js</code>を使用してください。</p>
 <h3 id="railties"><a href="#railties">3 Railties</a></h3>

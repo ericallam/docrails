@@ -34,7 +34,7 @@ Rails 4.1アプリケーションに含まれるbinstubは「spring化」され�
 bin/rake test:models
 ```
 
-**RRailsコマンドの実行:**
+**Railsコマンドの実行:**
 
 ```
 bin/rails console
@@ -113,7 +113,7 @@ respond_to do |format|
 end
 ```
 
-* Action Mailerプレビュー
+### Action Mailerプレビュー
 
 Action Mailerプレビューは、特定のURLにアクセスすることで、送信されるメールがどんなふうに見えるかをレンダリングしてプレビューします。
 
