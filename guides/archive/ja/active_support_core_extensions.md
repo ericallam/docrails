@@ -443,7 +443,7 @@ class C
   def initialize(x, y)
     @x, @y = x, y
   end 
-  end 
+end
 
 C.new(0, 1).instance_values # => {"x" => 0, "y" => 1}
 ```
