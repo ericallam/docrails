@@ -567,7 +567,7 @@ $ bin/rails r 'puts ActiveSupport::Dependencies.autoload_paths'
 </div>
 <div class="info"><p><code>autoload_paths</code>は初期化中に算出され、キャッシュされます。ディレクトリ構造が少しでも変更された場合、変更を反映するにはアプリケーションを再起動する必要があります。</p></div>
 <h3 id="自動読み込みのアルゴリズム"><a href="#%E8%87%AA%E5%8B%95%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF%E3%81%AE%E3%82%A2%E3%83%AB%E3%82%B4%E3%83%AA%E3%82%BA%E3%83%A0">6 自動読み込みのアルゴリズム</a></h3>
-<h4 id="自動読み込みのアルゴリズム-相対参照"><a href="%E8%87%AA%E5%8B%95%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF%E3%81%AE%E3%82%A2%E3%83%AB%E3%82%B4%E3%83%AA%E3%82%BA%E3%83%A0-%E7%9B%B8%E5%AF%BE%E5%8F%82%E7%85%A7">6.1 相対参照</a></h4>
+<h4 id="自動読み込みのアルゴリズム-相対参照"><a href="#%E8%87%AA%E5%8B%95%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF%E3%81%AE%E3%82%A2%E3%83%AB%E3%82%B4%E3%83%AA%E3%82%BA%E3%83%A0-%E7%9B%B8%E5%AF%BE%E5%8F%82%E7%85%A7">6.1 相対参照</a></h4>
 <p>定数の相対的な参照は、以下のようにさまざまな場所で行われます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -663,7 +663,7 @@ app/models/post.rb
 </pre>
 </div>
 <p>やっとマッチするファイル<code>app/models/post.rb</code>が見つかりました。探索はここで終了し、ファイルが読み込まれます。<code>Post</code>がこのファイルで実際に定義されていればすべてOKです。定義されていない場合は<code>LoadError</code>が発生します。</p>
-<h4 id="自動読み込みのアルゴリズム-修飾済み参照"><a href="%E8%87%AA%E5%8B%95%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF%E3%81%AE%E3%82%A2%E3%83%AB%E3%82%B4%E3%83%AA%E3%82%BA%E3%83%A0-%E4%BF%AE%E9%A3%BE%E6%B8%88%E3%81%BF%E5%8F%82%E7%85%A7">6.2 修飾済み参照</a></h4>
+<h4 id="自動読み込みのアルゴリズム-修飾済み参照"><a href="#%E8%87%AA%E5%8B%95%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF%E3%81%AE%E3%82%A2%E3%83%AB%E3%82%B4%E3%83%AA%E3%82%BA%E3%83%A0-%E4%BF%AE%E9%A3%BE%E6%B8%88%E3%81%BF%E5%8F%82%E7%85%A7">6.2 修飾済み参照</a></h4>
 <p>修飾済み (qualified) 定数が見つからない場合、この定数は親の名前空間では探索されません。しかしここで注意すべき点がひとつあります。定数が見つからない場合、Railsはそのトリガーが相対的な参照であるか、修飾済み参照であるかを判定できなくなります。</p>
 <p>以下の例について考察してみましょう。</p>
 <div class="code_container">
