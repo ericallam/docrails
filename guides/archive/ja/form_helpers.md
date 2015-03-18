@@ -232,7 +232,7 @@ Railsのヘルパーには、モデルオブジェクトに関連する検証 (�
 
 上のやり方でだいぶコーディングが楽になりましたが、改善の余地はまだまだあります。Personモデルに多数の属性があると、編集されたオブジェクトの名前を何度も繰り返さなければなりません。もっと楽に、フォームとモデルオブジェクトを結び付けるだけで簡単に作れないものか。それがまさに`form_for`なのです。
 
-記事を扱うArticlesコントローラA`app/controllers/articles_controller.rb`があるとします。
+記事を扱うArticlesコントローラ`app/controllers/articles_controller.rb`があるとします。
 
 ```ruby
 def new

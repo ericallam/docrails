@@ -494,7 +494,7 @@ form_tag({controller: "people", action: "search"}, method: "get", class: "nifty_
 <p>Railsのヘルパーには、モデルオブジェクトに関連する検証 (バリデーション) エラーを自動的に表示する機能もあります。詳細については本ガイドの<a href="./active_record_validations.html#displaying-validation-errors-in-views">Active Record検証 (バリデーション)</a>を参照してください。</p>
 <h4 id="フォームとオブジェクトを結び付ける"><a href="#%E3%83%95%E3%82%A9%E3%83%BC%E3%83%A0%E3%81%A8%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E7%B5%90%E3%81%B3%E4%BB%98%E3%81%91%E3%82%8B">2.2 フォームとオブジェクトを結び付ける</a></h4>
 <p>上のやり方でだいぶコーディングが楽になりましたが、改善の余地はまだまだあります。Personモデルに多数の属性があると、編集されたオブジェクトの名前を何度も繰り返さなければなりません。もっと楽に、フォームとモデルオブジェクトを結び付けるだけで簡単に作れないものか。それがまさに<code>form_for</code>なのです。</p>
-<p>記事を扱うArticlesコントローラA<code>app/controllers/articles_controller.rb</code>があるとします。</p>
+<p>記事を扱うArticlesコントローラ<code>app/controllers/articles_controller.rb</code>があるとします。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 def new
