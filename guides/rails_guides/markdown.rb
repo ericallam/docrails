@@ -42,7 +42,7 @@ module RailsGuides
 
             # Update <a> tag href for self
             duplicate_nodes.last.children.each do |child|
-              duplicate_nodes.last.children.first[:href] = new_node_id if child.name == "a"
+              duplicate_nodes.last.children.first[:href] = "##{new_node_id}" if child.name == "a"
             end
 
             @node_ids[new_node_id] = duplicate_nodes
