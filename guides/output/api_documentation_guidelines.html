@@ -266,7 +266,7 @@ end
 <p>読者に現時点の最新の方法が伝わるように書くこと、それも明示的かつ暗黙に。先進的な分野で推奨されている慣用表現を使用すること。推奨される方法が強調されるようセクションの順序に注意し、必要であれば順序を入れ替えること。作成するドキュメント自身がRailsのベストプラクティスのよいモデルとなるように、そしてRailsの最新かつ模範的な使用法になるように書くこと。</p>
 <p>ドキュメントは簡潔であり、かつ全体を理解できるものであること。例外的なケースについても調査し、ドキュメントに盛り込むこと。あるモジュールが無名であったらどうなるか。あるコレクションの内容が空であったらどうなるか。引数がnilであったらどうなるか。</p>
 <p>Railsのコンポーネント名は語の間にスペースを1つ置く表記を正式なものとする (例: "Active Support")。なお、<code>ActiveRecord</code>はRubyモジュール名だが、Active RecordはORMを指す。Railsドキュメント内でコンポーネントを指す場合には常に正式名称を使用すること。ブログ投稿やプレゼンテーションなどでもこの点に留意し、異なる名称で読者などを驚かせないようにすること。</p>
-<p>正しいスペルを使用すること (Arel、Test::Unit、RSpec、HTML, MySQL、JavaScript、ERBなど)。大文字小文字にも注意すること。疑わしい場合には公式ドキュメントなど、信頼できる情報源を参照すること。</p>
+<p>正しいスペルを使用すること (Arel、Test::Unit、RSpec、HTML、 MySQL、JavaScript、ERBなど)。大文字小文字にも注意すること。疑わしい場合には公式ドキュメントなど、信頼できる情報源を参照すること。</p>
 <p>"SQL" という語の前には冠詞 "an" を付けること (例: "an SQL statement")。同様に、"an SQLite database"のようにすること。</p>
 <p>"you"や"your"を使用する表現を避けること。以下の例文ではyouが3度も使用されている。</p>
 <div class="code_container">
@@ -369,7 +369,7 @@ If `return` is needed it is recommended to explicitly define a method.
 # Returns true if the collection is empty. (訳:コレクションが空ならtrueを返す)
 #
 # If the collection has been loaded (コレクションが読み込まれると)
-# it is equivalent to &lt;tt&gt;collection.size.zero?&lt;/tt&gt;. if the (&lt;/tt&gt;. (&lt;tt&gt;collection.size.zero?&lt;/tt&gt;と同値)
+# it is equivalent to &lt;tt&gt;collection.size.zero?&lt;/tt&gt;. if the (&lt;tt&gt;collection.size.zero?&lt;/tt&gt;と同値)
 # collection has not been loaded, it is equivalent to (コレクションが読み込まれなかった場合は)
 # &lt;tt&gt;collection.exists?&lt;/tt&gt;. If the collection has not already been (&lt;tt&gt;collection.exists?&lt;/tt&gt;と同値。コレクションが読み込まれておらず、)
 # loaded and you are going to fetch the records anyway it is better to (どうしてもレコードを取り出したい場合は)

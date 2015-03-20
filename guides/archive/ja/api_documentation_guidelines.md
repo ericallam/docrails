@@ -47,7 +47,7 @@ end
 
 Railsのコンポーネント名は語の間にスペースを1つ置く表記を正式なものとする (例: "Active Support")。なお、`ActiveRecord`はRubyモジュール名だが、Active RecordはORMを指す。[REVIEW]Railsドキュメント内でコンポーネントを指す場合には常に正式名称を使用すること。ブログ投稿やプレゼンテーションなどでもこの点に留意し、異なる名称で読者などを驚かせないようにすること。
 
-正しいスペルを使用すること (Arel、Test::Unit、RSpec、HTML, MySQL、JavaScript、ERBなど)。大文字小文字にも注意すること。疑わしい場合には公式ドキュメントなど、信頼できる情報源を参照すること。
+正しいスペルを使用すること (Arel、Test::Unit、RSpec、HTML、 MySQL、JavaScript、ERBなど)。大文字小文字にも注意すること。疑わしい場合には公式ドキュメントなど、信頼できる情報源を参照すること。
 
 "SQL" という語の前には冠詞 "an" を付けること (例: "an SQL statement")。同様に、"an SQLite database"のようにすること。
 
@@ -158,7 +158,7 @@ If `return` is needed it is recommended to explicitly define a method.
 # Returns true if the collection is empty. (訳:コレクションが空ならtrueを返す)
 #
 # If the collection has been loaded (コレクションが読み込まれると)
-# it is equivalent to <tt>collection.size.zero?</tt>. if the (</tt>. (<tt>collection.size.zero?</tt>と同値)
+# it is equivalent to <tt>collection.size.zero?</tt>. if the (<tt>collection.size.zero?</tt>と同値)
 # collection has not been loaded, it is equivalent to (コレクションが読み込まれなかった場合は)
 # <tt>collection.exists?</tt>. If the collection has not already been (<tt>collection.exists?</tt>と同値。コレクションが読み込まれておらず、)
 # loaded and you are going to fetch the records anyway it is better to (どうしてもレコードを取り出したい場合は)
