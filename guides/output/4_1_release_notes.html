@@ -323,7 +323,7 @@ Spring is running:
 <p>Springのすべての機能については<a href="https://github.com/rails/spring/blob/master/README.md">Spring README</a>を参照してください。</p>
 <p><a href="upgrading_ruby_on_rails.html#spring">Ruby on Railsアップグレードガイド</a>には、この機能を既存のアプリケーションと統合する方法について記載されています。</p>
 <h4 id="config/secrets.yml"><a href="#config/secrets.yml">2.2 <code>config/secrets.yml</code></a></h4>
-<p>Rails 4.1 generates a new <code>secrets.yml</code> file in the <code>config</code> folder. デフォルトでは、このファイルにはアプリケーションの<code>secret_key_base</code>が含まれていますが、外部API用のアクセスキーなどの秘密キーもここに保存できます。</p>
+<p>Rails 4.1では<code>config</code>フォルダ内に新しく<code>secrets.yml</code>ファイルが生成されます。デフォルトでは、このファイルにはアプリケーションの<code>secret_key_base</code>が含まれていますが、外部API用のアクセスキーなどの秘密キーもここに保存できます。</p>
 <p>このファイルに保存された秘密キーは<code>Rails.application.secrets</code>を使用してアクセスできます。
 たとえば、以下の<code>config/secrets.yml</code>について見てみましょう。</p>
 <div class="code_container">

@@ -57,7 +57,7 @@ Springのすべての機能については[Spring README](https://github.com/rai
 
 ### `config/secrets.yml`
 
-Rails 4.1 generates a new `secrets.yml` file in the `config` folder. デフォルトでは、このファイルにはアプリケーションの`secret_key_base`が含まれていますが、外部API用のアクセスキーなどの秘密キーもここに保存できます。
+Rails 4.1では`config`フォルダ内に新しく`secrets.yml`ファイルが生成されます。デフォルトでは、このファイルにはアプリケーションの`secret_key_base`が含まれていますが、外部API用のアクセスキーなどの秘密キーもここに保存できます。
 
 このファイルに保存された秘密キーは`Rails.application.secrets`を使用してアクセスできます。
 たとえば、以下の`config/secrets.yml`について見てみましょう。
