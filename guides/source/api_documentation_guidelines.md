@@ -140,7 +140,7 @@ If `return` is needed it is recommended to explicitly define a method.
 
 述語やフラグでの論理値の表記は、正確な値表現よりも、論理値の意味を優先すること。
 
-"true"および"false"をRubyの定義どおりに使用する場合は、通常のフォントで表記すること。シングルトンの`true`および`false`は等幅フォントで表記すること。"truthy"のような用語は避けてください。Rubyでは言語レベルでtrueとfalseが定義されているので、これらの用語は技術的に厳密な意味が与えられており、言い方を変える必要はありません。
+"true"および"false"をRubyの定義どおりに使用する場合は、通常のフォントで表記すること。シングルトンの`true`および`false`は等幅フォントで表記すること(訳注: シングルトンの`true`および`false`とは、`TrueClass`および`FalseClass`の唯一のインスタンスのことです)。"truthy"のような用語は避けてください。Rubyでは言語レベルでtrueとfalseが定義されているので、これらの用語は技術的に厳密な意味が与えられており、言い方を変える必要はありません。
 
 経験から申し上げると、どうしても必要な場合を除いて、ドキュメントでシングルトンを使用すべきではありません。シングルトンを避けることで、`!!`や三項演算子のような人工的な表現を避けることができ、リファクタリングもしやすくなります。さらに、実装で呼び出されるメソッドが返す値の表現が少しでも違うとコードが正常に動作しないという事態も避けられます。
 
@@ -150,7 +150,7 @@ If `return` is needed it is recommended to explicitly define a method.
 `config.action_mailer.perform_deliveries` specifies whether mail will actually be delivered and is true by default (訳: `config.action_mailer.perform_deliveries`は、メールを実際に配信するかどうかを指定します。デフォルト値はtrueです。)
 ```
 
-上の例では、フラグのデフォルト値の実際の表現がどれであるか (訳注: trueなのか`true`なのかなど) を知る必要はありません。従って、論理値の意味だけをドキュメントに書くべきです。
+上の例では、フラグのデフォルト値の実際の表現がどれであるか (訳注: シングルトンのtrueなのか、trueと評価されるオブジェクトなのか) を知る必要はありません。従って、論理値の意味だけをドキュメントに書くべきです。
 
 以下は述語の例です。
 

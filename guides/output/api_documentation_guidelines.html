@@ -353,7 +353,7 @@ If `return` is needed it is recommended to explicitly define a method.
 </div>
 <h3 id="論理値"><a href="#%E8%AB%96%E7%90%86%E5%80%A4">5 論理値</a></h3>
 <p>述語やフラグでの論理値の表記は、正確な値表現よりも、論理値の意味を優先すること。</p>
-<p>"true"および"false"をRubyの定義どおりに使用する場合は、通常のフォントで表記すること。シングルトンの<code>true</code>および<code>false</code>は等幅フォントで表記すること。"truthy"のような用語は避けてください。Rubyでは言語レベルでtrueとfalseが定義されているので、これらの用語は技術的に厳密な意味が与えられており、言い方を変える必要はありません。</p>
+<p>"true"および"false"をRubyの定義どおりに使用する場合は、通常のフォントで表記すること。シングルトンの<code>true</code>および<code>false</code>は等幅フォントで表記すること(訳注: シングルトンの<code>true</code>および<code>false</code>とは、<code>TrueClass</code>および<code>FalseClass</code>の唯一のインスタンスのことです)。"truthy"のような用語は避けてください。Rubyでは言語レベルでtrueとfalseが定義されているので、これらの用語は技術的に厳密な意味が与えられており、言い方を変える必要はありません。</p>
 <p>経験から申し上げると、どうしても必要な場合を除いて、ドキュメントでシングルトンを使用すべきではありません。シングルトンを避けることで、<code>!!</code>や三項演算子のような人工的な表現を避けることができ、リファクタリングもしやすくなります。さらに、実装で呼び出されるメソッドが返す値の表現が少しでも違うとコードが正常に動作しないという事態も避けられます。</p>
 <p>以下の例で説明します。</p>
 <div class="code_container">
@@ -362,7 +362,7 @@ If `return` is needed it is recommended to explicitly define a method.
 
 </pre>
 </div>
-<p>上の例では、フラグのデフォルト値の実際の表現がどれであるか (訳注: trueなのか<code>true</code>なのかなど) を知る必要はありません。従って、論理値の意味だけをドキュメントに書くべきです。</p>
+<p>上の例では、フラグのデフォルト値の実際の表現がどれであるか (訳注: シングルトンのtrueなのか、trueと評価されるオブジェクトなのか) を知る必要はありません。従って、論理値の意味だけをドキュメントに書くべきです。</p>
 <p>以下は述語の例です。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
