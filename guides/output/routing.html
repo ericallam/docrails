@@ -546,7 +546,7 @@ end
 
 </pre>
 </div>
-<p>上のルーティングにより、<code>posts</code>コントローラや<code>comments</code>コントローラへのルーティングが多数生成されます。たとえば、<code>Admin::PostsController</code>によって作成されるルーティングは以下のとおりです。</p>
+<p>上のルーティングにより、<code>posts</code>コントローラや<code>comments</code>コントローラへのルーティングが多数生成されます。たとえば、<code>Admin::PostsController</code>向けに作成されるルーティングは以下のとおりです。</p>
 <table>
 <thead>
 <tr>
@@ -1642,7 +1642,7 @@ resources :photos, except: :destroy
 <p>この場合、<code>destroy</code> (<code>/photos/:id</code>への<code>DELETE</code>リクエスト) を除いて通常のルーティングが生成されます。</p>
 <div class="info"><p>アプリケーションでRESTfulルーティングが多数使用されているのであれば、それらに適宜<code>:only</code>や<code>:except</code>を使用して、本当に必要なルーティングのみを生成することで、メモリ使用量の節約とルーティングプロセスの速度向上が見込めます。</p></div>
 <h4 id="パスを変更する"><a href="#%E3%83%91%E3%82%B9%E3%82%92%E5%A4%89%E6%9B%B4%E3%81%99%E3%82%8B">4.7 パスを変更する</a></h4>
-<p><code>scope</code>オプションを使用することで、リソースによって生成されたデフォルトのパス名を変更できます。</p>
+<p><code>scope</code>メソッドを使用することで、<code>resource</code>によって生成されるデフォルトのパス名を変更できます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 scope(path_names: { new: 'neu', edit: 'bearbeiten' }) do
