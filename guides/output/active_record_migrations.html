@@ -615,7 +615,7 @@ change_column :products, :part_number, :text
 </pre>
 </div>
 <p>productsテーブル上の<code>part_number</code>カラムの種類を<code>:text</code>フィールドに変更しています。</p>
-<p><code>change_column</code>の他に<code>change_column_null</code>メソッドと<code>change_column_default</code>メソッドもあり、カラムをnullにしたりデフォルト値を指定したりするのに使用します。</p>
+<p><code>change_column</code>の他に<code>change_column_null</code>メソッドと<code>change_column_default</code>メソッドもあり、それぞれnot null制約を変更したりデフォルト値を指定したりするのに使用します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 change_column_null :products, :name, false

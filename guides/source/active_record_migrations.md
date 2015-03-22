@@ -356,7 +356,7 @@ change_column :products, :part_number, :text
 
 productsテーブル上の`part_number`カラムの種類を`:text`フィールドに変更しています。
 
-`change_column`の他に`change_column_null`メソッドと`change_column_default`メソッドもあり、カラムをnullにしたりデフォルト値を指定したりするのに使用します。
+`change_column`の他に`change_column_null`メソッドと`change_column_default`メソッドもあり、それぞれnot null制約を変更したりデフォルト値を指定したりするのに使用します。
 
 ```ruby
 change_column_null :products, :name, false
