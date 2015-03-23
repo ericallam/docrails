@@ -61,8 +61,7 @@ http://railstutorial.jp/
 
 ### ⑤ Herokuにデプロイ
 
-- 今のところ @yasulab が対応.
-- 手伝ってくれる方がいれば @yasulab まで. collaborator に追加します。
+- Travis CIのtestがパスすれば、自動でHerokuにデプロイにdeployされます。
 
 ## 協力者
 
