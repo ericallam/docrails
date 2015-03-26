@@ -1635,7 +1635,7 @@ Client.unscoped {
 <p>この動的ファインダメソッドの末尾に<code>Client.find_by_name!("Ryan")</code>のように感嘆符 (<code>!</code>) を追加すると、該当するレコードがない場合に<code>ActiveRecord::RecordNotFound</code>エラーが発生します。</p>
 <p>nameとlockedの両方を検索したいのであれば、2つのフィールド名をandでつなぐだけでメソッドを利用できます。たとえば、<code>Client.find_by_first_name_and_locked("Ryan", true)</code>のように書くことができます。</p>
 <h3 id="新しいオブジェクトを検索またはビルドする"><a href="#%E6%96%B0%E3%81%97%E3%81%84%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E6%A4%9C%E7%B4%A2%E3%81%BE%E3%81%9F%E3%81%AF%E3%83%93%E3%83%AB%E3%83%89%E3%81%99%E3%82%8B">16 新しいオブジェクトを検索またはビルドする</a></h3>
-<div class="note"><p>Rails 4.0では一部の動的ファインダメソッドが非推奨に指定されました。これらはRails 4.1で削除される予定です。最良の方法は、Active Recordのスコープを代りに使用することです。非推奨になったファインダgemは<a href="https://github.com/rails/activerecord-deprecated_finders%E3%81%AB%E3%81%82%E3%82%8A%E3%81%BE%E3%81%99%E3%80%82">https://github.com/rails/activerecord-deprecated_findersにあります。</a></p></div>
+<div class="note"><p>Rails 4.0では一部の動的ファインダメソッドが非推奨に指定されました。これらはRails 4.1で削除される予定です。最良の方法は、Active Recordのスコープを代りに使用することです。非推奨になったファインダgemは <a href="https://github.com/rails/activerecord-deprecated_finders">https://github.com/rails/activerecord-deprecated_finders</a> にあります。</p></div>
 <p>レコードを検索し、レコードがなければ作成する、というのはよくある一連の流れです。<code>find_or_create_by</code>および<code>find_or_create_by!</code>メソッドを使用すればこれらを一度に行なうことができます。</p>
 <h4 id="find_or_create_by"><a href="#find_or_create_by">16.1 <code>find_or_create_by</code></a></h4>
 <p><code>find_or_create_by</code>メソッドは、指定された属性を持つレコードが存在するかどうかをチェックします。レコードがない場合は<code>create</code>が呼び出されます。以下の例を見てみましょう。</p>
