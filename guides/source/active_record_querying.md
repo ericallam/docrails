@@ -1338,7 +1338,7 @@ nameとlockedの両方を検索したいのであれば、2つのフィールド
 新しいオブジェクトを検索またはビルドする
 --------------------------
 
-NOTE: Rails 4.0では一部の動的ファインダメソッドが非推奨に指定されました。これらはRails 4.1で削除される予定です。最良の方法は、Active Recordのスコープを代りに使用することです。非推奨になったファインダgemはhttps://github.com/rails/activerecord-deprecated_findersにあります。
+NOTE: Rails 4.0では一部の動的ファインダメソッドが非推奨に指定されました。これらはRails 4.1で削除される予定です。最良の方法は、Active Recordのスコープを代りに使用することです。非推奨になったファインダgemは https://github.com/rails/activerecord-deprecated_finders にあります。
 
 レコードを検索し、レコードがなければ作成する、というのはよくある一連の流れです。`find_or_create_by`および`find_or_create_by!`メソッドを使用すればこれらを一度に行なうことができます。
 
