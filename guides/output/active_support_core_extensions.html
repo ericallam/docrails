@@ -860,7 +860,7 @@ silence_warnings { Object.const_set "RAILS_DEFAULT_LOGGER", logger }
 <pre class="brush: ruby; gutter: false; toolbar: false">
 silence_stream(STDOUT) do
   # STDOUTの出力が止まる
-  end 
+end
 
 </pre>
 </div>
@@ -878,7 +878,7 @@ quietly { system 'bundle install' }
 # ユーザーがロックされていればインクリメントは失われるが、重要ではない
 suppress(ActiveRecord::StaleObjectError) do
   current_user.increment! :visits
-  end 
+end
 
 </pre>
 </div>
@@ -1125,7 +1125,7 @@ module M
 end
 
 module N
-class C
+  class C
     include M
   end 
 end

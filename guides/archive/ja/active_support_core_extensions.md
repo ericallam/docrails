@@ -479,7 +479,7 @@ silence_warnings { Object.const_set "RAILS_DEFAULT_LOGGER", logger }
 ```ruby
 silence_stream(STDOUT) do
   # STDOUTの出力が止まる
-  end 
+end
 ```
 
 `quietly`メソッドは、サブプロセスも含めてSTDOUTとSTDERRの出力を抑制したい場合に使用します。
@@ -496,7 +496,7 @@ quietly { system 'bundle install' }
 # ユーザーがロックされていればインクリメントは失われるが、重要ではない
 suppress(ActiveRecord::StaleObjectError) do
   current_user.increment! :visits
-  end 
+end
 ```
 
 NOTE: 定義ファイルの場所は`active_support/core_ext/kernel/reporting.rb`です。
@@ -768,7 +768,7 @@ module M
 end
 
 module N
-class C
+  class C
     include M
   end 
 end
