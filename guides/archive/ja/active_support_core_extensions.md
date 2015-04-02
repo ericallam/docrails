@@ -503,7 +503,7 @@ NOTE: 定義ファイルの場所は`active_support/core_ext/kernel/reporting.rb
 
 ### `in?`
 
-述語`in?`は、あるオブジェクトが他のオブジェクトに含まれているかどうかをテストします。渡された引数が`include?`に応答しない場合は`ArgumentError`例外が発生します。`.
+述語`in?`は、あるオブジェクトが他のオブジェクトに含まれているかどうかをテストします。渡された引数が`include?`に応答しない場合は`ArgumentError`例外が発生します。
 
 `in?`の例を示します。
 
