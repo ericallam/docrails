@@ -1224,7 +1224,7 @@ m.anonymous? # =&gt; false
 <p>逆に、無名モジュールは、定義上必ず到達不能です。</p>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/module/anonymous.rb</code>。</p></div>
 <h4 id="メソッド委譲"><a href="#%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89%E5%A7%94%E8%AD%B2">3.7 メソッド委譲</a></h4>
-<p><code>delegate</code>マクロを使用すると、メソッドを簡単に転送できます。</p>
+<p><code>delegate</code>マクロを使用すると、メソッドを簡単に委譲できます。</p>
 <p>あるアプリケーションの<code>User</code>モデルにログイン情報があり、それに関連する名前などの情報は<code>Profile</code>モデルにあるとします。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1260,14 +1260,14 @@ end
 </div>
 <p>この方法なら記述が短くて済み、意味もはっきりします。</p>
 <p>使用するメソッドは対象クラス内でpublicである必要があります。</p>
-<p><code>delegate</code>マクロはさまざまなメソッドを受け付けます。</p>
+<p><code>delegate</code>マクロには複数のメソッドを指定できます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 delegate :name, :age, :address, :twitter, to: :profile
 
 </pre>
 </div>
-<p>文字列に式展開すると、<code>:to</code>はメソッドが委譲されるオブジェクトに対して評価される式になります。通常は文字列またはシンボルになります。そのような式は、レシーバのコンテキストで評価されます。</p>
+<p><code>:to</code>オプションが文字列に変換されると、メソッドの委譲先となるオブジェクトに評価される式になります。通常は文字列またはシンボルになります。そのような式は、レシーバのコンテキストで評価されます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # Rails定数を委譲する
