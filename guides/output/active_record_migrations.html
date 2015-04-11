@@ -652,7 +652,7 @@ add_foreign_key :articles, :authors
 
 </pre>
 </div>
-<p>上によって新たな外部キーが<code>articles</code>テーブルの<code>author_id</code>カラムに追加されます。このキーは<code>articles</code>テーブルの<code>id</code>カラムを参照します。欲しいカラム名をテーブル名から類推できない場合は、<code>:column</code>オプションと<code>:primary_key</code>オプションを使用できます。</p>
+<p>上によって新たな外部キーが<code>articles</code>テーブルの<code>author_id</code>カラムに追加されます。このキーは<code>authors</code>テーブルの<code>id</code>カラムを参照します。欲しいカラム名をテーブル名から類推できない場合は、<code>:column</code>オプションと<code>:primary_key</code>オプションを使用できます。</p>
 <p>Railsでは、すべての外部キーは<code>fk_rails_</code>という名前で始まり、その後ろに10文字のランダムな文字列が続きます。
 必要であれば、<code>:name</code>オプションを指定することで別の名前を使用できます。</p>
 <div class="note"><p>Active Recordでは単一カラムの外部キーのみがサポートされています。複合外部キーを使用する場合は<code>execute</code>と<code>structure.sql</code>が必要です。</p></div>

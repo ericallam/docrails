@@ -389,7 +389,7 @@ TIP: `change_column` (および`change_column_default`) と異なる点は、`ch
 add_foreign_key :articles, :authors
 ```
 
-上によって新たな外部キーが`articles`テーブルの`author_id`カラムに追加されます。このキーは`articles`テーブルの`id`カラムを参照します。欲しいカラム名をテーブル名から類推できない場合は、`:column`オプションと`:primary_key`オプションを使用できます。
+上によって新たな外部キーが`articles`テーブルの`author_id`カラムに追加されます。このキーは`authors`テーブルの`id`カラムを参照します。欲しいカラム名をテーブル名から類推できない場合は、`:column`オプションと`:primary_key`オプションを使用できます。
 
 Railsでは、すべての外部キーは`fk_rails_`という名前で始まり、その後ろに10文字のランダムな文字列が続きます。
 必要であれば、`:name`オプションを指定することで別の名前を使用できます。
