@@ -2032,7 +2032,7 @@ end
 </pre>
 </div>
 <p>与えられた文字列を<code>constantize</code>メソッドで評価しても既知の定数とマッチしない、または指定された定数名が正しくない場合は<code>NameError</code>が発生します。</p>
-<p><code>constantize</code>メソッドによる定数名解決は、常にトップレベルの<code>Object</code>から開始されます。これは上位に"::"がない場合であっても同じです。</p>
+<p><code>constantize</code>メソッドによる定数名解決は、常にトップレベルの<code>Object</code>から開始されます。これは上位に"::"がない場合でも同じです。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 X = :in_Object
@@ -2046,7 +2046,7 @@ end
 
 </pre>
 </div>
-<p>従って、一般的にはこのメソッドは、Rubyが同じ場所 (評価される実際の定数がある) に対して行なうものと等価ではありません。</p>
+<p>従って、このメソッドは、同じ場所でRubyが定数を評価したときの値と必ずしも等価ではありません。</p>
 <p>メイラー (mailer) のテストケースでは、テストされるクラスの名前からテストされるメイラーを取得するのに<code>constantize</code>メソッドを使用します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
