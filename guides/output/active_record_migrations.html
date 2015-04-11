@@ -623,7 +623,7 @@ change_column_default :products, :approved, false
 
 </pre>
 </div>
-<p>上のマイグレーションはproductsテーブルの<code>:name</code>フィールドを<code>NOT NULL</code>カラムに設定し、<code>:approved</code>フィールドのデフォルト値をfalseに設定します。</p>
+<p>上のマイグレーションはproductsテーブルの<code>:name</code>フィールドに<code>NOT NULL</code>制約を設定し、<code>:approved</code>フィールドのデフォルト値をfalseに設定します。</p>
 <div class="info"><p><code>change_column</code> (および<code>change_column_default</code>) と異なる点は、<code>change_column_null</code>が可逆的であることです。</p></div>
 <h4 id="カラム修飾子"><a href="#%E3%82%AB%E3%83%A9%E3%83%A0%E4%BF%AE%E9%A3%BE%E5%AD%90">3.5 カラム修飾子</a></h4>
 <p>カラムの作成または変更時に、カラムの修飾子を適用できます。</p>

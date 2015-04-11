@@ -363,7 +363,7 @@ change_column_null :products, :name, false
 change_column_default :products, :approved, false
 ```
 
-[REVIEW]上のマイグレーションはproductsテーブルの`:name`フィールドを`NOT NULL`カラムに設定し、`:approved`フィールドのデフォルト値をfalseに設定します。
+上のマイグレーションはproductsテーブルの`:name`フィールドに`NOT NULL`制約を設定し、`:approved`フィールドのデフォルト値をfalseに設定します。
 
 TIP: `change_column` (および`change_column_default`) と異なる点は、`change_column_null`が可逆的であることです。
 
