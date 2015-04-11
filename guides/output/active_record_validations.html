@@ -1117,7 +1117,7 @@ end
 </pre>
 </div>
 <h4 id="errors.clear"><a href="#errors.clear">7.5 <code>errors.clear</code></a></h4>
-<p><code>clear</code>メソッドは、<code>errors</code>コレクションに含まれるメッセージをすべてクリアしたい場合に使用できます。無効なオブジェクトに対して<code>errors.clear</code>メソッドを呼び出しても、それだけでオブジェクトが有効になるわけではありませんのでご注意ください。<code>errors</code>は空になりますが、<code>valid?</code>などのオブジェクトをデータベースに保存しようとするメソッドが次回呼び出されたときに、バリデーションが再実行されます。そしていずれかのバリデーションが失敗すると、<code>errors</code>コレクションに再びメッセージが格納されます。</p>
+<p><code>clear</code>メソッドは、<code>errors</code>コレクションに含まれるメッセージをすべてクリアしたい場合に使用できます。無効なオブジェクトに対して<code>errors.clear</code>メソッドを呼び出しても、それだけでオブジェクトが有効になるわけではありませんのでご注意ください。<code>errors</code>は空になりますが、<code>valid?</code>やオブジェクトをデータベースに保存しようとするメソッドが次回呼び出されたときに、バリデーションが再実行されます。そしていずれかのバリデーションが失敗すると、<code>errors</code>コレクションに再びメッセージが格納されます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class Person &lt; ActiveRecord::Base
