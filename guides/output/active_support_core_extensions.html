@@ -2413,7 +2413,7 @@ BigDecimal.new(5.00, 6).to_formatted_s("e")  # =&gt; "0.5E1"
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/enumerable.rb</code>です。</p></div>
 <h4 id="index_by"><a href="#index_by">9.2 <code>index_by</code></a></h4>
 <p><code>index_by</code>メソッドは、何らかのキーによってインデックス化されたenumerableの要素を持つハッシュを生成します。</p>
-<p>このメソッドはコレクションを列挙し、各要素をブロックに渡します。この要素は、ブロックから返された値によってキーとなります。</p>
+<p>このメソッドはコレクションを列挙し、各要素をブロックに渡します。この要素は、ブロックから返された値によってインデックス化されます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 invoices.index_by(&amp;:number)
