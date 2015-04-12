@@ -3680,7 +3680,7 @@ Time.current
 # => Fri, 06 Aug 2010 17:11:58 CEST +02:00
 ```
 
-`DateTime`と同様、述語`past?`と`future?``Time.current`を起点とします。
+`DateTime`と同様、述語`past?`と`future?`は`Time.current`を起点とします。
 
 構成される時間が、実行プラットフォームの`Time`でサポートされる範囲を超えている場合は、usecは破棄され、`DateTime`オブジェクトが代りに返されます。
 
