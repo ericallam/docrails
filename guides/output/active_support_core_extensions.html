@@ -667,7 +667,7 @@ end
 
 </pre>
 </div>
-<p>このメソッドは単なる目印であり、メソッドの本体と返し値の間には関連はありません。これにより、クライアントコードで以下のようなダックタイピングチェックを行なうことができます。</p>
+<p>このメソッドは単なる目印であり、メソッドの本体と戻り値の間には関連はありません。これにより、クライアントコードで以下のようなダックタイピングチェックを行なうことができます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 some_klass.acts_like?(:string)
@@ -2849,7 +2849,7 @@ array[1][2] == nil   # =&gt; true
 <ul>
 <li><p>値がハッシュのとき、キーを<code>:root</code>として再帰的な呼び出しを行います。</p></li>
 <li><p>値が配列の場合、キーを<code>:root</code>に、キーを単数形化 (singularize) したものを<code>:children</code>に指定して再帰的な呼び出しを行います。</p></li>
-<li><p>値が呼び出し可能な (callable) オブジェクトの場合、引数が1つまたは2つ必要です。引数の数に応じて (arityメソッドで確認)、呼び出し可能オブジェクトを呼び出します。第1引数には<code>:root</code>にキーを指定したもの、第2引数にはキーを単数形化したものが使用されます。返し値は新しいノードです。</p></li>
+<li><p>値が呼び出し可能な (callable) オブジェクトの場合、引数が1つまたは2つ必要です。引数の数に応じて (arityメソッドで確認)、呼び出し可能オブジェクトを呼び出します。第1引数には<code>:root</code>にキーを指定したもの、第2引数にはキーを単数形化したものが使用されます。戻り値は新しいノードです。</p></li>
 <li><p><code>value</code>が<code>to_xml</code>メソッドに応答する場合、<code>:root</code>にキーが指定されます。</p></li>
 <li><p>その他の場合、<code>key</code>を持ち、ノードがタグとして作成されます。そのノードには<code>value</code>を文字列形式にしたものがテキストノードとして追加されます。<code>value</code>が<code>nil</code>の場合、"nil"属性が"true"に設定されたものが追加されます。<code>:skip_types</code>オプションがtrueでない (または<code>:skip_types</code>オプションがない) 場合、 以下のようなマッピングで"type"属性も追加されます。</p></li>
 </ul>
@@ -3122,7 +3122,7 @@ end
 </pre>
 </div>
 <div class="note"><p>スライス処理は、キーのホワイトリストを使用してオプションハッシュをサニタイズするのに便利です。</p></div>
-<p>破壊的なスライス操作を行なう<code>slice!</code>メソッドもあります。返し値は、取り除かれた要素です。</p>
+<p>破壊的なスライス操作を行なう<code>slice!</code>メソッドもあります。戻り値は、取り除かれた要素です。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 hash = {a: 1, b: 2}
@@ -3271,7 +3271,7 @@ Proc.new { size }.bind([]).call # =&gt; 0
 
 </pre>
 </div>
-<p>上のようにメソッドが呼び出し可能になって引数にバインドされたので、返し値は実際に<code>Method</code>になりました。</p>
+<p>上のようにメソッドが呼び出し可能になって引数にバインドされたので、戻り値は実際に<code>Method</code>になりました。</p>
 <div class="note"><p>実際には、<code>Proc#bind</code>は自身の下にメソッドを作成しています。<code>__bind_1256598120_237302</code>のような気持ち悪い名前のメソッドをスタックトレースで見かけることがあると思いますが、あれはまさにこの方法で作成されたものです。</p></div>
 <p>Action Packではこのトリックを<code>rescue_from</code>などで使用しています。そこではメソッド名を1つ引数として取り、与えられたレスキュー例外用のコールバックとしてprocも引数として取ります。これらはいずれにせよ呼び出される必要があります。それによってバインドされたメソッドが<code>handler_for_rescue</code>から返され、呼び出し元のコードがシンプルになります。</p>
 <div class="code_container">

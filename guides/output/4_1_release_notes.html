@@ -527,7 +527,7 @@ end
 <ul>
 <li><p><code>protect_from_forgery</code>によって、クロスオリジン<code>&lt;script&gt;</code>タグも使用できなくなりました。テストをアップデートして、 <code>get :foo, format: :js</code>の代りに<code>xhr :get, :foo, format: :js</code>を使うようにしてください。(<a href="https://github.com/rails/rails/pull/13345">Pull Request</a>)</p></li>
 <li><p><code>#url_for</code>は、オプションのハッシュを配列の中で使用できるようになりました。(<a href="https://github.com/rails/rails/pull/9599">Pull Request</a>)</p></li>
-<li><p><code>session#fetch</code>メソッドが追加されました。この振る舞いは<a href="http://www.ruby-doc.org/core-1.9.3/Hash.html#method-i-fetch">Hash#fetch</a>と似ていますが、返し値が常にセッションに保存される点が異なります。(<a href="https://github.com/rails/rails/pull/12692">Pull Request</a>)</p></li>
+<li><p><code>session#fetch</code>メソッドが追加されました。この振る舞いは<a href="http://www.ruby-doc.org/core-1.9.3/Hash.html#method-i-fetch">Hash#fetch</a>と似ていますが、戻り値が常にセッションに保存される点が異なります。(<a href="https://github.com/rails/rails/pull/12692">Pull Request</a>)</p></li>
 <li><p>Action ViewはAction Packから完全に分離されました。(<a href="https://github.com/rails/rails/pull/11032">Pull Request</a>)</p></li>
 <li><p>deep_mungeに影響されているキーがログ出力されるようになりました。(<a href="https://github.com/rails/rails/pull/13813">Pull Request</a>)</p></li>
 <li><p>セキュリティ脆弱性CVE-2013-0155に対応するため、パラメータのdeep_munge化を回避する<code>config.action_dispatch.perform_deep_munge</code>configオプションが新たに追加されました。(<a href="https://github.com/rails/rails/pull/13188">Pull Request</a>)</p></li>
