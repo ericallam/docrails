@@ -534,7 +534,7 @@ end
 
 </pre>
 </div>
-<p><code>form_for</code>に渡される名前は、<code>params</code>を使用してフォームの値にアクセスするときのキーに影響します。たとえば、この名前が<code>article</code>だとすると、すべての入力は<code>article[属性名]</code>というフォーム名を持ちます。従って<code>create</code>アクションでは、<code>:title</code>キーと<code>:body</code>キーを持つ1つのハッシュが<code>params[:article]</code>に含まれることになります。input名の重要性については、parameter_namesに関する節を参照してください。</p>
+<p><code>form_for</code>に渡される名前は、<code>params</code>を使用してフォームの値にアクセスするときのキーに影響します。たとえば、この名前が<code>article</code>だとすると、すべての入力は<code>article[属性名]</code>というフォーム名を持ちます。従って<code>create</code>アクションでは、<code>:title</code>キーと<code>:body</code>キーを持つ1つのハッシュが<code>params[:article]</code>に含まれることになります。input名の重要性については、<a href="#%E3%83%91%E3%83%A9%E3%83%A1%E3%83%BC%E3%82%BF%E3%81%AE%E5%91%BD%E5%90%8D%E3%83%AB%E3%83%BC%E3%83%AB%E3%82%92%E7%90%86%E8%A7%A3%E3%81%99%E3%82%8B">パラメータの命名ルールを理解する</a>を参照してください。</p>
 <p>フォームビルダー変数に対して呼び出されるヘルパーメソッドは、モデルオブジェクトのヘルパーメソッドと同一です。ただし、フォームの場合は編集の対象となるオブジェクトが既にフォームビルダーで管理されているので、どのオブジェクトに対して編集を行うかを指定する必要がない点が異なります。</p>
 <p><code>fields_for</code>メソッドを使用すれば、<code>&lt;form&gt;</code>タグを実際に作成することなく同様の結び付きを設定することができます。これは、同じフォームで別のモデルオブジェクトも編集できるようにしたい場合などに便利です。たとえば、Personモデルに関連付けられているContactDetailモデルがあるとすると、以下のようなフォームを作成すればよいのです。</p>
 <div class="code_container">
