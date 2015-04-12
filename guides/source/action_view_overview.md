@@ -1031,7 +1031,7 @@ url_field(:user, :url)
 
 #### collection_select
 
-`select`タグと、`object`が属するクラスのメソッド値の既存の返り値をコレクションにした`option`タグを返します。
+`select`タグと、`object`が属するクラスのメソッド値の既存の戻り値をコレクションにした`option`タグを返します。
 
 例として、このメソッドを適用するオブジェクトの構造が以下のようになっているとします。
 
@@ -1067,7 +1067,7 @@ collection_select(:post, :author_id, Author.all, :id, :name_with_initial, {promp
 
 #### collection_radio_buttons
 
-`object`が属するクラスのメソッド値の既存の返り値をコレクションにした`radio_button`タグを返します。
+`object`が属するクラスのメソッド値の既存の戻り値をコレクションにした`radio_button`タグを返します。
 
 例として、このメソッドを適用するオブジェクトの構造が以下のようになっているとします。
 
@@ -1103,7 +1103,7 @@ collection_radio_buttons(:post, :author_id, Author.all, :id, :name_with_initial)
 
 #### collection_check_boxes
 
-`object`が属するクラスのメソッド値の既存の返り値をコレクションにした`check_box`タグを返します。
+`object`が属するクラスのメソッド値の既存の戻り値をコレクションにした`check_box`タグを返します。
 
 例として、このメソッドを適用するオブジェクトの構造が以下のようになっているとします。
 

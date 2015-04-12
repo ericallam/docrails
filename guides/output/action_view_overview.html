@@ -1251,7 +1251,7 @@ url_field(:user, :url)
 <h4 id="formoptionshelper"><a href="#formoptionshelper">6.10 FormOptionsHelper</a></h4>
 <p>さまざまな種類のコンテナを1つのオプションタグのセットにまとめるためのメソッドを多数提供します。</p>
 <h5 id="collection_select"><a href="#collection_select">6.10.1 collection_select</a></h5>
-<p><code>select</code>タグと、<code>object</code>が属するクラスのメソッド値の既存の返り値をコレクションにした<code>option</code>タグを返します。</p>
+<p><code>select</code>タグと、<code>object</code>が属するクラスのメソッド値の既存の戻り値をコレクションにした<code>option</code>タグを返します。</p>
 <p>例として、このメソッドを適用するオブジェクトの構造が以下のようになっているとします。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1288,7 +1288,7 @@ collection_select(:post, :author_id, Author.all, :id, :name_with_initial, {promp
 </pre>
 </div>
 <h5 id="collection_radio_buttons"><a href="#collection_radio_buttons">6.10.2 collection_radio_buttons</a></h5>
-<p><code>object</code>が属するクラスのメソッド値の既存の返り値をコレクションにした<code>radio_button</code>タグを返します。</p>
+<p><code>object</code>が属するクラスのメソッド値の既存の戻り値をコレクションにした<code>radio_button</code>タグを返します。</p>
 <p>例として、このメソッドを適用するオブジェクトの構造が以下のようになっているとします。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1325,7 +1325,7 @@ collection_radio_buttons(:post, :author_id, Author.all, :id, :name_with_initial)
 </pre>
 </div>
 <h5 id="collection_check_boxes"><a href="#collection_check_boxes">6.10.3 collection_check_boxes</a></h5>
-<p><code>object</code>が属するクラスのメソッド値の既存の返り値をコレクションにした<code>check_box</code>タグを返します。</p>
+<p><code>object</code>が属するクラスのメソッド値の既存の戻り値をコレクションにした<code>check_box</code>タグを返します。</p>
 <p>例として、このメソッドを適用するオブジェクトの構造が以下のようになっているとします。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
