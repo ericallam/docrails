@@ -1641,7 +1641,7 @@ end
 </pre>
 </div>
 <h4 id="starts_with?とends_with?"><a href="#starts_with?%E3%81%A8ends_with?">5.7 <code>starts_with?</code>と<code>ends_with?</code></a></h4>
-<p>Active Supportでは、<code>String#start_with?</code>と<code>String#end_with?</code>を英語的に自然な三人称(starts、ends)にした別名も定義してあります。`:</p>
+<p>Active Supportでは、<code>String#start_with?</code>と<code>String#end_with?</code>を英語的に自然な三人称(starts、ends)にした別名も定義してあります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 "foo".starts_with?("f") # =&gt; true
@@ -2726,7 +2726,7 @@ Array(foo: :bar)      # =&gt; [[:foo, :bar]]
 
 </pre>
 </div>
-<p>上はRuby 1.8の場合、<code>nil</code>に対して<code>[nil]</code>を返し、それ以外の場合には<code>Array(object)</code>を呼び出します。(1.9のcontact機能の正確な動作を理解していることが前提です)</p>
+<p>上はRuby 1.8の場合、<code>nil</code>に対して<code>[nil]</code>を返し、それ以外の場合には<code>Array(object)</code>を呼び出します(1.9のcontact機能の正確な動作を理解していることが前提です)。</p>
 <p>従って、この場合<code>nil</code>に対する動作は異なり、上で説明されている<code>Kernel#Array</code>についてもこの異なる動作が残りの<code>object</code>に適用されます。</p>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/array/wrap.rb</code>です。</p></div>
 <h4 id="複製"><a href="#%E8%A4%87%E8%A3%BD">10.6 複製</a></h4>

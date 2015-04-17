@@ -1328,7 +1328,7 @@ NOTE: 定義ファイルの場所は`active_support/core_ext/string/filters.rb`�
 
 ### `starts_with?`と`ends_with?`
 
-Active Supportでは、`String#start_with?`と`String#end_with?`を英語的に自然な三人称(starts、ends)にした別名も定義してあります。`:
+Active Supportでは、`String#start_with?`と`String#end_with?`を英語的に自然な三人称(starts、ends)にした別名も定義してあります。
 
 ```ruby
 "foo".starts_with?("f") # => true
@@ -2440,7 +2440,7 @@ Array(foo: :bar)      # => [[:foo, :bar]]
 [*object]
 ```
 
-上はRuby 1.8の場合、`nil`に対して`[nil]`を返し、それ以外の場合には`Array(object)`を呼び出します。(1.9のcontact機能の正確な動作を理解していることが前提です)
+上はRuby 1.8の場合、`nil`に対して`[nil]`を返し、それ以外の場合には`Array(object)`を呼び出します(1.9のcontact機能の正確な動作を理解していることが前提です)。
 
 従って、この場合`nil`に対する動作は異なり、上で説明されている`Kernel#Array`についてもこの異なる動作が残りの`object`に適用されます。
 
