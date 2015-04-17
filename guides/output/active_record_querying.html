@@ -988,7 +988,7 @@ HAVING sum(price) &gt; 100
 <p><code>unscope</code>を使用して特定の条件を取り除くことができます。例：</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-Post.where('id &gt; 10').limit(20).order('id asc').except(:order)
+Post.where('id &gt; 10').limit(20).order('id asc').unscope(:order)
 
 </pre>
 </div>
