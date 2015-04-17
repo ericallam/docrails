@@ -126,48 +126,48 @@ config.logger = Logger.new(STDOUT)
 config.logger = Log4r::Logger.new("Application Log")
 ```
 
-ヒント: ログの保存場所は、デフォルトでは`Rails.root/log/`になります。ログのファイル名は、アプリケーションが実行されるときの環境 (development/test/productionなど) が使用されます。
+TIP: ログの保存場所は、デフォルトでは`Rails.root/log/`になります。ログのファイル名は、アプリケーションが実行されるときの環境 (development/test/productionなど) が使用されます。
 
 ### ログの出力レベル
 
-When something is logged it's printed into the corresponding log if the log level of the message is equal or higher than the configured log level. If you want to know the current log level you can call the `Rails.logger.level` method.
+ログに出力されるメッセージのログレベルが、設定済みのログレベル以上になった場合に、対応するログファイルにそのメッセージが出力されます。現在のログレベルを知りたい場合は、`Rails.logger.level`メソッドを呼び出します。
 
-The available log levels are: `:debug`, `:info`, `:warn`, `:error`, `:fatal`, and `:unknown`, corresponding to the log level numbers from 0 up to 5 respectively. To change the default log level, use
+指定可能なログレベルは`:debug`、`:info`、`:warn`、`:error`、`:fatal`、`:unknown`の6つであり、それぞれ0から5までの数字に対応します。デフォルトのログレベルを変更するには以下のようにします。
 
 ```ruby
-config.log_level = :warn # In any environment initializer, or
-Rails.logger.level = 0 # at any time
-``` 
+config.log_level = :warn # 環境ごとのイニシャライザで使用可能
+Rails.logger.level = 0 # いつでも使用可能
+```
 
-This is useful when you want to log under development or staging, but you don't want to flood your production log with unnecessary information.
+これは、development環境やstating環境ではログを出力し、production環境では不要な情報をログに出力したくない場合などに便利です。
 
-TIP: The default Rails log level is `debug` in all environments.
+TIP: Railsのデフォルトログレベルは全環境で`debug`です。
 
-### Sending Messages
+### メッセージ送信
 
-To write in the current log use the `logger.(debug|info|warn|error|fatal)` method from within a controller, model or mailer:
+コントローラ、モデル、メイラーから現在のログに書き込みたい場合は、`logger.(debug|info|warn|error|fatal)`を使用します。
 
 ```ruby
 logger.debug "Person attributes hash: #{@person.attributes.inspect}"
 logger.info "Processing the request..."
 logger.fatal "Terminating application, raised unrecoverable error!!!"
-``` 
+```
 
-Here's an example of a method instrumented with extra logging:
+例として、ログに別の情報を追加する機能を装備したメソッドを以下に示します。
 
 ```ruby
   class ArticlesController < ApplicationController
   # ...
 
   def create
-  @article = Article.new(params[:article])
-    logger.debug "New article: #{@article.attributes.inspect}"
-    logger.debug "Article should be valid: #{@article.valid?}"
+    @article = Article.new(params[:article])
+    logger.debug "新しい記事: #{@article.attributes.inspect}"
+    logger.debug "記事が正しいかどうか: #{@article.valid?}"
 
-  if @article.save
+    if @article.save
       flash[:notice] =  'Article was successfully created.'
-      logger.debug "The article was saved and now the user is going to be redirected..."
-    redirect_to @article
+      logger.debug "記事は正常に保存され、ユーザーをリダイレクト中..."
+      redirect_to(@article)
     else
       render action: "new"
     end
@@ -175,9 +175,9 @@ Here's an example of a method instrumented with extra logging:
 
   # ...
 end
-``` 
+```
 
-Here's an example of the log generated when this controller action is executed:
+上のコントローラのアクションを実行すると、以下のようなログが生成されます。
 
 ``` 
 Processing ArticlesController#create (for 127.0.0.1 at 2008-09-08 11:52:54) [POST]
@@ -186,57 +186,57 @@ vbkNvbnRyb2xsZXI6OkZsYXNoOjpGbGFzaEhhc2h7AAY6CkB1c2VkewA=--b18cd92fba90eacf8137e
   Parameters: {"commit"=>"Create", "article"=>{"title"=>"Debugging Rails",
 "body"=>"I'm learning how to print in logs!!!", "published"=>"0"},
 "authenticity_token"=>"2059c1286e93402e389127b1153204e0d1e275dd", "action"=>"create", "controller"=>"articles"}
-New article: {"updated_at"=>nil, "title"=>"Debugging Rails", "body"=>"I'm learning how to print in logs!!!",
+新しい記事: {"updated_at"=>nil, "title"=>"Debugging Rails", "body"=>"I'm learning how to print in logs!!!",
 "published"=>false, "created_at"=>nil}
-Article should be valid: true
+記事が正しいかどうか: true
   Article Create (0.000443)   INSERT INTO "articles" ("updated_at", "title", "body", "published",
 "created_at") VALUES('2008-09-08 14:52:54', 'Debugging Rails',
 'I''m learning how to print in logs!!!', 'f', '2008-09-08 14:52:54')
-The article was saved and now the user is going to be redirected...
+記事は正常に保存され、ユーザーをリダイレクト中...
 Redirected to # Article:0x20af760>
 Completed in 0.01224 (81 reqs/sec) | DB: 0.00044 (3%) | 302 Found [http://localhost/articles]
-``` 
+```
 
-Adding extra logging like this makes it easy to search for unexpected or unusual behavior in your logs. If you add extra logging, be sure to make sensible use of log levels to avoid filling your production logs with useless trivia.
+このようにログに独自の情報を追加すると、予想外の異常な動作をログで見つけやすくなります。ログに独自の情報を追加する場合は、productionログが意味のない大量のメッセージでうずまることのないよう、適切なログレベルを使用するようにしてください。
 
-### Tagged Logging
+### タグ付きログの出力
 
-When running multi-user, multi-account applications, it's often useful to be able to filter the logs using some custom rules. `TaggedLogging` in Active Support helps in doing exactly that by stamping log lines with subdomains, request ids, and anything else to aid debugging such applications.
+ユーザーとアカウントを多数使用するアプリケーションを実行するときに、何らかのカスタムルールを設定してログをフィルタできると便利です。Active Supportの`TaggedLogging`を使用すれば、サブドメインやリクエストIDなどを指定してログを絞り込むことができ、このようなアプリケーションのデバッグがはかどります。
 
 ```ruby
 logger = ActiveSupport::TaggedLogging.new(Logger.new(STDOUT))
 logger.tagged("BCX") { logger.info "Stuff" }                            # Logs "[BCX] Stuff"
 logger.tagged("BCX", "Jason") { logger.info "Stuff" }                   # Logs "[BCX] [Jason] Stuff"
 logger.tagged("BCX") { logger.tagged("Jason") { logger.info "Stuff" } } # Logs "[BCX] [Jason] Stuff"
-``` 
+```
 
-### Impact of Logs on Performance
-Logging will always have a small impact on performance of your rails app, particularly when logging to disk. However, there are a few subtleties:
+### ログがパフォーマンスに与える影響
+ログ出力がRailsアプリのパフォーマンスに与える影響は常にわずかです。ログをディスクに保存する場合は特にそうです。ただし、場合によってはそうとは言い切れないことがあります。
 
-Using the `:debug` level will have a greater performance penalty than `:fatal`, as a far greater number of strings are being evaluated and written to the log output (e.g. disk).
+ログレベル`:debug`は、`:fatal`と比べてはるかに多くの文字列が評価および(ディスクなどに)出力されるため、パフォーマンスに与える影響がずっと大きくなります。
 
-Another potential pitfall is that if you have many calls to `Logger` like this in your code:
+他にも、以下のように`Logger`の呼び出しを多数実行した場合には落とし穴に注意する必要があります。
 
 ```ruby
 logger.debug "Person attributes hash: #{@person.attributes.inspect}"
-``` 
+```
 
-In the above example, There will be a performance impact even if the allowed output level doesn't include debug. The reason is that Ruby has to evaluate these strings, which includes instantiating the somewhat heavy `String` object and interpolating the variables, and which takes time.
-Therefore, it's recommended to pass blocks to the logger methods, as these are only evaluated if the output level is the same or included in the allowed level (i.e. lazy loading). The same code rewritten would be:
+上の例では、たとえログ出力レベルをdebugにしなかった場合でもパフォーマンスが低下します。その理由は、上のコードでは文字列を評価する必要があり、その際に比較的動作が重い`String`オブジェクトのインスタンス化と、実行に時間のかかる変数の式展開 (interpolation) が行われているからです。
+したがって、ロガーメソッドに渡すものはブロックの形にしておくことをお勧めします。ブロックとして渡しておけば、ブロックの評価は出力レベルが設定レベル以上になった場合にしか行われない (遅延読み込みなど) ためです。これに従って上のコードを書き直すと以下のようになります。
 
 ```ruby
 logger.debug {"Person attributes hash: #{@person.attributes.inspect}"}
-``` 
+```
 
-The contents of the block, and therefore the string interpolation, is only evaluated if debug is enabled. This performance savings is only really noticeable with large amounts of logging, but it's a good practice to employ.
+渡したブロックの内容 (ここでは文字列の式展開) は、debug が有効になっている場合にしか評価されません。この方法によるパフォーマンスの改善は、大量のログを出力しているときでないとそれほど実感できないかもしれませんが、それでも採用する価値があります。
 
-Debugging with the `byebug` gem
+`byebug` gemを使用してデバッグする
 ---------------------------------
 
-When your code is behaving in unexpected ways, you can try printing to logs or the console to diagnose the problem. Unfortunately, there are times when this sort of error tracking is not effective in finding the root cause of a problem.
-When you actually need to journey into your running source code, the debugger is your best companion.
+コードが期待どおりに動作しない場合は、ログやコンソールに出力して問題を診断することができます。ただし、この方法ではエラー追跡を何度も繰り返さねばならず、根本的な原因を突き止めるには能率がよいとは言えません。
+実行中のコードに探りを入れる必要があるのであれば、最も頼りになるのはやはりデバッガーです。
 
-The debugger can also help you if you want to learn about the Rails source code but don't know where to start. Just debug any request to your application and use this guide to learn how to move from the code you have written deeper into Rails code.
+デバッガーは、Railsのソースコードを追うときに、そのコードがどこで開始されるのかがを知りたいときにも有用です。Just debug any request to your application and use this guide to learn how to move from the code you have written deeper into Rails code.
 
 設定
 
