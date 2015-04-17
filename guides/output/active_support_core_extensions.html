@@ -235,7 +235,7 @@
 <li><a href="#with_options"><code>with_options</code></a></li>
 <li><a href="#json-support">JSON support</a></li>
 <li><a href="#%E3%82%A4%E3%83%B3%E3%82%B9%E3%82%BF%E3%83%B3%E3%82%B9%E5%A4%89%E6%95%B0">インスタンス変数</a></li>
-<li><a href="#%E8%AD%A6%E5%91%8A%E3%83%BB%E3%82%B9%E3%83%88%E3%83%AA%E3%83%BC%E3%83%A0%E3%83%BB%E4%BE%8B%E5%A4%96%E3%81%AE%E6%8A%91%E5%88%B6">警告・ストリーム・例外の抑制</a></li>
+<li><a href="#%E8%AD%A6%E5%91%8A%E3%83%BB%E4%BE%8B%E5%A4%96%E3%81%AE%E6%8A%91%E5%88%B6">警告・例外の抑制</a></li>
 <li><a href="#in?"><code>in?</code></a></li>
 </ul>
 </li>
@@ -269,6 +269,7 @@
 <li><a href="#remove"><code>remove</code></a></li>
 <li><a href="#squish"><code>squish</code></a></li>
 <li><a href="#truncate"><code>truncate</code></a></li>
+<li><a href="#truncate_words"><code>truncate_words</code></a></li>
 <li><a href="#inquiry"><code>inquiry</code></a></li>
 <li><a href="#starts_with?%E3%81%A8ends_with?"><code>starts_with?</code>と<code>ends_with?</code></a></li>
 <li><a href="#strip_heredoc"><code>strip_heredoc</code></a></li>
@@ -312,6 +313,7 @@
 <li><a href="#index_by"><code>index_by</code></a></li>
 <li><a href="#many?"><code>many?</code></a></li>
 <li><a href="#exclude?"><code>exclude?</code></a></li>
+<li><a href="#without"><code>without</code></a></li>
 </ul>
 </li>
 <li>
@@ -335,6 +337,7 @@
 <li><a href="#%E3%83%9E%E3%83%BC%E3%82%B8">マージ</a></li>
 <li><a href="#%E3%83%87%E3%82%A3%E3%83%BC%E3%83%97%E8%A4%87%E8%A3%BD">ディープ複製</a></li>
 <li><a href="#%E3%83%8F%E3%83%83%E3%82%B7%E3%83%A5%E3%82%AD%E3%83%BC%E3%81%AE%E6%93%8D%E4%BD%9C">ハッシュキーの操作</a></li>
+<li><a href="#%E3%83%8F%E3%83%83%E3%82%B7%E3%83%A5%E3%81%AE%E5%80%A4%E3%81%AE%E6%93%8D%E4%BD%9C">ハッシュの値の操作</a></li>
 <li><a href="#%E3%82%B9%E3%83%A9%E3%82%A4%E3%82%B9">スライス</a></li>
 <li><a href="#%E6%8A%BD%E5%87%BA">抽出</a></li>
 <li><a href="#%E3%83%8F%E3%83%83%E3%82%B7%E3%83%A5%E3%82%AD%E3%83%BC%E3%81%8C%E3%82%B7%E3%83%B3%E3%83%9C%E3%83%AB%E3%81%A7%E3%82%82%E6%96%87%E5%AD%97%E5%88%97%E3%81%A7%E3%82%82%E5%90%8C%E6%A7%98%E3%81%AB%E6%89%B1%E3%81%86-(indifferent-access)">ハッシュキーがシンボルでも文字列でも同様に扱う (indifferent access)</a></li>
@@ -358,13 +361,6 @@
 </ul>
 </li>
 <li>
-<a href="#proc%E3%81%AE%E6%8B%A1%E5%BC%B5"><code>Proc</code>の拡張</a>
-
-<ul>
-<li><a href="#bind"><code>bind</code></a></li>
-</ul>
-</li>
-<li>
 <a href="#date%E3%81%AE%E6%8B%A1%E5%BC%B5"><code>Date</code>の拡張</a>
 
 <ul>
@@ -384,7 +380,7 @@
 
 <ul>
 <li><a href="#%E8%A8%88%E7%AE%97">計算</a></li>
-<li><a href="#time-constructors">Time Constructors</a></li>
+<li><a href="#%E6%99%82%E9%96%93%E3%82%B3%E3%83%B3%E3%82%B9%E3%83%88%E3%83%A9%E3%82%AF%E3%82%BF">時間コンストラクタ</a></li>
 </ul>
 </li>
 <li>
@@ -399,15 +395,6 @@
 
 <ul>
 <li><a href="#load"><code>load</code></a></li>
-</ul>
-</li>
-<li>
-<a href="#logger%E3%81%AE%E6%8B%A1%E5%BC%B5"><code>Logger</code>の拡張</a>
-
-<ul>
-<li><a href="#around_%5Blevel%5D"><code>around_[level]</code></a></li>
-<li><a href="#%60silence">`silence</a></li>
-<li><a href="#datetime_format="><code>datetime_format=</code></a></li>
 </ul>
 </li>
 <li><a href="#nameerror%E3%81%AE%E6%8B%A1%E5%BC%B5"><code>NameError</code>の拡張</a></li>
@@ -475,7 +462,7 @@ require 'active_support/all'
 
 </pre>
 </div>
-<p>ただし、これを実行してもActive Supportが残らずメモリに読み込まれるわけではないことにご注意ください。一部は<code>autoload</code>として設定されており、実際に使うまで読み込まれません。</p>
+<p>ただし、これを実行してもActive Support全体がメモリに読み込まれるわけではないことにご注意ください。一部は<code>autoload</code>として設定されており、実際に使うまで読み込まれません。</p>
 <h4 id="ruby-on-railsアプリケーションでactive-supportを使用する"><a href="#ruby-on-rails%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%A7active-support%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B">1.2 Ruby on RailsアプリケーションでActive Supportを使用する</a></h4>
 <p>Ruby on Railsaアプリケーションでは、基本的にすべてのActive Supportを読み込みます。例外は<code>config.active_support.bare</code>をtrueに設定した場合です。このオプションをtrueにすると、フレームワーク自体が必要とするまでアプリケーションは拡張機能を読み込みません。また、読み込まれる拡張機能の選択は、上で解説したように、あらゆる粒度で行われます。</p>
 <h3 id="すべてのオブジェクトで使用できる拡張機能"><a href="#%E3%81%99%E3%81%B9%E3%81%A6%E3%81%AE%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%81%A7%E4%BD%BF%E7%94%A8%E3%81%A7%E3%81%8D%E3%82%8B%E6%8B%A1%E5%BC%B5%E6%A9%9F%E8%83%BD">2 すべてのオブジェクトで使用できる拡張機能</a></h3>
@@ -485,7 +472,7 @@ require 'active_support/all'
 <li><p><code>nil</code>と<code>false</code></p></li>
 <li><p>空白文字 (whitespace) だけで構成された文字列 (以下の注釈参照)</p></li>
 <li><p>空欄の配列とハッシュ</p></li>
-<li><p>その他、<code>empty?</code>メソッドに応答するオブジェクトはすべて空白として扱われます</p></li>
+<li><p>その他、<code>empty?</code>メソッドに応答するオブジェクトはすべて空白として扱われます。</p></li>
 </ul>
 <div class="info"><p>文字列を判定する述語として、Unicode対応した文字クラスである<code>[:space:]</code>が使用されています。そのため、たとえばU+2029 (段落区切り文字)は空白文字と判断されます。</p></div>
 <div class="warning"><p>数字については空白であるかどうかは判断されません。特に0および0.0は<strong>空白ではありません</strong>のでご注意ください。</p></div>
@@ -496,12 +483,12 @@ def authenticate(controller, &amp;login_procedure)
   token, options = token_and_options(controller.request)
   unless token.blank?
     login_procedure.call(token, options)
-  end 
+  end
 end
 
 </pre>
 </div>
-<p><code>present?</code>メソッドは<code>!blank?</code>メソッドと同等です。以下の例は<code>ActionDispatch::Http::Cache::Response</code>からのものです。</p>
+<p><code>present?</code>メソッドは<code>!blank?</code>メソッドと同等です。以下の例は<code>ActionDispatch::Http::Cache::Response</code>から引用しました。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 def set_conditional_cache_control!
@@ -550,12 +537,12 @@ true.dup  # =&gt; TypeError: can't dup TrueClass
 <pre class="brush: ruby; gutter: false; toolbar: false">
 "foo".duplicable? # =&gt; true
 "".duplicable?    # =&gt; true
-0.0.duplicable?   # =&gt; false 
-false.duplicable? # =&gt; false 
+0.0.duplicable?  # =&gt; false
+false.duplicable? # =&gt; false
 
 </pre>
 </div>
-<p>デフォルトでは、<code>nil</code>、<code>false</code>、<code>true</code>、シンボル、数値、クラス、モジュールを除くすべてのオブジェクトが<code>duplicable?</code> #=&gt; trueです。</p>
+<p>デフォルトでは、<code>nil</code>、<code>false</code>、<code>true</code>、シンボル、数値、クラス、モジュール、メソッドオブジェクトを除くすべてのオブジェクトが<code>duplicable?</code> #=&gt; trueです。</p>
 <div class="warning"><p>どんなクラスでも、<code>dup</code>メソッドと<code>clone</code>メソッドを除去することでこれらのメソッドを無効にしてしまうことができます。このとき、これらのメソッドが実行されると例外が発生します。このような状態では、どんなオブジェクトについてもそれが複製可能かどうかを確認するには<code>rescue</code>を使用する以外に方法はありません。<code>duplicable?</code>メソッドは、上のハードコードされたリストに依存しますが、その代わり<code>rescue</code>よりずっと高速です。実際のユースケースでハードコードされたリストで十分であることがわかっている場合には、<code>duplicable?</code>をお使いください。</p></div>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/object/duplicable.rb</code>です。</p></div>
 <h4 id="deep_dup"><a href="#deep_dup">2.4 <code>deep_dup</code></a></h4>
@@ -580,7 +567,7 @@ duplicate # =&gt; ['foo', 'another-string']
 </pre>
 </div>
 <p>上で見たとおり、<code>Array</code>のインスタンスを複製して別のオブジェクトができたことにより、一方を変更しても他方は変更されないようになりました。ただし、配列は複製されましたが、配列の要素はそうではありません。<code>dup</code>メソッドはディープコピーを行わないので、配列の中にある文字列は複製後も同一オブジェクトのままです。</p>
-<p>オブジェクトをディープコピーする必要がある場合は<code>deep_dup</code>をお使いください。例をあげてみましょう：</p>
+<p>オブジェクトをディープコピーする必要がある場合は<code>deep_dup</code>をお使いください。例:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 array     = ['string']
@@ -605,7 +592,7 @@ number.object_id == duplicate.object_id   # =&gt; true
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/object/deep_dup.rb</code>です。</p></div>
 <h4 id="try"><a href="#try">2.5 <code>try</code></a></h4>
 <p><code>nil</code>でない場合にのみオブジェクトのメソッドを呼び出したい場合、最も単純な方法は条件文を追加することですが、どこか冗長になってしまいます。そこで<code>try</code>メソッドを使うという手があります。<code>try</code>は<code>Object#send</code>と似ていますが、<code>nil</code>に送信された場合には<code>nil</code>を返す点が異なります。</p>
-<p>例をあげてみましょう：</p>
+<p>例:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # tryメソッドを使用しない場合
@@ -625,7 +612,7 @@ def log_info(sql, name, ms)
   if @logger.try(:debug?)
     name = '%s (%.1fms)' % [name || 'SQL', ms]
     @logger.debug(format_log_entry(name, sql.squeeze(' ')))
-  end 
+  end
 end
 
 </pre>
@@ -652,7 +639,7 @@ class Proc
       remove_method(method_name)
       method
     end.bind(object)
-  end 
+  end
 end
 
 </pre>
@@ -667,7 +654,7 @@ end
 
 </pre>
 </div>
-<p>このメソッドは単なる目印であり、メソッドの本体と戻り値の間には関連はありません。これにより、クライアントコードで以下のようなダックタイピングチェックを行なうことができます。</p>
+<p>このメソッドは単なる目印であり、メソッドの本体と返し値の間には関連はありません。これにより、クライアントコードで以下のようなダックタイピングチェックを行なうことができます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 some_klass.acts_like?(:string)
@@ -706,7 +693,7 @@ some_klass.acts_like?(:string)
 class User
   def to_param
     "#{id}-#{name.parameterize}"
-  end 
+  end
 end
 
 </pre>
@@ -727,7 +714,7 @@ user_path(@user) # =&gt; "/users/357-john-smith"
 class User
   def to_param
     "#{id}-#{name.parameterize}"
-  end 
+  end
 end
 
 </pre>
@@ -735,7 +722,7 @@ end
 <p>以下の結果を得ます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-current_user.to_query('user') # =&gt; user=357-john-smith
+current_user.to_query('user') # =&gt; "user=357-john-smith"
 
 </pre>
 </div>
@@ -795,7 +782,7 @@ class Account &lt; ActiveRecord::Base
     assoc.has_many :products
     assoc.has_many :invoices
     assoc.has_many :expenses
-  end 
+  end
 end
 
 </pre>
@@ -818,13 +805,13 @@ end
 <h4 id="インスタンス変数"><a href="#%E3%82%A4%E3%83%B3%E3%82%B9%E3%82%BF%E3%83%B3%E3%82%B9%E5%A4%89%E6%95%B0">2.12 インスタンス変数</a></h4>
 <p>Active Supportは、インスタンス変数に簡単にアクセスするためのメソッドを多数提供しています。</p>
 <h5 id="instance_values"><a href="#instance_values">2.12.1 <code>instance_values</code></a></h5>
-<p><code>instance_values</code>メソッドはハッシュを返します。インスタンス変数名から"@"を除いたものがハッシュのキーにマップされ、インスタンス変数の値がハッシュの値にマップされます。キーは文字列です。</p>
+<p><code>instance_values</code>メソッドはハッシュを返します。インスタンス変数名から"@"を除いたものがハッシュのキーに、インスタンス変数の値がハッシュの値にマップされます。キーは文字列です。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class C
   def initialize(x, y)
     @x, @y = x, y
-  end 
+  end
 end
 
 C.new(0, 1).instance_values # =&gt; {"x" =&gt; 0, "y" =&gt; 1}
@@ -839,7 +826,7 @@ C.new(0, 1).instance_values # =&gt; {"x" =&gt; 0, "y" =&gt; 1}
 class C
   def initialize(x, y)
     @x, @y = x, y
-  end 
+  end
 end
 
 C.new(0, 1).instance_variable_names # =&gt; ["@x", "@y"]
@@ -847,7 +834,7 @@ C.new(0, 1).instance_variable_names # =&gt; ["@x", "@y"]
 </pre>
 </div>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/object/instance_variables.rb</code>です。</p></div>
-<h4 id="警告・ストリーム・例外の抑制"><a href="#%E8%AD%A6%E5%91%8A%E3%83%BB%E3%82%B9%E3%83%88%E3%83%AA%E3%83%BC%E3%83%A0%E3%83%BB%E4%BE%8B%E5%A4%96%E3%81%AE%E6%8A%91%E5%88%B6">2.13 警告・ストリーム・例外の抑制</a></h4>
+<h4 id="警告・例外の抑制"><a href="#%E8%AD%A6%E5%91%8A%E3%83%BB%E4%BE%8B%E5%A4%96%E3%81%AE%E6%8A%91%E5%88%B6">2.13 警告・例外の抑制</a></h4>
 <p><code>silence_warnings</code>メソッドと<code>enable_warnings</code>メソッドは、ブロックが継続する間<code>$VERBOSE</code>の値を変更し、その後リセットします。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -855,24 +842,7 @@ silence_warnings { Object.const_set "RAILS_DEFAULT_LOGGER", logger }
 
 </pre>
 </div>
-<p><code>silence_stream</code>メソッドは、与えたブロックが実行中の間、あらゆるストリームを止めることができます。</p>
-<div class="code_container">
-<pre class="brush: ruby; gutter: false; toolbar: false">
-silence_stream(STDOUT) do
-  # STDOUTの出力が止まる
-end
-
-</pre>
-</div>
-<p><code>quietly</code>メソッドは、サブプロセスも含めてSTDOUTとSTDERRの出力を抑制したい場合に使用します。</p>
-<div class="code_container">
-<pre class="brush: ruby; gutter: false; toolbar: false">
-quietly { system 'bundle install' }
-
-</pre>
-</div>
-<p>たとえば、railtiesテストスイートではこのメソッドを数箇所で使用することで、echoされたコマンドメッセージが進捗ステータスと混じって表示されることのないようにしています。</p>
-<p><code>suppress</code>メソッドを使用すると例外の発生を止めることもできます。このメソッドは引数に、任意の数の例外クラスを受け取ります。<code>suppress</code>は、あるブロックの実行時に例外が発生し、その例外が(<code>kind_of?</code>による判定で)いずれかの引数に一致する場合、それをキャプチャして例外を発生せずに戻ります。一致しない場合、例外はキャプチャされません。</p>
+<p><code>suppress</code>メソッドを使用すると例外の発生を止めることもできます。このメソッドは、例外クラスを表す任意の数値を受け取ります。<code>suppress</code>は、あるブロックの実行時に例外が発生し、その例外が(<code>kind_of?</code>による判定で)いずれかの引数に一致する場合、それをキャプチャして例外を発生せずに戻ります。一致しない場合、例外はキャプチャされません。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # ユーザーがロックされていればインクリメントは失われるが、重要ではない
@@ -898,19 +868,19 @@ end
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/object/inclusion.rb</code>です。</p></div>
 <h3 id="moduleの拡張"><a href="#module%E3%81%AE%E6%8B%A1%E5%BC%B5">3 <code>Module</code>の拡張</a></h3>
 <h4 id="alias_method_chain"><a href="#alias_method_chain">3.1 <code>alias_method_chain</code></a></h4>
+<p><strong>このメソッドは非推奨になりました。Module#prependをお使いください。</strong></p>
 <p>拡張されていない純粋なRubyを使用して、メソッドを他のメソッドで包み込む(wrap)ことができます。これは <em>エイリアスチェーン (alias chaining)</em> と呼ばれています。</p>
 <p>たとえば、機能テストのときにはパラメータが (実際のリクエストのときと同様に) 文字列であって欲しいとします。しかし必要なときには整数など他の型の値を持つこともできるようにしておきたいとします。これを実現するには、<code>ActionController::TestCase#process</code>を以下のように<code>test/test_helper.rb</code>でラップします。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 ActionController::TestCase.class_eval do
-  # 元のプロセスメソッドへの参照を保存
-  alias_method :original_process, :process
+  # 参照を元のプロセスメソッドalias_method :original_process, :processへ保存
 
   # 今度はプロセスを再定義してoriginal_processに以上する
   def process(action, params=nil, session=nil, flash=nil, http_method='GET')
     params = Hash[*params.map {|k, v| [k, v.to_s]}.flatten]
     original_process(action, params, session, flash, http_method)
-  end 
+  end
 end
 
 </pre>
@@ -923,7 +893,7 @@ ActionController::TestCase.class_eval do
   def process_with_stringified_params(...)
     params = Hash[*params.map {|k, v| [k, v.to_s]}.flatten]
     process_without_stringified_params(action, params, session, flash, http_method)
-  end 
+  end
   alias_method :process_without_stringified_params, :process
   alias_method :process, :process_with_stringified_params
 end
@@ -937,23 +907,22 @@ ActionController::TestCase.class_eval do
   def process_with_stringified_params(...)
     params = Hash[*params.map {|k, v| [k, v.to_s]}.flatten]
     process_without_stringified_params(action, params, session, flash, http_method)
-  end 
+  end
   alias_method_chain :process, :stringified_params
 end
 
 </pre>
 </div>
-<p>Railsでは<code>alias_method_chain</code>を全面的にコードベースに採用しています。たとえば、<code>ActiveRecord::Base#save</code>メソッドに検証 (validation) 機能を追加するために、検証専用の独立したモジュール内でメソッドを上の方法でラップしています。</p>
-<div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/module/aliasing.rb</code>です。</p></div>
+<div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/module/aliasing.rb</code>です</p></div>
 <h4 id="属性"><a href="#%E5%B1%9E%E6%80%A7">3.2 属性</a></h4>
 <h5 id="alias_attribute"><a href="#alias_attribute">3.2.1 <code>alias_attribute</code></a></h5>
-<p>モデルの属性には、リーダー (reader)、ライター (writer)、述語 (predicate) があります。上に対応する3つのメソッドを持つ、モデルの属性の別名 (alias) を一度に作成することができます。他の別名作成メソッドと同様、1つ目の引数には新しい名前、2つ目の引数には元の名前を指定します (変数に代入するときと同じ順序、と覚えておくと楽です)。</p>
+<p>モデルの属性には、リーダー (reader)、ライター (writer)、述語 (predicate) があります。上に対応する3つのメソッドを持つ、モデルの属性の別名 (alias) を一度に作成することができます。他の別名作成メソッドと同様、1つ目の引数には新しい名前、2つ目の引数には元の名前を指定します (変数に代入するときと同じ順序、と覚えておく手もあります)。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class User &lt; ActiveRecord::Base
   # emailカラムを"login"という名前でも参照したい
-  # 認証のコードをわかりやすくするため
-  alias_attribute :login, :email 
+  # そうすることで認証のコードがわかりやすくなる
+  alias_attribute :login, :email
 end
 
 </pre>
@@ -978,7 +947,7 @@ end
 </pre>
 </div>
 <p>先の例では、<code>:log_level</code>はライブラリのパブリックインターフェイスに属さず、開発用途にのみ使用されます。クライアント側のコードでは衝突の可能性について考慮せずに独自に<code>:log_level</code>をサブクラスで定義しています。ライブラリ側で<code>attr_internal</code>を使用しているおかげで衝突が生じずに済んでいます。</p>
-<p>このとき、内部インスタンス変数の名前にはデフォルトで冒頭にアンダースコアが追加されます。上の例であれば<code>@_log_level</code>となります。この動作は<code>Module.attr_internal_naming_format</code>を使用して変更することもできます。<code>sprintf</code>と同様のフォーマット文字列を与え、冒頭に<code>@</code>を置き、それ以外の名前を置きたい場所に<code>%s</code>を置きます。デフォルトは<code>"@_%s"</code>の形式となります。</p>
+<p>このとき、内部インスタンス変数の名前にはデフォルトで冒頭にアンダースコアが追加されます。上の例であれば<code>@_log_level</code>となります。この動作は<code>Module.attr_internal_naming_format</code>を使用して変更することもできます。<code>sprintf</code>と同様のフォーマット文字列を与え、冒頭に<code>@</code>を置き、それ以外の名前を置きたい場所に<code>%s</code>を置きます。デフォルトは<code>"@_%s"</code>です。</p>
 <p>Railsではこの内部属性を他の場所でも若干使用しています。たとえばビューでは以下のように使用しています。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -987,7 +956,7 @@ module ActionView
     attr_internal :captures
     attr_internal :request, :layout
     attr_internal :controller, :template
-  end 
+  end
 end
 
 </pre>
@@ -1012,7 +981,7 @@ module ActiveSupport
     mattr_accessor :log_activity
     mattr_accessor :constant_watch_stack
     mattr_accessor :constant_watch_stack_mutex
-  end 
+  end
 end
 
 </pre>
@@ -1032,7 +1001,7 @@ end
 M = X::Y::Z
 
 X::Y::Z.parent # =&gt; X::Y
-M.parent       # =&gt; X::Y 
+M.parent       # =&gt; X::Y
 
 </pre>
 </div>
@@ -1087,7 +1056,7 @@ module X
   module Y
     Y1 = :y1
     X1 = :overrides_X1_above
-  end 
+  end
 end
 
 X.local_constants    # =&gt; [:X1, :X2, :Y]
@@ -1097,9 +1066,9 @@ X::Y.local_constants # =&gt; [:Y1, :X1]
 </div>
 <p>定数名はシンボルとして返されます。</p>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/module/introspection.rb</code>です。</p></div>
-<h5 id="フルパスの定数名"><a href="#%E3%83%95%E3%83%AB%E3%83%91%E3%82%B9%E3%81%AE%E5%AE%9A%E6%95%B0%E5%90%8D">3.4.1 フルパスの定数名</a></h5>
-<p>標準のメソッド<code>const_defined?</code>、<code>const_get</code>、<code>const_set</code>は素の定数名を受け付けます。Active SupportではこのAPIを拡張し、よりフルパスに近い(qualified)定数名を渡せるようにしています。</p>
-<p>新しいメソッドは<code>qualified_const_defined?</code>、<code>qualified_const_get</code>、<code>qualified_const_set</code>です。これらのメソッドでは、引数がレシーバから見て正規な定数名であることが前提となります。</p>
+<h5 id="正規の定数名"><a href="#%E6%AD%A3%E8%A6%8F%E3%81%AE%E5%AE%9A%E6%95%B0%E5%90%8D">3.4.1 正規の定数名</a></h5>
+<p>標準のメソッド<code>const_defined?</code>、<code>const_get</code>、<code>const_set</code>では、(修飾されていない)素の定数名を使用します。Active SupportではこのAPIを拡張し、よりフルパスに近い(qualified)定数名を渡せるようにしています。</p>
+<p>新しいメソッドは<code>qualified_const_defined?</code>、<code>qualified_const_get</code>、<code>qualified_const_set</code>です。これらのメソッドに渡す引数は、レシーバからの相対的な修飾済み定数名であることが前提となります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Object.qualified_const_defined?("Math::PI")       # =&gt; true
@@ -1108,16 +1077,16 @@ Object.qualified_const_set("Math::Phi", 1.618034) # =&gt; 1.618034
 
 </pre>
 </div>
-<p>正規でない、素の定数名も使用できます。</p>
+<p>修飾されていない、素の定数名も使用できます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Math.qualified_const_get("E") # =&gt; 2.718281828459045
 
 </pre>
 </div>
-<p>これらのメソッドは、ビルトイン版のメソッドと類似しています。特に、<code>qualified_constant_defined?</code>メソッドは2つ目の引数として、述語を先祖に向って遡って探すかどうかというフラグをオプションで指定できます。
+<p>これらのメソッドは、ビルトイン版のメソッドと類似しています。特に、<code>qualified_constant_defined?</code>メソッドは2つ目の引数として、述語を先祖に向って遡って探せるようにするかどうかというフラグをオプションで指定できます。
 このフラグは、与えられたすべての定数について、メソッドでパスを下る時に適用されます。</p>
-<p>たとえば</p>
+<p>以下の例で考察してみましょう。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 module M
@@ -1127,7 +1096,7 @@ end
 module N
   class C
     include M
-  end 
+  end
 end
 
 </pre>
@@ -1142,8 +1111,7 @@ N.qualified_const_defined?("C::X")        # =&gt; true
 </pre>
 </div>
 <p>最後の例でわかるように、2番目の引数は<code>const_defined?</code>と同様デフォルトでtrueになります。</p>
-<p>ビルトインメソッドと一貫させるため、相対パスのみを受け付けます。
-<code>::Math::PI</code>のような絶対定数名を指定すると<code>NameError</code>が発生します。</p>
+<p>ビルトインメソッドと一貫させるため、相対パスのみを受け付けます。<code>::Math::PI</code>のような絶対定数名を指定すると<code>NameError</code>が発生します。</p>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/module/qualified_const.rb</code>です。</p></div>
 <h4 id="到達可能"><a href="#%E5%88%B0%E9%81%94%E5%8F%AF%E8%83%BD">3.5 到達可能</a></h4>
 <p>名前を持つモジュールは、対応する定数に保存されている場合に到達可能 (reachable) となります。これは、定数を経由してモジュールオブジェクトに到達できるという意味です。</p>
@@ -1165,19 +1133,19 @@ end
 
 orphan = Object.send(:remove_const, :M)
 
-# このモジュールは孤立しましたが、まだ名前はあります
+# このモジュールは孤立しているが、まだ無名ではない
 orphan.name # =&gt; "M"
 
-# 定数Mは既に存在してないので、定数Mを経由して到達することはできません
-orphan.reachable? # =&gt; false 
+# 定数Mは既に存在してないので、定数Mを経由して到達できない
+orphan.reachable? # =&gt; false
 
-# "M"という名前のモジュールを再度定義してみます
+# "M"という名前のモジュールを再度定義する
 module M
 end
 
-# 定数Mが再度存在するようになり、モジュールオブジェクト"M"を保持していますが、
-# 元と異なる新しいインスタンスです
-orphan.reachable? # =&gt; false 
+# 定数Mが再度存在し、モジュールオブジェクト"M"を保持しているが
+# 元と異なる新しいインスタンスである
+orphan.reachable? # =&gt; false
 
 </pre>
 </div>
@@ -1202,13 +1170,13 @@ Module.new.name # =&gt; nil
 <pre class="brush: ruby; gutter: false; toolbar: false">
 module M
 end
-M.anonymous? # =&gt; false 
+M.anonymous? # =&gt; false
 
 Module.new.anonymous? # =&gt; true
 
 </pre>
 </div>
-<p>到達不能 (unreachable) であっても、無名 (anonymous) であるとは限りませんのでご注意ください。</p>
+<p>到達不能 (unreachable) であっても、必ずしも無名 (anonymous) になるとは限りません。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 module M
@@ -1216,13 +1184,13 @@ end
 
 m = Object.send(:remove_const, :M)
 
-m.reachable? # =&gt; false 
-m.anonymous? # =&gt; false 
+m.reachable? # =&gt; false
+m.anonymous? # =&gt; false
 
 </pre>
 </div>
-<p>逆に、無名モジュールは、定義上必ず到達不能です。</p>
-<div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/module/anonymous.rb</code>。</p></div>
+<p>逆に無名モジュールは、定義上必ず到達不能になります。</p>
+<div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/module/anonymous.rb</code>です。</p></div>
 <h4 id="メソッド委譲"><a href="#%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89%E5%A7%94%E8%AD%B2">3.7 メソッド委譲</a></h4>
 <p><code>delegate</code>マクロを使用すると、メソッドを簡単に委譲できます。</p>
 <p>あるアプリケーションの<code>User</code>モデルにログイン情報があり、それに関連する名前などの情報は<code>Profile</code>モデルにあるとします。</p>
@@ -1242,7 +1210,7 @@ class User &lt; ActiveRecord::Base
 
   def name
     profile.name
-  end 
+  end
 end
 
 </pre>
@@ -1306,8 +1274,8 @@ delegate :size, to: :attachment, prefix: :avatar
 <p>上の例では、マクロによって<code>size</code>の代わりに<code>avatar_size</code>が生成されます。</p>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/module/delegation.rb</code>です。</p></div>
 <h4 id="メソッドの再定義"><a href="#%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89%E3%81%AE%E5%86%8D%E5%AE%9A%E7%BE%A9">3.8 メソッドの再定義</a></h4>
-<p><code>define_method</code>を使用してメソッドを再定義する必要があるが、その名前が既にあるかどうかがわからないということがときどきあります。有効な名前が既にあれば警告が表示されます。この警告は特に重大というわけではありませんが、美しいとも言えません。</p>
-<p><code>redefine_method</code>メソッドを使用すれば、必要に応じて既存のメソッドが削除されるので、このような警告が表示されることを防止できます。</p>
+<p><code>define_method</code>を使用してメソッドを再定義する必要があるが、その名前が既にあるかどうかがわからないとことがあります。有効な名前が既にあれば警告が表示されます。警告が表示されても大したことはありませんが、邪魔に思えることもあります。</p>
+<p><code>redefine_method</code>メソッドを使用すれば、必要に応じて既存のメソッドが削除されるので、このような警告表示を抑制できます。</p>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/module/remove_method.rb</code>です。</p></div>
 <h3 id="classの拡張"><a href="#class%E3%81%AE%E6%8B%A1%E5%BC%B5">4 <code>Class</code>の拡張</a></h3>
 <h4 id="class属性"><a href="#class%E5%B1%9E%E6%80%A7">4.1 Class属性</a></h4>
@@ -1359,8 +1327,8 @@ a1 = A.new
 a2 = A.new
 a2.x = 2
 
-a1.x # =&gt; 1 (Aの値)
-a2.x # =&gt; 2 (a2でオーバーライドされた値)
+a1.x # =&gt; 1 (Aが使われる)
+a2.x # =&gt; 2 (a2でオーバーライドされる)
 
 </pre>
 </div>
@@ -1371,7 +1339,7 @@ module ActiveRecord
   class Base
     class_attribute :table_name_prefix, instance_writer: false
     self.table_name_prefix = ""
-  end 
+  end
 end
 
 </pre>
@@ -1444,7 +1412,7 @@ end
 </pre>
 </div>
 <p><code>:instance_accessor</code>を<code>false</code>に設定すると、モデルの属性設定時にマスアサインメントを防止するのに便利です。</p>
-<div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/module/attribute_accessors.rb</code>です。<code>active_support/core_ext/class/attribute_accessors.rb</code>は非推奨であり、Ruby on Rails 4.2では削除される予定です。</p></div>
+<div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/module/attribute_accessors.rb</code>です。</p></div>
 <h4 id="サブクラスと子孫"><a href="#%E3%82%B5%E3%83%96%E3%82%AF%E3%83%A9%E3%82%B9%E3%81%A8%E5%AD%90%E5%AD%AB">4.2 サブクラスと子孫</a></h4>
 <h5 id="subclasses"><a href="#subclasses">4.2.1 <code>subclasses</code></a></h5>
 <p><code>subclasses</code>メソッドはレシーバのサブクラスを返します。</p>
@@ -1489,13 +1457,13 @@ C.descendants # =&gt; [B, A, D]
 <h3 id="stringの拡張"><a href="#string%E3%81%AE%E6%8B%A1%E5%BC%B5">5 <code>String</code>の拡張</a></h3>
 <h4 id="安全な出力"><a href="#%E5%AE%89%E5%85%A8%E3%81%AA%E5%87%BA%E5%8A%9B">5.1 安全な出力</a></h4>
 <h5 id="開発の動機"><a href="#%E9%96%8B%E7%99%BA%E3%81%AE%E5%8B%95%E6%A9%9F">5.1.1 開発の動機</a></h5>
-<p>HTMLテンプレートにデータを挿入するときには、殊の外注意が必要になります。たとえば、<code>@review.title</code>を何の工夫もなくそのままHTMLに式展開してはいけません。もしこのレビューのタイトルが仮に"Flanagan &amp; Matz rules!"だとしたら、出力はwell-formedになりません。well-formedにするには、"&amp;amp;"のようにエスケープしなければなりません。さらに、ユーザーがレビューのタイトルに細工をして、悪意のあるHTMLをタイトルに含めれば、巨大なセキュリティホールになることすらあります。このリスクの詳細については、<a href="security.html#%E3%82%AF%E3%83%AD%E3%82%B9%E3%82%B5%E3%82%A4%E3%83%88%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%97%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0-(xss)">セキュリティガイド</a>のクロスサイトスクリプティングの節を参照してください。</p>
+<p>HTMLテンプレートにデータを挿入する方法は、きわめて慎重に設計する必要があります。たとえば、<code>@review.title</code>を何の工夫もなくそのままHTMLに式展開するようなことは絶対にすべきではありません。もしこのレビューのタイトルが仮に"Flanagan &amp; Matz rules!"だとしたら、出力はwell-formedになりません。well-formedにするには、"&amp;amp;"のようにエスケープしなければなりません。さらに、ユーザーがレビューのタイトルに細工をして、悪意のあるHTMLをタイトルに含めれば、巨大なセキュリティホールになることすらあります。このリスクの詳細については、<a href="security.html#%E3%82%AF%E3%83%AD%E3%82%B9%E3%82%B5%E3%82%A4%E3%83%88%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%97%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0-(xss)">セキュリティガイド</a>のクロスサイトスクリプティングの節を参照してください。</p>
 <h5 id="安全な文字列"><a href="#%E5%AE%89%E5%85%A8%E3%81%AA%E6%96%87%E5%AD%97%E5%88%97">5.1.2 安全な文字列</a></h5>
-<p>Active Supportには「<i>(html的に)安全な</i>文字列」という概念があります。安全な文字列とは、HTMLにそのまま挿入しても問題がないというマークが付けられている文字列です。マーキングされていれば、実際にエスケープされていてもいなくても信頼されます。</p>
-<p>文字列はデフォルトでは<i>unsafe</i>とマークされます。</p>
+<p>Active Supportには「(html的に) 安全な文字列」という概念があります。安全な文字列とは、HTMLにそのまま挿入しても問題がないというマークが付けられている文字列です。マーキングさえされていれば、「実際にエスケープされているかどうかにかかわらず」その文字列は信頼されます。</p>
+<p>文字列はデフォルトでは <em>unsafe</em> とマークされます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-"".html_safe? # =&gt; false 
+"".html_safe? # =&gt; false
 
 </pre>
 </div>
@@ -1517,7 +1485,7 @@ s            # =&gt; "&lt;script&gt;...&lt;/script&gt;"
 </pre>
 </div>
 <p>従って、特定の文字列に対して<code>html_safe</code>メソッドを呼び出す際には、その文字列が本当に安全であることを確認する義務があります。</p>
-<p>安全であると宣言された文字列に対し、安全でない文字列を<code>concat</code>/<code>&lt;&lt;</code>または<code>+</code>を使用して追加した場合、結果は安全な文字列になります。安全でない引数は追加時にエスケープされます。</p>
+<p>安全であると宣言された文字列に対し、安全でない文字列を<code>concat</code>/<code>&lt;&lt;</code>または<code>+</code>を使用して破壊的に追加すると、結果は安全な文字列になります。安全でない引数は追加時にエスケープされます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 "".html_safe + "&lt;" # =&gt; "&amp;lt;"
@@ -1534,7 +1502,7 @@ s            # =&gt; "&lt;script&gt;...&lt;/script&gt;"
 <p>基本的にこれらのメソッドは、通常のビューでは使用しないでください。現在のRailsのビューでは、安全でない値は自動的にエスケープされるためです。</p>
 <div class="code_container">
 <pre class="brush: ruby; html-script: true; gutter: false; toolbar: false">
-&lt;%= @review.title %&gt; &lt;%# fine, escaped if needed %&gt;
+&lt;%= @review.title %&gt; &lt;%# 必要に応じてエスケープされるので問題なし %&gt;
 
 </pre>
 </div>
@@ -1563,9 +1531,9 @@ end
 </div>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/string/output_safety.rb</code>です。</p></div>
 <h5 id="安全な出力-各種変換"><a href="#%E5%AE%89%E5%85%A8%E3%81%AA%E5%87%BA%E5%8A%9B-%E5%90%84%E7%A8%AE%E5%A4%89%E6%8F%9B">5.1.3 各種変換</a></h5>
-<p>経験上、上で説明したような連結 (concatenation) 操作を除き、どんなメソッドでも潜在的には文字列を安全でないものに変換してしまう可能性があることにご注意ください。そのようなメソッドには<code>downcase</code>、<code>gsub</code>、<code>strip</code>、<code>chomp</code>、<code>underscore</code>などがあります。</p>
+<p>経験上、上で説明したような連結 (concatenation) 操作を除き、どんなメソッドでも潜在的には文字列を安全でないものに変換してしまう可能性があることに常に注意を払う必要があります。そのようなメソッドには<code>downcase</code>、<code>gsub</code>、<code>strip</code>、<code>chomp</code>、<code>underscore</code>などがあります。</p>
 <p><code>gsub!</code>のような破壊的な変換を行なうメソッドを使用すると、レシーバ自体が安全でなくなります。</p>
-<div class="info"><p>安全を表すビットは、実際に変換が行われていてもなくても、こうしたメソッドを実行すれば外されます。</p></div>
+<div class="info"><p>こうしたメソッドを実行すると、実際に変換が行われたかどうかにかかわらず、安全を表すビットは常にオフになります。</p></div>
 <h5 id="変換と強制"><a href="#%E5%A4%89%E6%8F%9B%E3%81%A8%E5%BC%B7%E5%88%B6">5.1.4 変換と強制</a></h5>
 <p>安全な文字列に対して<code>to_s</code>を実行した場合は、安全な文字列が返されます。しかし、<code>to_str</code>による強制的な変換を実行した場合には安全でない文字列が返されます。</p>
 <h5 id="コピー"><a href="#%E3%82%B3%E3%83%94%E3%83%BC">5.1.5 コピー</a></h5>
@@ -1574,12 +1542,12 @@ end
 <p><code>remove</code>メソッドを実行すると、すべての該当パターンが削除されます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-"Hello World".remove(/Hello /) =&gt; "World"
+"Hello World".remove(/Hello /) # =&gt; "World"
 
 </pre>
 </div>
 <p>このメソッドには破壊的なバージョンの<code>String#remove!</code>もあります。</p>
-<div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/string/filters.rb</code>。</p></div>
+<div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/string/filters.rb</code>です。</p></div>
 <h4 id="squish"><a href="#squish">5.3 <code>squish</code></a></h4>
 <p><code>squish</code>メソッドは、冒頭と末尾のホワイトスペースを除去し、連続したホワイトスペースを1つに減らします。</p>
 <div class="code_container">
@@ -1589,8 +1557,8 @@ end
 </pre>
 </div>
 <p>このメソッドには破壊的なバージョンの<code>String#squish!</code>もあります。</p>
-<p>このメソッドでは、ASCIIとUnicodeのホワイトスペースを扱えます。これには、たとえばモンゴル語の母音区切り文字 (U+180E) なども含まれます。</p>
-<div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/string/filters.rb</code>。</p></div>
+<p>このメソッドでは、ASCIIとUnicodeのホワイトスペースを扱えます。</p>
+<div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/string/filters.rb</code>です。</p></div>
 <h4 id="truncate"><a href="#truncate">5.4 <code>truncate</code></a></h4>
 <p><code>truncate</code>メソッドは、指定された<code>length</code>にまで長さを切り詰めたレシーバのコピーを返します。</p>
 <div class="code_container">
@@ -1619,7 +1587,7 @@ end
 
 </pre>
 </div>
-<p><code>:separator</code>では正規表現を使用することもできます。</p>
+<p><code>:separator</code>オプションに正規表現を使用することもできます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 "Oh dear! Oh dear! I shall be late!".truncate(18, separator: /\s/)
@@ -1628,18 +1596,52 @@ end
 </pre>
 </div>
 <p>上の例では、"dear"という文字で切り落とされそうになるところを、<code>:separator</code>によって防いでいます。</p>
-<div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/string/filters.rb</code>。</p></div>
-<h4 id="inquiry"><a href="#inquiry">5.5 <code>inquiry</code></a></h4>
-<p><code>inquiry</code>は、等しいかどうかをスマートに検索するために、文字列を<code>StringInquirer</code>文字列に変換します。</p>
+<div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/string/filters.rb</code>です。</p></div>
+<h4 id="truncate_words"><a href="#truncate_words">5.5 <code>truncate_words</code></a></h4>
+<p><code>truncate_words</code>メソッドは、指定されたワード数から後ろを切り落としたレシーバのコピーを返します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-"production".inquiry.production? # =&gt; true
-"active".inquiry.inactive?       # =&gt; false 
+"Oh dear! Oh dear! I shall be late!".truncate_words(4)
+# =&gt; "Oh dear! Oh dear!..."
 
 </pre>
 </div>
-<h4 id="starts_with?とends_with?"><a href="#starts_with?%E3%81%A8ends_with?">5.6 <code>starts_with?</code>と<code>ends_with?</code></a></h4>
-<p>Active Supportでは、<code>String#start_with?</code>と<code>String#end_with?</code>を英語的に自然な三人称(starts、ends)にした別名も定義してあります。</p>
+<p><code>:omission</code>オプションを指定することで、省略文字 (…) をカスタマイズすることもできます。</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+"Oh dear! Oh dear! I shall be late!".truncate_words(4, omission: '&amp;hellip;')
+# =&gt; "Oh dear! Oh dear!&amp;hellip;"
+
+</pre>
+</div>
+<p><code>:separator</code>を指定することで、自然な区切り位置で切り詰めることができます。</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+"Oh dear! Oh dear! I shall be late!".truncate_words(3, separator: '!')
+# =&gt; "Oh dear! Oh dear! I shall be late..."
+
+</pre>
+</div>
+<p><code>:separator</code>オプションに正規表現を使用することもできます。</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+"Oh dear! Oh dear! I shall be late!".truncate_words(4, separator: /\s/)
+# =&gt; "Oh dear! Oh dear!..."
+
+</pre>
+</div>
+<div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/string/filters.rb</code>です。</p></div>
+<h4 id="inquiry"><a href="#inquiry">5.6 <code>inquiry</code></a></h4>
+<p><code>inquiry</code>は、文字列を<code>StringInquirer</code>オブジェクトに変換します。このオブジェクトを使用すると、等しいかどうかをよりスマートにチェックできます。</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+"production".inquiry.production? # =&gt; true
+"active".inquiry.inactive?       # =&gt; false
+
+</pre>
+</div>
+<h4 id="starts_with?とends_with?"><a href="#starts_with?%E3%81%A8ends_with?">5.7 <code>starts_with?</code>と<code>ends_with?</code></a></h4>
+<p>Active Supportでは、<code>String#start_with?</code>と<code>String#end_with?</code>を英語的に自然な三人称(starts、ends)にした別名も定義してあります。`:</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 "foo".starts_with?("f") # =&gt; true
@@ -1648,7 +1650,7 @@ end
 </pre>
 </div>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/string/starts_ends_with.rb</code>です。</p></div>
-<h4 id="strip_heredoc"><a href="#strip_heredoc">5.7 <code>strip_heredoc</code></a></h4>
+<h4 id="strip_heredoc"><a href="#strip_heredoc">5.8 <code>strip_heredoc</code></a></h4>
 <p><code>strip_heredoc</code>メソッドは、ヒアドキュメントのインデントを除去します。</p>
 <p>以下に例を示します。</p>
 <div class="code_container">
@@ -1665,10 +1667,10 @@ end
 
 </pre>
 </div>
-<p>USAGEメッセージが左寄せで表示されます。</p>
+<p>このUSAGEメッセージは左寄せで表示されます。</p>
 <p>技術的には、インデントが一番浅い行を探して、そのインデント分だけ行頭のホワイトスペースを全体から削除するという操作を行っています。</p>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/string/strip.rb</code>です。</p></div>
-<h4 id="indent"><a href="#indent">5.8 <code>indent</code></a></h4>
+<h4 id="indent"><a href="#indent">5.9 <code>indent</code></a></h4>
 <p>このメソッドは、レシーバの行にインデントを与えます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1704,8 +1706,8 @@ EOS
 </div>
 <p><code>indent!</code>メソッドはインデントをその場で (破壊的に) 行います。</p>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/string/indent.rb</code>です。</p></div>
-<h4 id="access"><a href="#access">5.9 Access</a></h4>
-<h5 id="at(position)"><a href="#at(position)">5.9.1 <code>at(position)</code></a></h5>
+<h4 id="access"><a href="#access">5.10 Access</a></h4>
+<h5 id="at(position)"><a href="#at(position)">5.10.1 <code>at(position)</code></a></h5>
 <p>対象となる文字列のうち、<code>position</code>で指定された位置にある文字を返します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1717,19 +1719,19 @@ EOS
 </pre>
 </div>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/string/access.rb</code>です。</p></div>
-<h5 id="from(position)"><a href="#from(position)">5.9.2 <code>from(position)</code></a></h5>
+<h5 id="from(position)"><a href="#from(position)">5.10.2 <code>from(position)</code></a></h5>
 <p>文字列のうち、<code>position</code>で指定された位置から始まる部分文字列を返します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 "hello".from(0)  # =&gt; "hello"
 "hello".from(2)  # =&gt; "llo"
 "hello".from(-2) # =&gt; "lo"
-"hello".from(10) # =&gt; "" if &lt; 1.9, nil in 1.9
+"hello".from(10) # =&gt; nil
 
 </pre>
 </div>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/string/access.rb</code>です。</p></div>
-<h5 id="to(position)"><a href="#to(position)">5.9.3 <code>to(position)</code></a></h5>
+<h5 id="to(position)"><a href="#to(position)">5.10.3 <code>to(position)</code></a></h5>
 <p>文字列のうち、<code>position</code>で指定された位置を終端とする部分文字列を返します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1741,14 +1743,14 @@ EOS
 </pre>
 </div>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/string/access.rb</code>です。</p></div>
-<h5 id="first(limit-=-1)"><a href="#first(limit-=-1)">5.9.4 <code>first(limit = 1)</code></a></h5>
+<h5 id="first(limit-=-1)"><a href="#first(limit-=-1)">5.10.4 <code>first(limit = 1)</code></a></h5>
 <p><code>str.first(n)</code>という呼び出しは、<code>n</code> &gt; 0の場合は<code>str.to(n-1)</code>と等価です。<code>n</code> == 0の場合は空文字列を返します。</p>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/string/access.rb</code>です。</p></div>
-<h5 id="last(limit-=-1)"><a href="#last(limit-=-1)">5.9.5 <code>last(limit = 1)</code></a></h5>
+<h5 id="last(limit-=-1)"><a href="#last(limit-=-1)">5.10.5 <code>last(limit = 1)</code></a></h5>
 <p><code>str.last(n)</code>という呼び出しは、<code>n</code> &gt; 0の場合は<code>str.from(-n)</code>と等価です。<code>n</code> == 0の場合は空文字列を返します。</p>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/string/access.rb</code>です。</p></div>
-<h4 id="活用形"><a href="#%E6%B4%BB%E7%94%A8%E5%BD%A2">5.10 活用形</a></h4>
-<h5 id="pluralize"><a href="#pluralize">5.10.1 <code>pluralize</code></a></h5>
+<h4 id="活用形"><a href="#%E6%B4%BB%E7%94%A8%E5%BD%A2">5.11 活用形</a></h4>
+<h5 id="pluralize"><a href="#pluralize">5.11.1 <code>pluralize</code></a></h5>
 <p><code>pluralize</code>メソッドは、レシーバを「複数形」にしたものを返します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1780,7 +1782,7 @@ end
 </pre>
 </div>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/string/inflections.rb</code>です。</p></div>
-<h5 id="singularize"><a href="#singularize">5.10.2 <code>singularize</code></a></h5>
+<h5 id="singularize"><a href="#singularize">5.11.2 <code>singularize</code></a></h5>
 <p><code>pluralize</code>と逆の動作です。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1803,7 +1805,7 @@ end
 </pre>
 </div>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/string/inflections.rb</code>です。</p></div>
-<h5 id="camelize"><a href="#camelize">5.10.3 <code>camelize</code></a></h5>
+<h5 id="camelize"><a href="#camelize">5.11.3 <code>camelize</code></a></h5>
 <p><code>camelize</code>メソッドは、レシーバをキャメルケース (冒頭を大文字にした単語をスペースなしで連結した語) にしたものを返します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1839,7 +1841,7 @@ end
 </pre>
 </div>
 <p>このメソッドは、そのような命名慣習に従っている言語 (JavaScriptなど) で使用される名前を求めるのに便利です。</p>
-<div class="info"><p><code>camelize</code>メソッドは、<code>underscore</code>メソッドと逆の動作をすると考えるとわかりやすいでしょう。ただし逆は必ずしも真ならずで、<code>"SSLError".underscore.camelize</code>の実行結果は<code>"SslError"</code>となります。このような場合をサポートするために、Active Supportでは<code>config/initializers/inflections.rb</code>の頭字語を指定することができます。</p></div>
+<div class="info"><p><code>camerize</code>メソッドの動作は、<code>underscore</code>メソッドと逆の動作と考えるとわかりやすいでしょう。ただし完全に逆の動作ではありません。たとえば、<code>"SSLError".underscore.camelize</code>を実行した結果は<code>"SslError"</code>になり、元に戻りません。このような場合をサポートするために、Active Supportでは<code>config/initializers/inflections.rb</code>の頭字語を指定することができます。</p></div>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 ActiveSupport::Inflector.inflections do |inflect|
@@ -1852,7 +1854,7 @@ end
 </div>
 <p><code>camelize</code>は<code>camelcase</code>の別名です。</p>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/string/inflections.rb</code>です。</p></div>
-<h5 id="underscore"><a href="#underscore">5.10.4 <code>underscore</code></a></h5>
+<h5 id="underscore"><a href="#underscore">5.11.4 <code>underscore</code></a></h5>
 <p><code>underscore</code>メソッドは上と逆に、キャメルケースをパスに変換します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1876,7 +1878,7 @@ end
 </pre>
 </div>
 <p>ただし<code>underscore</code>は引数を取りません。</p>
-<p>Railsで自動的にロードされるクラスとモジュールは<code>underscore</code>メソッドを使用して、ファイルの拡張子を除いた相対パスを推測し、指定された定数が失われている場合にそれを定義するのに役立てます。</p>
+<p>Railsで自動的に読み込まれるクラスとモジュールは、<code>underscore</code>メソッドを使用してファイルの拡張子を除いた相対パスを推測し、指定された定数が失われている場合にそれを定義するのに役立てます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # active_support/dependencies.rb
@@ -1889,9 +1891,9 @@ end
 
 </pre>
 </div>
-<div class="info"><p><code>underscore</code>メソッドは、<code>camelize</code>メソッドと逆の動作をすると考えるとわかりやすいでしょう。ただし、きれいに逆変換されるとは限りません。たとえば、<code>"SSLError".underscore.camelize</code>を実行した結果は<code>"SslError"</code>になります。</p></div>
+<div class="info"><p><code>underscore</code>メソッドの動作は、<code>camelize</code>メソッドと逆の動作と考えるとわかりやすいでしょう。ただし完全に逆の動作ではありません。たとえば、<code>"SSLError".underscore.camelize</code>を実行した結果は<code>"SslError"</code>になり、元に戻りません。</p></div>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/string/inflections.rb</code>です。</p></div>
-<h5 id="titleize"><a href="#titleize">5.10.5 <code>titleize</code></a></h5>
+<h5 id="titleize"><a href="#titleize">5.11.5 <code>titleize</code></a></h5>
 <p><code>titleize</code>メソッドは、レシーバの語の1文字目を大文字にします。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1902,7 +1904,7 @@ end
 </div>
 <p><code>titleize</code>メソッドは<code>titlecase</code>の別名です。</p>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/string/inflections.rb</code>です。</p></div>
-<h5 id="dasherize"><a href="#dasherize">5.10.6 <code>dasherize</code></a></h5>
+<h5 id="dasherize"><a href="#dasherize">5.11.6 <code>dasherize</code></a></h5>
 <p><code>dasherize</code>メソッドは、レシーバのアンダースコア文字をダッシュに置き換えます(訳注: ここで言うダッシュは実際には「ハイフンマイナス文字」(U+002D)です)。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1923,7 +1925,7 @@ end
 </pre>
 </div>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/string/inflections.rb</code>です。</p></div>
-<h5 id="demodulize"><a href="#demodulize">5.10.7 <code>demodulize</code></a></h5>
+<h5 id="demodulize"><a href="#demodulize">5.11.7 <code>demodulize</code></a></h5>
 <p><code>demodulize</code>メソッドは、フルパスの (qualified) 定数名を与えられると、パス部分を取り除いて右側の定数名だけにしたものを返します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1951,7 +1953,7 @@ end
 </pre>
 </div>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/string/inflections.rb</code>です。</p></div>
-<h5 id="deconstantize"><a href="#deconstantize">5.10.8 <code>deconstantize</code></a></h5>
+<h5 id="deconstantize"><a href="#deconstantize">5.11.8 <code>deconstantize</code></a></h5>
 <p><code>deconstantize</code>メソッドは、フルパスの定数を表す参照表現を与えられると、一番右の部分 (通常は定数名) を取り除きます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1976,7 +1978,7 @@ end
 </pre>
 </div>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/string/inflections.rb</code>です。</p></div>
-<h5 id="parameterize"><a href="#parameterize">5.10.9 <code>parameterize</code></a></h5>
+<h5 id="parameterize"><a href="#parameterize">5.11.9 <code>parameterize</code></a></h5>
 <p><code>parameterize</code>メソッドは、レシーバを正しいURLで使用可能な形式に正規化します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1987,7 +1989,7 @@ end
 </div>
 <p>実際に得られる文字列は、<code>ActiveSupport::Multibyte::Chars</code>のインスタンスでラップされています。</p>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/string/inflections.rb</code>です。</p></div>
-<h5 id="tableize"><a href="#tableize">5.10.10 <code>tableize</code></a></h5>
+<h5 id="tableize"><a href="#tableize">5.11.10 <code>tableize</code></a></h5>
 <p><code>tableize</code>メソッドは、<code>underscore</code>の次に<code>pluralize</code>を実行したものです。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1999,7 +2001,7 @@ end
 </div>
 <p>単純な場合であれば、モデル名に<code>tableize</code>を使用するとモデルのテーブル名を得られます。実際のActive Recordの実装は、単に<code>tableize</code>を実行する場合よりも複雑です。Active Recordではクラス名に対して<code>demodulize</code>も行っており、返される文字列に影響する可能性のあるオプションもいくつかチェックしています。</p>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/string/inflections.rb</code>です。</p></div>
-<h5 id="classify"><a href="#classify">5.10.11 <code>classify</code></a></h5>
+<h5 id="classify"><a href="#classify">5.11.11 <code>classify</code></a></h5>
 <p><code>classify</code>メソッドは、<code>tableize</code>と逆の動作です。与えられたテーブル名に対応するクラス名を返します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -2018,7 +2020,7 @@ end
 </div>
 <p><code>classify</code>が返すクラス名は文字列であることにご注意ください。得られた文字列に対して<code>constantize</code> (後述) を実行することで本当のクラスオブジェクトを得られます。</p>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/string/inflections.rb</code>です。</p></div>
-<h5 id="constantize"><a href="#constantize">5.10.12 <code>constantize</code></a></h5>
+<h5 id="constantize"><a href="#constantize">5.11.12 <code>constantize</code></a></h5>
 <p><code>constantize</code>メソッドは、レシーバの定数参照表現を解決し、実際のオブジェクトを返します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -2047,7 +2049,7 @@ end
 </pre>
 </div>
 <p>従って、このメソッドは、同じ場所でRubyが定数を評価したときの値と必ずしも等価ではありません。</p>
-<p>メイラー (mailer) のテストケースでは、テストされるクラスの名前からテストされるメイラーを取得するのに<code>constantize</code>メソッドを使用します。</p>
+<p>メイラー (mailer) のテストケースでは、テストするクラスの名前からテスト対象のメイラーを取得するのに<code>constantize</code>メソッドを使用します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # action_mailer/test_case.rb
@@ -2060,20 +2062,32 @@ end
 </pre>
 </div>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/string/inflections.rb</code>です。</p></div>
-<h5 id="humanize"><a href="#humanize">5.10.13 <code>humanize</code></a></h5>
-<p><code>humanize</code>メソッドは、属性名を常識的な英語表記に変換します。具体的には、アンダースコアをスペースに置き換え、末尾の "_id" を除去し、冒頭の文字を大文字にします。</p>
+<h5 id="humanize"><a href="#humanize">5.11.13 <code>humanize</code></a></h5>
+<p><code>humanize</code>メソッドは、属性名を (英語的に) 読みやすい表記に変換します。</p>
+<p>具体的には以下の変換を行います。</p>
+<ul>
+<li>引数に (英語の) 活用ルールを適用します(inflection)。</li>
+<li>冒頭にアンダースコアがある場合は削除します。</li>
+<li>末尾に"_id"がある場合は削除します。</li>
+<li>アンダースコアが他にもある場合はスペースに置き換えます。</li>
+<li>略語を除いてすべての単語を小文字にします(downcase)。</li>
+<li>最初の単語だけ冒頭の文字を大文字にします(capitalize)。</li>
+</ul>
+<p><code>capitalize</code>オプションをfalseにすると、冒頭の文字は大文字にされません(デフォルトはtrue)。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-"name".humanize           # =&gt; "Name"
-"author_id".humanize      # =&gt; "Author"
-"comments_count".humanize # =&gt; "Comments count"
+"name".humanize                         # =&gt; "Name"
+"author_id".humanize                    # =&gt; "Author"
+"author_id".humanize(capitalize: false) # =&gt; "author"
+"comments_count".humanize               # =&gt; "Comments count"
+"_id".humanize                          # =&gt; "Id"
 
 </pre>
 </div>
-<p>オプションの<code>capitalize</code>パラメータをfalseにすると、冒頭の文字は大文字にされません。</p>
+<p>"SSL"が頭字語と定義されている場合は以下のようにエラーになります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-"author_id".humanize(capitalize: false) # =&gt; "author"
+'ssl_error'.humanize # =&gt; "SSL error"
 
 </pre>
 </div>
@@ -2081,22 +2095,20 @@ end
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 def full_messages
-  full_messages = []
+  map { |attribute, message| full_message(attribute, message) }
+end
 
-  each do |attribute, messages|
-    ...
-    attr_name = attribute.to_s.gsub('.', '_').humanize
-    attr_name = @base.class.human_attribute_name(attribute, default: attr_name)
-    ...
-  end
-
-  full_messages
+def full_message
+  ...
+  attr_name = attribute.to_s.tr('.', '_').humanize
+  attr_name = @base.class.human_attribute_name(attribute, default: attr_name)
+  ...
 end
 
 </pre>
 </div>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/string/inflections.rb</code>です。</p></div>
-<h5 id="foreign_key"><a href="#foreign_key">5.10.14 <code>foreign_key</code></a></h5>
+<h5 id="foreign_key"><a href="#foreign_key">5.11.14 <code>foreign_key</code></a></h5>
 <p><code>foreign_key</code>メソッドは、クラス名から外部キーカラム名を求める時に使用します。具体的には、<code>demodulize</code>、<code>underscore</code>を実行し、末尾に "_id" を追加します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -2106,7 +2118,7 @@ end
 
 </pre>
 </div>
-<p>末尾の "_id" のアンダースコアが不要な場合は引数にfalseを指定します。</p>
+<p>末尾の "_id" のアンダースコアが不要な場合は引数に<code>false</code>を指定します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 "User".foreign_key(false) # =&gt; "userid"
@@ -2122,8 +2134,8 @@ foreign_key = options[:foreign_key] || reflection.active_record.name.foreign_key
 </pre>
 </div>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/string/inflections.rb</code>です。</p></div>
-<h4 id="stringの拡張-各種変換"><a href="#string%E3%81%AE%E6%8B%A1%E5%BC%B5-%E5%90%84%E7%A8%AE%E5%A4%89%E6%8F%9B">5.11 各種変換</a></h4>
-<h5 id="to_date、to_time、to_datetime"><a href="#to_date%E3%80%81to_time%E3%80%81to_datetime">5.11.1 <code>to_date</code>、<code>to_time</code>、<code>to_datetime</code></a></h5>
+<h4 id="stringの拡張-各種変換"><a href="#string%E3%81%AE%E6%8B%A1%E5%BC%B5-%E5%90%84%E7%A8%AE%E5%A4%89%E6%8F%9B">5.12 各種変換</a></h4>
+<h5 id="to_date、to_time、to_datetime"><a href="#to_date%E3%80%81to_time%E3%80%81to_datetime">5.12.1 <code>to_date</code>、<code>to_time</code>、<code>to_datetime</code></a></h5>
 <p><code>to_date</code>、<code>to_time</code>、<code>to_datetime</code>メソッドは、<code>Date._parse</code>をラップして使いやすくします。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -2180,7 +2192,7 @@ exabytes
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/numeric/bytes.rb</code>です。</p></div>
 <h4 id="time"><a href="#time">6.2 Time</a></h4>
 <p>たとえば<code>45.minutes + 2.hours + 4.years</code>のように時間の計算や宣言を行なうことができます。</p>
-<p>これらのメソッドでは、from_nowやagoなどを使用したり、またはTimeオブジェクトから得た結果の加減算を行なう際に、Time#advanceを使用して正確な日付計算を行っています。例：</p>
+<p>これらのメソッドでは、from_nowやagoなどを使用したり、またはTimeオブジェクトから得た結果の加減算を行なう際に、Time#advanceを使用して正確な日付計算を行っています。以下に例を示します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # Time.current.advance(months: 1) と等価
@@ -2194,19 +2206,6 @@ exabytes
 
 </pre>
 </div>
-<p>これらのメソッドは、上のような例での計算は正確に行いますが、<code>months'や</code>years'などの計算を行う場合には期待どおりにならないこともあるため注意が必要です (訳注: 現実の月や年の日数は一定ではありませんが、1.monthの長さが以下のように固定されているため、たとえば7月1日の1か月後を求めると8月1日でなく7月30日となったりします)。</p>
-<div class="code_container">
-<pre class="brush: ruby; gutter: false; toolbar: false">
-# 30.days.to_i.from_nowと等価
-1.month.to_i.from_now
-
-# 365.25.days.to_f.from_nowと等価
-1.year.to_f.from_now
-
-</pre>
-</div>
-<p>このような場合、日付時刻を正確に計算するにはRubyのコア <a href="http://ruby-doc.org/stdlib/libdoc/date/rdoc/Date.html">Date</a> および <a href="http://ruby-doc.org/stdlib/libdoc/time/rdoc/Time.html">Time</a> を使用する必要があります。</p>
-<div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/numeric/time.rb</code>です。</p></div>
 <h4 id="フォーマッティング"><a href="#%E3%83%95%E3%82%A9%E3%83%BC%E3%83%9E%E3%83%83%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0">6.3 フォーマッティング</a></h4>
 <p>数値はさまざまな方法でフォーマットできます。</p>
 <p>以下のように、数値を電話番号形式の文字列に変換できます。</p>
@@ -2324,7 +2323,7 @@ exabytes
 </div>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/integer/inflections.rb</code>です。</p></div>
 <h4 id="ordinalize"><a href="#ordinalize">7.3 <code>ordinalize</code></a></h4>
-<p><code>ordinalize</code>メソッドは、レシーバの整数に、対応する序数文字列を追加したものを返します。先に紹介した<code>ordinal</code>メソッドは、序数文字列 <strong>だけ</strong> を返す点が異なることにご注意ください。</p>
+<p><code>ordinalize</code>メソッドは、レシーバの整数に、対応する序数文字列を追加したものをかえします。先に紹介した<code>ordinal</code>メソッドは、序数文字列 <strong>だけ</strong> を返す点が異なることにご注意ください。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 1.ordinalize    # =&gt; "1st"
@@ -2378,7 +2377,7 @@ BigDecimal.new(5.00, 6).to_formatted_s("e")  # =&gt; "0.5E1"
 
 </pre>
 </div>
-<p><code>+</code>に応答する要素のみが加算の対象としてぜんて</p>
+<p><code>+</code>に応答する要素のみが加算の対象として前提とされます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 [[1, 2], [2, 3], [3, 4]].sum    # =&gt; [1, 2, 2, 3, 3, 4]
@@ -2429,7 +2428,7 @@ invoices.index_by(&amp;:number)
 <pre class="brush: ruby; html-script: true; gutter: false; toolbar: false">
 &lt;% if pages.many? %&gt;
   &lt;%= pagination_links %&gt;
-&lt;% end %&gt; 
+&lt;% end %&gt;
 
 </pre>
 </div>
@@ -2446,6 +2445,15 @@ invoices.index_by(&amp;:number)
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 to_visit &lt;&lt; node if visited.exclude?(node)
+
+</pre>
+</div>
+<div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/enumerable.rb</code>です。</p></div>
+<h4 id="without"><a href="#without">9.5 <code>without</code></a></h4>
+<p><code>without</code>メソッドは、指定した要素を除外したenumerableのコピーを返します。</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+people.without("Aaron", "Todd")
 
 </pre>
 </div>
@@ -2509,7 +2517,7 @@ User.exists?(email: params[:email])
 </div>
 <p>このようなシンタックスシュガーは、多数ある引数が順序に依存することを避け、名前付きパラメータをエミュレートするインターフェイスを提供するためにRailsで多用されています。特に、末尾にオプションのハッシュを置くというのは定番中の定番です。</p>
 <p>しかし、あるメソッドが受け取る引数の数が固定されておらず、メソッド宣言で<code>*</code>が使用されていると、そのような波括弧なしのオプションハッシュは、引数の配列の末尾の要素になってしまい、ハッシュとして認識されなくなってしまいます。</p>
-<p>このような場合、<code>extract_options!</code>メソッドを使用することでオプションハッシュを区別して扱えるようになります。このメソッドは、配列の最後の項目の型をチェックします。それがハッシュの場合、そのハッシュを取り出して返し、それいがいの場合は空のハッシュを返します。</p>
+<p>このような場合、<code>extract_options!</code>メソッドを使用することでオプションハッシュを区別して扱えるようになります。このメソッドは、配列の最後の項目の型をチェックします。それがハッシュの場合、そのハッシュを取り出して返し、それ以外の場合は空のハッシュを返します。</p>
 <p><code>caches_action</code>コントローラマクロでの定義を例にとって見てみましょう。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -2548,8 +2556,8 @@ end
 <table>
 <thead>
 <tr>
-<th>Option</th>
-<th>I18n key</th>
+<th>オプション</th>
+<th>I18n キー</th>
 </tr>
 </thead>
 <tbody>
@@ -2582,7 +2590,7 @@ invoice.lines.to_formatted_s(:db) # =&gt; "23,567,556,12"
 <p>上の例の整数は、<code>id</code>への呼び出しによって取り出されたものと考えられます。</p>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/array/conversions.rb</code>です。</p></div>
 <h5 id="arrayの拡張-各種変換-to_xml"><a href="#array%E3%81%AE%E6%8B%A1%E5%BC%B5-%E5%90%84%E7%A8%AE%E5%A4%89%E6%8F%9B-to_xml">10.4.3 <code>to_xml</code></a></h5>
-<p><code>to_xml</code>メソッドは、レシーバのXML表現を含む文字列を返します。</p>
+<p><code>to_xml</code>メソッドは、レシーバをXML表現に変換したものを含む文字列を返します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Contributor.limit(2).order(:rank).to_xml
@@ -2606,7 +2614,7 @@ Contributor.limit(2).order(:rank).to_xml
 </pre>
 </div>
 <p>実際には、<code>to_xml</code>をすべての要素に送り、結果をルートノードの下に集めます。すべての要素が<code>to_xml</code>に応答する必要があります。そうでない場合は例外が発生します。</p>
-<p>デフォルトでは、ルート要素の名前は最初の要素のクラス名を複数形にしてアンダースコア化(underscorize)とダッシュ化(dasherize)を行います。残りの要素も最初の要素と同じ型 (<code>is_a?</code>でチェックされます) に属し、ハッシュでないことが前提となっています。上の例で言うと、"contributors"がそれです。</p>
+<p>デフォルトでは、ルート要素の名前は最初の要素のクラス名を複数形にしてアンダースコア化(underscorize)とダッシュ化(dasherize)を行います。残りの要素も最初の要素と同じ型 (<code>is_a?</code>でチェックされます) に属し、ハッシュでないことが前提となっています。上の例で言うと、"contributors"です。</p>
 <p>最初の要素と同じ型に属さない要素が1つでもある場合、ルートノードには<code>objects</code>が使用されます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -2655,7 +2663,7 @@ Contributor.limit(2).order(:rank).to_xml
 </pre>
 </div>
 <div class="warning"><p>コレクションが空の場合、ルート要素はデフォルトで"nilクラス"になります。ここからわかるように、たとえば上の例でのcontributorsのリストのルート要素は、コレクションがもし空であれば "contributors" ではなく "nilクラス" になってしまうということです。<code>:root</code>オプションを使用することで一貫したルート要素を使用することもできます。</p></div>
-<p>子ノードの名前は、デフォルトではルートノードを単数形にしたものが使用されます。上の例で言うと"contributor"や"object"がそれです。<code>:children</code>オプションを使用すると、これらをノード名として設定できます。</p>
+<p>子ノードの名前は、デフォルトではルートノードを単数形にしたものが使用されます。上の例で言うと"contributor"や"object"です。<code>:children</code>オプションを使用すると、これらをノード名として設定できます。</p>
 <p>デフォルトのXMLビルダは、<code>Builder::XmlMarkup</code>から直接生成されたインスタンスです。<code>:builder</code>オブションを使用することで、独自のビルダを構成できます。このメソッドでは<code>:dasherize</code>とその同族と同様のオプションが使用できます。それらのオプションはビルダに転送されます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -2701,7 +2709,7 @@ Array.wrap(0)         # =&gt; [0]
 <li>引数が<code>to_ary</code>に応答する場合、このメソッドが呼び出されます。<code>nil</code>が返された場合、<code>Kernel#Array</code>は<code>to_a</code>を適用しようと動作を続けますが、<code>Array.wrap</code>はすぐさま<code>nil</code>を返します。</li>
 <li>
 <code>to_ary</code>から返された値が<code>nil</code>でも<code>Array</code>オブジェクトでもない場合、<code>Kernel#Array</code>は例外を発生しますが、<code>Array.wrap</code>は例外を発生せずに単にその値を返します。</li>
-<li>このメソッドは引数に対して<code>to_a</code>を呼び出しませんが、特殊なケースとして<code>nil</code>は空の配列を返します。</li>
+<li>このメソッドは引数に対して<code>to_a</code>を呼び出しませんが、特殊なケースとして<code>nil</code>では空の配列を返します。</li>
 </ul>
 <p>最後の性質は、列挙型同士を比較する場合に特に便利です。</p>
 <div class="code_container">
@@ -2718,11 +2726,12 @@ Array(foo: :bar)      # =&gt; [[:foo, :bar]]
 
 </pre>
 </div>
-<p>上はRuby 1.8の場合、<code>nil</code>に対して<code>[nil]</code>を返し、それ以外の場合には<code>Array(object)</code>を呼び出します。(1.9のcontact機能の正確な動作について知っている前提とします)</p>
-<p>従って、この場合<code>nil</code>に対する動作が異なり、上で説明されている、残りの<code>object</code>に適用される<code>Kernel#Array</code>も異なります。</p>
+<p>上はRuby 1.8の場合、<code>nil</code>に対して<code>[nil]</code>を返し、それ以外の場合には<code>Array(object)</code>を呼び出します。(1.9のcontact機能の正確な動作を理解していることが前提です)</p>
+<p>従って、この場合<code>nil</code>に対する動作は異なり、上で説明されている<code>Kernel#Array</code>についてもこの異なる動作が残りの<code>object</code>に適用されます。</p>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/array/wrap.rb</code>です。</p></div>
 <h4 id="複製"><a href="#%E8%A4%87%E8%A3%BD">10.6 複製</a></h4>
-<p><code>Array.deep_dup</code>メソッドは、自分自身を複製すると同時に、その中のすべてのオブジェクトをActive Supportの<code>Object#deep_dup</code>メソッドによって再帰的に複製します。この動作は、<code>Array#map</code>を使用して<code>deep_dup</code>メソッドを内部の各オブジェクトに適用するのと似ています。</p>
+<p><code>Array.deep_dup</code>メソッドは、自分自身を複製すると同時に、Active Supportの<code>Object#deep_dup</code>メソッドによってその中のすべてのオブジェクトも再帰的に複製します。
+この動作は、<code>Array#map</code>を使用して<code>deep_dup</code>メソッドを内部の各オブジェクトに適用するのと似ています。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 array = [1, [2, 3]]
@@ -2762,14 +2771,14 @@ array[1][2] == nil   # =&gt; true
 
 </pre>
 </div>
-<p>2番目のオプション引数に<code>false</code>を渡せば、空きを埋めなくなります。</p>
+<p>2番目のオプション引数に<code>false</code>を渡すと、最後のグループの空きは詰められます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 [1, 2, 3].in_groups_of(2, false) # =&gt; [[1, 2], [3]]
 
 </pre>
 </div>
-<p>当然ながら、<code>false</code>は空きを埋める値としては使用できないことになります。</p>
+<p>従って、<code>false</code>は空きを埋める値としては使用できません。</p>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/array/grouping.rb</code>です。</p></div>
 <h5 id="in_groups(number,-fill_with-=-nil)"><a href="#in_groups(number,-fill_with-=-nil)">10.7.2 <code>in_groups(number, fill_with = nil)</code></a></h5>
 <p><code>in_groups</code>は、配列を指定の個数のグループに分割します。分割されたグループを内包する配列を1つ返します。</p>
@@ -2790,7 +2799,7 @@ array[1][2] == nil   # =&gt; true
 
 </pre>
 </div>
-<p>この例では、<code>in_groups</code>メソッドは一部のグループの後ろを必要に応じて<code>nil</code>要素で埋めているのがわかります。1つのグループには、このような余分な要素がグループの一番右側に必要に応じて最大で1つ置かれる可能性があります。 また、そのような値を持つグループは、常に全体の中で最後のグループになります。</p>
+<p>この例では、<code>in_groups</code>メソッドは一部のグループの後ろを必要に応じて<code>nil</code>要素で埋めているのがわかります。1つのグループには、このような余分な要素がグループの一番右側に必要に応じて最大で1つ置かれる可能性があります。また、そのような値を持つグループは、常に全体の中で最後のグループになります。</p>
 <p>空きを埋める値は2番目のオプション引数で指定できます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -2799,7 +2808,7 @@ array[1][2] == nil   # =&gt; true
 
 </pre>
 </div>
-<p>2番目のオプション引数に<code>false</code>を渡せば、空きを埋めなくなります。</p>
+<p>2番目のオプション引数に<code>false</code>を渡すと、要素の個数の少ないグループの空きは詰められます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 %w(1 2 3 4 5 6 7).in_groups(3, false)
@@ -2807,7 +2816,7 @@ array[1][2] == nil   # =&gt; true
 
 </pre>
 </div>
-<p>当然ながら、<code>false</code>は空きを埋める値としては使用できないことになります。</p>
+<p>従って、<code>false</code>は空きを埋める値としては使用できません。</p>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/array/grouping.rb</code>です。</p></div>
 <h5 id="split(value-=-nil)"><a href="#split(value-=-nil)">10.7.3 <code>split(value = nil)</code></a></h5>
 <p><code>split</code>メソッドは、指定のセパレータで配列を分割し、分割されたチャンクを返します。</p>
@@ -2849,9 +2858,9 @@ array[1][2] == nil   # =&gt; true
 <ul>
 <li><p>値がハッシュのとき、キーを<code>:root</code>として再帰的な呼び出しを行います。</p></li>
 <li><p>値が配列の場合、キーを<code>:root</code>に、キーを単数形化 (singularize) したものを<code>:children</code>に指定して再帰的な呼び出しを行います。</p></li>
-<li><p>値が呼び出し可能な (callable) オブジェクトの場合、引数が1つまたは2つ必要です。引数の数に応じて (arityメソッドで確認)、呼び出し可能オブジェクトを呼び出します。第1引数には<code>:root</code>にキーを指定したもの、第2引数にはキーを単数形化したものが使用されます。戻り値は新しいノードです。</p></li>
+<li><p>値が呼び出し可能な (callable) オブジェクトの場合、引数が1つまたは2つ必要です。引数の数に応じて (arityメソッドで確認)、呼び出し可能オブジェクトを呼び出します。第1引数には<code>:root</code>にキーを指定したもの、第2引数にはキーを単数形化したものが使用されます。返し値は新しいノードです。</p></li>
 <li><p><code>value</code>が<code>to_xml</code>メソッドに応答する場合、<code>:root</code>にキーが指定されます。</p></li>
-<li><p>その他の場合、<code>key</code>を持ち、ノードがタグとして作成されます。そのノードには<code>value</code>を文字列形式にしたものがテキストノードとして追加されます。<code>value</code>が<code>nil</code>の場合、"nil"属性が"true"に設定されたものが追加されます。<code>:skip_types</code>オプションがtrueでない (または<code>:skip_types</code>オプションがない) 場合、 以下のようなマッピングで"type"属性も追加されます。</p></li>
+<li><p>その他の場合、<code>key</code>を持ち、ノードがタグとして作成されます。そのノードには<code>value</code>を文字列形式にしたものがテキストノードとして追加されます。<code>value</code>が<code>nil</code>の場合、"nil"属性が"true"に設定されたものが追加されます。<code>:skip_types</code>オプションがtrueでない (または<code>:skip_types</code>オプションがない) 場合、以下のようなマッピングで"type"属性も追加されます。</p></li>
 </ul>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -2909,7 +2918,7 @@ options.reverse_merge!(length: 30, omission: "...")
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/hash/reverse_merge.rb</code>です。</p></div>
 <h5 id="reverse_update"><a href="#reverse_update">11.2.2 <code>reverse_update</code></a></h5>
 <p><code>reverse_update</code>メソッドは、上で説明した<code>reverse_merge!</code>の別名です。</p>
-<div class="warning"><p><code>reverse_update</code>には破壊的なバージョンはありません。</p></div>
+<p>WARN: <code>reverse_update</code>には破壊的なバージョンはありません。</p>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/hash/reverse_merge.rb</code>です。</p></div>
 <h5 id="deep_mergeとdeep_merge!"><a href="#deep_merge%E3%81%A8deep_merge!">11.2.3 <code>deep_merge</code>と<code>deep_merge!</code></a></h5>
 <p>先の例で説明したとおり、キーがレシーバと引数で重複している場合、引数の側の値が優先されます。</p>
@@ -2924,8 +2933,7 @@ options.reverse_merge!(length: 30, omission: "...")
 <p><code>deep_merge!</code>メソッドはディープマージを破壊的に実行します。</p>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/hash/deep_merge.rb</code>です。</p></div>
 <h4 id="ディープ複製"><a href="#%E3%83%87%E3%82%A3%E3%83%BC%E3%83%97%E8%A4%87%E8%A3%BD">11.3 ディープ複製</a></h4>
-<p><code>Hash.deep_dup</code>メソッドは、自分自身の複製に加えて
-その中のすべてのキーと値を再帰的に複製します。複製にはActive Supportの<code>Object#deep_dup</code>メソッドを使用しています。この動作は、<code>Enumerator#each_with_object</code>を使用して下位のすべてのオブジェクトに<code>deep_dup</code>を送信するのと似ています。</p>
+<p><code>Hash.deep_dup</code>メソッドは、自分自身の複製に加えて その中のすべてのキーと値を再帰的に複製します。複製にはActive Supportの<code>Object#deep_dup</code>メソッドを使用しています。この動作は、<code>Enumerator#each_with_object</code>を使用して下位のすべてのオブジェクトに<code>deep_dup</code>を送信するのと似ています。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 hash = { a: 1, b: { c: 2, d: [3, 4] } }
@@ -2960,7 +2968,7 @@ hash[:b][:d] == [3, 4]   # =&gt; true
 <p>レシーバーからキーを取り除く破壊的な<code>except!</code>もあります。</p>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/hash/except.rb</code>です。</p></div>
 <h5 id="transform_keysとtransform_keys!"><a href="#transform_keys%E3%81%A8transform_keys!">11.4.2 <code>transform_keys</code>と<code>transform_keys!</code></a></h5>
-<p><code>transform_keys</code>メソッドは、ブロックを1つ取り、ハッシュを1つ返します。返されるハッシュには、レシーバのすべてのキーに対してブロック操作を適用した結果が含まれます。</p>
+<p><code>transform_keys</code>メソッドは、ブロックを1つ取り、ハッシュを1つ返します。返されるハッシュには、レシーバのそれぞれのキーに対してブロック操作を適用した結果が含まれます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 {nil =&gt; nil, 1 =&gt; 1, a: :a}.transform_keys { |key| key.to_s.upcase }
@@ -3033,7 +3041,7 @@ end
 
 </pre>
 </div>
-<p>stringify_keysメソッドのおかげで、2行目で"type"キーに安全にアクセスできています。メソッドの利用者は、<code>:type</code>のようなシンボルでも"type"のような文字列でも使用できます。</p>
+<p>stringify_keysメソッドのおかげで、2行目で"type"キーに安全にアクセスできます。メソッドの利用者は、<code>:type</code>のようなシンボルと"type"のような文字列のどちらでも使用できます。</p>
 <p>レシーバーのキーを直接文字列化する破壊的な<code>stringify_keys!</code>もあります。</p>
 <p>また、<code>deep_stringify_keys</code>や<code>deep_stringify_keys!</code>を使用して、与えられたハッシュのすべてのキーを文字列化し、その中にネストされているすべてのハッシュのキーも文字列化することもできます。以下に例を示します。</p>
 <div class="code_container">
@@ -3076,7 +3084,7 @@ end
 
 </pre>
 </div>
-<p>symbolize_keysメソッドのおかげで、2行目で<code>:params</code>キーに安全にアクセスできています。メソッドの利用者は、<code>:params</code>のようなシンボルでも"params"のような文字列でも使用できます。</p>
+<p>symbolize_keysメソッドのおかげで、2行目で<code>:params</code>キーに安全にアクセスできています。メソッドの利用者は、<code>:params</code>のようなシンボルと"params"のような文字列のどちらでも使用できます。</p>
 <p>レシーバーのキーを直接シンボルに変換する破壊的な<code>symbolize_keys!</code>もあります。</p>
 <p>また、<code>deep_symbolize_keys</code>や<code>deep_symbolize_keys!</code>を使用して、与えられたハッシュのすべてのキーと、その中にネストされているすべてのハッシュのキーをシンボルに変換することもできます。以下に例を示します。</p>
 <div class="code_container">
@@ -3095,13 +3103,25 @@ end
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 {a: 1}.assert_valid_keys(:a)  # パスする
-{a: 1}.assert_valid_keys("a") # ArgumentErrorが発生
+{a: 1}.assert_valid_keys("a") # ArgumentError
 
 </pre>
 </div>
 <p>Active Recordは、たとえば関連付けが行われている場合に未知のオプションを受け付けません。このメソッドでは、<code>assert_valid_keys</code>を使用した制御を実装しています。</p>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/hash/keys.rb</code>です。</p></div>
-<h4 id="スライス"><a href="#%E3%82%B9%E3%83%A9%E3%82%A4%E3%82%B9">11.5 スライス</a></h4>
+<h4 id="ハッシュの値の操作"><a href="#%E3%83%8F%E3%83%83%E3%82%B7%E3%83%A5%E3%81%AE%E5%80%A4%E3%81%AE%E6%93%8D%E4%BD%9C">11.5 ハッシュの値の操作</a></h4>
+<h5 id="transform_values-と-transform_values!"><a href="#transform_values-%E3%81%A8-transform_values!">11.5.1 <code>transform_values</code> と <code>transform_values!</code></a></h5>
+<p><code>transform_values</code>メソッドは、ブロックを1つ取り、ハッシュを1つ返します。返されるハッシュには、レシーバのそれぞれの値に対してブロック操作を適用した結果が含まれます。</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+{ nil =&gt; nil, 1 =&gt; 1, :x =&gt; :a }.transform_values { |value| value.to_s.upcase }
+# =&gt; {nil=&gt;"", 1=&gt;"1", :x=&gt;"A"}
+
+</pre>
+</div>
+<p>レシーバ自体のキーに対して破壊的なブロック操作を適用する<code>transform_values!</code>メソッドもあります。</p>
+<div class="note"><p>定義ファイルの場所は<code>active_support/core_text/hash/transform_values.rb</code>です。</p></div>
+<h4 id="スライス"><a href="#%E3%82%B9%E3%83%A9%E3%82%A4%E3%82%B9">11.6 スライス</a></h4>
 <p>Rubyには、文字列や配列をスライスして一部を取り出すビルトインのメソッドをサポートしています。Active Supportでは、スライス操作をハッシュに対して拡張しています。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -3132,7 +3152,7 @@ hash                   # =&gt; {:a=&gt;1}
 </pre>
 </div>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/hash/slice.rb</code>です。</p></div>
-<h4 id="抽出"><a href="#%E6%8A%BD%E5%87%BA">11.6 抽出</a></h4>
+<h4 id="抽出"><a href="#%E6%8A%BD%E5%87%BA">11.7 抽出</a></h4>
 <p><code>extract!</code>メソッドは、与えられたキーにマッチするキー/値ペアを取り除き、取り除いたペアを返します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -3152,7 +3172,7 @@ rest = hash.extract!(:a).class
 </pre>
 </div>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/hash/slice.rb</code>です。</p></div>
-<h4 id="ハッシュキーがシンボルでも文字列でも同様に扱う-(indifferent-access)"><a href="#%E3%83%8F%E3%83%83%E3%82%B7%E3%83%A5%E3%82%AD%E3%83%BC%E3%81%8C%E3%82%B7%E3%83%B3%E3%83%9C%E3%83%AB%E3%81%A7%E3%82%82%E6%96%87%E5%AD%97%E5%88%97%E3%81%A7%E3%82%82%E5%90%8C%E6%A7%98%E3%81%AB%E6%89%B1%E3%81%86-(indifferent-access)">11.7 ハッシュキーがシンボルでも文字列でも同様に扱う (indifferent access)</a></h4>
+<h4 id="ハッシュキーがシンボルでも文字列でも同様に扱う-(indifferent-access)"><a href="#%E3%83%8F%E3%83%83%E3%82%B7%E3%83%A5%E3%82%AD%E3%83%BC%E3%81%8C%E3%82%B7%E3%83%B3%E3%83%9C%E3%83%AB%E3%81%A7%E3%82%82%E6%96%87%E5%AD%97%E5%88%97%E3%81%A7%E3%82%82%E5%90%8C%E6%A7%98%E3%81%AB%E6%89%B1%E3%81%86-(indifferent-access)">11.8 ハッシュキーがシンボルでも文字列でも同様に扱う (indifferent access)</a></h4>
 <p><code>with_indifferent_access</code>メソッドは、レシーバに対して<code>ActiveSupport::HashWithIndifferentAccess</code>を実行した結果を返します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -3161,7 +3181,7 @@ rest = hash.extract!(:a).class
 </pre>
 </div>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/hash/indifferent_access.rb</code>です。</p></div>
-<h4 id="コンパクト化"><a href="#%E3%82%B3%E3%83%B3%E3%83%91%E3%82%AF%E3%83%88%E5%8C%96">11.8 コンパクト化</a></h4>
+<h4 id="コンパクト化"><a href="#%E3%82%B3%E3%83%B3%E3%83%91%E3%82%AF%E3%83%88%E5%8C%96">11.9 コンパクト化</a></h4>
 <p><code>compact</code>メソッドと<code>compact!</code>メソッドは、ハッシュから<code>nil</code>値を除外したものを返します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -3175,10 +3195,10 @@ rest = hash.extract!(:a).class
 <p><code>multiline?</code>メソッドは、正規表現に<code>/m</code>フラグが設定されているかどうかをチェックします。このフラグが設定されていると、ドット (.) が改行にマッチし、複数行を扱えるようになります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-%r{.}.multiline?  # =&gt; false 
+%r{.}.multiline? # =&gt; false
 %r{.}m.multiline? # =&gt; true
 
-Regexp.new('.').multiline?                    # =&gt; false 
+Regexp.new('.').multiline?                    # =&gt; false
 Regexp.new('.', Regexp::MULTILINE).multiline? # =&gt; true
 
 </pre>
@@ -3247,61 +3267,16 @@ end
 </pre>
 </div>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/range/overlaps.rb</code>です。</p></div>
-<h3 id="procの拡張"><a href="#proc%E3%81%AE%E6%8B%A1%E5%BC%B5">14 <code>Proc</code>の拡張</a></h3>
-<h4 id="bind"><a href="#bind">14.1 <code>bind</code></a></h4>
-<p>既に御存じかと思いますが、Rubyには<code>UnboundMethod</code>という特殊なクラスがあります。このクラスのインスタンスは、どこにもバインドされていないメソッドです。<code>Module#instance_method</code>メソッドを使用して、このようなバインドされてないメソッドを1つ得ることができます。</p>
-<div class="code_container">
-<pre class="brush: ruby; gutter: false; toolbar: false">
-Hash.instance_method(:delete) # =&gt; #&lt;UnboundMethod: Hash#delete&gt;
-
-</pre>
-</div>
-<p>バインドされていないメソッドはそのままでは呼び出しできないので、呼び出すためには<code>bind</code>メソッドを使用してメソッドをオブジェクトにバインドしておく必要があります。</p>
-<div class="code_container">
-<pre class="brush: ruby; gutter: false; toolbar: false">
-clear = Hash.instance_method(:clear)
-clear.bind({a: 1}).call # =&gt; {}
-
-</pre>
-</div>
-<p>Active Supportは、同様の目的で<code>Proc#bind</code>メソッドを定義しています。</p>
-<div class="code_container">
-<pre class="brush: ruby; gutter: false; toolbar: false">
-Proc.new { size }.bind([]).call # =&gt; 0
-
-</pre>
-</div>
-<p>上のようにメソッドが呼び出し可能になって引数にバインドされたので、戻り値は実際に<code>Method</code>になりました。</p>
-<div class="note"><p>実際には、<code>Proc#bind</code>は自身の下にメソッドを作成しています。<code>__bind_1256598120_237302</code>のような気持ち悪い名前のメソッドをスタックトレースで見かけることがあると思いますが、あれはまさにこの方法で作成されたものです。</p></div>
-<p>Action Packではこのトリックを<code>rescue_from</code>などで使用しています。そこではメソッド名を1つ引数として取り、与えられたレスキュー例外用のコールバックとしてprocも引数として取ります。これらはいずれにせよ呼び出される必要があります。それによってバインドされたメソッドが<code>handler_for_rescue</code>から返され、呼び出し元のコードがシンプルになります。</p>
-<div class="code_container">
-<pre class="brush: ruby; gutter: false; toolbar: false">
-def handler_for_rescue(exception)
-  _, rescuer = Array(rescue_handlers).reverse.detect do |klass_name, handler|
-    ...
-  end
-
-  case rescuer
-  when Symbol
-    method(rescuer)
-  when Proc
-    rescuer.bind(self)
-  end
-end
-
-</pre>
-</div>
-<div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/proc.rb</code>です。</p></div>
-<h3 id="dateの拡張"><a href="#date%E3%81%AE%E6%8B%A1%E5%BC%B5">15 <code>Date</code>の拡張</a></h3>
-<h4 id="dateの拡張-計算"><a href="#date%E3%81%AE%E6%8B%A1%E5%BC%B5-%E8%A8%88%E7%AE%97">15.1 計算</a></h4>
+<h3 id="dateの拡張"><a href="#date%E3%81%AE%E6%8B%A1%E5%BC%B5">14 <code>Date</code>の拡張</a></h3>
+<h4 id="dateの拡張-計算"><a href="#date%E3%81%AE%E6%8B%A1%E5%BC%B5-%E8%A8%88%E7%AE%97">14.1 計算</a></h4>
 <div class="note"><p>これらはすべて同じ定義ファイル<code>active_support/core_ext/date/calculations.rb</code>にあります。</p></div>
 <div class="info"><p>以下の計算方法の一部では1582年10月を極端な例として使用しています。この月にユリウス暦からグレゴリオ暦への切り替えが行われたため、10月5日から10月14日までが存在しません。本ガイドはこの特殊な月について長々と解説することはしませんが、メソッドがこの月でも期待どおりに動作することについては説明しておきたいと思います。具体的には、たとえば<code>Date.new(1582, 10, 4).tomorrow</code>を実行すると<code>Date.new(1582, 10, 15)</code>が返されます。期待どおりに動作することは、Active Supportの<code>test/core_ext/date_ext_test.rb</code>用のテストスイートで確認できます。</p></div>
-<h5 id="date.current"><a href="#date.current">15.1.1 <code>Date.current</code></a></h5>
+<h5 id="date.current"><a href="#date.current">14.1.1 <code>Date.current</code></a></h5>
 <p>Active Supportでは、<code>Date.current</code>を定義して現在のタイムゾーンにおける「今日」を定めています。このメソッドは<code>Date.today</code>と似ていますが、ユーザー定義のタイムゾーンがある場合にそれを考慮する点が異なります。Active Supportでは<code>Date.yesterday</code>メソッドと<code>Date.tomorrow</code>も定義しています。インスタンスでは<code>past?</code>、<code>today?</code>、<code>future?</code>を使用でき、これらはすべて<code>Date.current</code>を起点として導かれます。</p>
 <p>ユーザー定義のタイムゾーンを考慮するメソッドを使用して日付を比較したい場合、<code>Date.today</code>ではなく必ず<code>Date.current</code>を使用してください。将来、ユーザー定義のタイムゾーンがシステムのタイムゾーンと比較されることがありえます。システムのタイムゾーンではデフォルトで<code>Date.today</code>が使用されます。つまり、<code>Date.today</code>が<code>Date.yesterday</code>と等しくなることがありえるということです。</p>
-<h5 id="名前付き日付"><a href="#%E5%90%8D%E5%89%8D%E4%BB%98%E3%81%8D%E6%97%A5%E4%BB%98">15.1.2 名前付き日付</a></h5>
-<h6 id="prev_year、next_year"><a href="#prev_year%E3%80%81next_year">15.1.2.1 <code>prev_year</code>、<code>next_year</code></a></h6>
-<p>Ruby 1.9では、<code>prev_year</code>メソッドと<code>next_year</code>メソッドがそれぞれ返す日と月は、昨年のものも来年のものも同じです。</p>
+<h5 id="名前付き日付"><a href="#%E5%90%8D%E5%89%8D%E4%BB%98%E3%81%8D%E6%97%A5%E4%BB%98">14.1.2 名前付き日付</a></h5>
+<h6 id="prev_year、next_year"><a href="#prev_year%E3%80%81next_year">14.1.2.1 <code>prev_year</code>、<code>next_year</code></a></h6>
+<p>Ruby 1.9の<code>prev_year</code>メソッドと<code>next_year</code>メソッドは、それぞれ昨年と来年の同じ日と月を返します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 d = Date.new(2010, 5, 8) # =&gt; Sat, 08 May 2010
@@ -3310,7 +3285,7 @@ d.next_year              # =&gt; Sun, 08 May 2011
 
 </pre>
 </div>
-<p>うるう年の2月29日から始める場合、昨年と来年の日付は2月28日になります。</p>
+<p>うるう年の2月29日の場合、昨年と来年の日付はいずれも2月28日になります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 d = Date.new(2000, 2, 29) # =&gt; Tue, 29 Feb 2000
@@ -3320,8 +3295,8 @@ d.next_year               # =&gt; Wed, 28 Feb 2001
 </pre>
 </div>
 <p><code>prev_year</code>は<code>last_year</code>の別名です。</p>
-<h6 id="prev_month、next_month"><a href="#prev_month%E3%80%81next_month">15.1.2.2 <code>prev_month</code>、<code>next_month</code></a></h6>
-<p>Ruby 1.9では、<code>prev_month</code>メソッドと<code>next_month</code>メソッドがそれぞれ返す日と月は、先月のものも来月のものも同じです。</p>
+<h6 id="prev_month、next_month"><a href="#prev_month%E3%80%81next_month">14.1.2.2 <code>prev_month</code>、<code>next_month</code></a></h6>
+<p>Ruby 1.9の<code>prev_month</code>メソッドと<code>next_month</code>メソッドは、それぞれ先月と翌月の同じ日を返します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 d = Date.new(2010, 5, 8) # =&gt; Sat, 08 May 2010
@@ -3341,7 +3316,7 @@ Date.new(2000, 1, 31).next_month # =&gt; Tue, 29 Feb 2000
 </pre>
 </div>
 <p><code>prev_month</code>は<code>last_month</code>の別名です。</p>
-<h6 id="prev_quarter、next_quarter"><a href="#prev_quarter%E3%80%81next_quarter">15.1.2.3 <code>prev_quarter</code>、<code>next_quarter</code></a></h6>
+<h6 id="prev_quarter、next_quarter"><a href="#prev_quarter%E3%80%81next_quarter">14.1.2.3 <code>prev_quarter</code>、<code>next_quarter</code></a></h6>
 <p><code>prev_month</code>および<code>next_month</code>と基本的に同じ要領で動作します。前四半期または来四半期の同じ日の日付を返します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -3362,7 +3337,7 @@ Time.local(2000, 11, 31).next_quarter # =&gt; Wed, 28 Feb 2001
 </pre>
 </div>
 <p><code>prev_quarter</code>は<code>last_quarter</code>の別名です。</p>
-<h6 id="beginning_of_week、end_of_week"><a href="#beginning_of_week%E3%80%81end_of_week">15.1.2.4 <code>beginning_of_week</code>、<code>end_of_week</code></a></h6>
+<h6 id="beginning_of_week、end_of_week"><a href="#beginning_of_week%E3%80%81end_of_week">14.1.2.4 <code>beginning_of_week</code>、<code>end_of_week</code></a></h6>
 <p><code>beginning_of_week</code>メソッドと<code>end_of_week</code>メソッドは、それぞれ週の最初の日付と週の最後の日付を返します。週の始まりはデフォルトでは月曜日ですが、引数を渡して変更できます。そのときにスレッドローカルの<code>Date.beginning_of_week</code>または<code>config.beginning_of_week</code>を設定します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -3375,9 +3350,8 @@ d.end_of_week(:sunday)       # =&gt; Sat, 08 May 2010
 </pre>
 </div>
 <p><code>beginning_of_week</code>は<code>at_beginning_of_week</code>の別名、<code>end_of_week</code>は<code>at_end_of_week</code>の別名です。</p>
-<h6 id="monday、sunday"><a href="#monday%E3%80%81sunday">15.1.2.5 <code>monday</code>、<code>sunday</code></a></h6>
-<p><code>monday</code>メソッドと<code>sunday</code>メソッドは、それぞれ前の月曜、
-次の日曜をそれぞれ返します。</p>
+<h6 id="monday、sunday"><a href="#monday%E3%80%81sunday">14.1.2.5 <code>monday</code>、<code>sunday</code></a></h6>
+<p><code>monday</code>メソッドと<code>sunday</code>メソッドは、それぞれ前の月曜、次の日曜をそれぞれ返します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 d = Date.new(2010, 5, 8)     # =&gt; Sat, 08 May 2010
@@ -3392,7 +3366,7 @@ d.sunday                     # =&gt; Sun, 16 Sep 2012
 
 </pre>
 </div>
-<h6 id="prev_week、next_week"><a href="#prev_week%E3%80%81next_week">15.1.2.6 <code>prev_week</code>、<code>next_week</code></a></h6>
+<h6 id="prev_week、next_week"><a href="#prev_week%E3%80%81next_week">14.1.2.6 <code>prev_week</code>、<code>next_week</code></a></h6>
 <p><code>next_week</code>メソッドは、英語表記 (デフォルトではスレッドローカルの<code>Date.beginning_of_week</code>または<code>config.beginning_of_week</code>または<code>:monday</code>) の日付名のシンボルを受け取り、それに対応する日付を返します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -3413,7 +3387,7 @@ d.prev_week(:friday)     # =&gt; Fri, 30 Apr 2010
 </div>
 <p><code>prev_week</code>は<code>last_week</code>の別名です。</p>
 <p><code>Date.beginning_of_week</code>または<code>config.beginning_of_week</code>が設定されていれば、<code>next_week</code>と<code>prev_week</code>はどちらも正常に動作します。</p>
-<h6 id="beginning_of_month、end_of_month"><a href="#beginning_of_month%E3%80%81end_of_month">15.1.2.7 <code>beginning_of_month</code>、<code>end_of_month</code></a></h6>
+<h6 id="beginning_of_month、end_of_month"><a href="#beginning_of_month%E3%80%81end_of_month">14.1.2.7 <code>beginning_of_month</code>、<code>end_of_month</code></a></h6>
 <p><code>beginning_of_month</code>メソッドと<code>end_of_month</code>メソッドは、それぞれ月の最初の日付と月の最後の日付を返します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -3424,7 +3398,7 @@ d.end_of_month           # =&gt; Mon, 31 May 2010
 </pre>
 </div>
 <p><code>beginning_of_month</code>は<code>at_beginning_of_month</code>の別名、<code>end_of_month</code>は<code>at_end_of_month</code>の別名です。</p>
-<h6 id="beginning_of_quarter、end_of_quarter"><a href="#beginning_of_quarter%E3%80%81end_of_quarter">15.1.2.8 <code>beginning_of_quarter</code>、<code>end_of_quarter</code></a></h6>
+<h6 id="beginning_of_quarter、end_of_quarter"><a href="#beginning_of_quarter%E3%80%81end_of_quarter">14.1.2.8 <code>beginning_of_quarter</code>、<code>end_of_quarter</code></a></h6>
 <p><code>beginning_of_quarter</code>メソッドと<code>end_of_quarter</code>メソッドは、レシーバのカレンダーの年における四半期の最初の日と最後の日をそれぞれ返します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -3435,7 +3409,7 @@ d.end_of_quarter         # =&gt; Wed, 30 Jun 2010
 </pre>
 </div>
 <p><code>beginning_of_quarter</code>は<code>at_beginning_of_quarter</code>の別名、<code>end_of_quarter</code>は<code>at_end_of_quarter</code>の別名です。</p>
-<h6 id="beginning_of_year、end_of_year"><a href="#beginning_of_year%E3%80%81end_of_year">15.1.2.9 <code>beginning_of_year</code>、<code>end_of_year</code></a></h6>
+<h6 id="beginning_of_year、end_of_year"><a href="#beginning_of_year%E3%80%81end_of_year">14.1.2.9 <code>beginning_of_year</code>、<code>end_of_year</code></a></h6>
 <p><code>beginning_of_year</code>メソッドと<code>end_of_year</code>メソッドは、その年の最初の日と最後の日をそれぞれ返します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -3446,8 +3420,8 @@ d.end_of_year            # =&gt; Fri, 31 Dec 2010
 </pre>
 </div>
 <p><code>beginning_of_year</code>は<code>at_beginning_of_year</code>の別名、<code>end_of_year</code>は<code>at_end_of_year</code>の別名です。</p>
-<h5 id="その他の日付計算メソッド"><a href="#%E3%81%9D%E3%81%AE%E4%BB%96%E3%81%AE%E6%97%A5%E4%BB%98%E8%A8%88%E7%AE%97%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89">15.1.3 その他の日付計算メソッド</a></h5>
-<h6 id="years_ago、years_since"><a href="#years_ago%E3%80%81years_since">15.1.3.1 <code>years_ago</code>、<code>years_since</code></a></h6>
+<h5 id="その他の日付計算メソッド"><a href="#%E3%81%9D%E3%81%AE%E4%BB%96%E3%81%AE%E6%97%A5%E4%BB%98%E8%A8%88%E7%AE%97%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89">14.1.3 その他の日付計算メソッド</a></h5>
+<h6 id="years_ago、years_since"><a href="#years_ago%E3%80%81years_since">14.1.3.1 <code>years_ago</code>、<code>years_since</code></a></h6>
 <p><code>years_ago</code>メソッドは、年数を受け取り、その年数前の同じ日付を返します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -3472,7 +3446,7 @@ Date.new(2012, 2, 29).years_since(3)   # =&gt; Sat, 28 Feb 2015
 
 </pre>
 </div>
-<h6 id="months_ago、months_since"><a href="#months_ago%E3%80%81months_since">15.1.3.2 <code>months_ago</code>、<code>months_since</code></a></h6>
+<h6 id="months_ago、months_since"><a href="#months_ago%E3%80%81months_since">14.1.3.2 <code>months_ago</code>、<code>months_since</code></a></h6>
 <p><code>months_ago</code>メソッドと<code>months_since</code>メソッドは、上と同じ要領で月に対して行います。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -3489,7 +3463,7 @@ Date.new(2009, 12, 31).months_since(2) # =&gt; Sun, 28 Feb 2010
 
 </pre>
 </div>
-<h6 id="weeks_ago"><a href="#weeks_ago">15.1.3.3 <code>weeks_ago</code></a></h6>
+<h6 id="weeks_ago"><a href="#weeks_ago">14.1.3.3 <code>weeks_ago</code></a></h6>
 <p><code>weeks_ago</code>メソッドは、同じ要領で週に対して行います。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -3498,7 +3472,7 @@ Date.new(2010, 5, 24).weeks_ago(2)    # =&gt; Mon, 10 May 2010
 
 </pre>
 </div>
-<h6 id="その他の日付計算メソッド-advance"><a href="#%E3%81%9D%E3%81%AE%E4%BB%96%E3%81%AE%E6%97%A5%E4%BB%98%E8%A8%88%E7%AE%97%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89-advance">15.1.3.4 <code>advance</code></a></h6>
+<h6 id="その他の日付計算メソッド-advance"><a href="#%E3%81%9D%E3%81%AE%E4%BB%96%E3%81%AE%E6%97%A5%E4%BB%98%E8%A8%88%E7%AE%97%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89-advance">14.1.3.4 <code>advance</code></a></h6>
 <p>日付を移動する最も一般的な方法は<code>advance</code>メソッドを使用することです。このメソッドは<code>:years</code>、<code>:months</code>、<code>:weeks</code>、<code>:days</code>をキーに持つハッシュを受け取り、日付をできるだけ詳細な形式で、現在のキーで示されるとおりに返します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -3518,7 +3492,7 @@ Date.new(2010, 2, 28).advance(months: 1, days: 1)
 
 </pre>
 </div>
-<p>もし計算の順序が違っていると、同じ結果が得られない可能性があります。</p>
+<p>計算の順序が異なる場合、同じ結果が得られない可能性があります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Date.new(2010, 2, 28).advance(days: 1).advance(months: 1)
@@ -3526,7 +3500,7 @@ Date.new(2010, 2, 28).advance(days: 1).advance(months: 1)
 
 </pre>
 </div>
-<h5 id="dateの拡張-計算-要素の変更"><a href="#date%E3%81%AE%E6%8B%A1%E5%BC%B5-%E8%A8%88%E7%AE%97-%E8%A6%81%E7%B4%A0%E3%81%AE%E5%A4%89%E6%9B%B4">15.1.4 要素の変更</a></h5>
+<h5 id="dateの拡張-計算-要素の変更"><a href="#date%E3%81%AE%E6%8B%A1%E5%BC%B5-%E8%A8%88%E7%AE%97-%E8%A6%81%E7%B4%A0%E3%81%AE%E5%A4%89%E6%9B%B4">14.1.4 要素の変更</a></h5>
 <p><code>change</code>メソッドは、与えられた年、月、日に応じてレシーバの日付を変更し、与えられなかった部分はそのままにしてその日付を返します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -3543,7 +3517,7 @@ Date.new(2010, 1, 31).change(month: 2)
 
 </pre>
 </div>
-<h5 id="dateの拡張-計算-期間"><a href="#date%E3%81%AE%E6%8B%A1%E5%BC%B5-%E8%A8%88%E7%AE%97-%E6%9C%9F%E9%96%93">15.1.5 期間</a></h5>
+<h5 id="dateの拡張-計算-期間"><a href="#date%E3%81%AE%E6%8B%A1%E5%BC%B5-%E8%A8%88%E7%AE%97-%E6%9C%9F%E9%96%93">14.1.5 期間</a></h5>
 <p>日付に対して期間を加減算できます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -3564,9 +3538,9 @@ Date.new(1582, 10, 4) + 1.day
 
 </pre>
 </div>
-<h5 id="タイムスタンプ"><a href="#%E3%82%BF%E3%82%A4%E3%83%A0%E3%82%B9%E3%82%BF%E3%83%B3%E3%83%97">15.1.6 タイムスタンプ</a></h5>
+<h5 id="タイムスタンプ"><a href="#%E3%82%BF%E3%82%A4%E3%83%A0%E3%82%B9%E3%82%BF%E3%83%B3%E3%83%97">14.1.6 タイムスタンプ</a></h5>
 <div class="info"><p>以下のメソッドは可能であれば<code>Time</code>オブジェクトを返し、それ以外の場合は<code>DateTime</code>を返します。ユーザーのタイムゾーンを設定しておけば配慮されます。</p></div>
-<h6 id="beginning_of_day、end_of_day"><a href="#beginning_of_day%E3%80%81end_of_day">15.1.6.1 <code>beginning_of_day</code>、<code>end_of_day</code></a></h6>
+<h6 id="beginning_of_day、end_of_day"><a href="#beginning_of_day%E3%80%81end_of_day">14.1.6.1 <code>beginning_of_day</code>、<code>end_of_day</code></a></h6>
 <p><code>beginning_of_day</code>メソッドは、その日の開始時点 (00:00:00) のタイムスタンプを返します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -3584,7 +3558,7 @@ date.end_of_day # =&gt; Mon Jun 07 23:59:59 +0200 2010
 </pre>
 </div>
 <p><code>beginning_of_day</code>は<code>at_beginning_of_day</code>の別名, <code>midnight</code>は<code>at_midnight</code>の別名です。</p>
-<h6 id="beginning_of_hour、end_of_hour"><a href="#beginning_of_hour%E3%80%81end_of_hour">15.1.6.2 <code>beginning_of_hour</code>、<code>end_of_hour</code></a></h6>
+<h6 id="beginning_of_hour、end_of_hour"><a href="#beginning_of_hour%E3%80%81end_of_hour">14.1.6.2 <code>beginning_of_hour</code>、<code>end_of_hour</code></a></h6>
 <p><code>beginning_of_hour</code>メソッドは、その時の最初の時点 (hh:00:00) のタイムスタンプを返します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -3602,7 +3576,7 @@ date.end_of_hour # =&gt; Mon Jun 07 19:59:59 +0200 2010
 </pre>
 </div>
 <p><code>beginning_of_hour</code>は<code>at_beginning_of_hour</code>の別名です。</p>
-<h6 id="beginning_of_minute、end_of_minute"><a href="#beginning_of_minute%E3%80%81end_of_minute">15.1.6.3 <code>beginning_of_minute</code>、<code>end_of_minute</code></a></h6>
+<h6 id="beginning_of_minute、end_of_minute"><a href="#beginning_of_minute%E3%80%81end_of_minute">14.1.6.3 <code>beginning_of_minute</code>、<code>end_of_minute</code></a></h6>
 <p><code>beginning_of_minute</code>は、その分の最初の時点 (hh:mm:00) のタイムスタンプを返します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -3621,7 +3595,7 @@ date.end_of_minute # =&gt; Mon Jun 07 19:55:59 +0200 2010
 </div>
 <p><code>beginning_of_minute</code>は<code>at_beginning_of_minute</code>の別名です。</p>
 <div class="info"><p><code>beginning_of_hour</code>、<code>end_of_hour</code>、<code>beginning_of_minute</code>、<code>end_of_minute</code>は<code>Time</code>および<code>DateTime</code>への実装ですが、<code>Date</code>への実装では <strong>ありません</strong> 。<code>Date</code>インスタンスに対して時間や分の最初や最後を問い合わせる意味はありません。</p></div>
-<h6 id="ago、since"><a href="#ago%E3%80%81since">15.1.6.4 <code>ago</code>、<code>since</code></a></h6>
+<h6 id="ago、since"><a href="#ago%E3%80%81since">14.1.6.4 <code>ago</code>、<code>since</code></a></h6>
 <p><code>ago</code>メソッドは秒数を引数として受け取り、真夜中の時点からその秒数だけさかのぼった時点のタイムスタンプを返します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -3630,7 +3604,7 @@ date.ago(1)         # =&gt; Thu, 10 Jun 2010 23:59:59 EDT -04:00
 
 </pre>
 </div>
-<p><code>since</code>メソッドは、同様にその秒数だけ先に進みます。</p>
+<p><code>since</code>メソッドは、同様にその秒数だけさきにすすみます</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 date = Date.current # =&gt; Fri, 11 Jun 2010
@@ -3638,11 +3612,11 @@ date.since(1)       # =&gt; Fri, 11 Jun 2010 00:00:01 EDT -04:00
 
 </pre>
 </div>
-<h5 id="その他の時間計算"><a href="#%E3%81%9D%E3%81%AE%E4%BB%96%E3%81%AE%E6%99%82%E9%96%93%E8%A8%88%E7%AE%97">15.1.7 その他の時間計算</a></h5>
-<h4 id="各種変換"><a href="#%E5%90%84%E7%A8%AE%E5%A4%89%E6%8F%9B">15.2 各種変換</a></h4>
-<h3 id="datetimeの拡張"><a href="#datetime%E3%81%AE%E6%8B%A1%E5%BC%B5">16 <code>DateTime</code>の拡張</a></h3>
+<h5 id="その他の時間計算"><a href="#%E3%81%9D%E3%81%AE%E4%BB%96%E3%81%AE%E6%99%82%E9%96%93%E8%A8%88%E7%AE%97">14.1.7 その他の時間計算</a></h5>
+<h4 id="各種変換"><a href="#%E5%90%84%E7%A8%AE%E5%A4%89%E6%8F%9B">14.2 各種変換</a></h4>
+<h3 id="datetimeの拡張"><a href="#datetime%E3%81%AE%E6%8B%A1%E5%BC%B5">15 <code>DateTime</code>の拡張</a></h3>
 <div class="warning"><p><code>DateTime</code>は夏時間 (DST) ルールについては関知しません。夏時間の変更が行われた場合、メソッドの一部がこのとおりに動作しないことがあります。たとえば、<code>seconds_since_midnight</code>メソッドが返す秒数が実際の総量と合わない可能性があります。</p></div>
-<h4 id="datetimeの拡張-計算"><a href="#datetime%E3%81%AE%E6%8B%A1%E5%BC%B5-%E8%A8%88%E7%AE%97">16.1 計算</a></h4>
+<h4 id="datetimeの拡張-計算"><a href="#datetime%E3%81%AE%E6%8B%A1%E5%BC%B5-%E8%A8%88%E7%AE%97">15.1 計算</a></h4>
 <div class="note"><p>これらはすべて同じ定義ファイル<code>active_support/core_ext/date_time/calculations.rb</code>にあります。</p></div>
 <p><code>DateTime</code>クラスは<code>Date</code>のサブクラスであり、<code>active_support/core_ext/date/calculations.rb</code>を読み込むことでこれらのメソッドと別名を継承することができます。ただしこれらは常にdatetimesを返す点が異なります。</p>
 <div class="code_container">
@@ -3692,11 +3666,11 @@ end_of_hour
 
 </pre>
 </div>
-<h5 id="名前付き日付時刻"><a href="#%E5%90%8D%E5%89%8D%E4%BB%98%E3%81%8D%E6%97%A5%E4%BB%98%E6%99%82%E5%88%BB">16.1.1 名前付き日付時刻</a></h5>
-<h6 id="datetime.current"><a href="#datetime.current">16.1.1.1 <code>DateTime.current</code></a></h6>
+<h5 id="名前付き日付時刻"><a href="#%E5%90%8D%E5%89%8D%E4%BB%98%E3%81%8D%E6%97%A5%E4%BB%98%E6%99%82%E5%88%BB">15.1.1 名前付き日付時刻</a></h5>
+<h6 id="datetime.current"><a href="#datetime.current">15.1.1.1 <code>DateTime.current</code></a></h6>
 <p>Active Supportでは、<code>DateTime.current</code>を<code>Time.now.to_datetime</code>と同様に定義しています。ただし、<code>DateTime.current</code>はユーザータイムゾーンが定義されている場合に対応する点が異なります。Active Supportでは<code>Date.yesterday</code>メソッドと<code>Date.tomorrow</code>も定義しています。インスタンスでは<code>past?</code>と<code>future?</code>を使用でき、これらは<code>Date.current</code>を起点として導かれます。</p>
-<h5 id="その他の拡張"><a href="#%E3%81%9D%E3%81%AE%E4%BB%96%E3%81%AE%E6%8B%A1%E5%BC%B5">16.1.2 その他の拡張</a></h5>
-<h6 id="seconds_since_midnight"><a href="#seconds_since_midnight">16.1.2.1 <code>seconds_since_midnight</code></a></h6>
+<h5 id="その他の拡張"><a href="#%E3%81%9D%E3%81%AE%E4%BB%96%E3%81%AE%E6%8B%A1%E5%BC%B5">15.1.2 その他の拡張</a></h5>
+<h6 id="seconds_since_midnight"><a href="#seconds_since_midnight">15.1.2.1 <code>seconds_since_midnight</code></a></h6>
 <p><code>seconds_since_midnight</code>メソッドは、真夜中からの経過秒数を返します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -3705,7 +3679,7 @@ now.seconds_since_midnight # =&gt; 73596
 
 </pre>
 </div>
-<h6 id="utc"><a href="#utc">16.1.2.2 <code>utc</code></a></h6>
+<h6 id="utc"><a href="#utc">15.1.2.2 <code>utc</code></a></h6>
 <p><code>utc</code>メソッドは、レシーバの日付時刻をUTCで返します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -3715,17 +3689,17 @@ now.utc                # =&gt; Mon, 07 Jun 2010 23:27:52 +0000
 </pre>
 </div>
 <p><code>getutc</code>はこのメソッドの別名です。</p>
-<h6 id="utc?"><a href="#utc?">16.1.2.3 <code>utc?</code></a></h6>
+<h6 id="utc?"><a href="#utc?">15.1.2.3 <code>utc?</code></a></h6>
 <p><code>utc?</code>述語は、レシーバがそのタイムゾーンに合ったUTC時刻を持っているかどうかをチェックします。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 now = DateTime.now # =&gt; Mon, 07 Jun 2010 19:30:47 -0400
-now.utc?           # =&gt; false 
-now.utc.utc?       # =&gt; true
+now.utc?          # =&gt; false
+now.utc.utc?      # =&gt; true
 
 </pre>
 </div>
-<h6 id="その他の拡張-advance"><a href="#%E3%81%9D%E3%81%AE%E4%BB%96%E3%81%AE%E6%8B%A1%E5%BC%B5-advance">16.1.2.4 <code>advance</code></a></h6>
+<h6 id="その他の拡張-advance"><a href="#%E3%81%9D%E3%81%AE%E4%BB%96%E3%81%AE%E6%8B%A1%E5%BC%B5-advance">15.1.2.4 <code>advance</code></a></h6>
 <p>日時を移動する最も一般的な方法は<code>advance</code>メソッドを使用することです。このメソッドは<code>:years</code>、<code>:months</code>、<code>:weeks</code>、<code>:days</code>、<code>:hours</code>、<code>:minutes</code>および<code>:seconds</code>をキーに持つハッシュを受け取り、日時をできるだけ詳細な形式で、現在のキーで示されるとおりに返します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -3756,7 +3730,7 @@ d.advance(seconds: 1).advance(months: 1)
 </pre>
 </div>
 <div class="warning"><p><code>DateTime</code>は夏時間 (DST) を考慮しません。算出された時間が最終的に存在しない時間になっても警告やエラーは発生しません。</p></div>
-<h5 id="datetimeの拡張-計算-要素の変更"><a href="#datetime%E3%81%AE%E6%8B%A1%E5%BC%B5-%E8%A8%88%E7%AE%97-%E8%A6%81%E7%B4%A0%E3%81%AE%E5%A4%89%E6%9B%B4">16.1.3 要素の変更</a></h5>
+<h5 id="datetimeの拡張-計算-要素の変更"><a href="#datetime%E3%81%AE%E6%8B%A1%E5%BC%B5-%E8%A8%88%E7%AE%97-%E8%A6%81%E7%B4%A0%E3%81%AE%E5%A4%89%E6%9B%B4">15.1.3 要素の変更</a></h5>
 <p><code>change</code>メソッドを使用して、レシーバの日時の一部の要素だけを更新した新しい日時を得ることができます。変更する要素としては、<code>:year</code>、<code>:month</code>、<code>:day</code>、<code>:hour</code>、<code>:min</code>、<code>:sec</code>、<code>:offset</code>、<code>:start</code>などが指定できます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -3791,7 +3765,7 @@ DateTime.current.change(month: 2, day: 30)
 
 </pre>
 </div>
-<h5 id="datetimeの拡張-計算-期間"><a href="#datetime%E3%81%AE%E6%8B%A1%E5%BC%B5-%E8%A8%88%E7%AE%97-%E6%9C%9F%E9%96%93">16.1.4 期間</a></h5>
+<h5 id="datetimeの拡張-計算-期間"><a href="#datetime%E3%81%AE%E6%8B%A1%E5%BC%B5-%E8%A8%88%E7%AE%97-%E6%9C%9F%E9%96%93">15.1.4 期間</a></h5>
 <p>日時に対して期間を加減算できます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -3812,8 +3786,8 @@ DateTime.new(1582, 10, 4, 23) + 1.hour
 
 </pre>
 </div>
-<h3 id="timeの拡張"><a href="#time%E3%81%AE%E6%8B%A1%E5%BC%B5">17 <code>Time</code>の拡張</a></h3>
-<h4 id="計算"><a href="#%E8%A8%88%E7%AE%97">17.1 計算</a></h4>
+<h3 id="timeの拡張"><a href="#time%E3%81%AE%E6%8B%A1%E5%BC%B5">16 <code>Time</code>の拡張</a></h3>
+<h4 id="計算"><a href="#%E8%A8%88%E7%AE%97">16.1 計算</a></h4>
 <div class="note"><p>これらはすべて同じ定義ファイル<code>active_support/core_ext/time/calculations.rb</code>にあります。</p></div>
 <p>Active Supportは、<code>DateTime</code>で使用できるメソッドの多くを<code>Time</code>に追加しています。</p>
 <div class="code_container">
@@ -3881,10 +3855,10 @@ t.advance(seconds: 1)
 <li>
 <code>since</code>や<code>ago</code>の移動先の時間が<code>Time</code>で表現できない場合、<code>DateTime</code>オブジェクトが代わりに返されます。</li>
 </ul>
-<h5 id="time.current"><a href="#time.current">17.1.1 <code>Time.current</code></a></h5>
-<p>Active Supportでは、<code>Time.current</code>を定義して現在のタイムゾーンにおける「今日」を定めています。このメソッドは<code>Time.now</code>と似ていますが、ユーザー定義のタイムゾーンがある場合にそれを考慮する点が異なります。Active Supportでは<code>Time#yesterday</code>メソッドと<code>Time#tomorrow</code>も定義しています。インスタンスでは<code>past?</code>、<code>today?</code>、<code>future?</code>を使用でき、これらはすべて<code>Time.current</code>を起点にして導入されています。</p>
-<p>ユーザー定義のタイムゾーンを考慮するメソッドを使用して日付を比較したい場合、<code>TIme.now</code>ではなく必ず<code>Time.current</code>を使用してください。将来、ユーザー定義のタイムゾーンがシステムのタイムゾーンと比較されることがありえます。システムのタイムゾーンではデフォルトで<code>Time#today</code>が使用されます。つまり、<code>Time.now</code>が<code>Time.current.yesterday</code>と等しくなることがありえるということです。</p>
-<h5 id="all_day、all_week、all_month、all_quarter、all_year"><a href="#all_day%E3%80%81all_week%E3%80%81all_month%E3%80%81all_quarter%E3%80%81all_year">17.1.2 <code>all_day</code>、<code>all_week</code>、<code>all_month</code>、<code>all_quarter</code>、<code>all_year</code></a></h5>
+<h5 id="time.current"><a href="#time.current">16.1.1 <code>Time.current</code></a></h5>
+<p>Active Supportでは、<code>Time.current</code>を定義して現在のタイムゾーンにおける「今日」を定めています。このメソッドは<code>Time.now</code>と似ていますが、ユーザー定義のタイムゾーンがある場合にそれを考慮する点が異なります。Active Supportでは<code>past?</code>、<code>today?</code>、<code>future?</code>を示すインスタンス述語も定義されており、これらはすべてこの<code>Time.current</code>を起点にしています。</p>
+<p>ユーザー定義のタイムゾーンを考慮するメソッドを使用して日付を比較したい場合、<code>Time.now</code>ではなく必ず<code>Time.current</code>を使用してください。将来、ユーザー定義のタイムゾーンがシステムのタイムゾーンと比較されることがありえます。システムのタイムゾーンではデフォルトで<code>Time#now</code>が使用されます。つまり、<code>Time.now</code>が<code>Time.currentyesterday</code>と等しくなることがありえるということです。</p>
+<h5 id="all_day、all_week、all_month、all_quarter、all_year"><a href="#all_day%E3%80%81all_week%E3%80%81all_month%E3%80%81all_quarter%E3%80%81all_year">16.1.2 <code>all_day</code>、<code>all_week</code>、<code>all_month</code>、<code>all_quarter</code>、<code>all_year</code></a></h5>
 <p><code>all_day</code>メソッドは、現在時刻を含むその日一日を表す範囲を返します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -3913,8 +3887,8 @@ now.all_year
 
 </pre>
 </div>
-<h4 id="time-constructors"><a href="#time-constructors">17.2 Time Constructors</a></h4>
-<p>Active Supportは、<code>Time.current</code>の値が<code>Time.zone.now</code>の値と同じになるように定義しています。ユーザータイムゾーンが定義されていれば<code>Time.now</code>と同じになります。</p>
+<h4 id="時間コンストラクタ"><a href="#%E6%99%82%E9%96%93%E3%82%B3%E3%83%B3%E3%82%B9%E3%83%88%E3%83%A9%E3%82%AF%E3%82%BF">16.2 時間コンストラクタ</a></h4>
+<p>ユーザータイムゾーンが定義されている場合、Active Supportが定義する<code>Time.current</code>の値は<code>Time.zone.now</code>の値と同じになります。ユーザータイムゾーンが定義されていない場合は、<code>Time.now</code>と同じになります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Time.zone_default
@@ -3926,7 +3900,7 @@ Time.current
 </div>
 <p><code>DateTime</code>と同様、述語<code>past?</code>と<code>future?</code>は<code>Time.current</code>を起点とします。</p>
 <p>構成される時間が、実行プラットフォームの<code>Time</code>でサポートされる範囲を超えている場合は、usecは破棄され、<code>DateTime</code>オブジェクトが代りに返されます。</p>
-<h5 id="期間"><a href="#%E6%9C%9F%E9%96%93">17.2.1 期間</a></h5>
+<h5 id="期間"><a href="#%E6%9C%9F%E9%96%93">16.2.1 期間</a></h5>
 <p>Timeオブジェクトに対して期間を加減算できます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -3947,8 +3921,8 @@ Time.utc(1582, 10, 3) + 5.days
 
 </pre>
 </div>
-<h3 id="fileの拡張"><a href="#file%E3%81%AE%E6%8B%A1%E5%BC%B5">18 <code>File</code>の拡張</a></h3>
-<h4 id="atomic_write"><a href="#atomic_write">18.1 <code>atomic_write</code></a></h4>
+<h3 id="fileの拡張"><a href="#file%E3%81%AE%E6%8B%A1%E5%BC%B5">17 <code>File</code>の拡張</a></h3>
+<h4 id="atomic_write"><a href="#atomic_write">17.1 <code>atomic_write</code></a></h4>
 <p><code>File.atomic_write</code>クラスメソッドを使用すると、書きかけの文章を誰にも読まれないようにファイルを保存することができます。</p>
 <p>このメソッドにファイル名を引数として渡すと、書き込み用にオープンされたファイルハンドルを生成します。ブロックが完了すると、<code>atomic_write</code>はファイルハンドルをクローズして処理を完了します。</p>
 <p>Action Packは、このメソッドを利用して<code>all.css</code>などのキャッシュファイルへの書き込みを行ったりしています。</p>
@@ -3960,13 +3934,13 @@ end
 
 </pre>
 </div>
-<p><code>atomic_write</code>は、処理を完了するために一時的なファイルを作成します。ブロック内のコードが実際に書き込む対象となるのは実際にはこのファイルです。完了時にはこの一時ファイルはリネームされます。リネームは、POSIXシステムのアトミック操作に基いて行われます。書き込み対象ファイル既にが存在する場合、<code>atomic_write</code>はそれを上書きしてオーナーとパーミッションを保持します。ただし、<code>atomic_write</code>メソッドがファイルのオーナーシップとパーミッションを変更できないケースがまれにあります。このエラーはキャッチされ、そのファイルがそれを必要とするプロセスからアクセスできるようにするために、ユーザーのファイルシステムへの信頼をスキップします。</p>
+<p><code>atomic_write</code>は、処理を完了するために一時的なファイルを作成します。ブロック内のコードが実際に書き込むのはこのファイルです。完了時にはこの一時ファイルはリネームされます。リネームは、POSIXシステムのアトミック操作に基いて行われます。書き込み対象ファイル既にが存在する場合、<code>atomic_write</code>はそれを上書きしてオーナーとパーミッションを保持します。ただし、<code>atomic_write</code>メソッドがファイルのオーナーシップとパーミッションを変更できないケースがまれにあります。このエラーはキャッチされ、そのファイルがそれを必要とするプロセスからアクセスできるようにするために、ユーザーのファイルシステムへの信頼をスキップします。</p>
 <div class="note"><p><code>atomic_write</code>が行なうchmod操作が原因で、書き込み対象ファイルがACLセットを持っているときにそのACLが再計算/変更されます。</p></div>
 <div class="warning"><p><code>atomic_write</code>で追記を行なうことはできません。</p></div>
 <p>この補助ファイルは標準の一時ファイル用ディレクトリに書き込まれますが、2番目の引数でディレクトリを直接指定することもできます。</p>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/file/atomic.rb</code>です。</p></div>
-<h3 id="marshalの拡張"><a href="#marshal%E3%81%AE%E6%8B%A1%E5%BC%B5">19 <code>Marshal</code>の拡張</a></h3>
-<h4 id="load"><a href="#load">19.1 <code>load</code></a></h4>
+<h3 id="marshalの拡張"><a href="#marshal%E3%81%AE%E6%8B%A1%E5%BC%B5">18 <code>Marshal</code>の拡張</a></h3>
+<h4 id="load"><a href="#load">18.1 <code>load</code></a></h4>
 <p>Active Supportは、<code>load</code>に一定の自動読み込みサポートを追加します。</p>
 <p>たとえば、ファイルキャッシュストアでは以下のように非直列化 (deserialize) します。</p>
 <div class="code_container">
@@ -3978,59 +3952,18 @@ File.open(file_name) { |f| Marshal.load(f) }
 <p>キャッシュデータが不明な定数を参照している場合、自動読み込みがトリガされます。読み込みに成功した場合は非直列化を透過的に再試行します。</p>
 <div class="warning"><p>引数が<code>IO</code>の場合、再試行を可能にするために<code>rewind</code>に応答する必要があります。通常のファイルは<code>rewind</code>に応答します。</p></div>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/marshal.rb</code>です。</p></div>
-<h3 id="loggerの拡張"><a href="#logger%E3%81%AE%E6%8B%A1%E5%BC%B5">20 <code>Logger</code>の拡張</a></h3>
-<h4 id="around_[level]"><a href="#around_%5Blevel%5D">20.1 <code>around_[level]</code></a></h4>
-<p>引数を2つ取り (<code>before_message</code>と<code>after_message</code>)。<code>Logger</code>インスタンスの現在のログレベルのメソッドを呼び出し、最初に<code>before_message</code>、続いて指定されたメッセージ、最後に<code>after_message</code>を渡します。</p>
-<div class="code_container">
-<pre class="brush: ruby; gutter: false; toolbar: false">
-logger = Logger.new("log/development.log")
-logger.around_info("before", "after") { |logger| logger.info("during") }
-
-</pre>
-</div>
-<h4 id="`silence"><a href="#%60silence">20.2 `silence</a></h4>
-<p>与えられたブロックの動作中、指定されたログレベルより下のログ出力を停止します。指定可能なログレベルはdebug、info、error、fatalです。</p>
-<div class="code_container">
-<pre class="brush: ruby; gutter: false; toolbar: false">
-logger = Logger.new("log/development.log")
-logger.silence(Logger::INFO) do
-  logger.debug("In space, no one can hear you scream.")
-  logger.info("Scream all you want, small mailman!")
-end
-
-</pre>
-</div>
-<h4 id="datetime_format="><a href="#datetime_format=">20.3 <code>datetime_format=</code></a></h4>
-<p>ロガーに関連付けられているフォーマッタクラスによって出力される日時のフォーマットを変更します。フォーマッタクラスに<code>datetime_format</code>メソッドがない場合は無視されます。</p>
-<div class="code_container">
-<pre class="brush: ruby; gutter: false; toolbar: false">
-class Logger::FormatWithTime &lt; Logger::Formatter
-  cattr_accessor(:datetime_format) { "%Y%m%d%H%m%S" }
-
-  def self.call(severity, timestamp, progname, msg)
-    "#{timestamp.strftime(datetime_format)} -- #{String === msg ? msg : msg.inspect}\n"
-  end
-end
-
-logger = Logger.new("log/development.log")
-logger.formatter = Logger::FormatWithTime
-logger.info("&lt;- is the current time")
-
-</pre>
-</div>
-<div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/logger.rb</code>です。</p></div>
-<h3 id="nameerrorの拡張"><a href="#nameerror%E3%81%AE%E6%8B%A1%E5%BC%B5">21 <code>NameError</code>の拡張</a></h3>
+<h3 id="nameerrorの拡張"><a href="#nameerror%E3%81%AE%E6%8B%A1%E5%BC%B5">19 <code>NameError</code>の拡張</a></h3>
 <p>Active Supportは<code>NameError</code>に<code>missing_name?</code>メソッドを追加します。このメソッドは、引数として渡された名前が原因で例外が発生するかどうかをテストします。</p>
 <p>渡される名前はシンボルまたは文字列です。シンボルを渡した場合は単なる定数名をテストし、文字列を渡した場合はフルパス (fully-qualified) の定数名をテストします。</p>
 <div class="info"><p>シンボルは<code>:"ActiveRecord::Base"</code>で行なっているのと同じようにフルパスの定数として表すことができます。シンボルがそのように動作するのはそれが便利だからであり、技術的にそうしなければならないというものではありません。</p></div>
-<p>たとえば、<code>PostsController</code>のアクションが呼び出されると、Railsはその名前からすぐに推測できる<code>PostsHelper</code>を使用しようとします。ここではこのヘルパーモジュールが存在していなくても問題はないので、この定数名で例外が発生しても黙殺します。しかし、実際に不明な定数が原因で<code>posts_helper.rb</code>が<code>NameError</code>エラーを発生することはありえます。そのような場合は、エラーを再度発生させなくてはなりません。<code>missing_name?</code>メソッドは、この2つの場合を区別するために使用されます。</p>
+<p>たとえば、<code>ArticlesController</code>のアクションが呼び出されると、Railsはその名前からすぐに推測できる<code>ArticleHelper</code>を使用しようとします。ここではこのヘルパーモジュールが存在していなくても問題はないので、この定数名で例外が発生しても例外として扱わずに黙殺する必要があります。しかし、実際に不明な定数が原因で<code>articles_helper.rb</code>が<code>NameError</code>エラーを発生するという場合が考えられます。そのような場合は、改めて例外を発生させなくてはなりません。<code>missing_name?</code>メソッドは、この2つの場合を区別するために使用されます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 def default_helper_module!
   module_name = name.sub(/Controller$/, '')
   module_path = module_name.underscore
   helper module_path
-rescue MissingSourceFile =&gt; e
+rescue LoadError =&gt; e
   raise e unless e.is_missing? "helpers/#{module_path}_helper"
 rescue NameError =&gt; e
   raise e unless e.missing_name? "#{module_name}Helper"
@@ -4039,17 +3972,17 @@ end
 </pre>
 </div>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/name_error.rb</code>です。</p></div>
-<h3 id="loaderrorの拡張"><a href="#loaderror%E3%81%AE%E6%8B%A1%E5%BC%B5">22 <code>LoadError</code>の拡張</a></h3>
-<p>Active Supportは<code>LoadError</code>に<code>is_missing?</code>メソッドを追加します。また、後方互換性のためにそのクラスを<code>MissingSourceFile</code>定数に割り当てます。</p>
-<p><code>is_missing?</code>は、パス名を引数に取り、特定のファイルが原因で例外が発生するかどうかをテストします (おそらく".rb"拡張子が原因の場合を除く)。</p>
-<p>たとえば、<code>PostsController</code>のアクションが呼び出されると、Railsは<code>posts_helper.rb</code>という名前のヘルパーを読み込もうとしますが、ヘルパーは存在しないことがあります。ヘルパーモジュールは必須ではないので、Railsは読み込みエラーを黙殺します。しかし、ヘルパーモジュールが存在しないために別のライブラリが必要になり、それがさらに見つからないという場合が考えられます。Railsはそのような場合には例外を再発生させなければなりません。<code>is_missing?</code>メソッドは、この2つの場合を区別するために使用されます。</p>
+<h3 id="loaderrorの拡張"><a href="#loaderror%E3%81%AE%E6%8B%A1%E5%BC%B5">20 <code>LoadError</code>の拡張</a></h3>
+<p>Active Supportは<code>is_missing?</code>を<code>LoadError</code>に追加します。</p>
+<p><code>is_missing?</code>は、パス名を引数に取り、特定のファイルが原因で例外が発生するかどうかをテストします (おそらく".rb"拡張子が原因の場合を除きます)。</p>
+<p>たとえば、<code>ArticlesController</code>のアクションが呼び出されると、Railsは<code>articles_helper.rb</code>を読み込もうとしますが、このファイルは存在しないことがあります。ヘルパーモジュールは必須ではないので、Railsは読み込みエラーを例外扱いせずに黙殺します。しかし、ヘルパーモジュールが存在しないために別のライブラリが必要になり、それがさらに見つからないという場合が考えられます。Railsはそのような場合には、改めて例外を発生させなくてはなりません。<code>is_missing?</code>メソッドは、この2つの場合を区別するために使用されます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 def default_helper_module!
   module_name = name.sub(/Controller$/, '')
   module_path = module_name.underscore
   helper module_path
-rescue MissingSourceFile =&gt; e
+rescue LoadError =&gt; e
   raise e unless e.is_missing? "helpers/#{module_path}_helper"
 rescue NameError =&gt; e
   raise e unless e.missing_name? "#{module_name}Helper"
