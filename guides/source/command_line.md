@@ -422,7 +422,7 @@ Database schema version   20110805173523
 
 Rakeの`db:`という名前空間に属するタスクのうち、最もよく使われるのは`migrate`と`create`です。マイグレーションに関するタスク(`up`, `down`, `redo`, `reset`)はいずれも一度試してみることをおすすめします。`rake db:version`を使えばデータベースの状況が分かるので、トラブルシューティングの際に役立ちます。
 
-マイグレーションについては、[Migrations](migrations.html)でより詳しく扱っています。
+マイグレーションについては、[Migrations](active_record_migrations.html)でより詳しく扱っています。
 
 ### `doc`
 

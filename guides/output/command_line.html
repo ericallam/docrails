@@ -647,7 +647,7 @@ Database schema version   20110805173523
 <p><code>public/assets</code>配下を完全に消去するには<code>rake assets:clobber</code>を実行します。</p>
 <h4 id="db"><a href="#db">2.3 <code>db</code></a></h4>
 <p>Rakeの<code>db:</code>という名前空間に属するタスクのうち、最もよく使われるのは<code>migrate</code>と<code>create</code>です。マイグレーションに関するタスク(<code>up</code>, <code>down</code>, <code>redo</code>, <code>reset</code>)はいずれも一度試してみることをおすすめします。<code>rake db:version</code>を使えばデータベースの状況が分かるので、トラブルシューティングの際に役立ちます。</p>
-<p>マイグレーションについては、<a href="migrations.html">Migrations</a>でより詳しく扱っています。</p>
+<p>マイグレーションについては、<a href="active_record_migrations.html">Migrations</a>でより詳しく扱っています。</p>
 <h4 id="doc"><a href="#doc">2.4 <code>doc</code></a></h4>
 <p><code>doc:</code>という名前空間にはアプリケーションやAPI、Railsガイドのドキュメントをつくるためのタスクが入っています。ドキュメントを別で管理することができるので、コードベースの肥大化を防ぐことができます (まるで組込み系の開発をしているかのようです)。</p>
 <ul>
