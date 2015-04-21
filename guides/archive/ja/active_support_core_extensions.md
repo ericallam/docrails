@@ -2198,7 +2198,7 @@ Active Supportには配列のAPIが多数追加されており、配列に容易
 [].from(0)           # => []
 ```
 
-`second`、`third`、`fourth`、`fifth`は、対応する位置の要素を返します (`first`は元からビルトインされています)。社会の智慧と建設的な姿勢のおかげで、今では`forty_two`も使用できます (訳注: これは何らかのジョークの可能性、実際には`forty_two`は使用できない)。
+`second`、`third`、`fourth`、`fifth`は、対応する位置の要素を返します (`first`は元からビルトインされています)。社会の智慧と建設的な姿勢のおかげで、今では`forty_two`も使用できます (訳注: [Rails 2.2 以降](https://github.com/rails/rails/commit/9d8cc60ec3845fa3e6f9292a65b119fe4f619f7e)で使えます。詳細は Quora の [Why is Array.forty_two() called "the reddit" in Ruby on Rails?](http://www.quora.com/Why-is-Array-forty_two-called-the-reddit-in-Ruby-on-Rails) を参照してください)。
 
 ```ruby
 %w(a b c d).third # => c
