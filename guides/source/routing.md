@@ -645,7 +645,7 @@ NOTE: 1つのアクションに`GET`リクエストと`POST`リクエストを�
 
 ### セグメントを制限する
 
-`:constraints`オプションを使用すると、動的セグメントのURLフォーマットを特定の形式に制限するすることができます。
+`:constraints`オプションを使用すると、動的セグメントのURLフォーマットを特定の形式に制限することができます。
 
 ```ruby
 get 'photos/:id', to: 'photos#show', constraints: { id: /[A-Z]\d{5}/ }
