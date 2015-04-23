@@ -767,7 +767,7 @@ end
 </tr>
 </tbody>
 </table>
-<p>ルーティングを作成すると、ルーティングヘルパーも作成されます。ヘルパーは<code>magazine_ads_url</code>や<code>edit_magazine_ad_path</code>のような名前になります。これらのヘルパーは、最初のパラメーターとしてMagazineモデルのインスタンスを1つ取ります (<code>magazine_ads_url(@magazine)</code>)。</p>
+<p>ルーティングを作成すると、ルーティングヘルパーも作成されます。ヘルパーは<code>magazine_ads_url</code>や<code>edit_magazine_ad_path</code>のような名前になります。これらのヘルパーは、最初のパラメータとしてMagazineモデルのインスタンスを1つ取ります (<code>magazine_ads_url(@magazine)</code>)。</p>
 <h5 id="ネスティング回数の限界"><a href="#%E3%83%8D%E3%82%B9%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0%E5%9B%9E%E6%95%B0%E3%81%AE%E9%99%90%E7%95%8C">2.7.1 ネスティング回数の限界</a></h5>
 <p>ネストしたリソースの中でさらに別のリソースをネストすることは可能です。例：</p>
 <div class="code_container">
@@ -1352,7 +1352,7 @@ get '/stories/:name', to: redirect('/posts/%{name}')
 
 </pre>
 </div>
-<p>リダイレクトにブロックを渡すこともできます。このリダイレクトは、シンボル化されたパスパラメーターとrequestオブジェクトを受け取ります。</p>
+<p>リダイレクトにブロックを渡すこともできます。このリダイレクトは、シンボル化されたパスパラメータとrequestオブジェクトを受け取ります。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 get '/stories/:name', to: redirect {|path_params, req| "/posts/#{path_params[:name].pluralize}" }
@@ -1736,7 +1736,7 @@ end
 <li>ルーティング名 (あれば)</li>
 <li>使用されているHTTP動詞 (そのルーティングがすべてのHTTP動詞に応答するのでない場合)</li>
 <li>マッチするURLパターン</li>
-<li>そのルーティングで使用するパラメーター</li>
+<li>そのルーティングで使用するパラメータ</li>
 </ul>
 <p>以下は、あるRESTfulルーティングに対して<code>rake routes</code>を実行した結果から抜粋したものです。</p>
 <div class="code_container">

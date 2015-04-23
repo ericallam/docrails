@@ -276,7 +276,7 @@ end
 | PATCH/PUT | /magazines/:magazine_id/ads/:id      | ads#update        | ある雑誌1冊に含まれる広告を1つ更新する                      |
 | DELETE    | /magazines/:magazine_id/ads/:id      | ads#destroy       | ある雑誌1冊に含まれる広告を1つ削除する                      |
 
-ルーティングを作成すると、ルーティングヘルパーも作成されます。ヘルパーは`magazine_ads_url`や`edit_magazine_ad_path`のような名前になります。これらのヘルパーは、最初のパラメーターとしてMagazineモデルのインスタンスを1つ取ります (`magazine_ads_url(@magazine)`)。
+ルーティングを作成すると、ルーティングヘルパーも作成されます。ヘルパーは`magazine_ads_url`や`edit_magazine_ad_path`のような名前になります。これらのヘルパーは、最初のパラメータとしてMagazineモデルのインスタンスを1つ取ります (`magazine_ads_url(@magazine)`)。
 
 #### ネスティング回数の限界
 
@@ -778,7 +778,7 @@ get '/stories', to: redirect('/posts')
 get '/stories/:name', to: redirect('/posts/%{name}')
 ```
 
-リダイレクトにブロックを渡すこともできます。このリダイレクトは、シンボル化されたパスパラメーターとrequestオブジェクトを受け取ります。
+リダイレクトにブロックを渡すこともできます。このリダイレクトは、シンボル化されたパスパラメータとrequestオブジェクトを受け取ります。
 
 ```ruby
 get '/stories/:name', to: redirect {|path_params, req| "/posts/#{path_params[:name].pluralize}" }
@@ -1053,7 +1053,7 @@ Railsには、ルーティングを調べる機能とテストする機能が備
 * ルーティング名 (あれば)
 * 使用されているHTTP動詞 (そのルーティングがすべてのHTTP動詞に応答するのでない場合)
 * マッチするURLパターン
-* そのルーティングで使用するパラメーター
+* そのルーティングで使用するパラメータ
 
 以下は、あるRESTfulルーティングに対して`rake routes`を実行した結果から抜粋したものです。
 
