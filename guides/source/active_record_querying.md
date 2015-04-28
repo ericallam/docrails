@@ -731,7 +731,7 @@ Post.where('id > 10').limit(20).order('id desc').only(:order, :where)
 ```sql
 SELECT * FROM posts WHERE id > 10 ORDER BY id DESC
 
-# Original query without `only`
+# `only`を使用する前のオリジナルのクエリ
 SELECT "posts".* FROM "posts" WHERE (id > 10) ORDER BY id desc LIMIT 20
 
 ```
