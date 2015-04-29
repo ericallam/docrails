@@ -825,7 +825,7 @@ resources :posts
 def index
   @posts = Post.all
 
-respond_to do |format|
+  respond_to do |format|
     format.html
     format.atom
   end
@@ -1144,7 +1144,7 @@ check_box("post", "validated")
 
   &lt;%= fields_for @person.permission do |permission_fields| %&gt;
     Admin?  : &lt;%= permission_fields.check_box :admin %&gt;
-&lt;% end %&gt;
+  &lt;% end %&gt;
 &lt;% end %&gt;
 
 </pre>

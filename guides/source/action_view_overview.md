@@ -600,7 +600,7 @@ resources :posts
 def index
   @posts = Post.all
 
-respond_to do |format|
+  respond_to do |format|
     format.html
     format.atom
   end
@@ -922,7 +922,7 @@ form_forのような特定のモデルオブジェクトの外側にスコープ
 
   <%= fields_for @person.permission do |permission_fields| %>
     Admin?  : <%= permission_fields.check_box :admin %>
-<% end %>
+  <% end %>
 <% end %>
 ```
 
