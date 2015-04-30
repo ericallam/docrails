@@ -421,7 +421,7 @@ I18n.with_options locale: user.locale, scope: "newsletter" do |i18n|
 end
 ```
 
-TIP: `with_options`はメソッドをレシーバに転送しているので、呼び出しをネストすることもできます。[REVIEW]各ネスティングレベルでは、自身の呼び出しに、継承したデフォルト呼び出しをマージします。
+TIP: `with_options`はメソッドをレシーバに転送しているので、呼び出しをネストすることもできます。各ネスティングレベルでは、自身の呼び出しに、継承したデフォルト呼び出しをマージします。
 
 NOTE: 定義ファイルの場所は`active_support/core_ext/object/with_options.rb`です。
 
@@ -453,7 +453,7 @@ NOTE: 定義ファイルの場所は`active_support/core_ext/object/instance_var
 
 #### `instance_variable_names`
 
-`instance_variable_names`メソッドは配列を返します。配列に含まれるインスタンス名には"@"記号が含まれます。
+`instance_variable_names`メソッドは配列を返します。配列のインスタンス名には"@"記号が含まれます。
 
 ```ruby
 class C
@@ -514,7 +514,8 @@ NOTE: 定義ファイルの場所は`active_support/core_ext/object/inclusion.rb
 
 ```ruby
 ActionController::TestCase.class_eval do
-  # 参照を元のプロセスメソッドalias_method :original_process, :processへ保存
+  # 元のプロセスメソッドへの参照を保存
+  alias_method :original_process, :process
 
   # 今度はプロセスを再定義してoriginal_processに以上する
   def process(action, params=nil, session=nil, flash=nil, http_method='GET')
@@ -551,7 +552,7 @@ ActionController::TestCase.class_eval do
 end
 ```
 
-NOTE: 定義ファイルの場所は`active_support/core_ext/module/aliasing.rb`です
+NOTE: 定義ファイルの場所は`active_support/core_ext/module/aliasing.rb`です。
 
 ### 属性
 
@@ -567,7 +568,7 @@ class User < ActiveRecord::Base
 end
 ```
 
-NOTE: 定義ファイルの場所は`active_support/core_ext/module/aliasing.rb`です
+NOTE: 定義ファイルの場所は`active_support/core_ext/module/aliasing.rb`です。
 
 #### 内部属性
 
@@ -591,7 +592,7 @@ end
 
 先の例では、`:log_level`はライブラリのパブリックインターフェイスに属さず、開発用途にのみ使用されます。クライアント側のコードでは衝突の可能性について考慮せずに独自に`:log_level`をサブクラスで定義しています。ライブラリ側で`attr_internal`を使用しているおかげで衝突が生じずに済んでいます。
 
-このとき、内部インスタンス変数の名前にはデフォルトで冒頭にアンダースコアが追加されます。上の例であれば`@_log_level`となります。この動作は`Module.attr_internal_naming_format`を使用して変更することもできます。`sprintf`と同様のフォーマット文字列を与え、冒頭に`@`を置き、それ以外の名前を置きたい場所に`%s`を置きます。デフォルトは`"@_%s"`です。
+このとき、内部インスタンス変数の名前にはデフォルトで冒頭にアンダースコアが追加されます。上の例であれば`@_log_level`となります。この動作は`Module.attr_internal_naming_format`を使用して変更することもできます。`sprintf`と同様のフォーマット文字列を与え、冒頭に`@`を置き、それ以外の名前を置きたい場所に`%s`を置きます。デフォルト値は`"@_%s"`です。
 
 Railsではこの内部属性を他の場所でも若干使用しています。たとえばビューでは以下のように使用しています。
 
@@ -699,7 +700,7 @@ X::Y::Z.parents # => [X::Y, X, Object]
 M.parents       # => [X::Y, X, Object]
 ```
 
-NOTE: 定義ファイルの場所は`active_support/core_ext/module/introspection.rb`。
+NOTE: 定義ファイルの場所は`active_support/core_ext/module/introspection.rb`です。
 
 ### 定数
 
@@ -741,7 +742,7 @@ Object.qualified_const_set("Math::Phi", 1.618034) # => 1.618034
 Math.qualified_const_get("E") # => 2.718281828459045
 ```
 
-これらのメソッドは、ビルトイン版のメソッドと類似しています。特に、`qualified_constant_defined?`メソッドは2つ目の引数として、述語を先祖に向って遡って探せるようにするかどうかというフラグをオプションで指定できます。
+これらのメソッドは、ビルトイン版のメソッドと類似しています。特に、`qualified_constant_defined?`メソッドは2つ目の引数として、述語を先祖に向って遡って探すかどうかというフラグをオプションで指定できます。
 このフラグは、与えられたすべての定数について、メソッドでパスを下る時に適用されます。
 
 以下の例で考察してみましょう。
@@ -766,9 +767,10 @@ N.qualified_const_defined?("C::X", true)  # => true
 N.qualified_const_defined?("C::X")        # => true
 ```
 
-最後の例でわかるように、2番目の引数は`const_defined?`と同様デフォルトでtrueになります。
+最後の例でわかるように、`const_defined?`メソッドと同様に2番目の引数はデフォルトでtrueになります。
 
-ビルトインメソッドと一貫させるため、相対パスのみを受け付けます。`::Math::PI`のような絶対定数名を指定すると`NameError`が発生します。
+ビルトインメソッドと一貫させるため、相対パス以外は利用できません。
+`::Math::PI`のような絶対定数名を指定すると`NameError`が発生します。
 
 NOTE: 定義ファイルの場所は`active_support/core_ext/module/qualified_const.rb`です。
 
@@ -1274,7 +1276,7 @@ NOTE: 定義ファイルの場所は`active_support/core_ext/string/filters.rb`�
 # => "Oh dear! Oh..."
 ```
 
-`:separator`オプションに正規表現を使用することもできます。
+`:separator`オプションで正規表現を使用することもできます。
 
 ```ruby
 "Oh dear! Oh dear! I shall be late!".truncate(18, separator: /\s/)
@@ -1287,7 +1289,7 @@ NOTE: 定義ファイルの場所は`active_support/core_ext/string/filters.rb`�
 
 ### `truncate_words`
 
-`truncate_words`メソッドは、指定されたワード数から後ろを切り落としたレシーバのコピーを返します。
+`truncate_words`メソッドは、指定されたワード数から後ろをきりおとしたレシーバのコピーを返します。
 
 ```ruby
 "Oh dear! Oh dear! I shall be late!".truncate_words(4)
@@ -1308,7 +1310,7 @@ NOTE: 定義ファイルの場所は`active_support/core_ext/string/filters.rb`�
 # => "Oh dear! Oh dear! I shall be late..."
 ```
 
-`:separator`オプションに正規表現を使用することもできます。
+`:separator`オプションで正規表現を使用することもできます。
 
 ```ruby
 "Oh dear! Oh dear! I shall be late!".truncate_words(4, separator: /\s/)
@@ -1441,13 +1443,13 @@ NOTE: 定義ファイルの場所は`active_support/core_ext/string/access.rb`�
 
 #### `first(limit = 1)`
 
-`str.first(n)`という呼び出しは、`n` > 0の場合は`str.to(n-1)`と等価です。`n` == 0の場合は空文字列を返します。
+`str.first(n)`という呼び出しは、`n` > 0 のとき`str.to(n-1)`と等価です。`n` == 0の場合は空文字列を返します。
 
 NOTE: 定義ファイルの場所は`active_support/core_ext/string/access.rb`です。
 
 #### `last(limit = 1)`
 
-`str.last(n)`という呼び出しは、`n` > 0の場合は`str.from(-n)`と等価です。`n` == 0の場合は空文字列を返します。
+`str.last(n)` という呼び出しは、`n` > 0 のとき`str.from(-n)`と等価です。`n` == 0 の場合は空文字列を返します。
 
 NOTE: 定義ファイルの場所は`active_support/core_ext/string/access.rb`です。
 
@@ -1802,6 +1804,7 @@ NOTE: 定義ファイルの場所は`active_support/core_ext/string/inflections.
 ```
 
 ヘルパーメソッド`full_messages`では、属性名をメッセージに含めるときに`humanize`を使用しています。
+
 
 ```ruby
 def full_messages
@@ -2173,7 +2176,7 @@ NOTE: 定義ファイルの場所は`active_support/core_ext/enumerable.rb`で�
 [REVIEW]
 
 ```ruby
-people.without("Aaron", "Todd")
+["David", "Rafael", "Aaron", "Todd"].without("Aaron", "Todd") # => ["David", "Rafael"]
 ```
 
 NOTE: 定義ファイルの場所は`active_support/core_ext/enumerable.rb`です。
@@ -2243,7 +2246,7 @@ User.exists?(email: params[:email])
 
 しかし、あるメソッドが受け取る引数の数が固定されておらず、メソッド宣言で`*`が使用されていると、そのような波括弧なしのオプションハッシュは、引数の配列の末尾の要素になってしまい、ハッシュとして認識されなくなってしまいます。
 
-このような場合、`extract_options!`メソッドを使用することでオプションハッシュを区別して扱えるようになります。このメソッドは、配列の最後の項目の型をチェックします。それがハッシュの場合、そのハッシュを取り出して返し、それ以外の場合は空のハッシュを返します。
+このような場合、`extract_options!`このメソッドは、配列の最後の項目の型をチェックします。それがハッシュの場合、そのハッシュを取り出して返し、それ以外の場合は空のハッシュを返します。
 
 `caches_action`コントローラマクロでの定義を例にとって見てみましょう。
 
@@ -2411,7 +2414,7 @@ NOTE: 定義ファイルの場所は`active_support/core_ext/array/conversions.r
 
 特徴:
 
-* 引数が`nil`の場合、空のリストが返されます。
+* 引数が`nil`の場合、空の配列が返されます。
 * 上記以外の場合で、引数が`to_ary`に応答する場合は`to_ary`が呼び出され、`to_ary`の値が`nil`でない場合はその値が返されます。
 * 上記以外の場合、引数を内側に含んだ配列 (要素が1つだけの配列) が返されます。
 
@@ -2423,9 +2426,9 @@ Array.wrap(0)         # => [0]
 
 このメソッドの目的は`Kernel#Array`と似ていますが、いくつかの相違点があります。
 
-* 引数が`to_ary`に応答する場合、このメソッドが呼び出されます。`nil`が返された場合、`Kernel#Array`は`to_a`を適用しようと動作を続けますが、`Array.wrap`はすぐさま`nil`を返します。
+* 引数が`to_ary`に応答する場合、このメソッドが呼び出されます。`nil`が返された場合、`Kernel#Array`は`to_a`を適用しようと動作を続けますが、`Array.wrap`はその場で、引数を単一の要素として持つ配列を返します。
 * `to_ary`から返された値が`nil`でも`Array`オブジェクトでもない場合、`Kernel#Array`は例外を発生しますが、`Array.wrap`は例外を発生せずに単にその値を返します。
-* このメソッドは引数に対して`to_a`を呼び出しませんが、特殊なケースとして`nil`では空の配列を返します。
+* このメソッドは引数に対して`to_a`を呼び出しませんが、この引数が +to_ary+ に応答しない場合、引数を単一の要素として持つ配列を返します。
 
 最後の性質は、列挙型同士を比較する場合に特に便利です。
 
@@ -2448,8 +2451,7 @@ NOTE: 定義ファイルの場所は`active_support/core_ext/array/wrap.rb`で�
 
 ### 複製
 
-`Array.deep_dup`メソッドは、自分自身を複製すると同時に、Active Supportの`Object#deep_dup`メソッドによってその中のすべてのオブジェクトも再帰的に複製します。
-[REVIEW]この動作は、`Array#map`を使用して`deep_dup`メソッドを内部の各オブジェクトに適用するのと似ています。
+`Array.deep_dup`メソッドは、自分自身を複製すると同時に、その中のすべてのオブジェクトをActive Supportの`Object#deep_dup`メソッドによって再帰的に複製します。この動作は、`Array#map`を使用して`deep_dup`メソッドを内部の各オブジェクトに適用するのと似ています。
 
 ```ruby
 array = [1, [2, 3]]
@@ -2853,9 +2855,9 @@ Active Recordは、たとえば関連付けが行われている場合に未知�
 
 NOTE: 定義ファイルの場所は`active_support/core_ext/hash/keys.rb`です。
 
-### ハッシュの値の操作
+### 値の操作
 
-#### `transform_values` と `transform_values!`
+#### `transform_values`と`transform_values!`
 
 `transform_values`メソッドは、ブロックを1つ取り、ハッシュを1つ返します。返されるハッシュには、レシーバのそれぞれの値に対してブロック操作を適用した結果が含まれます。
 
@@ -3372,7 +3374,7 @@ date = Date.current # => Fri, 11 Jun 2010
 date.ago(1)         # => Thu, 10 Jun 2010 23:59:59 EDT -04:00
 ```
 
-`since`メソッドは、同様にその秒数だけさきにすすみます
+`since`メソッドは、同様にその秒数だけ先に進みます。
 
 ```ruby
 date = Date.current # => Fri, 11 Jun 2010
@@ -3769,9 +3771,9 @@ NOTE: 定義ファイルの場所は`active_support/core_ext/name_error.rb`で�
 
 Active Supportは`is_missing?`を`LoadError`に追加します。
 
-`is_missing?`は、パス名を引数に取り、特定のファイルが原因で例外が発生するかどうかをテストします (おそらく".rb"拡張子が原因の場合を除きます)。
+`is_missing?`は、パス名を引数に取り、特定のファイルが原因で例外が発生するかどうかをテストします (".rb"拡張子が原因と思われる場合を除きます)。
 
-たとえば、`ArticlesController`のアクションが呼び出されると、Railsは`articles_helper.rb`を読み込もうとしますが、このファイルは存在しないことがあります。ヘルパーモジュールは必須ではないので、Railsは読み込みエラーを例外扱いせずに黙殺します。しかし、ヘルパーモジュールが存在しないために別のライブラリが必要になり、それがさらに見つからないという場合が考えられます。Railsはそのような場合には、改めて例外を発生させなくてはなりません。`is_missing?`メソッドは、この2つの場合を区別するために使用されます。
+たとえば、`ArticlesController`のアクションが呼び出されると、Railsは`articles_helper.rb`を読み込もうとしますが、このファイルは存在しないことがあります。ヘルパーモジュールは必須ではないので、Railsは読み込みエラーを例外扱いせずに黙殺します。しかし、ヘルパーモジュールが存在しないために別のライブラリが必要になり、それがさらに見つからないという場合が考えられます。Railsはそのような場合には例外を再発生させなければなりません。`is_missing?`メソッドは、この2つの場合を区別するために使用されます。
 
 ```ruby
 def default_helper_module!

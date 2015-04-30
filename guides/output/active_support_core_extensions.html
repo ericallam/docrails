@@ -337,7 +337,7 @@
 <li><a href="#%E3%83%9E%E3%83%BC%E3%82%B8">マージ</a></li>
 <li><a href="#%E3%83%87%E3%82%A3%E3%83%BC%E3%83%97%E8%A4%87%E8%A3%BD">ディープ複製</a></li>
 <li><a href="#%E3%83%8F%E3%83%83%E3%82%B7%E3%83%A5%E3%82%AD%E3%83%BC%E3%81%AE%E6%93%8D%E4%BD%9C">ハッシュキーの操作</a></li>
-<li><a href="#%E3%83%8F%E3%83%83%E3%82%B7%E3%83%A5%E3%81%AE%E5%80%A4%E3%81%AE%E6%93%8D%E4%BD%9C">ハッシュの値の操作</a></li>
+<li><a href="#%E5%80%A4%E3%81%AE%E6%93%8D%E4%BD%9C">値の操作</a></li>
 <li><a href="#%E3%82%B9%E3%83%A9%E3%82%A4%E3%82%B9">スライス</a></li>
 <li><a href="#%E6%8A%BD%E5%87%BA">抽出</a></li>
 <li><a href="#%E3%83%8F%E3%83%83%E3%82%B7%E3%83%A5%E3%82%AD%E3%83%BC%E3%81%8C%E3%82%B7%E3%83%B3%E3%83%9C%E3%83%AB%E3%81%A7%E3%82%82%E6%96%87%E5%AD%97%E5%88%97%E3%81%A7%E3%82%82%E5%90%8C%E6%A7%98%E3%81%AB%E6%89%B1%E3%81%86-(indifferent-access)">ハッシュキーがシンボルでも文字列でも同様に扱う (indifferent access)</a></li>
@@ -820,7 +820,7 @@ C.new(0, 1).instance_values # =&gt; {"x" =&gt; 0, "y" =&gt; 1}
 </div>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/object/instance_variables.rb</code>です。</p></div>
 <h5 id="instance_variable_names"><a href="#instance_variable_names">2.12.2 <code>instance_variable_names</code></a></h5>
-<p><code>instance_variable_names</code>メソッドは配列を返します。配列に含まれるインスタンス名には"@"記号が含まれます。</p>
+<p><code>instance_variable_names</code>メソッドは配列を返します。配列のインスタンス名には"@"記号が含まれます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class C
@@ -874,7 +874,8 @@ end
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 ActionController::TestCase.class_eval do
-  # 参照を元のプロセスメソッドalias_method :original_process, :processへ保存
+  # 元のプロセスメソッドへの参照を保存
+  alias_method :original_process, :process
 
   # 今度はプロセスを再定義してoriginal_processに以上する
   def process(action, params=nil, session=nil, flash=nil, http_method='GET')
@@ -913,7 +914,7 @@ end
 
 </pre>
 </div>
-<div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/module/aliasing.rb</code>です</p></div>
+<div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/module/aliasing.rb</code>です。</p></div>
 <h4 id="属性"><a href="#%E5%B1%9E%E6%80%A7">3.2 属性</a></h4>
 <h5 id="alias_attribute"><a href="#alias_attribute">3.2.1 <code>alias_attribute</code></a></h5>
 <p>モデルの属性には、リーダー (reader)、ライター (writer)、述語 (predicate) があります。上に対応する3つのメソッドを持つ、モデルの属性の別名 (alias) を一度に作成することができます。他の別名作成メソッドと同様、1つ目の引数には新しい名前、2つ目の引数には元の名前を指定します (変数に代入するときと同じ順序、と覚えておく手もあります)。</p>
@@ -927,7 +928,7 @@ end
 
 </pre>
 </div>
-<div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/module/aliasing.rb</code>です</p></div>
+<div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/module/aliasing.rb</code>です。</p></div>
 <h5 id="内部属性"><a href="#%E5%86%85%E9%83%A8%E5%B1%9E%E6%80%A7">3.2.2 内部属性</a></h5>
 <p>あるクラスで属性を定義すると、後にそのクラスのサブクラスが作成されるときに名前が衝突するリスクが生じます。これはライブラリにおいては特に重要な問題です。</p>
 <p>Active Supportでは、<code>attr_internal_reader</code>、<code>attr_internal_writer</code>、<code>attr_internal_accessor</code>というマクロが定義されています。これらのマクロは、Rubyにビルトインされている<code>attr_*</code>と同様に振る舞いますが、内部のインスタンス変数の名前が衝突しにくいように配慮される点が異なります。</p>
@@ -947,7 +948,7 @@ end
 </pre>
 </div>
 <p>先の例では、<code>:log_level</code>はライブラリのパブリックインターフェイスに属さず、開発用途にのみ使用されます。クライアント側のコードでは衝突の可能性について考慮せずに独自に<code>:log_level</code>をサブクラスで定義しています。ライブラリ側で<code>attr_internal</code>を使用しているおかげで衝突が生じずに済んでいます。</p>
-<p>このとき、内部インスタンス変数の名前にはデフォルトで冒頭にアンダースコアが追加されます。上の例であれば<code>@_log_level</code>となります。この動作は<code>Module.attr_internal_naming_format</code>を使用して変更することもできます。<code>sprintf</code>と同様のフォーマット文字列を与え、冒頭に<code>@</code>を置き、それ以外の名前を置きたい場所に<code>%s</code>を置きます。デフォルトは<code>"@_%s"</code>です。</p>
+<p>このとき、内部インスタンス変数の名前にはデフォルトで冒頭にアンダースコアが追加されます。上の例であれば<code>@_log_level</code>となります。この動作は<code>Module.attr_internal_naming_format</code>を使用して変更することもできます。<code>sprintf</code>と同様のフォーマット文字列を与え、冒頭に<code>@</code>を置き、それ以外の名前を置きたい場所に<code>%s</code>を置きます。デフォルト値は<code>"@_%s"</code>です。</p>
 <p>Railsではこの内部属性を他の場所でも若干使用しています。たとえばビューでは以下のように使用しています。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -1045,7 +1046,7 @@ M.parents       # =&gt; [X::Y, X, Object]
 
 </pre>
 </div>
-<div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/module/introspection.rb</code>。</p></div>
+<div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/module/introspection.rb</code>です。</p></div>
 <h4 id="定数"><a href="#%E5%AE%9A%E6%95%B0">3.4 定数</a></h4>
 <p><code>local_constants</code>メソッドは、レシーバモジュールで定義された定数名を返します。</p>
 <div class="code_container">
@@ -1084,7 +1085,7 @@ Math.qualified_const_get("E") # =&gt; 2.718281828459045
 
 </pre>
 </div>
-<p>これらのメソッドは、ビルトイン版のメソッドと類似しています。特に、<code>qualified_constant_defined?</code>メソッドは2つ目の引数として、述語を先祖に向って遡って探せるようにするかどうかというフラグをオプションで指定できます。
+<p>これらのメソッドは、ビルトイン版のメソッドと類似しています。特に、<code>qualified_constant_defined?</code>メソッドは2つ目の引数として、述語を先祖に向って遡って探すかどうかというフラグをオプションで指定できます。
 このフラグは、与えられたすべての定数について、メソッドでパスを下る時に適用されます。</p>
 <p>以下の例で考察してみましょう。</p>
 <div class="code_container">
@@ -1110,8 +1111,9 @@ N.qualified_const_defined?("C::X")        # =&gt; true
 
 </pre>
 </div>
-<p>最後の例でわかるように、2番目の引数は<code>const_defined?</code>と同様デフォルトでtrueになります。</p>
-<p>ビルトインメソッドと一貫させるため、相対パスのみを受け付けます。<code>::Math::PI</code>のような絶対定数名を指定すると<code>NameError</code>が発生します。</p>
+<p>最後の例でわかるように、<code>const_defined?</code>メソッドと同様に2番目の引数はデフォルトでtrueになります。</p>
+<p>ビルトインメソッドと一貫させるため、相対パス以外は利用できません。
+<code>::Math::PI</code>のような絶対定数名を指定すると<code>NameError</code>が発生します。</p>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/module/qualified_const.rb</code>です。</p></div>
 <h4 id="到達可能"><a href="#%E5%88%B0%E9%81%94%E5%8F%AF%E8%83%BD">3.5 到達可能</a></h4>
 <p>名前を持つモジュールは、対応する定数に保存されている場合に到達可能 (reachable) となります。これは、定数を経由してモジュールオブジェクトに到達できるという意味です。</p>
@@ -1587,7 +1589,7 @@ end
 
 </pre>
 </div>
-<p><code>:separator</code>オプションに正規表現を使用することもできます。</p>
+<p><code>:separator</code>オプションで正規表現を使用することもできます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 "Oh dear! Oh dear! I shall be late!".truncate(18, separator: /\s/)
@@ -1598,7 +1600,7 @@ end
 <p>上の例では、"dear"という文字で切り落とされそうになるところを、<code>:separator</code>によって防いでいます。</p>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/string/filters.rb</code>です。</p></div>
 <h4 id="truncate_words"><a href="#truncate_words">5.5 <code>truncate_words</code></a></h4>
-<p><code>truncate_words</code>メソッドは、指定されたワード数から後ろを切り落としたレシーバのコピーを返します。</p>
+<p><code>truncate_words</code>メソッドは、指定されたワード数から後ろをきりおとしたレシーバのコピーを返します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 "Oh dear! Oh dear! I shall be late!".truncate_words(4)
@@ -1622,7 +1624,7 @@ end
 
 </pre>
 </div>
-<p><code>:separator</code>オプションに正規表現を使用することもできます。</p>
+<p><code>:separator</code>オプションで正規表現を使用することもできます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 "Oh dear! Oh dear! I shall be late!".truncate_words(4, separator: /\s/)
@@ -1744,10 +1746,10 @@ EOS
 </div>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/string/access.rb</code>です。</p></div>
 <h5 id="first(limit-=-1)"><a href="#first(limit-=-1)">5.10.4 <code>first(limit = 1)</code></a></h5>
-<p><code>str.first(n)</code>という呼び出しは、<code>n</code> &gt; 0の場合は<code>str.to(n-1)</code>と等価です。<code>n</code> == 0の場合は空文字列を返します。</p>
+<p><code>str.first(n)</code>という呼び出しは、<code>n</code> &gt; 0 のとき<code>str.to(n-1)</code>と等価です。<code>n</code> == 0の場合は空文字列を返します。</p>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/string/access.rb</code>です。</p></div>
 <h5 id="last(limit-=-1)"><a href="#last(limit-=-1)">5.10.5 <code>last(limit = 1)</code></a></h5>
-<p><code>str.last(n)</code>という呼び出しは、<code>n</code> &gt; 0の場合は<code>str.from(-n)</code>と等価です。<code>n</code> == 0の場合は空文字列を返します。</p>
+<p><code>str.last(n)</code> という呼び出しは、<code>n</code> &gt; 0 のとき<code>str.from(-n)</code>と等価です。<code>n</code> == 0 の場合は空文字列を返します。</p>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/string/access.rb</code>です。</p></div>
 <h4 id="活用形"><a href="#%E6%B4%BB%E7%94%A8%E5%BD%A2">5.11 活用形</a></h4>
 <h5 id="pluralize"><a href="#pluralize">5.11.1 <code>pluralize</code></a></h5>
@@ -2453,7 +2455,7 @@ to_visit &lt;&lt; node if visited.exclude?(node)
 <p><code>without</code>メソッドは、指定した要素を除外したenumerableのコピーを返します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-people.without("Aaron", "Todd")
+["David", "Rafael", "Aaron", "Todd"].without("Aaron", "Todd") # =&gt; ["David", "Rafael"]
 
 </pre>
 </div>
@@ -2517,7 +2519,7 @@ User.exists?(email: params[:email])
 </div>
 <p>このようなシンタックスシュガーは、多数ある引数が順序に依存することを避け、名前付きパラメータをエミュレートするインターフェイスを提供するためにRailsで多用されています。特に、末尾にオプションのハッシュを置くというのは定番中の定番です。</p>
 <p>しかし、あるメソッドが受け取る引数の数が固定されておらず、メソッド宣言で<code>*</code>が使用されていると、そのような波括弧なしのオプションハッシュは、引数の配列の末尾の要素になってしまい、ハッシュとして認識されなくなってしまいます。</p>
-<p>このような場合、<code>extract_options!</code>メソッドを使用することでオプションハッシュを区別して扱えるようになります。このメソッドは、配列の最後の項目の型をチェックします。それがハッシュの場合、そのハッシュを取り出して返し、それ以外の場合は空のハッシュを返します。</p>
+<p>このような場合、<code>extract_options!</code>このメソッドは、配列の最後の項目の型をチェックします。それがハッシュの場合、そのハッシュを取り出して返し、それ以外の場合は空のハッシュを返します。</p>
 <p><code>caches_action</code>コントローラマクロでの定義を例にとって見てみましょう。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -2692,7 +2694,7 @@ Contributor.limit(2).order(:rank).to_xml(skip_types: true)
 <p><code>Array.wrap</code>メソッドは、配列の中にある引数が配列 (または配列のようなもの) になっていない場合に、それらを配列の中にラップします。</p>
 <p>特徴:</p>
 <ul>
-<li>引数が<code>nil</code>の場合、空のリストが返されます。</li>
+<li>引数が<code>nil</code>の場合、空の配列が返されます。</li>
 <li>上記以外の場合で、引数が<code>to_ary</code>に応答する場合は<code>to_ary</code>が呼び出され、<code>to_ary</code>の値が<code>nil</code>でない場合はその値が返されます。</li>
 <li>上記以外の場合、引数を内側に含んだ配列 (要素が1つだけの配列) が返されます。</li>
 </ul>
@@ -2706,10 +2708,10 @@ Array.wrap(0)         # =&gt; [0]
 </div>
 <p>このメソッドの目的は<code>Kernel#Array</code>と似ていますが、いくつかの相違点があります。</p>
 <ul>
-<li>引数が<code>to_ary</code>に応答する場合、このメソッドが呼び出されます。<code>nil</code>が返された場合、<code>Kernel#Array</code>は<code>to_a</code>を適用しようと動作を続けますが、<code>Array.wrap</code>はすぐさま<code>nil</code>を返します。</li>
+<li>引数が<code>to_ary</code>に応答する場合、このメソッドが呼び出されます。<code>nil</code>が返された場合、<code>Kernel#Array</code>は<code>to_a</code>を適用しようと動作を続けますが、<code>Array.wrap</code>はその場で、引数を単一の要素として持つ配列を返します。</li>
 <li>
 <code>to_ary</code>から返された値が<code>nil</code>でも<code>Array</code>オブジェクトでもない場合、<code>Kernel#Array</code>は例外を発生しますが、<code>Array.wrap</code>は例外を発生せずに単にその値を返します。</li>
-<li>このメソッドは引数に対して<code>to_a</code>を呼び出しませんが、特殊なケースとして<code>nil</code>では空の配列を返します。</li>
+<li>このメソッドは引数に対して<code>to_a</code>を呼び出しませんが、この引数が +to_ary+ に応答しない場合、引数を単一の要素として持つ配列を返します。</li>
 </ul>
 <p>最後の性質は、列挙型同士を比較する場合に特に便利です。</p>
 <div class="code_container">
@@ -2730,8 +2732,7 @@ Array(foo: :bar)      # =&gt; [[:foo, :bar]]
 <p>従って、この場合<code>nil</code>に対する動作は異なり、上で説明されている<code>Kernel#Array</code>についてもこの異なる動作が残りの<code>object</code>に適用されます。</p>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/array/wrap.rb</code>です。</p></div>
 <h4 id="複製"><a href="#%E8%A4%87%E8%A3%BD">10.6 複製</a></h4>
-<p><code>Array.deep_dup</code>メソッドは、自分自身を複製すると同時に、Active Supportの<code>Object#deep_dup</code>メソッドによってその中のすべてのオブジェクトも再帰的に複製します。
-この動作は、<code>Array#map</code>を使用して<code>deep_dup</code>メソッドを内部の各オブジェクトに適用するのと似ています。</p>
+<p><code>Array.deep_dup</code>メソッドは、自分自身を複製すると同時に、その中のすべてのオブジェクトをActive Supportの<code>Object#deep_dup</code>メソッドによって再帰的に複製します。この動作は、<code>Array#map</code>を使用して<code>deep_dup</code>メソッドを内部の各オブジェクトに適用するのと似ています。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 array = [1, [2, 3]]
@@ -3109,8 +3110,8 @@ end
 </div>
 <p>Active Recordは、たとえば関連付けが行われている場合に未知のオプションを受け付けません。このメソッドでは、<code>assert_valid_keys</code>を使用した制御を実装しています。</p>
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/hash/keys.rb</code>です。</p></div>
-<h4 id="ハッシュの値の操作"><a href="#%E3%83%8F%E3%83%83%E3%82%B7%E3%83%A5%E3%81%AE%E5%80%A4%E3%81%AE%E6%93%8D%E4%BD%9C">11.5 ハッシュの値の操作</a></h4>
-<h5 id="transform_values-と-transform_values!"><a href="#transform_values-%E3%81%A8-transform_values!">11.5.1 <code>transform_values</code> と <code>transform_values!</code></a></h5>
+<h4 id="値の操作"><a href="#%E5%80%A4%E3%81%AE%E6%93%8D%E4%BD%9C">11.5 値の操作</a></h4>
+<h5 id="transform_valuesとtransform_values!"><a href="#transform_values%E3%81%A8transform_values!">11.5.1 <code>transform_values</code>と<code>transform_values!</code></a></h5>
 <p><code>transform_values</code>メソッドは、ブロックを1つ取り、ハッシュを1つ返します。返されるハッシュには、レシーバのそれぞれの値に対してブロック操作を適用した結果が含まれます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -3604,7 +3605,7 @@ date.ago(1)         # =&gt; Thu, 10 Jun 2010 23:59:59 EDT -04:00
 
 </pre>
 </div>
-<p><code>since</code>メソッドは、同様にその秒数だけさきにすすみます</p>
+<p><code>since</code>メソッドは、同様にその秒数だけ先に進みます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 date = Date.current # =&gt; Fri, 11 Jun 2010
@@ -3974,8 +3975,8 @@ end
 <div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/name_error.rb</code>です。</p></div>
 <h3 id="loaderrorの拡張"><a href="#loaderror%E3%81%AE%E6%8B%A1%E5%BC%B5">20 <code>LoadError</code>の拡張</a></h3>
 <p>Active Supportは<code>is_missing?</code>を<code>LoadError</code>に追加します。</p>
-<p><code>is_missing?</code>は、パス名を引数に取り、特定のファイルが原因で例外が発生するかどうかをテストします (おそらく".rb"拡張子が原因の場合を除きます)。</p>
-<p>たとえば、<code>ArticlesController</code>のアクションが呼び出されると、Railsは<code>articles_helper.rb</code>を読み込もうとしますが、このファイルは存在しないことがあります。ヘルパーモジュールは必須ではないので、Railsは読み込みエラーを例外扱いせずに黙殺します。しかし、ヘルパーモジュールが存在しないために別のライブラリが必要になり、それがさらに見つからないという場合が考えられます。Railsはそのような場合には、改めて例外を発生させなくてはなりません。<code>is_missing?</code>メソッドは、この2つの場合を区別するために使用されます。</p>
+<p><code>is_missing?</code>は、パス名を引数に取り、特定のファイルが原因で例外が発生するかどうかをテストします (".rb"拡張子が原因と思われる場合を除きます)。</p>
+<p>たとえば、<code>ArticlesController</code>のアクションが呼び出されると、Railsは<code>articles_helper.rb</code>を読み込もうとしますが、このファイルは存在しないことがあります。ヘルパーモジュールは必須ではないので、Railsは読み込みエラーを例外扱いせずに黙殺します。しかし、ヘルパーモジュールが存在しないために別のライブラリが必要になり、それがさらに見つからないという場合が考えられます。Railsはそのような場合には例外を再発生させなければなりません。<code>is_missing?</code>メソッドは、この2つの場合を区別するために使用されます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 def default_helper_module!
