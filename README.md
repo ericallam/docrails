@@ -62,6 +62,7 @@ http://railstutorial.jp/
 ### ⑤ Herokuにデプロイ
 
 - Travis CIのtestがパスすれば、自動でHerokuにデプロイされます。
+- 詳細: [Automatic deploys - Heroku Dev Center](https://devcenter.heroku.com/articles/github-integration#automatic-deploys)
 
 ## 協力者
 
