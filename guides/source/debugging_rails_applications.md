@@ -236,17 +236,17 @@ logger.debug {"Person attributes hash: #{@person.attributes.inspect}"}
 コードが期待どおりに動作しない場合は、ログやコンソールに出力して問題を診断することができます。ただし、この方法ではエラー追跡を何度も繰り返さねばならず、根本的な原因を突き止めるには能率がよいとは言えません。
 実行中のコードに探りを入れる必要があるのであれば、最も頼りになるのはやはりデバッガーです。
 
-デバッガーは、Railsのソースコードを追うときに、そのコードがどこで開始されるのかがを知りたいときにも有用です。Just debug any request to your application and use this guide to learn how to move from the code you have written deeper into Rails code.
+デバッガーは、Railsのソースコードを追うときに、そのコードをどこで開始するのかがを知りたいときにも有用です。アプリケーションへのリクエストをすべてデバッグし、自分が書いたコードからRailsのもっと深いところへダイブする方法を本ガイドから学びましょう。
 
-設定
+### 設定
 
-You can use the `byebug` gem to set breakpoints and step through live code in Rails. To install it, just run:
+`byebug` gemを使用すると、Railsコードにブレークポイントを設定してステップ実行できます。次を実行するだけでインストールできます。
 
 ```bash
 $ gem install byebug
-``` 
+```
 
-Inside any Rails application you can then invoke the debugger by calling the `byebug` method.
+後はRailsアプリケーション内で`byebug`メソッドを呼び出せばいつでもデバッガーを起動できます。
 
 以下に例を示します。
 
@@ -259,10 +259,10 @@ class PeopleController < ApplicationController
 end
 ``` 
 
-### The Shell
+### シェル
 
-As soon as your application calls the `byebug` method, the debugger will be started in a debugger shell inside the terminal window where you launched your application server, and you will be placed at the debugger's prompt `(byebug)`.
-Before the prompt, the code around the line that is about to be run will be displayed and the current line will be marked by '=>'. 以下に例を示します。
+アプリケーションで`byebug`を呼び出すと、アプリケーションサーバーを実行しているターミナルウィンドウ内のデバッガーシェルで即座にデバッガーが起動し、`(byebug)`というプロンプトが表示されます。
+実行しようとしている行の前後のコードがプロンプトの前に表示され、'=>'で現在の行が示されます。以下に例を示します。
 
 ``` 
 [1, 10] in /PathTo/project/app/controllers/articles_controller.rb
@@ -278,9 +278,9 @@ Before the prompt, the code around the line that is about to be run will be disp
    12:       format.json { render json: @articles }
 
 (byebug)
-``` 
+```
 
-If you got there by a browser request, the browser tab containing the request will be hung until the debugger has finished and the trace has finished processing the entire request.
+ブラウザからのリクエストによってデバッグ行に到達した場合、リクエストしたブラウザのタブ上の処理は、デバッガが終了してリクエストの処理が完全に終了するまで中断します。
 
 以下に例を示します。
 
@@ -312,9 +312,9 @@ Processing by ArticlesController#index as HTML
    12:       format.json { render json: @articles }
 
 (byebug)
-``` 
+```
 
-Now it's time to explore and dig into your application. A good place to start is by asking the debugger for help. Type: `help`
+それではアプリケーションの奥深くにダイブしてみましょう。まずはデバッガーのヘルプを表示してみるのがよいでしょう。`help`と入力します。
 
 ``` 
 (byebug) help
@@ -329,13 +329,13 @@ break      disable  eval    info       method  ps        save     step       var
 catch      display  exit    interrupt  next    putl      set      thread
 condition  down     finish  irb        p       quit      show     trace
 continue   edit     frame   kill       pp      reload    skip     undisplay
-``` 
+```
 
-TIP: To view the help menu for any command use `help <command-name>` at the debugger prompt. For example: _`help list`_. You can abbreviate any debugging command by supplying just enough letters to distinguish them from other commands, so you can also use `l` for the `list` command, for example.
+TIP: 個別のコマンドのヘルプを表示するには、デバッガーのプロンプトで`help <コマンド名>`と入力します。（例: _`help list`_）デバッグ用コマンドは、他のコマンドと区別できる程度に短縮できます。たとえば`list`コマンドの代わりに`l`と入力することもできます。
 
-To see the previous ten lines you should type `list-` (or `l-`)
+前の10行を表示するには、`list-` (または `l-`) と入力します。
 
-``` 
+```
 (byebug) l-
 
 [1, 10] in /PathTo/project/app/controllers/articles_controller.rb
@@ -350,11 +350,11 @@ To see the previous ten lines you should type `list-` (or `l-`)
    9
    10      respond_to do |format|
 
-``` 
+```
 
-This way you can move inside the file, being able to see the code above and over the line where you added the `byebug` call. Finally, to see where you are in the code again you can type `list=`
+上に示したように、該当のファイルに移動して、`byebug`呼び出しを追加した行の前を表示できます。最後に、`list=`と入力して現在の位置を再び表示してみましょう。
 
-``` 
+```
 (byebug) list=
 
 [3, 12] in /PathTo/project/app/controllers/articles_controller.rb
@@ -370,17 +370,17 @@ This way you can move inside the file, being able to see the code above and over
    12:       format.json { render json: @articles }
 
 (byebug)
-``` 
+```
 
-### The Context
+### コンテキスト
 
-When you start debugging your application, you will be placed in different contexts as you go through the different parts of the stack.
+アプリケーションのデバッグ中は、通常と異なる「コンテキスト」に置かれます。具体的には、スタックの別の部分を通って進むコンテキストです。
 
-The debugger creates a context when a stopping point or an event is reached. The context has information about the suspended program which enables the debugger to inspect the frame stack, evaluate variables from the perspective of the debugged program, and contains information about the place where the debugged program is stopped.
+デバッガーは、停止位置やイベントに到達するときに「コンテキスト」を作成します。作成されたコンテキストには、中断しているプログラムに関する情報が含まれており、デバッガーはこの情報を使用して、フレームスタックの検査やデバッグ中のプログラムにおける変数の評価を行います。また、デバッグ中のプログラムが停止している位置の情報もコンテキストに含まれます。
 
-At any time you can call the `backtrace` command (or its alias `where`) to print the backtrace of the application. This can be very helpful to know how you got where you are. If you ever wondered about how you got somewhere in your code, then `backtrace` will supply the answer.
+`backtrace`コマンド (またはそのエイリアスである`where`コマンド) を使用すれば、いつでもアプリケーションのバックトレースを出力できます。これは、コードのその位置に至るまでの経過を知るうえで非常に便利です。コードのある行にたどりついたとき、その経緯を知りたければ`backtrace`でわかります。
 
-``` 
+```
 (byebug) where
 --> #0  ArticlesController.index
       at /PathTo/project/test_app/app/controllers/articles_controller.rb:8
@@ -391,11 +391,11 @@ At any time you can call the `backtrace` command (or its alias `where`) to print
     #3  ActionController::Rendering.process_action(action#NilClass, *args#NilClass)
       at /PathToGems/actionpack-5.0.0/lib/action_controller/metal/rendering.rb:10
 ...
-``` 
+```
 
-The current frame is marked with `-->`. You can move anywhere you want in this trace (thus changing the context) by using the `frame _n_` command, where _n_ is the specified frame number. If you do that, `byebug` will display your new context.
+現在のフレームは`-->`で示されます。`frame `_n_コマンド (_n_はフレーム番号) を使用すれば、トレース内のどのコンテキストにも自由に移動できます。このコマンドを実行すると、`byebug`は新しいコンテキストを表示します。
 
-``` 
+```
 (byebug) frame 2
 
 [184, 193] in /PathToGems/actionpack-5.0.0/lib/abstract_controller/base.rb
@@ -411,31 +411,31 @@ The current frame is marked with `-->`. You can move anywhere you want in this t
    193:       # this method if you wish to change how action methods are called,
 
 (byebug)
-``` 
+```
 
-The available variables are the same as if you were running the code line by line. After all, that's what debugging is.
+コードを1行ずつ実行していた場合、利用できる変数は同一です。つまり、これこそがデバッグという作業です。
 
-You can also use `up [n]` (`u` for abbreviated) and `down [n]` commands in order to change the context _n_ frames up or down the stack respectively. _n_ defaults to one. Up in this case is towards higher-numbered stack frames, and down is towards lower-numbered stack frames.
+`up [n]` (短縮形の`u`も可) コマンドや`down [n]`コマンドを使用して、スタックを _n_ フレーム上または下に移動し、コンテキストを切り替えることもできます。upはスタックフレーム番号の大きい方に進み、downは小さい方に進みます。
 
-### Threads
+### スレッド
 
-The debugger can list, stop, resume and switch between running threads by using the `thread` command (or the abbreviated `th`). This command has a handful of options:
+デバッガーで`thread`(短縮形は`th`) コマンドを使用すると、スレッド実行中にスレッドのリスト表示/停止/再開/切り替えを行えます。このコマンドには以下のささやかなオプションがあります。
 
-* `thread` shows the current thread.
-* `thread list` is used to list all threads and their statuses. The plus + character and the number indicates the current thread of execution.
-* `thread stop _n_` stop thread _n_.
-* `thread resume _n_` resumes thread _n_.
-* `thread switch _n_` switches the current thread context to _n_.
+* `thread`は現在のスレッドを表示します。
+* `thread list`はすべてのスレッドのリストをステータス付きで表示します。現在実行中のスレッドは「+」記号と数字で示されます。
+* `thread stop `_n_ はスレッド _n_ を停止します。
+* `thread resume `_n_ はスレッド _n_ を再開します。
+* `thread switch `_n_ は現在のスレッドコンテキストを _n_ に切り替えます。
 
-This command is very helpful, among other occasions, when you are debugging concurrent threads and need to verify that there are no race conditions in your code.
+このコマンドは他の場合にも非常に便利です。同時実行スレッドのデバッグ中に、競合状態が発生していないかどうかを確認する必要がある場合にも使えます。
 
-### Inspecting Variables
+### 変数の検査
 
-Any expression can be evaluated in the current context. To evaluate an expression, just type it!
+すべての式は、現在のコンテキストで評価されます。式を評価するには、単にその式を入力します。
 
-This example shows how you can print the instance variables defined within the current context:
+次の例では、現在のコンテキスト内で定義されたインスタンス変数を出力する方法を示しています。
 
-``` 
+```
 [3, 12] in /PathTo/project/app/controllers/articles_controller.rb
     3:
     4:   # GET /articles
@@ -450,12 +450,12 @@ This example shows how you can print the instance variables defined within the c
 
 (byebug) instance_variables
 [:@_action_has_layout, :@_routes, :@_headers, :@_status, :@_request, :@_response, :@_env, :@_prefixes, :@_lookup_context, :@_action_name, :@_response_body, :@marked_for_same_origin_verification, :@_config]
-``` 
+```
 
-As you may have figured out, all of the variables that you can access from a controller are displayed. This list is dynamically updated as you execute code.
-For example, run the next line using `next` (you'll learn more about this command later in this guide).
+見ての通り、コントローラからアクセスできるすべての変数が表示されています。表示される変数リストは、コードの実行に伴って動的に更新されます。
+たとえば、`next`コマンドで次の行に進んだとします (このコマンドの詳細については後述します)。
 
-``` 
+```
 (byebug) next
 [5, 14] in /PathTo/project/app/controllers/articles_controller.rb
    5     # GET /articles.json
@@ -470,42 +470,42 @@ For example, run the next line using `next` (you'll learn more about this comman
    14    end
    15
 (byebug)
-``` 
+```
 
-And then ask again for the instance_variables:
+それではinstance_variablesをもう一度調べてみましょう。
 
-``` 
+```
 (byebug) instance_variables.include? "@articles"
 true
-``` 
+```
 
-Now `@articles` is included in the instance variables, because the line defining it was executed.
+定義行が実行されたことによって、今度は`@articles`もインスタンス変数に表示されます。
 
-TIP: You can also step into **irb** mode with the command `irb` (of course!).
-This way an irb session will be started within the context you invoked it. But be warned: this is an experimental feature.
+TIP: `irb`コマンドを使用することで、**irb**モードで実行できます。
+これにより、呼び出し中のコンテキスト内でirbセッションが開始されます。ただし、この機能はまだ実験中の段階です。
 
-The `var` method is the most convenient way to show variables and their values.
-Let's let `byebug` help us with it.
+変数と値のリストを表示するのに便利なのは何と言っても`var`メソッドでしょう。
+`byebug`でこのメソッドを使ってみましょう。
 
-``` 
+```
 (byebug) help var
 v[ar] cl[ass]                   show class variables of self
 v[ar] const <object>            show constants of object
 v[ar] g[lobal]                  show global variables
 v[ar] i[nstance] <object>       show instance variables of object
 v[ar] l[ocal]                   show local variables
-``` 
+```
 
-This is a great way to inspect the values of the current context variables. For example, to check that we have no local variables currently defined.
+このメソッドは、現在のコンテキストでの変数の値を検査するのにうってつけの方法です。たとえば、現時点でローカル変数が何も定義されていないことを確認してみましょう。
 
-``` 
+```
 (byebug) var local
 (byebug)
-``` 
+```
 
-You can also inspect for an object method this way:
+以下の方法でオブジェクトのメソッドを検査することもできます。
 
-``` 
+```
 (byebug) var instance Article.new
 @_start_transaction_state = {}
 @aggregation_cache = {}
@@ -514,33 +514,33 @@ You can also inspect for an object method this way:
 @attributes_cache = {}
 @changed_attributes = nil
 ...
-``` 
+```
 
-TIP: The commands `p` (print) and `pp` (pretty print) can be used to evaluate
-Ruby expressions and display the value of variables to the console.
+TIP: `p` (print) コマンドとa`pp` (pretty print) コマンドを使用して
+Rubyの式を評価し、変数の値をコンソールに出力することができます。
 
-You can use also `display` to start watching variables. This is a good way of tracking the values of a variable while the execution goes on.
+`display`コマンドを使用して変数をウォッチすることもできます。これは、デバッガーで実行を進めながら変数の値の移り変わりを追跡するのに大変便利です。
 
-``` 
+```
 (byebug) display @articles
 1: @articles = nil
-``` 
+```
 
-The variables inside the displaying list will be printed with their values after you move in the stack. To stop displaying a variable use `undisplay _n_` where _n_ is the variable number (1 in the last example).
+スタック内で移動するたびに、そのときの変数と値のリストが出力されます。変数の表示を止めるには、`undisplay `_n_ (_n_ は変数番号) を実行します。上の例では変数番号は 1 になっています。
 
-### Step by Step
+### ステップ実行
 
-Now you should know where you are in the running trace and be able to print the available variables. But lets continue and move on with the application execution.
+これで、トレース実行中に現在の実行位置を確認し、利用可能な変数をいつでも確認できるようになりました。アプリケーションの実行について引き続き学んでみましょう。
 
-Use `step` (abbreviated `s`) to continue running your program until the next logical stopping point and return control to the debugger.
+`step`コマンド (短縮形は`s`) を使用すると、プログラムの実行を継続し、次の論理的な停止行まで進んだらデバッガーに制御を返します。
 
-You may also use `next` which is similar to step, but function or method calls that appear within the line of code are executed without stopping.
+`step`とよく似た`next`を使用することももちろんできますが、`next`はそのコードの行に関数やメソッドがあっても止まらずにそれらの関数やメソッドを実行してしまう点が異なります。
 
-TIP: You can also use `step n` or `next n` to move forwards `n` steps at once.
+TIP: `step n`や`next n`と入力することで、`n`ステップずつ進めることもできます。
 
-The difference between `next` and `step` is that `step` stops at the next line of code executed, doing just a single step, while `next` moves to the next line without descending inside methods.
+`next`と`step`の違いは次のとおりです。`step`は次のコード行を実行したらそこで止まるので、常に一度に1行だけを実行します。`next`はメソッドがあってもその中に潜らずに次の行に進みます。
 
-For example, consider the following situation:
+たとえば、次のような状況を考えてみましょう
 
 ```ruby
 Started GET "/" for 127.0.0.1 at 2014-04-11 13:39:23 +0200
@@ -557,13 +557,13 @@ Processing by ArticlesController#index as HTML
    8: end
 
 (byebug)
-``` 
+```
 
-If we use `next`, we want go deep inside method calls. Instead, byebug will go to the next line within the same context. In this case, this is the last line of the method, so `byebug` will jump to next next line of the previous frame.
+`next`を使用していて、メソッド呼び出しに潜ってみたいとしましょう。しかしbyebugは、潜る代わりに単に同じコンテキストの次の行に進みます。この例の場合、次の行とはそのメソッドの最終行になります。従って、`byebug`は前のフレームにある次の次の行にジャンプします。
 
-``` 
+```
 (byebug) next
-Next went up a frame because previous frame finished
+前のフレームの実行が完了するので、Nextによって1つ上のフレームに移動する
 
 [4, 13] in /PathTo/project/test_app/app/controllers/articles_controller.rb
     4:   # GET /articles
@@ -578,11 +578,11 @@ Next went up a frame because previous frame finished
    13:   end
 
 (byebug)
-``` 
+```
 
-If we use `step` in the same situation, we will literally go the next ruby instruction to be executed. In this case, the activesupport's `week` method.
+同じ状況で`step`を使用すると、文字通り「Rubyコードの、実行すべき次の行」に進みます。ここではactivesupportの`week`メソッドに潜って進むことになります。
 
-``` 
+```
 (byebug) step
 
 [50, 59] in /PathToGems/activesupport-5.0.0/lib/active_support/core_ext/numeric/time.rb
@@ -598,25 +598,25 @@ If we use `step` in the same situation, we will literally go the next ruby instr
    59:   def fortnights
 
 (byebug)
-``` 
+```
 
-This is one of the best ways to find bugs in your code, or perhaps in Ruby on Rails.
+これは自分のコードの、ひいてはRuby on Railsのバグを見つけ出す方法として非常に優れています。
 
-### Breakpoints
+### ブレークポイント
 
-A breakpoint makes your application stop whenever a certain point in the program is reached. The debugger shell is invoked in that line.
+ブレークポイントとは、アプリケーションの実行がプログラムの特定の場所に達した時に停止する位置を指します。そしてその場所でデバッガーシェルが起動します。
 
-You can add breakpoints dynamically with the command `break` (or just `b`).
-There are 3 possible ways of adding breakpoints manually:
+`break` (または`b`) コマンドを使用してブレークポイントを動的に追加できます。
+手動でブレークポイントを追加する方法は次の 3 とおりです。
 
-* `break line`: set breakpoint in the _line_ in the current source file.
-* `break file:line [if expression]`: set breakpoint in the _line_ number inside the _file_. If an _expression_ is given it must evaluated to _true_ to fire up the debugger.
-* `break class(.|\#)method [if expression]`: set breakpoint in _method_ (. and \# for class and instance method respectively) defined in _class_. The _expression_ works the same way as with file:line.
+* `break line`: 現在のソースファイルの _line_ で示した行にブレークポイントを設定します。
+* `break file:line [if expression]`: _file_ ファイルの _line_ 行目にブレークポイントを設定します。_expression_ が与えられた場合、デバッガを起動するにはこれが _true_ と評価される必要があります。
+* `break class(.|\#)method [if expression]`: _class_ クラスに定義されている _method_ メソッドにブレークポイントを設定します (「.」と「\#」はそれぞれクラスとインスタンスメソッドを指す)。_expression_の動作はfile:lineの場合と同じです。
 
 
-For example, in the previous situation
+さっきと同じ状況を例に説明します。
 
-``` 
+```
 [4, 13] in /PathTo/project/app/controllers/articles_controller.rb
     4:   # GET /articles
     5:   # GET /articles.json
@@ -632,7 +632,7 @@ For example, in the previous situation
 (byebug) break 11
 Created breakpoint 1 at /PathTo/project/app/controllers/articles_controller.rb:11
 
-``` 
+```
 
 Use `info breakpoints _n_` or `info break _n_` to list breakpoints. If you supply a number, it lists that breakpoint. Otherwise it lists all breakpoints.
 
@@ -772,7 +772,7 @@ There are some Rails plugins to help you to find errors and debug your applicati
 * [RailsPanel](https://github.com/dejan/rails_panel) Chrome extension for Rails development that will end your tailing of development.log. Have all information about your Rails app requests in the browser - in the Developer Tools panel.
 Provides insight to db/rendering/total times, parameter list, rendered views and more.
 
-### 参考資料
+参考資料
 ----------
 
 * [ruby-debug Homepage](http://bashdb.sourceforge.net/ruby-debug/home-page.html)

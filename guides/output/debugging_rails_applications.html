@@ -235,12 +235,13 @@
 <a href="#byebug-gem%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%97%E3%81%A6%E3%83%87%E3%83%90%E3%83%83%E3%82%B0%E3%81%99%E3%82%8B"><code>byebug</code> gemを使用してデバッグする</a>
 
 <ul>
-<li><a href="#the-shell">The Shell</a></li>
-<li><a href="#the-context">The Context</a></li>
-<li><a href="#threads">Threads</a></li>
-<li><a href="#byebug-gem%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%97%E3%81%A6%E3%83%87%E3%83%90%E3%83%83%E3%82%B0%E3%81%99%E3%82%8B-inspecting-variables">Inspecting Variables</a></li>
-<li><a href="#step-by-step">Step by Step</a></li>
-<li><a href="#breakpoints">Breakpoints</a></li>
+<li><a href="#%E8%A8%AD%E5%AE%9A">設定</a></li>
+<li><a href="#%E3%82%B7%E3%82%A7%E3%83%AB">シェル</a></li>
+<li><a href="#%E3%82%B3%E3%83%B3%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88">コンテキスト</a></li>
+<li><a href="#%E3%82%B9%E3%83%AC%E3%83%83%E3%83%89">スレッド</a></li>
+<li><a href="#%E5%A4%89%E6%95%B0%E3%81%AE%E6%A4%9C%E6%9F%BB">変数の検査</a></li>
+<li><a href="#%E3%82%B9%E3%83%86%E3%83%83%E3%83%97%E5%AE%9F%E8%A1%8C">ステップ実行</a></li>
+<li><a href="#%E3%83%96%E3%83%AC%E3%83%BC%E3%82%AF%E3%83%9D%E3%82%A4%E3%83%B3%E3%83%88">ブレークポイント</a></li>
 <li><a href="#catching-exceptions">Catching Exceptions</a></li>
 <li><a href="#resuming-execution">Resuming Execution</a></li>
 <li><a href="#editing">Editing</a></li>
@@ -253,7 +254,7 @@
 
 <ul>
 <li><a href="#console">Console</a></li>
-<li><a href="#debugging-with-the-web-console-gem-inspecting-variables">Inspecting Variables</a></li>
+<li><a href="#inspecting-variables">Inspecting Variables</a></li>
 <li><a href="#debugging-with-the-web-console-gem-settings">Settings</a></li>
 </ul>
 </li>
@@ -264,13 +265,8 @@
 <li><a href="#valgrind">Valgrind</a></li>
 </ul>
 </li>
-<li>
-<a href="#plugins-for-debugging">Plugins for Debugging</a>
-
-<ul>
+<li><a href="#plugins-for-debugging">Plugins for Debugging</a></li>
 <li><a href="#%E5%8F%82%E8%80%83%E8%B3%87%E6%96%99">参考資料</a></li>
-</ul>
-</li>
 </ol>
 </body></html>
 
@@ -494,16 +490,16 @@ logger.debug {"Person attributes hash: #{@person.attributes.inspect}"}
 <h3 id="byebug-gemを使用してデバッグする"><a href="#byebug-gem%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%97%E3%81%A6%E3%83%87%E3%83%90%E3%83%83%E3%82%B0%E3%81%99%E3%82%8B">3 <code>byebug</code> gemを使用してデバッグする</a></h3>
 <p>コードが期待どおりに動作しない場合は、ログやコンソールに出力して問題を診断することができます。ただし、この方法ではエラー追跡を何度も繰り返さねばならず、根本的な原因を突き止めるには能率がよいとは言えません。
 実行中のコードに探りを入れる必要があるのであれば、最も頼りになるのはやはりデバッガーです。</p>
-<p>デバッガーは、Railsのソースコードを追うときに、そのコードがどこで開始されるのかがを知りたいときにも有用です。Just debug any request to your application and use this guide to learn how to move from the code you have written deeper into Rails code.</p>
-<p>設定</p>
-<p>You can use the <code>byebug</code> gem to set breakpoints and step through live code in Rails. To install it, just run:</p>
+<p>デバッガーは、Railsのソースコードを追うときに、そのコードをどこで開始するのかがを知りたいときにも有用です。アプリケーションへのリクエストをすべてデバッグし、自分が書いたコードからRailsのもっと深いところへダイブする方法を本ガイドから学びましょう。</p>
+<h4 id="設定"><a href="#%E8%A8%AD%E5%AE%9A">3.1 設定</a></h4>
+<p><code>byebug</code> gemを使用すると、Railsコードにブレークポイントを設定してステップ実行できます。次を実行するだけでインストールできます。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ gem install byebug
 
 </pre>
 </div>
-<p>Inside any Rails application you can then invoke the debugger by calling the <code>byebug</code> method.</p>
+<p>後はRailsアプリケーション内で<code>byebug</code>メソッドを呼び出せばいつでもデバッガーを起動できます。</p>
 <p>以下に例を示します。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -516,9 +512,9 @@ end
 
 </pre>
 </div>
-<h4 id="the-shell"><a href="#the-shell">3.1 The Shell</a></h4>
-<p>As soon as your application calls the <code>byebug</code> method, the debugger will be started in a debugger shell inside the terminal window where you launched your application server, and you will be placed at the debugger's prompt <code>(byebug)</code>.
-Before the prompt, the code around the line that is about to be run will be displayed and the current line will be marked by '=&gt;'. 以下に例を示します。</p>
+<h4 id="シェル"><a href="#%E3%82%B7%E3%82%A7%E3%83%AB">3.2 シェル</a></h4>
+<p>アプリケーションで<code>byebug</code>を呼び出すと、アプリケーションサーバーを実行しているターミナルウィンドウ内のデバッガーシェルで即座にデバッガーが起動し、<code>(byebug)</code>というプロンプトが表示されます。
+実行しようとしている行の前後のコードがプロンプトの前に表示され、'=&gt;'で現在の行が示されます。以下に例を示します。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 [1, 10] in /PathTo/project/app/controllers/articles_controller.rb
@@ -537,7 +533,7 @@ Before the prompt, the code around the line that is about to be run will be disp
 
 </pre>
 </div>
-<p>If you got there by a browser request, the browser tab containing the request will be hung until the debugger has finished and the trace has finished processing the entire request.</p>
+<p>ブラウザからのリクエストによってデバッグ行に到達した場合、リクエストしたブラウザのタブ上の処理は、デバッガが終了してリクエストの処理が完全に終了するまで中断します。</p>
 <p>以下に例を示します。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
@@ -571,7 +567,7 @@ Processing by ArticlesController#index as HTML
 
 </pre>
 </div>
-<p>Now it's time to explore and dig into your application. A good place to start is by asking the debugger for help. Type: <code>help</code></p>
+<p>それではアプリケーションの奥深くにダイブしてみましょう。まずはデバッガーのヘルプを表示してみるのがよいでしょう。<code>help</code>と入力します。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 (byebug) help
@@ -589,8 +585,8 @@ continue   edit     frame   kill       pp      reload    skip     undisplay
 
 </pre>
 </div>
-<div class="info"><p>To view the help menu for any command use <code>help &lt;command-name&gt;</code> at the debugger prompt. For example: <em><code>help list</code></em>. You can abbreviate any debugging command by supplying just enough letters to distinguish them from other commands, so you can also use <code>l</code> for the <code>list</code> command, for example.</p></div>
-<p>To see the previous ten lines you should type <code>list-</code> (or <code>l-</code>)</p>
+<div class="info"><p>個別のコマンドのヘルプを表示するには、デバッガーのプロンプトで<code>help &lt;コマンド名&gt;</code>と入力します。（例: <em><code>help list</code></em>）デバッグ用コマンドは、他のコマンドと区別できる程度に短縮できます。たとえば<code>list</code>コマンドの代わりに<code>l</code>と入力することもできます。</p></div>
+<p>前の10行を表示するには、<code>list-</code> (または <code>l-</code>) と入力します。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 (byebug) l-
@@ -610,7 +606,7 @@ continue   edit     frame   kill       pp      reload    skip     undisplay
 
 </pre>
 </div>
-<p>This way you can move inside the file, being able to see the code above and over the line where you added the <code>byebug</code> call. Finally, to see where you are in the code again you can type <code>list=</code></p>
+<p>上に示したように、該当のファイルに移動して、<code>byebug</code>呼び出しを追加した行の前を表示できます。最後に、<code>list=</code>と入力して現在の位置を再び表示してみましょう。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 (byebug) list=
@@ -631,10 +627,10 @@ continue   edit     frame   kill       pp      reload    skip     undisplay
 
 </pre>
 </div>
-<h4 id="the-context"><a href="#the-context">3.2 The Context</a></h4>
-<p>When you start debugging your application, you will be placed in different contexts as you go through the different parts of the stack.</p>
-<p>The debugger creates a context when a stopping point or an event is reached. The context has information about the suspended program which enables the debugger to inspect the frame stack, evaluate variables from the perspective of the debugged program, and contains information about the place where the debugged program is stopped.</p>
-<p>At any time you can call the <code>backtrace</code> command (or its alias <code>where</code>) to print the backtrace of the application. This can be very helpful to know how you got where you are. If you ever wondered about how you got somewhere in your code, then <code>backtrace</code> will supply the answer.</p>
+<h4 id="コンテキスト"><a href="#%E3%82%B3%E3%83%B3%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88">3.3 コンテキスト</a></h4>
+<p>アプリケーションのデバッグ中は、通常と異なる「コンテキスト」に置かれます。具体的には、スタックの別の部分を通って進むコンテキストです。</p>
+<p>デバッガーは、停止位置やイベントに到達するときに「コンテキスト」を作成します。作成されたコンテキストには、中断しているプログラムに関する情報が含まれており、デバッガーはこの情報を使用して、フレームスタックの検査やデバッグ中のプログラムにおける変数の評価を行います。また、デバッグ中のプログラムが停止している位置の情報もコンテキストに含まれます。</p>
+<p><code>backtrace</code>コマンド (またはそのエイリアスである<code>where</code>コマンド) を使用すれば、いつでもアプリケーションのバックトレースを出力できます。これは、コードのその位置に至るまでの経過を知るうえで非常に便利です。コードのある行にたどりついたとき、その経緯を知りたければ<code>backtrace</code>でわかります。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 (byebug) where
@@ -650,7 +646,7 @@ continue   edit     frame   kill       pp      reload    skip     undisplay
 
 </pre>
 </div>
-<p>The current frame is marked with <code>--&gt;</code>. You can move anywhere you want in this trace (thus changing the context) by using the <code>frame _n_</code> command, where <em>n</em> is the specified frame number. If you do that, <code>byebug</code> will display your new context.</p>
+<p>現在のフレームは<code>--&gt;</code>で示されます。<code>frame</code><em>n</em>コマンド (<em>n</em>はフレーム番号) を使用すれば、トレース内のどのコンテキストにも自由に移動できます。このコマンドを実行すると、<code>byebug</code>は新しいコンテキストを表示します。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 (byebug) frame 2
@@ -671,26 +667,26 @@ continue   edit     frame   kill       pp      reload    skip     undisplay
 
 </pre>
 </div>
-<p>The available variables are the same as if you were running the code line by line. After all, that's what debugging is.</p>
-<p>You can also use <code>up [n]</code> (<code>u</code> for abbreviated) and <code>down [n]</code> commands in order to change the context <em>n</em> frames up or down the stack respectively. <em>n</em> defaults to one. Up in this case is towards higher-numbered stack frames, and down is towards lower-numbered stack frames.</p>
-<h4 id="threads"><a href="#threads">3.3 Threads</a></h4>
-<p>The debugger can list, stop, resume and switch between running threads by using the <code>thread</code> command (or the abbreviated <code>th</code>). This command has a handful of options:</p>
+<p>コードを1行ずつ実行していた場合、利用できる変数は同一です。つまり、これこそがデバッグという作業です。</p>
+<p><code>up [n]</code> (短縮形の<code>u</code>も可) コマンドや<code>down [n]</code>コマンドを使用して、スタックを <em>n</em> フレーム上または下に移動し、コンテキストを切り替えることもできます。upはスタックフレーム番号の大きい方に進み、downは小さい方に進みます。</p>
+<h4 id="スレッド"><a href="#%E3%82%B9%E3%83%AC%E3%83%83%E3%83%89">3.4 スレッド</a></h4>
+<p>デバッガーで<code>thread</code>(短縮形は<code>th</code>) コマンドを使用すると、スレッド実行中にスレッドのリスト表示/停止/再開/切り替えを行えます。このコマンドには以下のささやかなオプションがあります。</p>
 <ul>
 <li>
-<code>thread</code> shows the current thread.</li>
+<code>thread</code>は現在のスレッドを表示します。</li>
 <li>
-<code>thread list</code> is used to list all threads and their statuses. The plus + character and the number indicates the current thread of execution.</li>
+<code>thread list</code>はすべてのスレッドのリストをステータス付きで表示します。現在実行中のスレッドは「+」記号と数字で示されます。</li>
 <li>
-<code>thread stop _n_</code> stop thread <em>n</em>.</li>
+<code>thread stop</code><em>n</em> はスレッド <em>n</em> を停止します。</li>
 <li>
-<code>thread resume _n_</code> resumes thread <em>n</em>.</li>
+<code>thread resume</code><em>n</em> はスレッド <em>n</em> を再開します。</li>
 <li>
-<code>thread switch _n_</code> switches the current thread context to <em>n</em>.</li>
+<code>thread switch</code><em>n</em> は現在のスレッドコンテキストを <em>n</em> に切り替えます。</li>
 </ul>
-<p>This command is very helpful, among other occasions, when you are debugging concurrent threads and need to verify that there are no race conditions in your code.</p>
-<h4 id="byebug-gemを使用してデバッグする-inspecting-variables"><a href="#byebug-gem%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%97%E3%81%A6%E3%83%87%E3%83%90%E3%83%83%E3%82%B0%E3%81%99%E3%82%8B-inspecting-variables">3.4 Inspecting Variables</a></h4>
-<p>Any expression can be evaluated in the current context. To evaluate an expression, just type it!</p>
-<p>This example shows how you can print the instance variables defined within the current context:</p>
+<p>このコマンドは他の場合にも非常に便利です。同時実行スレッドのデバッグ中に、競合状態が発生していないかどうかを確認する必要がある場合にも使えます。</p>
+<h4 id="変数の検査"><a href="#%E5%A4%89%E6%95%B0%E3%81%AE%E6%A4%9C%E6%9F%BB">3.5 変数の検査</a></h4>
+<p>すべての式は、現在のコンテキストで評価されます。式を評価するには、単にその式を入力します。</p>
+<p>次の例では、現在のコンテキスト内で定義されたインスタンス変数を出力する方法を示しています。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 [3, 12] in /PathTo/project/app/controllers/articles_controller.rb
@@ -710,8 +706,8 @@ continue   edit     frame   kill       pp      reload    skip     undisplay
 
 </pre>
 </div>
-<p>As you may have figured out, all of the variables that you can access from a controller are displayed. This list is dynamically updated as you execute code.
-For example, run the next line using <code>next</code> (you'll learn more about this command later in this guide).</p>
+<p>見ての通り、コントローラからアクセスできるすべての変数が表示されています。表示される変数リストは、コードの実行に伴って動的に更新されます。
+たとえば、<code>next</code>コマンドで次の行に進んだとします (このコマンドの詳細については後述します)。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 (byebug) next
@@ -731,7 +727,7 @@ For example, run the next line using <code>next</code> (you'll learn more about 
 
 </pre>
 </div>
-<p>And then ask again for the instance_variables:</p>
+<p>それではinstance_variablesをもう一度調べてみましょう。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 (byebug) instance_variables.include? "@articles"
@@ -739,11 +735,11 @@ true
 
 </pre>
 </div>
-<p>Now <code>@articles</code> is included in the instance variables, because the line defining it was executed.</p>
-<div class="info"><p>You can also step into <strong>irb</strong> mode with the command <code>irb</code> (of course!).
-This way an irb session will be started within the context you invoked it. But be warned: this is an experimental feature.</p></div>
-<p>The <code>var</code> method is the most convenient way to show variables and their values.
-Let's let <code>byebug</code> help us with it.</p>
+<p>定義行が実行されたことによって、今度は<code>@articles</code>もインスタンス変数に表示されます。</p>
+<div class="info"><p><code>irb</code>コマンドを使用することで、<strong>irb</strong>モードで実行できます。
+これにより、呼び出し中のコンテキスト内でirbセッションが開始されます。ただし、この機能はまだ実験中の段階です。</p></div>
+<p>変数と値のリストを表示するのに便利なのは何と言っても<code>var</code>メソッドでしょう。
+<code>byebug</code>でこのメソッドを使ってみましょう。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 (byebug) help var
@@ -755,7 +751,7 @@ v[ar] l[ocal]                   show local variables
 
 </pre>
 </div>
-<p>This is a great way to inspect the values of the current context variables. For example, to check that we have no local variables currently defined.</p>
+<p>このメソッドは、現在のコンテキストでの変数の値を検査するのにうってつけの方法です。たとえば、現時点でローカル変数が何も定義されていないことを確認してみましょう。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 (byebug) var local
@@ -763,7 +759,7 @@ v[ar] l[ocal]                   show local variables
 
 </pre>
 </div>
-<p>You can also inspect for an object method this way:</p>
+<p>以下の方法でオブジェクトのメソッドを検査することもできます。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 (byebug) var instance Article.new
@@ -777,9 +773,9 @@ v[ar] l[ocal]                   show local variables
 
 </pre>
 </div>
-<div class="info"><p>The commands <code>p</code> (print) and <code>pp</code> (pretty print) can be used to evaluate
-Ruby expressions and display the value of variables to the console.</p></div>
-<p>You can use also <code>display</code> to start watching variables. This is a good way of tracking the values of a variable while the execution goes on.</p>
+<div class="info"><p><code>p</code> (print) コマンドとa<code>pp</code> (pretty print) コマンドを使用して
+Rubyの式を評価し、変数の値をコンソールに出力することができます。</p></div>
+<p><code>display</code>コマンドを使用して変数をウォッチすることもできます。これは、デバッガーで実行を進めながら変数の値の移り変わりを追跡するのに大変便利です。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 (byebug) display @articles
@@ -787,14 +783,14 @@ Ruby expressions and display the value of variables to the console.</p></div>
 
 </pre>
 </div>
-<p>The variables inside the displaying list will be printed with their values after you move in the stack. To stop displaying a variable use <code>undisplay _n_</code> where <em>n</em> is the variable number (1 in the last example).</p>
-<h4 id="step-by-step"><a href="#step-by-step">3.5 Step by Step</a></h4>
-<p>Now you should know where you are in the running trace and be able to print the available variables. But lets continue and move on with the application execution.</p>
-<p>Use <code>step</code> (abbreviated <code>s</code>) to continue running your program until the next logical stopping point and return control to the debugger.</p>
-<p>You may also use <code>next</code> which is similar to step, but function or method calls that appear within the line of code are executed without stopping.</p>
-<div class="info"><p>You can also use <code>step n</code> or <code>next n</code> to move forwards <code>n</code> steps at once.</p></div>
-<p>The difference between <code>next</code> and <code>step</code> is that <code>step</code> stops at the next line of code executed, doing just a single step, while <code>next</code> moves to the next line without descending inside methods.</p>
-<p>For example, consider the following situation:</p>
+<p>スタック内で移動するたびに、そのときの変数と値のリストが出力されます。変数の表示を止めるには、<code>undisplay</code><em>n</em> (<em>n</em> は変数番号) を実行します。上の例では変数番号は 1 になっています。</p>
+<h4 id="ステップ実行"><a href="#%E3%82%B9%E3%83%86%E3%83%83%E3%83%97%E5%AE%9F%E8%A1%8C">3.6 ステップ実行</a></h4>
+<p>これで、トレース実行中に現在の実行位置を確認し、利用可能な変数をいつでも確認できるようになりました。アプリケーションの実行について引き続き学んでみましょう。</p>
+<p><code>step</code>コマンド (短縮形は<code>s</code>) を使用すると、プログラムの実行を継続し、次の論理的な停止行まで進んだらデバッガーに制御を返します。</p>
+<p><code>step</code>とよく似た<code>next</code>を使用することももちろんできますが、<code>next</code>はそのコードの行に関数やメソッドがあっても止まらずにそれらの関数やメソッドを実行してしまう点が異なります。</p>
+<div class="info"><p><code>step n</code>や<code>next n</code>と入力することで、<code>n</code>ステップずつ進めることもできます。</p></div>
+<p><code>next</code>と<code>step</code>の違いは次のとおりです。<code>step</code>は次のコード行を実行したらそこで止まるので、常に一度に1行だけを実行します。<code>next</code>はメソッドがあってもその中に潜らずに次の行に進みます。</p>
+<p>たとえば、次のような状況を考えてみましょう</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Started GET "/" for 127.0.0.1 at 2014-04-11 13:39:23 +0200
@@ -814,11 +810,11 @@ Processing by ArticlesController#index as HTML
 
 </pre>
 </div>
-<p>If we use <code>next</code>, we want go deep inside method calls. Instead, byebug will go to the next line within the same context. In this case, this is the last line of the method, so <code>byebug</code> will jump to next next line of the previous frame.</p>
+<p><code>next</code>を使用していて、メソッド呼び出しに潜ってみたいとしましょう。しかしbyebugは、潜る代わりに単に同じコンテキストの次の行に進みます。この例の場合、次の行とはそのメソッドの最終行になります。従って、<code>byebug</code>は前のフレームにある次の次の行にジャンプします。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 (byebug) next
-Next went up a frame because previous frame finished
+前のフレームの実行が完了するので、Nextによって1つ上のフレームに移動する
 
 [4, 13] in /PathTo/project/test_app/app/controllers/articles_controller.rb
     4:   # GET /articles
@@ -836,7 +832,7 @@ Next went up a frame because previous frame finished
 
 </pre>
 </div>
-<p>If we use <code>step</code> in the same situation, we will literally go the next ruby instruction to be executed. In this case, the activesupport's <code>week</code> method.</p>
+<p>同じ状況で<code>step</code>を使用すると、文字通り「Rubyコードの、実行すべき次の行」に進みます。ここではactivesupportの<code>week</code>メソッドに潜って進むことになります。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 (byebug) step
@@ -857,20 +853,20 @@ Next went up a frame because previous frame finished
 
 </pre>
 </div>
-<p>This is one of the best ways to find bugs in your code, or perhaps in Ruby on Rails.</p>
-<h4 id="breakpoints"><a href="#breakpoints">3.6 Breakpoints</a></h4>
-<p>A breakpoint makes your application stop whenever a certain point in the program is reached. The debugger shell is invoked in that line.</p>
-<p>You can add breakpoints dynamically with the command <code>break</code> (or just <code>b</code>).
-There are 3 possible ways of adding breakpoints manually:</p>
+<p>これは自分のコードの、ひいてはRuby on Railsのバグを見つけ出す方法として非常に優れています。</p>
+<h4 id="ブレークポイント"><a href="#%E3%83%96%E3%83%AC%E3%83%BC%E3%82%AF%E3%83%9D%E3%82%A4%E3%83%B3%E3%83%88">3.7 ブレークポイント</a></h4>
+<p>ブレークポイントとは、アプリケーションの実行がプログラムの特定の場所に達した時に停止する位置を指します。そしてその場所でデバッガーシェルが起動します。</p>
+<p><code>break</code> (または<code>b</code>) コマンドを使用してブレークポイントを動的に追加できます。
+手動でブレークポイントを追加する方法は次の 3 とおりです。</p>
 <ul>
 <li>
-<code>break line</code>: set breakpoint in the <em>line</em> in the current source file.</li>
+<code>break line</code>: 現在のソースファイルの <em>line</em> で示した行にブレークポイントを設定します。</li>
 <li>
-<code>break file:line [if expression]</code>: set breakpoint in the <em>line</em> number inside the <em>file</em>. If an <em>expression</em> is given it must evaluated to <em>true</em> to fire up the debugger.</li>
+<code>break file:line [if expression]</code>: <em>file</em> ファイルの <em>line</em> 行目にブレークポイントを設定します。<em>expression</em> が与えられた場合、デバッガを起動するにはこれが <em>true</em> と評価される必要があります。</li>
 <li>
-<code>break class(.|\#)method [if expression]</code>: set breakpoint in <em>method</em> (. and # for class and instance method respectively) defined in <em>class</em>. The <em>expression</em> works the same way as with file:line.</li>
+<code>break class(.|\#)method [if expression]</code>: <em>class</em> クラスに定義されている <em>method</em> メソッドにブレークポイントを設定します (「.」と「#」はそれぞれクラスとインスタンスメソッドを指す)。<em>expression</em>の動作はfile:lineの場合と同じです。</li>
 </ul>
-<p>For example, in the previous situation</p>
+<p>さっきと同じ状況を例に説明します。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 [4, 13] in /PathTo/project/app/controllers/articles_controller.rb
@@ -916,10 +912,10 @@ No breakpoints.
 <li>
 <code>disable breakpoints</code>: the <em>breakpoints</em> will have no effect on your program.</li>
 </ul>
-<h4 id="catching-exceptions"><a href="#catching-exceptions">3.7 Catching Exceptions</a></h4>
+<h4 id="catching-exceptions"><a href="#catching-exceptions">3.8 Catching Exceptions</a></h4>
 <p>The command <code>catch exception-name</code> (or just <code>cat exception-name</code>) can be used to intercept an exception of type <em>exception-name</em> when there would otherwise be no handler for it.</p>
 <p>To list all active catchpoints use <code>catch</code>.</p>
-<h4 id="resuming-execution"><a href="#resuming-execution">3.8 Resuming Execution</a></h4>
+<h4 id="resuming-execution"><a href="#resuming-execution">3.9 Resuming Execution</a></h4>
 <p>There are two ways to resume execution of an application that is stopped in the debugger:</p>
 <ul>
 <li>
@@ -927,16 +923,16 @@ No breakpoints.
 <li>
 <code>finish</code> [frame-number] (or <code>fin</code>): execute until the selected stack frame returns. If no frame number is given, the application will run until the currently selected frame returns. The currently selected frame starts out the most-recent frame or 0 if no frame positioning (e.g up, down or frame) has been performed. If a frame number is given it will run until the specified frame returns.</li>
 </ul>
-<h4 id="editing"><a href="#editing">3.9 Editing</a></h4>
+<h4 id="editing"><a href="#editing">3.10 Editing</a></h4>
 <p>Two commands allow you to open code from the debugger into an editor:</p>
 <ul>
 <li>
 <code>edit [file:line]</code>: edit <em>file</em> using the editor specified by the EDITOR environment variable. A specific <em>line</em> can also be given.</li>
 </ul>
-<h4 id="quitting"><a href="#quitting">3.10 Quitting</a></h4>
+<h4 id="quitting"><a href="#quitting">3.11 Quitting</a></h4>
 <p>To exit the debugger, use the <code>quit</code> command (abbreviated <code>q</code>), or its alias <code>exit</code>.</p>
 <p>A simple quit tries to terminate all threads in effect. Therefore your server will be stopped and you will have to start it again.</p>
-<h4 id="byebug-gemを使用してデバッグする-settings"><a href="#byebug-gem%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%97%E3%81%A6%E3%83%87%E3%83%90%E3%83%83%E3%82%B0%E3%81%99%E3%82%8B-settings">3.11 Settings</a></h4>
+<h4 id="byebug-gemを使用してデバッグする-settings"><a href="#byebug-gem%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%97%E3%81%A6%E3%83%87%E3%83%90%E3%83%83%E3%82%B0%E3%81%99%E3%82%8B-settings">3.12 Settings</a></h4>
 <p><code>byebug</code> has a few available options to tweak its behaviour:</p>
 <ul>
 <li>
@@ -986,7 +982,7 @@ end
 <p>This will render a console inside your view. You don't need to care about the location of the <code>console</code> call; it won't be rendered on the spot of its invocation but next to your HTML content.</p>
 <p>The console executes pure Ruby code. You can define and instantiate custom classes, create new models and inspect variables.</p>
 <div class="note"><p>Only one console can be rendered per request. Otherwise <code>web-console</code> will raise an error on the second <code>console</code> invocation.</p></div>
-<h4 id="debugging-with-the-web-console-gem-inspecting-variables"><a href="#debugging-with-the-web-console-gem-inspecting-variables">4.2 Inspecting Variables</a></h4>
+<h4 id="inspecting-variables"><a href="#inspecting-variables">4.2 Inspecting Variables</a></h4>
 <p>You can invoke <code>instance_variables</code> to list all the instance variables available in your context. If you want to list all the local variables, you can do that with <code>local_variables</code>.</p>
 <h4 id="debugging-with-the-web-console-gem-settings"><a href="#debugging-with-the-web-console-gem-settings">4.3 Settings</a></h4>
 <ul>
@@ -1020,9 +1016,7 @@ end
 <a href="https://github.com/dejan/rails_panel">RailsPanel</a> Chrome extension for Rails development that will end your tailing of development.log. Have all information about your Rails app requests in the browser - in the Developer Tools panel.
 Provides insight to db/rendering/total times, parameter list, rendered views and more.</li>
 </ul>
-<h4 id="参考資料"><a href="#%E5%8F%82%E8%80%83%E8%B3%87%E6%96%99">6.1 参考資料</a></h4>
-<hr>
-
+<h3 id="参考資料"><a href="#%E5%8F%82%E8%80%83%E8%B3%87%E6%96%99">7 参考資料</a></h3>
 <ul>
 <li><a href="http://bashdb.sourceforge.net/ruby-debug/home-page.html">ruby-debug Homepage</a></li>
 <li><a href="https://github.com/cldwalker/debugger">debugger Homepage</a></li>
