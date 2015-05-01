@@ -420,7 +420,7 @@ render file: "/u/apps/warehouse_app/current/app/views/products/show"
 <div class="note"><p>ファイルを出力する場合、デフォルトでは現在のレイアウトが適用されません。ファイルの出力を現在のレイアウト内で行いたい場合は、<code>layout: true</code>オプションを追加する必要があります。</p></div>
 <div class="info"><p>Microsoft Windows上でRailsを実行している場合、ファイルを出力する際に<code>:file</code>オプションを省略できません。Windowsのファイル名フォーマットはUnixのファイル名と同じではないためです。</p></div>
 <h5 id="まとめ"><a href="#%E3%81%BE%E3%81%A8%E3%82%81">2.2.5 まとめ</a></h5>
-<p>これまでご紹介した3とおりの出力方法 (コントローラ内の別テンプレートを使用、べコントローラのテンプレートを使用、ファイルシステム上の任意のファイルを使用) は、実際には同一のアクションのバリエーションにすぎません。</p>
+<p>これまでご紹介した3通りの出力方法 (コントローラ内の別テンプレートを使用、別のコントローラのテンプレートを使用、ファイルシステム上の任意のファイルを使用) は、実際には同一のアクションのバリエーションにすぎません。</p>
 <p>実のところ、たとえばBooksControllerクラスのupdateアクション内で、本の更新に失敗したらeditテンプレートを出力したいとすると、以下のどのレンダリング呼び出しを行っても最終的には必ず<code>views/books</code>ディレクトリの<code>edit.html.erb</code>を使用して出力が行われます。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
@@ -868,7 +868,7 @@ render status: :forbidden
 </tbody>
 </table>
 <h5 id="レイアウトの探索順序"><a href="#%E3%83%AC%E3%82%A4%E3%82%A2%E3%82%A6%E3%83%88%E3%81%AE%E6%8E%A2%E7%B4%A2%E9%A0%86%E5%BA%8F">2.2.14 レイアウトの探索順序</a></h5>
-<p>Railsはが現在のレイアウトを探索する場合、最初に現在のコントローラと同じ基本名を持つレイアウトが<code>app/views/layouts</code>ディレクトリにあるかどうかを調べます。たとえば、<code>PhotosController</code>クラスのアクションから出力するのであれば、<code>app/views/layouts/photos.html.erb</code>または<code>app/views/layouts/photos.builder</code>を探します。該当のコントローラに属するレイアウトがない場合、<code>app/views/layouts/application.html.erb</code>または<code>app/views/layouts/application.builder</code>を使用します。<code>.erb</code>レイアウトがない場合、<code>.builder</code>レイアウトがあればそれを使用します。Railsには、各コントローラやアクションに割り当てる特定のレイアウトをもっと正確に指定する方法がいくつも用意されています。</p>
+<p>Railsは現在のレイアウトを探索する場合、最初に現在のコントローラと同じ基本名を持つレイアウトが<code>app/views/layouts</code>ディレクトリにあるかどうかを調べます。たとえば、<code>PhotosController</code>クラスのアクションから出力するのであれば、<code>app/views/layouts/photos.html.erb</code>または<code>app/views/layouts/photos.builder</code>を探します。該当のコントローラに属するレイアウトがない場合、<code>app/views/layouts/application.html.erb</code>または<code>app/views/layouts/application.builder</code>を使用します。<code>.erb</code>レイアウトがない場合、<code>.builder</code>レイアウトがあればそれを使用します。Railsには、各コントローラやアクションに割り当てる特定のレイアウトをもっと正確に指定する方法がいくつも用意されています。</p>
 <h6 id="コントローラ用のレイアウトを指定する"><a href="#%E3%82%B3%E3%83%B3%E3%83%88%E3%83%AD%E3%83%BC%E3%83%A9%E7%94%A8%E3%81%AE%E3%83%AC%E3%82%A4%E3%82%A2%E3%82%A6%E3%83%88%E3%82%92%E6%8C%87%E5%AE%9A%E3%81%99%E3%82%8B">2.2.14.1 コントローラ用のレイアウトを指定する</a></h6>
 <p><code>layout</code>宣言を使用することで、デフォルトのレイアウト名ルールを上書きすることができます。例: </p>
 <div class="code_container">
