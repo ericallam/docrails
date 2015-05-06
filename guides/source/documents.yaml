@@ -94,7 +94,7 @@
       url: security.html
       description: Webアプリケーション全般におけるセキュリティ問題と、Railsでこれらの問題を回避する方法について解説します。
     -
-      name: Debugging Rails Applications [未着手]
+      name: Rails アプリケーションのデバッグ
       url: debugging_rails_applications.html
       description: Railsアプリケーションのデバッグ方法について解説します。さまざまなデバッグ方法や、作成したコードの舞台裏でどのような動作が行われているかについても解説します。
     -

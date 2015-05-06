@@ -610,8 +610,8 @@ Processing by ArticlesController#index as HTML
 手動でブレークポイントを追加する方法は次の 3 とおりです。
 
 * `break line`: 現在のソースファイルの _line_ で示した行にブレークポイントを設定します。
-* `break file:line [if expression]`: _file_ ファイルの _line_ 行目にブレークポイントを設定します。_expression_ が与えられた場合、デバッガを起動するにはこれが _true_ と評価される必要があります。
-* `break class(.|\#)method [if expression]`: _class_ クラスに定義されている _method_ メソッドにブレークポイントを設定します (「.」と「\#」はそれぞれクラスとインスタンスメソッドを指す)。_expression_の動作はfile:lineの場合と同じです。
+* `break file:line [if expression]`: _file_の_line_行目にブレークポイントを設定します。_expression_ が与えられた場合、デバッガを起動するにはこの式が _true_ と評価される必要があります。
+* `break class(.|\#)method [if expression]`: _class_ に定義されている _method_ にブレークポイントを設定します (「.」と「\#」はそれぞれクラスとインスタンスメソッドを指す)。_expression_の動作はfile:lineの場合と同じです。
 
 
 さっきと同じ状況を例に説明します。
@@ -634,81 +634,81 @@ Created breakpoint 1 at /PathTo/project/app/controllers/articles_controller.rb:1
 
 ```
 
-Use `info breakpoints _n_` or `info break _n_` to list breakpoints. If you supply a number, it lists that breakpoint. Otherwise it lists all breakpoints.
+ブレークポイントをリスト表示するには、`info breakpoints `_n_や`info break `_n_を使用します。番号を指定すると、その番号のブレークポイントをリスト表示します。番号を指定しない場合は、すべてのブレークポイントをリスト表示します。
 
-``` 
+```
 (byebug) info breakpoints
 Num Enb What
 1   y   at /PathTo/project/app/controllers/articles_controller.rb:11
-``` 
+```
 
-To delete breakpoints: use the command `delete _n_` to remove the breakpoint number _n_. If no number is specified, it deletes all breakpoints that are currently active.
+`delete `_n_コマンドを使用すると_n_番のブレークポイントを削除できます。番号を指定しない場合、現在有効なブレークポイントをすべて削除します。
 
-``` 
+```
 (byebug) delete 1
 (byebug) info breakpoints
 No breakpoints.
-``` 
+```
 
-You can also enable or disable breakpoints:
+ブレークポイントを有効にしたり、無効にしたりすることもできます。
 
-* `enable breakpoints`: allow a _breakpoints_ list or all of them if no list is specified, to stop your program. This is the default state when you create a breakpoint.
-* `disable breakpoints`: the _breakpoints_ will have no effect on your program.
+* `enable breakpoints`: _breakpoints_で指定したブレークポイントのリスト (無指定の場合はすべてのブレークポイント) でのプログラムの停止を有効にします。ブレークポイントを作成するとデフォルトでこの状態になります。
+* `disable breakpoints`: _breakpoints_で指定したブレークポイントのリストで停止しなくなります。
 
-### Catching Exceptions
+### 例外のキャッチ
 
-The command `catch exception-name` (or just `cat exception-name`) can be used to intercept an exception of type _exception-name_ when there would otherwise be no handler for it.
+`catch exception-name` (省略形は `cat exception-name`) を使用すると、例外を受けるハンドラが他にないと考えられる場合に、_exception-name_で例外の種類を指定してインターセプトできます。
 
-To list all active catchpoints use `catch`.
+例外のキャッチポイントをすべてリスト表示するには単に`catch`と入力します。
 
-### Resuming Execution
+### 実行再開
 
-There are two ways to resume execution of an application that is stopped in the debugger:
+デバッガーで停止したアプリケーションの再開方法は2種類あります。
 
-* `continue` [line-specification] \(or `c`): resume program execution, at the address where your script last stopped; any breakpoints set at that address are bypassed. The optional argument line-specification allows you to specify a line number to set a one-time breakpoint which is deleted when that breakpoint is reached.
-* `finish` [frame-number] \(or `fin`): execute until the selected stack frame returns. If no frame number is given, the application will run until the currently selected frame returns. The currently selected frame starts out the most-recent frame or 0 if no frame positioning (e.g up, down or frame) has been performed. If a frame number is given it will run until the specified frame returns.
+* `continue` [line-specification] \(または`c`): スクリプトが直前に停止していたアドレスからプログラムの実行を再開します。このとき、それまで設定されていたブレークポイントはすべて無視されます。オプションとして、特定の行番号をワンタイムブレークポイントとして[line-specification]で指定できます。このワンタイムブレークポイントに達するとブレークポイントは削除されます。
+* `finish` [frame-number] \(or `fin`): 指定のスタックフレームが返るまで実行を続けます。frame-numberが指定されていない場合は、現在選択しているフレームが返るまで実行を続けます。フレーム位置が指定されていない (upやdownやフレーム番号指定が行われていない) 場合は、現在の位置から最も近いフレームまたは0フレームから開始します。フレーム番号を指定すると、そのフレームが返るまで実行を続けます。
 
-### Editing
+### 編集
 
-Two commands allow you to open code from the debugger into an editor:
+デバッガー上のコードをエディタで開くためのコマンドは2種類あります。
 
-* `edit [file:line]`: edit _file_ using the editor specified by the EDITOR environment variable. A specific _line_ can also be given.
+* `edit [file:line]`: _file_をエディタで開きます。エディタはEDITOR環境変数で指定します。_line_で行数を指定することもできます。
 
-### Quitting
+### 終了
 
-To exit the debugger, use the `quit` command (abbreviated `q`), or its alias `exit`.
+デバッガーを終了するには、`quit`コマンド (短縮形は `q`) または別名の`exit`を使用します。
 
-A simple quit tries to terminate all threads in effect. Therefore your server will be stopped and you will have to start it again.
+quitを実行すると、事実上すべてのスレッドを終了しようとします。これによりサーバーが停止するので、サーバーを再起動する必要があります。
 
-### Settings
+### 設定
 
-`byebug` has a few available options to tweak its behaviour:
+`byebug`の振る舞いを変更するためのオプションがいくつかあります。
 
-* `set autoreload`: Reload source code when changed (defaults: true).
-* `set autolist`: Execute `list` command on every breakpoint (defaults: true).
-* `set listsize _n_`: Set number of source lines to list by default to _n_ (defaults: 10)
-* `set forcestep`: Make sure the `next` and `step` commands always move to a new line.
+* `set autoreload`: ソースコードが変更されると再読み込みします (デフォルト: true)。
+* `set autolist`: すべてのブレークポイントで`list`コマンドを実行します (デフォルト: true)。
+* `set listsize _n_`: リスト表示の行数をデフォルトから_n_ に変更します (デフォルト: 10)。
+* `set forcestep`: `next`や`step`コマンドを実行すると常に新しい行に移動するようにします。
 
-You can see the full list by using `help set`. Use `help set _subcommand_` to learn about a particular `set` command.
+すべてのオプションを表示するには`help set`を実行します。特定の`set`コマンドを調べるには`help set `_subcommand_ を実行します。
 
-TIP: You can save these settings in an `.byebugrc` file in your home directory.
-The debugger reads these global settings when it starts. 以下に例を示します。
+TIP: これらの設定は、ホームディレクトリの`.byebugrc`ファイルに保存しておくことができます。
+デバッガーが起動すると、この設定がグローバルに適用されます。以下に例を示します。
 
 ```bash
 set forcestep
 set listsize 25
-``` 
+```
 
-Debugging with the `web-console` gem
+`web-console` gemを使用するデバッグ
 ------------------------------------
 
-Web Console is a bit like `byebug`, but it runs in the browser. In any page you are developing, you can request a console in the context of a view or a controller. The console would be rendered next to your HTML content.
+Web Consoleは`byebug`と似ていますが、ブラウザ上で動作する点が異なります。開発中のどのページでも、ビューやコントローラのコンテキストでコンソールをリクエストできます。コンソールは、HTMLコンテンツの隣に表示されます。
 
 ### Console
 
-Inside any controller action or view, you can then invoke the console by calling the `console` method.
+`console`メソッドを呼び出すことで、任意のコントローラのアクションやビューでいつでもコンソールを呼び出せます。
 
-For example, in a controller:
+たとえば、コントローラで以下のように呼び出せます。
 
 ```ruby
 class PostsController < ApplicationController
@@ -717,70 +717,70 @@ class PostsController < ApplicationController
     @post = Post.new
   end
 end
-``` 
+```
 
-Or in a view:
+ビューでも以下のように呼び出せます。
 
 ```html+erb
 <% console %>
 
 <h2>New Post</h2>
-``` 
+```
 
-This will render a console inside your view. You don't need to care about the location of the `console` call; it won't be rendered on the spot of its invocation but next to your HTML content.
+上のコードは、ビューの内部でコンソールを出力します。`console`を呼び出す位置を気にする必要はありません。コンソールは、呼び出し位置にかかわらず、HTMLコンテンツの隣りに出力されます。
 
-The console executes pure Ruby code. You can define and instantiate custom classes, create new models and inspect variables.
+コンソールでは純粋なRubyコードを実行できます。ここでカスタムクラスの定義やインスタンス化を行ったり、新しいモデルを作成したり、変数を検査したりすることができます。
 
-NOTE: Only one console can be rendered per request. Otherwise `web-console` will raise an error on the second `console` invocation.
+NOTE: 一回のリクエストで出力できるコンソールは1つだけです。`console`呼び出しを2回以上行うと`web-console`でエラーが発生します。
 
-### Inspecting Variables
+### 変数の検査
 
-You can invoke `instance_variables` to list all the instance variables available in your context. If you want to list all the local variables, you can do that with `local_variables`.
+`instance_variables`を呼び出すと、コンテキストで利用可能なインスタンス変数をすべてリスト表示できます。すべてのローカル変数をリスト表示したい場合は、`local_variables`を使用します。
 
-### Settings
+### 設定
 
-* `config.web_console.whitelisted_ips`: Authorized list of IPv4 or IPv6 addresses and networks (defaults: `127.0.0.1/8, ::1`).
-* `config.web_console.whiny_requests`: Log a message when a console rendering is prevented (defaults: `true`).
+* `config.web_console.whitelisted_ips`: 認証済みの IPv4/IPv6アドレスとネットワークのリストです (デフォルト値: `127.0.0.1/8、::1`).
+* `config.web_console.whiny_requests`: コンソール出力が抑制されている場合にメッセージをログ出力します (デフォルト値: `true`).
 
-Since `web-console` evaluates plain Ruby code remotely on the server, don't try to use it in production.
+`web-console`はサーバー上の純粋なRubyコードをリモート評価できるので、production環境では絶対に使用しないください。
 
-Debugging Memory Leaks
+メモリーリークのデバッグ
 ----------------------
 
-A Ruby application (on Rails or not), can leak memory - either in the Ruby code or at the C code level.
+Railsに限らず、Rubyアプリケーションではメモリーリークが発生することがあります。リークはRubyコードレベルのこともあれば、Cコードレベルであることもあります。
 
-In this section, you will learn how to find and fix such leaks by using tool such as Valgrind.
+このセクションでは、Valgrindなどのツールを使用してこうしたメモリーリークの検出と修正を行う方法をご紹介します。
 
 ### Valgrind
 
-[Valgrind](http://valgrind.org/) is a Linux-only application for detecting C-based memory leaks and race conditions.
+[Valgrind](http://valgrind.org/)はLinux専用のアプリケーションであり、Cコードベースのメモリーリークや競合状態の検出を行います。
 
-There are Valgrind tools that can automatically detect many memory management and threading bugs, and profile your programs in detail. For example, if a C extension in the interpreter calls `malloc()` but doesn't properly call `free()`, this memory won't be available until the app terminates.
+Valgrindには、さまざまなメモリー管理上のバグやスレッドバグなどを自動検出し、プログラムの詳細なプロファイリングを行うための各種ツールがあります。たとえば、インタプリタ内にあるC拡張機能が`malloc()`を呼び出した後`free()`を正しく呼び出さなかった場合、このメモリーはアプリケーションが終了するまで利用できなくなります。
 
-For further information on how to install Valgrind and use with Ruby, refer to [Valgrind and Ruby](http://blog.evanweaver.com/articles/2008/02/05/valgrind-and-ruby/) by Evan Weaver.
+Valgrindのインストール方法とRuby内での使用方法については、[ValgrindとRuby](http://blog.evanweaver.com/articles/2008/02/05/valgrind-and-ruby/)(Evan Weaver著、英語) を参照してください。
 
-Plugins for Debugging
+デバッグ用プラグイン
 ---------------------
 
-There are some Rails plugins to help you to find errors and debug your application. Here is a list of useful plugins for debugging:
+アプリケーションのエラーを検出し、デバッグするためのRailsプラグインがあります。デバッグ用に便利なプラグインのリストを以下にご紹介します。
 
-* [Footnotes](https://github.com/josevalim/rails-footnotes) Every Rails page has footnotes that give request information and link back to your source via TextMate.
-* [Query Trace](https://github.com/ruckus/active-record-query-trace/tree/master) Adds query origin tracing to your logs.
-* [Query Reviewer](https://github.com/nesquena/query_reviewer) This rails plugin not only runs "EXPLAIN" before each of your select queries in development, but provides a small DIV in the rendered output of each page with the summary of warnings for each query that it analyzed.
-* [Exception Notifier](https://github.com/smartinez87/exception_notification/tree/master) Provides a mailer object and a default set of templates for sending email notifications when errors occur in a Rails application.
-* [Better Errors](https://github.com/charliesome/better_errors) Replaces the standard Rails error page with a new one containing more contextual information, like source code and variable inspection.
-* [RailsPanel](https://github.com/dejan/rails_panel) Chrome extension for Rails development that will end your tailing of development.log. Have all information about your Rails app requests in the browser - in the Developer Tools panel.
-Provides insight to db/rendering/total times, parameter list, rendered views and more.
+* [Footnotes](https://github.com/josevalim/rails-footnotes): すべてのRailsページに脚注を追加し、リクエスト情報を表示したり、TextMateでソースを開くためのリンクを表示したりします。
+* [Query Trace](https://github.com/ruckus/active-record-query-trace/tree/master): ログにクエリ元のトレースを追加します。
+* [Query Reviewer](https://github.com/nesquena/query_reviewer): このRailsプラグインは、開発中のselectクエリの前に"EXPLAIN"を実行します。また、ページごとにDIVセクションを追加して、分析対象のクエリごとの警告の概要をそこに表示します。
+* [Exception Notifier](https://github.com/smartinez87/exception_notification/tree/master): Railsアプリケーションでのエラー発生時用の、メイラーオブジェクトとメール通知送信テンプレートのデフォルトセットを提供します。
+* [Better Errors](https://github.com/charliesome/better_errors): Rails標準のエラーページを新しい表示に置き換えて、ソースコードや変数検査などのコンテキスト情報を見やすくしてくれます。
+* [RailsPanel](https://github.com/dejan/rails_panel): Rails開発用のChrome機能拡張です。これがあればdevelopment.logでtailコマンドを実行する必要がなくなります。Railsアプリケーションのリクエストに関するすべての情報をブラウザ上 (Developer Toolsパネル) に表示できます。
+db時間、レンダリング時間、トータル時間、パラメータリスト、出力したビューなども表示されます。
 
 参考資料
 ----------
 
-* [ruby-debug Homepage](http://bashdb.sourceforge.net/ruby-debug/home-page.html)
-* [debugger Homepage](https://github.com/cldwalker/debugger)
-* [byebug Homepage](https://github.com/deivid-rodriguez/byebug)
-* [web-console Homepage](https://github.com/rails/web-console)
-* [Article: Debugging a Rails application with ruby-debug](http://www.sitepoint.com/debug-rails-app-ruby-debug/)
-* [Ryan Bates' debugging ruby (revised) screencast](http://railscasts.com/episodes/54-debugging-ruby-revised)
-* [Ryan Bates' stack trace screencast](http://railscasts.com/episodes/24-the-stack-trace)
-* [Ryan Bates' logger screencast](http://railscasts.com/episodes/56-the-logger)
-* [Debugging with ruby-debug](http://bashdb.sourceforge.net/ruby-debug.html)
+* [ruby-debugホームページ](http://bashdb.sourceforge.net/ruby-debug/home-page.html)(英語)
+* [debuggerホームページ](https://github.com/cldwalker/debugger)(英語)
+* [byebugホームページ](https://github.com/deivid-rodriguez/byebug)(英語)
+* [web-consoleホームページ](https://github.com/rails/web-console)(英語)
+* [記事: ruby-debugでRailsアプリケーションをデバッグする](http://www.sitepoint.com/debug-rails-app-ruby-debug/)(英語)
+* [Ryan Batesのスクリーンキャスト: Rubyデバッグ(改訂版)](http://railscasts.com/episodes/54-debugging-ruby-revised)(英語)
+* [Ryan Batesのスクリーンキャスト: スタックトレース](http://railscasts.com/episodes/24-the-stack-trace)(英語)
+* [Ryan Batesのスクリーンキャスト: ロガー](http://railscasts.com/episodes/56-the-logger)(英語)
+* [ruby-debugによるデバッグ](http://bashdb.sourceforge.net/ruby-debug.html)(英語)
