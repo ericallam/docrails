@@ -2,6 +2,7 @@ require 'rack/file'
 require 'capybara/rspec'
 require 'turnip'
 require 'turnip/capybara'
+require 'pry'
 
 Dir.glob("spec/**/*steps.rb") { |f| load f, true }
 Dir.glob("spec/support/**/*.rb") { |f| load f, true }
