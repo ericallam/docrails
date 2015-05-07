@@ -516,7 +516,7 @@ v[ar] l[ocal]                   show local variables
 ...
 ```
 
-TIP: `p` (print) コマンドとa`pp` (pretty print) コマンドを使用して
+TIP: `p` (print) コマンドと`pp` (pretty print) コマンドを使用して
 Rubyの式を評価し、変数の値をコンソールに出力することができます。
 
 `display`コマンドを使用して変数をウォッチすることもできます。これは、デバッガーで実行を進めながら変数の値の移り変わりを追跡するのに大変便利です。
