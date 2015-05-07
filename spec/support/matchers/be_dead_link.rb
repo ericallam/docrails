@@ -17,7 +17,9 @@ RSpec::Matchers.define :be_dead_fragment do |page|
     @id = URI.unescape(@fragment)
     begin
       !page.find_by_id(@id)
-    rescue
+    rescue => e
+      raise if !e.instance_of?(Capybara::ElementNotFound)
+
       true
     end
   end
