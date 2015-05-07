@@ -235,7 +235,7 @@
 <a href="#byebug-gem%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%97%E3%81%A6%E3%83%87%E3%83%90%E3%83%83%E3%82%B0%E3%81%99%E3%82%8B"><code>byebug</code> gemを使用してデバッグする</a>
 
 <ul>
-<li><a href="#byebug-gem%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%97%E3%81%A6%E3%83%87%E3%83%90%E3%83%83%E3%82%B0%E3%81%99%E3%82%8B-%E8%A8%AD%E5%AE%9A">設定</a></li>
+<li><a href="#%E3%82%BB%E3%83%83%E3%83%88%E3%82%A2%E3%83%83%E3%83%97">セットアップ</a></li>
 <li><a href="#%E3%82%B7%E3%82%A7%E3%83%AB">シェル</a></li>
 <li><a href="#%E3%82%B3%E3%83%B3%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88">コンテキスト</a></li>
 <li><a href="#%E3%82%B9%E3%83%AC%E3%83%83%E3%83%89">スレッド</a></li>
@@ -255,7 +255,7 @@
 <ul>
 <li><a href="#console">Console</a></li>
 <li><a href="#web-console-gem%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B%E3%83%87%E3%83%90%E3%83%83%E3%82%B0-%E5%A4%89%E6%95%B0%E3%81%AE%E6%A4%9C%E6%9F%BB">変数の検査</a></li>
-<li><a href="#%E8%A8%AD%E5%AE%9A">設定</a></li>
+<li><a href="#web-console-gem%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B%E3%83%87%E3%83%90%E3%83%83%E3%82%B0-%E8%A8%AD%E5%AE%9A">設定</a></li>
 </ul>
 </li>
 <li>
@@ -491,7 +491,7 @@ logger.debug {"Person attributes hash: #{@person.attributes.inspect}"}
 <p>コードが期待どおりに動作しない場合は、ログやコンソールに出力して問題を診断することができます。ただし、この方法ではエラー追跡を何度も繰り返さねばならず、根本的な原因を突き止めるには能率がよいとは言えません。
 実行中のコードに探りを入れる必要があるのであれば、最も頼りになるのはやはりデバッガーです。</p>
 <p>デバッガーは、Railsのソースコードを追うときに、そのコードをどこで開始するのかがを知りたいときにも有用です。アプリケーションへのリクエストをすべてデバッグし、自分が書いたコードからRailsのもっと深いところへダイブする方法を本ガイドから学びましょう。</p>
-<h4 id="byebug-gemを使用してデバッグする-設定"><a href="#byebug-gem%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%97%E3%81%A6%E3%83%87%E3%83%90%E3%83%83%E3%82%B0%E3%81%99%E3%82%8B-%E8%A8%AD%E5%AE%9A">3.1 設定</a></h4>
+<h4 id="セットアップ"><a href="#%E3%82%BB%E3%83%83%E3%83%88%E3%82%A2%E3%83%83%E3%83%97">3.1 セットアップ</a></h4>
 <p><code>byebug</code> gemを使用すると、Railsコードにブレークポイントを設定してステップ実行できます。次を実行するだけでインストールできます。</p>
 <div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
@@ -984,7 +984,7 @@ end
 <div class="note"><p>一回のリクエストで出力できるコンソールは1つだけです。<code>console</code>呼び出しを2回以上行うと<code>web-console</code>でエラーが発生します。</p></div>
 <h4 id="web-console-gemを使用するデバッグ-変数の検査"><a href="#web-console-gem%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B%E3%83%87%E3%83%90%E3%83%83%E3%82%B0-%E5%A4%89%E6%95%B0%E3%81%AE%E6%A4%9C%E6%9F%BB">4.2 変数の検査</a></h4>
 <p><code>instance_variables</code>を呼び出すと、コンテキストで利用可能なインスタンス変数をすべてリスト表示できます。すべてのローカル変数をリスト表示したい場合は、<code>local_variables</code>を使用します。</p>
-<h4 id="設定"><a href="#%E8%A8%AD%E5%AE%9A">4.3 設定</a></h4>
+<h4 id="web-console-gemを使用するデバッグ-設定"><a href="#web-console-gem%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B%E3%83%87%E3%83%90%E3%83%83%E3%82%B0-%E8%A8%AD%E5%AE%9A">4.3 設定</a></h4>
 <ul>
 <li>
 <code>config.web_console.whitelisted_ips</code>: 認証済みの IPv4/IPv6アドレスとネットワークのリストです (デフォルト値: <code>127.0.0.1/8、::1</code>).</li>
