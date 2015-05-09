@@ -7,6 +7,10 @@
 #  e.g.: ./check_typo.rb source/testing.md
 
 ARGF.each do |line|
+  next if line.include? "ここまでで"
+  next if line.include? "でできる"
+  next if line.include? "でできます"
+  next if line.include? "でである"
   print ARGF.file.path, " ",
     ARGF.file.lineno, ":",
     line if line.gsub!(/([へにおはがでな])\1/u, '[[\&]]')
