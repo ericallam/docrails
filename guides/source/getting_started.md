@@ -57,7 +57,7 @@ TIP: 以下の例では、Unix系OSのプロンプトとして`$`記号を使用
 
 ターミナル (コマンドプロンプトとも言います) ウィンドウを開いてください。Mac OS Xの場合、ターミナル (Terminal.app) という名前のアプリケーションを実行します。Windowsの場合は[スタート] メニューから [ファイル名を指定して実行] をクリックして'cmd.exe'と入力します。`$`で始まる記述はコマンド行なので、これらはコマンドラインに入力して実行してください。続いて現在インストールされているRubyのバージョンが最新のものであることを確認してください。
 
-TIP: RubyやRuby on Railsを素早くインストールするためのツールは多数存在します。Windowsユーザーの場合は[Railsインストーラ](http://railsinstaller.org)をお使いください。Mac OS Xユーザーは[Rails One Click](http://railsoneclick.com)をお使いください。(訳注: これらのリンクは古いか適切でない可能性があります。最新のインストール方法については[Railsチュートリアル](http://railstutorial.jp/chapters/beginning?version=4.0#sec-rubygems)を参照してください)
+TIP: RubyやRuby on Railsを素早くインストールするためのツールは多数存在します。Windowsユーザーの場合は[Railsインストーラ](http://railsinstaller.org)をお使いください。Mac OS Xユーザーは[Tokaido](https://github.com/tokaido/tokaidoapp)をお使いください。(訳注: 具体的なインストール方法については[Railsチュートリアル](http://railstutorial.jp/chapters/beginning?version=4.0#sec-rubygems)を参照してください)
 
 ```bash
 $ ruby -v
