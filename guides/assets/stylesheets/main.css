@@ -10,6 +10,7 @@
 .snsb {
     overflow: hidden;
     clear: left;
+    margin-left: 13px;
 }
 .snsb li {
     float: left;
