@@ -35,6 +35,9 @@
 @media screen and (max-width: 480px) {
   .sitemap .L, .sitemap .C, .sitemap .R { width: 100%; }
 }
+.sitemap dl dt {
+  margin-top: 21px;
+}
 
 .left {float: left; margin-right: 1em;}
 .right {float: right; margin-left: 1em;}
