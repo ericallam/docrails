@@ -228,7 +228,7 @@ Ruby on Rails ガイド：体系的に Rails を学ぼう
 これからRailsを学び始める場合は<a href="http://railstutorial.jp/">Railsチュートリアル：実例を使ってRailsを学ぼう</a>が役に立ちます。本ガイドを副読本として参考にしつつ、Railsチュートリアルから読み進めることをオススメします。
 <br />
 <br />
-誤訳や誤字・脱字などを見つけた際には、<a href="https://twitter.com/yasulab">@yasulab</a> または <a href="https://github.com/yasslab/railsguides.jp/issues">GitHub Issue</a> にてお気軽にご連絡ください。本ガイドのクオリティ向上に向けてご協力して頂けると幸いです :)
+誤訳や誤字・脱字などを見つけた際には、<a href="https://twitter.com/yasulab">@yasulab</a> または <a href="https://github.com/yasslab/railsguides.jp/issues">GitHub Issue</a> にてお気軽にご連絡ください。本ガイドの品質向上に向けてご協力して頂けると幸いです :)
 <br />
 <br />
 <ol class="snsb" style="margin-left: 0px">
@@ -245,7 +245,6 @@ Ruby on Rails ガイド：体系的に Rails を学ぼう
     <dd class="work-in-progress">このアイコンが付いているガイドは現在作業中 (Work in progress) であり、上部のガイド目次からは参照できません。作業中のガイドはそれなりに有用ではありますが、不完全な情報やエラーが含まれている可能性があります。</dd>
   </dl>
 </div>
-
 </div>
   </div>
 
@@ -254,105 +253,122 @@ Ruby on Rails ガイド：体系的に Rails を学ぼう
       <div id="mainCol">
         ﻿
 
+
 <h3>はじめに</h3>
     <dt><a href="getting_started.html">Rails をはじめよう</a></dt><dd>
-      Railsのインストール方法と最初のRailsアプリケーションの作成に必要なすべてを解説します。</dd>
-<h3>モデル</h3>
+      Railsのインストール方法と最初のRailsアプリケーションの作成に必要なすべてを解説します。
+</dd><h3>モデル</h3>
     <dt><a href="active_record_basics.html">Active Record の基礎</a></dt><dd>
-      Active Recordの基礎となるモデル、データベースへの永続的な保存、Active Recordパターンとライブラリについて解説します。</dd>
-    <dt><a href="active_record_migrations.html">Active Record マイグレーション</a></dt><dd>
-      Active Recordのマイグレーション (migration) を使用して、データベースを構造化された方法で整然と変更する方法について解説します。</dd>
-    <dt><a href="active_record_validations.html">Active Record バリデーション</a></dt><dd>
-      Active Recordのバリデーション機能について解説します。</dd>
-    <dt><a href="active_record_callbacks.html">Active Record コールバック</a></dt><dd>
-      Active Recordのコールバックについて解説します。</dd>
-    <dt><a href="association_basics.html">Active Record の関連付け</a></dt><dd>
-      Active Recordが提供するすべての関連付け機能について解説します。</dd>
-    <dt><a href="active_record_querying.html">Active Record クエリインターフェイス</a></dt><dd>
-      Active Recordが提供するすべてのデータベースクエリインターフェイスについて解説します。</dd>
-    <dt><a href="active_model_basics.html">Active Model の基礎</a></dt><dd>
-      Active Recordを使わずにモデルクラスを扱う方法について解説します。</dd>
-<h3>ビュー</h3>
+      Active Recordの基礎となるモデル、データベースへの永続的な保存、Active Recordパターンとライブラリについて解説します。
+</dd>    <dt><a href="active_record_migrations.html">Active Record マイグレーション</a></dt><dd>
+      Active Recordのマイグレーション (migration) を使用して、データベースを構造化された方法で整然と変更する方法について解説します。
+</dd>    <dt><a href="active_record_validations.html">Active Record バリデーション</a></dt><dd>
+      Active Recordのバリデーション機能について解説します。
+</dd>    <dt><a href="active_record_callbacks.html">Active Record コールバック</a></dt><dd>
+      Active Recordのコールバックについて解説します。
+</dd>    <dt><a href="association_basics.html">Active Record の関連付け</a></dt><dd>
+      Active Recordが提供するすべての関連付け機能について解説します。
+</dd>    <dt><a href="active_record_querying.html">Active Record クエリインターフェイス</a></dt><dd>
+      Active Recordが提供するすべてのデータベースクエリインターフェイスについて解説します。
+</dd>    <dt><a href="active_model_basics.html">Active Model の基礎</a></dt><dd>
+      Active Recordを使わずにモデルクラスを扱う方法について解説します。
+</dd><h3>ビュー</h3>
     <dt><a href="action_view_overview.html">Action View の概要</a></dt><dd class="work-in-progress">Work in progress</dd><dd>
-      Action Viewの概要を紹介し、共通のビューヘルパーについてもある程度解説します。</dd>
-    <dt><a href="layouts_and_rendering.html">レイアウトとレンダリング</a></dt><dd>
-      Action ControllerとAction Viewが提供する基本的なレイアウト機能について解説します。画面出力 (レンダリング) とリダイレクト、content_forブロックとパーシャル (部分テンプレート) の使用方法についても解説します。</dd>
-    <dt><a href="form_helpers.html">Action View フォームヘルパー</a></dt><dd>
-      ビルトインのフォームヘルパーについて解説します。</dd>
-<h3>コントローラ</h3>
+      Action Viewの概要を紹介し、共通のビューヘルパーについてもある程度解説します。
+</dd>    <dt><a href="layouts_and_rendering.html">レイアウトとレンダリング</a></dt><dd>
+      Action ControllerとAction Viewが提供する基本的なレイアウト機能について解説します。画面出力 (レンダリング) とリダイレクト、content_forブロックとパーシャル (部分テンプレート) の使用方法についても解説します。
+</dd>    <dt><a href="form_helpers.html">Action View フォームヘルパー</a></dt><dd>
+      ビルトインのフォームヘルパーについて解説します。
+</dd><h3>コントローラ</h3>
     <dt><a href="action_controller_overview.html">Action Controller の概要</a></dt><dd>
-      コントローラの動作と、アプリケーションのリクエストサイクルでコントローラがどのように使われるかについて解説します。セッション、フィルタ、cookie、データストリーミング、リクエストによって発生する例外、その他多くの話題を取り扱っています。</dd>
-    <dt><a href="routing.html">Rails ルーティング</a></dt><dd>
-      Railsのルーティング機能について解説しますRailsアプリケーションで行われているルーティングのしくみについて理解したい場合は、ここからお読みください。</dd>
-<h3>高度なトピック</h3>
+      コントローラの動作と、アプリケーションのリクエストサイクルでコントローラがどのように使われるかについて解説します。セッション、フィルタ、cookie、データストリーミング、リクエストによって発生する例外、その他多くの話題を取り扱っています。
+</dd>    <dt><a href="routing.html">Rails ルーティング</a></dt><dd>
+      Railsのルーティング機能について解説しますRailsアプリケーションで行われているルーティングのしくみについて理解したい場合は、ここからお読みください。
+</dd><h3>高度なトピック</h3>
     <dt><a href="active_support_core_extensions.html">Active Support コア拡張機能</a></dt><dd>
-      Active Supportで定義されているRubyのコア拡張機能に関するドキュメントです。</dd>
-    <dt><a href="i18n.html">Rails 国際化 (i18n) API</a></dt><dd>
-      Railsアプリケーションを国際化する方法について解説します。これによりアプリケーションを異なる言語に翻訳することができ、さらに単数形/複数形ルールを変更したり、その国に適した日付フォーマットを設定したりできます。</dd>
-    <dt><a href="action_mailer_basics.html">Action Mailer の基礎</a></dt><dd>
-      Action Mailerを使用してメールを送受信する方法について解説します。</dd>
-    <dt><a href="active_job_basics.html">Active Job の基礎</a></dt><dd>
-      バックグラウンドで動作するジョブの作成・キュー送信・実行方法に必要なすべてを解説します。</dd>
-    <dt><a href="testing.html">Rails テスティングガイド</a></dt><dd class="work-in-progress">Work in progress</dd><dd>
-      Railsで単体テストと機能テストを実行するための総合的な解説を行います。「テスティングとは何か」からテスティングAPIまですべてのトピックを扱います。</dd>
-    <dt><a href="security.html">Rails セキュリティガイド</a></dt><dd>
-      Webアプリケーション全般におけるセキュリティ問題と、Railsでこれらの問題を回避する方法について解説します。</dd>
-    <dt><a href="debugging_rails_applications.html">Rails アプリケーションのデバッグ</a></dt><dd>
-      Railsアプリケーションのデバッグ方法について解説します。さまざまなデバッグ方法や、作成したコードの舞台裏でどのような動作が行われているかについても解説します。</dd>
-    <dt><a href="configuring.html">Rails アプリケーションを設定する</a></dt><dd>
-      Railsアプリケーションの基本的な設定方法について解説します。</dd>
-    <dt><a href="command_line.html">コマンドラインツールと Rake タスク</a></dt><dd>
-      Railsが提供する各種コマンドラインツールとRakeタスクについて解説します。</dd>
-    <dt><a href="asset_pipeline.html">アセットパイプライン</a></dt><dd>
-      アセットパイプラインに関するドキュメントです。</dd>
-    <dt><a href="working_with_javascript_in_rails.html">Rails で JavaScript を使用する</a></dt><dd>
-      RailsビルトインのAjax/JavaScriptについて解説します。</dd>
-    <dt><a href="engines.html">Rails エンジン入門</a></dt><dd class="work-in-progress">Work in progress</dd><dd>
-      マウント可能なエンジンの作成方法について解説します。</dd>
-    <dt><a href="initialization.html">Rails の初期化プロセス</a></dt><dd class="work-in-progress">Work in progress</dd><dd>
-      Rails 4内部の初期化プロセスについて解説します。</dd>
-    <dt><a href="constant_autoloading_and_reloading.html">定数の自動読み込みと再読み込み</a></dt><dd>
-      自動読み込みやリロードの仕組みについて解説します。</dd>
-<h3>Rails を拡張する</h3>
+      Active Supportで定義されているRubyのコア拡張機能に関するドキュメントです。
+</dd>    <dt><a href="i18n.html">Rails 国際化 (i18n) API</a></dt><dd>
+      Railsアプリケーションを国際化する方法について解説します。これによりアプリケーションを異なる言語に翻訳することができ、さらに単数形/複数形ルールを変更したり、その国に適した日付フォーマットを設定したりできます。
+</dd>    <dt><a href="action_mailer_basics.html">Action Mailer の基礎</a></dt><dd>
+      Action Mailerを使用してメールを送受信する方法について解説します。
+</dd>    <dt><a href="active_job_basics.html">Active Job の基礎</a></dt><dd>
+      バックグラウンドで動作するジョブの作成・キュー送信・実行方法に必要なすべてを解説します。
+</dd>    <dt><a href="testing.html">Rails テスティングガイド</a></dt><dd class="work-in-progress">Work in progress</dd><dd>
+      Railsで単体テストと機能テストを実行するための総合的な解説を行います。「テスティングとは何か」からテスティングAPIまですべてのトピックを扱います。
+</dd>    <dt><a href="security.html">Rails セキュリティガイド</a></dt><dd>
+      Webアプリケーション全般におけるセキュリティ問題と、Railsでこれらの問題を回避する方法について解説します。
+</dd>    <dt><a href="debugging_rails_applications.html">Rails アプリケーションのデバッグ</a></dt><dd>
+      Railsアプリケーションのデバッグ方法について解説します。さまざまなデバッグ方法や、作成したコードの舞台裏でどのような動作が行われているかについても解説します。
+</dd>    <dt><a href="configuring.html">Rails アプリケーションを設定する</a></dt><dd>
+      Railsアプリケーションの基本的な設定方法について解説します。
+</dd>    <dt><a href="command_line.html">コマンドラインツールと Rake タスク</a></dt><dd>
+      Railsが提供する各種コマンドラインツールとRakeタスクについて解説します。
+</dd>    <dt><a href="asset_pipeline.html">アセットパイプライン</a></dt><dd>
+      アセットパイプラインに関するドキュメントです。
+</dd>    <dt><a href="working_with_javascript_in_rails.html">Rails で JavaScript を使用する</a></dt><dd>
+      RailsビルトインのAjax/JavaScriptについて解説します。
+</dd>    <dt><a href="engines.html">Rails エンジン入門</a></dt><dd class="work-in-progress">Work in progress</dd><dd>
+      マウント可能なエンジンの作成方法について解説します。
+</dd>    <dt><a href="initialization.html">Rails の初期化プロセス</a></dt><dd class="work-in-progress">Work in progress</dd><dd>
+      Rails 4内部の初期化プロセスについて解説します。
+</dd>    <dt><a href="constant_autoloading_and_reloading.html">定数の自動読み込みと再読み込み</a></dt><dd>
+      自動読み込みやリロードの仕組みについて解説します。
+</dd><h3>Rails を拡張する</h3>
     <dt><a href="plugins.html">Rails プラグイン作成入門</a></dt><dd class="work-in-progress">Work in progress</dd><dd>
-      プラグインを作成してRailsの機能を拡張する方法について解説します。</dd>
-    <dt><a href="rails_on_rack.html">Rails と Rack</a></dt><dd>
-      RailsとRackがどのように統合されているか、および他のRackコンポーネントとのインターフェイスについて解説します。</dd>
-    <dt><a href="generators.html">Rails ジェネレータとテンプレート入門</a></dt><dd>
-      新しいジェネレータを拡張に追加したり、ビルトインのRailsジェネレータの要素に別の要素を提供したりする方法 (scaffoldジェネレータに別のテストスタブを提供するなど) について解説します。</dd>
-<h3>Ruby on Rails に貢献する</h3>
+      プラグインを作成してRailsの機能を拡張する方法について解説します。
+</dd>    <dt><a href="rails_on_rack.html">Rails と Rack</a></dt><dd>
+      RailsとRackがどのように統合されているか、および他のRackコンポーネントとのインターフェイスについて解説します。
+</dd>    <dt><a href="generators.html">Rails ジェネレータとテンプレート入門</a></dt><dd>
+      新しいジェネレータを拡張に追加したり、ビルトインのRailsジェネレータの要素に別の要素を提供したりする方法 (scaffoldジェネレータに別のテストスタブを提供するなど) について解説します。
+</dd><h3>Ruby on Rails に貢献する</h3>
     <dt><a href="contributing_to_ruby_on_rails.html">Contributing to Ruby on Rails [未着手]</a></dt><dd>
-      Railsは「どこかで誰かがうまくやってくれているフレームワーク」ではありません。現在も継続しているRailsフレームワーク開発に貢献するさまざまな方法について解説します。</dd>
-    <dt><a href="api_documentation_guidelines.html">APIドキュメント作成ガイドライン</a></dt><dd>
-      Ruby on Rails APIドキュメントのガイドラインについて解説します。</dd>
-    <dt><a href="ruby_on_rails_guides_guidelines.html">Rails ガイドのガイドライン</a></dt><dd>
-      Ruby on Railsガイド作成方法のガイドラインです。</dd>
-<h3>メンテナンスポリシー</h3>
+      Railsは「どこかで誰かがうまくやってくれているフレームワーク」ではありません。現在も継続しているRailsフレームワーク開発に貢献するさまざまな方法について解説します。
+</dd>    <dt><a href="api_documentation_guidelines.html">APIドキュメント作成ガイドライン</a></dt><dd>
+      Ruby on Rails APIドキュメントのガイドラインについて解説します。
+</dd>    <dt><a href="ruby_on_rails_guides_guidelines.html">Rails ガイドのガイドライン</a></dt><dd>
+      Ruby on Railsガイド作成方法のガイドラインです。
+</dd><h3>メンテナンスポリシー</h3>
     <dt><a href="maintenance_policy.html">メンテナンスポリシー</a></dt><dd>
-      現在サポートされているRuby on Railsのバージョンと、次期バージョンのリリース見込み時期について記載されています。</dd>
-<h3>リリースノート</h3>
+      現在サポートされているRuby on Railsのバージョンと、次期バージョンのリリース見込み時期について記載されています。
+</dd><h3>リリースノート</h3>
     <dt><a href="upgrading_ruby_on_rails.html">Rails アップグレードガイド</a></dt><dd>
-      アプリケーションのRuby on Railsを最新バージョンにアップグレードする方法について解説します。</dd>
-    <dt><a href="4_2_release_notes.html">Ruby on Rails 4.2 リリースノート</a></dt><dd>
-      Rails 4.2のリリースノートです。</dd>
-    <dt><a href="4_1_release_notes.html">Ruby on Rails 4.1 リリースノート</a></dt><dd>
-      Rails 4.1のリリースノートです。</dd>
-    <dt><a href="4_0_release_notes.html">Ruby on Rails 4.0 リリースノート</a></dt><dd>
-      Rails 4.0のリリースノートです。</dd>
-    <dt><a href="3_2_release_notes.html">Ruby on Rails 3.2 Release Notes [未着手]</a></dt><dd>
-      Rails 3.2のリリースノートです。</dd>
-    <dt><a href="3_1_release_notes.html">Ruby on Rails 3.1 Release Notes [未着手]</a></dt><dd>
-      Rails 3.1のリリースノートです。</dd>
-    <dt><a href="3_0_release_notes.html">Ruby on Rails 3.0 Release Notes [未着手]</a></dt><dd>
-      Rails 3.0のリリースノートです。</dd>
-    <dt><a href="2_3_release_notes.html">Ruby on Rails 2.3 Release Notes [未着手]</a></dt><dd>
-      Rails 2.3のリリースノートです。</dd>
-    <dt><a href="2_2_release_notes.html">Ruby on Rails 2.2 Release Notes [未着手]</a></dt><dd>
-      Rails 2.2のリリースノートです。</dd>
+      アプリケーションのRuby on Railsを最新バージョンにアップグレードする方法について解説します。
+</dd>    <dt><a href="4_2_release_notes.html">Ruby on Rails 4.2 リリースノート</a></dt><dd>
+      Rails 4.2のリリースノートです。
+</dd>    <dt><a href="4_1_release_notes.html">Ruby on Rails 4.1 リリースノート</a></dt><dd>
+      Rails 4.1のリリースノートです。
+</dd>    <dt><a href="4_0_release_notes.html">Ruby on Rails 4.0 リリースノート</a></dt><dd>
+      Rails 4.0のリリースノートです。
+</dd>    <dt><a href="3_2_release_notes.html">Ruby on Rails 3.2 Release Notes [未着手]</a></dt><dd>
+      Rails 3.2のリリースノートです。
+</dd>    <dt><a href="3_1_release_notes.html">Ruby on Rails 3.1 Release Notes [未着手]</a></dt><dd>
+      Rails 3.1のリリースノートです。
+</dd>    <dt><a href="3_0_release_notes.html">Ruby on Rails 3.0 Release Notes [未着手]</a></dt><dd>
+      Rails 3.0のリリースノートです。
+</dd>    <dt><a href="2_3_release_notes.html">Ruby on Rails 2.3 Release Notes [未着手]</a></dt><dd>
+      Rails 2.3のリリースノートです。
+</dd>    <dt><a href="2_2_release_notes.html">Ruby on Rails 2.2 Release Notes [未着手]</a></dt><dd>
+      Rails 2.2のリリースノートです。
+</dd>
+<h3 id="contributors"><a href="#contributors">協力者</a></h3>
+<p>Railsガイドは、次の方々の支援によって支えられております。</p>
 
+<ul style="list-style: none;">
+  <li>翻訳 (共同発起人): <a href="https://www.linkedin.com/pub/shozo-hatta/11/349/930">八田 昌三</a> (<a href="https://twitter.com/hachi8833">@hachi8833</a>)</li>
+  <li>開発 (共同発起人): <a href="https://www.facebook.com/yasulab">安川 要平</a> (<a href="http://twitter.com/yasulab">@yasulab</a>)</li>
+  <li>訳著チェック: <a href="https://github.com/yui-knk">金子 雄一郎</a> (<a href="https://twitter.com/spikeolaf">@spikeolaf</a>)</li>
+  <li>運営:<br />
+    <a href="http://yasslab.jp/" target="_blank"><img src="/images/yasslab_logo.png"
+						      alt="ヤスラボ" /></a>
+  </li>
+  <li>後援:<br />
+    <a href="http://www.railscp.org/text/" target="_blank"><img src="/images/railscp_logo.png"
+						      alt="Rails技術者認定試験" /></a>
+  </li>
+</ul>
 
         
-        <h3>フィードバックについて</h3>
+        <h3 id="feedback"><a href="#feedback">フィードバックについて</a></h3>
         <p>
           本ガイドの訳文およびソースコードは、GitHub上の <a href="https://github.com/yasslab/railsguides.jp">yasslab/railsguides.jp</a> で管理・公開されております。
 	  本ガイドを読んで、誤字・脱字・誤訳などを見かけましたら、上記リポジトリにてお気軽に <a href="https://github.com/yasslab/railsguides.jp/issues">Issue</a> を出して頂けると大変嬉しいです。また、「Pull Request を送りたい!」という場合には、<a href="ruby_on_rails_guides_guidelines.html">Ruby on Railsガイドのガイドライン</a>と、<a href="https://github.com/yasslab/railsguides.jp#%E7%BF%BB%E8%A8%B3%E3%81%AE%E6%B5%81%E3%82%8C">README</a>に記載されている「翻訳の流れ」をご参考にしてください。
@@ -370,18 +386,75 @@ Ruby on Rails ガイド：体系的に Rails を学ぼう
   <hr class="hide" />
   <div id="footer">
     <div class="wrapper">
-      <ol class="snsb" style="margin-left: 13px">
-	<li><a href="http://www.railscp.org/text/" target="_blank"><img src="images/railscp_logo.png" width="150px"/></a></li>
-      </ol>
-      <ol class="snsb" style="margin-left: 13px">
+      <div class="sitemap">
+        <dl class="L">
+        <dt>はじめに</dt>
+        <dd><a href="getting_started.html">Rails をはじめよう</a></dd>
+        <dt>モデル</dt>
+        <dd><a href="active_record_basics.html">Active Record の基礎</a></dd>
+        <dd><a href="active_record_migrations.html">Active Record マイグレーション</a></dd>
+        <dd><a href="active_record_validations.html">Active Record バリデーション</a></dd>
+        <dd><a href="active_record_callbacks.html">Active Record コールバック</a></dd>
+        <dd><a href="association_basics.html">Active Record の関連付け</a></dd>
+        <dd><a href="active_record_querying.html">Active Record クエリインターフェイス</a></dd>
+        <dd><a href="active_model_basics.html">Active Model の基礎</a></dd>
+        <dt>ビュー</dt>
+        <dd><a href="action_view_overview.html">Action View の概要</a></dd>
+        <dd><a href="layouts_and_rendering.html">レイアウトとレンダリング</a></dd>
+        <dd><a href="form_helpers.html">Action View フォームヘルパー</a></dd>
+        <dt>コントローラ</dt>
+        <dd><a href="action_controller_overview.html">Action Controller の概要</a></dd>
+        <dd><a href="routing.html">Rails ルーティング</a></dd>
+        </dl>
+        <dl class="C">
+        <dt>高度なトピック</dt>
+        <dd><a href="active_support_core_extensions.html">Active Support コア拡張機能</a></dd>
+        <dd><a href="i18n.html">Rails 国際化 (i18n) API</a></dd>
+        <dd><a href="action_mailer_basics.html">Action Mailer の基礎</a></dd>
+        <dd><a href="active_job_basics.html">Active Job の基礎</a></dd>
+        <dd><a href="testing.html">Rails テスティングガイド</a></dd>
+        <dd><a href="security.html">Rails セキュリティガイド</a></dd>
+        <dd><a href="debugging_rails_applications.html">Rails アプリケーションのデバッグ</a></dd>
+        <dd><a href="configuring.html">Rails アプリケーションを設定する</a></dd>
+        <dd><a href="command_line.html">コマンドラインツールと Rake タスク</a></dd>
+        <dd><a href="asset_pipeline.html">アセットパイプライン</a></dd>
+        <dd><a href="working_with_javascript_in_rails.html">Rails で JavaScript を使用する</a></dd>
+        <dd><a href="engines.html">Rails エンジン入門</a></dd>
+        <dd><a href="initialization.html">Rails の初期化プロセス</a></dd>
+        <dd><a href="constant_autoloading_and_reloading.html">定数の自動読み込みと再読み込み</a></dd>
+        <dt>Rails を拡張する</dt>
+        <dd><a href="plugins.html">Rails プラグイン作成入門</a></dd>
+        <dd><a href="rails_on_rack.html">Rails と Rack</a></dd>
+        <dd><a href="generators.html">Rails ジェネレータとテンプレート入門</a></dd>
+        </dl>
+        <dl class="R">
+        <dt>Ruby on Rails に貢献する</dt>
+        <dd><a href="contributing_to_ruby_on_rails.html">Contributing to Ruby on Rails [未着手]</a></dd>
+        <dd><a href="api_documentation_guidelines.html">APIドキュメント作成ガイドライン</a></dd>
+        <dd><a href="ruby_on_rails_guides_guidelines.html">Rails ガイドのガイドライン</a></dd>
+        <dt>メンテナンスポリシー</dt>
+        <dd><a href="maintenance_policy.html">メンテナンスポリシー</a></dd>
+        <dt>リリースノート</dt>
+        <dd><a href="upgrading_ruby_on_rails.html">Rails アップグレードガイド</a></dd>
+        <dd><a href="4_2_release_notes.html">Ruby on Rails 4.2 リリースノート</a></dd>
+        <dd><a href="4_1_release_notes.html">Ruby on Rails 4.1 リリースノート</a></dd>
+        <dd><a href="4_0_release_notes.html">Ruby on Rails 4.0 リリースノート</a></dd>
+        <dd><a href="3_2_release_notes.html">Ruby on Rails 3.2 Release Notes [未着手]</a></dd>
+        <dd><a href="3_1_release_notes.html">Ruby on Rails 3.1 Release Notes [未着手]</a></dd>
+        <dd><a href="3_0_release_notes.html">Ruby on Rails 3.0 Release Notes [未着手]</a></dd>
+        <dd><a href="2_3_release_notes.html">Ruby on Rails 2.3 Release Notes [未着手]</a></dd>
+        <dd><a href="2_2_release_notes.html">Ruby on Rails 2.2 Release Notes [未着手]</a></dd>
+        </dl>
+      </div>
+
+      <ol class="snsb" style="padding-top: 20px;">
 	<li><iframe src="http://ghbtns.com/github-btn.html?user=yasslab&repo=railsguides.jp&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="80" height="20"></iframe></li>
 	<li><a href="http://b.hatena.ne.jp/entry/railsguides.jp" class="hatena-bookmark-button" data-hatena-bookmark-title="Ruby on Rails ガイド：体系的に Rails を学ぼう (Rails 4.2 対応)" data-hatena-bookmark-layout="standard-balloon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="http://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="http://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script></li>
 	<li><div class="fb-like" data-href="http://railsguides.jp/" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true"></div></li>
 	<li><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://railsguides.jp/" data-text="Ruby on Rails ガイド：体系的に Rails を学ぼう (Rails 4.2 対応)" data-lang="ja" data-hashtags="Railsガイド" width="100">ツイート</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script></li>
       </ol>
-      <ol class="snsb" style="margin-left: 13px">
-	<li>本ガイドは<a href="https://creativecommons.org/licenses/by-sa/4.0/deed.ja">クリエイティブ・コモンズ 表示-継承 4.0 国際</a> (CC BY-SA 4.0) ライセンスに基づいて公開されています。</li>
-	<li>「Rails」および「Ruby on Rails」という名称、そして Rails のロゴは、David Heinemeier Hansson による登録商標で、すべての権利を有しています。</li>
+      <ol class="snsb">
+	<li>本ガイドは<a href="https://creativecommons.org/licenses/by-sa/4.0/deed.ja">クリエイティブ・コモンズ 表示-継承 4.0 国際</a> (CC BY-SA 4.0) ライセンスに基づいて公開されています。また、「Rails」および「Ruby on Rails」という名称、そして Rails のロゴは、David Heinemeier Hansson による登録商標で、すべての権利を有しています。</li>
       </ol>
     </div>
   </div>
@@ -403,7 +476,7 @@ Ruby on Rails ガイド：体系的に Rails を学ぼう
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
     m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
     })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-    
+
     ga('create', 'UA-50163209-4', 'auto');
     ga('send', 'pageview');
   </script>

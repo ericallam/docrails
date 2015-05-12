@@ -781,7 +781,7 @@ end
 </body></html>
 
         
-        <h3>フィードバックについて</h3>
+        <h3 id="feedback"><a href="#feedback">フィードバックについて</a></h3>
         <p>
           本ガイドの訳文およびソースコードは、GitHub上の <a href="https://github.com/yasslab/railsguides.jp">yasslab/railsguides.jp</a> で管理・公開されております。
 	  本ガイドを読んで、誤字・脱字・誤訳などを見かけましたら、上記リポジトリにてお気軽に <a href="https://github.com/yasslab/railsguides.jp/issues">Issue</a> を出して頂けると大変嬉しいです。また、「Pull Request を送りたい!」という場合には、<a href="ruby_on_rails_guides_guidelines.html">Ruby on Railsガイドのガイドライン</a>と、<a href="https://github.com/yasslab/railsguides.jp#%E7%BF%BB%E8%A8%B3%E3%81%AE%E6%B5%81%E3%82%8C">README</a>に記載されている「翻訳の流れ」をご参考にしてください。
@@ -799,18 +799,75 @@ end
   <hr class="hide" />
   <div id="footer">
     <div class="wrapper">
-      <ol class="snsb" style="margin-left: 13px">
-	<li><a href="http://www.railscp.org/text/" target="_blank"><img src="images/railscp_logo.png" width="150px"/></a></li>
-      </ol>
-      <ol class="snsb" style="margin-left: 13px">
+      <div class="sitemap">
+        <dl class="L">
+        <dt>はじめに</dt>
+        <dd><a href="getting_started.html">Rails をはじめよう</a></dd>
+        <dt>モデル</dt>
+        <dd><a href="active_record_basics.html">Active Record の基礎</a></dd>
+        <dd><a href="active_record_migrations.html">Active Record マイグレーション</a></dd>
+        <dd><a href="active_record_validations.html">Active Record バリデーション</a></dd>
+        <dd><a href="active_record_callbacks.html">Active Record コールバック</a></dd>
+        <dd><a href="association_basics.html">Active Record の関連付け</a></dd>
+        <dd><a href="active_record_querying.html">Active Record クエリインターフェイス</a></dd>
+        <dd><a href="active_model_basics.html">Active Model の基礎</a></dd>
+        <dt>ビュー</dt>
+        <dd><a href="action_view_overview.html">Action View の概要</a></dd>
+        <dd><a href="layouts_and_rendering.html">レイアウトとレンダリング</a></dd>
+        <dd><a href="form_helpers.html">Action View フォームヘルパー</a></dd>
+        <dt>コントローラ</dt>
+        <dd><a href="action_controller_overview.html">Action Controller の概要</a></dd>
+        <dd><a href="routing.html">Rails ルーティング</a></dd>
+        </dl>
+        <dl class="C">
+        <dt>高度なトピック</dt>
+        <dd><a href="active_support_core_extensions.html">Active Support コア拡張機能</a></dd>
+        <dd><a href="i18n.html">Rails 国際化 (i18n) API</a></dd>
+        <dd><a href="action_mailer_basics.html">Action Mailer の基礎</a></dd>
+        <dd><a href="active_job_basics.html">Active Job の基礎</a></dd>
+        <dd><a href="testing.html">Rails テスティングガイド</a></dd>
+        <dd><a href="security.html">Rails セキュリティガイド</a></dd>
+        <dd><a href="debugging_rails_applications.html">Rails アプリケーションのデバッグ</a></dd>
+        <dd><a href="configuring.html">Rails アプリケーションを設定する</a></dd>
+        <dd><a href="command_line.html">コマンドラインツールと Rake タスク</a></dd>
+        <dd><a href="asset_pipeline.html">アセットパイプライン</a></dd>
+        <dd><a href="working_with_javascript_in_rails.html">Rails で JavaScript を使用する</a></dd>
+        <dd><a href="engines.html">Rails エンジン入門</a></dd>
+        <dd><a href="initialization.html">Rails の初期化プロセス</a></dd>
+        <dd><a href="constant_autoloading_and_reloading.html">定数の自動読み込みと再読み込み</a></dd>
+        <dt>Rails を拡張する</dt>
+        <dd><a href="plugins.html">Rails プラグイン作成入門</a></dd>
+        <dd><a href="rails_on_rack.html">Rails と Rack</a></dd>
+        <dd><a href="generators.html">Rails ジェネレータとテンプレート入門</a></dd>
+        </dl>
+        <dl class="R">
+        <dt>Ruby on Rails に貢献する</dt>
+        <dd><a href="contributing_to_ruby_on_rails.html">Contributing to Ruby on Rails [未着手]</a></dd>
+        <dd><a href="api_documentation_guidelines.html">APIドキュメント作成ガイドライン</a></dd>
+        <dd><a href="ruby_on_rails_guides_guidelines.html">Rails ガイドのガイドライン</a></dd>
+        <dt>メンテナンスポリシー</dt>
+        <dd><a href="maintenance_policy.html">メンテナンスポリシー</a></dd>
+        <dt>リリースノート</dt>
+        <dd><a href="upgrading_ruby_on_rails.html">Rails アップグレードガイド</a></dd>
+        <dd><a href="4_2_release_notes.html">Ruby on Rails 4.2 リリースノート</a></dd>
+        <dd><a href="4_1_release_notes.html">Ruby on Rails 4.1 リリースノート</a></dd>
+        <dd><a href="4_0_release_notes.html">Ruby on Rails 4.0 リリースノート</a></dd>
+        <dd><a href="3_2_release_notes.html">Ruby on Rails 3.2 Release Notes [未着手]</a></dd>
+        <dd><a href="3_1_release_notes.html">Ruby on Rails 3.1 Release Notes [未着手]</a></dd>
+        <dd><a href="3_0_release_notes.html">Ruby on Rails 3.0 Release Notes [未着手]</a></dd>
+        <dd><a href="2_3_release_notes.html">Ruby on Rails 2.3 Release Notes [未着手]</a></dd>
+        <dd><a href="2_2_release_notes.html">Ruby on Rails 2.2 Release Notes [未着手]</a></dd>
+        </dl>
+      </div>
+
+      <ol class="snsb" style="padding-top: 20px;">
 	<li><iframe src="http://ghbtns.com/github-btn.html?user=yasslab&repo=railsguides.jp&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="80" height="20"></iframe></li>
 	<li><a href="http://b.hatena.ne.jp/entry/railsguides.jp" class="hatena-bookmark-button" data-hatena-bookmark-title="Ruby on Rails ガイド：体系的に Rails を学ぼう (Rails 4.2 対応)" data-hatena-bookmark-layout="standard-balloon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="http://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="http://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script></li>
 	<li><div class="fb-like" data-href="http://railsguides.jp/" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true"></div></li>
 	<li><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://railsguides.jp/" data-text="Ruby on Rails ガイド：体系的に Rails を学ぼう (Rails 4.2 対応)" data-lang="ja" data-hashtags="Railsガイド" width="100">ツイート</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script></li>
       </ol>
-      <ol class="snsb" style="margin-left: 13px">
-	<li>本ガイドは<a href="https://creativecommons.org/licenses/by-sa/4.0/deed.ja">クリエイティブ・コモンズ 表示-継承 4.0 国際</a> (CC BY-SA 4.0) ライセンスに基づいて公開されています。</li>
-	<li>「Rails」および「Ruby on Rails」という名称、そして Rails のロゴは、David Heinemeier Hansson による登録商標で、すべての権利を有しています。</li>
+      <ol class="snsb">
+	<li>本ガイドは<a href="https://creativecommons.org/licenses/by-sa/4.0/deed.ja">クリエイティブ・コモンズ 表示-継承 4.0 国際</a> (CC BY-SA 4.0) ライセンスに基づいて公開されています。また、「Rails」および「Ruby on Rails」という名称、そして Rails のロゴは、David Heinemeier Hansson による登録商標で、すべての権利を有しています。</li>
       </ol>
     </div>
   </div>
@@ -832,7 +889,7 @@ end
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
     m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
     })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-    
+
     ga('create', 'UA-50163209-4', 'auto');
     ga('send', 'pageview');
   </script>

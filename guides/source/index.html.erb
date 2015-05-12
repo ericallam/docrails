@@ -18,7 +18,7 @@ Ruby on Rails ガイド：体系的に Rails を学ぼう
 これからRailsを学び始める場合は<a href="http://railstutorial.jp/">Railsチュートリアル：実例を使ってRailsを学ぼう</a>が役に立ちます。本ガイドを副読本として参考にしつつ、Railsチュートリアルから読み進めることをオススメします。
 <br />
 <br />
-誤訳や誤字・脱字などを見つけた際には、<a href="https://twitter.com/yasulab">@yasulab</a> または <a href="https://github.com/yasslab/railsguides.jp/issues">GitHub Issue</a> にてお気軽にご連絡ください。本ガイドのクオリティ向上に向けてご協力して頂けると幸いです :)
+誤訳や誤字・脱字などを見つけた際には、<a href="https://twitter.com/yasulab">@yasulab</a> または <a href="https://github.com/yasslab/railsguides.jp/issues">GitHub Issue</a> にてお気軽にご連絡ください。本ガイドの品質向上に向けてご協力して頂けると幸いです :)
 <br />
 <br />
 <ol class="snsb" style="margin-left: 0px">
@@ -35,10 +35,30 @@ Ruby on Rails ガイド：体系的に Rails を学ぼう
     <dd class="work-in-progress">このアイコンが付いているガイドは現在作業中 (Work in progress) であり、上部のガイド目次からは参照できません。作業中のガイドはそれなりに有用ではありますが、不完全な情報やエラーが含まれている可能性があります。</dd>
   </dl>
 </div>
-
 <% end %>
+
 <% documents_by_section.each do |section| %><h3><%= section['name'] %></h3>
   <% section['documents'].each do |document| %>
-    <%= guide(document['name'], document['url'], work_in_progress: document['work_in_progress']) do %>
-      <%= document['description'] %><% end %>
-<% end %><% end %>
+    <%= guide(document['name'], document['url'],
+	work_in_progress: document['work_in_progress']) do %>
+      <%= document['description'] %>
+    <% end %>    
+  <% end %>
+<% end %>
+
+<h3 id="contributors"><a href="#contributors">協力者</a></h3>
+<p>Railsガイドは、次の方々の支援によって支えられております。</p>
+
+<ul style="list-style: none;">
+  <li>翻訳 (共同発起人): <a href="https://www.linkedin.com/pub/shozo-hatta/11/349/930">八田 昌三</a> (<a href="https://twitter.com/hachi8833">@hachi8833</a>)</li>
+  <li>開発 (共同発起人): <a href="https://www.facebook.com/yasulab">安川 要平</a> (<a href="http://twitter.com/yasulab">@yasulab</a>)</li>
+  <li>訳著チェック: <a href="https://github.com/yui-knk">金子 雄一郎</a> (<a href="https://twitter.com/spikeolaf">@spikeolaf</a>)</li>
+  <li>運営:<br />
+    <a href="http://yasslab.jp/" target="_blank"><img src="/images/yasslab_logo.png"
+						      alt="ヤスラボ" /></a>
+  </li>
+  <li>後援:<br />
+    <a href="http://www.railscp.org/text/" target="_blank"><img src="/images/railscp_logo.png"
+						      alt="Rails技術者認定試験" /></a>
+  </li>
+</ul>

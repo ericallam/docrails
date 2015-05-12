@@ -9,6 +9,8 @@
 
 .snsb {
     overflow: hidden;
+    clear: left;
+    margin-left: 13px;
 }
 .snsb li {
     float: left;
@@ -18,7 +20,22 @@
 .snsb iframe {
     margin: 0 !important;
 }
-     
+.sitemap{
+  margin-left: 13px;
+}
+.sitemap .L, .sitemap .C, .sitemap .R {
+  float: left;
+  width: 33%;
+  margin: 0;
+  padding: 0;
+}
+@media screen and (max-width: 880px) {
+  .sitemap .L, .sitemap .C, .sitemap .R { width: 50%; }
+}
+@media screen and (max-width: 480px) {
+  .sitemap .L, .sitemap .C, .sitemap .R { width: 100%; }
+}
+
 .left {float: left; margin-right: 1em;}
 .right {float: right; margin-left: 1em;}
 @media screen and (max-width: 480px) {
