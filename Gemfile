@@ -27,3 +27,5 @@ group :test do
 end
 
 gem 'kindlerb', '0.1.1'
+
+gem 'wraith'

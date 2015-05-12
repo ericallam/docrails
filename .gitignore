@@ -104,3 +104,6 @@ vendor/
 
 ## rack log
 log/
+
+## wraith
+shots/
