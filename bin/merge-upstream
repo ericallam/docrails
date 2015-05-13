@@ -39,7 +39,7 @@ if git subtree merge --squash --prefix=guides $branch_upstream_local -m "Merge c
   echo merge success
   exit
 else
-  echo "merge ${rails} ${branch_upstream}(`git rev-parse $branch_upstream_local`) failed."
+  echo "merge ${rails} ${branch_upstream}($rev) failed."
   echo merge failed
   exit 1
 fi
