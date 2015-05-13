@@ -24,8 +24,7 @@ group :test do
   gem 'rspec'
   gem 'turnip'
   gem 'pry-byebug'
+  gem 'wraith'
 end
 
 gem 'kindlerb', '0.1.1'
-
-gem 'wraith'
