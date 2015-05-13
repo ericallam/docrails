@@ -107,3 +107,6 @@ log/
 
 ## wraith
 shots/
+
+## Ignore needless files to host
+guides/output/kindle
