@@ -3,7 +3,7 @@
 set -ex
 
 rails=https://github.com/rails/rails.git
-railsguides_jp=https://github.com/yasslab/railsguides.jp.git
+railsguides_jp=git@github.com:yasslab/railsguides.jp.git
 
 d=`TZ=UTC date +%Y%m%d%H%M%S`
 
