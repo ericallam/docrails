@@ -33,8 +33,9 @@ fi
 rev=`git rev-parse $branch_upstream_local`
 
 if git subtree merge --squash --prefix=guides $branch_upstream_local -m "Merge commit '$rev' into $branch_head_local"; then
-  git push $railsguides_jp $branch_head_local
-  hub pull-request -b yasslab:$branch_head -m "Merge commit '$rev' into $branch_head_local"
+  # pushしてプルリクを出したいならコメントアウト
+  # git push $railsguides_jp $branch_head_local
+  # hub pull-request -b yasslab:$branch_head -m "Merge commit '$rev' into $branch_head_local"
   echo merge success
   exit
 else
