@@ -43,7 +43,7 @@ module RailsGuides
       when 'L'
         documents_by_section.to(3)
       when 'C'
-        documents_by_section.from(4).to(1)
+        documents_by_section.from(4).take(2)
       when 'R'
         documents_by_section.from(6)
       else
