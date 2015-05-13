@@ -27,4 +27,6 @@ group :test do
   gem 'wraith'
 end
 
-gem 'kindlerb', '0.1.1'
+group :kindle do
+  gem 'kindlerb', '0.1.1'
+end
