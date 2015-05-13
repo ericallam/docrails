@@ -42,10 +42,10 @@ module RailsGuides
       case position
       when 'L'
         documents_by_section.to(3)
-      when 'R'
-        documents_by_section.from(6)
       when 'C'
         documents_by_section.from(4).to(1)
+      when 'R'
+        documents_by_section.from(6)
       else
         raise "Unknown position: #{position}"
       end
