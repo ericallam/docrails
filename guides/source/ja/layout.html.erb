@@ -153,14 +153,14 @@
     <div class="wrapper">
       <div class="sitemap">
         <% %w(L C R).each do |position| %>
-        <dl class="<%= position %>">
-        <% docs_for_sitemap(position).each do |section| %>
-        <dt><%= section['name'] %></dt>
-        <% finished_documents(section['documents']).each do |document| %>
-        <dd><a href="<%= document['url'] %>"><%= document['name'] %></a></dd>
+          <dl class="<%= position %>">
+          <% docs_for_sitemap(position).each do |section| %>
+            <dt><%= section['name'] %></dt>
+            <% finished_documents(section['documents']).each do |document| %>
+              <dd><a href="<%= document['url'] %>"><%= document['name'] %></a></dd>
+            <% end %>
           <% end %>
-        <% end %>
-        </dl>
+          </dl>
         <% end %>
       </div>
 
