@@ -334,7 +334,7 @@ one:
 
 </pre>
 </div>
-<p>メモ: 名前で互いを参照する関連付けの場合、フィクスチャで<code>id:</code>属性を指定することはできません。Railsはテストの実行中に、一貫性を保つために自動的に主キーを割り当てます。フィクスチャで<code>id:</code>属性を指定するとこの自動割り当てがしなくなります。関連付けの詳細な動作については、<a href="http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html">フィクスチャAPIドキュメント</a>を参照してください。</p><h5 id="erb"><a href="#erb">2.3.3 ERB</a></h5><p>ERBは、テンプレート内にRubyコードを埋め込むのに使用されます。YAMLフィクスチャ形式のファイルは、Railsに読み込まれたときにERBによる事前処理が行われます。ERBを活用すれば、Rubyで一部のサンプルデータを生成できます。たとえば、以下のコードを使用すれば1000人のユーザーを生成できます。</p><div class="code_container">
+<div class="note"><p>名前で互いを参照する関連付けの場合、フィクスチャで<code>id:</code>属性を指定することはできません。Railsはテストの実行中に、一貫性を保つために自動的に主キーを割り当てます。フィクスチャで<code>id:</code>属性を指定するとこの自動割り当てがしなくなります。関連付けの詳細な動作については、<a href="http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html">フィクスチャAPIドキュメント</a>を参照してください。</p></div><h5 id="erb"><a href="#erb">2.3.3 ERB</a></h5><p>ERBは、テンプレート内にRubyコードを埋め込むのに使用されます。YAMLフィクスチャ形式のファイルは、Railsに読み込まれたときにERBによる事前処理が行われます。ERBを活用すれば、Rubyで一部のサンプルデータを生成できます。たとえば、以下のコードを使用すれば1000人のユーザーを生成できます。</p><div class="code_container">
 <pre class="brush: ruby; html-script: true; gutter: false; toolbar: false">
 &lt;% 1000.times do |n| %&gt;
 user_&lt;%= n %&gt;:
@@ -363,7 +363,7 @@ email(david.girlfriend.email, david.location_tonight)
 
 </pre>
 </div>
-<h3 id="モデルに対する単体テスト"><a href="#%E3%83%A2%E3%83%87%E3%83%AB%E3%81%AB%E5%AF%BE%E3%81%99%E3%82%8B%E5%8D%98%E4%BD%93%E3%83%86%E3%82%B9%E3%83%88">3 モデルに対する単体テスト</a></h3><p>Railsにおけるモデルのテストとは、モデルをテストするために書いたコードを指します。</p><p>本ガイドでは、Railsの <em>scaffold</em> を使用します。scaffoldを使用すれば、1つの操作だけで新しいリソースのモデル、マイグレーション、コントローラ、ビューを一度に作成できます。このときに、Railsのベストプラクティスに準拠した完全なテストスイートも作成されます。本ガイドではこのようにして生成したコードを例として使用し、必要に応じてそこにコードを追加する形式で進めます。</p><p>メモ: Railsの <em>scaffold</em> の詳細については、<a href="getting_started.html">Railsをはじめよう</a>を参照してください。</p><p><code>rails generate scaffold</code>を実行すると、生成される多数のファイルの中に、<code>test/models</code>フォルダの下に作成されるテストスタブがあります。</p><div class="code_container">
+<h3 id="モデルに対する単体テスト"><a href="#%E3%83%A2%E3%83%87%E3%83%AB%E3%81%AB%E5%AF%BE%E3%81%99%E3%82%8B%E5%8D%98%E4%BD%93%E3%83%86%E3%82%B9%E3%83%88">3 モデルに対する単体テスト</a></h3><p>Railsにおけるモデルのテストとは、モデルをテストするために書いたコードを指します。</p><p>本ガイドでは、Railsの <em>scaffold</em> を使用します。scaffoldを使用すれば、1つの操作だけで新しいリソースのモデル、マイグレーション、コントローラ、ビューを一度に作成できます。このときに、Railsのベストプラクティスに準拠した完全なテストスイートも作成されます。本ガイドではこのようにして生成したコードを例として使用し、必要に応じてそこにコードを追加する形式で進めます。</p><div class="note"><p>Railsの <em>scaffold</em> の詳細については、<a href="getting_started.html">Railsをはじめよう</a>を参照してください。</p></div><p><code>rails generate scaffold</code>を実行すると、生成される多数のファイルの中に、<code>test/models</code>フォルダの下に作成されるテストスタブがあります。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ bin/rails generate scaffold article title:string body:text
 ...
@@ -414,7 +414,7 @@ end
 
 </pre>
 </div>
-<p><code>test</code>マクロが適用されることによって、引用符で囲んだ読みやすいテスト名がテストメソッドの定義に変換されます。もちろん、後者のような通常のメソッド定義を使用することもできます。</p><p>メモ: テスト名からのメソッド名生成は、スペースをアンダースコアに置き換えることによって行われます。生成されたメソッド名はRubyの正規な識別子である必要はありませんが、テスト名にはパンクチュエーションなどの文字を含めることができます。これが可能なのは、Rubyがメソッド名にあらゆる文字列を使用できるからです。<code>define_method</code>や<code>send</code>のように一見問題の起きそうな呼び出しが必要になることがあるかもしれません。しかし名前の付け方には公式な制限はありません。</p><div class="code_container">
+<p><code>test</code>マクロが適用されることによって、引用符で囲んだ読みやすいテスト名がテストメソッドの定義に変換されます。もちろん、後者のような通常のメソッド定義を使用することもできます。</p><div class="note"><p>テスト名からのメソッド名生成は、スペースをアンダースコアに置き換えることによって行われます。生成されたメソッド名はRubyの正規な識別子である必要はありませんが、テスト名にはパンクチュエーションなどの文字を含めることができます。これが可能なのは、Rubyがメソッド名にあらゆる文字列を使用できるからです。<code>define_method</code>や<code>send</code>のように一見問題の起きそうな呼び出しが必要になることがあるかもしれません。しかし名前の付け方には公式な制限はありません。</p></div><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 assert true
 
@@ -535,7 +535,7 @@ NameError: undefined local variable or method `some_undefined_variable' for #&lt
 
 </pre>
 </div>
-<p>今度は'E'が出力されます。これはエラーが発生したテストが1つあることを示しています。</p><p>メモ: テストスイートに含まれる各テストメソッドは、エラーまたはアサーション失敗が発生するとそこで実行を中止し、次のメソッドに進みます。すべてのテストメソッドはアルファベット順に実行されます。</p><p>テストが失敗すると、それに応じたバックトレースが出力されます。Railsはデフォルトでバックトレースをフィルタし、アプリケーションに関連するバックトレースのみを出力します。これによって、フレームワークから発生する不要な情報を排除して作成中のコードに集中できます。完全なバックトレースを参照しなければならなくなった場合は、<code>BACKTRACE</code>環境変数を設定するだけで動作を変更できます。</p><div class="code_container">
+<p>今度は'E'が出力されます。これはエラーが発生したテストが1つあることを示しています。</p><div class="note"><p>テストスイートに含まれる各テストメソッドは、エラーまたはアサーション失敗が発生するとそこで実行を中止し、次のメソッドに進みます。すべてのテストメソッドはアルファベット順に実行されます。</p></div><p>テストが失敗すると、それに応じたバックトレースが出力されます。Railsはデフォルトでバックトレースをフィルタし、アプリケーションに関連するバックトレースのみを出力します。これによって、フレームワークから発生する不要な情報を排除して作成中のコードに集中できます。完全なバックトレースを参照しなければならなくなった場合は、<code>BACKTRACE</code>環境変数を設定するだけで動作を変更できます。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ BACKTRACE=1 bin/rake test test/models/article_test.rb
 
@@ -702,7 +702,7 @@ $ BACKTRACE=1 bin/rake test test/models/article_test.rb
 </tr>
 </tbody>
 </table>
-<p>これらはMinitestがサポートするアサーションの一部に過ぎません。最新の完全なアサーションのリストについては<a href="http://docs.seattlerb.org/minitest/">Minitest APIドキュメント</a>、特に<a href="http://docs.seattlerb.org/minitest/Minitest/Assertions.html"><code>Minitest::Assertions</code></a>を参照してください。</p><p>テスティングフレームワークはモジュール化されているので、アサーションを自作して利用することもできます。実際、Railsはまさにそれを行っているのです。Railsには開発を楽にしてくれる特殊なアサーションがいくつも追加されています。</p><p>メモ: アサーションの自作は高度なトピックなので、このチュートリアルでは扱いません。</p><h4 id="rails固有のアサーション"><a href="#rails%E5%9B%BA%E6%9C%89%E3%81%AE%E3%82%A2%E3%82%B5%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3">3.5 Rails固有のアサーション</a></h4><p>Railsは<code>minitest</code>フレームワークに以下のような独自のカスタムアサーションを追加しています。</p>
+<p>これらはMinitestがサポートするアサーションの一部に過ぎません。最新の完全なアサーションのリストについては<a href="http://docs.seattlerb.org/minitest/">Minitest APIドキュメント</a>、特に<a href="http://docs.seattlerb.org/minitest/Minitest/Assertions.html"><code>Minitest::Assertions</code></a>を参照してください。</p><p>テスティングフレームワークはモジュール化されているので、アサーションを自作して利用することもできます。実際、Railsはまさにそれを行っているのです。Railsには開発を楽にしてくれる特殊なアサーションがいくつも追加されています。</p><div class="note"><p>アサーションの自作は高度なトピックなので、このチュートリアルでは扱いません。</p></div><h4 id="rails固有のアサーション"><a href="#rails%E5%9B%BA%E6%9C%89%E3%81%AE%E3%82%A2%E3%82%B5%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3">3.5 Rails固有のアサーション</a></h4><p>Railsは<code>minitest</code>フレームワークに以下のような独自のカスタムアサーションを追加しています。</p>
 <table>
 <thead>
 <tr>
@@ -780,7 +780,7 @@ get(:view, {'id' =&gt; '12'}, nil, {'message' =&gt; 'booya!'})
 
 </pre>
 </div>
-<p>メモ: <code>articles_controller_test.rb</code>ファイルにある<code>test_should_create_article</code>テストを実行してみると、モデルレベルのバリデーションが新たに追加されることによってテストは失敗します。</p><p><code>articles_controller_test.rb</code>ファイルの<code>test_should_create_article</code>テストを変更して、テストがパスするようにしてみましょう。</p><div class="code_container">
+<div class="note"><p><code>articles_controller_test.rb</code>ファイルにある<code>test_should_create_article</code>テストを実行してみると、モデルレベルのバリデーションが新たに追加されることによってテストは失敗します。</p></div><p><code>articles_controller_test.rb</code>ファイルの<code>test_should_create_article</code>テストを変更して、テストがパスするようにしてみましょう。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 test "should create article" do
   assert_difference('Article.count') do
@@ -801,7 +801,7 @@ end
 <li><code>head</code></li>
 <li><code>delete</code></li>
 </ul>
-<p>これらはすべてメソッドとして利用できますが、実際には最初の2つでほとんどの用が足りるはずです。</p><p>メモ: 機能テストは、そのリクエストがアクションで受け付けられるかどうかについては検証するものではありません。機能テストでこれらのリクエストの名前が使用されているのは、リクエストの種類を明示してテストを読みやすくするためです。</p><h4 id="4つのハッシュ"><a href="#4%E3%81%A4%E3%81%AE%E3%83%8F%E3%83%83%E3%82%B7%E3%83%A5">4.3 4つのハッシュ</a></h4><p>6種類のメソッドのうち、<code>get</code>や<code>post</code>などいずれかのリクエストが行われて処理されると、以下の4種類のハッシュオブジェクトが使用できるようになります。</p>
+<p>これらはすべてメソッドとして利用できますが、実際には最初の2つでほとんどの用が足りるはずです。</p><div class="note"><p>機能テストは、そのリクエストがアクションで受け付けられるかどうかについては検証するものではありません。機能テストでこれらのリクエストの名前が使用されているのは、リクエストの種類を明示してテストを読みやすくするためです。</p></div><h4 id="4つのハッシュ"><a href="#4%E3%81%A4%E3%81%AE%E3%83%8F%E3%83%83%E3%82%B7%E3%83%A5">4.3 4つのハッシュ</a></h4><p>6種類のメソッドのうち、<code>get</code>や<code>post</code>などいずれかのリクエストが行われて処理されると、以下の4種類のハッシュオブジェクトが使用できるようになります。</p>
 <ul>
 <li>
 <code>assigns</code> - ビューで使用するためにアクションのインスタンス変数として保存されるすべてのオブジェクト。</li>
@@ -881,7 +881,7 @@ end
 
 </pre>
 </div>
-<h4 id="ビューをテストする"><a href="#%E3%83%93%E3%83%A5%E3%83%BC%E3%82%92%E3%83%86%E3%82%B9%E3%83%88%E3%81%99%E3%82%8B">4.8 ビューをテストする</a></h4><p>アプリケーションのビューのテストで、あるページで重要なHTML要素とその内容がレスポンスに含まれていることを主張する (アサーションを行なう) のは、リクエストに対するレスポンスをテストする方法として便利です。<code>assert_select</code>というアサーションを使用すると、こうしたテストで簡潔かつ強力な文法を利用できるようになります。</p><p>メモ: 他のドキュメントで<code>assert_tag</code>というアサーションを見かけることがあるかもしれません。このアサーションはRails 4.2で削除されました。今後は<code>assert_select</code>を使用してください。</p><p><code>assert_select</code>には2つの書式があります。</p><p><code>assert_select(セレクタ, [条件], [メッセージ])</code>という書式は、セレクタで指定された要素が条件に一致することを主張します。セレクタにはCSSセレクタの式 (文字列) や代入値を持つ式を使用できます。</p><p><code>assert_select(要素, セレクタ, [条件], [メッセージ])</code> は、選択されたすべての要素が条件に一致することを主張します。選択される要素は、<em>element</em> (<code>Nokogiri::XML::Node</code> or <code>Nokogiri::XML::NodeSet</code>のインスタンス) からその子孫要素までの範囲から選択されます。</p><p>たとえば、レスポンスに含まれるtitle要素の内容を検証するには、以下のアサーションを使用します。</p><div class="code_container">
+<h4 id="ビューをテストする"><a href="#%E3%83%93%E3%83%A5%E3%83%BC%E3%82%92%E3%83%86%E3%82%B9%E3%83%88%E3%81%99%E3%82%8B">4.8 ビューをテストする</a></h4><p>アプリケーションのビューのテストで、あるページで重要なHTML要素とその内容がレスポンスに含まれていることを主張する (アサーションを行なう) のは、リクエストに対するレスポンスをテストする方法として便利です。<code>assert_select</code>というアサーションを使用すると、こうしたテストで簡潔かつ強力な文法を利用できるようになります。</p><div class="note"><p>他のドキュメントで<code>assert_tag</code>というアサーションを見かけることがあるかもしれません。このアサーションはRails 4.2で削除されました。今後は<code>assert_select</code>を使用してください。</p></div><p><code>assert_select</code>には2つの書式があります。</p><p><code>assert_select(セレクタ, [条件], [メッセージ])</code>という書式は、セレクタで指定された要素が条件に一致することを主張します。セレクタにはCSSセレクタの式 (文字列) や代入値を持つ式を使用できます。</p><p><code>assert_select(要素, セレクタ, [条件], [メッセージ])</code> は、選択されたすべての要素が条件に一致することを主張します。選択される要素は、<em>element</em> (<code>Nokogiri::XML::Node</code> or <code>Nokogiri::XML::NodeSet</code>のインスタンス) からその子孫要素までの範囲から選択されます。</p><p>たとえば、レスポンスに含まれるtitle要素の内容を検証するには、以下のアサーションを使用します。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 assert_select 'title', "Welcome to Rails Testing Guide"
 
@@ -1151,7 +1151,7 @@ end
 </tr>
 </tbody>
 </table>
-<h3 id="minitestに関する簡単なメモ"><a href="#minitest%E3%81%AB%E9%96%A2%E3%81%99%E3%82%8B%E7%B0%A1%E5%8D%98%E3%81%AA%E3%83%A1%E3%83%A2">7 <code>Minitest</code>に関する簡単なメモ</a></h3><p>Rubyには、テスティングを含むあらゆる一般的なユースケースのための膨大な標準ライブラリが付属しています。Ruby 1.9からはテスティングフレームワークとして<code>Minitest</code>が提供されるようになりました。前述した<code>assert_equal</code>などの基本的なアサーションは、実際にはすべて<code>Minitest::Assertions</code>で定義されています。テストクラスで継承している<code>ActiveSupport::TestCase</code>、<code>ActionController::TestCase</code>、<code>ActionMailer::TestCase</code>、<code>ActionView::TestCase</code>および<code>ActionDispatch::IntegrationTest</code>は<code>Minitest::Assertions</code>を含んでおり、これによってテスト内で基本的なアサーションがすべて利用できます。</p><p>メモ: <code>Minitest</code>の詳細については<a href="http://ruby-doc.org/stdlib-2.1.0/libdoc/minitest/rdoc/MiniTest.html">Minitest</a>を参照してください。</p><h3 id="setupとteardown"><a href="#setup%E3%81%A8teardown">8 SetupとTeardown</a></h3><p>各テストの実行前に特定のコードブロックを1つ実行したり、各テストの実行後に別のコードブロックを1つ実行したりしたい場合は、そのための特殊なコールバックを使用することができます。<code>Articles</code>コントローラの機能テストを例にとって詳しく見てみましょう。</p><div class="code_container">
+<h3 id="minitestに関する簡単なメモ"><a href="#minitest%E3%81%AB%E9%96%A2%E3%81%99%E3%82%8B%E7%B0%A1%E5%8D%98%E3%81%AA%E3%83%A1%E3%83%A2">7 <code>Minitest</code>に関する簡単なメモ</a></h3><p>Rubyには、テスティングを含むあらゆる一般的なユースケースのための膨大な標準ライブラリが付属しています。Ruby 1.9からはテスティングフレームワークとして<code>Minitest</code>が提供されるようになりました。前述した<code>assert_equal</code>などの基本的なアサーションは、実際にはすべて<code>Minitest::Assertions</code>で定義されています。テストクラスで継承している<code>ActiveSupport::TestCase</code>、<code>ActionController::TestCase</code>、<code>ActionMailer::TestCase</code>、<code>ActionView::TestCase</code>および<code>ActionDispatch::IntegrationTest</code>は<code>Minitest::Assertions</code>を含んでおり、これによってテスト内で基本的なアサーションがすべて利用できます。</p><div class="note"><p><code>Minitest</code>の詳細については<a href="http://ruby-doc.org/stdlib-2.1.0/libdoc/minitest/rdoc/MiniTest.html">Minitest</a>を参照してください。</p></div><h3 id="setupとteardown"><a href="#setup%E3%81%A8teardown">8 SetupとTeardown</a></h3><p>各テストの実行前に特定のコードブロックを1つ実行したり、各テストの実行後に別のコードブロックを1つ実行したりしたい場合は、そのための特殊なコールバックを使用することができます。<code>Articles</code>コントローラの機能テストを例にとって詳しく見てみましょう。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 require 'test_helper'
 
@@ -1280,7 +1280,7 @@ friend@example.comさん、こんにちは。
 
 </pre>
 </div>
-<p>ここでメイラーのテスト作成方法の詳細部分についてご説明したいと思います。<code>config/environments/test.rb</code>の<code>ActionMailer::Base.delivery_method = :test</code>という行で送信モードをtestに設定しています。これにより、送信したメールが実際に配信されないようにできます。そうしないと、テスト中にユーザーにスパムメールを送りつけてしまうことになります。この設定で送信したメールは、<code>ActionMailer::Base.deliveries</code>という配列に追加されます。</p><p>メモ: この<code>ActionMailer::Base.deliveries</code>という配列は、<code>ActionMailer::TestCase</code>でのテストを除き、自動的にはリセットされません。Action Mailerテストの外で配列をクリアしたい場合は、<code>ActionMailer::Base.deliveries.clear</code>で手動リセットできます。</p><h4 id="機能テスト"><a href="#%E6%A9%9F%E8%83%BD%E3%83%86%E3%82%B9%E3%83%88">10.3 機能テスト</a></h4><p>メイラーの機能テストでは、メール本文や受取人が正しいことを確認するなど、単体テストでカバーされているようなことは扱いません。メールの機能テストでは、メール配信メソッドを呼び出し、その結果適切なメールが配信リストに追加されるかどうかをチェックします。機能テストでは配信メソッド自体は正常に動作すると仮定することになりますが、これでまず問題ありません。機能テストでは、期待されたタイミングでアプリケーションのビジネスロジックからメールが送信されるかどうかをテストすることがメインになるのが普通だからです。たとえば、友人を招待するという操作によってメールが適切に送信されるかどうかをチェックするには以下のような機能テストを使用します。</p><div class="code_container">
+<p>ここでメイラーのテスト作成方法の詳細部分についてご説明したいと思います。<code>config/environments/test.rb</code>の<code>ActionMailer::Base.delivery_method = :test</code>という行で送信モードをtestに設定しています。これにより、送信したメールが実際に配信されないようにできます。そうしないと、テスト中にユーザーにスパムメールを送りつけてしまうことになります。この設定で送信したメールは、<code>ActionMailer::Base.deliveries</code>という配列に追加されます。</p><div class="note"><p>この<code>ActionMailer::Base.deliveries</code>という配列は、<code>ActionMailer::TestCase</code>でのテストを除き、自動的にはリセットされません。Action Mailerテストの外で配列をクリアしたい場合は、<code>ActionMailer::Base.deliveries.clear</code>で手動リセットできます。</p></div><h4 id="機能テスト"><a href="#%E6%A9%9F%E8%83%BD%E3%83%86%E3%82%B9%E3%83%88">10.3 機能テスト</a></h4><p>メイラーの機能テストでは、メール本文や受取人が正しいことを確認するなど、単体テストでカバーされているようなことは扱いません。メールの機能テストでは、メール配信メソッドを呼び出し、その結果適切なメールが配信リストに追加されるかどうかをチェックします。機能テストでは配信メソッド自体は正常に動作すると仮定することになりますが、これでまず問題ありません。機能テストでは、期待されたタイミングでアプリケーションのビジネスロジックからメールが送信されるかどうかをテストすることがメインになるのが普通だからです。たとえば、友人を招待するという操作によってメールが適切に送信されるかどうかをチェックするには以下のような機能テストを使用します。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 require 'test_helper'
 
