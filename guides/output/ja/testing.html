@@ -509,7 +509,7 @@ Finished tests in 0.047721s, 20.9551 tests/s, 20.9551 assertions/s.
 
 </pre>
 </div>
-<p>お気付きになった方もいるかと思いますが、私たちは欲しい機能が未実装であるために失敗するテストをあえて最初に作成していることにご注目ください。続いてその機能を実装し、それからもう一度実行してテストがパスすることを確認しました。ソフトウェア開発の世界ではこのようなアプローチをテスト駆動開発 ( <em>Test-Driven Development</em> : TDD) と呼んでいます。</p><p>ヒント: Rails開発者の多くがTDDを日々実践しています。この手法は、アプリケーションのあらゆる部品に対して動作試験を行なうためのテストスイートを作成する方法として非常に優れています。TDDそのものについては本ガイドの範疇を超えるためこれ以上言及しませんが、TDDを初めて学ぶための資料のひとつとして<a href="http://andrzejonsoftware.blogspot.com/2007/05/15-tdd-steps-to-create-rails.html">Railsアプリケーションを開発するためのTDD 15ステップ</a>をご紹介します。</p><p>エラーがどのように表示されるかを確認するために、以下のようなエラーを含んだテストを作ってみましょう。</p><div class="code_container">
+<p>お気付きになった方もいるかと思いますが、私たちは欲しい機能が未実装であるために失敗するテストをあえて最初に作成していることにご注目ください。続いてその機能を実装し、それからもう一度実行してテストがパスすることを確認しました。ソフトウェア開発の世界ではこのようなアプローチをテスト駆動開発 ( <em>Test-Driven Development</em> : TDD) と呼んでいます。</p><div class="info"><p>Rails開発者の多くがTDDを日々実践しています。この手法は、アプリケーションのあらゆる部品に対して動作試験を行なうためのテストスイートを作成する方法として非常に優れています。TDDそのものについては本ガイドの範疇を超えるためこれ以上言及しませんが、TDDを初めて学ぶための資料のひとつとして<a href="http://andrzejonsoftware.blogspot.com/2007/05/15-tdd-steps-to-create-rails.html">Railsアプリケーションを開発するためのTDD 15ステップ</a>をご紹介します。</p></div><p>エラーがどのように表示されるかを確認するために、以下のようなエラーを含んだテストを作ってみましょう。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 test "should report error" do
   # some_undefined_variable is not defined elsewhere in the test case
