@@ -500,7 +500,7 @@ WARNING: `select`ヘルパー(および類似の`collection_select`ヘルパー�
 
 要約すると、`options_from_collection_for_select`ヘルパーは「`options_for_select`が`select`するもの」を「`collection_select`する」ということです。
 
-NOTE:  `options_for_select`に渡されるペアでは、名前が1番目でidが2番目でしたが、`options_from_collection_for_select`の場合は1番目の引数はvalueメソッドで2番目の引数はtextメソッドです。
+NOTE: `options_for_select`に渡されるペアでは、名前が1番目でidが2番目でしたが、`options_from_collection_for_select`の場合は1番目の引数はvalueメソッドで2番目の引数はtextメソッドです。
 
 ### タイムゾーンと国を選択する
 
