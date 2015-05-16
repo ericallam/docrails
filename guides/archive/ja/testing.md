@@ -379,7 +379,7 @@ $ BACKTRACE=1 bin/rake test test/models/article_test.rb
 | `assert_nothing_raised( exception1, exception2, ... ) { block }` | 渡されたブロックからは、渡されたどの例外も発生しないと主張する。|
 | `assert_instance_of( class, obj, [msg] )`                        | `obj`は`class`のインスタンスであると主張する。|
 | `assert_not_instance_of( class, obj, [msg] )`                    | `obj`は`class`のインスタンスではないと主張する。|
-| `assert_kind_of( class, obj, [msg] )`                            | `obj`は`class`またはそのサブクラスのインスタンスであると主張する。[REVIEW: 原文がエラーか古い]|
+| `assert_kind_of( class, obj, [msg] )`                            | `obj`は`class`またはそのサブクラスのインスタンスであると主張する。|
 | `assert_not_kind_of( class, obj, [msg] )`                        | `obj`は`class`またはそのサブクラスのインスタンスではないと主張する。|
 | `assert_respond_to( obj, symbol, [msg] )`                        | `obj`は`symbol`に応答すると主張する。|
 | `assert_not_respond_to( obj, symbol, [msg] )`                    | `obj`は`symbol`に応答しないと主張する。|
