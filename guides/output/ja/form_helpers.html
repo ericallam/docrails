@@ -647,7 +647,7 @@ form_tag(search_path, method: "patch")
 
 </pre>
 </div>
-<p>第3のパラメータであるオプション配列は、<code>options_for_select</code>に渡した引数と同じ種類のものです。このヘルパーのメリットの1つは、正しい街名が既に選ばれている場合、正しい街名が事前選択されているかどうかを気にする必要がないという点です。Railsは<code>@person.city_id</code>属性を読み出してこれらを肩代わりしてくれます。</p><p>他のヘルパーのときと同様、<code>@person</code>オブジェクトを対象としたフォームビルダーで<code>select</code>ヘルパーを使用するのであれば、以下のような文法になります。</p><div class="code_container">
+<p>第3のパラメータであるオプション配列は、<code>options_for_select</code>に渡した引数と同じ種類のものです。このヘルパーのメリットの1つは、ユーザーが既に街を選んでいる場合に、正しい街がデフォルトの値として事前に選択されているかどうかを気にする必要がないという点です。Railsは<code>@person.city_id</code>属性を読み出してこれらを肩代わりしてくれます。</p><p>他のヘルパーのときと同様、<code>@person</code>オブジェクトを対象としたフォームビルダーで<code>select</code>ヘルパーを使用するのであれば、以下のような文法になります。</p><div class="code_container">
 <pre class="brush: ruby; html-script: true; gutter: false; toolbar: false">
 # フォームビルダーに対して選択を行なう
 &lt;%= f.select(:city_id, ...) %&gt;
