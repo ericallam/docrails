@@ -391,7 +391,7 @@ form_tag({controller: "people", action: "search"}, method: "get", class: "nifty_
 
 </pre>
 </div>
-<p><code>check_box_tag</code>の最初のパラメータは、言うまでもなくinputの名前です。2番目のパラメータには、ご想像のとおりinputの値が使用されます。チェックボックスをオンにすると、この値はフォームデータに含まれ、最終的に<code>params</code>に渡されます。</p><h5 id="ラジオボタン"><a href="#%E3%83%A9%E3%82%B8%E3%82%AA%E3%83%9C%E3%82%BF%E3%83%B3">1.3.2 ラジオボタン</a></h5><p>ラジオボタンも、チェックボックスと同様に一連のオプションをユーザーが選択できるようにするものですが、一度に1つの項目しか選択できない排他的な動作が特徴です。</p><div class="code_container">
+<p><code>check_box_tag</code>の最初のパラメータは、言うまでもなくinputの名前です。2番目のパラメータは、input(タグ)のvalue属性になります。チェックボックスをオンにすると、この値はフォームデータに含まれ、最終的に<code>params</code>に渡されます。</p><h5 id="ラジオボタン"><a href="#%E3%83%A9%E3%82%B8%E3%82%AA%E3%83%9C%E3%82%BF%E3%83%B3">1.3.2 ラジオボタン</a></h5><p>ラジオボタンも、チェックボックスと同様に一連のオプションをユーザーが選択できるようにするものですが、一度に1つの項目しか選択できない排他的な動作が特徴です。</p><div class="code_container">
 <pre class="brush: ruby; html-script: true; gutter: false; toolbar: false">
 &lt;%= radio_button_tag(:age, "child") %&gt;
 &lt;%= label_tag(:age_child, "I am younger than 21") %&gt;
@@ -409,7 +409,7 @@ form_tag({controller: "people", action: "search"}, method: "get", class: "nifty_
 
 </pre>
 </div>
-<p><code>check_box_tag</code>ヘルパーのときと同様、<code>radio_button_tag</code>の2番目のパラメータにはinputの値が使用されます。2つのラジオボタン項目は同じ名前 ('age') を共有しているので、ユーザーはどちらかの値だけを選択できます。そして<code>params[:age]</code>の値は"child"と"adult"のどちらかになります。</p><div class="note"><p>チェックボックスとラジオボタンには必ずラベルを表示してください。ラベルを表示することで、そのオプションとラベルの名前が関連付けられるだけでなく、ラベルの部分までクリック可能になるのでユーザーにとってクリックしやすくなります。</p></div><h4 id="その他のヘルパー"><a href="#%E3%81%9D%E3%81%AE%E4%BB%96%E3%81%AE%E3%83%98%E3%83%AB%E3%83%91%E3%83%BC">1.4 その他のヘルパー</a></h4><p>これまで紹介した他にも、次のようなフィールドがあります: テキストエリア、パスワード、隠しフィールド、検索フィールド、電話番号フィールド、日付フィールド、時刻フィールド、色フィールド、日時フィールド、ローカル日時フィールド、月フィールド、週フィールド、URLフィールド、メールアドレスフィールド、数値フィールド、範囲フィールド。</p><div class="code_container">
+<p><code>check_box_tag</code>ヘルパーのときと同様、<code>radio_button_tag</code>の2番目のパラメータがinput(タグ)のvalue属性になります。2つのラジオボタン項目は同じ名前 ('age') を共有しているので、ユーザーはどちらかの値だけを選択できます。そして<code>params[:age]</code>の値は"child"と"adult"のどちらかになります。</p><div class="note"><p>チェックボックスとラジオボタンには必ずラベルを表示してください。ラベルを表示することで、そのオプションとラベルの名前が関連付けられるだけでなく、ラベルの部分までクリック可能になるのでユーザーにとってクリックしやすくなります。</p></div><h4 id="その他のヘルパー"><a href="#%E3%81%9D%E3%81%AE%E4%BB%96%E3%81%AE%E3%83%98%E3%83%AB%E3%83%91%E3%83%BC">1.4 その他のヘルパー</a></h4><p>これまで紹介した他にも、次のようなフィールドがあります: テキストエリア、パスワード、隠しフィールド、検索フィールド、電話番号フィールド、日付フィールド、時刻フィールド、色フィールド、日時フィールド、ローカル日時フィールド、月フィールド、週フィールド、URLフィールド、メールアドレスフィールド、数値フィールド、範囲フィールド。</p><div class="code_container">
 <pre class="brush: ruby; html-script: true; gutter: false; toolbar: false">
 &lt;%= text_area_tag(:message, "Hi, nice site", size: "24x6") %&gt;
 &lt;%= password_field_tag(:password) %&gt;
