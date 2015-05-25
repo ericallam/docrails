@@ -6,7 +6,11 @@
 
 /* General
 --------------------------------------- */
-
+.ebook {
+    box-shadow: -2px 6px 10px 0px rgba(0,0,0,0.4);
+    border-right: double 7px #B2231F;
+    border-bottom: double 3px #B2231F;
+}
 .snsb {
     overflow: hidden;
     clear: left;
