@@ -6,11 +6,7 @@
 
 /* General
 --------------------------------------- */
-.ebook {
-    box-shadow: -2px 6px 10px 0px rgba(0,0,0,0.4);
-    border-right: double 7px #B2231F;
-    border-bottom: double 3px #B2231F;
-}
+
 .snsb {
     overflow: hidden;
     clear: left;
@@ -299,6 +295,7 @@ body {
     margin-left: -1em;
     margin-right: 0;
     padding-right: 1.25em;
+    min-height: 273px;
   }
 }
 
@@ -667,6 +664,30 @@ h6 code {
   margin-top: 0.25em;
 }
 
+@media screen and (max-width: 800px) {
+  #subCol dd.work-in-progress, #subCol dd.kindle {
+    margin-left: 215px;
+  }
+  #subCol dd.kindle {
+    margin-top: -25px;
+  }
+  #subCol dd {
+    border-bottom: 0;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  #subCol dd.work-in-progress, #subCol dd.kindle {
+    margin-left: 0;
+  }
+  #subCol dd.kindle {
+    margin-top: 0;
+  }
+  #subCol dd {
+    border-bottom: 0;
+  }
+}
+
 #mainCol div.warning, #subCol dd.warning {
   background: #f9d9d8 url(../images/tab_red.gif) no-repeat left top;
   border: none;
@@ -737,6 +758,24 @@ div.code_container {
   padding: 0 0 1em;
   font-size: 1.1667em;
 }
+
+#subCol .ebook img{
+    box-shadow: -2px 6px 10px 0px rgba(0,0,0,0.4);
+    border-right: double 4px #B2231F;
+    border-bottom: double 3px #B2231F;
+    width: 188px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+@media screen and (max-width: 800px) {
+  #subCol .ebook img { float: left; }
+}
+
+@media screen and (max-width: 480px) {
+  #subCol .ebook img { float: none; }
+}
+
 
 /* Clearing
 --------------------------------------- */
