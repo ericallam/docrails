@@ -1,8 +1,10 @@
 ﻿
-Ruby on Railsに貢献する方法
+
+
+Ruby on Rails に貢献する方法
 =============================
 
-本ガイドでは、Ruby on Railsの開発に「あなた」が参加する方法について説明します。
+本ガイドでは、Ruby on Railsの開発に「あなた」が参加する方法について説明します (訳注: 本ガイドで紹介されるメーリングリストへの投稿例やバグ報告例、コミットメッセージ例、ドキュメント例などは **日本語に翻訳されておりますが、実際には必ず英語を使うようにしてください** )。
 
 このガイドの内容:
 
@@ -19,29 +21,39 @@ Ruby on Railsは、「どこかで誰かがうまくやってくれているフ�
 issueのレポート
 ------------------
 
-Ruby on Railsでは[GitHubのIssueトラッキング](https://github.com/rails/rails/issues)機能を使用してissueをトラッキングしています。主にバグや、新しいコードの貢献に使用されます。Ruby on Railsでバグを見つけたら、そこから貢献を開始できます。Githubへのissue送信、コメント、pull requestsの作成を行うには、まずGitHubアカウント (無料) を作成する必要があります。
+Ruby on Railsでは[GitHubのIssueトラッキング](https://github.com/rails/rails/issues)機能を使用してissueをトラッキングしています。主にバグや、新しいコードの貢献に使用されます。Ruby on Railsでバグを見つけたら、そこから貢献を開始できます。Githubへのissue送信、コメント、プルリクエストの作成を行うには、まずGitHubアカウント (無料) を作成する必要があります。
 
 NOTE: Ruby on Railsの最新リリースで見つけたバグは最も注目を集める可能性があります。また、Railsコアチームは、_edge Rails_ (その時点での開発版Railsのコード) でのテストに時間を割いてくれる方からのフィードバックを常に歓迎しています。テスティング用にedge Railsを入手する方法については後述します。
 
 ### バグレポートを作成する
 
-Ruby on Railsで何らかの問題を発見し、それがセキュリティ上の問題でなければ、まずGithubの[Issues](https://github.com/rails/rails/issues)を検索して、既にレポートがあがっているかどうかを確認してみましょう。該当する問題がissuesにまだあがっていない場合は、[新しいissueを作成](https://github.com/rails/rails/issues/new)します。セキュリティ上のissueをレポートする方法については次のセクションで説明します。
+Ruby on Railsで何らかの問題を発見し、それがセキュリティ上の問題でなければ、まずGithubの[issue](https://github.com/rails/rails/issues)を検索して、既にレポートがあがっているかどうかを確認してみましょう。該当する問題がissueで見つからないことが確認できたら、[新しいissueを作成](https://github.com/rails/rails/issues/new)します。セキュリティ上のissueをレポートする方法については次のセクションで説明します。
 
 issueレポートには、最低でもタイトルとissueの明快な説明が必要です。できるだけ多くの関連情報を含めるようにしてください。また、少なくとも問題を再現できるコードサンプルも合わせて投稿してください。期待される動作が行われていないことを示す単体テストも含めてもらえるとさらに助かります。バグの再現と修正点の把握を、他の人達にとっても自分自身にとってもやりやすくすることを目指してください。
 
 そして、issueの扱いについて過度な期待を抱かないことも肝心です。「地球滅亡クラス」の重大な問題でもない限り、レポートしてもらったissueは他のissueと同様に、解決に向けて共同作業が行われるようになります。issueレポートが自動的に修正担当者を見つけてくれることもありませんし、他の開発者が自分の作業を差し置いてまで修正してくれることもありません。issueを作成するということはほとんどの場合、自分にとっては問題修正のスタートラインに着くことであり、他の開発者にとっては「こちらでも同じ問題が起きてます」と確認およびコメントを追加する場所ができたということに過ぎません。
 
-### Active RecordとAction Controllerのissueに関する自己完結gistを作成する
+### 実行可能なテストケースを作成する
 
-バグレポートを報告する際は次のようにお願いします: パブリッシュ済みのgemで見つけたバグについては[Active Record template for gems](https://github.com/rails/rails/blob/master/guides/bug_report_templates/active_record_gem.rb)または[Action Controller template for gems](https://github.com/rails/rails/blob/master/guides/bug_report_templates/action_controller_gem.rb)で報告してください。masterブランチで見つけたバグは[Active Record template for master](https://github.com/rails/rails/blob/master/guides/bug_report_templates/active_record_master.rb)または[Action Controller template for master](https://github.com/rails/rails/blob/master/guides/bug_report_templates/action_controller_master.rb)で報告してください。
+自分のissueを再現する方法を用意することは、他の開発者がissueを確認、調査、そして修正する上で大変役立ちます。そのための方法は、実行可能なテストケースを提供することです。この作業を少しでも簡単にするために、Railsチームはバグレポートのテンプレートを多数用意しています。これを元に作業を開始できます。
+
+* Active Record (モデル、データベース) issue用テンプレート: [gem](https://github.com/rails/rails/blob/master/guides/bug_report_templates/active_record_gem.rb) / [master](https://github.com/rails/rails/blob/master/guides/bug_report_templates/active_record_master.rb)
+* Action Pack (コントローラ、ルーティング) issue用テンプレート: [gem](https://github.com/rails/rails/blob/master/guides/bug_report_templates/action_controller_gem.rb) / [master](https://github.com/rails/rails/blob/master/guides/bug_report_templates/action_controller_master.rb)
+* その他の一般的なissue用テンプレート: [gem](https://github.com/rails/rails/blob/master/guides/bug_report_templates/generic_gem.rb) / [master](https://github.com/rails/rails/blob/master/guides/bug_report_templates/generic_master.rb)
+
+テンプレートには「ボイラープレート(boilerplate)」と呼ばれる一種のひな形コードが含まれており、これを使用してRailsのリリースバージョン(`*_gem.rb`)やedge Rails (`*_master.rb`)に対するテストケースを設定することができます。
+
+該当するテンプレートの内容をコピーして`.rb`ファイルに貼り付けて適宜変更を行い、issueを再現できるようにします。このコードを実行するには、ターミナルで`ruby the_file.rb`を実行します。テストコードが正しく作成されていれば、このテストケースはバグがあることによって失敗する (failと表示される) はずです。
+
+続いて、この実行可能テストケースをGithubの[gist](https://gist.github.com)で共有するか、issueの説明に貼り付けます。
 
 ### セキュリティissueの特殊な取り扱い方法について
 
-WARNING: セキュリティ脆弱性に関する問題は、一般公開されているGithubのissueレポート機能には「絶対に掲載しないでください」。セキュリティ関連のissueを扱う方法の詳細については、[Railsセキュリティポリシーページ](http://rubyonrails.org/security)を参照してください。
+WARNING: セキュリティ脆弱性に関する問題は、一般公開されているGithubのissueレポート機能には「絶対に掲載しないでください」。セキュリティ関連のissueを扱う方法の詳細については、[Railsセキュリティポリシーページ](http://rubyonrails.org/security) (英語) を参照してください。
 
 ### 機能リクエストについて
 
-GitHubのIssueには「機能リクエスト」を記入しないでください。Ruby on Railsで欲しい機能があるなら、自分でコードを書いてください。あるいは、誰かにお願いしてコードを書いてもらってください。Ruby on Rails用のパッチを提案する方法については後述します。たとえGitHubのissueにこのような「欲しい機能リスト」を書き込んだところで、Issueをチェックした人によって早晩「無効」とマーキングされて終わるでしょう。
+GitHubのIssueには「機能リクエスト」を記入しないでください。Ruby on Railsで欲しい機能があるなら、自分でコードを書いてください。あるいは、誰かにお願いしてコードを書いてもらってください。Ruby on Rails用のパッチを提案する方法については後述します。たとえGitHubのissueにこのような「欲しい機能リスト」をコードも添えずに書き込んだところで、Issueをチェックした人によって早晩「無効」とマーキングされて終わるでしょう。
 
 その一方、「バグ」と「機能」の線引きはそう簡単ではないこともあります。一般に、「機能」はアプリケーションに新しい振る舞いを追加するものであり、バグとは既存の振る舞いが期待どおりでないことを示します。コアチームは、必要に応じてバグか機能かを審査するための招集をかけることもあります。とはいうものの、バグか機能かの違いは、送っていただいたパッチを (ボツにするかどうかというよりは)、どのリリースに反映するかという扱いの違いでしかないことがほとんどです。バグ修正は早めにリリースされ、機能追加は大きなリリース変更のときに反映されるといった具合です。私たちは、修正パッチと同様に機能追加も大歓迎しています。送っていただいた機能追加をメンテナンス用ブランチに押し込めておしまい、というようなことはしていません。
 
@@ -55,144 +67,152 @@ issueのレポートに続く貢献方法として、コアチームが既存の
 
 ### バグレポートの確認
 
-For starters, it helps just to verify bug reports. Can you reproduce the reported issue on your own computer? If so, you can add a comment to the issue saying that you're seeing the same thing.
+初歩的な貢献として、バグレポートを確認する作業も大変役に立ちます。issueを自分のコンピュータで再現できるかどうかを試してみましょう。問題をうまく再現できたら、そのことをissueのコメントに追加しましょう。
 
-If something is very vague, can you help squash it down into something specific? Maybe you can provide additional information to help reproduce a bug, or help by eliminating needless steps that aren't required to demonstrate the problem.
+再現手順などにあいまいな点があるなら、どこがわかりにくいかを指摘しましょう。バグを再現するために有用な情報を追加したり、不要な手順を削除したりするのも重要な貢献です。
 
-If you find a bug report without a test, it's very useful to contribute a failing test. This is also a great way to get started exploring the source code: looking at the existing test files will teach you how to write more tests. New tests are best contributed in the form of a patch, as explained later on in the "Contributing to the Rails Code" section.
+テストが添えられていないバグレポートを見かけたら、貢献のチャンスです。バグが原因で失敗するテストを作成して貢献できます。テストの書き方は、既存のテストファイルを詳しく読むことで学べます。これは、Railsのソースコードをみっちり探索するためのよいきっかけにもなります。作成するテストは「パッチ」の形式にしてもらえるとベストです。詳しくは「Railsコードに貢献する」で後述します。
 
-Anything you can do to make bug reports more succinct or easier to reproduce is a help to folks trying to write code to fix those bugs - whether you end up writing the code yourself or not.
+バグレポートは、とにかく簡潔でわかりやすく、そしてなるべく簡単に現象を再現できるように書いてください。バグを修正する開発者にとって何よりありがたいのは、このような「よいバグレポート」です。たとえバグレポートを作成するあなたが最終的にコードを書かなくても、よいバグレポートは大きな貢献となります。
 
-### Testing Patches
+### パッチをテストする
 
-You can also help out by examining pull requests that have been submitted to Ruby on Rails via GitHub. To apply someone's changes you need first to create a dedicated branch:
+GitHubからRuby on Railsに送信されたプルリクエスト (pull request、プルリクとも) をチェックしてくれる人もいると助かります。寄せられた修正を適用するには、まず次のように専用のブランチを作成してください。
 
 ```bash
 $ git checkout -b testing_branch
 ```
 
-Then you can use their remote branch to update your codebase. For example, let's say the GitHub user JohnSmith has forked and pushed to a topic branch "orange" located at https://github.com/JohnSmith/rails.
+続いて、このリモートブランチを使用してローカルのコードベースを更新します。たとえばGitHubユーザーであるJohnSmithが、forkしてhttps://github.com/JohnSmith/railsの"orange"というトピックブランチにpushしたとします。
 
 ```bash
 $ git remote add JohnSmith git://github.com/JohnSmith/rails.git
 $ git pull JohnSmith orange
 ```
 
-After applying their branch, test it out! Here are some things to think about:
+ブランチを適用したらテストしてみます。次のような点に注意しながら進めましょう。
 
-* Does the change actually work?
-* Are you happy with the tests? Can you follow what they're testing? Are there any tests missing?
-* Does it have the proper documentation coverage? Should documentation elsewhere be updated?
-* Do you like the implementation? Can you think of a nicer or faster way to implement a part of their change?
+* 修正は本当に有効か。
+* このテストで自分は幸せになれるか。何がテストされているのかを自分が理解できているか。足りないテストはないか。
+* ドキュメントに適切な記載があるか。ドキュメントも更新する必要があるか。
+* 実装が楽しいと思えるか。同じ変更をもっと高速かつ素晴らしい方法で実装する方法を思い付けるか。
 
-Once you're happy that the pull request contains a good change, comment on the GitHub issue indicating your approval. Your comment should indicate that you like the change and what you like about it. Something like:
+プルリクエストに含まれている変更点がよいものであると思えたら、GitHubのissueに賛成を表明(approval)するコメントを追加してください。追加するコメントでは、まずその変更に賛成していることを表明しつつ、なるべく具体的にどの変更点がよいと思ったのかについても示しましょう。たとえば次のようにコメントします。
 
->I like the way you've restructured that code in generate_finder_sql - much nicer. The tests look good too.
+>I like the way you've restructured that code in generate_finder_sql - much nicer. (generate_finder_sqlのコードが非常によい形で再構築されている点がよいと思います)。The tests look good too. (テストもよく書けているようです)。
 
-If your comment simply says "+1", then odds are that other reviewers aren't going to take it too seriously. Show that you took the time to review the pull request.
+単に「+1」とありがちなコメントを残すだけでは、他のレビュアーはほとんど注目してくれないでしょう。コメントするあなたが十分時間をかけてプルリクエストを読んだということが皆に伝わるように書きましょう。
 
-Contributing to the Rails Documentation
+Railsのドキュメントに貢献する
 ---------------------------------------
 
-Ruby on Rails has two main sets of documentation: the guides, which help you learn about Ruby on Rails, and the API, which serves as a reference.
+Ruby on Railsには2種類のドキュメントがあります。ひとつはこのガイドであり、Ruby on Railsを学ぶためのものです。もうひとつはAPIドキュメントであり、こちらはリファレンス用です。
 
-You can help improve the Rails guides by making them more coherent, consistent or readable, adding missing information, correcting factual errors, fixing typos, or bringing it up to date with the latest edge Rails. To get involved in the translation of Rails guides, please see [Translating Rails Guides](https://wiki.github.com/rails/docrails/translating-rails-guides).
+どなたでもRailsガイドの改善に貢献することができます。Railsガイドに求められる改善とは、「一貫していること」「矛盾がないこと」「読みやすいこと」「情報の追加」「事実と異なっている部分の修正」「タイポの修正」「最新のedge Railsに追い付くこと」などです。Railsガイドの翻訳に参加したい方は[Railsガイドの翻訳について](https://wiki.github.com/rails/docrails/translating-rails-guides) (英語)を参照してください。
 
-You can either open a pull request to [Rails](http://github.com/rails/rails) or ask the [Rails core team](http://rubyonrails.org/core) for commit access on [docrails](http://github.com/rails/docrails) if you contribute regularly.
-Please do not open pull requests in docrails, if you'd like to get feedback on your change, ask for it in [Rails](http://github.com/rails/rails) instead.
+[Rails](http://github.com/rails/rails)にプルリクエストを送ることができます。常連貢献者になったら、[Railsコアチーム](http://rubyonrails.org/core)に
+[docrails](http://github.com/rails/docrails)へのコミットアクセス権をリクエストしてもよいでしょう。ただし、docrailsにはプルリクエストを送信しないでください。自分で書いた変更への意見が欲しい場合は、[Rails](http://github.com/rails/rails)の方でお願いします。
 
-Docrails is merged with master regularly, so you are effectively editing the Ruby on Rails documentation.
+docrailsは定期的にmasterにマージされますので、Ruby on Railsドキュメントの編集を効率よく行えます。
 
-If you are unsure of the documentation changes, you can create an issue in the [Rails](https://github.com/rails/rails/issues) issues tracker on GitHub.
+ドキュメントの変更内容について不明な点がある場合は、GitHubの[Rails](https://github.com/rails/rails/issues) issueトラッカーでissueを作成してください。
 
-When working with documentation, please take into account the [API Documentation Guidelines](api_documentation_guidelines.html) and the [Ruby on Rails Guides Guidelines](ruby_on_rails_guides_guidelines.html).
+ドキュメント関連で貢献したい場合は、[API ドキュメント作成のガイドライン](api_documentation_guidelines.html) と[Rails ガイドのガイドライン](ruby_on_rails_guides_guidelines.html) をよく読んでからにしてください。
 
-NOTE: As explained earlier, ordinary code patches should have proper documentation coverage. Docrails is only used for isolated documentation improvements.
+NOTE: 前述のとおり、コードにパッチを当てる際には、ドキュメントもそれに対応して適切に書かれる必要があります。docrailsは、コーディングから独立したドキュメンテーションのみを目的としています。
 
-NOTE: To help our CI servers you should add [ci skip] to your documentation commit message to skip build on that commit. Please remember to use it for commits containing only documentation changes.
+NOTE: RailsのCI (継続的インテグレーション: Continuous Integration) サーバーの負荷を減らすために、ドキュメント関連のコミットメッセージには[ci skip]と記入してください。こうすることで、コミット時のビルドはスキップされます。[ci skip] は「ドキュメントのみの変更」以外では使用できません。コードの変更には絶対使用しないでください。
 
-WARNING: Docrails has a very strict policy: no code can be touched whatsoever, no matter how trivial or small the change. Only RDoc and guides can be edited via docrails. Also, CHANGELOGs should never be edited in docrails.
+WARNING: docrailsには次の厳格なポリシーが制定されていることを理解しておく必要があります: 「docrailsのコードは1文字たりとも絶対に変更しないこと」「docrailsで変更してよいのはRDocとガイドのみ」「docrailsのchangelogも絶対に変更しないこと」
 
-Contributing to the Rails Code
+Railsコードに貢献する
 ------------------------------
 
-### Setting Up a Development Environment
+### development環境を設定する
 
-To move on from submitting bugs to helping resolve existing issues or contributing your own code to Ruby on Rails, you _must_ be able to run its test suite. In this section of the guide you'll learn how to setup the tests on your own computer.
+バグレポートを送信して既存の問題解決を手伝ったり、コードを書いてRuby on Railsに貢献したりするためには、ぜひともテストスイートを実行できるようにしておく必要があります。このセクションでは、自分のパソコン上でテスト用の環境を設定する方法について解説します。
 
-#### The Easy Way
+#### おすすめの方法
 
-The easiest and recommended way to get a development environment ready to hack is to use the [Rails development box](https://github.com/rails/rails-dev-box).
+[Rails development box](https://github.com/rails/rails-dev-box)にあるできあいのdevelopment環境を入手するのがおすすめです。
 
-#### The Hard Way
+#### 面倒な方法
 
-In case you can't use the Rails development box, see [this other guide](development_dependencies_install.html).
+Rails development boxを利用できない事情がある場合は、Railsガイドの [Development Dependencies Install](development_dependencies_install.html) (英語) をご覧ください。
 
-### Clone the Rails Repository
+### Railsリポジトリをクローンする
 
-To be able to contribute code, you need to clone the Rails repository:
+コードに貢献するには、まずRailsリポジトリをクローンするところから始める必要があります。
 
 ```bash
 $ git clone git://github.com/rails/rails.git
 ```
 
-and create a dedicated branch:
+続いて、専用のブランチを作成します。
 
 ```bash
 $ cd rails
 $ git checkout -b my_new_branch
 ```
 
-It doesn't matter much what name you use, because this branch will only exist on your local computer and your personal repository on GitHub. It won't be part of the Rails Git repository.
+このブランチの名前はローカルコンピュータの自分のリポジトリ上でしか使われないので、どんな名前でも構いません。この名前がRails Gitリポジトリにそのまま取り込まれることはありません。
 
-### Running an Application Against Your Local Branch
+### Bundle install
 
-In case you need a dummy Rails app to test changes, the `--dev` flag of `rails new` generates an application that uses your local branch:
+必要なgemをインストールします。
+
+```bash
+$ bundle install
+```
+
+### ローカルブランチでアプリケーションを実行する
+
+ダミーのRailsアプリで変更をテストする必要がある場合は、`rails new`に`--dev`フラグを追加すると、ローカルブランチを使用するアプリケーションが生成されます。
 
 ```bash
 $ cd rails
 $ bundle exec rails new ~/my-test-app --dev
 ```
 
-The application generated in `~/my-test-app` runs against your local branch and in particular sees any modifications upon server reboot.
+`~/my-test-app`で生成されたアプリケーションはローカルブランチのコードを実行します。サーバーを再起動すると、設定の変更をアプリケーションで確認できます。
 
-### Write Your Code
+### コードを書く
 
-Now get busy and add/edit code. You're on your branch now, so you can write whatever you want (make sure you're on the right branch with `git branch -a`). But if you're planning to submit your change back for inclusion in Rails, keep a few things in mind:
+体制が整ったので、早速コードを追加・編集しましょう。現在のGitブランチで存分にコードを書くことができます (念のため`git branch -a`を実行して、正しいブランチにいることを確認しておきましょう)。自分のコードをRailsに追加するのであれば、以下の点を心がけてください。
 
-* Get the code right.
-* Use Rails idioms and helpers.
-* Include tests that fail without your code, and pass with it.
-* Update the (surrounding) documentation, examples elsewhere, and the guides: whatever is affected by your contribution.
+* 正しいコードを書くこと。
+* Railsで皆が使用している慣例やヘルパーメソッドを使用すること。
+* テストを書くこと。自分のコードがないと失敗し、あると成功するテストであること。
+* 関連するドキュメント、実行例、ガイドなど、コードが影響する部分はすべて更新すること。
 
 
-TIP: Changes that are cosmetic in nature and do not add anything substantial to the stability, functionality, or testability of Rails will generally not be accepted.
+TIP: 表面的なものにとどまる変更や、Railsの安定性/機能性/テストのしやすさの根本的な部分を何も改良しないような変更は受け付けられません。詳細については [our rationales behind this decision](https://github.com/rails/rails/pull/13771#issuecomment-32746700) (英語) を参照してください。
 
 #### Railsコーディングルールに従う
 
-Rails follows a simple set of coding style conventions:
+Railsのコーディングを行う場合は、以下のシンプルなスタイルガイドに従います。
 
-* Two spaces, no tabs (for indentation).
-* No trailing whitespace. Blank lines should not have any spaces.
-* Indent after private/protected.
-* Use Ruby >= 1.9 syntax for hashes. Prefer `{ a: :b }` over `{ :a => :b }`.
-* Prefer `&&`/`||` over `and`/`or`.
-* Prefer class << self over self.method for class methods.
-* Use `MyClass.my_method(my_arg)` not `my_method( my_arg )` or `my_method my_arg`.
-* Use `a = b` and not `a=b`.
-* Use assert_not methods instead of refute.
-* Prefer `method { do_stuff }` instead of `method{do_stuff}` for single-line blocks.
-* Follow the conventions in the source you see used already.
+* インデントはスペース2つを使用する。タブ文字は使用しないこと。
+* 行末にスペースを置かないこと。空行に余分なスペースを置かないこと。
+* privateやprotectedの後の行はインデントする。
+* ハッシュの記法は Ruby 1.9 以降の書式を使用する。つまり「`{ :a => :b }`」よりも「`{ a: :b }`」が望ましい。
+* 「`and`/`or`」よりも「`&&`/`||`」が望ましい。
+* クラスメソッドは「self.method」よりも「class << self」が望ましい。
+* 引数の記述はかっこ+スペース「`my_method( my_arg )`」やかっこなし「`my_method my_arg`」ではなく、スペース無しかっこ「`my_method(my_arg)`」を使用すること。
+* 等号の前後にはスペースを置く。「`a=b`」ではなく「`a = b`」とすること。
+* refuteではなくassert_notを使用すること。
+* 単一行ブロックはスペース無しの「`method{do_stuff}`」よりもスペースありの「`method { do_stuff }`」が望ましい。
+* その他、既存のRailsコードの書式に従うこと。
 
-The above are guidelines - please use your best judgment in using them.
+上はあくまでガイドラインであり、最適な使用方法については各自でご判断ください。
 
-### Benchmark Your Code
+### ベンチマークを行う
 
-If your change has an impact on the performance of Rails, please use the [benchmark-ips](https://github.com/evanphx/benchmark-ips) gem to provide benchmark results for comparison.
+自分の書いたコードによってRailsのパフォーマンスが低下するのであれば、比較のために[benchmark-ips](https://github.com/evanphx/benchmark-ips) gemを使用してベンチマークの結果も添えてください。
 
-Here's an example of using benchmark-ips:
+benchmark-ipsの実行例を以下に示します。
 
-  ```ruby
+```ruby
 require 'benchmark/ips'
 
 Benchmark.ips do |x|
@@ -201,64 +221,67 @@ Benchmark.ips do |x|
 end
 ```
 
-This will generate a report with the following information:
+このコードによって以下の情報を含むレポートが生成されます。
 
 ```
 Calculating -------------------------------------
-            addition     69114 i/100ms
-  addition with send     64062 i/100ms
+            addition   132.013k i/100ms
+  addition with send   125.413k i/100ms
 -------------------------------------------------
-            addition  5307644.4 (±3.5%) i/s -   26539776 in   5.007219s
-  addition with send  3702897.9 (±3.5%) i/s -   18513918 in   5.006723s
+            addition      9.677M (± 1.7%) i/s -     48.449M
+  addition with send      6.794M (± 1.1%) i/s -     33.987M
 ```
 
-Please see the benchmark/ips [README](https://github.com/evanphx/benchmark-ips/blob/master/README.md) for more information.
+詳細については、benchmark/ips の [README](https://github.com/evanphx/benchmark-ips/blob/master/README.md)を参照してください。
 
-### Running Tests
+### テストを実行する
 
-It is not customary in Rails to run the full test suite before pushing changes. The railties test suite in particular takes a long time, and even more if the source code is mounted in `/vagrant` as happens in the recommended workflow with the [rails-dev-box](https://github.com/rails/rails-dev-box).
+Railsでは、変更をプッシュする時にテストスイートをフル実行するという慣習があるわけではありません。おすすめのワークフーロー[rails-dev-box](https://github.com/rails/rails-dev-box)で説明しているように、railtiesのテストは特に時間がかかり、ソースコードを`/vagrant`にマウントするとさらに時間がかかります。
 
-As a compromise, test what your code obviously affects, and if the change is not in railties, run the whole test suite of the affected component. If all tests are passing, that's enough to propose your contribution. We have [Travis CI](https://travis-ci.org/rails/rails) as a safety net for catching unexpected breakages elsewhere.
+現実的な妥協案として、作成したコードによって影響が生じるかどうかをテストするようにしてください。そして、変更がrailtiesで行われていないのであれば、影響を受けるコンポーネントのすべてのテストスイートを実行してください。テストにすべてパスすれば、貢献を提案する準備が整います。Rails では、他の箇所で予想外のエラーが生じたときに検出できるよう、[Travis CI](https://travis-ci.org/rails/rails)を使用しています。
 
-#### Entire Rails:
+#### Rails 全体のテストを実行する
 
-To run all the tests, do:
+すべてのテストを実行するには以下のようにします。
 
 ```bash
 $ cd rails
 $ bundle exec rake test
 ```
 
-#### For a Particular Component
+#### 特定のコンポーネントのテストを実行する
 
-You can run tests only for a particular component (e.g. Action Pack). For example, to run Action Mailer tests:
+Action Packなど、特定のコンポーネントのテストのみを実行することもできます。たとえば、Action Mailerの場合は以下を実行します。
 
 ```bash
 $ cd actionmailer
 $ bundle exec rake test
 ```
 
-#### Running a Single Test
+#### 単一のテストを実行する
 
-You can run a single test through ruby. たとえば次のようになります。
+Rubyで単一のテストを実行することができます。たとえば次のようになります。
 
 ```bash
 $ cd actionmailer
 $ ruby -w -Itest test/mail_layout_test.rb -n test_explicit_class_layout
 ```
 
-The `-n` option allows you to run a single method instead of the whole file.
+`-n`オプションを指定すると、ファイル全体ではなく指定した単一のメソッドだけを実行します。
 
-##### Testing Active Record
 
-This is how you run the Active Record test suite only for SQLite3:
+#### Active Recordをテストする
+
+最初に、必要なデータベースを作成します。MySQLやPostgreSQLを使用するのであれば、SQL文「`create database activerecord_unittest`」と「`create database activerecord_unittest2`」で十分です。SQLite3の場合は不要です。
+
+SQLite3 のみ、Active Recordのテストで以下を実行します。
 
 ```bash
 $ cd activerecord
 $ bundle exec rake test:sqlite3
 ```
 
-You can now run the tests as you did for `sqlite3`. The tasks are respectively
+これで、`sqlite3`で行った場合と同様にテストを実行できるようになります。タスクはそれぞれ以下のようになります。
 
 ```bash
 test:mysql
@@ -266,48 +289,49 @@ test:mysql2
 test:postgresql
 ```
 
-Finally, 
+最後に以下を実行します。
 
 ```bash
 $ bundle exec rake test
 ```
 
-will now run the four of them in turn.
+これで4つが順に実行されます。
 
-You can also run any single test separately:
+単一のテストを個別に実行することもできます。
 
 ```bash
 $ ARCONN=sqlite3 ruby -Itest test/cases/associations/has_many_associations_test.rb
 ```
 
-To run a single test against all adapters, use:
+ひとつのテストをすべてのアダプターに対して実行するには以下のようにします。
 
 ```bash
 $ bundle exec rake TEST=test/cases/associations/has_many_associations_test.rb
 ```
 
-You can invoke `test_jdbcmysql`, `test_jdbcsqlite3` or `test_jdbcpostgresql` also. See the file `activerecord/RUNNING_UNIT_TESTS.rdoc` for information on running more targeted database tests, or the file `ci/travis.rb` for the test suite run by the continuous integration server.
+これで`test_jdbcmysql`、`test_jdbcsqlite3`、`test_jdbcpostgresql`も呼び出されます。特定のデータベーステストにターゲットを絞って実行する方法の詳細については`activerecord/RUNNING_UNIT_TESTS.rdoc`を参照してください。CI (Continuous Integration: 継続的インテグレーション)サーバーでテストスイートを実行する方法の詳細については`ci/travis.rb`を参照してください。
 
-### Warnings
+### 警告
 
-The test suite runs with warnings enabled. Ideally, Ruby on Rails should issue no warnings, but there may be a few, as well as some from third-party libraries. Please ignore (or fix!) them, if any, and submit patches that do not issue new warnings.
+テストスイートの実行では、警告表示がオンになります。Ruby on Railsのテストで警告がひとつも表示されないのが理想ですが、サードパーティのものも含めて若干の警告が表示されてしまうことがあります。無視するという手もありますが、可能であれば修正をお願いします。そしてできれば、新しい警告を表示しないようにするためのパッチの送信もお願いします。
 
-If you are sure about what you are doing and would like to have a more clear output, there's a way to override the flag:
+出力を見やすくするためにフラグをオーバーライドすることもできます (ただしオプションの意味を十分理解したうえでですが)。
 
 ```bash
 $ RUBYOPT=-W0 bundle exec rake test
 ```
 
-### Updating the CHANGELOG
+### CHANGELOGの更新
 
-The CHANGELOG is an important part of every release. It keeps the list of changes for every Rails version.
+CHANGELOGはすべてのリリースで重要な位置を占めます。Railsの各バージョンの変更点をここに記録します。
 
-You should add an entry to the CHANGELOG of the framework that you modified if you're adding or removing a feature, committing a bug fix or adding deprecation notices. Refactorings and documentation changes generally should not go to the CHANGELOG.
+機能の追加や削除、バグ修正のコミット、非推奨通知の追加を行ったら、必ず修正したフレームワークのCHANGELOGの**冒頭に**エントリを追加してください。リファクタリングやドキュメント変更の場合はCHANGELOGを変更しないでください。
 
-A CHANGELOG entry should summarize what was changed and should end with author's name and it should go on top of a CHANGELOG. You can use multiple lines if you need more space and you can attach code examples indented with 4 spaces. If a change is related to a specific issue, you should attach the issue's number. Here is an example CHANGELOG entry:
+CHANGELOGのエントリには変更内容を的確に要約したものを記入し、最後に作者の名前を書きます。必要であれば複数行にわたってエントリを記入したり、スペース4つのインデントを置いたコード例を記入したりすることもできます。変更が特定のissueに関連する場合は、issue番号も記入してください。CHANGELOGエントリの例を以下に示します ( **訳注: 実際は英語で書きます** )。
 
 ```
-*   Summary of a change that briefly describes what was changed. You can use multiple lines and wrap them at around 80 characters. Code examples are ok, too, if needed:
+*  (変更内容の要約を記入します)(複数行の
+    エントリを記入する場合は80文字目で折り返します)(必要に応じてインデント付きのコード例を追加できます)
 
         class Foo
           def bar
@@ -315,35 +339,43 @@ A CHANGELOG entry should summarize what was changed and should end with author's
           end
         end
 
-    You can continue after the code example and you can attach issue number. GH#1234
+    （コード例に続けてエントリを書くこともできます。issue番号はここに書きます）GH#1234
 
-    *Your Name*
+    *自分の名前*
 ```
 
-Your name can be added directly after the last word if you don't provide any code examples or don't need multiple paragraphs. Otherwise, it's best to make as a new paragraph.
+コード例や複数行エントリを使用しない場合、名前はエントリの最後に続けて記入してエントリを1行に収めてください。その他の場合は、最後の行に名前だけを記入してください。
 
-### Sanity Check
+### Gemfile.lockを更新する
 
-You should not be the only person who looks at the code before you submit it. If you know someone else who uses Rails, try asking them if they'll check out your work. If you don't know anyone else using Rails, try hopping into the IRC room or posting about your idea to the rails-core mailing list. Doing this in private before you push a patch out publicly is the "smoke test" for a patch: if you can't convince one other developer of the beauty of your code, you’re unlikely to convince the core team either.
+変更内容によっては、依存関係もアップグレードしなければならないことがあります。そのような場合は、`bundle update` を実行して正しい依存関係バージョンを反映し、変更の`Gemfile.lock`ファイルにコミットしてください。
 
-### Commit Your Changes
+### 健全性チェック
 
-When you're happy with the code on your computer, you need to commit the changes to Git:
+コードに目を通したのが自分以外にいない状態でコードを送信するのはよくありません。身近にRails使いがいる場合は、送信前にコードを詳しくチェックしてもらいましょう。身近にRails使いがいない場合は、IRCルームやrails-coreメーリングリストでお問い合わせください。パッチをプッシュする前に内輪でコードをチェックすることを、そのパッチの「スモークテスト」と呼びます。書いたコードを他の開発者が見て美しいと思ってもらえないのであれば、Railsコアチームもおそらく同じ感想を持つでしょう。
+
+### 変更をコミットする
+
+自分のPC上のコードに満足がいくようになったら、変更をGitにコミットします。
 
 ```bash
 $ git commit -a
 ```
 
-At this point, your editor should be fired up and you can write a message for this commit. Well formatted and descriptive commit messages are extremely helpful for the others, especially when figuring out why given change was made, so please take the time to write it.
+上を実行すると、コミットメッセージを作成するためのエディタが開きます。メッセージを作成したら保存して続行します。
 
-Good commit message should be formatted according to the following example:
+コミットメッセージの書式をきちんと整え、わかりやすく記述してもらえると、他のメンバーが変更内容を理解する上で大変助かります。コミットメッセージは十分時間をかけて書いてください。
+
+よいコミットメッセージは以下のような感じになります。
 
 ```
-Short summary (ideally 50 characters or less)
+短い要約文 (50 文字以下だと理想的)
 
-More detailed description, if necessary. It should be wrapped to 72 characters. Try to be as descriptive as you can, even if you think that the commit content is obvious, it may not be obvious to others. You should add such description also if it's already present in bug tracker, it should not be necessary to visit a webpage to check the history.
+もちろん、必要であればもっと詳しく書いてください。メッセージは72文字目で改行してください。メッセージはできるだけ詳しく書くようにします。コミット内容が自明に思えるとしても、他の人にとってもそうであるとは限りません。関連するissueで言及されている記述もすべて追加し、履歴を探しにいかなくても良いようにすべきです。
 
-Description can have multiple paragraphs and you can use code examples inside, just indent it with 4 spaces:
+記述は複数のパラグラフにわたってもかまいません。
+
+コード例を記述に埋め込む際は、4つのスペースでインデントしてください。
 
     class ArticlesController
       def index
@@ -351,78 +383,79 @@ Description can have multiple paragraphs and you can use code examples inside, j
       end
     end
 
-You can also add bullet points:
+箇条書きの点を追加することもできます。
 
-- you can use dashes or asterisks
+- 箇条書きはダッシュ (-) または
+ アスタリスク (*) で始めます
 
-- also, try to indent next line of a point for readability, if it's too
-  long to fit in 72 characters
+- 行は72文字目で折り返し、読みやすさのために
+  追加行の冒頭にスペース2つを置いてインデントします
 ```
 
-TIP. Please squash your commits into a single commit when appropriate. This simplifies future cherry picks, and also keeps the git log clean.
+TIP. コミットが複数にわたっている場合は、必ず 1 つのコミットにスカッシュ(squash)しておいてください。これにより、今後のcherry pickがやりやすくなり、Gitのログも煩雑にならずに済みます。
 
-### Update Your Branch
+### ブランチを更新する
 
-It's pretty likely that other changes to master have happened while you were working. Go get them:
+ローカルで作業している間に、masterで別の更新が行われているということがよくあります。更新をローカルに取り込みましょう。
 
 ```bash
 $ git checkout master
 $ git pull --rebase
 ```
 
-Now reapply your patch on top of the latest changes:
+続いて、最新の変更のトップにパッチを再度適用しましょう。
 
 ```bash
 $ git checkout my_new_branch
 $ git rebase master
 ```
 
-No conflicts? Tests still pass? Change still seems reasonable to you? Then move on.
+コンフリクトは生じなかったか、テストはパスするか、取り込んだ変更は納得できる内容か。それらを確認してから次に進みましょう。
 
-### Fork
+### フォーク
 
-Navigate to the Rails [GitHub repository](https://github.com/rails/rails) and press "Fork" in the upper right hand corner.
+Rails [GitHubリポジトリ](https://github.com/rails/rails) を開いて、右上隅にある [Fork] を押します。
 
-Add the new remote to your local repository on your local machine:
+ローカルPC上のローカルリポジトリに新しいリモートを追加します。
 
 ```bash
-$ git remote add mine git@github.com:<your user name>/rails.git
+$ git remote add mine git@github.com:<自分のユーザー名>/rails.git
 ```
 
-Push to your remote:
+リモートにプッシュします。
 
 ```bash
 $ git push mine my_new_branch
 ```
 
-You might have cloned your forked repository into your machine and might want to add the original Rails repository as a remote instead, if that's the case here's what you have to do.
+フォークしたリポジトリをローカルにクローンし、オリジナルのRailsリポジトリをリモートとして追加することもできます。このような場合は次のように行う必要があります。
 
-In the directory you cloned your fork:
+フォークのクローンを保存したディレクトリで以下を実行します。
 
 ```bash
 $ git remote add rails git://github.com/rails/rails.git
 ```
 
-Download new commits and branches from the official repository:
+Railsの公式リポジトリから新しいコミットとブランチをダウンロードします。
 
 ```bash
 $ git fetch rails
 ```
 
-Merge the new content:
+ダウンロードした新しいコンテンツをマージします。
 
 ```bash
 $ git checkout master
 $ git rebase rails/master
 ```
 
-Update your fork:
+フォークをアップデートします。
 
 ```bash
 $ git push origin master
 ```
 
-If you want to update another branch:
+別のブランチをアップデートしたい場合は以下のようにします。
 
 ```bash
 $ git checkout branch_name
@@ -431,41 +464,41 @@ $ git push origin branch_name
 ```
 
 
-### Issue a Pull Request
+### プルリクエストを発行する
 
-Navigate to the Rails repository you just pushed to (e.g. https://github.com/your-user-name/rails) and click on "Pull Requests" seen in the right panel. On the next page, press "New pull request" in the upper right hand corner.
+プッシュしたRailsアプリケーションのリポジトリを開いて (ここではhttps://github.com/your-user-name/rails にあるとします)、右ペインにある [Pull Requests] をクリックします。次のページで右上隅の [New pull request] を押します。
 
-Click on "Edit", if you need to change the branches being compared (it compares "master" by default) and press "Click to create a pull request for this comparison".
+比較対象のブランチを変更したい場合は [Edit] をクリックし、(デフォルトではmasterが比較対象になります)。[Click to create a pull request for this comparison] をクリックします。
 
-Ensure the changesets you introduced are included. Fill in some details about your potential patch including a meaningful title. When finished, press "Send pull request". The Rails core team will be notified about your submission.
+自分が導入した変更セットが含まれていることを確認します。送信したいパッチの詳細を記入し、わかりやすいタイトルを付けます。終わったら、[Send pull request] を押します。送信したプルリクエストはRailsコアチームに知らされます。
 
-### Get some Feedback
+### フィードバックを受け取る
 
-Most pull requests will go through a few iterations before they get merged. Different contributors will sometimes have different opinions, and often patches will need revised before they can get merged.
+送信したプルリクエストがマージされるまでには、何回か再挑戦が必要になるでしょう。あなたのプルリクエストに対して別の意見を持つコントリビュータがいるかもしれません。多くの場合、プルリクエストがマージされるまでにパッチを何度か更新する必要もあるでしょう。
 
-Some contributors to Rails have email notifications from GitHub turned on, but others do not. Furthermore, (almost) everyone who works on Rails is a volunteer, and so it may take a few days for you to get your first feedback on a pull request. Don't despair! Sometimes it's quick, sometimes it's slow. Such is the open source life.
+GitHubのメール通知機能をオンにしているRailsコントリビュータもいますが、そうでない人もいます。Railsに携わっている人のほとんどはボランティアなので、プルリクエストに何らかの反応が生じるまでに数日かかることもざらにあります。どうかめげずにプルリクエストをどしどし送信してください。びっくりするほど早く反応がもらえることもあれば、そうでないこともあります。それがオープンソースというものです。
 
-If it's been over a week, and you haven't heard anything, you might want to try and nudge things along. You can use the [rubyonrails-core mailing list](http://groups.google.com/group/rubyonrails-core/) for this. You can also leave another comment on the pull request.
+一週間経っても何の音沙汰もないようなら、少しつっついてみましょう。[rubyonrails-coreメーリングリスト](http://groups.google.com/group/rubyonrails-core/)をご利用ください。プルリクエストに自分でコメントを追加してみてもよいでしょう。
 
-While you're waiting for feedback on your pull request, open up a few other pull requests and give someone else some! I'm sure they'll appreciate it in the same way that you appreciate feedback on your patches.
+せっかくなので、自分のプルリクエストへの反応を待っている間に、他の人のプルリクエストを開いてコメントしてみましょう。あなたのパッチに反応があったときとおなじぐらい、その人たちもきっと嬉しく思うことでしょう。
 
-### Iterate as Necessary
+### 必要なら何度でもトライする
 
-It's entirely possible that the feedback you get will suggest changes. Don't get discouraged: the whole point of contributing to an active open source project is to tap into the knowledge of the community. If people are encouraging you to tweak your code, then it's worth making the tweaks and resubmitting. If the feedback is that your code doesn't belong in the core, you might still think about releasing it as a gem.
+Railsに貢献すべく活動していれば、そのプルリクエストはここを変えた方がよいのではないかというフィードバックを受けることがきっと一度や二度あるでしょう。そういうことがあっても、どうか落ち込まないでください。オープンソースプロジェクトに貢献するうえで肝心なのは、コミュニティの知恵を遠慮なく活用させてもらうことです。コミュニティのメンバーがあなたのコードの調整を求めているのであれば、そのとおりにして再送信する価値があります。そのコードはRailsのコアにおくべきではないというフィードバックを受けたなら、gemの形でリリースする方がよいかもしれません。
 
-#### Squashing commits
+#### コミットをスカッシュする
 
-One of the things that we may ask you to do is to "squash your commits", which will combine all of your commits into a single commit. We prefer pull requests that are a single commit. This makes it easier to backport changes to stable branches, squashing makes it easier to revert bad commits, and the git history can be a bit easier to follow. Rails is a large project, and a bunch of extraneous commits can add a lot of noise.
+Railsに貢献する皆様には、必ず「コミットをスカッシュ」していただくようお願いします。スカッシュとは、複数のコミットをひとつにまとめることです (訳注: 後述の`git rebase -i`でスカッシュできます)。プルリクエストは、ひとつのコミットにまとめておくことが望まれます。コミットをひとつにまとめることで、安定版ブランチに新しい変更をバックポートしやすくなり、よくないコミットを取り消しやすくなり、Gitの履歴を多少なりとも追いやすくなります。Railsは巨大プロジェクトであり、異質なコミットが多数加わると膨大なノイズが生じる可能性があります。
 
-In order to do this, you'll need to have a git remote that points at the main Rails repository. This is useful anyway, but just in case you don't have it set up, make sure that you do this first:
+以下の作業を行うには、メインのRailsリポジトリを指すGitリモートを取得する必要があります。Gitリモートは他の場面でも何かと便利なものですが、まだ作成していない場合は以下を最初に行ってください。
 
 ```bash
 $ git remote add upstream https://github.com/rails/rails.git
 ```
 
-You can call this remote whatever you'd like, but if you don't use `upstream`, then change the name to your own in the instructions below.
+このリモートはupstream以外の名前にも設定できます。`upstream`という名前にしたくない場合は、以下の手順に従って名前を変更します。
 
-Given that your remote branch is called `my_pull_request`, then you can do the following:
+リモートブランチ名が`my_pull_request`の場合は、以下を実行します。
 
 ```bash
 $ git fetch upstream
@@ -473,68 +506,68 @@ $ git checkout my_pull_request
 $ git rebase upstream/master
 $ git rebase -i
 
-< Choose 'squash' for all of your commits except the first one. >
-< Edit the commit message to make sense, and describe all your changes. >
+< 最初のひとつを除くすべてのコミットに対して'squash'を選択する >
+< コミットメッセージを編集して、すべての変更をわかりやすく記述する >
 
 $ git push origin my_pull_request -f
 ```
 
-You should be able to refresh the pull request on GitHub and see that it has been updated.
+以上でGitHub上のプルリクエストを更新できるようになり、実際に更新されたことを確認できます。
 
-#### Updating pull request
+#### プルリクエストを更新する
 
-Sometimes you will be asked to make some changes to the code you have already committed. This can include amending existing commits. In this case Git will not allow you to push the changes as the pushed branch and local branch do not match. Instead of opening a new pull request, you can force push to your branch on GitHub as described earlier in squashing commits section:
+あなたがコミットしたコードに対して変更を求められることがあります。既存のコミットそのものを修正することを求められることもあります。ただし、Gitでは既存のコミットをさかのぼって変更したものをプッシュすることは許されていません。既にプッシュされたブランチとローカルのブランチが一致しないからです。このような場合は、新しいプルリクエストを作成する代わりに、コミットのスカッシュについて既に説明した方法を使用して、自分のブランチをGitHubに強制的にプッシュすることもできます。
 
 ```bash
 $ git push origin my_pull_request -f
 ```
 
-This will update the branch and pull request on GitHub with your new code. Do note that using force push may result in commits being lost on the remote branch; use it with care.
+これにより、GitHub上のブランチとプルリクエストが新しいコードによって更新されます。強制的にプッシュを行うと、リモートブランチのコミットが失われる危険性がありますので、くれぐれもご注意ください。
 
 
-### Older Versions of Ruby on Rails
+### 旧バージョンのRuby on Rails
 
-If you want to add a fix to older versions of Ruby on Rails, you'll need to set up and switch to your own local tracking branch. Here is an example to switch to the 4-0-stable branch:
+以前のバージョンのRuby on Railsに修正パッチを当てたい場合は、設定を行ってローカルのトラキングブランチに切り替える必要があります。たとえば4-0-stableブランチに切り替える場合は以下のようにします。
 
 ```bash
 $ git branch --track 4-0-stable origin/4-0-stable
 $ git checkout 4-0-stable
 ```
 
-TIP: You may want to [put your Git branch name in your shell prompt](http://qugstart.com/blog/git-and-svn/add-colored-git-branch-name-to-your-shell-prompt/) to make it easier to remember which version of the code you're working with.
+TIP: [シェルのプロンプトにGitブランチ名を表示](http://qugstart.com/blog/git-and-svn/add-colored-git-branch-name-to-your-shell-prompt/)すると、今どのバージョンで作業しているかがその場で確認できるので便利です。
 
-#### Backporting
+#### バックポート
 
-Changes that are merged into master are intended for the next major release of Rails. Sometimes, it might be beneficial for your changes to propagate back to the maintenance releases for older stable branches. Generally, security fixes and bug fixes are good candidates for a backport, while new features and patches that introduce a change in behavior will not be accepted. When in doubt, it is best to consult a Rails team member before backporting your changes to avoid wasted effort.
+変更がmasterにマージされると、その変更はRailsの次期メジャーリリースに採用されます。常にというわけではありませんが、変更を過去の安定版のメンテナンス用にバックポートできるとよい場合があります。一般に、セキュリティ修正とバグ修正は、バックポートの候補になります。新機能や動作変更用パッチはバックポートの候補には採り入れられません。自分の変更がどちらに該当するかわからない場合は、余分な作業をせずに済むためにも、変更をバックポートする前にRailsチームのメンバーにご相談ください。
 
-For simple fixes, the easiest way to backport your changes is to [extract a diff from your changes in master and apply them to the target branch](http://ariejan.net/2009/10/26/how-to-create-and-apply-a-patch-with-git).
+単純な修正をバックポートする最も簡単な方法は、[masterと自分の変更のdiffをとって対象ブランチに適用する](http://ariejan.net/2009/10/26/how-to-create-and-apply-a-patch-with-git)ことです。
 
-First make sure your changes are the only difference between your current branch and master:
+最初に、masterと自分の変更のdiff以外に差分がないことを確認します。
 
 ```bash
 $ git log master..HEAD
 ```
 
-Then extract the diff:
+次にdiffを展開します。
 
 ```bash
 $ git format-patch master --stdout > ~/my_changes.patch
 ```
 
-Switch over to the target branch and apply your changes:
+対象ブランチに切り替えて変更を適用します。
 
 ```bash
 $ git checkout -b my_backport_branch 3-2-stable
 $ git apply ~/my_changes.patch
 ```
 
-This works well for simple changes. However, if your changes are complicated or if the code in master has deviated significantly from your target branch, it might require more work on your part. The difficulty of a backport varies greatly from case to case, and sometimes it is simply not worth the effort.
+単純な変更であればこれで十分バックポートできます。しかし、複雑な変更を行っていた場合や、masterと対象ブランチの差が甚だしくなっている場合は、もう少し手を加える必要があるかもしれません。バックポートがどのぐらい難しくなるかは場合によって大きく異なります。ときには、それほどの手間をかけてバックポートするほどの意味がないこともあります。
 
-Once you have resolved all conflicts and made sure all the tests are passing, push your changes and open a separate pull request for your backport. It is also worth noting that older branches might have a different set of build targets than master. When possible, it is best to first test your backport locally against the Ruby versions listed in `.travis.yml` before submitting your pull request.
+コンフリクトをすべて解消してすべてのテストがパスすることを確認できたら、変更をプッシュして、バックポート用のプルリクエストを別に作成します。なお、古いブランチではビルドのターゲットがmasterと異なるセットになっている場合がありますのでご注意ください。できれば、`.travis.yml`に記載されているバージョンのRubyを使用してバックポートをローカルでテストしてからプルリクエストを送信するようにしてください。
 
-And then... think about your next contribution!
+以上で解説はおしまいです。次はどんな貢献をしようか楽しみつつ考えるとしましょう。
 
-Rails Contributors
+Railsコントリビュータ
 ------------------
 
-All contributions, either via master or docrails, get credit in [Rails Contributors](http://contributors.rubyonrails.org).
+masterやdocrailsへの貢献が認められた方々は[Railsコントリビュータ](http://contributors.rubyonrails.org)にその名を連ねています。
