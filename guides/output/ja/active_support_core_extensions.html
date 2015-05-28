@@ -1207,7 +1207,7 @@ end
 <p><code>:instance_reader</code>オプションを<code>false</code>に設定することで、readerインスタンスメソッドが生成されないようにできます。同様に、<code>:instance_writer</code>オプションを<code>false</code>に設定することで、writerインスタンスメソッドが生成されないようにできます。<code>:instance_accessor</code>オプションを<code>false</code>に設定すれば、どちらのインスタンスメソッドも生成されません。いずれの場合も、指定できる値は<code>false</code>のみです。'nil'など他のfalse値は指定できません。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 module A
-class B
+  class B
     # first_nameインスタンスreaderは生成されない
     cattr_accessor :first_name, instance_reader: false
     # last_name= インスタンスwriterは生成されない

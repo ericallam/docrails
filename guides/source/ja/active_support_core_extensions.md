@@ -1070,7 +1070,7 @@ end
 
 ```ruby
 module A
-class B
+  class B
     # first_nameインスタンスreaderは生成されない
     cattr_accessor :first_name, instance_reader: false
     # last_name= インスタンスwriterは生成されない
