@@ -789,7 +789,7 @@ end
 
 `Article#summary`を**オーバーライド**する場合:
 
-  ```ruby
+```ruby
 # MyApp/app/decorators/models/blorgh/article_decorator.rb
 
 Blorgh::Article.class_eval do
@@ -799,7 +799,7 @@ Blorgh::Article.class_eval do
 end
 ```
 
-  ```ruby
+```ruby
 # Blorgh/app/models/article.rb
 
 class Article < ActiveRecord::Base
@@ -950,7 +950,7 @@ end
 */
 ```
 
-情報: SassやCoffeeScriptなどの言語を使用する場合は、必要なライブラリを`.gemspec`に追加する必要があります。
+INFO: SassやCoffeeScriptなどの言語を使用する場合は、必要なライブラリを`.gemspec`に追加する必要があります。
 
 ### アセットとプリコンパイルを分離する
 

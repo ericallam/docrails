@@ -1003,7 +1003,7 @@ end
 
 </pre>
 </div>
-<p>情報: SassやCoffeeScriptなどの言語を使用する場合は、必要なライブラリを<code>.gemspec</code>に追加する必要があります。</p><h4 id="アセットとプリコンパイルを分離する"><a href="#%E3%82%A2%E3%82%BB%E3%83%83%E3%83%88%E3%81%A8%E3%83%97%E3%83%AA%E3%82%B3%E3%83%B3%E3%83%91%E3%82%A4%E3%83%AB%E3%82%92%E5%88%86%E9%9B%A2%E3%81%99%E3%82%8B">6.5 アセットとプリコンパイルを分離する</a></h4><p>エンジンが持つアセットは、ホスト側のアプリケーションでは必ずしも必要ではないことがあります。たとえば、エンジンでしか使用しない管理機能を作成したとしましょう。この場合、ホストアプリケーションでは<code>admin.css</code>や<code>admin.js</code>は不要です。これらのアセットを必要とするのは、gemのadminレイアウトしかないからです。ホストアプリケーションから見れば、自分が持つスタイルシートに<code>"blorgh/admin.css"</code>を追加する意味はありません。このような場合、これらのアセットを明示的にプリコンパイルする必要があります。それにより、<code>rake assets:precompile</code>が実行されたときにエンジンのアセットを追加するようsprocketsに指示されます。</p><p>プリコンパイルの対象となるアセットは<code>engine.rb</code>で定義できます。</p><div class="code_container">
+<div class="info"><p>SassやCoffeeScriptなどの言語を使用する場合は、必要なライブラリを<code>.gemspec</code>に追加する必要があります。</p></div><h4 id="アセットとプリコンパイルを分離する"><a href="#%E3%82%A2%E3%82%BB%E3%83%83%E3%83%88%E3%81%A8%E3%83%97%E3%83%AA%E3%82%B3%E3%83%B3%E3%83%91%E3%82%A4%E3%83%AB%E3%82%92%E5%88%86%E9%9B%A2%E3%81%99%E3%82%8B">6.5 アセットとプリコンパイルを分離する</a></h4><p>エンジンが持つアセットは、ホスト側のアプリケーションでは必ずしも必要ではないことがあります。たとえば、エンジンでしか使用しない管理機能を作成したとしましょう。この場合、ホストアプリケーションでは<code>admin.css</code>や<code>admin.js</code>は不要です。これらのアセットを必要とするのは、gemのadminレイアウトしかないからです。ホストアプリケーションから見れば、自分が持つスタイルシートに<code>"blorgh/admin.css"</code>を追加する意味はありません。このような場合、これらのアセットを明示的にプリコンパイルする必要があります。それにより、<code>rake assets:precompile</code>が実行されたときにエンジンのアセットを追加するようsprocketsに指示されます。</p><p>プリコンパイルの対象となるアセットは<code>engine.rb</code>で定義できます。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 initializer "blorgh.assets.precompile" do |app|
   app.config.assets.precompile += %w(admin.css admin.js)
