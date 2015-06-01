@@ -24,7 +24,7 @@
     <meta name="twitter:image" content="http://railsguides.jp/images/cover_for_twitter.png" />
     <meta name="twitter:url"   content="http://railsguides.jp/" />
 
-    <title>Rails コア開発環境の設定方法 — Rails ガイド</title>
+    <title>Rails コア開発環境の構築方法 — Rails ガイド</title>
     <meta name="apple-mobile-web-app-title" content="Railsガイド" />
     <meta name="application-name"           content="Railsガイド" />
 
@@ -218,9 +218,9 @@
 
   <div id="feature">
     <div class="wrapper">
-      <h2>Rails コア開発環境の設定方法</h2><p>本ガイドでは、Ruby on Rails自体のコア開発用環境の設定方法について解説します。</p><p>このガイドの内容:</p>
+      <h2>Rails コア開発環境の構築方法</h2><p>本ガイドでは、Ruby on Rails自体のコア開発用環境の構築方法について解説します。</p><p>このガイドの内容:</p>
 <ul>
-<li>自分のPCをRails開発用に設定する方法</li>
+<li>自分のPCをRails開発用にセットアップする方法</li>
 <li>Railsのテストスイートの中から特定のグループを実行する方法</li>
 <li>RailsテストスイートのうちActiveRecordに関する部分の動作</li>
 </ul>
@@ -235,8 +235,8 @@
 <ul>
 <li><a href="#git%E3%82%92%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E3%81%99%E3%82%8B">Gitをインストールする</a></li>
 <li><a href="#ruby-on-rails%E3%83%AA%E3%83%9D%E3%82%B8%E3%83%88%E3%83%AA%E3%82%92%E3%82%AF%E3%83%AD%E3%83%BC%E3%83%B3%E3%81%99%E3%82%8B">Ruby on Railsリポジトリをクローンする</a></li>
-<li><a href="#%E8%A8%AD%E5%AE%9A%E3%81%A8%E3%83%86%E3%82%B9%E3%83%88%E3%82%92%E8%A1%8C%E3%81%86">設定とテストを行う</a></li>
-<li><a href="#active-record%E3%82%92%E8%A8%AD%E5%AE%9A%E3%81%99%E3%82%8B">Active Recordを設定する</a></li>
+<li><a href="#%E3%82%BB%E3%83%83%E3%83%88%E3%82%A2%E3%83%83%E3%83%97%E3%81%A8%E3%83%86%E3%82%B9%E3%83%88%E3%82%92%E8%A1%8C%E3%81%86">セットアップとテストを行う</a></li>
+<li><a href="#active-record%E3%82%92%E3%82%BB%E3%83%83%E3%83%88%E3%82%A2%E3%83%83%E3%83%97%E3%81%99%E3%82%8B">Active Recordをセットアップする</a></li>
 </ul>
 </li>
 </ol>
@@ -270,7 +270,7 @@ $ cd rails
 
 </pre>
 </div>
-<h4 id="設定とテストを行う"><a href="#%E8%A8%AD%E5%AE%9A%E3%81%A8%E3%83%86%E3%82%B9%E3%83%88%E3%82%92%E8%A1%8C%E3%81%86">2.3 設定とテストを行う</a></h4><p>リポジトリに送信されるコードは、テストスイートにパスしなければなりません。自分でパッチを書いた場合や、他の人が書いたパッチを詳しく評価する場合にも、テストを実行できるようにしておく必要があります。</p><p>最初にSQLite3をインストールし、<code>sqlite3</code> gem用のSQLite3開発ファイルもインストールします。Mac OS Xの場合は以下を実行します。</p><div class="code_container">
+<h4 id="セットアップとテストを行う"><a href="#%E3%82%BB%E3%83%83%E3%83%88%E3%82%A2%E3%83%83%E3%83%97%E3%81%A8%E3%83%86%E3%82%B9%E3%83%88%E3%82%92%E8%A1%8C%E3%81%86">2.3 セットアップとテストを行う</a></h4><p>リポジトリに送信されるコードは、テストスイートにパスしなければなりません。自分でパッチを書いた場合や、他の人が書いたパッチを詳しく評価する場合にも、テストを実行できるようにしておく必要があります。</p><p>最初にSQLite3をインストールし、<code>sqlite3</code> gem用のSQLite3開発ファイルもインストールします。Mac OS Xの場合は以下を実行します。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ brew install sqlite3
 
@@ -377,7 +377,7 @@ $ bundle exec ruby -Itest path/to/test.rb -n test_name
 
 </pre>
 </div>
-<h4 id="active-recordを設定する"><a href="#active-record%E3%82%92%E8%A8%AD%E5%AE%9A%E3%81%99%E3%82%8B">2.4 Active Recordを設定する</a></h4><p>Active Recordのテストスイートの実行は4回試みられます。SQLite3で1回、MySQLの2つのgem(<code>mysql</code>と<code>mysql2</code>)でそれぞれ1回、PostgreSQLで1回です。それぞれについて環境設定方法を解説します。</p><div class="warning"><p>Active Recordのコードに手を付ける場合、最低でもMySQL、PostgreSQL、SQLite3のテストにはすべてパスしなければなりません。MySQLでしかテストを行なっていないようなパッチは、一見問題なさそうに見えても、さまざまなアダプタごとの微妙な違いに対応しきれていないことが非常に多く、ほとんどの場合受理されません。</p></div><h5 id="データベースの設定"><a href="#%E3%83%87%E3%83%BC%E3%82%BF%E3%83%99%E3%83%BC%E3%82%B9%E3%81%AE%E8%A8%AD%E5%AE%9A">2.4.1 データベースの設定</a></h5><p>Active Recordテストスイートでは、<code>activerecord/test/config.yml</code>というカスタム設定ファイルが必要です。設定例は<code>activerecord/test/config.example.yml</code>に記載されているので、これをコピーして各環境で使用できます。</p><h5 id="mysqlとpostgresql"><a href="#mysql%E3%81%A8postgresql">2.4.2 MySQLとPostgreSQL</a></h5><p>MySQLとPostgreSQLに対してテストスイートを実行できるようにするには、そのためのgemも必要です。最初にサーバーをインストールし、次にクライアントライブラリをインストール、そして開発用ファイルをインストールします。</p><p>OS Xの場合、以下を実行できます。</p><div class="code_container">
+<h4 id="active-recordをセットアップする"><a href="#active-record%E3%82%92%E3%82%BB%E3%83%83%E3%83%88%E3%82%A2%E3%83%83%E3%83%97%E3%81%99%E3%82%8B">2.4 Active Recordをセットアップする</a></h4><p>Active Recordのテストスイートの実行は4回試みられます。SQLite3で1回、MySQLの2つのgem(<code>mysql</code>と<code>mysql2</code>)でそれぞれ1回、PostgreSQLで1回です。それぞれについて環境構築方法を解説します。</p><div class="warning"><p>Active Recordのコードに手を付ける場合、最低でもMySQL、PostgreSQL、SQLite3のテストにはすべてパスしなければなりません。MySQLでしかテストを行なっていないようなパッチは、一見問題なさそうに見えても、さまざまなアダプタごとの微妙な違いに対応しきれていないことが非常に多く、ほとんどの場合受理されません。</p></div><h5 id="データベースの設定"><a href="#%E3%83%87%E3%83%BC%E3%82%BF%E3%83%99%E3%83%BC%E3%82%B9%E3%81%AE%E8%A8%AD%E5%AE%9A">2.4.1 データベースの設定</a></h5><p>Active Recordテストスイートでは、<code>activerecord/test/config.yml</code>というカスタム設定ファイルが必要です。設定例は<code>activerecord/test/config.example.yml</code>に記載されているので、これをコピーして各環境で使用できます。</p><h5 id="mysqlとpostgresql"><a href="#mysql%E3%81%A8postgresql">2.4.2 MySQLとPostgreSQL</a></h5><p>MySQLとPostgreSQLに対してテストスイートを実行できるようにするには、そのためのgemも必要です。最初にサーバーをインストールし、次にクライアントライブラリをインストール、そして開発用ファイルをインストールします。</p><p>OS Xの場合、以下を実行できます。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ brew install mysql
 $ brew install postgresql

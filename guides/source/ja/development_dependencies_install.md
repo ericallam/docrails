@@ -1,14 +1,14 @@
 ﻿
 
 
-Rails コア開発環境の設定方法
+Rails コア開発環境の構築方法
 ================================
 
-本ガイドでは、Ruby on Rails自体のコア開発用環境の設定方法について解説します。
+本ガイドでは、Ruby on Rails自体のコア開発用環境の構築方法について解説します。
 
 このガイドの内容:
 
-* 自分のPCをRails開発用に設定する方法
+* 自分のPCをRails開発用にセットアップする方法
 * Railsのテストスイートの中から特定のグループを実行する方法
 * RailsテストスイートのうちActiveRecordに関する部分の動作
 
@@ -44,7 +44,7 @@ $ git clone git://github.com/rails/rails.git
 $ cd rails
 ```
 
-### 設定とテストを行う
+### セットアップとテストを行う
 
 リポジトリに送信されるコードは、テストスイートにパスしなければなりません。自分でパッチを書いた場合や、他の人が書いたパッチを詳しく評価する場合にも、テストを実行できるようにしておく必要があります。
 
@@ -163,9 +163,9 @@ $ cd actionpack
 $ bundle exec ruby -Itest path/to/test.rb -n test_name
 ```
 
-### Active Recordを設定する
+### Active Recordをセットアップする
 
-Active Recordのテストスイートの実行は4回試みられます。SQLite3で1回、MySQLの2つのgem(`mysql`と`mysql2`)でそれぞれ1回、PostgreSQLで1回です。それぞれについて環境設定方法を解説します。
+Active Recordのテストスイートの実行は4回試みられます。SQLite3で1回、MySQLの2つのgem(`mysql`と`mysql2`)でそれぞれ1回、PostgreSQLで1回です。それぞれについて環境構築方法を解説します。
 
 WARNING: Active Recordのコードに手を付ける場合、最低でもMySQL、PostgreSQL、SQLite3のテストにはすべてパスしなければなりません。MySQLでしかテストを行なっていないようなパッチは、一見問題なさそうに見えても、さまざまなアダプタごとの微妙な違いに対応しきれていないことが非常に多く、ほとんどの場合受理されません。
 
