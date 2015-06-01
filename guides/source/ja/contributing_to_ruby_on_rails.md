@@ -138,7 +138,7 @@ Railsのコードに貢献する
 
 #### 面倒な方法
 
-Rails development boxを利用できない事情がある場合は、Railsガイドの [Development Dependencies Install](development_dependencies_install.html) (英語) をご覧ください。
+Rails development boxを利用できない事情がある場合は、Railsガイドの[Railsコア開発環境の設定方法](development_dependencies_install.html)をご覧ください。
 
 ### Railsリポジトリをクローンする
 

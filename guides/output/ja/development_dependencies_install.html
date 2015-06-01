@@ -24,7 +24,7 @@
     <meta name="twitter:image" content="http://railsguides.jp/images/cover_for_twitter.png" />
     <meta name="twitter:url"   content="http://railsguides.jp/" />
 
-    <title>Development Dependencies Install — Rails ガイド</title>
+    <title>Rails コア開発環境の設定方法 — Rails ガイド</title>
     <meta name="apple-mobile-web-app-title" content="Railsガイド" />
     <meta name="application-name"           content="Railsガイド" />
 
@@ -218,11 +218,11 @@
 
   <div id="feature">
     <div class="wrapper">
-      <h2>Development Dependencies Install</h2><p>This guide covers how to setup an environment for Ruby on Rails core development.</p><p>このガイドの内容:</p>
+      <h2>Rails コア開発環境の設定方法</h2><p>本ガイドでは、Ruby on Rails自体のコア開発用環境の設定方法について解説します。</p><p>このガイドの内容:</p>
 <ul>
-<li>How to set up your machine for Rails development</li>
-<li>How to run specific groups of unit tests from the Rails test suite</li>
-<li>How the ActiveRecord portion of the Rails test suite operates</li>
+<li>自分のPCをRails開発用に設定する方法</li>
+<li>Railsのテストスイートの中から特定のグループを実行する方法</li>
+<li>RailsテストスイートのうちActiveRecordに関する部分の動作</li>
 </ul>
 
                 <div id="subCol">
@@ -233,10 +233,10 @@
 <a href="#%E9%9D%A2%E5%80%92%E3%81%AA%E6%96%B9%E6%B3%95">面倒な方法</a>
 
 <ul>
-<li><a href="#install-git">Install Git</a></li>
-<li><a href="#clone-the-ruby-on-rails-repository">Clone the Ruby on Rails Repository</a></li>
-<li><a href="#set-up-and-run-the-tests">Set up and Run the Tests</a></li>
-<li><a href="#active-record-setup">Active Record Setup</a></li>
+<li><a href="#git%E3%82%92%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E3%81%99%E3%82%8B">Gitをインストールする</a></li>
+<li><a href="#ruby-on-rails%E3%83%AA%E3%83%9D%E3%82%B8%E3%83%88%E3%83%AA%E3%82%92%E3%82%AF%E3%83%AD%E3%83%BC%E3%83%B3%E3%81%99%E3%82%8B">Ruby on Railsリポジトリをクローンする</a></li>
+<li><a href="#%E8%A8%AD%E5%AE%9A%E3%81%A8%E3%83%86%E3%82%B9%E3%83%88%E3%82%92%E8%A1%8C%E3%81%86">設定とテストを行う</a></li>
+<li><a href="#active-record%E3%82%92%E8%A8%AD%E5%AE%9A%E3%81%99%E3%82%8B">Active Recordを設定する</a></li>
 </ul>
 </li>
 </ol>
@@ -248,231 +248,233 @@
   <div id="container">
     <div class="wrapper">
       <div id="mainCol">
-        <h3 id="おすすめの方法"><a href="#%E3%81%8A%E3%81%99%E3%81%99%E3%82%81%E3%81%AE%E6%96%B9%E6%B3%95">1 おすすめの方法</a></h3><p><a href="https://github.com/rails/rails-dev-box">Rails development box</a>にあるできあいのdevelopment環境を入手するのがおすすめです。</p><h3 id="面倒な方法"><a href="#%E9%9D%A2%E5%80%92%E3%81%AA%E6%96%B9%E6%B3%95">2 面倒な方法</a></h3><p>In case you can't use the Rails development box, see section above, these are the steps to manually build a development box for Ruby on Rails core development.</p><h4 id="install-git"><a href="#install-git">2.1 Install Git</a></h4><p>Ruby on Rails uses Git for source code control. The <a href="http://git-scm.com/">Git homepage</a> has installation instructions. There are a variety of resources on the net that will help you get familiar with Git:</p>
+        <h3 id="おすすめの方法"><a href="#%E3%81%8A%E3%81%99%E3%81%99%E3%82%81%E3%81%AE%E6%96%B9%E6%B3%95">1 おすすめの方法</a></h3><p><a href="https://github.com/rails/rails-dev-box">Rails development box</a>にあるできあいのdevelopment環境を入手するのがおすすめです。</p><h3 id="面倒な方法"><a href="#%E9%9D%A2%E5%80%92%E3%81%AA%E6%96%B9%E6%B3%95">2 面倒な方法</a></h3><p>Rails development boxを利用できない事情がある場合は、この先をお読みください。Ruby on Railsコア開発で必要なdevelopment boxを手動でビルドする手順を解説します。</p><h4 id="gitをインストールする"><a href="#git%E3%82%92%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E3%81%99%E3%82%8B">2.1 Gitをインストールする</a></h4><p>Ruby on Railsではソースコード管理にGitを使用しています。インストール方法については<a href="http://git-scm.com/">Gitホームページ</a>に記載されています。Gitを学ぶための資料はネット上に山ほどあります (特記ないものは英語)。</p>
 <ul>
 <li>
-<a href="http://try.github.io/">Try Git course</a> is an interactive course that will teach you the basics.</li>
-<li>The <a href="http://git-scm.com/documentation">official Documentation</a> is pretty comprehensive and also contains some videos with the basics of Git</li>
+<a href="http://try.github.io/">Try Git course</a>は、対話的な操作のできるコースで基礎を学べます。</li>
 <li>
-<a href="http://schacon.github.io/git/everyday.html">Everyday Git</a> will teach you just enough about Git to get by.</li>
-<li>The <a href="https://peepcode.com/products/git">PeepCode screencast</a> on Git is easier to follow.</li>
+<a href="http://git-scm.com/documentation">Git公式ドキュメント</a>には多くの情報がまとめられており、Gitの基礎を学べる動画もあります。</li>
 <li>
-<a href="http://help.github.com">GitHub</a> offers links to a variety of Git resources.</li>
+<a href="http://schacon.github.io/git/everyday.html">Everyday Git</a>は最小限必要なGitの知識を学ぶのに向いています。</li>
 <li>
-<a href="http://git-scm.com/book">Pro Git</a> is an entire book about Git with a Creative Commons license.</li>
+<a href="https://peepcode.com/products/git">PeepCode screencast</a>のGitのページは学びやすいスクリーンキャストです。</li>
+<li>
+<a href="http://help.github.com">GitHub</a>にはさまざまなGit関連リソースへのリンクがあります。</li>
+<li>
+<a href="https://progit-ja.github.io/">Pro Git日本語版</a>ではGitについてすべてをカバーした書籍がさまざまな形式で翻訳されており、クリエイティブ・コモンズ・ライセンスで公開されています。</li>
 </ul>
-<h4 id="clone-the-ruby-on-rails-repository"><a href="#clone-the-ruby-on-rails-repository">2.2 Clone the Ruby on Rails Repository</a></h4><p>Navigate to the folder where you want the Ruby on Rails source code (it will create its own <code>rails</code> subdirectory) and run:</p><div class="code_container">
+<h4 id="ruby-on-railsリポジトリをクローンする"><a href="#ruby-on-rails%E3%83%AA%E3%83%9D%E3%82%B8%E3%83%88%E3%83%AA%E3%82%92%E3%82%AF%E3%83%AD%E3%83%BC%E3%83%B3%E3%81%99%E3%82%8B">2.2 Ruby on Railsリポジトリをクローンする</a></h4><p>Ruby on Railsのソースコードを置きたいディレクトリ (そこに<code>rails</code>ディレクトリが作成されます) で以下を実行します。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ git clone git://github.com/rails/rails.git
 $ cd rails
 
 </pre>
 </div>
-<h4 id="set-up-and-run-the-tests"><a href="#set-up-and-run-the-tests">2.3 Set up and Run the Tests</a></h4><p>The test suite must pass with any submitted code. No matter whether you are writing a new patch, or evaluating someone else's, you need to be able to run the tests.</p><p>Install first SQLite3 and its development files for the <code>sqlite3</code> gem. Mac OS X users are done with:</p><div class="code_container">
+<h4 id="設定とテストを行う"><a href="#%E8%A8%AD%E5%AE%9A%E3%81%A8%E3%83%86%E3%82%B9%E3%83%88%E3%82%92%E8%A1%8C%E3%81%86">2.3 設定とテストを行う</a></h4><p>リポジトリに送信されるコードは、テストスイートにパスしなければなりません。自分でパッチを書いた場合や、他の人が書いたパッチを詳しく評価する場合にも、テストを実行できるようにしておく必要があります。</p><p>最初にSQLite3をインストールし、<code>sqlite3</code> gem用のSQLite3開発ファイルもインストールします。Mac OS Xの場合は以下を実行します。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ brew install sqlite3
 
 </pre>
 </div>
-<p>In Ubuntu you're done with just:</p><div class="code_container">
+<p>Ubuntuなら以下で行えます。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ sudo apt-get install sqlite3 libsqlite3-dev
 
 </pre>
 </div>
-<p>And if you are on Fedora or CentOS, you're done with</p><div class="code_container">
+<p>FedoraやCentOSの場合は以下を実行します。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ sudo yum install sqlite3 sqlite3-devel
 
 </pre>
 </div>
-<p>If you are on Arch Linux, you will need to run:</p><div class="code_container">
+<p>Arch Linuxなら以下を実行する必要があります。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ sudo pacman -S sqlite
 
 </pre>
 </div>
-<p>For FreeBSD users, you're done with:</p><div class="code_container">
+<p>FreeBSDの場合は以下を実行します。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 # pkg install sqlite3
 
 </pre>
 </div>
-<p>Or compile the <code>databases/sqlite3</code> port.</p><p>Get a recent version of <a href="http://bundler.io/">Bundler</a></p><div class="code_container">
+<p>あるいは<code>databases/sqlite3</code>のportsをコンパイルします。</p><p><a href="http://bundler.io/">Bundler</a>の最新バージョンを入手します。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ gem install bundler
 $ gem update bundler
 
 </pre>
 </div>
-<p>and run:</p><div class="code_container">
+<p>続いて以下を実行します。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ bundle install --without db
 
 </pre>
 </div>
-<p>This command will install all dependencies except the MySQL and PostgreSQL Ruby drivers. We will come back to these soon.</p><div class="note"><p>If you would like to run the tests that use memcached, you need to ensure that you have it installed and running.</p></div><p>You can use <a href="http://brew.sh/">Homebrew</a> to install memcached on OS X:</p><div class="code_container">
+<p>このコマンドによって、MySQLとPostgreSQL用のRubyドライバを除いて必要なファイルがすべてインストールされます。続きは後ほど行います。</p><div class="note"><p>memcachedを使用するテストを実行したい場合は、memcachedがインストールされ、実行可能であることを確認する必要があります。</p></div><p>OS Xの場合、<a href="http://brew.sh/">Homebrew</a>を使用してmemcachedをインストールできます。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ brew install memcached
 
 </pre>
 </div>
-<p>On Ubuntu you can install it with apt-get:</p><div class="code_container">
+<p>Ubuntuの場合はapt-getを使用できます。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ sudo apt-get install memcached
 
 </pre>
 </div>
-<p>Or use yum on Fedora or CentOS:</p><div class="code_container">
+<p>FedoraやCentOSの場合はyumを使用します。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ sudo yum install memcached
 
 </pre>
 </div>
-<p>If you are running on Arch Linux:</p><div class="code_container">
+<p>Arch Linuxの場合は以下のようにします。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ sudo pacman -S memcached
 
 </pre>
 </div>
-<p>For FreeBSD users, you're done with:</p><div class="code_container">
+<p>FreeBSDの場合は以下のようにします。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 # pkg install memcached
 
 </pre>
 </div>
-<p>Alternatively, you can compile the <code>databases/memcached</code> port.</p><p>With the dependencies now installed, you can run the test suite with:</p><div class="code_container">
+<p>あるいは<code>databases/memocached</code>のportsをコンパイルすることもできます。</p><p>依存ファイルのインストールがこれで終わったので、以下のコマンドでテストスイートを実行します。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ bundle exec rake test
 
 </pre>
 </div>
-<p>You can also run tests for a specific component, like Action Pack, by going into its directory and executing the same command:</p><div class="code_container">
+<p>Action Packなど、特定のコンポーネントのテストだけを実行することもできます。該当のディレクトリに移動して同じコマンドを実行します。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ cd actionpack
 $ bundle exec rake test
 
 </pre>
 </div>
-<p>If you want to run the tests located in a specific directory use the <code>TEST_DIR</code> environment variable. For example, this will run the tests in the <code>railties/test/generators</code> directory only:</p><div class="code_container">
+<p>特定のディレクトリにあるテストを実行したい場合、    <code>TEST_DIR</code>環境変数を使用する方法もあります。たとえば、<code>railties/test/generators</code>ディレクトリのテストだけを実行したい場合は以下のようにします。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ cd railties
 $ TEST_DIR=generators bundle exec rake test
 
 </pre>
 </div>
-<p>You can run the tests for a particular file by using:</p><div class="code_container">
+<p>以下の方法で特定のテストだけを実行することもできます。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ cd actionpack
 $ bundle exec ruby -Itest test/template/form_helper_test.rb
 
 </pre>
 </div>
-<p>Or, you can run a single test in a particular file:</p><div class="code_container">
+<p>特定のファイルに含まれるひとつのテストだけを実行するには以下のようにします。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ cd actionpack
 $ bundle exec ruby -Itest path/to/test.rb -n test_name
 
 </pre>
 </div>
-<h4 id="active-record-setup"><a href="#active-record-setup">2.4 Active Record Setup</a></h4><p>The test suite of Active Record attempts to run four times: once for SQLite3, once for each of the two MySQL gems (<code>mysql</code> and <code>mysql2</code>), and once for PostgreSQL. We are going to see now how to set up the environment for them.</p><div class="warning"><p>If you're working with Active Record code, you <em>must</em> ensure that the tests pass for at least MySQL, PostgreSQL, and SQLite3. Subtle differences between the various adapters have been behind the rejection of many patches that looked OK when tested only against MySQL.</p></div><h5 id="database-configuration"><a href="#database-configuration">2.4.1 Database Configuration</a></h5><p>The Active Record test suite requires a custom config file: <code>activerecord/test/config.yml</code>. An example is provided in <code>activerecord/test/config.example.yml</code> which can be copied and used as needed for your environment.</p><h5 id="mysql-and-postgresql"><a href="#mysql-and-postgresql">2.4.2 MySQL and PostgreSQL</a></h5><p>To be able to run the suite for MySQL and PostgreSQL we need their gems. Install first the servers, their client libraries, and their development files.</p><p>On OS X, you can run:</p><div class="code_container">
+<h4 id="active-recordを設定する"><a href="#active-record%E3%82%92%E8%A8%AD%E5%AE%9A%E3%81%99%E3%82%8B">2.4 Active Recordを設定する</a></h4><p>Active Recordのテストスイートの実行は4回試みられます。SQLite3で1回、MySQLの2つのgem(<code>mysql</code>と<code>mysql2</code>)でそれぞれ1回、PostgreSQLで1回です。それぞれについて環境設定方法を解説します。</p><div class="warning"><p>Active Recordのコードに手を付ける場合、最低でもMySQL、PostgreSQL、SQLite3のテストにはすべてパスしなければなりません。MySQLでしかテストを行なっていないようなパッチは、一見問題なさそうに見えても、さまざまなアダプタごとの微妙な違いに対応しきれていないことが非常に多く、ほとんどの場合受理されません。</p></div><h5 id="データベースの設定"><a href="#%E3%83%87%E3%83%BC%E3%82%BF%E3%83%99%E3%83%BC%E3%82%B9%E3%81%AE%E8%A8%AD%E5%AE%9A">2.4.1 データベースの設定</a></h5><p>Active Recordテストスイートでは、<code>activerecord/test/config.yml</code>というカスタム設定ファイルが必要です。設定例は<code>activerecord/test/config.example.yml</code>に記載されているので、これをコピーして各環境で使用できます。</p><h5 id="mysqlとpostgresql"><a href="#mysql%E3%81%A8postgresql">2.4.2 MySQLとPostgreSQL</a></h5><p>MySQLとPostgreSQLに対してテストスイートを実行できるようにするには、そのためのgemも必要です。最初にサーバーをインストールし、次にクライアントライブラリをインストール、そして開発用ファイルをインストールします。</p><p>OS Xの場合、以下を実行できます。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ brew install mysql
 $ brew install postgresql
 
 </pre>
 </div>
-<p>Follow the instructions given by Homebrew to start these.</p><p>In Ubuntu just run:</p><div class="code_container">
+<p>詳しくはHomebrewのヘルプを参照してください。</p><p>Ubuntuの場合は以下を実行します。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ sudo apt-get install mysql-server libmysqlclient15-dev
 $ sudo apt-get install postgresql postgresql-client postgresql-contrib libpq-dev
 
 </pre>
 </div>
-<p>On Fedora or CentOS, just run:</p><div class="code_container">
+<p>FedoraやCentOSの場合は以下を実行します。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ sudo yum install mysql-server mysql-devel
 $ sudo yum install postgresql-server postgresql-devel
 
 </pre>
 </div>
-<p>If you are running Arch Linux, MySQL isn't supported anymore so you will need to use MariaDB instead (see <a href="https://www.archlinux.org/news/mariadb-replaces-mysql-in-repositories/">this announcement</a>):</p><div class="code_container">
+<p>Arch LinuxではMySQLがサポート対象外になったため、MariaDBを代わりに使用します (詳細は<a href="https://www.archlinux.org/news/mariadb-replaces-mysql-in-repositories/">MariaDB replaces MySQL in repositories</a>を参照)。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ sudo pacman -S mariadb libmariadbclient mariadb-clients
 $ sudo pacman -S postgresql postgresql-libs
 
 </pre>
 </div>
-<p>FreeBSD users will have to run the following:</p><div class="code_container">
+<p>FreeBSDの場合は以下を実行する必要があります。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 # pkg install mysql56-client mysql56-server
 # pkg install postgresql93-client postgresql93-server
 
 </pre>
 </div>
-<p>Or install them through ports (they are located under the <code>databases</code> folder).
-If you run into troubles during the installation of MySQL, please see <a href="http://dev.mysql.com/doc/refman/5.1/en/freebsd-installation.html">the MySQL documentation</a>.</p><p>After that, run:</p><div class="code_container">
+<p>Portsを使用してインストールすることもできます (<code>databases</code>フォルダの下に置かれます)。
+MySQLのインストール中に問題が生じた場合は、<a href="http://dev.mysql.com/doc/refman/5.1/en/freebsd-installation.html">MySQLドキュメント</a> (英語) を参照してください。</p><p>以上の設定が終わったら、以下を実行します。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ rm .bundle/config
 $ bundle install
 
 </pre>
 </div>
-<p>First, we need to delete <code>.bundle/config</code> because Bundler remembers in that file that we didn't want to install the "db" group (alternatively you can edit the file).</p><p>In order to be able to run the test suite against MySQL you need to create a user named <code>rails</code> with privileges on the test databases:</p><div class="code_container">
+<p>最初に、<code>.bundle/config</code>を削除します。これは、インストールしたくない"db"グループのファイルをBundlerが覚えてしまっているのを消去するためです。ファイルを削除する代わりに編集しても構いません。</p><p>MySQLでテストスイートを実行できるようにするには、データベースに<code>rails</code>というユーザーアカウントを作成し、このアカウントにtestデータベースへのアクセス権を与える必要があります。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ mysql -uroot -p
 
 mysql&gt; CREATE USER 'rails'@'localhost';
 mysql&gt; GRANT ALL PRIVILEGES ON activerecord_unittest.*
        to 'rails'@'localhost';
-mysql&gt; GRANT ALL PRIVILEGES ON activerecord_unittest2.    ...
+mysql&gt; GRANT ALL PRIVILEGES ON activerecord_unittest2.*
        to 'rails'@'localhost';
 mysql&gt; GRANT ALL PRIVILEGES ON inexistent_activerecord_unittest.*
        to 'rails'@'localhost';
 
 </pre>
 </div>
-<p>and create the test databases:</p><div class="code_container">
+<p>続いてtestデータベースを作成します。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ cd activerecord
 $ bundle exec rake db:mysql:build
 
 </pre>
 </div>
-<p>PostgreSQL's authentication works differently. To setup the development environment with your development account, on Linux or BSD, you just have to run:</p><div class="code_container">
+<p>PostgreSQLでは認証方法が異なります。LinuxやBSDでdevelop環境にdevelopmentアカウントを設定するには、以下を実行します。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ sudo -u postgres createuser --superuser $USER
 
 </pre>
 </div>
-<p>and for OS X:</p><div class="code_container">
+<p>OS Xの場合は以下を実行します。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ createuser --superuser $USER
 
 </pre>
 </div>
-<p>Then you need to create the test databases with</p><div class="code_container">
+<p>続いて以下を実行してtestデータベースを作成します。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ cd activerecord
 $ bundle exec rake db:postgresql:build
 
 </pre>
 </div>
-<p>It is possible to build databases for both PostgreSQL and MySQL with</p><div class="code_container">
+<p>PostgreSQLとMySQLの両方を使用するデータベースをビルドすることもできます。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ cd activerecord
 $ bundle exec rake db:create
 
 </pre>
 </div>
-<p>You can cleanup the databases using</p><div class="code_container">
+<p>データベースを消去(drop)するには以下を実行します。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ cd activerecord
 $ bundle exec rake db:drop
 
 </pre>
 </div>
-<div class="note"><p>Using the rake task to create the test databases ensures they have the correct character set and collation.</p></div><div class="note"><p>You'll see the following warning (or localized warning) during activating HStore extension in PostgreSQL 9.1.x or earlier: "WARNING: =&gt; is deprecated as an operator".</p></div><p>If you're using another database, check the file <code>activerecord/test/config.yml</code> or <code>activerecord/test/config.example.yml</code> for default connection information. You can edit <code>activerecord/test/config.yml</code> to provide different credentials on your machine if you must, but obviously you should not push any such changes back to Rails.</p>
+<div class="note"><p>testデータベースの作成にはrake タスクを使用してください。これにより、文字セットと照合順序が正しく設定されます。</p></div><div class="note"><p>PostgreSQL 9.1.x 以前のHStore拡張機能を有効にしようとすると次のような警告 (メッセージはローカライズされることもあります) が表示されます: 「WARNING: =&gt; is deprecated as an operator」</p></div><p>他のデータベースを採用する場合は、<code>activerecord/test/config.yml</code>や<code>activerecord/test/config.example.yml</code>にデフォルトの接続情報があることをチェックしてください。必要であれば<code>activerecord/test/config.yml</code>を編集して、認証情報を別のものに変更することもできます。ただし、この臨時の認証情報をRailsのリポジトリに反映しないよう気を付けてください。</p>
         
         <h3 id="feedback"><a href="#feedback">フィードバックについて</a></h3>
         <p>
