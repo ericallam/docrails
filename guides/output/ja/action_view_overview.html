@@ -456,7 +456,7 @@ end
 
 </pre>
 </div>
-<p>使用されるパーシャル名は、コレクションの中にある「モデル名」を参照して決定されます。この場合のモデル名は<code>Product</code>です。作成するコレクションの各要素が不揃い (訳注: 要素ごとにモデルが異なる場合を指すと考えられる) であっても、Railsはコレクションのメンバごとに適切なパーシャルを選んで出力してくれます。</p><h5 id="スペーサーテンプレート"><a href="#%E3%82%B9%E3%83%9A%E3%83%BC%E3%82%B5%E3%83%BC%E3%83%86%E3%83%B3%E3%83%97%E3%83%AC%E3%83%BC%E3%83%88">3.2.5 スペーサーテンプレート</a></h5><p><code>:spacer_template</code>オプションを使用すると、主要なパーシャル同士の間を埋める第二のパーシャルを指定することができます。</p><div class="code_container">
+<p>使用されるパーシャル名は、コレクションの中にある「モデル名」を参照して決定されます。この場合のモデル名は<code>Product</code>です。作成するコレクションの各要素が不揃い (訳注: 要素ごとにモデルが異なる場合を指します) であっても、Railsはコレクションのメンバごとに適切なパーシャルを選んで出力してくれます。</p><h5 id="スペーサーテンプレート"><a href="#%E3%82%B9%E3%83%9A%E3%83%BC%E3%82%B5%E3%83%BC%E3%83%86%E3%83%B3%E3%83%97%E3%83%AC%E3%83%BC%E3%83%88">3.2.5 スペーサーテンプレート</a></h5><p><code>:spacer_template</code>オプションを使用すると、主要なパーシャル同士の間を埋める第二のパーシャルを指定することができます。</p><div class="code_container">
 <pre class="brush: ruby; html-script: true; gutter: false; toolbar: false">
 &lt;%= render partial: @products, spacer_template: "product_ruler" %&gt;
 
@@ -474,7 +474,7 @@ Post.create(body: 'Partial Layouts are cool!')
 
 </pre>
 </div>
-<p>その<code>box</code>レイアウトは、<code>div</code>タグの中に<code>_post</code>パーシャルを内包した簡単な構造です。</p><p><strong>posts/_box.html.erb</strong></p><div class="code_container">
+<p><code>box</code>レイアウトは、<code>div</code>タグの中に<code>_post</code>パーシャルを内包した簡単な構造です。</p><p><strong>posts/_box.html.erb</strong></p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 &lt;div class='box'&gt;
   &lt;%= yield %&gt;
@@ -482,7 +482,7 @@ Post.create(body: 'Partial Layouts are cool!')
 
 </pre>
 </div>
-<p>その<code>_post</code>パーシャルは、投稿の本文(<code>body</code>)を<code>div</code>タグに内包し、<code>div_for</code>を使用して投稿の<code>id</code>を与えます。</p><p><strong>posts/_post.html.erb</strong></p><div class="code_container">
+<p><code>_post</code>パーシャルは、投稿の本文(<code>body</code>)を<code>div</code>タグに内包します(<code>div_for</code>を使用して<code>div</code>タグに投稿の<code>id</code>を与えます)。</p><p><strong>posts/_post.html.erb</strong></p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 &lt;%= div_for(post) do %&gt;
   &lt;p&gt;&lt;%= post.body %&gt;&lt;/p&gt;

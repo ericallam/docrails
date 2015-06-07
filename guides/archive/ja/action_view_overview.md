@@ -256,7 +256,7 @@ Railsは、デフォルトですべてのビューテンプレートをコンパ
 <%= render @products %>
 ```
 
-使用されるパーシャル名は、コレクションの中にある「モデル名」を参照して決定されます。この場合のモデル名は`Product`です。作成するコレクションの各要素が不揃い (訳注: [REVIEW]要素ごとにモデルが異なる場合を指すと考えられる) であっても、Railsはコレクションのメンバごとに適切なパーシャルを選んで出力してくれます。
+使用されるパーシャル名は、コレクションの中にある「モデル名」を参照して決定されます。この場合のモデル名は`Product`です。作成するコレクションの各要素が不揃い (訳注: 要素ごとにモデルが異なる場合を指します) であっても、Railsはコレクションのメンバごとに適切なパーシャルを選んで出力してくれます。
 
 #### スペーサーテンプレート
 
@@ -291,7 +291,7 @@ Post.create(body: 'Partial Layouts are cool!')
 <%= render partial: 'post', layout: 'box', locals: {post: @post} %>
 ```
 
-その`box`レイアウトは、`div`タグの中に`_post`パーシャルを内包した簡単な構造です。
+`box`レイアウトは、`div`タグの中に`_post`パーシャルを内包した簡単な構造です。
 
 **posts/_box.html.erb**
 
@@ -301,7 +301,7 @@ Post.create(body: 'Partial Layouts are cool!')
 </div>
 ```
 
-[REVIEW]その`_post`パーシャルは、投稿の本文(`body`)を`div`タグに内包し、`div_for`を使用して投稿の`id`を与えます。
+`_post`パーシャルは、投稿の本文(`body`)を`div`タグに内包します(`div_for`を使用して`div`タグに投稿の`id`を与えます)。
 
 **posts/_post.html.erb**
 
@@ -1533,7 +1533,7 @@ sanitizeヘルパーメソッドは、すべてのタグ文字をHTMLエンコ�
 sanitize @article.body
 ```
 
-[REVIEW]:attributesオプションまたは:tagsオプションが渡されると、そこで指定されたタグおよび属性のみが処理の対象外となります。
+:attributesオプションまたは:tagsオプションが渡されると、そこで指定されたタグおよび属性のみが処理の対象外となります。
 
 ```ruby
 sanitize @article.body, tags: %w(table tr td), attributes: %w(id class style)
