@@ -204,7 +204,7 @@ Railsは、デフォルトですべてのビューテンプレートをコンパ
 <%= render partial: "product", locals: {product: @product} %>
 ```
 
-`as`オプションは、ローカル変数の名前を変更したい場合に使用します。たとえば、ローカル変数を`product`ではなく`item`にしたいのであれば、以下のようにします。
+`as`オプションは、ローカル変数の名前を変更したい場合に使用します。たとえば、ローカル変数名を`product`ではなく`item`にしたいのであれば、以下のようにします。
 
 ```erb
 <%= render partial: "product", as: "item" %>
