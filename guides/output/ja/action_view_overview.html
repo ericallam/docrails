@@ -276,7 +276,7 @@
   <div id="container">
     <div class="wrapper">
       <div id="mainCol">
-        <h3 id="action-viewについて"><a href="#action-view%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6">1 Action Viewについて</a></h3><p>Action ViewおよびAction Controllerは、Action Packを構成する2大コンポーネントです。Railsでは、WebリクエストはAction Packで取り扱われます。この動作はコントローラ寄りの部分 (ロジックの実行) とビュー寄りの部分(テンプレートの描画) に分かれます。Action Controllerは、データベースとのやりとりや、必要に応じたCRUD (Create/Read/Update/Delete) アクションの実行にかかわります。Action View はその後レスポンスを実際のWebページにまとめる役割を担います。</p><p>Action Viewのテンプレートは、HTMLタグの合間にERB (Embedded Ruby) を含む形式で書かれます。ビューテンプレートがコードの繰り返しでうずまって乱雑になるのを避けるために、フォーム・日付・文字列に対して共通の動作を提供するヘルパークラスが多数用意されています。アプリケーションの機能向上に応じて独自のヘルパーを追加することも簡単にできます。</p><div class="note"><p>Action Viewの一部の機能はActive Recordと結びついていますが、Action ViewがActive Recordに依存しているわけではありません。Action Viewは独立したパッケージであり、どのようなRubyライブラリとでも組み合わせて使用できます。</p></div><h3 id="action-viewをrailsで使用する"><a href="#action-view%E3%82%92rails%E3%81%A7%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B">2 Action ViewをRailsで使用する</a></h3><p>アプリケーションの<code>app/views</code>ディレクトリには、1つのコントローラごとに1つのディレクトリが作成され、そこにビューテンプレートファイルが置かれます。このビューテンプレートはそのコントローラと関連付けられています。これらのファイルは、コントローラ内にあるアクションごとに出力された結果をビューで表示するために使用されます。</p><p>scaffoldを使用してリソースを生成するときに、Railsがデフォルトでどんなことを行なうのか見てみましょう。</p><div class="code_container">
+        <h3 id="action-viewについて"><a href="#action-view%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6">1 Action Viewについて</a></h3><p>Action ViewおよびAction Controllerは、Action Packを構成する2大要素です。Railsでは、WebリクエストはAction Packで取り扱われます。この動作はコントローラ寄りの部分 (ロジックの実行) とビュー寄りの部分(テンプレートの描画) に分かれます。Action Controllerは、データベースとのやりとりや、必要に応じたCRUD (Create/Read/Update/Delete) アクションの実行にかかわります。Action View はその後レスポンスを実際のWebページにまとめる役割を担います。</p><p>Action Viewのテンプレートは、HTMLタグの合間にERB (Embedded Ruby) を含む形式で書かれます。ビューテンプレートがコードの繰り返しでうずまって乱雑になるのを避けるために、フォーム・日付・文字列に対して共通の動作を提供するヘルパークラスが多数用意されています。アプリケーションの機能向上に応じて独自のヘルパーを追加することも簡単にできます。</p><div class="note"><p>Action Viewの一部の機能はActive Recordと結びついていますが、Action ViewがActive Recordに依存しているわけではありません。Action Viewは独立したパッケージであり、どのようなRubyライブラリとでも組み合わせて使用できます。</p></div><h3 id="action-viewをrailsで使用する"><a href="#action-view%E3%82%92rails%E3%81%A7%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B">2 Action ViewをRailsで使用する</a></h3><p>アプリケーションの<code>app/views</code>ディレクトリには、1つのコントローラごとに1つのディレクトリが作成され、そこにビューテンプレートファイルが置かれます。このビューテンプレートはそのコントローラと関連付けられています。これらのファイルは、コントローラ内にあるアクションごとに出力された結果をビューで表示するために使用されます。</p><p>scaffoldを使用してリソースを生成するときに、Railsがデフォルトでどんなことを行なうのか見てみましょう。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ rails generate scaffold post
       [...]
@@ -295,7 +295,7 @@ $ rails generate scaffold post
 </div>
 <p>Railsのビューには命名規則があります。上で生成されたファイルを見るとわかるように、ビューテンプレートファイルは基本的にコントローラのアクションと関連付けられています。
 たとえば、<code>posts_controller.rb</code>コントローラのindexアクションは、<code>app/views/posts</code>ディレクトリの<code>index.html.erb</code>を使用します。
-これらのERBファイルに、それらを内包するレイアウトテンプレートや、ビューから参照されるあらゆるパーシャル (部分テンプレート) が組み合わさって完全なHTMLが生成され、クライアントに送信されます。この後、本ガイドではこれらの3つのコンポーネントについて詳細に説明します。</p><h3 id="テンプレート、パーシャル、レイアウト"><a href="#%E3%83%86%E3%83%B3%E3%83%97%E3%83%AC%E3%83%BC%E3%83%88%E3%80%81%E3%83%91%E3%83%BC%E3%82%B7%E3%83%A3%E3%83%AB%E3%80%81%E3%83%AC%E3%82%A4%E3%82%A2%E3%82%A6%E3%83%88">3 テンプレート、パーシャル、レイアウト</a></h3><p>前述のとおり、Railsが出力する最終的なHTMLは<code>テンプレート</code>、<code>パーシャル</code>、<code>レイアウト</code>の3つの要素です。
+これらのERBファイルに、それらを内包するレイアウトテンプレートや、ビューから参照されるあらゆるパーシャル (部分テンプレート) が組み合わさって完全なHTMLが生成され、クライアントに送信されます。この後、本ガイドではこれらの3つの要素について詳細に説明します。</p><h3 id="テンプレート、パーシャル、レイアウト"><a href="#%E3%83%86%E3%83%B3%E3%83%97%E3%83%AC%E3%83%BC%E3%83%88%E3%80%81%E3%83%91%E3%83%BC%E3%82%B7%E3%83%A3%E3%83%AB%E3%80%81%E3%83%AC%E3%82%A4%E3%82%A2%E3%82%A6%E3%83%88">3 テンプレート、パーシャル、レイアウト</a></h3><p>前述のとおり、Railsが出力する最終的なHTMLは<code>テンプレート</code>、<code>パーシャル</code>、<code>レイアウト</code>の3つの要素から成ります。
 まずこれらについて簡単に説明いたします。</p><h4 id="テンプレート"><a href="#%E3%83%86%E3%83%B3%E3%83%97%E3%83%AC%E3%83%BC%E3%83%88">3.1 テンプレート</a></h4><p>Action Viewのテンプレートはさまざまな方法で記述することができます。テンプレートの拡張子が<code>.erb</code>であれば、ERB (ここにRubyのコードが含まれます) とHTMLが含まれます。テンプレートの拡張子が<code>.builder</code>であれば、<code>Builder::XmlMarkup</code>ライブラリの新鮮なインスタンスが使用されます。</p><p>Railsでは複数のテンプレートシステムがサポートされており、テンプレートファイルの拡張子で区別されます。たとえば、ERBテンプレートシステムを使用するHTMLファイルの拡張子は<code>.html.erb</code>になります。</p><h5 id="erb"><a href="#erb">3.1.1 ERB</a></h5><p>ERBテンプレートの内部では、<code>&lt;% %&gt;</code>タグや<code>&lt;%= %&gt;</code>タグにRubyコードを含めることができます。最初の<code>&lt;% %&gt;</code>タグはその中に書かれたRubyコードを実行しますが、実行結果は出力されません。条件文やループ、ブロックなど出力の不要な行はこのタグの中に書くとよいでしょう。次の<code>&lt;%= %&gt;</code>タグでは実行結果がWebページに出力されます。</p><p>以下は、名前を出力するためのループです。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 &lt;h1&gt;Names of all the people&lt;/h1&gt;
@@ -312,7 +312,7 @@ Hi, Mr. &lt;% puts "Frodo" %&gt;
 
 </pre>
 </div>
-<p>なお、Webページへの出力結果の最初と最後からホワイトスペースを取り除きたい場合は<code>&lt;%-</code> および <code>-%&gt;</code>を通常の<code>&lt;%</code> および <code>%&gt;</code>と交互にご使用ください (訳注: これは英語のようなスペース分かち書きを行なう言語向けのノウハウです)。</p><h5 id="builderテンプレート"><a href="#builder%E3%83%86%E3%83%B3%E3%83%97%E3%83%AC%E3%83%BC%E3%83%88">3.1.2 Builderテンプレート</a></h5><p>BuilderテンプレートはERBの代わりに使用できる、よりプログラミング向きな記法です。これは特にXMLコンテンツの生成を得意とします。たとえば、<code>xml</code>という名前のXmlMarkupオブジェクトを使用すると、自動的に拡張子<code>.builder</code>のテンプレートが適用されます。</p><p>基本的な例を以下にいくつか示します。</p><div class="code_container">
+<p>なお、Webページへの出力結果の最初と最後からホワイトスペースを取り除きたい場合は<code>&lt;%-</code> および <code>-%&gt;</code>を通常の<code>&lt;%</code> および <code>%&gt;</code>と交互にご使用ください (訳注: これは英語のようなスペース分かち書きを行なう言語向けのノウハウです)。</p><h5 id="builderテンプレート"><a href="#builder%E3%83%86%E3%83%B3%E3%83%97%E3%83%AC%E3%83%BC%E3%83%88">3.1.2 Builderテンプレート</a></h5><p>BuilderテンプレートはERBの代わりに使用できる、よりプログラミング向きな記法です。これは特にXMLコンテンツの生成を得意とします。テンプレートの拡張子を<code>.builder</code>にすると、<code>xml</code>という名前のXmlMarkupオブジェクトが自動で使用できるようになります。</p><p>基本的な例を以下にいくつか示します。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 xml.em("emphasized")
 xml.em { xml.b("emph &amp; bold") }
@@ -385,7 +385,7 @@ end
 
 </pre>
 </div>
-<p>上のコードでは、<code>app/views/shared/_menu.html.erb</code>パーシャルを読み込んで使用します。</p><h5 id="パーシャルを活用してビューを簡潔に保つ"><a href="#%E3%83%91%E3%83%BC%E3%82%B7%E3%83%A3%E3%83%AB%E3%82%92%E6%B4%BB%E7%94%A8%E3%81%97%E3%81%A6%E3%83%93%E3%83%A5%E3%83%BC%E3%82%92%E7%B0%A1%E6%BD%94%E3%81%AB%E4%BF%9D%E3%81%A4">3.2.2 パーシャルを活用してビューを簡潔に保つ</a></h5><p>すぐに思い付くパーシャルの使い方といえば、パーシャルをサブルーチンと同等のものとみなすというのがあります。ビューの詳細部分をパーシャルに移動し、コードの見通しを良くするために、たとえば、以下のようなビューがあるとします。</p><div class="code_container">
+<p>上のコードでは、<code>app/views/shared/_menu.html.erb</code>パーシャルを読み込んで使用します。</p><h5 id="パーシャルを活用してビューを簡潔に保つ"><a href="#%E3%83%91%E3%83%BC%E3%82%B7%E3%83%A3%E3%83%AB%E3%82%92%E6%B4%BB%E7%94%A8%E3%81%97%E3%81%A6%E3%83%93%E3%83%A5%E3%83%BC%E3%82%92%E7%B0%A1%E6%BD%94%E3%81%AB%E4%BF%9D%E3%81%A4">3.2.2 パーシャルを活用してビューを簡潔に保つ</a></h5><p>すぐに思い付くパーシャルの使い方といえば、パーシャルをサブルーチンと同等のものとみなすというのがあります。ビューの詳細部分をパーシャルに移動し、コードの見通しを良くするために、パーシャルを使うのです。たとえば、以下のようなビューがあるとします。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 &lt;%= render "shared/ad_banner" %&gt;
 
