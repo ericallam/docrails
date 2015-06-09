@@ -2553,7 +2553,7 @@ end
 
 </pre>
 </div>
-<p>レシーバ自体のキーに対して破壊的なブロック操作を適用する<code>transform_values!</code>メソッドもあります。</p><div class="note"><p>定義ファイルの場所は<code>active_support/core_text/hash/transform_values.rb</code>です。</p></div><h4 id="スライス"><a href="#%E3%82%B9%E3%83%A9%E3%82%A4%E3%82%B9">11.6 スライス</a></h4><p>Rubyには、文字列や配列をスライスして一部を取り出すビルトインのメソッドをサポートしています。Active Supportでは、スライス操作をハッシュに対して拡張しています。</p><div class="code_container">
+<p>レシーバ自体のキーに対して破壊的なブロック操作を適用する<code>transform_values!</code>メソッドもあります。</p><div class="note"><p>定義ファイルの場所は<code>active_support/core_ext/hash/transform_values.rb</code>です。</p></div><h4 id="スライス"><a href="#%E3%82%B9%E3%83%A9%E3%82%A4%E3%82%B9">11.6 スライス</a></h4><p>Rubyには、文字列や配列をスライスして一部を取り出すビルトインのメソッドをサポートしています。Active Supportでは、スライス操作をハッシュに対して拡張しています。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 {a: 1, b: 2, c: 3}.slice(:a, :c)
 # =&gt; {:c=&gt;3, :a=&gt;1}
