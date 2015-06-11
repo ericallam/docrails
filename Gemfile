@@ -18,6 +18,10 @@ gem 'nokogiri'
 # Monitoring tools
 gem 'newrelic_rpm'
 
+group :development do
+  gem 'gtt-downloader'
+end
+
 # for test
 group :test do
   gem 'capybara'

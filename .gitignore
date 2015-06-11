@@ -110,3 +110,6 @@ shots/
 
 ## Ignore needless files to host
 guides/output/kindle
+
+# Ignore for direnv
+.envrc
