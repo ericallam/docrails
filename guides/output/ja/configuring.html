@@ -311,7 +311,7 @@ end
 <li><p><code>config.action_view.cache_template_loading</code>は、リクエストのたびにビューテンプレートを再読み込みするか(=キャッシュしないか)を指定します。</p></li>
 <li><p><code>config.beginning_of_week</code>は、アプリケーションにおける週の初日を設定します。引数には、曜日を表す正しいシンボルを渡します(<code>:monday</code>など)。</p></li>
 <li><p><code>config.cache_store</code>はRailsでのキャッシュ処理に使用されるキャッシュストアを設定します。指定できるオプションは次のシンボル<code>:memory_store</code>、<code>:file_store</code>、<code>:mem_cache_store</code>、<code>:null_store</code>のいずれか、またはキャッシュAPIを実装するオブジェクトです。<code>tmp/cache</code>ディレクトリが存在する場合のデフォルトは<code>:file_store</code>に設定され、それ以外の場合のデフォルトは<code>:memory_store</code>に設定されます。</p></li>
-<li><p><code>config.colorize_logging</code>は、出力するログ情報にANSI色情報を与えるかどうかを指定します。. デフォルトはtrueです。</p></li>
+<li><p><code>config.colorize_logging</code>は、出力するログ情報にANSI色情報を与えるかどうかを指定します。デフォルトはtrueです。</p></li>
 <li><p><code>config.consider_all_requests_local</code>はフラグです。このフラグがtrueの場合、どのような種類のエラーが発生した場合にも詳細なデバッグ情報がHTTPレスポンスに出力され、アプリケーションの実行時コンテキストが<code>Rails::Info</code>コントローラによって<code>/rails/info/properties</code>に出力されます。このフラグはdevelopmentモードとtestモードではtrue、productionモードではfalseに設定されます。もっと細かく制御したい場合は、このフラグをfalseに設定してから、コントローラで<code>local_request?</code>メソッドを実装し、エラー時にどのデバッグ情報を出力するかをそこで指定してください。</p></li>
 <li>
 <p><code>config.console</code>を使用すると、コンソールで<code>rails console</code>を実行する時に使用されるクラスをカスタマイズできます。このメソッドは<code>console</code>ブロックで使用するのが最適です。</p>
