@@ -568,7 +568,7 @@ en:
 
 </pre>
 </div>
-<h4 id="日付・時刻フォーマットを追加する"><a href="#%E6%97%A5%E4%BB%98%E3%83%BB%E6%99%82%E5%88%BB%E3%83%95%E3%82%A9%E3%83%BC%E3%83%9E%E3%83%83%E3%83%88%E3%82%92%E8%BF%BD%E5%8A%A0%E3%81%99%E3%82%8B">3.3 日付・時刻フォーマットを追加する</a></h4><p>お疲れさまでした。今度はビューにタイムスタンプを追加し、 <strong>日付・時刻のローカライズ</strong> 機能が動作するところもお目にかけましょう時間のフォーマットをローカライズするには、<code>I18n.l</code>にTimeオブジェクトを渡すか、Railsの<code>#l</code>ヘルパーを使用します(後者がお勧めです)。<code>:format</code>オプションを渡すことでフォーマットを選べます。デフォルトでは<code>:default</code>フォーマットを選べます。</p><div class="code_container">
+<h4 id="日付・時刻フォーマットを追加する"><a href="#%E6%97%A5%E4%BB%98%E3%83%BB%E6%99%82%E5%88%BB%E3%83%95%E3%82%A9%E3%83%BC%E3%83%9E%E3%83%83%E3%83%88%E3%82%92%E8%BF%BD%E5%8A%A0%E3%81%99%E3%82%8B">3.3 日付・時刻フォーマットを追加する</a></h4><p>お疲れさまでした。今度はビューにタイムスタンプを追加し、 <strong>日付・時刻のローカライズ</strong> 機能が動作するところもお目にかけましょう。時間のフォーマットをローカライズするには、<code>I18n.l</code>にTimeオブジェクトを渡すか、Railsの<code>#l</code>ヘルパーを使用します(後者がお勧めです)。<code>:format</code>オプションを渡すことでフォーマットを選べます。デフォルトでは<code>:default</code>フォーマットを選べます。</p><div class="code_container">
 <pre class="brush: ruby; html-script: true; gutter: false; toolbar: false">
 # app/views/home/index.html.erb
 &lt;h1&gt;&lt;%=t :hello_world %&gt;&lt;/h1&gt;
