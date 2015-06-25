@@ -744,7 +744,7 @@ development:
 $ echo $DATABASE_URL
 postgresql://localhost/my_database
 
-$ rails runner 'puts ActiveRecord::Base.connections'
+$ rails runner 'puts ActiveRecord::Base.configurations'
 {"development"=&gt;{"adapter"=&gt;"postgresql", "host"=&gt;"localhost", "database"=&gt;"my_database"}}
 
 </pre>
@@ -759,7 +759,7 @@ development:
 $ echo $DATABASE_URL
 postgresql://localhost/my_database
 
-$ rails runner 'puts ActiveRecord::Base.connections'
+$ rails runner 'puts ActiveRecord::Base.configurations'
 {"development"=&gt;{"adapter"=&gt;"postgresql", "host"=&gt;"localhost", "database"=&gt;"my_database", "pool"=&gt;5}}
 
 </pre>
@@ -773,7 +773,7 @@ development:
 $ echo $DATABASE_URL
 postgresql://localhost/my_database
 
-$ rails runner 'puts ActiveRecord::Base.connections'
+$ rails runner 'puts ActiveRecord::Base.configurations'
 {"development"=&gt;{"adapter"=&gt;"sqlite3", "database"=&gt;"NOT_my_database"}}
 
 </pre>
