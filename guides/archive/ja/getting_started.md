@@ -489,7 +489,7 @@ $ rake db:migrate
 ==  CreateArticles: migrated (0.0020s) =========================================
 ```
 
-NOTE. マイグレーションはデフォルトではdevelopment (開発) 環境で実行されます。そのため、`config/database.yml`ファイルの`development`セクションで定義されている開発用データベースに対して実行される点にご注意ください。production (本番) 環境など、development以外の環境に対してもマイグレーションを実行したい場合は、`rake db:migrate RAILS_ENV=production`のように環境変数を明示的に指定する必要があります。
+NOTE: マイグレーションはデフォルトではdevelopment (開発) 環境で実行されます。そのため、`config/database.yml`ファイルの`development`セクションで定義されている開発用データベースに対して実行される点にご注意ください。production (本番) 環境など、development以外の環境に対してもマイグレーションを実行したい場合は、`rake db:migrate RAILS_ENV=production`のように環境変数を明示的に指定する必要があります。
 
 ### コントローラでデータを保存する
 
