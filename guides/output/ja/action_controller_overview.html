@@ -460,7 +460,7 @@ params.permit(:id)
 
 </pre>
 </div>
-<p><code>:id</code>キーが<code>params</code>にあり、それに関連付けられた許可済みスカラー値があれば、ホワイトリストチェックをパスします。でなければ、このキーはフィルタによって除外されます。従って、ハッシュやその他のオブジェクトを外部から注入することはできなくなります。</p><p>許可されるスカラー型は<code>String</code>、<code>Symbol</code>、<code>NilClass</code>、<code>Numeric</code>、<code>TrueClass</code>、<code>FalseClass</code>、<code>Date</code>、<code>Time</code>、<code>DateTime</code>、<code>StringIO</code>、<code>IO</code>、<code>ActionDispatch::Http::UploadedFile</code>、<code>Rack::Test::UploadedFile</code>です。</p><p><code>params</code>の値が、許可されたスカラー値の配列でなければならないことを宣言するには、以下のようにキーを空の配列にマップします。</p><div class="code_container">
+<p><code>:id</code>キーが<code>params</code>にあり、それの値の型が許可済みスカラーがあれば、ホワイトリストチェックをパスします。でなければ、このキーはフィルタによって除外されます。従って、ハッシュやその他のオブジェクトを外部から注入することはできなくなります。</p><p>許可されるスカラー型は<code>String</code>、<code>Symbol</code>、<code>NilClass</code>、<code>Numeric</code>、<code>TrueClass</code>、<code>FalseClass</code>、<code>Date</code>、<code>Time</code>、<code>DateTime</code>、<code>StringIO</code>、<code>IO</code>、<code>ActionDispatch::Http::UploadedFile</code>、<code>Rack::Test::UploadedFile</code>です。</p><p><code>params</code>の値が、許可されたスカラー値の配列でなければならないことを宣言するには、以下のようにキーを空の配列にマップします。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 params.permit(id: [])
 
@@ -818,7 +818,7 @@ end
 
 </pre>
 </div>
-<p>"around"フィルタの場合、画面出力 (レンダリング) もその作業に含まれていることにご注意ください。特に、上の例で言うとビュー自身がデータベースから (スコープなどを使用して) 読み出しを行うとすると、その読み出しはトランザクション内で行われ、データはプレビューに表示されます。</p><p>あえてyieldを実行せず、自分で応答を作成するという方法もあります。この場合、アクションは実行されません。</p><h4 id="その他のフィルタ使用法"><a href="#%E3%81%9D%E3%81%AE%E4%BB%96%E3%81%AE%E3%83%95%E3%82%A3%E3%83%AB%E3%82%BF%E4%BD%BF%E7%94%A8%E6%B3%95">8.2 その他のフィルタ使用法</a></h4><p>最も一般的なフィルタの使用法は、privateメソッドを作成し、*_action を使用してそのメソッドを追加することですが、同じ結果を得られるフィルタ使用法が他にも2とおりあります。</p><p>1番目は、*_actionメソッドに対して直接ブロックを与えることです。このブロックはコントローラを引数として受け取り、その上の<code>require_login</code>フィルタを書き換えて、ブロックを使用するようにします。</p><div class="code_container">
+<p>"around"フィルタの場合、画面出力 (レンダリング) もその作業に含まれていることにご注意ください。特に、上の例で言うとビュー自身がデータベースから (スコープなどを使用して) 読み出しを行うとすると、その読み出しはトランザクション内で行われ、データはプレビューに表示されます。</p><p>あえてyieldを実行せず、自分で応答を作成するという方法もあります。この場合、アクションは実行されません。</p><h4 id="その他のフィルタ使用法"><a href="#%E3%81%9D%E3%81%AE%E4%BB%96%E3%81%AE%E3%83%95%E3%82%A3%E3%83%AB%E3%82%BF%E4%BD%BF%E7%94%A8%E6%B3%95">8.2 その他のフィルタ使用法</a></h4><p>最も一般的なフィルタの使用法は、privateメソッドを作成し、*_action を使用してそのメソッドを追加することですが、同じ結果を得られるフィルタ使用法が他にも2とおりあります。</p><p>1番目は、*_action メソッドに対して直接ブロックを与えることです。このブロックはコントローラを引数として受け取ります。さきほどの<code>require_login</code>フィルタを書き換えて、ブロックを使用するようにします。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class ApplicationController &lt; ActionController::Base
   before_action do |controller|
