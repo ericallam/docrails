@@ -415,7 +415,7 @@ Client.where("orders_count = #{params[:orders]}")
 
 条件文字列の中に変数を直接置くと、その変数はデータベースに **そのまま** 渡されてしまいます。これは、悪意のある人物がエスケープされていない危険な変数を渡すことができるということです。このようなコードがあると、悪意のある人物がデータベースを意のままにすることができ、データベース全体が危険にさらされます。くれぐれも、条件文字列の中に引数を直接置くことはしないでください。
 
-TIP: SQLインジェクションの詳細については[Ruby on Railsセキュリティガイド](security.html#sqlインジェクション) を参照してください。
+TIP: SQLインジェクションの詳細については[Ruby on Railsセキュリティガイド](security.html#sqlインジェクション)を参照してください。
 
 #### プレースホルダを使用した条件
 
@@ -467,7 +467,7 @@ Client.where(created_at: (Time.now.midnight - 1.day)..Time.now.midnight)
 SELECT * FROM clients WHERE (clients.created_at BETWEEN '2008-12-21 00:00:00' AND '2008-12-22 00:00:00')
 ```
 
-[配列による条件](#配列で表された条件) ではさらに簡潔な文例をご紹介しています。
+[配列で表された条件](#配列で表された条件)では、さらに簡潔な文例をご紹介しています。
 
 #### サブセット条件
 
@@ -954,7 +954,7 @@ SELECT clients.* FROM clients LEFT OUTER JOIN addresses ON addresses.client_id =
 
 WARNING: このメソッドは`INNER JOIN`でしか使用できません。
 
-Active Recordでは、`joins`メソッドを使用して関連付けで`JOIN`句を指定する際に、モデルで定義された[関連付け](association_basics.html)の名前をショートカットとして使用できます。
+Active Recordでは、`joins`メソッドを使用して関連付けで`JOIN`句を指定する際に、モデルで定義された関連付けの名前をショートカットとして使用できます (詳細は[Active Recordの関連付け](association_basics.html)を参照)。
 
 たとえば、以下の`Category`、`Article`、`Comment`、`Guest`、`Tag`モデルについて考えてみましょう。
 
@@ -1050,7 +1050,7 @@ SELECT categories.* FROM categories
 
 ### 結合されたテーブルで条件を指定する
 
-標準の[配列](#配列で表された条件)および[文字列](#文字列だけで表された条件)条件を使用して、結合テーブルに条件を指定することができます。[ハッシュ条件](#ハッシュを使用した条件) の場合、結合テーブルで条件を指定する場合に特殊な構文を使用します。
+標準の[配列](#配列で表された条件)および[文字列](#文字列だけで表された条件)条件を使用して、結合テーブルに条件を指定することができます。[ハッシュ条件](#ハッシュを使用した条件)の場合、結合テーブルで条件を指定する場合に特殊な構文を使用します。
 
 ```ruby
 time_range = (Time.now.midnight - 1.day).Time.now.midnight
@@ -1340,7 +1340,7 @@ nameとlockedの両方を検索したいのであれば、2つのフィールド
 
 Active Record パターンには [メソッドチェイン (Method chaining - Wikipedia)](http://en.wikipedia.org/wiki/Method_chaining) が実装されています。これにより、複数のActive Recordメソッドをシンプルな方法で次々に適用することができます。
 
-文中でメソッドチェインができるのは、その前のメソッドが`ActiveRecord::Relation` (`all`、`where`、`joins`など) をひとつ返す場合です。文の末尾には、単一のオブジェクトを返すメソッド ([単一のオブジェクトを取り出す](#retrieving-a-single-object)を参照) をひとつ置かなければなりません。
+文中でメソッドチェインができるのは、その前のメソッドが`ActiveRecord::Relation` (`all`、`where`、`joins`など) をひとつ返す場合です。文の末尾には、単一のオブジェクトを返すメソッド ([単一のオブジェクトを取り出す](#%E5%8D%98%E4%B8%80%E3%81%AE%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E5%8F%96%E3%82%8A%E5%87%BA%E3%81%99)を参照) をひとつ置かなければなりません。
 
 いくつか例をご紹介します。本ガイドでは一部の例のみをご紹介し、すべての例を網羅することはしません。
 Active Recordメソッドが呼び出されると、クエリはその時点ではすぐに生成されず、データベースに送信されます。クエリは、データが実際に必要になった時点で初めて生成されます。以下の例では、いずれも単一のクエリを生成します。
@@ -1809,8 +1809,8 @@ EXPLAIN for: SELECT `articles`.* FROM `articles`  WHERE `articles`.`user_id` IN 
 
 EXPLAINの出力を解釈することは、本ガイドの範疇を超えます。以下の情報を参考にしてください。
 
-* SQLite3: [EXPLAIN QUERY PLAN](http://www.sqlite.org/eqp.html) (英語)
+* SQLite3: [EXPLAIN QUERY PLAN](http://www.sqlite.org/eqp.html)
 
-* MySQL: [EXPLAIN Output Format](http://dev.mysql.com/doc/refman/5.6/en/explain-output.html) (英語)
+* MySQL: [EXPLAIN Output Format](http://dev.mysql.com/doc/refman/5.6/en/explain-output.html) 
 
-* PostgreSQL: [EXPLAINの利用](http://www.postgresql.org/docs/current/static/using-explain.html)
+* PostgreSQL: [Using EXPLAIN](http://www.postgresql.org/docs/current/static/using-explain.html)

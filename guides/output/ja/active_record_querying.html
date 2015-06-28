@@ -669,7 +669,7 @@ Client.where("orders_count = #{params[:orders]}")
 
 </pre>
 </div>
-<p>条件文字列の中に変数を直接置くと、その変数はデータベースに <strong>そのまま</strong> 渡されてしまいます。これは、悪意のある人物がエスケープされていない危険な変数を渡すことができるということです。このようなコードがあると、悪意のある人物がデータベースを意のままにすることができ、データベース全体が危険にさらされます。くれぐれも、条件文字列の中に引数を直接置くことはしないでください。</p><div class="info"><p>SQLインジェクションの詳細については<a href="security.html#sql%E3%82%A4%E3%83%B3%E3%82%B8%E3%82%A7%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3">Ruby on Railsセキュリティガイド</a> を参照してください。</p></div><h5 id="プレースホルダを使用した条件"><a href="#%E3%83%97%E3%83%AC%E3%83%BC%E3%82%B9%E3%83%9B%E3%83%AB%E3%83%80%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%97%E3%81%9F%E6%9D%A1%E4%BB%B6">2.2.1 プレースホルダを使用した条件</a></h5><p>疑問符<code>(?)</code>をパラメータで置き換えるスタイルと同様、配列による条件中でキー/値のハッシュを指定できます。</p><div class="code_container">
+<p>条件文字列の中に変数を直接置くと、その変数はデータベースに <strong>そのまま</strong> 渡されてしまいます。これは、悪意のある人物がエスケープされていない危険な変数を渡すことができるということです。このようなコードがあると、悪意のある人物がデータベースを意のままにすることができ、データベース全体が危険にさらされます。くれぐれも、条件文字列の中に引数を直接置くことはしないでください。</p><div class="info"><p>SQLインジェクションの詳細については<a href="security.html#sql%E3%82%A4%E3%83%B3%E3%82%B8%E3%82%A7%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3">Ruby on Railsセキュリティガイド</a>を参照してください。</p></div><h5 id="プレースホルダを使用した条件"><a href="#%E3%83%97%E3%83%AC%E3%83%BC%E3%82%B9%E3%83%9B%E3%83%AB%E3%83%80%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%97%E3%81%9F%E6%9D%A1%E4%BB%B6">2.2.1 プレースホルダを使用した条件</a></h5><p>疑問符<code>(?)</code>をパラメータで置き換えるスタイルと同様、配列による条件中でキー/値のハッシュを指定できます。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Client.where("created_at &gt;= :start_date AND created_at &lt;= :end_date",
   {start_date: params[:start_date], end_date: params[:end_date]})
@@ -707,7 +707,7 @@ SELECT * FROM clients WHERE (clients.created_at BETWEEN '2008-12-21 00:00:00' AN
 
 </pre>
 </div>
-<p><a href="#%E9%85%8D%E5%88%97%E3%81%A7%E8%A1%A8%E3%81%95%E3%82%8C%E3%81%9F%E6%9D%A1%E4%BB%B6">配列による条件</a> ではさらに簡潔な文例をご紹介しています。</p><h5 id="サブセット条件"><a href="#%E3%82%B5%E3%83%96%E3%82%BB%E3%83%83%E3%83%88%E6%9D%A1%E4%BB%B6">2.3.3 サブセット条件</a></h5><p>SQLの<code>IN</code>式を使用してレコードを検索したい場合、条件ハッシュにそのための配列を1つ渡すことができます。</p><div class="code_container">
+<p><a href="#%E9%85%8D%E5%88%97%E3%81%A7%E8%A1%A8%E3%81%95%E3%82%8C%E3%81%9F%E6%9D%A1%E4%BB%B6">配列で表された条件</a>では、さらに簡潔な文例をご紹介しています。</p><h5 id="サブセット条件"><a href="#%E3%82%B5%E3%83%96%E3%82%BB%E3%83%83%E3%83%88%E6%9D%A1%E4%BB%B6">2.3.3 サブセット条件</a></h5><p>SQLの<code>IN</code>式を使用してレコードを検索したい場合、条件ハッシュにそのための配列を1つ渡すことができます。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Client.where(orders_count: [1,3,5])
 
@@ -1100,7 +1100,7 @@ SELECT clients.* FROM clients LEFT OUTER JOIN addresses ON addresses.client_id =
 
 </pre>
 </div>
-<h4 id="名前付き関連付けの配列-ハッシュを使用する"><a href="#%E5%90%8D%E5%89%8D%E4%BB%98%E3%81%8D%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91%E3%81%AE%E9%85%8D%E5%88%97-%E3%83%8F%E3%83%83%E3%82%B7%E3%83%A5%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B">12.2 名前付き関連付けの配列/ハッシュを使用する</a></h4><div class="warning"><p>このメソッドは<code>INNER JOIN</code>でしか使用できません。</p></div><p>Active Recordでは、<code>joins</code>メソッドを使用して関連付けで<code>JOIN</code>句を指定する際に、モデルで定義された<a href="association_basics.html">関連付け</a>の名前をショートカットとして使用できます。</p><p>たとえば、以下の<code>Category</code>、<code>Article</code>、<code>Comment</code>、<code>Guest</code>、<code>Tag</code>モデルについて考えてみましょう。</p><div class="code_container">
+<h4 id="名前付き関連付けの配列-ハッシュを使用する"><a href="#%E5%90%8D%E5%89%8D%E4%BB%98%E3%81%8D%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91%E3%81%AE%E9%85%8D%E5%88%97-%E3%83%8F%E3%83%83%E3%82%B7%E3%83%A5%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B">12.2 名前付き関連付けの配列/ハッシュを使用する</a></h4><div class="warning"><p>このメソッドは<code>INNER JOIN</code>でしか使用できません。</p></div><p>Active Recordでは、<code>joins</code>メソッドを使用して関連付けで<code>JOIN</code>句を指定する際に、モデルで定義された関連付けの名前をショートカットとして使用できます (詳細は<a href="association_basics.html">Active Recordの関連付け</a>を参照)。</p><p>たとえば、以下の<code>Category</code>、<code>Article</code>、<code>Comment</code>、<code>Guest</code>、<code>Tag</code>モデルについて考えてみましょう。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class Category &lt; ActiveRecord::Base
   has_many :articles
@@ -1184,7 +1184,7 @@ SELECT categories.* FROM categories
 
 </pre>
 </div>
-<h4 id="結合されたテーブルで条件を指定する"><a href="#%E7%B5%90%E5%90%88%E3%81%95%E3%82%8C%E3%81%9F%E3%83%86%E3%83%BC%E3%83%96%E3%83%AB%E3%81%A7%E6%9D%A1%E4%BB%B6%E3%82%92%E6%8C%87%E5%AE%9A%E3%81%99%E3%82%8B">12.3 結合されたテーブルで条件を指定する</a></h4><p>標準の<a href="#%E9%85%8D%E5%88%97%E3%81%A7%E8%A1%A8%E3%81%95%E3%82%8C%E3%81%9F%E6%9D%A1%E4%BB%B6">配列</a>および<a href="#%E6%96%87%E5%AD%97%E5%88%97%E3%81%A0%E3%81%91%E3%81%A7%E8%A1%A8%E3%81%95%E3%82%8C%E3%81%9F%E6%9D%A1%E4%BB%B6">文字列</a>条件を使用して、結合テーブルに条件を指定することができます。<a href="#%E3%83%8F%E3%83%83%E3%82%B7%E3%83%A5%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%97%E3%81%9F%E6%9D%A1%E4%BB%B6">ハッシュ条件</a> の場合、結合テーブルで条件を指定する場合に特殊な構文を使用します。</p><div class="code_container">
+<h4 id="結合されたテーブルで条件を指定する"><a href="#%E7%B5%90%E5%90%88%E3%81%95%E3%82%8C%E3%81%9F%E3%83%86%E3%83%BC%E3%83%96%E3%83%AB%E3%81%A7%E6%9D%A1%E4%BB%B6%E3%82%92%E6%8C%87%E5%AE%9A%E3%81%99%E3%82%8B">12.3 結合されたテーブルで条件を指定する</a></h4><p>標準の<a href="#%E9%85%8D%E5%88%97%E3%81%A7%E8%A1%A8%E3%81%95%E3%82%8C%E3%81%9F%E6%9D%A1%E4%BB%B6">配列</a>および<a href="#%E6%96%87%E5%AD%97%E5%88%97%E3%81%A0%E3%81%91%E3%81%A7%E8%A1%A8%E3%81%95%E3%82%8C%E3%81%9F%E6%9D%A1%E4%BB%B6">文字列</a>条件を使用して、結合テーブルに条件を指定することができます。<a href="#%E3%83%8F%E3%83%83%E3%82%B7%E3%83%A5%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%97%E3%81%9F%E6%9D%A1%E4%BB%B6">ハッシュ条件</a>の場合、結合テーブルで条件を指定する場合に特殊な構文を使用します。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 time_range = (Time.now.midnight - 1.day).Time.now.midnight
 Client.joins(:orders).where('orders.created_at' =&gt; time_range)
@@ -1409,7 +1409,7 @@ Client.unscoped {
 
 </pre>
 </div>
-<h3 id="動的ファインダ"><a href="#%E5%8B%95%E7%9A%84%E3%83%95%E3%82%A1%E3%82%A4%E3%83%B3%E3%83%80">15 動的ファインダ</a></h3><p>Active Recordは、テーブルに定義されたすべてのフィールド (属性とも呼ばれます) に対して自動的にファインダメソッドを提供します。たとえば、<code>Client</code>モデルに<code>first_name</code>というフィールドがあると、<code>find_by_first_name</code>というメソッドがActive Recordによって自動的に作成されます。<code>Client</code>モデルに<code>locked</code>というフィールドがあれば、<code>find_by_locked</code>というメソッドを使用できます。</p><p>この動的ファインダメソッドの末尾に<code>Client.find_by_name!("Ryan")</code>のように感嘆符 (<code>!</code>) を追加すると、該当するレコードがない場合に<code>ActiveRecord::RecordNotFound</code>エラーが発生します。</p><p>nameとlockedの両方を検索したいのであれば、2つのフィールド名をandでつなぐだけでメソッドを利用できます。たとえば、<code>Client.find_by_first_name_and_locked("Ryan", true)</code>のようにかくことができます</p><h3 id="メソッドチェインを理解する"><a href="#%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89%E3%83%81%E3%82%A7%E3%82%A4%E3%83%B3%E3%82%92%E7%90%86%E8%A7%A3%E3%81%99%E3%82%8B">16 メソッドチェインを理解する</a></h3><p>Active Record パターンには <a href="http://en.wikipedia.org/wiki/Method_chaining">メソッドチェイン (Method chaining - Wikipedia)</a> が実装されています。これにより、複数のActive Recordメソッドをシンプルな方法で次々に適用することができます。</p><p>文中でメソッドチェインができるのは、その前のメソッドが<code>ActiveRecord::Relation</code> (<code>all</code>、<code>where</code>、<code>joins</code>など) をひとつ返す場合です。文の末尾には、単一のオブジェクトを返すメソッド (<a href="#retrieving-a-single-object">単一のオブジェクトを取り出す</a>を参照) をひとつ置かなければなりません。</p><p>いくつか例をご紹介します。本ガイドでは一部の例のみをご紹介し、すべての例を網羅することはしません。
+<h3 id="動的ファインダ"><a href="#%E5%8B%95%E7%9A%84%E3%83%95%E3%82%A1%E3%82%A4%E3%83%B3%E3%83%80">15 動的ファインダ</a></h3><p>Active Recordは、テーブルに定義されたすべてのフィールド (属性とも呼ばれます) に対して自動的にファインダメソッドを提供します。たとえば、<code>Client</code>モデルに<code>first_name</code>というフィールドがあると、<code>find_by_first_name</code>というメソッドがActive Recordによって自動的に作成されます。<code>Client</code>モデルに<code>locked</code>というフィールドがあれば、<code>find_by_locked</code>というメソッドを使用できます。</p><p>この動的ファインダメソッドの末尾に<code>Client.find_by_name!("Ryan")</code>のように感嘆符 (<code>!</code>) を追加すると、該当するレコードがない場合に<code>ActiveRecord::RecordNotFound</code>エラーが発生します。</p><p>nameとlockedの両方を検索したいのであれば、2つのフィールド名をandでつなぐだけでメソッドを利用できます。たとえば、<code>Client.find_by_first_name_and_locked("Ryan", true)</code>のようにかくことができます</p><h3 id="メソッドチェインを理解する"><a href="#%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89%E3%83%81%E3%82%A7%E3%82%A4%E3%83%B3%E3%82%92%E7%90%86%E8%A7%A3%E3%81%99%E3%82%8B">16 メソッドチェインを理解する</a></h3><p>Active Record パターンには <a href="http://en.wikipedia.org/wiki/Method_chaining">メソッドチェイン (Method chaining - Wikipedia)</a> が実装されています。これにより、複数のActive Recordメソッドをシンプルな方法で次々に適用することができます。</p><p>文中でメソッドチェインができるのは、その前のメソッドが<code>ActiveRecord::Relation</code> (<code>all</code>、<code>where</code>、<code>joins</code>など) をひとつ返す場合です。文の末尾には、単一のオブジェクトを返すメソッド (<a href="#%E5%8D%98%E4%B8%80%E3%81%AE%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E5%8F%96%E3%82%8A%E5%87%BA%E3%81%99">単一のオブジェクトを取り出す</a>を参照) をひとつ置かなければなりません。</p><p>いくつか例をご紹介します。本ガイドでは一部の例のみをご紹介し、すべての例を網羅することはしません。
 Active Recordメソッドが呼び出されると、クエリはその時点ではすぐに生成されず、データベースに送信されます。クエリは、データが実際に必要になった時点で初めて生成されます。以下の例では、いずれも単一のクエリを生成します。</p><h4 id="複数のテーブルからのデータをフィルタして取得する"><a href="#%E8%A4%87%E6%95%B0%E3%81%AE%E3%83%86%E3%83%BC%E3%83%96%E3%83%AB%E3%81%8B%E3%82%89%E3%81%AE%E3%83%87%E3%83%BC%E3%82%BF%E3%82%92%E3%83%95%E3%82%A3%E3%83%AB%E3%82%BF%E3%81%97%E3%81%A6%E5%8F%96%E5%BE%97%E3%81%99%E3%82%8B">16.1 複数のテーブルからのデータをフィルタして取得する</a></h4><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Person
@@ -1799,9 +1799,9 @@ EXPLAIN for: SELECT `articles`.* FROM `articles`  WHERE `articles`.`user_id` IN 
 </div>
 <p>上の結果はMySQLの場合です。</p><h4 id="explainの出力結果を解釈する"><a href="#explain%E3%81%AE%E5%87%BA%E5%8A%9B%E7%B5%90%E6%9E%9C%E3%82%92%E8%A7%A3%E9%87%88%E3%81%99%E3%82%8B">21.1 EXPLAINの出力結果を解釈する</a></h4><p>EXPLAINの出力を解釈することは、本ガイドの範疇を超えます。以下の情報を参考にしてください。</p>
 <ul>
-<li><p>SQLite3: <a href="http://www.sqlite.org/eqp.html">EXPLAIN QUERY PLAN</a> (英語)</p></li>
-<li><p>MySQL: <a href="http://dev.mysql.com/doc/refman/5.6/en/explain-output.html">EXPLAIN Output Format</a> (英語)</p></li>
-<li><p>PostgreSQL: <a href="http://www.postgresql.org/docs/current/static/using-explain.html">EXPLAINの利用</a></p></li>
+<li><p>SQLite3: <a href="http://www.sqlite.org/eqp.html">EXPLAIN QUERY PLAN</a></p></li>
+<li><p>MySQL: <a href="http://dev.mysql.com/doc/refman/5.6/en/explain-output.html">EXPLAIN Output Format</a> </p></li>
+<li><p>PostgreSQL: <a href="http://www.postgresql.org/docs/current/static/using-explain.html">Using EXPLAIN</a></p></li>
 </ul>
 
         
