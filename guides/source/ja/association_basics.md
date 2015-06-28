@@ -878,7 +878,7 @@ end
 * `:destroy` -- そのオブジェクトがdestroyされると、関連付けられたオブジェクトに対して`destroy`が呼び出されます。
 * `:delete` -- オブジェクトがdestroyされると、関連付けられたオブジェクトはすべて直接削除されます。このときオブジェクトの`destroy`メソッドは呼び出されません。
 
-WARNING: `他のクラスの`has_many` 関連付けとつながりのある `belongs_to` 関連付けに対してこのオプションを使用してはいけません。孤立したレコードがデータベースに残ってしまう可能性があります。
+WARNING: 他のクラスの`has_many` 関連付けとつながりのある `belongs_to` 関連付けに対してこのオプションを使用してはいけません。孤立したレコードがデータベースに残ってしまう可能性があります。
 
 ##### `:foreign_key`
 
@@ -909,7 +909,7 @@ end
 
 ##### `:polymorphic`
 
-`:polymorphic`オプションに`true`を指定すると、ポリモーフィック関連付けを指定できます。ポリモーフィック関連付けの詳細については<a href="#ポリモーフィック関連付け">このガイドの説明</a>を参照してください。
+`:polymorphic`オプションに`true`を指定すると、ポリモーフィック関連付けを指定できます。ポリモーフィック関連付けの詳細については[このガイドの説明](#ポリモーフィック関連付け)を参照してください。
 
 ##### `:touch`
 
@@ -984,7 +984,7 @@ class Customer < ActiveRecord::Base
 end
 ```
 
-LineItemから顧客名(Customer)を`@line_item.order.customer`のように直接取り出す機会が頻繁にあるのであれば、LineItemとOrderの関連付けを行なう時にCustomerをあらかじめincludeしておくことで無駄なクエリを減らし、効率を高めることができます。
+LineItemから顧客(Customer)を`@line_item.order.customer`のように直接取り出す機会が頻繁にあるのであれば、LineItemとOrderの関連付けを行なう時にCustomerをあらかじめincludeしておくことで無駄なクエリを減らし、効率を高めることができます。
 
 ```ruby
 class LineItem < ActiveRecord::Base
@@ -1437,7 +1437,7 @@ WARNING: この場合オブジェクトは_無条件で_データベースから
 
 ##### `collection.exists?(...)`
 
-`collection.exists?`メソッドは、指定された条件に合うオブジェクトがコレクションの中に存在するかどうかをチェックします。このメソッドで使用される文法は、`ActiveRecord::Base.exists?`で使用されているものと同じです。`.
+`collection.exists?`メソッドは、指定された条件に合うオブジェクトがコレクションの中に存在するかどうかをチェックします。このメソッドで使用される文法は、`ActiveRecord::Base.exists?`で使用されているものと同じです。
 
 ##### `collection.build(attributes = {}, ...)`
 
@@ -1615,7 +1615,7 @@ class Customer < ActiveRecord::Base
 end
 ```
 
-`where`オプションでハッシュを使用した場合、この関連付けで作成されたレコードは自動的にこのハッシュを使用したスコープに含まれるようになります。この例の場合、`@customer.confirmed_orders.create`または`@customer.confirmed_orders.build`を実行すると、comfirmedカラムの値が`true`の注文(order)が常に作成されます。
+`where`オプションでハッシュを使用した場合、この関連付けで作成されたレコードは自動的にこのハッシュを使用したスコープに含まれるようになります。この例の場合、`@customer.confirmed_orders.create`または`@customer.confirmed_orders.build`を実行すると、confirmedカラムの値が`true`の注文(order)が常に作成されます。
 
 ##### `extending`
 
@@ -1651,7 +1651,7 @@ class LineItem < ActiveRecord::Base
 end
 ```
 
-顧客名(Customer)からLineItemを`@customer.orders.line_items`のように直接取り出す機会が頻繁にあるのであれば、LineItemとOrderの関連付けを行なう時にCustomerをあらかじめincludeしておくことで無駄なクエリを減らし、効率を高めることができます。
+顧客名(Customer)からLineItemを`@customer.orders.line_items`のように直接取り出す機会が頻繁にあるのであれば、CustomerとOrderの関連付けを行なう時にLineItemをあらかじめincludeしておくことで無駄なクエリを減らし、効率を高めることができます。
 
 ```ruby
 class Customer < ActiveRecord::Base
@@ -1917,7 +1917,7 @@ WARNING: このメソッドを呼び出しても、結合レコードでコー�
 
 ##### `collection.exists?(...)`
 
-`collection.exists?`メソッドは、指定された条件に合うオブジェクトがコレクションの中に存在するかどうかをチェックします。このメソッドで使用される文法は、`ActiveRecord::Base.exists?`で使用されているものと同じです。`.
+`collection.exists?`メソッドは、指定された条件に合うオブジェクトがコレクションの中に存在するかどうかをチェックします。このメソッドで使用される文法は、`ActiveRecord::Base.exists?`で使用されているものと同じです。
 
 ##### `collection.build(attributes = {})`
 
@@ -2163,7 +2163,7 @@ class Customer < ActiveRecord::Base
 end
 ```
 
-`before_add`コールバックが例外を発生した場合、オブジェクトはコレクションに追加されません。同様に、`before_remove`で例外が発生した場合も、オブジェクトはコレクションに追加されません。
+`before_add`コールバックが例外を発生した場合、オブジェクトはコレクションに追加されません。同様に、`before_remove`で例外が発生した場合も、オブジェクトはコレクションに削除されません。
 
 ### 関連付けの拡張
 
