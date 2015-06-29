@@ -1013,7 +1013,7 @@ end
 <li>
 <code>:delete</code> -- オブジェクトがdestroyされると、関連付けられたオブジェクトはすべて直接削除されます。このときオブジェクトの<code>destroy</code>メソッドは呼び出されません。</li>
 </ul>
-<div class="warning"><p><code>他のクラスの</code>has_many<code>関連付けとつながりのある</code>belongs_to` 関連付けに対してこのオプションを使用してはいけません。孤立したレコードがデータベースに残ってしまう可能性があります。</p></div><h6 id="belongs-toのオプション-foreign-key"><a href="#belongs-to%E3%81%AE%E3%82%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3-foreign-key">4.1.2.5 <code>:foreign_key</code></a></h6><p>Railsの慣例では、相手のモデルを指す外部キーを保持している結合テーブル上のカラム名については、そのモデル名にサフィックス <code>_id</code> を追加した関連付け名が使用されることを前提とします。<code>:foreign_key</code>オプションを使用すると外部キーの名前を直接指定することができます。</p><div class="code_container">
+<div class="warning"><p>他のクラスの<code>has_many</code> 関連付けとつながりのある <code>belongs_to</code> 関連付けに対してこのオプションを使用してはいけません。孤立したレコードがデータベースに残ってしまう可能性があります。</p></div><h6 id="belongs-toのオプション-foreign-key"><a href="#belongs-to%E3%81%AE%E3%82%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3-foreign-key">4.1.2.5 <code>:foreign_key</code></a></h6><p>Railsの慣例では、相手のモデルを指す外部キーを保持している結合テーブル上のカラム名については、そのモデル名にサフィックス <code>_id</code> を追加した関連付け名が使用されることを前提とします。<code>:foreign_key</code>オプションを使用すると外部キーの名前を直接指定することができます。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class Order &lt; ActiveRecord::Base
   belongs_to :customer, class_name: "Patron",
@@ -1404,7 +1404,7 @@ orders.create!(attributes = {})`
 
 </pre>
 </div>
-<h6 id="has-manyで追加されるメソッド-collection-exists-questionmark"><a href="#has-many%E3%81%A7%E8%BF%BD%E5%8A%A0%E3%81%95%E3%82%8C%E3%82%8B%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89-collection-exists-questionmark">4.3.1.13 <code>collection.exists?(...)</code></a></h6><p><code>collection.exists?</code>メソッドは、指定された条件に合うオブジェクトがコレクションの中に存在するかどうかをチェックします。このメソッドで使用される文法は、<code>ActiveRecord::Base.exists?</code>で使用されているものと同じです。`.</p><h6 id="has-manyで追加されるメソッド-collection-build-attributes"><a href="#has-many%E3%81%A7%E8%BF%BD%E5%8A%A0%E3%81%95%E3%82%8C%E3%82%8B%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89-collection-build-attributes">4.3.1.14 <code>collection.build(attributes = {}, ...)</code></a></h6><p><code>collection.build</code>メソッドは、関連付けが行われたオブジェクトを1つまたは複数返します。返されるオブジェクトは、渡された属性に基いてインスタンス化され、外部キーを経由するリンクが作成されます。関連付けられたオブジェクトは、値が返された時点ではまだ保存されて<em>いない</em>ことにご注意ください。</p><div class="code_container">
+<h6 id="has-manyで追加されるメソッド-collection-exists-questionmark"><a href="#has-many%E3%81%A7%E8%BF%BD%E5%8A%A0%E3%81%95%E3%82%8C%E3%82%8B%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89-collection-exists-questionmark">4.3.1.13 <code>collection.exists?(...)</code></a></h6><p><code>collection.exists?</code>メソッドは、指定された条件に合うオブジェクトがコレクションの中に存在するかどうかをチェックします。このメソッドで使用される文法は、<code>ActiveRecord::Base.exists?</code>で使用されているものと同じです。</p><h6 id="has-manyで追加されるメソッド-collection-build-attributes"><a href="#has-many%E3%81%A7%E8%BF%BD%E5%8A%A0%E3%81%95%E3%82%8C%E3%82%8B%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89-collection-build-attributes">4.3.1.14 <code>collection.build(attributes = {}, ...)</code></a></h6><p><code>collection.build</code>メソッドは、関連付けが行われたオブジェクトを1つまたは複数返します。返されるオブジェクトは、渡された属性に基いてインスタンス化され、外部キーを経由するリンクが作成されます。関連付けられたオブジェクトは、値が返された時点ではまだ保存されて<em>いない</em>ことにご注意ください。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 @order = @customer.orders.build(order_date: Time.now,
                                 order_number: "A12345")
@@ -1528,7 +1528,7 @@ end
 
 </pre>
 </div>
-<p><code>where</code>オプションでハッシュを使用した場合、この関連付けで作成されたレコードは自動的にこのハッシュを使用したスコープに含まれるようになります。この例の場合、<code>@customer.confirmed_orders.create</code>または<code>@customer.confirmed_orders.build</code>を実行すると、comfirmedカラムの値が<code>true</code>の注文(order)が常に作成されます。</p><h6 id="has-manyのスコープについて-extending"><a href="#has-many%E3%81%AE%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%97%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6-extending">4.3.3.2 <code>extending</code></a></h6><p><code>extending</code>メソッドは、関連付けプロキシを拡張する名前付きモジュールを指定します。関連付けの拡張については<a href="#%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91%E3%81%AE%E6%8B%A1%E5%BC%B5">後述します</a>。</p><h6 id="has-manyのスコープについて-group"><a href="#has-many%E3%81%AE%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%97%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6-group">4.3.3.3 <code>group</code></a></h6><p><code>group</code>メソッドは、結果をグループ化する際の属性名を1つ指定します。内部的にはSQLの<code>GROUP BY</code>句が使用されます。</p><div class="code_container">
+<p><code>where</code>オプションでハッシュを使用した場合、この関連付けで作成されたレコードは自動的にこのハッシュを使用したスコープに含まれるようになります。この例の場合、<code>@customer.confirmed_orders.create</code>または<code>@customer.confirmed_orders.build</code>を実行すると、confirmedカラムの値が<code>true</code>の注文(order)が常に作成されます。</p><h6 id="has-manyのスコープについて-extending"><a href="#has-many%E3%81%AE%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%97%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6-extending">4.3.3.2 <code>extending</code></a></h6><p><code>extending</code>メソッドは、関連付けプロキシを拡張する名前付きモジュールを指定します。関連付けの拡張については<a href="#%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91%E3%81%AE%E6%8B%A1%E5%BC%B5">後述します</a>。</p><h6 id="has-manyのスコープについて-group"><a href="#has-many%E3%81%AE%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%97%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6-group">4.3.3.3 <code>group</code></a></h6><p><code>group</code>メソッドは、結果をグループ化する際の属性名を1つ指定します。内部的にはSQLの<code>GROUP BY</code>句が使用されます。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class Customer &lt; ActiveRecord::Base
   has_many :line_items, -&gt; { group 'orders.id' },
@@ -1554,7 +1554,7 @@ end
 
 </pre>
 </div>
-<p>顧客名(Customer)からLineItemを<code>@customer.orders.line_items</code>のように直接取り出す機会が頻繁にあるのであれば、LineItemとOrderの関連付けを行なう時にCustomerをあらかじめincludeしておくことで無駄なクエリを減らし、効率を高めることができます。</p><div class="code_container">
+<p>顧客名(Customer)からLineItemを<code>@customer.orders.line_items</code>のように直接取り出す機会が頻繁にあるのであれば、CustomerとOrderの関連付けを行なう時にLineItemをあらかじめincludeしておくことで無駄なクエリを減らし、効率を高めることができます。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class Customer &lt; ActiveRecord::Base
   has_many :orders, -&gt; { includes :line_items }
@@ -1738,7 +1738,7 @@ assemblies.create!(attributes = {})`
 
 </pre>
 </div>
-<h6 id="has-and-belongs-to-manyで追加されるメソッド-collection-exists-questionmark"><a href="#has-and-belongs-to-many%E3%81%A7%E8%BF%BD%E5%8A%A0%E3%81%95%E3%82%8C%E3%82%8B%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89-collection-exists-questionmark">4.4.1.14 <code>collection.exists?(...)</code></a></h6><p><code>collection.exists?</code>メソッドは、指定された条件に合うオブジェクトがコレクションの中に存在するかどうかをチェックします。このメソッドで使用される文法は、<code>ActiveRecord::Base.exists?</code>で使用されているものと同じです。`.</p><h6 id="has-and-belongs-to-manyで追加されるメソッド-collection-build-attributes"><a href="#has-and-belongs-to-many%E3%81%A7%E8%BF%BD%E5%8A%A0%E3%81%95%E3%82%8C%E3%82%8B%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89-collection-build-attributes">4.4.1.15 <code>collection.build(attributes = {})</code></a></h6><p><code>collection.build</code>メソッドは、関連付けが行われたオブジェクトを1つ返します。このオブジェクトは、渡された属性でインスタンス化され、その結合テーブルを介してリンクが作成されます。ただし、関連付けられたオブジェクトはこの時点では保存s慣れて<em>いない</em>ことにご注意ください。</p><div class="code_container">
+<h6 id="has-and-belongs-to-manyで追加されるメソッド-collection-exists-questionmark"><a href="#has-and-belongs-to-many%E3%81%A7%E8%BF%BD%E5%8A%A0%E3%81%95%E3%82%8C%E3%82%8B%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89-collection-exists-questionmark">4.4.1.14 <code>collection.exists?(...)</code></a></h6><p><code>collection.exists?</code>メソッドは、指定された条件に合うオブジェクトがコレクションの中に存在するかどうかをチェックします。このメソッドで使用される文法は、<code>ActiveRecord::Base.exists?</code>で使用されているものと同じです。</p><h6 id="has-and-belongs-to-manyで追加されるメソッド-collection-build-attributes"><a href="#has-and-belongs-to-many%E3%81%A7%E8%BF%BD%E5%8A%A0%E3%81%95%E3%82%8C%E3%82%8B%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89-collection-build-attributes">4.4.1.15 <code>collection.build(attributes = {})</code></a></h6><p><code>collection.build</code>メソッドは、関連付けが行われたオブジェクトを1つ返します。このオブジェクトは、渡された属性でインスタンス化され、その結合テーブルを介してリンクが作成されます。ただし、関連付けられたオブジェクトはこの時点では保存s慣れて<em>いない</em>ことにご注意ください。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 @assembly = @part.assemblies.build({assembly_name: "Transmission housing"})
 
@@ -1900,7 +1900,7 @@ end
 
 </pre>
 </div>
-<p><code>before_add</code>コールバックが例外を発生した場合、オブジェクトはコレクションに追加されません。同様に、<code>before_remove</code>で例外が発生した場合も、オブジェクトはコレクションに追加されません。</p><h4 id="関連付けの拡張"><a href="#%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91%E3%81%AE%E6%8B%A1%E5%BC%B5">4.6 関連付けの拡張</a></h4><p>Railsは自動的に関連付けのプロキシオブジェクトをビルドしますが、開発者はこれをカスタマイズすることができます。無名モジュール(anonymous module)を使用してこれらのオブジェクトを拡張(検索、作成などのメソッドを追加)することができます。例：</p><div class="code_container">
+<p><code>before_add</code>コールバックが例外を発生した場合、オブジェクトはコレクションに追加されません。同様に、<code>before_remove</code>で例外が発生した場合も、オブジェクトはコレクションに削除されません。</p><h4 id="関連付けの拡張"><a href="#%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91%E3%81%AE%E6%8B%A1%E5%BC%B5">4.6 関連付けの拡張</a></h4><p>Railsは自動的に関連付けのプロキシオブジェクトをビルドしますが、開発者はこれをカスタマイズすることができます。無名モジュール(anonymous module)を使用してこれらのオブジェクトを拡張(検索、作成などのメソッドを追加)することができます。例：</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class Customer &lt; ActiveRecord::Base
   has_many :orders do

@@ -984,7 +984,7 @@ class Customer < ActiveRecord::Base
 end
 ```
 
-LineItemから顧客(Customer)を`@line_item.order.customer`のように直接取り出す機会が頻繁にあるのであれば、LineItemとOrderの関連付けを行なう時にCustomerをあらかじめincludeしておくことで無駄なクエリを減らし、効率を高めることができます。
+LineItemから顧客名(Customer)を`@line_item.order.customer`のように直接取り出す機会が頻繁にあるのであれば、LineItemとOrderの関連付けを行なう時にCustomerをあらかじめincludeしておくことで無駄なクエリを減らし、効率を高めることができます。
 
 ```ruby
 class LineItem < ActiveRecord::Base
