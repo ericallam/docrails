@@ -2,6 +2,9 @@
 
 # Update HTMLs using 'archive.zip' downloaded by GTT
 
+if [ -n "$GTT_DOWNLOADER" ]; then
+    bundle exec gtt-downloader
+fi
 ruby allocate.rb
 rm -rf output/ja
 bundle exec rake guides:generate:html GUIDES_LANGUAGE=ja

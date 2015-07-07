@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.1.3'
+ruby '2.2.2'
 
 gem 'bundler'
 gem 'jekyll'
@@ -17,6 +17,10 @@ gem 'nokogiri'
 
 # Monitoring tools
 gem 'newrelic_rpm'
+
+group :development do
+  gem 'gtt-downloader'
+end
 
 # for test
 group :test do

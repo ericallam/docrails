@@ -802,7 +802,7 @@ alert(eval('document.body.inne' + 'rHTML'));
 次の問題は、MySpaceは"javascript"という単語をフィルタしていましたが、「java&lt;NEWLINE&gt;script」と書くことでこのフィルタを回避できてしまったことでした。
 
 ```html
-<div id="mycode" expr="alert('hah!')" style="background:url('java↵ script:eval(document.all.mycode.expr)')">
+<div id="mycode" expr="alert('hah!')" style="background:url('java [BR] script:eval(document.all.mycode.expr)')">
 ```
 
 次の問題は、ワームの作者がCSRFセキュリティトークンを利用していたことでした。これがなければ友達リクエストをばらまくということはできない相談だったでしょう。ワーム作者は、ユーザーが追加される直前にページに送信されたGETリクエストの結果を解析してCSRFトークンを得ていました。

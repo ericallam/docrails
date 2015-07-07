@@ -1,235 +1,232 @@
-Development Dependencies Install
+﻿
+
+
+Rails コア開発環境の構築方法
 ================================
 
-This guide covers how to setup an environment for Ruby on Rails core development.
+本ガイドでは、Ruby on Rails自体の開発環境を構築する方法について解説します。
 
-After reading this guide, you will know:
+このガイドの内容:
 
-* How to set up your machine for Rails development
-* How to run specific groups of unit tests from the Rails test suite
-* How the ActiveRecord portion of the Rails test suite operates
+* 自分のPCをRails開発用にセットアップする方法
+* Railsのテストスイートの中から特定のグループを実行する方法
+* RailsテストスイートのうちActiveRecordに関する部分の動作
 
 --------------------------------------------------------------------------------
 
-The Easy Way
+おすすめの方法
 ------------
 
-The easiest and recommended way to get a development environment ready to hack is to use the [Rails development box](https://github.com/rails/rails-dev-box).
+[Rails development box](https://github.com/rails/rails-dev-box)にあるできあいのdevelopment環境を入手するのがおすすめです。
 
-The Hard Way
+面倒な方法
 ------------
 
-In case you can't use the Rails development box, see section above, these are the steps to manually build a development box for Ruby on Rails core development.
+Rails development boxを利用できない事情がある場合は、この先をお読みください。Ruby on Railsコア開発で必要なdevelopment boxを手動でビルドする手順を解説します。
 
-### Install Git
+### Gitをインストールする
 
-Ruby on Rails uses Git for source code control. The [Git homepage](http://git-scm.com/) has installation instructions. There are a variety of resources on the net that will help you get familiar with Git:
+Ruby on Railsではソースコード管理にGitを使用しています。インストール方法については[Gitホームページ](http://git-scm.com/)に記載されています。Gitを学ぶための資料はネット上に山ほどあります (特記ないものは英語)。
 
-* [Try Git course](http://try.github.io/) is an interactive course that will teach you the basics.
-* The [official Documentation](http://git-scm.com/documentation) is pretty comprehensive and also contains some videos with the basics of Git
-* [Everyday Git](http://schacon.github.io/git/everyday.html) will teach you just enough about Git to get by.
-* The [PeepCode screencast](https://peepcode.com/products/git) on Git is easier to follow.
-* [GitHub](http://help.github.com) offers links to a variety of Git resources.
-* [Pro Git](http://git-scm.com/book) is an entire book about Git with a Creative Commons license.
+* [Try Git course](http://try.github.io/)は、対話的な操作のできるコースで基礎を学べます。
+* [Git公式ドキュメント](http://git-scm.com/documentation)には多くの情報がまとめられており、Gitの基礎を学べる動画もあります。
+* [Everyday Git](http://schacon.github.io/git/everyday.html)は最小限必要なGitの知識を学ぶのに向いています。
+* [PeepCode screencast](https://peepcode.com/products/git)のGitのページは学びやすいスクリーンキャストです。
+* [GitHub](http://help.github.com)にはさまざまなGit関連リソースへのリンクがあります。
+* [Pro Git日本語版](https://progit-ja.github.io/)ではGitについてすべてをカバーした書籍がさまざまな形式で翻訳されており、クリエイティブ・コモンズ・ライセンスで公開されています。
 
-### Clone the Ruby on Rails Repository
+### Ruby on Railsリポジトリをクローンする
 
-Navigate to the folder where you want the Ruby on Rails source code (it will create its own `rails` subdirectory) and run:
+Ruby on Railsのソースコードを置きたいディレクトリ (そこに`rails`ディレクトリが作成されます) で以下を実行します。
 
 ```bash
 $ git clone git://github.com/rails/rails.git
 $ cd rails
 ```
 
-### Set up and Run the Tests
+### セットアップとテストを行う
 
-The test suite must pass with any submitted code. No matter whether you are writing a new patch, or evaluating someone else's, you need to be able to run the tests.
+リポジトリに送信されるコードは、テストスイートにパスしなければなりません。自分でパッチを書いた場合や、他の人が書いたパッチを詳しく評価する場合にも、テストを実行できるようにしておく必要があります。
 
-Install first libxml2 and libxslt together with their development files for Nokogiri. In Ubuntu that's
-
-```bash
-$ sudo apt-get install libxml2 libxml2-dev libxslt1-dev
-```
-
-If you are on Fedora or CentOS, you can run
+最初にSQLite3をインストールし、`sqlite3` gem用のSQLite3開発ファイルもインストールします。Mac OS Xの場合は以下を実行します。
 
 ```bash
-$ sudo yum install libxml2 libxml2-devel libxslt libxslt-devel
+$ brew install sqlite3
 ```
 
-If you are running Arch Linux, you're done with:
-
-```bash
-$ sudo pacman -S libxml2 libxslt
-```
-
-On FreeBSD, you just have to run:
-
-```bash
-# pkg_add -r libxml2 libxslt
-```
-
-Alternatively, you can install the `textproc/libxml2` and `textproc/libxslt` ports.
-
-If you have any problems with these libraries, you can install them manually by compiling the source code. Just follow the instructions at the [Red Hat/CentOS section of the Nokogiri tutorials](http://nokogiri.org/tutorials/installing_nokogiri.html#red_hat__centos) .
-
-Also, SQLite3 and its development files for the `sqlite3-ruby` gem - in Ubuntu you're done with just
+Ubuntuなら以下で行えます。
 
 ```bash
 $ sudo apt-get install sqlite3 libsqlite3-dev
 ```
 
-And if you are on Fedora or CentOS, you're done with
+FedoraやCentOSの場合は以下を実行します。
 
 ```bash
 $ sudo yum install sqlite3 sqlite3-devel
 ```
 
-If you are on Arch Linux, you will need to run:
+Arch Linuxなら以下を実行する必要があります。
 
 ```bash
 $ sudo pacman -S sqlite
 ```
 
-For FreeBSD users, you're done with:
+FreeBSDの場合は以下を実行します。
 
 ```bash
-# pkg_add -r sqlite3
+# pkg install sqlite3
 ```
 
-Or compile the `databases/sqlite3` port.
+あるいは`databases/sqlite3`のportsをコンパイルします。
 
-Get a recent version of [Bundler](http://gembundler.com/)
+[Bundler](http://bundler.io/)の最新バージョンを入手します。
 
 ```bash
 $ gem install bundler
 $ gem update bundler
 ```
 
-and run:
+続いて以下を実行します。
 
 ```bash
 $ bundle install --without db
 ```
 
-This command will install all dependencies except the MySQL and PostgreSQL Ruby drivers. We will come back to these soon.
+このコマンドによって、MySQLとPostgreSQL用のRubyドライバを除いて必要なファイルがすべてインストールされます。続きは後ほど行います。
 
-NOTE: If you would like to run the tests that use memcached, you need to ensure that you have it installed and running.
+NOTE: memcachedを使用するテストを実行したい場合は、memcachedがインストールされ、実行可能であることを確認する必要があります。
 
-You can use [Homebrew](http://brew.sh/) to install memcached on OSX:
+OS Xの場合、[Homebrew](http://brew.sh/)を使用してmemcachedをインストールできます。
 
 ```bash
 $ brew install memcached
 ```
 
-On Ubuntu you can install it with apt-get:
+Ubuntuの場合はapt-getを使用できます。
 
 ```bash
 $ sudo apt-get install memcached
 ```
 
-Or use yum on Fedora or CentOS:
+FedoraやCentOSの場合はyumを使用します。
 
 ```bash
 $ sudo yum install memcached
 ```
 
-With the dependencies now installed, you can run the test suite with:
+Arch Linuxの場合は以下のようにします。
+
+```bash
+$ sudo pacman -S memcached
+```
+
+FreeBSDの場合は以下のようにします。
+
+```bash
+# pkg install memcached
+```
+
+あるいは`databases/memocached`のportsをコンパイルすることもできます。
+
+依存ファイルのインストールがこれで終わったので、以下のコマンドでテストスイートを実行します。
 
 ```bash
 $ bundle exec rake test
 ```
 
-You can also run tests for a specific component, like Action Pack, by going into its directory and executing the same command:
+Action Packなど、特定のコンポーネントのテストだけを実行することもできます。該当のディレクトリに移動して同じコマンドを実行します。
 
 ```bash
 $ cd actionpack
 $ bundle exec rake test
 ```
 
-If you want to run the tests located in a specific directory use the `TEST_DIR` environment variable. For example, this will run the tests in the `railties/test/generators` directory only:
+特定のディレクトリにあるテストを実行したい場合、    `TEST_DIR`環境変数を使用する方法もあります。たとえば、`railties/test/generators`ディレクトリのテストだけを実行したい場合は以下のようにします。
 
 ```bash
 $ cd railties
 $ TEST_DIR=generators bundle exec rake test
 ```
 
-You can run the tests for a particular file by using:
+以下の方法で特定のテストだけを実行することもできます。
 
 ```bash
 $ cd actionpack
 $ bundle exec ruby -Itest test/template/form_helper_test.rb
 ```
 
-Or, you can run a single test in a particular file:
+特定のファイルに含まれるひとつのテストだけを実行するには以下のようにします。
 
 ```bash
 $ cd actionpack
 $ bundle exec ruby -Itest path/to/test.rb -n test_name
 ```
 
-### Active Record Setup
+### Active Recordをセットアップする
 
-The test suite of Active Record attempts to run four times: once for SQLite3, once for each of the two MySQL gems (`mysql` and `mysql2`), and once for PostgreSQL. We are going to see now how to set up the environment for them.
+Active Recordのテストスイートの実行は4回試みられます。SQLite3で1回、MySQLの2つのgem(`mysql`と`mysql2`)でそれぞれ1回、PostgreSQLで1回です。それぞれについて環境構築方法を解説します。
 
-WARNING: If you're working with Active Record code, you _must_ ensure that the tests pass for at least MySQL, PostgreSQL, and SQLite3. Subtle differences between the various adapters have been behind the rejection of many patches that looked OK when tested only against MySQL.
+WARNING: Active Recordのコードに手を付ける場合、最低でもMySQL、PostgreSQL、SQLite3のテストにはすべてパスしなければなりません。MySQLでしかテストを行なっていないようなパッチは、一見問題なさそうに見えても、さまざまなアダプタごとの微妙な違いに対応しきれていないことが非常に多く、ほとんどの場合受理されません。
 
-#### Database Configuration
+#### データベースの設定
 
-The Active Record test suite requires a custom config file: `activerecord/test/config.yml`. An example is provided in `activerecord/test/config.example.yml` which can be copied and used as needed for your environment.
+Active Recordテストスイートでは、`activerecord/test/config.yml`というカスタム設定ファイルが必要です。設定例は`activerecord/test/config.example.yml`に記載されているので、これをコピーして各環境で使用できます。
 
-#### MySQL and PostgreSQL
+#### MySQLとPostgreSQL
 
-To be able to run the suite for MySQL and PostgreSQL we need their gems. Install first the servers, their client libraries, and their development files. In Ubuntu just run
+MySQLとPostgreSQLに対してテストスイートを実行できるようにするには、そのためのgemも必要です。最初にサーバーをインストールし、次にクライアントライブラリをインストール、そして開発用ファイルをインストールします。
+
+OS Xの場合、以下を実行できます。
+
+```bash
+$ brew install mysql
+$ brew install postgresql
+```
+
+詳しくはHomebrewのヘルプを参照してください。
+
+Ubuntuの場合は以下を実行します。
 
 ```bash
 $ sudo apt-get install mysql-server libmysqlclient15-dev
 $ sudo apt-get install postgresql postgresql-client postgresql-contrib libpq-dev
 ```
 
-On Fedora or CentOS, just run:
+FedoraやCentOSの場合は以下を実行します。
 
 ```bash
 $ sudo yum install mysql-server mysql-devel
 $ sudo yum install postgresql-server postgresql-devel
 ```
 
-If you are running Arch Linux, MySQL isn't supported anymore so you will need to
-use MariaDB instead (see [this announcement](https://www.archlinux.org/news/mariadb-replaces-mysql-in-repositories/)):
+Arch LinuxではMySQLがサポート対象外になったため、MariaDBを代わりに使用します (詳細は[MariaDB replaces MySQL in repositories](https://www.archlinux.org/news/mariadb-replaces-mysql-in-repositories/)を参照)。
 
 ```bash
 $ sudo pacman -S mariadb libmariadbclient mariadb-clients
 $ sudo pacman -S postgresql postgresql-libs
 ```
 
-FreeBSD users will have to run the following:
+FreeBSDの場合は以下を実行する必要があります。
 
 ```bash
-# pkg_add -r mysql56-client mysql56-server
-# pkg_add -r postgresql92-client postgresql92-server
+# pkg install mysql56-client mysql56-server
+# pkg install postgresql93-client postgresql93-server
 ```
 
-You can use [Homebrew](http://brew.sh/) to install MySQL and PostgreSQL on OSX:
+Portsを使用してインストールすることもできます (`databases`フォルダの下に置かれます)。
+MySQLのインストール中に問題が生じた場合は、[MySQLドキュメント](http://dev.mysql.com/doc/refman/5.1/en/freebsd-installation.html) (英語) を参照してください。
 
-```bash
-$ brew install mysql
-$ brew install postgresql
-```
-Follow instructions given by [Homebrew](http://brew.sh/) to start these.
-
-Or install them through ports (they are located under the `databases` folder).
-If you run into troubles during the installation of MySQL, please see [the MySQL documentation](http://dev.mysql.com/doc/refman/5.1/en/freebsd-installation.html).
-
-After that, run:
+以上の設定が終わったら、以下を実行します。
 
 ```bash
 $ rm .bundle/config
 $ bundle install
 ```
 
-First, we need to delete `.bundle/config` because Bundler remembers in that file that we didn't want to install the "db" group (alternatively you can edit the file).
+最初に、`.bundle/config`を削除します。これは、インストールしたくない"db"グループのファイルをBundlerが覚えてしまっているのを消去するためです。ファイルを削除する代わりに編集しても構いません。
 
-In order to be able to run the test suite against MySQL you need to create a user named `rails` with privileges on the test databases:
+MySQLでテストスイートを実行できるようにするには、データベースに`rails`というユーザーアカウントを作成し、このアカウントにtestデータベースへのアクセス権を与える必要があります。
 
 ```bash
 $ mysql -uroot -p
@@ -243,47 +240,48 @@ mysql> GRANT ALL PRIVILEGES ON inexistent_activerecord_unittest.*
        to 'rails'@'localhost';
 ```
 
-and create the test databases:
+続いてtestデータベースを作成します。
 
 ```bash
 $ cd activerecord
-$ bundle exec rake mysql:build_databases
+$ bundle exec rake db:mysql:build
 ```
 
-PostgreSQL's authentication works differently. A simple way to set up the development environment for example is to run with your development account
-This is not needed when installed via [Homebrew](http://brew.sh).
+PostgreSQLでは認証方法が異なります。LinuxやBSDでdevelop環境にdevelopmentアカウントを設定するには、以下を実行します。
 
 ```bash
 $ sudo -u postgres createuser --superuser $USER
 ```
-And for OS X (when installed via [Homebrew](http://brew.sh))
+
+OS Xの場合は以下を実行します。
+
 ```bash
 $ createuser --superuser $USER
 ```
 
-and then create the test databases with
+続いて以下を実行してtestデータベースを作成します。
 
 ```bash
 $ cd activerecord
-$ bundle exec rake postgresql:build_databases
+$ bundle exec rake db:postgresql:build
 ```
 
-It is possible to build databases for both PostgreSQL and MySQL with
+PostgreSQLとMySQLの両方を使用するデータベースをビルドすることもできます。
 
 ```bash
 $ cd activerecord
 $ bundle exec rake db:create
 ```
 
-You can cleanup the databases using
+データベースを消去(drop)するには以下を実行します。
 
 ```bash
 $ cd activerecord
 $ bundle exec rake db:drop
 ```
 
-NOTE: Using the rake task to create the test databases ensures they have the correct character set and collation.
+NOTE: testデータベースの作成にはrake タスクを使用してください。これにより、文字セットと照合順序が正しく設定されます。
 
-NOTE: You'll see the following warning (or localized warning) during activating HStore extension in PostgreSQL 9.1.x or earlier: "WARNING: => is deprecated as an operator".
+NOTE: PostgreSQL 9.1.x 以前のHStore拡張機能を有効にしようとすると次のような警告 (メッセージはローカライズされることもあります) が表示されます: 「WARNING: => is deprecated as an operator」
 
-If you're using another database, check the file `activerecord/test/config.yml` or `activerecord/test/config.example.yml` for default connection information. You can edit `activerecord/test/config.yml` to provide different credentials on your machine if you must, but obviously you should not push any such changes back to Rails.
+他のデータベースを採用する場合は、`activerecord/test/config.yml`や`activerecord/test/config.example.yml`にデフォルトの接続情報があることをチェックしてください。必要であれば`activerecord/test/config.yml`を編集して、認証情報を別のものに変更することもできます。ただし、この臨時の認証情報をRailsのリポジトリに反映しないよう気を付けてください。

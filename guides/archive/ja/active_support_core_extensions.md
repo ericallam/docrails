@@ -1070,7 +1070,7 @@ end
 
 ```ruby
 module A
-class B
+  class B
     # first_nameインスタンスreaderは生成されない
     cattr_accessor :first_name, instance_reader: false
     # last_name= インスタンスwriterは生成されない
@@ -2867,7 +2867,7 @@ NOTE: 定義ファイルの場所は`active_support/core_ext/hash/keys.rb`です
 ```
 レシーバ自体のキーに対して破壊的なブロック操作を適用する`transform_values!`メソッドもあります。
 
-NOTE: 定義ファイルの場所は`active_support/core_text/hash/transform_values.rb`です。
+NOTE: 定義ファイルの場所は`active_support/core_ext/hash/transform_values.rb`です。
 
 ### スライス
 

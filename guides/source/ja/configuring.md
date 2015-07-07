@@ -71,7 +71,7 @@ Rails全般に対する設定を行うには、`Rails::Railtie`オブジェク�
 
 * `config.cache_store`はRailsでのキャッシュ処理に使用されるキャッシュストアを設定します。指定できるオプションは次のシンボル`:memory_store`、`:file_store`、`:mem_cache_store`、`:null_store`のいずれか、またはキャッシュAPIを実装するオブジェクトです。`tmp/cache`ディレクトリが存在する場合のデフォルトは`:file_store`に設定され、それ以外の場合のデフォルトは`:memory_store`に設定されます。
 
-* `config.colorize_logging`は、出力するログ情報にANSI色情報を与えるかどうかを指定します。. デフォルトはtrueです。
+* `config.colorize_logging`は、出力するログ情報にANSI色情報を与えるかどうかを指定します。デフォルトはtrueです。
 
 * `config.consider_all_requests_local`はフラグです。このフラグがtrueの場合、どのような種類のエラーが発生した場合にも詳細なデバッグ情報がHTTPレスポンスに出力され、アプリケーションの実行時コンテキストが`Rails::Info`コントローラによって`/rails/info/properties`に出力されます。このフラグはdevelopmentモードとtestモードではtrue、productionモードではfalseに設定されます。もっと細かく制御したい場合は、このフラグをfalseに設定してから、コントローラで`local_request?`メソッドを実装し、エラー時にどのデバッグ情報を出力するかをそこで指定してください。
 
@@ -539,7 +539,7 @@ development:
 $ echo $DATABASE_URL
 postgresql://localhost/my_database
 
-$ rails runner 'puts ActiveRecord::Base.connections'
+$ rails runner 'puts ActiveRecord::Base.configurations'
 {"development"=>{"adapter"=>"postgresql", "host"=>"localhost", "database"=>"my_database"}}
 ```
 
@@ -556,7 +556,7 @@ development:
 $ echo $DATABASE_URL
 postgresql://localhost/my_database
 
-$ rails runner 'puts ActiveRecord::Base.connections'
+$ rails runner 'puts ActiveRecord::Base.configurations'
 {"development"=>{"adapter"=>"postgresql", "host"=>"localhost", "database"=>"my_database", "pool"=>5}}
 ```
 
@@ -572,7 +572,7 @@ development:
 $ echo $DATABASE_URL
 postgresql://localhost/my_database
 
-$ rails runner 'puts ActiveRecord::Base.connections'
+$ rails runner 'puts ActiveRecord::Base.configurations'
 {"development"=>{"adapter"=>"sqlite3", "database"=>"NOT_my_database"}}
 ```
 
