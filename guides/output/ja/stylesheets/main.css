@@ -278,7 +278,7 @@ body {
 #subCol {
   position: absolute;
   z-index: 0;
-  top: -24px;
+  top: -7px;
   right: 0;
   background: #FFF;
   width: 17em;
@@ -858,11 +858,17 @@ div.code_container {
 
 @media screen and (max-width: 480px) {
   #subCol .ebook-button {
-    border-radius: 0;
-    -webkit-border-radius: 0;
-    -moz-border-radius: 0;
-    margin: 0;
+    border-radius: 7px;
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    margin: 13px 4px;
     font-size: 18px;
+    background: #751913;
+    background: -webkit-gradient(linear, left top, left bottom, from(#c52f24), to(#751913));
+    background: -webkit-linear-gradient(top, #c52f24, #751913);
+    background: -moz-linear-gradient(top, #c52f24, #751913);
+    background: -ms-linear-gradient(top, #c52f24, #751913);
+    background: -o-linear-gradient(top, #c52f24, #751913);
   }
 }
 
