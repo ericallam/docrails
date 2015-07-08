@@ -277,14 +277,16 @@ body {
 #subCol {
   position: absolute;
   z-index: 0;
-  top: 21px;
+  top: -4px;
   right: 0;
   background: #FFF;
-  padding: 1em 1.5em 1em 1.25em;
   width: 17em;
   font-size: 0.9285em;
   line-height: 1.3846em;
   margin-right: 1em;
+  border-radius: 1em 1em 0 0;
+  -webkit-border-radius: 1em 1em 0 0;
+  -moz-border-radius: 1em 1em 0 0;
 }
 
 
@@ -296,6 +298,17 @@ body {
     margin-right: 0;
     padding-right: 1.25em;
     min-height: 273px;
+    border-radius: 0;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    padding: 10px;
+    height: 350px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  #subCol {
+    height: 440px;
   }
 }
 
@@ -688,6 +701,40 @@ h6 code {
   }
 }
 
+#mainCol dd.ebook-detail, #subCol dd.ebook-detail {
+  background: #FFF9D8;
+  border: none;
+  padding: 20px;
+  margin-left: 0;
+  margin-top: 0.25em;
+}
+
+@media screen and (max-width: 800px) {
+  #subCol dd.work-in-progress, #subCol dd.ebook-detail {
+    margin-left: 270px;
+  }
+  #subCol dd.ebook-detail {
+    margin-top: 10px;
+    margin-right: 10px;
+  }
+  #subCol dd {
+    border-bottom: 0;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  #subCol dd.ebook-detail {
+    margin-left: 0;
+    margin-right: 0;
+  }
+  #subCol dd.kinebook-detaildle {
+    margin-top: 0;
+  }
+  #subCol dd {
+    border-bottom: 0;
+  }
+}
+
 #mainCol div.warning, #subCol dd.warning {
   background: #f9d9d8 url(../images/tab_red.gif) no-repeat left top;
   border: none;
@@ -759,21 +806,46 @@ div.code_container {
   font-size: 1.1667em;
 }
 
+#subCol .ebook {
+  background-color: #fff;
+  border: solid 1px #aaa;
+  border-radius: 1em;
+  -webkit-border-radius: 1em;
+  -moz-border-radius: 1em;
+  width: 220px;
+}
+
 #subCol .ebook img{
-    box-shadow: -2px 6px 10px 0px rgba(0,0,0,0.4);
-    border-right: double 4px #B2231F;
-    border-bottom: double 3px #B2231F;
-    width: 188px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+  box-shadow: -2px 6px 10px 0px rgba(0,0,0,0.4);
+  border-right: double 4px #B2231F;
+  width: 150px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20px;
+}
+#subCol .ebook-button {
+  padding: 10px 10px 10px 0;
+  margin-top: 22px;
+  border-radius: 0 0 1em 1em;
+  -webkit-border-radius: 0 0 1em 1em;
+  -moz-border-radius: 0 0 1em 1em;
+  text-align: center;
+  background-color: #C52F24;
+  color: #fff;
 }
 @media screen and (max-width: 800px) {
-  #subCol .ebook img { float: left; }
+  #subCol .ebook {
+    margin: 10px;
+    float: left;
+  }
 }
 
 @media screen and (max-width: 480px) {
-  #subCol .ebook img { float: none; }
+  #subCol .ebook {
+    margin: 0 auto;
+    float: none;
+  }
 }
 
 
