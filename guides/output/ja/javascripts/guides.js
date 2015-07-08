@@ -58,8 +58,8 @@ $(document).ready(function() {
   SyntaxHighlighter.all();
 });
 
-// Link to Gumload
-jQuery('.ebook').click(function() {
+// Link to 特設ページ
+jQuery('.ebook-button').click(function() {
   window.location=$(this).find("a").attr("href");
   return false;
 });

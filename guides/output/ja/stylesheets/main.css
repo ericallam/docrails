@@ -302,13 +302,13 @@ body {
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
     padding: 10px;
-    height: 320px;
+    height: 445px;
   }
 }
 
 @media screen and (max-width: 480px) {
   #subCol {
-    height: 440px;
+    padding: 0;
   }
 }
 
@@ -713,7 +713,7 @@ h6 code {
 @media screen and (max-width: 800px) {
   #subCol dd.ebook-detail {
     margin-top: 10px;
-    margin-left: 270px;
+    margin-left: 350px;
     margin-right: 10px;
     border: none;
     padding: 5px;
@@ -812,27 +812,58 @@ div.code_container {
   margin-bottom: 10px;
 }
 
-#subCol .ebook:active {
+#subCol .ebook-button:active {
   box-shadow: -2px 1px 13px 2px rgba(0,0,0,0.4) inset;
 }
 
-#subCol .ebook:hover {
-  filter: alpha(opacity=90);
-  -moz-opacity: 0.9;
-  opacity: 0.9;
-  cursor: pointer;
-  background-color: #FaFaFa;
+#subCol .ebook-button:hover {
+  background-color: #980905;
+}
+
+@media screen and (max-width: 800px) {
+  #subCol .ebook {
+    width: 300px;
+    margin: 10px;
+    float: left;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  #subCol .ebook {
+    border: none;
+    border-radius: 0;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    margin: 0 auto;
+    width: 100%;
+    float: none;
+  }
 }
 
 #subCol .ebook img{
   box-shadow: -2px 6px 10px 0px rgba(0,0,0,0.4);
   border-right: double 4px #B2231F;
-  width: 150px;
+  width: 190px;
   display: block;
   margin-left: auto;
   margin-right: auto;
   margin-top: 20px;
 }
+
+@media screen and (max-width: 800px) {
+  #subCol .ebook img {
+    width: 80%;
+    border-right: none;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  #subCol .ebook img {
+    width: 98%;
+    box-shadow: none;
+  }
+}
+
 #subCol .ebook-button {
   padding: 10px 10px 10px 0;
   margin-top: 22px;
@@ -848,17 +879,17 @@ div.code_container {
     color: #fff;
 }
 
-@media screen and (max-width: 800px) {
-  #subCol .ebook {
-    margin: 10px;
-    float: left;
-  }
+#subCol .ebook-button:hover {
+  cursor: pointer;
 }
 
 @media screen and (max-width: 480px) {
-  #subCol .ebook {
-    margin: 0 auto;
-    float: none;
+  #subCol .ebook-button {
+    border-radius: 0;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    margin: 0;
+    font-size: 18px;
   }
 }
 
