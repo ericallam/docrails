@@ -302,7 +302,7 @@ body {
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
     padding: 10px;
-    height: 350px;
+    height: 320px;
   }
 }
 
@@ -813,6 +813,19 @@ div.code_container {
   -webkit-border-radius: 1em;
   -moz-border-radius: 1em;
   width: 220px;
+  margin-bottom: 10px;
+}
+
+#subCol .ebook:active {
+  box-shadow: -2px 1px 13px 2px rgba(0,0,0,0.4) inset;
+}
+
+#subCol .ebook:hover {
+  filter: alpha(opacity=90);
+  -moz-opacity: 0.9;
+  opacity: 0.9;
+  cursor: pointer;
+  background-color: #FaFaFa;
 }
 
 #subCol .ebook img{
