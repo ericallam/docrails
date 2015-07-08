@@ -296,15 +296,11 @@ body {
   #subCol {
     position: static;
     width: inherit;
-    margin-left: -1em;
-    margin-right: 0;
-    padding-right: 1.25em;
-    min-height: 273px;
-    border-radius: 0;
-    -webkit-border-radius: 0;
-    -moz-border-radius: 0;
-    padding: 10px;
-    height: 445px;
+    min-height: 491px;
+    margin-right: 6px;
+    border-radius: 1em;
+    -webkit-border-radius: 1em;
+    -moz-border-radius: 1em;
   }
 }
 
@@ -794,8 +790,8 @@ div.code_container {
 
 @media screen and (max-width: 800px) {
   #subCol .ebook {
-    width: 300px;
-    margin: 10px;
+    width: 100%;
+    margin: 0px;
     float: left;
   }
 }
@@ -824,10 +820,16 @@ div.code_container {
 
 @media screen and (max-width: 800px) {
   #subCol .ebook img {
-    width: 80%;
+    width: 47%;
+    float: left;
     border-right: none;
+    margin-left: 20px;
+  }
+  #subCol #ebook-left {
+    margin-left: 3px;
   }
 }
+
 
 @media screen and (max-width: 480px) {
   #subCol .ebook img {
@@ -838,13 +840,15 @@ div.code_container {
 
 #subCol .ebook-button {
   padding: 10px 10px 10px 0;
-  margin-top: 22px;
+  position: relative;
+  top: 15px;
   border-radius: 0 0 1em 1em;
   -webkit-border-radius: 0 0 1em 1em;
   -moz-border-radius: 0 0 1em 1em;
   text-align: center;
   background-color: #C52F24;
   color: #fff;
+  clear: both;
 }
 
 #subCol .ebook-button a {
