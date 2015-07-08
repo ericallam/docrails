@@ -812,7 +812,7 @@ div.code_container {
 }
 
 #subCol .ebook img{
-  box-shadow: -2px 6px 10px 0px rgba(0,0,0,0.4);
+  box-shadow: 0px 6px 10px 0px rgba(0,0,0,0.4);
   border-right: double 4px #B2231F;
   width: 180px;
   display: block;
