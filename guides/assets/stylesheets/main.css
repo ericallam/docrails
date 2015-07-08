@@ -702,20 +702,21 @@ h6 code {
 }
 
 #mainCol dd.ebook-detail, #subCol dd.ebook-detail {
-  background: #FFF9D8;
-  border: none;
+  background: #fdfdfd;
+  border: solid 1px #ABABAB;
   padding: 20px;
   margin-left: 0;
   margin-top: 0.25em;
+  font-size: 14px;
 }
 
 @media screen and (max-width: 800px) {
-  #subCol dd.work-in-progress, #subCol dd.ebook-detail {
-    margin-left: 270px;
-  }
   #subCol dd.ebook-detail {
     margin-top: 10px;
+    margin-left: 270px;
     margin-right: 10px;
+    border: none;
+    padding: 5px;
   }
   #subCol dd {
     border-bottom: 0;
@@ -726,12 +727,7 @@ h6 code {
   #subCol dd.ebook-detail {
     margin-left: 0;
     margin-right: 0;
-  }
-  #subCol dd.kinebook-detaildle {
-    margin-top: 0;
-  }
-  #subCol dd {
-    border-bottom: 0;
+    padding: 12px;
   }
 }
 
@@ -808,7 +804,7 @@ div.code_container {
 
 #subCol .ebook {
   background-color: #fff;
-  border: solid 1px #aaa;
+  border: solid 1px #DADADA;
   border-radius: 1em;
   -webkit-border-radius: 1em;
   -moz-border-radius: 1em;
