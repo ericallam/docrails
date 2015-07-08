@@ -859,7 +859,12 @@ div.code_container {
   -webkit-border-radius: 0 0 1em 1em;
   -moz-border-radius: 0 0 1em 1em;
   text-align: center;
-  background-color: #C52F24;
+  background: #751913;
+  background: -webkit-gradient(linear, left top, left bottom, from(#c52f24), to(#751913));
+  background: -webkit-linear-gradient(top, #c52f24, #751913);
+  background: -moz-linear-gradient(top, #c52f24, #751913);
+  background: -ms-linear-gradient(top, #c52f24, #751913);
+  background: -o-linear-gradient(top, #c52f24, #751913);
   color: #fff;
   clear: both;
 }
