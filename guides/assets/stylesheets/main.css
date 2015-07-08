@@ -282,7 +282,7 @@ body {
   right: 0;
   background: #FFF;
   width: 17em;
-  height: 340px;
+  height: 330px;
   font-size: 0.9285em;
   line-height: 1.3846em;
   margin-right: 1em;
@@ -301,6 +301,7 @@ body {
     border-radius: 1em;
     -webkit-border-radius: 1em;
     -moz-border-radius: 1em;
+    background-color: transparent;
   }
 }
 
@@ -308,6 +309,7 @@ body {
   #subCol {
     height: 100%;
     padding: 0;
+    margin-right: 10px;
   }
 }
 
@@ -805,6 +807,7 @@ div.code_container {
     margin: 0 auto;
     width: 100%;
     float: none;
+    background-color: transparent;
   }
 }
 
@@ -816,6 +819,11 @@ div.code_container {
   margin-left: auto;
   margin-right: auto;
   margin-top: 20px;
+  display: block;
+}
+
+#subCol #ebook-right {
+  display:none;
 }
 
 @media screen and (max-width: 800px) {
@@ -825,16 +833,21 @@ div.code_container {
     border-right: none;
     margin-left: 20px;
   }
-  #subCol #ebook-left {
-    margin-left: 3px;
+  #subCol #ebook-right {
+    margin-left: 1px;
+    display: block;
   }
 }
 
 
 @media screen and (max-width: 480px) {
   #subCol .ebook img {
-    width: 98%;
+    width: 100%;
     box-shadow: none;
+    margin: 0;
+  }
+  #subCol #ebook-right {
+    display:none;
   }
 }
 
