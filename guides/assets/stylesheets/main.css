@@ -308,6 +308,7 @@ body {
 
 @media screen and (max-width: 480px) {
   #subCol {
+    height: 100%;
     padding: 0;
   }
 }
