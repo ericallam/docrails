@@ -847,6 +847,11 @@ div.code_container {
   background-color: #C52F24;
   color: #fff;
 }
+
+#subCol .ebook-button a {
+    color: #fff;
+}
+
 @media screen and (max-width: 800px) {
   #subCol .ebook {
     margin: 10px;

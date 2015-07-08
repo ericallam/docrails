@@ -57,3 +57,9 @@ $(document).ready(function() {
   SyntaxHighlighter.defaults['auto-links'] = false;
   SyntaxHighlighter.all();
 });
+
+// Link to Gumload
+jQuery('.ebook').click(function() {
+  window.location=$(this).find("a").attr("href");
+  return false;
+});
