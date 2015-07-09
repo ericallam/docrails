@@ -67,7 +67,7 @@ end
 キューへのジョブ登録は以下のように行います。
 
 ```ruby
-MyJob.perform_later record  # キューイングシステムが空き次第ジョブが実行されるようにキューに登録する
+MyJob.perform_later record  # 「キューイングシステムが空いたらジョブを実行する」とキューに登録する
 ```
 
 ```ruby

@@ -298,7 +298,7 @@ end
 </div>
 <h4 id="ジョブをキューに登録する"><a href="#%E3%82%B8%E3%83%A7%E3%83%96%E3%82%92%E3%82%AD%E3%83%A5%E3%83%BC%E3%81%AB%E7%99%BB%E9%8C%B2%E3%81%99%E3%82%8B">3.2 ジョブをキューに登録する</a></h4><p>キューへのジョブ登録は以下のように行います。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-MyJob.perform_later record  # キューイングシステムがビジーでなくなり次第ジョブをキューに登録する
+MyJob.perform_later record  # 「キューイングシステムが空いたらジョブを実行する」とキューに登録する
 
 </pre>
 </div>
