@@ -734,6 +734,25 @@ div.code_container {
   font-size: 1.1667em;
 }
 
+.legal table{
+  border: none;
+}
+.legal th {
+  border-bottom: 1px solid #CCC;
+}
+.legal td {
+  font-size:13px;
+  text-align: left;
+}
+
+.legal .copyright {
+  color: gray;
+  text-align: right;
+  font-size: 10px;
+  border: none;
+}
+
+
 /* Clearing
 --------------------------------------- */
 
