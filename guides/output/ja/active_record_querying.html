@@ -224,11 +224,12 @@
 <ul>
 <li>多くのメソッドや条件を駆使してレコードを検索する</li>
 <li>検索されたレコードのソート順、取り出したい属性、グループ化の有無などを指定する</li>
-<li>eager loadingを使用して、データ取り出しに必要なクエリの実行回数を減らす</li>
+<li>一括読み込み (eager loading) を使用して、データ取り出しに必要なクエリの実行回数を減らす</li>
 <li>動的検索メソッドを使用する</li>
+<li>複数のActive Record メソッドを連鎖 (chain) させて同時に利用する</li>
 <li>特定のレコードが存在するかどうかをチェックする</li>
 <li>Active Recordモデルでさまざまな計算を行う</li>
-<li>リレーションでEXPLAINを実行する</li>
+<li>リレーションでHEXPLAINを実行する</li>
 </ul>
 
                 <div id="subCol">
@@ -239,7 +240,6 @@
 
 <ul>
 <li><a href="#%E5%8D%98%E4%B8%80%E3%81%AE%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E5%8F%96%E3%82%8A%E5%87%BA%E3%81%99">単一のオブジェクトを取り出す</a></li>
-<li><a href="#%E8%A4%87%E6%95%B0%E3%81%AE%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E5%8F%96%E3%82%8A%E5%87%BA%E3%81%99">複数のオブジェクトを取り出す</a></li>
 <li><a href="#%E8%A4%87%E6%95%B0%E3%81%AE%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E3%83%90%E3%83%83%E3%83%81%E3%81%A7%E5%8F%96%E3%82%8A%E5%87%BA%E3%81%99">複数のオブジェクトをバッチで取り出す</a></li>
 </ul>
 </li>
@@ -256,7 +256,13 @@
 <li><a href="#%E4%B8%A6%E3%81%B3%E9%A0%86">並び順</a></li>
 <li><a href="#%E7%89%B9%E5%AE%9A%E3%81%AE%E3%83%95%E3%82%A3%E3%83%BC%E3%83%AB%E3%83%89%E3%81%A0%E3%81%91%E3%82%92%E5%8F%96%E3%82%8A%E5%87%BA%E3%81%99">特定のフィールドだけを取り出す</a></li>
 <li><a href="#limit%E3%81%A8offset">LimitとOffset</a></li>
-<li><a href="#%E3%82%B0%E3%83%AB%E3%83%BC%E3%83%97">グループ</a></li>
+<li>
+<a href="#%E3%82%B0%E3%83%AB%E3%83%BC%E3%83%97">グループ</a>
+
+<ul>
+<li><a href="#%E3%82%B0%E3%83%AB%E3%83%BC%E3%83%97%E5%8C%96%E3%81%95%E3%82%8C%E3%81%9F%E9%A0%85%E7%9B%AE%E3%81%AE%E5%90%88%E8%A8%88">グループ化された項目の合計</a></li>
+</ul>
+</li>
 <li><a href="#having">Having</a></li>
 <li>
 <a href="#%E6%9D%A1%E4%BB%B6%E3%82%92%E4%B8%8A%E6%9B%B8%E3%81%8D%E3%81%99%E3%82%8B">条件を上書きする</a>
@@ -276,7 +282,7 @@
 
 <ul>
 <li><a href="#%E6%A5%BD%E8%A6%B3%E7%9A%84%E3%83%AD%E3%83%83%E3%82%AF-optimistic">楽観的ロック (optimistic)</a></li>
-<li><a href="#%E6%82%B2%E8%A6%B3%E7%9A%84%E3%83%AD%E3%83%83%E3%82%AF">悲観的ロック</a></li>
+<li><a href="#%E6%82%B2%E8%A6%B3%E7%9A%84%E3%83%AD%E3%83%83%E3%82%AF-pessimistic">悲観的ロック (pessimistic)</a></li>
 </ul>
 </li>
 <li>
@@ -301,12 +307,20 @@
 
 <ul>
 <li><a href="#%E5%BC%95%E6%95%B0%E3%82%92%E6%B8%A1%E3%81%99">引数を渡す</a></li>
-<li><a href="#%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%97%E3%81%AE%E3%83%9E%E3%83%BC%E3%82%B8">スコープのマージ</a></li>
 <li><a href="#%E3%83%87%E3%83%95%E3%82%A9%E3%83%AB%E3%83%88%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%97%E3%82%92%E9%81%A9%E7%94%A8%E3%81%99%E3%82%8B">デフォルトスコープを適用する</a></li>
+<li><a href="#%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%97%E3%81%AE%E3%83%9E%E3%83%BC%E3%82%B8">スコープのマージ</a></li>
 <li><a href="#%E3%81%99%E3%81%B9%E3%81%A6%E3%81%AE%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%97%E3%82%92%E5%89%8A%E9%99%A4%E3%81%99%E3%82%8B">すべてのスコープを削除する</a></li>
 </ul>
 </li>
 <li><a href="#%E5%8B%95%E7%9A%84%E3%83%95%E3%82%A1%E3%82%A4%E3%83%B3%E3%83%80">動的ファインダ</a></li>
+<li>
+<a href="#%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89%E3%83%81%E3%82%A7%E3%82%A4%E3%83%B3%E3%82%92%E7%90%86%E8%A7%A3%E3%81%99%E3%82%8B">メソッドチェインを理解する</a>
+
+<ul>
+<li><a href="#%E8%A4%87%E6%95%B0%E3%81%AE%E3%83%86%E3%83%BC%E3%83%96%E3%83%AB%E3%81%8B%E3%82%89%E3%81%AE%E3%83%87%E3%83%BC%E3%82%BF%E3%82%92%E3%83%95%E3%82%A3%E3%83%AB%E3%82%BF%E3%81%97%E3%81%A6%E5%8F%96%E5%BE%97%E3%81%99%E3%82%8B">複数のテーブルからのデータをフィルタして取得する</a></li>
+<li><a href="#%E8%A4%87%E6%95%B0%E3%81%AE%E3%83%86%E3%83%BC%E3%83%96%E3%83%AB%E3%81%8B%E3%82%89%E7%89%B9%E5%AE%9A%E3%81%AE%E3%83%87%E3%83%BC%E3%82%BF%E3%82%92%E5%8F%96%E5%BE%97%E3%81%99%E3%82%8B">複数のテーブルから特定のデータを取得する</a></li>
+</ul>
+</li>
 <li>
 <a href="#%E6%96%B0%E3%81%97%E3%81%84%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E6%A4%9C%E7%B4%A2%E3%81%BE%E3%81%9F%E3%81%AF%E3%83%93%E3%83%AB%E3%83%89%E3%81%99%E3%82%8B">新しいオブジェクトを検索またはビルドする</a>
 
@@ -418,9 +432,9 @@ end
 <li>与えられたオプションを同等のSQLクエリに変換します。</li>
 <li>SQLクエリを発行し、該当する結果をデータベースから取り出します。</li>
 <li>得られた結果を行ごとに同等のRubyオブジェクトとしてインスタンス化します。</li>
-<li>必要であれば<code>after_find</code>コールバックを実行します。</li>
+<li>指定されていれば、<code>after_find</code>を実行し、続いて<code>after_initialize</code>コールバックを実行します。</li>
 </ul>
-<h4 id="単一のオブジェクトを取り出す"><a href="#%E5%8D%98%E4%B8%80%E3%81%AE%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E5%8F%96%E3%82%8A%E5%87%BA%E3%81%99">1.1 単一のオブジェクトを取り出す</a></h4><p>Active Recordには、単一のオブジェクトを取り出すためのさまざま方法が用意されています。</p><h5 id="主キーを使用する"><a href="#%E4%B8%BB%E3%82%AD%E3%83%BC%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B">1.1.1 主キーを使用する</a></h5><p><code>Model.find(primary_key)</code>を使用すると、与えられたどのオプションにもマッチする <em>主キー</em> に対応するオブジェクトを取り出すことができます。例：</p><div class="code_container">
+<h4 id="単一のオブジェクトを取り出す"><a href="#%E5%8D%98%E4%B8%80%E3%81%AE%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E5%8F%96%E3%82%8A%E5%87%BA%E3%81%99">1.1 単一のオブジェクトを取り出す</a></h4><p>Active Recordには、単一のオブジェクトを取り出すためのさまざま方法が用意されています。</p><h5 id="find"><a href="#find">1.1.1 <code>find</code></a></h5><p><code>find</code>メソッドを使用すると、与えられたどのオプションにもマッチする <em>主キー</em> に対応するオブジェクトを取り出すことができます。以下に例を示します。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # Find the client with primary key (id) 10.
 client = Client.find(10)
@@ -434,7 +448,21 @@ SELECT * FROM clients WHERE (clients.id = 10) LIMIT 1
 
 </pre>
 </div>
-<p><code>Model.find(primary_key)</code>でマッチするレコードが見つからない場合、<code>ActiveRecord::RecordNotFound</code>例外が発生します。</p><h5 id="単一のオブジェクトを取り出す-take"><a href="#%E5%8D%98%E4%B8%80%E3%81%AE%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E5%8F%96%E3%82%8A%E5%87%BA%E3%81%99-take">1.1.2 <code>take</code></a></h5><p><code>Model.take</code>はレコードを1つ取り出します。このとき、どのレコードが取り出されるかは指定されません。例：</p><div class="code_container">
+<p><code>find</code>メソッドでマッチするレコードが見つからない場合、<code>ActiveRecord::RecordNotFound</code>例外が発生します。</p><p>このメソッドを使用して、複数のオブジェクトへのクエリを作成することもできます。これを行うには、<code>find</code>メソッドの呼び出し時に主キーの配列を渡します。これにより、与えられた <em>主キー</em> にマッチするレコードをすべて含む配列が返されます。以下に例を示します。</p><div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+# Find the clients with primary keys 1 and 10.
+client = Client.find([1, 10]) # Client.find(1, 10)でもよい
+# =&gt; [#&lt;Client id: 1, first_name: "Lifo"&gt;, #&lt;Client id: 10, first_name: "Ryan"&gt;]
+
+</pre>
+</div>
+<p>これと同等のSQLは以下のようになります。</p><div class="code_container">
+<pre class="brush: sql; gutter: false; toolbar: false">
+SELECT * FROM clients WHERE (clients.id IN (1,10))
+
+</pre>
+</div>
+<div class="warning"><p><code>find</code>メソッドで与えられた主キーの中に、どのレコードにもマッチしない主キーが<strong>1つでも</strong>あると、<code>ActiveRecord::RecordNotFound</code>例外が発生します。</p></div><h5 id="take"><a href="#take">1.1.2 <code>take</code></a></h5><p><code>take</code>メソッドはレコードを1つ取り出します。どのレコードが取り出されるかは指定されません。以下に例を示します。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 client = Client.take
 # =&gt; #&lt;Client id: 1, first_name: "Lifo"&gt;
@@ -447,7 +475,23 @@ SELECT * FROM clients LIMIT 1
 
 </pre>
 </div>
-<p>モデルにレコードが1つもない場合は<code>Model.take</code>は<code>nil</code>を返します。このとき例外は発生しません。</p><div class="info"><p>このメソッドでどのレコードが取り出されるかは、使用するデータベースエンジンによって異なることがあります。</p></div><h5 id="単一のオブジェクトを取り出す-first"><a href="#%E5%8D%98%E4%B8%80%E3%81%AE%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E5%8F%96%E3%82%8A%E5%87%BA%E3%81%99-first">1.1.3 <code>first</code></a></h5><p><code>Model.first</code>は、主キー順の最初のレコードを取り出します。例：</p><div class="code_container">
+<p><code>Model.take</code>は、モデルにレコードが1つもない場合に<code>nil</code>を返します。このとき例外は発生しません。</p><p><code>take</code>メソッドで返すレコードの最大数を数値の引数で指定することもできます。例:</p><div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+client = Client.take(2)
+# =&gt; [
+  #&lt;Client id: 1, first_name: "Lifo"&gt;,
+  #&lt;Client id: 220, first_name: "Sara"&gt;
+]
+
+</pre>
+</div>
+<p>これと同等のSQLは以下のようになります。</p><div class="code_container">
+<pre class="brush: sql; gutter: false; toolbar: false">
+SELECT * FROM clients LIMIT 2
+
+</pre>
+</div>
+<p><code>take</code>メソッドの動作は、<code>find</code>メソッドとまったく同じです。ただし、<code>find</code>メソッドでは、マッチするレコードが見つからない場合に<code>ActiveRecord::RecordNotFound</code>例外が発生する点だけが異なります。</p><div class="info"><p>このメソッドで取り出されるレコードは、使用するデータベースエンジンによっても異なることがあります。</p></div><h5 id="first"><a href="#first">1.1.3 <code>first</code></a></h5><p><code>first</code>メソッドは、主キー順の最初のレコードを取り出します。以下に例を示します。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 client = Client.first
 # =&gt; #&lt;Client id: 1, first_name: "Lifo"&gt;
@@ -460,7 +504,24 @@ SELECT * FROM clients ORDER BY clients.id ASC LIMIT 1
 
 </pre>
 </div>
-<p>モデルにレコードが1つもない場合は<code>Model.first</code>は<code>nil</code>を返します。このとき例外は発生しません。</p><h5 id="単一のオブジェクトを取り出す-last"><a href="#%E5%8D%98%E4%B8%80%E3%81%AE%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E5%8F%96%E3%82%8A%E5%87%BA%E3%81%99-last">1.1.4 <code>last</code></a></h5><p><code>Model.last</code>は、主キー順の最後のレコードを取り出します。例：</p><div class="code_container">
+<p><code>first</code>メソッドは、モデルにレコードが1つもない場合に<code>nil</code>を返します。このとき例外は発生しません。</p><p><code>first</code>メソッドで返すレコードの最大数を数値の引数で指定することもできます。例：</p><div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+client = Client.first(3)
+# =&gt; [
+  #&lt;Client id: 1, first_name: "Lifo"&gt;,
+  #&lt;Client id: 2, first_name: "Fifo"&gt;,
+  #&lt;Client id: 3, first_name: "Filo"&gt;
+]
+
+</pre>
+</div>
+<p>これと同等のSQLは以下のようになります。</p><div class="code_container">
+<pre class="brush: sql; gutter: false; toolbar: false">
+SELECT * FROM clients ORDER BY clients.id ASC LIMIT 3
+
+</pre>
+</div>
+<p><code>first!</code>メソッドの動作は、マッチするレコードが見つからない場合に<code>ActiveRecord::RecordNotFound</code>例外が発生する点を除いて、<code>first</code>メソッドとまったく同じです。</p><h5 id="last"><a href="#last">1.1.4 <code>last</code></a></h5><p><code>last</code>メソッドは、主キー順の最後のレコードを取り出します。以下に例を示します。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 client = Client.last
 # =&gt; #&lt;Client id: 221, first_name: "Russel"&gt;
@@ -473,7 +534,24 @@ SELECT * FROM clients ORDER BY clients.id DESC LIMIT 1
 
 </pre>
 </div>
-<p>モデルにレコードが1つもない場合は<code>Model.last</code>は<code>nil</code>を返します。このとき例外は発生しません。</p><h5 id="find-by"><a href="#find-by">1.1.5 <code>find_by</code></a></h5><p><code>Model.find_by</code> は、与えられた条件にマッチするレコードのうち最初のレコードだけを返します。例：</p><div class="code_container">
+<p>last<code>メソッドは、モデルにレコードが1つもない場合に</code>nil`を返します。このとき例外は発生しません。</p><p><code>last</code>メソッドで返すレコードの最大数を数値の引数で指定することもできます。例:</p><div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+client = Client.last(3)
+# =&gt; [
+  #&lt;Client id: 219, first_name: "James"&gt;,
+  #&lt;Client id: 220, first_name: "Sara"&gt;,
+  #&lt;Client id: 221, first_name: "Russel"&gt;
+]
+
+</pre>
+</div>
+<p>これと同等のSQLは以下のようになります。</p><div class="code_container">
+<pre class="brush: sql; gutter: false; toolbar: false">
+SELECT * FROM clients ORDER BY clients.id DESC LIMIT 3
+
+</pre>
+</div>
+<p><code>last!</code>メソッドの動作は、マッチするレコードが見つからない場合に<code>ActiveRecord::RecordNotFound</code>例外が発生する点を除いて、<code>last</code>メソッドとまったく同じです。</p><h5 id="find-by"><a href="#find-by">1.1.5 <code>find_by</code></a></h5><p><code>find_by</code>メソッドは、与えられた条件にマッチするレコードのうち最初のレコードだけを返します。以下に例を示します。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Client.find_by first_name: 'Lifo'
 # =&gt; #&lt;Client id: 1, first_name: "Lifo"&gt;
@@ -489,160 +567,85 @@ Client.where(first_name: 'Lifo').take
 
 </pre>
 </div>
-<h5 id="take-bang"><a href="#take-bang">1.1.6 <code>take!</code></a></h5><p><code>Model.take!</code>は、レコードを1つ取り出します。例：</p><div class="code_container">
-<pre class="brush: ruby; gutter: false; toolbar: false">
-client = Client.take!
-# =&gt; #&lt;Client id: 1, first_name: "Lifo"&gt;
-
-</pre>
-</div>
 <p>これと同等のSQLは以下のようになります。</p><div class="code_container">
 <pre class="brush: sql; gutter: false; toolbar: false">
-SELECT * FROM clients LIMIT 1
+SELECT * FROM clients WHERE (clients.first_name = 'Lifo') LIMIT 1
 
 </pre>
 </div>
-<p><code>Model.take!</code>でマッチするレコードが見つからない場合、<code>ActiveRecord::RecordNotFound</code>例外が発生します。</p><h5 id="first-bang"><a href="#first-bang">1.1.7 <code>first!</code></a></h5><p><code>Model.first!</code>は、主キー順の最初のレコードを取り出します。例：</p><div class="code_container">
+<p><code>find_by!</code>メソッドの動作は、マッチするレコードが見つからない場合に<code>ActiveRecord::RecordNotFound</code>例外が発生する点を除いて、<code>find_by</code>メソッドとまったく同じです。以下に例を示します。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-client = Client.first!
-# =&gt; #&lt;Client id: 1, first_name: "Lifo"&gt;
-
-</pre>
-</div>
-<p>これと同等のSQLは以下のようになります。</p><div class="code_container">
-<pre class="brush: sql; gutter: false; toolbar: false">
-SELECT * FROM clients ORDER BY clients.id ASC LIMIT 1
-
-</pre>
-</div>
-<p><code>Model.first!</code>でマッチするレコードが見つからない場合、<code>ActiveRecord::RecordNotFound</code>例外が発生します。</p><h5 id="last-bang"><a href="#last-bang">1.1.8 <code>last!</code></a></h5><p><code>Model.last!</code>は、主キー順の最後のレコードを取り出します。例：</p><div class="code_container">
-<pre class="brush: ruby; gutter: false; toolbar: false">
-client = Client.last!
-# =&gt; #&lt;Client id: 221, first_name: "Russel"&gt;
-
-</pre>
-</div>
-<p>これと同等のSQLは以下のようになります。</p><div class="code_container">
-<pre class="brush: sql; gutter: false; toolbar: false">
-SELECT * FROM clients ORDER BY clients.id DESC LIMIT 1
-
-</pre>
-</div>
-<p><code>Model.last!</code>でマッチするレコードが見つからない場合、<code>ActiveRecord::RecordNotFound</code>例外が発生します。</p><h5 id="find-by-bang"><a href="#find-by-bang">1.1.9 <code>find_by!</code></a></h5><p><code>Model.find_by!</code> は、与えられた条件にマッチするレコードのうち最初のレコードだけを返します。マッチするレコードが見つからない場合、<code>ActiveRecord::RecordNotFound</code>例外が発生します。例：</p><div class="code_container">
-<pre class="brush: ruby; gutter: false; toolbar: false">
-Client.find_by! first_name: 'Lifo'
-# =&gt; #&lt;Client id: 1, first_name: "Lifo"&gt;
-
-Client.find_by! first_name: 'Jon'
+Client.find_by! first_name: 'does not exist'
 # =&gt; ActiveRecord::RecordNotFound
 
 </pre>
 </div>
 <p>上の文は以下のように書くこともできます。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-Client.where(first_name: 'Lifo').take! 
+Client.where(first_name: 'does not exist').take!
 
 </pre>
 </div>
-<h4 id="複数のオブジェクトを取り出す"><a href="#%E8%A4%87%E6%95%B0%E3%81%AE%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E5%8F%96%E3%82%8A%E5%87%BA%E3%81%99">1.2 複数のオブジェクトを取り出す</a></h4><h5 id="複数の主キーを使用する"><a href="#%E8%A4%87%E6%95%B0%E3%81%AE%E4%B8%BB%E3%82%AD%E3%83%BC%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B">1.2.1 複数の主キーを使用する</a></h5><p><code>Model.find()</code> は <em>主キー</em> の配列を受け付け、与えられた <em>主キー</em> にマッチするすべてのレコードを配列の形で返します。例：</p><div class="code_container">
-<pre class="brush: ruby; gutter: false; toolbar: false">
-# Find the clients with primary keys 1 and 10.
-client = Client.find([1, 10]) # Or even Client.find(1, 10)
-# =&gt; [#&lt;Client id: 1, first_name: "Lifo"&gt;, #&lt;Client id: 10, first_name: "Ryan"&gt;]
-
-</pre>
-</div>
-<p>これと同等のSQLは以下のようになります。</p><div class="code_container">
-<pre class="brush: sql; gutter: false; toolbar: false">
-SELECT * FROM clients WHERE (clients.id IN (1,10))
-
-</pre>
-</div>
-<div class="warning"><p><code>Model.find(array_of_primary_key)</code>は、与えられた主キーのうち1つでもマッチしなければ<code>ActiveRecord::RecordNotFound</code>例外を発生します。</p></div><h5 id="複数のオブジェクトを取り出す-take"><a href="#%E8%A4%87%E6%95%B0%E3%81%AE%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E5%8F%96%E3%82%8A%E5%87%BA%E3%81%99-take">1.2.2 take</a></h5><p><code>Model.take(limit)</code>は、<code>limit</code>で指定された数だけレコードを取り出します。このとき取り出し順は指定できません。</p><div class="code_container">
-<pre class="brush: ruby; gutter: false; toolbar: false">
-Client.take(2)
-# =&gt; [#&lt;Client id: 1, first_name: "Lifo"&gt;,
-      #&lt;Client id: 2, first_name: "Raf"&gt;]
-
-</pre>
-</div>
-<p>これと同等のSQLは以下のようになります。</p><div class="code_container">
-<pre class="brush: sql; gutter: false; toolbar: false">
-SELECT * FROM clients LIMIT 2
-
-</pre>
-</div>
-<h5 id="複数のオブジェクトを取り出す-first"><a href="#%E8%A4%87%E6%95%B0%E3%81%AE%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E5%8F%96%E3%82%8A%E5%87%BA%E3%81%99-first">1.2.3 first</a></h5><p><code>Model.first(limit)</code>は、主キー順の最初から、<code>limit</code>で指定された数だけレコードを取り出します。</p><div class="code_container">
-<pre class="brush: ruby; gutter: false; toolbar: false">
-Client.first(2)
-# =&gt; [#&lt;Client id: 1, first_name: "Lifo"&gt;,
-      #&lt;Client id: 2, first_name: "Raf"&gt;]
-
-</pre>
-</div>
-<p>これと同等のSQLは以下のようになります。</p><div class="code_container">
-<pre class="brush: sql; gutter: false; toolbar: false">
-SELECT * FROM clients ORDER BY id ASC LIMIT 2
-
-</pre>
-</div>
-<h5 id="複数のオブジェクトを取り出す-last"><a href="#%E8%A4%87%E6%95%B0%E3%81%AE%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E5%8F%96%E3%82%8A%E5%87%BA%E3%81%99-last">1.2.4 last</a></h5><p><code>Model.last(limit)</code>は、主キー順の最後から、<code>limit</code>で指定された数だけレコードを取り出します。</p><div class="code_container">
-<pre class="brush: ruby; gutter: false; toolbar: false">
-Client.last(2)
-# =&gt; [#&lt;Client id: 10, first_name: "Ryan"&gt;,
-      #&lt;Client id: 9, first_name: "John"&gt;]
-
-</pre>
-</div>
-<p>これと同等のSQLは以下のようになります。</p><div class="code_container">
-<pre class="brush: sql; gutter: false; toolbar: false">
-SELECT * FROM clients ORDER BY id DESC LIMIT 2
-
-</pre>
-</div>
-<h4 id="複数のオブジェクトをバッチで取り出す"><a href="#%E8%A4%87%E6%95%B0%E3%81%AE%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E3%83%90%E3%83%83%E3%83%81%E3%81%A7%E5%8F%96%E3%82%8A%E5%87%BA%E3%81%99">1.3 複数のオブジェクトをバッチで取り出す</a></h4><p>多数のレコードに対して反復処理を行いたいことがあります。たとえば、多くのユーザーにニュースレターを送信したい、データをエクスポートしたいなどです。</p><p>このような処理をそのまま実装すると以下のようになるでしょう。</p><div class="code_container">
+<h4 id="複数のオブジェクトをバッチで取り出す"><a href="#%E8%A4%87%E6%95%B0%E3%81%AE%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E3%83%90%E3%83%83%E3%83%81%E3%81%A7%E5%8F%96%E3%82%8A%E5%87%BA%E3%81%99">1.2 複数のオブジェクトをバッチで取り出す</a></h4><p>多数のレコードに対して反復処理を行いたいことがあります。たとえば、多くのユーザーにニュースレターを送信したい、データをエクスポートしたいなどです。</p><p>このような処理をそのまま実装すると以下のようになるでしょう。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # このような処理を数千件ものレコードに対して実行すると、効率が大幅に低下します。
 User.all.each do |user|
-  NewsLetter.weekly_deliver(user)
+  NewsMailer.weekly(user).deliver_now
 end
 
 </pre>
 </div>
-<p>しかし上のような処理は、テーブルのサイズが大きくなるにつれて非現実的になります。<code>User.all.each</code>は、Active Recordに対して <em>テーブル全体</em> を一度に取り出し、しかも1行ごとにオブジェクトを生成し、その巨大なモデルオブジェクトの配列をメモリに配置するからです。もし莫大な数のレコードに対してこのようなコードをまともに実行すると、コレクション全体のサイズがメモリ容量を上回ってしまうことでしょう。</p><p>Railsでは、メモリを圧迫しないサイズにバッチを分割して処理するための方法を2とおり提供しています。1つ目は<code>find_each</code>メソッドを使用する方法です。これは、レコードのバッチを1つ取り出し、次に <em>各</em> レコードを1つのモデルとして個別にブロックにyieldします。2つ目の方法は<code>find_in_batches</code>メソッドを使用する方法です。レコードのバッチを1つ取り出し、次に <em>バッチ全体</em> をモデルの配列としてブロックにyieldします。</p><div class="info"><p><code>find_each</code>メソッドと<code>find_in_batches</code>メソッドは、一度にメモリに読み込めないような大量のレコードに対するバッチ処理のためのものです。数千のレコードに対して単にループ処理を行なうのであれば通常の検索メソッドで十分です。</p></div><h5 id="find-each"><a href="#find-each">1.3.1 <code>find_each</code></a></h5><p><code>find_each</code>メソッドは、レコードのバッチを1つ取り出し、続いて <em>各</em> レコードを1つのモデルとして個別にブロックにyieldします。以下の例では、<code>find_each</code>で1000件のレコードを取り出しています。この件数は<code>find_each</code>と<code>find_in_batches</code>のどちらでもデフォルト値として使用されており、続いて各レコードを1つのモデルとしてブロックに個別にyieldします。この処理は、すべてのレコードが処理されるまで繰り返されます。</p><div class="code_container">
+<p>しかし上のような処理は、テーブルのサイズが大きくなるにつれて非現実的になります。<code>User.all.each</code>は、Active Recordに対して <em>テーブル全体</em> を一度に取り出し、しかも1行ごとにオブジェクトを生成し、その巨大なモデルオブジェクトの配列をメモリに配置するからです。もし莫大な数のレコードに対してこのようなコードをまともに実行すると、コレクション全体のサイズがメモリ容量を上回ってしまうことでしょう。</p><p>Railsでは、メモリを圧迫しないサイズにバッチを分割して処理するための方法を2とおり提供しています。1つ目は<code>find_each</code>メソッドを使用する方法です。これは、レコードのバッチを1つ取り出し、次に <em>各</em> レコードを1つのモデルとして個別にブロックにyieldします。2つ目の方法は<code>find_in_batches</code>メソッドを使用する方法です。レコードのバッチを1つ取り出し、次に <em>バッチ全体</em> をモデルの配列としてブロックにyieldします。</p><div class="info"><p><code>find_each</code>メソッドと<code>find_in_batches</code>メソッドは、一度にメモリに読み込めないような大量のレコードに対するバッチ処理のためのものです。数千のレコードに対して単にループ処理を行なうのであれば通常の検索メソッドで十分です。</p></div><h5 id="find-each"><a href="#find-each">1.2.1 <code>find_each</code></a></h5><p><code>find_each</code>メソッドは、レコードのバッチを1つ取り出し、続いて <em>各</em> レコードを1つのモデルとして個別にブロックにyieldします。以下の例では、<code>find_each</code>で1000件のレコードを取り出しています。この件数は<code>find_each</code>と<code>find_in_batches</code>のどちらでもデフォルト値として使用されており、続いて各レコードを1つのモデルとしてブロックに個別にyieldします。この処理は、すべてのレコードが処理されるまで繰り返されます。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 User.find_each do |user|
-  NewsLetter.weekly_deliver(user)
+  NewsMailer.weekly(user).deliver_now
 end
 
 </pre>
 </div>
-<h6 id="find-eachのオプション"><a href="#find-each%E3%81%AE%E3%82%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3">1.3.1.1 <code>find_each</code>のオプション</a></h6><p><code>find_each</code>メソッドでは、通常の<code>find</code>メソッドとほぼ同じオプションが使用できます。<code>:order</code>と<code>:limit</code>は<code>find_each</code>内部で利用するために予約されており、使用できません。</p><p>通常のオプションの他に、<code>:batch_size</code>オプションと<code>:start</code>オプションも使用できます。</p><p><strong><code>:batch_size</code></strong></p><p><code>:batch_size</code>オプションは、(ブロックに個別に渡される前に) 1回のバッチで取り出すレコード数を指定します。たとえば、1回に5000件ずつ処理したい場合は以下のように指定します。</p><div class="code_container">
+<p><code>find_each</code>では、<code>where</code>などのActive Recordメソッドを連鎖 (chain) させることで条件を追加することができます。</p><div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+User.where(weekly_subscriber: true).find_each do |user|
+  NewsMailer.weekly(user).deliver_now
+end
+
+</pre>
+</div>
+<h6 id="find-eachのオプション"><a href="#find-each%E3%81%AE%E3%82%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3">1.2.1.1 <code>find_each</code>のオプション</a></h6><p><code>find_each</code>メソッドでは、通常の<code>find</code>メソッドとほぼ同じオプションが使用できます。<code>:order</code>と<code>:limit</code>は<code>find_each</code>内部で利用するために予約されており、使用できません。</p><p>このメソッドでは、通常のオプションの他に<code>:batch_size</code>、<code>:begin_at</code>、<code>:end_at</code>も利用できます。</p><p><strong><code>:batch_size</code></strong></p><p><code>:batch_size</code>オプションは、(ブロックに個別に渡される前に) 1回のバッチで取り出すレコード数を指定します。たとえば、1回に5000件ずつ処理したい場合は以下のように指定します。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 User.find_each(batch_size: 5000) do |user|
-  NewsLetter.weekly_deliver(user)
+  NewsMailer.weekly(user).deliver_now
 end
 
 </pre>
 </div>
-<p><strong><code>:start</code></strong></p><p>デフォルトでは、レコードは主キーの昇順に取り出されます。主キーは整数でなければなりません。並び順冒頭のIDが不要な場合、<code>:start</code>オプションを使用してシーケンスの開始IDを指定します。これは、たとえば中断したバッチ処理を再開する場合などに便利です (最後に実行された処理のIDがチェックポイントとして保存済みであることが前提です)。</p><p>たとえば、1回のバッチで5000件を取り出し、主キーが2000以降のユーザーだけにニュースレターを送信したい場合は以下のようにします。</p><div class="code_container">
+<p><strong><code>:begin_at</code></strong></p><p>デフォルトでは、レコードは主キーの昇順に取り出されます。主キーは整数でなければなりません。あるIDより小さいIDを除外したい場合は、<code>:begin_at</code>オプションを使用していつでもシーケンスの開始IDを指定できます。これは、たとえば中断したバッチ処理を再開する場合などに便利です (最後に実行された処理のIDがチェックポイントとして保存済みであることが前提です)。</p><p>たとえば、1回のバッチで5000件を取り出し、主キーが2000以降のユーザーだけにニュースレターを送信したい場合は以下のようにします。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-User.find_each(start: 2000, batch_size: 5000) do |user|
-  NewsLetter.weekly_deliver(user)
+User.find_each(begin_at: 2000, batch_size: 5000) do |user|
+  NewsMailer.weekly(user).deliver_now
 end
 
 </pre>
 </div>
-<p>他にも、同じ処理キューを複数の作業者で手分けする場合が考えられます。<code>start</code>オプションを適切に使用して、作業者1人につき10000レコードずつ割り当てるといった利用法です。</p><h5 id="find-in-batches"><a href="#find-in-batches">1.3.2 <code>find_in_batches</code></a></h5><p><code>find_in_batches</code>メソッドは、レコードをバッチで取り出すという点で<code>find_each</code>と似ています。違うのは、<code>find_in_batches</code>は <em>バッチ</em> を個別にではなくモデルの配列としてブロックにyieldするという点です。以下の例では、与えられたブロックに対して一度に最大1000までの納品書 (invoice) の配列をyieldしています。最後のブロックには残りの納品書が含まれます。</p><div class="code_container">
+<p>他にも、同じ処理キューを複数の作業者で手分けする場合が考えられます。たとえば、<code>:begin_at</code>オプションを適切に使用して、作業者1人につき10000レコードずつ割り当てることができます。</p><p><strong><code>:end_at</code></strong></p><p><code>:begin_at</code>オプションと同様、あるIDより大きいIDを除外したい場合は、<code>:end_at</code>オプションを使用していつでもシーケンスの終了IDを指定できます。
+これは、たとえば中断したバッチ処理を再開する場合などに便利です。<code>:begin_at</code>と<code>:end_at</code>でレコードのサブセットを指定します。</p><p>たとえば、1回のバッチで5000件を取り出し、主キーが2000から10000のユーザーだけにニュースレターを送信したい場合は以下のようにします。</p><div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+User.find_each(begin_at: 2000, end_at: 10000, batch_size: 5000) do |user|
+  NewsMailer.weekly(user).deliver_now
+end
+
+</pre>
+</div>
+<h5 id="find-in-batches"><a href="#find-in-batches">1.2.2 <code>find_in_batches</code></a></h5><p><code>find_in_batches</code>メソッドは、レコードをバッチで取り出すという点で<code>find_each</code>と似ています。違うのは、<code>find_in_batches</code>は <em>バッチ</em> を個別にではなくモデルの配列としてブロックにyieldするという点です。以下の例では、与えられたブロックに対して一度に最大1000までの納品書 (invoice) の配列をyieldしています。最後のブロックには残りの納品書が含まれます。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # 1回あたりadd_invoicesに納品書1000通の配列を渡す
-Invoice.find_in_batches(include: :invoice_lines) do |invoices|
+Invoice.find_in_batches do |invoices|
   export.add_invoices(invoices)
 end
 
 </pre>
 </div>
-<div class="note"><p><code>:include</code>オプションを使用すると、モデルとともに読み込まれる関連付けに名前を付けることができます。</p></div><h6 id="find-in-batchesのオプション"><a href="#find-in-batches%E3%81%AE%E3%82%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3">1.3.2.1 <code>find_in_batches</code>のオプション</a></h6><p><code>find_in_batches</code>メソッドでは、<code>find_each</code>メソッドと同様、通常の<code>find</code>メソッド用オプションに加えて<code>:batch_size</code>オプションや<code>:start</code>オプションが使用できます。<code>:order</code>と<code>:limit</code>は<code>find_in_batches</code>内部で利用するために予約されており、使用できません。</p><h3 id="条件"><a href="#%E6%9D%A1%E4%BB%B6">2 条件</a></h3><p><code>where</code>メソッドは、返されるレコードを制限するための条件を指定します。SQL文で言う<code>WHERE</code>の部分に相当します。条件は、文字列、配列、ハッシュのいずれかの方法で与えることができます。</p><h4 id="文字列だけで表された条件"><a href="#%E6%96%87%E5%AD%97%E5%88%97%E3%81%A0%E3%81%91%E3%81%A7%E8%A1%A8%E3%81%95%E3%82%8C%E3%81%9F%E6%9D%A1%E4%BB%B6">2.1 文字列だけで表された条件</a></h4><p>検索メソッドに条件を追加したい場合、たとえば<code>Client.where("orders_count = '2'")</code>のように条件を単純に指定することができます。この場合、<code>orders_count</code>フィールドの値が2であるすべてのクライアントが検索されます。</p><div class="warning"><p>条件を文字列だけで構成すると、SQLインジェクションの脆弱性が発生する可能性があります。たとえば、<code>Client.where("first_name LIKE '%#{params[:first_name]}%'")</code>という書き方は危険です。次で説明するように、配列を使用するのが望ましい方法です。</p></div><h4 id="配列で表された条件"><a href="#%E9%85%8D%E5%88%97%E3%81%A7%E8%A1%A8%E3%81%95%E3%82%8C%E3%81%9F%E6%9D%A1%E4%BB%B6">2.2 配列で表された条件</a></h4><p>条件で使用する数値が変動する可能性がある場合、引数をどのようにすればよいでしょうか。この場合は以下のようにします。</p><div class="code_container">
+<h6 id="find-in-batchesのオプション"><a href="#find-in-batches%E3%81%AE%E3%82%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3">1.2.2.1 <code>find_in_batches</code>のオプション</a></h6><p><code>find_in_batches</code>メソッドでは、<code>find_each</code>メソッドと同様に<code>:batch_size</code>、<code>:begin_at</code>、<code>:end_at</code>オプションを使用できます。</p><h3 id="条件"><a href="#%E6%9D%A1%E4%BB%B6">2 条件</a></h3><p><code>where</code>メソッドは、返されるレコードを制限するための条件を指定します。SQL文で言う<code>WHERE</code>の部分に相当します。条件は、文字列、配列、ハッシュのいずれかの方法で与えることができます。</p><h4 id="文字列だけで表された条件"><a href="#%E6%96%87%E5%AD%97%E5%88%97%E3%81%A0%E3%81%91%E3%81%A7%E8%A1%A8%E3%81%95%E3%82%8C%E3%81%9F%E6%9D%A1%E4%BB%B6">2.1 文字列だけで表された条件</a></h4><p>検索メソッドに条件を追加したい場合、たとえば<code>Client.where("orders_count = '2'")</code>のように条件を単純に指定することができます。この場合、<code>orders_count</code>フィールドの値が2であるすべてのクライアントが検索されます。</p><div class="warning"><p>条件を文字列だけで構成すると、SQLインジェクションの脆弱性が発生する可能性があります。たとえば、<code>Client.where("first_name LIKE '%#{params[:first_name]}%'")</code>という書き方は危険です。次で説明するように、配列を使用するのが望ましい方法です。</p></div><h4 id="配列で表された条件"><a href="#%E9%85%8D%E5%88%97%E3%81%A7%E8%A1%A8%E3%81%95%E3%82%8C%E3%81%9F%E6%9D%A1%E4%BB%B6">2.2 配列で表された条件</a></h4><p>条件で使用する数値が変動する可能性がある場合、引数をどのようにすればよいでしょうか。この場合は以下のようにします。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Client.where("orders_count = ?", params[:orders])
 
@@ -650,7 +653,7 @@ Client.where("orders_count = ?", params[:orders])
 </div>
 <p>Active Recordは条件値の最初の要素を調べ、その後に要素が追加されていたら、最初の要素の中にある疑問符<code>(?)</code>を追加要素で置き換えます。</p><p>複数の条件を指定したい場合は次のようにします。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-Client.where("orders_count = ? AND locked = ?", params[:orders], false)
+Client.where("orders_count = ?AND locked = ?", params[:orders], false)
 
 </pre>
 </div>
@@ -666,7 +669,7 @@ Client.where("orders_count = #{params[:orders]}")
 
 </pre>
 </div>
-<p>条件文字列の中に変数を直接置くと、その変数はデータベースに <strong>そのまま</strong> 渡されてしまいます。これは、悪意のある人物がエスケープされていない危険な変数を渡すことができるということです。このようなコードがあると、悪意のある人物がデータベースを意のままにすることができ、データベース全体が危険にさらされます。くれぐれも、条件文字列の中に引数を直接置くことはしないでください。</p><div class="info"><p>SQLインジェクションの詳細については<a href="security.html#sql%E3%82%A4%E3%83%B3%E3%82%B8%E3%82%A7%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3">Ruby on Railsセキュリティガイド</a> を参照してください。</p></div><h5 id="プレースホルダを使用した条件"><a href="#%E3%83%97%E3%83%AC%E3%83%BC%E3%82%B9%E3%83%9B%E3%83%AB%E3%83%80%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%97%E3%81%9F%E6%9D%A1%E4%BB%B6">2.2.1 プレースホルダを使用した条件</a></h5><p>疑問符<code>(?)</code>をパラメータで置き換えるスタイルと同様、配列による条件中でキー/値のハッシュを指定できます。</p><div class="code_container">
+<p>条件文字列の中に変数を直接置くと、その変数はデータベースに <strong>そのまま</strong> 渡されてしまいます。これは、悪意のある人物がエスケープされていない危険な変数を渡すことができるということです。このようなコードがあると、悪意のある人物がデータベースを意のままにすることができ、データベース全体が危険にさらされます。くれぐれも、条件文字列の中に引数を直接置くことはしないでください。</p><div class="info"><p>SQLインジェクションの詳細については<a href="security.html#sql%E3%82%A4%E3%83%B3%E3%82%B8%E3%82%A7%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3">Ruby on Railsセキュリティガイド</a>を参照してください。</p></div><h5 id="プレースホルダを使用した条件"><a href="#%E3%83%97%E3%83%AC%E3%83%BC%E3%82%B9%E3%83%9B%E3%83%AB%E3%83%80%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%97%E3%81%9F%E6%9D%A1%E4%BB%B6">2.2.1 プレースホルダを使用した条件</a></h5><p>疑問符<code>(?)</code>をパラメータで置き換えるスタイルと同様、配列による条件中でキー/値のハッシュを指定できます。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Client.where("created_at &gt;= :start_date AND created_at &lt;= :end_date",
   {start_date: params[:start_date], end_date: params[:end_date]})
@@ -687,8 +690,8 @@ Client.where('locked' =&gt; true)
 </div>
 <p>belongs_toリレーションシップの場合、Active Recordオブジェクトが値として使用されていれば、モデルを指定する時に関連付けキーを使用できます。この方法はポリモーフィックリレーションシップでも同様に使用できます。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-Post.where(author: author)
-Author.joins(:posts).where(posts: { author: author })
+Article.where(author: author)
+Author.joins(:articles).where(articles: { author: author })
 
 </pre>
 </div>
@@ -704,7 +707,7 @@ SELECT * FROM clients WHERE (clients.created_at BETWEEN '2008-12-21 00:00:00' AN
 
 </pre>
 </div>
-<p><a href="#%E9%85%8D%E5%88%97%E3%81%A7%E8%A1%A8%E3%81%95%E3%82%8C%E3%81%9F%E6%9D%A1%E4%BB%B6">配列による条件</a> ではさらに簡潔な文例をご紹介しています。</p><h5 id="サブセット条件"><a href="#%E3%82%B5%E3%83%96%E3%82%BB%E3%83%83%E3%83%88%E6%9D%A1%E4%BB%B6">2.3.3 サブセット条件</a></h5><p>SQLの<code>IN</code>式を使用してレコードを検索したい場合、条件ハッシュにそのための配列を1つ渡すことができます。</p><div class="code_container">
+<p><a href="#%E9%85%8D%E5%88%97%E3%81%A7%E8%A1%A8%E3%81%95%E3%82%8C%E3%81%9F%E6%9D%A1%E4%BB%B6">配列で表された条件</a>では、さらに簡潔な文例をご紹介しています。</p><h5 id="サブセット条件"><a href="#%E3%82%B5%E3%83%96%E3%82%BB%E3%83%83%E3%83%88%E6%9D%A1%E4%BB%B6">2.3.3 サブセット条件</a></h5><p>SQLの<code>IN</code>式を使用してレコードを検索したい場合、条件ハッシュにそのための配列を1つ渡すことができます。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Client.where(orders_count: [1,3,5])
 
@@ -718,7 +721,7 @@ SELECT * FROM clients WHERE (clients.orders_count IN (1,3,5))
 </div>
 <h4 id="not条件"><a href="#not%E6%9D%A1%E4%BB%B6">2.4 NOT条件</a></h4><p>SQLの<code>NOT</code>クエリは、<code>where.not</code>で表せます。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-Post.where.not(author: author)
+Article.where.not(author: author)
 
 </pre>
 </div>
@@ -754,7 +757,7 @@ Client.order("orders_count ASC", "created_at DESC")
 
 </pre>
 </div>
-<p><code>order</code>メソッドを(条件を変えて)複数回呼び出したい場合、最初の条件に新しい条件が追加されます。</p><div class="code_container">
+<p><code>order</code>メソッドを (条件を変えて) 複数回呼び出すと、最初の並び順に新しい並び順が追加されます。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Client.order("orders_count ASC").order("created_at DESC")
 # SELECT * FROM clients ORDER BY orders_count ASC, created_at DESC
@@ -775,7 +778,7 @@ SELECT viewable_by, locked FROM clients
 </div>
 <p>selectを使用すると、選択したフィールドだけを使用してモデルオブジェクトが初期化されるため、注意してください。モデルオブジェクトの初期化時に指定しなかったフィールドにアクセスしようとすると、以下のメッセージが表示されます。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-ActiveModel::MissingAttributeError: missing attribute: &lt;属性名&gt; 
+ActiveModel::MissingAttributeError: missing attribute: &lt;属性名&gt;
 
 </pre>
 </div>
@@ -839,7 +842,22 @@ GROUP BY date(created_at)
 
 </pre>
 </div>
-<h3 id="having"><a href="#having">7 Having</a></h3><p>SQLでは、<code>GROUP BY</code>フィールドで条件を指定する場合に<code>HAVING</code>句を使用します。検索メソッドで<code>:having</code>オプションを使用すると、<code>Model.find</code>で生成されるSQLに<code>HAVING</code>句を追加できます。</p><p>例：</p><div class="code_container">
+<h4 id="グループ化された項目の合計"><a href="#%E3%82%B0%E3%83%AB%E3%83%BC%E3%83%97%E5%8C%96%E3%81%95%E3%82%8C%E3%81%9F%E9%A0%85%E7%9B%AE%E3%81%AE%E5%90%88%E8%A8%88">6.1 グループ化された項目の合計</a></h4><p>グループ化した項目の合計をひとつのクエリで得るには、<code>group</code>の次に<code>count</code>を呼び出します。</p><div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Order.group(:status).count
+# =&gt; { 'awaiting_approval' =&gt; 7, 'paid' =&gt; 12 }
+
+</pre>
+</div>
+<p>上で実行されるSQLは以下のようなものになります。</p><div class="code_container">
+<pre class="brush: sql; gutter: false; toolbar: false">
+SELECT COUNT (*) AS count_all, status AS status
+FROM "orders"
+GROUP BY status
+
+</pre>
+</div>
+<h3 id="having"><a href="#having">7 Having</a></h3><p>SQLでは、<code>GROUP BY</code>フィールドで条件を指定する場合に<code>HAVING</code>句を使用します。検索メソッドで<code>:having</code>メソッドを使用すると、<code>Model.find</code>で生成されるSQLに<code>HAVING</code>句を追加できます。</p><p>以下に例を示します。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Order.select("date(created_at) as ordered_date, sum(price) as total_price").
   group("date(created_at)").having("sum(price) &gt; ?", 100)
@@ -855,73 +873,73 @@ HAVING sum(price) &gt; 100
 
 </pre>
 </div>
-<p>上の例では、1日あたり1つの注文 (order) オブジェクトを返しますが、1日あたりの注文合計が$100を超える場合にのみこれを行います。</p><h3 id="条件を上書きする"><a href="#%E6%9D%A1%E4%BB%B6%E3%82%92%E4%B8%8A%E6%9B%B8%E3%81%8D%E3%81%99%E3%82%8B">8 条件を上書きする</a></h3><h4 id="unscope"><a href="#unscope">8.1 <code>unscope</code></a></h4><p><code>unscope</code>を使用して特定の条件を取り除くことができます。例：</p><div class="code_container">
+<p>上の例では、1日あたり1つの注文 (order) オブジェクトを返しますが、1日あたりの注文合計が$100を超える場合にのみこれを行います。</p><h3 id="条件を上書きする"><a href="#%E6%9D%A1%E4%BB%B6%E3%82%92%E4%B8%8A%E6%9B%B8%E3%81%8D%E3%81%99%E3%82%8B">8 条件を上書きする</a></h3><h4 id="unscope"><a href="#unscope">8.1 <code>unscope</code></a></h4><p><code>unscope</code>を使用して特定の条件を取り除くことができます。以下に例を示します。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-Post.where('id &gt; 10').limit(20).order('id asc').unscope(:order)
+Article.where('id &gt; 10').limit(20).order('id asc').unscope(:order)
 
 </pre>
 </div>
 <p>上で実行されるSQLは以下のようなものになります。</p><div class="code_container">
 <pre class="brush: sql; gutter: false; toolbar: false">
-SELECT * FROM posts WHERE id &gt; 10 LIMIT 20
+SELECT * FROM articles WHERE id &gt; 10 LIMIT 20
 
 # `unscope`する前のオリジナルのクエリ
-SELECT * FROM posts WHERE id &gt; 10 ORDER BY id asc LIMIT 20
+SELECT * FROM articles WHERE id &gt; 10 ORDER BY id asc LIMIT 20
 
 
 </pre>
 </div>
-<p>特定のwhere句で<code>unscope</code>を指定することもできます。例：</p><div class="code_container">
+<p>特定の<code>where</code>句で<code>unscope</code>を指定することもできます。以下に例を示します。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-Post.where(id: 10, trashed: false).unscope(where: :id)
-# SELECT "posts".* FROM "posts" WHERE trashed = 0
+Article.where(id: 10, trashed: false).unscope(where: :id)
+# SELECT "articles".* FROM "articles" WHERE trashed = 0
 
 </pre>
 </div>
 <p><code>unscope</code>をリレーションに適用すると、それにマージされるすべてのリレーションにも影響します。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-Post.order('id asc').merge(Post.unscope(:order))
-# SELECT "posts".* FROM "posts"
+Article.order('id asc').merge(Article.unscope(:order))
+# SELECT "articles".* FROM "articles"
 
 </pre>
 </div>
-<h4 id="only"><a href="#only">8.2 <code>only</code></a></h4><p><code>only</code>メソッドを使用すると、条件を上書きできます。例：</p><div class="code_container">
+<h4 id="only"><a href="#only">8.2 <code>only</code></a></h4><p><code>only</code>メソッドを使用すると、条件を上書きできます。以下に例を示します。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-Post.where('id &gt; 10').limit(20).order('id desc').only(:order, :where)
+Article.where('id &gt; 10').limit(20).order('id desc').only(:order, :where)
 
 </pre>
 </div>
 <p>上で実行されるSQLは以下のようなものになります。</p><div class="code_container">
 <pre class="brush: sql; gutter: false; toolbar: false">
-SELECT * FROM posts WHERE id &gt; 10 ORDER BY id DESC
+SELECT * FROM articles WHERE id &gt; 10 ORDER BY id DESC
 
 # `only`を使用する前のオリジナルのクエリ
-SELECT "posts".* FROM "posts" WHERE (id &gt; 10) ORDER BY id desc LIMIT 20
+SELECT "articles".* FROM "articles" WHERE (id &gt; 10) ORDER BY id desc LIMIT 20
 
 
 </pre>
 </div>
-<h4 id="reorder"><a href="#reorder">8.3 <code>reorder</code></a></h4><p><code>reorder</code>メソッドは、デフォルトのスコープの並び順を上書きします。例：</p><div class="code_container">
+<h4 id="reorder"><a href="#reorder">8.3 <code>reorder</code></a></h4><p><code>reorder</code>メソッドは、デフォルトのスコープの並び順を上書きします。以下に例を示します。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-class Post &lt; ActiveRecord::Base
-  ..
-  ..
+class Article &lt; ActiveRecord::Base
   has_many :comments, -&gt; { order('posted_at DESC') }
 end
 
-Post.find(10).comments.reorder('name')
+Article.find(10).comments.reorder('name')
 
 </pre>
 </div>
 <p>上で実行されるSQLは以下のようなものになります。</p><div class="code_container">
 <pre class="brush: sql; gutter: false; toolbar: false">
-SELECT * FROM posts WHERE id = 10 ORDER BY name
+SELECT * FROM articles WHERE id = 10
+SELECT * FROM comments WHERE article_id = 10 ORDER BY name
 
 </pre>
 </div>
 <p><code>reorder</code>を実行しなかった場合に実行されるSQLは以下のようなものになります。</p><div class="code_container">
 <pre class="brush: sql; gutter: false; toolbar: false">
-SELECT * FROM posts WHERE id = 10 ORDER BY posted_at DESC
+SELECT * FROM articles WHERE id = 10
+SELECT * FROM comments WHERE article_id = 10 ORDER BY posted_at DESC
 
 </pre>
 </div>
@@ -949,49 +967,49 @@ SELECT * FROM clients WHERE orders_count &gt; 10 ORDER BY clients.id DESC
 
 </pre>
 </div>
-<p>このメソッドは引数を<strong>取りません</strong>。</p><h4 id="rewhere"><a href="#rewhere">8.5 <code>rewhere</code></a></h4><p><code>rewhere</code>メソッドは、既存のwhere条件を上書きします。例：</p><div class="code_container">
+<p>このメソッドは引数を<strong>取りません</strong>。</p><h4 id="rewhere"><a href="#rewhere">8.5 <code>rewhere</code></a></h4><p><code>rewhere</code>メソッドは、既存のwhere条件を上書きします。以下に例を示します。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-Post.where(trashed: true).rewhere(trashed: false)
+Article.where(trashed: true).rewhere(trashed: false)
 
 </pre>
 </div>
 <p>上で実行されるSQLは以下のようなものになります。</p><div class="code_container">
 <pre class="brush: sql; gutter: false; toolbar: false">
-SELECT * FROM posts WHERE `trashed` = 0
+SELECT * FROM articles WHERE `trashed` = 0
 
 </pre>
 </div>
-<p><code>rewhere</code>の代わりに<code>where</code>を2回使用すると、以下のようになってしまいます。</p><div class="code_container">
+<p><code>rewhere</code>の代わりに<code>where</code>を2回使用すると、結果が異なります。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-Post.where(trashed: true).where(trashed: false)
+Article.where(trashed: true).where(trashed: false)
 
 </pre>
 </div>
 <p>上で実行されるSQLは以下のようなものになります。</p><div class="code_container">
 <pre class="brush: sql; gutter: false; toolbar: false">
-SELECT * FROM posts WHERE `trashed` = 1 AND `trashed` = 0
+SELECT * FROM articles WHERE `trashed` = 1 AND `trashed` = 0
 
 </pre>
 </div>
-<h3 id="nullリレーション"><a href="#null%E3%83%AA%E3%83%AC%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3">9 Nullリレーション</a></h3><p><code>none</code>メソッドは、連鎖 (chain) 可能なリレーションを返します (レコードは返しません)。このメソッドから返されたリレーションにどのような条件を連鎖しても、常に空のリレーションが生成されます。これは、メソッドまたはスコープへの連鎖可能な応答が必要で、しかも結果を一切返したくない場合に便利です。</p><div class="code_container">
+<h3 id="nullリレーション"><a href="#null%E3%83%AA%E3%83%AC%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3">9 Nullリレーション</a></h3><p><code>none</code>メソッドは、連鎖 (chain) 可能なリレーションを返します (レコードは返しません)。このメソッドから返されたリレーションにどのような条件を連鎖させても、常に空のリレーションが生成されます。これは、メソッドまたはスコープへの連鎖可能な応答が必要で、しかも結果を一切返したくない場合に便利です。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-Post.none # 空のリレーションを返し、クエリを生成しない。
+Article.none # 空のリレーションを返し、クエリを生成しない。
 
 </pre>
 </div>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-# 以下のvisible_postsメソッドはリレーションを1つ返すことが期待されている
-@posts = current_user.visible_posts.where(name: params[:name])
+# visible_articles メソッドはリレーションを1つ返すことが期待されている
+@articles = current_user.visible_articles.where(name: params[:name])
 
-def visible_posts
+def visible_articles
   case role
   when 'Country Manager'
-    Post.where(country: country)
+    Article.where(country: country)
   when 'Reviewer'
-    Post.published
+    Article.published
   when 'Bad User'
-    Post.none # =&gt; この場合[]またはnilを返し、呼び出し側のコードを中断する
+    Article.none # =&gt; この場合[]またはnilを返し、呼び出し側のコードを中断する
   end
 end
 
@@ -1031,12 +1049,12 @@ end
 
 </pre>
 </div>
-<h4 id="悲観的ロック"><a href="#%E6%82%B2%E8%A6%B3%E7%9A%84%E3%83%AD%E3%83%83%E3%82%AF">11.2 悲観的ロック</a></h4><p>悲観的ロックでは、データベースが提供するロック機構を使用します。リレーションの構築時に<code>lock</code>を使用すると、選択した行に対する排他的ロックを取得できます。<code>lock</code>を使用するリレーションは、デッドロック条件を回避するために通常トランザクションの内側にラップされます。</p><p>例：</p><div class="code_container">
+<h4 id="悲観的ロック-pessimistic"><a href="#%E6%82%B2%E8%A6%B3%E7%9A%84%E3%83%AD%E3%83%83%E3%82%AF-pessimistic">11.2 悲観的ロック (pessimistic)</a></h4><p>悲観的ロックでは、データベースが提供するロック機構を使用します。リレーションの構築時に<code>lock</code>を使用すると、選択した行に対する排他的ロックを取得できます。<code>lock</code>を使用するリレーションは、デッドロック条件を回避するために通常トランザクションの内側にラップされます。</p><p>以下に例を示します。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Item.transaction do
   i = Item.lock.first
   i.name = 'Jones'
-  i.save
+  i.save!
 end
 
 </pre>
@@ -1082,20 +1100,20 @@ SELECT clients.* FROM clients LEFT OUTER JOIN addresses ON addresses.client_id =
 
 </pre>
 </div>
-<h4 id="名前付き関連付けの配列-ハッシュを使用する"><a href="#%E5%90%8D%E5%89%8D%E4%BB%98%E3%81%8D%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91%E3%81%AE%E9%85%8D%E5%88%97-%E3%83%8F%E3%83%83%E3%82%B7%E3%83%A5%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B">12.2 名前付き関連付けの配列/ハッシュを使用する</a></h4><div class="warning"><p>このメソッドは<code>INNER JOIN</code>でしか使用できません。</p></div><p>Active Recordでは、<code>joins</code>メソッドを使用して関連付けで<code>JOIN</code>句を指定する際に、モデルで定義された<a href="association_basics.html">関連付け</a>の名前をショートカットとして使用できます。</p><p>たとえば、以下の<code>Category</code>、<code>Post</code>、<code>Comment</code>、<code>Guest</code>、<code>Tag</code>モデルについて考えてみましょう。</p><div class="code_container">
+<h4 id="名前付き関連付けの配列-ハッシュを使用する"><a href="#%E5%90%8D%E5%89%8D%E4%BB%98%E3%81%8D%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91%E3%81%AE%E9%85%8D%E5%88%97-%E3%83%8F%E3%83%83%E3%82%B7%E3%83%A5%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B">12.2 名前付き関連付けの配列/ハッシュを使用する</a></h4><div class="warning"><p>このメソッドは<code>INNER JOIN</code>でしか使用できません。</p></div><p>Active Recordでは、<code>joins</code>メソッドを使用して関連付けで<code>JOIN</code>句を指定する際に、モデルで定義された関連付けの名前をショートカットとして使用できます (詳細は<a href="association_basics.html">Active Recordの関連付け</a>を参照)。</p><p>たとえば、以下の<code>Category</code>、<code>Article</code>、<code>Comment</code>、<code>Guest</code>、<code>Tag</code>モデルについて考えてみましょう。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class Category &lt; ActiveRecord::Base
-  has_many :posts
+  has_many :articles
 end
 
-class Post &lt; ActiveRecord::Base
+class Article &lt; ActiveRecord::Base
   belongs_to :category
   has_many :comments
   has_many :tags
 end
 
 class Comment &lt; ActiveRecord::Base
-  belongs_to :post
+  belongs_to :article
   has_one :guest
 end
 
@@ -1104,69 +1122,69 @@ class Guest &lt; ActiveRecord::Base
 end
 
 class Tag &lt; ActiveRecord::Base
-  belongs_to :post
+  belongs_to :article
 end
 
 </pre>
 </div>
 <p>以下のすべてにおいて、<code>INNER JOIN</code>を使用した結合クエリが期待どおりに生成されています。</p><h5 id="単一関連付けを結合する"><a href="#%E5%8D%98%E4%B8%80%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91%E3%82%92%E7%B5%90%E5%90%88%E3%81%99%E3%82%8B">12.2.1 単一関連付けを結合する</a></h5><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-Category.joins(:posts)
+Category.joins(:articles)
 
 </pre>
 </div>
 <p>上によって以下が生成されます。</p><div class="code_container">
 <pre class="brush: sql; gutter: false; toolbar: false">
 SELECT categories.* FROM categories
-  INNER JOIN posts ON posts.category_id = categories.id
+  INNER JOIN articles ON articles.category_id = categories.id
 
 </pre>
 </div>
-<p>上のSQLを日本語で書くと「投稿 (post) のあるすべてのカテゴリーを含む、Categoryオブジェクトを1つ返す」となります。なお、同じカテゴリーに複数の投稿がある場合、カテゴリーが重複します。重複のない一意のカテゴリーが必要な場合は、<code>Category.joins(:posts).uniq</code>を使用できます。</p><h5 id="複数の関連付けを結合する"><a href="#%E8%A4%87%E6%95%B0%E3%81%AE%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91%E3%82%92%E7%B5%90%E5%90%88%E3%81%99%E3%82%8B">12.2.2 複数の関連付けを結合する</a></h5><div class="code_container">
+<p>上のSQLを日本語で書くと「記事 (article) のあるすべてのカテゴリーを含む、Categoryオブジェクトを1つ返す」となります。なお、同じカテゴリーに複数の記事がある場合、カテゴリーが重複します。重複のない一意のカテゴリーが必要な場合は、<code>Category.joins(:article).uniq</code>を使用できます。</p><h5 id="複数の関連付けを結合する"><a href="#%E8%A4%87%E6%95%B0%E3%81%AE%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91%E3%82%92%E7%B5%90%E5%90%88%E3%81%99%E3%82%8B">12.2.2 複数の関連付けを結合する</a></h5><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-Post.joins(:category, :comments)
+Article.joins(:category, :comments)
 
 </pre>
 </div>
 <p>上によって以下が生成されます。</p><div class="code_container">
 <pre class="brush: sql; gutter: false; toolbar: false">
-SELECT posts.* FROM posts
-  INNER JOIN categories ON posts.category_id = categories.id
-  INNER JOIN comments ON comments.post_id = posts.id
+SELECT articles.* FROM articles
+  INNER JOIN categories ON articles.category_id = categories.id
+  INNER JOIN comments ON comments.article_id = articles.id
 
 </pre>
 </div>
-<p>上のSQLを日本語で書くと、「カテゴリーが1つあり、かつコメントが少なくとも1つある、すべての投稿を返す」となります。こちらも、コメントが複数ある投稿は複数回表示されます。</p><h5 id="ネストした関連付けを結合する-単一レベル"><a href="#%E3%83%8D%E3%82%B9%E3%83%88%E3%81%97%E3%81%9F%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91%E3%82%92%E7%B5%90%E5%90%88%E3%81%99%E3%82%8B-%E5%8D%98%E4%B8%80%E3%83%AC%E3%83%99%E3%83%AB">12.2.3 ネストした関連付けを結合する (単一レベル)</a></h5><div class="code_container">
+<p>上のSQLを日本語で書くと、「カテゴリーが1つあり、かつコメントが1つ以上ある、すべての記事を返す」となります。こちらも、コメントが複数ある記事は複数回表示されます。</p><h5 id="ネストした関連付けを結合する-単一レベル"><a href="#%E3%83%8D%E3%82%B9%E3%83%88%E3%81%97%E3%81%9F%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91%E3%82%92%E7%B5%90%E5%90%88%E3%81%99%E3%82%8B-%E5%8D%98%E4%B8%80%E3%83%AC%E3%83%99%E3%83%AB">12.2.3 ネストした関連付けを結合する (単一レベル)</a></h5><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-Post.joins(comments: :guest)
+Article.joins(comments: :guest)
 
 </pre>
 </div>
 <p>上によって以下が生成されます。</p><div class="code_container">
 <pre class="brush: sql; gutter: false; toolbar: false">
-SELECT posts.* FROM posts
-  INNER JOIN comments ON comments.post_id = posts.id
+SELECT articles.* FROM articles
+  INNER JOIN comments ON comments.article_id = articles.id
   INNER JOIN guests ON guests.comment_id = comments.id
 
 </pre>
 </div>
-<p>上のSQLを日本語で書くと、「ゲストによるコメントが1つある投稿をすべて返す」となります。</p><h5 id="ネストした関連付けを結合する-複数レベル"><a href="#%E3%83%8D%E3%82%B9%E3%83%88%E3%81%97%E3%81%9F%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91%E3%82%92%E7%B5%90%E5%90%88%E3%81%99%E3%82%8B-%E8%A4%87%E6%95%B0%E3%83%AC%E3%83%99%E3%83%AB">12.2.4 ネストした関連付けを結合する (複数レベル)</a></h5><div class="code_container">
+<p>上のSQLを日本語で書くと、「ゲストによるコメントが1つある記事をすべて返す」となります。</p><h5 id="ネストした関連付けを結合する-複数レベル"><a href="#%E3%83%8D%E3%82%B9%E3%83%88%E3%81%97%E3%81%9F%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91%E3%82%92%E7%B5%90%E5%90%88%E3%81%99%E3%82%8B-%E8%A4%87%E6%95%B0%E3%83%AC%E3%83%99%E3%83%AB">12.2.4 ネストした関連付けを結合する (複数レベル)</a></h5><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-Category.joins(posts: [{ comments: :guest }, :tags])
+Category.joins(articles: [{ comments: :guest }, :tags])
 
 </pre>
 </div>
 <p>上によって以下が生成されます。</p><div class="code_container">
 <pre class="brush: sql; gutter: false; toolbar: false">
 SELECT categories.* FROM categories
-  INNER JOIN posts ON posts.category_id = categories.id
-  INNER JOIN comments ON comments.post_id = posts.id
+  INNER JOIN articles ON articles.category_id = categories.id
+  INNER JOIN comments ON comments.article_id = articles.id
   INNER JOIN guests ON guests.comment_id = comments.id
-  INNER JOIN tags ON tags.post_id = posts.id
+  INNER JOIN tags ON tags.article_id = articles.id
 
 </pre>
 </div>
-<h4 id="結合されたテーブルで条件を指定する"><a href="#%E7%B5%90%E5%90%88%E3%81%95%E3%82%8C%E3%81%9F%E3%83%86%E3%83%BC%E3%83%96%E3%83%AB%E3%81%A7%E6%9D%A1%E4%BB%B6%E3%82%92%E6%8C%87%E5%AE%9A%E3%81%99%E3%82%8B">12.3 結合されたテーブルで条件を指定する</a></h4><p>標準の<a href="#%E9%85%8D%E5%88%97%E3%81%A7%E8%A1%A8%E3%81%95%E3%82%8C%E3%81%9F%E6%9D%A1%E4%BB%B6">配列</a>および<a href="#%E6%96%87%E5%AD%97%E5%88%97%E3%81%A0%E3%81%91%E3%81%A7%E8%A1%A8%E3%81%95%E3%82%8C%E3%81%9F%E6%9D%A1%E4%BB%B6">文字列</a>条件を使用して、結合テーブルに条件を指定することができます。<a href="#%E3%83%8F%E3%83%83%E3%82%B7%E3%83%A5%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%97%E3%81%9F%E6%9D%A1%E4%BB%B6">ハッシュ条件</a> の場合、結合テーブルで条件を指定する場合に特殊な構文を使用します。</p><div class="code_container">
+<h4 id="結合されたテーブルで条件を指定する"><a href="#%E7%B5%90%E5%90%88%E3%81%95%E3%82%8C%E3%81%9F%E3%83%86%E3%83%BC%E3%83%96%E3%83%AB%E3%81%A7%E6%9D%A1%E4%BB%B6%E3%82%92%E6%8C%87%E5%AE%9A%E3%81%99%E3%82%8B">12.3 結合されたテーブルで条件を指定する</a></h4><p>標準の<a href="#%E9%85%8D%E5%88%97%E3%81%A7%E8%A1%A8%E3%81%95%E3%82%8C%E3%81%9F%E6%9D%A1%E4%BB%B6">配列</a>および<a href="#%E6%96%87%E5%AD%97%E5%88%97%E3%81%A0%E3%81%91%E3%81%A7%E8%A1%A8%E3%81%95%E3%82%8C%E3%81%9F%E6%9D%A1%E4%BB%B6">文字列</a>条件を使用して、結合テーブルに条件を指定することができます。<a href="#%E3%83%8F%E3%83%83%E3%82%B7%E3%83%A5%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%97%E3%81%9F%E6%9D%A1%E4%BB%B6">ハッシュ条件</a>の場合、結合テーブルで条件を指定する場合に特殊な構文を使用します。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 time_range = (Time.now.midnight - 1.day).Time.now.midnight
 Client.joins(:orders).where('orders.created_at' =&gt; time_range)
@@ -1210,31 +1228,37 @@ SELECT addresses.* FROM addresses
 </div>
 <h4 id="複数の関連付けを一括で読み込む"><a href="#%E8%A4%87%E6%95%B0%E3%81%AE%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91%E3%82%92%E4%B8%80%E6%8B%AC%E3%81%A7%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%82%80">13.1 複数の関連付けを一括で読み込む</a></h4><p>Active Recordは、1つの<code>Model.find</code>呼び出しで関連付けをいくつでも一括読み込みすることができます。これを行なうには、<code>includes</code>メソッドで配列、ハッシュ、または、配列やハッシュのネストしたハッシュを使用します。</p><h5 id="複数の関連付けの配列"><a href="#%E8%A4%87%E6%95%B0%E3%81%AE%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91%E3%81%AE%E9%85%8D%E5%88%97">13.1.1 複数の関連付けの配列</a></h5><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-Post.includes(:category, :comments)
+Article.includes(:category, :comments)
 
 </pre>
 </div>
-<p>上のコードは、投稿と、それに関連付けられたカテゴリとコメントをすべて読み込みます。</p><h5 id="ネストした関連付けハッシュ"><a href="#%E3%83%8D%E3%82%B9%E3%83%88%E3%81%97%E3%81%9F%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91%E3%83%8F%E3%83%83%E3%82%B7%E3%83%A5">13.1.2 ネストした関連付けハッシュ</a></h5><div class="code_container">
+<p>上のコードは、記事と、それに関連付けられたカテゴリやコメントをすべて読み込みます。</p><h5 id="ネストした関連付けハッシュ"><a href="#%E3%83%8D%E3%82%B9%E3%83%88%E3%81%97%E3%81%9F%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91%E3%83%8F%E3%83%83%E3%82%B7%E3%83%A5">13.1.2 ネストした関連付けハッシュ</a></h5><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-Category.includes(posts: [{ comments: :guest }, :tags]).find(1)
+Category.includes(articles: [{ comments: :guest }, :tags]).find(1)
 
 </pre>
 </div>
-<p>上のコードは、id=1のカテゴリを検索し、関連付けられたすべての投稿およびそのタグとコメント、およびすべてのコメントのゲスト関連付けを一括読み込みします。</p><h4 id="関連付けの一括読み込みで条件を指定する"><a href="#%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91%E3%81%AE%E4%B8%80%E6%8B%AC%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF%E3%81%A7%E6%9D%A1%E4%BB%B6%E3%82%92%E6%8C%87%E5%AE%9A%E3%81%99%E3%82%8B">13.2 関連付けの一括読み込みで条件を指定する</a></h4><p>Active Recordでは、<code>joins</code>のように事前読み込みされた関連付けに対して条件を指定することができますが、<a href="#%E3%83%86%E3%83%BC%E3%83%96%E3%83%AB%E3%82%92%E7%B5%90%E5%90%88%E3%81%99%E3%82%8B">joins</a> という方法を使用することをお勧めします。</p><p>しかし、このようにせざるを得ない場合は、<code>where</code>を通常どおりに使用することができます。</p><div class="code_container">
+<p>上のコードは、id=1のカテゴリを検索し、関連付けられたすべての記事とそのタグやコメント、およびすべてのコメントのゲスト関連付けを一括読み込みします。</p><h4 id="関連付けの一括読み込みで条件を指定する"><a href="#%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91%E3%81%AE%E4%B8%80%E6%8B%AC%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF%E3%81%A7%E6%9D%A1%E4%BB%B6%E3%82%92%E6%8C%87%E5%AE%9A%E3%81%99%E3%82%8B">13.2 関連付けの一括読み込みで条件を指定する</a></h4><p>Active Recordでは、<code>joins</code>のように事前読み込みされた関連付けに対して条件を指定することができますが、<a href="#%E3%83%86%E3%83%BC%E3%83%96%E3%83%AB%E3%82%92%E7%B5%90%E5%90%88%E3%81%99%E3%82%8B">joins</a> という方法を使用することをお勧めします。</p><p>しかし、このようにせざるを得ない場合は、<code>where</code>を通常どおりに使用することができます。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-Post.includes(:comments).where("comments.visible" =&gt; true)
+Article.includes(:comments).where(comments: { visible: true })
 
 </pre>
 </div>
 <p>このコードは、<code>LEFT OUTER JOIN</code>を含むクエリを1つ生成します。<code>joins</code>メソッドを使用していたら、代りに<code>INNER JOIN</code>を使用するクエリが生成されていたでしょう。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-  SELECT "posts"."id" AS t0_r0, ... "comments"."updated_at" AS t1_r5 FROM "posts" LEFT OUTER JOIN "comments" ON "comments"."post_id" = "posts"."id" WHERE (comments.visible = 1)
+  SELECT "articles"."id" AS t0_r0, ... "comments"."updated_at" AS t1_r5 FROM "articles" LEFT OUTER JOIN "comments" ON "comments"."article_id" = "articles"."id" WHERE (comments.visible = 1)
 
 </pre>
 </div>
-<p><code>where</code>条件がない場合は、通常のクエリが2セット生成されます。</p><p>この<code>includes</code>クエリの場合、どの投稿にもコメントがついていないで、やはりすべての投稿が読み込まれるでしょう。<code>joins</code> (INNER JOIN) を使用する場合、結合条件は必ずマッチ <strong>しなければならず</strong> 、それ以外の場合にはレコードは返されません。</p><h3 id="スコープ"><a href="#%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%97">14 スコープ</a></h3><p>スコープを設定することで、関連オブジェクトやモデルへのメソッド呼び出しとして参照される、よく使用されるクエリを指定することができます。スコープでは、<code>where</code>、<code>joins</code>、<code>includes</code>など、これまでに登場したすべてのメソッドを使用できます。どのスコープメソッドも、常に<code>ActiveRecord::Relation</code>オブジェクトを返します。このオブジェクトに対して、別のスコープを含む他のメソッド呼び出しを行なうこともできます。</p><p>単純なスコープを設定するには、クラスの内部で<code>scope</code>メソッドを使用し、スコープが呼び出されたときに実行して欲しいクエリをそこで渡します。</p><div class="code_container">
+<p><code>where</code>条件がない場合は、通常のクエリが2セット生成されます。</p><div class="note"><p><code>where</code>がこのように動作するのは、ハッシュを渡した場合だけです。SQL断片化 (fragmentation) を避けるためには、<code>references</code> を指定して強制的にテーブルをjoinする必要があります。</p></div><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-class Post &lt; ActiveRecord::Base
+Article.includes(:comments).where("comments.visible = true").references(:comments)
+
+</pre>
+</div>
+<p>この<code>includes</code>クエリの場合、どの記事にもコメントがついていないので、すべての記事が読み込まれます。<code>joins</code> (INNER JOIN) を使用する場合、結合条件は必ずマッチ <strong>しなければならず</strong> 、それ以外の場合にはレコードは返されません。</p><h3 id="スコープ"><a href="#%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%97">14 スコープ</a></h3><p>スコープを設定することで、関連オブジェクトやモデルへのメソッド呼び出しとして参照される、よく使用されるクエリを指定することができます。スコープでは、<code>where</code>、<code>joins</code>、<code>includes</code>など、これまでに登場したすべてのメソッドを使用できます。どのスコープメソッドも、常に<code>ActiveRecord::Relation</code>オブジェクトを返します。このオブジェクトに対して、別のスコープを含む他のメソッド呼び出しを行なうこともできます。</p><p>単純なスコープを設定するには、クラスの内部で<code>scope</code>メソッドを使用し、スコープが呼び出されたときに実行して欲しいクエリをそこで渡します。</p><div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class Article &lt; ActiveRecord::Base
   scope :published, -&gt; { where(published: true) }
 end
 
@@ -1242,7 +1266,7 @@ end
 </div>
 <p>以下でもわかるように、スコープでのメソッドの設定は、クラスメソッドの定義と完全に同じ (というよりクラスメソッドの定義そのもの) です。どちらの形式を使用するかは好みの問題です。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-class Post &lt; ActiveRecord::Base
+class Article &lt; ActiveRecord::Base
   def self.published
     where(published: true)
   end
@@ -1252,7 +1276,7 @@ end
 </div>
 <p>スコープをスコープ内で連鎖 (chain) させることもできます。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-class Post &lt; ActiveRecord::Base
+class Article &lt; ActiveRecord::Base
   scope :published,               -&gt; { where(published: true) }
   scope :published_and_commented, -&gt; { published.where("comments_count &gt; 0") }
 end
@@ -1261,20 +1285,20 @@ end
 </div>
 <p>この<code>published</code>スコープを呼び出すには、クラスでこのスコープを呼び出します。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-Post.published # =&gt; [published posts]
+Article.published # =&gt; [published articles]
 
 </pre>
 </div>
-<p>または、<code>Post</code>オブジェクトからなる関連付けでこのスコープを呼び出します。</p><div class="code_container">
+<p>または、<code>Articles</code>オブジェクトからなる関連付けでこのスコープを呼び出します。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 category = Category.first
-category.posts.published # =&gt; [published posts belonging to this category]
+category.articles.published # =&gt; [このカテゴリに属する、公開済みの記事]
 
 </pre>
 </div>
 <h4 id="引数を渡す"><a href="#%E5%BC%95%E6%95%B0%E3%82%92%E6%B8%A1%E3%81%99">14.1 引数を渡す</a></h4><p>スコープには引数を渡すことができます。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-class Post &lt; ActiveRecord::Base
+class Article &lt; ActiveRecord::Base
   scope :created_before, -&gt;(time) { where("created_at &lt; ?", time) }
 end
 
@@ -1282,13 +1306,13 @@ end
 </div>
 <p>引数付きスコープの呼び出しは、クラスメソッドの呼び出しと同様の方法で行います。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-Post.created_before(Time.zone.now)
+Article.created_before(Time.zone.now)
 
 </pre>
 </div>
 <p>しかし、このスコープでできる機能は、クラスメソッドでできる機能と重複しています。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-class Post &lt; ActiveRecord::Base
+class Article &lt; ActiveRecord::Base
   def self.created_before(time)
     where("created_at &lt; ?", time)
   end
@@ -1298,57 +1322,11 @@ end
 </div>
 <p>スコープで引数を使用するのであれば、クラスメソッドとして定義する方が推奨されます。クラスメソッドにした場合でも、関連オブジェクトからアクセス可能です。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-category.posts.created_before(time)
+category.articles.created_before(time)
 
 </pre>
 </div>
-<h4 id="スコープのマージ"><a href="#%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%97%E3%81%AE%E3%83%9E%E3%83%BC%E3%82%B8">14.2 スコープのマージ</a></h4><p><code>where</code>句と同様、<code>AND</code>条件を使用してスコープをマージできます。</p><div class="code_container">
-<pre class="brush: ruby; gutter: false; toolbar: false">
-class User &lt; ActiveRecord::Base
-  scope :active, -&gt; { where state: 'active' }
-  scope :inactive, -&gt; { where state: 'inactive' }
-end
-
-User.active.inactive
-# SELECT "users".* FROM "users" WHERE "users"."state" = 'active' AND "users"."state" = 'inactive'
-
-</pre>
-</div>
-<p><code>scope</code>と<code>where</code>条件を混用してマッチさせることができます。その結果生成される最終的なSQLには、すべての条件が<code>AND</code>で結合されて使用されます。</p><div class="code_container">
-<pre class="brush: ruby; gutter: false; toolbar: false">
-User.active.where(state: 'finished')
-# SELECT "users".* FROM "users" WHERE "users"."state" = 'active' AND "users"."state" = 'finished'
-
-</pre>
-</div>
-<p>スコープよりも最後のwhere句をどうしても優先したい場合は、<code>Relation#merge</code>を使用できます。</p><div class="code_container">
-<pre class="brush: ruby; gutter: false; toolbar: false">
-User.active.merge(User.inactive)
-# SELECT "users".* FROM "users" WHERE "users"."state" = 'inactive'
-
-</pre>
-</div>
-<p>ここで一つ注意すべき点は、<code>default_scope</code>は
-<code>scope</code>や<code>where</code>条件よりも前に置かれるという点です。</p><div class="code_container">
-<pre class="brush: ruby; gutter: false; toolbar: false">
-class User &lt; ActiveRecord::Base
-  default_scope { where state: 'pending' }
-  scope :active, -&gt; { where state: 'active' }
-  scope :inactive, -&gt; { where state: 'inactive' }
-end
-
-User.all
-# SELECT "users".* FROM "users" WHERE "users"."state" = 'pending'
-
-User.active
-# SELECT "users".* FROM "users" WHERE "users"."state" = 'pending' AND "users"."state" = 'active'
-
-User.where(state: 'inactive')
-# SELECT "users".* FROM "users" WHERE "users"."state" = 'pending' AND "users"."state" = 'inactive'
-
-</pre>
-</div>
-<p>上の例でわかるように、<code>default_scope</code>が<code>scope</code>と<code>where</code>よりも前の場所にマージされています。</p><h4 id="デフォルトスコープを適用する"><a href="#%E3%83%87%E3%83%95%E3%82%A9%E3%83%AB%E3%83%88%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%97%E3%82%92%E9%81%A9%E7%94%A8%E3%81%99%E3%82%8B">14.3 デフォルトスコープを適用する</a></h4><p>あるスコープをモデルのすべてのクエリに適用したい場合、モデル自身の内部で<code>default_scope</code>メソッドを使用することができます。</p><div class="code_container">
+<h4 id="デフォルトスコープを適用する"><a href="#%E3%83%87%E3%83%95%E3%82%A9%E3%83%AB%E3%83%88%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%97%E3%82%92%E9%81%A9%E7%94%A8%E3%81%99%E3%82%8B">14.2 デフォルトスコープを適用する</a></h4><p>あるスコープをモデルのすべてのクエリに適用したい場合、モデル自身の内部で<code>default_scope</code>メソッドを使用することができます。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class Client &lt; ActiveRecord::Base
   default_scope { where("removed_at IS NULL") }
@@ -1372,7 +1350,52 @@ end
 
 </pre>
 </div>
-<h4 id="すべてのスコープを削除する"><a href="#%E3%81%99%E3%81%B9%E3%81%A6%E3%81%AE%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%97%E3%82%92%E5%89%8A%E9%99%A4%E3%81%99%E3%82%8B">14.4 すべてのスコープを削除する</a></h4><p>何らかの理由でスコープをすべて解除したい場合は<code>unscoped</code>メソッドを使用できます。このメソッドは、モデルで<code>default_scope</code>が指定されているが、それを適用したくないクエリがある場合に特に便利です。</p><div class="code_container">
+<h4 id="スコープのマージ"><a href="#%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%97%E3%81%AE%E3%83%9E%E3%83%BC%E3%82%B8">14.3 スコープのマージ</a></h4><p><code>where</code>句と同様、<code>AND</code>条件を使用してスコープをマージできます。</p><div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class User &lt; ActiveRecord::Base
+  scope :active, -&gt; { where state: 'active' }
+  scope :inactive, -&gt; { where state: 'inactive' }
+end
+
+User.active.inactive
+# SELECT "users".* FROM "users" WHERE "users"."state" = 'active' AND "users"."state" = 'inactive'
+
+</pre>
+</div>
+<p><code>scope</code>と<code>where</code>条件を混用してマッチさせることができます。その結果生成される最終的なSQLには、すべての条件が<code>AND</code>で結合されて使用されます。</p><div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+User.active.where(state: 'finished')
+# SELECT "users".* FROM "users" WHERE "users"."state" = 'active' AND "users"."state" = 'finished'
+
+</pre>
+</div>
+<p>末尾のwhere句をどうしてもスコープより優先したい場合は、<code>Relation#merge</code>を使用できます。</p><div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+User.active.merge(User.inactive)
+# SELECT "users".* FROM "users" WHERE "users"."state" = 'inactive'
+
+</pre>
+</div>
+<p>ここでひとつ注意しなければならないのは、<code>default_scope</code>を<code>scope</code>や<code>where</code>条件よりも前に置いているという点です。</p><div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class User &lt; ActiveRecord::Base
+  default_scope { where state: 'pending' }
+  scope :active, -&gt; { where state: 'active' }
+  scope :inactive, -&gt; { where state: 'inactive' }
+end
+
+User.all
+# SELECT "users".* FROM "users" WHERE "users"."state" = 'pending'
+
+User.active
+# SELECT "users".* FROM "users" WHERE "users"."state" = 'pending' AND "users"."state" = 'active'
+
+User.where(state: 'inactive')
+# SELECT "users".* FROM "users" WHERE "users"."state" = 'pending' AND "users"."state" = 'inactive'
+
+</pre>
+</div>
+<p>上の例でわかるように、<code>default_scope</code>が<code>scope</code>と<code>where</code>よりも前の場所にマージされています。</p><h4 id="すべてのスコープを削除する"><a href="#%E3%81%99%E3%81%B9%E3%81%A6%E3%81%AE%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%97%E3%82%92%E5%89%8A%E9%99%A4%E3%81%99%E3%82%8B">14.4 すべてのスコープを削除する</a></h4><p>何らかの理由でスコープをすべて解除したい場合は<code>unscoped</code>メソッドを使用できます。このメソッドは、モデルで<code>default_scope</code>が指定されているが、それを適用したくないクエリがある場合に特に便利です。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Client.unscoped.load
 
@@ -1386,7 +1409,47 @@ Client.unscoped {
 
 </pre>
 </div>
-<h3 id="動的ファインダ"><a href="#%E5%8B%95%E7%9A%84%E3%83%95%E3%82%A1%E3%82%A4%E3%83%B3%E3%83%80">15 動的ファインダ</a></h3><p>Active Recordは、テーブルに定義されたすべてのフィールド (属性とも呼ばれます) に対して自動的にファインダメソッドを提供します。たとえば、<code>Client</code>モデルに<code>first_name</code>というフィールドがあると、<code>find_by_first_name</code>というメソッドがActive Recordによって自動的に作成されます。<code>Client</code>モデルに<code>locked</code>というフィールドがあれば、<code>find_by_locked</code>というメソッドを使用できます。</p><p>この動的ファインダメソッドの末尾に<code>Client.find_by_name!("Ryan")</code>のように感嘆符 (<code>!</code>) を追加すると、該当するレコードがない場合に<code>ActiveRecord::RecordNotFound</code>エラーが発生します。</p><p>nameとlockedの両方を検索したいのであれば、2つのフィールド名をandでつなぐだけでメソッドを利用できます。たとえば、<code>Client.find_by_first_name_and_locked("Ryan", true)</code>のように書くことができます。</p><h3 id="新しいオブジェクトを検索またはビルドする"><a href="#%E6%96%B0%E3%81%97%E3%81%84%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E6%A4%9C%E7%B4%A2%E3%81%BE%E3%81%9F%E3%81%AF%E3%83%93%E3%83%AB%E3%83%89%E3%81%99%E3%82%8B">16 新しいオブジェクトを検索またはビルドする</a></h3><div class="note"><p>Rails 4.0では一部の動的ファインダメソッドが非推奨に指定されました。これらはRails 4.1で削除される予定です。最良の方法は、Active Recordのスコープを代りに使用することです。非推奨になったファインダgemは <a href="https://github.com/rails/activerecord-deprecated_finders">https://github.com/rails/activerecord-deprecated_finders</a> にあります。</p></div><p>レコードを検索し、レコードがなければ作成する、というのはよくある一連の流れです。<code>find_or_create_by</code>および<code>find_or_create_by!</code>メソッドを使用すればこれらを一度に行なうことができます。</p><h4 id="find-or-create-by"><a href="#find-or-create-by">16.1 <code>find_or_create_by</code></a></h4><p><code>find_or_create_by</code>メソッドは、指定された属性を持つレコードが存在するかどうかをチェックします。レコードがない場合は<code>create</code>が呼び出されます。以下の例を見てみましょう。</p><p>'Andy'という名前のクライアントを探し、いなければ作成したいとします。これを行なうには以下を実行します。</p><div class="code_container">
+<h3 id="動的ファインダ"><a href="#%E5%8B%95%E7%9A%84%E3%83%95%E3%82%A1%E3%82%A4%E3%83%B3%E3%83%80">15 動的ファインダ</a></h3><p>Active Recordは、テーブルに定義されたすべてのフィールド (属性とも呼ばれます) に対して自動的にファインダメソッドを提供します。たとえば、<code>Client</code>モデルに<code>first_name</code>というフィールドがあると、<code>find_by_first_name</code>というメソッドがActive Recordによって自動的に作成されます。<code>Client</code>モデルに<code>locked</code>というフィールドがあれば、<code>find_by_locked</code>というメソッドを使用できます。</p><p>この動的ファインダメソッドの末尾に<code>Client.find_by_name!("Ryan")</code>のように感嘆符 (<code>!</code>) を追加すると、該当するレコードがない場合に<code>ActiveRecord::RecordNotFound</code>エラーが発生します。</p><p>nameとlockedの両方を検索したいのであれば、2つのフィールド名をandでつなぐだけでメソッドを利用できます。たとえば、<code>Client.find_by_first_name_and_locked("Ryan", true)</code>のようにかくことができます</p><h3 id="メソッドチェインを理解する"><a href="#%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89%E3%83%81%E3%82%A7%E3%82%A4%E3%83%B3%E3%82%92%E7%90%86%E8%A7%A3%E3%81%99%E3%82%8B">16 メソッドチェインを理解する</a></h3><p>Active Record パターンには <a href="http://en.wikipedia.org/wiki/Method_chaining">メソッドチェイン (Method chaining - Wikipedia)</a> が実装されています。これにより、複数のActive Recordメソッドをシンプルな方法で次々に適用することができます。</p><p>文中でメソッドチェインができるのは、その前のメソッドが<code>ActiveRecord::Relation</code> (<code>all</code>、<code>where</code>、<code>joins</code>など) をひとつ返す場合です。文の末尾には、単一のオブジェクトを返すメソッド (<a href="#%E5%8D%98%E4%B8%80%E3%81%AE%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E5%8F%96%E3%82%8A%E5%87%BA%E3%81%99">単一のオブジェクトを取り出す</a>を参照) をひとつ置かなければなりません。</p><p>いくつか例をご紹介します。本ガイドでは一部の例のみをご紹介し、すべての例を網羅することはしません。
+Active Recordメソッドが呼び出されると、クエリはその時点ではすぐに生成されず、データベースに送信されます。クエリは、データが実際に必要になった時点で初めて生成されます。以下の例では、いずれも単一のクエリを生成します。</p><h4 id="複数のテーブルからのデータをフィルタして取得する"><a href="#%E8%A4%87%E6%95%B0%E3%81%AE%E3%83%86%E3%83%BC%E3%83%96%E3%83%AB%E3%81%8B%E3%82%89%E3%81%AE%E3%83%87%E3%83%BC%E3%82%BF%E3%82%92%E3%83%95%E3%82%A3%E3%83%AB%E3%82%BF%E3%81%97%E3%81%A6%E5%8F%96%E5%BE%97%E3%81%99%E3%82%8B">16.1 複数のテーブルからのデータをフィルタして取得する</a></h4><div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Person
+  .select('people.id, people.name, comments.text')
+  .joins(:comments)
+  .where('comments.created_at &gt; ?', 1.week.ago)
+
+</pre>
+</div>
+<p>結果は次のようなものになります。</p><div class="code_container">
+<pre class="brush: sql; gutter: false; toolbar: false">
+SELECT people.id, people.name, comments.text
+FROM people
+INNER JOIN comments
+  ON comments.person_id = people.id
+WHERE comments.created_at = '2015-01-01'
+
+</pre>
+</div>
+<h4 id="複数のテーブルから特定のデータを取得する"><a href="#%E8%A4%87%E6%95%B0%E3%81%AE%E3%83%86%E3%83%BC%E3%83%96%E3%83%AB%E3%81%8B%E3%82%89%E7%89%B9%E5%AE%9A%E3%81%AE%E3%83%87%E3%83%BC%E3%82%BF%E3%82%92%E5%8F%96%E5%BE%97%E3%81%99%E3%82%8B">16.2 複数のテーブルから特定のデータを取得する</a></h4><div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Person
+  .select('people.id, people.name, companies.name')
+  .joins(:company)
+  .find_by('people.name' =&gt; 'John') # 名を指定
+
+</pre>
+</div>
+<p>上のコードから以下が生成されます。</p><div class="code_container">
+<pre class="brush: sql; gutter: false; toolbar: false">
+SELECT people.id, people.name, companies.name
+FROM people
+INNER JOIN companies
+  ON companies.person_id = people.id
+WHERE people.name = 'John'
+LIMIT 1
+
+</pre>
+</div>
+<div class="note"><p>ひとつのクエリが複数のレコードとマッチする場合、<code>find_by</code>は「最初」の結果だけを返し、他は返しません (上の<code>LIMIT 1</code> 文を参照)。</p></div><h3 id="新しいオブジェクトを検索またはビルドする"><a href="#%E6%96%B0%E3%81%97%E3%81%84%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E6%A4%9C%E7%B4%A2%E3%81%BE%E3%81%9F%E3%81%AF%E3%83%93%E3%83%AB%E3%83%89%E3%81%99%E3%82%8B">17 新しいオブジェクトを検索またはビルドする</a></h3><p>レコードを検索し、レコードがなければ作成する、というのはよくある一連の流れです。<code>find_or_create_by</code>および<code>find_or_create_by!</code>メソッドを使用すればこれらを一度に行なうことができます。</p><h4 id="find-or-create-by"><a href="#find-or-create-by">17.1 <code>find_or_create_by</code></a></h4><p><code>find_or_create_by</code>メソッドは、指定された属性を持つレコードが存在するかどうかをチェックします。レコードがない場合は<code>create</code>が呼び出されます。以下の例を見てみましょう。</p><p>'Andy'という名前のクライアントを探し、いなければ作成したいとします。これを行なうには以下を実行します。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Client.find_or_create_by(first_name: 'Andy')
 # =&gt; #&lt;Client id: 1, first_name: "Andy", orders_count: 0, locked: true, created_at: "2011-08-30 06:09:27", updated_at: "2011-08-30 06:09:27"&gt;
@@ -1416,7 +1479,7 @@ end
 
 </pre>
 </div>
-<p>このブロックは、クライアントが作成されるときにだけ実行されます。このコードを再度実行すると、このブロックは実行されません。</p><h4 id="find-or-create-by-bang"><a href="#find-or-create-by-bang">16.2 <code>find_or_create_by!</code></a></h4><p><code>find_or_create_by!</code>を使用すると、新しいレコードが無効な場合に例外を発生することもできます。このガイドでは検証については解説の対象ではありませんが、</p><div class="code_container">
+<p>このブロックは、クライアントが作成されるときにだけ実行されます。このコードを再度実行すると、このブロックは実行されません。</p><h4 id="find-or-create-by-bang"><a href="#find-or-create-by-bang">17.2 <code>find_or_create_by!</code></a></h4><p><code>find_or_create_by!</code>を使用すると、新しいレコードが無効な場合に例外を発生することもできます。検証 (validation) については本ガイドでは解説していませんが、たとえば</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 validates :orders_count, presence: true
 
@@ -1429,7 +1492,7 @@ Client.find_or_create_by!(first_name: 'Andy')
 
 </pre>
 </div>
-<h4 id="find-or-initialize-by"><a href="#find-or-initialize-by">16.3 <code>find_or_initialize_by</code></a></h4><p><code>find_or_initialize_by</code>メソッドは<code>find_or_create_by</code>と同様に動作しますが、<code>create</code>の代りに<code>new</code>を呼ぶ点が異なります。つまり、モデルの新しいインスタンスは作成されますが、その時点ではデータベースに保存されていません。<code>find_or_create_by</code>の例を少し変えて説明を続けます。今度は'Nick'という名前のクライアントが必要だとします。</p><div class="code_container">
+<h4 id="find-or-initialize-by"><a href="#find-or-initialize-by">17.3 <code>find_or_initialize_by</code></a></h4><p><code>find_or_initialize_by</code>メソッドは<code>find_or_create_by</code>と同様に動作しますが、<code>create</code>の代りに<code>new</code>を呼ぶ点が異なります。つまり、モデルの新しいインスタンスは作成されますが、その時点ではデータベースに保存されていません。<code>find_or_create_by</code>の例を少し変えて説明を続けます。今度は'Nick'という名前のクライアントが必要だとします。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 nick = Client.find_or_initialize_by(first_name: 'Nick')
 # =&gt; &lt;Client id: nil, first_name: "Nick", orders_count: 0, locked: true, created_at: "2011-08-30 06:09:27", updated_at: "2011-08-30 06:09:27"&gt;
@@ -1455,21 +1518,30 @@ nick.save
 
 </pre>
 </div>
-<h3 id="sqlで検索する"><a href="#sql%E3%81%A7%E6%A4%9C%E7%B4%A2%E3%81%99%E3%82%8B">17 SQLで検索する</a></h3><p>独自のSQLを使用してレコードを検索したい場合、<code>find_by_sql</code>メソッドを使用できます。この<code>find_by_sql</code>メソッドは、オブジェクトの配列を1つ返します。クエリがレコードを1つしか返さなかった場合にも配列が返されますのでご注意ください。たとえば、以下のクエリを実行したとします。</p><div class="code_container">
+<h3 id="sqlで検索する"><a href="#sql%E3%81%A7%E6%A4%9C%E7%B4%A2%E3%81%99%E3%82%8B">18 SQLで検索する</a></h3><p>独自のSQLを使用してレコードを検索したい場合、<code>find_by_sql</code>メソッドを使用できます。この<code>find_by_sql</code>メソッドは、オブジェクトの配列を1つ返します。クエリがレコードを1つしか返さなかった場合にも配列が返されますのでご注意ください。たとえば、以下のクエリを実行したとします。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Client.find_by_sql("SELECT * FROM clients
   INNER JOIN orders ON clients.id = orders.client_id
   ORDER BY clients.created_at desc")
+&gt;
+  #&lt;Client id: 1, first_name: "Lucas" &gt;,
+  #&lt;Client id: 2, first_name: "Jan" &gt;,
+  # ...
+]
 
 </pre>
 </div>
-<p><code>find_by_sql</code>は、カスタマイズしたデータベース呼び出しを簡単な方法で提供し、インスタンス化されたオブジェクトを返します。</p><h4 id="select-all"><a href="#select-all">17.1 <code>select_all</code></a></h4><p><code>find_by_sql</code>は<code>connection#select_all</code>と深い関係があります。<code>select_all</code>は<code>find_by_sql</code>と同様、カスタムSQLを使用してデータベースからオブジェクトを取り出しますが、取り出したオブジェクトのインスタンス化を行わない点が異なります。代りに、ハッシュの配列を返します。1つのハッシュが1レコードを表します。</p><div class="code_container">
+<p><code>find_by_sql</code>は、カスタマイズしたデータベース呼び出しを簡単な方法で提供し、インスタンス化されたオブジェクトを返します。</p><h4 id="select-all"><a href="#select-all">18.1 <code>select_all</code></a></h4><p><code>find_by_sql</code>は<code>connection#select_all</code>と深い関係があります。<code>select_all</code>は<code>find_by_sql</code>と同様、カスタムSQLを使用してデータベースからオブジェクトを取り出しますが、取り出したオブジェクトのインスタンス化を行わない点が異なります。代りに、ハッシュの配列を返します。1つのハッシュが1レコードを表します。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-Client.connection.select_all("SELECT * FROM clients WHERE id = '1'")
+Client.connection.select_all("SELECT first_name, created_at FROM clients WHERE id = '1'")
+# =&gt; [
+  {"first_name"=&gt;"Rafael", "created_at"=&gt;"2012-11-10 23:23:45.281189"},
+  {"first_name"=&gt;"Eileen", "created_at"=&gt;"2013-12-09 11:22:35.221282"}
+]
 
 </pre>
 </div>
-<h4 id="pluck"><a href="#pluck">17.2 <code>pluck</code></a></h4><p><code>pluck</code>は、1つのモデルで使用されているテーブルから1つまたは複数のカラムをクエリするのに使用できます。引数としてカラム名のリストを取り、指定したカラムの値の配列を、対応するデータ型で返します。</p><div class="code_container">
+<h4 id="pluck"><a href="#pluck">18.2 <code>pluck</code></a></h4><p><code>pluck</code>は、1つのモデルで使用されているテーブルからカラム (1つでも複数でも可) を取得するクエリを送信するのに使用できます。引数としてカラム名のリストを与えると、指定したカラムの値の配列を、対応するデータ型で返します。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Client.where(active: true).pluck(:id)
 # SELECT id FROM clients WHERE active = 1
@@ -1488,9 +1560,9 @@ Client.pluck(:id, :name)
 <p><code>pluck</code>を使用すると、以下のようなコードをシンプルなものに置き換えることができます。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Client.select(:id).map { |c| c.id }
-  # または
+# または
 Client.select(:id).map(&amp;:id)
-  # または
+# または
 Client.select(:id, :name).map { |c| [c.id, c.name] }
 
 </pre>
@@ -1498,12 +1570,12 @@ Client.select(:id, :name).map { |c| [c.id, c.name] }
 <p>上は以下に置き換えられます。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Client.pluck(:id)
-  # または
+# または
 Client.pluck(:id, :name)
 
 </pre>
 </div>
-<p><code>select</code>と異なり、<code>pluck</code>はデータベースから受け取った結果を直接Rubyの配列に変換してくれます。そのための<code>ActiveRecord</code>オブジェクトを事前に構成しておく必要はありません。従って、このメソッドは大規模なクエリや使用頻度の高いクエリで使用するとパフォーマンスが向上します。ただし、オーバーライドを行なうモデルメソッドは使用できません。例：</p><div class="code_container">
+<p><code>select</code>と異なり、<code>pluck</code>はデータベースから受け取った結果を直接Rubyの配列に変換してくれます。そのための<code>ActiveRecord</code>オブジェクトを事前に構成しておく必要はありません。従って、このメソッドは大規模なクエリや使用頻度の高いクエリで使用するとパフォーマンスが向上します。ただし、オーバーライドを行なうモデルメソッドは使用できません。以下に例を示します。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class Client &lt; ActiveRecord::Base
   def name
@@ -1529,7 +1601,7 @@ Client.limit(1).pluck(:name)
 
 </pre>
 </div>
-<h4 id="ids"><a href="#ids">17.3 <code>ids</code></a></h4><p><code>ids</code>は、テーブルの主キーを使用するリレーションのIDをすべて取り出すのに使用できます。</p><div class="code_container">
+<h4 id="ids"><a href="#ids">18.3 <code>ids</code></a></h4><p><code>ids</code>は、テーブルの主キーを使用するリレーションのIDをすべて取り出すのに使用できます。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Person.ids
 # SELECT id FROM people
@@ -1547,8 +1619,7 @@ Person.ids
 
 </pre>
 </div>
-<h3 id="オブジェクトの存在チェック"><a href="#%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%81%AE%E5%AD%98%E5%9C%A8%E3%83%81%E3%82%A7%E3%83%83%E3%82%AF">18 オブジェクトの存在チェック</a></h3><p>オブジェクトが存在するかどうかは、<code>exists?</code>メソッドでチェックできます。
-このメソッドは、<code>find</code>と同様のクエリを使用してデータベースにクエリを送信しますが、オブジェクトのコレクションの代わりに<code>true</code>または<code>false</code>を返します。</p><div class="code_container">
+<h3 id="オブジェクトの存在チェック"><a href="#%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%81%AE%E5%AD%98%E5%9C%A8%E3%83%81%E3%82%A7%E3%83%83%E3%82%AF">19 オブジェクトの存在チェック</a></h3><p>オブジェクトが存在するかどうかは、<code>exists?</code>このメソッドは、<code>find</code>と同様のクエリを使用してデータベースにクエリを送信しますが、オブジェクトのコレクションの代わりに<code>true</code>または<code>false</code>を返します。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Client.exists?(1)
 
@@ -1557,12 +1628,12 @@ Client.exists?(1)
 <p><code>exists?</code>は複数の値を引数に取ることができます。ただし、それらの値のうち1つでも存在していれば、他の値が存在していなくても<code>true</code>を返します。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Client.exists?(id: [1,2,3])
-  # または
+# または
 Client.exists?(name: ['John', 'Sergei'])
 
 </pre>
 </div>
-<p><code>exists?</code>メソッドは、モデルやリレーションに対して引数なしで呼び出すことすらできます。</p><div class="code_container">
+<p><code>exists?</code>メソッドは、引数なしでモデルやリレーションに使用することもできます。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Client.where(first_name: 'Ryan').exists?
 
@@ -1577,24 +1648,24 @@ Client.exists?
 <p>上の例では、<code>Client</code>テーブルが空なら<code>false</code>を返し、それ以外の場合は<code>true</code>を返します。</p><p>モデルやリレーションでの存在チェックには<code>any?</code>や<code>many?</code>も使用できます。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # via a model
-Post.any?
-Post.many?
+Article.any?
+Article.many?
 
 # 名前付きスコープを経由
-Post.recent.any?
-Post.recent.many?
+Article.recent.any?
+Article.recent.many?
 
 # リレーション経由
-Post.where(published: true).any?
-Post.where(published: true).many?
+Article.where(published: true).any?
+Article.where(published: true).many?
 
 # 関連付け経由
-Post.first.categories.any?
-Post.first.categories.many?
+Article.first.categories.any?
+Article.first.categories.many?
 
 </pre>
 </div>
-<h3 id="計算"><a href="#%E8%A8%88%E7%AE%97">19 計算</a></h3><p>このセクションでは冒頭で<code>count</code>メソッドを例に取って説明していますが、ここで説明されているオプションは以下のすべてのサブセクションにも該当します。</p><p>あらゆる計算メソッドは、モデルに対して直接実行されます。All calculation methods work directly on a model:</p><div class="code_container">
+<h3 id="計算"><a href="#%E8%A8%88%E7%AE%97">20 計算</a></h3><p>このセクションでは冒頭で<code>count</code>メソッドを例に取って説明していますが、ここで説明されているオプションは以下のすべてのサブセクションにも該当します。</p><p>あらゆる計算メソッドは、モデルに対して直接実行されます。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Client.count
 # SELECT count(*) AS count_all FROM clients
@@ -1622,95 +1693,115 @@ SELECT count(DISTINCT clients.id) AS count_all FROM clients
 
 </pre>
 </div>
-<h4 id="個数を数える"><a href="#%E5%80%8B%E6%95%B0%E3%82%92%E6%95%B0%E3%81%88%E3%82%8B">19.1 個数を数える</a></h4><p>モデルのテーブルに含まれるレコードの個数を数えるには<code>Client.count</code>を使用できます。返されるのはレコードの個数です。特定の年齢のクライアントの数を数えるのであれば、<code>Client.count(:age)</code>とします。</p><p>オプションについては、1つ上の<a href="#%E8%A8%88%E7%AE%97">計算</a>セクションを参照してください。</p><h4 id="平均"><a href="#%E5%B9%B3%E5%9D%87">19.2 平均</a></h4><p>テーブルに含まれる特定の数値の平均を得るには、そのテーブルを持つクラスに対して<code>average</code>メソッドを呼び出します。このメソッド呼び出しは以下のようなものになります。</p><div class="code_container">
+<h4 id="個数を数える"><a href="#%E5%80%8B%E6%95%B0%E3%82%92%E6%95%B0%E3%81%88%E3%82%8B">20.1 個数を数える</a></h4><p>モデルのテーブルに含まれるレコードの個数を数えるには<code>Client.count</code>を使用できます。返されるのはレコードの個数です。特定の年齢のクライアントの数を数えるのであれば、<code>Client.count(:age)</code>とします</p><p>オプションについては、1つ上の<a href="#%E8%A8%88%E7%AE%97">計算</a>セクションを参照してください。</p><h4 id="平均"><a href="#%E5%B9%B3%E5%9D%87">20.2 平均</a></h4><p>テーブルに含まれる特定の数値の平均を得るには、そのテーブルを持つクラスに対して<code>average</code>メソッドを呼び出します。このメソッド呼び出しは以下のようなものになります。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Client.average("orders_count")
 
 </pre>
 </div>
-<p>返される値は、そのフィールドの平均値です。通常3.14159265のような浮動小数点になります。</p><p>オプションについては、1つ上の<a href="#%E8%A8%88%E7%AE%97">計算</a>セクションを参照してください。</p><h4 id="最小値"><a href="#%E6%9C%80%E5%B0%8F%E5%80%A4">19.3 最小値</a></h4><p>テーブルに含まれるフィールドの最小値を得るには、そのテーブルを持つクラスに対して<code>minimum</code>メソッドを呼び出します。このメソッド呼び出しは以下のようなものになります。</p><div class="code_container">
+<p>返される値は、そのフィールドの平均値です。通常3.14159265のような浮動小数点になります。</p><p>オプションについては、1つ上の<a href="#%E8%A8%88%E7%AE%97">計算</a>セクションを参照してください。</p><h4 id="最小値"><a href="#%E6%9C%80%E5%B0%8F%E5%80%A4">20.3 最小値</a></h4><p>テーブルに含まれるフィールドの最小値を得るには、そのテーブルを持つクラスに対して<code>minimum</code>メソッドを呼び出します。このメソッド呼び出しは以下のようなものになります。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Client.minimum("age")
 
 </pre>
 </div>
-<p>オプションについては、1つ上の<a href="#%E8%A8%88%E7%AE%97">計算</a>セクションを参照してください。</p><h4 id="最大値"><a href="#%E6%9C%80%E5%A4%A7%E5%80%A4">19.4 最大値</a></h4><p>テーブルに含まれるフィールドの最大値を得るには、そのテーブルを持つクラスに対して<code>maximum</code>メソッドを呼び出します。このメソッド呼び出しは以下のようなものになります。</p><div class="code_container">
+<p>オプションについては、1つ上の<a href="#%E8%A8%88%E7%AE%97">計算</a>セクションを参照してください。</p><h4 id="最大値"><a href="#%E6%9C%80%E5%A4%A7%E5%80%A4">20.4 最大値</a></h4><p>テーブルに含まれるフィールドの最大値を得るには、そのテーブルを持つクラスに対して<code>maximum</code>メソッドを呼び出します。このメソッド呼び出しは以下のようなものになります。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Client.maximum("age")
 
 </pre>
 </div>
-<p>オプションについては、1つ上の<a href="#%E8%A8%88%E7%AE%97">計算</a>セクションを参照してください。</p><h4 id="合計"><a href="#%E5%90%88%E8%A8%88">19.5 合計</a></h4><p>テーブルに含まれるフィールドのすべてのレコードにおける合計を得るには、そのテーブルを持つクラスに対して<code>sum</code>メソッドを呼び出します。このメソッド呼び出しは以下のようなものになります。</p><div class="code_container">
+<p>オプションについては、1つ上の<a href="#%E8%A8%88%E7%AE%97">計算</a>セクションを参照してください。</p><h4 id="合計"><a href="#%E5%90%88%E8%A8%88">20.5 合計</a></h4><p>テーブルに含まれるフィールドのすべてのレコードにおける合計を得るには、そのテーブルを持つクラスに対して<code>sum</code>メソッドを呼び出します。このメソッド呼び出しは以下のようなものになります。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Client.sum("orders_count")
 
 </pre>
 </div>
-<p>オプションについては、1つ上の<a href="#%E8%A8%88%E7%AE%97">計算</a>セクションを参照してください。</p><h3 id="explainを実行する"><a href="#explain%E3%82%92%E5%AE%9F%E8%A1%8C%E3%81%99%E3%82%8B">20 EXPLAINを実行する</a></h3><p>リレーションによってトリガされるクエリでEXPLAINを実行することができます。たとえば、以下のコードでは、</p><div class="code_container">
+<p>オプションについては、1つ上の<a href="#%E8%A8%88%E7%AE%97">計算</a>セクションを参照してください。</p><h3 id="explainを実行する"><a href="#explain%E3%82%92%E5%AE%9F%E8%A1%8C%E3%81%99%E3%82%8B">21 EXPLAINを実行する</a></h3><p>リレーションによってトリガされるクエリでEXPLAINを実行することができます。以下に例を示します。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-User.where(id: 1).joins(:posts).explain
+User.where(id: 1).joins(:articles).explain
 
 </pre>
 </div>
 <p>以下のような結果が生成されます。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-EXPLAIN for: SELECT `users`.* FROM `users` INNER JOIN `posts` ON `posts`.`user_id` = `users`.`id` WHERE `users`.`id` = 1
-+----+-------------+-------+-------+---------------+---------+---------+-------+------+-------------+
-| id | select_type | table | type  | possible_keys | key     | key_len | ref   | rows | Extra       |
-+----+-------------+-------+-------+---------------+---------+---------+-------+------+-------------+
-|  1 | SIMPLE      | users | const | PRIMARY       | PRIMARY | 4       | const |    1 |             |
-|  1 | SIMPLE      | posts | ALL   | NULL          | NULL    | NULL    | NULL  |    1 | Using where |
-+----+-------------+-------+-------+---------------+---------+---------+-------+------+-------------+
+EXPLAIN for: SELECT `users`.* FROM `users` INNER JOIN `articles` ON `articles`.`user_id` = `users`.`id` WHERE `users`.`id` = 1
++----+-------------+----------+-------+---------------+
+| id | select_type | table    | type  | possible_keys |
++----+-------------+----------+-------+---------------+
+|  1 | SIMPLE      | users    | const | PRIMARY       |
+|  1 | SIMPLE      | articles | ALL   | NULL          |
++----+-------------+----------+-------+---------------+
++---------+---------+-------+------+-------------+
+| key     | key_len | ref   | rows | Extra       |
++---------+---------+-------+------+-------------+
+| PRIMARY | 4       | const |    1 |             |
+| NULL    | NULL    | NULL  |    1 | Using where |
++---------+---------+-------+------+-------------+
+
 2 rows in set (0.00 sec)
 
 </pre>
 </div>
-<p>上の結果はMySQLの場合です。</p><p>Active Recordは、データベースのシェルを模した整形済みのデータを出力します。PostgreSQLアダプタで同じクエリを実行すると、今度は以下のような結果が得られます。</p><div class="code_container">
+<p>上の結果はMySQLの場合です。</p><p>Active Recordは、データベースシェルを模したデータをある程度整形して出力します。PostgreSQLアダプタで同じクエリを実行すると、今度は以下のような結果が得られます。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-EXPLAIN for: SELECT "users".* FROM "users" INNER JOIN "posts" ON "posts"."user_id" = "users"."id" WHERE "users"."id" = 1
+EXPLAIN for: SELECT "users".* FROM "users" INNER JOIN "articles" ON "articles"."user_id" = "users"."id" WHERE "users"."id" = 1
                                   QUERY PLAN
 ------------------------------------------------------------------------------
 Nested Loop Left Join  (cost=0.00..37.24 rows=8 width=0)
-   Join Filter: (posts.user_id = users.id)
+   Join Filter: (articles.user_id = users.id)
    -&gt;  Index Scan using users_pkey on users  (cost=0.00..8.27 rows=1 width=4)
          Index Cond: (id = 1)
-   -&gt;  Seq Scan on posts  (cost=0.00..28.88 rows=8 width=4)
-         Filter: (posts.user_id = 1)
+   -&gt;  Seq Scan on articles  (cost=0.00..28.88 rows=8 width=4)
+         Filter: (articles.user_id = 1)
 (6 rows)
 
 </pre>
 </div>
-<p>一括読み込みを使用していると、内部で複数のクエリがトリガされることがあり、一部のクエリではその前の結果を必要とすることがあります。このため、<code>explain</code>はこのクエリを実際に実行し、それからクエリプランを要求します。たとえば、以下のコードでは、</p><div class="code_container">
+<p>一括読み込みを使用していると、内部で複数のクエリがトリガされることがあり、一部のクエリではその前の結果を必要とすることがあります。このため、<code>explain</code>はこのクエリを実際に実行し、それからクエリプランを要求します。以下に例を示します。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-User.where(id: 1).includes(:posts).explain
+User.where(id: 1).includes(:articles).explain
 
 </pre>
 </div>
 <p>以下の結果を生成します。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 EXPLAIN for: SELECT `users`.* FROM `users`  WHERE `users`.`id` = 1
-+----+-------------+-------+-------+---------------+---------+---------+-------+------+-------+
-| id | select_type | table | type  | possible_keys | key     | key_len | ref   | rows | Extra |
-+----+-------------+-------+-------+---------------+---------+---------+-------+------+-------+
-|  1 | SIMPLE      | users | const | PRIMARY       | PRIMARY | 4       | const |    1 |       |
-+----+-------------+-------+-------+---------------+---------+---------+-------+------+-------+
++----+-------------+-------+-------+---------------+
+| id | select_type | table | type  | possible_keys |
++----+-------------+-------+-------+---------------+
+|  1 | SIMPLE      | users | const | PRIMARY       |
++----+-------------+-------+-------+---------------+
++---------+---------+-------+------+-------+
+| key     | key_len | ref   | rows | Extra |
++---------+---------+-------+------+-------+
+| PRIMARY | 4       | const |    1 |       |
++---------+---------+-------+------+-------+
+
 1 row in set (0.00 sec)
 
-EXPLAIN for: SELECT `posts`.* FROM `posts`  WHERE `posts`.`user_id` IN (1)
-+----+-------------+-------+------+---------------+------+---------+------+------+-------------+
-| id | select_type | table | type | possible_keys | key  | key_len | ref  | rows | Extra       |
-+----+-------------+-------+------+---------------+------+---------+------+------+-------------+
-|  1 | SIMPLE      | posts | ALL  | NULL          | NULL | NULL    | NULL |    1 | Using where |
-+----+-------------+-------+------+---------------+------+---------+------+------+-------------+
+EXPLAIN for: SELECT `articles`.* FROM `articles`  WHERE `articles`.`user_id` IN (1)
++----+-------------+----------+------+---------------+
+| id | select_type | table    | type | possible_keys |
++----+-------------+----------+------+---------------+
+|  1 | SIMPLE      | articles | ALL  | NULL          |
++----+-------------+----------+------+---------------+
++------+---------+------+------+-------------+
+| key  | key_len | ref  | rows | Extra       |
++------+---------+------+------+-------------+
+| NULL | NULL    | NULL |    1 | Using where |
++------+---------+------+------+-------------+
+
+
 1 row in set (0.00 sec)
 
 </pre>
 </div>
-<p>上の結果はMySQLの場合です。</p><h4 id="explainの出力結果を解釈する"><a href="#explain%E3%81%AE%E5%87%BA%E5%8A%9B%E7%B5%90%E6%9E%9C%E3%82%92%E8%A7%A3%E9%87%88%E3%81%99%E3%82%8B">20.1 EXPLAINの出力結果を解釈する</a></h4><p>EXPLAINの出力を解釈することは、本ガイドの範疇を超えます。以下の情報を参考にしてください。</p>
+<p>上の結果はMySQLの場合です。</p><h4 id="explainの出力結果を解釈する"><a href="#explain%E3%81%AE%E5%87%BA%E5%8A%9B%E7%B5%90%E6%9E%9C%E3%82%92%E8%A7%A3%E9%87%88%E3%81%99%E3%82%8B">21.1 EXPLAINの出力結果を解釈する</a></h4><p>EXPLAINの出力を解釈することは、本ガイドの範疇を超えます。以下の情報を参考にしてください。</p>
 <ul>
-<li><p>SQLite3: <a href="http://www.sqlite.org/eqp.html">EXPLAIN QUERY PLAN</a> (英語)</p></li>
-<li><p>MySQL: <a href="http://dev.mysql.com/doc/refman/5.6/en/explain-output.html">EXPLAIN Output Format</a> (英語)</p></li>
-<li><p>PostgreSQL: <a href="https://www.postgresql.jp/document/9.3/html/using-explain.html">EXPLAINの利用</a></p></li>
+<li><p>SQLite3: <a href="http://www.sqlite.org/eqp.html">EXPLAIN QUERY PLAN</a></p></li>
+<li><p>MySQL: <a href="http://dev.mysql.com/doc/refman/5.6/en/explain-output.html">EXPLAIN Output Format</a> </p></li>
+<li><p>PostgreSQL: <a href="http://www.postgresql.org/docs/current/static/using-explain.html">Using EXPLAIN</a></p></li>
 </ul>
 
         

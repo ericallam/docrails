@@ -1,4 +1,6 @@
 ﻿
+
+
 Active Record クエリインターフェイス
 =============================
 
@@ -8,11 +10,12 @@ Active Record クエリインターフェイス
 
 * 多くのメソッドや条件を駆使してレコードを検索する
 * 検索されたレコードのソート順、取り出したい属性、グループ化の有無などを指定する
-* eager loadingを使用して、データ取り出しに必要なクエリの実行回数を減らす
+* 一括読み込み (eager loading) を使用して、データ取り出しに必要なクエリの実行回数を減らす
 * 動的検索メソッドを使用する
+* 複数のActive Record メソッドを連鎖 (chain) させて同時に利用する
 * 特定のレコードが存在するかどうかをチェックする
 * Active Recordモデルでさまざまな計算を行う
-* リレーションでEXPLAINを実行する
+* リレーションでHEXPLAINを実行する
 
 --------------------------------------------------------------------------------
 
@@ -88,15 +91,15 @@ Active Recordでは、データベースからオブジェクトを取り出す�
 * 与えられたオプションを同等のSQLクエリに変換します。
 * SQLクエリを発行し、該当する結果をデータベースから取り出します。
 * 得られた結果を行ごとに同等のRubyオブジェクトとしてインスタンス化します。
-* 必要であれば`after_find`コールバックを実行します。
+* 指定されていれば、`after_find`を実行し、続いて`after_initialize`コールバックを実行します。
 
 ### 単一のオブジェクトを取り出す
 
 Active Recordには、単一のオブジェクトを取り出すためのさまざま方法が用意されています。
 
-#### 主キーを使用する
+#### `find`
 
-`Model.find(primary_key)`を使用すると、与えられたどのオプションにもマッチする _主キー_ に対応するオブジェクトを取り出すことができます。例：
+`find`メソッドを使用すると、与えられたどのオプションにもマッチする _主キー_ に対応するオブジェクトを取り出すことができます。以下に例を示します。
 
 ```ruby
 # Find the client with primary key (id) 10.
@@ -110,11 +113,27 @@ client = Client.find(10)
 SELECT * FROM clients WHERE (clients.id = 10) LIMIT 1
 ```
 
-`Model.find(primary_key)`でマッチするレコードが見つからない場合、`ActiveRecord::RecordNotFound`例外が発生します。
+`find`メソッドでマッチするレコードが見つからない場合、`ActiveRecord::RecordNotFound`例外が発生します。
+
+このメソッドを使用して、複数のオブジェクトへのクエリを作成することもできます。これを行うには、`find`メソッドの呼び出し時に主キーの配列を渡します。これにより、与えられた _主キー_ にマッチするレコードをすべて含む配列が返されます。以下に例を示します。
+
+```ruby
+# Find the clients with primary keys 1 and 10.
+client = Client.find([1, 10]) # Client.find(1, 10)でもよい
+# => [#<Client id: 1, first_name: "Lifo">, #<Client id: 10, first_name: "Ryan">]
+```
+
+これと同等のSQLは以下のようになります。
+
+```sql
+SELECT * FROM clients WHERE (clients.id IN (1,10))
+```
+
+WARNING: `find`メソッドで与えられた主キーの中に、どのレコードにもマッチしない主キーが**1つでも**あると、`ActiveRecord::RecordNotFound`例外が発生します。
 
 #### `take`
 
-`Model.take`はレコードを1つ取り出します。このとき、どのレコードが取り出されるかは指定されません。例：
+`take`メソッドはレコードを1つ取り出します。どのレコードが取り出されるかは指定されません。以下に例を示します。
 
 ```ruby
 client = Client.take
@@ -127,13 +146,31 @@ client = Client.take
 SELECT * FROM clients LIMIT 1
 ```
 
-モデルにレコードが1つもない場合は`Model.take`は`nil`を返します。このとき例外は発生しません。
+`Model.take`は、モデルにレコードが1つもない場合に`nil`を返します。このとき例外は発生しません。
 
-TIP: このメソッドでどのレコードが取り出されるかは、使用するデータベースエンジンによって異なることがあります。
+`take`メソッドで返すレコードの最大数を数値の引数で指定することもできます。例:
+
+```ruby
+client = Client.take(2)
+# => [
+  #<Client id: 1, first_name: "Lifo">,
+  #<Client id: 220, first_name: "Sara">
+]
+```
+
+これと同等のSQLは以下のようになります。
+
+```sql
+SELECT * FROM clients LIMIT 2
+```
+
+`take`メソッドの動作は、`find`メソッドとまったく同じです。ただし、`find`メソッドでは、マッチするレコードが見つからない場合に`ActiveRecord::RecordNotFound`例外が発生する点だけが異なります。
+
+TIP: このメソッドで取り出されるレコードは、使用するデータベースエンジンによっても異なることがあります。
 
 #### `first`
 
-`Model.first`は、主キー順の最初のレコードを取り出します。例：
+`first`メソッドは、主キー順の最初のレコードを取り出します。以下に例を示します。
 
 ```ruby
 client = Client.first
@@ -142,15 +179,34 @@ client = Client.first
 
 これと同等のSQLは以下のようになります。
 
-```sql 
+```sql
 SELECT * FROM clients ORDER BY clients.id ASC LIMIT 1
 ```
 
-モデルにレコードが1つもない場合は`Model.first`は`nil`を返します。このとき例外は発生しません。
+`first`メソッドは、モデルにレコードが1つもない場合に`nil`を返します。このとき例外は発生しません。
+
+`first`メソッドで返すレコードの最大数を数値の引数で指定することもできます。例：
+
+```ruby
+client = Client.first(3)
+# => [
+  #<Client id: 1, first_name: "Lifo">,
+  #<Client id: 2, first_name: "Fifo">,
+  #<Client id: 3, first_name: "Filo">
+]
+```
+
+これと同等のSQLは以下のようになります。
+
+```sql
+SELECT * FROM clients ORDER BY clients.id ASC LIMIT 3
+```
+
+`first!`メソッドの動作は、マッチするレコードが見つからない場合に`ActiveRecord::RecordNotFound`例外が発生する点を除いて、`first`メソッドとまったく同じです。
 
 #### `last`
 
-`Model.last`は、主キー順の最後のレコードを取り出します。例：
+`last`メソッドは、主キー順の最後のレコードを取り出します。以下に例を示します。
 
 ```ruby
 client = Client.last
@@ -163,11 +219,30 @@ client = Client.last
 SELECT * FROM clients ORDER BY clients.id DESC LIMIT 1
 ```
 
-モデルにレコードが1つもない場合は`Model.last`は`nil`を返します。このとき例外は発生しません。
+last`メソッドは、モデルにレコードが1つもない場合に`nil`を返します。このとき例外は発生しません。
+
+`last`メソッドで返すレコードの最大数を数値の引数で指定することもできます。例:
+
+```ruby
+client = Client.last(3)
+# => [
+  #<Client id: 219, first_name: "James">,
+  #<Client id: 220, first_name: "Sara">,
+  #<Client id: 221, first_name: "Russel">
+]
+```
+
+これと同等のSQLは以下のようになります。
+
+```sql
+SELECT * FROM clients ORDER BY clients.id DESC LIMIT 3
+```
+
+`last!`メソッドの動作は、マッチするレコードが見つからない場合に`ActiveRecord::RecordNotFound`例外が発生する点を除いて、`last`メソッドとまったく同じです。
 
 #### `find_by`
 
-`Model.find_by` は、与えられた条件にマッチするレコードのうち最初のレコードだけを返します。例：
+`find_by`メソッドは、与えられた条件にマッチするレコードのうち最初のレコードだけを返します。以下に例を示します。
 
 ```ruby
 Client.find_by first_name: 'Lifo'
@@ -183,141 +258,23 @@ Client.find_by first_name: 'Jon'
 Client.where(first_name: 'Lifo').take
 ```
 
-#### `take!`
-
-`Model.take!`は、レコードを1つ取り出します。例：
-
-```ruby
-client = Client.take!
-# => #<Client id: 1, first_name: "Lifo">
-```
-
 これと同等のSQLは以下のようになります。
 
 ```sql
-SELECT * FROM clients LIMIT 1
+SELECT * FROM clients WHERE (clients.first_name = 'Lifo') LIMIT 1
 ```
 
-`Model.take!`でマッチするレコードが見つからない場合、`ActiveRecord::RecordNotFound`例外が発生します。
-
-#### `first!`
-
-`Model.first!`は、主キー順の最初のレコードを取り出します。例：
+`find_by!`メソッドの動作は、マッチするレコードが見つからない場合に`ActiveRecord::RecordNotFound`例外が発生する点を除いて、`find_by`メソッドとまったく同じです。以下に例を示します。
 
 ```ruby
-client = Client.first!
-# => #<Client id: 1, first_name: "Lifo">
-```
-
-これと同等のSQLは以下のようになります。
-
-```sql 
-SELECT * FROM clients ORDER BY clients.id ASC LIMIT 1
-```
-
-`Model.first!`でマッチするレコードが見つからない場合、`ActiveRecord::RecordNotFound`例外が発生します。
-
-#### `last!`
-
-`Model.last!`は、主キー順の最後のレコードを取り出します。例：
-
-```ruby
-client = Client.last!
-# => #<Client id: 221, first_name: "Russel">
-```
-
-これと同等のSQLは以下のようになります。
-
-```sql
-SELECT * FROM clients ORDER BY clients.id DESC LIMIT 1
-```
-
-`Model.last!`でマッチするレコードが見つからない場合、`ActiveRecord::RecordNotFound`例外が発生します。
-
-#### `find_by!`
-
-`Model.find_by!` は、与えられた条件にマッチするレコードのうち最初のレコードだけを返します。マッチするレコードが見つからない場合、`ActiveRecord::RecordNotFound`例外が発生します。例：
-
-```ruby
-Client.find_by! first_name: 'Lifo'
-# => #<Client id: 1, first_name: "Lifo">
-
-Client.find_by! first_name: 'Jon'
+Client.find_by! first_name: 'does not exist'
 # => ActiveRecord::RecordNotFound
 ```
 
 上の文は以下のように書くこともできます。
 
 ```ruby
-Client.where(first_name: 'Lifo').take! 
-```
-
-### 複数のオブジェクトを取り出す
-
-#### 複数の主キーを使用する
-
-`Model.find()` は _主キー_ の配列を受け付け、与えられた _主キー_ にマッチするすべてのレコードを配列の形で返します。例：
-
-```ruby
-# Find the clients with primary keys 1 and 10.
-client = Client.find([1, 10]) # Or even Client.find(1, 10)
-# => [#<Client id: 1, first_name: "Lifo">, #<Client id: 10, first_name: "Ryan">]
-```
-
-これと同等のSQLは以下のようになります。
-
-```sql
-SELECT * FROM clients WHERE (clients.id IN (1,10))
-```
-
-WARNING: `Model.find(array_of_primary_key)`は、与えられた主キーのうち1つでもマッチしなければ`ActiveRecord::RecordNotFound`例外を発生します。
-
-#### take
-
-`Model.take(limit)`は、`limit`で指定された数だけレコードを取り出します。このとき取り出し順は指定できません。
-
-```ruby
-Client.take(2)
-# => [#<Client id: 1, first_name: "Lifo">,
-      #<Client id: 2, first_name: "Raf">]
-```
-
-これと同等のSQLは以下のようになります。
-
-```sql
-SELECT * FROM clients LIMIT 2
-```
-
-#### first
-
-`Model.first(limit)`は、主キー順の最初から、`limit`で指定された数だけレコードを取り出します。
-
-```ruby
-Client.first(2)
-# => [#<Client id: 1, first_name: "Lifo">,
-      #<Client id: 2, first_name: "Raf">]
-```
-
-これと同等のSQLは以下のようになります。
-
-```sql
-SELECT * FROM clients ORDER BY id ASC LIMIT 2
-```
-
-#### last
-
-`Model.last(limit)`は、主キー順の最後から、`limit`で指定された数だけレコードを取り出します。
-
-```ruby
-Client.last(2)
-# => [#<Client id: 10, first_name: "Ryan">,
-      #<Client id: 9, first_name: "John">]
-```
-
-これと同等のSQLは以下のようになります。
-
-```sql
-SELECT * FROM clients ORDER BY id DESC LIMIT 2
+Client.where(first_name: 'does not exist').take!
 ```
 
 ### 複数のオブジェクトをバッチで取り出す
@@ -329,7 +286,7 @@ SELECT * FROM clients ORDER BY id DESC LIMIT 2
 ```ruby
 # このような処理を数千件ものレコードに対して実行すると、効率が大幅に低下します。
 User.all.each do |user|
-  NewsLetter.weekly_deliver(user)
+  NewsMailer.weekly(user).deliver_now
 end
 ```
 
@@ -345,7 +302,15 @@ TIP: `find_each`メソッドと`find_in_batches`メソッドは、一度にメ�
 
 ```ruby
 User.find_each do |user|
-  NewsLetter.weekly_deliver(user)
+  NewsMailer.weekly(user).deliver_now
+end
+```
+
+`find_each`では、`where`などのActive Recordメソッドを連鎖 (chain) させることで条件を追加することができます。
+
+```ruby
+User.where(weekly_subscriber: true).find_each do |user|
+  NewsMailer.weekly(user).deliver_now
 end
 ```
 
@@ -353,7 +318,7 @@ end
 
 `find_each`メソッドでは、通常の`find`メソッドとほぼ同じオプションが使用できます。`:order`と`:limit`は`find_each`内部で利用するために予約されており、使用できません。
 
-通常のオプションの他に、`:batch_size`オプションと`:start`オプションも使用できます。
+このメソッドでは、通常のオプションの他に`:batch_size`、`:begin_at`、`:end_at`も利用できます。
 
 **`:batch_size`**
 
@@ -361,23 +326,36 @@ end
 
 ```ruby
 User.find_each(batch_size: 5000) do |user|
-  NewsLetter.weekly_deliver(user)
+  NewsMailer.weekly(user).deliver_now
 end
 ```
 
-**`:start`**
+**`:begin_at`**
 
-デフォルトでは、レコードは主キーの昇順に取り出されます。主キーは整数でなければなりません。並び順冒頭のIDが不要な場合、`:start`オプションを使用してシーケンスの開始IDを指定します。これは、たとえば中断したバッチ処理を再開する場合などに便利です (最後に実行された処理のIDがチェックポイントとして保存済みであることが前提です)。
+デフォルトでは、レコードは主キーの昇順に取り出されます。主キーは整数でなければなりません。あるIDより小さいIDを除外したい場合は、`:begin_at`オプションを使用していつでもシーケンスの開始IDを指定できます。これは、たとえば中断したバッチ処理を再開する場合などに便利です (最後に実行された処理のIDがチェックポイントとして保存済みであることが前提です)。
 
 たとえば、1回のバッチで5000件を取り出し、主キーが2000以降のユーザーだけにニュースレターを送信したい場合は以下のようにします。
 
 ```ruby
-User.find_each(start: 2000, batch_size: 5000) do |user|
-  NewsLetter.weekly_deliver(user)
+User.find_each(begin_at: 2000, batch_size: 5000) do |user|
+  NewsMailer.weekly(user).deliver_now
 end
 ```
 
-他にも、同じ処理キューを複数の作業者で手分けする場合が考えられます。`start`オプションを適切に使用して、作業者1人につき10000レコードずつ割り当てるといった利用法です。
+他にも、同じ処理キューを複数の作業者で手分けする場合が考えられます。たとえば、`:begin_at`オプションを適切に使用して、作業者1人につき10000レコードずつ割り当てることができます。
+
+**`:end_at`**
+
+`:begin_at`オプションと同様、あるIDより大きいIDを除外したい場合は、`:end_at`オプションを使用していつでもシーケンスの終了IDを指定できます。
+これは、たとえば中断したバッチ処理を再開する場合などに便利です。`:begin_at`と`:end_at`でレコードのサブセットを指定します。
+
+たとえば、1回のバッチで5000件を取り出し、主キーが2000から10000のユーザーだけにニュースレターを送信したい場合は以下のようにします。
+
+```ruby
+User.find_each(begin_at: 2000, end_at: 10000, batch_size: 5000) do |user|
+  NewsMailer.weekly(user).deliver_now
+end
+```
 
 #### `find_in_batches`
 
@@ -385,16 +363,14 @@ end
 
 ```ruby
 # 1回あたりadd_invoicesに納品書1000通の配列を渡す
-Invoice.find_in_batches(include: :invoice_lines) do |invoices|
+Invoice.find_in_batches do |invoices|
   export.add_invoices(invoices)
 end
 ```
 
-NOTE: `:include`オプションを使用すると、モデルとともに読み込まれる関連付けに名前を付けることができます。
-
 ##### `find_in_batches`のオプション
 
-`find_in_batches`メソッドでは、`find_each`メソッドと同様、通常の`find`メソッド用オプションに加えて`:batch_size`オプションや`:start`オプションが使用できます。`:order`と`:limit`は`find_in_batches`内部で利用するために予約されており、使用できません。
+`find_in_batches`メソッドでは、`find_each`メソッドと同様に`:batch_size`、`:begin_at`、`:end_at`オプションを使用できます。
 
 条件
 ----------
@@ -420,7 +396,7 @@ Active Recordは条件値の最初の要素を調べ、その後に要素が追�
 複数の条件を指定したい場合は次のようにします。
 
 ```ruby
-Client.where("orders_count = ? AND locked = ?", params[:orders], false)
+Client.where("orders_count = ?AND locked = ?", params[:orders], false)
 ```
 
 上の例では、1つ目の疑問符は`params[:orders]`の値で置き換えられ、2つ目の疑問符は`false`をSQL形式に変換したもの (変換方法はアダプタによって異なる) で置き換えられます。
@@ -439,7 +415,7 @@ Client.where("orders_count = #{params[:orders]}")
 
 条件文字列の中に変数を直接置くと、その変数はデータベースに **そのまま** 渡されてしまいます。これは、悪意のある人物がエスケープされていない危険な変数を渡すことができるということです。このようなコードがあると、悪意のある人物がデータベースを意のままにすることができ、データベース全体が危険にさらされます。くれぐれも、条件文字列の中に引数を直接置くことはしないでください。
 
-TIP: SQLインジェクションの詳細については[Ruby on Railsセキュリティガイド](security.html#sqlインジェクション) を参照してください。
+TIP: SQLインジェクションの詳細については[Ruby on Railsセキュリティガイド](security.html#sqlインジェクション)を参照してください。
 
 #### プレースホルダを使用した条件
 
@@ -473,8 +449,8 @@ Client.where('locked' => true)
 belongs_toリレーションシップの場合、Active Recordオブジェクトが値として使用されていれば、モデルを指定する時に関連付けキーを使用できます。この方法はポリモーフィックリレーションシップでも同様に使用できます。
 
 ```ruby
-Post.where(author: author)
-Author.joins(:posts).where(posts: { author: author })
+Article.where(author: author)
+Author.joins(:articles).where(articles: { author: author })
 ```
 
 NOTE: この値はシンボルにすることはできません。たとえば`Client.where(status: :active)`のような書き方はできません。
@@ -491,7 +467,7 @@ Client.where(created_at: (Time.now.midnight - 1.day)..Time.now.midnight)
 SELECT * FROM clients WHERE (clients.created_at BETWEEN '2008-12-21 00:00:00' AND '2008-12-22 00:00:00')
 ```
 
-[配列による条件](#配列で表された条件) ではさらに簡潔な文例をご紹介しています。
+[配列で表された条件](#配列で表された条件)では、さらに簡潔な文例をご紹介しています。
 
 #### サブセット条件
 
@@ -512,7 +488,7 @@ SELECT * FROM clients WHERE (clients.orders_count IN (1,3,5))
 SQLの`NOT`クエリは、`where.not`で表せます。
 
 ```ruby
-Post.where.not(author: author)
+Article.where.not(author: author)
 ```
 
 言い換えれば、このクエリは`where`に引数を付けずに呼び出し、直後に`where`条件に`not`を渡して連鎖させることによって生成されています。
@@ -554,7 +530,7 @@ Client.order("orders_count ASC, created_at DESC")
 Client.order("orders_count ASC", "created_at DESC")
 ```
 
-`order`メソッドを(条件を変えて)複数回呼び出したい場合、最初の条件に新しい条件が追加されます。
+`order`メソッドを (条件を変えて) 複数回呼び出すと、最初の並び順に新しい並び順が追加されます。
 
 ```ruby
 Client.order("orders_count ASC").order("created_at DESC")
@@ -583,7 +559,7 @@ SELECT viewable_by, locked FROM clients
 selectを使用すると、選択したフィールドだけを使用してモデルオブジェクトが初期化されるため、注意してください。モデルオブジェクトの初期化時に指定しなかったフィールドにアクセスしようとすると、以下のメッセージが表示されます。
 
 ```bash
-ActiveModel::MissingAttributeError: missing attribute: <属性名> 
+ActiveModel::MissingAttributeError: missing attribute: <属性名>
 ```
 
 `<属性名>`は、アクセスしようとした属性です。`id`メソッドは、この`ActiveRecord::MissingAttributeError`を発生しません。このため、関連付けを扱う場合には注意してください。関連付けが正常に動作するには`id`メソッドが必要だからです。
@@ -660,12 +636,29 @@ FROM orders
 GROUP BY date(created_at)
 ```
 
+### グループ化された項目の合計
+
+グループ化した項目の合計をひとつのクエリで得るには、`group`の次に`count`を呼び出します。
+
+```ruby
+Order.group(:status).count
+# => { 'awaiting_approval' => 7, 'paid' => 12 }
+```
+
+上で実行されるSQLは以下のようなものになります。
+
+```sql
+SELECT COUNT (*) AS count_all, status AS status
+FROM "orders"
+GROUP BY status
+```
+
 Having
 ------
 
-SQLでは、`GROUP BY`フィールドで条件を指定する場合に`HAVING`句を使用します。検索メソッドで`:having`オプションを使用すると、`Model.find`で生成されるSQLに`HAVING`句を追加できます。
+SQLでは、`GROUP BY`フィールドで条件を指定する場合に`HAVING`句を使用します。検索メソッドで`:having`メソッドを使用すると、`Model.find`で生成されるSQLに`HAVING`句を追加できます。
 
-例：
+以下に例を示します。
 
 ```ruby
 Order.select("date(created_at) as ordered_date, sum(price) as total_price").
@@ -688,78 +681,78 @@ HAVING sum(price) > 100
 
 ### `unscope`
 
-`unscope`を使用して特定の条件を取り除くことができます。例：
+`unscope`を使用して特定の条件を取り除くことができます。以下に例を示します。
 
 ```ruby
-Post.where('id > 10').limit(20).order('id asc').unscope(:order)
+Article.where('id > 10').limit(20).order('id asc').unscope(:order)
 ```
 
 上で実行されるSQLは以下のようなものになります。
 
 ```sql
-SELECT * FROM posts WHERE id > 10 LIMIT 20
+SELECT * FROM articles WHERE id > 10 LIMIT 20
 
 # `unscope`する前のオリジナルのクエリ
-SELECT * FROM posts WHERE id > 10 ORDER BY id asc LIMIT 20
+SELECT * FROM articles WHERE id > 10 ORDER BY id asc LIMIT 20
 
 ```
 
-特定のwhere句で`unscope`を指定することもできます。例：
+特定の`where`句で`unscope`を指定することもできます。以下に例を示します。
 
 ```ruby
-Post.where(id: 10, trashed: false).unscope(where: :id)
-# SELECT "posts".* FROM "posts" WHERE trashed = 0
+Article.where(id: 10, trashed: false).unscope(where: :id)
+# SELECT "articles".* FROM "articles" WHERE trashed = 0
 ```
 
 `unscope`をリレーションに適用すると、それにマージされるすべてのリレーションにも影響します。
 
 ```ruby
-Post.order('id asc').merge(Post.unscope(:order))
-# SELECT "posts".* FROM "posts"
+Article.order('id asc').merge(Article.unscope(:order))
+# SELECT "articles".* FROM "articles"
 ```
 
 ### `only`
 
-`only`メソッドを使用すると、条件を上書きできます。例：
+`only`メソッドを使用すると、条件を上書きできます。以下に例を示します。
 
 ```ruby
-Post.where('id > 10').limit(20).order('id desc').only(:order, :where)
+Article.where('id > 10').limit(20).order('id desc').only(:order, :where)
 ```
 
 上で実行されるSQLは以下のようなものになります。
 
 ```sql
-SELECT * FROM posts WHERE id > 10 ORDER BY id DESC
+SELECT * FROM articles WHERE id > 10 ORDER BY id DESC
 
 # `only`を使用する前のオリジナルのクエリ
-SELECT "posts".* FROM "posts" WHERE (id > 10) ORDER BY id desc LIMIT 20
+SELECT "articles".* FROM "articles" WHERE (id > 10) ORDER BY id desc LIMIT 20
 
 ```
 
 ### `reorder`
 
-`reorder`メソッドは、デフォルトのスコープの並び順を上書きします。例：
+`reorder`メソッドは、デフォルトのスコープの並び順を上書きします。以下に例を示します。
 
 ```ruby
-class Post < ActiveRecord::Base
-  ..
-  ..
+class Article < ActiveRecord::Base
   has_many :comments, -> { order('posted_at DESC') }
 end
 
-Post.find(10).comments.reorder('name')
+Article.find(10).comments.reorder('name')
 ```
 
 上で実行されるSQLは以下のようなものになります。
 
 ```sql
-SELECT * FROM posts WHERE id = 10 ORDER BY name
+SELECT * FROM articles WHERE id = 10
+SELECT * FROM comments WHERE article_id = 10 ORDER BY name
 ```
 
 `reorder`を実行しなかった場合に実行されるSQLは以下のようなものになります。
 
 ```sql
-SELECT * FROM posts WHERE id = 10 ORDER BY posted_at DESC
+SELECT * FROM articles WHERE id = 10
+SELECT * FROM comments WHERE article_id = 10 ORDER BY posted_at DESC
 ```
 
 ### `reverse_order`
@@ -792,51 +785,51 @@ SELECT * FROM clients WHERE orders_count > 10 ORDER BY clients.id DESC
 
 ### `rewhere`
 
-`rewhere`メソッドは、既存のwhere条件を上書きします。例：
+`rewhere`メソッドは、既存のwhere条件を上書きします。以下に例を示します。
 
 ```ruby
-Post.where(trashed: true).rewhere(trashed: false)
+Article.where(trashed: true).rewhere(trashed: false)
 ```
 
 上で実行されるSQLは以下のようなものになります。
 
 ```sql
-SELECT * FROM posts WHERE `trashed` = 0
+SELECT * FROM articles WHERE `trashed` = 0
 ```
 
-`rewhere`の代わりに`where`を2回使用すると、以下のようになってしまいます。
+`rewhere`の代わりに`where`を2回使用すると、結果が異なります。
 
 ```ruby
-Post.where(trashed: true).where(trashed: false)
+Article.where(trashed: true).where(trashed: false)
 ```
 
 上で実行されるSQLは以下のようなものになります。
 
 ```sql
-SELECT * FROM posts WHERE `trashed` = 1 AND `trashed` = 0
+SELECT * FROM articles WHERE `trashed` = 1 AND `trashed` = 0
 ```
 
 Nullリレーション
 -------------
 
-`none`メソッドは、連鎖 (chain) 可能なリレーションを返します (レコードは返しません)。このメソッドから返されたリレーションにどのような条件を連鎖しても、常に空のリレーションが生成されます。これは、メソッドまたはスコープへの連鎖可能な応答が必要で、しかも結果を一切返したくない場合に便利です。
+`none`メソッドは、連鎖 (chain) 可能なリレーションを返します (レコードは返しません)。このメソッドから返されたリレーションにどのような条件を連鎖させても、常に空のリレーションが生成されます。これは、メソッドまたはスコープへの連鎖可能な応答が必要で、しかも結果を一切返したくない場合に便利です。
 
 ```ruby
-Post.none # 空のリレーションを返し、クエリを生成しない。
+Article.none # 空のリレーションを返し、クエリを生成しない。
 ```
 
 ```ruby
-# 以下のvisible_postsメソッドはリレーションを1つ返すことが期待されている
-@posts = current_user.visible_posts.where(name: params[:name])
+# visible_articles メソッドはリレーションを1つ返すことが期待されている
+@articles = current_user.visible_articles.where(name: params[:name])
 
-def visible_posts
+def visible_articles
   case role
   when 'Country Manager'
-    Post.where(country: country)
+    Article.where(country: country)
   when 'Reviewer'
-    Post.published
+    Article.published
   when 'Bad User'
-    Post.none # => この場合[]またはnilを返し、呼び出し側のコードを中断する
+    Article.none # => この場合[]またはnilを返し、呼び出し側のコードを中断する
   end
 end
 ```
@@ -895,17 +888,17 @@ class Client < ActiveRecord::Base
 end
 ```
 
-### 悲観的ロック
+### 悲観的ロック (pessimistic)
 
 悲観的ロックでは、データベースが提供するロック機構を使用します。リレーションの構築時に`lock`を使用すると、選択した行に対する排他的ロックを取得できます。`lock`を使用するリレーションは、デッドロック条件を回避するために通常トランザクションの内側にラップされます。
 
-例：
+以下に例を示します。
 
 ```ruby
 Item.transaction do
   i = Item.lock.first
   i.name = 'Jones'
-  i.save
+  i.save!
 end
 ```
 
@@ -961,23 +954,23 @@ SELECT clients.* FROM clients LEFT OUTER JOIN addresses ON addresses.client_id =
 
 WARNING: このメソッドは`INNER JOIN`でしか使用できません。
 
-Active Recordでは、`joins`メソッドを使用して関連付けで`JOIN`句を指定する際に、モデルで定義された[関連付け](association_basics.html)の名前をショートカットとして使用できます。
+Active Recordでは、`joins`メソッドを使用して関連付けで`JOIN`句を指定する際に、モデルで定義された関連付けの名前をショートカットとして使用できます (詳細は[Active Recordの関連付け](association_basics.html)を参照)。
 
-たとえば、以下の`Category`、`Post`、`Comment`、`Guest`、`Tag`モデルについて考えてみましょう。
+たとえば、以下の`Category`、`Article`、`Comment`、`Guest`、`Tag`モデルについて考えてみましょう。
 
 ```ruby
 class Category < ActiveRecord::Base
-  has_many :posts
+  has_many :articles
 end
 
-class Post < ActiveRecord::Base
+class Article < ActiveRecord::Base
   belongs_to :category
   has_many :comments
   has_many :tags
 end
 
 class Comment < ActiveRecord::Base
-  belongs_to :post
+  belongs_to :article
   has_one :guest
 end
 
@@ -986,7 +979,7 @@ class Guest < ActiveRecord::Base
 end
 
 class Tag < ActiveRecord::Base
-  belongs_to :post
+  belongs_to :article
 end
 ```
 
@@ -995,69 +988,69 @@ end
 #### 単一関連付けを結合する
 
 ```ruby
-Category.joins(:posts)
+Category.joins(:articles)
 ```
 
 上によって以下が生成されます。
 
 ```sql
 SELECT categories.* FROM categories
-  INNER JOIN posts ON posts.category_id = categories.id
+  INNER JOIN articles ON articles.category_id = categories.id
 ```
 
-上のSQLを日本語で書くと「投稿 (post) のあるすべてのカテゴリーを含む、Categoryオブジェクトを1つ返す」となります。なお、同じカテゴリーに複数の投稿がある場合、カテゴリーが重複します。重複のない一意のカテゴリーが必要な場合は、`Category.joins(:posts).uniq`を使用できます。
+上のSQLを日本語で書くと「記事 (article) のあるすべてのカテゴリーを含む、Categoryオブジェクトを1つ返す」となります。なお、同じカテゴリーに複数の記事がある場合、カテゴリーが重複します。重複のない一意のカテゴリーが必要な場合は、`Category.joins(:article).uniq`を使用できます。
 
 #### 複数の関連付けを結合する
 
 ```ruby
-Post.joins(:category, :comments)
+Article.joins(:category, :comments)
 ```
 
 上によって以下が生成されます。
 
 ```sql
-SELECT posts.* FROM posts
-  INNER JOIN categories ON posts.category_id = categories.id
-  INNER JOIN comments ON comments.post_id = posts.id
+SELECT articles.* FROM articles
+  INNER JOIN categories ON articles.category_id = categories.id
+  INNER JOIN comments ON comments.article_id = articles.id
 ```
 
-上のSQLを日本語で書くと、「カテゴリーが1つあり、かつコメントが少なくとも1つある、すべての投稿を返す」となります。こちらも、コメントが複数ある投稿は複数回表示されます。
+上のSQLを日本語で書くと、「カテゴリーが1つあり、かつコメントが1つ以上ある、すべての記事を返す」となります。こちらも、コメントが複数ある記事は複数回表示されます。
 
 #### ネストした関連付けを結合する (単一レベル)
 
 ```ruby
-Post.joins(comments: :guest)
+Article.joins(comments: :guest)
 ```
 
 上によって以下が生成されます。
 
 ```sql
-SELECT posts.* FROM posts
-  INNER JOIN comments ON comments.post_id = posts.id
+SELECT articles.* FROM articles
+  INNER JOIN comments ON comments.article_id = articles.id
   INNER JOIN guests ON guests.comment_id = comments.id
 ```
 
-上のSQLを日本語で書くと、「ゲストによるコメントが1つある投稿をすべて返す」となります。
+上のSQLを日本語で書くと、「ゲストによるコメントが1つある記事をすべて返す」となります。
 
 #### ネストした関連付けを結合する (複数レベル)
 
 ```ruby
-Category.joins(posts: [{ comments: :guest }, :tags])
+Category.joins(articles: [{ comments: :guest }, :tags])
 ```
 
 上によって以下が生成されます。
 
 ```sql
 SELECT categories.* FROM categories
-  INNER JOIN posts ON posts.category_id = categories.id
-  INNER JOIN comments ON comments.post_id = posts.id
+  INNER JOIN articles ON articles.category_id = categories.id
+  INNER JOIN comments ON comments.article_id = articles.id
   INNER JOIN guests ON guests.comment_id = comments.id
-  INNER JOIN tags ON tags.post_id = posts.id
+  INNER JOIN tags ON tags.article_id = articles.id
 ```
 
 ### 結合されたテーブルで条件を指定する
 
-標準の[配列](#配列で表された条件)および[文字列](#文字列だけで表された条件)条件を使用して、結合テーブルに条件を指定することができます。[ハッシュ条件](#ハッシュを使用した条件) の場合、結合テーブルで条件を指定する場合に特殊な構文を使用します。
+標準の[配列](#配列で表された条件)および[文字列](#文字列だけで表された条件)条件を使用して、結合テーブルに条件を指定することができます。[ハッシュ条件](#ハッシュを使用した条件)の場合、結合テーブルで条件を指定する場合に特殊な構文を使用します。
 
 ```ruby
 time_range = (Time.now.midnight - 1.day).Time.now.midnight
@@ -1121,18 +1114,18 @@ Active Recordは、1つの`Model.find`呼び出しで関連付けをいくつで
 #### 複数の関連付けの配列
 
 ```ruby
-Post.includes(:category, :comments)
+Article.includes(:category, :comments)
 ```
 
-上のコードは、投稿と、それに関連付けられたカテゴリとコメントをすべて読み込みます。
+上のコードは、記事と、それに関連付けられたカテゴリやコメントをすべて読み込みます。
 
 #### ネストした関連付けハッシュ
 
 ```ruby
-Category.includes(posts: [{ comments: :guest }, :tags]).find(1)
+Category.includes(articles: [{ comments: :guest }, :tags]).find(1)
 ```
 
-上のコードは、id=1のカテゴリを検索し、関連付けられたすべての投稿およびそのタグとコメント、およびすべてのコメントのゲスト関連付けを一括読み込みします。
+上のコードは、id=1のカテゴリを検索し、関連付けられたすべての記事とそのタグやコメント、およびすべてのコメントのゲスト関連付けを一括読み込みします。
 
 ### 関連付けの一括読み込みで条件を指定する
 
@@ -1141,18 +1134,26 @@ Active Recordでは、`joins`のように事前読み込みされた関連付け
 しかし、このようにせざるを得ない場合は、`where`を通常どおりに使用することができます。
 
 ```ruby
-Post.includes(:comments).where("comments.visible" => true)
+Article.includes(:comments).where(comments: { visible: true })
 ```
 
 このコードは、`LEFT OUTER JOIN`を含むクエリを1つ生成します。`joins`メソッドを使用していたら、代りに`INNER JOIN`を使用するクエリが生成されていたでしょう。
 
 ```ruby
-  SELECT "posts"."id" AS t0_r0, ... "comments"."updated_at" AS t1_r5 FROM "posts" LEFT OUTER JOIN "comments" ON "comments"."post_id" = "posts"."id" WHERE (comments.visible = 1)
+  SELECT "articles"."id" AS t0_r0, ... "comments"."updated_at" AS t1_r5 FROM "articles" LEFT OUTER JOIN "comments" ON "comments"."article_id" = "articles"."id" WHERE (comments.visible = 1)
 ```
 
 `where`条件がない場合は、通常のクエリが2セット生成されます。
 
-この`includes`クエリの場合、どの投稿にもコメントがついていないで、やはりすべての投稿が読み込まれるでしょう。`joins` (INNER JOIN) を使用する場合、結合条件は必ずマッチ **しなければならず** 、それ以外の場合にはレコードは返されません。
+NOTE: `where`がこのように動作するのは、ハッシュを渡した場合だけです。SQL断片化 (fragmentation) を避けるためには、`references` を指定して強制的にテーブルをjoinする必要があります。
+
+```ruby
+Article.includes(:comments).where("comments.visible = true").references(:comments)
+```
+
+この`includes`クエリの場合、どの記事にもコメントがついていないので、すべての記事が読み込まれます。`joins` (INNER JOIN) を使用する場合、結合条件は必ずマッチ **しなければならず** 、それ以外の場合にはレコードは返されません。
+
+
 
 スコープ
 ------
@@ -1162,7 +1163,7 @@ Post.includes(:comments).where("comments.visible" => true)
 単純なスコープを設定するには、クラスの内部で`scope`メソッドを使用し、スコープが呼び出されたときに実行して欲しいクエリをそこで渡します。
 
 ```ruby
-class Post < ActiveRecord::Base
+class Article < ActiveRecord::Base
   scope :published, -> { where(published: true) }
 end
 ```
@@ -1170,7 +1171,7 @@ end
 以下でもわかるように、スコープでのメソッドの設定は、クラスメソッドの定義と完全に同じ (というよりクラスメソッドの定義そのもの) です。どちらの形式を使用するかは好みの問題です。
 
 ```ruby
-class Post < ActiveRecord::Base
+class Article < ActiveRecord::Base
   def self.published
     where(published: true)
   end
@@ -1180,7 +1181,7 @@ end
 スコープをスコープ内で連鎖 (chain) させることもできます。
 
 ```ruby
-class Post < ActiveRecord::Base
+class Article < ActiveRecord::Base
   scope :published,               -> { where(published: true) }
   scope :published_and_commented, -> { published.where("comments_count > 0") }
 end
@@ -1189,14 +1190,14 @@ end
 この`published`スコープを呼び出すには、クラスでこのスコープを呼び出します。
 
 ```ruby
-Post.published # => [published posts]
+Article.published # => [published articles]
 ```
 
-または、`Post`オブジェクトからなる関連付けでこのスコープを呼び出します。
+または、`Articles`オブジェクトからなる関連付けでこのスコープを呼び出します。
 
 ```ruby
 category = Category.first
-category.posts.published # => [published posts belonging to this category]
+category.articles.published # => [このカテゴリに属する、公開済みの記事]
 ```
 
 ### 引数を渡す
@@ -1204,7 +1205,7 @@ category.posts.published # => [published posts belonging to this category]
 スコープには引数を渡すことができます。
 
 ```ruby
-class Post < ActiveRecord::Base
+class Article < ActiveRecord::Base
   scope :created_before, ->(time) { where("created_at < ?", time) }
 end
 ```
@@ -1212,13 +1213,13 @@ end
 引数付きスコープの呼び出しは、クラスメソッドの呼び出しと同様の方法で行います。
 
 ```ruby
-Post.created_before(Time.zone.now)
+Article.created_before(Time.zone.now)
 ```
 
 しかし、このスコープでできる機能は、クラスメソッドでできる機能と重複しています。
 
 ```ruby
-class Post < ActiveRecord::Base
+class Article < ActiveRecord::Base
   def self.created_before(time)
     where("created_at < ?", time)
   end
@@ -1228,7 +1229,34 @@ end
 スコープで引数を使用するのであれば、クラスメソッドとして定義する方が推奨されます。クラスメソッドにした場合でも、関連オブジェクトからアクセス可能です。
 
 ```ruby
-category.posts.created_before(time)
+category.articles.created_before(time)
+```
+
+### デフォルトスコープを適用する
+
+あるスコープをモデルのすべてのクエリに適用したい場合、モデル自身の内部で`default_scope`メソッドを使用することができます。
+
+```ruby
+class Client < ActiveRecord::Base
+  default_scope { where("removed_at IS NULL") }
+end
+```
+
+このモデルに対してクエリが実行されたときのSQLクエリは以下のような感じになります。
+
+
+```sql
+SELECT * FROM clients WHERE removed_at IS NULL
+```
+
+デフォルトスコープの条件が複雑になるのであれば、スコープをクラスメソッドとして定義するのもひとつの手です。
+
+```ruby
+class Client < ActiveRecord::Base
+  def self.default_scope
+    # ActiveRecord::Relationを返すようにする
+  end
+end
 ```
 
 ### スコープのマージ
@@ -1252,15 +1280,14 @@ User.active.where(state: 'finished')
 # SELECT "users".* FROM "users" WHERE "users"."state" = 'active' AND "users"."state" = 'finished'
 ```
 
-スコープよりも最後のwhere句をどうしても優先したい場合は、`Relation#merge`を使用できます。
+末尾のwhere句をどうしてもスコープより優先したい場合は、`Relation#merge`を使用できます。
 
 ```ruby
 User.active.merge(User.inactive)
 # SELECT "users".* FROM "users" WHERE "users"."state" = 'inactive'
 ```
 
-ここで一つ注意すべき点は、`default_scope`は
-`scope`や`where`条件よりも前に置かれるという点です。
+ここでひとつ注意しなければならないのは、`default_scope`を`scope`や`where`条件よりも前に置いているという点です。
 
 ```ruby
 class User < ActiveRecord::Base
@@ -1280,33 +1307,6 @@ User.where(state: 'inactive')
 ```
 
 上の例でわかるように、`default_scope`が`scope`と`where`よりも前の場所にマージされています。
-
-
-### デフォルトスコープを適用する
-
-あるスコープをモデルのすべてのクエリに適用したい場合、モデル自身の内部で`default_scope`メソッドを使用することができます。
-
-```ruby
-class Client < ActiveRecord::Base
-  default_scope { where("removed_at IS NULL") }
-end
-```
-
-このモデルに対してクエリが実行されたときのSQLクエリは以下のような感じになります。
-
-```sql
-SELECT * FROM clients WHERE removed_at IS NULL
-```
-
-デフォルトスコープの条件が複雑になるのであれば、スコープをクラスメソッドとして定義するのもひとつの手です。
-
-```ruby
-class Client < ActiveRecord::Base
-  def self.default_scope
-    # ActiveRecord::Relationを返すようにする
-  end
-end
-```
 
 ### すべてのスコープを削除する
 
@@ -1333,12 +1333,61 @@ Active Recordは、テーブルに定義されたすべてのフィールド (�
 
 この動的ファインダメソッドの末尾に`Client.find_by_name!("Ryan")`のように感嘆符 (`!`) を追加すると、該当するレコードがない場合に`ActiveRecord::RecordNotFound`エラーが発生します。
 
-nameとlockedの両方を検索したいのであれば、2つのフィールド名をandでつなぐだけでメソッドを利用できます。たとえば、`Client.find_by_first_name_and_locked("Ryan", true)`のように書くことができます。
+nameとlockedの両方を検索したいのであれば、2つのフィールド名をandでつなぐだけでメソッドを利用できます。たとえば、`Client.find_by_first_name_and_locked("Ryan", true)`のようにかくことができます
+
+メソッドチェインを理解する
+---------------------------------
+
+Active Record パターンには [メソッドチェイン (Method chaining - Wikipedia)](http://en.wikipedia.org/wiki/Method_chaining) が実装されています。これにより、複数のActive Recordメソッドをシンプルな方法で次々に適用することができます。
+
+文中でメソッドチェインができるのは、その前のメソッドが`ActiveRecord::Relation` (`all`、`where`、`joins`など) をひとつ返す場合です。文の末尾には、単一のオブジェクトを返すメソッド ([単一のオブジェクトを取り出す](#%E5%8D%98%E4%B8%80%E3%81%AE%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E5%8F%96%E3%82%8A%E5%87%BA%E3%81%99)を参照) をひとつ置かなければなりません。
+
+いくつか例をご紹介します。本ガイドでは一部の例のみをご紹介し、すべての例を網羅することはしません。
+Active Recordメソッドが呼び出されると、クエリはその時点ではすぐに生成されず、データベースに送信されます。クエリは、データが実際に必要になった時点で初めて生成されます。以下の例では、いずれも単一のクエリを生成します。
+
+### 複数のテーブルからのデータをフィルタして取得する
+
+```ruby
+Person
+  .select('people.id, people.name, comments.text')
+  .joins(:comments)
+  .where('comments.created_at > ?', 1.week.ago)
+```
+
+結果は次のようなものになります。
+
+```sql
+SELECT people.id, people.name, comments.text
+FROM people
+INNER JOIN comments
+  ON comments.person_id = people.id
+WHERE comments.created_at = '2015-01-01'
+```
+
+### 複数のテーブルから特定のデータを取得する
+
+```ruby
+Person
+  .select('people.id, people.name, companies.name')
+  .joins(:company)
+  .find_by('people.name' => 'John') # 名を指定
+```
+
+上のコードから以下が生成されます。
+
+```sql
+SELECT people.id, people.name, companies.name
+FROM people
+INNER JOIN companies
+  ON companies.person_id = people.id
+WHERE people.name = 'John'
+LIMIT 1
+```
+
+NOTE: ひとつのクエリが複数のレコードとマッチする場合、`find_by`は「最初」の結果だけを返し、他は返しません (上の`LIMIT 1` 文を参照)。
 
 新しいオブジェクトを検索またはビルドする
 --------------------------
-
-NOTE: Rails 4.0では一部の動的ファインダメソッドが非推奨に指定されました。これらはRails 4.1で削除される予定です。最良の方法は、Active Recordのスコープを代りに使用することです。非推奨になったファインダgemは https://github.com/rails/activerecord-deprecated_finders にあります。
 
 レコードを検索し、レコードがなければ作成する、というのはよくある一連の流れです。`find_or_create_by`および`find_or_create_by!`メソッドを使用すればこれらを一度に行なうことができます。
 
@@ -1386,7 +1435,7 @@ end
 
 ### `find_or_create_by!`
 
-`find_or_create_by!`を使用すると、新しいレコードが無効な場合に例外を発生することもできます。このガイドでは検証については解説の対象ではありませんが、
+`find_or_create_by!`を使用すると、新しいレコードが無効な場合に例外を発生することもできます。検証 (validation) については本ガイドでは解説していませんが、たとえば
 
 ```ruby
 validates :orders_count, presence: true
@@ -1436,6 +1485,11 @@ SQLで検索する
 Client.find_by_sql("SELECT * FROM clients
   INNER JOIN orders ON clients.id = orders.client_id
   ORDER BY clients.created_at desc")
+>
+  #<Client id: 1, first_name: "Lucas" >,
+  #<Client id: 2, first_name: "Jan" >,
+  # ...
+]
 ```
 
 `find_by_sql`は、カスタマイズしたデータベース呼び出しを簡単な方法で提供し、インスタンス化されたオブジェクトを返します。
@@ -1445,12 +1499,16 @@ Client.find_by_sql("SELECT * FROM clients
 `find_by_sql`は`connection#select_all`と深い関係があります。`select_all`は`find_by_sql`と同様、カスタムSQLを使用してデータベースからオブジェクトを取り出しますが、取り出したオブジェクトのインスタンス化を行わない点が異なります。代りに、ハッシュの配列を返します。1つのハッシュが1レコードを表します。
 
 ```ruby
-Client.connection.select_all("SELECT * FROM clients WHERE id = '1'")
+Client.connection.select_all("SELECT first_name, created_at FROM clients WHERE id = '1'")
+# => [
+  {"first_name"=>"Rafael", "created_at"=>"2012-11-10 23:23:45.281189"},
+  {"first_name"=>"Eileen", "created_at"=>"2013-12-09 11:22:35.221282"}
+]
 ```
 
 ### `pluck`
 
-`pluck`は、1つのモデルで使用されているテーブルから1つまたは複数のカラムをクエリするのに使用できます。引数としてカラム名のリストを取り、指定したカラムの値の配列を、対応するデータ型で返します。
+`pluck`は、1つのモデルで使用されているテーブルからカラム (1つでも複数でも可) を取得するクエリを送信するのに使用できます。引数としてカラム名のリストを与えると、指定したカラムの値の配列を、対応するデータ型で返します。
 
 ```ruby
 Client.where(active: true).pluck(:id)
@@ -1470,9 +1528,9 @@ Client.pluck(:id, :name)
 
 ```ruby
 Client.select(:id).map { |c| c.id }
-  # または
+# または
 Client.select(:id).map(&:id)
-  # または
+# または
 Client.select(:id, :name).map { |c| [c.id, c.name] }
 ```
 
@@ -1480,11 +1538,11 @@ Client.select(:id, :name).map { |c| [c.id, c.name] }
 
 ```ruby
 Client.pluck(:id)
-  # または
+# または
 Client.pluck(:id, :name)
 ```
 
-`select`と異なり、`pluck`はデータベースから受け取った結果を直接Rubyの配列に変換してくれます。そのための`ActiveRecord`オブジェクトを事前に構成しておく必要はありません。従って、このメソッドは大規模なクエリや使用頻度の高いクエリで使用するとパフォーマンスが向上します。ただし、オーバーライドを行なうモデルメソッドは使用できません。例：
+`select`と異なり、`pluck`はデータベースから受け取った結果を直接Rubyの配列に変換してくれます。そのための`ActiveRecord`オブジェクトを事前に構成しておく必要はありません。従って、このメソッドは大規模なクエリや使用頻度の高いクエリで使用するとパフォーマンスが向上します。ただし、オーバーライドを行なうモデルメソッドは使用できません。以下に例を示します。
 
 ```ruby
 class Client < ActiveRecord::Base
@@ -1531,8 +1589,7 @@ Person.ids
 オブジェクトの存在チェック
 --------------------
 
-オブジェクトが存在するかどうかは、`exists?`メソッドでチェックできます。
-このメソッドは、`find`と同様のクエリを使用してデータベースにクエリを送信しますが、オブジェクトのコレクションの代わりに`true`または`false`を返します。
+オブジェクトが存在するかどうかは、`exists?`このメソッドは、`find`と同様のクエリを使用してデータベースにクエリを送信しますが、オブジェクトのコレクションの代わりに`true`または`false`を返します。
 
 ```ruby
 Client.exists?(1)
@@ -1542,11 +1599,11 @@ Client.exists?(1)
 
 ```ruby
 Client.exists?(id: [1,2,3])
-  # または
+# または
 Client.exists?(name: ['John', 'Sergei'])
 ```
 
-`exists?`メソッドは、モデルやリレーションに対して引数なしで呼び出すことすらできます。
+`exists?`メソッドは、引数なしでモデルやリレーションに使用することもできます。
 
 ```ruby
 Client.where(first_name: 'Ryan').exists?
@@ -1564,20 +1621,20 @@ Client.exists?
 
 ```ruby
 # via a model
-Post.any?
-Post.many?
+Article.any?
+Article.many?
 
 # 名前付きスコープを経由
-Post.recent.any?
-Post.recent.many?
+Article.recent.any?
+Article.recent.many?
 
 # リレーション経由
-Post.where(published: true).any?
-Post.where(published: true).many?
+Article.where(published: true).any?
+Article.where(published: true).many?
 
 # 関連付け経由
-Post.first.categories.any?
-Post.first.categories.many?
+Article.first.categories.any?
+Article.first.categories.many?
 ```
 
 計算
@@ -1585,7 +1642,7 @@ Post.first.categories.many?
 
 このセクションでは冒頭で`count`メソッドを例に取って説明していますが、ここで説明されているオプションは以下のすべてのサブセクションにも該当します。
 
-あらゆる計算メソッドは、モデルに対して直接実行されます。All calculation methods work directly on a model:
+あらゆる計算メソッドは、モデルに対して直接実行されます。
 
 ```ruby
 Client.count
@@ -1615,7 +1672,7 @@ SELECT count(DISTINCT clients.id) AS count_all FROM clients
 
 ### 個数を数える
 
-モデルのテーブルに含まれるレコードの個数を数えるには`Client.count`を使用できます。返されるのはレコードの個数です。特定の年齢のクライアントの数を数えるのであれば、`Client.count(:age)`とします。
+モデルのテーブルに含まれるレコードの個数を数えるには`Client.count`を使用できます。返されるのはレコードの個数です。特定の年齢のクライアントの数を数えるのであれば、`Client.count(:age)`とします
 
 オプションについては、1つ上の[計算](#計算)セクションを参照してください。
 
@@ -1664,65 +1721,85 @@ Client.sum("orders_count")
 EXPLAINを実行する
 ---------------
 
-リレーションによってトリガされるクエリでEXPLAINを実行することができます。たとえば、以下のコードでは、
+リレーションによってトリガされるクエリでEXPLAINを実行することができます。以下に例を示します。
 
 ```ruby
-User.where(id: 1).joins(:posts).explain
+User.where(id: 1).joins(:articles).explain
 ```
 
 以下のような結果が生成されます。
 
 ```
-EXPLAIN for: SELECT `users`.* FROM `users` INNER JOIN `posts` ON `posts`.`user_id` = `users`.`id` WHERE `users`.`id` = 1
-+----+-------------+-------+-------+---------------+---------+---------+-------+------+-------------+
-| id | select_type | table | type  | possible_keys | key     | key_len | ref   | rows | Extra       |
-+----+-------------+-------+-------+---------------+---------+---------+-------+------+-------------+
-|  1 | SIMPLE      | users | const | PRIMARY       | PRIMARY | 4       | const |    1 |             |
-|  1 | SIMPLE      | posts | ALL   | NULL          | NULL    | NULL    | NULL  |    1 | Using where |
-+----+-------------+-------+-------+---------------+---------+---------+-------+------+-------------+
+EXPLAIN for: SELECT `users`.* FROM `users` INNER JOIN `articles` ON `articles`.`user_id` = `users`.`id` WHERE `users`.`id` = 1
++----+-------------+----------+-------+---------------+
+| id | select_type | table    | type  | possible_keys |
++----+-------------+----------+-------+---------------+
+|  1 | SIMPLE      | users    | const | PRIMARY       |
+|  1 | SIMPLE      | articles | ALL   | NULL          |
++----+-------------+----------+-------+---------------+
++---------+---------+-------+------+-------------+
+| key     | key_len | ref   | rows | Extra       |
++---------+---------+-------+------+-------------+
+| PRIMARY | 4       | const |    1 |             |
+| NULL    | NULL    | NULL  |    1 | Using where |
++---------+---------+-------+------+-------------+
+
 2 rows in set (0.00 sec)
 ```
 
 上の結果はMySQLの場合です。
 
-Active Recordは、データベースのシェルを模した整形済みのデータを出力します。PostgreSQLアダプタで同じクエリを実行すると、今度は以下のような結果が得られます。
+Active Recordは、データベースシェルを模したデータをある程度整形して出力します。PostgreSQLアダプタで同じクエリを実行すると、今度は以下のような結果が得られます。
 
 ```
-EXPLAIN for: SELECT "users".* FROM "users" INNER JOIN "posts" ON "posts"."user_id" = "users"."id" WHERE "users"."id" = 1
+EXPLAIN for: SELECT "users".* FROM "users" INNER JOIN "articles" ON "articles"."user_id" = "users"."id" WHERE "users"."id" = 1
                                   QUERY PLAN
 ------------------------------------------------------------------------------
 Nested Loop Left Join  (cost=0.00..37.24 rows=8 width=0)
-   Join Filter: (posts.user_id = users.id)
+   Join Filter: (articles.user_id = users.id)
    ->  Index Scan using users_pkey on users  (cost=0.00..8.27 rows=1 width=4)
          Index Cond: (id = 1)
-   ->  Seq Scan on posts  (cost=0.00..28.88 rows=8 width=4)
-         Filter: (posts.user_id = 1)
+   ->  Seq Scan on articles  (cost=0.00..28.88 rows=8 width=4)
+         Filter: (articles.user_id = 1)
 (6 rows)
 ```
 
-一括読み込みを使用していると、内部で複数のクエリがトリガされることがあり、一部のクエリではその前の結果を必要とすることがあります。このため、`explain`はこのクエリを実際に実行し、それからクエリプランを要求します。たとえば、以下のコードでは、
+一括読み込みを使用していると、内部で複数のクエリがトリガされることがあり、一部のクエリではその前の結果を必要とすることがあります。このため、`explain`はこのクエリを実際に実行し、それからクエリプランを要求します。以下に例を示します。
 
 ```ruby
-User.where(id: 1).includes(:posts).explain
+User.where(id: 1).includes(:articles).explain
 ```
 
 以下の結果を生成します。
 
 ```
 EXPLAIN for: SELECT `users`.* FROM `users`  WHERE `users`.`id` = 1
-+----+-------------+-------+-------+---------------+---------+---------+-------+------+-------+
-| id | select_type | table | type  | possible_keys | key     | key_len | ref   | rows | Extra |
-+----+-------------+-------+-------+---------------+---------+---------+-------+------+-------+
-|  1 | SIMPLE      | users | const | PRIMARY       | PRIMARY | 4       | const |    1 |       |
-+----+-------------+-------+-------+---------------+---------+---------+-------+------+-------+
++----+-------------+-------+-------+---------------+
+| id | select_type | table | type  | possible_keys |
++----+-------------+-------+-------+---------------+
+|  1 | SIMPLE      | users | const | PRIMARY       |
++----+-------------+-------+-------+---------------+
++---------+---------+-------+------+-------+
+| key     | key_len | ref   | rows | Extra |
++---------+---------+-------+------+-------+
+| PRIMARY | 4       | const |    1 |       |
++---------+---------+-------+------+-------+
+
 1 row in set (0.00 sec)
 
-EXPLAIN for: SELECT `posts`.* FROM `posts`  WHERE `posts`.`user_id` IN (1)
-+----+-------------+-------+------+---------------+------+---------+------+------+-------------+
-| id | select_type | table | type | possible_keys | key  | key_len | ref  | rows | Extra       |
-+----+-------------+-------+------+---------------+------+---------+------+------+-------------+
-|  1 | SIMPLE      | posts | ALL  | NULL          | NULL | NULL    | NULL |    1 | Using where |
-+----+-------------+-------+------+---------------+------+---------+------+------+-------------+
+EXPLAIN for: SELECT `articles`.* FROM `articles`  WHERE `articles`.`user_id` IN (1)
++----+-------------+----------+------+---------------+
+| id | select_type | table    | type | possible_keys |
++----+-------------+----------+------+---------------+
+|  1 | SIMPLE      | articles | ALL  | NULL          |
++----+-------------+----------+------+---------------+
++------+---------+------+------+-------------+
+| key  | key_len | ref  | rows | Extra       |
++------+---------+------+------+-------------+
+| NULL | NULL    | NULL |    1 | Using where |
++------+---------+------+------+-------------+
+
+
 1 row in set (0.00 sec)
 ```
 
@@ -1732,8 +1809,8 @@ EXPLAIN for: SELECT `posts`.* FROM `posts`  WHERE `posts`.`user_id` IN (1)
 
 EXPLAINの出力を解釈することは、本ガイドの範疇を超えます。以下の情報を参考にしてください。
 
-* SQLite3: [EXPLAIN QUERY PLAN](http://www.sqlite.org/eqp.html) (英語)
+* SQLite3: [EXPLAIN QUERY PLAN](http://www.sqlite.org/eqp.html)
 
-* MySQL: [EXPLAIN Output Format](http://dev.mysql.com/doc/refman/5.6/en/explain-output.html) (英語)
+* MySQL: [EXPLAIN Output Format](http://dev.mysql.com/doc/refman/5.6/en/explain-output.html) 
 
-* PostgreSQL: [EXPLAINの利用](https://www.postgresql.jp/document/9.3/html/using-explain.html)
+* PostgreSQL: [Using EXPLAIN](http://www.postgresql.org/docs/current/static/using-explain.html)
