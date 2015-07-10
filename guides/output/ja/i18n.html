@@ -145,6 +145,7 @@
         </li>
         <li><a class="nav-item" href="https://github.com/yasslab/railsguides.jp#readme">翻訳に貢献する</a></li>
         <li><a class="nav-item" href="credits.html">原著者</a></li>
+        <li><a class="nav-item" href="options.html">電子書籍</a></li>
         <li class="guides-index guides-index-small">
           <select class="guides-index-item nav-item">
             <option value="index.html">ガイド目次</option>
@@ -264,7 +265,7 @@
 </ul>
 </li>
 <li>
-<a href="#%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%92%E5%9B%BD%E9%9A%9B%E5%8C%96%E3%81%99%E3%82%8B%E3%80%82">アプリケーションを国際化する。</a>
+<a href="#%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%92%E5%9B%BD%E9%9A%9B%E5%8C%96%E3%81%99%E3%82%8B">アプリケーションを国際化する</a>
 
 <ul>
 <li><a href="#%E8%A8%B3%E6%96%87%E3%82%92%E8%BF%BD%E5%8A%A0%E3%81%99%E3%82%8B">訳文を追加する</a></li>
@@ -479,7 +480,7 @@ private
 
 </pre>
 </div>
-<p>言うまでもありませんが、production環境ではもっとまともなコードを使用すべきです。Iain Hecker作 <a href="https://github.com/iain/http_accept_language/tree/master">http_accept_language</a> のようなプラグインや、RackミドルウェアのRyan Tomayko作 <a href="https://github.com/rack/rack-contrib/blob/master/lib/rack/contrib/locale.rb">locale</a> などを使用してもよいでしょう。</p><h5 id="geoipなどの地域情報データベースを使用する"><a href="#geoip%E3%81%AA%E3%81%A9%E3%81%AE%E5%9C%B0%E5%9F%9F%E6%83%85%E5%A0%B1%E3%83%87%E3%83%BC%E3%82%BF%E3%83%99%E3%83%BC%E3%82%B9%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B">2.6.2 GeoIPなどの地域情報データベースを使用する</a></h5><p>クライアントから送信される情報からロケールを取得する別の方法として、クライアントIPアドレスを地域にマッピングするデータベースを使用することもできます。<a href="http://www.maxmind.com/app/geolitecountry">GeoIP Lite Country</a>などが代表的です。このコードのしくみは、上のコードと非常によく似ています。ユーザーのIPアドレスをこのデータベースに問い合わせ、国・地域・町などに応じた好みのロケールを取得します。</p><h5 id="ユーザープロファイル"><a href="#%E3%83%A6%E3%83%BC%E3%82%B6%E3%83%BC%E3%83%97%E3%83%AD%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB">2.6.3 ユーザープロファイル</a></h5><p>アプリケーションのロケールを設定 (そして上書き) するための手段をユーザーに提供することもできます。そのためのコードは、これまでのものと基本的にほとんど変わりません。ドロップダウンリストにロケールを表示し、ユーザーがそれを使用してロケールを設定したらデータベースに保存します。その後、そのロケール値をアプリケーションのロケールに設定します。</p><h3 id="アプリケーションを国際化する。"><a href="#%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%92%E5%9B%BD%E9%9A%9B%E5%8C%96%E3%81%99%E3%82%8B%E3%80%82">3 アプリケーションを国際化する。</a></h3><p>お疲れさまでした。以上でRuby on RailsアプリケーションのI18nサポートの初期化が完了しました。使用すべきロケールも設定され、リクエスト間でロケールを保存する方法も指定されました。いよいよここからが本格的な作業になります。</p><p>それでは、アプリケーションの <em>国際化</em> (ロケール固有の部分を抽象化する作業など) を行い、続いて <em>ローカライズ</em> (抽象化された箇所に訳文を提供する) を行いましょう。</p><p>アプリケーションには以下のようなコードがあるものとします。</p><div class="code_container">
+<p>言うまでもありませんが、production環境ではもっとまともなコードを使用すべきです。Iain Hecker作 <a href="https://github.com/iain/http_accept_language/tree/master">http_accept_language</a> のようなプラグインや、RackミドルウェアのRyan Tomayko作 <a href="https://github.com/rack/rack-contrib/blob/master/lib/rack/contrib/locale.rb">locale</a> などを使用してもよいでしょう。</p><h5 id="geoipなどの地域情報データベースを使用する"><a href="#geoip%E3%81%AA%E3%81%A9%E3%81%AE%E5%9C%B0%E5%9F%9F%E6%83%85%E5%A0%B1%E3%83%87%E3%83%BC%E3%82%BF%E3%83%99%E3%83%BC%E3%82%B9%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B">2.6.2 GeoIPなどの地域情報データベースを使用する</a></h5><p>クライアントから送信される情報からロケールを取得する別の方法として、クライアントIPアドレスを地域にマッピングするデータベースを使用することもできます。<a href="http://www.maxmind.com/app/geolitecountry">GeoIP Lite Country</a>などが代表的です。このコードのしくみは、上のコードと非常によく似ています。ユーザーのIPアドレスをこのデータベースに問い合わせ、国・地域・町などに応じた好みのロケールを取得します。</p><h5 id="ユーザープロファイル"><a href="#%E3%83%A6%E3%83%BC%E3%82%B6%E3%83%BC%E3%83%97%E3%83%AD%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB">2.6.3 ユーザープロファイル</a></h5><p>アプリケーションのロケールを設定 (そして上書き) するための手段をユーザーに提供することもできます。そのためのコードは、これまでのものと基本的にほとんど変わりません。ドロップダウンリストにロケールを表示し、ユーザーがそれを使用してロケールを設定したらデータベースに保存します。その後、そのロケール値をアプリケーションのロケールに設定します。</p><h3 id="アプリケーションを国際化する"><a href="#%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%92%E5%9B%BD%E9%9A%9B%E5%8C%96%E3%81%99%E3%82%8B">3 アプリケーションを国際化する</a></h3><p>お疲れさまでした。以上でRuby on RailsアプリケーションのI18nサポートの初期化が完了しました。使用すべきロケールも設定され、リクエスト間でロケールを保存する方法も指定されました。いよいよここからが本格的な作業になります。</p><p>それでは、アプリケーションの <em>国際化</em> (ロケール固有の部分を抽象化する作業など) を行い、続いて <em>ローカライズ</em> (抽象化された箇所に訳文を提供する) を行いましょう。</p><p>アプリケーションには以下のようなコードがあるものとします。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # config/routes.rb
 Rails.application.routes.draw do
