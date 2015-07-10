@@ -139,8 +139,29 @@
         <%= yield :references %>
 
         <% if yield(:not_need_feedback).present? %>
-        <h3 id="contact" class="section">お問い合わせ</h3>
-        <p>(ここに問い合わせについての文言を書く)ヤスラボへの問い合わせはこちらからお願いします。</p>
+          <h3 id="contact" class="section">お問い合わせ</h3>
+          <p>電子書籍やセミナー、広告出稿などのお問い合わせについては<br />
+	    下記フォームまたは <i>yohei@yasslab.jp</i> までご連絡ください。</p>
+	  <div id="wufoo-zdk8f280mkdut0" style="margin-top: -50px" >
+	    Fill out my <a href="https://yasslab.wufoo.com/forms/zdk8f280mkdut0">online form</a>.
+    </div>
+    <div id="wuf-adv" style="font-family:inherit;font-size: small;color:#a7a7a7;text-align:center;display:block;">HTML Forms powered by <a href="http://www.wufoo.com">Wufoo</a>.</div>
+    <script type="text/javascript">var zdk8f280mkdut0;(function(d, t) {
+	    var s = d.createElement(t), options = {
+	    'userName':'yasslab',
+	    'formHash':'zdk8f280mkdut0',
+	    'autoResize':true,
+	    'height':'497',
+	    'async':true,
+	    'host':'wufoo.com',
+	    'header':'show',
+	    'ssl':true};
+	    s.src = ('https:' == d.location.protocol ? 'https://' : 'http://') + 'www.wufoo.com/scripts/embed/form.js';
+	    s.onload = s.onreadystatechange = function() {
+	    var rs = this.readyState; if (rs) if (rs != 'complete') if (rs != 'loaded') return;
+	    try { zdk8f280mkdut0 = new WufooForm();zdk8f280mkdut0.initialize(options);zdk8f280mkdut0.display(); } catch (e) {}};
+	    var scr = d.getElementsByTagName(t)[0], par = scr.parentNode; par.insertBefore(s, scr);
+	    })(document, 'script');</script>
         <% else %>
         <h3 id="feedback"><a href="#feedback">フィードバックについて</a></h3>
         <p>
