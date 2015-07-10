@@ -789,7 +789,6 @@ div.code_container {
   }
 }
 
-
 #subCol .ebook {
   background-color: #fff;
   border: solid 1px #DADADA;
@@ -964,6 +963,73 @@ div.code_container {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   box-shadow: -5px 4px 6px rgba(166, 166, 166, 0.8);
+}
+table.seminar {
+  width: 100%;
+}
+.seminar .state, .seminar .state {
+  padding: 8px;
+}
+.seminar td {
+  font-size: 15px;
+}
+.state {
+  width: 100px;
+}
+.available > .state a,
+.full > .state a,
+.finish > .state a {
+  padding: 6px;
+  display:block;
+  text-decoration: none;
+}
+.finish > .state a:active,
+.full  > .state a:active,
+.available > .state a:active {
+  box-shadow: 1px 1px 3px rgba(169, 169, 169, 0.4) inset;
+}
+.available > .state {
+  text-align: center
+}
+.available > .state a {
+  background-color: #4EB34E;
+  text-decoration: none;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border: solid 1px #ddd;
+  box-shadow: 1px 1px 3px rgba(169, 169, 169, 0.4);
+}
+.available > .state a:hover{
+  background-color: #5EA35E;
+}
+.full > .state {
+  text-align: center
+}
+.full > .state a {
+  background-color: #BB4F41;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border: solid 1px #ddd;
+  box-shadow: 1px 1px 3px rgba(169, 169, 169, 0.4);
+}
+.full > .state a:hover{
+  background-color: #CB5F51;
+}
+.finish > .state {
+  text-align: center;
+}
+.finish > .state a {
+  background-color: #8E8E8E;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border: solid 1px #ddd;
+  box-shadow: 1px 1px 3px rgba(169, 169, 169, 0.4);
+}
+.finish > .state a:hover {
+  background-color: #9E9E9E;
 }
 
 /* Clearing
