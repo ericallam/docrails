@@ -24,7 +24,7 @@
     <meta name="twitter:image" content="http://railsguides.jp/images/cover_for_twitter.png" />
     <meta name="twitter:url"   content="http://railsguides.jp/" />
 
-    <title>Ruby on Rails のメンテナンスポリシー — Rails ガイド</title>
+    <title>Ruby on Rails のメンテナンスポリシー | Rails ガイド</title>
     <meta name="apple-mobile-web-app-title" content="Railsガイド" />
     <meta name="application-name"           content="Railsガイド" />
 
@@ -145,6 +145,7 @@
         </li>
         <li><a class="nav-item" href="https://github.com/yasslab/railsguides.jp#readme">翻訳に貢献する</a></li>
         <li><a class="nav-item" href="credits.html">原著者</a></li>
+        <li><a class="nav-item" href="options.html">電子書籍／セミナー</a></li>
         <li class="guides-index guides-index-small">
           <select class="guides-index-item nav-item">
             <option value="index.html">ガイド目次</option>
@@ -217,7 +218,6 @@
     </div>
   </div>
   <hr class="hide" />
-
   <div id="feature">
     <div class="wrapper">
       <h2>Ruby on Rails のメンテナンスポリシー</h2><p>Railsフレームワークのサポートは、新機能 (New feature)、バグ修正 (bug fixes)、セキュリティ問題 (security issues)、重大なセキュリティ問題 (severe security issue) の4つのグループに分割されています。これらは以下のように扱われています。バージョン表記はすべて<code>X.Y.Z</code>の形式に従います。</p>
@@ -240,24 +240,24 @@
       <div id="mainCol">
         <p>Railsのバージョン命名は<a href="http://semver.org/">semver</a>のSemantic Versioningをシフトしたものに従っています。</p><p><strong>パッチ<code>Z</code></strong></p><p>このパッチではバグ修正のみを行います。API変更や機能追加はこのパッチでは行いません。ただしセキュリティ修正については、必要であればこれらの変更を行なうこともあります。</p><p><strong>マイナー<code>Y</code></strong></p><p>新機能を追加します。ここにAPIの変更を含めることもできます (Semverでいうメジャーバージョンに相当)。重大な変更を行う場合は、必ず事前にマイナーリリースまたはメジャーリリースで非推奨通知を行います。</p><p><strong>メジャー<code>X</code></strong></p><p>新機能を追加します。多くの場合API変更も含まれます。Railsにおけるマイナーリリースとメジャーリリースの違いは変更の重大性の度合いであり、通常は特別な場合に備えて予約されます。</p><h3 id="新機能"><a href="#%E6%96%B0%E6%A9%9F%E8%83%BD">1 新機能</a></h3><p>新機能はmasterブランチにのみ追加されます。ポイントリリース (=メジャーでないリリース) で新機能を追加することはありません。</p><h3 id="バグ修正"><a href="#%E3%83%90%E3%82%B0%E4%BF%AE%E6%AD%A3">2 バグ修正</a></h3><p>バグ修正は最新リリースのシリーズでのみ利用できます。バグ修正が十分に行われ、新しいgemをリリースする価値があると認められた場合は、そこからブランチを作成します。</p><p>特別な場合として、Core Teamメンバーの誰かがサポート対象となるシリーズを増やすことに賛成した場合は、それらはサポート対象のシリーズに追加されます。</p><p><strong>現在対象となっているシリーズ:</strong> <code>4.2.Z</code>、<code>4.1.Z</code> (サポート担当: Rafael França)。</p><h3 id="セキュリティ問題"><a href="#%E3%82%BB%E3%82%AD%E3%83%A5%E3%83%AA%E3%83%86%E3%82%A3%E5%95%8F%E9%A1%8C">3 セキュリティ問題</a></h3><p>現在のリリースシリーズ (訳注: 複数のリリースに対する総称)、および次のリリースシリーズには、セキュリティ問題発生時にパッチと新バージョンが適用されます。</p><p>これらのリリースは、直前にリリースされたバージョンにセキュリティパッチを適用してリリースされます。続いて、それらのパッチはx-y-stable (安定版) ブランチの最後に適用されます。たとえば、仮に1.2.3というセキュリティリリースがあるとすると、このリリースは1.2.2を元にビルドされ、1-2-stableの最後に追加されます。つまり、最新のRailsを使用していればセキュリティリリースのアップグレードが容易に行えるということです。</p><p><strong>現在対象となっているシリーズ:</strong> <code>4.2.Z</code>、<code>4.1.Z</code>。</p><h3 id="重大なセキュリティ問題"><a href="#%E9%87%8D%E5%A4%A7%E3%81%AA%E3%82%BB%E3%82%AD%E3%83%A5%E3%83%AA%E3%83%86%E3%82%A3%E5%95%8F%E9%A1%8C">4 重大なセキュリティ問題</a></h3><p>重大なセキュリティ問題については、上と同様に新バージョンを提供し、かつ最新のメジャーリリースシリーズに対してセキュリティパッチと新バージョンを提供します。セキュリティ問題がどれほど重大であるかの判断はコアチームによって行われます。</p><p><strong>現在対象となっているシリーズ:</strong> <code>4.2.Z</code>、<code>4.1.Z</code>、<code>3.2.Z</code>。</p><h3 id="サポート対象外となるリリースシリーズ"><a href="#%E3%82%B5%E3%83%9D%E3%83%BC%E3%83%88%E5%AF%BE%E8%B1%A1%E5%A4%96%E3%81%A8%E3%81%AA%E3%82%8B%E3%83%AA%E3%83%AA%E3%83%BC%E3%82%B9%E3%82%B7%E3%83%AA%E3%83%BC%E3%82%BA">5 サポート対象外となるリリースシリーズ</a></h3><p>あるリリースシリーズがサポート対象外になった場合、バグ修正とセキュリティ問題の対応は各自の責任となります。場合によっては修正のバックポートの提供とgitへの公開が行われることもありますが、以後新バージョンがリリースされることはありません。アプリケーションで使用しているバージョンを維持しきれない場合は、サポート対象となっているバージョンにアップグレードしてください。</p>
         
+
         <h3 id="feedback"><a href="#feedback">フィードバックについて</a></h3>
         <p>
           本ガイドは GitHub上の <a href="https://github.com/yasslab/railsguides.jp">yasslab/railsguides.jp</a> で管理・公開されております。
-	  本ガイドを読んで気になる文章や間違ったコードを見かけたら、上記リポジトリにてお気軽に <a href="https://github.com/yasslab/railsguides.jp/issues">Issue</a> を出して頂けると嬉しいです。また、「Pull Request を送りたい!」という場合には、<a href="ruby_on_rails_guides_guidelines.html">Ruby on Railsガイドのガイドライン</a>と、<a href="https://github.com/yasslab/railsguides.jp#%E7%BF%BB%E8%A8%B3%E3%81%AE%E6%B5%81%E3%82%8C">README</a>に記載されている「翻訳の流れ」をご参考にしてください。
-	</p>
-	<p>
-	  なお、原著における間違いを見つけたら、「Ruby on Railsに貢献する方法」に記されている<a href="/contributing_to_ruby_on_rails.html#rails%E3%81%AE%E3%83%89%E3%82%AD%E3%83%A5%E3%83%A1%E3%83%B3%E3%83%88%E3%81%AB%E8%B2%A2%E7%8C%AE%E3%81%99%E3%82%8B">Railsのドキュメントに貢献する</a>を参考にしながら、ぜひRailsコミュニティに貢献してみてしてください :)
+          本ガイドを読んで気になる文章や間違ったコードを見かけたら、上記リポジトリにてお気軽に <a href="https://github.com/yasslab/railsguides.jp/issues">Issue</a> を出して頂けると嬉しいです。また、「Pull Request を送りたい!」という場合には、<a href="ruby_on_rails_guides_guidelines.html">Ruby on Railsガイドのガイドライン</a>と、<a href="https://github.com/yasslab/railsguides.jp#%E7%BF%BB%E8%A8%B3%E3%81%AE%E6%B5%81%E3%82%8C">README</a>に記載されている「翻訳の流れ」をご参考にしてください。
         </p>
         <p>
-	  本ガイドの品質向上に向けて、皆さまのご協力が得られれば幸いです。よろしくお願い致します。
+          なお、原著における間違いを見つけたら、「Ruby on Railsに貢献する方法」に記されている<a href="/contributing_to_ruby_on_rails.html#rails%E3%81%AE%E3%83%89%E3%82%AD%E3%83%A5%E3%83%A1%E3%83%B3%E3%83%88%E3%81%AB%E8%B2%A2%E7%8C%AE%E3%81%99%E3%82%8B">Railsのドキュメントに貢献する</a>を参考にしながら、ぜひRailsコミュニティに貢献してみてしてください :)
         </p>
-
-	<ol class="snsb" style="margin-left: 0px">
-	  <li><iframe src="http://ghbtns.com/github-btn.html?user=yasslab&repo=railsguides.jp&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="80" height="20"></iframe></li>
-	  <li><a href="http://b.hatena.ne.jp/entry/railsguides.jp" class="hatena-bookmark-button" data-hatena-bookmark-title="Ruby on Rails ガイド：体系的に Rails を学ぼう (Rails 4.2 対応)" data-hatena-bookmark-layout="standard-balloon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="http://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="http://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script></li>
-	  <li><div class="fb-like" data-href="http://railsguides.jp/" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true"></div></li>
-	  <li><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://railsguides.jp/" data-text="Ruby on Rails ガイド：体系的に Rails を学ぼう (Rails 4.2 対応)" data-lang="ja" data-hashtags="Railsガイド" data-via="RailsGuidesJP" width="100">ツイート</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script></li>
-	</ol>
+        <p>
+          本ガイドの品質向上に向けて、皆さまのご協力が得られれば幸いです。よろしくお願い致します。
+        </p>
+        <ol class="snsb" style="margin-left: 0px">
+          <li><iframe src="http://ghbtns.com/github-btn.html?user=yasslab&repo=railsguides.jp&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="80" height="20"></iframe></li>
+          <li><a href="http://b.hatena.ne.jp/entry/railsguides.jp" class="hatena-bookmark-button" data-hatena-bookmark-title="Ruby on Rails ガイド：体系的に Rails を学ぼう (Rails 4.2 対応)" data-hatena-bookmark-layout="standard-balloon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="http://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="http://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script></li>
+          <li><div class="fb-like" data-href="http://railsguides.jp/" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true"></div></li>
+          <li><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://railsguides.jp/" data-text="Ruby on Rails ガイド：体系的に Rails を学ぼう (Rails 4.2 対応)" data-lang="ja" data-hashtags="Railsガイド" data-via="RailsGuidesJP" width="100">ツイート</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script></li>
+        </ol>
       </div>
     </div>
   </div>
