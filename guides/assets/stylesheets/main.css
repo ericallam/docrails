@@ -1042,6 +1042,10 @@ div.code_container {
   .seminar table.responsive th:first-child, .seminar table.responsive td:first-child, .seminar table.responsive td:first-child, .seminar table.responsive.pinned td { display: table-cell; }
 
 }
+
+#contact.section {
+  margin-top: 100px;
+}
 /* Clearing
 --------------------------------------- */
 

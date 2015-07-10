@@ -1166,16 +1166,17 @@ I18n.t :foo, raise: true # always re-raises exceptions from the backend
 </ul>
 <p>本ガイドがお役に立ったのであれば、<a href="http://www.workingwithrails.com">workingwithrails</a> でこれらの作者を推奨いただければ幸いです(訳注: 翻訳時点ではこのサイトは引退したと表示されていました)。</p><h3 id="脚注"><a href="#%E8%84%9A%E6%B3%A8">11 脚注</a></h3><p class="footnote" id="footnote-1"><a href="#footnote-1-ref"><sup>1</sup></a> あるいは、<a href="http://ja.wikipedia.org/wiki/%E5%9B%BD%E9%9A%9B%E5%8C%96%E3%81%A8%E5%9C%B0%E5%9F%9F%E5%8C%96">Wikipedia</a> によれば「国際化とは、技術上の実装変更を伴わずに多数の言語や地域への適合を行なうための、ソフトウェアアプリケーションの設計プロセスである。ローカライズとは、ロケール固有のコンポーネントを追加したりテキストを翻訳したりすることによってソフトウェアを特定の言語や地域に適合させるプロセスである。」となっています。</p><p class="footnote" id="footnote-2"><a href="#footnote-2-ref"><sup>2</sup></a> この他のバックエンドでは、異なるフォーマットが利用できたり、必須とされる可能性があります。たとえば、GetTextバックエンドはGetTextファイルを読み込めるでしょう。</p><p class="footnote" id="footnote-3"><a href="#footnote-3-ref"><sup>3</sup></a> 理由のひとつは、I18n機能を必要としないアプリケーションで不必要な読み込みを強要したくないためです。そのために、私たちチームはI18nを極力シンプルに保ち、あえて英語のみに絞り込んでいるのです。もうひとつの理由は、既存のあらゆる言語で生じるあらゆる問題を一度に解決できるような万能のソリューションを実装するというのは無理な相談だからです。結局私たちのようなI18n開発者にできることは、実装全体をいつでも簡単に差し替えられるようにすることぐらいしかありません。I18nを差し替え可能にすることで、実験や拡張がずっと容易になるというメリットも得られます。</p>
         
+
         <h3 id="feedback"><a href="#feedback">フィードバックについて</a></h3>
         <p>
           本ガイドは GitHub上の <a href="https://github.com/yasslab/railsguides.jp">yasslab/railsguides.jp</a> で管理・公開されております。
-	  本ガイドを読んで気になる文章や間違ったコードを見かけたら、上記リポジトリにてお気軽に <a href="https://github.com/yasslab/railsguides.jp/issues">Issue</a> を出して頂けると嬉しいです。また、「Pull Request を送りたい!」という場合には、<a href="ruby_on_rails_guides_guidelines.html">Ruby on Railsガイドのガイドライン</a>と、<a href="https://github.com/yasslab/railsguides.jp#%E7%BF%BB%E8%A8%B3%E3%81%AE%E6%B5%81%E3%82%8C">README</a>に記載されている「翻訳の流れ」をご参考にしてください。
-	</p>
-	<p>
-	  なお、原著における間違いを見つけたら、「Ruby on Railsに貢献する方法」に記されている<a href="/contributing_to_ruby_on_rails.html#rails%E3%81%AE%E3%83%89%E3%82%AD%E3%83%A5%E3%83%A1%E3%83%B3%E3%83%88%E3%81%AB%E8%B2%A2%E7%8C%AE%E3%81%99%E3%82%8B">Railsのドキュメントに貢献する</a>を参考にしながら、ぜひRailsコミュニティに貢献してみてしてください :)
+          本ガイドを読んで気になる文章や間違ったコードを見かけたら、上記リポジトリにてお気軽に <a href="https://github.com/yasslab/railsguides.jp/issues">Issue</a> を出して頂けると嬉しいです。また、「Pull Request を送りたい!」という場合には、<a href="ruby_on_rails_guides_guidelines.html">Ruby on Railsガイドのガイドライン</a>と、<a href="https://github.com/yasslab/railsguides.jp#%E7%BF%BB%E8%A8%B3%E3%81%AE%E6%B5%81%E3%82%8C">README</a>に記載されている「翻訳の流れ」をご参考にしてください。
         </p>
         <p>
-	  本ガイドの品質向上に向けて、皆さまのご協力が得られれば幸いです。よろしくお願い致します。
+          なお、原著における間違いを見つけたら、「Ruby on Railsに貢献する方法」に記されている<a href="/contributing_to_ruby_on_rails.html#rails%E3%81%AE%E3%83%89%E3%82%AD%E3%83%A5%E3%83%A1%E3%83%B3%E3%83%88%E3%81%AB%E8%B2%A2%E7%8C%AE%E3%81%99%E3%82%8B">Railsのドキュメントに貢献する</a>を参考にしながら、ぜひRailsコミュニティに貢献してみてしてください :)
+        </p>
+        <p>
+          本ガイドの品質向上に向けて、皆さまのご協力が得られれば幸いです。よろしくお願い致します。
         </p>
 
 	<ol class="snsb" style="margin-left: 0px">
