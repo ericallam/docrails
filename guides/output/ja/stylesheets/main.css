@@ -964,7 +964,7 @@ div.code_container {
   -moz-border-radius: 5px;
   box-shadow: -5px 4px 6px rgba(166, 166, 166, 0.8);
 }
-table.seminar {
+.seminar table {
   width: 100%;
 }
 .seminar .state, .seminar .state {
@@ -1032,6 +1032,13 @@ table.seminar {
   background-color: #9E9E9E;
 }
 
+@media only screen and (max-width: 767px) {
+  .seminar .table.responsive { margin-bottom: 0; }
+  .seminar .pinned { display: none; }
+  .seminar div.table-wrapper div.scrollable table { margin-left: 0; }
+  .seminar table.responsive th:first-child, .seminar table.responsive td:first-child, .seminar table.responsive td:first-child, .seminar table.responsive.pinned td { display: table-cell; }
+
+}
 /* Clearing
 --------------------------------------- */
 
