@@ -1463,7 +1463,7 @@ class CommentsController < ApplicationController
 
 以上で、Railsアプリケーションを初めて作るという試みは終わりです。この後は自由に更新したり実験を重ねたりできます。もちろん、何の助けもなしにWebアプリケーションを作らなければならないなどということはありません。Railsを使用してWebアプリケーションを立ち上げたり実行したりするうえで助けが必要になったら、以下のサポート用リソースを自由に参照できます。
 
-* [Ruby on Railsガイド](index.html) -- 本書です
+* [Ruby on Railsガイド](http://railsguides.jp) -- 本書です
 * [Ruby on Railsチュートリアル](http://railstutorial.jp)
 * [Ruby on Railsメーリングリスト](http://www.ruby.or.jp/ja/tech/development/web_application/100_community.html)
 * irc.freenode.net上の[#rubyonrails](irc://irc.freenode.net/#rubyonrails)チャンネル
