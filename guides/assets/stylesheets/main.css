@@ -262,6 +262,8 @@ body {
   background: #d5e9f6 url(../images/feature_tile.gif) repeat-x;
   color: #333;
   padding: 0.5em 0 1.5em;
+}
+#feature.top {
   min-height: 340px;
 }
 

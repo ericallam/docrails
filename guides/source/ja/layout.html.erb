@@ -122,8 +122,11 @@
     </div>
   </div>
   <hr class="hide" />
-
+  <% if yield(:i_am_top).present? %>
+  <div id="feature" class="top">
+  <% else %>
   <div id="feature">
+  <% end %>
     <div class="wrapper">
       <%= yield :header_section %>
       <%= yield :index_section %></div>
