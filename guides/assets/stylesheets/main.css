@@ -976,17 +976,17 @@ div.code_container {
 .state {
   width: 100px;
 }
-.available > .state a,
-.full > .state a,
-.finish > .state a {
+.available > .state a, .full > .state a, .finish > .state a {
   padding: 6px;
   display:block;
   text-decoration: none;
 }
-.finish > .state a:active,
-.full  > .state a:active,
-.available > .state a:active {
+.finish > .state a:hover, .full  > .state a:hover, .available > .state a:hover {
+  text-decoration: underline;
+}
+.finish > .state a:active, .full  > .state a:active, .available > .state a:active {
   box-shadow: 1px 1px 3px rgba(169, 169, 169, 0.4) inset;
+  text-decoration: underline;
 }
 .available > .state {
   text-align: center
@@ -996,7 +996,6 @@ div.code_container {
   background-image: -webkit-linear-gradient(#8add6d, #60b044);
   background-image: linear-gradient(#8add6d, #60b044);
   border-color: #5ca941;
-  text-decoration: none;
   border-radius: 5px;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
