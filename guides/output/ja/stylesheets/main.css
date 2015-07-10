@@ -280,17 +280,14 @@ body {
 #subCol {
   position: absolute;
   z-index: 0;
-  top: -7px;
+  top: 21px;
   right: 0;
   background: #FFF;
+  padding: 1em 1.5em 1em 1.25em;
   width: 17em;
-  height: 330px;
   font-size: 0.9285em;
   line-height: 1.3846em;
   margin-right: 1em;
-  border-radius: 1em 1em;
-  -webkit-border-radius: 1em;
-  -moz-border-radius: 1em;
 }
 
 
@@ -298,20 +295,9 @@ body {
   #subCol {
     position: static;
     width: inherit;
-    min-height: 491px;
-    margin-right: 6px;
-    border-radius: 1em;
-    -webkit-border-radius: 1em;
-    -moz-border-radius: 1em;
-    background-color: transparent;
-  }
-}
-
-@media screen and (max-width: 480px) {
-  #subCol {
-    height: 100%;
-    padding: 0;
-    margin-right: 10px;
+    margin-left: -1em;
+    margin-right: 0;
+    padding-right: 1.25em;
   }
 }
 
@@ -680,30 +666,6 @@ h6 code {
   margin-top: 0.25em;
 }
 
-@media screen and (max-width: 800px) {
-  #subCol dd.work-in-progress, #subCol dd.kindle {
-    margin-left: 215px;
-  }
-  #subCol dd.kindle {
-    margin-top: -25px;
-  }
-  #subCol dd {
-    border-bottom: 0;
-  }
-}
-
-@media screen and (max-width: 480px) {
-  #subCol dd.work-in-progress, #subCol dd.kindle {
-    margin-left: 0;
-  }
-  #subCol dd.kindle {
-    margin-top: 0;
-  }
-  #subCol dd {
-    border-bottom: 0;
-  }
-}
-
 #mainCol div.warning, #subCol dd.warning {
   background: #f9d9d8 url(../images/tab_red.gif) no-repeat left top;
   border: none;
@@ -774,6 +736,59 @@ div.code_container {
   padding: 0 0 1em;
   font-size: 1.1667em;
 }
+
+.top #subCol {
+  top: -7px;
+  height: 330px;
+  padding: 0;
+  border-radius: 1em 1em;
+  -webkit-border-radius: 1em;
+  -moz-border-radius: 1em;
+}
+
+@media screen and (max-width: 800px) {
+  .top #subCol {
+    min-height: 491px;
+    margin-right: 6px;
+    border-radius: 1em;
+    -webkit-border-radius: 1em;
+    -moz-border-radius: 1em;
+    background-color: transparent;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .top #subCol {
+    height: 100%;
+    padding: 0;
+    margin-right: 10px;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .top #subCol dd.work-in-progress, #subCol dd.kindle {
+    margin-left: 215px;
+  }
+  #subCol dd.kindle {
+    margin-top: -25px;
+  }
+  #subCol dd {
+    border-bottom: 0;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .top #subCol dd.work-in-progress, #subCol dd.kindle {
+    margin-left: 0;
+  }
+  .top #subCol dd.kindle {
+    margin-top: 0;
+  }
+  .top #subCol dd {
+    border-bottom: 0;
+  }
+}
+
 
 #subCol .ebook {
   background-color: #fff;
