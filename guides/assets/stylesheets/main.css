@@ -912,6 +912,7 @@ div.code_container {
 
 .legal table{
   border: none;
+  width: 100%;
 }
 .legal th {
   border-bottom: 1px solid #CCC;
