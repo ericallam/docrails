@@ -965,6 +965,14 @@ div.code_container {
   -moz-border-radius: 5px;
   box-shadow: -5px 4px 6px rgba(166, 166, 166, 0.8);
 }
+
+#contact.section {
+  margin-top: 50px;
+}
+
+/* about seminar
+--------------------------------------- */
+
 .seminar table {
   width: 100%;
 }
@@ -1039,13 +1047,11 @@ div.code_container {
   .seminar .table.responsive { margin-bottom: 0; }
   .seminar .pinned { display: none; }
   .seminar div.table-wrapper div.scrollable table { margin-left: 0; }
-  .seminar table.responsive th:first-child, .seminar table.responsive td:first-child, .seminar table.responsive td:first-child, .seminar table.responsive.pinned td { display: table-cell; }
-
+  .seminar table.responsive th:first-child, .seminar table.responsive td:first-child, .seminar table.responsive td:first-child, .seminar table.responsive.pinned td { display: block; white-space: inherit; }
+  .seminar .state { padding: 0px; width: 100%; }
+  .seminar td { display: block; }
 }
 
-#contact.section {
-  margin-top: 50px;
-}
 
 /* Clearing
 --------------------------------------- */
