@@ -946,8 +946,8 @@ div.code_container {
   -moz-box-shadow: rgba(0,0,0,1) 0 1px 0;
   box-shadow: rgba(0,0,0,1) 0 1px 0;
   cursor: pointer;
-  width: 86%;
-  margin: 20px 30px 0px;
+  width: 90%;
+  margin: 20px 0px 0px;
   text-align: center;
 }
 
@@ -965,6 +965,14 @@ div.code_container {
   -moz-border-radius: 5px;
   box-shadow: -5px 4px 6px rgba(166, 166, 166, 0.8);
 }
+
+#contact.section {
+  margin-top: 50px;
+}
+
+/* about seminar
+--------------------------------------- */
+
 .seminar table {
   width: 100%;
 }
@@ -1036,16 +1044,17 @@ div.code_container {
 }
 
 @media only screen and (max-width: 767px) {
-  .seminar .table.responsive { margin-bottom: 0; }
-  .seminar .pinned { display: none; }
-  .seminar div.table-wrapper div.scrollable table { margin-left: 0; }
-  .seminar table.responsive th:first-child, .seminar table.responsive td:first-child, .seminar table.responsive td:first-child, .seminar table.responsive.pinned td { display: table-cell; }
-
+  .seminar .table.responsive, .legal .table.responsive { margin-bottom: 0; white-space: inherit; }
+  .seminar .pinned, .legal .pinned { display: none; }
+  .seminar div.table-wrapper div.scrollable table,
+  .legal div.table-wrapper div.scrollable table { margin-left: 0; }
+  .seminar table.responsive th:first-child, .seminar table.responsive td:first-child, .seminar table.responsive td:first-child, .seminar table.responsive.pinned td,
+  .legal table.responsive th:first-child, .legal table.responsive td:first-child, .legal table.responsive td:first-child, .legal table.responsive.pinned td { display: block; white-space: inherit; }
+  .seminar .state, .legal .state { padding: 0px; width: 100%; }
+  .seminar td, .legal td { display: block; }
+  .legal table.responsive td, .legal table.responsive th { white-space: inherit; }
 }
 
-#contact.section {
-  margin-top: 50px;
-}
 
 /* Clearing
 --------------------------------------- */
