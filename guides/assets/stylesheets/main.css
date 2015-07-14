@@ -30,8 +30,12 @@
     color: #fff !important;
     text-decoration: underline !important;
 }
-.announce a:link {
-    color: rgb(0,164,222) !important;
+.announce a {
+    color: #fff !important;
+    text-decoration: underline !important;
+}
+.announce a:hover {
+    color: #eee !important;
 }
 
 .snsb {
