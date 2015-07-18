@@ -48,8 +48,7 @@ http://railstutorial.jp/
 - ※必ずRailsガイド用の翻訳メモリに結びつけること. (shared TM は使わない)
 - cf. [翻訳メモリの使用 - Translate ヘルプ - Google Help](https://support.google.com/translate/toolkit/answer/147863?hl=ja)
 
-**GTT は共有が面倒なので，ターミナルなどで編集して Pull Request して頂いても大丈夫です :+1: その際は，@yasulab などが別途 GTT 上の翻訳メモリに訳文を格納します．**
-(↑ このステップを，もうちょっとスマートにできるようにしたい...)
+**GTT は共有が面倒なので，エディタなどで `guides/source/ja` 内の Markdown ファイルを直接編集して Pull Request して頂いても大丈夫です :+1: その際は，@yasulab などが別途 GTT 上の翻訳メモリに訳文を格納します．**
 
 ### ③  GTT上で英語→日本語に翻訳する (訳文は翻訳メモリに格納)
 
@@ -61,7 +60,7 @@ http://railstutorial.jp/
 
 1. `/guides` ディレクトリに移動する
 2. Google Translator Toolkit から訳文のファイルをダウンロードする (要: ダウンロード権限)
-3. `./main.sh` を実行して、`archive.zip`の展開からHTML生成までの必要な処理します。例えば、
+3. [main.sh](https://github.com/yasslab/railsguides.jp/blob/japanese/guides/main.sh) を実行して、`archive.zip`の展開からHTML生成までの必要な処理します。例えば、
    - 適切なファイル名/拡張子に変換
    - [翻訳専用の特殊タグ](https://github.com/yasslab/railsguides.jp/wiki/%E7%BF%BB%E8%A8%B3%E3%81%AB%E9%96%A2%E3%81%99%E3%82%8BTIPS)の置換
    - MarkdownファイルからHTMLファイルを生成、など
