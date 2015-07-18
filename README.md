@@ -27,8 +27,8 @@ http://railstutorial.jp/
 
 [![Railsガイドを支える技術 - SpeakerDeck](https://raw.githubusercontent.com/yasslab/railsguides.jp/japanese/images/continuous_translation_system.png)](https://speakerdeck.com/yasulab/railsgaidowozhi-eruji-shu-30fen-ban)
 
-本リポジトリの仕組みについては、上記のスライドで説明されています。    
-本リポジトリにPull Requestを送付したい方は下記の「翻訳の流れ」を参照してください。    
+本リポジトリの仕組みについては、上記のスライドで詳しく解説されています。    
+本リポジトリにPull Requestを送付したい方は、下記の「翻訳の流れ」を参照してください。    
 (特に④と⑤を見ておくとよいかもしれません)
 
 ### 翻訳の流れ
@@ -39,7 +39,7 @@ http://railstutorial.jp/
 ### ①  原著との差分更新の方法
    - [bin/merge-upstream](https://github.com/yasslab/railsguides.jp/blob/japanese/bin/merge-upstream) を実行すると最新版が `guides/source` 内に取り込まれます。
    - 特に、原著を手元で確認したいとき、原著にPRを送付したいときに便利です。
-   - また、原著にPRを送るときは事前に[Railsのドキュメントに貢献する](http://railsguides.jp/contributing_to_ruby_on_rails.html#rails%E3%81%AE%E3%83%89%E3%82%AD%E3%83%A5%E3%83%A1%E3%83%B3%E3%83%88%E3%81%AB%E8%B2%A2%E7%8C%AE%E3%81%99%E3%82%8B)に目を通しておくとよいです :)
+   - 原著にPRを送るときは、事前に[Railsのドキュメントに貢献する](http://railsguides.jp/contributing_to_ruby_on_rails.html#rails%E3%81%AE%E3%83%89%E3%82%AD%E3%83%A5%E3%83%A1%E3%83%B3%E3%83%88%E3%81%AB%E8%B2%A2%E7%8C%AE%E3%81%99%E3%82%8B)に目を通しておくとよいです :)
 
 ### ②  GTTに最新のドキュメントをアップロードする
 
@@ -63,8 +63,8 @@ http://railstutorial.jp/
 2. Google Translator Toolkit から訳文のファイルをダウンロードする (要: ダウンロード権限)
 3. `./main.sh` を実行して、`archive.zip`の展開からHTML生成までの必要な処理します。例えば、
    - 適切なファイル名/拡張子に変換
-   - 翻訳専用の特殊タグの置換
-   - MDファイルからHTMLファイルを生成、など
+   - [翻訳専用の特殊タグ](https://github.com/yasslab/railsguides.jp/wiki/%E7%BF%BB%E8%A8%B3%E3%81%AB%E9%96%A2%E3%81%99%E3%82%8BTIPS)の置換
+   - MarkdownファイルからHTMLファイルを生成、など
    - 詳細は `main.sh` を参照してください
 
 **※ Pull Request を送付する場合は `guides/source/ja` 以下の Markdown を直接修正してください** 
