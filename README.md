@@ -23,17 +23,23 @@ http://railstutorial.jp/
 
 本ガイドの品質向上に向けて、皆さまのご協力が得られれば幸いです。よろしくお願い致します。
 
+## 継続的翻訳システムについて
 
-## 翻訳の流れ
+[![Railsガイドを支える技術 - SpeakerDeck](https://raw.githubusercontent.com/yasslab/railsguides.jp/japanese/images/continuous_translation_system.png)](https://speakerdeck.com/yasulab/railsgaidowozhi-eruji-shu-30fen-ban)
 
-![翻訳の流れ](https://raw.githubusercontent.com/yasslab/railsguides.jp/japanese/images/flow-of-translation.jpg)
+本リポジトリの全体像は上記のスライドに記載されています。    
+Pull Request を送付したい方は下記の③以降を参照してください。
+
+### 翻訳の流れ
+
+![翻訳の流れ](https://raw.githubusercontent.com/yasslab/railsguides.jp/japanese/images/flow-of-translation.png)
 参考: [[翻訳]Ruby on Rails 4.1リリース前にアップグレードガイドを先行翻訳した & 同じ翻訳を2回しないで済むようにした](http://techracho.bpsinc.jp/hachi8833/2014_03_28/16037)
 
-### ① 原著との差分更新の方法
+### ①  原著との差分更新の方法
+   - [bin/merge-upstream](https://github.com/yasslab/railsguides.jp/blob/japanese/bin/merge-upstream) を実行する最新版が `guides/source` 内に取り込まれます
+   - 原著を手元で確認したいときに使います
 
-- cf. [Syncing a fork, GitHub Help](https://help.github.com/articles/syncing-a-fork)
-
-### ② GTTに最新のドキュメントをアップロードする
+### ②  GTTに最新のドキュメントをアップロードする
 
 - Google Translator Toolkit: https://translate.google.com/toolkit/
 - Markdownは対応してないので、必要に応じてファイル名を `hogehoge.md.txt` などに変更する。
@@ -43,15 +49,15 @@ http://railstutorial.jp/
 **GTT は共有が面倒なので，ターミナルなどで編集して Pull Request して頂いても大丈夫です :+1: その際は，@yasulab などが別途 GTT 上の翻訳メモリに訳文を格納します．**
 (↑ このステップを，もうちょっとスマートにできるようにしたい...)
 
-### ③ GTT上で英語→日本語に翻訳する (訳文は翻訳メモリに格納)
+### ③  GTT上で英語→日本語に翻訳する (訳文は翻訳メモリに格納)
 
 - 詳細: [Google Translator Toolkitと翻訳メモリ(ノーカット版) : RubyWorld Conference 2013より](http://techracho.bpsinc.jp/hachi8833/2013_12_16/14889)
 - GTTの使用方法や文体などに関しては[こちら](https://www.facebook.com/notes/ruby-on-rails-tutorial-%E7%BF%BB%E8%A8%B3%E3%82%B0%E3%83%AB%E3%83%BC%E3%83%97/google-translator-toolkit-gtt-%E3%81%AE%E4%BD%BF%E3%81%84%E6%96%B9/170100333166820)を参考にしてください。
 - ※CSSの関係で、行頭が`(TIP|IMPORTANT|CAUTION|WARNING|NOTE|INFO|TODO)[.:]`から始まる場合、`(TIP|IMPORTANT|CAUTION|WARNING|NOTE|INFO|TODO)`は訳さないでください。
 
-### ④ 日本語のHTMLファイルの生成方法
+### ④  日本語のHTMLファイルの生成方法
 
-1. `/guides` フォルダに移動する
+1. `/guides` ディレクトリに移動する
 2. Google Translator Toolkit から訳文のファイルをダウンロードする (要: ダウンロード権限)
 3. `./main.sh` を実行して、`archive.zip`の展開からHTML生成までの必要な処理します。例えば、
    - 適切なファイル名/拡張子に変換
@@ -59,8 +65,11 @@ http://railstutorial.jp/
    - MDファイルからHTMLファイルを生成、など
    - 詳細は `main.sh` を参照してください
 
-### ⑤ Herokuにデプロイ
+**※ Pull Request を送付する場合は `guides/source/ja` 以下の Markdown を直接修正してください** 
 
+### ⑤  Herokuにデプロイ
+
+- Commit が Push されたときに WebHook が飛び、Travis CI が走ります。
 - Travis CIのtestがパスすれば、自動でHerokuにデプロイされます。
 - 詳細: [Automatic deploys - Heroku Dev Center](https://devcenter.heroku.com/articles/github-integration#automatic-deploys)
 
