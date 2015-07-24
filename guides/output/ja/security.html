@@ -702,7 +702,7 @@ http://www.cbsnews.com/stories/2002/02/15/weather_local/main501644.shtml?zipcode
 
 </pre>
 </div>
-<h5 id="クロスサイトスクリプティング-xss-対応策"><a href="#%E3%82%AF%E3%83%AD%E3%82%B9%E3%82%B5%E3%82%A4%E3%83%88%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%97%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0-xss-%E5%AF%BE%E5%BF%9C%E7%AD%96">7.3.3 対応策</a></h5><p><em>悪意のある入力をフィルタすることがきわめて重要です。Webアプリケーションの出力をエスケープすることも同様に重要です。</em>.</p><p>特にXSSの場合、<em>ブラックリストではなくホワイトリストに基づいた入力フィルタを実施することが絶対重要です。</em>.ホワイトリストフィルタでは特定の値のみが許可され、それ以外の値はすべて拒否されます。ブラックリストを元にしている限り、必ず将来漏れが生じます。</p><p>ユーザー入力から「script」という文字を除去するのに使用されているブラックリストがあるとしましょう。それなら攻撃者は次には「&lt;scrscriptipt&gt;」という文字を入力するでしょう。この文字がフィルタされると「&lt;script&gt;」という文字が残ってしまいます。以前のRailsではstrip_tags()、strip_links()、sanitize()メソッドでブラックリスト的アプローチが使用されていました。従って、当時は以下のような攻撃が可能になっていました。</p><div class="code_container">
+<h5 id="クロスサイトスクリプティング-xss-対応策"><a href="#%E3%82%AF%E3%83%AD%E3%82%B9%E3%82%B5%E3%82%A4%E3%83%88%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%97%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0-xss-%E5%AF%BE%E5%BF%9C%E7%AD%96">7.3.3 対応策</a></h5><p><em>悪意のある入力をフィルタすることがきわめて重要です。Webアプリケーションの出力をエスケープすることも同様に重要です</em>。</p><p>特にXSSの場合、<em>ブラックリストではなくホワイトリストに基づいた入力フィルタを実施することが絶対重要です</em>。ホワイトリストフィルタでは特定の値のみが許可され、それ以外の値はすべて拒否されます。ブラックリストを元にしている限り、必ず将来漏れが生じます。</p><p>ユーザー入力から「script」という文字を除去するのに使用されているブラックリストがあるとしましょう。それなら攻撃者は次には「&lt;scrscriptipt&gt;」という文字を入力するでしょう。この文字がフィルタされると「&lt;script&gt;」という文字が残ってしまいます。以前のRailsではstrip_tags()、strip_links()、sanitize()メソッドでブラックリスト的アプローチが使用されていました。従って、当時は以下のような攻撃が可能になっていました。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 strip_tags("some&lt;&lt;b&gt;script&gt;alert('hello')&lt;&lt;/b&gt;/script&gt;")
 
@@ -907,7 +907,7 @@ config.action_dispatch.default_headers.clear
 <li>X-XSS-Protection
 <em>Railsではデフォルトで'1; mode=block'が指定されます。</em> - XSS攻撃が検出された場合は、XSS Auditorとブロックページを使用してください。XSS Auditorをオフにしたい場合は'0;'を指定します(レスポンスがリクエストパラメータからのスクリプトを含んでいる場合に便利です)。</li>
 <li>X-Content-Type-Options
-<em>'nosniff' はRailsではデフォルトです</em> - ファイルのMIMEタイプをブラウザが推測しないようにします。</li>
+<em>'nosniff' はRailsではデフォルトです。</em> - ファイルのMIMEタイプをブラウザが推測しないようにします。</li>
 <li>X-Content-Security-Policy
 <a href="http://w3c.github.io/webappsec/specs/content-security-policy/csp-specification.dev.html">コンテンツタイプを読み込む元のサイトを制御するための強力なメカニズム</a>です。</li>
 <li>Access-Control-Allow-Origin
