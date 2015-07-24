@@ -773,7 +773,7 @@ webmailワームの他の概念実証的な事例としてNdujaを取り上げ�
 
 2006年12月、実在する34,000人のユーザー名とパスワードが[MySpaceへのフィッシング攻撃](http://news.netcraft.com/archives/2006/10/27/myspace_accounts_compromised_by_phishers.html)によって盗み出されました。この攻撃では「login_home_index_html」という名前をURLに持つプロファイルページが捏造され、それによってこのURLはユーザーからは実にもっともらしく見えました。MySpaceの本物のWebページコンテンツは特殊なHTML/CSSによって覆い隠され、独自の偽ログインページを代りに表示しました。
 
-MySpaceのSamyワームについては次のCSSインジェクションの節でせつめいします
+MySpaceのSamyワームについては次のCSSインジェクションの節で説明します。
 
 ### CSSインジェクション
 
