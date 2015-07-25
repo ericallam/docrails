@@ -779,7 +779,7 @@ MySpaceのSamyワームについては次のCSSインジェクションの節で
 
 INFO: _CSSインジェクションは実際にはJavaScriptのインジェクションであると言えます。これは、IEや特定のバージョンのSafariなどで、CSSに含まれるJavaScriptの実行が許可されているからです。_
 
-CSSインジェクションの説明に最適なのは、かの有名な[MySpace Samyワーム](http://namb.la/popular/tech.html). This worm automatically sent a friend request to Samy (the attacker) simply by visiting his profile. 他愛もないいたずらだったかもしれませんが、Samyのもとには数時間のうちに百万件以上の友達リクエストが集まり、それによってMySpaceに膨大なトラフィックが発生してサイトがオフラインになってしまいました。以下はこのワームに関する技術的な解説です。
+CSSインジェクションの説明に最適なのは、かの有名な[MySpace Samyワーム](http://namb.la/popular/tech.html)です。このワームは、攻撃者であるSamyのプロファイルページを開くだけで自動的にSamyに友達リクエストを送信するというものです。他愛もないいたずらだったかもしれませんが、Samyのもとには数時間のうちに百万件以上の友達リクエストが集まり、それによってMySpaceに膨大なトラフィックが発生してサイトがオフラインになってしまいました。以下はこのワームに関する技術的な解説です。
 
 MySpaceでは多くのタグをブロックしていましたが、CSSについては禁止していなかったので、ワームの作者はCSSに以下のようなJavaScriptを仕込みました。
 
