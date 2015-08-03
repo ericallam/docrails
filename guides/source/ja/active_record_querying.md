@@ -1053,14 +1053,14 @@ SELECT categories.* FROM categories
 標準の[配列](#配列で表された条件)および[文字列](#文字列だけで表された条件)条件を使用して、結合テーブルに条件を指定することができます。[ハッシュ条件](#ハッシュを使用した条件)の場合、結合テーブルで条件を指定する場合に特殊な構文を使用します。
 
 ```ruby
-time_range = (Time.now.midnight - 1.day).Time.now.midnight
+time_range = (Time.now.midnight - 1.day)..Time.now.midnight
 Client.joins(:orders).where('orders.created_at' => time_range)
 ```
 
 さらに読みやすい別の方法として、ハッシュ条件をネストさせる方法があります。
 
 ```ruby
-time_range = (Time.now.midnight - 1.day).Time.now.midnight
+time_range = (Time.now.midnight - 1.day)..Time.now.midnight
 Client.joins(:orders).where(orders: { created_at: time_range })
 ```
 
