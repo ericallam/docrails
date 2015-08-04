@@ -330,7 +330,7 @@ Person.create(name: nil).valid? # =&gt; false
 <li>コントローラレベルのバリデーションは一度はやってみたくなるものですが、たいてい手に負えなくなり、テストも保守も困難になりがちです。アプリケーションの寿命を永らえ、保守作業を苦痛なものにしないようにするためには、コントローラのコード量は可能な限り減らすべきです。</li>
 </ul>
 <p>上で紹介したその他のバリデーションについては、特定の状況に応じて適宜追加してください。Railsチームは、ほとんどの場合モデルレベルのバリデーションが最も適切であると考えています。</p><h4 id="バリデーション実行時の動作"><a href="#%E3%83%90%E3%83%AA%E3%83%87%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E5%AE%9F%E8%A1%8C%E6%99%82%E3%81%AE%E5%8B%95%E4%BD%9C">1.2 バリデーション実行時の動作</a></h4><p>Active Recordのオブジェクトには2種類あります。オブジェクトがデータベースの行(row)に対応しているものと、そうでないものです。たとえば、<code>new</code>メソッドを使用して新しくオブジェクトを作成しただけでは、オブジェクトはデータベースに属していません。<code>save</code>メソッドを呼ぶことで、オブジェクトは適切なデータベースのテーブルに保存されます。Active Recordの<code>new_record?</code>インスタンスメソッドを使用して、オブジェクトが既にデータベース上にあるかどうかを確認できます。
-次の単純はActive Recordクラスを例に取ってみましょう。</p><div class="code_container">
+次の単純なActive Recordクラスを例に取ってみましょう。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class Person &lt; ActiveRecord::Base
 end

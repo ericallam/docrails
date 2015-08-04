@@ -45,7 +45,7 @@ Person.create(name: nil).valid? # => false
 ### バリデーション実行時の動作
 
 Active Recordのオブジェクトには2種類あります。オブジェクトがデータベースの行(row)に対応しているものと、そうでないものです。たとえば、`new`メソッドを使用して新しくオブジェクトを作成しただけでは、オブジェクトはデータベースに属していません。`save`メソッドを呼ぶことで、オブジェクトは適切なデータベースのテーブルに保存されます。Active Recordの`new_record?`インスタンスメソッドを使用して、オブジェクトが既にデータベース上にあるかどうかを確認できます。
-次の単純はActive Recordクラスを例に取ってみましょう。
+次の単純なActive Recordクラスを例に取ってみましょう。
 
 ```ruby
 class Person < ActiveRecord::Base
