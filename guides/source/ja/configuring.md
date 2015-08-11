@@ -152,7 +152,7 @@ Rails全般に対する設定を行うには、`Rails::Railtie`オブジェク�
 
 * `config.assets.debug`は、デバッグ用にアセットの連結と圧縮をやめるかどうかを指定します。`development.rb`ではデフォルトで`true`に設定されます。
 
-* `config.assets.cache_store`は、スプロケットで使用するキャッシュストアを定義します。デフォルトではRailsのファイルストアが使用されます。
+* `config.assets.cache_store`は、Sprocketsで使用するキャッシュストアを定義します。デフォルトではRailsのファイルストアが使用されます。
 
 * `config.assets.version`はMD5ハッシュ生成に使用されるオプション文字列です。この値を変更すると、すべてのアセットファイルが強制的にリコンパイルされます。
 

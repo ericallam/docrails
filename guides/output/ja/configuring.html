@@ -373,7 +373,7 @@ config.session_store :my_custom_store
 <li><p><code>config.assets.prefix</code>はアセットを置くディレクトリを指定します。デフォルトは<code>/assets</code>です。</p></li>
 <li><p><code>config.assets.digest</code>は、アセット名に使用するMD5フィンガープリントを有効にするかどうかを指定します。<code>production.rb</code>ではデフォルトで<code>true</code>に設定されます。</p></li>
 <li><p><code>config.assets.debug</code>は、デバッグ用にアセットの連結と圧縮をやめるかどうかを指定します。<code>development.rb</code>ではデフォルトで<code>true</code>に設定されます。</p></li>
-<li><p><code>config.assets.cache_store</code>は、スプロケットで使用するキャッシュストアを定義します。デフォルトではRailsのファイルストアが使用されます。</p></li>
+<li><p><code>config.assets.cache_store</code>は、Sprocketsで使用するキャッシュストアを定義します。デフォルトではRailsのファイルストアが使用されます。</p></li>
 <li><p><code>config.assets.version</code>はMD5ハッシュ生成に使用されるオプション文字列です。この値を変更すると、すべてのアセットファイルが強制的にリコンパイルされます。</p></li>
 <li><p><code>config.assets.compile</code>は、production環境での動的なSprocketsコンパイルをオンにするかどうかをtrue/falseで指定します。</p></li>
 <li><p><code>config.assets.logger</code>はロガーを引数に取ります。このロガーは、Log4のインターフェイスか、Rubyの<code>Logger</code>クラスに従います。デフォルトでは、<code>config.logger</code>と同じ設定が使用されます。<code>config.assets.logger</code>をfalseに設定すると、アセットのログ出力がオフになります</p></li>
