@@ -737,7 +737,7 @@ Rails環境の設定
 
 * `ENV["RAILS_RELATIVE_URL_ROOT"]`は、[アプリケーションをサブディレクトリにデプロイする](configuring.html#サブディレクトリにデプロイする-相対urlルートの使用)ときにルーティングシステムがURLを認識するために使用されます。
 
-* `ENV["RAILS_CACHE_ID"]`と`ENV["RAILS_APP_VERSION"]`は、Railsのキャッシュを扱うコードで拡張キャッシュを生成するために使用されます。これにより、This allows you to have multiple separate caches from the same application.
+* `ENV["RAILS_CACHE_ID"]`と`ENV["RAILS_APP_VERSION"]`は、Railsのキャッシュを扱うコードで拡張キャッシュを生成するために使用されます。これにより、ひとつのアプリケーションの中で複数の独立したキャッシュを扱うことができるようになります。
 
 
 イニシャライザファイルを使用する
