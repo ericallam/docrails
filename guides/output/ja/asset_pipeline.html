@@ -367,7 +367,7 @@ end
 <li><p><code>lib/assets</code>は、1つのアプリケーションの範疇に収まらないライブラリのコードや、複数のアプリケーションで共有されるライブラリのコードを置く場所です。</p></li>
 <li><p><code>vendor/assets</code>は、JavaScriptプラグインやCSSフレームワークなど、外部の団体などによって所有されているアセットの置き場所です。</p></li>
 </ul>
-<div class="warning"><p>Rails 3からのアップグレードを行なう際には、<code>lib/assets</code>と<code>vendor/assets</code>の下に置かれているアセットがRails 4ではアプリケーションのマニフェストによってインクルードされて利用可能になること、しかしプリコンパイルアレイの一部には含まれなくなることを考慮に入れてください。ガイダンスについては<a href="#%E3%82%A2%E3%82%BB%E3%83%83%E3%83%88%E3%82%92%E3%83%97%E3%83%AA%E3%82%B3%E3%83%B3%E3%83%91%E3%82%A4%E3%83%AB%E3%81%99%E3%82%8B">アセットをプリコンパイルする</a>を参照してください。</p></div><h5 id="パスの検索"><a href="#%E3%83%91%E3%82%B9%E3%81%AE%E6%A4%9C%E7%B4%A2">2.2.1 パスの検索</a></h5><p>ファイルがマニフェストやヘルパーから参照される場合、Sprocketsはデフォルトのアセットの置き場所である3つのディレクトリからファイルを探します。</p><p>3つのディレクトリとは、<code>app/assets</code>の下にある<code>images</code>、<code>javascripts</code>、<code>stylesheets</code>ディレクトリです。ただしこれらのサブディレクトリは特殊なものではなく、実際には<code>assets/*</code>以下のすべてのパスが検索対象になります。</p><p>以下のファイルを例に説明します。</p><div class="code_container">
+<div class="warning"><p>Rails 3からのアップグレードを行なう際には、<code>lib/assets</code>と<code>vendor/assets</code>の下に置かれているアセットがRails 4ではアプリケーションのマニフェストによってインクルードされて利用可能になること、しかしプリコンパイル配列の一部には含まれなくなることを考慮に入れてください。ガイダンスについては<a href="#%E3%82%A2%E3%82%BB%E3%83%83%E3%83%88%E3%82%92%E3%83%97%E3%83%AA%E3%82%B3%E3%83%B3%E3%83%91%E3%82%A4%E3%83%AB%E3%81%99%E3%82%8B">アセットをプリコンパイルする</a>を参照してください。</p></div><h5 id="パスの検索"><a href="#%E3%83%91%E3%82%B9%E3%81%AE%E6%A4%9C%E7%B4%A2">2.2.1 パスの検索</a></h5><p>ファイルがマニフェストやヘルパーから参照される場合、Sprocketsはデフォルトのアセットの置き場所である3つのディレクトリからファイルを探します。</p><p>3つのディレクトリとは、<code>app/assets</code>の下にある<code>images</code>、<code>javascripts</code>、<code>stylesheets</code>ディレクトリです。ただしこれらのサブディレクトリは特殊なものではなく、実際には<code>assets/*</code>以下のすべてのパスが検索対象になります。</p><p>以下のファイルを例に説明します。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 app/assets/javascripts/home.js
 lib/assets/javascripts/moovinator.js
@@ -403,7 +403,7 @@ config.assets.paths &lt;&lt; Rails.root.join("lib", "videoplayer", "flash")
 
 </pre>
 </div>
-<p>パスの探索は、検索パスでの出現順で行われます。デフォルトでは<code>app/assets</code>の検索が優先されるので、対応するパスが<code>lib</code>や<code>vendor</code>にある場合はマスクされます。</p><p>ここでご注意いただきたいのは、参照したいファイルがマニフェストの外にある場合はそれらをプリコンパイルアレイに追加しなければならないこと、さらにこれらはproduction環境では利用できないという点です。</p><h5 id="indexファイルを使用する"><a href="#index%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B">2.2.2 indexファイルを使用する</a></h5><p>Sprocketsでは、<code>index</code>という名前のファイル (および関連する拡張子) を特殊な目的に使用します。</p><p>たとえば、たくさんのモジュールがあるjQueryライブラリを使用していて、それらが<code>lib/assets/javascripts/library_name</code>に保存されているとします。この<code>lib/assets/javascripts/library_name/index.js</code>ファイルはそのライブラリ内のすべてのファイルで利用できるマニフェストとして機能します。このファイルには必要なファイルをすべて順に記述するか、あるいは単に<code>require_tree</code>と記述します。</p><p>一般に、このライブラリはアプリケーションマニフェストに以下のように記述することでアクセスできます。</p><div class="code_container">
+<p>パスの探索は、検索パスでの出現順で行われます。デフォルトでは<code>app/assets</code>の検索が優先されるので、対応するパスが<code>lib</code>や<code>vendor</code>にある場合はマスクされます。</p><p>ここでご注意いただきたいのは、参照したいファイルがマニフェストの外にある場合はそれらをプリコンパイル配列に追加しなければならないこと、さらにこれらはproduction環境では利用できないという点です。</p><h5 id="indexファイルを使用する"><a href="#index%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B">2.2.2 indexファイルを使用する</a></h5><p>Sprocketsでは、<code>index</code>という名前のファイル (および関連する拡張子) を特殊な目的に使用します。</p><p>たとえば、たくさんのモジュールがあるjQueryライブラリを使用していて、それらが<code>lib/assets/javascripts/library_name</code>に保存されているとします。この<code>lib/assets/javascripts/library_name/index.js</code>ファイルはそのライブラリ内のすべてのファイルで利用できるマニフェストとして機能します。このファイルには必要なファイルをすべて順に記述するか、あるいは単に<code>require_tree</code>と記述します。</p><p>一般に、このライブラリはアプリケーションマニフェストに以下のように記述することでアクセスできます。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 //= require library_name
 
@@ -583,7 +583,7 @@ load 'deploy/assets'
 
 </pre>
 </div>
-<div class="note"><p>このマッチャ (および後述するprecompile配列の他のメンバ) が適用されるのは、コンパイル前やコンパイル中のファイル名ではなく、コンパイル後の最終的なファイル名である点にご注意ください。これは、コンパイルされてJavaScriptやCSSになるような中間ファイルはマッチャの対象からすべて除外されるということです (純粋なJavaScript/CSSと同様)。たとえば、<code>.coffee</code>と<code>.scss</code>ファイルはコンパイル後にそれぞれJavaScriptとCSSになるので、これらは自動的にはインクルードされません。</p></div><p>他のマニフェストや、個別のスタイルシート/JavaScriptファイルをインクルードしたい場合は、<code>config/initializers/assets.rb</code>の<code>precompile</code>という配列を使用します。</p><div class="code_container">
+<div class="note"><p>このマッチャ (および後述するプリコンパイル配列の他のメンバ) が適用されるのは、コンパイル前やコンパイル中のファイル名ではなく、コンパイル後の最終的なファイル名である点にご注意ください。これは、コンパイルされてJavaScriptやCSSになるような中間ファイルはマッチャの対象からすべて除外されるということです (純粋なJavaScript/CSSと同様)。たとえば、<code>.coffee</code>と<code>.scss</code>ファイルはコンパイル後にそれぞれJavaScriptとCSSになるので、これらは自動的にはインクルードされません。</p></div><p>他のマニフェストや、個別のスタイルシート/JavaScriptファイルをインクルードしたい場合は、<code>config/initializers/assets.rb</code>の<code>precompile</code>という配列を使用します。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Rails.application.config.assets.precompile += ['admin.js', 'admin.css', 'swfObject.js']
 
@@ -610,7 +610,7 @@ end
 
 </pre>
 </div>
-<div class="note"><p>precompile配列にSassやCoffeeScriptファイルなどを追加する場合にも、必ず.jsや.cssで終わるファイル名 (つまりコンパイル後のファイル名として期待されているファイル名) も指定してください。</p></div><p>このrakeタスクは、<code>manifest-md5hash.json</code>ファイルも生成します。これはすべてのアセットとそれらのフィンガープリントのリストです。Railsヘルパーはこれを使用して、マッピングリクエストがSprocketsへ戻されることを回避します。典型的なマニフェストファイルの内容は以下のような感じになっています。</p><div class="code_container">
+<div class="note"><p>プリコンパイル配列にSassやCoffeeScriptファイルなどを追加する場合にも、必ず.jsや.cssで終わるファイル名 (つまりコンパイル後のファイル名として期待されているファイル名) も指定してください。</p></div><p>このrakeタスクは、<code>manifest-md5hash.json</code>ファイルも生成します。これはすべてのアセットとそれらのフィンガープリントのリストです。Railsヘルパーはこれを使用して、マッピングリクエストがSprocketsへ戻されることを回避します。典型的なマニフェストファイルの内容は以下のような感じになっています。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 {"files":{"application-723d1be6cc741a3aabb1cec24276d681.js":{"logical_path":"application.js","mtime":"2013-07-26T22:55:03-07:00","size":302506,
 "digest":"723d1be6cc741a3aabb1cec24276d681"},"application-12b3c7dd74d2e9df37e7cbb1efa76a6d.css":{"logical_path":"application.css","mtime":"2013-07-26T22:54:54-07:00","size":1560,
