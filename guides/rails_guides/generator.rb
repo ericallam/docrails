@@ -84,6 +84,7 @@ module RailsGuides
       @warnings = ENV['WARNINGS'] == '1'
       @all      = ENV['ALL']      == '1'
       @kindle   = ENV['KINDLE']   == '1'
+      @dash     = ENV['DASH']     == '1'
       @version  = ENV['RAILS_VERSION'] || 'local'
       @lang     = ENV['GUIDES_LANGUAGE']
     end
@@ -97,12 +98,17 @@ module RailsGuides
       generate_guides
       copy_assets
       generate_mobi if kindle?
+      generate_docset if dash?
     end
 
     private
 
     def kindle?
       @kindle
+    end
+
+    def dash?
+      @dash
     end
 
     def check_for_kindlegen
@@ -118,6 +124,15 @@ module RailsGuides
       puts "(kindlegen log at #{out})."
     end
 
+    def generate_docset
+      require 'rails_guides/dash'
+      out = "#{output_dir}/docset.out"
+      Dash.generate @source_dir, output_dir,
+        "ruby_on_rails_guides_#@version%s.docset" % (@lang.present? ? ".#@lang" : ''),
+        out
+      puts "(docset generate log at #{out})."
+    end
+
     def mobi
       "ruby_on_rails_guides_#@version%s.mobi" % (@lang.present? ? ".#@lang" : '')
     end
@@ -129,6 +144,8 @@ module RailsGuides
         output
       elsif kindle?
         "#@guides_dir/output/kindle/#@lang"
+      elsif dash?
+        "#@guides_dir/output/dash/#@lang"
       else
         "#@guides_dir/output/#@lang"
       end.sub(%r</$>, '')
