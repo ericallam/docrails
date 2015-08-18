@@ -6,9 +6,10 @@ module Dash
   extend self
 
   def generate(source_dir, output_dir, out_dir, logfile, debug: false)
+    puts "Output Dir: #{output_dir}"
     @debug = debug
+    @stylesheets = []
     html_body = ''
-    file_name = 'asset_pipeline'
 
     docset_path = "#{output_dir}/#{out_dir}"
     FileUtils.rm_r(docset_path) if Dir.exists? docset_path
@@ -19,47 +20,56 @@ module Dash
     FileUtils.mkdir_p @documents_dir
     build_info_plist
     initialize_sqlite
+    copy_assets output_dir, @documents_dir
 
+    output_dir = File.absolute_path(output_dir)
     Dir.chdir output_dir do
-      Dir.glob("#{source_dir}/*.md").each do|file_path|
-        next if file_path =~ /release_notes.md\z/
+      Dir.glob("#{output_dir}/*.html").each do|file_path|
+        next if file_path =~ /release_notes.html\z/
+        next if File.basename(file_path) =~ /\A_/
         doc_name = File.basename(file_path).sub(".md", "")
 
         File.open(file_path) do |file|
-          html_body = create_html_and_register_index(file, doc_name)
+          html = create_html_and_register_index(file, doc_name)
+          File.write("#{@documents_dir}/#{doc_name}", html)
         end
-
-        build_html(doc_name, html_body)
       end
     end
   end
 
   def create_html_and_register_index(file, doc_name)
-    # CodeBlock
-    html_body = markdown.render(file.read.gsub("\r\n", "\n").gsub(/^(```)([a-z]{1,10})\n(.*?)\n```/m){|s|
-      CodeRay.scan($3, $2).div
-    })
-    # Create Index <h1>..<h5>
-    html_body.scan(/<h[1-5]>(.*)<\/h([1-5])>/).each do |attr|
-      name   = attr.first
-      header = attr.last
-      plain_name = name.gsub(%r{</?code>}, '').gsub(%r{</?em>}, "")
+    title = ''
+    html_body = file.read
+    html_body.scan(/(<h[1-5]( [^>]+)?>(.*?)<\/h([1-5])>)/).each do |match|
+      tag = match[0]
+      name = ActionView::Base.full_sanitizer.sanitize(match[2])
+      puts "Index: #{name}"
       hash = Digest::MD5.hexdigest name
-      # Add ID to Header
-      html_body.sub!("<h#{header}>#{name}</h#{header}>", %{<h#{header} id="#{hash}">#{name}</h#{header}>})
-      index_name = CGI.unescapeHTML(plain_name).gsub("'"){ "''" }
-      cmd =%{INSERT OR IGNORE INTO searchIndex(name, type, path) VALUES ('#{index_name}', 'Guide', '#{doc_name}.html##{hash}');}
-      sqlite cmd
+
+      # Add Anchor to Header Tag
+      html_body.sub!(tag, %{<a name="#{hash}"></a>#{tag}})
+
+      # Add Search Index
+      title = index_name = CGI.unescapeHTML(name).gsub("'"){ "''" }
+      sqlite %{INSERT OR IGNORE INTO searchIndex(name, type, path) VALUES ('#{index_name}', 'Guide', '#{doc_name}##{hash}');}
     end
     html_body
   end
 
-  def markdown
-    Redcarpet::Markdown.new(
-      Redcarpet::Render::HTML,
-      autolink: true, tables: true,
-      fenced_code_blocks: true
-    )
+  def copy_assets(source_dir, destination_dir)
+    %w{images stylesheets}.each do |dir|
+      src = "#{source_dir}/#{dir}"
+      dst = "#{destination_dir}/#{dir}"
+      FileUtils.rm_r dst if Dir.exists? dst
+      FileUtils.cp_r src, dst
+
+      if dir == 'stylesheets'
+        Dir.glob("#{dst}/*").each do |stylesheet|
+          next if stylesheet =~ /kindle.css\z/
+          @stylesheets << File.basename(stylesheet)
+        end
+      end
+    end
   end
 
   def initialize_sqlite
@@ -72,32 +82,6 @@ module Dash
   def sqlite(query)
     puts "[SQLite] #{query}" if @debug
     `sqlite3  #{@sqlite_db} "#{query}"`
-  end
-
-  def build_html(file_name, html_body)
-    File.write("#{@documents_dir}/#{file_name}.html", <<-HTML)
-<!doctype html>
-<html class="no-js" lang="">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title></title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="css/normalize.css">
-    <link rel="stylesheet" href="css/main.css">
-    <style type="text/css">
-      pre {
-        background: #002A35!important;
-        color: #93A1A1!important;
-        padding: 6px;
-        border-radius: 2px;
-      }
-    </style>
-  </head>
-  <body> #{html_body} </body>
-</html>
-    HTML
   end
 
   def build_info_plist
