@@ -53,6 +53,8 @@ module Dash
       title = index_name = CGI.unescapeHTML(name).gsub("'"){ "''" }
       sqlite %{INSERT OR IGNORE INTO searchIndex(name, type, path) VALUES ('#{index_name}', 'Guide', '#{doc_name}##{hash}');}
     end
+    # relative
+    html_body.gsub!('src="/images/', 'src="./images/')
     html_body
   end
 
