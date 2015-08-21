@@ -432,8 +432,8 @@ Product.connection.execute('UPDATE `products` SET `price`=`free` WHERE 1')
 * `add_foreign_key`
 * `create_table`
 * `create_join_table`
-* `drop_table` (must supply a block)
-* `drop_join_table` (must supply a block)
+* `drop_table` (ブロックを渡す必要あり)
+* `drop_join_table` (ブロックを渡す必要あり)
 * `remove_timestamps`
 * `rename_column`
 * `rename_index`
