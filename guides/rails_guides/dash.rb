@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require 'redcarpet'
 require 'coderay'
 require 'nokogiri'
@@ -102,11 +103,11 @@ module Dash
 <plist version="1.0">
   <dict>
     <key>CFBundleIdentifier</key>
-    <string>railsguides</string>
+    <string>railsguidesjp</string>
     <key>CFBundleName</key>
-    <string>RailsGuides</string>
+    <string>Railsガイド</string>
     <key>DocSetPlatformFamily</key>
-    <string>railsguides</string>
+    <string>rails</string>
     <key>isDashDocset</key>
     <true/>
   </dict>
