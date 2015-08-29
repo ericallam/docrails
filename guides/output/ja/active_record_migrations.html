@@ -728,7 +728,7 @@ end
 </div>
 <p><code>revert</code>はブロックを受け取ることもできます。ブロックには逆転のための命令群が含まれます。
 これは、以前のマイグレーションの一部のみを逆転したい場合に便利です。
-たとえば、<code>ExampleMigration</code>がコミット済みになっており、後になって郵便番号を検証するには<code>CHECK</code>制約よりもActive Record検証を使う方がよいことに気付いたとしましょう。</p><div class="code_container">
+たとえば、<code>ExampleMigration</code>がコミット済みになっており、後になって郵便番号を検証するには<code>CHECK</code>制約よりもActive Recordのバリデーションを使う方がよいことに気付いたとしましょう。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class DontUseConstraintForZipcodeValidationMigration &lt; ActiveRecord::Migration
   def change

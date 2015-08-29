@@ -541,7 +541,7 @@ end
 
 `revert`はブロックを受け取ることもできます。ブロックには逆転のための命令群が含まれます。
 これは、以前のマイグレーションの一部のみを逆転したい場合に便利です。
-たとえば、`ExampleMigration`がコミット済みになっており、後になって郵便番号を検証するには`CHECK`制約よりもActive Record検証を使う方がよいことに気付いたとしましょう。
+たとえば、`ExampleMigration`がコミット済みになっており、後になって郵便番号を検証するには`CHECK`制約よりもActive Recordのバリデーションを使う方がよいことに気付いたとしましょう。
 
 ```ruby
 class DontUseConstraintForZipcodeValidationMigration < ActiveRecord::Migration
