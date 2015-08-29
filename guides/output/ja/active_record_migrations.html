@@ -684,7 +684,7 @@ class ExampleMigration &lt; ActiveRecord::Migration
       t.string :zipcode
     end
 
-        # CHECK制約を追加
+    # CHECK制約を追加
     execute &lt;&lt;-SQL
       ALTER TABLE distributors
         ADD CONSTRAINT zipchk
