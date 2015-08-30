@@ -43,7 +43,7 @@ end
 
 NOTE: ある種のクエリは、トランザクション内で実行できないことがあります。アダプタがDDLトランザクションをサポートしている場合は、`disable_ddl_transaction!`を使用して単一のマイグレーションでこれらを無効にすることができます。
 
-Active Recordで対応できないマイグレーションを行いたい場合は、`reversible`を使用します。
+マイグレーションを逆方向に実行 (ロールバック) する方法が推測できない場合、`reversible` を使用します。
 
 ```ruby
 class ChangeProductsPrice < ActiveRecord::Migration
