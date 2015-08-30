@@ -733,7 +733,7 @@ end
 class DontUseConstraintForZipcodeValidationMigration &lt; ActiveRecord::Migration
   def change
     revert do
-      # copy-pasted code from ExampleMigration
+      # ExampleMigrationのコードをコピー＆ペースト
       reversible do |dir|
         dir.up do
           # CHECK制約を追加
