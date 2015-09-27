@@ -331,7 +331,7 @@ CookieStoreには約4KBのデータを保存できます。他のセッション
 Railsは、セッションデータに署名するときにセッションキー(=cookieの名前)を設定します。この動作も`config/initializers/session_store.rb`で変更できます。
 
 ```ruby
-# Be sure to restart your server when you modify this file.
+# このファイルを変更後サーバーを必ず再起動してください。
 Rails.application.config.session_store :cookie_store, key: '_your_app_session'
 ```
 
