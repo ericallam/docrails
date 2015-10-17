@@ -176,7 +176,7 @@ config.middleware.insert_after ActiveRecord::QueryCache, Lifo::Cache, page_cache
 ```ruby
 # config/application.rb
 
-# Lifo::ShowExceptionsをActionDispatch::ShowExceptionsで置き換える
+# ActionDispatch::ShowExceptionsをLifo::ShowExceptionsで置き換える
 config.middleware.swap ActionDispatch::ShowExceptions, Lifo::ShowExceptions
 ```
 
