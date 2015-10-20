@@ -78,7 +78,7 @@ DELETE /photos/17
 resources :photos
 ```
 
-Railsはこのリクエストを`photos`コントローラ内の`destroy`コントローラに割り当て、`params`ハッシュに`{ id: '17' }`を含めます。
+Railsはこのリクエストを`photos`コントローラ内の`destroy`アクションに割り当て、`params`ハッシュに`{ id: '17' }`を含めます。
 
 ### CRUD、動詞、アクション
 

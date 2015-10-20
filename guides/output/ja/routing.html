@@ -351,7 +351,7 @@ resources :photos
 
 </pre>
 </div>
-<p>Railsはこのリクエストを<code>photos</code>コントローラ内の<code>destroy</code>コントローラに割り当て、<code>params</code>ハッシュに<code>{ id: '17' }</code>を含めます。</p><h4 id="crud、動詞、アクション"><a href="#crud%E3%80%81%E5%8B%95%E8%A9%9E%E3%80%81%E3%82%A2%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3">2.2 CRUD、動詞、アクション</a></h4><p>Railsのリソースフルルーティングでは、(GET、PUTなどの) 各種HTTP動詞 (verb) と、コントローラ内アクションを指すURLが対応付けられます。1つのアクションは、データベース上での特定のCRUD (Create/Read/Update/Delete) 操作に対応付けられるルールになっています。たとえば、以下のようなルーティングが1つあるとします。</p><div class="code_container">
+<p>Railsはこのリクエストを<code>photos</code>コントローラ内の<code>destroy</code>アクションに割り当て、<code>params</code>ハッシュに<code>{ id: '17' }</code>を含めます。</p><h4 id="crud、動詞、アクション"><a href="#crud%E3%80%81%E5%8B%95%E8%A9%9E%E3%80%81%E3%82%A2%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3">2.2 CRUD、動詞、アクション</a></h4><p>Railsのリソースフルルーティングでは、(GET、PUTなどの) 各種HTTP動詞 (verb) と、コントローラ内アクションを指すURLが対応付けられます。1つのアクションは、データベース上での特定のCRUD (Create/Read/Update/Delete) 操作に対応付けられるルールになっています。たとえば、以下のようなルーティングが1つあるとします。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 resources :photos
 
