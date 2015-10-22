@@ -775,9 +775,9 @@ Railsでは、[formヘルパー](form_helpers.html)を使用して生成され�
 
 #### `path_parameters`、`query_parameters`、`request_parameters`
 
-Railsは、リクエストに関連する`params`ハッシュに集約してくれます。 collects all of the parameters sent along with the request in the `params` hash, whether they are sent as part of the query string or the post body. requestオブジェクトには3つのアクセサがあり、パラメータの由来に応じたアクセスを行なうこともできます。`query_parameters`ハッシュにはクエリ文字列として送信されたパラメータが含まれます。`request_parameters`ハッシュにはPOST bodyの一部として送信されたパラメータが含まれます。`path_parameters`には、ルーティング機構によって特定のコントローラとアクションへのパスの一部であると認識されたパラメータが含まれます。
+Railsは、リクエストに関連するすべてのパラメータを`params`ハッシュに集約してくれます。例えば、クエリ文字列や、POSTで送信されたパラメータがそうです。requestオブジェクトには3つのアクセサがあり、パラメータの由来に応じたアクセスを行なうこともできます。`query_parameters`ハッシュにはクエリ文字列として送信されたパラメータが含まれます。`request_parameters`ハッシュにはPOST bodyの一部として送信されたパラメータが含まれます。`path_parameters`には、ルーティング機構によって特定のコントローラとアクションへのパスの一部であると認識されたパラメータが含まれます。
 
-### The `response`オブジェクト
+### `response`オブジェクト
 
 responseオブジェクトはアクションが実行されるときに構築され、クライアントに送り返されるデータを描画 (レンダリング) するものなので、responseオブジェクトを直接使用することは通常ありません。しかし、たとえばafter filter内などでresponseオブジェクトを直接操作できれば便利です。responseオブジェクトのアクセサメソッドがセッターを持っていれば、これを使用してresponseオブジェクトの値を直接変更できます。
 
