@@ -273,7 +273,7 @@
 
 <ul>
 <li><a href="#request%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88"><code>request</code>オブジェクト</a></li>
-<li><a href="#the-response%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88">The <code>response</code>オブジェクト</a></li>
+<li><a href="#response%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88"><code>response</code>オブジェクト</a></li>
 </ul>
 </li>
 <li>
@@ -924,7 +924,7 @@ end
 </tr>
 </tbody>
 </table>
-<h5 id="path-parameters、query-parameters、request-parameters"><a href="#path-parameters%E3%80%81query-parameters%E3%80%81request-parameters">10.1.1 <code>path_parameters</code>、<code>query_parameters</code>、<code>request_parameters</code></a></h5><p>Railsは、リクエストに関連する<code>params</code>ハッシュに集約してくれます。 collects all of the parameters sent along with the request in the <code>params</code> hash, whether they are sent as part of the query string or the post body. requestオブジェクトには3つのアクセサがあり、パラメータの由来に応じたアクセスを行なうこともできます。<code>query_parameters</code>ハッシュにはクエリ文字列として送信されたパラメータが含まれます。<code>request_parameters</code>ハッシュにはPOST bodyの一部として送信されたパラメータが含まれます。<code>path_parameters</code>には、ルーティング機構によって特定のコントローラとアクションへのパスの一部であると認識されたパラメータが含まれます。</p><h4 id="the-responseオブジェクト"><a href="#the-response%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88">10.2 The <code>response</code>オブジェクト</a></h4><p>responseオブジェクトはアクションが実行されるときに構築され、クライアントに送り返されるデータを描画 (レンダリング) するものなので、responseオブジェクトを直接使用することは通常ありません。しかし、たとえばafter filter内などでresponseオブジェクトを直接操作できれば便利です。responseオブジェクトのアクセサメソッドがセッターを持っていれば、これを使用してresponseオブジェクトの値を直接変更できます。</p>
+<h5 id="path-parameters、query-parameters、request-parameters"><a href="#path-parameters%E3%80%81query-parameters%E3%80%81request-parameters">10.1.1 <code>path_parameters</code>、<code>query_parameters</code>、<code>request_parameters</code></a></h5><p>Railsは、リクエストに関連するすべてのパラメータを<code>params</code>ハッシュに集約してくれます。例えば、クエリ文字列や、POSTで送信されたパラメータがそうです。requestオブジェクトには3つのアクセサがあり、パラメータの由来に応じたアクセスを行なうこともできます。<code>query_parameters</code>ハッシュにはクエリ文字列として送信されたパラメータが含まれます。<code>request_parameters</code>ハッシュにはPOST bodyの一部として送信されたパラメータが含まれます。<code>path_parameters</code>には、ルーティング機構によって特定のコントローラとアクションへのパスの一部であると認識されたパラメータが含まれます。</p><h4 id="responseオブジェクト"><a href="#response%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88">10.2 <code>response</code>オブジェクト</a></h4><p>responseオブジェクトはアクションが実行されるときに構築され、クライアントに送り返されるデータを描画 (レンダリング) するものなので、responseオブジェクトを直接使用することは通常ありません。しかし、たとえばafter filter内などでresponseオブジェクトを直接操作できれば便利です。responseオブジェクトのアクセサメソッドがセッターを持っていれば、これを使用してresponseオブジェクトの値を直接変更できます。</p>
 <table>
 <thead>
 <tr>
