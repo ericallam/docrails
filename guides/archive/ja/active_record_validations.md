@@ -334,7 +334,7 @@ too_long: "使用可能な最大語数は%{count}です"
 end
 ```
 
-デフォルトのエラーメッセージは複数形で表現されていることにご注意ください (例: "is too short (minimum is %{count} characters)")。このため、`:minimum`を1に設定するのであればメッセージをカスタマイズして単数形にするか、代りに`presence: true`を使用します。`:in`または`:within`に1よりも小さい値を指定する場合、メッセージをカスタマイズして複数形にするか、`length`より先に`presence`を呼ぶようにします。
+デフォルトのエラーメッセージは複数形で表現されていることにご注意ください (例: "is too short (minimum is %{count} characters)")。このため、`:minimum`を1に設定するのであればメッセージをカスタマイズして単数形にするか、代りに`presence: true`を使用します。`:in`または`:within`の下限に1を指定する場合、メッセージをカスタマイズして単数形にするか、`length`より先に`presence`を呼ぶようにします。
 
 ### `numericality`
 

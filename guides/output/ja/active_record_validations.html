@@ -560,7 +560,7 @@ end
 
 </pre>
 </div>
-<p>デフォルトのエラーメッセージは複数形で表現されていることにご注意ください (例: "is too short (minimum is %{count} characters)")。このため、<code>:minimum</code>を1に設定するのであればメッセージをカスタマイズして単数形にするか、代りに<code>presence: true</code>を使用します。<code>:in</code>または<code>:within</code>に1よりも小さい値を指定する場合、メッセージをカスタマイズして複数形にするか、<code>length</code>より先に<code>presence</code>を呼ぶようにします。</p><h4 id="numericality"><a href="#numericality">2.8 <code>numericality</code></a></h4><p>このヘルパーは、属性に数値のみが使用されていることを検証します。デフォルトでは、整数または浮動小数点にマッチします。これらの冒頭に符号が付いている場合もマッチします。整数のみにマッチさせたい場合は、<code>:only_integer</code>をtrueにします。</p><p><code>:only_integer</code>を<code>true</code>に設定すると、</p><div class="code_container">
+<p>デフォルトのエラーメッセージは複数形で表現されていることにご注意ください (例: "is too short (minimum is %{count} characters)")。このため、<code>:minimum</code>を1に設定するのであればメッセージをカスタマイズして単数形にするか、代りに<code>presence: true</code>を使用します。<code>:in</code>または<code>:within</code>の下限に1を指定する場合、メッセージをカスタマイズして単数形にするか、<code>length</code>より先に<code>presence</code>を呼ぶようにします。</p><h4 id="numericality"><a href="#numericality">2.8 <code>numericality</code></a></h4><p>このヘルパーは、属性に数値のみが使用されていることを検証します。デフォルトでは、整数または浮動小数点にマッチします。これらの冒頭に符号が付いている場合もマッチします。整数のみにマッチさせたい場合は、<code>:only_integer</code>をtrueにします。</p><p><code>:only_integer</code>を<code>true</code>に設定すると、</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 /\A[+-]?\d+\Z/
 
