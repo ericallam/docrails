@@ -164,7 +164,7 @@ client = Client.take(2)
 SELECT * FROM clients LIMIT 2
 ```
 
-`take`メソッドの動作は、`find`メソッドとまったく同じです。ただし、`find`メソッドでは、マッチするレコードが見つからない場合に`ActiveRecord::RecordNotFound`例外が発生する点だけが異なります。
+`take!`メソッドの動作は、`take`メソッドとまったく同じです。ただし、`take!`メソッドでは、マッチするレコードが見つからない場合に`ActiveRecord::RecordNotFound`例外が発生する点だけが異なります。
 
 TIP: このメソッドで取り出されるレコードは、使用するデータベースエンジンによっても異なることがあります。
 

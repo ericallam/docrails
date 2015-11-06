@@ -450,7 +450,7 @@ Active Supportにもいくつかの設定オプションがあります。
 
 * `config.active_support.time_precision`は、JSONエンコードされた時間値の精度を指定します。デフォルトは`3`です。
 
-* `ActiveSupport::Logger.silencer`を`false`に設定すると、ブロック内でのログ出力を抑制する機能がオフになります。 デフォルト値は`true`です。
+* `ActiveSupport::Logger.silencer`を`false`に設定すると、ブロック内でのログ出力を抑制する機能がオフになります。デフォルト値は`true`です。
 
 * `ActiveSupport::Cache::Store.logger`は、キャッシュストア操作で使用するロガーを指定します。
 
