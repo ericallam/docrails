@@ -1310,7 +1310,7 @@ Article.created_before(Time.zone.now)
 
 </pre>
 </div>
-<p>しかし、このスコープでできる機能は、クラスメソッドでできる機能と重複しています。</p><div class="code_container">
+<p>しかし、スコープに引数を渡す機能は、クラスメソッドによって提供される機能を単に複製したものです。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class Article &lt; ActiveRecord::Base
   def self.created_before(time)
@@ -1320,7 +1320,7 @@ end
 
 </pre>
 </div>
-<p>スコープで引数を使用するのであれば、クラスメソッドとして定義する方が推奨されます。クラスメソッドにした場合でも、関連オブジェクトからアクセス可能です。</p><div class="code_container">
+<p>したがって、スコープで引数を使用するのであれば、クラスメソッドとして定義する方が推奨されます。クラスメソッドにした場合でも、関連オブジェクトからアクセス可能です。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 category.articles.created_before(time)
 
@@ -1350,7 +1350,7 @@ end
 
 </pre>
 </div>
-<h4 id="スコープのマージ"><a href="#%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%97%E3%81%AE%E3%83%9E%E3%83%BC%E3%82%B8">14.3 スコープのマージ</a></h4><p><code>where</code>句と同様、<code>AND</code>条件を使用してスコープをマージできます。</p><div class="code_container">
+<h4 id="スコープのマージ"><a href="#%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%97%E3%81%AE%E3%83%9E%E3%83%BC%E3%82%B8">14.3 スコープのマージ</a></h4><p><code>where</code>句と同様、スコープも<code>AND</code>条件でマージできます。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class User &lt; ActiveRecord::Base
   scope :active, -&gt; { where state: 'active' }
@@ -1362,7 +1362,7 @@ User.active.inactive
 
 </pre>
 </div>
-<p><code>scope</code>と<code>where</code>条件を混用してマッチさせることができます。その結果生成される最終的なSQLには、すべての条件が<code>AND</code>で結合されて使用されます。</p><div class="code_container">
+<p><code>scope</code>と<code>where</code>条件を混用してマッチさせることができます。その結果生成される最終的なSQLには、すべての条件が<code>AND</code>で結合されます。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 User.active.where(state: 'finished')
 # SELECT "users".* FROM "users" WHERE "users"."state" = 'active' AND "users"."state" = 'finished'
@@ -1376,7 +1376,7 @@ User.active.merge(User.inactive)
 
 </pre>
 </div>
-<p>ここでひとつ注意しなければならないのは、<code>default_scope</code>を<code>scope</code>や<code>where</code>条件よりも前に置いているという点です。</p><div class="code_container">
+<p>ここでひとつ注意しなければならないのは、<code>default_scope</code>で定義した条件が、<code>scope</code>や<code>where</code>で定義した条件よりも先に評価されるという点です。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class User &lt; ActiveRecord::Base
   default_scope { where state: 'pending' }
@@ -1395,7 +1395,7 @@ User.where(state: 'inactive')
 
 </pre>
 </div>
-<p>上の例でわかるように、<code>default_scope</code>が<code>scope</code>と<code>where</code>よりも前の場所にマージされています。</p><h4 id="すべてのスコープを削除する"><a href="#%E3%81%99%E3%81%B9%E3%81%A6%E3%81%AE%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%97%E3%82%92%E5%89%8A%E9%99%A4%E3%81%99%E3%82%8B">14.4 すべてのスコープを削除する</a></h4><p>何らかの理由でスコープをすべて解除したい場合は<code>unscoped</code>メソッドを使用できます。このメソッドは、モデルで<code>default_scope</code>が指定されているが、それを適用したくないクエリがある場合に特に便利です。</p><div class="code_container">
+<p>上の例でわかるように、<code>default_scope</code>の条件が、<code>scope</code>と<code>where</code>の条件よりも先に評価されています。</p><h4 id="すべてのスコープを削除する"><a href="#%E3%81%99%E3%81%B9%E3%81%A6%E3%81%AE%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%97%E3%82%92%E5%89%8A%E9%99%A4%E3%81%99%E3%82%8B">14.4 すべてのスコープを削除する</a></h4><p>何らかの理由でスコープをすべて解除したい場合は<code>unscoped</code>メソッドを使用できます。このメソッドは、モデルで<code>default_scope</code>が指定されているが、それを適用したくないクエリがある場合に特に便利です。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 Client.unscoped.load
 

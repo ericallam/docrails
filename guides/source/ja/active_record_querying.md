@@ -1216,7 +1216,7 @@ end
 Article.created_before(Time.zone.now)
 ```
 
-しかし、このスコープでできる機能は、クラスメソッドでできる機能と重複しています。
+しかし、スコープに引数を渡す機能は、クラスメソッドによって提供される機能を単に複製したものです。
 
 ```ruby
 class Article < ActiveRecord::Base
@@ -1226,7 +1226,7 @@ class Article < ActiveRecord::Base
 end
 ```
 
-スコープで引数を使用するのであれば、クラスメソッドとして定義する方が推奨されます。クラスメソッドにした場合でも、関連オブジェクトからアクセス可能です。
+したがって、スコープで引数を使用するのであれば、クラスメソッドとして定義する方が推奨されます。クラスメソッドにした場合でも、関連オブジェクトからアクセス可能です。
 
 ```ruby
 category.articles.created_before(time)
@@ -1261,7 +1261,7 @@ end
 
 ### スコープのマージ
 
-`where`句と同様、`AND`条件を使用してスコープをマージできます。
+`where`句と同様、スコープも`AND`条件でマージできます。
 
 ```ruby
 class User < ActiveRecord::Base
@@ -1273,7 +1273,7 @@ User.active.inactive
 # SELECT "users".* FROM "users" WHERE "users"."state" = 'active' AND "users"."state" = 'inactive'
 ```
 
-`scope`と`where`条件を混用してマッチさせることができます。その結果生成される最終的なSQLには、すべての条件が`AND`で結合されて使用されます。
+`scope`と`where`条件を混用してマッチさせることができます。その結果生成される最終的なSQLには、すべての条件が`AND`で結合されます。
 
 ```ruby
 User.active.where(state: 'finished')
@@ -1287,7 +1287,7 @@ User.active.merge(User.inactive)
 # SELECT "users".* FROM "users" WHERE "users"."state" = 'inactive'
 ```
 
-ここでひとつ注意しなければならないのは、`default_scope`を`scope`や`where`条件よりも前に置いているという点です。
+ここでひとつ注意しなければならないのは、`default_scope`で定義した条件が、`scope`や`where`で定義した条件よりも先に評価されるという点です。
 
 ```ruby
 class User < ActiveRecord::Base
@@ -1306,7 +1306,7 @@ User.where(state: 'inactive')
 # SELECT "users".* FROM "users" WHERE "users"."state" = 'pending' AND "users"."state" = 'inactive'
 ```
 
-上の例でわかるように、`default_scope`が`scope`と`where`よりも前の場所にマージされています。
+上の例でわかるように、`default_scope`の条件が、`scope`と`where`の条件よりも先に評価されています。
 
 ### すべてのスコープを削除する
 
