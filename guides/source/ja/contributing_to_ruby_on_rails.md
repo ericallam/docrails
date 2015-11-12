@@ -83,7 +83,7 @@ GitHubからRuby on Railsに送信されたプルリクエスト (pull request�
 $ git checkout -b testing_branch
 ```
 
-続いて、このリモートブランチを使用してローカルのコードベースを更新します。たとえばGitHubユーザーであるJohnSmithが、forkしてhttps://github.com/JohnSmith/railsの"orange"というトピックブランチにpushしたとします。
+続いて、このリモートブランチを使用してローカルのコードベースを更新します。たとえばGitHubユーザーであるJohnSmithが、forkして https://github.com/JohnSmith/rails の"orange"というトピックブランチにpushしたとします。
 
 ```bash
 $ git remote add JohnSmith git://github.com/JohnSmith/rails.git
