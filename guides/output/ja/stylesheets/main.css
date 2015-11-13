@@ -879,7 +879,7 @@ div.code_container {
   right: 0px;
 }
 
-#subCol #ebook-right {
+#subCol #ebook-right, #subCol #ebook-left {
   display:none;
 }
 
@@ -889,6 +889,12 @@ div.code_container {
     float: left;
     border-right: none;
     margin-left: 20px;
+  }
+  #subCol #ebook-left {
+    display: block;
+  }
+  #subCol #ebook-left-discount {
+    display: none;
   }
   #subCol #ebook-right {
     margin-left: 1px;
@@ -907,8 +913,11 @@ div.code_container {
     box-shadow: none;
     margin: 0;
   }
-  #subCol #ebook-right {
-    display:none;
+  #subCol #ebook-right, #subCol #ebook-left {
+    display: none;
+  }
+  #subCol #ebook-left-discount {
+    display: block;
   }
   #subCol #ebook-ribbon {
     width: 150px;
