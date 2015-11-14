@@ -23,15 +23,15 @@ http://railstutorial.jp/
 
 本ガイドの品質向上に向けて、皆さまのご協力が得られれば幸いです。よろしくお願い致します。
 
-## 継続的翻訳システムについて
+## 継続的翻訳システムについて (段階的に移行中)
 
-[![Railsガイドを支える技術 - SpeakerDeck](https://raw.githubusercontent.com/yasslab/railsguides.jp/japanese/images/continuous_translation_system.png)](https://speakerdeck.com/yasulab/railsgaidowozhi-eruji-shu-30fen-ban)
+[![Railsガイドを支える継続的翻訳システム - SpeakerDeck](https://raw.githubusercontent.com/yasslab/railsguides.jp/japanese/images/continuous_translation_system.png)](https://speakerdeck.com/yasulab/continuous-translation-system-at-rwc2015)
 
 本リポジトリの仕組みについては、上記のスライドで詳しく解説されています。    
 本リポジトリにPull Requestを送付したい方は、下記の「翻訳の流れ」を参照してください。    
 (特に④と⑤を見ておくとよいかもしれません)
 
-### 翻訳の流れ
+### 翻訳の流れ (現在の構成)
 
 ![翻訳の流れ](https://raw.githubusercontent.com/yasslab/railsguides.jp/japanese/images/flow-of-translation.png)
 参考: [[翻訳]Ruby on Rails 4.1リリース前にアップグレードガイドを先行翻訳した & 同じ翻訳を2回しないで済むようにした](http://techracho.bpsinc.jp/hachi8833/2014_03_28/16037)
