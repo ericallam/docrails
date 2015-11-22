@@ -71,7 +71,7 @@ $ bin/rails plugin --help
 
   * アセットマニフェストファイル (`application.js`および`application.css`)
   * 名前空間化された`ApplicationController`スタブ
-  名前空間化された`ApplicationHelper`スタブ
+  * 名前空間化された`ApplicationHelper`スタブ
   * エンジンで使用するレイアウトビューテンプレート
   * `config/routes.rb`での名前空間分離
 
@@ -395,7 +395,7 @@ create      app/assets/stylesheets/blorgh/comments.css
 このフォームは`POST`リクエストを`/articles/:article_id/comments`に送信します。これに対応するのは`Blorgh::CommentsController`の`create`アクションです。このアクションを作成する必要があります。`app/controllers/blorgh/comments_controller.rb`のクラス定義の中に以下の行を追加します。
 
 ```ruby
-  def create
+def create
   @article = Article.find(params[:article_id])
   @comment = @article.comments.create(comment_params)
   flash[:notice] = "Comment has been created!"

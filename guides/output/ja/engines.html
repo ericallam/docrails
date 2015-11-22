@@ -328,8 +328,8 @@ end
 <p><code>--mountable</code>オプションを使用すると、<code>--full</code>オプションに以下が追加されます。</p>
 <ul>
 <li>アセットマニフェストファイル (<code>application.js</code>および<code>application.css</code>)</li>
-<li>名前空間化された<code>ApplicationController</code>スタブ
-名前空間化された<code>ApplicationHelper</code>スタブ</li>
+<li>名前空間化された<code>ApplicationController</code>スタブ</li>
+<li>名前空間化された<code>ApplicationHelper</code>スタブ</li>
 <li>エンジンで使用するレイアウトビューテンプレート</li>
 <li>
 <p><code>config/routes.rb</code>での名前空間分離</p>
@@ -586,7 +586,7 @@ create      app/assets/stylesheets/blorgh/comments.css
 </div>
 <p>このフォームは<code>POST</code>リクエストを<code>/articles/:article_id/comments</code>に送信します。これに対応するのは<code>Blorgh::CommentsController</code>の<code>create</code>アクションです。このアクションを作成する必要があります。<code>app/controllers/blorgh/comments_controller.rb</code>のクラス定義の中に以下の行を追加します。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-  def create
+def create
   @article = Article.find(params[:article_id])
   @comment = @article.comments.create(comment_params)
   flash[:notice] = "Comment has been created!"
