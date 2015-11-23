@@ -790,7 +790,7 @@ end
 <p>設定オプションの完全な説明については「Railsアプリケーションを設定する」ガイドの<a href="configuring.html#action-mailer%E3%82%92%E8%A8%AD%E5%AE%9A%E3%81%99%E3%82%8B">Action Mailerを設定する</a>を参照してください。</p><h4 id="action-mailerの設定例"><a href="#action-mailer%E3%81%AE%E8%A8%AD%E5%AE%9A%E4%BE%8B">6.1 Action Mailerの設定例</a></h4><p>適切な<code>config/environments/$RAILS_ENV.rb</code>ファイルに追加する設定の例を以下に示します。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 config.action_mailer.delivery_method = :sendmail
-デフォルトは以下のとおりです。
+# デフォルトは以下のとおりです。
 # config.action_mailer.sendmail_settings = {
 #   location: '/usr/sbin/sendmail',
 #   arguments: '-i -t'

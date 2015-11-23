@@ -506,6 +506,8 @@ NOTE: 定義ファイルの場所は`active_support/core_ext/object/inclusion.rb
 
 ### `alias_method_chain`
 
+**このメソッドは非推奨になりました。Module#prependをお使いください。**
+
 拡張されていない純粋なRubyを使用して、メソッドを他のメソッドで包み込む(wrap)ことができます。これは _エイリアスチェーン (alias chaining)_ と呼ばれています。
 
 たとえば、機能テストのときにはパラメータが (実際のリクエストのときと同様に) 文字列であって欲しいとします。しかし必要なときには整数など他の型の値を持つこともできるようにしておきたいとします。これを実現するには、`ActionController::TestCase#process`を以下のように`test/test_helper.rb`でラップします。
@@ -3323,7 +3325,7 @@ date = Date.new(2010, 6, 7)
 date.end_of_day # => Mon Jun 07 23:59:59 +0200 2010
 ```
 
-`at_beginning_of_day`、`midnight`、`at_midnight`は`beginning_of_day`の別称です。
+`at_beginning_of_day`と`midnight`と`at_midnight`は、`beginning_of_day`の別名です。
 
 ##### `beginning_of_hour`、`end_of_hour`
 

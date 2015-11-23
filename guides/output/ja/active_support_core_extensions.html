@@ -461,7 +461,7 @@ require 'active_support/all'
 
 </pre>
 </div>
-<p>ただし、これを実行してもActive Support全体がメモリに読み込まれるわけではないことにご注意ください。一部は<code>autoload</code>として設定されており、実際に使うまで読み込まれません。</p><h4 id="ruby-on-railsアプリケーションでactive-supportを使用する"><a href="#ruby-on-rails%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%A7active-support%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B">1.2 Ruby on RailsアプリケーションでActive Supportを使用する</a></h4><p>Ruby on Railsaアプリケーションでは、基本的にすべてのActive Supportを読み込みます。例外は<code>config.active_support.bare</code>をtrueに設定した場合です。このオプションをtrueにすると、フレームワーク自体が必要とするまでアプリケーションは拡張機能を読み込みません。また、読み込まれる拡張機能の選択は、上で解説したように、あらゆる粒度で行われます。</p><h3 id="すべてのオブジェクトで使用できる拡張機能"><a href="#%E3%81%99%E3%81%B9%E3%81%A6%E3%81%AE%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%81%A7%E4%BD%BF%E7%94%A8%E3%81%A7%E3%81%8D%E3%82%8B%E6%8B%A1%E5%BC%B5%E6%A9%9F%E8%83%BD">2 すべてのオブジェクトで使用できる拡張機能</a></h3><h4 id="blank-questionmarkとpresent-questionmark"><a href="#blank-questionmark%E3%81%A8present-questionmark">2.1 <code>blank?</code>と<code>present?</code></a></h4><p>Railsアプリケーションは以下の値を空白(blank)とみなします。</p>
+<p>ただし、これを実行してもActive Support全体がメモリに読み込まれるわけではないことにご注意ください。一部は<code>autoload</code>として設定されており、実際に使うまで読み込まれません。</p><h4 id="ruby-on-railsアプリケーションでactive-supportを使用する"><a href="#ruby-on-rails%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%A7active-support%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B">1.2 Ruby on RailsアプリケーションでActive Supportを使用する</a></h4><p>Ruby on Railsアプリケーションでは、基本的にすべてのActive Supportを読み込みます。例外は<code>config.active_support.bare</code>をtrueに設定した場合です。このオプションをtrueにすると、フレームワーク自体が必要とするまでアプリケーションは拡張機能を読み込みません。また、読み込まれる拡張機能の選択は、上で解説したように、あらゆる粒度で行われます。</p><h3 id="すべてのオブジェクトで使用できる拡張機能"><a href="#%E3%81%99%E3%81%B9%E3%81%A6%E3%81%AE%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%81%A7%E4%BD%BF%E7%94%A8%E3%81%A7%E3%81%8D%E3%82%8B%E6%8B%A1%E5%BC%B5%E6%A9%9F%E8%83%BD">2 すべてのオブジェクトで使用できる拡張機能</a></h3><h4 id="blank-questionmarkとpresent-questionmark"><a href="#blank-questionmark%E3%81%A8present-questionmark">2.1 <code>blank?</code>と<code>present?</code></a></h4><p>Railsアプリケーションは以下の値を空白(blank)とみなします。</p>
 <ul>
 <li><p><code>nil</code>と<code>false</code></p></li>
 <li><p>空白文字 (whitespace) だけで構成された文字列 (以下の注釈参照)</p></li>
@@ -785,7 +785,7 @@ ActionController::TestCase.class_eval do
   # 元のプロセスメソッドへの参照を保存
   alias_method :original_process, :process
 
-  # 今度はプロセスを再定義してoriginal_processに以上する
+  # 今度はプロセスを再定義してoriginal_processに委譲する
   def process(action, params=nil, session=nil, flash=nil, http_method='GET')
     params = Hash[*params.map {|k, v| [k, v.to_s]}.flatten]
     original_process(action, params, session, flash, http_method)
@@ -1474,7 +1474,7 @@ EOS
 
 </pre>
 </div>
-<p>上の例でも示したように、Active Supportは不規則な複数形や非可算名詞についてある程度知っています。<code>config/initializers/inflections.rb</code>にあるビルトインのルールは拡張可能です。このファイルは<code>rails</code>コマンドで拡張可能であり、方法はコメントに示されています。</p><p><code>pluralize</code>メソッドではオプションで<code>count</code>パラメータを使用できます。If <code>count == 1</code>を指定すると単数形が返されます。<code>count</code>がそれ以外の値の場合は複数形を返します(訳注: 英語では個数がゼロや小数の場合は複数形で表されます)。</p><div class="code_container">
+<p>上の例でも示したように、Active Supportは不規則な複数形や非可算名詞についてある程度知っています。<code>config/initializers/inflections.rb</code>にあるビルトインのルールは拡張可能です。このファイルは<code>rails</code>コマンドで拡張可能であり、方法はコメントに示されています。</p><p><code>pluralize</code>メソッドではオプションで<code>count</code>パラメータを使用できます。もし<code>count == 1</code>を指定すると単数形が返されます。<code>count</code>がそれ以外の値の場合は複数形を返します(訳注: 英語では個数がゼロや小数の場合は複数形で表されます)。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 "dude".pluralize(0) # =&gt; "dudes"
 "dude".pluralize(1) # =&gt; "dude"
@@ -2075,7 +2075,7 @@ User.exists?(email: params[:email])
 
 </pre>
 </div>
-<p>このようなシンタックスシュガーは、多数ある引数が順序に依存することを避け、名前付きパラメータをエミュレートするインターフェイスを提供するためにRailsで多用されています。特に、末尾にオプションのハッシュを置くというのは定番中の定番です。</p><p>しかし、あるメソッドが受け取る引数の数が固定されておらず、メソッド宣言で<code>*</code>が使用されていると、そのような波括弧なしのオプションハッシュは、引数の配列の末尾の要素になってしまい、ハッシュとして認識されなくなってしまいます。</p><p>このような場合、<code>extract_options!</code>このメソッドは、配列の最後の項目の型をチェックします。それがハッシュの場合、そのハッシュを取り出して返し、それ以外の場合は空のハッシュを返します。</p><p><code>caches_action</code>コントローラマクロでの定義を例にとって見てみましょう。</p><div class="code_container">
+<p>このようなシンタックスシュガーは、多数ある引数が順序に依存することを避け、名前付きパラメータをエミュレートするインターフェイスを提供するためにRailsで多用されています。特に、末尾にオプションのハッシュを置くというのは定番中の定番です。</p><p>しかし、あるメソッドが受け取る引数の数が固定されておらず、メソッド宣言で<code>*</code>が使用されていると、そのような波括弧なしのオプションハッシュは、引数の配列の末尾の要素になってしまい、ハッシュとして認識されなくなってしまいます。</p><p>このような場合、<code>extract_options!</code>メソッドは、配列の最後の項目の型をチェックします。それがハッシュの場合、そのハッシュを取り出して返し、それ以外の場合は空のハッシュを返します。</p><p><code>caches_action</code>コントローラマクロでの定義を例にとって見てみましょう。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 def caches_action(*actions)
   return unless cache_configured?
@@ -2890,7 +2890,7 @@ date.end_of_day # =&gt; Mon Jun 07 23:59:59 +0200 2010
 
 </pre>
 </div>
-<p><code>beginning_of_day</code>は<code>at_beginning_of_day</code>の別名, <code>midnight</code>は<code>at_midnight</code>の別名です。</p><h6 id="beginning-of-hour、end-of-hour"><a href="#beginning-of-hour%E3%80%81end-of-hour">14.1.6.2 <code>beginning_of_hour</code>、<code>end_of_hour</code></a></h6><p><code>beginning_of_hour</code>メソッドは、その時の最初の時点 (hh:00:00) のタイムスタンプを返します。</p><div class="code_container">
+<p><code>at_beginning_of_day</code>と<code>midnight</code>と<code>at_midnight</code>は、<code>beginning_of_day</code>の別名です。</p><h6 id="beginning-of-hour、end-of-hour"><a href="#beginning-of-hour%E3%80%81end-of-hour">14.1.6.2 <code>beginning_of_hour</code>、<code>end_of_hour</code></a></h6><p><code>beginning_of_hour</code>メソッドは、その時の最初の時点 (hh:00:00) のタイムスタンプを返します。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 date = DateTime.new(2010, 6, 7, 19, 55, 25)
 date.beginning_of_hour # =&gt; Mon Jun 07 19:00:00 +0200 2010

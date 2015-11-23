@@ -575,7 +575,7 @@ Action Mailerを設定する
 
 ```ruby
 config.action_mailer.delivery_method = :sendmail
-デフォルトは以下のとおりです。
+# デフォルトは以下のとおりです。
 # config.action_mailer.sendmail_settings = {
 #   location: '/usr/sbin/sendmail',
 #   arguments: '-i -t'
