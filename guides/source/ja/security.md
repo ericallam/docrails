@@ -926,7 +926,7 @@ Content-Type: text/html
 安全でないクエリ生成
 -----------------------
 
-Rackがクエリパラメータを解析(parse)する方法とActive Recordがパラメータを解釈する方法の組み合わせに問題があり、where句が`IS NULL`のデータベースクエリを本来の意図に反して生成することが可能になってしまっています。([CVE-2012-2660](https://groups.google.com/forum/#!searchin/rubyonrails-security/deep_munge/rubyonrails-security/8SA-M3as7A8/Mr9fi9X4kNgJ), [CVE-2012-2694](https://groups.google.com/forum/#!searchin/rubyonrails-security/deep_munge/rubyonrails-security/jILZ34tAHF4/7x0hLH-o0-IJ) および [CVE-2013-0155](https://groups.google.com/forum/#!searchin/rubyonrails-security/CVE-2012-2660/rubyonrails-security/c7jT-EeN9eI/L0u4e87zYGMJ)) のセキュリティ問題への対応として、Railsの動作をデフォルトでセキュアにするために`deep_munge`メソッドが導入されました。
+Rackがクエリパラメータを解析(parse)する方法とActive Recordがパラメータを解釈する方法の組み合わせに問題があり、where句が`IS NULL`のデータベースクエリを本来の意図に反して生成することが可能になってしまっています。([CVE-2012-2660](https://groups.google.com/forum/#!searchin/rubyonrails-security/deep_munge/rubyonrails-security/8SA-M3as7A8/Mr9fi9X4kNgJ)、[CVE-2012-2694](https://groups.google.com/forum/#!searchin/rubyonrails-security/deep_munge/rubyonrails-security/jILZ34tAHF4/7x0hLH-o0-IJ) および [CVE-2013-0155](https://groups.google.com/forum/#!searchin/rubyonrails-security/CVE-2012-2660/rubyonrails-security/c7jT-EeN9eI/L0u4e87zYGMJ)) のセキュリティ問題への対応として、Railsの動作をデフォルトでセキュアにするために`deep_munge`メソッドが導入されました。
 
 `deep_munge`が実行されなかった場合に攻撃者に利用される可能性のある脆弱なコードの例を以下に示します。
 
