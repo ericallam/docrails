@@ -879,7 +879,7 @@ div.code_container {
   right: 0px;
 }
 
-#subCol #ebook-right, #subCol #ebook-left {
+#subCol #ebook-right {
   display:none;
 }
 
@@ -913,7 +913,7 @@ div.code_container {
     box-shadow: none;
     margin: 0;
   }
-  #subCol #ebook-right, #subCol #ebook-left {
+  #subCol #ebook-right{
     display: none;
   }
   #subCol #ebook-left-discount {
