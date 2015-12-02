@@ -499,7 +499,7 @@ Copied migration [timestamp_2]_create_blorgh_comments.rb from blorgh
 rake db:migrate SCOPE=blorgh
 ```
 
-このオプションは、エンジンを削除する前にマイグレーションを元に戻したい場合などに便利です。blorghエンジンによるすべてのマイグレーションを基に戻したい場合は以下のようなコマンドを実行します。
+このオプションは、エンジンを削除する前にマイグレーションを元に戻したい場合などに便利です。blorghエンジンによるすべてのマイグレーションを元に戻したい場合は以下のようなコマンドを実行します。
 
 ```bash
 rake db:migrate SCOPE=blorgh VERSION=0
