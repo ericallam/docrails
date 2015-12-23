@@ -405,7 +405,7 @@ MySQLアダプターを使用すると、以下の設定オプションが1つ�
 
 * `config.action_mailer.raise_delivery_errors`は、メールの配信が完了しなかった場合にエラーを発生させるかどうかを指定します。デフォルトはtrueです。
 
-* `config.action_mailer.delivery_method`は、配信方法を指定します。デフォルトは`:smtp`です。詳細については、[Action Mailerガイド](action_mailer_basics.html#action-mailer-configuration)を参照してください。
+* `config.action_mailer.delivery_method`は、配信方法を指定します。デフォルトは`:smtp`です。詳細については、[Action Mailerガイド](action_mailer_basics.html#action-mailerを設定する)を参照してください。
 
 * `config.action_mailer.perform_deliveries`は、メールを実際に配信するかどうかを指定します。デフォルトはtrueです。テスト時にメール送信を抑制するのに便利です。
 
