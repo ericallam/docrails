@@ -307,7 +307,7 @@ end
 <li><p><code>config.asset_host</code>はアセットを置くホストを設定します。この設定は、アセットの置き場所がCDN (Contents Delivery Network) の場合や、別のドメインエイリアスを使用するとブラウザの同時実行制限にひっかかるのを避けたい場合に便利です。このメソッドは<code>config.action_controller.asset_host</code>を短縮したものです。</p></li>
 <li><p><code>config.autoload_once_paths</code>は、サーバーへのリクエストごとにクリアされない定数を自動読込するパスの配列を引数に取ります。この設定は<code>config.cache_classes</code>がfalseの場合に影響を受けます。<code>config.cache_classes</code>はdevelopmentモードでは<code>config.cache_classes</code>はデフォルトでオフです。<code>config.cache_classes</code>がtrueの場合、すべての<code>config.autoload_once_paths</code>自動読み込みは一度しか行われません。<code>config.autoload_once_paths</code>の配列に含まれる要素は、次で説明する<code>autoload_paths</code>にもまったく同じように含めておく必要があります。<code>config.autoload_once_paths</code>のデフォルト値は、空の配列です。</p></li>
 <li><p><code>config.autoload_paths</code>はRailsが定数を自動読込するパスを含む配列を引数に取ります。<code>config.autoload_paths</code>のデフォルト値は、<code>app</code>以下のすべてのディレクトリです(訳注: Rails3からはautoload_pathの設定はデフォルトでは無効です)。</p></li>
-<li><p><code>config.cache_classes</code>は、アプリケーションのクラスやモジュールをリクエストごとに再読み込みするか(=キャッシュしないかどうか)どうかを指定します。config.cache_classes<code>のデフォルト値は、developmentモードではfalseなのでコードの更新がすぐ反映され、testモードとproductionモードではtrueなので動作が高速になります。同時に</code>threadsafe!`をオンにすることもできます。</p></li>
+<li><p><code>config.cache_classes</code>は、アプリケーションのクラスやモジュールをリクエストごとに再読み込みするか(=キャッシュしないかどうか)どうかを指定します。<code>config.cache_classes</code>のデフォルト値は、developmentモードではfalseなのでコードの更新がすぐ反映され、testモードとproductionモードではtrueなので動作が高速になります。同時に<code>threadsafe!</code>をオンにすることもできます。</p></li>
 <li><p><code>config.action_view.cache_template_loading</code>は、リクエストのたびにビューテンプレートを再読み込みするか(=キャッシュしないか)を指定します。</p></li>
 <li><p><code>config.beginning_of_week</code>は、アプリケーションにおける週の初日を設定します。引数には、曜日を表す正しいシンボルを渡します(<code>:monday</code>など)。</p></li>
 <li><p><code>config.cache_store</code>はRailsでのキャッシュ処理に使用されるキャッシュストアを設定します。指定できるオプションは次のシンボル<code>:memory_store</code>、<code>:file_store</code>、<code>:mem_cache_store</code>、<code>:null_store</code>のいずれか、またはキャッシュAPIを実装するオブジェクトです。<code>tmp/cache</code>ディレクトリが存在する場合のデフォルトは<code>:file_store</code>に設定され、それ以外の場合のデフォルトは<code>:memory_store</code>に設定されます。</p></li>
@@ -408,7 +408,7 @@ end
 <li>
 <code>scaffold_controller</code>は<code>resource_controller</code>と同じではありません。<code>scaffold_controller</code>は <em>scaffold</em> でどのジェネレータを使用してコントローラを生成するか(<code>rails generate scaffold</code>の実行時)を指定します。デフォルトは<code>:scaffold_controller</code>です。</li>
 <li>
-<code>stylesheets</code>は、ジェネレータでスタイルシートのフックを行なうかどうかを指定します。この設定は<code>scaffold</code>ジェネレータの実行時に使用されますが。このフックは他のジェネレータでも使用されます。デフォルトは<code>true</code>です。</li>
+<code>stylesheets</code>は、ジェネレータでスタイルシートのフックを行なうかどうかを指定します。この設定は<code>scaffold</code>ジェネレータの実行時に使用されますが、このフックは他のジェネレータでも使用されます。デフォルトは<code>true</code>です。</li>
 <li>
 <code>stylesheet_engine</code>は、アセット生成時に使用される、sassなどのスタイルシートエンジンを指定します。デフォルトは<code>:css</code>です。</li>
 <li>
@@ -532,7 +532,7 @@ config.middleware.delete "Rack::MethodOverride"
 <li><p><code>config.action_controller.default_static_extension</code>は、キャッシュされたページに与える拡張子を指定します。デフォルトは<code>.html</code>です。</p></li>
 <li><p><code>config.action_controller.default_charset</code>は、すべての画面出力で使用されるデフォルトの文字セットを指定します。デフォルトは"utf-8"です。</p></li>
 <li><p><code>config.action_controller.logger</code>は、Log4rのインターフェイスまたはデフォルトのRuby Loggerクラスに従うロガーを引数として取ります。このロガーは、Action Controllerからの情報をログ出力するために使用されます。ログ出力を無効にするには<code>nil</code>を設定します。</p></li>
-<li><p><code>config.action_controller.request_forgery_protection_token</code>は、RequestForgery対策用のトークンパラメータ名を設定します。Calling <code>protect_from_forgery</code>を呼び出すと、デフォルトで<code>:authenticity_token</code>が設定されます。</p></li>
+<li><p><code>config.action_controller.request_forgery_protection_token</code>は、RequestForgery対策用のトークンパラメータ名を設定します。<code>protect_from_forgery</code>を呼び出すと、デフォルトで<code>:authenticity_token</code>が設定されます。</p></li>
 <li><p><code>config.action_controller.allow_forgery_protection</code>は、CSRF保護をオンにするかどうかを指定します。testモードではデフォルトで<code>false</code>に設定され、それ以外では<code>true</code>に設定されます。</p></li>
 <li><p><code>config.action_controller.relative_url_root</code>は、<a href="configuring.html#%E3%82%B5%E3%83%96%E3%83%87%E3%82%A3%E3%83%AC%E3%82%AF%E3%83%88%E3%83%AA%E3%81%AB%E3%83%87%E3%83%97%E3%83%AD%E3%82%A4%E3%81%99%E3%82%8B-%E7%9B%B8%E5%AF%BEurl%E3%83%AB%E3%83%BC%E3%83%88%E3%81%AE%E4%BD%BF%E7%94%A8">サブディレクトリへのデプロイ</a>を行うことをRailsに伝えるために使用できます。デフォルトは<code>ENV['RAILS_RELATIVE_URL_ROOT']</code>です。</p></li>
 <li><p><code>config.action_controller.permit_all_parameters</code>は、マスアサインメントされるすべてのパラメータをデフォルトで許可することを設定します。デフォルト値は<code>false</code>です。</p></li>
@@ -626,7 +626,7 @@ end
 </ul>
 </li>
 <li><p><code>config.action_mailer.raise_delivery_errors</code>は、メールの配信が完了しなかった場合にエラーを発生させるかどうかを指定します。デフォルトはtrueです。</p></li>
-<li><p><code>config.action_mailer.delivery_method</code>は、配信方法を指定します。デフォルトは<code>:smtp</code>です。詳細については、<a href="http://guides.rubyonrails.org/action_mailer_basics.html#action-mailer-configuration">Action Mailerガイド</a>を参照してください。</p></li>
+<li><p><code>config.action_mailer.delivery_method</code>は、配信方法を指定します。デフォルトは<code>:smtp</code>です。詳細については、<a href="action_mailer_basics.html#action-mailer-configuration">Action Mailerガイド</a>を参照してください。</p></li>
 <li><p><code>config.action_mailer.perform_deliveries</code>は、メールを実際に配信するかどうかを指定します。デフォルトはtrueです。テスト時にメール送信を抑制するのに便利です。</p></li>
 <li>
 <p><code>config.action_mailer.default_options</code>は、Action Mailerのデフォルトを設定します。これは、メイラーごとに<code>from</code>や<code>reply_to</code>などを設定します。デフォルトは以下のとおりです。</p>
@@ -670,7 +670,7 @@ config.action_mailer.interceptors = ["MailInterceptor"]
 </ul>
 <h4 id="active-supportを設定する"><a href="#active-support%E3%82%92%E8%A8%AD%E5%AE%9A%E3%81%99%E3%82%8B">3.11 Active Supportを設定する</a></h4><p>Active Supportにもいくつかの設定オプションがあります。</p>
 <ul>
-<li><p><code>config.active_support.bareは、Rails起動時に</code>active_support/all<code>の読み込みを行なうかどうかを指定します。デフォルトは</code>nil<code>であり、この場合</code>active_support/all`は読み込まれます。</p></li>
+<li><p><code>config.active_support.bare</code>は、Rails起動時に<code>active_support/all</code>の読み込みを行なうかどうかを指定します。デフォルトは<code>nil</code>であり、この場合<code>active_support/all</code>は読み込まれます。</p></li>
 <li><p><code>config.active_support.escape_html_entities_in_json</code>は、JSONシリアライズに含まれるHTMLエンティティをエスケープするかどうかを指定します。デフォルトは<code>false</code>です。</p></li>
 <li><p><code>config.active_support.use_standard_json_time_format</code>は、ISO 8601フォーマットに従った日付のシリアライズを行なうかどうかを指定します。デフォルトは<code>true</code>です。</p></li>
 <li><p><code>config.active_support.time_precision</code>は、JSONエンコードされた時間値の精度を指定します。デフォルトは<code>3</code>です。</p></li>
@@ -945,14 +945,14 @@ end
 <li><p><code>active_record.log_runtime</code>: <code>ActiveRecord::Railties::ControllerRuntime</code>をインクルードします。これは、リクエストでActive Record呼び出しにかかった時間をロガーにレポートする役割を担います。</p></li>
 <li><p><code>active_record.set_dispatch_hooks</code>: <code>config.cache_classes</code>が<code>false</code>に設定されている場合、再読み込み可能なデータベース接続をすべてリセットします。</p></li>
 <li><p><code>action_mailer.logger</code>: <code>Rails.logger</code>に対する設定が行われていない場合に<code>ActionMailer::Base.logger</code>を設定します。</p></li>
-<li><p><code>action_mailer.set_configs</code>: <code>config.action_mailer</code>の設定を使用してAction Mailerを設定します。使用される<code>config.action_mailer</code>の設定は、メソッド名が<code>ActiveRecord::Base</code>に対するセッターとして<code>send</code>され、それを経由して値が渡されることによって行われます。</p></li>
+<li><p><code>action_mailer.set_configs</code>: <code>config.action_mailer</code>の設定を使用してAction Mailerを設定します。使用される<code>config.action_mailer</code>の設定は、メソッド名が<code>ActionMailer::Base</code>に対するセッターとして<code>send</code>され、それを経由して値が渡されることによって行われます。</p></li>
 <li><p><code>action_mailer.compile_config_methods</code>: 指定された設定用メソッドを初期化し、より高速にアクセスできるようにします。</p></li>
 <li><p><code>set_load_path</code>: このイニシャライザは<code>bootstrap_hook</code>より前に実行されます。<code>vendor</code>、<code>lib</code>、<code>app</code>以下のすべてのディレクトリ、<code>config.load_paths</code>で指定されるすべてのパスが<code>$LOAD_PATH</code>に追加されます。</p></li>
 <li><p><code>set_autoload_paths</code>: このイニシャライザは<code>bootstrap_hook</code>より前に実行されます。<code>app</code>以下のすべてのサブディレクトリと、<code>config.autoload_paths</code>で指定したすべてのパスが<code>ActiveSupport::Dependencies.autoload_paths</code>に追加されます。</p></li>
 <li><p><code>add_routing_paths</code>: デフォルトですべての<code>config/routes.rb</code>ファイルを読み込み、アプリケーションのルーティングを設定します。この<code>config/routes.rb</code>ファイルは、アプリケーションだけではなく、エンジンなどのrailtiesにもあります。</p></li>
 <li><p><code>add_locales</code>: <code>config/locales</code>にあるファイルを<code>I18n.load_path</code>に追加し、そのパスで指定された場所にある訳文にアクセスできるようにします。この<code>config/locales</code>は、アプリケーションだけではなく、railtiesやエンジンにもあります。</p></li>
 <li><p><code>add_view_paths</code>: アプリケーションやrailtiesやエンジンにある<code>app/views</code>へのパスをビューファイルへのパスに追加します。</p></li>
-<li><p><code>load_environment_config</code> 現在の環境に<code>config/environments</code>を読み込みます。</p></li>
+<li><p><code>load_environment_config</code>: 現在の環境に<code>config/environments</code>を読み込みます。</p></li>
 <li><p><code>append_asset_paths</code>: アプリケーションと、それに追加されているrailtiesに含まれているアセットパスを探索し、<code>config.static_asset_paths</code>で指定されているディレクトリを監視します。</p></li>
 <li><p><code>prepend_helpers_path</code>: アプリケーションやrailtiesやエンジンに含まれる<code>app/helpers</code>ディレクトリをヘルパーへの参照パスに追加します。</p></li>
 <li><p><code>load_config_initializers</code>: アプリケーションやrailtiesやエンジンに含まれる<code>config/initializers</code>にあるRubyファイルをすべて読み込みます。このディレクトリに置かれているファイルは、フレームワークの読み込みがすべて読み終わってから行いたい設定を保存しておくのにも使用できます。</p></li>
