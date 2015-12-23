@@ -63,7 +63,7 @@ Rails全般に対する設定を行うには、`Rails::Railtie`オブジェク�
 
 * `config.autoload_paths`はRailsが定数を自動読込するパスを含む配列を引数に取ります。`config.autoload_paths`のデフォルト値は、`app`以下のすべてのディレクトリです(訳注: Rails3からはautoload_pathの設定はデフォルトでは無効です)。
 
-* `config.cache_classes`は、アプリケーションのクラスやモジュールをリクエストごとに再読み込みするか(=キャッシュしないかどうか)どうかを指定します。config.cache_classes`のデフォルト値は、developmentモードではfalseなのでコードの更新がすぐ反映され、testモードとproductionモードではtrueなので動作が高速になります。同時に`threadsafe!`をオンにすることもできます。
+* `config.cache_classes`は、アプリケーションのクラスやモジュールをリクエストごとに再読み込みするか(=キャッシュしないかどうか)どうかを指定します。`config.cache_classes`のデフォルト値は、developmentモードではfalseなのでコードの更新がすぐ反映され、testモードとproductionモードではtrueなので動作が高速になります。同時に`threadsafe!`をオンにすることもできます。
 
 * `config.action_view.cache_template_loading`は、リクエストのたびにビューテンプレートを再読み込みするか(=キャッシュしないか)を指定します。
 
@@ -182,7 +182,7 @@ end
 * `orm`は、使用するORM (オブジェクトリレーショナルマッピング) を指定します。デフォルトは`false`であり、この場合はActive Recordが使用されます。
 * `resource_controller`は、`rails generate resource`の実行時にどのジェネレータを使用してコントローラを生成するかを指定します。デフォルトは`:controller`です。
 * `scaffold_controller`は`resource_controller`と同じではありません。`scaffold_controller`は _scaffold_ でどのジェネレータを使用してコントローラを生成するか(`rails generate scaffold`の実行時)を指定します。デフォルトは`:scaffold_controller`です。
-* `stylesheets`は、ジェネレータでスタイルシートのフックを行なうかどうかを指定します。この設定は`scaffold`ジェネレータの実行時に使用されますが。このフックは他のジェネレータでも使用されます。デフォルトは`true`です。
+* `stylesheets`は、ジェネレータでスタイルシートのフックを行なうかどうかを指定します。この設定は`scaffold`ジェネレータの実行時に使用されますが、このフックは他のジェネレータでも使用されます。デフォルトは`true`です。
 * `stylesheet_engine`は、アセット生成時に使用される、sassなどのスタイルシートエンジンを指定します。デフォルトは`:css`です。
 * `test_framework`は、使用するテストフレームワークを指定します。デフォルトは`false`であり、この場合はTest::Unitが使用されます。
 * `template_engine`はビューのテンプレートエンジン(ERBやHamlなど)を指定します。デフォルトは`:erb`です。
@@ -313,7 +313,7 @@ MySQLアダプターを使用すると、以下の設定オプションが1つ�
 
 * `config.action_controller.logger`は、Log4rのインターフェイスまたはデフォルトのRuby Loggerクラスに従うロガーを引数として取ります。このロガーは、Action Controllerからの情報をログ出力するために使用されます。ログ出力を無効にするには`nil`を設定します。
 
-* `config.action_controller.request_forgery_protection_token`は、RequestForgery対策用のトークンパラメータ名を設定します。Calling `protect_from_forgery`を呼び出すと、デフォルトで`:authenticity_token`が設定されます。
+* `config.action_controller.request_forgery_protection_token`は、RequestForgery対策用のトークンパラメータ名を設定します。`protect_from_forgery`を呼び出すと、デフォルトで`:authenticity_token`が設定されます。
 
 * `config.action_controller.allow_forgery_protection`は、CSRF保護をオンにするかどうかを指定します。testモードではデフォルトで`false`に設定され、それ以外では`true`に設定されます。
 
@@ -405,7 +405,7 @@ MySQLアダプターを使用すると、以下の設定オプションが1つ�
 
 * `config.action_mailer.raise_delivery_errors`は、メールの配信が完了しなかった場合にエラーを発生させるかどうかを指定します。デフォルトはtrueです。
 
-* `config.action_mailer.delivery_method`は、配信方法を指定します。デフォルトは`:smtp`です。詳細については、[Action Mailerガイド](http://guides.rubyonrails.org/action_mailer_basics.html#action-mailer-configuration)を参照してください。
+* `config.action_mailer.delivery_method`は、配信方法を指定します。デフォルトは`:smtp`です。詳細については、[Action Mailerガイド](action_mailer_basics.html#action-mailer-configuration)を参照してください。
 
 * `config.action_mailer.perform_deliveries`は、メールを実際に配信するかどうかを指定します。デフォルトはtrueです。テスト時にメール送信を抑制するのに便利です。
 
@@ -442,7 +442,7 @@ MySQLアダプターを使用すると、以下の設定オプションが1つ�
 
 Active Supportにもいくつかの設定オプションがあります。
 
-* `config.active_support.bareは、Rails起動時に`active_support/all`の読み込みを行なうかどうかを指定します。デフォルトは`nil`であり、この場合`active_support/all`は読み込まれます。
+* `config.active_support.bare`は、Rails起動時に`active_support/all`の読み込みを行なうかどうかを指定します。デフォルトは`nil`であり、この場合`active_support/all`は読み込まれます。
 
 * `config.active_support.escape_html_entities_in_json`は、JSONシリアライズに含まれるHTMLエンティティをエスケープするかどうかを指定します。デフォルトは`false`です。
 
@@ -858,7 +858,7 @@ Railsにあるイニシャライザのリストを以下にまとめました。
 
 * `action_mailer.logger`: `Rails.logger`に対する設定が行われていない場合に`ActionMailer::Base.logger`を設定します。
 
-* `action_mailer.set_configs`: `config.action_mailer`の設定を使用してAction Mailerを設定します。使用される`config.action_mailer`の設定は、メソッド名が`ActiveRecord::Base`に対するセッターとして`send`され、それを経由して値が渡されることによって行われます。
+* `action_mailer.set_configs`: `config.action_mailer`の設定を使用してAction Mailerを設定します。使用される`config.action_mailer`の設定は、メソッド名が`ActionMailer::Base`に対するセッターとして`send`され、それを経由して値が渡されることによって行われます。
 
 * `action_mailer.compile_config_methods`: 指定された設定用メソッドを初期化し、より高速にアクセスできるようにします。
 
@@ -872,7 +872,7 @@ Railsにあるイニシャライザのリストを以下にまとめました。
 
 * `add_view_paths`: アプリケーションやrailtiesやエンジンにある`app/views`へのパスをビューファイルへのパスに追加します。
 
-* `load_environment_config` 現在の環境に`config/environments`を読み込みます。
+* `load_environment_config`: 現在の環境に`config/environments`を読み込みます。
 
 * `append_asset_paths`: アプリケーションと、それに追加されているrailtiesに含まれているアセットパスを探索し、`config.static_asset_paths`で指定されているディレクトリを監視します。
 
