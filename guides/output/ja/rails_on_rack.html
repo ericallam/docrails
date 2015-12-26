@@ -392,7 +392,7 @@ run Rails.application.routes
 # Rack::BounceFaviconを一番最後に追加する
 config.middleware.use Rack::BounceFavicon
 
-# ActiveRecord::QueryCacheの後にAdd Lifo::Cacheを追加する
+# ActiveRecord::QueryCacheの後にLifo::Cacheを追加する
 # またLifo::Cacheに{ page_cache: false }を渡す
 config.middleware.insert_after ActiveRecord::QueryCache, Lifo::Cache, page_cache: false
 

@@ -292,7 +292,7 @@ $('#logo').attr({ src: "<%= asset_path('logo.png') %>" });
 
 これは、指定されたアセットへのパスを記述します。
 
-CoffeeScriptファイルでも、`application.js.coffee.erb`のように`erb`拡張子を追加することで同様に`asset_path`ヘルパーを使用できます 。
+CoffeeScriptファイルでも、`application.js.coffee.erb`のように`erb`拡張子を追加することで同様に`asset_path`ヘルパーを使用できます。
 
 ```js
 $('#logo').attr src: "<%= asset_path('logo.png') %>"
@@ -465,7 +465,7 @@ Railsには、パイプラインにあるアセットマニフェストなどの
 
 コンパイルされたアセットは、`config.assets.prefix`で指定された場所に保存されます。この保存場所は、デフォルトでは`/assets`ディレクトリです。
 
-デプロイ時にこのrakeタスクをサーバー上で呼び出すと、コンパイル済みアセットサーバー上で直接作成できます。ローカル環境でコンパイルする方法については次のセクションを参照してください。
+デプロイ時にこのrakeタスクをサーバー上で呼び出すと、コンパイル済みアセットをサーバー上で直接作成できます。ローカル環境でコンパイルする方法については次のセクションを参照してください。
 
 以下がそのrakeタスクです。
 
@@ -674,7 +674,7 @@ config.action_controller.asset_host = ENV['CDN_HOST']
 
 
 
-NOTE: 上の設定が有効になるためには、サーバーの`CDN_HOST`環境変数に値 (この場合であれば`mycdnsubdomain .fictional-cdn.com`) を設定しておく必要があります。
+NOTE: 上の設定が有効になるためには、サーバーの`CDN_HOST`環境変数に値 (この場合であれば`mycdnsubdomain.fictional-cdn.com`) を設定しておく必要があります。
 
 サーバーとCDNの設定完了後、以下のアセットを持つWebページにアクセスしたとします。
 
