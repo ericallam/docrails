@@ -9,7 +9,7 @@ Rails 4.1の注目ポイント
 * Action Packのバリアント
 * Action Mailerプレビュー
 
-本リリースノートでは、主要な変更についてのみ説明します。細かなバグ修正や変更については、change logを参照するか、Githubの主要なRailsリポジトリにある[コミットリスト](https://github.com/rails/rails/commits/master) を参照してください
+本リリースノートでは、主要な変更についてのみ説明します。細かなバグ修正や変更については、change logを参照するか、Githubの主要なRailsリポジトリにある[コミットリスト](https://github.com/rails/rails/commits/master) を参照してください。
 
 --------------------------------------------------------------------------------
 
@@ -165,7 +165,7 @@ signed_token = Rails.application.message_verifier(:remember_me).generate(token)
 Rails.application.message_verifier(:remember_me).verify(signed_token) # => token
 
 Rails.application.message_verifier(:remember_me).verify(tampered_token)
-# ActiveSupport::MessageVerifier::InvalidSignatureをはっせいする
+# ActiveSupport::MessageVerifier::InvalidSignatureを発生する
 ```
 
 ### Module#concerning
@@ -199,7 +199,7 @@ end
 
 JavaScriptレスポンスを伴うGETリクエストもクロスサイトリクエストフォージェリ (CSRF) 保護の対象となりました。この保護によって、第三者のサイトが重要なデータの奪取のために自分のサイトのJavaScript URLを参照して実行しようとすることを防止します。
 
-これは、xhr`を使用しない場合、`.js` URLにヒットするすべてのテストはCSRF保護によって失敗するということです。`XmlHttpRequestsを明示的に想定するようにテストをアップグレードしてください。`post :create, format: :js`の代りに、明示的に`xhr :post, :create, format: :js`を使用してください。
+これは、`xhr`を使用しない場合、`.js` URLにヒットするすべてのテストはCSRF保護によって失敗するということです。`XmlHttpRequests`を明示的に想定するようにテストをアップグレードしてください。`post :create, format: :js`の代りに、明示的に`xhr :post, :create, format: :js`を使用してください。
 
 
 Railties
@@ -317,7 +317,7 @@ Active Record
 
 * 非推奨の`ActiveRecord::Fixtures.find_table_name`が削除されました。`ActiveRecord::Fixtures.default_fixture_model_name`をお使いください。
 
-* 非推奨の`columns_for_remove`が`SchemaStatements`削除されました。
+* 非推奨の`columns_for_remove`が`SchemaStatements`から削除されました。
 
 * 非推奨の`SchemaStatements#distinct`が削除されました。
 
@@ -367,7 +367,7 @@ Active Record
 
 * `ActiveRecord::Base.no_touching`が追加されました。モデルへのタッチを無視します。([Pull Request](https://github.com/rails/rails/pull/12772))
 
-* `MysqlAdapter`および`Mysql2Adapter`における型変換の真偽値が統一されました。`type_cast`は`true`の場合に`1を、`false`の場合に`2`を返します。([Pull Request](https://github.com/rails/rails/pull/12425))
+* `MysqlAdapter`および`Mysql2Adapter`における型変換の真偽値が統一されました。`type_cast`は`true`の場合に`1`を、`false`の場合に`2`を返します。([Pull Request](https://github.com/rails/rails/pull/12425))
 
 * `.unscope`を指定すると`default_scope`で指定された条件が削除されます。([Commit](https://github.com/rails/rails/commit/94924dc32baf78f13e289172534c2e71c9c8cade))
 
@@ -401,7 +401,7 @@ Active Record
 
 `Relation`には`#map!`や`#delete_if`などのミューテーターメソッド (mutator method) が含まれなくなりました。これらのメソッドを使用したい場合は`#to_a`を呼び出して`Array`に変更してからにしてください。([Pull Request](https://github.com/rails/rails/pull/13314))
 
-* `find_in_batches`、`find_each`、`Result#each` and `Enumerable#index_by`は、自身のサイズを計算可能な`Enumerator`を返すようになりました。([Pull Request](https://github.com/rails/rails/pull/13938))
+* `find_in_batches`、`find_each`、`Result#each`、`Enumerable#index_by`は、自身のサイズを計算可能な`Enumerator`を返すようになりました。([Pull Request](https://github.com/rails/rails/pull/13938))
 
 * `scope`、`enum`とAssociationsで "dangerous" 名前衝突が発生するようになりました。([Pull Request](https://github.com/rails/rails/pull/13450), [Pull Request](https://github.com/rails/rails/pull/13896))
 
