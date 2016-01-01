@@ -108,7 +108,7 @@ Railsのドキュメントに貢献する
 
 Ruby on Railsには2種類のドキュメントがあります。ひとつはこのガイドであり、Ruby on Railsを学ぶためのものです。もうひとつはAPIドキュメントであり、こちらはリファレンス用です。
 
-どなたでもRailsガイドの改善に貢献することができます。Railsガイドに求められる改善とは、「一貫していること」「矛盾がないこと」「読みやすいこと」「情報の追加」「事実と異なっている部分の修正」「タイポの修正」「最新のedge Railsに追い付くこと」などです。Railsガイドの翻訳に参加したい方は[Railsガイドの翻訳について](https://wiki.github.com/rails/docrails/translating-rails-guides) (英語)を参照してください (訳注: docrailsがprivateレポジトリになったことにともない、現在このリンクは無効になっています)。
+どなたでもRailsガイドの改善に貢献することができます。Railsガイドに求められる改善とは、「一貫していること」「矛盾がないこと」「読みやすいこと」「情報の追加」「事実と異なっている部分の修正」「タイポの修正」「最新のedge Railsに追い付くこと」などです。Railsガイドの翻訳に参加したい方は[Railsガイドの翻訳について](https://github.com/yasslab/railsguides.jp/wiki/translating-rails-guides) (英語)を参照してください (訳注: docrailsのprivateレポジトリ化に伴い、原著のwikiは見れなくなっております)。
 
 [Rails](http://github.com/rails/rails)にプルリクエストを送ることができます。常連貢献者になったら、[Railsコアチーム](http://rubyonrails.org/core)に
 docrailsへのコミットアクセス権をリクエストしてもよいでしょう。ただし、docrailsにはプルリクエストを送信しないでください。自分で書いた変更への意見が欲しい場合は、[Rails](http://github.com/rails/rails)の方でお願いします。
