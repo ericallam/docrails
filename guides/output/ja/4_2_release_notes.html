@@ -646,7 +646,7 @@ skip_filter           =&gt; skip_action_callback
 <li><p>  CSRFによる失敗のログ出力を無効にするオプションが追加されました。
 (<a href="https://github.com/rails/rails/pull/14280">Pull Request</a>)</p></li>
 <li><p>  Railsが静的なアセットを送信するように設定されている場合、ブラウザがgzip圧縮ファイルをサポートし、かつgzipファイル (.gz) がサーバーのディスク上にあれば、アセットのgzip圧縮がサポートされるようになりました。
-アセットパイプラインは、圧縮可能なすべてのアセットから<code>.gz</code>ファイルをデフォルトで生成するようになりました。gzip圧縮されたファイルを送信することで、通信量が最小化され、アセットへのリクエストが高速化されます。Railsがproduction環境でアセットを提供する場合は、必ず<a href="http://guides.rubyonrails.org/asset_pipeline.html#cdns">CDN</a> を有効にしてください。
+アセットパイプラインは、圧縮可能なすべてのアセットから<code>.gz</code>ファイルをデフォルトで生成するようになりました。gzip圧縮されたファイルを送信することで、通信量が最小化され、アセットへのリクエストが高速化されます。Railsがproduction環境でアセットを提供する場合は、必ず<a href="asset_pipeline.html#cdn">CDN</a> を有効にしてください。
 (<a href="https://github.com/rails/rails/pull/16466">Pull Request</a>)</p></li>
 <li>
 <p>  結合テストの中で<code>process</code>ヘルパーを呼び出すとき、パスの冒頭にスラッシュ ('/') が必要になりました。以前は省略することができましたが、これは内部実装による副作用であり、意図的な機能ではありません。例:</p>
