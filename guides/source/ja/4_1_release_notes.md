@@ -199,7 +199,7 @@ end
 
 JavaScriptレスポンスを伴うGETリクエストもクロスサイトリクエストフォージェリ (CSRF) 保護の対象となりました。この保護によって、第三者のサイトが重要なデータの奪取のために自分のサイトのJavaScript URLを参照して実行しようとすることを防止します。
 
-これは、`xhr`を使用しない場合、`.js` URLにヒットするすべてのテストはCSRF保護によって失敗するということです。`XmlHttpRequests`を明示的に想定するようにテストをアップグレードしてください。`post :create, format: :js`の代りに、明示的に`xhr :post, :create, format: :js`を使用してください。
+これは、`xhr`を使用しない場合、`.js` URLにヒットするすべてのテストはCSRF保護によって失敗するということです。``XmlHttpRequests`を明示的に想定するようにテストをアップグレードしてください。`post :create, format: :js`の代りに、明示的に`xhr :post, :create, format: :js`を使用してください。
 
 
 Railties
@@ -401,7 +401,7 @@ Active Record
 
 `Relation`には`#map!`や`#delete_if`などのミューテーターメソッド (mutator method) が含まれなくなりました。これらのメソッドを使用したい場合は`#to_a`を呼び出して`Array`に変更してからにしてください。([Pull Request](https://github.com/rails/rails/pull/13314))
 
-* `find_in_batches`、`find_each`、`Result#each`、`Enumerable#index_by`は、自身のサイズを計算可能な`Enumerator`を返すようになりました。([Pull Request](https://github.com/rails/rails/pull/13938))
+* `find_in_batches`、`find_each`、`Result#each`、 `Enumerable#index_by`は、自身のサイズを計算可能な`Enumerator`を返すようになりました。([Pull Request](https://github.com/rails/rails/pull/13938))
 
 * `scope`、`enum`とAssociationsで "dangerous" 名前衝突が発生するようになりました。([Pull Request](https://github.com/rails/rails/pull/13450), [Pull Request](https://github.com/rails/rails/pull/13896))
 

@@ -477,10 +477,10 @@ $ ruby /path/to/rails/railties/bin/rails new myapp --dev
 <code>change_table</code>も逆マイグレーション可能になりました。ただしそのブロックで<code>remove</code>、<code>change</code>、<code>change_default</code>が呼び出されていないことが前提です。</li>
 <li>
 <code>reversible</code>メソッドが新たに追加され、マイグレーション (up) や逆マイグレーション (down) 時に実行するコードを指定できるようになりました。
-詳細については<a href="https://github.com/rails/rails/blob/master/guides/source/active_record_migrations.md#using-reversible">Active Record マイグレーションガイド</a>を参照してください。</li>
+詳細については<a href="active_record_migrations.html#reversible%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B">Active Record マイグレーションガイド</a>を参照してください。</li>
 <li>新しい<code>revert</code>メソッドは、特定のブロックやマイグレーション全体を逆転します。
 逆マイグレーション (down) を行うと、指定されたマイグレーションやブロックは通常のマイグレーション (up) になります。
-詳細については<a href="https://github.com/rails/rails/blob/master/guides/source/active_record_migrations.md#reverting-previous-migrations">Active Record マイグレーションガイド</a>を参照してください。</li>
+詳細については<a href="active_record_migrations.html#%E4%BB%A5%E5%89%8D%E3%81%AE%E3%83%9E%E3%82%A4%E3%82%B0%E3%83%AC%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%92%E9%80%86%E8%BB%A2%E3%81%99%E3%82%8B">Active Record マイグレーションガイド</a>を参照してください。</li>
 </ul>
 </li>
 <li><p>PostgreSQLの配列型サポートが追加されました。配列カラムの作成時に任意のデータ型を使用できます。それらのデータ型はフルマイグレーションやスキーマダンプでもサポートされます。</p></li>

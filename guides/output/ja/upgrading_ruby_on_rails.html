@@ -545,7 +545,7 @@ flash.keys # =&gt; ["string", "symbol"]
 <li><p>'multi_json'をGemfileに追加する。ただしこのGemは将来使えなくなるかもしれません。</p></li>
 <li><p><code>obj.to_json</code>と<code>JSON.parse(str)</code>を使用してMultiJSONから乗り換える。</p></li>
 </ol>
-<div class="warning"><p><code>MultiJson.dump</code> と <code>MultiJson.load</code>をそれぞれ<code>JSON.dump</code>と<code>JSON.load</code>に単純に置き換えては「いけません」。これらのJSON gem are meant for serializing and deserializing arbitrary Ruby objects and are generally [unsafe]APIは任意のRubyオブジェクトをシリアライズおよびデシリアライズするためのものであり、一般に<a href="http://www.ruby-doc.org/stdlib-2.0.0/libdoc/json/rdoc/JSON.html#method-i-load">安全ではありません</a>。</p></div><h5 id="json-gemの互換性"><a href="#json-gem%E3%81%AE%E4%BA%92%E6%8F%9B%E6%80%A7">3.7.2 JSON gemの互換性</a></h5><p>これまでのRailsでは、JSON gemとの互換性に何らかの問題が生じていました。Railsアプリケーション内の<code>JSON.generate</code>と<code>JSON.dump</code>ではときたまエラーが生じることがありました。</p><p>Rails 4.1では、Rails自身のエンコーダをJSON gemから切り離すことでこれらの問題が修正されました。JSON gem APIは今後正常に動作しますが、その代わりJSON gem APIからRails特有の機能にアクセスすることはできなくなります。以下に例を示します。</p><div class="code_container">
+<div class="warning"><p><code>MultiJson.dump</code> と <code>MultiJson.load</code>をそれぞれ<code>JSON.dump</code>と<code>JSON.load</code>に単純に置き換えては「いけません」。これらのJSON gem APIは任意のRubyオブジェクトをシリアライズおよびデシリアライズするためのものであり、一般に<a href="http://www.ruby-doc.org/stdlib-2.0.0/libdoc/json/rdoc/JSON.html#method-i-load">安全ではありません</a>。</p></div><h5 id="json-gemの互換性"><a href="#json-gem%E3%81%AE%E4%BA%92%E6%8F%9B%E6%80%A7">3.7.2 JSON gemの互換性</a></h5><p>これまでのRailsでは、JSON gemとの互換性に何らかの問題が生じていました。Railsアプリケーション内の<code>JSON.generate</code>と<code>JSON.dump</code>ではときたまエラーが生じることがありました。</p><p>Rails 4.1では、Rails自身のエンコーダをJSON gemから切り離すことでこれらの問題が修正されました。JSON gem APIは今後正常に動作しますが、その代わりJSON gem APIからRails特有の機能にアクセスすることはできなくなります。以下に例を示します。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class FooBar
   def as_json(options = nil)
@@ -822,7 +822,7 @@ Bundler.require(:default, Rails.env)
 <ul>
 <li><p><code>ActiveRecord::FixtureSet</code>の導入に伴い、Rails 4.0では<code>ActiveRecord::Fixtures</code>が非推奨となりました。</p></li>
 <li><p><code>ActiveSupport::TestCase</code>の導入に伴い、Rails 4.0では<code>ActiveRecord::TestCase</code>が非推奨となりました。</p></li>
-<li><p>Rails 4.0では、ハッシュを使用する旧来のfinder APIが非推奨となりました。これまでfinderオプションを受け付けていたメソッドは、これらのオプションを今後受け付けなくなりますたとえば、<code>Book.find(:all, conditions: { name: '1984' })</code>は非推奨です。今後は<code>Book.where(name: '1984')</code>をご使用ください。</p></li>
+<li><p>Rails 4.0では、ハッシュを使用する旧来のfinder APIが非推奨となりました。これまでfinderオプションを受け付けていたメソッドは、これらのオプションを今後受け付けなくなります。たとえば、<code>Book.find(:all, conditions: { name: '1984' })</code>は非推奨です。今後は<code>Book.where(name: '1984')</code>をご使用ください。</p></li>
 <li>
 <p>動的なメソッドは、<code>find_by_...</code>と<code>find_by_...!</code>を除いて非推奨となりました。
 以下のように変更してください。</p>
@@ -976,7 +976,7 @@ config.assets.js_compressor = :uglifier
 <ul>
 <li>引数を2つ使用する<code>asset-url</code>は非推奨となりました。たとえば、<code>asset-url("rails.png", image)</code>は<code>asset-url("rails.png")</code>とする必要があります。</li>
 </ul>
-<h3 id="rails-3-1からrails-3-2へのアップグレード"><a href="#rails-3-1%E3%81%8B%E3%82%89rails-3-2%E3%81%B8%E3%81%AE%E3%82%A2%E3%83%83%E3%83%97%E3%82%B0%E3%83%AC%E3%83%BC%E3%83%89">5 Rails 3.1からRails 3.2へのアップグレード</a></h3><p>Railsアプリケーションのバージョンが3.1より前の場合、まず3.1へのアップグレードを完了してからRails 3.2へのアップグレードにとりかかってください。</p><p>Railsアプリケーションのバージョンが3.1よりも古い場合、まず3.1へのアップグレードを完了してからRails 3.2へのアップグレードを開始してください。</p><h4 id="rails-3-1からrails-3-2へのアップグレード-gemfile"><a href="#rails-3-1%E3%81%8B%E3%82%89rails-3-2%E3%81%B8%E3%81%AE%E3%82%A2%E3%83%83%E3%83%97%E3%82%B0%E3%83%AC%E3%83%BC%E3%83%89-gemfile">5.1 Gemfile</a></h4><p><code>Gemfile</code>を以下のように変更します。</p><div class="code_container">
+<h3 id="rails-3-1からrails-3-2へのアップグレード"><a href="#rails-3-1%E3%81%8B%E3%82%89rails-3-2%E3%81%B8%E3%81%AE%E3%82%A2%E3%83%83%E3%83%97%E3%82%B0%E3%83%AC%E3%83%BC%E3%83%89">5 Rails 3.1からRails 3.2へのアップグレード</a></h3><p>Railsアプリケーションのバージョンが3.1よりも古い場合、まず3.1へのアップグレードを完了してからRails 3.2へのアップグレードを開始してください。</p><p>以下の変更は、Rails 3.2.xにアップグレードするためのものです。</p><h4 id="rails-3-1からrails-3-2へのアップグレード-gemfile"><a href="#rails-3-1%E3%81%8B%E3%82%89rails-3-2%E3%81%B8%E3%81%AE%E3%82%A2%E3%83%83%E3%83%97%E3%82%B0%E3%83%AC%E3%83%BC%E3%83%89-gemfile">5.1 Gemfile</a></h4><p><code>Gemfile</code>を以下のように変更します。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 gem 'rails', '3.2.21'
 
