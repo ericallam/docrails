@@ -474,7 +474,7 @@ auto_discovery_link_tag(:rss, "http://www.example.com/feed.rss", {title: "RSS Fe
 
 #### image_path
 
-`app/assets/images`に置かれている画像アセットへのパスを算出します。ドキュメントルート・ディレクトリからの完全なパスが返されます。このメソッドの内部では画像へのパス作成に`image_tag`が使用されています。
+`app/assets/images`に置かれている画像アセットへのパスを算出します。ドキュメントルート・ディレクトリからの完全なパスが返されます。このメソッドは`image_tag`の内部で画像へのパス作成に使用されています。
 
 ```ruby
 image_path("edit.png") # => /assets/edit.png
@@ -531,7 +531,7 @@ javascript_include_tag :all, cache: true # =>
 
 #### javascript_path
 
-`app/assets/javascripts`に置かれているJavaScriptアセットへのパスを算出します。ソースのファイル名に拡張子`.js`がない場合は自動的に補われます。ドキュメントルート・ディレクトリからの完全なパスが返されます。スクリプトパス作成のために内部で`javascript_include_tag`が使用されています。
+`app/assets/javascripts`に置かれているJavaScriptアセットへのパスを算出します。ソースのファイル名に拡張子`.js`がない場合は自動的に補われます。ドキュメントルート・ディレクトリからの完全なパスが返されます。このメソッドは`javascript_include_tag`の内部でスクリプトパス作成に使用されています。
 
 ```ruby
 javascript_path "common" # => /assets/common.js
@@ -568,7 +568,7 @@ stylesheet_link_tag :all, cache: true
 
 #### stylesheet_path
 
-`app/assets/stylesheets`に置かれているスタイルシートアセットへのパスを算出します。ソースのファイル名に拡張子`.css`がない場合は自動的に補われます。ドキュメントルート・ディレクトリからの完全なパスが返されます。このメソッドの内部ではスタイルシートへのパス作成に`stylesheet_link_tag`が使用されています。
+`app/assets/stylesheets`に置かれているスタイルシートアセットへのパスを算出します。ソースのファイル名に拡張子`.css`がない場合は自動的に補われます。ドキュメントルート・ディレクトリからの完全なパスが返されます。このメソッドは`stylesheet_link_tag`の内部でスタイルシートへのパス作成に使用されています。
 
 ```ruby
 stylesheet_path "application" # => /assets/application.css
