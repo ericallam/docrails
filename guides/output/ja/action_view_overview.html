@@ -613,7 +613,7 @@ auto_discovery_link_tag(:rss, "http://www.example.com/feed.rss", {title: "RSS Fe
 
 </pre>
 </div>
-<h5 id="image-path"><a href="#image-path">6.2.4 image_path</a></h5><p><code>app/assets/images</code>に置かれている画像アセットへのパスを算出します。ドキュメントルート・ディレクトリからの完全なパスが返されます。このメソッドの内部では画像へのパス作成に<code>image_tag</code>が使用されています。</p><div class="code_container">
+<h5 id="image-path"><a href="#image-path">6.2.4 image_path</a></h5><p><code>app/assets/images</code>に置かれている画像アセットへのパスを算出します。ドキュメントルート・ディレクトリからの完全なパスが返されます。このメソッドは<code>image_tag</code>の内部で画像へのパス作成に使用されています。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 image_path("edit.png") # =&gt; /assets/edit.png
 
@@ -662,7 +662,7 @@ javascript_include_tag :all, cache: true # =&gt;
 
 </pre>
 </div>
-<h5 id="javascript-path"><a href="#javascript-path">6.2.8 javascript_path</a></h5><p><code>app/assets/javascripts</code>に置かれているJavaScriptアセットへのパスを算出します。ソースのファイル名に拡張子<code>.js</code>がない場合は自動的に補われます。ドキュメントルート・ディレクトリからの完全なパスが返されます。スクリプトパス作成のために内部で<code>javascript_include_tag</code>が使用されています。</p><div class="code_container">
+<h5 id="javascript-path"><a href="#javascript-path">6.2.8 javascript_path</a></h5><p><code>app/assets/javascripts</code>に置かれているJavaScriptアセットへのパスを算出します。ソースのファイル名に拡張子<code>.js</code>がない場合は自動的に補われます。ドキュメントルート・ディレクトリからの完全なパスが返されます。このメソッドは<code>javascript_include_tag</code>の内部でスクリプトパス作成に使用されています。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 javascript_path "common" # =&gt; /assets/common.js
 
@@ -693,7 +693,7 @@ stylesheet_link_tag :all, cache: true
 
 </pre>
 </div>
-<h5 id="stylesheet-path"><a href="#stylesheet-path">6.2.11 stylesheet_path</a></h5><p><code>app/assets/stylesheets</code>に置かれているスタイルシートアセットへのパスを算出します。ソースのファイル名に拡張子<code>.css</code>がない場合は自動的に補われます。ドキュメントルート・ディレクトリからの完全なパスが返されます。このメソッドの内部ではスタイルシートへのパス作成に<code>stylesheet_link_tag</code>が使用されています。</p><div class="code_container">
+<h5 id="stylesheet-path"><a href="#stylesheet-path">6.2.11 stylesheet_path</a></h5><p><code>app/assets/stylesheets</code>に置かれているスタイルシートアセットへのパスを算出します。ソースのファイル名に拡張子<code>.css</code>がない場合は自動的に補われます。ドキュメントルート・ディレクトリからの完全なパスが返されます。このメソッドは<code>stylesheet_link_tag</code>の内部でスタイルシートへのパス作成に使用されています。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 stylesheet_path "application" # =&gt; /assets/application.css
 
