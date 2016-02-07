@@ -1341,7 +1341,7 @@ orders.where(...)
 orders.exists?(...)
 orders.build(attributes = {}, ...)
 orders.create(attributes = {})
-orders.create!(attributes = {})`
+orders.create!(attributes = {})
 ```
 
 ##### `collection(force_reload = false)`
@@ -1815,7 +1815,7 @@ assemblies.where(...)
 assemblies.exists?(...)
 assemblies.build(attributes = {}, ...)
 assemblies.create(attributes = {})
-assemblies.create!(attributes = {})`
+assemblies.create!(attributes = {})
 ```
 
 ##### 追加のカラムメソッド
