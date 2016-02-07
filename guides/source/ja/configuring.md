@@ -357,7 +357,7 @@ MySQLアダプターを使用すると、以下の設定オプションが1つ�
 
 ### Action Viewを設定する
 
-`config.action_view`にもわすかながら設定があります。
+`config.action_view`にもわずかながら設定があります。
 
 * `config.action_view.field_error_proc`は、Active Recordで発生したエラーの表示に使用するHTMLジェネレータを指定します。デフォルトは以下のとおりです。
 
