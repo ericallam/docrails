@@ -274,14 +274,14 @@ $ ruby -w -Itest test/mail_layout_test.rb -n test_explicit_class_layout
 
 最初に、必要なデータベースを作成します。MySQLやPostgreSQLを使用するのであれば、SQL文「`create database activerecord_unittest`」と「`create database activerecord_unittest2`」で十分です。SQLite3の場合は不要です。
 
-SQLite3 のみ、Active Recordのテストで以下を実行します。
+以下の手順で、SQLite3のみを対象にActive Recordのテストを実行します。
 
 ```bash
 $ cd activerecord
 $ bundle exec rake test:sqlite3
 ```
 
-これで、`sqlite3`で行った場合と同様にテストを実行できるようになります。タスクはそれぞれ以下のようになります。
+`sqlite3`のときと同様に、以下の手順で各アダプターを対象にテストを実行することができます。タスクはそれぞれ以下のようになります。
 
 ```bash
 test:mysql

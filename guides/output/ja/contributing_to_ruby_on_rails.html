@@ -409,14 +409,14 @@ $ ruby -w -Itest test/mail_layout_test.rb -n test_explicit_class_layout
 
 </pre>
 </div>
-<p><code>-n</code>オプションを指定すると、ファイル全体ではなく指定した単一のメソッドだけを実行します。</p><h5 id="active-recordをテストする"><a href="#active-record%E3%82%92%E3%83%86%E3%82%B9%E3%83%88%E3%81%99%E3%82%8B">4.7.4 Active Recordをテストする</a></h5><p>最初に、必要なデータベースを作成します。MySQLやPostgreSQLを使用するのであれば、SQL文「<code>create database activerecord_unittest</code>」と「<code>create database activerecord_unittest2</code>」で十分です。SQLite3の場合は不要です。</p><p>SQLite3 のみ、Active Recordのテストで以下を実行します。</p><div class="code_container">
+<p><code>-n</code>オプションを指定すると、ファイル全体ではなく指定した単一のメソッドだけを実行します。</p><h5 id="active-recordをテストする"><a href="#active-record%E3%82%92%E3%83%86%E3%82%B9%E3%83%88%E3%81%99%E3%82%8B">4.7.4 Active Recordをテストする</a></h5><p>最初に、必要なデータベースを作成します。MySQLやPostgreSQLを使用するのであれば、SQL文「<code>create database activerecord_unittest</code>」と「<code>create database activerecord_unittest2</code>」で十分です。SQLite3の場合は不要です。</p><p>以下の手順で、SQLite3のみを対象にActive Recordのテストを実行します。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ cd activerecord
 $ bundle exec rake test:sqlite3
 
 </pre>
 </div>
-<p>これで、<code>sqlite3</code>で行った場合と同様にテストを実行できるようになります。タスクはそれぞれ以下のようになります。</p><div class="code_container">
+<p><code>sqlite3</code>のときと同様に、以下の手順で各アダプターを対象にテストを実行することができます。タスクはそれぞれ以下のようになります。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 test:mysql
 test:mysql2
