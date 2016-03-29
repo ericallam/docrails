@@ -582,19 +582,19 @@ change_column_default :products, :approved, false
 <p>上のマイグレーションはproductsテーブルの<code>:name</code>フィールドに<code>NOT NULL</code>制約を設定し、<code>:approved</code>フィールドのデフォルト値をfalseに設定します。</p><div class="info"><p><code>change_column</code> (および<code>change_column_default</code>) と異なる点は、<code>change_column_null</code>が可逆的であることです。</p></div><h4 id="カラム修飾子"><a href="#%E3%82%AB%E3%83%A9%E3%83%A0%E4%BF%AE%E9%A3%BE%E5%AD%90">3.5 カラム修飾子</a></h4><p>カラムの作成または変更時に、カラムの修飾子を適用できます。</p>
 <ul>
 <li>
-<code>limit</code>        <code>string/text/binary/integer</code>フィールドの最大サイズを設定します。</li>
+<code>limit</code> - <code>string/text/binary/integer</code>フィールドの最大サイズを設定します。</li>
 <li>
-<code>precision</code>    <code>decimal</code>フィールドの精度 (precision) を定義します。この精度は、その数字の総桁数で表されます。</li>
+<code>precision</code> - <code>decimal</code>フィールドの精度 (precision) を定義します。この精度は、その数字の総桁数で表されます。</li>
 <li>
-<code>scale</code>        <code>decimal</code>フィールドの精度 (スケール: scale) を指定します。この精度は小数点以下の桁数で表されます。</li>
+<code>scale</code> - <code>decimal</code>フィールドの精度 (スケール: scale) を指定します。この精度は小数点以下の桁数で表されます。</li>
 <li>
-<code>polymorphic</code>  <code>belongs_to</code>関連付けで使用する<code>type</code>カラムを追加します。</li>
+<code>polymorphic</code> - <code>belongs_to</code>関連付けで使用する<code>type</code>カラムを追加します。</li>
 <li>
-<code>null</code>         カラムで<code>NULL</code>値を許可または禁止します。</li>
+<code>null</code> - カラムで<code>NULL</code>値を許可または禁止します。</li>
 <li>
-<code>default</code>      カラムでのデフォルト値の設定を許可します。dateなどの動的な値を使用している場合は、デフォルト値は最初 (マイグレーションが実行された日付など) にしか計算されないことに注意してください。</li>
+<code>default</code> - カラムでのデフォルト値の設定を許可します。dateなどの動的な値を使用している場合は、デフォルト値は最初 (マイグレーションが実行された日付など) にしか計算されないことに注意してください。</li>
 <li>
-<code>index</code>        カラムにインデックスを追加します。</li>
+<code>index</code> - カラムにインデックスを追加します。</li>
 </ul>
 <p>アダプタによってはこの他にも使用できるオプションがあるものもあります。詳細については各アダプタ固有のAPIドキュメントを参照してください。</p><h4 id="外部キー"><a href="#%E5%A4%96%E9%83%A8%E3%82%AD%E3%83%BC">3.6 外部キー</a></h4><p><a href="#active-record%E3%81%A8%E5%8F%82%E7%85%A7%E6%95%B4%E5%90%88%E6%80%A7">参照整合性の保証</a> に対して外部キー制約を追加することもできます。これは必須ではありません。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
