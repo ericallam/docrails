@@ -277,4 +277,4 @@ end
 
 Railsはどのマイグレーションファイルがデータベースにコミットされたかを把握しており、その情報を使用してロールバック機能を提供しています。テーブルを実際に作成するには`rake db:migrate`を実行します。ロールバックするには`rake db:rollback`を実行します。
 
-上のマイグレーションコードはデータベースに依存していないことにご注目ください。MySQL、PostgreSQL、Oracleなど多くのデータベースに対して実行できます。マイグレーションの詳細については[Active Recordマイグレーションガイド](active_record_migrations.html)を参照してください。
+上のマイグレーションコードはデータベースに依存していないことにご注目ください。MySQL、PostgreSQL、Oracleなど多くのデータベースに対して実行できます。マイグレーションの詳細については[Active Recordマイグレーション](active_record_migrations.html)を参照してください。
