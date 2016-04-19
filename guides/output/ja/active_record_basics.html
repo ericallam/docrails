@@ -320,7 +320,7 @@
 <h4 id="スキーマのルール"><a href="#%E3%82%B9%E3%82%AD%E3%83%BC%E3%83%9E%E3%81%AE%E3%83%AB%E3%83%BC%E3%83%AB">2.2 スキーマのルール</a></h4><p>Active Recordでは、データベースのテーブルで使用されるカラムの名前についても、利用目的に応じてルールがあります。</p>
 <ul>
 <li><p><strong>外部キー</strong> - このカラムは <code>テーブル名の単数形_id</code> にする必要があります (例 <code>item_id</code>、<code>order_id</code>)これらのカラムは、Active Recordがモデル間の関連付けを作成するときに参照されます。</p></li>
-<li><p><strong>主キー</strong> - デフォルトでは <code>id</code> という名前を持つintegerのカラムをテーブルの主キーとして使用します。このカラムは、<a href="migrations.html">Active Recordマイグレーション</a>を使用してテーブルを作成するときに自動的に作成されます。</p></li>
+<li><p><strong>主キー</strong> - デフォルトでは <code>id</code> という名前を持つintegerのカラムをテーブルの主キーとして使用します。このカラムは、<a href="active_record_migrations.html">Active Recordマイグレーション</a>を使用してテーブルを作成するときに自動的に作成されます。</p></li>
 </ul>
 <p>他にも、Active Recordインスタンスに機能を追加するカラム名がいくつかあります。</p>
 <ul>
@@ -499,7 +499,7 @@ end
 
 </pre>
 </div>
-<p>Railsはどのマイグレーションファイルがデータベースにコミットされたかを把握しており、その情報を使用してロールバック機能を提供しています。テーブルを実際に作成するには<code>rake db:migrate</code>を実行します。ロールバックするには<code>rake db:rollback</code>を実行します。</p><p>上のマイグレーションコードはデータベースに依存していないことにご注目ください。MySQL、PostgreSQL、Oracleなど多くのデータベースに対して実行できます。マイグレーションの詳細については<a href="migrations.html">Active Recordマイグレーションガイド</a>を参照してください。</p>
+<p>Railsはどのマイグレーションファイルがデータベースにコミットされたかを把握しており、その情報を使用してロールバック機能を提供しています。テーブルを実際に作成するには<code>rake db:migrate</code>を実行します。ロールバックするには<code>rake db:rollback</code>を実行します。</p><p>上のマイグレーションコードはデータベースに依存していないことにご注目ください。MySQL、PostgreSQL、Oracleなど多くのデータベースに対して実行できます。マイグレーションの詳細については<a href="active_record_migrations.html">Active Recordマイグレーションガイド</a>を参照してください。</p>
         
 
         <h3 id="feedback"><a href="#feedback">フィードバックについて</a></h3>
