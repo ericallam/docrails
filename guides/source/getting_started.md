@@ -397,7 +397,7 @@ a controller called `ArticlesController`. You can do this by running this
 command:
 
 ```bash
-$ bin/rails g controller articles
+$ bin/rails generate controller articles
 ```
 
 If you open up the newly generated `app/controllers/articles_controller.rb`
@@ -1536,20 +1536,17 @@ class CreateComments < ActiveRecord::Migration
     create_table :comments do |t|
       t.string :commenter
       t.text :body
-
-      # this line adds an integer column called `article_id`.
-      t.references :article, index: true
+      t.references :article, index: true, foreign_key: true
 
       t.timestamps null: false
     end
-    add_foreign_key :comments, :articles
   end
 end
 ```
 
-The `t.references` line sets up a foreign key column for the association between
-the two models. An index for this association is also created on this column.
-Go ahead and run the migration:
+The `t.references` line creates an integer column called `article_id`, an index
+for it, and a foreign key constraint that points to the `articles` table. Go
+ahead and run the migration:
 
 ```bash
 $ bin/rake db:migrate
@@ -1562,8 +1559,6 @@ run against the current database, so in this case you will just see:
 ==  CreateComments: migrating =================================================
 -- create_table(:comments)
    -> 0.0115s
--- add_foreign_key(:comments, :articles)
-   -> 0.0000s
 ==  CreateComments: migrated (0.0119s) ========================================
 ```
 

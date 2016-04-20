@@ -227,7 +227,7 @@ or, for a single case:
 resources :articles, path: '/admin/articles'
 ```
 
-In each of these cases, the named routes remain the same as if you did not use `scope`. In the last case, the following paths map to `PostsController`:
+In each of these cases, the named routes remain the same as if you did not use `scope`. In the last case, the following paths map to `ArticlesController`:
 
 | HTTP Verb | Path                     | Controller#Action    | Named Helper           |
 | --------- | ------------------------ | -------------------- | ---------------------- |
@@ -610,6 +610,8 @@ get 'photos/:id', to: 'photos#show', defaults: { format: 'jpg' }
 ```
 
 Rails would match `photos/12` to the `show` action of `PhotosController`, and set `params[:format]` to `"jpg"`.
+
+NOTE: You cannot override defaults via query parameters - this is for security reasons. The only defaults that can be overridden are dynamic segments via substitution in the URL path.
 
 ### Naming Routes
 
