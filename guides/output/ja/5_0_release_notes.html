@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+  <head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"    content="width=device-width, initial-scale=1"/>
+    <meta name="description" content="Railsガイドは、Ruby on Rails Guidesに基づいたRails 4.2対応の大型リファレンスガイドです。Rails開発の生産性を高めたいときや、Railsの各機能を体系的に学びたいときに役立ちます。" />
+    <meta name="keywords"    content="Ruby Rails ガイド 体系的 入門 無料" />
+    <meta name="author"      content="Ruby on Rails Community" />
+
+    <meta property="fb:admins"      content="715330868" />
+    <meta property="og:title"       content="Ruby on Rails ガイド：体系的に Rails を学ぼう"/>
+    <meta property="og:site_name"   content="Ruby on Rails ガイド：体系的に Rails を学ぼう"/>
+    <meta property="og:image"       content="http://railsguides.jp/images/cover_for_facebook.png"/>
+    <meta property="og:url"         content="http://railsguides.jp/" />
+    <meta property="og:type"        content="article" />
+    <meta property="og:description" content="Railsガイドは、Ruby on Rails Guidesに基づいたRails 4.2対応の大型リファレンスガイドです。Rails開発の生産性を高めたいときや、Railsの各機能を体系的に学びたいときに役立ちます。" />
+
+    <meta name="twitter:card"  content="summary" />
+    <meta name="twitter:site"  content="@RailsGuidesJP" />
+    <meta name="twitter:title" content="Ruby on Rails ガイド：体系的に Rails を学ぼう" />
+    <meta name="twitter:description" content="Railsガイドは、Ruby on Rails Guidesに基づいたRails 4.2対応の大型リファレンスガイドです。Rails開発の生産性を高めたいときや、Railsの各機能を体系的に学びたいときに役立ちます。" />
+    <meta name="twitter:image" content="http://railsguides.jp/images/cover_for_twitter.png" />
+    <meta name="twitter:url"   content="http://railsguides.jp/" />
+
+    <title>Ruby on Rails 5.0 リリースノート | Rails ガイド</title>
+    <meta name="apple-mobile-web-app-title" content="Railsガイド" />
+    <meta name="application-name"           content="Railsガイド" />
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/syntaxhighlighter/shCore.css" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/syntaxhighlighter/shThemeRailsGuides.css" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/fixes.css" />
+
+    <link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+
+    <link rel="apple-touch-icon" sizes="57x57" href="images/favicons/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="images/favicons/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/favicons/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="images/favicons/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/favicons/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="images/favicons/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="images/favicons/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="images/favicons/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/favicons/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="images/favicons/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="images/favicons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="images/favicons/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+
+  </head>
+<body class="guide">
+  <div id="fb-root"></div>
+  <script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=614116885378153&version=v2.0";
+    fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
+  <div id="topNav">
+    <div class="wrapper">
+      <strong class="more-info-label">関連サイト: </strong>
+      <span class="red-button more-info-button">関連URL</span>
+      <ul class="more-info-links s-hidden">
+        <li class="more-info"><a href="http://guides.rubyonrails.org/">原著 (英語)</a></li>
+        <li class="more-info"><a href="https://github.com/yasslab/railsguides.jp">ソースコード (GitHub)</a></li>
+        <li class="more-info"><a href="http://railstutorial.jp/">Rails チュートリアル</a></li>
+      </ul>
+    </div>
+  </div>
+  <div id="header">
+    <div class="wrapper clearfix">
+      <h1><a href="/" title="Return to home page">railsguides.jp</a></h1>
+      <ul class="nav">
+        <li><a class="nav-item" href="/">ホーム</a></li>
+        <li class="guides-index guides-index-large">
+          <a href="index.html" id="guidesMenu" class="guides-index-item nav-item">ガイド目次</a>
+          <div id="guides" class="clearfix" style="display: none;">
+            <hr />
+              <dl class="L">
+                <dt>はじめに</dt>
+                <dd><a href="getting_started.html">Rails をはじめよう</a></dd>
+                <dt>モデル</dt>
+                <dd><a href="active_record_basics.html">Active Record の基礎</a></dd>
+                <dd><a href="active_record_migrations.html">Active Record マイグレーション</a></dd>
+                <dd><a href="active_record_validations.html">Active Record バリデーション</a></dd>
+                <dd><a href="active_record_callbacks.html">Active Record コールバック</a></dd>
+                <dd><a href="association_basics.html">Active Record の関連付け</a></dd>
+                <dd><a href="active_record_querying.html">Active Record クエリインターフェイス</a></dd>
+                <dd><a href="active_model_basics.html">Active Model の基礎</a></dd>
+                <dt>ビュー</dt>
+                <dd><a href="action_view_overview.html">Action View の概要</a></dd>
+                <dd><a href="layouts_and_rendering.html">レイアウトとレンダリング</a></dd>
+                <dd><a href="form_helpers.html">Action View フォームヘルパー</a></dd>
+                <dt>コントローラ</dt>
+                <dd><a href="action_controller_overview.html">Action Controller の概要</a></dd>
+                <dd><a href="routing.html">Rails ルーティング</a></dd>
+              </dl>
+              <dl class="R">
+                <dt>高度なトピック</dt>
+                <dd><a href="active_support_core_extensions.html">Active Support コア拡張機能</a></dd>
+                <dd><a href="i18n.html">Rails 国際化 (i18n) API</a></dd>
+                <dd><a href="action_mailer_basics.html">Action Mailer の基礎</a></dd>
+                <dd><a href="active_job_basics.html">Active Job の基礎</a></dd>
+                <dd><a href="testing.html">Rails テスティングガイド</a></dd>
+                <dd><a href="security.html">Rails セキュリティガイド</a></dd>
+                <dd><a href="debugging_rails_applications.html">Rails アプリケーションのデバッグ</a></dd>
+                <dd><a href="configuring.html">Rails アプリケーションを設定する</a></dd>
+                <dd><a href="command_line.html">コマンドラインツールと Rake タスク</a></dd>
+                <dd><a href="asset_pipeline.html">アセットパイプライン</a></dd>
+                <dd><a href="working_with_javascript_in_rails.html">Rails で JavaScript を使用する</a></dd>
+                <dd><a href="engines.html">Rails エンジン入門</a></dd>
+                <dd><a href="initialization.html">Rails の初期化プロセス</a></dd>
+                <dd><a href="constant_autoloading_and_reloading.html">定数の自動読み込みと再読み込み</a></dd>
+                <dt>Rails を拡張する</dt>
+                <dd><a href="plugins.html">Rails プラグイン作成入門</a></dd>
+                <dd><a href="rails_on_rack.html">Rails と Rack</a></dd>
+                <dd><a href="generators.html">Rails ジェネレータとテンプレート入門</a></dd>
+                <dt>Ruby on Rails に貢献する</dt>
+                <dd><a href="contributing_to_ruby_on_rails.html">Ruby on Rails に貢献する方法</a></dd>
+                <dd><a href="development_dependencies_install.html">Rails コア開発環境の構築方法</a></dd>
+                <dd><a href="api_documentation_guidelines.html">APIドキュメント作成ガイドライン</a></dd>
+                <dd><a href="ruby_on_rails_guides_guidelines.html">Rails ガイドのガイドライン</a></dd>
+                <dt>メンテナンスポリシー</dt>
+                <dd><a href="maintenance_policy.html">メンテナンスポリシー</a></dd>
+                <dt>リリースノート</dt>
+                <dd><a href="upgrading_ruby_on_rails.html">Rails アップグレードガイド</a></dd>
+                <dd><a href="4_2_release_notes.html">Ruby on Rails 4.2 リリースノート</a></dd>
+                <dd><a href="4_1_release_notes.html">Ruby on Rails 4.1 リリースノート</a></dd>
+                <dd><a href="4_0_release_notes.html">Ruby on Rails 4.0 リリースノート</a></dd>
+                <dd><a href="3_2_release_notes.html">Ruby on Rails 3.2 Release Notes [未着手]</a></dd>
+                <dd><a href="3_1_release_notes.html">Ruby on Rails 3.1 Release Notes [未着手]</a></dd>
+                <dd><a href="3_0_release_notes.html">Ruby on Rails 3.0 Release Notes [未着手]</a></dd>
+                <dd><a href="2_3_release_notes.html">Ruby on Rails 2.3 Release Notes [未着手]</a></dd>
+                <dd><a href="2_2_release_notes.html">Ruby on Rails 2.2 Release Notes [未着手]</a></dd>
+              </dl>
+          </div>
+        </li>
+        <li><a class="nav-item" href="https://github.com/yasslab/railsguides.jp#readme">翻訳に貢献する</a></li>
+        <li><a class="nav-item" href="credits.html">原著者</a></li>
+        <li><a class="nav-item" href="options.html">電子書籍 (検索対応)</a></li>
+        <li class="guides-index guides-index-small">
+          <select class="guides-index-item nav-item">
+            <option value="index.html">ガイド目次</option>
+              <optgroup label="はじめに">
+                  <option value="getting_started.html">Rails をはじめよう</option>
+              </optgroup>
+              <optgroup label="モデル">
+                  <option value="active_record_basics.html">Active Record の基礎</option>
+                  <option value="active_record_migrations.html">Active Record マイグレーション</option>
+                  <option value="active_record_validations.html">Active Record バリデーション</option>
+                  <option value="active_record_callbacks.html">Active Record コールバック</option>
+                  <option value="association_basics.html">Active Record の関連付け</option>
+                  <option value="active_record_querying.html">Active Record クエリインターフェイス</option>
+                  <option value="active_model_basics.html">Active Model の基礎</option>
+              </optgroup>
+              <optgroup label="ビュー">
+                  <option value="action_view_overview.html">Action View の概要</option>
+                  <option value="layouts_and_rendering.html">レイアウトとレンダリング</option>
+                  <option value="form_helpers.html">Action View フォームヘルパー</option>
+              </optgroup>
+              <optgroup label="コントローラ">
+                  <option value="action_controller_overview.html">Action Controller の概要</option>
+                  <option value="routing.html">Rails ルーティング</option>
+              </optgroup>
+              <optgroup label="高度なトピック">
+                  <option value="active_support_core_extensions.html">Active Support コア拡張機能</option>
+                  <option value="i18n.html">Rails 国際化 (i18n) API</option>
+                  <option value="action_mailer_basics.html">Action Mailer の基礎</option>
+                  <option value="active_job_basics.html">Active Job の基礎</option>
+                  <option value="testing.html">Rails テスティングガイド</option>
+                  <option value="security.html">Rails セキュリティガイド</option>
+                  <option value="debugging_rails_applications.html">Rails アプリケーションのデバッグ</option>
+                  <option value="configuring.html">Rails アプリケーションを設定する</option>
+                  <option value="command_line.html">コマンドラインツールと Rake タスク</option>
+                  <option value="asset_pipeline.html">アセットパイプライン</option>
+                  <option value="working_with_javascript_in_rails.html">Rails で JavaScript を使用する</option>
+                  <option value="engines.html">Rails エンジン入門</option>
+                  <option value="initialization.html">Rails の初期化プロセス</option>
+                  <option value="constant_autoloading_and_reloading.html">定数の自動読み込みと再読み込み</option>
+              </optgroup>
+              <optgroup label="Rails を拡張する">
+                  <option value="plugins.html">Rails プラグイン作成入門</option>
+                  <option value="rails_on_rack.html">Rails と Rack</option>
+                  <option value="generators.html">Rails ジェネレータとテンプレート入門</option>
+              </optgroup>
+              <optgroup label="Ruby on Rails に貢献する">
+                  <option value="contributing_to_ruby_on_rails.html">Ruby on Rails に貢献する方法</option>
+                  <option value="development_dependencies_install.html">Rails コア開発環境の構築方法</option>
+                  <option value="api_documentation_guidelines.html">APIドキュメント作成ガイドライン</option>
+                  <option value="ruby_on_rails_guides_guidelines.html">Rails ガイドのガイドライン</option>
+              </optgroup>
+              <optgroup label="メンテナンスポリシー">
+                  <option value="maintenance_policy.html">メンテナンスポリシー</option>
+              </optgroup>
+              <optgroup label="リリースノート">
+                  <option value="upgrading_ruby_on_rails.html">Rails アップグレードガイド</option>
+                  <option value="4_2_release_notes.html">Ruby on Rails 4.2 リリースノート</option>
+                  <option value="4_1_release_notes.html">Ruby on Rails 4.1 リリースノート</option>
+                  <option value="4_0_release_notes.html">Ruby on Rails 4.0 リリースノート</option>
+                  <option value="3_2_release_notes.html">Ruby on Rails 3.2 Release Notes [未着手]</option>
+                  <option value="3_1_release_notes.html">Ruby on Rails 3.1 Release Notes [未着手]</option>
+                  <option value="3_0_release_notes.html">Ruby on Rails 3.0 Release Notes [未着手]</option>
+                  <option value="2_3_release_notes.html">Ruby on Rails 2.3 Release Notes [未着手]</option>
+                  <option value="2_2_release_notes.html">Ruby on Rails 2.2 Release Notes [未着手]</option>
+              </optgroup>
+          </select>
+        </li>
+      </ul>
+      </div>
+    </div>
+  </div>
+  <hr class="hide" />
+  <div id="feature">
+  <div class="wrapper">
+      <p><strong>DO NOT READ THIS FILE ON GITHUB, GUIDES ARE PUBLISHED ON <a href="http://guides.rubyonrails.org">http://guides.rubyonrails.org</a>.</strong></p><h2>Ruby on Rails 5.0 リリースノート</h2><p>Rails 5.0の注目ポイント</p>
+<ul>
+<li>Action Cable</li>
+<li>Rails API</li>
+<li>Active Record Attributes API</li>
+<li>Test Runner</li>
+<li>Exclusive use of <code>rails</code> CLI over Rake</li>
+<li>Sprockets 3</li>
+<li>Turbolinks 5</li>
+<li>Ruby 2.2.2+ required</li>
+</ul>
+<p>本リリースノートでは、主要な変更についてのみ説明します。To learn about various bug
+fixes and changes, please refer to the change logs or check out the <a href="https://github.com/rails/rails/commits/5-0-stable">list of
+commits</a> in the main Rails
+repository on GitHub.</p>
+                <div id="subCol">
+            <h3 class="chapter"><img src="images/chapters_icon.gif" alt="" />目次</h3>
+            <ol class="chapters">
+<li><a href="#rails-5-0%E3%81%B8%E3%81%AE%E3%82%A2%E3%83%83%E3%83%97%E3%82%B0%E3%83%AC%E3%83%BC%E3%83%89">Rails 5.0へのアップグレード</a></li>
+<li>
+<a href="#%E4%B8%BB%E8%A6%81%E3%81%AA%E5%A4%89%E6%9B%B4">主要な変更</a>
+
+<ul>
+<li><a href="#action-cable">Action Cable</a></li>
+<li><a href="#rails-api">Rails API</a></li>
+<li><a href="#active-record-attributes-api">Active Record attributes API</a></li>
+<li><a href="#test-runner">Test Runner</a></li>
+</ul>
+</li>
+<li>
+<a href="#railties">Railties</a>
+
+<ul>
+<li><a href="#railties-%E5%89%8A%E9%99%A4%E3%81%95%E3%82%8C%E3%81%9F%E3%82%82%E3%81%AE">削除されたもの</a></li>
+<li><a href="#railties-%E9%9D%9E%E6%8E%A8%E5%A5%A8">非推奨</a></li>
+<li><a href="#railties-%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">主な変更点</a></li>
+</ul>
+</li>
+<li>
+<a href="#action-pack">Action Pack</a>
+
+<ul>
+<li><a href="#action-pack-%E5%89%8A%E9%99%A4%E3%81%95%E3%82%8C%E3%81%9F%E3%82%82%E3%81%AE">削除されたもの</a></li>
+<li><a href="#action-pack-%E9%9D%9E%E6%8E%A8%E5%A5%A8">非推奨</a></li>
+<li><a href="#action-pack-%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">主な変更点</a></li>
+</ul>
+</li>
+<li>
+<a href="#action-view">Action View</a>
+
+<ul>
+<li><a href="#action-view-%E5%89%8A%E9%99%A4%E3%81%95%E3%82%8C%E3%81%9F%E3%82%82%E3%81%AE">削除されたもの</a></li>
+<li><a href="#action-view-%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">主な変更点</a></li>
+</ul>
+</li>
+<li>
+<a href="#action-mailer">Action Mailer</a>
+
+<ul>
+<li><a href="#action-mailer-%E5%89%8A%E9%99%A4%E3%81%95%E3%82%8C%E3%81%9F%E3%82%82%E3%81%AE">削除されたもの</a></li>
+<li><a href="#action-mailer-%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">主な変更点</a></li>
+</ul>
+</li>
+<li>
+<a href="#active-record">Active Record</a>
+
+<ul>
+<li><a href="#active-record-%E5%89%8A%E9%99%A4%E3%81%95%E3%82%8C%E3%81%9F%E3%82%82%E3%81%AE">削除されたもの</a></li>
+<li><a href="#active-record-%E9%9D%9E%E6%8E%A8%E5%A5%A8">非推奨</a></li>
+<li><a href="#active-record-%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">主な変更点</a></li>
+</ul>
+</li>
+<li>
+<a href="#active-model">Active Model</a>
+
+<ul>
+<li><a href="#active-model-%E5%89%8A%E9%99%A4%E3%81%95%E3%82%8C%E3%81%9F%E3%82%82%E3%81%AE">削除されたもの</a></li>
+<li><a href="#active-model-%E9%9D%9E%E6%8E%A8%E5%A5%A8">非推奨</a></li>
+<li><a href="#active-model-%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">主な変更点</a></li>
+</ul>
+</li>
+<li>
+<a href="#active-job">Active Job</a>
+
+<ul>
+<li><a href="#active-job-%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">主な変更点</a></li>
+</ul>
+</li>
+<li>
+<a href="#active-support">Active Support</a>
+
+<ul>
+<li><a href="#%E5%89%8A%E9%99%A4%E3%81%95%E3%82%8C%E3%81%9F%E3%82%82%E3%81%AE">削除されたもの</a></li>
+<li><a href="#%E9%9D%9E%E6%8E%A8%E5%A5%A8">非推奨</a></li>
+<li><a href="#active-support-%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">主な変更点</a></li>
+</ul>
+</li>
+<li><a href="#%E3%82%AF%E3%83%AC%E3%82%B8%E3%83%83%E3%83%88%E8%A1%A8%E8%A8%98">クレジット表記</a></li>
+</ol>
+
+          </div>
+</div>
+  </div>
+
+  <div id="container">
+    <div class="wrapper">
+      <div id="mainCol">
+        <h3 id="rails-5-0へのアップグレード"><a href="#rails-5-0%E3%81%B8%E3%81%AE%E3%82%A2%E3%83%83%E3%83%97%E3%82%B0%E3%83%AC%E3%83%BC%E3%83%89">1 Rails 5.0へのアップグレード</a></h3><p>If you're upgrading an existing application, it's a great idea to have good test
+coverage before going in. You should also first upgrade to Rails 4.2 in case you
+haven't and make sure your application still runs as expected before attempting
+an update to Rails 5.0. A list of things to watch out for when upgrading is
+available in the
+<a href="upgrading_ruby_on_rails.html#upgrading-from-rails-4-2-to-rails-5-0">Upgrading Ruby on Rails</a>
+guide.</p><h3 id="主要な変更"><a href="#%E4%B8%BB%E8%A6%81%E3%81%AA%E5%A4%89%E6%9B%B4">2 主要な変更</a></h3><h4 id="action-cable"><a href="#action-cable">2.1 Action Cable</a></h4><p><a href="https://github.com/rails/rails/pull/22586">Pull Request</a></p><p>(執筆予定)</p><h4 id="rails-api"><a href="#rails-api">2.2 Rails API</a></h4><p><a href="https://github.com/rails/rails/pull/19832">Pull Request</a></p><p>(執筆予定)</p><h4 id="active-record-attributes-api"><a href="#active-record-attributes-api">2.3 Active Record attributes API</a></h4><p>(執筆予定)</p><h4 id="test-runner"><a href="#test-runner">2.4 Test Runner</a></h4><p><a href="https://github.com/rails/rails/pull/19216">Pull Request</a></p><p>(執筆予定)</p><h3 id="railties"><a href="#railties">3 Railties</a></h3><p>変更の詳細については[Changelog][railties]を参照してください。</p><h4 id="railties-削除されたもの"><a href="#railties-%E5%89%8A%E9%99%A4%E3%81%95%E3%82%8C%E3%81%9F%E3%82%82%E3%81%AE">3.1 削除されたもの</a></h4>
+<ul>
+<li><p>  Removed debugger support, use byebug instead. <code>debugger</code> is not supported by
+Ruby
+2.2. (<a href="https://github.com/rails/rails/commit/93559da4826546d07014f8cfa399b64b4a143127">commit</a>)</p></li>
+<li><p>  Removed deprecated <code>test:all</code> and <code>test:all:db</code> tasks.
+(<a href="https://github.com/rails/rails/commit/f663132eef0e5d96bf2a58cec9f7c856db20be7c">commit</a>)</p></li>
+<li><p>  Removed deprecated <code>Rails::Rack::LogTailer</code>.
+(<a href="https://github.com/rails/rails/commit/c564dcb75c191ab3d21cc6f920998b0d6fbca623">commit</a>)</p></li>
+<li><p>  Removed deprecated <code>RAILS_CACHE</code> constant.
+(<a href="https://github.com/rails/rails/commit/b7f856ce488ef8f6bf4c12bb549f462cb7671c08">commit</a>)</p></li>
+<li><p>  Removed deprecated <code>serve_static_assets</code> configuration.
+(<a href="https://github.com/rails/rails/commit/463b5d7581ee16bfaddf34ca349b7d1b5878097c">commit</a>)</p></li>
+<li><p>  Removed the documentation tasks <code>doc:app</code>, <code>doc:rails</code>, and <code>doc:guides</code>.
+(<a href="https://github.com/rails/rails/commit/cd7cc5254b090ccbb84dcee4408a5acede25ef2a">commit</a>)</p></li>
+<li><p>  Removed <code>Rack::ContentLength</code> middleware from the default
+stack. (<a href="https://github.com/rails/rails/commit/56903585a099ab67a7acfaaef0a02db8fe80c450">Commit</a>)</p></li>
+</ul>
+<h4 id="railties-非推奨"><a href="#railties-%E9%9D%9E%E6%8E%A8%E5%A5%A8">3.2 非推奨</a></h4>
+<ul>
+<li><p>  Deprecated <code>config.static_cache_control</code> in favor of
+<code>config.public_file_server.headers</code>.
+(<a href="https://github.com/rails/rails/pull/22173">Pull Request</a>)</p></li>
+<li><p>  Deprecated <code>config.serve_static_files</code> in favor of <code>config.public_file_server.enabled</code>.
+(<a href="https://github.com/rails/rails/pull/22173">Pull Request</a>)</p></li>
+<li><p>  Deprecated the tasks in the <code>rails</code> task namespace in favor of the <code>app</code> namespace.
+(e.g. <code>rails:update</code> and <code>rails:template</code> tasks is renamed to <code>app:update</code> and <code>app:template</code>.)
+(<a href="https://github.com/rails/rails/pull/23439">Pull Request</a>)</p></li>
+</ul>
+<h4 id="railties-主な変更点"><a href="#railties-%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">3.3 主な変更点</a></h4>
+<ul>
+<li><p>  Added Rails test runner <code>bin/rails test</code>.
+(<a href="https://github.com/rails/rails/pull/19216">Pull Request</a>)</p></li>
+<li><p>  Newly generated applications and plugins get a <code>README.md</code> in Markdown.
+(<a href="https://github.com/rails/rails/commit/89a12c931b1f00b90e74afffcdc2fc21f14ca663">commit</a>,
+ <a href="https://github.com/rails/rails/pull/22068">Pull Request</a>)</p></li>
+<li><p>  Added <code>bin/rails restart</code> task to restart your Rails app by touching <code>tmp/restart.txt</code>.
+(<a href="https://github.com/rails/rails/pull/18965">Pull Request</a>)</p></li>
+<li><p>  Added <code>bin/rails initializers</code> task to print out all defined initializers in
+the order they are invoked by Rails.
+(<a href="https://github.com/rails/rails/pull/19323">Pull Request</a>)</p></li>
+<li><p>  Added <code>bin/rails dev:cache</code> to enable or disable caching in development mode.
+(<a href="https://github.com/rails/rails/pull/20961">Pull Request</a>)</p></li>
+<li><p>  Added <code>bin/update</code> script to update the development environment automatically.
+(<a href="https://github.com/rails/rails/pull/20972">Pull Request</a>)</p></li>
+<li><p>  Proxy Rake tasks through <code>bin/rails</code>.
+(<a href="https://github.com/rails/rails/pull/22457">Pull Request</a>,
+ <a href="https://github.com/rails/rails/pull/22288">Pull Request</a>)</p></li>
+<li><p>  New applications are generated with the evented file system monitor enabled
+on Linux and Mac OS X. The feature can be opted out by passing
+<code>--skip-listen</code> to the generator.
+(<a href="https://github.com/rails/rails/commit/de6ad5665d2679944a9ee9407826ba88395a1003">commit</a>,
+<a href="https://github.com/rails/rails/commit/94dbc48887bf39c241ee2ce1741ee680d773f202">commit</a>)</p></li>
+<li><p>  Generate applications with an option to log to STDOUT in production
+using the environment variable <code>RAILS_LOG_TO_STDOUT</code>.
+(<a href="https://github.com/rails/rails/pull/23734">Pull Request</a>)</p></li>
+<li><p>  Enable HSTS with IncludeSudomains header for new applications.
+(<a href="https://github.com/rails/rails/pull/23852">Pull Request</a>)</p></li>
+<li><p>  The application generator writes a new file <code>config/spring.rb</code>, which tells
+Spring to watch additional common files.
+(<a href="https://github.com/rails/rails/commit/b04d07337fd7bc17e88500e9d6bcd361885a45f8">commit</a>)</p></li>
+</ul>
+<h3 id="action-pack"><a href="#action-pack">4 Action Pack</a></h3><p>変更の詳細については[Changelog][action-pack]を参照してください。</p><h4 id="action-pack-削除されたもの"><a href="#action-pack-%E5%89%8A%E9%99%A4%E3%81%95%E3%82%8C%E3%81%9F%E3%82%82%E3%81%AE">4.1 削除されたもの</a></h4>
+<ul>
+<li><p>  Removed <code>ActionDispatch::Request::Utils.deep_munge</code>.
+(<a href="https://github.com/rails/rails/commit/52cf1a71b393486435fab4386a8663b146608996">commit</a>)</p></li>
+<li><p>  Removed <code>ActionController::HideActions</code>.
+(<a href="https://github.com/rails/rails/pull/18371">Pull Request</a>)</p></li>
+<li><p>  Removed <code>respond_to</code> and <code>respond_with</code> placeholder methods, this functionality
+has been extracted to the
+<a href="https://github.com/plataformatec/responders">responders</a> gem.
+(<a href="https://github.com/rails/rails/commit/afd5e9a7ff0072e482b0b0e8e238d21b070b6280">commit</a>)</p></li>
+<li><p>  Removed deprecated assertion files.
+(<a href="https://github.com/rails/rails/commit/92e27d30d8112962ee068f7b14aa7b10daf0c976">commit</a>)</p></li>
+<li><p>  Removed deprecated usage of string keys in URL helpers.
+(<a href="https://github.com/rails/rails/commit/34e380764edede47f7ebe0c7671d6f9c9dc7e809">commit</a>)</p></li>
+<li><p>  Removed deprecated <code>only_path</code> option on <code>*_path</code> helpers.
+(<a href="https://github.com/rails/rails/commit/e4e1fd7ade47771067177254cb133564a3422b8a">commit</a>)</p></li>
+<li><p>  Removed deprecated <code>NamedRouteCollection#helpers</code>.
+(<a href="https://github.com/rails/rails/commit/2cc91c37bc2e32b7a04b2d782fb8f4a69a14503f">commit</a>)</p></li>
+<li><p>  Removed deprecated support to define routes with <code>:to</code> option that doesn't contain <code>#</code>.
+(<a href="https://github.com/rails/rails/commit/1f3b0a8609c00278b9a10076040ac9c90a9cc4a6">commit</a>)</p></li>
+<li><p>  Removed deprecated <code>ActionDispatch::Response#to_ary</code>.
+(<a href="https://github.com/rails/rails/commit/4b19d5b7bcdf4f11bd1e2e9ed2149a958e338c01">commit</a>)</p></li>
+<li><p>  Removed deprecated <code>ActionDispatch::Request#deep_munge</code>.
+(<a href="https://github.com/rails/rails/commit/7676659633057dacd97b8da66e0d9119809b343e">commit</a>)</p></li>
+<li><p>  Removed deprecated
+<code>ActionDispatch::Http::Parameters#symbolized_path_parameters</code>.
+(<a href="https://github.com/rails/rails/commit/7fe7973cd8bd119b724d72c5f617cf94c18edf9e">commit</a>)</p></li>
+<li><p>  Removed deprecated option <code>use_route</code> in controller tests.
+(<a href="https://github.com/rails/rails/commit/e4cfd353a47369dd32198b0e67b8cbb2f9a1c548">commit</a>)</p></li>
+<li><p>  Removed <code>assigns</code> and <code>assert_template</code>. Both methods have been extracted
+into the
+<a href="https://github.com/rails/rails-controller-testing">rails-controller-testing</a>
+gem.
+(<a href="https://github.com/rails/rails/pull/20138">Pull Request</a>)</p></li>
+</ul>
+<h4 id="action-pack-非推奨"><a href="#action-pack-%E9%9D%9E%E6%8E%A8%E5%A5%A8">4.2 非推奨</a></h4>
+<ul>
+<li><p>  Deprecated all <code>*_filter</code> callbacks in favor of <code>*_action</code> callbacks.
+(<a href="https://github.com/rails/rails/pull/18410">Pull Request</a>)</p></li>
+<li><p>  Deprecated <code>*_via_redirect</code> integration test methods. Use <code>follow_redirect!</code>
+manually after the request call for the same behavior.
+(<a href="https://github.com/rails/rails/pull/18693">Pull Request</a>)</p></li>
+<li><p>  Deprecated <code>AbstractController#skip_action_callback</code> in favor of individual
+skip_callback methods.
+(<a href="https://github.com/rails/rails/pull/19060">Pull Request</a>)</p></li>
+<li><p>  Deprecated <code>:nothing</code> option for <code>render</code> method.
+(<a href="https://github.com/rails/rails/pull/20336">Pull Request</a>)</p></li>
+<li><p>  Deprecated passing first parameter as <code>Hash</code> and default status code for
+<code>head</code> method.
+(<a href="https://github.com/rails/rails/pull/20407">Pull Request</a>)</p></li>
+<li><p>  Deprecated using strings or symbols for middleware class names. Use class
+names instead.
+(<a href="https://github.com/rails/rails/commit/83b767ce">commit</a>)</p></li>
+<li><p>  Deprecated accessing mime types via constants (eg. <code>Mime::HTML</code>). Use the
+subscript operator with a symbol instead (eg. <code>Mime[:html]</code>).
+(<a href="https://github.com/rails/rails/pull/21869">Pull Request</a>)</p></li>
+<li><p>  Deprecated <code>redirect_to :back</code> in favor of <code>redirect_back</code>, which accepts a
+required <code>fallback_location</code> argument, thus eliminating the possibility of a
+<code>RedirectBackError</code>.
+(<a href="https://github.com/rails/rails/pull/22506">Pull Request</a>)</p></li>
+</ul>
+<h4 id="action-pack-主な変更点"><a href="#action-pack-%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">4.3 主な変更点</a></h4>
+<ul>
+<li><p>  Added <code>ActionController::Renderer</code> to render arbitrary templates
+outside controller actions.
+(<a href="https://github.com/rails/rails/pull/18546">Pull Request</a>)</p></li>
+<li><p>  Migrating to keyword arguments syntax in <code>ActionController::TestCase</code> and
+<code>ActionDispatch::Integration</code> HTTP request methods.
+(<a href="https://github.com/rails/rails/pull/18323">Pull Request</a>)</p></li>
+<li><p>  Added <code>http_cache_forever</code> to Action Controller, so we can cache a response
+that never gets expired.
+(<a href="https://github.com/rails/rails/pull/18394">Pull Request</a>)</p></li>
+<li><p>  Provide friendlier access to request variants.
+(<a href="https://github.com/rails/rails/pull/18939">Pull Request</a>)</p></li>
+<li><p>  For actions with no corresponding templates, render <code>head :no_content</code>
+instead of raising an error.
+(<a href="https://github.com/rails/rails/pull/19377">Pull Request</a>)</p></li>
+<li><p>  Added the ability to override default form builder for a controller.
+(<a href="https://github.com/rails/rails/pull/19736">Pull Request</a>)</p></li>
+<li><p>  Added support for API only apps.
+<code>ActionController::API</code> is added as a replacement of
+<code>ActionController::Base</code> for this kind of applications.
+(<a href="https://github.com/rails/rails/pull/19832">Pull Request</a>)</p></li>
+<li><p>  Make <code>ActionController::Parameters</code> no longer inherits from
+<code>HashWithIndifferentAccess</code>.
+(<a href="https://github.com/rails/rails/pull/20868">Pull Request</a>)</p></li>
+<li><p>  Make it easier to opt in to <code>config.force_ssl</code> and <code>config.ssl_options</code> by
+making them less dangerous to try and easier to disable.
+(<a href="https://github.com/rails/rails/pull/21520">Pull Request</a>)</p></li>
+<li><p>  Added the ability of returning arbitrary headers to <code>ActionDispatch::Static</code>.
+(<a href="https://github.com/rails/rails/pull/19135">Pull Request</a>)</p></li>
+<li><p>  Changed the <code>protect_from_forgery</code> prepend default to <code>false</code>.
+(<a href="https://github.com/rails/rails/commit/39794037817703575c35a75f1961b01b83791191">commit</a>)</p></li>
+<li><p>  <code>ActionController::TestCase</code> will be moved to its own gem in Rails 5.1. Use
+<code>ActionDispatch::IntegrationTest</code> instead.
+(<a href="https://github.com/rails/rails/commit/4414c5d1795e815b102571425974a8b1d46d932d">commit</a>)</p></li>
+<li><p>  Rails will only generate "weak", instead of strong ETags.
+(<a href="https://github.com/rails/rails/pull/17573">Pull Request</a>)</p></li>
+<li><p>  Controller actions without an explicit <code>render</code> call and with no
+corresponding templates will render <code>head :no_content</code> implicitly
+instead of raising an error.
+(Pull Request <a href="https://github.com/rails/rails/pull/19377">1</a>,
+<a href="https://github.com/rails/rails/pull/23827">2</a>)</p></li>
+<li><p>  Added an option for per-form CSRF tokens.
+(<a href="https://github.com/rails/rails/pull/22275">Pull Request</a>)</p></li>
+<li><p>  Added request encoding and response parsing to integration tests.
+(<a href="https://github.com/rails/rails/pull/21671">Pull Request</a>)</p></li>
+<li><p>  Update default rendering policies when the controller action did
+not explicitly indicate a response.
+(<a href="https://github.com/rails/rails/pull/23827">Pull Request</a>)</p></li>
+</ul>
+<h3 id="action-view"><a href="#action-view">5 Action View</a></h3><p>変更の詳細については[Changelog][action-view]を参照してください。</p><h4 id="action-view-削除されたもの"><a href="#action-view-%E5%89%8A%E9%99%A4%E3%81%95%E3%82%8C%E3%81%9F%E3%82%82%E3%81%AE">5.1 削除されたもの</a></h4>
+<ul>
+<li><p>  Removed deprecated <code>AbstractController::Base::parent_prefixes</code>.
+(<a href="https://github.com/rails/rails/commit/34bcbcf35701ca44be559ff391535c0dd865c333">commit</a>)</p></li>
+<li><p>  Removed <code>ActionView::Helpers::RecordTagHelper</code>, this functionality
+has been extracted to the
+<a href="https://github.com/rails/record_tag_helper">record_tag_helper</a> gem.
+(<a href="https://github.com/rails/rails/pull/18411">Pull Request</a>)</p></li>
+<li><p>  Removed <code>:rescue_format</code> option for <code>translate</code> helper since it's no longer
+supported by I18n.
+(<a href="https://github.com/rails/rails/pull/20019">Pull Request</a>)</p></li>
+</ul>
+<h4 id="action-view-主な変更点"><a href="#action-view-%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">5.2 主な変更点</a></h4>
+<ul>
+<li><p>  Changed the default template handler from <code>ERB</code> to <code>Raw</code>.
+(<a href="https://github.com/rails/rails/commit/4be859f0fdf7b3059a28d03c279f03f5938efc80">commit</a>)</p></li>
+<li><p>  Collection rendering can cache and fetches multiple partials.
+(<a href="https://github.com/rails/rails/pull/18948">Pull Request</a>,
+<a href="https://github.com/rails/rails/commit/e93f0f0f133717f9b06b1eaefd3442bd0ff43985">commit</a>)</p></li>
+<li><p>  Added wildcard matching to explicit dependencies.
+(<a href="https://github.com/rails/rails/pull/20904">Pull Request</a>)</p></li>
+<li><p>  Make <code>disable_with</code> the default behavior for submit tags. Disables the
+button on submit to prevent double submits.
+(<a href="https://github.com/rails/rails/pull/21135">Pull Request</a>)</p></li>
+<li><p>  Collection rendering can cache and fetch multiple partials at once.
+(<a href="https://github.com/rails/rails/pull/21135">Pull Request</a>)</p></li>
+</ul>
+<h3 id="action-mailer"><a href="#action-mailer">6 Action Mailer</a></h3><p>変更の詳細については[Changelog][action-mailer]を参照してください。</p><h4 id="action-mailer-削除されたもの"><a href="#action-mailer-%E5%89%8A%E9%99%A4%E3%81%95%E3%82%8C%E3%81%9F%E3%82%82%E3%81%AE">6.1 削除されたもの</a></h4>
+<ul>
+<li><p>  Removed deprecated <code>*_path</code> helpers in email views.
+(<a href="https://github.com/rails/rails/commit/d282125a18c1697a9b5bb775628a2db239142ac7">commit</a>)</p></li>
+<li><p>  Removed deprecated <code>deliver</code> and <code>deliver!</code> methods.
+(<a href="https://github.com/rails/rails/commit/755dcd0691f74079c24196135f89b917062b0715">commit</a>)</p></li>
+</ul>
+<h4 id="action-mailer-主な変更点"><a href="#action-mailer-%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">6.2 主な変更点</a></h4>
+<ul>
+<li><p>  Template lookup now respects default locale and I18n fallbacks.
+(<a href="https://github.com/rails/rails/commit/ecb1981b">commit</a>)</p></li>
+<li><p>  Added <code>_mailer</code> suffix to mailers created via generator, following the same
+naming convention used in controllers and jobs.
+(<a href="https://github.com/rails/rails/pull/18074">Pull Request</a>)</p></li>
+<li><p>  Added <code>assert_enqueued_emails</code> and <code>assert_no_enqueued_emails</code>.
+(<a href="https://github.com/rails/rails/pull/18403">Pull Request</a>)</p></li>
+<li><p>  Added <code>config.action_mailer.deliver_later_queue_name</code> configuration to set
+the mailer queue name.
+(<a href="https://github.com/rails/rails/pull/18587">Pull Request</a>)</p></li>
+<li><p>  Added support for fragment caching in Action Mailer views.
+Added new config option <code>config.action_mailer.perform_caching</code> to determine
+whether your templates should perform caching or not.
+(<a href="https://github.com/rails/rails/pull/22825">Pull Request</a>)</p></li>
+</ul>
+<h3 id="active-record"><a href="#active-record">7 Active Record</a></h3><p>変更の詳細については、[Changelog][active-record]を参照してください。</p><h4 id="active-record-削除されたもの"><a href="#active-record-%E5%89%8A%E9%99%A4%E3%81%95%E3%82%8C%E3%81%9F%E3%82%82%E3%81%AE">7.1 削除されたもの</a></h4>
+<ul>
+<li><p>  Removed deprecated behavior allowing nested arrays to be passed as query
+values. (<a href="https://github.com/rails/rails/pull/17919">Pull Request</a>)</p></li>
+<li><p>  Removed deprecated <code>ActiveRecord::Tasks::DatabaseTasks#load_schema</code>. This
+method was replaced by <code>ActiveRecord::Tasks::DatabaseTasks#load_schema_for</code>.
+(<a href="https://github.com/rails/rails/commit/ad783136d747f73329350b9bb5a5e17c8f8800da">commit</a>)</p></li>
+<li><p>  Removed deprecated <code>serialized_attributes</code>.
+(<a href="https://github.com/rails/rails/commit/82043ab53cb186d59b1b3be06122861758f814b2">commit</a>)</p></li>
+<li><p>  Removed deprecated automatic counter caches on <code>has_many :through</code>.
+(<a href="https://github.com/rails/rails/commit/87c8ce340c6c83342df988df247e9035393ed7a0">commit</a>)</p></li>
+<li><p>  Removed deprecated <code>sanitize_sql_hash_for_conditions</code>.
+(<a href="https://github.com/rails/rails/commit/3a59dd212315ebb9bae8338b98af259ac00bbef3">commit</a>)</p></li>
+<li><p>  Removed deprecated <code>Reflection#source_macro</code>.
+(<a href="https://github.com/rails/rails/commit/ede8c199a85cfbb6457d5630ec1e285e5ec49313">commit</a>)</p></li>
+<li><p>  Removed deprecated <code>symbolized_base_class</code> and <code>symbolized_sti_name</code>.
+(<a href="https://github.com/rails/rails/commit/9013e28e52eba3a6ffcede26f85df48d264b8951">commit</a>)</p></li>
+<li><p>  Removed deprecated <code>ActiveRecord::Base.disable_implicit_join_references=</code>.
+(<a href="https://github.com/rails/rails/commit/0fbd1fc888ffb8cbe1191193bf86933110693dfc">commit</a>)</p></li>
+<li><p>  Removed deprecated access to connection specification using a string accessor.
+(<a href="https://github.com/rails/rails/commit/efdc20f36ccc37afbb2705eb9acca76dd8aabd4f">commit</a>)</p></li>
+<li><p>  Removed deprecated support to preload instance-dependent associations.
+(<a href="https://github.com/rails/rails/commit/4ed97979d14c5e92eb212b1a629da0a214084078">commit</a>)</p></li>
+<li><p>  Removed deprecated support for PostgreSQL ranges with exclusive lower bounds.
+(<a href="https://github.com/rails/rails/commit/a076256d63f64d194b8f634890527a5ed2651115">commit</a>)</p></li>
+<li><p>  Removed deprecation when modifying a relation with cached Arel.
+This raises an <code>ImmutableRelation</code> error instead.
+(<a href="https://github.com/rails/rails/commit/3ae98181433dda1b5e19910e107494762512a86c">commit</a>)</p></li>
+<li>
+<p>  Removed <code>ActiveRecord::Serialization::XmlSerializer</code> from core. This feature
+has been extracted into the
+<a href="https://github.com/rails/activemodel-serializers-xml">activemodel-serializers-xml</a></p>
+<h4>
+<code>gem</code>(<a href="https://github.com/rails/rails/pull/21161">Pull Request</a>)</h4>
+</li>
+<li><p>  Removed support for the legacy <code>mysql</code> database adapter from core. It will
+live on in a separate gem for now, but most users should just use <code>mysql2</code>.</p></li>
+<li><p>  Removed support for the <code>protected_attributes</code> gem.
+(<a href="https://github.com/rails/rails/commit/f4fbc0301021f13ae05c8e941c8efc4ae351fdf9">commit</a>)</p></li>
+<li><p>  Removed support for PostgreSQL versions below 9.1.
+(<a href="https://github.com/rails/rails/pull/23434">Pull Request</a>)</p></li>
+</ul>
+<h4 id="active-record-非推奨"><a href="#active-record-%E9%9D%9E%E6%8E%A8%E5%A5%A8">7.2 非推奨</a></h4>
+<ul>
+<li><p>  Deprecated passing a class as a value in a query. Users should pass strings
+instead. (<a href="https://github.com/rails/rails/pull/17916">Pull Request</a>)</p></li>
+<li><p>  Deprecated returning <code>false</code> as a way to halt Active Record callback
+chains. The recommended way is to
+<code>throw(:abort)</code>. (<a href="https://github.com/rails/rails/pull/17227">Pull Request</a>)</p></li>
+<li><p>  Deprecated <code>ActiveRecord::Base.errors_in_transactional_callbacks=</code>.
+(<a href="https://github.com/rails/rails/commit/07d3d402341e81ada0214f2cb2be1da69eadfe72">commit</a>)</p></li>
+<li><p>  Deprecated <code>Relation#uniq</code> use <code>Relation#distinct</code> instead.
+(<a href="https://github.com/rails/rails/commit/adfab2dcf4003ca564d78d4425566dd2d9cd8b4f">commit</a>)</p></li>
+<li><p>  Deprecated the PostgreSQL <code>:point</code> type in favor of a new one which will return
+<code>Point</code> objects instead of an <code>Array</code>
+(<a href="https://github.com/rails/rails/pull/20448">Pull Request</a>)</p></li>
+<li><p>  Deprecated force association reload by passing a truthy argument to
+association method.
+(<a href="https://github.com/rails/rails/pull/20888">Pull Request</a>)</p></li>
+<li><p>  Deprecated the keys for association <code>restrict_dependent_destroy</code> errors in favor
+of new key names.
+(<a href="https://github.com/rails/rails/pull/20668">Pull Request</a>)</p></li>
+<li><p>  Synchronize behavior of <code>#tables</code>.
+(<a href="https://github.com/rails/rails/pull/21601">Pull Request</a>)</p></li>
+<li><p>  Deprecated <code>SchemaCache#tables</code>, <code>SchemaCache#table_exists?</code> and
+<code>SchemaCache#clear_table_cache!</code> in favor of their new data source
+counterparts.
+(<a href="https://github.com/rails/rails/pull/21715">Pull Request</a>)</p></li>
+<li><p>  Deprecated <code>connection.tables</code> on the SQLite3 and MySQL adapters.
+(<a href="https://github.com/rails/rails/pull/21601">Pull Request</a>)</p></li>
+<li><p>  Deprecated passing arguments to <code>#tables</code> - the <code>#tables</code> method of some
+adapters (mysql2, sqlite3) would return both tables and views while others
+(postgresql) just return tables. To make their behavior consistent,
+<code>#tables</code> will return only tables in the future.
+(<a href="https://github.com/rails/rails/pull/21601">Pull Request</a>)</p></li>
+<li><p>  Deprecated <code>table_exists?</code> - The <code>#table_exists?</code> method would check both
+tables and views. To make their behavior consistent with <code>#tables</code>,
+<code>#table_exists?</code> will check only tables in the future.
+(<a href="https://github.com/rails/rails/pull/21601">Pull Request</a>)</p></li>
+<li><p>  Deprecate sending the <code>offset</code> argument to <code>find_nth</code>. Please use the
+<code>offset</code> method on relation instead.
+(<a href="https://github.com/rails/rails/pull/22053">Pull Request</a>)</p></li>
+<li><p>  Deprecated <code>{insert|update|delete}_sql</code> in <code>DatabaseStatements</code>.
+Use the <code>{insert|update|delete}</code> public methods instead.
+(<a href="https://github.com/rails/rails/pull/23086">Pull Request</a>)</p></li>
+</ul>
+<h4 id="active-record-主な変更点"><a href="#active-record-%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">7.3 主な変更点</a></h4>
+<ul>
+<li><p>  Added a <code>foreign_key</code> option to <code>references</code> while creating the table.
+(<a href="https://github.com/rails/rails/commit/99a6f9e60ea55924b44f894a16f8de0162cf2702">commit</a>)</p></li>
+<li><p>  New attributes
+API. (<a href="https://github.com/rails/rails/commit/8c752c7ac739d5a86d4136ab1e9d0142c4041e58">commit</a>)</p></li>
+<li><p>  Added <code>:enum_prefix</code>/<code>:enum_suffix</code> option to <code>enum</code>
+definition. (<a href="https://github.com/rails/rails/pull/19813">Pull Request</a>)</p></li>
+<li><p>  Added <code>#cache_key</code> to <code>ActiveRecord::Relation</code>.
+(<a href="https://github.com/rails/rails/pull/20884">Pull Request</a>)</p></li>
+<li><p>  Require <code>belongs_to</code> by default.
+(<a href="https://github.com/rails/rails/pull/18937">Pull Request</a>) - Deprecate
+<code>required</code> option in favor of <code>optional</code> for <code>belongs_to</code></p></li>
+<li><p>  Changed the default <code>null</code> value for <code>timestamps</code> to <code>false</code>.
+(<a href="https://github.com/rails/rails/commit/a939506f297b667291480f26fa32a373a18ae06a">commit</a>)</p></li>
+<li><p>  Added <code>ActiveRecord::SecureToken</code> in order to encapsulate generation of
+unique tokens for attributes in a model using <code>SecureRandom</code>.
+(<a href="https://github.com/rails/rails/pull/18217">Pull Request</a>)</p></li>
+<li><p>  Added <code>:if_exists</code> option for <code>drop_table</code>.
+(<a href="https://github.com/rails/rails/pull/18597">Pull Request</a>)</p></li>
+<li><p>  Added <code>ActiveRecord::Base#accessed_fields</code>, which can be used to quickly
+discover which fields were read from a model when you are looking to only
+select the data you need from the database.
+(<a href="https://github.com/rails/rails/commit/be9b68038e83a617eb38c26147659162e4ac3d2c">commit</a>)</p></li>
+<li><p>  Added the <code>#or</code> method on <code>ActiveRecord::Relation</code>, allowing use of the OR
+operator to combine WHERE or HAVING clauses.
+(<a href="https://github.com/rails/rails/commit/b0b37942d729b6bdcd2e3178eda7fa1de203b3d0">commit</a>)</p></li>
+<li><p>  Added <code>:time</code> option added for <code>#touch</code>.
+(<a href="https://github.com/rails/rails/pull/18956">Pull Request</a>)</p></li>
+<li><p>  Added <code>ActiveRecord::Base.suppress</code> to prevent the receiver from being saved
+during the given block.
+(<a href="https://github.com/rails/rails/pull/18910">Pull Request</a>)</p></li>
+<li><p>  <code>belongs_to</code> will now trigger a validation error by default if the
+association is not present. You can turn this off on a per-association basis
+with <code>optional: true</code>.
+(<a href="https://github.com/rails/rails/pull/18937">Pull Request</a>)</p></li>
+<li><p>  Added <code>config.active_record.dump_schemas</code> to configure the behavior of
+<code>db:structure:dump</code>.
+(<a href="https://github.com/rails/rails/pull/19347">Pull Request</a>)</p></li>
+<li><p>  Added <code>config.active_record.warn_on_records_fetched_greater_than</code> option.
+(<a href="https://github.com/rails/rails/pull/18846">Pull Request</a>)</p></li>
+<li><p>  Added a native JSON data type support in MySQL.
+(<a href="https://github.com/rails/rails/pull/21110">Pull Request</a>)</p></li>
+<li><p>  Added support for dropping indexes concurrently in PostgreSQL.
+(<a href="https://github.com/rails/rails/pull/21317">Pull Request</a>)</p></li>
+<li><p>  Added <code>#views</code> and <code>#view_exists?</code> methods on connection adapters.
+(<a href="https://github.com/rails/rails/pull/21609">Pull Request</a>)</p></li>
+<li><p>  Added <code>ActiveRecord::Base.ignored_columns</code> to make some columns
+invisible from Active Record.
+(<a href="https://github.com/rails/rails/pull/21720">Pull Request</a>)</p></li>
+<li><p>  Added <code>connection.data_sources</code> and <code>connection.data_source_exists?</code>
+These methods determine what relations can be used to back Active Record
+models (usually tables and views).
+(<a href="https://github.com/rails/rails/pull/21715">Pull Request</a>)</p></li>
+<li><p>  Allow fixtures files to set the model class in the YAML file itself.
+(<a href="https://github.com/rails/rails/pull/20574">Pull Request</a>)</p></li>
+<li><p>  Added ability to default to <code>uuid</code> as primary key when generating database
+マイグレーション(<a href="https://github.com/rails/rails/pull/21762">Pull Request</a>)</p></li>
+<li><p>  Added <code>ActiveRecord::Relation#left_joins</code> and
+<code>ActiveRecord::Relation#left_outer_joins</code>.
+(<a href="https://github.com/rails/rails/pull/12071">Pull Request</a>)</p></li>
+<li><p>  Added <code>after_{create,update,delete}_commit</code> callbacks.
+(<a href="https://github.com/rails/rails/pull/22516">Pull Request</a>)</p></li>
+<li><p>  Version the API presented to migration classes, so we can change parameter
+defaults without breaking existing migrations, or forcing them to be
+rewritten through a deprecation cycle.
+(<a href="https://github.com/rails/rails/pull/21538">Pull Request</a>)</p></li>
+<li><p>  <code>ApplicationRecord</code> is a new superclass for all app models, analogous to app
+controllers subclassing <code>ApplicationController</code> instead of
+<code>ActionController::Base</code>. This gives apps a single spot to configure app-wide
+model behavior.
+(<a href="https://github.com/rails/rails/pull/22567">Pull Request</a>)</p></li>
+<li><p>  Added ActiveRecord <code>#second_to_last</code> and <code>#third_to_last</code> methods.
+(<a href="https://github.com/rails/rails/pull/23583">Pull Request</a>)</p></li>
+<li><p> Added ability to annotate database objects (tables, columns, indexes)
+with comments stored in database metadata for PostgreSQL &amp; MySQL.
+(<a href="https://github.com/rails/rails/pull/22911">Pull Request</a>)</p></li>
+</ul>
+<h3 id="active-model"><a href="#active-model">8 Active Model</a></h3><p>変更の詳細については[Changelog][active-model]を参照してください。</p><h4 id="active-model-削除されたもの"><a href="#active-model-%E5%89%8A%E9%99%A4%E3%81%95%E3%82%8C%E3%81%9F%E3%82%82%E3%81%AE">8.1 削除されたもの</a></h4>
+<ul>
+<li><p>  Removed deprecated <code>ActiveModel::Dirty#reset_#{attribute}</code> and
+<code>ActiveModel::Dirty#reset_changes</code>.
+(<a href="https://github.com/rails/rails/commit/37175a24bd508e2983247ec5d011d57df836c743">Pull Request</a>)</p></li>
+<li><p>  Removed XML serialization. This feature has been extracted into the
+<a href="https://github.com/rails/activemodel-serializers-xml">activemodel-serializers-xml</a> gem.
+(<a href="https://github.com/rails/rails/pull/21161">Pull Request</a>)</p></li>
+</ul>
+<h4 id="active-model-非推奨"><a href="#active-model-%E9%9D%9E%E6%8E%A8%E5%A5%A8">8.2 非推奨</a></h4>
+<ul>
+<li><p>  Deprecated returning <code>false</code> as a way to halt Active Model and
+<code>ActiveModel::Validations</code> callback chains. The recommended way is to
+<code>throw(:abort)</code>. (<a href="https://github.com/rails/rails/pull/17227">Pull Request</a>)</p></li>
+<li><p>  Deprecated <code>ActiveModel::Errors#get</code>, <code>ActiveModel::Errors#set</code> and
+<code>ActiveModel::Errors#[]=</code> methods that have inconsistent behavior.
+(<a href="https://github.com/rails/rails/pull/18634">Pull Request</a>)</p></li>
+<li><p>  Deprecated the <code>:tokenizer</code> option for <code>validates_length_of</code>, in favor of
+plain Ruby.
+(<a href="https://github.com/rails/rails/pull/19585">Pull Request</a>)</p></li>
+<li><p>  Deprecated <code>ActiveModel::Errors#add_on_empty</code> and <code>ActiveModel::Errors#add_on_blank</code>
+with no replacement.
+(<a href="https://github.com/rails/rails/pull/18996">Pull Request</a>)</p></li>
+</ul>
+<h4 id="active-model-主な変更点"><a href="#active-model-%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">8.3 主な変更点</a></h4>
+<ul>
+<li><p>  Added <code>ActiveModel::Errors#details</code> to determine what validator has failed.
+(<a href="https://github.com/rails/rails/pull/18322">Pull Request</a>)</p></li>
+<li><p>  Extracted <code>ActiveRecord::AttributeAssignment</code> to <code>ActiveModel::AttributeAssignment</code>
+allowing to use it for any object as an includable module.
+(<a href="https://github.com/rails/rails/pull/10776">Pull Request</a>)</p></li>
+<li><p>  Added <code>ActiveModel::Dirty#[attr_name]_previously_changed?</code> and
+<code>ActiveModel::Dirty#[attr_name]_previous_change</code> to improve access
+to recorded changes after the model has been saved.
+(<a href="https://github.com/rails/rails/pull/19847">Pull Request</a>)</p></li>
+<li><p>  Validate multiple contexts on <code>valid?</code> and <code>invalid?</code> at once.
+(<a href="https://github.com/rails/rails/pull/21069">Pull Request</a>)</p></li>
+</ul>
+<h3 id="active-job"><a href="#active-job">9 Active Job</a></h3><p>変更の詳細については[Changelog][active-model]を参照してください。</p><h4 id="active-job-主な変更点"><a href="#active-job-%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">9.1 主な変更点</a></h4>
+<ul>
+<li><p>  <code>ActiveJob::Base.deserialize</code> delegates to the job class. this allows jobs
+to attach arbitrary metadata when they get serialized and read it back when
+they get performed.
+(<a href="https://github.com/rails/rails/pull/18260">Pull Request</a>)</p></li>
+<li><p>  A generated job now inherits from <code>app/jobs/application_job.rb</code> by default.
+(<a href="https://github.com/rails/rails/pull/19034">Pull Request</a>)</p></li>
+<li><p>  Allow <code>DelayedJob</code>, <code>Sidekiq</code>, <code>qu</code>, <code>que</code>, and <code>queue_classic</code> to report
+the job id back to <code>ActiveJob::Base</code> as <code>provider_job_id</code>.
+(<a href="https://github.com/rails/rails/pull/20064">Pull Request</a>,
+ <a href="https://github.com/rails/rails/pull/20056">Pull Request</a>,
+ <a href="https://github.com/rails/rails/commit/68e3279163d06e6b04e043f91c9470e9259bbbe0">commit</a>)</p></li>
+<li><p>  Implement a simple <code>AsyncJob</code> processor and associated <code>AsyncAdapter</code> that
+queue jobs to a <code>concurrent-ruby</code> thread pool.
+(<a href="https://github.com/rails/rails/pull/21257">Pull Request</a>)</p></li>
+<li><p>  Change the default adapter from inline to async. It's a better default as
+tests will then not mistakenly come to rely on behavior happening
+synchronously.
+(<a href="https://github.com/rails/rails/commit/625baa69d14881ac49ba2e5c7d9cac4b222d7022">commit</a>)</p></li>
+</ul>
+<h3 id="active-support"><a href="#active-support">10 Active Support</a></h3><p>変更の詳細については[Changelog][active-support]を参照してください。</p><h4 id="削除されたもの"><a href="#%E5%89%8A%E9%99%A4%E3%81%95%E3%82%8C%E3%81%9F%E3%82%82%E3%81%AE">10.1 削除されたもの</a></h4>
+<ul>
+<li><p>  Removed deprecated <code>ActiveSupport::JSON::Encoding::CircularReferenceError</code>.
+(<a href="https://github.com/rails/rails/commit/d6e06ea8275cdc3f126f926ed9b5349fde374b10">commit</a>)</p></li>
+<li><p>  Removed deprecated methods <code>ActiveSupport::JSON::Encoding.encode_big_decimal_as_string=</code>
+and <code>ActiveSupport::JSON::Encoding.encode_big_decimal_as_string</code>.
+(<a href="https://github.com/rails/rails/commit/c8019c0611791b2716c6bed48ef8dcb177b7869c">commit</a>)</p></li>
+<li><p>  Removed deprecated <code>ActiveSupport::SafeBuffer#prepend</code>.
+(<a href="https://github.com/rails/rails/commit/e1c8b9f688c56aaedac9466a4343df955b4a67ec">commit</a>)</p></li>
+<li><p>  Removed deprecated methods from <code>Kernel</code>. <code>silence_stderr</code>, <code>silence_stream</code>,
+<code>capture</code> and <code>quietly</code>.
+(<a href="https://github.com/rails/rails/commit/481e49c64f790e46f4aff3ed539ed227d2eb46cb">commit</a>)</p></li>
+<li><p>  Removed deprecated <code>active_support/core_ext/big_decimal/yaml_conversions</code>
+FIL
+(<a href="https://github.com/rails/rails/commit/98ea19925d6db642731741c3b91bd085fac92241">commit</a>)</p></li>
+<li><p>  Removed deprecated methods <code>ActiveSupport::Cache::Store.instrument</code> and
+<code>ActiveSupport::Cache::Store.instrument=</code>.
+(<a href="https://github.com/rails/rails/commit/a3ce6ca30ed0e77496c63781af596b149687b6d7">commit</a>)</p></li>
+<li><p>  Removed deprecated <code>Class#superclass_delegating_accessor</code>.
+Use <code>Class#class_attribute</code> instead.
+(<a href="https://github.com/rails/rails/pull/16938">Pull Request</a>)</p></li>
+<li><p>  Removed deprecated <code>ThreadSafe::Cache</code>. Use <code>Concurrent::Map</code> instead.
+(<a href="https://github.com/rails/rails/pull/21679">Pull Request</a>)</p></li>
+</ul>
+<h4 id="非推奨"><a href="#%E9%9D%9E%E6%8E%A8%E5%A5%A8">10.2 非推奨</a></h4>
+<ul>
+<li><p>  Deprecated <code>MissingSourceFile</code> in favor of <code>LoadError</code>.
+(<a href="https://github.com/rails/rails/commit/734d97d2">commit</a>)</p></li>
+<li><p>  Deprecated <code>alias_method_chain</code> in favour of <code>Module#prepend</code> introduced in
+```ruby
+(<a href="https://github.com/rails/rails/pull/19434">Pull Request</a>)</p></li>
+</ul>
+
+<ul>
+<li><p>  Deprecated <code>ActiveSupport::Concurrency::Latch</code> in favor of
+<code>Concurrent::CountDownLatch</code> from concurrent-ruby.
+(<a href="https://github.com/rails/rails/pull/20866">Pull Request</a>)</p></li>
+<li><p>  Deprecated <code>:prefix</code> option of <code>number_to_human_size</code> with no replacement.
+(<a href="https://github.com/rails/rails/pull/21191">Pull Request</a>)</p></li>
+<li><p>  Deprecated <code>Module#qualified_const_</code> in favour of the builtin
+<code>Module#const_</code> methods.
+(<a href="https://github.com/rails/rails/pull/17845">Pull Request</a>)</p></li>
+<li><p>  Deprecated passing string to define callback.
+(<a href="https://github.com/rails/rails/pull/22598">Pull Request</a>)</p></li>
+<li>
+<p>  Deprecated <code>ActiveSupport::Cache::Store#namespaced_key</code>,
+<code>ActiveSupport::Cache::MemCachedStore#escape_key</code>, and
+<code>ActiveSupport::Cache::FileStore#key_file_path</code>.
+Use <code>normalize_key</code> instead.</p>
+<p>Deprecated <code>ActiveSupport::Cache::LocaleCache#set_cache_value</code> in favor of <code>write_cache_value</code>.
+(<a href="https://github.com/rails/rails/pull/22215">Pull Request</a>)</p>
+</li>
+<li><p>  Deprecated passing arguments to <code>assert_nothing_raised</code>.
+(<a href="https://github.com/rails/rails/pull/23789">Pull Request</a>)</p></li>
+<li><p>  Deprecated <code>Module.local_constants</code> in favor of <code>Module.constants(false)</code>.
+(<a href="https://github.com/rails/rails/pull/23936">Pull Request</a>)</p></li>
+</ul>
+<h4 id="active-support-主な変更点"><a href="#active-support-%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">10.3 主な変更点</a></h4>
+<ul>
+<li><p>  Added <code>#verified</code> and <code>#valid_message?</code> methods to
+<code>ActiveSupport::MessageVerifier</code>.
+(<a href="https://github.com/rails/rails/pull/17727">Pull Request</a>)</p></li>
+<li><p>  Changed the way in which callback chains can be halted. The preferred method
+to halt a callback chain from now on is to explicitly <code>throw(:abort)</code>.
+(<a href="https://github.com/rails/rails/pull/17227">Pull Request</a>)</p></li>
+<li><p>  New config option
+<code>config.active_support.halt_callback_chains_on_return_false</code> to specify
+whether ActiveRecord, ActiveModel and ActiveModel::Validations callback
+chains can be halted by returning <code>false</code> in a 'before' callback.
+(<a href="https://github.com/rails/rails/pull/17227">Pull Request</a>)</p></li>
+<li><p>  Changed the default test order from <code>:sorted</code> to <code>:random</code>.
+(<a href="https://github.com/rails/rails/commit/5f777e4b5ee2e3e8e6fd0e2a208ec2a4d25a960d">commit</a>)</p></li>
+<li><p>  Added <code>#on_weekend?</code>, <code>#on_weekday?</code>, <code>#next_weekday</code>, <code>#prev_weekday</code> methods to <code>Date</code>,
+<code>Time</code>, and <code>DateTime</code>.
+(<a href="https://github.com/rails/rails/pull/18335">Pull Request</a>)</p></li>
+<li><p>  Added <code>same_time</code> option to <code>#next_week</code> and <code>#prev_week</code> for <code>Date</code>, <code>Time</code>,
+and <code>DateTime</code>.
+(<a href="https://github.com/rails/rails/pull/18335">Pull Request</a>)</p></li>
+<li><p>  Added <code>#prev_day</code> and <code>#next_day</code> counterparts to <code>#yesterday</code> and
+<code>#tomorrow</code> for <code>Date</code>, <code>Time</code>, and <code>DateTime</code>.
+(<a href="httpshttps://github.com/rails/rails/pull/18335">Pull Request</a>)</p></li>
+<li><p>  Added <code>SecureRandom.base58</code> for generation of random base58 strings.
+(<a href="https://github.com/rails/rails/commit/b1093977110f18ae0cafe56c3d99fc22a7d54d1b">commit</a>)</p></li>
+<li><p>  Added <code>file_fixture</code> to <code>ActiveSupport::TestCase</code>.
+It provides a simple mechanism to access sample files in your test cases.
+(<a href="https://github.com/rails/rails/pull/18658">Pull Request</a>)</p></li>
+<li><p>  Added <code>#without</code> on <code>Enumerable</code> and <code>Array</code> to return a copy of an
+enumerable without the specified elements.
+(<a href="https://github.com/rails/rails/pull/19157">Pull Request</a>)</p></li>
+<li><p>  Added <code>ActiveSupport::ArrayInquirer</code> and <code>Array#inquiry</code>.
+(<a href="https://github.com/rails/rails/pull/18939">Pull Request</a>)</p></li>
+<li><p>  Added <code>ActiveSupport::TimeZone#strptime</code> to allow parsing times as if
+from a given timezone.
+(<a href="https://github.com/rails/rails/commit/a5e507fa0b8180c3d97458a9b86c195e9857d8f6">commit</a>)</p></li>
+<li><p>  Added <code>Integer#positive?</code> and <code>Integer#negative?</code> query methods
+in the vein of <code>Fixnum#zero?</code>
+(<a href="https://github.com/rails/rails/commit/e54277a45da3c86fecdfa930663d7692fd083daa">commit</a>)</p></li>
+<li><p>  Added a bang version to <code>ActiveSupport::OrderedOptions</code> get methods which will raise
+an <code>KeyError</code> if the value is <code>.blank?</code>
+(<a href="https://github.com/rails/rails/pull/20208">Pull Request</a>)</p></li>
+<li><p>  Added <code>Time.days_in_year</code> to return the number of days in the given year, or the
+current year if no argument is provided.
+(<a href="https://github.com/rails/rails/commit/2f4f4d2cf1e4c5a442459fc250daf66186d110fa">commit</a>)</p></li>
+<li><p>  Added an evented file watcher to asynchronously detect changes in the
+application source code, routes, locales, etc.
+(<a href="https://github.com/rails/rails/pull/22254">Pull Request</a>)</p></li>
+<li><p>  Added thread_m/cattr_accessor/reader/writer suite of methods for declaring
+class and module variables that live per-thread.
+(<a href="https://github.com/rails/rails/pull/22630">Pull Request</a>)</p></li>
+<li><p>  Added <code>Array#second_to_last</code> and <code>Array#third_to_last</code> methods.
+(<a href="https://github.com/rails/rails/pull/23583">Pull Request</a>)</p></li>
+<li><p>  Added <code>#on_weekday?</code> method to <code>Date</code>, <code>Time</code>, and <code>DateTime</code>.
+(<a href="https://github.com/rails/rails/pull/23687">Pull Request</a>)</p></li>
+<li><p>  Publish <code>ActiveSupport::Executor</code> and <code>ActiveSupport::Reloader</code> APIs to allow
+components and libraries to manage, and participate in, the execution of
+application code, and the application reloading process.
+(<a href="https://github.com/rails/rails/pull/23807">Pull Request</a>)</p></li>
+<li><p>  <code>ActiveSupport::Duration</code> now supports ISO8601 formatting and parsing.
+(<a href="https://github.com/rails/rails/pull/16917">Pull Request</a>)</p></li>
+</ul>
+<h3 id="クレジット表記"><a href="#%E3%82%AF%E3%83%AC%E3%82%B8%E3%83%83%E3%83%88%E8%A1%A8%E8%A8%98">11 クレジット表記</a></h3><p>ポストプロセッサが実行されるときの詳細については
+<a href="http://contributors.rubyonrails.org/">full list of contributors to Rails</a> for
+the many people who spent many hours making Rails, the stable and robust
+framework it is. これらの方々全員に敬意を表明いたします。</p><p>[railties]:       <a href="https://github.com/rails/rails/blob/5-0-stable/railties/CHANGELOG.md">https://github.com/rails/rails/blob/5-0-stable/railties/CHANGELOG.md</a>
+[action-pack]:    <a href="https://github.com/rails/rails/blob/5-0-stable/actionpack/CHANGELOG.md">https://github.com/rails/rails/blob/5-0-stable/actionpack/CHANGELOG.md</a>
+[action-view]:    <a href="https://github.com/rails/rails/blob/5-0-stable/actionview/CHANGELOG.md">https://github.com/rails/rails/blob/5-0-stable/actionview/CHANGELOG.md</a>
+[action-mailer]:  <a href="https://github.com/rails/rails/blob/5-0-stable/actionmailer/CHANGELOG.md">https://github.com/rails/rails/blob/5-0-stable/actionmailer/CHANGELOG.md</a>
+[action-cable]:   <a href="https://github.com/rails/rails/blob/5-0-stable/actioncable/CHANGELOG.md">https://github.com/rails/rails/blob/5-0-stable/actioncable/CHANGELOG.md</a>
+[active-record]:  <a href="https://github.com/rails/rails/blob/5-0-stable/activerecord/CHANGELOG.md">https://github.com/rails/rails/blob/5-0-stable/activerecord/CHANGELOG.md</a>
+[active-model]:   <a href="https://github.com/rails/rails/blob/5-0-stable/activemodel/CHANGELOG.md">https://github.com/rails/rails/blob/5-0-stable/activemodel/CHANGELOG.md</a>
+[active-support]: <a href="https://github.com/rails/rails/blob/5-0-stable/activesupport/CHANGELOG.md">https://github.com/rails/rails/blob/5-0-stable/activesupport/CHANGELOG.md</a>
+[active-job]:     <a href="https://github.com/rails/rails/blob/5-0-stable/activejob/CHANGELOG.md">https://github.com/rails/rails/blob/5-0-stable/activejob/CHANGELOG.md</a></p>
+        
+
+        <h3 id="feedback"><a href="#feedback">フィードバックについて</a></h3>
+        <p>
+          本ガイドは GitHub上の <a href="https://github.com/yasslab/railsguides.jp">yasslab/railsguides.jp</a> で管理・公開されております。
+          本ガイドを読んで気になる文章や間違ったコードを見かけたら、上記リポジトリにてお気軽に <a href="https://github.com/yasslab/railsguides.jp/issues">Issue</a> を出して頂けると嬉しいです。また、「Pull Request を送りたい!」という場合には、<a href="ruby_on_rails_guides_guidelines.html">Ruby on Railsガイドのガイドライン</a>と、<a href="https://github.com/yasslab/railsguides.jp#%E7%BF%BB%E8%A8%B3%E3%81%AE%E6%B5%81%E3%82%8C">README</a>に記載されている「翻訳の流れ」をご参考にしてください。
+        </p>
+        <p>
+          なお、原著における間違いを見つけたら、「Ruby on Railsに貢献する方法」に記されている<a href="/contributing_to_ruby_on_rails.html#rails%E3%81%AE%E3%83%89%E3%82%AD%E3%83%A5%E3%83%A1%E3%83%B3%E3%83%88%E3%81%AB%E8%B2%A2%E7%8C%AE%E3%81%99%E3%82%8B">Railsのドキュメントに貢献する</a>を参考にしながら、ぜひRailsコミュニティに貢献してみてしてください :)
+        </p>
+        <p>
+          本ガイドの品質向上に向けて、皆さまのご協力が得られれば幸いです。よろしくお願い致します。
+        </p>
+        <ol class="snsb" style="margin-left: 0px">
+	  <li><div class="fb-like" data-href="http://railsguides.jp/" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true"></div></li>
+	  <li><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://railsguides.jp/" data-text="Ruby on Rails ガイド：体系的に Rails を学ぼう (Rails 4.2 対応)" data-lang="en" data-hashtags="Railsガイド" data-via="RailsGuidesJP" width="100">Tweet</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script></li>
+          <li><iframe src="http://ghbtns.com/github-btn.html?user=yasslab&repo=railsguides.jp&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="80" height="20"></iframe></li>
+          <li><a href="http://b.hatena.ne.jp/entry/railsguides.jp" class="hatena-bookmark-button" data-hatena-bookmark-title="Ruby on Rails ガイド：体系的に Rails を学ぼう (Rails 4.2 対応)" data-hatena-bookmark-layout="standard-balloon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="http://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="http://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script></li>          
+	  <li><div class="g-plusone" data-size="medium" data-lang="ja"></div>
+	    <script type="text/javascript">
+	      (function() {
+                var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+                po.src = 'https://apis.google.com/js/plusone.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+	      })();
+	    </script>
+	  </li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <hr class="hide" />
+  <div id="footer">
+    <div class="wrapper">
+      <div class="sitemap">
+          <dl class="L">
+            <dt>はじめに</dt>
+              <dd><a href="getting_started.html">Rails をはじめよう</a></dd>
+            <dt>モデル</dt>
+              <dd><a href="active_record_basics.html">Active Record の基礎</a></dd>
+              <dd><a href="active_record_migrations.html">Active Record マイグレーション</a></dd>
+              <dd><a href="active_record_validations.html">Active Record バリデーション</a></dd>
+              <dd><a href="active_record_callbacks.html">Active Record コールバック</a></dd>
+              <dd><a href="association_basics.html">Active Record の関連付け</a></dd>
+              <dd><a href="active_record_querying.html">Active Record クエリインターフェイス</a></dd>
+              <dd><a href="active_model_basics.html">Active Model の基礎</a></dd>
+            <dt>ビュー</dt>
+              <dd><a href="action_view_overview.html">Action View の概要</a></dd>
+              <dd><a href="layouts_and_rendering.html">レイアウトとレンダリング</a></dd>
+              <dd><a href="form_helpers.html">Action View フォームヘルパー</a></dd>
+            <dt>コントローラ</dt>
+              <dd><a href="action_controller_overview.html">Action Controller の概要</a></dd>
+              <dd><a href="routing.html">Rails ルーティング</a></dd>
+          </dl>
+          <dl class="C">
+            <dt>高度なトピック</dt>
+              <dd><a href="active_support_core_extensions.html">Active Support コア拡張機能</a></dd>
+              <dd><a href="i18n.html">Rails 国際化 (i18n) API</a></dd>
+              <dd><a href="action_mailer_basics.html">Action Mailer の基礎</a></dd>
+              <dd><a href="active_job_basics.html">Active Job の基礎</a></dd>
+              <dd><a href="testing.html">Rails テスティングガイド</a></dd>
+              <dd><a href="security.html">Rails セキュリティガイド</a></dd>
+              <dd><a href="debugging_rails_applications.html">Rails アプリケーションのデバッグ</a></dd>
+              <dd><a href="configuring.html">Rails アプリケーションを設定する</a></dd>
+              <dd><a href="command_line.html">コマンドラインツールと Rake タスク</a></dd>
+              <dd><a href="asset_pipeline.html">アセットパイプライン</a></dd>
+              <dd><a href="working_with_javascript_in_rails.html">Rails で JavaScript を使用する</a></dd>
+              <dd><a href="engines.html">Rails エンジン入門</a></dd>
+              <dd><a href="initialization.html">Rails の初期化プロセス</a></dd>
+              <dd><a href="constant_autoloading_and_reloading.html">定数の自動読み込みと再読み込み</a></dd>
+            <dt>Rails を拡張する</dt>
+              <dd><a href="plugins.html">Rails プラグイン作成入門</a></dd>
+              <dd><a href="rails_on_rack.html">Rails と Rack</a></dd>
+              <dd><a href="generators.html">Rails ジェネレータとテンプレート入門</a></dd>
+          </dl>
+          <dl class="R">
+            <dt>Ruby on Rails に貢献する</dt>
+              <dd><a href="contributing_to_ruby_on_rails.html">Ruby on Rails に貢献する方法</a></dd>
+              <dd><a href="development_dependencies_install.html">Rails コア開発環境の構築方法</a></dd>
+              <dd><a href="api_documentation_guidelines.html">APIドキュメント作成ガイドライン</a></dd>
+              <dd><a href="ruby_on_rails_guides_guidelines.html">Rails ガイドのガイドライン</a></dd>
+            <dt>メンテナンスポリシー</dt>
+              <dd><a href="maintenance_policy.html">メンテナンスポリシー</a></dd>
+            <dt>リリースノート</dt>
+              <dd><a href="upgrading_ruby_on_rails.html">Rails アップグレードガイド</a></dd>
+              <dd><a href="4_2_release_notes.html">Ruby on Rails 4.2 リリースノート</a></dd>
+              <dd><a href="4_1_release_notes.html">Ruby on Rails 4.1 リリースノート</a></dd>
+              <dd><a href="4_0_release_notes.html">Ruby on Rails 4.0 リリースノート</a></dd>
+              <dd><a href="3_2_release_notes.html">Ruby on Rails 3.2 Release Notes [未着手]</a></dd>
+              <dd><a href="3_1_release_notes.html">Ruby on Rails 3.1 Release Notes [未着手]</a></dd>
+              <dd><a href="3_0_release_notes.html">Ruby on Rails 3.0 Release Notes [未着手]</a></dd>
+              <dd><a href="2_3_release_notes.html">Ruby on Rails 2.3 Release Notes [未着手]</a></dd>
+              <dd><a href="2_2_release_notes.html">Ruby on Rails 2.2 Release Notes [未着手]</a></dd>
+          </dl>
+      </div>
+
+      <ol class="snsb" style="padding-top: 20px">
+	<li>本ガイドは<a href="https://creativecommons.org/licenses/by-sa/4.0/deed.ja">クリエイティブ・コモンズ 表示-継承 4.0 国際</a> (CC BY-SA 4.0) ライセンスに基づいて公開されています。また、「Rails」および「Ruby on Rails」という名称、そして Rails のロゴは、David Heinemeier Hansson による登録商標で、すべての権利を有しています。</li>
+      </ol>
+    </div>
+  </div>
+</h5>
+  <script type="text/javascript" src="javascripts/jquery.min.js"></script>
+  <script type="text/javascript" src="javascripts/responsive-tables.js"></script>
+  <script type="text/javascript" src="javascripts/guides.js"></script>
+  <script type="text/javascript" src="javascripts/syntaxhighlighter/shCore.js"></script>
+  <script type="text/javascript" src="javascripts/syntaxhighlighter/shBrushRuby.js"></script>
+  <script type="text/javascript" src="javascripts/syntaxhighlighter/shBrushXml.js"></script>
+  <script type="text/javascript" src="javascripts/syntaxhighlighter/shBrushSql.js"></script>
+  <script type="text/javascript" src="javascripts/syntaxhighlighter/shBrushPlain.js"></script>
+  <script type="text/javascript">
+    SyntaxHighlighter.all();
+    $(guidesIndex.bind);
+  </script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-50163209-4', 'auto');
+    ga('send', 'pageview');
+  </script>
+</body>
+</html>
