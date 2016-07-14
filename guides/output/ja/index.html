@@ -118,22 +118,28 @@ Ruby on Rails ガイド：体系的に Rails を学ぼう
                 <dd><a href="command_line.html">コマンドラインツールと Rake タスク</a></dd>
                 <dd><a href="asset_pipeline.html">アセットパイプライン</a></dd>
                 <dd><a href="working_with_javascript_in_rails.html">Rails で JavaScript を使用する</a></dd>
-                <dd><a href="engines.html">Rails エンジン入門</a></dd>
                 <dd><a href="initialization.html">Rails の初期化プロセス</a></dd>
-                <dd><a href="constant_autoloading_and_reloading.html">定数の自動読み込みと再読み込み</a></dd>
+                <dd><a href="autoloading_and_reloading_constants.html">定数の自動読み込みと再読み込み</a></dd>
+                <dd><a href="caching_with_rails.html">Rails のキャッシュ概要</a></dd>
+                <dd><a href="active_support_instrumentation.html">Active Support Instrumentation</a></dd>
+                <dd><a href="profiling.html">Railsアプリケーションのプロファイリング</a></dd>
+                <dd><a href="api_app.html">Rails で API 専用アプリを構築する</a></dd>
+                <dd><a href="action_cable_overview.html">Action Cable の概要</a></dd>
                 <dt>Rails を拡張する</dt>
                 <dd><a href="plugins.html">Rails プラグイン作成入門</a></dd>
                 <dd><a href="rails_on_rack.html">Rails と Rack</a></dd>
                 <dd><a href="generators.html">Rails ジェネレータとテンプレート入門</a></dd>
+                <dd><a href="engines.html">Rails エンジン入門</a></dd>
                 <dt>Ruby on Rails に貢献する</dt>
                 <dd><a href="contributing_to_ruby_on_rails.html">Ruby on Rails に貢献する方法</a></dd>
                 <dd><a href="development_dependencies_install.html">Rails コア開発環境の構築方法</a></dd>
-                <dd><a href="api_documentation_guidelines.html">APIドキュメント作成ガイドライン</a></dd>
+                <dd><a href="api_documentation_guidelines.html">API ドキュメント作成ガイドライン</a></dd>
                 <dd><a href="ruby_on_rails_guides_guidelines.html">Rails ガイドのガイドライン</a></dd>
                 <dt>メンテナンスポリシー</dt>
                 <dd><a href="maintenance_policy.html">メンテナンスポリシー</a></dd>
                 <dt>リリースノート</dt>
                 <dd><a href="upgrading_ruby_on_rails.html">Rails アップグレードガイド</a></dd>
+                <dd><a href="5_0_release_notes.html">Ruby on Rails 5.0 リリースノート</a></dd>
                 <dd><a href="4_2_release_notes.html">Ruby on Rails 4.2 リリースノート</a></dd>
                 <dd><a href="4_1_release_notes.html">Ruby on Rails 4.1 リリースノート</a></dd>
                 <dd><a href="4_0_release_notes.html">Ruby on Rails 4.0 リリースノート</a></dd>
@@ -184,19 +190,24 @@ Ruby on Rails ガイド：体系的に Rails を学ぼう
                   <option value="command_line.html">コマンドラインツールと Rake タスク</option>
                   <option value="asset_pipeline.html">アセットパイプライン</option>
                   <option value="working_with_javascript_in_rails.html">Rails で JavaScript を使用する</option>
-                  <option value="engines.html">Rails エンジン入門</option>
                   <option value="initialization.html">Rails の初期化プロセス</option>
-                  <option value="constant_autoloading_and_reloading.html">定数の自動読み込みと再読み込み</option>
+                  <option value="autoloading_and_reloading_constants.html">定数の自動読み込みと再読み込み</option>
+                  <option value="caching_with_rails.html">Rails のキャッシュ概要</option>
+                  <option value="active_support_instrumentation.html">Active Support Instrumentation</option>
+                  <option value="profiling.html">Railsアプリケーションのプロファイリング</option>
+                  <option value="api_app.html">Rails で API 専用アプリを構築する</option>
+                  <option value="action_cable_overview.html">Action Cable の概要</option>
               </optgroup>
               <optgroup label="Rails を拡張する">
                   <option value="plugins.html">Rails プラグイン作成入門</option>
                   <option value="rails_on_rack.html">Rails と Rack</option>
                   <option value="generators.html">Rails ジェネレータとテンプレート入門</option>
+                  <option value="engines.html">Rails エンジン入門</option>
               </optgroup>
               <optgroup label="Ruby on Rails に貢献する">
                   <option value="contributing_to_ruby_on_rails.html">Ruby on Rails に貢献する方法</option>
                   <option value="development_dependencies_install.html">Rails コア開発環境の構築方法</option>
-                  <option value="api_documentation_guidelines.html">APIドキュメント作成ガイドライン</option>
+                  <option value="api_documentation_guidelines.html">API ドキュメント作成ガイドライン</option>
                   <option value="ruby_on_rails_guides_guidelines.html">Rails ガイドのガイドライン</option>
               </optgroup>
               <optgroup label="メンテナンスポリシー">
@@ -204,6 +215,7 @@ Ruby on Rails ガイド：体系的に Rails を学ぼう
               </optgroup>
               <optgroup label="リリースノート">
                   <option value="upgrading_ruby_on_rails.html">Rails アップグレードガイド</option>
+                  <option value="5_0_release_notes.html">Ruby on Rails 5.0 リリースノート</option>
                   <option value="4_2_release_notes.html">Ruby on Rails 4.2 リリースノート</option>
                   <option value="4_1_release_notes.html">Ruby on Rails 4.1 リリースノート</option>
                   <option value="4_0_release_notes.html">Ruby on Rails 4.0 リリースノート</option>
@@ -303,7 +315,7 @@ Ruby on Rails ガイド：体系的に Rails を学ぼう
       ビルトインのフォームヘルパーについて解説します。
 </dd><h3>コントローラ</h3>
     <dt><a href="action_controller_overview.html">Action Controller の概要</a></dt><dd>
-      コントローラの動作と、アプリケーションのリクエストサイクルでコントローラがどのように使われるかについて解説します。セッション、フィルタ、cookie、データストリーミング、リクエストによって発生する例外、その他多くの話題を取り扱っています。
+      本ガイドでは、コントローラの動作と、アプリケーションのリクエストサイクルでコントローラがどのように使われるかについて説明します。セッション、フィルタ、cookie、データストリーミング、リクエストによって発生する例外、その他多くの話題を取り扱っています。
 </dd>    <dt><a href="routing.html">Rails ルーティング</a></dt><dd>
       Railsのルーティング機能について解説しますRailsアプリケーションで行われているルーティングのしくみについて理解したい場合は、ここからお読みください。
 </dd><h3>高度なトピック</h3>
@@ -315,8 +327,8 @@ Ruby on Rails ガイド：体系的に Rails を学ぼう
       Action Mailerを使用してメールを送受信する方法について解説します。
 </dd>    <dt><a href="active_job_basics.html">Active Job の基礎</a></dt><dd>
       バックグラウンドで動作するジョブの作成・キュー送信・実行方法に必要なすべてを解説します。
-</dd>    <dt><a href="testing.html">Rails テスティングガイド</a></dt><dd class="work-in-progress">Work in progress</dd><dd>
-      Railsで単体テストと機能テストを実行するための総合的な解説を行います。「テスティングとは何か」からテスティングAPIまですべてのトピックを扱います。
+</dd>    <dt><a href="testing.html">Rails テスティングガイド</a></dt><dd>
+      Railsでさまざまなテストを実行するための総合的な解説を行います。「テスティングとは何か」から結合テストまですべてのトピックを扱います。
 </dd>    <dt><a href="security.html">Rails セキュリティガイド</a></dt><dd>
       Webアプリケーション全般におけるセキュリティ問題と、Railsでこれらの問題を回避する方法について解説します。
 </dd>    <dt><a href="debugging_rails_applications.html">Rails アプリケーションのデバッグ</a></dt><dd>
@@ -329,12 +341,20 @@ Ruby on Rails ガイド：体系的に Rails を学ぼう
       アセットパイプラインに関するドキュメントです。
 </dd>    <dt><a href="working_with_javascript_in_rails.html">Rails で JavaScript を使用する</a></dt><dd>
       RailsビルトインのAjax/JavaScriptについて解説します。
-</dd>    <dt><a href="engines.html">Rails エンジン入門</a></dt><dd class="work-in-progress">Work in progress</dd><dd>
-      マウント可能なエンジンの作成方法について解説します。
 </dd>    <dt><a href="initialization.html">Rails の初期化プロセス</a></dt><dd class="work-in-progress">Work in progress</dd><dd>
-      Rails 4内部の初期化プロセスについて解説します。
-</dd>    <dt><a href="constant_autoloading_and_reloading.html">定数の自動読み込みと再読み込み</a></dt><dd>
-      自動読み込みやリロードの仕組みについて解説します。
+      Rails 内部の初期化プロセスについて解説します。
+</dd>    <dt><a href="autoloading_and_reloading_constants.html">定数の自動読み込みと再読み込み</a></dt><dd>
+      定数の自動読み込みや再読み込みの動作について解説します。
+</dd>    <dt><a href="caching_with_rails.html">Rails のキャッシュ概要</a></dt><dd>
+      キャッシュを活用してRailsを高速化する方法について解説します。
+</dd>    <dt><a href="active_support_instrumentation.html">Active Support Instrumentation</a></dt><dd class="work-in-progress">Work in progress</dd><dd>
+      RailsなどのRubyコード内のイベント測定に使う、Active Support内のInstrumentation APIについて解説します。
+</dd>    <dt><a href="profiling.html">Railsアプリケーションのプロファイリング</a></dt><dd class="work-in-progress">Work in progress</dd><dd>
+      Railsのパフォーマンス向上に役立つプロファイリングの手法について解説します。
+</dd>    <dt><a href="api_app.html">Rails で API 専用アプリを構築する</a></dt><dd>
+      JSON APIアプリケーションをRailsで効果的に作成する方法を解説します。
+</dd>    <dt><a href="action_cable_overview.html">Action Cable の概要</a></dt><dd>
+      リアルタイム機能を実現するAction Cableの動作と、WebSocketsの利用法について解説します。
 </dd><h3>Rails を拡張する</h3>
     <dt><a href="plugins.html">Rails プラグイン作成入門</a></dt><dd class="work-in-progress">Work in progress</dd><dd>
       プラグインを作成してRailsの機能を拡張する方法について解説します。
@@ -342,12 +362,14 @@ Ruby on Rails ガイド：体系的に Rails を学ぼう
       RailsとRackがどのように統合されているか、および他のRackコンポーネントとのインターフェイスについて解説します。
 </dd>    <dt><a href="generators.html">Rails ジェネレータとテンプレート入門</a></dt><dd>
       新しいジェネレータを拡張に追加したり、ビルトインのRailsジェネレータの要素に別の要素を提供したりする方法 (scaffoldジェネレータに別のテストスタブを提供するなど) について解説します。
+</dd>    <dt><a href="engines.html">Rails エンジン入門</a></dt><dd>
+      マウント可能なエンジンの作成方法について解説します。
 </dd><h3>Ruby on Rails に貢献する</h3>
     <dt><a href="contributing_to_ruby_on_rails.html">Ruby on Rails に貢献する方法</a></dt><dd>
       Railsは「どこかで誰かがうまくやってくれているフレームワーク」ではありません。現在も継続しているRailsフレームワーク開発に貢献するさまざまな方法について解説します。
 </dd>    <dt><a href="development_dependencies_install.html">Rails コア開発環境の構築方法</a></dt><dd>
       Ruby on Rails自体の開発環境を構築する方法について解説します。
-</dd>    <dt><a href="api_documentation_guidelines.html">APIドキュメント作成ガイドライン</a></dt><dd>
+</dd>    <dt><a href="api_documentation_guidelines.html">API ドキュメント作成ガイドライン</a></dt><dd>
       Ruby on Rails APIドキュメントのガイドラインについて解説します。
 </dd>    <dt><a href="ruby_on_rails_guides_guidelines.html">Rails ガイドのガイドライン</a></dt><dd>
       Ruby on Railsガイド作成方法のガイドラインです。
@@ -357,6 +379,8 @@ Ruby on Rails ガイド：体系的に Rails を学ぼう
 </dd><h3>リリースノート</h3>
     <dt><a href="upgrading_ruby_on_rails.html">Rails アップグレードガイド</a></dt><dd>
       アプリケーションのRuby on Railsを最新バージョンにアップグレードする方法について解説します。
+</dd>    <dt><a href="5_0_release_notes.html">Ruby on Rails 5.0 リリースノート</a></dt><dd>
+      Rails 5.0のリリースノートです。
 </dd>    <dt><a href="4_2_release_notes.html">Ruby on Rails 4.2 リリースノート</a></dt><dd>
       Rails 4.2のリリースノートです。
 </dd>    <dt><a href="4_1_release_notes.html">Ruby on Rails 4.1 リリースノート</a></dt><dd>
@@ -470,24 +494,30 @@ Ruby on Rails ガイド：体系的に Rails を学ぼう
               <dd><a href="command_line.html">コマンドラインツールと Rake タスク</a></dd>
               <dd><a href="asset_pipeline.html">アセットパイプライン</a></dd>
               <dd><a href="working_with_javascript_in_rails.html">Rails で JavaScript を使用する</a></dd>
-              <dd><a href="engines.html">Rails エンジン入門</a></dd>
               <dd><a href="initialization.html">Rails の初期化プロセス</a></dd>
-              <dd><a href="constant_autoloading_and_reloading.html">定数の自動読み込みと再読み込み</a></dd>
+              <dd><a href="autoloading_and_reloading_constants.html">定数の自動読み込みと再読み込み</a></dd>
+              <dd><a href="caching_with_rails.html">Rails のキャッシュ概要</a></dd>
+              <dd><a href="active_support_instrumentation.html">Active Support Instrumentation</a></dd>
+              <dd><a href="profiling.html">Railsアプリケーションのプロファイリング</a></dd>
+              <dd><a href="api_app.html">Rails で API 専用アプリを構築する</a></dd>
+              <dd><a href="action_cable_overview.html">Action Cable の概要</a></dd>
             <dt>Rails を拡張する</dt>
               <dd><a href="plugins.html">Rails プラグイン作成入門</a></dd>
               <dd><a href="rails_on_rack.html">Rails と Rack</a></dd>
               <dd><a href="generators.html">Rails ジェネレータとテンプレート入門</a></dd>
+              <dd><a href="engines.html">Rails エンジン入門</a></dd>
           </dl>
           <dl class="R">
             <dt>Ruby on Rails に貢献する</dt>
               <dd><a href="contributing_to_ruby_on_rails.html">Ruby on Rails に貢献する方法</a></dd>
               <dd><a href="development_dependencies_install.html">Rails コア開発環境の構築方法</a></dd>
-              <dd><a href="api_documentation_guidelines.html">APIドキュメント作成ガイドライン</a></dd>
+              <dd><a href="api_documentation_guidelines.html">API ドキュメント作成ガイドライン</a></dd>
               <dd><a href="ruby_on_rails_guides_guidelines.html">Rails ガイドのガイドライン</a></dd>
             <dt>メンテナンスポリシー</dt>
               <dd><a href="maintenance_policy.html">メンテナンスポリシー</a></dd>
             <dt>リリースノート</dt>
               <dd><a href="upgrading_ruby_on_rails.html">Rails アップグレードガイド</a></dd>
+              <dd><a href="5_0_release_notes.html">Ruby on Rails 5.0 リリースノート</a></dd>
               <dd><a href="4_2_release_notes.html">Ruby on Rails 4.2 リリースノート</a></dd>
               <dd><a href="4_1_release_notes.html">Ruby on Rails 4.1 リリースノート</a></dd>
               <dd><a href="4_0_release_notes.html">Ruby on Rails 4.0 リリースノート</a></dd>

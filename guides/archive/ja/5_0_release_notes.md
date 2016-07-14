@@ -9,7 +9,7 @@ Rails 5.0の注目ポイント
 * Action Cable
 * Rails API
 * Active Record Attributes API
-* Test Runner
+* テストランナー
 * Exclusive use of `rails` CLI over Rake
 * Sprockets 3
 * Turbolinks 5
