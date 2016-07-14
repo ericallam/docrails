@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -ex
+
 # Update HTMLs using 'archive.zip' downloaded by GTT
 
 if [ -n "$GTT_DOWNLOADER" ]; then
