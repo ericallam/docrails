@@ -1,3 +1,6 @@
+﻿
+**DO NOT READ THIS FILE ON GITHUB, GUIDES ARE PUBLISHED ON http://guides.rubyonrails.org.**
+
 Active Support Instrumentation
 ==============================
 
@@ -5,7 +8,7 @@ Active Support is a part of core Rails that provides Ruby language extensions, u
 
 In this guide, you will learn how to use the instrumentation API inside of Active Support to measure events inside of Rails and other Ruby code.
 
-After reading this guide, you will know:
+このガイドの内容:
 
 * What instrumentation can provide.
 * The hooks inside the Rails framework for instrumentation.
@@ -17,7 +20,7 @@ After reading this guide, you will know:
 Introduction to instrumentation
 -------------------------------
 
-The instrumentation API provided by Active Support allows developers to provide hooks which other developers may hook into. There are several of these within the Rails framework, as described below in <TODO: link to section detailing each hook point>. With this API, developers can choose to be notified when certain events occur inside their application or another piece of Ruby code.
+The instrumentation API provided by Active Support allows developers to provide hooks which other developers may hook into. There are several of these within the [Rails framework](#rails-framework-hooks). With this API, developers can choose to be notified when certain events occur inside their application or another piece of Ruby code.
 
 For example, there is a hook provided within Active Record that is called every time Active Record uses an SQL query on a database. This hook could be **subscribed** to, and used to track the number of queries during a certain action. There's another hook around the processing of an action of a controller. This could be used, for instance, to track how long a specific action has taken.
 
@@ -28,13 +31,13 @@ Rails framework hooks
 
 Within the Ruby on Rails framework, there are a number of hooks provided for common events. These are detailed below.
 
-Action Controller
+  action_controller
 -----------------
 
 ### write_fragment.action_controller
 
 | Key    | Value            |
-| ------ | ---------------- |
+|:-----------------------------------|:--------------------------------|
 | `:key` | The complete key |
 
 ```ruby
@@ -46,7 +49,7 @@ Action Controller
 ### read_fragment.action_controller
 
 | Key    | Value            |
-| ------ | ---------------- |
+|:-----------------------------------|:--------------------------------|
 | `:key` | The complete key |
 
 ```ruby
@@ -58,7 +61,7 @@ Action Controller
 ### expire_fragment.action_controller
 
 | Key    | Value            |
-| ------ | ---------------- |
+|:-----------------------------------|:--------------------------------|
 | `:key` | The complete key |
 
 ```ruby
@@ -70,7 +73,7 @@ Action Controller
 ### exist_fragment?.action_controller
 
 | Key    | Value            |
-| ------ | ---------------- |
+|:-----------------------------------|:--------------------------------|
 | `:key` | The complete key |
 
 ```ruby
@@ -82,7 +85,7 @@ Action Controller
 ### write_page.action_controller
 
 | Key     | Value             |
-| ------- | ----------------- |
+|:-----------------------------------|:--------------------------------|
 | `:path` | The complete path |
 
 ```ruby
@@ -94,7 +97,7 @@ Action Controller
 ### expire_page.action_controller
 
 | Key     | Value             |
-| ------- | ----------------- |
+|:-----------------------------------|:--------------------------------|
 | `:path` | The complete path |
 
 ```ruby
@@ -106,10 +109,11 @@ Action Controller
 ### start_processing.action_controller
 
 | Key           | Value                                                     |
-| ------------- | --------------------------------------------------------- |
+|:-----------------------------------|:--------------------------------|
 | `:controller` | The controller name                                       |
 | `:action`     | The action                                                |
 | `:params`     | Hash of request parameters without any filtered parameter |
+| `:headers`    | Request headers                                           |
 | `:format`     | html/js/json/xml etc                                      |
 | `:method`     | HTTP request verb                                         |
 | `:path`       | Request path                                              |
@@ -119,7 +123,8 @@ Action Controller
   controller: "PostsController",
   action: "new",
   params: { "action" => "new", "controller" => "posts" },
-  format: :html,
+  headers: #<ActionDispatch::Http::Headers:0x0055a67a519b88>,
+    format.html
   method: "GET",
   path: "/posts/new"
 }
@@ -128,24 +133,28 @@ Action Controller
 ### process_action.action_controller
 
 | Key             | Value                                                     |
-| --------------- | --------------------------------------------------------- |
+|:-----------------------------------|:--------------------------------|
 | `:controller`   | The controller name                                       |
 | `:action`       | The action                                                |
 | `:params`       | Hash of request parameters without any filtered parameter |
+| `:headers`      | Request headers                                           |
 | `:format`       | html/js/json/xml etc                                      |
 | `:method`       | HTTP request verb                                         |
 | `:path`         | Request path                                              |
+| `:status`       | HTTP status code                                          |
 | `:view_runtime` | Amount spent in view in ms                                |
+| `:db_runtime`   | Amount spent executing database queries in ms             |
 
 ```ruby
 {
   controller: "PostsController",
   action: "index",
   params: {"action" => "index", "controller" => "posts"},
-  format: :html,
+  headers: #<ActionDispatch::Http::Headers:0x0055a67a519b88>,
+    format.html
   method: "GET",
   path: "/posts",
-  status: 200,
+* `:status`
   view_runtime: 46.848,
   db_runtime: 0.157
 }
@@ -154,7 +163,7 @@ Action Controller
 ### send_file.action_controller
 
 | Key     | Value                     |
-| ------- | ------------------------- |
+|:-----------------------------------|:--------------------------------|
 | `:path` | Complete path to the file |
 
 INFO. Additional keys may be added by the caller.
@@ -166,13 +175,13 @@ INFO. Additional keys may be added by the caller.
 ### redirect_to.action_controller
 
 | Key         | Value              |
-| ----------- | ------------------ |
+`
 | `:status`   | HTTP response code |
 | `:location` | URL to redirect to |
 
 ```ruby
 {
-  status: 302,
+* `:status`
   location: "http://localhost:3000/posts/new"
 }
 ```
@@ -180,7 +189,7 @@ INFO. Additional keys may be added by the caller.
 ### halted_callback.action_controller
 
 | Key       | Value                         |
-| --------- | ----------------------------- |
+|:-----------------------------------|:--------------------------------|
 | `:filter` | Filter that halted the action |
 
 ```ruby
@@ -195,7 +204,7 @@ Action View
 ### render_template.action_view
 
 | Key           | Value                 |
-| ------------- | --------------------- |
+|:-----------------------------------|:--------------------------------|
 | `:identifier` | Full path to template |
 | `:layout`     | Applicable layout     |
 
@@ -209,12 +218,12 @@ Action View
 ### render_partial.action_view
 
 | Key           | Value                 |
-| ------------- | --------------------- |
+|:-----------------------------------|:--------------------------------|
 | `:identifier` | Full path to template |
 
 ```ruby
 {
-  identifier: "/Users/adam/projects/notifications/app/views/posts/_form.html.erb",
+  identifier: "/Users/adam/projects/notifications/app/views/posts/_form.html.erb"
 }
 ```
 
@@ -223,11 +232,12 @@ Active Record
 
 ### sql.active_record
 
-| Key          | Value                 |
-| ------------ | --------------------- |
-| `:sql`       | SQL statement         |
-| `:name`      | Name of the operation |
-| `:object_id` | `self.object_id`      |
+| Key              | Value                 |
+|:-----------------------------------|:--------------------------------|
+| `:sql`           | SQL statement         |
+| `:name`          | Name of the operation |
+| `:connection_id` | `self.object_id`      |
+| `:binds`         | Bind parameters       |
 
 INFO. The adapters will add their own data as well.
 
@@ -240,13 +250,19 @@ INFO. The adapters will add their own data as well.
 }
 ```
 
-### identity.active_record
+### instantiation.active_record
 
 | Key              | Value                                     |
-| ---------------- | ----------------------------------------- |
-| `:line`          | Primary Key of object in the identity map |
-| `:name`          | Record's class                            |
-| `:connection_id` | `self.object_id`                          |
+|:-----------------------------------|:--------------------------------|
+| `:record_count`  | Number of records that instantiated       |
+| `:class_name`    | Record's class                            |
+
+```ruby
+{
+  record_count: 1,
+      class_name: "User",
+}
+```
 
 Action Mailer
 -------------
@@ -254,7 +270,7 @@ Action Mailer
 ### receive.action_mailer
 
 | Key           | Value                                        |
-| ------------- | -------------------------------------------- |
+|:-----------------------------------|:--------------------------------|
 | `:mailer`     | Name of the mailer class                     |
 | `:message_id` | ID of the message, generated by the Mail gem |
 | `:subject`    | Subject of the mail                          |
@@ -280,7 +296,7 @@ Action Mailer
 ### deliver.action_mailer
 
 | Key           | Value                                        |
-| ------------- | -------------------------------------------- |
+|:-----------------------------------|:--------------------------------|
 | `:mailer`     | Name of the mailer class                     |
 | `:message_id` | ID of the message, generated by the Mail gem |
 | `:subject`    | Subject of the mail                          |
@@ -303,24 +319,13 @@ Action Mailer
 }
 ```
 
-ActiveResource
---------------
-
-### request.active_resource
-
-| Key            | Value                |
-| -------------- | -------------------- |
-| `:method`      | HTTP method          |
-| `:request_uri` | Complete URI         |
-| `:result`      | HTTP response object |
-
 Active Support
 --------------
 
 ### cache_read.active_support
 
 | Key                | Value                                             |
-| ------------------ | ------------------------------------------------- |
+|:-----------------------------------|:--------------------------------|
 | `:key`             | Key used in the store                             |
 | `:hit`             | If this read is a hit                             |
 | `:super_operation` | :fetch is added when a read is used with `#fetch` |
@@ -330,7 +335,7 @@ Active Support
 This event is only used when `#fetch` is called with a block.
 
 | Key    | Value                 |
-| ------ | --------------------- |
+|:-----------------------------------|:--------------------------------|
 | `:key` | Key used in the store |
 
 INFO. Options passed to fetch will be merged with the payload when writing to the store
@@ -347,7 +352,7 @@ INFO. Options passed to fetch will be merged with the payload when writing to th
 This event is only used when `#fetch` is called with a block.
 
 | Key    | Value                 |
-| ------ | --------------------- |
+|:-----------------------------------|:--------------------------------|
 | `:key` | Key used in the store |
 
 INFO. Options passed to fetch will be merged with the payload.
@@ -361,10 +366,10 @@ INFO. Options passed to fetch will be merged with the payload.
 ### cache_write.active_support
 
 | Key    | Value                 |
-| ------ | --------------------- |
+|:-----------------------------------|:--------------------------------|
 | `:key` | Key used in the store |
 
-INFO. Cache stores my add their own keys
+INFO. Cache stores may add their own keys
 
 ```ruby
 {
@@ -375,7 +380,7 @@ INFO. Cache stores my add their own keys
 ### cache_delete.active_support
 
 | Key    | Value                 |
-| ------ | --------------------- |
+|:-----------------------------------|:--------------------------------|
 | `:key` | Key used in the store |
 
 ```ruby
@@ -387,7 +392,7 @@ INFO. Cache stores my add their own keys
 ### cache_exist?.active_support
 
 | Key    | Value                 |
-| ------ | --------------------- |
+|:-----------------------------------|:--------------------------------|
 | `:key` | Key used in the store |
 
 ```ruby
@@ -396,46 +401,80 @@ INFO. Cache stores my add their own keys
 }
 ```
 
+Active Job
+--------
+
+### enqueue_at.active_job
+
+| Key          | Value                                  |
+|:-----------------------------------|:--------------------------------|
+| `:adapter`   | QueueAdapter object processing the job |
+| `:job`       | Job object                             |
+
+### enqueue.active_job
+
+| Key          | Value                                  |
+|:-----------------------------------|:--------------------------------|
+| `:adapter`   | QueueAdapter object processing the job |
+| `:job`       | Job object                             |
+
+### perform_start.active_job
+
+| Key          | Value                                  |
+|:-----------------------------------|:--------------------------------|
+| `:adapter`   | QueueAdapter object processing the job |
+| `:job`       | Job object                             |
+
+### perform.active_job
+
+| Key          | Value                                  |
+|:-----------------------------------|:--------------------------------|
+| `:adapter`   | QueueAdapter object processing the job |
+| `:job`       | Job object                             |
+
+
 Railties
 --------
 
 ### load_config_initializer.railties
 
 | Key            | Value                                                 |
-| -------------- | ----------------------------------------------------- |
+|:-----------------------------------|:--------------------------------|
 | `:initializer` | Path to loaded initializer from `config/initializers` |
 
-Rails
+* rails
 -----
 
 ### deprecation.rails
 
 | Key          | Value                           |
-| ------------ | ------------------------------- |
+|:-----------------------------------|:--------------------------------|
 | `:message`   | The deprecation warning         |
 | `:callstack` | Where the deprecation came from |
 
 Subscribing to an event
 -----------------------
 
-Subscribing to an event is easy. Use `ActiveSupport::Notifications.subscribe` with a block to listen to any notification.
+Subscribing to an event is easy. Use `ActiveSupport::Notifications.subscribe` with a block to
+listen to any notification.
 
 The block receives the following arguments:
 
 * The name of the event
 * Time when it started
 * Time when it finished
-* An unique ID for this event
+* A unique ID for this event
 * The payload (described in previous sections)
 
 ```ruby
 ActiveSupport::Notifications.subscribe "process_action.action_controller" do |name, started, finished, unique_id, data|
   # your own custom stuff
   Rails.logger.info "#{name} Received!"
-end
+end 
 ```
 
-Defining all those block arguments each time can be tedious. You can easily create an `ActiveSupport::Notifications::Event` from block arguments like this:
+Defining all those block arguments each time can be tedious. You can easily create an `ActiveSupport::Notifications::Event`
+from block arguments like this:
 
 ```ruby
 ActiveSupport::Notifications.subscribe "process_action.action_controller" do |*args|
@@ -446,7 +485,7 @@ ActiveSupport::Notifications.subscribe "process_action.action_controller" do |*a
   event.payload   # => {:extra=>information}
 
   Rails.logger.info "#{event} Received!"
-end
+end 
 ```
 
 Most times you only care about the data itself. Here is a shortcut to just get the data.
@@ -455,28 +494,32 @@ Most times you only care about the data itself. Here is a shortcut to just get t
 ActiveSupport::Notifications.subscribe "process_action.action_controller" do |*args|
   data = args.extract_options!
   data # { extra: :information }
+end 
 ```
 
-You may also subscribe to events matching a regular expression. This enables you to subscribe to multiple events at once. Here's you could subscribe to everything from `ActionController`.
+You may also subscribe to events matching a regular expression. This enables you to subscribe to
+multiple events at once. Here's you could subscribe to everything from `ActionController`.
 
 ```ruby
 ActiveSupport::Notifications.subscribe /action_controller/ do |*args|
   # inspect all ActionController events
-end
+end 
 ```
 
 Creating custom events
 ----------------------
 
-Adding your own events is easy as well. `ActiveSupport::Notifications` will take care of all the heavy lifting for you. Simply call `instrument` with a `name`, `payload` and a block.
-The notification will be sent after the block returns. `ActiveSupport` will generate the start and end times as well as the unique ID. All data passed into the `instrument` call will make it into the payload.
+Adding your own events is easy as well. `ActiveSupport::Notifications` will take care of
+all the heavy lifting for you. Simply call `instrument` with a `name`, `payload` and a block.
+The notification will be sent after the block returns. `ActiveSupport` will generate the start and end times
+as well as the unique ID. All data passed into the `instrument` call will make it into the payload.
 
-Here's an example:
+以下に例を示します。
 
 ```ruby
 ActiveSupport::Notifications.instrument "my.custom.event", this: :data do
   # do your custom stuff here
-end
+end 
 ```
 
 Now you can listen to this event with:
@@ -484,7 +527,7 @@ Now you can listen to this event with:
 ```ruby
 ActiveSupport::Notifications.subscribe "my.custom.event" do |name, started, finished, unique_id, data|
   puts data.inspect # {:this=>:data}
-end
+end 
 ```
 
 You should follow Rails conventions when defining your own events. The format is: `event.library`.

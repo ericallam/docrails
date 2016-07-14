@@ -24,7 +24,7 @@
     <meta name="twitter:image" content="http://railsguides.jp/images/cover_for_twitter.png" />
     <meta name="twitter:url"   content="http://railsguides.jp/" />
 
-    <title>Active Support Instrumentation | Rails ガイド</title>
+    <title>Ruby on Rails ガイド：体系的に Rails を学ぼう</title>
     <meta name="apple-mobile-web-app-title" content="Railsガイド" />
     <meta name="application-name"           content="Railsガイド" />
 
@@ -232,99 +232,78 @@
   <hr class="hide" />
   <div id="feature">
   <div class="wrapper">
-      <p><strong>DO NOT READ THIS FILE ON GITHUB, GUIDES ARE PUBLISHED ON <a href="http://guides.rubyonrails.org">http://guides.rubyonrails.org</a>.</strong></p><h2>Active Support Instrumentation</h2><p>Active Support is a part of core Rails that provides Ruby language extensions, utilities and other things. One of the things it includes is an instrumentation API that can be used inside an application to measure certain actions that occur within Ruby code, such as that inside a Rails application or the framework itself. It is not limited to Rails, however. It can be used independently in other Ruby scripts if it is so desired.</p><p>In this guide, you will learn how to use the instrumentation API inside of Active Support to measure events inside of Rails and other Ruby code.</p><p>このガイドの内容:</p>
+      <p>Action Cable の概要
+|:-----------------------------------|:--------------------------------|</p><p>In this guide you will learn how Action Cable works and how to use WebSockets to
+incorporate real-time features into your Rails application.</p><p>このガイドの内容:</p>
 <ul>
-<li>What instrumentation can provide.</li>
-<li>The hooks inside the Rails framework for instrumentation.</li>
-<li>Adding a subscriber to a hook.</li>
-<li>Building a custom instrumentation implementation.</li>
+<li>What Action Cable is and its integration on backend and frontend<br></li>
+<li>How to setup Action Cable</li>
+<li>How to setup channels</li>
+<li>Deployment and Architecture setup for running Action Cable</li>
 </ul>
 
                 <div id="subCol">
             <h3 class="chapter"><img src="images/chapters_icon.gif" alt="" />目次</h3>
             <ol class="chapters">
-<li><a href="#introduction-to-instrumentation">Introduction to instrumentation</a></li>
-<li><a href="#rails-framework-hooks">Rails framework hooks</a></li>
+<li><a href="#%E3%81%AF%E3%81%98%E3%82%81%E3%81%AB">はじめに</a></li>
+<li><a href="#what-is-pub-sub">What is Pub/Sub</a></li>
 <li>
-<a href="#action-controller">  action_controller</a>
+<a href="#server-side-components">Server-Side Components</a>
 
 <ul>
-<li><a href="#write-fragment-action-controller">write_fragment.action_controller</a></li>
-<li><a href="#read-fragment-action-controller">read_fragment.action_controller</a></li>
-<li><a href="#expire-fragment-action-controller">expire_fragment.action_controller</a></li>
-<li><a href="#exist-fragment-questionmark-action-controller">exist_fragment?.action_controller</a></li>
-<li><a href="#write-page-action-controller">write_page.action_controller</a></li>
-<li><a href="#expire-page-action-controller">expire_page.action_controller</a></li>
-<li><a href="#start-processing-action-controller">start_processing.action_controller</a></li>
-<li><a href="#process-action-action-controller">process_action.action_controller</a></li>
-<li><a href="#send-file-action-controller">send_file.action_controller</a></li>
-<li><a href="#send-data-action-controller">send_data.action_controller</a></li>
-<li><a href="#redirect-to-action-controller">redirect_to.action_controller</a></li>
-<li><a href="#halted-callback-action-controller">halted_callback.action_controller</a></li>
+<li><a href="#server-side-components-connections">Connections</a></li>
+<li><a href="#channels">Channels</a></li>
 </ul>
 </li>
 <li>
-<a href="#action-view">Action View</a>
+<a href="#client-side-components">Client-Side Components</a>
 
 <ul>
-<li><a href="#render-template-action-view">render_template.action_view</a></li>
-<li><a href="#render-partial-action-view">render_partial.action_view</a></li>
+<li><a href="#client-side-components-connections">Connections</a></li>
 </ul>
 </li>
 <li>
-<a href="#active-record">Active Record</a>
+<a href="#client-server-interactions">Client-Server Interactions</a>
 
 <ul>
-<li><a href="#sql-active-record">sql.active_record</a></li>
-<li><a href="#instantiation-active-record">instantiation.active_record</a></li>
+<li><a href="#streams">Streams</a></li>
+<li><a href="#broadcasting">Broadcasting</a></li>
+<li><a href="#client-server-interactions-subscriptions">Subscriptions</a></li>
+<li><a href="#passing-parameters-to-channels">Passing Parameters to Channels</a></li>
+<li><a href="#rebroadcasting-a-message">Rebroadcasting a Message</a></li>
 </ul>
 </li>
 <li>
-<a href="#action-mailer">Action Mailer</a>
+<a href="#full-stack-examples">Full-Stack Examples</a>
 
 <ul>
-<li><a href="#receive-action-mailer">receive.action_mailer</a></li>
-<li><a href="#deliver-action-mailer">deliver.action_mailer</a></li>
+<li><a href="#example-1-user-appearances">Example 1: User Appearances</a></li>
+<li><a href="#example-2-receiving-new-web-notifications">Example 2: Receiving New Web Notifications</a></li>
+<li><a href="#application"><code>application</code></a></li>
+<li><a href="#more-complete-examples">More Complete Examples</a></li>
 </ul>
 </li>
 <li>
-<a href="#active-support">Active Support</a>
+<a href="#configuration">Configuration</a>
 
 <ul>
-<li><a href="#cache-read-active-support">cache_read.active_support</a></li>
-<li><a href="#cache-generate-active-support">cache_generate.active_support</a></li>
-<li><a href="#cache-fetch-hit-active-support">cache_fetch_hit.active_support</a></li>
-<li><a href="#cache-write-active-support">cache_write.active_support</a></li>
-<li><a href="#cache-delete-active-support">cache_delete.active_support</a></li>
-<li><a href="#cache-exist-questionmark-active-support">cache_exist?.active_support</a></li>
+<li><a href="#subscription-adapter">Subscription Adapter</a></li>
+<li><a href="#allowed-request-origins">Allowed Request Origins</a></li>
+<li><a href="#consumer-configuration">Consumer Configuration</a></li>
+<li><a href="#other-configurations">Other Configurations</a></li>
 </ul>
 </li>
 <li>
-<a href="#active-job">Active Job</a>
+<a href="#running-standalone-cable-servers">Running Standalone Cable Servers</a>
 
 <ul>
-<li><a href="#enqueue-at-active-job">enqueue_at.active_job</a></li>
-<li><a href="#enqueue-active-job">enqueue.active_job</a></li>
-<li><a href="#perform-start-active-job">perform_start.active_job</a></li>
-<li><a href="#perform-active-job">perform.active_job</a></li>
+<li><a href="#in-app">In App</a></li>
+<li><a href="#standalone">Standalone</a></li>
+<li><a href="#notes">Notes</a></li>
 </ul>
 </li>
-<li>
-<a href="#railties">Railties</a>
-
-<ul>
-<li><a href="#load-config-initializer-railties">load_config_initializer.railties</a></li>
-</ul>
-</li>
-<li>
-<a href="#rails">* rails</a>
-
-<ul>
-<li><a href="#deprecation-rails">deprecation.rails</a></li>
-</ul>
-</li>
-<li><a href="#subscribing-to-an-event">Subscribing to an event</a></li>
-<li><a href="#creating-custom-events">Creating custom events</a></li>
+<li><a href="#dependencies">Dependencies</a></li>
+<li><a href="#deployment">Deployment</a></li>
 </ol>
 
           </div>
@@ -334,876 +313,520 @@
   <div id="container">
     <div class="wrapper">
       <div id="mainCol">
-        <h3 id="introduction-to-instrumentation"><a href="#introduction-to-instrumentation">1 Introduction to instrumentation</a></h3><p>The instrumentation API provided by Active Support allows developers to provide hooks which other developers may hook into. There are several of these within the <a href="#rails-framework-hooks">Rails framework</a>. With this API, developers can choose to be notified when certain events occur inside their application or another piece of Ruby code.</p><p>For example, there is a hook provided within Active Record that is called every time Active Record uses an SQL query on a database. This hook could be <strong>subscribed</strong> to, and used to track the number of queries during a certain action. There's another hook around the processing of an action of a controller. This could be used, for instance, to track how long a specific action has taken.</p><p>You are even able to create your own events inside your application which you can later subscribe to.</p><h3 id="rails-framework-hooks"><a href="#rails-framework-hooks">2 Rails framework hooks</a></h3><p>Within the Ruby on Rails framework, there are a number of hooks provided for common events. These are detailed below.</p><h3 id="action-controller"><a href="#action-controller">3   action_controller</a></h3><h4 id="write-fragment-action-controller"><a href="#write-fragment-action-controller">3.1 write_fragment.action_controller</a></h4>
-<table>
-<thead>
-<tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left"><code>:key</code></td>
-<td style="text-align: left">The complete key</td>
-</tr>
-</tbody>
-</table>
-<div class="code_container">
+        <h3 id="はじめに"><a href="#%E3%81%AF%E3%81%98%E3%82%81%E3%81%AB">1 はじめに</a></h3><p>Action Cable seamlessly integrates
+<a href="https://en.wikipedia.org/wiki/WebSocket">WebSockets</a> with the rest of your
+Rails application. It allows for real-time features to be written in Ruby in the
+same style and form as the rest of your Rails application, while still being
+performant and scalable. It's a full-stack offering that provides both a
+client-side JavaScript framework and a server-side Ruby framework. You have
+access to your full domain model written with Active Record or your ORM of
+choice.</p><h3 id="what-is-pub-sub"><a href="#what-is-pub-sub">2 What is Pub/Sub</a></h3><p><a href="https://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern">Pub/Sub</a>, or
+Publish-Subscribe, refers to a message queue paradigm whereby senders of
+information (publishers), send data to an abstract class of recipients
+(subscribers), without specifying individual recipients. Action Cable uses this
+approach to communicate between the server and many clients.</p><h3 id="server-side-components"><a href="#server-side-components">3 Server-Side Components</a></h3><h4 id="server-side-components-connections"><a href="#server-side-components-connections">3.1 Connections</a></h4><p><em>Connections</em> form the foundation of the client-server relationship. For every
+WebSocket accepted by the server, a connection object is instantiated. This
+object becomes the parent of all the <em>channel subscriptions</em> that are created
+from there on. The connection itself does not deal with any specific application
+logic beyond authentication and authorization. The client of a WebSocket
+connection is called the connection <em>consumer</em>. An individual user will create
+one consumer-connection pair per browser tab, window, or device they have open.</p><p>Connections are instances of <code>ApplicationCable::Connection</code>. In this class, you
+authorize the incoming connection, and proceed to establish it if the user can
+be identified.</p><h5 id="connection-setup"><a href="#connection-setup">3.1.1 Connection Setup</a></h5><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-{
-  key: 'posts/1-dashboard-view'
-}
+# app/channels/application_cable/connection.rb
+module ApplicationCable
+  class Connection &lt; ActionCable::Connection::Base
+    identified_by :current_user
+
+    def connect
+      self.current_user = find_verified_user
+    end 
+
+  protected
+      def find_verified_user
+        if current_user = User.find_by(id: cookies.signed[:user_id])
+          current_user
+    else
+          reject_unauthorized_connection
+        end
+      end
+  end 
+end
 
 </pre>
 </div>
-<h4 id="read-fragment-action-controller"><a href="#read-fragment-action-controller">3.2 read_fragment.action_controller</a></h4>
-<table>
-<thead>
-<tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left"><code>:key</code></td>
-<td style="text-align: left">The complete key</td>
-</tr>
-</tbody>
-</table>
-<div class="code_container">
+<p>Here <code>identified_by</code> is a connection identifier that can be used to find the
+specific connection later. Note that anything marked as an identifier will automatically
+create a delegate by the same name on any channel instances created off the connection.</p><p>This example relies on the fact that you will already have handled authentication of the user
+somewhere else in your application, and that a successful authentication sets a signed
+cookie with the user ID.</p><p>The cookie is then automatically sent to the connection instance when a new connection
+is attempted, and you use that to set the <code>current_user</code>. By identifying the connection
+by this same current user, you're also ensuring that you can later retrieve all open
+connections by a given user (and potentially disconnect them all if the user is deleted
+or unauthorized).</p><h4 id="channels"><a href="#channels">3.2 Channels</a></h4><p>A <em>channel</em> encapsulates a logical unit of work, similar to what a controller does in a
+regular MVC setup. By default, Rails creates a parent <code>ApplicationCable::Channel</code> class
+for encapsulating shared logic between your channels.</p><h5 id="parent-channel-setup"><a href="#parent-channel-setup">3.2.1 Parent Channel Setup</a></h5><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-{
-  key: 'posts/1-dashboard-view'
-}
+# app/channels/application_cable/channel.rb
+module ApplicationCable
+  class Channel &lt; ActionCable::Channel::Base
+  end 
+end
 
 </pre>
 </div>
-<h4 id="expire-fragment-action-controller"><a href="#expire-fragment-action-controller">3.3 expire_fragment.action_controller</a></h4>
-<table>
-<thead>
-<tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left"><code>:key</code></td>
-<td style="text-align: left">The complete key</td>
-</tr>
-</tbody>
-</table>
-<div class="code_container">
+<p>Then you would create your own channel classes. For example, you could have a
+<code>ChatChannel</code> and an <code>AppearanceChannel</code>:</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-{
-  key: 'posts/1-dashboard-view'
-}
+# app/channels/chat_channel.rb
+class ChatChannel &lt; ApplicationCable::Channel
+end 
 
-</pre>
-</div>
-<h4 id="exist-fragment-questionmark-action-controller"><a href="#exist-fragment-questionmark-action-controller">3.4 exist_fragment?.action_controller</a></h4>
-<table>
-<thead>
-<tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left"><code>:key</code></td>
-<td style="text-align: left">The complete key</td>
-</tr>
-</tbody>
-</table>
-<div class="code_container">
-<pre class="brush: ruby; gutter: false; toolbar: false">
-{
-  key: 'posts/1-dashboard-view'
-}
-
-</pre>
-</div>
-<h4 id="write-page-action-controller"><a href="#write-page-action-controller">3.5 write_page.action_controller</a></h4>
-<table>
-<thead>
-<tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left"><code>:path</code></td>
-<td style="text-align: left">The complete path</td>
-</tr>
-</tbody>
-</table>
-<div class="code_container">
-<pre class="brush: ruby; gutter: false; toolbar: false">
-{
-  path: '/users/1'
-}
-
-</pre>
-</div>
-<h4 id="expire-page-action-controller"><a href="#expire-page-action-controller">3.6 expire_page.action_controller</a></h4>
-<table>
-<thead>
-<tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left"><code>:path</code></td>
-<td style="text-align: left">The complete path</td>
-</tr>
-</tbody>
-</table>
-<div class="code_container">
-<pre class="brush: ruby; gutter: false; toolbar: false">
-{
-  path: '/users/1'
-}
-
-</pre>
-</div>
-<h4 id="start-processing-action-controller"><a href="#start-processing-action-controller">3.7 start_processing.action_controller</a></h4>
-<table>
-<thead>
-<tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left"><code>:controller</code></td>
-<td style="text-align: left">The controller name</td>
-</tr>
-<tr>
-<td style="text-align: left"><code>:action</code></td>
-<td style="text-align: left">The action</td>
-</tr>
-<tr>
-<td style="text-align: left"><code>:params</code></td>
-<td style="text-align: left">Hash of request parameters without any filtered parameter</td>
-</tr>
-<tr>
-<td style="text-align: left"><code>:headers</code></td>
-<td style="text-align: left">Request headers</td>
-</tr>
-<tr>
-<td style="text-align: left"><code>:format</code></td>
-<td style="text-align: left">html/js/json/xml etc</td>
-</tr>
-<tr>
-<td style="text-align: left"><code>:method</code></td>
-<td style="text-align: left">HTTP request verb</td>
-</tr>
-<tr>
-<td style="text-align: left"><code>:path</code></td>
-<td style="text-align: left">Request path</td>
-</tr>
-</tbody>
-</table>
-<div class="code_container">
-<pre class="brush: ruby; gutter: false; toolbar: false">
-{
-  controller: "PostsController",
-  action: "new",
-  params: { "action" =&gt; "new", "controller" =&gt; "posts" },
-  headers: #&lt;ActionDispatch::Http::Headers:0x0055a67a519b88&gt;,
-    format.html
-  method: "GET",
-  path: "/posts/new"
-}
-
-</pre>
-</div>
-<h4 id="process-action-action-controller"><a href="#process-action-action-controller">3.8 process_action.action_controller</a></h4>
-<table>
-<thead>
-<tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left"><code>:controller</code></td>
-<td style="text-align: left">The controller name</td>
-</tr>
-<tr>
-<td style="text-align: left"><code>:action</code></td>
-<td style="text-align: left">The action</td>
-</tr>
-<tr>
-<td style="text-align: left"><code>:params</code></td>
-<td style="text-align: left">Hash of request parameters without any filtered parameter</td>
-</tr>
-<tr>
-<td style="text-align: left"><code>:headers</code></td>
-<td style="text-align: left">Request headers</td>
-</tr>
-<tr>
-<td style="text-align: left"><code>:format</code></td>
-<td style="text-align: left">html/js/json/xml etc</td>
-</tr>
-<tr>
-<td style="text-align: left"><code>:method</code></td>
-<td style="text-align: left">HTTP request verb</td>
-</tr>
-<tr>
-<td style="text-align: left"><code>:path</code></td>
-<td style="text-align: left">Request path</td>
-</tr>
-<tr>
-<td style="text-align: left"><code>:status</code></td>
-<td style="text-align: left">HTTP status code</td>
-</tr>
-<tr>
-<td style="text-align: left"><code>:view_runtime</code></td>
-<td style="text-align: left">Amount spent in view in ms</td>
-</tr>
-<tr>
-<td style="text-align: left"><code>:db_runtime</code></td>
-<td style="text-align: left">Amount spent executing database queries in ms</td>
-</tr>
-</tbody>
-</table>
-<div class="code_container">
-<pre class="brush: ruby; gutter: false; toolbar: false">
-{
-  controller: "PostsController",
-  action: "index",
-  params: {"action" =&gt; "index", "controller" =&gt; "posts"},
-  headers: #&lt;ActionDispatch::Http::Headers:0x0055a67a519b88&gt;,
-    format.html
-  method: "GET",
-  path: "/posts",
-* `:status`
-  view_runtime: 46.848,
-  db_runtime: 0.157
-}
-
-</pre>
-</div>
-<h4 id="send-file-action-controller"><a href="#send-file-action-controller">3.9 send_file.action_controller</a></h4>
-<table>
-<thead>
-<tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left"><code>:path</code></td>
-<td style="text-align: left">Complete path to the file</td>
-</tr>
-</tbody>
-</table>
-<div class="info"><p>Additional keys may be added by the caller.</p></div><h4 id="send-data-action-controller"><a href="#send-data-action-controller">3.10 send_data.action_controller</a></h4><p><code>ActionController</code> does not had any specific information to the payload. All options are passed through to the payload.</p><h4 id="redirect-to-action-controller"><a href="#redirect-to-action-controller">3.11 redirect_to.action_controller</a></h4><p>| Key         | Value              |
-<code>
-|</code>:status<code>| HTTP response code |
-|</code>:location` | URL to redirect to |</p><div class="code_container">
-<pre class="brush: ruby; gutter: false; toolbar: false">
-{
-* `:status`
-  location: "http://localhost:3000/posts/new"
-}
-
-</pre>
-</div>
-<h4 id="halted-callback-action-controller"><a href="#halted-callback-action-controller">3.12 halted_callback.action_controller</a></h4>
-<table>
-<thead>
-<tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left"><code>:filter</code></td>
-<td style="text-align: left">Filter that halted the action</td>
-</tr>
-</tbody>
-</table>
-<div class="code_container">
-<pre class="brush: ruby; gutter: false; toolbar: false">
-{
-  filter: ":halting_filter"
-}
-
-</pre>
-</div>
-<h3 id="action-view"><a href="#action-view">4 Action View</a></h3><h4 id="render-template-action-view"><a href="#render-template-action-view">4.1 render_template.action_view</a></h4>
-<table>
-<thead>
-<tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left"><code>:identifier</code></td>
-<td style="text-align: left">Full path to template</td>
-</tr>
-<tr>
-<td style="text-align: left"><code>:layout</code></td>
-<td style="text-align: left">Applicable layout</td>
-</tr>
-</tbody>
-</table>
-<div class="code_container">
-<pre class="brush: ruby; gutter: false; toolbar: false">
-{
-  identifier: "/Users/adam/projects/notifications/app/views/posts/index.html.erb",
-  layout: "layouts/application"
-}
-
-</pre>
-</div>
-<h4 id="render-partial-action-view"><a href="#render-partial-action-view">4.2 render_partial.action_view</a></h4>
-<table>
-<thead>
-<tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left"><code>:identifier</code></td>
-<td style="text-align: left">Full path to template</td>
-</tr>
-</tbody>
-</table>
-<div class="code_container">
-<pre class="brush: ruby; gutter: false; toolbar: false">
-{
-  identifier: "/Users/adam/projects/notifications/app/views/posts/_form.html.erb"
-}
-
-</pre>
-</div>
-<h3 id="active-record"><a href="#active-record">5 Active Record</a></h3><h4 id="sql-active-record"><a href="#sql-active-record">5.1 sql.active_record</a></h4>
-<table>
-<thead>
-<tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left"><code>:sql</code></td>
-<td style="text-align: left">SQL statement</td>
-</tr>
-<tr>
-<td style="text-align: left"><code>:name</code></td>
-<td style="text-align: left">Name of the operation</td>
-</tr>
-<tr>
-<td style="text-align: left"><code>:connection_id</code></td>
-<td style="text-align: left"><code>self.object_id</code></td>
-</tr>
-<tr>
-<td style="text-align: left"><code>:binds</code></td>
-<td style="text-align: left">Bind parameters</td>
-</tr>
-</tbody>
-</table>
-<div class="info"><p>The adapters will add their own data as well.</p></div><div class="code_container">
-<pre class="brush: ruby; gutter: false; toolbar: false">
-{
-  sql: "SELECT \"posts\".* FROM \"posts\" ",
-  name: "Post Load",
-  connection_id: 70307250813140,
-  binds: []
-}
-
-</pre>
-</div>
-<h4 id="instantiation-active-record"><a href="#instantiation-active-record">5.2 instantiation.active_record</a></h4>
-<table>
-<thead>
-<tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left"><code>:record_count</code></td>
-<td style="text-align: left">Number of records that instantiated</td>
-</tr>
-<tr>
-<td style="text-align: left"><code>:class_name</code></td>
-<td style="text-align: left">Record's class</td>
-</tr>
-</tbody>
-</table>
-<div class="code_container">
-<pre class="brush: ruby; gutter: false; toolbar: false">
-{
-  record_count: 1,
-      class_name: "User",
-}
-
-</pre>
-</div>
-<h3 id="action-mailer"><a href="#action-mailer">6 Action Mailer</a></h3><h4 id="receive-action-mailer"><a href="#receive-action-mailer">6.1 receive.action_mailer</a></h4>
-<table>
-<thead>
-<tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left"><code>:mailer</code></td>
-<td style="text-align: left">Name of the mailer class</td>
-</tr>
-<tr>
-<td style="text-align: left"><code>:message_id</code></td>
-<td style="text-align: left">ID of the message, generated by the Mail gem</td>
-</tr>
-<tr>
-<td style="text-align: left"><code>:subject</code></td>
-<td style="text-align: left">Subject of the mail</td>
-</tr>
-<tr>
-<td style="text-align: left"><code>:to</code></td>
-<td style="text-align: left">To address(es) of the mail</td>
-</tr>
-<tr>
-<td style="text-align: left"><code>:from</code></td>
-<td style="text-align: left">From address of the mail</td>
-</tr>
-<tr>
-<td style="text-align: left"><code>:bcc</code></td>
-<td style="text-align: left">BCC addresses of the mail</td>
-</tr>
-<tr>
-<td style="text-align: left"><code>:cc</code></td>
-<td style="text-align: left">CC addresses of the mail</td>
-</tr>
-<tr>
-<td style="text-align: left"><code>:date</code></td>
-<td style="text-align: left">Date of the mail</td>
-</tr>
-<tr>
-<td style="text-align: left"><code>:mail</code></td>
-<td style="text-align: left">The encoded form of the mail</td>
-</tr>
-</tbody>
-</table>
-<div class="code_container">
-<pre class="brush: ruby; gutter: false; toolbar: false">
-{
-  mailer: "Notification",
-  message_id: "4f5b5491f1774_181b23fc3d4434d38138e5@mba.local.mail",
-  subject: "Rails Guides",
-  to: ["users@rails.com", "ddh@rails.com"],
-  from: ["me@rails.com"],
-  date: Sat, 10 Mar 2012 14:18:09 +0100,
-  mail: "..." # omitted for brevity
-}
-
-</pre>
-</div>
-<h4 id="deliver-action-mailer"><a href="#deliver-action-mailer">6.2 deliver.action_mailer</a></h4>
-<table>
-<thead>
-<tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left"><code>:mailer</code></td>
-<td style="text-align: left">Name of the mailer class</td>
-</tr>
-<tr>
-<td style="text-align: left"><code>:message_id</code></td>
-<td style="text-align: left">ID of the message, generated by the Mail gem</td>
-</tr>
-<tr>
-<td style="text-align: left"><code>:subject</code></td>
-<td style="text-align: left">Subject of the mail</td>
-</tr>
-<tr>
-<td style="text-align: left"><code>:to</code></td>
-<td style="text-align: left">To address(es) of the mail</td>
-</tr>
-<tr>
-<td style="text-align: left"><code>:from</code></td>
-<td style="text-align: left">From address of the mail</td>
-</tr>
-<tr>
-<td style="text-align: left"><code>:bcc</code></td>
-<td style="text-align: left">BCC addresses of the mail</td>
-</tr>
-<tr>
-<td style="text-align: left"><code>:cc</code></td>
-<td style="text-align: left">CC addresses of the mail</td>
-</tr>
-<tr>
-<td style="text-align: left"><code>:date</code></td>
-<td style="text-align: left">Date of the mail</td>
-</tr>
-<tr>
-<td style="text-align: left"><code>:mail</code></td>
-<td style="text-align: left">The encoded form of the mail</td>
-</tr>
-</tbody>
-</table>
-<div class="code_container">
-<pre class="brush: ruby; gutter: false; toolbar: false">
-{
-  mailer: "Notification",
-  message_id: "4f5b5491f1774_181b23fc3d4434d38138e5@mba.local.mail",
-  subject: "Rails Guides",
-  to: ["users@rails.com", "ddh@rails.com"],
-  from: ["me@rails.com"],
-  date: Sat, 10 Mar 2012 14:18:09 +0100,
-  mail: "..." # omitted for brevity
-}
-
-</pre>
-</div>
-<h3 id="active-support"><a href="#active-support">7 Active Support</a></h3><h4 id="cache-read-active-support"><a href="#cache-read-active-support">7.1 cache_read.active_support</a></h4>
-<table>
-<thead>
-<tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left"><code>:key</code></td>
-<td style="text-align: left">Key used in the store</td>
-</tr>
-<tr>
-<td style="text-align: left"><code>:hit</code></td>
-<td style="text-align: left">If this read is a hit</td>
-</tr>
-<tr>
-<td style="text-align: left"><code>:super_operation</code></td>
-<td style="text-align: left">:fetch is added when a read is used with <code>#fetch</code>
-</td>
-</tr>
-</tbody>
-</table>
-<h4 id="cache-generate-active-support"><a href="#cache-generate-active-support">7.2 cache_generate.active_support</a></h4><p>This event is only used when <code>#fetch</code> is called with a block.</p>
-<table>
-<thead>
-<tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left"><code>:key</code></td>
-<td style="text-align: left">Key used in the store</td>
-</tr>
-</tbody>
-</table>
-<div class="info"><p>Options passed to fetch will be merged with the payload when writing to the store</p></div><div class="code_container">
-<pre class="brush: ruby; gutter: false; toolbar: false">
-{
-  key: 'name-of-complicated-computation'
-}
-
-</pre>
-</div>
-<h4 id="cache-fetch-hit-active-support"><a href="#cache-fetch-hit-active-support">7.3 cache_fetch_hit.active_support</a></h4><p>This event is only used when <code>#fetch</code> is called with a block.</p>
-<table>
-<thead>
-<tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left"><code>:key</code></td>
-<td style="text-align: left">Key used in the store</td>
-</tr>
-</tbody>
-</table>
-<div class="info"><p>Options passed to fetch will be merged with the payload.</p></div><div class="code_container">
-<pre class="brush: ruby; gutter: false; toolbar: false">
-{
-  key: 'name-of-complicated-computation'
-}
-
-</pre>
-</div>
-<h4 id="cache-write-active-support"><a href="#cache-write-active-support">7.4 cache_write.active_support</a></h4>
-<table>
-<thead>
-<tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left"><code>:key</code></td>
-<td style="text-align: left">Key used in the store</td>
-</tr>
-</tbody>
-</table>
-<div class="info"><p>Cache stores may add their own keys</p></div><div class="code_container">
-<pre class="brush: ruby; gutter: false; toolbar: false">
-{
-  key: 'name-of-complicated-computation'
-}
-
-</pre>
-</div>
-<h4 id="cache-delete-active-support"><a href="#cache-delete-active-support">7.5 cache_delete.active_support</a></h4>
-<table>
-<thead>
-<tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left"><code>:key</code></td>
-<td style="text-align: left">Key used in the store</td>
-</tr>
-</tbody>
-</table>
-<div class="code_container">
-<pre class="brush: ruby; gutter: false; toolbar: false">
-{
-  key: 'name-of-complicated-computation'
-}
-
-</pre>
-</div>
-<h4 id="cache-exist-questionmark-active-support"><a href="#cache-exist-questionmark-active-support">7.6 cache_exist?.active_support</a></h4>
-<table>
-<thead>
-<tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left"><code>:key</code></td>
-<td style="text-align: left">Key used in the store</td>
-</tr>
-</tbody>
-</table>
-<div class="code_container">
-<pre class="brush: ruby; gutter: false; toolbar: false">
-{
-  key: 'name-of-complicated-computation'
-}
-
-</pre>
-</div>
-<h3 id="active-job"><a href="#active-job">8 Active Job</a></h3><h4 id="enqueue-at-active-job"><a href="#enqueue-at-active-job">8.1 enqueue_at.active_job</a></h4>
-<table>
-<thead>
-<tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left"><code>:adapter</code></td>
-<td style="text-align: left">QueueAdapter object processing the job</td>
-</tr>
-<tr>
-<td style="text-align: left"><code>:job</code></td>
-<td style="text-align: left">Job object</td>
-</tr>
-</tbody>
-</table>
-<h4 id="enqueue-active-job"><a href="#enqueue-active-job">8.2 enqueue.active_job</a></h4>
-<table>
-<thead>
-<tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left"><code>:adapter</code></td>
-<td style="text-align: left">QueueAdapter object processing the job</td>
-</tr>
-<tr>
-<td style="text-align: left"><code>:job</code></td>
-<td style="text-align: left">Job object</td>
-</tr>
-</tbody>
-</table>
-<h4 id="perform-start-active-job"><a href="#perform-start-active-job">8.3 perform_start.active_job</a></h4>
-<table>
-<thead>
-<tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left"><code>:adapter</code></td>
-<td style="text-align: left">QueueAdapter object processing the job</td>
-</tr>
-<tr>
-<td style="text-align: left"><code>:job</code></td>
-<td style="text-align: left">Job object</td>
-</tr>
-</tbody>
-</table>
-<h4 id="perform-active-job"><a href="#perform-active-job">8.4 perform.active_job</a></h4>
-<table>
-<thead>
-<tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left"><code>:adapter</code></td>
-<td style="text-align: left">QueueAdapter object processing the job</td>
-</tr>
-<tr>
-<td style="text-align: left"><code>:job</code></td>
-<td style="text-align: left">Job object</td>
-</tr>
-</tbody>
-</table>
-<h3 id="railties"><a href="#railties">9 Railties</a></h3><h4 id="load-config-initializer-railties"><a href="#load-config-initializer-railties">9.1 load_config_initializer.railties</a></h4>
-<table>
-<thead>
-<tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left"><code>:initializer</code></td>
-<td style="text-align: left">Path to loaded initializer from <code>config/initializers</code>
-</td>
-</tr>
-</tbody>
-</table>
-<h3 id="rails"><a href="#rails">10 * rails</a></h3><h4 id="deprecation-rails"><a href="#deprecation-rails">10.1 deprecation.rails</a></h4>
-<table>
-<thead>
-<tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left"><code>:message</code></td>
-<td style="text-align: left">The deprecation warning</td>
-</tr>
-<tr>
-<td style="text-align: left"><code>:callstack</code></td>
-<td style="text-align: left">Where the deprecation came from</td>
-</tr>
-</tbody>
-</table>
-<h3 id="subscribing-to-an-event"><a href="#subscribing-to-an-event">11 Subscribing to an event</a></h3><p>Subscribing to an event is easy. Use <code>ActiveSupport::Notifications.subscribe</code> with a block to
-listen to any notification.</p><p>The block receives the following arguments:</p>
-<ul>
-<li>The name of the event</li>
-<li>Time when it started</li>
-<li>Time when it finished</li>
-<li>A unique ID for this event</li>
-<li>The payload (described in previous sections)</li>
-</ul>
-<div class="code_container">
-<pre class="brush: ruby; gutter: false; toolbar: false">
-ActiveSupport::Notifications.subscribe "process_action.action_controller" do |name, started, finished, unique_id, data|
-  # your own custom stuff
-  Rails.logger.info "#{name} Received!"
+# app/channels/appearance_channel.rb
+class AppearanceChannel &lt; ApplicationCable::Channel
 end 
 
 </pre>
 </div>
-<p>Defining all those block arguments each time can be tedious. You can easily create an <code>ActiveSupport::Notifications::Event</code>
-from block arguments like this:</p><div class="code_container">
+<p>A consumer could then be subscribed to either or both of these channels.</p><h5 id="channels-subscriptions"><a href="#channels-subscriptions">3.2.2 Subscriptions</a></h5><p>Consumers subscribe to channels, acting as <em>subscribers</em>. Their connection is
+called a <em>subscription</em>. Produced messages are then routed to these channel
+subscriptions based on an identifier sent by the cable consumer.</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-ActiveSupport::Notifications.subscribe "process_action.action_controller" do |*args|
-  event = ActiveSupport::Notifications::Event.new *args
+# app/channels/chat_channel.rb
+class ChatChannel &lt; ApplicationCable::Channel
+  # Called when the consumer has successfully
+  # become a subscriber of this channel.
+  def subscribed
+  end 
+end
 
-  event.name      # =&gt; "process_action.action_controller"
-  event.duration  # =&gt; 10 (in milliseconds)
-  event.payload   # =&gt; {:extra=&gt;information}
+</pre>
+</div>
+<h3 id="client-side-components"><a href="#client-side-components">4 Client-Side Components</a></h3><h4 id="client-side-components-connections"><a href="#client-side-components-connections">4.1 Connections</a></h4><p>Consumers require an instance of the connection on their side. This can be
+established using the following JavaScript, which is generated by default by Rails:</p><h5 id="connect-consumer"><a href="#connect-consumer">4.1.1 Connect Consumer</a></h5><div class="code_container">
+<pre class="brush: plain; gutter: false; toolbar: false">
+// app/assets/javascripts/cable.js
+//= require action_cable
+*= require_self
+//= require_tree ./channels
 
-  Rails.logger.info "#{event} Received!"
+(function() {
+thisApp || (this.    app
+
+  App.cable = ActionCable.createConsumer();
+}).call(this);
+
+</pre>
+</div>
+<p>This will ready a consumer that'll connect against <code>/cable</code> on your server by default.
+The connection won't be established until you've also specified at least one subscription
+you're interested in having.</p><h5 id="subscriber"><a href="#subscriber">4.1.2 Subscriber</a></h5><p>A consumer becomes a subscriber by creating a subscription to a given channel:</p><div class="code_container">
+<pre class="brush: plain; gutter: false; toolbar: false">
+# app/assets/javascripts/cable/subscriptions/chat.coffee
+App.cable.subscriptions.create { channel: "ChatChannel", room: "Best Room" }
+
+# app/assets/javascripts/cable/subscriptions/appearance.coffee
+App.cable.subscriptions.create { channel: "AppearanceChannel" }
+
+</pre>
+</div>
+<p>While this creates the subscription, the functionality needed to respond to
+received data will be described later on.</p><p>A consumer can act as a subscriber to a given channel any number of times. For
+example, a consumer could subscribe to multiple chat rooms at the same time:</p><div class="code_container">
+<pre class="brush: plain; gutter: false; toolbar: false">
+App.cable.subscriptions.create { channel: "ChatChannel", room: "1st Room" }
+App.cable.subscriptions.create { channel: "ChatChannel", room: "2nd Room" }
+
+</pre>
+</div>
+<h3 id="client-server-interactions"><a href="#client-server-interactions">5 Client-Server Interactions</a></h3><h4 id="streams"><a href="#streams">5.1 Streams</a></h4><p><em>Streams</em> provide the mechanism by which channels route published content
+(broadcasts) to their subscribers.</p><div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+# app/channels/chat_channel.rb
+class ChatChannel &lt; ApplicationCable::Channel
+  def subscribed
+    stream_from "chat_#{params[:room]}"
+  end 
+end
+
+</pre>
+</div>
+<p>If you have a stream that is related to a model, then the broadcasting used
+can be generated from the model and channel. The following example would
+subscribe to a broadcasting like <code>comments:Z2lkOi8vVGVzdEFwcC9Qb3N0LzE</code></p><div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class CommentsChannel &lt; ApplicationCable::Channel
+  def subscribed
+        @post = Post.find(params[:id])
+    stream_for post
+  end 
+end
+
+</pre>
+</div>
+<p>You can then broadcast to this channel like this:</p><div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+CommentsChannel.broadcast_to(@post, @comment)
+
+</pre>
+</div>
+<h4 id="broadcasting"><a href="#broadcasting">5.2 Broadcasting</a></h4><p>A <em>broadcasting</em> is a pub/sub link where anything transmitted by a publisher
+is routed directly to the channel subscribers who are streaming that named
+broadcasting. Each channel can be streaming zero or more broadcastings.</p><p>Broadcastings are purely an online queue and time dependent. If a consumer is
+not streaming (subscribed to a given channel), they'll not get the broadcast
+should they connect later.</p><p>Broadcasts are called elsewhere in your Rails application:</p><div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+WebNotificationsChannel.broadcast_to(
+  current_user,
+  title: 'New things!|:-----------------------------------|:--------------------------------|
+  body: 'All the news fit to print'
+|:-----------------------------------|:--------------------------------|
+
+</pre>
+</div>
+<p>The <code>WebNotificationsChannel.broadcast_to</code> call places a message in the current
+subscription adapter (Redis by default)'s pubsub queue under a separate
+broadcasting name for each user. For a user with an ID of 1, the broadcasting
+name would be <code>web_notifications_1</code>.</p><p>The channel has been instructed to stream everything that arrives at
+<code>web_notifications_1</code> directly to the client by invoking the <code>received</code>
+callback.</p><h4 id="client-server-interactions-subscriptions"><a href="#client-server-interactions-subscriptions">5.3 Subscriptions</a></h4><p>When a consumer is subscribed to a channel, they act as a subscriber. This
+connection is called a subscription. Incoming messages are then routed to
+these channel subscriptions based on an identifier sent by the cable consumer.</p><div class="code_container">
+<pre class="brush: plain; gutter: false; toolbar: false">
+# app/assets/javascripts/cable/subscriptions/chat.coffee
+# Assumes you've already requested the right to send web notifications
+App.cable.subscriptions.create { channel: "ChatChannel", room: "Best Room" },
+  received: (data) -&gt;
+    @appendLine(data)
+
+  appendLine: (data) -&gt;
+    html = @createLine(data)
+    $("[data-chat-room='Best Room']").append(html)
+
+  createLine: (data) -&gt;
+    """
+    &lt;article class="chat-line"&gt;
+      &lt;span class="speaker"&gt;#{data["sent_by"]}&lt;/span&gt;
+      &lt;span class="body"&gt;#{data["body"]}&lt;/span&gt;
+    &lt;/article&gt;
+    """
+
+</pre>
+</div>
+<h4 id="passing-parameters-to-channels"><a href="#passing-parameters-to-channels">5.4 Passing Parameters to Channels</a></h4><p>You can pass parameters from the client side to the server side when creating a
+subscription. 以下に例を示します。</p><div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+# app/channels/chat_channel.rb
+class ChatChannel &lt; ApplicationCable::Channel
+  def subscribed
+    stream_from "chat_#{params[:room]}"
+  end 
+end
+
+</pre>
+</div>
+<p>An object passed as the first argument to <code>subscriptions.create</code> becomes the
+params hash in the cable channel. The keyword <code>channel</code> is required:</p><div class="code_container">
+<pre class="brush: plain; gutter: false; toolbar: false">
+# app/assets/javascripts/cable/subscriptions/chat.coffee
+App.cable.subscriptions.create { channel: "ChatChannel", room: "Best Room" },
+  received: (data) -&gt;
+    @appendLine(data)
+
+  appendLine: (data) -&gt;
+    html = @createLine(data)
+    $("[data-chat-room='Best Room']").append(html)
+
+  createLine: (data) -&gt;
+    """
+    &lt;article class="chat-line"&gt;
+      &lt;span class="speaker"&gt;#{data["sent_by"]}&lt;/span&gt;
+      &lt;span class="body"&gt;#{data["body"]}&lt;/span&gt;
+    &lt;/article&gt;
+    """
+
+</pre>
+</div>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+# Somewhere in your app this is called, perhaps
+# from a NewCommentJob.
+ChatChannel.broadcast_to(
+  "chat_#{room}",
+  sent_by: 'Paul',
+  body: 'This is a cool chat app.|:-----------------------------------|:--------------------------------|
+|:-----------------------------------|:--------------------------------|
+
+</pre>
+</div>
+<h4 id="rebroadcasting-a-message"><a href="#rebroadcasting-a-message">5.5 Rebroadcasting a Message</a></h4><p>A common use case is to <em>rebroadcast</em> a message sent by one client to any
+other connected clients.</p><div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+# app/channels/chat_channel.rb
+class ChatChannel &lt; ApplicationCable::Channel
+  def subscribed
+    stream_from "chat_#{params[:room]}"
+  end 
+
+  def receive(data)
+    ChatChannel.broadcast_to("chat_#{params[:room]}", data)
+  end 
+end
+
+</pre>
+</div>
+<div class="code_container">
+<pre class="brush: plain; gutter: false; toolbar: false">
+# app/assets/javascripts/cable/subscriptions/chat.coffee
+App.chatChannel = App.cable.subscriptions.create { channel: "ChatChannel", room: "Best Room" },
+  received: (data) -&gt;
+    # data =&gt; { sent_by: "Paul", body: "This is a cool chat app." }
+
+App.chatChannel.send({ sent_by: "Paul", body: "This is a cool chat app." })
+
+</pre>
+</div>
+<p>The rebroadcast will be received by all connected clients, <em>including</em> the
+client that sent the message. Note that params are the same as they were when
+you subscribed to the channel.</p><h3 id="full-stack-examples"><a href="#full-stack-examples">6 Full-Stack Examples</a></h3><p>The following setup steps are common to both examples:</p><p>|:-----------------------------------|:--------------------------------|<a href="#connection-setup">Setup your connection</a>.
+|:-----------------------------------|:--------------------------------|<a href="#parent-channel-setup">Setup your parent channel</a>.
+|:-----------------------------------|:--------------------------------|<a href="#connect-consumer">Connect your consumer</a>.</p><h4 id="example-1-user-appearances"><a href="#example-1-user-appearances">6.1 Example 1: User Appearances</a></h4><p>Here's a simple example of a channel that tracks whether a user is online or not
+and what page they're on. (This is useful for creating presence features like showing
+a green dot next to a user name if they're online).</p><p>Create the server-side appearance channel:</p><div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+# app/channels/appearance_channel.rb
+class AppearanceChannel &lt; ApplicationCable::Channel
+  def subscribed
+    current_user.appear
+  end 
+
+  def unsubscribed
+    current_user.disappear
+  end 
+
+  def appear(data)
+    current_user.appear(on: data['appearing_on'])
+  end 
+
+  def away
+    current_user.away
+  end 
+end
+
+</pre>
+</div>
+<p>When a subscription is initiated the <code>subscribed</code> callback gets fired and we
+take that opportunity to say "the current user has indeed appeared". That
+appear/disappear API could be backed by Redis, a database, or whatever else.</p><p>Create the client-side appearance channel subscription:</p><div class="code_container">
+<pre class="brush: plain; gutter: false; toolbar: false">
+# app/assets/javascripts/cable/subscriptions/appearance.coffee
+App.cable.subscriptions.create "AppearanceChannel",
+  # Called when the subscription is ready for use on the server.
+  connected: -&gt;
+    @install()
+    @appear()
+
+  # Called when the WebSocket connection is closed.
+  disconnected: -&gt;
+    @uninstall()
+
+  # Called when the subscription is rejected by the server.
+  rejected: -&gt;
+    @uninstall()
+
+  appear: -&gt;
+    # Calls `AppearanceChannel#appear(data)` on the server.
+    @perform("appear", appearing_on: $("main").data("appearing-on"))
+
+  away: -&gt;
+    # Calls `AppearanceChannel#away` on the server.
+    @perform("away")
+
+
+  buttonSelector = "[data-behavior~=appear_away]"
+
+  install: -&gt;
+    $(document).on "page:change.appearance", =&gt;
+      @appear()
+
+    $(document).on "click.appearance", buttonSelector, =&gt;
+      @away()
+      false
+
+    $(buttonSelector).show()
+
+  uninstall: -&gt;
+    $(document).off(".appearance")
+    $(buttonSelector).hide()
+
+</pre>
+</div>
+<h6 id="client-server-interaction"><a href="#client-server-interaction">6.1.1 Client-Server Interaction</a></h6>
+<ol>
+<li><p><strong>Client</strong> connects to the <strong>Server</strong> via <code>App.cable =
+ActionCable.createConsumer("ws://cable.example.com")</code>. (<code>cable.js</code>). The
+<strong>Server</strong> identifies this connection by <code>current_user</code>.</p></li>
+<li><p><strong>Client</strong> subscribes to the appearance channel via
+<code>App.cable.subscriptions.create(channel: "AppearanceChannel")</code>. (<code>appearance.coffee</code>)</p></li>
+<li><p><strong>Server</strong> recognizes a new subscription has been initiated for the
+appearance channel and runs its <code>subscribed</code> callback, calling the <code>appear</code>
+method on <code>current_user</code>. (<code>appearance_channel.rb</code>)</p></li>
+<li><p><strong>Client</strong> recognizes that a subscription has been established and calls
+<code>connected</code> (<code>appearance.coffee</code>) which in turn calls <code>@install</code> and <code>@appear</code>.
+<code>@appear</code> calls <code>AppearanceChannel#appear(data)</code> on the server, and supplies a
+data hash of <code>{ appearing_on: $("main").data("appearing-on") }</code>. This is
+possible because the server-side channel instance automatically exposes all
+public methods declared on the class (minus the callbacks), so that these can be
+reached as remote procedure calls via a subscription's <code>perform</code> method.</p></li>
+<li><p><strong>Server</strong> receives the request for the <code>appear</code> action on the appearance
+channel for the connection identified by <code>current_user</code>
+(<code>appearance_channel.rb</code>). <strong>Server</strong> retrieves the data with the
+<code>:appearing_on</code> key from the data hash and sets it as the value for the <code>:on</code>
+key being passed to <code>current_user.appear</code>.</p></li>
+</ol>
+<h4 id="example-2-receiving-new-web-notifications"><a href="#example-2-receiving-new-web-notifications">6.2 Example 2: Receiving New Web Notifications</a></h4><p>The appearance example was all about exposing server functionality to
+client-side invocation over the WebSocket connection. But the great thing
+about WebSockets is that it's a two-way street. So now let's show an example
+where the server invokes an action on the client.</p><p>This is a web notification channel that allows you to trigger client-side
+web notifications when you broadcast to the right streams:</p><p>Create the server-side web notifications channel:</p><div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+# app/channels/web_notifications_channel.rb
+class WebNotificationsChannel &lt; ApplicationCable::Channel
+  def subscribed
+    stream_for current_user
+  end 
+end
+
+</pre>
+</div>
+<p>Create the client-side web notifications channel subscription:</p><div class="code_container">
+<pre class="brush: plain; gutter: false; toolbar: false">
+# app/assets/javascripts/cable/subscriptions/web_notifications.coffee
+# Client-side which assumes you've already requested
+# the right to send web notifications.
+App.cable.subscriptions.create "WebNotificationsChannel",
+  received: (data) -&gt;
+    new Notification data["title"], body: data["body"]
+
+</pre>
+</div>
+<p>Broadcast content to a web notification channel instance from elsewhere in your</p><h4 id="application"><a href="#application">6.3 <code>application</code></a></h4><div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+# Somewhere in your app this is called, perhaps from a NewCommentJob
+WebNotificationsChannel.broadcast_to(
+  current_user,
+  title: 'New things!|:-----------------------------------|:--------------------------------|
+  body: 'All the news fit to print'
+|:-----------------------------------|:--------------------------------|
+
+</pre>
+</div>
+<p>The <code>WebNotificationsChannel.broadcast_to</code> call places a message in the current
+subscription adapter's pubsub queue under a separate broadcasting name for each
+  UserFor a user with an ID of 1, the broadcasting name would be
+"web_notifications_1".</p><p>The channel has been instructed to stream everything that arrives at
+"web_notifications_1" directly to the client by invoking the <code>received</code>
+callback. The data passed as argument is the hash sent as the second parameter
+to the server-side broadcast call, JSON encoded for the trip across the wire,
+and unpacked for the data argument arriving to <code>received</code>.</p><h4 id="more-complete-examples"><a href="#more-complete-examples">6.4 More Complete Examples</a></h4><p>See the <a href="https://github.com/rails/actioncable-examples">rails/actioncable-examples</a>
+repository for a full example of how to setup Action Cable in a Rails app and adding channels.</p><h3 id="configuration"><a href="#configuration">7 Configuration</a></h3><p>Action Cable has two required configurations: a subscription adapter and allowed request origins.</p><h4 id="subscription-adapter"><a href="#subscription-adapter">7.1 Subscription Adapter</a></h4><p>By default, Action Cable looks for a configuration file in <code>config/cable.yml</code>.
+The file must specify an adapter and a URL for each Rails environment. ポストプロセッサが実行されるときの詳細については
+<a href="#dependencies">Dependencies</a> section for additional information on adapters.</p><div class="code_container">
+<pre class="brush: plain; gutter: false; toolbar: false">
+development:
+  adapter: async
+
+test:
+  adapter: async
+
+production:
+  adapter: redis
+  url: redis://10.10.3.153:6381
+
+</pre>
+</div>
+<h4 id="allowed-request-origins"><a href="#allowed-request-origins">7.2 Allowed Request Origins</a></h4><p>Action Cable will only accept requests from specified origins, which are
+passed to the server config as an array. The origins can be instances of
+strings or regular expressions, against which a check for match will be performed.</p><div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+config.action_cable.allowed_request_origins = ['http://rubyonrails.com', %r{http://ruby.*}]
+
+</pre>
+</div>
+<p>To disable and allow requests from any origin:</p><div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+config.action_cable.disable_request_forgery_protection = true
+
+</pre>
+</div>
+<p>By default, Action Cable allows all requests from localhost:3000 when running
+in the development environment.</p><h4 id="consumer-configuration"><a href="#consumer-configuration">7.3 Consumer Configuration</a></h4><p>To configure the URL, add a call to <code>action_cable_meta_tag</code> in your HTML layout
+HEAD. This uses a URL or path typically set via <code>config.action_cable.url</code> in the
+environment configuration files.</p><h4 id="other-configurations"><a href="#other-configurations">7.4 Other Configurations</a></h4><p>The other common option to configure, is the log tags applied to the
+per-connection logger. Here's an example that uses
+the user account id if available, else "no-account" while tagging:</p><div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+config.action_cable.log_tags = [
+  -&gt; request { request.env['user_account_id'] || "no-account" },
+### Action Cable
+  -&gt; request { request.uuid }
+]
+
+</pre>
+</div>
+<p>For a full list of all configuration options, see the
+<code>ActionCable::Server::Configuration</code> class.</p><p>Also note that your server must provide at least the same number of database
+connections as you have workers. The default worker pool size is set to 4, so
+that means you have to make at least that available. You can change that in
+<code>config/database.yml</code> through the <code>pool</code> attribute.</p><h3 id="running-standalone-cable-servers"><a href="#running-standalone-cable-servers">8 Running Standalone Cable Servers</a></h3><h4 id="in-app"><a href="#in-app">8.1 In App</a></h4><p>Action Cable can run alongside your Rails application. For example, to
+listen for WebSocket requests on <code>/websocket</code>, specify that path to
+<code>config.action_cable.mount_path</code>:</p><div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+# config/application.rb
+class Application &lt; Rails::Application
+  config.action_cable.mount_path = '/websocket'
 end 
 
 </pre>
 </div>
-<p>Most times you only care about the data itself. Here is a shortcut to just get the data.</p><div class="code_container">
+<p>You can use <code>App.cable = ActionCable.createConsumer()</code> to connect to the cable
+server if <code>action_cable_meta_tag</code> is invoked in the layout. A custom path is
+specified as first argument to <code>createConsumer</code> (e.g. <code>App.cable =
+ActionCable.createConsumer("/websocket")</code>).</p><p>For every instance of your server you create and for every worker your server
+spawns, you will also have a new instance of Action Cable, but the use of Redis
+keeps messages synced across connections.</p><h4 id="standalone"><a href="#standalone">8.2 Standalone</a></h4><p>The cable servers can be separated from your normal application server. It's
+still a Rack application, but it is its own Rack application. The recommended
+basic setup is as follows:</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-ActiveSupport::Notifications.subscribe "process_action.action_controller" do |*args|
-  data = args.extract_options!
-  data # { extra: :information }
-end 
+# cable/config.ru
+require_relative '../config/environment'
+Rails.application.eager_load!
+
+run ActionCable.server
 
 </pre>
 </div>
-<p>You may also subscribe to events matching a regular expression. This enables you to subscribe to
-multiple events at once. Here's you could subscribe to everything from <code>ActionController</code>.</p><div class="code_container">
-<pre class="brush: ruby; gutter: false; toolbar: false">
-ActiveSupport::Notifications.subscribe /action_controller/ do |*args|
-  # inspect all ActionController events
-end 
+<p>Then you start the server using a binstub in <code>bin/cable</code> ala:</p><div class="code_container">
+<pre class="brush: plain; gutter: false; toolbar: false">
+#!/bin/bash
+bundle exec puma -p 28080 cable/config.ru
 
 </pre>
 </div>
-<h3 id="creating-custom-events"><a href="#creating-custom-events">12 Creating custom events</a></h3><p>Adding your own events is easy as well. <code>ActiveSupport::Notifications</code> will take care of
-all the heavy lifting for you. Simply call <code>instrument</code> with a <code>name</code>, <code>payload</code> and a block.
-The notification will be sent after the block returns. <code>ActiveSupport</code> will generate the start and end times
-as well as the unique ID. All data passed into the <code>instrument</code> call will make it into the payload.</p><p>以下に例を示します。</p><div class="code_container">
-<pre class="brush: ruby; gutter: false; toolbar: false">
-ActiveSupport::Notifications.instrument "my.custom.event", this: :data do
-  # do your custom stuff here
-end 
-
-</pre>
-</div>
-<p>Now you can listen to this event with:</p><div class="code_container">
-<pre class="brush: ruby; gutter: false; toolbar: false">
-ActiveSupport::Notifications.subscribe "my.custom.event" do |name, started, finished, unique_id, data|
-  puts data.inspect # {:this=&gt;:data}
-end 
-
-</pre>
-</div>
-<p>You should follow Rails conventions when defining your own events. The format is: <code>event.library</code>.
-If you application is sending Tweets, you should create an event named <code>tweet.twitter</code>.</p>
+<p>The above will start a cable server on port 28080.</p><h4 id="notes"><a href="#notes">8.3 Notes</a></h4><p>The WebSocket server doesn't have access to the session, but it has
+access to the cookies. This can be used when you need to handle
+authentication. You can see one way of doing that with Devise in this <a href="http://www.rubytutorial.io/actioncable-devise-authentication">article</a>.</p><h3 id="dependencies"><a href="#dependencies">9 Dependencies</a></h3><p>Action Cable provides a subscription adapter interface to process its
+pubsub internals. By default, asynchronous, inline, PostgreSQL, evented
+Redis, and non-evented Redis adapters are included. The default adapter
+in new Rails applications is the asynchronous (<code>async</code>) adapter.</p><p>The Ruby side of things is built on top of <a href="https://github.com/faye/websocket-driver-ruby">websocket-driver</a>,
+<a href="https://github.com/celluloid/nio4r">nio4r</a>, and <a href="https://github.com/ruby-concurrency/concurrent-ruby">concurrent-ruby</a>.</p><h3 id="deployment"><a href="#deployment">10 Deployment</a></h3><p>Action Cable is powered by a combination of WebSockets and threads. Both the
+framework plumbing and user-specified channel work are handled internally by
+utilizing Ruby's native thread support. This means you can use all your regular
+Rails models with no problem, as long as you haven't committed any thread-safety sins.</p><p>The Action Cable server implements the Rack socket hijacking API,
+thereby allowing the use of a multithreaded pattern for managing connections
+internally, irrespective of whether the application server is multi-threaded or not.</p><p>Accordingly, Action Cable works with popular servers like Unicorn, Puma, and
+Passenger.</p>
         
 
         <h3 id="feedback"><a href="#feedback">フィードバックについて</a></h3>
