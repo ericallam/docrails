@@ -8,54 +8,133 @@ Rails 5.0の注目ポイント
 
 * Action Cable
 * Rails API
-* Active Record Attributes API
+* Active Record属性API
 * テストランナー
-* Exclusive use of `rails` CLI over Rake
+* Rakeコマンドを`rails`コマンドに統一
 * Sprockets 3
 * Turbolinks 5
-* Ruby 2.2.2+ required
+* Ruby 2.2.2以上が必須
 
-本リリースノートでは、主要な変更についてのみ説明します。To learn about various bug
-fixes and changes, please refer to the change logs or check out the [list of
-commits](https://github.com/rails/rails/commits/5-0-stable) in the main Rails
-repository on GitHub.
+本リリースノートでは、主要な変更についてのみ説明します。多数のバグ修正および変更点については、GithubのRailsリポジトリにある[コミットリスト](https://github.com/rails/rails/commits/5-0-stable)のchangelogを参照してください。
 
 --------------------------------------------------------------------------------
 
 Rails 5.0へのアップグレード
 ----------------------
 
-If you're upgrading an existing application, it's a great idea to have good test
-coverage before going in. You should also first upgrade to Rails 4.2 in case you
-haven't and make sure your application still runs as expected before attempting
-an update to Rails 5.0. A list of things to watch out for when upgrading is
-available in the
-[Upgrading Ruby on Rails](upgrading_ruby_on_rails.html#upgrading-from-rails-4-2-to-rails-5-0)
-guide.
+既存のアプリケーションをアップグレードするのであれば、その前に質のよいテストカバレッジを用意するのはよい考えです。アプリケーションがRails 4.2までアップグレードされていない場合は先にそれを完了し、アプリケーションが正常に動作することを十分確認してからRails 5.0にアップデートしてください。アップグレードの注意点などについては[Ruby on Railsアップグレードガイド](upgrading_ruby_on_rails.html#upgrading-from-rails-4-2-to-rails-5-0) を参照してください。
 
 
 主要な変更
 --------------
 
 ### Action Cable
-[Pull Request](https://github.com/rails/rails/pull/22586)
 
-(執筆予定)
+Action Cable はRails 5 に新しく導入されたフレームワークであり、Rails アプリケーションで [WebSockets](https://ja.wikipedia.org/wiki/WebSocket) とその他の部分をシームレスに統合します。
 
-### Rails API
-[Pull Request](https://github.com/rails/rails/pull/19832)
+Action Cable が導入されたことで、Rails アプリケーションの効率の良さとスケーラビリティを損なわずに、通常のRailsアプリケーションと同じスタイル・方法でリアルタイム機能をRubyで書くことができます。クライアント側のJavaScriptフレームワークとサーバー側のRubyフレームワークを同時に提供する、フルスタックのフレームワークです。Active RecordなどのORMで書かれたすべてのドメインモデルにアクセスできます。
 
-(執筆予定)
+詳しくは [Action Cableの概要](action_cable_overview.html) をご覧ください。
 
-### Active Record attributes API
+### API アプリケーション
 
-(執筆予定)
+APIのみを提供するシンプルなアプリケーションをRailsで簡単に作成できるようになりました。
+[Twitter](https://dev.twitter.com) APIや [GitHub](http://developer.github.com) APIのような一般公開APIサーバーはもちろん、カスタムアプリケーション用APIサーバーの作成・公開にも便利です。
 
-### Test Runner
-[Pull Request](https://github.com/rails/rails/pull/19216)
+API Railsアプリの生成には次のコマンドを使います。
 
-(執筆予定)
+```bash
+$ rails new my_api --api
+```
 
+上のコマンドでは次の3つの重要な動作を実行します。
+
+- 利用するミドルウェアを通常よりも絞り込んでアプリケーションを起動するよう設定します。特に、ブラウザ向けアプリケーションで有用なミドルウェア（cookiesのサポートなど）を一切利用しなくなります。
+- `ApplicationController`を、通常の`ActionController::Base`の代わりに`ActionController::API`から継承します。ミドルウェアと同様、Action Controllerモジュールのうち、ブラウザ向けアプリケーションでしか使われないモジュールをすべて除外します。
+- ビュー、ヘルパー、アセットを生成しないようジェネレーターを設定します。
+
+生成されたAPIアプリケーションはAPI提供の基礎となり、必要に応じて[機能を追加](api_app.html)できるようになります。
+
+詳しくは [RailsでAPI専用アプリを作る](api_app.html) をご覧ください。
+
+### Active Record属性API
+
+モデルでtypeの属性を定義します。必要であれば、既存の属性をオーバーライドすることもできます。
+これを使って、モデルに割り当てられたSQLとの値の変換方法を制御できます。
+また、`ActiveRecord::Base.where`に渡された値の動作を変更することもできます。これによって、実装の詳細やモンキーパッチに頼ることなく、Active Recordの多くをサポートするドメインオブジェクトを使えるようになります。
+
+以下を行うこともできます。
+
+* Active Recordで検出されたtypeはオーバーライドできます。
+* デフォルトの動作も指定できます。
+* 属性にはデータベースのカラムは不要です。
+
+```ruby
+
+# db/schema.rb
+create_table :store_listings, force: true do |t|
+  t.decimal :price_in_cents
+  t.string :my_string, default: "original default"
+end
+
+# app/models/store_listing.rb
+class StoreListing < ActiveRecord::Base
+end 
+
+store_listing = StoreListing.new(price_in_cents: '10.1')
+
+# 変更前
+store_listing.price_in_cents # => BigDecimal.new(10.1)
+StoreListing.new.my_string # => "original default"
+
+class StoreListing < ActiveRecord::Base
+  attribute :price_in_cents, :integer # カスタムのtype
+  attribute :my_string, :string, default: "new default" # デフォルト値
+  attribute :my_default_proc, :datetime, default: -> { Time.now } # デフォルト値
+  attribute :field_without_db_column, :integer, array: true
+end 
+
+# 変更後
+store_listing.price_in_cents # => 10
+StoreListing.new.my_string # => 「新しいデフォルト値」
+StoreListing.new.my_default_proc # => 2015-05-30 11:04:48 -0600
+model = StoreListing.new(field_without_db_column: ["1", "2", "3"])
+model.attributes #=> {field_without_db_column: [1, 2, 3]}
+```
+
+**カスタムTypeの作成:**
+
+独自のtypeを定義できます。独自のtype定義は、値のtypeで定義されたメソッドに応答する場合に限り行えます。`deserialize`メソッドや`cast`メソッドは、作成したtypeオブジェクトで呼び出され、データベースやコントローラからのraw入力を引数に取ります。これは、お金のデータで通貨をカスタム換算する場合などに便利です。
+
+**クエリ:**
+
+`ActiveRecord::Base.where`が呼び出されると、モデルのクラスで定義されたtypeを使って値をSQLに変換し、そのtypeオブジェクトで`serialize`を呼び出します。
+
+これにより、SQLクエリの発行時に行う値の変換方法を、オブジェクトで指定できるようになります。
+
+**ダーティトラッキング:**
+
+このtypeの属性は、「ダーティトラッキング」の実行方法を変更できるようになります。
+
+詳しくは [ドキュメント](http://api.rubyonrails.org/classes/ActiveRecord/Attributes/ClassMethods.html) をご覧ください。
+
+
+### テストランナー
+
+新しいテストランナーが導入され、Railsからのテスト実行機能が強化されました。
+`bin/rails test`と入力するだけでテストランナーを使えます。
+
+テストランナーは、`RSpec`、`minitest-reporters`、`maxitest`などから着想を得ています。
+次のような多数の改良が施されています。
+
+- テストの行番号を指定して単体テストを実行。
+- テストの行番号を指定して複数テストを実行。
+- 失敗の場合のメッセージが改良され、失敗したテストをすぐに再実行できるようになった。
+- `-f`オプションを付けると失敗時に即座にテストを停止できるようになり、全テストの完了を待たなくて済む
+- `-d`オプションを付けるとテストが完了するまでメッセージ出力を待たせることができる。
+- `-b`オプションを付けると完全な例外バックトレースを出力できる。
+- `Minitest`と統合されてさまざまなオプションが利用できるようになった: `-s`でシードデータを指定、`-n`で特定のテスト名を指定して実行、`-v`で詳細出力をオン、など。
+- テスト出力に色が追加された。
 
 Railties
 --------
@@ -64,84 +143,86 @@ Railties
 
 ### 削除されたもの
 
-*   Removed debugger support, use byebug instead. `debugger` is not supported by
-    Ruby
-    2.2. ([commit](https://github.com/rails/rails/commit/93559da4826546d07014f8cfa399b64b4a143127))
+*  デバッガのサポートを削除。`debugger`はRuby 2.2でサポートされないため、今後はbyebugを利用すること。
+    ([commit](https://github.com/rails/rails/commit/93559da4826546d07014f8cfa399b64b4a143127))
 
-*   Removed deprecated `test:all` and `test:all:db` tasks.
+*   非推奨の`test:all`タスクと`test:all:db`タスクを削除。
     ([commit](https://github.com/rails/rails/commit/f663132eef0e5d96bf2a58cec9f7c856db20be7c))
 
-*   Removed deprecated `Rails::Rack::LogTailer`.
+*  非推奨の`Rails::Rack::LogTailer`を削除。
     ([commit](https://github.com/rails/rails/commit/c564dcb75c191ab3d21cc6f920998b0d6fbca623))
 
-*   Removed deprecated `RAILS_CACHE` constant.
+*   非推奨の`RAILS_CACHE`定数を削除。
     ([commit](https://github.com/rails/rails/commit/b7f856ce488ef8f6bf4c12bb549f462cb7671c08))
 
-*   Removed deprecated `serve_static_assets` configuration.
+*   非推奨の`serve_static_assets`設定を削除。
     ([commit](https://github.com/rails/rails/commit/463b5d7581ee16bfaddf34ca349b7d1b5878097c))
 
-*   Removed the documentation tasks `doc:app`, `doc:rails`, and `doc:guides`.
+*   ドキュメント作成タスク`doc:app`、`doc:rails`、`doc:guides`を削除。
     ([commit](https://github.com/rails/rails/commit/cd7cc5254b090ccbb84dcee4408a5acede25ef2a))
 
-*   Removed `Rack::ContentLength` middleware from the default
-    stack. ([Commit](https://github.com/rails/rails/commit/56903585a099ab67a7acfaaef0a02db8fe80c450))
+*   `Rack::ContentLength`ミドルウェアをデフォルトから削除。([Commit](https://github.com/rails/rails/commit/56903585a099ab67a7acfaaef0a02db8fe80c450))
 
 ### 非推奨
 
-*   Deprecated `config.static_cache_control` in favor of
-    `config.public_file_server.headers`.
+*   `config.static_cache_control`を廃止。今後は`config.public_file_server.headers`を使用。
     ([Pull Request](https://github.com/rails/rails/pull/22173))
 
-*   Deprecated `config.serve_static_files` in favor of `config.public_file_server.enabled`.
+*  `config.serve_static_files`を廃止。今後は`config.public_file_server.enabled`を使用。
     ([Pull Request](https://github.com/rails/rails/pull/22173))
 
-*   Deprecated the tasks in the `rails` task namespace in favor of the `app` namespace.
-    (e.g. `rails:update` and `rails:template` tasks is renamed to `app:update` and `app:template`.)
+*   `rails`タスク名前空間のタスクを削除。今後は`app`名前空間が使われる。
+   （例: `rails:update`タスクや`rails:template`タスクは`app:update`や`app:template`に変更された）
     ([Pull Request](https://github.com/rails/rails/pull/23439))
 
 ### 主な変更点
 
-*   Added Rails test runner `bin/rails test`.
+*   Railsテストランナー`bin/rails test`を追加。
     ([Pull Request](https://github.com/rails/rails/pull/19216))
 
-*   Newly generated applications and plugins get a `README.md` in Markdown.
+*  新規アプリケーションやプラグインのREADMEがマークダウン形式の`README.md`になった。
     ([commit](https://github.com/rails/rails/commit/89a12c931b1f00b90e74afffcdc2fc21f14ca663),
      [Pull Request](https://github.com/rails/rails/pull/22068))
 
-*   Added `bin/rails restart` task to restart your Rails app by touching `tmp/restart.txt`.
+*   Railsアプリをtouch `tmp/restart.txt`で再起動する`bin/rails restart`タスクを追加。
     ([Pull Request](https://github.com/rails/rails/pull/18965))
 
-*   Added `bin/rails initializers` task to print out all defined initializers in
-    the order they are invoked by Rails.
+*  すべての定義済みイニシャライザをRailsでの起動順に出力する`bin/rails initializers`タスクを追加。
     ([Pull Request](https://github.com/rails/rails/pull/19323))
 
-*   Added `bin/rails dev:cache` to enable or disable caching in development mode.
+*   developmentモードでのキャッシュのオンとオフを指定する`bin/rails dev:cache`を追加。
     ([Pull Request](https://github.com/rails/rails/pull/20961))
 
-*   Added `bin/update` script to update the development environment automatically.
+*   developement環境を自動でアップデートする`bin/update`スクリプトを追加。
     ([Pull Request](https://github.com/rails/rails/pull/20972))
 
-*   Proxy Rake tasks through `bin/rails`.
+*   rakeタスクを`bin/rails`で置き換え。
     ([Pull Request](https://github.com/rails/rails/pull/22457),
      [Pull Request](https://github.com/rails/rails/pull/22288))
 
-*   New applications are generated with the evented file system monitor enabled
-    on Linux and Mac OS X. The feature can be opted out by passing
-    `--skip-listen` to the generator.
-    ([commit](https://github.com/rails/rails/commit/de6ad5665d2679944a9ee9407826ba88395a1003),
-    [commit](https://github.com/rails/rails/commit/94dbc48887bf39c241ee2ce1741ee680d773f202))
+*   生成されるアプリケーションはLinuxやMac OS X上で「ファイルシステムのイベント監視」（evented file system monitor）が有効になる。`--skip-listen`オプションを追加するとこの機能を無効にできる。
+    ([commit](https://github.com/rails/rails/commit/de6ad5665d2679944a9ee9407826ba88395a1003)、[commit](https://github.com/rails/rails/commit/94dbc48887bf39c241ee2ce1741ee680d773f202))
 
-*   Generate applications with an option to log to STDOUT in production
-    using the environment variable `RAILS_LOG_TO_STDOUT`.
+*   生成したアプリケーションは、`RAILS_LOG_TO_STDOUT`環境変数を使ってproduction環境でSTDOUTへのログ出力を指定できる。
     ([Pull Request](https://github.com/rails/rails/pull/23734))
 
-*   Enable HSTS with IncludeSudomains header for new applications.
+*   新しいアプリケーションでは、HSTS（HTTP Strict Transport Security）でIncludeSudomainsヘッダを利用できる。
     ([Pull Request](https://github.com/rails/rails/pull/23852))
 
-*   The application generator writes a new file `config/spring.rb`, which tells
-    Spring to watch additional common files.
+*   アプリケーション ジェネレータから、新しく`config/spring.rb`ファイルが出力される。これを使用してSpringの監視対象となる共通ファイルを追加できる。
     ([commit](https://github.com/rails/rails/commit/b04d07337fd7bc17e88500e9d6bcd361885a45f8))
 
+*  新規アプリケーション生成時にAction Mailerをスキップする`--skip-action-mailer` を追加。
+    ([Pull Request](https://github.com/rails/rails/pull/18288))
+
+*   `tmp/sessions`ディレクトリと、これに関連するclear rakeタスクを削除。
+    ([Pull Request](https://github.com/rails/rails/pull/18314))
+
+*   scaffoldジェネレータで生成する`_form.html.erb`を、ローカル変数を使用するように変更。
+    ([Pull Request](https://github.com/rails/rails/pull/13434))
+
+*   production環境でクラスの自動読み込みを無効化。
+    ([commit](https://github.com/rails/rails/commit/a71350cae0082193ad8c66d65ab62e8bb0b7853b))
 
 Action Pack
 -----------
@@ -150,149 +231,147 @@ Action Pack
 
 ### 削除されたもの
 
-*   Removed `ActionDispatch::Request::Utils.deep_munge`.
+*   `ActionDispatch::Request::Utils.deep_munge`を削除。
     ([commit](https://github.com/rails/rails/commit/52cf1a71b393486435fab4386a8663b146608996))
 
-*   Removed `ActionController::HideActions`.
+*   `ActionController::HideActions`を削除。
     ([Pull Request](https://github.com/rails/rails/pull/18371))
 
-*   Removed `respond_to` and `respond_with` placeholder methods, this functionality
-    has been extracted to the
-    [responders](https://github.com/plataformatec/responders) gem.
+*  プレースホルダメソッドである`respond_to`と`respond_with`を削除し、[responders](https://github.com/plataformatec/responders) gemに移動。
     ([commit](https://github.com/rails/rails/commit/afd5e9a7ff0072e482b0b0e8e238d21b070b6280))
 
-*   Removed deprecated assertion files.
+*   非推奨のアサーションファイルを削除。
     ([commit](https://github.com/rails/rails/commit/92e27d30d8112962ee068f7b14aa7b10daf0c976))
 
-*   Removed deprecated usage of string keys in URL helpers.
+*   URLヘルパーで使われていた非推奨の文字列キーを削除。
     ([commit](https://github.com/rails/rails/commit/34e380764edede47f7ebe0c7671d6f9c9dc7e809))
 
-*   Removed deprecated `only_path` option on `*_path` helpers.
+*   非推奨の`only_path`オプションを`*_path`ヘルパーから削除。
     ([commit](https://github.com/rails/rails/commit/e4e1fd7ade47771067177254cb133564a3422b8a))
 
-*   Removed deprecated `NamedRouteCollection#helpers`.
+*  非推奨の`NamedRouteCollection#helpers`を削除。
     ([commit](https://github.com/rails/rails/commit/2cc91c37bc2e32b7a04b2d782fb8f4a69a14503f))
 
-*   Removed deprecated support to define routes with `:to` option that doesn't contain `#`.
+*  `#`を含まない`:to`オプション（非推奨）のルーティング定義サポートを削除。
     ([commit](https://github.com/rails/rails/commit/1f3b0a8609c00278b9a10076040ac9c90a9cc4a6))
 
-*   Removed deprecated `ActionDispatch::Response#to_ary`.
+*   非推奨の`ActionDispatch::Response#to_ary`を削除。
     ([commit](https://github.com/rails/rails/commit/4b19d5b7bcdf4f11bd1e2e9ed2149a958e338c01))
 
-*   Removed deprecated `ActionDispatch::Request#deep_munge`.
+*   非推奨の`ActionDispatch::Request#deep_munge`を削除。
     ([commit](https://github.com/rails/rails/commit/7676659633057dacd97b8da66e0d9119809b343e))
 
-*   Removed deprecated
-    `ActionDispatch::Http::Parameters#symbolized_path_parameters`.
+*   非推奨の`ActionDispatch::Http::Parameters#symbolized_path_parameters`を削除。
     ([commit](https://github.com/rails/rails/commit/7fe7973cd8bd119b724d72c5f617cf94c18edf9e))
 
-*   Removed deprecated option `use_route` in controller tests.
+*  コントローラのテストから非推奨の`use_route`を削除。
     ([commit](https://github.com/rails/rails/commit/e4cfd353a47369dd32198b0e67b8cbb2f9a1c548))
 
-*   Removed `assigns` and `assert_template`. Both methods have been extracted
-    into the
-    [rails-controller-testing](https://github.com/rails/rails-controller-testing)
-    gem.
+*   `assigns`と`assert_template`を削除。これらのメソッドは[rails-controller-testing](https://github.com/rails/rails-controller-testing) gemに移動された。
     ([Pull Request](https://github.com/rails/rails/pull/20138))
 
 ### 非推奨
 
-*   Deprecated all `*_filter` callbacks in favor of `*_action` callbacks.
+*   `*_filter`コールバックをすべて非推奨に指定。今後は`*_action`コールバックを使用。
     ([Pull Request](https://github.com/rails/rails/pull/18410))
 
-*   Deprecated `*_via_redirect` integration test methods. Use `follow_redirect!`
-    manually after the request call for the same behavior.
+*   結合テストメソッド`*_via_redirect`を非推奨に指定。今後同じ動作が必要な場合は、はリクエストの呼出し後にUse `follow_redirect!`を手動で実行すること。
     ([Pull Request](https://github.com/rails/rails/pull/18693))
 
-*   Deprecated `AbstractController#skip_action_callback` in favor of individual
-    skip_callback methods.
+*  `AbstractController#skip_action_callback`を非推奨に指定。今後は個別のskip_callbackメソッドを使用。
     ([Pull Request](https://github.com/rails/rails/pull/19060))
 
-*   Deprecated `:nothing` option for `render` method.
+*  `render`メソッドの`:nothing`オプションを非推奨に指定。
     ([Pull Request](https://github.com/rails/rails/pull/20336))
 
-*   Deprecated passing first parameter as `Hash` and default status code for
-    `head` method.
+*  `head`メソッドの最初のパラメータを`Hash`として渡すことと、デフォルトのステータスコードの利用を非推奨に指定。
     ([Pull Request](https://github.com/rails/rails/pull/20407))
 
-*   Deprecated using strings or symbols for middleware class names. Use class
-    names instead.
+*  ミドルウェアのクラス名を文字列やシンボルで表すことを非推奨に指定。今後はクラス名をそのまま使うこと。
     ([commit](https://github.com/rails/rails/commit/83b767ce))
 
-*   Deprecated accessing mime types via constants (eg. `Mime::HTML`). Use the
-    subscript operator with a symbol instead (eg. `Mime[:html]`).
+*  MIMEタイプを定数として利用することを非推奨に指定（`Mime::HTML`など）。今後は「`Mime[:html]`」のように添字演算子内でシンボルを使うこと。
     ([Pull Request](https://github.com/rails/rails/pull/21869))
 
-*   Deprecated `redirect_to :back` in favor of `redirect_back`, which accepts a
-    required `fallback_location` argument, thus eliminating the possibility of a
-    `RedirectBackError`.
+*  `redirect_to :back`を非推奨に指定。今後は`RedirectBackError`を避けるために、`redirect_back`を使用して必須の`fallback_location`引数を受け取ること。
     ([Pull Request](https://github.com/rails/rails/pull/22506))
+
+*   `ActionDispatch::IntegrationTest`と`ActionController::TestCase`で位置引数（positional argument）を非推奨に指定。今後はキーワード引数を使用。([Pull Request](https://github.com/rails/rails/pull/18323))
+
+*  パスパラメータ`:controller`と`:action`を非推奨に指定。
+    ([Pull Request](https://github.com/rails/rails/pull/23980))
+
+*   コントローラのインスタンスでのenvメソッドを非推奨に指定。
+    ([commit](https://github.com/rails/rails/commit/05934d24aff62d66fc62621aa38dae6456e276be))
+
+*   `ActionDispatch::ParamsParser`を非推奨に指定し、ミドルウェアスタックから削除。今後パラメーターパーサーの構成が必要な場合は`ActionDispatch::Request.parameter_parsers=`を使用。
+    ([commit](https://github.com/rails/rails/commit/38d2bf5fd1f3e014f2397898d371c339baa627b1), [commit](https://github.com/rails/rails/commit/5ed38014811d4ce6d6f957510b9153938370173b))
 
 ### 主な変更点
 
-*   Added `ActionController::Renderer` to render arbitrary templates
-    outside controller actions.
+*  コントローラのアクションの外部で任意のテンプレートでレンダリングする`ActionController::Renderer`を追加。
     ([Pull Request](https://github.com/rails/rails/pull/18546))
 
-*   Migrating to keyword arguments syntax in `ActionController::TestCase` and
-    `ActionDispatch::Integration` HTTP request methods.
+*   HTTPリクエスト メソッド`ActionController::TestCase`と`ActionDispatch::Integration`にキーワード引数構文を統合。
     ([Pull Request](https://github.com/rails/rails/pull/18323))
 
-*   Added `http_cache_forever` to Action Controller, so we can cache a response
-    that never gets expired.
+*   期限切れのないレスポンスをキャッシュする`http_cache_forever`をAction Controllerに追加。
     ([Pull Request](https://github.com/rails/rails/pull/18394))
 
-*   Provide friendlier access to request variants.
+*   リクエストのvariantのわかりやすい指定方法を追加。
     ([Pull Request](https://github.com/rails/rails/pull/18939))
 
-*   For actions with no corresponding templates, render `head :no_content`
-    instead of raising an error.
+*   対応するテンプレートがない場合にはエラーの代わりに`head :no_content`でレンダリングする
     ([Pull Request](https://github.com/rails/rails/pull/19377))
 
-*   Added the ability to override default form builder for a controller.
+*   コントローラのデフォルトのフォームビルダーをオーバーライドする機能を追加。
     ([Pull Request](https://github.com/rails/rails/pull/19736))
 
-*   Added support for API only apps.
-    `ActionController::API` is added as a replacement of
-    `ActionController::Base` for this kind of applications.
+*   API専用アプリ向けのサポートを追加。API専用アプリでは`ActionController::Base`の代わりに`ActionController::API`が追加される。
     ([Pull Request](https://github.com/rails/rails/pull/19832))
 
-*   Make `ActionController::Parameters` no longer inherits from
-    `HashWithIndifferentAccess`.
+*   `ActionController::Parameters` は今後 `HashWithIndifferentAccess` を継承しない。
     ([Pull Request](https://github.com/rails/rails/pull/20868))
 
-*   Make it easier to opt in to `config.force_ssl` and `config.ssl_options` by
-    making them less dangerous to try and easier to disable.
+*  より安全にSSLを試したりオフにしたりできるよう、`config.force_ssl`と`config.ssl_options`を簡単に導入できるようにした。
     ([Pull Request](https://github.com/rails/rails/pull/21520))
 
-*   Added the ability of returning arbitrary headers to `ActionDispatch::Static`.
+*   `ActionDispatch::Static`に任意のヘッダーを返す機能を追加。
     ([Pull Request](https://github.com/rails/rails/pull/19135))
 
-*   Changed the `protect_from_forgery` prepend default to `false`.
+*   `protect_from_forgery`のprependのデフォルトを`false`に変更。
     ([commit](https://github.com/rails/rails/commit/39794037817703575c35a75f1961b01b83791191))
 
-*   `ActionController::TestCase` will be moved to its own gem in Rails 5.1. Use
-    `ActionDispatch::IntegrationTest` instead.
+*   `ActionController::TestCase`はRails 5.1で専用gemに移行する予定。今後は`ActionDispatch::IntegrationTest`を使用。
     ([commit](https://github.com/rails/rails/commit/4414c5d1795e815b102571425974a8b1d46d932d))
 
-*   Rails will only generate "weak", instead of strong ETags.
+*   Railsで生成するETagを「強い」ものから「弱い」ものに変更。
     ([Pull Request](https://github.com/rails/rails/pull/17573))
 
-*   Controller actions without an explicit `render` call and with no
-    corresponding templates will render `head :no_content` implicitly
-    instead of raising an error.
-    (Pull Request [1](https://github.com/rails/rails/pull/19377),
-    [2](https://github.com/rails/rails/pull/23827))
+*   コントローラのアクションで`render`が明示的に呼び出されず、対応するテンプレートもない場合、エラーの代わりに`head :no_content`を暗黙に出力する。
+    (Pull Request [1](https://github.com/rails/rails/pull/19377), [2](https://github.com/rails/rails/pull/23827))
 
-*   Added an option for per-form CSRF tokens.
+*   フォームごとのCSRFトークン用オプションを追加。
     ([Pull Request](https://github.com/rails/rails/pull/22275))
 
-*   Added request encoding and response parsing to integration tests.
+*   リクエストのエンコーディングとレスポンスの解析（parse）を結合テストに追加。
     ([Pull Request](https://github.com/rails/rails/pull/21671))
 
-*   Update default rendering policies when the controller action did
-    not explicitly indicate a response.
+*  コントローラのアクションでレスポンスが明示的に定められていない場合の、デフォルトのレンダリングポリシーを更新。
     ([Pull Request](https://github.com/rails/rails/pull/23827))
+
+
+*  コントローラレベルでビューコンテキストにアクセスする`ActionController#helpers`を追加。
+    ([Pull Request](https://github.com/rails/rails/pull/24866))
+
+*   破棄されたフラッシュメッセージをセッションに保存せずに除去。
+    ([Pull Request](https://github.com/rails/rails/pull/18721))
+
+*  `fresh_when`や`stale?`にレコードのコレクションを渡す機能を追加。
+    ([Pull Request](https://github.com/rails/rails/pull/18374))
+
+*   `ActionController::Live`を`ActiveSupport::Concern`に変更。`ActiveSupport::Concern`でextendしていない他のモジュールにはincludeされない。また、`ActionController::Live`はproduction環境では有効にならない。`ActionController::Live`が使われていると、生成されたスレッドから投げられた`:warden`をミドルウェアでキャッチできない問題があった。これに対応するため、`Warden`/`Devise`の認証エラーを扱える特殊なコードをincludeする別のモジュールを使っている開発者を見かける。
+    ([詳細](https://github.com/rails/rails/issues/25581))
 
 
 Action View
@@ -302,37 +381,34 @@ Action View
 
 ### 削除されたもの
 
-*   Removed deprecated `AbstractController::Base::parent_prefixes`.
+*  非推奨の`AbstractController::Base::parent_prefixes`を削除。
     ([commit](https://github.com/rails/rails/commit/34bcbcf35701ca44be559ff391535c0dd865c333))
 
-*   Removed `ActionView::Helpers::RecordTagHelper`, this functionality
-    has been extracted to the
-    [record_tag_helper](https://github.com/rails/record_tag_helper) gem.
+*  `ActionView::Helpers::RecordTagHelper`を削除。この機能は[record_tag_helper](https://github.com/rails/record_tag_helper) gemに移行済み。
     ([Pull Request](https://github.com/rails/rails/pull/18411))
 
-*   Removed `:rescue_format` option for `translate` helper since it's no longer
-    supported by I18n.
+*  i18nでのサポート廃止に伴い、`translate`の`:rescue_format`オプションを削除。
     ([Pull Request](https://github.com/rails/rails/pull/20019))
 
 ### 主な変更点
 
-*   Changed the default template handler from `ERB` to `Raw`.
+*  デフォルトのテンプレートハンドラを`ERB`から`Raw`に変更。
     ([commit](https://github.com/rails/rails/commit/4be859f0fdf7b3059a28d03c279f03f5938efc80))
 
-*   Collection rendering can cache and fetches multiple partials.
-    ([Pull Request](https://github.com/rails/rails/pull/18948),
-    [commit](https://github.com/rails/rails/commit/e93f0f0f133717f9b06b1eaefd3442bd0ff43985))
+*   コレクションのレンダリングで、複数の部分テンプレート（パーシャル）のキャッシュと取得を一度に行えるようになった。
+    ([Pull Request](https://github.com/rails/rails/pull/18948), [commit](https://github.com/rails/rails/commit/e93f0f0f133717f9b06b1eaefd3442bd0ff43985))
 
-*   Added wildcard matching to explicit dependencies.
+*  明示的な依存関係指定にワイルドカードによるマッチングを追加。
     ([Pull Request](https://github.com/rails/rails/pull/20904))
 
-*   Make `disable_with` the default behavior for submit tags. Disables the
-    button on submit to prevent double submits.
+*  `disable_with`をsubmitタグのデフォルトの動作に設定。これにより送信時にボタンを無効にし、二重送信を防止する。
     ([Pull Request](https://github.com/rails/rails/pull/21135))
 
-*   Collection rendering can cache and fetch multiple partials at once.
-    ([Pull Request](https://github.com/rails/rails/pull/21135))
+*   部分テンプレート（パーシャル）名はRubyの有効な識別子ではなくなった。
+    ([commit](https://github.com/rails/rails/commit/da9038e))
 
+*   `datetime_tag`ヘルパーで`datetime-local`を指定したinputタグが生成されるようになった。
+    ([Pull Request](https://github.com/rails/rails/pull/25469))
 
 Action Mailer
 -------------
@@ -341,31 +417,28 @@ Action Mailer
 
 ### 削除されたもの
 
-*   Removed deprecated `*_path` helpers in email views.
+*  非推奨の`*_path`ヘルパーをemailビューから削除。
     ([commit](https://github.com/rails/rails/commit/d282125a18c1697a9b5bb775628a2db239142ac7))
 
-*   Removed deprecated `deliver` and `deliver!` methods.
+*  非推奨の`deliver`メソッドと`deliver!`メソッドを削除。
     ([commit](https://github.com/rails/rails/commit/755dcd0691f74079c24196135f89b917062b0715))
 
 ### 主な変更点
 
-*   Template lookup now respects default locale and I18n fallbacks.
+*   テンプレートを検索するときにデフォルトのロケールとi18nにフォールバックするようになった。
     ([commit](https://github.com/rails/rails/commit/ecb1981b))
 
-*   Added `_mailer` suffix to mailers created via generator, following the same
-    naming convention used in controllers and jobs.
+*  ジェネレーターで生成されたメイラーに`_mailer`サフィックスを追加。コントローラやジョブと同様の命名規則に従う。
     ([Pull Request](https://github.com/rails/rails/pull/18074))
 
-*   Added `assert_enqueued_emails` and `assert_no_enqueued_emails`.
+*   `assert_enqueued_emails`と`assert_no_enqueued_emails`を追加。
     ([Pull Request](https://github.com/rails/rails/pull/18403))
 
-*   Added `config.action_mailer.deliver_later_queue_name` configuration to set
-    the mailer queue name.
+*  メイラーキュー名を設定する`config.action_mailer.deliver_later_queue_name`設定を追加。
     ([Pull Request](https://github.com/rails/rails/pull/18587))
 
-*   Added support for fragment caching in Action Mailer views.
-    Added new config option `config.action_mailer.perform_caching` to determine
-    whether your templates should perform caching or not.
+*  Action Mailerビューでフラグメントキャッシュをサポート。
+テンプレートでキャッシュが有効かどうかを検出する`config.action_mailer.perform_caching`設定オプションを追加。
     ([Pull Request](https://github.com/rails/rails/pull/22825))
 
 
@@ -376,219 +449,219 @@ Active Record
 
 ### 削除されたもの
 
-*   Removed deprecated behavior allowing nested arrays to be passed as query
-    values. ([Pull Request](https://github.com/rails/rails/pull/17919))
+*  ネストした配列をクエリ値として渡す機能（非推奨）を削除。([Pull Request](https://github.com/rails/rails/pull/17919))
 
-*   Removed deprecated `ActiveRecord::Tasks::DatabaseTasks#load_schema`. This
-    method was replaced by `ActiveRecord::Tasks::DatabaseTasks#load_schema_for`.
+*  非推奨の`ActiveRecord::Tasks::DatabaseTasks#load_schema`を削除。このメソッドは`ActiveRecord::Tasks::DatabaseTasks#load_schema_for`で置き換え済み。
     ([commit](https://github.com/rails/rails/commit/ad783136d747f73329350b9bb5a5e17c8f8800da))
 
-*   Removed deprecated `serialized_attributes`.
+*  非推奨の`serialized_attributes`を削除。
     ([commit](https://github.com/rails/rails/commit/82043ab53cb186d59b1b3be06122861758f814b2))
 
-*   Removed deprecated automatic counter caches on `has_many :through`.
+*   `has_many :through`の自動カウンタのキャッシュ（非推奨）を削除。
     ([commit](https://github.com/rails/rails/commit/87c8ce340c6c83342df988df247e9035393ed7a0))
 
-*   Removed deprecated `sanitize_sql_hash_for_conditions`.
+*  非推奨の`sanitize_sql_hash_for_conditions`を削除。
     ([commit](https://github.com/rails/rails/commit/3a59dd212315ebb9bae8338b98af259ac00bbef3))
 
-*   Removed deprecated `Reflection#source_macro`.
+*  非推奨の`Reflection#source_macro`を削除。
     ([commit](https://github.com/rails/rails/commit/ede8c199a85cfbb6457d5630ec1e285e5ec49313))
 
-*   Removed deprecated `symbolized_base_class` and `symbolized_sti_name`.
+*  非推奨の`symbolized_base_class`と`symbolized_sti_name`を削除。
     ([commit](https://github.com/rails/rails/commit/9013e28e52eba3a6ffcede26f85df48d264b8951))
 
-*   Removed deprecated `ActiveRecord::Base.disable_implicit_join_references=`.
+*  非推奨の`ActiveRecord::Base.disable_implicit_join_references=`を削除。
     ([commit](https://github.com/rails/rails/commit/0fbd1fc888ffb8cbe1191193bf86933110693dfc))
 
-*   Removed deprecated access to connection specification using a string accessor.
+*  文字列アクセサによる接続使用へのアクセス（非推奨）を削除。
     ([commit](https://github.com/rails/rails/commit/efdc20f36ccc37afbb2705eb9acca76dd8aabd4f))
 
-*   Removed deprecated support to preload instance-dependent associations.
+*  インスタンスに依存するプリロード（非推奨）のサポートを削除。
     ([commit](https://github.com/rails/rails/commit/4ed97979d14c5e92eb212b1a629da0a214084078))
 
-*   Removed deprecated support for PostgreSQL ranges with exclusive lower bounds.
+*   PostgreSQLでしか使われない値の範囲の下限値（非推奨）を削除。
     ([commit](https://github.com/rails/rails/commit/a076256d63f64d194b8f634890527a5ed2651115))
 
-*   Removed deprecation when modifying a relation with cached Arel.
-    This raises an `ImmutableRelation` error instead.
+*  キャッシュされたArelとのリレーションを変更したときの動作（非推奨）を削除。
+今後は`ImmutableRelation`エラーが出力される。
     ([commit](https://github.com/rails/rails/commit/3ae98181433dda1b5e19910e107494762512a86c))
 
-*   Removed `ActiveRecord::Serialization::XmlSerializer` from core. This feature
-    has been extracted into the
-    [activemodel-serializers-xml](https://github.com/rails/activemodel-serializers-xml)
-### `gem`([Pull Request](https://github.com/rails/rails/pull/21161))
+*  `ActiveRecord::Serialization::XmlSerializer`をコアから削除。この機能は[activemodel-serializers-xml](https://github.com/rails/activemodel-serializers-xml) gemに移行済み。([Pull Request](https://github.com/rails/rails/pull/21161))
 
-*   Removed support for the legacy `mysql` database adapter from core. It will
-    live on in a separate gem for now, but most users should just use `mysql2`.
+*  古い`mysql`データベースアダプタのサポートをコアから削除。今後は原則として`mysql2`を使用。今後古いアダプタのメンテナンス担当者が決まった場合、アダプタは別のgemに切り出される予定。([Pull Request 1](https://github.com/rails/rails/pull/22642)], [Pull Request 2](https://github.com/rails/rails/pull/22715))
 
-*   Removed support for the `protected_attributes` gem.
+* `protected_attributes` gem のサポートを終了。
     ([commit](https://github.com/rails/rails/commit/f4fbc0301021f13ae05c8e941c8efc4ae351fdf9))
 
-*   Removed support for PostgreSQL versions below 9.1.
+*  PostgreSQL 9.1以前のサポートを削除。
     ([Pull Request](https://github.com/rails/rails/pull/23434))
+
+`activerecord-deprecated_finders` gem のサポートを終了。
+    ([commit](https://github.com/rails/rails/commit/78dab2a8569408658542e462a957ea5a35aa4679))
 
 ### 非推奨
 
-*   Deprecated passing a class as a value in a query. Users should pass strings
-    instead. ([Pull Request](https://github.com/rails/rails/pull/17916))
+*   クエリでクラスを値として渡すことを非推奨に指定。ユーザーは文字列を渡すこと。([Pull Request](https://github.com/rails/rails/pull/17916))
 
-*   Deprecated returning `false` as a way to halt Active Record callback
-    chains. The recommended way is to
-    `throw(:abort)`. ([Pull Request](https://github.com/rails/rails/pull/17227))
+*   Active Recordのコールバックチェーンを止めるために`false`を返すことを非推奨に指定。代わりに`throw(:abort)`の利用を推奨。([Pull Request](https://github.com/rails/rails/pull/17227))
 
-*   Deprecated `ActiveRecord::Base.errors_in_transactional_callbacks=`.
+*  `ActiveRecord::Base.errors_in_transactional_callbacks=`を非推奨に指定。
     ([commit](https://github.com/rails/rails/commit/07d3d402341e81ada0214f2cb2be1da69eadfe72))
 
-*   Deprecated `Relation#uniq` use `Relation#distinct` instead.
+*   `Relation#uniq`を非推奨に指定。今後は`Relation#distinct`を使用。
     ([commit](https://github.com/rails/rails/commit/adfab2dcf4003ca564d78d4425566dd2d9cd8b4f))
 
-*   Deprecated the PostgreSQL `:point` type in favor of a new one which will return
-    `Point` objects instead of an `Array`
+*   PostgreSQLの`:point` typeを非推奨に指定。今後は`Array`ではなく`Point`オブジェクトを返す新しいtypeを使用。
     ([Pull Request](https://github.com/rails/rails/pull/20448))
 
-*   Deprecated force association reload by passing a truthy argument to
-    association method.
+*   trueになる引数を関連付け用メソッドに渡して関連付けを強制的に再読み込みする手法を非推奨に指定。
     ([Pull Request](https://github.com/rails/rails/pull/20888))
 
-*   Deprecated the keys for association `restrict_dependent_destroy` errors in favor
-    of new key names.
+*   関連付け`restrict_dependent_destroy`エラーのキーを非推奨に指定。今後は新しいキー名を使用。
     ([Pull Request](https://github.com/rails/rails/pull/20668))
 
-*   Synchronize behavior of `#tables`.
+*   `#tables`の動作を統一。
     ([Pull Request](https://github.com/rails/rails/pull/21601))
 
-*   Deprecated `SchemaCache#tables`, `SchemaCache#table_exists?` and
-    `SchemaCache#clear_table_cache!` in favor of their new data source
-    counterparts.
+*   `SchemaCache#tables`、`SchemaCache#table_exists?`、`SchemaCache#clear_table_cache!`を非推奨に指定。今後は新しい同等のデータソースを使用。
     ([Pull Request](https://github.com/rails/rails/pull/21715))
 
-*   Deprecated `connection.tables` on the SQLite3 and MySQL adapters.
+*   SQLite3アダプタとMySQLアダプタの`connection.tables`を非推奨に指定。
     ([Pull Request](https://github.com/rails/rails/pull/21601))
 
-*   Deprecated passing arguments to `#tables` - the `#tables` method of some
-    adapters (mysql2, sqlite3) would return both tables and views while others
-    (postgresql) just return tables. To make their behavior consistent,
-    `#tables` will return only tables in the future.
+*   `#tables`に引数を渡すことを非推奨に指定。一部のアダプタ（mysql2、sqlite3）の`#tables`メソッドはテーブルとビューを両方返すが、他のアダプタはテーブルのみを返す。動作を統一するため、今後は`#tables`はテーブルのみを返すようになる予定。
     ([Pull Request](https://github.com/rails/rails/pull/21601))
 
-*   Deprecated `table_exists?` - The `#table_exists?` method would check both
-    tables and views. To make their behavior consistent with `#tables`,
-    `#table_exists?` will check only tables in the future.
+*   `table_exists?`を非推奨に指定。`#table_exists?`メソッドでテーブルとビューが両方チェックされていることがあるため。`#tables`の動作を統一するため、今後`#table_exists?`はテーブルのみをチェックするようになる予定。
     ([Pull Request](https://github.com/rails/rails/pull/21601))
 
-*   Deprecate sending the `offset` argument to `find_nth`. Please use the
-    `offset` method on relation instead.
+*   ``find_nth`に`offset`を引数として渡すことを非推奨に指定。今後リレーションでは`offset`メソッドを使用。
     ([Pull Request](https://github.com/rails/rails/pull/22053))
 
-*   Deprecated `{insert|update|delete}_sql` in `DatabaseStatements`.
-    Use the `{insert|update|delete}` public methods instead.
+*   `DatabaseStatements`の`{insert|update|delete}_sql`を非推奨に指定。
+   今後は`{insert|update|delete}`パブリックメソッドを使用。
     ([Pull Request](https://github.com/rails/rails/pull/23086))
+
+*   `use_transactional_fixtures`を非推奨に指定。今後はより明瞭な`use_transactional_tests`を使用。
+    ([Pull Request](https://github.com/rails/rails/pull/19282))
+
+*  `ActiveRecord::Connection#quote`にカラムを渡すことを非推奨に指定。
+    ([commit](https://github.com/rails/rails/commit/7bb620869725ad6de603f6a5393ee17df13aa96c))
+
+*  `start`パラメータを補完する`end`オプション（バッチ処理の停止位置を指定）を`find_in_batches`に追加。
+    ([Pull Request](https://github.com/rails/rails/pull/12257))
+
 
 ### 主な変更点
 
-*   Added a `foreign_key` option to `references` while creating the table.
+*  テーブルの作成中に`foreign_key`オプションを`references`に追加。
     ([commit](https://github.com/rails/rails/commit/99a6f9e60ea55924b44f894a16f8de0162cf2702))
 
-*   New attributes
-    API. ([commit](https://github.com/rails/rails/commit/8c752c7ac739d5a86d4136ab1e9d0142c4041e58))
+*  新しい属性API。([commit](https://github.com/rails/rails/commit/8c752c7ac739d5a86d4136ab1e9d0142c4041e58))
 
-*   Added `:enum_prefix`/`:enum_suffix` option to `enum`
-    definition. ([Pull Request](https://github.com/rails/rails/pull/19813))
+*  `enum`の定義に`:_prefix`/`:_suffix`オプションを追加。
+    ([Pull Request](https://github.com/rails/rails/pull/19813),
+     [Pull Request](https://github.com/rails/rails/pull/20999))
 
-*   Added `#cache_key` to `ActiveRecord::Relation`.
+*  `ActiveRecord::Relation`に`#cache_key`を追加。
     ([Pull Request](https://github.com/rails/rails/pull/20884))
 
-*   Require `belongs_to` by default.
-    ([Pull Request](https://github.com/rails/rails/pull/18937)) - Deprecate
-    `required` option in favor of `optional` for `belongs_to`
-
-*   Changed the default `null` value for `timestamps` to `false`.
+*  `timestamps`のデフォルトの`null`値を`false`に変更。
     ([commit](https://github.com/rails/rails/commit/a939506f297b667291480f26fa32a373a18ae06a))
 
-*   Added `ActiveRecord::SecureToken` in order to encapsulate generation of
-    unique tokens for attributes in a model using `SecureRandom`.
+*   `ActiveRecord::SecureToken`を追加。`SecureRandom`を使うモデル内の属性で一意のトークン生成をカプセル化するメソッド。
     ([Pull Request](https://github.com/rails/rails/pull/18217))
 
-*   Added `:if_exists` option for `drop_table`.
+*   `:if_exists` option for `drop_table`を追加。
     ([Pull Request](https://github.com/rails/rails/pull/18597))
 
-*   Added `ActiveRecord::Base#accessed_fields`, which can be used to quickly
-    discover which fields were read from a model when you are looking to only
-    select the data you need from the database.
+*   `ActiveRecord::Base#accessed_fields`を追加。データベース内の必要なデータだけをselectしたい場合に、参照したモデルでどのフィールドが読み出されたかをこのメソッドで簡単に調べられる。
     ([commit](https://github.com/rails/rails/commit/be9b68038e83a617eb38c26147659162e4ac3d2c))
 
-*   Added the `#or` method on `ActiveRecord::Relation`, allowing use of the OR
-    operator to combine WHERE or HAVING clauses.
+*   `ActiveRecord::Relation`に`#or`メソッドを追加。WHERE句やHAVING句を結合するOR演算子。
     ([commit](https://github.com/rails/rails/commit/b0b37942d729b6bdcd2e3178eda7fa1de203b3d0))
 
-*   Added `:time` option added for `#touch`.
+*   `#touch`に`:time`オプションを追加。
     ([Pull Request](https://github.com/rails/rails/pull/18956))
 
-*   Added `ActiveRecord::Base.suppress` to prevent the receiver from being saved
-    during the given block.
+*   `ActiveRecord::Base.suppress`を追加。指定のブロックを実行中にレシーバーが保存されないようにする。
     ([Pull Request](https://github.com/rails/rails/pull/18910))
 
-*   `belongs_to` will now trigger a validation error by default if the
-    association is not present. You can turn this off on a per-association basis
-    with `optional: true`.
+*   関連付けが存在しない場合、`belongs_to`でバリデーションエラーが発生するようになった。この機能は関連付けごとに`optional: true`でオフにできる。また、`belongs_to`の`required`オプションも非推奨に指定。今後は`optional`を使用。
     ([Pull Request](https://github.com/rails/rails/pull/18937))
 
-*   Added `config.active_record.dump_schemas` to configure the behavior of
-    `db:structure:dump`.
+*  `db:structure:dump`の動作を設定する`config.active_record.dump_schemas`を追加。
     ([Pull Request](https://github.com/rails/rails/pull/19347))
 
-*   Added `config.active_record.warn_on_records_fetched_greater_than` option.
+*  `config.active_record.warn_on_records_fetched_greater_than`オプションを追加。
     ([Pull Request](https://github.com/rails/rails/pull/18846))
 
-*   Added a native JSON data type support in MySQL.
+*   MySQLでネイティブJSONデータタイプをサポート。
     ([Pull Request](https://github.com/rails/rails/pull/21110))
 
-*   Added support for dropping indexes concurrently in PostgreSQL.
+*  PostgreSQLでのインデックス削除の並列実行をサポート。
     ([Pull Request](https://github.com/rails/rails/pull/21317))
 
-*   Added `#views` and `#view_exists?` methods on connection adapters.
+*  接続アダプタに`#views`メソッドと`#view_exists?`メソッドを追加。
     ([Pull Request](https://github.com/rails/rails/pull/21609))
 
-*   Added `ActiveRecord::Base.ignored_columns` to make some columns
-    invisible from Active Record.
+*  `ActiveRecord::Base.ignored_columns`を追加。カラムの一部をActive Recordに対して隠蔽する。
     ([Pull Request](https://github.com/rails/rails/pull/21720))
 
-*   Added `connection.data_sources` and `connection.data_source_exists?`
-    These methods determine what relations can be used to back Active Record
-    models (usually tables and views).
+*   `connection.data_sources`と`connection.data_source_exists?`
+Active Recordモデル（通常はテーブルやビュー）を支えるリレーションを特定するのに利用できる。
     ([Pull Request](https://github.com/rails/rails/pull/21715))
 
-*   Allow fixtures files to set the model class in the YAML file itself.
+*  フィクスチャファイルを使って、モデルのクラスをYAMLファイルそのものの中に設定できるようになった。
     ([Pull Request](https://github.com/rails/rails/pull/20574))
 
-*   Added ability to default to `uuid` as primary key when generating database
-マイグレーション([Pull Request](https://github.com/rails/rails/pull/21762))
+*   データベースマイグレーションの生成時に`uuid`をデフォルトの主キーに設定できる機能を追加。([Pull Request](https://github.com/rails/rails/pull/21762))
 
-*   Added `ActiveRecord::Relation#left_joins` and
-    `ActiveRecord::Relation#left_outer_joins`.
+*  `ActiveRecord::Relation#left_joins`と`ActiveRecord::Relation#left_outer_joins`を追加。
     ([Pull Request](https://github.com/rails/rails/pull/12071))
 
-*   Added `after_{create,update,delete}_commit` callbacks.
+*  `after_{create,update,delete}_commit`コールバックを追加。
     ([Pull Request](https://github.com/rails/rails/pull/22516))
 
-*   Version the API presented to migration classes, so we can change parameter
-    defaults without breaking existing migrations, or forcing them to be
-    rewritten through a deprecation cycle.
+*  クラスのマイグレーションに出現するAPIのバージョンを管理し、既存のマイグレーションを損なわずにパラメータを変更したり、非推奨サイクルの間に書き換えるためにバージョンを強制適用したりできるようにした。
     ([Pull Request](https://github.com/rails/rails/pull/21538))
 
-*   `ApplicationRecord` is a new superclass for all app models, analogous to app
-    controllers subclassing `ApplicationController` instead of
-    `ActionController::Base`. This gives apps a single spot to configure app-wide
-    model behavior.
+`ApplicationRecord`がアプリのすべてのモデルのスーパークラスとして新設され、`ActionController::Base`に代わって`ApplicationController`を継承する。この変更により、アプリ全体のモデルの動作を1か所で変更できるようになった。
     ([Pull Request](https://github.com/rails/rails/pull/22567))
 
-*   Added ActiveRecord `#second_to_last` and `#third_to_last` methods.
+*  ActiveRecordに`#second_to_last`メソッドと`#third_to_last`メソッドを追加。
     ([Pull Request](https://github.com/rails/rails/pull/23583))
 
-*  Added ability to annotate database objects (tables, columns, indexes)
-   with comments stored in database metadata for PostgreSQL & MySQL.
-   ([Pull Request](https://github.com/rails/rails/pull/22911))
+*  データベースオブジェクト（テーブル、カラム、インデックス）にコメントを追加して、PostgreSQLやMySQLのデータベースメタデータに保存する機能を追加。
+    ([Pull Request](https://github.com/rails/rails/pull/22911))
+
+*  プリペアドステートメントを`mysql2`アダプタに追加（mysql2 0.4.4以降向け）。
+従来は古い`mysql`アダプタでしかサポートされていなかった。
+config/database.ymlに`prepared_statements: true`と記述することでプリペアドステートメントが有効になる。
+    ([Pull Request](https://github.com/rails/rails/pull/23461))
+
+*  `ActionRecord::Relation#update`を追加。リレーションオブジェクトに対して、そのリレーションにあるすべてのオブジェクトのコールバックでバリデーション（検証）を実行できる。
+    ([Pull Request](https://github.com/rails/rails/pull/11898))
+
+*  `save`メソッドに`:touch`オプションを追加。タイムスタンプを変更せずにレコードを保存する場合に使用。
+    ([Pull Request](https://github.com/rails/rails/pull/18225))
+
+*  PostgreSQL向けに式インデックスと演算子クラスのサポートを追加。
+    ([commit](https://github.com/rails/rails/commit/edc2b7718725016e988089b5fb6d6fb9d6e16882))
+
+*  ネストした属性のエラーにインデックスを追加する`:index_errors`オプションを追加。
+    ([Pull Request](https://github.com/rails/rails/pull/19686))
+
+*  依存関係の削除（destroy）を双方向に行える機能を追加。
+    ([Pull Request](https://github.com/rails/rails/pull/18548))
+
+*  トランザクションテストでの`after_commit`コールバックのサポートを追加。
+    ([Pull Request](https://github.com/rails/rails/pull/18458))
+
+*  `foreign_key_exists?`メソッドを追加。テーブルに外部キーが存在するかどうかを確認できる。
+    ([Pull Request](https://github.com/rails/rails/pull/18662))
+
+*  `touch`メソッドに`:time`オプションを追加。レコードに現在時刻以外の時刻を指定する場合に使用。
+    ([Pull Request](https://github.com/rails/rails/pull/18956))
 
 Active Model
 ------------
@@ -597,78 +670,68 @@ Active Model
 
 ### 削除されたもの
 
-*   Removed deprecated `ActiveModel::Dirty#reset_#{attribute}` and
-    `ActiveModel::Dirty#reset_changes`.
+*  非推奨の`ActiveModel::Dirty#reset_#{attribute}`と`ActiveModel::Dirty#reset_changes`を削除
     ([Pull Request](https://github.com/rails/rails/commit/37175a24bd508e2983247ec5d011d57df836c743))
 
-*   Removed XML serialization. This feature has been extracted into the
-    [activemodel-serializers-xml](https://github.com/rails/activemodel-serializers-xml) gem.
+*  XMLシリアライズを削除。この機能は[activemodel-serializers-xml](https://github.com/rails/activemodel-serializers-xml) gemに移行済み。
     ([Pull Request](https://github.com/rails/rails/pull/21161))
+
+*  `ActionController::ModelNaming`モジュールを削除。
+    ([Pull Request](https://github.com/rails/rails/pull/18194))
 
 ### 非推奨
 
-*   Deprecated returning `false` as a way to halt Active Model and
-    `ActiveModel::Validations` callback chains. The recommended way is to
-    `throw(:abort)`. ([Pull Request](https://github.com/rails/rails/pull/17227))
+*   Active Modelのコールバックチェーンを止めるために`false`を返すことを非推奨に指定。代わりに`throw(:abort)`の利用を推奨。([Pull Request](https://github.com/rails/rails/pull/17227))
 
-*   Deprecated `ActiveModel::Errors#get`, `ActiveModel::Errors#set` and
-    `ActiveModel::Errors#[]=` methods that have inconsistent behavior.
+*  `ActiveModel::Errors#get`、`ActiveModel::Errors#set`、`ActiveModel::Errors#[]=`メソッドの動作が一貫していないため、非推奨に指定。
     ([Pull Request](https://github.com/rails/rails/pull/18634))
 
-*   Deprecated the `:tokenizer` option for `validates_length_of`, in favor of
-    plain Ruby.
+*  `validates_length_of`の`:tokenizer`オプションを非推奨に指定。今後はRubyの純粋な機能を使用。
     ([Pull Request](https://github.com/rails/rails/pull/19585))
 
-*   Deprecated `ActiveModel::Errors#add_on_empty` and `ActiveModel::Errors#add_on_blank`
-    with no replacement.
+*  `ActiveModel::Errors#add_on_empty`と`ActiveModel::Errors#add_on_blank`を非推奨に指定。置き換え先の機能はなし。
     ([Pull Request](https://github.com/rails/rails/pull/18996))
 
 ### 主な変更点
 
-*   Added `ActiveModel::Errors#details` to determine what validator has failed.
+*  どのバリデータで失敗したかを調べる`ActiveModel::Errors#details`を追加。
     ([Pull Request](https://github.com/rails/rails/pull/18322))
 
-*   Extracted `ActiveRecord::AttributeAssignment` to `ActiveModel::AttributeAssignment`
-    allowing to use it for any object as an includable module.
+*  `ActiveRecord::AttributeAssignment`を`ActiveModel::AttributeAssignment`にも展開。これにより、include可能なモジュールとしてすべてのオブジェクトで使えるようになる。
     ([Pull Request](https://github.com/rails/rails/pull/10776))
 
-*   Added `ActiveModel::Dirty#[attr_name]_previously_changed?` and
-    `ActiveModel::Dirty#[attr_name]_previous_change` to improve access
-    to recorded changes after the model has been saved.
+*   `ActiveModel::Dirty#[attr_name]_previously_changed?`と`ActiveModel::Dirty#[attr_name]_previous_change`を追加。モデルの保存後に一時記録された変更に簡単にアクセスできる。
     ([Pull Request](https://github.com/rails/rails/pull/19847))
 
-*   Validate multiple contexts on `valid?` and `invalid?` at once.
+*  `valid?`と`invalid?`でさまざまなコンテキストを一度にバリデーションする機能。
     ([Pull Request](https://github.com/rails/rails/pull/21069))
 
+*  `validates_acceptance_of`のデフォルト値として`1`の他に`true`も指定できるようになった。
+    ([Pull Request](https://github.com/rails/rails/pull/18439))
 
 Active Job
 -----------
 
-変更の詳細については[Changelog][active-model]を参照してください。
+変更の詳細については[Changelog][active-job]を参照してください。
 
 ### 主な変更点
 
-*   `ActiveJob::Base.deserialize` delegates to the job class. this allows jobs
-    to attach arbitrary metadata when they get serialized and read it back when
-    they get performed.
+*   `ActiveJob::Base.deserialize`をジョブクラスに委譲（delegate）。これにより、ジョブがシリアライズされたときやジョブ実行時に再度読み込まれたときに、ジョブを任意のメタデータにアタッチできるようになる。
     ([Pull Request](https://github.com/rails/rails/pull/18260))
 
-*   A generated job now inherits from `app/jobs/application_job.rb` by default.
+*  キューアダプタをジョブ単位で構成する機能を追加。ジョブ同士が影響しないように構成できる。
+    ([Pull Request](https://github.com/rails/rails/pull/16992))
+
+*  ジェネレータのジョブがデフォルトで`app/jobs/application_job.rb`を継承するようになった。
     ([Pull Request](https://github.com/rails/rails/pull/19034))
 
-*   Allow `DelayedJob`, `Sidekiq`, `qu`, `que`, and `queue_classic` to report
-    the job id back to `ActiveJob::Base` as `provider_job_id`.
-    ([Pull Request](https://github.com/rails/rails/pull/20064),
-     [Pull Request](https://github.com/rails/rails/pull/20056),
-     [commit](https://github.com/rails/rails/commit/68e3279163d06e6b04e043f91c9470e9259bbbe0))
+*  `DelayedJob`、`Sidekiq`、`qu`、`que`、`queue_classic`で、ジョブIDを`provider_job_id`として`ActiveJob::Base`に返す機能を追加。
+    ([Pull Request](https://github.com/rails/rails/pull/20064)、[Pull Request](https://github.com/rails/rails/pull/20056)、[commit](https://github.com/rails/rails/commit/68e3279163d06e6b04e043f91c9470e9259bbbe0))
 
-*   Implement a simple `AsyncJob` processor and associated `AsyncAdapter` that
-    queue jobs to a `concurrent-ruby` thread pool.
+*  ジョブを`concurrent-ruby`スレッドプールにキューイングする簡単な`AsyncJob`プロセッサと、関連する`AsyncAdapter`を実装。
     ([Pull Request](https://github.com/rails/rails/pull/21257))
 
-*   Change the default adapter from inline to async. It's a better default as
-    tests will then not mistakenly come to rely on behavior happening
-    synchronously.
+*   デフォルトのアダプタをinlineからasyncに変更。デフォルトをasyncにすることで、テストを同期的な振る舞いに依存せずに行える。
     ([commit](https://github.com/rails/rails/commit/625baa69d14881ac49ba2e5c7d9cac4b222d7022))
 
 Active Support
@@ -678,165 +741,146 @@ Active Support
 
 ### 削除されたもの
 
-*   Removed deprecated `ActiveSupport::JSON::Encoding::CircularReferenceError`.
+*  非推奨の`ActiveSupport::JSON::Encoding::CircularReferenceError`を削除。
     ([commit](https://github.com/rails/rails/commit/d6e06ea8275cdc3f126f926ed9b5349fde374b10))
 
-*   Removed deprecated methods `ActiveSupport::JSON::Encoding.encode_big_decimal_as_string=`
-    and `ActiveSupport::JSON::Encoding.encode_big_decimal_as_string`.
+*  非推奨の`ActiveSupport::JSON::Encoding.encode_big_decimal_as_string=`メソッドと`ActiveSupport::JSON::Encoding.encode_big_decimal_as_string`メソッドを削除。
     ([commit](https://github.com/rails/rails/commit/c8019c0611791b2716c6bed48ef8dcb177b7869c))
 
-*   Removed deprecated `ActiveSupport::SafeBuffer#prepend`.
+*  非推奨の`ActiveSupport::SafeBuffer#prepend`を削除。
     ([commit](https://github.com/rails/rails/commit/e1c8b9f688c56aaedac9466a4343df955b4a67ec))
 
-*   Removed deprecated methods from `Kernel`. `silence_stderr`, `silence_stream`,
-    `capture` and `quietly`.
+*   `Kernel`、`silence_stderr`、`silence_stream`、`capture`、`quietly`から非推奨メソッドを多数削除。
     ([commit](https://github.com/rails/rails/commit/481e49c64f790e46f4aff3ed539ed227d2eb46cb))
 
-*   Removed deprecated `active_support/core_ext/big_decimal/yaml_conversions`
-    FIL
+*  非推奨の`active_support/core_ext/big_decimal/yaml_conversions`ファイルを削除。
     ([commit](https://github.com/rails/rails/commit/98ea19925d6db642731741c3b91bd085fac92241))
 
-*   Removed deprecated methods `ActiveSupport::Cache::Store.instrument` and
-    `ActiveSupport::Cache::Store.instrument=`.
+*  非推奨の`ActiveSupport::Cache::Store.instrument`メソッドと`ActiveSupport::Cache::Store.instrument=`メソッドを削除。
     ([commit](https://github.com/rails/rails/commit/a3ce6ca30ed0e77496c63781af596b149687b6d7))
 
-*   Removed deprecated `Class#superclass_delegating_accessor`.
-    Use `Class#class_attribute` instead.
+*  非推奨の`Class#superclass_delegating_accessor`を削除。
+   今後は`Class#class_attribute`を使用。
     ([Pull Request](https://github.com/rails/rails/pull/16938))
 
-*   Removed deprecated `ThreadSafe::Cache`. Use `Concurrent::Map` instead.
+*  非推奨の`ThreadSafe::Cache`を削除。今後は`Concurrent::Map`を使用。
     ([Pull Request](https://github.com/rails/rails/pull/21679))
+
+*  Ruby 2.2 で既に実装されている`Object#itself`を削除。
+    ([Pull Request](https://github.com/rails/rails/pull/18244))
 
 ### 非推奨
 
-*   Deprecated `MissingSourceFile` in favor of `LoadError`.
+*  `MissingSourceFile`を非推奨に指定。今後は`LoadError`を使用。
     ([commit](https://github.com/rails/rails/commit/734d97d2))
 
-*   Deprecated `alias_method_chain` in favour of `Module#prepend` introduced in
-```ruby
+*  `alias_method_chain`を非推奨に指定。今後はRuby 2.0 で導入された`Module#prepend`を使用。
     ([Pull Request](https://github.com/rails/rails/pull/19434))
 
-*   Deprecated `ActiveSupport::Concurrency::Latch` in favor of
-    `Concurrent::CountDownLatch` from concurrent-ruby.
+*  `ActiveSupport::Concurrency::Latch`を非推奨に指定。今後は`Concurrent::CountDownLatch` from concurrent-rubyを使用。
     ([Pull Request](https://github.com/rails/rails/pull/20866))
 
-*   Deprecated `:prefix` option of `number_to_human_size` with no replacement.
+*  `:prefix` option of `number_to_human_size`を非推奨に指定。置き換え先はなし。
     ([Pull Request](https://github.com/rails/rails/pull/21191))
 
-*   Deprecated `Module#qualified_const_` in favour of the builtin
-    `Module#const_` methods.
+*  `Module#qualified_const_`を非推奨に指定。今後はビルトインの`Module#const_`メソッドを使用。
     ([Pull Request](https://github.com/rails/rails/pull/17845))
 
-*   Deprecated passing string to define callback.
+*  コールバック定義に文字列を渡すことを非推奨に指定。
     ([Pull Request](https://github.com/rails/rails/pull/22598))
 
-*   Deprecated `ActiveSupport::Cache::Store#namespaced_key`,
-    `ActiveSupport::Cache::MemCachedStore#escape_key`, and
-    `ActiveSupport::Cache::FileStore#key_file_path`.
-    Use `normalize_key` instead.
+*  `ActiveSupport::Cache::Store#namespaced_key`、`ActiveSupport::Cache::MemCachedStore#escape_key`、`ActiveSupport::Cache::FileStore#key_file_path`を非推奨に指定。
+   今後は`normalize_key`を使用。
 
-    Deprecated `ActiveSupport::Cache::LocaleCache#set_cache_value` in favor of `write_cache_value`.
+   `ActiveSupport::Cache::LocaleCache#set_cache_value`を非推奨に指定。今後は`write_cache_value`を使用。
     ([Pull Request](https://github.com/rails/rails/pull/22215))
 
-*   Deprecated passing arguments to `assert_nothing_raised`.
+*  `assert_nothing_raised`に引数を渡すことを非推奨に指定。
     ([Pull Request](https://github.com/rails/rails/pull/23789))
 
-*   Deprecated `Module.local_constants` in favor of `Module.constants(false)`.
+*  `Module.local_constants`を非推奨に指定。今後は`Module.constants(false)`を使用。
     ([Pull Request](https://github.com/rails/rails/pull/23936))
 
 
 ### 主な変更点
 
-*   Added `#verified` and `#valid_message?` methods to
-    `ActiveSupport::MessageVerifier`.
+*  `ActiveSupport::MessageVerifier`に`#verified`メソッドと`#valid_message?`メソッドを追加。
     ([Pull Request](https://github.com/rails/rails/pull/17727))
 
-*   Changed the way in which callback chains can be halted. The preferred method
-    to halt a callback chain from now on is to explicitly `throw(:abort)`.
+*  コールバックチェーンの停止方法を変更。今後は明示的に`throw(:abort)`で停止することを推奨。
     ([Pull Request](https://github.com/rails/rails/pull/17227))
 
-*   New config option
-    `config.active_support.halt_callback_chains_on_return_false` to specify
-    whether ActiveRecord, ActiveModel and ActiveModel::Validations callback
-    chains can be halted by returning `false` in a 'before' callback.
+*  新しい設定オプション`config.active_support.halt_callback_chains_on_return_false`を追加。ActiveRecord、ActiveModel、ActiveModel::Validationsのコールバックチェーンを、'before'コールバックで`false`を返したときに停止するかどうかを指定する。
     ([Pull Request](https://github.com/rails/rails/pull/17227))
 
-*   Changed the default test order from `:sorted` to `:random`.
+*  デフォルトのテスト実行順を`:sorted`から`:random`に変更。
     ([commit](https://github.com/rails/rails/commit/5f777e4b5ee2e3e8e6fd0e2a208ec2a4d25a960d))
 
-*   Added `#on_weekend?`, `#on_weekday?`, `#next_weekday`, `#prev_weekday` methods to `Date`,
-    `Time`, and `DateTime`.
+*   `#on_weekend?`メソッド、`#on_weekday?`メソッド、`#next_weekday`メソッド、`#prev_weekday`メソッドを`Date`、`Time`、`DateTime`に追加。
     ([Pull Request](https://github.com/rails/rails/pull/18335))
 
-*   Added `same_time` option to `#next_week` and `#prev_week` for `Date`, `Time`,
-    and `DateTime`.
+*  `Date`、`Time`、`DateTime`の`#next_week`と`#prev_week`に`same_time`を追加。
     ([Pull Request](https://github.com/rails/rails/pull/18335))
 
-*   Added `#prev_day` and `#next_day` counterparts to `#yesterday` and
-    `#tomorrow` for `Date`, `Time`, and `DateTime`.
+*  `Date`、`Time`、`DateTime`の`#yesterday`と`#tomorrow`に、`#prev_day`と`#next_day`に対応するメソッドを追加。
     ([Pull Request](httpshttps://github.com/rails/rails/pull/18335))
 
-*   Added `SecureRandom.base58` for generation of random base58 strings.
+*  ランダムなbase58文字列を生成する`SecureRandom.base58`を追加。
     ([commit](https://github.com/rails/rails/commit/b1093977110f18ae0cafe56c3d99fc22a7d54d1b))
 
-*   Added `file_fixture` to `ActiveSupport::TestCase`.
-    It provides a simple mechanism to access sample files in your test cases.
+*  `file_fixture`を`ActiveSupport::TestCase`に追加。
+   テストケースからサンプルファイルにアクセスするシンプルな機能を提供する。
     ([Pull Request](https://github.com/rails/rails/pull/18658))
 
-*   Added `#without` on `Enumerable` and `Array` to return a copy of an
-    enumerable without the specified elements.
+*  `Enumerable`と`Array`に`#without`を追加。指定の要素を除外して、列挙のコピーを返す。
     ([Pull Request](https://github.com/rails/rails/pull/19157))
 
-*   Added `ActiveSupport::ArrayInquirer` and `Array#inquiry`.
+*  `ActiveSupport::ArrayInquirer`と`Array#inquiry`を追加。
     ([Pull Request](https://github.com/rails/rails/pull/18939))
 
-*   Added `ActiveSupport::TimeZone#strptime` to allow parsing times as if
-    from a given timezone.
+*  指定のタイムゾーンで時刻を解析する`ActiveSupport::TimeZone#strptime`を追加。
     ([commit](https://github.com/rails/rails/commit/a5e507fa0b8180c3d97458a9b86c195e9857d8f6))
 
-*   Added `Integer#positive?` and `Integer#negative?` query methods
-    in the vein of `Fixnum#zero?`
+*  `Integer#zero?`に加えて`Integer#positive?`と`Integer#negative?`クエリメソッドを追加。
     ([commit](https://github.com/rails/rails/commit/e54277a45da3c86fecdfa930663d7692fd083daa))
 
-*   Added a bang version to `ActiveSupport::OrderedOptions` get methods which will raise
-    an `KeyError` if the value is `.blank?`
+*  `ActiveSupport::OrderedOptions`に破壊的なgetメソッドを追加。値が`.blank?`の場合は`KeyError`が発生。
     ([Pull Request](https://github.com/rails/rails/pull/20208))
 
-*   Added `Time.days_in_year` to return the number of days in the given year, or the
-    current year if no argument is provided.
+*  指定の年の日数を返す`Time.days_in_year`を追加。引数がない場合は現在の年の日数を返す。
     ([commit](https://github.com/rails/rails/commit/2f4f4d2cf1e4c5a442459fc250daf66186d110fa))
 
-*   Added an evented file watcher to asynchronously detect changes in the
-    application source code, routes, locales, etc.
+*  ファイルのイベント監視機能を追加。アプリケーションのソースコード、ルーティング、ロケールなどの変更を非同期的に検出する。
     ([Pull Request](https://github.com/rails/rails/pull/22254))
 
-*   Added thread_m/cattr_accessor/reader/writer suite of methods for declaring
-    class and module variables that live per-thread.
+*  スレッドごとのクラス変数やモジュール変数を宣言するメソッド群 thread_m/cattr_accessor/reader/writer を追加。
     ([Pull Request](https://github.com/rails/rails/pull/22630))
 
-*   Added `Array#second_to_last` and `Array#third_to_last` methods.
+*   `Array#second_to_last`メソッドと`Array#third_to_last`メソッドを追加。
     ([Pull Request](https://github.com/rails/rails/pull/23583))
 
-*   Added `#on_weekday?` method to `Date`, `Time`, and `DateTime`.
+*  `Date`、`Time`、`DateTime`に`#on_weekday?`メソッドを追加。
     ([Pull Request](https://github.com/rails/rails/pull/23687))
 
-*   Publish `ActiveSupport::Executor` and `ActiveSupport::Reloader` APIs to allow
-    components and libraries to manage, and participate in, the execution of
-    application code, and the application reloading process.
+* `ActiveSupport::Executor` APIと`ActiveSupport::Reloader` APIを公開。アプリケーションコードの実行やアプリケーションの再読み込みプロセスを、コンポーネントやライブラリから管理したり参加したりできる。
     ([Pull Request](https://github.com/rails/rails/pull/23807))
 
-*   `ActiveSupport::Duration` now supports ISO8601 formatting and parsing.
+*  `ActiveSupport::Duration`でISO8601形式のフォーマットや解析をサポート。
     ([Pull Request](https://github.com/rails/rails/pull/16917))
 
+*  `ActiveSupport::JSON.decode`でISO8601形式のローカル時刻をサポート（`parse_json_times`を有効にした場合）。
+    ([Pull Request](https://github.com/rails/rails/pull/23011))
+
+*  `ActiveSupport::JSON.decode`が日付の文字列ではなく`Date`オブジェクトを返すようになった。
+    ([Pull Request](https://github.com/rails/rails/pull/23011))
+
+*  `TaggedLogging`をロガーに追加。ロガーのインスタンスを複数作成して、タグがロガー同士で共有されないようにする。
+    ([Pull Request](https://github.com/rails/rails/pull/9065))
 
 クレジット表記
 -------
 
-ポストプロセッサが実行されるときの詳細については
-[full list of contributors to Rails](http://contributors.rubyonrails.org/) for
-the many people who spent many hours making Rails, the stable and robust
-framework it is. これらの方々全員に敬意を表明いたします。
-
+Railsを頑丈かつ安定したフレームワークにするために多大な時間を費やしてくださった多くの開発者については、[Railsコントリビューターの完全なリスト](http://contributors.rubyonrails.org/)を参照してください。これらの方々全員に深く敬意を表明いたします。
 [railties]:       https://github.com/rails/rails/blob/5-0-stable/railties/CHANGELOG.md
 [action-pack]:    https://github.com/rails/rails/blob/5-0-stable/actionpack/CHANGELOG.md
 [action-view]:    https://github.com/rails/rails/blob/5-0-stable/actionview/CHANGELOG.md
