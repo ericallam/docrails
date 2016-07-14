@@ -1,8 +1,10 @@
 ﻿
+
+
 Rails アップグレードガイド
 ===================================
 
-本章では、アプリケーションで使用されているRuby on Railsのバージョンを、新しいバージョンにアップグレードする際の手順について示します。アップグレードの手順は、Railsのバージョンごとに個別に記載されています。
+本章では、アプリケーションで使用されているRuby on Railsのバージョンを、新しいバージョンにアップグレードする際の手順について示します。アップグレードの手順は、Railsのバージョンごとに記載されています。
 
 --------------------------------------------------------------------------------
 
@@ -15,23 +17,39 @@ Rails アップグレードガイド
 
 アップグレード後にアプリケーションが正常に動作していることを確認する方法としては、良いテストカバレッジをアップグレード前に準備しておくのが最善です。アプリケーションを一気に検査する自動テストがないと、変更点をすべて手動で確認しなければならず膨大な時間がかかってしまいます。Railsのようなアプリケーションの場合、これはアプリケーションのあらゆる機能を一つ残らず確認しなければならないということです。アップグレードの実施は、テストカバレッジをきちんと準備してから行なうよう、お願いいたします。
 
+### アップグレード手順
+
+Rails のバージョンを変更する場合、マイナーバージョンを1つずつゆっくりと変更して、非推奨機能の警告をすべて確認・利用するのが最善の方法であると言えます。言い換えると、アップグレードを急ぐあまりバージョンをスキップするべきではありません。Rails のバージョン番号は「メジャー番号.マイナー番号.パッチ番号」の形式を取ります。メジャーバージョンやマイナーバージョンが変更される場合、公開 API の変更によるエラーがアプリケーションで発生する可能性があります。パッチバージョンはバグ修正のみが含まれ、公開 API 変更は含まれません。
+
+アップグレードは以下の手順で行います。
+
+1. テストを書き、テストがパスすることを確認する。
+2. 現時点のバージョンのパッチバージョンを最新のパッチに移行する。
+3. テストを修正し、非推奨の機能を修正する。
+4. 次のマイナーバージョンの最新パッチに移行する。
+
+上の手順を繰り返して、最終的にRailsを目的のバージョンにアップグレードします。バージョンを移行するたびに、Gemfile 内の Rails バージョン番号を変更（これに伴い、他の gem のバージョン変更が必要になることもあります）し、`bundle update` を実行する必要があります。続いて、以下のアップデートタスクを実行して設定ファイルをアップデートし、テストを実行します。
+
+リリース済みの Rails バージョンのリストは[ここ](https://rubygems.org/gems/rails/versions)で確認できます。
+
 ### Rubyのバージョン
 
 Railsは、そのバージョンがリリースされた時点で最新のバージョンのRubyに依存しています。
 
-* Rails 3以上では、Ruby 1.8.7以降が必須です。これより古いRubyのサポートは公式に停止しています。できるだけ早くアップグレードをお願いします。
-* Rails 3.2.xはRuby 1.8.7の最終ブランチです。
+* Rails 5 では Ruby 2.2.2 以降が必須です。
 * Rails 4ではRuby 2.0が推奨されます。Ruby 1.9.3以上が必須です。
+* Rails 3.2.xはRuby 1.8.7の最終ブランチです。
+* Rails 3以上では、Ruby 1.8.7以降が必須です。これより古いRubyのサポートは公式に停止しています。できるだけ早くアップグレードをお願いします。
 
 TIP: Ruby 1.8.7 p248およびp249にはRailsをクラッシュさせるマーシャリングバグがあります。Ruby Enterprise Editionでは1.8.7-2010.02以降このバグは修正されています。Ruby 1.9系を使用する場合、Ruby 1.9.1はあからさまなセグメンテーション違反が発生するため使用できません。1.9.3をご使用ください。
 
-### Rakeタスク
+### アップデートタスク
 
-Railsには`rails:update`というrakeタスクがあります。Gemfileに記載されているRailsのバージョンを更新後、このrakeタスクを実行してください。
-これにより、新しいバージョンでのファイル作成や既存ファイルの変更を対話形式で行なうことができます。
+Rails では`app:update`というタスクが提供されています（Rails 4.2 以前では `rails:update` という名前でした）。Gemfileに記載されているRailsのバージョンを更新後、このタスクを実行することで、
+新しいバージョンでのファイル作成や既存ファイルの変更を対話形式で行うことができます。
 
 ```bash
-$ rake rails:update
+$ rails app:update
    identical  config/boot.rb
        exist  config
     conflict  config/routes.rb
@@ -45,6 +63,231 @@ Overwrite /myapp/config/application.rb? (enter "h" for help) [Ynaqdh]
 ```
 
 予期しなかった変更が発生した場合は、必ず差分を十分にチェックしてください。
+
+Rails 4.2からRails 5.0へのアップグレード
+-------------------------------------
+
+Rails 5.0 の変更点について詳しくは、[リリースノート](5_0_release_notes.html)を参照してください。
+
+### Ruby 2.2.2以上が必須
+
+Ruby on Rails 5.0 以降は、バージョン 2.2.2 以降の Ruby だけをサポートします。
+Ruby のバージョンが 2.2.2 以降であることを確認してから手順を進めてください。
+
+### Active Record モデルは今後デフォルトで ApplicationRecord を継承する
+
+Rails 4.2 の Active Record モデルは `ActiveRecord::Base` を継承していました。Rails 5.0 では、すべてのモデルが `ApplicationRecord` を継承するようになりました。
+
+`ApplicationRecord` はアプリのすべてのモデルのスーパークラスとして新設され、`ActionController::Base`に代わって`ApplicationController`を継承します。この変更により、アプリ全体のモデルの動作を1か所で変更できるようになりました。
+
+Rails 4.2 を Rails 5.0 にアップグレードする場合、`app/models/`ディレクトリに`application_record.rb`ファイルを追加し、このファイルに以下の設定を追加する必要があります。
+
+```
+class ApplicationRecord < ActiveRecord::Base
+  self.abstract_class = true
+end
+```
+
+### `throw(:abort)`でコールバックチェーンを停止する
+
+Rails 4.2 では、Active RecordやActive Modelで'before'コールバックが`false`を返すと、すべてのコールバックチェインが停止する仕様でした。この場合、以後'before'コールバックは実行されず、コールバック内にラップされているアクションも実行されません。
+
+Rails 5.0 ではこの副作用が修正され、Active RecordやActive Modelのコールバックで`false`が返ってもコールバックチェーンが停止しなくなりました。その代わり、今後コールバックチェーンは`throw(:abort)`で明示的に停止する必要があります。
+
+Rails 4.2 を Rails 5.0 にアップグレードした場合、こうしたコールバックで`false`が返ったときに従来同様コールバックチェーンは停止しますが、この変更にともなう非推奨警告が表示されます。
+
+この変更内容とその影響を十分理解しているのであれば、`config/application.rb`に以下の記述を追加して非推奨警告をオフにできます。
+
+    ActiveSupport.halt_callback_chains_on_return_false = false
+
+Active Support のコールバックはこのオプションの影響を受けないことにご注意ください。Active Supportのチェーンはどのような値が返っても停止しません。
+
+詳細については[#17227](https://github.com/rails/rails/pull/17227)を参照してください。
+
+### ActiveJob は今後デフォルトで ApplicationJob を継承する
+
+Rails 4.2 のActive Jobは`ActiveJob::Base`を継承しますが、Rails 5.0 ではデフォルトで`ApplicationJob`を継承するよう変更されました。
+
+Rails 4.2 を Rails 5.0 にアップグレードする場合、`app/models/`ディレクトリに`application_job.rb`ファイルを追加し、このファイルに以下の設定を追加する必要があります。
+
+```
+class ApplicationJob < ActiveJob::Base
+end
+```
+
+これにより、すべてのjobクラスがActiveJob::Baseを継承するようになります。
+
+詳細については[#19034](https://github.com/rails/rails/pull/19034)を参照してください。
+
+### Rails コントローラのテスト
+
+`assigns`メソッドと`assert_template`メソッドは`rails-controller-testing` gemに移転しました。これらのメソッドを引き続きコントローラのテストで使いたい場合は、Gemfileに`gem 'rails-controller-testing'`を追加してください。
+
+テストでRspecを使っている場合は、このgemのドキュメントで必須となっている追加の設定方法もご確認ください。
+
+### production 環境での起動後は自動読み込みが無効になる
+
+今後Railsがproduction 環境で起動されると、自動読み込みがデフォルトで無効になります。
+
+アプリケーションの一括読み込み（eager loading）は起動プロセスに含まれています。このため、トップレベルの定数についてはファイルをrequireしなくても問題なく利用でき、従来と同様に自動読み込みされます。
+
+トップレベルより下で、実行時にのみ有効にする定数（通常のメソッド本体など）を定義した場合も、起動時に一括読み込みされるので問題なく利用できます。
+
+ほとんどのアプリケーションでは、この変更に関して特別な対応は不要です。めったにないと思われますが、productionモードで動作するアプリケーションで自動読み込みが必要な場合は、`Rails.application.config.enable_dependency_loading`をtrueに設定してください。
+
+### XML シリアライズ
+
+Railsの`ActiveModel::Serializers::Xml`は`activemodel-serializers-xml` gemに移転しました。アプリケーションで今後もXMLシリアライズを使うには、Gemfileに「`gem 'activemodel-serializers-xml'`」を追加してください。
+
+2.8 古い `mysql` データベース アダプタのサポートを終了
+
+Rails 5で古い`mysql`データベース アダプタのサポートが終了しました。原則として`mysql2`をお使いください。今後古いアダプタのメンテナンス担当者が決まった場合、アダプタは別のgemに切り出されます。
+
+### デバッガのサポートを終了
+
+Rails 5 で必要なRuby 2.2では、`debugger`はサポートされていません。今後は代わりに`byebug`をお使いください。
+
+### タスクやテストの実行には bin/rails を使うこと
+
+Rails 5 では、rakeに代わって`bin/rails`でタスクやテストを実行できるようになりました。原則として、多くのタスクやテストはrakeでも引き続き実行できますが、一部のタスクやテストは完全にbin/railsに移行しました。
+
+今後テストの実行には「`bin/rails test`」をお使いください。
+
+「`rake dev:cache`」は「`rails dev:cache`」に変更されました。
+
+「`bin/rails`」を実行すると、利用可能なコマンドリストを表示できます。
+
+2.11 `ActionController::Parameters` は今後 `HashWithIndifferentAccess` を継承しない
+
+アプリケーションで `params` を呼び出すと、今後はハッシュではなくオブジェクトが返ります。現在使っているパラメーターがRailsで既に利用できている場合、変更は不要です。`permitted?`の状態にかかわらずハッシュを読み取れることが前提のメソッド（`slice`メソッドなど）にコードが依存している場合、まずアプリケーションをアップグレードしてpermitを指定し、続いてハッシュに変換する必要があります。
+
+    params.permit([:proceed_to, :return_to]).to_h
+
+### `protect_from_forgery` は今後デフォルトで `prepend: false` に設定される
+
+`protect_from_forgery` は今後デフォルトで `prepend: false` に設定されます。これにより、protect_from_forgeryはアプリケーションで呼び出される時点でコールバックチェーンに挿入されます。`protect_from_forgery`を常に最初に実行したい場合は、アプリケーションの設定で`protect_from_forgery prepend: true`を指定する必要があります。
+
+### デフォルトのテンプレート ハンドラは今後 RAW になる
+
+拡張子がテンプレート ハンドラになっていないファイルは、今後rawハンドラで出力されるようになります。
+従来のRailsでは、このような場合にはERBテンプレートハンドラで出力されました。
+
+ファイルをrawハンドラで出力したくない場合は、ファイルに明示的に拡張子を与え、適切なテンプレート ハンドラで処理されるようにしてください。
+
+### テンプレート依存関係の指定でワイルドカードマッチングが追加された
+
+テンプレート依存関係をワイルドカードマッチングで指定できるようになりました。以下のテンプレートを例に説明します。
+
+```erb
+<% # Template Dependency: recordings/threads/events/subscribers_changed %>
+<% # Template Dependency: recordings/threads/events/completed %>
+<% # Template Dependency: recordings/threads/events/uncompleted %>
+```
+
+上のようなテンプレートは、以下のようにワイルドカードを使えば1行で設定できます。
+
+```erb
+<% # Template Dependency: recordings/threads/events/* %>
+```
+
+### `protected_attributes` gem のサポートを終了
+
+`protected_attributes` gemのサポートは Rails 5 で終了しました。
+
+### `activerecord-deprecated_finders` gem のサポートを終了
+
+`activerecord-deprecated_finders` gemのサポートは Rails 5 で終了しました。
+
+### `ActiveSupport::TestCase` でのテストは今後デフォルトでランダムに実行される
+
+アプリケーションのテストのデフォルトの実行順序は、従来の`:sorted`から`:random`に変更されました。`:sorted`に戻すには以下のオプションを指定します。
+
+```ruby
+# config/environments/test.rb
+Rails.application.configure do
+  config.active_support.test_order = :sorted
+end
+```
+
+### `ActionController::Live` は `Concern` に変更された
+
+コントローラにincludeされている別のモジュールに`ActionController::Live`がincludeされている場合、`ActiveSupport::Concern`をextendするコードの追加も必要です。または、`StreamingSupport`がincludeされてから、`self.included`フックを使って`ActionController::Live`をコントローラに直接includeすることもできます。
+
+理由: アプリケーションで独自のストリーミングモジュールを使用している場合、以下のコードはproductionモードで正常に動作しなくなる可能性があります。
+
+```ruby
+# Warden/Devise で認証するストリーミングコントローラでの回避方法を示すコード
+# https://github.com/plataformatec/devise/issues/2332 を参照
+# 上のissueではルーター内での認証で解決する方法もアドバイスされている
+class StreamingSupport
+  include ActionController::Live # Rails 5 の production モードではこの行は動作しない
+  # extend ActiveSupport::Concern # この行をコメント解除することで上の行が動作するようにな
+
+  def process(name)
+    super(name)
+  rescue ArgumentError => e
+    if e.message == 'uncaught throw :warden'
+      throw :warden
+    else
+      raise e
+    end
+  end
+end
+```
+
+### フレームワークの新しいデフォルト設定
+
+#### Active Recordの`belongs_to`はデフォルトオプションで必須
+
+関連付けが存在しない場合、`belongs_to`でバリデーションエラーが発生するようになりました。
+
+なお、この機能は関連付けごとに`optional: true`を指定してオフにできます。
+
+新しいアプリケーションでは、このデフォルト設定が自動で有効になります。この設定を既存のアプリケーションに追加するには、イニシャライザでこの機能をオンにする必要があります
+
+    config.active_record.belongs_to_required_by_default = true
+
+#### フォームごとのCSRFトークン
+
+Rails 5 では、JavaScriptで作成されたフォームによるコードインジェクション攻撃に対応するため、フォーム単位でのCSRFトークンをサポートします。このオプションがオンの場合、アクションやメソッドで指定したCSRFトークンがアプリケーションのフォームごとに個別に生成されるようになります。
+
+    config.action_controller.per_form_csrf_tokens = true
+
+#### OriginチェックによるCSRF対策
+
+アプリケーションで、CSRF防御の一環としてHTTP `Origin`ヘッダによるサイトの出自チェックを設定できるようになりました。以下の設定をtrueにすることで有効になります。
+
+    config.action_controller.forgery_protection_origin_check = true
+
+#### Action Mailerのキュー名がカスタマイズ可能に
+
+デフォルトのメイラー キュー名は`mailers`です。新しい設定オプションを使うと、キュー名をグローバルに変更できます。以下の方法で設定します。
+
+    config.action_mailer.deliver_later_queue_name = :new_queue_name
+
+#### Action Mailer のビューでフラグメントキャッシュをサポート
+
+設定ファイルの `config.action_mailer.perform_caching` で、Action Mailerのビューでキャッシュをサポートするかどうかを指定できます。
+
+    config.action_mailer.perform_caching = true
+
+#### `db:structure:dump`の出力形式のカスタマイズ
+
+`schema_search_path`やその他のPostgreSQL 拡張を使っている場合、スキーマのダンプ方法を指定できます。以下のように`:all`を指定するとすべてのダンプが生成され、`:schema_search_path`を指定するとスキーマ検索パスからダンプが生成されます。
+
+    config.active_record.dump_schemas = :all
+
+#### サブドメインでのHSTSを有効にするSSLオプション
+
+サブドメインで HSTS（HTTP Strict Transport Security）を有効にするには、以下の設定を使います。
+
+    config.ssl_options = { hsts: { subdomains: true } }
+
+#### レシーバのタイムゾーンを保存する
+
+Ruby 2.4を利用している場合、`to_time`の呼び出しでレシーバのタイムゾーンを保存できます。
+
+    ActiveSupport.to_time_preserves_timezone = false
 
 Rails 4.1からRails 4.2へのアップグレード
 -------------------------------------
@@ -84,7 +327,7 @@ class UsersController < ApplicationController
     end
   end
 end
-``` 
+```
 
 詳細については[#16526](https://github.com/rails/rails/pull/16526)を参照してください。
 
@@ -119,7 +362,6 @@ end
 ### Productionログのレベル
 
 Rails 5のproduction環境では、デフォルトのログレベルが`:info`から`:debug`に変更される予定です。現在のログレベルを変更したくない場合は`production.rb`に以下の行を追加してください。
-
 ```ruby
 # `:info`を指定すると現在のデフォルト設定が使用され、
 # `:debug`を指定すると今後のデフォルト設定が使用される
@@ -203,7 +445,8 @@ mail = Notifier.notify(user, ...) # Notifier#notifyはこの時点では呼び�
 mail = mail.deliver_now           # "Called"を出力する
 ```
 
-この変更によって実行結果が大きく異なるアプリケーションはそれほどないと思われます。ただし、メイラー以外のメソッドを同期的に実行したい場合、かつ従来の同期的プロキシ動作に依存している場合は、これらのメソッドをメイラークラスにクラスメソッドとして直接定義する必要があります。
+この変更によって実行結果が大きく異なるアプリケーションはほとんどないと思われます。
+ただし、メイラー以外のメソッドを同期的に実行したい場合、かつ従来の同期的プロキシ動作に依存している場合は、これらのメソッドをメイラークラスにクラスメソッドとして直接定義する必要があります。
 
 ```ruby
 class Notifier < ActionMailer::Base
@@ -213,14 +456,26 @@ class Notifier < ActionMailer::Base
 end
 ```
 
+### 外部キーのサポート
+
+移行DSLが拡張され、外部キー定義をサポートするようになりました。Foreigner gemを使っていた場合は、この機会に削除するとよいでしょう。
+Railsの外部キーサポートは、Foreignerの全機能ではなく、一部のみである点にご注意ください。このため、Foreignerの定義を必ずしもRailsの移行DSLに置き換えられないことがあります。
+
+移行手順は次のとおりです。
+
+1. Gemfileから`gem "foreigner"`を削除します。
+2. `bundle install`を実行します。
+3. `bin/rake db:schema:dump`を実行します。
+4. 外部キー定義と必要なオプションが`db/schema.rb`にすべて含まれていることを確認します。
+
 Rails 4.0からRails 4.1へのアップグレード
 -------------------------------------
 
 ### リモート `<script>` タグにCSRF保護を実施
 
-これを行わないと、「なぜかテストがとおらない...orz」ということになりかねません。
+これを行わないと、「なぜかテストがとおらない...orz」「`<script>`ウィジェットがおかしい！」などという結果になりかねません。
 
-JavaScriptレスポンスを伴うGETリクエストもクロスサイトリクエストフォージェリ (CSRF) 保護の対象となりました。この保護によって、第三者のサイトが重要なデータを奪取する目的で自分のサイトのJavaScript URLを参照して実行しようとすることを防止します。
+JavaScriptレスポンスを伴うGETリクエストもクロスサイトリクエストフォージェリ (CSRF) 保護の対象となりました。これは、サイトの`<script>`タグのJavaScriptが第三者のサイトから参照されて重要なデータが奪取されないよう保護するためのものです。
 
 つまり、以下を使用する機能テストと結合テストは
 
@@ -232,11 +487,11 @@ CSRF保護をトリガーするようになります。以下のように書き�
 
 ```ruby
 xhr :get, :index, format: :js
-``` 
+```
 
 `XmlHttpRequest`を明示的にテストしてください。
 
-本当にJavaScriptをリモートの`<script>`タグから読み込むのであれば、そのアクションではCSRF保護をスキップしてください。
+NOTE: 自サイトの`<script>`はクロス参照の出発点として扱われるため、同様にブロックされます。JavaScriptを本当に`<script>`タグから読み込む場合は、そのアクションでCSRF保護を明示的にスキップしてください。
 
 ### Spring
 
@@ -246,7 +501,8 @@ xhr :get, :index, format: :js
 2. `bundle install`を実行してSpringをインストールする
 3. `bundle exec spring binstub --all`を実行してbinstubをSpring化する
 
-NOTE: ユーザーが定義したRakeタスクはデフォルトでdevelopment環境で動作するようになります。これらのRakeタスクを他の環境でも実行したい場合は[Spring README](https://github.com/rails/spring#rake)を参考にしてください。
+NOTE: ユーザーが定義したRakeタスクはデフォルトでdevelopment環境で動作するようになります。他の環境で実行したい場合は
+[Spring README](https://github.com/rails/spring#rake)を参照してください。
 
 ### `config/secrets.yml`
 
@@ -275,7 +531,7 @@ NOTE: ユーザーが定義したRakeタスクはデフォルトでdevelopment�
 
 ### テストヘルパーの変更
 
-テストヘルパーに`ActiveRecord::Migration.check_pending!`の呼び出しがある場合、これを削除することができます。このチェックは`require 'rails/test_help'`の際に自動的に行われるようになりました。この呼び出しを削除しなくても悪影響が生じることはありません。
+テストヘルパーに含まれている`ActiveRecord::Migration.check_pending!`呼び出しは削除できます。このチェックは`require 'rails/test_help'`の際に自動的に行われるようになりました。この呼び出しを削除しなくても悪影響が生じることはありません。
 
 ### Cookiesシリアライザ
 
@@ -338,7 +594,7 @@ MultiJSONはその役目を終えて [end-of-life](https://github.com/rails/rail
 
 2. `obj.to_json`と`JSON.parse(str)`を使用してMultiJSONから乗り換える。
 
-WARNING: `MultiJson.dump` と `MultiJson.load`をそれぞれ`JSON.dump`と`JSON.load`に単純に置き換えては「いけません」。これらのJSON gem APIは任意のRubyオブジェクトをシリアライズおよびデシリアライズするためのものであり、一般に[安全ではありません](http://www.ruby-doc.org/stdlib-2.0.0/libdoc/json/rdoc/JSON.html#method-i-load)。
+WARNING: `MultiJson.dump` と `MultiJson.load`をそれぞれ`JSON.dump`と`JSON.load`に単純に置き換えては「いけません」。これらのJSON gem APIは任意のRubyオブジェクトをシリアライズおよびデシリアライズするためのものであり、一般に[安全ではありません](http://www.ruby-doc.org/stdlib-2.2.2/libdoc/json/rdoc/JSON.html#method-i-load)。
 
 #### JSON gemの互換性
 
@@ -424,7 +680,7 @@ module FixtureFileHelpers
     Digest::SHA2.hexdigest(File.read(Rails.root.join('test/fixtures', path)))
   end
 end
-ActiveRecord::FixtureSet.context_class.send :include, FixtureFileHelpers
+ActiveRecord::FixtureSet.context_class.include FixtureFileHelpers
 ```
 
 ### I18nオプションでavailable_localesリストの使用が強制される
@@ -435,13 +691,13 @@ Rails 4.1からI18nオプション`enforce_available_locales`がデフォルト�
 
 ```ruby
 config.i18n.enforce_available_locales = false
-``` 
+```
 
 available_localesの強制はセキュリティのために行われていることにご注意ください。つまり、アプリケーションが把握していないロケールを持つユーザー入力が、ロケール情報として使用されることのないようにするためのものです。従って、やむを得ない理由がない限りこのオプションはfalseにしないでください。
 
 ### リレーションに対するミューテーターメソッド呼び出し
 
-`Relation`に`#map!`や`#delete_if`などのミューテーターメソッド (mutator method) が含まれなくなりました。これらのメソッドを使用したい場合は`#to_a`を呼び出して`Array`に変更してからにしてください。
+`Relation`には`#map!`や`#delete_if`などのミューテーターメソッド (mutator method) が含まれなくなりました。これらのメソッドを使用したい場合は`#to_a`を呼び出して`Array`に変更してからにしてください。
 
 この変更は、`Relation`に対して直接ミューテーターメソッドを呼び出すことによる奇妙なバグや混乱を防止するために行われました。
 
@@ -452,7 +708,7 @@ Author.where(name: 'Hank Moody').compact!
 # 今後のミューテーター呼び出し方法
 authors = Author.where(name: 'Hank Moody').to_a
 authors.compact!
-``` 
+```
 
 ### デフォルトスコープの変更
 
@@ -520,6 +776,7 @@ User.inactive
 ### 文字列からのコンテンツ描出
 
 Rails 4.1の`render`に`:plain`、`:html`、`:body`オプションが導入されました。以下のようにコンテンツタイプを指定できるため、文字列ベースのコンテンツ表示にはこれらのオプションの使用が推奨されます。[BR]
+
 * `render :plain`を実行するとcontent typeは`text/plain`に設定される
 * `render :html`を実行するとcontent typeは`text/html`に設定される
 * `render :body`を実行した場合、content typeヘッダーは「設定されない」
@@ -558,8 +815,7 @@ Railsアプリケーションのバージョンが3.2より前の場合、まず
 Rails 4では、`config/routes.rb`でRESTfulなリソースが宣言されたときに、更新用の主要なHTTP verbとして`PATCH`が使用されるようになりました。`update`アクションは従来通り使用でき、`PUT`リクエストは今後も`update`アクションにルーティングされます。
 標準的なRESTfulのみを使用しているのであれば、これに関する変更は不要です。
 
-```ruby
-resources :users
+```ruby resources :users
 ```
 
 ```erb
@@ -645,24 +901,24 @@ Rails 4.0では`assets`グループがGemfileから削除されました。ア�
 ```ruby
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
-Bundler.require(:default, Rails.env)
-``` 
+Bundler.require(*Rails.groups)
+```
 
 ### vendor/plugins
 
-Rails 4.0 では `vendor/plugins` 読み込みのサポートは完全に終了しました。使用するプラグインはすべてgemに展開してGemfileに追加しなければなりません。理由があってプラグインをgemにしないのであれば、プラグインを`lib/my_plugin/*`に移動し、適切な初期化の記述を`config/initializers/my_plugin.rb`に書いてください。
+Rails 4.0 では `vendor/plugins` 読み込みのサポートは完全に終了しました。使用するプラグインはすべてgemに展開してGemfileに追加しなければなりません。 理由があってプラグインをgemにしないのであれば、プラグインを`lib/my_plugin/*`に移動し、適切な初期化の記述を`config/initializers/my_plugin.rb`に書いてください。
 
 ### Active Record
 
 * [関連付けに関する若干の不整合](https://github.com/rails/rails/commit/302c912bf6bcd0fa200d964ec2dc4a44abe328a6) のため、Rails 4.0ではActive Recordからidentity mapが削除されました。この機能をアプリケーションで手動で有効にしたい場合は、今や無効になった`config.active_record.identity_map`を削除する必要があるでしょう。
 
-* コレクション関連付けの`delete`メソッドは、`Fixnum`や`String`引数をレコードの他にレコードIDとしても受け付けるようになりました。これにより`destroy`メソッドの動作にかなり近くなりました。以前はこのような引数を使用すると`ActiveRecord::AssociationTypeMismatch`例外が発生しました。Rails 4.0からは、`delete`メソッドを使用すると、与えられたIDにマッチするレコードを自動的に探すようになりました。
+コレクション関連付けの`delete`メソッドは、`integer`や`String`引数をレコードの他にレコードIDとしても受け付けるようになりました。これにより`destroy`メソッドの動作にかなり近くなりました。以前はこのような引数を使用すると`ActiveRecord::AssociationTypeMismatch`例外が発生しました。Rails 4.0からは、`delete`メソッドを使用すると、与えられたIDにマッチするレコードを自動的に探すようになりました。
 
 * Rails 4.0では、カラムやテーブルの名前を変更すると、関連するインデックスも自動的にリネームされるようになりました。インデックス名を変更するためだけのマイグレーションは今後不要になりました。
 
 * Rails 4.0の`serialized_attributes`メソッドと`attr_readonly`メソッドは、クラスメソッドとしてのみ使用するように変更されました。これらのメソッドをインスタンスメソッドとして使用することは非推奨となったため、行わないでください。たとえば`self.serialized_attributes`は`self.class.serialized_attributes`のようにクラスメソッドとして使用してください。
 
-* [REVIEW]デフォルトのコーダーを使用する場合、シリアル化属性に`nil`を渡すと、YAML全体にわたって (`nil`値を渡す代わりに) `NULL`としてデータベースに保存されます (`"--- \n...\n"`)。
+* デフォルトのコーダーを使用する場合、シリアル化属性に`nil`を渡すと、YAML全体にわたって (`nil`値を渡す代わりに) `NULL`としてデータベースに保存されます (`"--- \n...\n"`)。
 
 * Rails 4.0ではStrong Parametersの導入に伴い、`attr_accessible`と`attr_protected`が廃止されました。これらを引き続き使用したい場合は、[Protected Attributes gem](https://github.com/rails/protected_attributes) を導入することでスムーズにアップグレードすることができます。
 
@@ -688,15 +944,29 @@ Rails 4.0 では `vendor/plugins` 読み込みのサポートは完全に終了�
 
       * `find_all_by_...`           に代えて `where(...)` を使用
       * `find_last_by_...`          に代えて `where(...).last` を使用
-      * `scoped_by_...`             に代えて `where(...)` を使用
-      * `find_or_initialize_by_...` に代えて`find_or_initialize_by(...)`を使用
-      * `find_or_create_by_...`   に代えて`find_or_create_by(...)`を使用
+      * `scoped_by_...`             に代えて `where(...)` を使用`
+      * `find_or_initialize_by_...` に代えて`find_or_initialize_by(...)`を使用`
+      * `find_or_create_by_...`   に代えて`find_or_create_by(...)`を使用`
 
 * 旧来のfinderが配列を返していたのに対し、`where(...)`はリレーションを返します。`Array`が必要な場合は, `where(...).to_a`を使用してください。
 
 * これらの同等なメソッドが実行するSQLは、従来の実装と同じではありません。
 
 * 旧来のfinderを再度有効にしたい場合は、[activerecord-deprecated_finders gem](https://github.com/rails/activerecord-deprecated_finders) を使用できます。
+
+* Rails 4.0 では、`has_and_belongs_to_many`リレーションで2番目のテーブル名の共通プレフィックスを除去する際に、デフォルトでjoin tableを使うよう変更されました。共通プレフィックスがあるモデル同士の`has_and_belongs_to_many`リレーションでは、必ず`join_table`オプションを指定する必要があります。以下に例を示します。
+
+```ruby
+CatalogCategory < ActiveRecord::Base
+  has_and_belongs_to_many :catalog_products, join_table: 'catalog_categories_catalog_products'
+end
+
+CatalogProduct < ActiveRecord::Base
+  has_and_belongs_to_many :catalog_categories, join_table: 'catalog_categories_catalog_products'
+end
+```
+
+* プレフィックスではスコープも同様に考慮されるので、`Catalog::Category`と`Catalog::Product`間のリレーションや、`Catalog::Category`と`CatalogProduct`間のリレーションも同様に更新する必要があります。
 
 ### Active Resource
 
@@ -711,7 +981,7 @@ Rails 4.0ではActive Resourceがgem化されました。この機能が必要�
 ```ruby
 # Disable root element in JSON by default.
 # ActiveSupport.on_load(:active_record) do
-#   self.include_root_in_json = false
+#   self.include_root_in_json = false 
 # end
 ```
 
@@ -741,6 +1011,8 @@ Rails 4.0ではActive Resourceがgem化されました。この機能が必要�
 
 * Rails 4.0からXMLパラメータパーサーが取り除かれました。この機能が必要な場合は`actionpack-xml_parser` gemを追加する必要があります。
 
+Rails 4.0 では、シンボルやprocがnilを返す場合の、デフォルトの `layout` ルックアップ設定が変更されました。動作を「no layout」にするには、nilではなくfalseを返すようにします。
+
 * Rails 4.0のデフォルトのmemcachedクライアントが`memcache-client`から`dalli`に変更されました。アップグレードするには、単に`gem 'dalli'`を`Gemfile`に追加します。
 
 * Rails 4.0ではコントローラでの`dom_id`および`dom_class`メソッドの使用が非推奨になりました (ビューでの使用は問題ありません)。この機能が必要なコントローラでは`ActionView::RecordIdentifier`モジュールをインクルードする必要があります。
@@ -759,16 +1031,16 @@ Rails 4.0ではActive Resourceがgem化されました。この機能が必要�
 
 ```ruby
   resources :examples
-  get 'clashing/:id' => 'test#example', as: :example
+  get 'clashing/:id' => 'test#example', as: :example 
 ```
 
-最初の例では、複数のルーティングで同じ名前を使用しないようにすれば回避できます。次の例では、`only`または`except`オプションを`resources`メソッドで使用することで、作成されるルーティングを制限することができます。詳細は [Routing Guide](routing.html#ルーティングの作成を制限する) を参照。
+最初の例では、複数のルーティングで同じ名前を使用しないようにすれば回避できます。次の例では、`only`または`except`オプションを`resources`メソッドで使用することで、作成されるルーティングを制限することができます。詳細は [Routing Guide](routing.html#restricting-the-routes-created) を参照。
 
 * Rails 4.0ではunicode文字のルーティングの描出方法が変更されました。unicode文字を使用するルーティングを直接描出できるようになりました。既にこのようなルーティングを使用している場合は、以下の変更が必要です。
 
 ```ruby
 get Rack::Utils.escape('こんにちは'), controller: 'welcome', action: 'index'
-```
+``` 
 
 上のコードは以下のように変更する必要があります。
 
@@ -791,7 +1063,7 @@ get 'こんにちは', controller: 'welcome', action: 'index'
 
 * Rails 4.0から`ActionDispatch::BestStandardsSupport`ミドルウェアが削除されました。`<!DOCTYPE html>`は既に http://msdn.microsoft.com/en-us/library/jj676915(v=vs.85).aspx の標準モードをトリガするようになり、ChromeFrameヘッダは`config.action_dispatch.default_headers`に移動されました。
 
-アプリケーションコード内にあるこのミドルウェアへの参照はすべて削除する必要がありますので注意が必要です。例：
+アプリケーションコード内にあるこのミドルウェアへの参照はすべて削除する必要がありますのでご注意ください。例：
 
 ```ruby
 # 例外発生
@@ -933,7 +1205,7 @@ Railsアプリケーションでリソースのルーティングに"/assets"ル
 ```ruby
 # '/assets'のデフォルト
 config.assets.prefix = '/asset-files'
-``` 
+```
 
 ### config/environments/development.rb
 
@@ -947,7 +1219,7 @@ config.assets.compress = false
 
 # アセットで読み込んだ行を展開する
 config.assets.debug = true
-``` 
+```
 
 ### config/environments/production.rb
 
@@ -971,7 +1243,7 @@ config.assets.digest = true
 
 # アプリケーションへのすべてのアクセスを強制的にSSLにし、Strict-Transport-Securityとセキュアクッキーを使用する
 # config.force_ssl = true
-``` 
+```
 
 ### config/environments/test.rb
 
@@ -979,8 +1251,10 @@ config.assets.digest = true
 
 ```ruby
 # Cache-Controlを使用するテストで静的アセットサーバーを構成し、パフォーマンスを向上させる
-config.serve_static_assets = true
-config.static_cache_control = 'public, max-age=3600'
+config.public_file_server.enabled = true
+config.public_file_server.headers = {
+  'Cache-Control' => 'public, max-age=3600'
+}
 ```
 
 ### config/initializers/wrap_parameters.rb
