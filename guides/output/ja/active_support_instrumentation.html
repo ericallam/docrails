@@ -232,7 +232,7 @@
   <hr class="hide" />
   <div id="feature">
   <div class="wrapper">
-      <p><strong>DO NOT READ THIS FILE ON GITHUB, GUIDES ARE PUBLISHED ON <a href="http://guides.rubyonrails.org">http://guides.rubyonrails.org</a>.</strong></p><h2>Active Support Instrumentation</h2><p>Active Support is a part of core Rails that provides Ruby language extensions, utilities and other things. One of the things it includes is an instrumentation API that can be used inside an application to measure certain actions that occur within Ruby code, such as that inside a Rails application or the framework itself. It is not limited to Rails, however. It can be used independently in other Ruby scripts if it is so desired.</p><p>In this guide, you will learn how to use the instrumentation API inside of Active Support to measure events inside of Rails and other Ruby code.</p><p>このガイドの内容:</p>
+      <h2>Active Support Instrumentation</h2><p>Active Support is a part of core Rails that provides Ruby language extensions, utilities and other things. One of the things it includes is an instrumentation API that can be used inside an application to measure certain actions that occur within Ruby code, such as that inside a Rails application or the framework itself. It is not limited to Rails, however. It can be used independently in other Ruby scripts if it is so desired.</p><p>In this guide, you will learn how to use the instrumentation API inside of Active Support to measure events inside of Rails and other Ruby code.</p><p>このガイドの内容:</p>
 <ul>
 <li>What instrumentation can provide.</li>
 <li>The hooks inside the Rails framework for instrumentation.</li>
@@ -246,7 +246,7 @@
 <li><a href="#introduction-to-instrumentation">Introduction to instrumentation</a></li>
 <li><a href="#rails-framework-hooks">Rails framework hooks</a></li>
 <li>
-<a href="#action-controller">  action_controller</a>
+<a href="#action-controller">Action Controller</a>
 
 <ul>
 <li><a href="#write-fragment-action-controller">write_fragment.action_controller</a></li>
@@ -317,7 +317,7 @@
 </ul>
 </li>
 <li>
-<a href="#rails">* rails</a>
+<a href="#rails">Rails</a>
 
 <ul>
 <li><a href="#deprecation-rails">deprecation.rails</a></li>
@@ -334,18 +334,18 @@
   <div id="container">
     <div class="wrapper">
       <div id="mainCol">
-        <h3 id="introduction-to-instrumentation"><a href="#introduction-to-instrumentation">1 Introduction to instrumentation</a></h3><p>The instrumentation API provided by Active Support allows developers to provide hooks which other developers may hook into. There are several of these within the <a href="#rails-framework-hooks">Rails framework</a>. With this API, developers can choose to be notified when certain events occur inside their application or another piece of Ruby code.</p><p>For example, there is a hook provided within Active Record that is called every time Active Record uses an SQL query on a database. This hook could be <strong>subscribed</strong> to, and used to track the number of queries during a certain action. There's another hook around the processing of an action of a controller. This could be used, for instance, to track how long a specific action has taken.</p><p>You are even able to create your own events inside your application which you can later subscribe to.</p><h3 id="rails-framework-hooks"><a href="#rails-framework-hooks">2 Rails framework hooks</a></h3><p>Within the Ruby on Rails framework, there are a number of hooks provided for common events. These are detailed below.</p><h3 id="action-controller"><a href="#action-controller">3   action_controller</a></h3><h4 id="write-fragment-action-controller"><a href="#write-fragment-action-controller">3.1 write_fragment.action_controller</a></h4>
+        <h3 id="introduction-to-instrumentation"><a href="#introduction-to-instrumentation">1 Introduction to instrumentation</a></h3><p>The instrumentation API provided by Active Support allows developers to provide hooks which other developers may hook into. There are several of these within the <a href="#rails-framework-hooks">Rails framework</a>. With this API, developers can choose to be notified when certain events occur inside their application or another piece of Ruby code.</p><p>For example, there is a hook provided within Active Record that is called every time Active Record uses an SQL query on a database. This hook could be <strong>subscribed</strong> to, and used to track the number of queries during a certain action. There's another hook around the processing of an action of a controller. This could be used, for instance, to track how long a specific action has taken.</p><p>You are even able to create your own events inside your application which you can later subscribe to.</p><h3 id="rails-framework-hooks"><a href="#rails-framework-hooks">2 Rails framework hooks</a></h3><p>Within the Ruby on Rails framework, there are a number of hooks provided for common events. These are detailed below.</p><h3 id="action-controller"><a href="#action-controller">3 Action Controller</a></h3><h4 id="write-fragment-action-controller"><a href="#write-fragment-action-controller">3.1 write_fragment.action_controller</a></h4>
 <table>
 <thead>
 <tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
+<th>Key</th>
+<th>Value</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left"><code>:key</code></td>
-<td style="text-align: left">The complete key</td>
+<td><code>:key</code></td>
+<td>The complete key</td>
 </tr>
 </tbody>
 </table>
@@ -361,14 +361,14 @@
 <table>
 <thead>
 <tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
+<th>Key</th>
+<th>Value</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left"><code>:key</code></td>
-<td style="text-align: left">The complete key</td>
+<td><code>:key</code></td>
+<td>The complete key</td>
 </tr>
 </tbody>
 </table>
@@ -384,14 +384,14 @@
 <table>
 <thead>
 <tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
+<th>Key</th>
+<th>Value</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left"><code>:key</code></td>
-<td style="text-align: left">The complete key</td>
+<td><code>:key</code></td>
+<td>The complete key</td>
 </tr>
 </tbody>
 </table>
@@ -407,14 +407,14 @@
 <table>
 <thead>
 <tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
+<th>Key</th>
+<th>Value</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left"><code>:key</code></td>
-<td style="text-align: left">The complete key</td>
+<td><code>:key</code></td>
+<td>The complete key</td>
 </tr>
 </tbody>
 </table>
@@ -430,14 +430,14 @@
 <table>
 <thead>
 <tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
+<th>Key</th>
+<th>Value</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left"><code>:path</code></td>
-<td style="text-align: left">The complete path</td>
+<td><code>:path</code></td>
+<td>The complete path</td>
 </tr>
 </tbody>
 </table>
@@ -453,14 +453,14 @@
 <table>
 <thead>
 <tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
+<th>Key</th>
+<th>Value</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left"><code>:path</code></td>
-<td style="text-align: left">The complete path</td>
+<td><code>:path</code></td>
+<td>The complete path</td>
 </tr>
 </tbody>
 </table>
@@ -476,38 +476,38 @@
 <table>
 <thead>
 <tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
+<th>Key</th>
+<th>Value</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left"><code>:controller</code></td>
-<td style="text-align: left">The controller name</td>
+<td><code>:controller</code></td>
+<td>The controller name</td>
 </tr>
 <tr>
-<td style="text-align: left"><code>:action</code></td>
-<td style="text-align: left">The action</td>
+<td><code>:action</code></td>
+<td>The action</td>
 </tr>
 <tr>
-<td style="text-align: left"><code>:params</code></td>
-<td style="text-align: left">Hash of request parameters without any filtered parameter</td>
+<td><code>:params</code></td>
+<td>Hash of request parameters without any filtered parameter</td>
 </tr>
 <tr>
-<td style="text-align: left"><code>:headers</code></td>
-<td style="text-align: left">Request headers</td>
+<td><code>:headers</code></td>
+<td>Request headers</td>
 </tr>
 <tr>
-<td style="text-align: left"><code>:format</code></td>
-<td style="text-align: left">html/js/json/xml etc</td>
+<td><code>:format</code></td>
+<td>html/js/json/xml etc</td>
 </tr>
 <tr>
-<td style="text-align: left"><code>:method</code></td>
-<td style="text-align: left">HTTP request verb</td>
+<td><code>:method</code></td>
+<td>HTTP request verb</td>
 </tr>
 <tr>
-<td style="text-align: left"><code>:path</code></td>
-<td style="text-align: left">Request path</td>
+<td><code>:path</code></td>
+<td>Request path</td>
 </tr>
 </tbody>
 </table>
@@ -518,7 +518,7 @@
   action: "new",
   params: { "action" =&gt; "new", "controller" =&gt; "posts" },
   headers: #&lt;ActionDispatch::Http::Headers:0x0055a67a519b88&gt;,
-    format.html
+  format: :html,
   method: "GET",
   path: "/posts/new"
 }
@@ -529,50 +529,50 @@
 <table>
 <thead>
 <tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
+<th>Key</th>
+<th>Value</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left"><code>:controller</code></td>
-<td style="text-align: left">The controller name</td>
+<td><code>:controller</code></td>
+<td>The controller name</td>
 </tr>
 <tr>
-<td style="text-align: left"><code>:action</code></td>
-<td style="text-align: left">The action</td>
+<td><code>:action</code></td>
+<td>The action</td>
 </tr>
 <tr>
-<td style="text-align: left"><code>:params</code></td>
-<td style="text-align: left">Hash of request parameters without any filtered parameter</td>
+<td><code>:params</code></td>
+<td>Hash of request parameters without any filtered parameter</td>
 </tr>
 <tr>
-<td style="text-align: left"><code>:headers</code></td>
-<td style="text-align: left">Request headers</td>
+<td><code>:headers</code></td>
+<td>Request headers</td>
 </tr>
 <tr>
-<td style="text-align: left"><code>:format</code></td>
-<td style="text-align: left">html/js/json/xml etc</td>
+<td><code>:format</code></td>
+<td>html/js/json/xml etc</td>
 </tr>
 <tr>
-<td style="text-align: left"><code>:method</code></td>
-<td style="text-align: left">HTTP request verb</td>
+<td><code>:method</code></td>
+<td>HTTP request verb</td>
 </tr>
 <tr>
-<td style="text-align: left"><code>:path</code></td>
-<td style="text-align: left">Request path</td>
+<td><code>:path</code></td>
+<td>Request path</td>
 </tr>
 <tr>
-<td style="text-align: left"><code>:status</code></td>
-<td style="text-align: left">HTTP status code</td>
+<td><code>:status</code></td>
+<td>HTTP status code</td>
 </tr>
 <tr>
-<td style="text-align: left"><code>:view_runtime</code></td>
-<td style="text-align: left">Amount spent in view in ms</td>
+<td><code>:view_runtime</code></td>
+<td>Amount spent in view in ms</td>
 </tr>
 <tr>
-<td style="text-align: left"><code>:db_runtime</code></td>
-<td style="text-align: left">Amount spent executing database queries in ms</td>
+<td><code>:db_runtime</code></td>
+<td>Amount spent executing database queries in ms</td>
 </tr>
 </tbody>
 </table>
@@ -583,10 +583,10 @@
   action: "index",
   params: {"action" =&gt; "index", "controller" =&gt; "posts"},
   headers: #&lt;ActionDispatch::Http::Headers:0x0055a67a519b88&gt;,
-    format.html
+  format: :html,
   method: "GET",
   path: "/posts",
-* `:status`
+  status: 200,
   view_runtime: 46.848,
   db_runtime: 0.157
 }
@@ -597,24 +597,40 @@
 <table>
 <thead>
 <tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
+<th>Key</th>
+<th>Value</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left"><code>:path</code></td>
-<td style="text-align: left">Complete path to the file</td>
+<td><code>:path</code></td>
+<td>Complete path to the file</td>
 </tr>
 </tbody>
 </table>
-<div class="info"><p>Additional keys may be added by the caller.</p></div><h4 id="send-data-action-controller"><a href="#send-data-action-controller">3.10 send_data.action_controller</a></h4><p><code>ActionController</code> does not had any specific information to the payload. All options are passed through to the payload.</p><h4 id="redirect-to-action-controller"><a href="#redirect-to-action-controller">3.11 redirect_to.action_controller</a></h4><p>| Key         | Value              |
-<code>
-|</code>:status<code>| HTTP response code |
-|</code>:location` | URL to redirect to |</p><div class="code_container">
+<div class="info"><p>Additional keys may be added by the caller.</p></div><h4 id="send-data-action-controller"><a href="#send-data-action-controller">3.10 send_data.action_controller</a></h4><p><code>ActionController</code> does not had any specific information to the payload. All options are passed through to the payload.</p><h4 id="redirect-to-action-controller"><a href="#redirect-to-action-controller">3.11 redirect_to.action_controller</a></h4>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:status</code></td>
+<td>HTTP response code</td>
+</tr>
+<tr>
+<td><code>:location</code></td>
+<td>URL to redirect to</td>
+</tr>
+</tbody>
+</table>
+<div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 {
-* `:status`
+  status: 302,
   location: "http://localhost:3000/posts/new"
 }
 
@@ -624,14 +640,14 @@
 <table>
 <thead>
 <tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
+<th>Key</th>
+<th>Value</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left"><code>:filter</code></td>
-<td style="text-align: left">Filter that halted the action</td>
+<td><code>:filter</code></td>
+<td>Filter that halted the action</td>
 </tr>
 </tbody>
 </table>
@@ -647,18 +663,18 @@
 <table>
 <thead>
 <tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
+<th>Key</th>
+<th>Value</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left"><code>:identifier</code></td>
-<td style="text-align: left">Full path to template</td>
+<td><code>:identifier</code></td>
+<td>Full path to template</td>
 </tr>
 <tr>
-<td style="text-align: left"><code>:layout</code></td>
-<td style="text-align: left">Applicable layout</td>
+<td><code>:layout</code></td>
+<td>Applicable layout</td>
 </tr>
 </tbody>
 </table>
@@ -675,14 +691,14 @@
 <table>
 <thead>
 <tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
+<th>Key</th>
+<th>Value</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left"><code>:identifier</code></td>
-<td style="text-align: left">Full path to template</td>
+<td><code>:identifier</code></td>
+<td>Full path to template</td>
 </tr>
 </tbody>
 </table>
@@ -698,26 +714,26 @@
 <table>
 <thead>
 <tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
+<th>Key</th>
+<th>Value</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left"><code>:sql</code></td>
-<td style="text-align: left">SQL statement</td>
+<td><code>:sql</code></td>
+<td>SQL statement</td>
 </tr>
 <tr>
-<td style="text-align: left"><code>:name</code></td>
-<td style="text-align: left">Name of the operation</td>
+<td><code>:name</code></td>
+<td>Name of the operation</td>
 </tr>
 <tr>
-<td style="text-align: left"><code>:connection_id</code></td>
-<td style="text-align: left"><code>self.object_id</code></td>
+<td><code>:connection_id</code></td>
+<td><code>self.object_id</code></td>
 </tr>
 <tr>
-<td style="text-align: left"><code>:binds</code></td>
-<td style="text-align: left">Bind parameters</td>
+<td><code>:binds</code></td>
+<td>Bind parameters</td>
 </tr>
 </tbody>
 </table>
@@ -736,18 +752,18 @@
 <table>
 <thead>
 <tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
+<th>Key</th>
+<th>Value</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left"><code>:record_count</code></td>
-<td style="text-align: left">Number of records that instantiated</td>
+<td><code>:record_count</code></td>
+<td>Number of records that instantiated</td>
 </tr>
 <tr>
-<td style="text-align: left"><code>:class_name</code></td>
-<td style="text-align: left">Record's class</td>
+<td><code>:class_name</code></td>
+<td>Record's class</td>
 </tr>
 </tbody>
 </table>
@@ -755,7 +771,7 @@
 <pre class="brush: ruby; gutter: false; toolbar: false">
 {
   record_count: 1,
-      class_name: "User",
+  class_name: "User"
 }
 
 </pre>
@@ -764,46 +780,46 @@
 <table>
 <thead>
 <tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
+<th>Key</th>
+<th>Value</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left"><code>:mailer</code></td>
-<td style="text-align: left">Name of the mailer class</td>
+<td><code>:mailer</code></td>
+<td>Name of the mailer class</td>
 </tr>
 <tr>
-<td style="text-align: left"><code>:message_id</code></td>
-<td style="text-align: left">ID of the message, generated by the Mail gem</td>
+<td><code>:message_id</code></td>
+<td>ID of the message, generated by the Mail gem</td>
 </tr>
 <tr>
-<td style="text-align: left"><code>:subject</code></td>
-<td style="text-align: left">Subject of the mail</td>
+<td><code>:subject</code></td>
+<td>Subject of the mail</td>
 </tr>
 <tr>
-<td style="text-align: left"><code>:to</code></td>
-<td style="text-align: left">To address(es) of the mail</td>
+<td><code>:to</code></td>
+<td>To address(es) of the mail</td>
 </tr>
 <tr>
-<td style="text-align: left"><code>:from</code></td>
-<td style="text-align: left">From address of the mail</td>
+<td><code>:from</code></td>
+<td>From address of the mail</td>
 </tr>
 <tr>
-<td style="text-align: left"><code>:bcc</code></td>
-<td style="text-align: left">BCC addresses of the mail</td>
+<td><code>:bcc</code></td>
+<td>BCC addresses of the mail</td>
 </tr>
 <tr>
-<td style="text-align: left"><code>:cc</code></td>
-<td style="text-align: left">CC addresses of the mail</td>
+<td><code>:cc</code></td>
+<td>CC addresses of the mail</td>
 </tr>
 <tr>
-<td style="text-align: left"><code>:date</code></td>
-<td style="text-align: left">Date of the mail</td>
+<td><code>:date</code></td>
+<td>Date of the mail</td>
 </tr>
 <tr>
-<td style="text-align: left"><code>:mail</code></td>
-<td style="text-align: left">The encoded form of the mail</td>
+<td><code>:mail</code></td>
+<td>The encoded form of the mail</td>
 </tr>
 </tbody>
 </table>
@@ -825,46 +841,46 @@
 <table>
 <thead>
 <tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
+<th>Key</th>
+<th>Value</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left"><code>:mailer</code></td>
-<td style="text-align: left">Name of the mailer class</td>
+<td><code>:mailer</code></td>
+<td>Name of the mailer class</td>
 </tr>
 <tr>
-<td style="text-align: left"><code>:message_id</code></td>
-<td style="text-align: left">ID of the message, generated by the Mail gem</td>
+<td><code>:message_id</code></td>
+<td>ID of the message, generated by the Mail gem</td>
 </tr>
 <tr>
-<td style="text-align: left"><code>:subject</code></td>
-<td style="text-align: left">Subject of the mail</td>
+<td><code>:subject</code></td>
+<td>Subject of the mail</td>
 </tr>
 <tr>
-<td style="text-align: left"><code>:to</code></td>
-<td style="text-align: left">To address(es) of the mail</td>
+<td><code>:to</code></td>
+<td>To address(es) of the mail</td>
 </tr>
 <tr>
-<td style="text-align: left"><code>:from</code></td>
-<td style="text-align: left">From address of the mail</td>
+<td><code>:from</code></td>
+<td>From address of the mail</td>
 </tr>
 <tr>
-<td style="text-align: left"><code>:bcc</code></td>
-<td style="text-align: left">BCC addresses of the mail</td>
+<td><code>:bcc</code></td>
+<td>BCC addresses of the mail</td>
 </tr>
 <tr>
-<td style="text-align: left"><code>:cc</code></td>
-<td style="text-align: left">CC addresses of the mail</td>
+<td><code>:cc</code></td>
+<td>CC addresses of the mail</td>
 </tr>
 <tr>
-<td style="text-align: left"><code>:date</code></td>
-<td style="text-align: left">Date of the mail</td>
+<td><code>:date</code></td>
+<td>Date of the mail</td>
 </tr>
 <tr>
-<td style="text-align: left"><code>:mail</code></td>
-<td style="text-align: left">The encoded form of the mail</td>
+<td><code>:mail</code></td>
+<td>The encoded form of the mail</td>
 </tr>
 </tbody>
 </table>
@@ -886,22 +902,22 @@
 <table>
 <thead>
 <tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
+<th>Key</th>
+<th>Value</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left"><code>:key</code></td>
-<td style="text-align: left">Key used in the store</td>
+<td><code>:key</code></td>
+<td>Key used in the store</td>
 </tr>
 <tr>
-<td style="text-align: left"><code>:hit</code></td>
-<td style="text-align: left">If this read is a hit</td>
+<td><code>:hit</code></td>
+<td>If this read is a hit</td>
 </tr>
 <tr>
-<td style="text-align: left"><code>:super_operation</code></td>
-<td style="text-align: left">:fetch is added when a read is used with <code>#fetch</code>
+<td><code>:super_operation</code></td>
+<td>:fetch is added when a read is used with <code>#fetch</code>
 </td>
 </tr>
 </tbody>
@@ -910,14 +926,14 @@
 <table>
 <thead>
 <tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
+<th>Key</th>
+<th>Value</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left"><code>:key</code></td>
-<td style="text-align: left">Key used in the store</td>
+<td><code>:key</code></td>
+<td>Key used in the store</td>
 </tr>
 </tbody>
 </table>
@@ -933,14 +949,14 @@
 <table>
 <thead>
 <tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
+<th>Key</th>
+<th>Value</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left"><code>:key</code></td>
-<td style="text-align: left">Key used in the store</td>
+<td><code>:key</code></td>
+<td>Key used in the store</td>
 </tr>
 </tbody>
 </table>
@@ -956,14 +972,14 @@
 <table>
 <thead>
 <tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
+<th>Key</th>
+<th>Value</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left"><code>:key</code></td>
-<td style="text-align: left">Key used in the store</td>
+<td><code>:key</code></td>
+<td>Key used in the store</td>
 </tr>
 </tbody>
 </table>
@@ -979,14 +995,14 @@
 <table>
 <thead>
 <tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
+<th>Key</th>
+<th>Value</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left"><code>:key</code></td>
-<td style="text-align: left">Key used in the store</td>
+<td><code>:key</code></td>
+<td>Key used in the store</td>
 </tr>
 </tbody>
 </table>
@@ -1002,14 +1018,14 @@
 <table>
 <thead>
 <tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
+<th>Key</th>
+<th>Value</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left"><code>:key</code></td>
-<td style="text-align: left">Key used in the store</td>
+<td><code>:key</code></td>
+<td>Key used in the store</td>
 </tr>
 </tbody>
 </table>
@@ -1025,18 +1041,18 @@
 <table>
 <thead>
 <tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
+<th>Key</th>
+<th>Value</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left"><code>:adapter</code></td>
-<td style="text-align: left">QueueAdapter object processing the job</td>
+<td><code>:adapter</code></td>
+<td>QueueAdapter object processing the job</td>
 </tr>
 <tr>
-<td style="text-align: left"><code>:job</code></td>
-<td style="text-align: left">Job object</td>
+<td><code>:job</code></td>
+<td>Job object</td>
 </tr>
 </tbody>
 </table>
@@ -1044,18 +1060,18 @@
 <table>
 <thead>
 <tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
+<th>Key</th>
+<th>Value</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left"><code>:adapter</code></td>
-<td style="text-align: left">QueueAdapter object processing the job</td>
+<td><code>:adapter</code></td>
+<td>QueueAdapter object processing the job</td>
 </tr>
 <tr>
-<td style="text-align: left"><code>:job</code></td>
-<td style="text-align: left">Job object</td>
+<td><code>:job</code></td>
+<td>Job object</td>
 </tr>
 </tbody>
 </table>
@@ -1063,18 +1079,18 @@
 <table>
 <thead>
 <tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
+<th>Key</th>
+<th>Value</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left"><code>:adapter</code></td>
-<td style="text-align: left">QueueAdapter object processing the job</td>
+<td><code>:adapter</code></td>
+<td>QueueAdapter object processing the job</td>
 </tr>
 <tr>
-<td style="text-align: left"><code>:job</code></td>
-<td style="text-align: left">Job object</td>
+<td><code>:job</code></td>
+<td>Job object</td>
 </tr>
 </tbody>
 </table>
@@ -1082,18 +1098,18 @@
 <table>
 <thead>
 <tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
+<th>Key</th>
+<th>Value</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left"><code>:adapter</code></td>
-<td style="text-align: left">QueueAdapter object processing the job</td>
+<td><code>:adapter</code></td>
+<td>QueueAdapter object processing the job</td>
 </tr>
 <tr>
-<td style="text-align: left"><code>:job</code></td>
-<td style="text-align: left">Job object</td>
+<td><code>:job</code></td>
+<td>Job object</td>
 </tr>
 </tbody>
 </table>
@@ -1101,34 +1117,34 @@
 <table>
 <thead>
 <tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
+<th>Key</th>
+<th>Value</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left"><code>:initializer</code></td>
-<td style="text-align: left">Path to loaded initializer from <code>config/initializers</code>
+<td><code>:initializer</code></td>
+<td>Path to loaded initializer from <code>config/initializers</code>
 </td>
 </tr>
 </tbody>
 </table>
-<h3 id="rails"><a href="#rails">10 * rails</a></h3><h4 id="deprecation-rails"><a href="#deprecation-rails">10.1 deprecation.rails</a></h4>
+<h3 id="rails"><a href="#rails">10 Rails</a></h3><h4 id="deprecation-rails"><a href="#deprecation-rails">10.1 deprecation.rails</a></h4>
 <table>
 <thead>
 <tr>
-<th style="text-align: left">Key</th>
-<th style="text-align: left">Value</th>
+<th>Key</th>
+<th>Value</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left"><code>:message</code></td>
-<td style="text-align: left">The deprecation warning</td>
+<td><code>:message</code></td>
+<td>The deprecation warning</td>
 </tr>
 <tr>
-<td style="text-align: left"><code>:callstack</code></td>
-<td style="text-align: left">Where the deprecation came from</td>
+<td><code>:callstack</code></td>
+<td>Where the deprecation came from</td>
 </tr>
 </tbody>
 </table>

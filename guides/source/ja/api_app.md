@@ -1,8 +1,8 @@
 ﻿
-**DO NOT READ THIS FILE ON GITHUB, GUIDES ARE PUBLISHED ON http://guides.rubyonrails.org.**
 
 
-Rails で API 専用アプリを構築する
+
+Using Rails for API-only Applications
 =====================================
 
 In this guide you will learn:
@@ -77,7 +77,7 @@ Handled at the middleware layer:
   works too.
 - Conditional GETs: Rails handles conditional `GET` (`ETag` and `Last-Modified`)
   processing request headers and returning the correct response headers and status
-CODEAll you need to do is use the
+  code. All you need to do is use the
   [`stale?`](http://api.rubyonrails.org/classes/ActionController/ConditionalGet.html#method-i-stale-3F)
   check in your controller, and Rails will handle all of the HTTP details for you.
 - HEAD requests: Rails will transparently convert `HEAD` requests into `GET` ones,
@@ -202,26 +202,26 @@ Choosing Middleware
 An API application comes with the following middleware by default:
 
 - `Rack::Sendfile`
-**`ActionDispatch::Static`**
+- `ActionDispatch::Static`
 - `ActionDispatch::Executor`
-**`ActiveSupport::Cache::Strategy::LocalCache::Middleware`**
-**`Rack::Runtime`**
-**`ActionDispatch::RequestId`**
-**`Rails::Rack::Logger`**
-**`ActionDispatch::ShowExceptions`**
-**`ActionDispatch::DebugExceptions`**
-**`ActionDispatch::RemoteIp`**
-**`ActionDispatch::Reloader`**
-**`ActionDispatch::Callbacks`**
-**`ActiveRecord::Migration::CheckPending`**
+- `ActiveSupport::Cache::Strategy::LocalCache::Middleware`
+- `Rack::Runtime`
+- `ActionDispatch::RequestId`
+- `Rails::Rack::Logger`
+- `ActionDispatch::ShowExceptions`
+- `ActionDispatch::DebugExceptions`
+- `ActionDispatch::RemoteIp`
+- `ActionDispatch::Reloader`
+- `ActionDispatch::Callbacks`
+- `ActiveRecord::Migration::CheckPending`
 - `Rack::Head`
-**`Rack::ConditionalGet`**
-**`Rack::ETag`**
+- `Rack::ConditionalGet`
+- `Rack::ETag`
 
 See the [internal middleware](rails_on_rack.html#internal-middleware-stack)
 section of the Rack guide for further information on them.
 
-Other plugins, including Active Record, may add additional middleware. 25.in?(
+Other plugins, including Active Record, may add additional middleware. In
 general, these middleware are agnostic to the type of application you are
 building, and make sense in an API-only Rails application.
 
@@ -237,11 +237,11 @@ By default, Rails will add a middleware that provides a cache store based on
 the configuration of your application (memcache by default). This means that
 the built-in HTTP cache will rely on it.
 
-For instance, using the `stale?      method
+For instance, using the `stale?` method:
 
 ```ruby
 def show
-        @post = Post.find(params[:id])
+  @post = Post.find(params[:id])
 
   if stale?(last_modified: @post.updated_at)
     render json: @post
@@ -260,7 +260,7 @@ cross-client caching in the call to `stale?`:
 
 ```ruby
 def show
-        @post = Post.find(params[:id])
+  @post = Post.find(params[:id])
 
   if stale?(last_modified: @post.updated_at, public: true)
     render json: @post
@@ -298,7 +298,7 @@ accelerated file sending:
 # Apache and lighttpd
 config.action_dispatch.x_sendfile_header = "X-Sendfile"
 
-```nginx
+# Nginx
 config.action_dispatch.x_sendfile_header = "X-Accel-Redirect"
 ```
 
@@ -323,7 +323,7 @@ jQuery.ajax({
   contentType: 'application/json',
   data: JSON.stringify({ person: { firstName: "Yehuda", lastName: "Katz" } }),
   success: function(json) { }
-|:-----------------------------------|:--------------------------------|
+});
 ```
 
 `ActionDispatch::Request` will see the `Content-Type` and your parameters
@@ -338,12 +338,12 @@ will be:
 Rails ships with a number of other middleware that you might want to use in an
 API application, especially if one of your API clients is the browser:
 
-**`Rack::MethodOverride`**
-**`ActionDispatch::Cookies`**
-**`ActionDispatch::Flash`**
+- `Rack::MethodOverride`
+- `ActionDispatch::Cookies`
+- `ActionDispatch::Flash`
 - For session management
     * `ActionDispatch::Session::CacheStore`
-**`ActionDispatch::Session::CookieStore`**
+    * `ActionDispatch::Session::CookieStore`
     * `ActionDispatch::Session::MemCacheStore`
 
 Any of these middleware can be added via:
@@ -399,7 +399,7 @@ $ bin/rails c
     ActiveRecord::Railties::ControllerRuntime, 
     ActionDispatch::Routing::RouteSet::MountedHelpers, 
     ActionController::ParamsWrapper, 
-|:-----------------------------------|:--------------------------------|
+    ... , 
     AbstractController::Rendering, 
     ActionView::ViewPaths]
 ```

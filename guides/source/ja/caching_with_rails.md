@@ -1,10 +1,10 @@
 ﻿
-**DO NOT READ THIS FILE ON GITHUB, GUIDES ARE PUBLISHED ON http://guides.rubyonrails.org.**
 
-Rails のキャッシュ: 概要
+
+Caching with Rails: An Overview
 ===============================
 
-      description: キャッシュを活用してRailsを高速化する方法について解説します。
+This guide is an introduction to speeding up your Rails application with caching.
 
 Caching means to store content generated during the request-response cycle and
 to reuse it when responding to similar requests.
@@ -75,7 +75,7 @@ page need to be cached and expired separately you can use Fragment Caching.
 Fragment Caching allows a fragment of view logic to be wrapped in a cache block and served out of the cache store when the next request comes in.
 
 For example, if you wanted to cache each product on a page, you could use this
-CODE
+code:
 
 ```html+erb
 <% @products.each do |product| %>
@@ -131,7 +131,7 @@ greater speed. Additionally, the templates that haven't yet been cached will be
 written to cache and multi fetched on the next render.
 
 
-* ロシアンドールキャッシュ (Russian Doll Caching)
+### Russian Doll Caching
 
 You may want to nest cached fragments inside other cached fragments. This is
 called Russian doll caching.
@@ -178,7 +178,7 @@ end
 
 With `touch` set to true, any action which changes `updated_at` for a game
 record will also change it for the associated product, thereby expiring the
-#### cache
+cache.
 
 ### Managing dependencies
 
@@ -360,7 +360,7 @@ There are some common options used by all cache implementations. These can be pa
 #### Custom Cache Stores
 
 You can create your own custom cache store by simply extending
-`ActiveSupport::Cache::Store` and implementing the appropriate methods. 上は以下のようにできます。
+`ActiveSupport::Cache::Store` and implementing the appropriate methods. This way,
 you can swap in any number of caching technologies into your Rails application.
 
 To use a custom cache store, simply set the cache store to a new instance of your
@@ -397,7 +397,7 @@ config.cache_store = :file_store, "/path/to/cache/directory"
 ```
 
 With this cache store, multiple server processes on the same host can share a
-#### cacheThe cache store is appropriate for low to medium traffic sites that are
+cache. The cache store is appropriate for low to medium traffic sites that are
 served off one or two hosts. Server processes running on different hosts could
 share a cache by using a shared file system, but that setup is not recommended.
 
@@ -433,7 +433,7 @@ Cache Keys
 ----------
 
 The keys used in a cache can be any object that responds to either `cache_key` or
-### `to_param`You can implement the `cache_key` method on your classes if you need
+`to_param`. You can implement the `cache_key` method on your classes if you need
 to generate custom keys. Active Record will generate keys based on the class name
 and record id.
 
@@ -477,7 +477,7 @@ class ProductsController < ApplicationController
     # If the request is fresh (i.e. it's not modified) then you don't need to do
     # anything. The default render checks for this using the parameters
     # used in the previous call to stale? and will automatically send a
-|                     | 304              | :not_modified                    |So that's it, you're done.
+    # :not_modified. So that's it, you're done.
   end 
 end
 ```
@@ -533,9 +533,9 @@ large video or PDF file. Some CDNs support only strong ETags, like Akamai.
 If you absolutely need to generate a strong ETag, it can be done as follows.
 
 ```ruby
-class ProductsController < ApplicationController
-  def show
-    @product = Product.find(params[:id])
+  class ProductsController < ApplicationController
+    def show
+      @product = Product.find(params[:id])
       fresh_when last_modified: @product.published_at.utc, strong_etag: @product
     end 
   end

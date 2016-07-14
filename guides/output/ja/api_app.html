@@ -24,7 +24,7 @@
     <meta name="twitter:image" content="http://railsguides.jp/images/cover_for_twitter.png" />
     <meta name="twitter:url"   content="http://railsguides.jp/" />
 
-    <title>Rails で API 専用アプリを構築する | Rails ガイド</title>
+    <title>Using Rails for API-only Applications | Rails ガイド</title>
     <meta name="apple-mobile-web-app-title" content="Railsガイド" />
     <meta name="application-name"           content="Railsガイド" />
 
@@ -232,7 +232,7 @@
   <hr class="hide" />
   <div id="feature">
   <div class="wrapper">
-      <p><strong>DO NOT READ THIS FILE ON GITHUB, GUIDES ARE PUBLISHED ON <a href="http://guides.rubyonrails.org">http://guides.rubyonrails.org</a>.</strong></p><h2>Rails で API 専用アプリを構築する</h2><p>In this guide you will learn:</p>
+      <h2>Using Rails for API-only Applications</h2><p>In this guide you will learn:</p>
 <ul>
 <li>What Rails provides for API-only applications</li>
 <li>How to configure Rails to start without any browser features</li>
@@ -319,7 +319,7 @@ it available in <code>params</code>. Want to use nested URL-encoded parameters? 
 works too.</li>
 <li>Conditional GETs: Rails handles conditional <code>GET</code> (<code>ETag</code> and <code>Last-Modified</code>)
 processing request headers and returning the correct response headers and status
-CODEAll you need to do is use the
+code. All you need to do is use the
 <a href="http://api.rubyonrails.org/classes/ActionController/ConditionalGet.html#method-i-stale-3F"><code>stale?</code></a>
 check in your controller, and Rails will handle all of the HTTP details for you.</li>
 <li>HEAD requests: Rails will transparently convert <code>HEAD</code> requests into <code>GET</code> ones,
@@ -419,31 +419,25 @@ end
 </div>
 <h3 id="choosing-middleware"><a href="#choosing-middleware">4 Choosing Middleware</a></h3><p>An API application comes with the following middleware by default:</p>
 <ul>
-<li>
-<code>Rack::Sendfile</code>
-<strong><code>ActionDispatch::Static</code></strong>
-</li>
-<li>
-<code>ActionDispatch::Executor</code>
-<strong><code>ActiveSupport::Cache::Strategy::LocalCache::Middleware</code></strong>
-<strong><code>Rack::Runtime</code></strong>
-<strong><code>ActionDispatch::RequestId</code></strong>
-<strong><code>Rails::Rack::Logger</code></strong>
-<strong><code>ActionDispatch::ShowExceptions</code></strong>
-<strong><code>ActionDispatch::DebugExceptions</code></strong>
-<strong><code>ActionDispatch::RemoteIp</code></strong>
-<strong><code>ActionDispatch::Reloader</code></strong>
-<strong><code>ActionDispatch::Callbacks</code></strong>
-<strong><code>ActiveRecord::Migration::CheckPending</code></strong>
-</li>
-<li>
-<code>Rack::Head</code>
-<strong><code>Rack::ConditionalGet</code></strong>
-<strong><code>Rack::ETag</code></strong>
-</li>
+<li><code>Rack::Sendfile</code></li>
+<li><code>ActionDispatch::Static</code></li>
+<li><code>ActionDispatch::Executor</code></li>
+<li><code>ActiveSupport::Cache::Strategy::LocalCache::Middleware</code></li>
+<li><code>Rack::Runtime</code></li>
+<li><code>ActionDispatch::RequestId</code></li>
+<li><code>Rails::Rack::Logger</code></li>
+<li><code>ActionDispatch::ShowExceptions</code></li>
+<li><code>ActionDispatch::DebugExceptions</code></li>
+<li><code>ActionDispatch::RemoteIp</code></li>
+<li><code>ActionDispatch::Reloader</code></li>
+<li><code>ActionDispatch::Callbacks</code></li>
+<li><code>ActiveRecord::Migration::CheckPending</code></li>
+<li><code>Rack::Head</code></li>
+<li><code>Rack::ConditionalGet</code></li>
+<li><code>Rack::ETag</code></li>
 </ul>
 <p>See the <a href="rails_on_rack.html#internal-middleware-stack">internal middleware</a>
-section of the Rack guide for further information on them.</p><p>Other plugins, including Active Record, may add additional middleware. 25.in?(
+section of the Rack guide for further information on them.</p><p>Other plugins, including Active Record, may add additional middleware. In
 general, these middleware are agnostic to the type of application you are
 building, and make sense in an API-only Rails application.</p><p>You can get a list of all middleware in your application via:</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
@@ -453,10 +447,10 @@ $ rails middleware
 </div>
 <h4 id="using-the-cache-middleware"><a href="#using-the-cache-middleware">4.1 Using the Cache Middleware</a></h4><p>By default, Rails will add a middleware that provides a cache store based on
 the configuration of your application (memcache by default). This means that
-the built-in HTTP cache will rely on it.</p><p>For instance, using the `stale?      method</p><div class="code_container">
+the built-in HTTP cache will rely on it.</p><p>For instance, using the <code>stale?</code> method:</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 def show
-        @post = Post.find(params[:id])
+  @post = Post.find(params[:id])
 
   if stale?(last_modified: @post.updated_at)
     render json: @post
@@ -473,7 +467,7 @@ allows us to share this caching mechanism across clients. We can enable
 cross-client caching in the call to <code>stale?</code>:</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 def show
-        @post = Post.find(params[:id])
+  @post = Post.find(params[:id])
 
   if stale?(last_modified: @post.updated_at, public: true)
     render json: @post
@@ -497,7 +491,7 @@ accelerated file sending:</p><div class="code_container">
 # Apache and lighttpd
 config.action_dispatch.x_sendfile_header = "X-Sendfile"
 
-```nginx
+# Nginx
 config.action_dispatch.x_sendfile_header = "X-Accel-Redirect"
 
 </pre>
@@ -514,7 +508,7 @@ jQuery.ajax({
   contentType: 'application/json',
   data: JSON.stringify({ person: { firstName: "Yehuda", lastName: "Katz" } }),
   success: function(json) { }
-|:-----------------------------------|:--------------------------------|
+});
 
 </pre>
 </div>
@@ -526,13 +520,21 @@ will be:</p><div class="code_container">
 </pre>
 </div>
 <h4 id="other-middleware"><a href="#other-middleware">4.4 Other Middleware</a></h4><p>Rails ships with a number of other middleware that you might want to use in an
-API application, especially if one of your API clients is the browser:</p><p><strong><code>Rack::MethodOverride</code></strong>
-<strong><code>ActionDispatch::Cookies</code></strong>
-<strong><code>ActionDispatch::Flash</code></strong>
-- For session management
-    * <code>ActionDispatch::Session::CacheStore</code>
-<strong><code>ActionDispatch::Session::CookieStore</code></strong>
-    * <code>ActionDispatch::Session::MemCacheStore</code></p><p>Any of these middleware can be added via:</p><div class="code_container">
+API application, especially if one of your API clients is the browser:</p>
+<ul>
+<li><code>Rack::MethodOverride</code></li>
+<li><code>ActionDispatch::Cookies</code></li>
+<li><code>ActionDispatch::Flash</code></li>
+<li>For session management
+
+<ul>
+<li><code>ActionDispatch::Session::CacheStore</code></li>
+<li><code>ActionDispatch::Session::CookieStore</code></li>
+<li><code>ActionDispatch::Session::MemCacheStore</code></li>
+</ul>
+</li>
+</ul>
+<p>Any of these middleware can be added via:</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 config.middleware.use Rack::MethodOverride
 
@@ -591,7 +593,7 @@ $ bin/rails c
     ActiveRecord::Railties::ControllerRuntime, 
     ActionDispatch::Routing::RouteSet::MountedHelpers, 
     ActionController::ParamsWrapper, 
-|:-----------------------------------|:--------------------------------|
+    ... , 
     AbstractController::Rendering, 
     ActionView::ViewPaths]
 

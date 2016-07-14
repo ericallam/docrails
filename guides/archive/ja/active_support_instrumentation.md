@@ -1,5 +1,5 @@
 ﻿
-**DO NOT READ THIS FILE ON GITHUB, GUIDES ARE PUBLISHED ON http://guides.rubyonrails.org.**
+
 
 Active Support Instrumentation
 ==============================
@@ -31,13 +31,13 @@ Rails framework hooks
 
 Within the Ruby on Rails framework, there are a number of hooks provided for common events. These are detailed below.
 
-  action_controller
+Action Controller
 -----------------
 
 ### write_fragment.action_controller
 
 | Key    | Value            |
-|:-----------------------------------|:--------------------------------|
+| ------ | ---------------- |
 | `:key` | The complete key |
 
 ```ruby
@@ -49,7 +49,7 @@ Within the Ruby on Rails framework, there are a number of hooks provided for com
 ### read_fragment.action_controller
 
 | Key    | Value            |
-|:-----------------------------------|:--------------------------------|
+| ------ | ---------------- |
 | `:key` | The complete key |
 
 ```ruby
@@ -61,7 +61,7 @@ Within the Ruby on Rails framework, there are a number of hooks provided for com
 ### expire_fragment.action_controller
 
 | Key    | Value            |
-|:-----------------------------------|:--------------------------------|
+| ------ | ---------------- |
 | `:key` | The complete key |
 
 ```ruby
@@ -73,7 +73,7 @@ Within the Ruby on Rails framework, there are a number of hooks provided for com
 ### exist_fragment?.action_controller
 
 | Key    | Value            |
-|:-----------------------------------|:--------------------------------|
+| ------ | ---------------- |
 | `:key` | The complete key |
 
 ```ruby
@@ -85,7 +85,7 @@ Within the Ruby on Rails framework, there are a number of hooks provided for com
 ### write_page.action_controller
 
 | Key     | Value             |
-|:-----------------------------------|:--------------------------------|
+| ------- | ----------------- |
 | `:path` | The complete path |
 
 ```ruby
@@ -97,7 +97,7 @@ Within the Ruby on Rails framework, there are a number of hooks provided for com
 ### expire_page.action_controller
 
 | Key     | Value             |
-|:-----------------------------------|:--------------------------------|
+| ------- | ----------------- |
 | `:path` | The complete path |
 
 ```ruby
@@ -109,7 +109,7 @@ Within the Ruby on Rails framework, there are a number of hooks provided for com
 ### start_processing.action_controller
 
 | Key           | Value                                                     |
-|:-----------------------------------|:--------------------------------|
+| ------------- | --------------------------------------------------------- |
 | `:controller` | The controller name                                       |
 | `:action`     | The action                                                |
 | `:params`     | Hash of request parameters without any filtered parameter |
@@ -124,7 +124,7 @@ Within the Ruby on Rails framework, there are a number of hooks provided for com
   action: "new",
   params: { "action" => "new", "controller" => "posts" },
   headers: #<ActionDispatch::Http::Headers:0x0055a67a519b88>,
-    format.html
+  format: :html,
   method: "GET",
   path: "/posts/new"
 }
@@ -133,7 +133,7 @@ Within the Ruby on Rails framework, there are a number of hooks provided for com
 ### process_action.action_controller
 
 | Key             | Value                                                     |
-|:-----------------------------------|:--------------------------------|
+| --------------- | --------------------------------------------------------- |
 | `:controller`   | The controller name                                       |
 | `:action`       | The action                                                |
 | `:params`       | Hash of request parameters without any filtered parameter |
@@ -151,10 +151,10 @@ Within the Ruby on Rails framework, there are a number of hooks provided for com
   action: "index",
   params: {"action" => "index", "controller" => "posts"},
   headers: #<ActionDispatch::Http::Headers:0x0055a67a519b88>,
-    format.html
+  format: :html,
   method: "GET",
   path: "/posts",
-* `:status`
+  status: 200,
   view_runtime: 46.848,
   db_runtime: 0.157
 }
@@ -163,7 +163,7 @@ Within the Ruby on Rails framework, there are a number of hooks provided for com
 ### send_file.action_controller
 
 | Key     | Value                     |
-|:-----------------------------------|:--------------------------------|
+| ------- | ------------------------- |
 | `:path` | Complete path to the file |
 
 INFO. Additional keys may be added by the caller.
@@ -175,13 +175,13 @@ INFO. Additional keys may be added by the caller.
 ### redirect_to.action_controller
 
 | Key         | Value              |
-`
+| ----------- | ------------------ |
 | `:status`   | HTTP response code |
 | `:location` | URL to redirect to |
 
 ```ruby
 {
-* `:status`
+  status: 302,
   location: "http://localhost:3000/posts/new"
 }
 ```
@@ -189,7 +189,7 @@ INFO. Additional keys may be added by the caller.
 ### halted_callback.action_controller
 
 | Key       | Value                         |
-|:-----------------------------------|:--------------------------------|
+| --------- | ----------------------------- |
 | `:filter` | Filter that halted the action |
 
 ```ruby
@@ -204,7 +204,7 @@ Action View
 ### render_template.action_view
 
 | Key           | Value                 |
-|:-----------------------------------|:--------------------------------|
+| ------------- | --------------------- |
 | `:identifier` | Full path to template |
 | `:layout`     | Applicable layout     |
 
@@ -218,7 +218,7 @@ Action View
 ### render_partial.action_view
 
 | Key           | Value                 |
-|:-----------------------------------|:--------------------------------|
+| ------------- | --------------------- |
 | `:identifier` | Full path to template |
 
 ```ruby
@@ -233,7 +233,7 @@ Active Record
 ### sql.active_record
 
 | Key              | Value                 |
-|:-----------------------------------|:--------------------------------|
+| ---------------- | --------------------- |
 | `:sql`           | SQL statement         |
 | `:name`          | Name of the operation |
 | `:connection_id` | `self.object_id`      |
@@ -253,14 +253,14 @@ INFO. The adapters will add their own data as well.
 ### instantiation.active_record
 
 | Key              | Value                                     |
-|:-----------------------------------|:--------------------------------|
+| ---------------- | ----------------------------------------- |
 | `:record_count`  | Number of records that instantiated       |
 | `:class_name`    | Record's class                            |
 
 ```ruby
 {
   record_count: 1,
-      class_name: "User",
+  class_name: "User"
 }
 ```
 
@@ -270,7 +270,7 @@ Action Mailer
 ### receive.action_mailer
 
 | Key           | Value                                        |
-|:-----------------------------------|:--------------------------------|
+| ------------- | -------------------------------------------- |
 | `:mailer`     | Name of the mailer class                     |
 | `:message_id` | ID of the message, generated by the Mail gem |
 | `:subject`    | Subject of the mail                          |
@@ -296,7 +296,7 @@ Action Mailer
 ### deliver.action_mailer
 
 | Key           | Value                                        |
-|:-----------------------------------|:--------------------------------|
+| ------------- | -------------------------------------------- |
 | `:mailer`     | Name of the mailer class                     |
 | `:message_id` | ID of the message, generated by the Mail gem |
 | `:subject`    | Subject of the mail                          |
@@ -325,7 +325,7 @@ Active Support
 ### cache_read.active_support
 
 | Key                | Value                                             |
-|:-----------------------------------|:--------------------------------|
+| ------------------ | ------------------------------------------------- |
 | `:key`             | Key used in the store                             |
 | `:hit`             | If this read is a hit                             |
 | `:super_operation` | :fetch is added when a read is used with `#fetch` |
@@ -335,7 +335,7 @@ Active Support
 This event is only used when `#fetch` is called with a block.
 
 | Key    | Value                 |
-|:-----------------------------------|:--------------------------------|
+| ------ | --------------------- |
 | `:key` | Key used in the store |
 
 INFO. Options passed to fetch will be merged with the payload when writing to the store
@@ -352,7 +352,7 @@ INFO. Options passed to fetch will be merged with the payload when writing to th
 This event is only used when `#fetch` is called with a block.
 
 | Key    | Value                 |
-|:-----------------------------------|:--------------------------------|
+| ------ | --------------------- |
 | `:key` | Key used in the store |
 
 INFO. Options passed to fetch will be merged with the payload.
@@ -366,7 +366,7 @@ INFO. Options passed to fetch will be merged with the payload.
 ### cache_write.active_support
 
 | Key    | Value                 |
-|:-----------------------------------|:--------------------------------|
+| ------ | --------------------- |
 | `:key` | Key used in the store |
 
 INFO. Cache stores may add their own keys
@@ -380,7 +380,7 @@ INFO. Cache stores may add their own keys
 ### cache_delete.active_support
 
 | Key    | Value                 |
-|:-----------------------------------|:--------------------------------|
+| ------ | --------------------- |
 | `:key` | Key used in the store |
 
 ```ruby
@@ -392,7 +392,7 @@ INFO. Cache stores may add their own keys
 ### cache_exist?.active_support
 
 | Key    | Value                 |
-|:-----------------------------------|:--------------------------------|
+| ------ | --------------------- |
 | `:key` | Key used in the store |
 
 ```ruby
@@ -407,28 +407,28 @@ Active Job
 ### enqueue_at.active_job
 
 | Key          | Value                                  |
-|:-----------------------------------|:--------------------------------|
+| ------------ | -------------------------------------- |
 | `:adapter`   | QueueAdapter object processing the job |
 | `:job`       | Job object                             |
 
 ### enqueue.active_job
 
 | Key          | Value                                  |
-|:-----------------------------------|:--------------------------------|
+| ------------ | -------------------------------------- |
 | `:adapter`   | QueueAdapter object processing the job |
 | `:job`       | Job object                             |
 
 ### perform_start.active_job
 
 | Key          | Value                                  |
-|:-----------------------------------|:--------------------------------|
+| ------------ | -------------------------------------- |
 | `:adapter`   | QueueAdapter object processing the job |
 | `:job`       | Job object                             |
 
 ### perform.active_job
 
 | Key          | Value                                  |
-|:-----------------------------------|:--------------------------------|
+| ------------ | -------------------------------------- |
 | `:adapter`   | QueueAdapter object processing the job |
 | `:job`       | Job object                             |
 
@@ -439,16 +439,16 @@ Railties
 ### load_config_initializer.railties
 
 | Key            | Value                                                 |
-|:-----------------------------------|:--------------------------------|
+| -------------- | ----------------------------------------------------- |
 | `:initializer` | Path to loaded initializer from `config/initializers` |
 
-* rails
+Rails
 -----
 
 ### deprecation.rails
 
 | Key          | Value                           |
-|:-----------------------------------|:--------------------------------|
+| ------------ | ------------------------------- |
 | `:message`   | The deprecation warning         |
 | `:callstack` | Where the deprecation came from |
 
