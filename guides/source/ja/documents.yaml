@@ -122,25 +122,25 @@
       url: autoloading_and_reloading_constants.html
       description: 定数の自動読み込みや再読み込みの動作について解説します。
     -
-      name: Rails のキャッシュ概要
+      name: "Caching with Rails: An Overview [未翻訳]"
       url: caching_with_rails.html
       description: キャッシュを活用してRailsを高速化する方法について解説します。
     -
-      name: Active Support Instrumentation
+      name: Active Support Instrumentation [未翻訳]
       work_in_progress: true
       url: active_support_instrumentation.html
       description: RailsなどのRubyコード内のイベント測定に使う、Active Support内のInstrumentation APIについて解説します。
     -
-      name: Railsアプリケーションのプロファイリング
+      name: Profiling Rails Applications [未翻訳]
       work_in_progress: true
       url: profiling.html
       description: Railsのパフォーマンス向上に役立つプロファイリングの手法について解説します。
     -
-      name: Rails で API 専用アプリを構築する
+      name: Using Rails for API-only Applications [未翻訳]
       url: api_app.html
       description: JSON APIアプリケーションをRailsで効果的に作成する方法を解説します。
     -
-      name: Action Cable の概要
+      name: Action Cable Overview [未翻訳]
       url: action_cable_overview.html
       description: リアルタイム機能を実現するAction Cableの動作と、WebSocketsの利用法について解説します。
 
