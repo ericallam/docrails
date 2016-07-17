@@ -139,7 +139,7 @@ end
 
 Railsの`ActiveModel::Serializers::Xml`は`activemodel-serializers-xml` gemに移転しました。アプリケーションで今後もXMLシリアライズを使うには、Gemfileに「`gem 'activemodel-serializers-xml'`」を追加してください。
 
-2.8 古い `mysql` データベース アダプタのサポートを終了
+### 古い `mysql` データベース アダプタのサポートを終了
 
 Rails 5で古い`mysql`データベース アダプタのサポートが終了しました。原則として`mysql2`をお使いください。今後古いアダプタのメンテナンス担当者が決まった場合、アダプタは別のgemに切り出されます。
 
@@ -157,7 +157,7 @@ Rails 5 では、rakeに代わって`bin/rails`でタスクやテストを実行
 
 「`bin/rails`」を実行すると、利用可能なコマンドリストを表示できます。
 
-2.11 `ActionController::Parameters` は今後 `HashWithIndifferentAccess` を継承しない
+### `ActionController::Parameters` は今後 `HashWithIndifferentAccess` を継承しない
 
 アプリケーションで `params` を呼び出すと、今後はハッシュではなくオブジェクトが返ります。現在使っているパラメーターがRailsで既に利用できている場合、変更は不要です。`permitted?`の状態にかかわらずハッシュを読み取れることが前提のメソッド（`slice`メソッドなど）にコードが依存している場合、まずアプリケーションをアップグレードしてpermitを指定し、続いてハッシュに変換する必要があります。
 
