@@ -96,7 +96,7 @@ end
 
 # 変更後
 store_listing.price_in_cents # => 10
-StoreListing.new.my_string # => 「新しいデフォルト値」
+StoreListing.new.my_string # => "new default"
 StoreListing.new.my_default_proc # => 2015-05-30 11:04:48 -0600
 model = StoreListing.new(field_without_db_column: ["1", "2", "3"])
 model.attributes #=> {field_without_db_column: [1, 2, 3]}
