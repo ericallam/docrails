@@ -78,7 +78,7 @@ Ruby のバージョンが 2.2.2 以降であることを確認してから手�
 
 Rails 4.2 の Active Record モデルは `ActiveRecord::Base` を継承していました。Rails 5.0 では、すべてのモデルが `ApplicationRecord` を継承するようになりました。
 
-`ApplicationRecord` はアプリのすべてのモデルのスーパークラスとして新設され、`ActionController::Base`に代わって`ApplicationController`を継承します。この変更により、アプリ全体のモデルの動作を1か所で変更できるようになりました。
+アプリのコントローラーが`ActionController::Base`に代わって`ApplicationController`を継承するように、アプリのすべてのモデルが`ApplicationRecord`をスーパークラスとして使うようになりました。この変更により、アプリ全体のモデルの動作を1か所で変更できるようになりました。
 
 Rails 4.2 を Rails 5.0 にアップグレードする場合、`app/models/`ディレクトリに`application_record.rb`ファイルを追加し、このファイルに以下の設定を追加する必要があります。
 
@@ -221,7 +221,7 @@ end
 # 上のissueではルーター内での認証で解決する方法もアドバイスされている
 class StreamingSupport
   include ActionController::Live # Rails 5 の production モードではこの行は動作しない
-  # extend ActiveSupport::Concern # この行をコメント解除することで上の行が動作するようにな
+  # extend ActiveSupport::Concern # この行をコメント解除することで上の行が動作するようになる
 
   def process(name)
     super(name)
