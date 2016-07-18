@@ -294,7 +294,7 @@ require "rails/cli"
 
 </pre>
 </div>
-<p>今度は<code>railties/lib/rails/cli</code>ファイルが<code>Rails::AppRailsLoader.exec_app_rails</code>を呼び出します。</p><h4 id="railties-lib-rails-app-rails-loader-rb"><a href="#railties-lib-rails-app-rails-loader-rb">1.2 <code>railties/lib/rails/app_rails_loader.rb</code></a></h4><p><code>exec_app_rails</code>の主要な目的な、Railsアプリケーションにある<code>bin/rails</code>を実行することです。カレントディレクトリに<code>bin/rails</code>がない場合、<code>bin/rails</code>が見つかるまでディレクトリを上に向って探索します。これにより、Railsアプリケーション内のどのディレクトリからでも<code>rails</code>コマンドを実行できるようになります。</p><p><code>rails server</code>については、以下の同等のコマンドが実行されます。</p><div class="code_container">
+<p>今度は<code>railties/lib/rails/cli</code>ファイルが<code>Rails::AppRailsLoader.exec_app_rails</code>を呼び出します。</p><h4 id="railties-lib-rails-app-rails-loader-rb"><a href="#railties-lib-rails-app-rails-loader-rb">1.2 <code>railties/lib/rails/app_rails_loader.rb</code></a></h4><p><code>exec_app_rails</code>の主要な目的は、Railsアプリケーションにある<code>bin/rails</code>を実行することです。カレントディレクトリに<code>bin/rails</code>がない場合、<code>bin/rails</code>が見つかるまでディレクトリを上に向って探索します。これにより、Railsアプリケーション内のどのディレクトリからでも<code>rails</code>コマンドを実行できるようになります。</p><p><code>rails server</code>については、以下の同等のコマンドが実行されます。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ exec ruby bin/rails server
 
