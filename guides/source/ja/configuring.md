@@ -253,7 +253,7 @@ config.middleware.delete "Rack::MethodOverride"
 
 * `config.i18n.load_path`は、ロケールファイルの探索パスを設定します。デフォルトは`config/locales/*.{yml,rb}`です。
 
-### Active Recordを設定する。
+### Active Recordを設定する
 
 `config.active_record`には多くのオプションが含まれています。
 

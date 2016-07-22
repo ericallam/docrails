@@ -252,7 +252,7 @@
 <li><a href="#%E3%82%B8%E3%82%A7%E3%83%8D%E3%83%AC%E3%83%BC%E3%82%BF%E3%81%AE%E8%A8%AD%E5%AE%9A">ジェネレータの設定</a></li>
 <li><a href="#%E3%83%9F%E3%83%89%E3%83%AB%E3%82%A6%E3%82%A7%E3%82%A2%E3%82%92%E8%A8%AD%E5%AE%9A%E3%81%99%E3%82%8B">ミドルウェアを設定する</a></li>
 <li><a href="#i18n%E3%82%92%E8%A8%AD%E5%AE%9A%E3%81%99%E3%82%8B">i18nを設定する</a></li>
-<li><a href="#active-record%E3%82%92%E8%A8%AD%E5%AE%9A%E3%81%99%E3%82%8B%E3%80%82">Active Recordを設定する。</a></li>
+<li><a href="#active-record%E3%82%92%E8%A8%AD%E5%AE%9A%E3%81%99%E3%82%8B">Active Recordを設定する</a></li>
 <li><a href="#action-controller%E3%82%92%E8%A8%AD%E5%AE%9A%E3%81%99%E3%82%8B">Action Controllerを設定する</a></li>
 <li><a href="#action-dispatch%E3%82%92%E8%A8%AD%E5%AE%9A%E3%81%99%E3%82%8B">Action Dispatchを設定する</a></li>
 <li><a href="#action-view%E3%82%92%E8%A8%AD%E5%AE%9A%E3%81%99%E3%82%8B">Action Viewを設定する</a></li>
@@ -506,7 +506,7 @@ config.middleware.delete "Rack::MethodOverride"
 <li><p><code>config.i18n.enforce_available_locales</code>がオンになっていると、<code>available_locales</code>リストで宣言されていないロケールはi18nに渡せなくなります。利用できないロケールがある場合は<code>i18n::InvalidLocale</code>例外が発生します。デフォルトは<code>true</code>です。このオプションは、ユーザー入力のロケールが不正である場合のセキュリティ対策であるため、特別な理由がない限り無効にしないでください。</p></li>
 <li><p><code>config.i18n.load_path</code>は、ロケールファイルの探索パスを設定します。デフォルトは<code>config/locales/*.{yml,rb}</code>です。</p></li>
 </ul>
-<h4 id="active-recordを設定する。"><a href="#active-record%E3%82%92%E8%A8%AD%E5%AE%9A%E3%81%99%E3%82%8B%E3%80%82">3.6 Active Recordを設定する。</a></h4><p><code>config.active_record</code>には多くのオプションが含まれています。</p>
+<h4 id="active-recordを設定する"><a href="#active-record%E3%82%92%E8%A8%AD%E5%AE%9A%E3%81%99%E3%82%8B">3.6 Active Recordを設定する</a></h4><p><code>config.active_record</code>には多くのオプションが含まれています。</p>
 <ul>
 <li><p><code>config.active_record.logger</code>は、Log4rのインターフェイスまたはデフォルトのRuby Loggerクラスに従うロガーを引数として取ります。このロガーは以後作成されるすべての新しいデータベース接続に渡されます。Active Recordのモデルクラスまたはモデルインスタンスに対して<code>logger</code>メソッドを呼び出すと、このロガーを取り出せます。ログ出力を無効にするには<code>nil</code>を設定します。</p></li>
 <li><p><code>config.active_record.primary_key_prefix_type</code>は、主キーカラムの命名法を変更するのに使用します。Railsのデフォルトでは、主キーカラムの名前に<code>id</code>が使用されます (なお<code>id</code>にしたい場合は値を設定する必要はありません)。<code>id</code>以外に以下の2つを指定できます。
