@@ -126,12 +126,12 @@
       url: caching_with_rails.html
       description: キャッシュを活用してRailsを高速化する方法について解説します。
     -
-      name: Active Support Instrumentation [未翻訳]
+      name: Active Support の Instrumentation 機能
       work_in_progress: true
       url: active_support_instrumentation.html
       description: RailsなどのRubyコード内のイベント測定に使う、Active Support内のInstrumentation APIについて解説します。
     -
-      name: Profiling Rails Applications [未翻訳]
+      name: Rails アプリケーションのプロファイリング
       work_in_progress: true
       url: profiling.html
       description: Railsのパフォーマンス向上に役立つプロファイリングの手法について解説します。

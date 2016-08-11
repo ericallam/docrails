@@ -1,5 +1,5 @@
 ﻿
-Action Cableの概要
+Action Cable の概要
 =====================
 
 本ガイドでは、Action Cableのしくみと、WebSocketsをRailsアプリケーションに
