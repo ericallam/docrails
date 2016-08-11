@@ -1,16 +1,16 @@
 ﻿
-Action Cable Overview
+Action Cableの概要
 =====================
 
-In this guide you will learn how Action Cable works and how to use WebSockets to
-incorporate real-time features into your Rails application.
+本ガイドでは、Action Cableのしくみと、WebSocketsをRailsアプリケーションに
+導入してリアルタイム機能を実現する方法について解説します。
 
 このガイドの内容:
 
-* What Action Cable is and its integration on backend and frontend  
-* How to setup Action Cable
-* How to setup channels
-* Deployment and Architecture setup for running Action Cable
+* Action Cableの概要、バックエンドとフロントエンドの統合
+* Action Cableの設定方法
+* チャネルの設定方法
+* Action Cable向けのデプロイとアーキテクチャの設定
 
 --------------------------------------------------------------------------------
 

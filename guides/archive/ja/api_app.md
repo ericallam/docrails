@@ -2,19 +2,19 @@
 
 
 
-Using Rails for API-only Applications
+RailsによるAPI専用アプリ
 =====================================
 
-In this guide you will learn:
+このガイドの内容:
 
-* What Rails provides for API-only applications
-* How to configure Rails to start without any browser features
-* How to decide which middleware you will want to include
-* How to decide which modules to use in your controller
+* API専用アプリに役立つRailsの機能
+* Railsの起動時にブラウザ向け機能をオフにする方法
+* ミドルウェアの選定
+* コントローラで使うモジュールの選定
 
 --------------------------------------------------------------------------------
 
-What is an API Application?
+APIアプリについて
 ---------------------------
 
 Traditionally, when people said that they used Rails as an "API", they meant

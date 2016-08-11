@@ -1,15 +1,15 @@
 ﻿
 
 
-A Guide to Profiling Rails Applications
+Railsアプリケーションのプロファイリング
 =======================================
 
 本ガイドは、アプリケーションをテストするためにRailsに組み込まれているメカニズムについて解説します。(訳注: 執筆中)
 
 このガイドの内容:
 
-* Rails profiling terminology.
-* How to write benchmark tests for your application.
-* Other benchmarking approaches and plugins.
+* Railsプロファイリング関連用語
+* アプリケーションのベンチマークテスト作成法
+* その他のベンチマーク手法やプラグイン
 
 --------------------------------------------------------------------------------

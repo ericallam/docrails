@@ -24,7 +24,7 @@
     <meta name="twitter:image" content="http://railsguides.jp/images/cover_for_twitter.png" />
     <meta name="twitter:url"   content="http://railsguides.jp/" />
 
-    <title>Active Support Instrumentation | Rails ガイド</title>
+    <title>Active SupportのInstrumentation機能 | Rails ガイド</title>
     <meta name="apple-mobile-web-app-title" content="Railsガイド" />
     <meta name="application-name"           content="Railsガイド" />
 
@@ -232,19 +232,19 @@
   <hr class="hide" />
   <div id="feature">
   <div class="wrapper">
-      <h2>Active Support Instrumentation</h2><p>Active Support is a part of core Rails that provides Ruby language extensions, utilities and other things. One of the things it includes is an instrumentation API that can be used inside an application to measure certain actions that occur within Ruby code, such as that inside a Rails application or the framework itself. It is not limited to Rails, however. It can be used independently in other Ruby scripts if it is so desired.</p><p>In this guide, you will learn how to use the instrumentation API inside of Active Support to measure events inside of Rails and other Ruby code.</p><p>このガイドの内容:</p>
+      <h2>Active SupportのInstrumentation機能</h2><p>Active SupportはRailsのコア機能のひとつであり、Ruby言語の拡張、ユーティリティなどを提供するものです。Active Supportに含まれているInstrumentation APIは、Rubyコードで発生する特定の動作の計測に利用できます。Railsアプリケーション内部やフレームワーク自身も計測できますが、必要であればRails以外のRubyスクリプトなども測定できます。</p><p>本ガイドでは、RailsなどのRubyコード内のイベント計測に使う、Active Support内のInstrumentation APIについて解説します。</p><p>このガイドの内容:</p>
 <ul>
-<li>What instrumentation can provide.</li>
-<li>The hooks inside the Rails framework for instrumentation.</li>
-<li>Adding a subscriber to a hook.</li>
-<li>Building a custom instrumentation implementation.</li>
+<li>Instrumentationでできること</li>
+<li>Railsフレームワーク内のInstrumentationフック</li>
+<li>フックにサブスクライバを追加する</li>
+<li>独自のInstrumentationを実装する</li>
 </ul>
 
                 <div id="subCol">
             <h3 class="chapter"><img src="images/chapters_icon.gif" alt="" />目次</h3>
             <ol class="chapters">
-<li><a href="#introduction-to-instrumentation">Introduction to instrumentation</a></li>
-<li><a href="#rails-framework-hooks">Rails framework hooks</a></li>
+<li><a href="#instrumentation%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6">Instrumentationについて</a></li>
+<li><a href="#rails%E3%83%95%E3%83%AC%E3%83%BC%E3%83%A0%E3%83%AF%E3%83%BC%E3%82%AF%E7%94%A8%E3%83%95%E3%83%83%E3%82%AF">Railsフレームワーク用フック</a></li>
 <li>
 <a href="#action-controller">Action Controller</a>
 
@@ -323,8 +323,8 @@
 <li><a href="#deprecation-rails">deprecation.rails</a></li>
 </ul>
 </li>
-<li><a href="#subscribing-to-an-event">Subscribing to an event</a></li>
-<li><a href="#creating-custom-events">Creating custom events</a></li>
+<li><a href="#%E3%82%A4%E3%83%99%E3%83%B3%E3%83%88%E3%81%AE%E3%82%B5%E3%83%96%E3%82%B9%E3%82%AF%E3%83%A9%E3%82%A4%E3%83%96">イベントのサブスクライブ</a></li>
+<li><a href="#%E3%82%AB%E3%82%B9%E3%82%BF%E3%83%A0%E3%82%A4%E3%83%99%E3%83%B3%E3%83%88%E3%81%AE%E4%BD%9C%E6%88%90">カスタムイベントの作成</a></li>
 </ol>
 
           </div>
@@ -334,18 +334,18 @@
   <div id="container">
     <div class="wrapper">
       <div id="mainCol">
-        <h3 id="introduction-to-instrumentation"><a href="#introduction-to-instrumentation">1 Introduction to instrumentation</a></h3><p>The instrumentation API provided by Active Support allows developers to provide hooks which other developers may hook into. There are several of these within the <a href="#rails-framework-hooks">Rails framework</a>. With this API, developers can choose to be notified when certain events occur inside their application or another piece of Ruby code.</p><p>For example, there is a hook provided within Active Record that is called every time Active Record uses an SQL query on a database. This hook could be <strong>subscribed</strong> to, and used to track the number of queries during a certain action. There's another hook around the processing of an action of a controller. This could be used, for instance, to track how long a specific action has taken.</p><p>You are even able to create your own events inside your application which you can later subscribe to.</p><h3 id="rails-framework-hooks"><a href="#rails-framework-hooks">2 Rails framework hooks</a></h3><p>Within the Ruby on Rails framework, there are a number of hooks provided for common events. These are detailed below.</p><h3 id="action-controller"><a href="#action-controller">3 Action Controller</a></h3><h4 id="write-fragment-action-controller"><a href="#write-fragment-action-controller">3.1 write_fragment.action_controller</a></h4>
+        <h3 id="instrumentationについて"><a href="#instrumentation%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6">1 Instrumentationについて</a></h3><p>Active Supportが提供するInstrumentation APIを使ってフックを開発すると、他の開発者がそこにフックできるようになります。フックの多くは、<a href="#rails-framework-hooks">Railsフレームワーク</a>向けです。このAPIをアプリケーションで実装すると、アプリケーション（またはRubyコード片）内部でイベントが発生したときに通知を受け取れるよう他の開発者が設定できます。</p><p>たとえばActive Recordには、データベースへのSQLクエリが発行されるたびに呼び出されるフックが用意されていますこのフックを<strong>サブスクライブ（購読）</strong>すると、特定のアクションでのクエリ実行数を追跡できます。他に、コントローラのアクション実行中に呼び出されるフックもあります。このフックは、たとえば特定のアクション実行に要する時間の測定に利用できます。</p><p>もちろん、アプリケーション内に独自のイベントを作成し、後で自分でサブスクライブして測定することもできます。</p><h3 id="railsフレームワーク用フック"><a href="#rails%E3%83%95%E3%83%AC%E3%83%BC%E3%83%A0%E3%83%AF%E3%83%BC%E3%82%AF%E7%94%A8%E3%83%95%E3%83%83%E3%82%AF">2 Railsフレームワーク用フック</a></h3><p>Ruby on Railsでは、フレームワーク内の主なイベント向けのフックが多数提供されています詳しくは次をご覧ください。</p><h3 id="action-controller"><a href="#action-controller">3 Action Controller</a></h3><h4 id="write-fragment-action-controller"><a href="#write-fragment-action-controller">3.1 write_fragment.action_controller</a></h4>
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Value</th>
+<th>キー</th>
+<th>値</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>:key</code></td>
-<td>The complete key</td>
+<td>完全なキー</td>
 </tr>
 </tbody>
 </table>
@@ -361,14 +361,14 @@
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Value</th>
+<th>キー</th>
+<th>値</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>:key</code></td>
-<td>The complete key</td>
+<td>完全なキー</td>
 </tr>
 </tbody>
 </table>
@@ -391,7 +391,7 @@
 <tbody>
 <tr>
 <td><code>:key</code></td>
-<td>The complete key</td>
+<td>完全なキー</td>
 </tr>
 </tbody>
 </table>
@@ -407,14 +407,14 @@
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Value</th>
+<th>キー</th>
+<th>値</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>:key</code></td>
-<td>The complete key</td>
+<td>完全なキー</td>
 </tr>
 </tbody>
 </table>
@@ -430,14 +430,14 @@
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Value</th>
+<th>キー</th>
+<th>値</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>:path</code></td>
-<td>The complete path</td>
+<td>完全なパス</td>
 </tr>
 </tbody>
 </table>
@@ -453,14 +453,14 @@
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Value</th>
+<th>キー</th>
+<th>値</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>:path</code></td>
-<td>The complete path</td>
+<td>完全なパス</td>
 </tr>
 </tbody>
 </table>
@@ -476,38 +476,38 @@
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Value</th>
+<th>キー</th>
+<th>値</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>:controller</code></td>
-<td>The controller name</td>
+<td>コントローラ名</td>
 </tr>
 <tr>
 <td><code>:action</code></td>
-<td>The action</td>
+<td>アクション</td>
 </tr>
 <tr>
 <td><code>:params</code></td>
-<td>Hash of request parameters without any filtered parameter</td>
+<td>リクエストパラメータのハッシュ（フィルタされたパラメータは含まない）</td>
 </tr>
 <tr>
 <td><code>:headers</code></td>
-<td>Request headers</td>
+<td>リクエスト ヘッダー</td>
 </tr>
 <tr>
 <td><code>:format</code></td>
-<td>html/js/json/xml etc</td>
+<td>html/js/json/xml など</td>
 </tr>
 <tr>
 <td><code>:method</code></td>
-<td>HTTP request verb</td>
+<td>HTTP リクエストメソッド（verb）</td>
 </tr>
 <tr>
 <td><code>:path</code></td>
-<td>Request path</td>
+<td>リクエスト パス</td>
 </tr>
 </tbody>
 </table>
@@ -529,50 +529,50 @@
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Value</th>
+<th>キー</th>
+<th>値</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>:controller</code></td>
-<td>The controller name</td>
+<td>コントローラ名</td>
 </tr>
 <tr>
 <td><code>:action</code></td>
-<td>The action</td>
+<td>アクション</td>
 </tr>
 <tr>
 <td><code>:params</code></td>
-<td>Hash of request parameters without any filtered parameter</td>
+<td>リクエストパラメータのハッシュ（フィルタされたパラメータは含まない）</td>
 </tr>
 <tr>
 <td><code>:headers</code></td>
-<td>Request headers</td>
+<td>リクエスト ヘッダー</td>
 </tr>
 <tr>
 <td><code>:format</code></td>
-<td>html/js/json/xml etc</td>
+<td>html/js/json/xml など</td>
 </tr>
 <tr>
 <td><code>:method</code></td>
-<td>HTTP request verb</td>
+<td>HTTP リクエストメソッド（verb）</td>
 </tr>
 <tr>
 <td><code>:path</code></td>
-<td>Request path</td>
+<td>リクエスト パス</td>
 </tr>
 <tr>
 <td><code>:status</code></td>
-<td>HTTP status code</td>
+<td>HTTP ステータスコード</td>
 </tr>
 <tr>
 <td><code>:view_runtime</code></td>
-<td>Amount spent in view in ms</td>
+<td>ビューでかかった合計時間（ms）</td>
 </tr>
 <tr>
 <td><code>:db_runtime</code></td>
-<td>Amount spent executing database queries in ms</td>
+<td>データベースへのクエリ実行にかかった時間（ms）</td>
 </tr>
 </tbody>
 </table>
@@ -597,33 +597,33 @@
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Value</th>
+<th>キー</th>
+<th>値</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>:path</code></td>
-<td>Complete path to the file</td>
+<td>ファイルへの完全なパス</td>
 </tr>
 </tbody>
 </table>
-<div class="info"><p>Additional keys may be added by the caller.</p></div><h4 id="send-data-action-controller"><a href="#send-data-action-controller">3.10 send_data.action_controller</a></h4><p><code>ActionController</code> does not had any specific information to the payload. All options are passed through to the payload.</p><h4 id="redirect-to-action-controller"><a href="#redirect-to-action-controller">3.11 redirect_to.action_controller</a></h4>
+<div class="info"><p>呼び出し側でキーが追加される可能性があります。</p></div><h4 id="send-data-action-controller"><a href="#send-data-action-controller">3.10 send_data.action_controller</a></h4><p><code>ActionController</code>自身は、ペイロードに情報を持ちません。オプションは、すべてペイロード経由で渡されます。</p><h4 id="redirect-to-action-controller"><a href="#redirect-to-action-controller">3.11 redirect_to.action_controller</a></h4>
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Value</th>
+<th>キー</th>
+<th>値</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>:status</code></td>
-<td>HTTP response code</td>
+<td>HTTP レスポンス コード</td>
 </tr>
 <tr>
 <td><code>:location</code></td>
-<td>URL to redirect to</td>
+<td>リダイレクト先URL</td>
 </tr>
 </tbody>
 </table>
@@ -640,14 +640,14 @@
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Value</th>
+<th>キー</th>
+<th>値</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>:filter</code></td>
-<td>Filter that halted the action</td>
+<td>アクションを停止させたフィルタ</td>
 </tr>
 </tbody>
 </table>
@@ -663,18 +663,18 @@
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Value</th>
+<th>キー</th>
+<th>値</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>:identifier</code></td>
-<td>Full path to template</td>
+<td>テンプレートへの完全なパス</td>
 </tr>
 <tr>
 <td><code>:layout</code></td>
-<td>Applicable layout</td>
+<td>該当のレイアウト</td>
 </tr>
 </tbody>
 </table>
@@ -691,14 +691,14 @@
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Value</th>
+<th>キー</th>
+<th>値</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>:identifier</code></td>
-<td>Full path to template</td>
+<td>テンプレートへの完全なパス</td>
 </tr>
 </tbody>
 </table>
@@ -714,18 +714,18 @@
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Value</th>
+<th>キー</th>
+<th>値</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>:sql</code></td>
-<td>SQL statement</td>
+<td>SQL文</td>
 </tr>
 <tr>
 <td><code>:name</code></td>
-<td>Name of the operation</td>
+<td>操作の名前</td>
 </tr>
 <tr>
 <td><code>:connection_id</code></td>
@@ -733,11 +733,11 @@
 </tr>
 <tr>
 <td><code>:binds</code></td>
-<td>Bind parameters</td>
+<td>パラメータの割り当て（バインド）</td>
 </tr>
 </tbody>
 </table>
-<div class="info"><p>The adapters will add their own data as well.</p></div><div class="code_container">
+<div class="info"><p>アダプタも独自のデータを追加します。</p></div><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 {
   sql: "SELECT \"posts\".* FROM \"posts\" ",
@@ -759,11 +759,11 @@
 <tbody>
 <tr>
 <td><code>:record_count</code></td>
-<td>Number of records that instantiated</td>
+<td>レコードのインスタンス数</td>
 </tr>
 <tr>
 <td><code>:class_name</code></td>
-<td>Record's class</td>
+<td>レコードのクラス</td>
 </tr>
 </tbody>
 </table>
@@ -780,46 +780,46 @@
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Value</th>
+<th>キー</th>
+<th>値</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>:mailer</code></td>
-<td>Name of the mailer class</td>
+<td>メイラークラス名</td>
 </tr>
 <tr>
 <td><code>:message_id</code></td>
-<td>ID of the message, generated by the Mail gem</td>
+<td>Mail gemが生成したメッセージID</td>
 </tr>
 <tr>
 <td><code>:subject</code></td>
-<td>Subject of the mail</td>
+<td>メールの件名</td>
 </tr>
 <tr>
 <td><code>:to</code></td>
-<td>To address(es) of the mail</td>
+<td>メールの宛先</td>
 </tr>
 <tr>
 <td><code>:from</code></td>
-<td>From address of the mail</td>
+<td>メールの差出人</td>
 </tr>
 <tr>
 <td><code>:bcc</code></td>
-<td>BCC addresses of the mail</td>
+<td>メールのBCCアドレス</td>
 </tr>
 <tr>
 <td><code>:cc</code></td>
-<td>CC addresses of the mail</td>
+<td>メールのCCアドレス</td>
 </tr>
 <tr>
 <td><code>:date</code></td>
-<td>Date of the mail</td>
+<td>メールの日付</td>
 </tr>
 <tr>
 <td><code>:mail</code></td>
-<td>The encoded form of the mail</td>
+<td>メールのエンコード形式</td>
 </tr>
 </tbody>
 </table>
@@ -832,7 +832,7 @@
   to: ["users@rails.com", "ddh@rails.com"],
   from: ["me@rails.com"],
   date: Sat, 10 Mar 2012 14:18:09 +0100,
-  mail: "..." # omitted for brevity
+  mail: "..." #（長いので省略）
 }
 
 </pre>
@@ -841,46 +841,46 @@
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Value</th>
+<th>キー</th>
+<th>値</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>:mailer</code></td>
-<td>Name of the mailer class</td>
+<td>メイラークラス名</td>
 </tr>
 <tr>
 <td><code>:message_id</code></td>
-<td>ID of the message, generated by the Mail gem</td>
+<td>Mail gemが生成したメッセージID</td>
 </tr>
 <tr>
 <td><code>:subject</code></td>
-<td>Subject of the mail</td>
+<td>メールの件名</td>
 </tr>
 <tr>
 <td><code>:to</code></td>
-<td>To address(es) of the mail</td>
+<td>メールの宛先</td>
 </tr>
 <tr>
 <td><code>:from</code></td>
-<td>From address of the mail</td>
+<td>メールの差出人</td>
 </tr>
 <tr>
 <td><code>:bcc</code></td>
-<td>BCC addresses of the mail</td>
+<td>メールのBCCアドレス</td>
 </tr>
 <tr>
 <td><code>:cc</code></td>
-<td>CC addresses of the mail</td>
+<td>メールのCCアドレス</td>
 </tr>
 <tr>
 <td><code>:date</code></td>
-<td>Date of the mail</td>
+<td>メールの日付</td>
 </tr>
 <tr>
 <td><code>:mail</code></td>
-<td>The encoded form of the mail</td>
+<td>メールのエンコード形式</td>
 </tr>
 </tbody>
 </table>
@@ -893,7 +893,7 @@
   to: ["users@rails.com", "ddh@rails.com"],
   from: ["me@rails.com"],
   date: Sat, 10 Mar 2012 14:18:09 +0100,
-  mail: "..." # omitted for brevity
+  mail: "..." #（長いので省略）
 }
 
 </pre>
@@ -902,42 +902,41 @@
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Value</th>
+<th>キー</th>
+<th>値</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>:key</code></td>
-<td>Key used in the store</td>
+<td>ストアで使われるキー</td>
 </tr>
 <tr>
 <td><code>:hit</code></td>
-<td>If this read is a hit</td>
+<td>ヒットしたかどうか</td>
 </tr>
 <tr>
 <td><code>:super_operation</code></td>
-<td>:fetch is added when a read is used with <code>#fetch</code>
-</td>
+<td>読み出しで<code>#fetch</code>が指定されている場合に:fetch を追加</td>
 </tr>
 </tbody>
 </table>
-<h4 id="cache-generate-active-support"><a href="#cache-generate-active-support">7.2 cache_generate.active_support</a></h4><p>This event is only used when <code>#fetch</code> is called with a block.</p>
+<h4 id="cache-generate-active-support"><a href="#cache-generate-active-support">7.2 cache_generate.active_support</a></h4><p>このイベントは、<code>#fetch</code>をブロック付きで使用した場合にのみ使われます。</p>
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Value</th>
+<th>キー</th>
+<th>値</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>:key</code></td>
-<td>Key used in the store</td>
+<td>ストアで使われるキー</td>
 </tr>
 </tbody>
 </table>
-<div class="info"><p>Options passed to fetch will be merged with the payload when writing to the store</p></div><div class="code_container">
+<div class="info"><p>fetchに渡されたオプションは、ストアへの書き込み時にペイロードとマージされます。</p></div><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 {
   key: 'name-of-complicated-computation'
@@ -945,22 +944,22 @@
 
 </pre>
 </div>
-<h4 id="cache-fetch-hit-active-support"><a href="#cache-fetch-hit-active-support">7.3 cache_fetch_hit.active_support</a></h4><p>This event is only used when <code>#fetch</code> is called with a block.</p>
+<h4 id="cache-fetch-hit-active-support"><a href="#cache-fetch-hit-active-support">7.3 cache_fetch_hit.active_support</a></h4><p>このイベントは、<code>#fetch</code>をブロック付きで使用した場合にのみ使われます。</p>
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Value</th>
+<th>キー</th>
+<th>値</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>:key</code></td>
-<td>Key used in the store</td>
+<td>ストアで使われるキー</td>
 </tr>
 </tbody>
 </table>
-<div class="info"><p>Options passed to fetch will be merged with the payload.</p></div><div class="code_container">
+<div class="info"><p>fetchに渡されたオプションは、ペイロードとマージされます。</p></div><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 {
   key: 'name-of-complicated-computation'
@@ -972,18 +971,18 @@
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Value</th>
+<th>キー</th>
+<th>値</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>:key</code></td>
-<td>Key used in the store</td>
+<td>ストアで使われるキー</td>
 </tr>
 </tbody>
 </table>
-<div class="info"><p>Cache stores may add their own keys</p></div><div class="code_container">
+<div class="info"><p>キャッシュストアが独自のキーを追加することがあります。</p></div><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 {
   key: 'name-of-complicated-computation'
@@ -995,14 +994,14 @@
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Value</th>
+<th>キー</th>
+<th>値</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>:key</code></td>
-<td>Key used in the store</td>
+<td>ストアで使われるキー</td>
 </tr>
 </tbody>
 </table>
@@ -1018,14 +1017,14 @@
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Value</th>
+<th>キー</th>
+<th>値</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>:key</code></td>
-<td>Key used in the store</td>
+<td>ストアで使われるキー</td>
 </tr>
 </tbody>
 </table>
@@ -1041,18 +1040,18 @@
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Value</th>
+<th>キー</th>
+<th>値</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>:adapter</code></td>
-<td>QueueAdapter object processing the job</td>
+<td>ジョブを処理するQueueAdapterオブジェクト</td>
 </tr>
 <tr>
 <td><code>:job</code></td>
-<td>Job object</td>
+<td>Jobオブジェクト</td>
 </tr>
 </tbody>
 </table>
@@ -1060,18 +1059,18 @@
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Value</th>
+<th>キー</th>
+<th>値</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>:adapter</code></td>
-<td>QueueAdapter object processing the job</td>
+<td>ジョブを処理するQueueAdapterオブジェクト</td>
 </tr>
 <tr>
 <td><code>:job</code></td>
-<td>Job object</td>
+<td>Jobオブジェクト</td>
 </tr>
 </tbody>
 </table>
@@ -1079,18 +1078,18 @@
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Value</th>
+<th>キー</th>
+<th>値</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>:adapter</code></td>
-<td>QueueAdapter object processing the job</td>
+<td>ジョブを処理するQueueAdapterオブジェクト</td>
 </tr>
 <tr>
 <td><code>:job</code></td>
-<td>Job object</td>
+<td>Jobオブジェクト</td>
 </tr>
 </tbody>
 </table>
@@ -1098,18 +1097,18 @@
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Value</th>
+<th>キー</th>
+<th>値</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>:adapter</code></td>
-<td>QueueAdapter object processing the job</td>
+<td>ジョブを処理するQueueAdapterオブジェクト</td>
 </tr>
 <tr>
 <td><code>:job</code></td>
-<td>Job object</td>
+<td>Jobオブジェクト</td>
 </tr>
 </tbody>
 </table>
@@ -1117,15 +1116,15 @@
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Value</th>
+<th>キー</th>
+<th>値</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>:initializer</code></td>
-<td>Path to loaded initializer from <code>config/initializers</code>
-</td>
+<td>
+<code>config/initializers</code>から読み込まれたイニシャライザへのパス</td>
 </tr>
 </tbody>
 </table>
@@ -1133,41 +1132,41 @@
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Value</th>
+<th>キー</th>
+<th>値</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>:message</code></td>
-<td>The deprecation warning</td>
+<td>非推奨機能の警告メッセージ</td>
 </tr>
 <tr>
 <td><code>:callstack</code></td>
-<td>Where the deprecation came from</td>
+<td>非推奨警告の発生元</td>
 </tr>
 </tbody>
 </table>
-<h3 id="subscribing-to-an-event"><a href="#subscribing-to-an-event">11 Subscribing to an event</a></h3><p>Subscribing to an event is easy. Use <code>ActiveSupport::Notifications.subscribe</code> with a block to
-listen to any notification.</p><p>The block receives the following arguments:</p>
+<h3 id="イベントのサブスクライブ"><a href="#%E3%82%A4%E3%83%99%E3%83%B3%E3%83%88%E3%81%AE%E3%82%B5%E3%83%96%E3%82%B9%E3%82%AF%E3%83%A9%E3%82%A4%E3%83%96">11 イベントのサブスクライブ</a></h3><p>イベントは簡単にサブスクライブできます。<code>ActiveSupport::Notifications.subscribe</code>をブロック付きで
+記述すれば、すべての通知をリッスンできます。</p><p>ブロックでは以下の引数を利用できます。</p>
 <ul>
-<li>The name of the event</li>
-<li>Time when it started</li>
-<li>Time when it finished</li>
-<li>A unique ID for this event</li>
-<li>The payload (described in previous sections)</li>
+<li>イベントの名前</li>
+<li>イベントの開始時刻</li>
+<li>イベントの終了時刻</li>
+<li>イベントのユニークID</li>
+<li>ペイロード（上の節を参照）</li>
 </ul>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 ActiveSupport::Notifications.subscribe "process_action.action_controller" do |name, started, finished, unique_id, data|
-  # your own custom stuff
+  # 自分のコードをここに書く
   Rails.logger.info "#{name} Received!"
-end 
+end
 
 </pre>
 </div>
-<p>Defining all those block arguments each time can be tedious. You can easily create an <code>ActiveSupport::Notifications::Event</code>
-from block arguments like this:</p><div class="code_container">
+<p>ブロックの引数を毎回定義しなくても済むよう、次のようなブロック付きの<code>ActiveSupport::Notifications::Event</code>を
+簡単に定義できます。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 ActiveSupport::Notifications.subscribe "process_action.action_controller" do |*args|
   event = ActiveSupport::Notifications::Event.new *args
@@ -1177,49 +1176,49 @@ ActiveSupport::Notifications.subscribe "process_action.action_controller" do |*a
   event.payload   # =&gt; {:extra=&gt;information}
 
   Rails.logger.info "#{event} Received!"
-end 
+end
 
 </pre>
 </div>
-<p>Most times you only care about the data itself. Here is a shortcut to just get the data.</p><div class="code_container">
+<p>ほとんどのデータはすぐに利用できます。次はデータの取り出し方の例です。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 ActiveSupport::Notifications.subscribe "process_action.action_controller" do |*args|
   data = args.extract_options!
   data # { extra: :information }
-end 
+end
 
 </pre>
 </div>
-<p>You may also subscribe to events matching a regular expression. This enables you to subscribe to
-multiple events at once. Here's you could subscribe to everything from <code>ActionController</code>.</p><div class="code_container">
+<p>正規表現に一致するイベントだけをサブスクライブすることもできます。
+さまざまなイベントを一括でサブスクライブしたい場合に便利です。次は、<code>ActionController</code>のイベントをすべて登録する場合の例です。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 ActiveSupport::Notifications.subscribe /action_controller/ do |*args|
-  # inspect all ActionController events
-end 
+  # ActionControllerの全イベントをチェック
+end
 
 </pre>
 </div>
-<h3 id="creating-custom-events"><a href="#creating-custom-events">12 Creating custom events</a></h3><p>Adding your own events is easy as well. <code>ActiveSupport::Notifications</code> will take care of
-all the heavy lifting for you. Simply call <code>instrument</code> with a <code>name</code>, <code>payload</code> and a block.
-The notification will be sent after the block returns. <code>ActiveSupport</code> will generate the start and end times
-as well as the unique ID. All data passed into the <code>instrument</code> call will make it into the payload.</p><p>以下に例を示します。</p><div class="code_container">
+<h3 id="カスタムイベントの作成"><a href="#%E3%82%AB%E3%82%B9%E3%82%BF%E3%83%A0%E3%82%A4%E3%83%99%E3%83%B3%E3%83%88%E3%81%AE%E4%BD%9C%E6%88%90">12 カスタムイベントの作成</a></h3><p>独自のイベントを自由に追加できます。イベント追加は、<code>ActiveSupport::Notifications</code>メソッドで
+すべてまかなえます。<code>name</code>、<code>payload</code>、ブロックを指定して<code>instrument</code>を呼び出すだけで追加完了します。
+通知は、ブロックが戻ってから送信されます。<code>ActiveSupport</code>では、開始時刻、終了時刻、
+ユニークIDが生成されます。<code>instrument</code>呼び出しに渡されるすべてのデータがペイロードに含まれます。</p><p>以下に例を示します。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 ActiveSupport::Notifications.instrument "my.custom.event", this: :data do
-  # do your custom stuff here
-end 
+  # 自分のコードをここに書く
+end
 
 </pre>
 </div>
-<p>Now you can listen to this event with:</p><div class="code_container">
+<p>これで、次のようにイベントをリッスンできるようになります。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 ActiveSupport::Notifications.subscribe "my.custom.event" do |name, started, finished, unique_id, data|
   puts data.inspect # {:this=&gt;:data}
-end 
+end
 
 </pre>
 </div>
-<p>You should follow Rails conventions when defining your own events. The format is: <code>event.library</code>.
-If you application is sending Tweets, you should create an event named <code>tweet.twitter</code>.</p>
+<p>独自のイベントを作成するときは、Railsの規則に従ってください。形式は「<code>event.library</code>」を使います
+たとえば、アプリケーションがツイートを送信するのであれば、イベント名は<code>tweet.twitter</code>となります。</p>
         
 
         <h3 id="feedback"><a href="#feedback">フィードバックについて</a></h3>

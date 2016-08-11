@@ -1,44 +1,44 @@
 ﻿
 
 
-Active Support Instrumentation
+Active SupportのInstrumentation機能
 ==============================
 
-Active Support is a part of core Rails that provides Ruby language extensions, utilities and other things. One of the things it includes is an instrumentation API that can be used inside an application to measure certain actions that occur within Ruby code, such as that inside a Rails application or the framework itself. It is not limited to Rails, however. It can be used independently in other Ruby scripts if it is so desired.
+Active SupportはRailsのコア機能のひとつであり、Ruby言語の拡張、ユーティリティなどを提供するものです。Active Supportに含まれているInstrumentation APIは、Rubyコードで発生する特定の動作の計測に利用できます。Railsアプリケーション内部やフレームワーク自身も計測できますが、必要であればRails以外のRubyスクリプトなども測定できます。
 
-In this guide, you will learn how to use the instrumentation API inside of Active Support to measure events inside of Rails and other Ruby code.
+本ガイドでは、RailsなどのRubyコード内のイベント計測に使う、Active Support内のInstrumentation APIについて解説します。
 
 このガイドの内容:
 
-* What instrumentation can provide.
-* The hooks inside the Rails framework for instrumentation.
-* Adding a subscriber to a hook.
-* Building a custom instrumentation implementation.
+* Instrumentationでできること
+* Railsフレームワーク内のInstrumentationフック
+* フックにサブスクライバを追加する
+* 独自のInstrumentationを実装する
 
 --------------------------------------------------------------------------------
 
-Introduction to instrumentation
+Instrumentationについて
 -------------------------------
 
-The instrumentation API provided by Active Support allows developers to provide hooks which other developers may hook into. There are several of these within the [Rails framework](#rails-framework-hooks). With this API, developers can choose to be notified when certain events occur inside their application or another piece of Ruby code.
+Active Supportが提供するInstrumentation APIを使ってフックを開発すると、他の開発者がそこにフックできるようになります。フックの多くは、[Railsフレームワーク](#rails-framework-hooks)向けです。このAPIをアプリケーションで実装すると、アプリケーション（またはRubyコード片）内部でイベントが発生したときに通知を受け取れるよう他の開発者が設定できます。
 
-For example, there is a hook provided within Active Record that is called every time Active Record uses an SQL query on a database. This hook could be **subscribed** to, and used to track the number of queries during a certain action. There's another hook around the processing of an action of a controller. This could be used, for instance, to track how long a specific action has taken.
+たとえばActive Recordには、データベースへのSQLクエリが発行されるたびに呼び出されるフックが用意されていますこのフックを**サブスクライブ（購読）**すると、特定のアクションでのクエリ実行数を追跡できます。他に、コントローラのアクション実行中に呼び出されるフックもあります。このフックは、たとえば特定のアクション実行に要する時間の測定に利用できます。
 
-You are even able to create your own events inside your application which you can later subscribe to.
+もちろん、アプリケーション内に独自のイベントを作成し、後で自分でサブスクライブして測定することもできます。
 
-Rails framework hooks
+Railsフレームワーク用フック
 ---------------------
 
-Within the Ruby on Rails framework, there are a number of hooks provided for common events. These are detailed below.
+Ruby on Railsでは、フレームワーク内の主なイベント向けのフックが多数提供されています詳しくは次をご覧ください。
 
 Action Controller
 -----------------
 
 ### write_fragment.action_controller
 
-| Key    | Value            |
+| キー    | 値            |
 | ------ | ---------------- |
-| `:key` | The complete key |
+| `:key` | 完全なキー |
 
 ```ruby
 {
@@ -48,9 +48,9 @@ Action Controller
 
 ### read_fragment.action_controller
 
-| Key    | Value            |
+| キー    | 値            |
 | ------ | ---------------- |
-| `:key` | The complete key |
+| `:key` | 完全なキー |
 
 ```ruby
 {
@@ -62,7 +62,7 @@ Action Controller
 
 | Key    | Value            |
 | ------ | ---------------- |
-| `:key` | The complete key |
+| `:key` | 完全なキー |
 
 ```ruby
 {
@@ -72,9 +72,9 @@ Action Controller
 
 ### exist_fragment?.action_controller
 
-| Key    | Value            |
+| キー    | 値            |
 | ------ | ---------------- |
-| `:key` | The complete key |
+| `:key` | 完全なキー |
 
 ```ruby
 {
@@ -84,9 +84,9 @@ Action Controller
 
 ### write_page.action_controller
 
-| Key     | Value             |
+| キー    | 値            |
 | ------- | ----------------- |
-| `:path` | The complete path |
+| `:path` | 完全なパス |
 
 ```ruby
 {
@@ -96,9 +96,9 @@ Action Controller
 
 ### expire_page.action_controller
 
-| Key     | Value             |
+| キー    | 値            |
 | ------- | ----------------- |
-| `:path` | The complete path |
+| `:path` | 完全なパス |
 
 ```ruby
 {
@@ -108,15 +108,15 @@ Action Controller
 
 ### start_processing.action_controller
 
-| Key           | Value                                                     |
+| キー           | 値                                                     |
 | ------------- | --------------------------------------------------------- |
-| `:controller` | The controller name                                       |
-| `:action`     | The action                                                |
-| `:params`     | Hash of request parameters without any filtered parameter |
-| `:headers`    | Request headers                                           |
-| `:format`     | html/js/json/xml etc                                      |
-| `:method`     | HTTP request verb                                         |
-| `:path`       | Request path                                              |
+| `:controller` | コントローラ名                                       |
+| `:action`     | アクション                                                |
+| `:params`     | リクエストパラメータのハッシュ（フィルタされたパラメータは含まない）|
+| `:headers`    | リクエスト ヘッダー                                           |
+| `:format`     | html/js/json/xml など                                      |
+| `:method`     | HTTP リクエストメソッド（verb）                                         |
+| `:path`       | リクエスト パス                                              |
 
 ```ruby
 {
@@ -132,18 +132,18 @@ Action Controller
 
 ### process_action.action_controller
 
-| Key             | Value                                                     |
+| キー             | 値                                                     |
 | --------------- | --------------------------------------------------------- |
-| `:controller`   | The controller name                                       |
-| `:action`       | The action                                                |
-| `:params`       | Hash of request parameters without any filtered parameter |
-| `:headers`      | Request headers                                           |
-| `:format`       | html/js/json/xml etc                                      |
-| `:method`       | HTTP request verb                                         |
-| `:path`         | Request path                                              |
-| `:status`       | HTTP status code                                          |
-| `:view_runtime` | Amount spent in view in ms                                |
-| `:db_runtime`   | Amount spent executing database queries in ms             |
+| `:controller` | コントローラ名                                       |
+| `:action`     | アクション                                                |
+| `:params`     | リクエストパラメータのハッシュ（フィルタされたパラメータは含まない）|
+| `:headers`    | リクエスト ヘッダー                                           |
+| `:format`     | html/js/json/xml など                                      |
+| `:method`     | HTTP リクエストメソッド（verb）                                         |
+| `:path`       | リクエスト パス                                              |
+| `:status`       | HTTP ステータスコード                                          |
+| `:view_runtime` | ビューでかかった合計時間（ms）                                |
+| `:db_runtime`   | データベースへのクエリ実行にかかった時間（ms）             |
 
 ```ruby
 {
@@ -162,22 +162,22 @@ Action Controller
 
 ### send_file.action_controller
 
-| Key     | Value                     |
+| キー     | 値                     |
 | ------- | ------------------------- |
-| `:path` | Complete path to the file |
+| `:path` | ファイルへの完全なパス |
 
-INFO. Additional keys may be added by the caller.
+INFO. 呼び出し側でキーが追加される可能性があります。
 
 ### send_data.action_controller
 
-`ActionController` does not had any specific information to the payload. All options are passed through to the payload.
+`ActionController`自身は、ペイロードに情報を持ちません。オプションは、すべてペイロード経由で渡されます。
 
 ### redirect_to.action_controller
 
-| Key         | Value              |
+| キー         | 値              |
 | ----------- | ------------------ |
-| `:status`   | HTTP response code |
-| `:location` | URL to redirect to |
+| `:status`   | HTTP レスポンス コード |
+| `:location` | リダイレクト先URL |
 
 ```ruby
 {
@@ -188,9 +188,9 @@ INFO. Additional keys may be added by the caller.
 
 ### halted_callback.action_controller
 
-| Key       | Value                         |
+| キー         | 値              |
 | --------- | ----------------------------- |
-| `:filter` | Filter that halted the action |
+| `:filter` | アクションを停止させたフィルタ |
 
 ```ruby
 {
@@ -203,10 +203,10 @@ Action View
 
 ### render_template.action_view
 
-| Key           | Value                 |
+| キー         | 値              |
 | ------------- | --------------------- |
-| `:identifier` | Full path to template |
-| `:layout`     | Applicable layout     |
+| `:identifier` | テンプレートへの完全なパス |
+| `:layout`     | 該当のレイアウト     |
 
 ```ruby
 {
@@ -217,9 +217,9 @@ Action View
 
 ### render_partial.action_view
 
-| Key           | Value                 |
+| キー         | 値              |
 | ------------- | --------------------- |
-| `:identifier` | Full path to template |
+| `:identifier` | テンプレートへの完全なパス |
 
 ```ruby
 {
@@ -232,14 +232,14 @@ Active Record
 
 ### sql.active_record
 
-| Key              | Value                 |
+| キー         | 値              |
 | ---------------- | --------------------- |
-| `:sql`           | SQL statement         |
-| `:name`          | Name of the operation |
+| `:sql`           | SQL文         |
+| `:name`          | 操作の名前 |
 | `:connection_id` | `self.object_id`      |
-| `:binds`         | Bind parameters       |
+| `:binds`         | パラメータの割り当て（バインド）       |
 
-INFO. The adapters will add their own data as well.
+INFO. アダプタも独自のデータを追加します。
 
 ```ruby
 {
@@ -254,8 +254,8 @@ INFO. The adapters will add their own data as well.
 
 | Key              | Value                                     |
 | ---------------- | ----------------------------------------- |
-| `:record_count`  | Number of records that instantiated       |
-| `:class_name`    | Record's class                            |
+| `:record_count`  | レコードのインスタンス数       |
+| `:class_name`    | レコードのクラス                            |
 
 ```ruby
 {
@@ -269,17 +269,17 @@ Action Mailer
 
 ### receive.action_mailer
 
-| Key           | Value                                        |
+| キー         | 値              |
 | ------------- | -------------------------------------------- |
-| `:mailer`     | Name of the mailer class                     |
-| `:message_id` | ID of the message, generated by the Mail gem |
-| `:subject`    | Subject of the mail                          |
-| `:to`         | To address(es) of the mail                   |
-| `:from`       | From address of the mail                     |
-| `:bcc`        | BCC addresses of the mail                    |
-| `:cc`         | CC addresses of the mail                     |
-| `:date`       | Date of the mail                             |
-| `:mail`       | The encoded form of the mail                 |
+| `:mailer`     | メイラークラス名                     |
+| `:message_id` | Mail gemが生成したメッセージID |
+| `:subject`    | メールの件名                          |
+| `:to`         | メールの宛先                   |
+| `:from`       | メールの差出人                     |
+| `:bcc`        | メールのBCCアドレス                    |
+| `:cc`         | メールのCCアドレス                     |
+| `:date`       | メールの日付                             |
+| `:mail`       | メールのエンコード形式                 |
 
 ```ruby
 {
@@ -289,23 +289,23 @@ Action Mailer
   to: ["users@rails.com", "ddh@rails.com"],
   from: ["me@rails.com"],
   date: Sat, 10 Mar 2012 14:18:09 +0100,
-  mail: "..." # omitted for brevity
+  mail: "..." #（長いので省略）
 }
 ```
 
 ### deliver.action_mailer
 
-| Key           | Value                                        |
+| キー         | 値              |
 | ------------- | -------------------------------------------- |
-| `:mailer`     | Name of the mailer class                     |
-| `:message_id` | ID of the message, generated by the Mail gem |
-| `:subject`    | Subject of the mail                          |
-| `:to`         | To address(es) of the mail                   |
-| `:from`       | From address of the mail                     |
-| `:bcc`        | BCC addresses of the mail                    |
-| `:cc`         | CC addresses of the mail                     |
-| `:date`       | Date of the mail                             |
-| `:mail`       | The encoded form of the mail                 |
+| `:mailer`     | メイラークラス名                     |
+| `:message_id` | Mail gemが生成したメッセージID |
+| `:subject`    | メールの件名                          |
+| `:to`         | メールの宛先                   |
+| `:from`       | メールの差出人                     |
+| `:bcc`        | メールのBCCアドレス                    |
+| `:cc`         | メールのCCアドレス                     |
+| `:date`       | メールの日付                             |
+| `:mail`       | メールのエンコード形式                 |
 
 ```ruby
 {
@@ -315,7 +315,7 @@ Action Mailer
   to: ["users@rails.com", "ddh@rails.com"],
   from: ["me@rails.com"],
   date: Sat, 10 Mar 2012 14:18:09 +0100,
-  mail: "..." # omitted for brevity
+  mail: "..." #（長いので省略）
 }
 ```
 
@@ -324,21 +324,21 @@ Active Support
 
 ### cache_read.active_support
 
-| Key                | Value                                             |
+| キー         | 値              |
 | ------------------ | ------------------------------------------------- |
-| `:key`             | Key used in the store                             |
-| `:hit`             | If this read is a hit                             |
-| `:super_operation` | :fetch is added when a read is used with `#fetch` |
+| `:key`             | ストアで使われるキー                             |
+| `:hit`             | ヒットしたかどうか                             |
+| `:super_operation` | 読み出しで`#fetch`が指定されている場合に:fetch を追加 |
 
 ### cache_generate.active_support
 
-This event is only used when `#fetch` is called with a block.
+このイベントは、`#fetch`をブロック付きで使用した場合にのみ使われます。
 
-| Key    | Value                 |
+| キー         | 値              |
 | ------ | --------------------- |
-| `:key` | Key used in the store |
+| `:key`             | ストアで使われるキー                             |
 
-INFO. Options passed to fetch will be merged with the payload when writing to the store
+INFO. fetchに渡されたオプションは、ストアへの書き込み時にペイロードとマージされます。
 
 ```ruby
 {
@@ -349,13 +349,13 @@ INFO. Options passed to fetch will be merged with the payload when writing to th
 
 ### cache_fetch_hit.active_support
 
-This event is only used when `#fetch` is called with a block.
+このイベントは、`#fetch`をブロック付きで使用した場合にのみ使われます。
 
-| Key    | Value                 |
+| キー         | 値              |
 | ------ | --------------------- |
-| `:key` | Key used in the store |
+| `:key`             | ストアで使われるキー                             |
 
-INFO. Options passed to fetch will be merged with the payload.
+INFO. fetchに渡されたオプションは、ペイロードとマージされます。
 
 ```ruby
 {
@@ -365,11 +365,11 @@ INFO. Options passed to fetch will be merged with the payload.
 
 ### cache_write.active_support
 
-| Key    | Value                 |
+| キー         | 値              |
 | ------ | --------------------- |
-| `:key` | Key used in the store |
+| `:key`  | ストアで使われるキー |
 
-INFO. Cache stores may add their own keys
+INFO. キャッシュストアが独自のキーを追加することがあります。
 
 ```ruby
 {
@@ -379,9 +379,9 @@ INFO. Cache stores may add their own keys
 
 ### cache_delete.active_support
 
-| Key    | Value                 |
+| キー         | 値              |
 | ------ | --------------------- |
-| `:key` | Key used in the store |
+| `:key` | ストアで使われるキー |
 
 ```ruby
 {
@@ -391,9 +391,9 @@ INFO. Cache stores may add their own keys
 
 ### cache_exist?.active_support
 
-| Key    | Value                 |
+| キー   | 値              |
 | ------ | --------------------- |
-| `:key` | Key used in the store |
+| `:key` | ストアで使われるキー |
 
 ```ruby
 {
@@ -406,31 +406,31 @@ Active Job
 
 ### enqueue_at.active_job
 
-| Key          | Value                                  |
+| キー         | 値              |
 | ------------ | -------------------------------------- |
-| `:adapter`   | QueueAdapter object processing the job |
-| `:job`       | Job object                             |
+| `:adapter`   | ジョブを処理するQueueAdapterオブジェクト |
+| `:job`       | Jobオブジェクト                             |
 
 ### enqueue.active_job
 
-| Key          | Value                                  |
+| キー         | 値              |
 | ------------ | -------------------------------------- |
-| `:adapter`   | QueueAdapter object processing the job |
-| `:job`       | Job object                             |
+| `:adapter`   | ジョブを処理するQueueAdapterオブジェクト |
+| `:job`       | Jobオブジェクト                             |
 
 ### perform_start.active_job
 
-| Key          | Value                                  |
+| キー         | 値              |
 | ------------ | -------------------------------------- |
-| `:adapter`   | QueueAdapter object processing the job |
-| `:job`       | Job object                             |
+| `:adapter`   | ジョブを処理するQueueAdapterオブジェクト |
+| `:job`       | Jobオブジェクト                             |
 
 ### perform.active_job
 
-| Key          | Value                                  |
+| キー         | 値              |
 | ------------ | -------------------------------------- |
-| `:adapter`   | QueueAdapter object processing the job |
-| `:job`       | Job object                             |
+| `:adapter`   | ジョブを処理するQueueAdapterオブジェクト |
+| `:job`       | Jobオブジェクト                             |
 
 
 Railties
@@ -438,43 +438,43 @@ Railties
 
 ### load_config_initializer.railties
 
-| Key            | Value                                                 |
+| キー         | 値              |
 | -------------- | ----------------------------------------------------- |
-| `:initializer` | Path to loaded initializer from `config/initializers` |
+| `:initializer` | `config/initializers`から読み込まれたイニシャライザへのパス |
 
 Rails
 -----
 
 ### deprecation.rails
 
-| Key          | Value                           |
+| キー         | 値              |
 | ------------ | ------------------------------- |
-| `:message`   | The deprecation warning         |
-| `:callstack` | Where the deprecation came from |
+| `:message`   | 非推奨機能の警告メッセージ         |
+| `:callstack` | 非推奨警告の発生元 |
 
-Subscribing to an event
+イベントのサブスクライブ
 -----------------------
 
-Subscribing to an event is easy. Use `ActiveSupport::Notifications.subscribe` with a block to
-listen to any notification.
+イベントは簡単にサブスクライブできます。`ActiveSupport::Notifications.subscribe`をブロック付きで
+記述すれば、すべての通知をリッスンできます。
 
-The block receives the following arguments:
+ブロックでは以下の引数を利用できます。
 
-* The name of the event
-* Time when it started
-* Time when it finished
-* A unique ID for this event
-* The payload (described in previous sections)
+* イベントの名前
+* イベントの開始時刻
+* イベントの終了時刻
+* イベントのユニークID
+* ペイロード（上の節を参照）
 
 ```ruby
 ActiveSupport::Notifications.subscribe "process_action.action_controller" do |name, started, finished, unique_id, data|
-  # your own custom stuff
+  # 自分のコードをここに書く
   Rails.logger.info "#{name} Received!"
-end 
+end
 ```
 
-Defining all those block arguments each time can be tedious. You can easily create an `ActiveSupport::Notifications::Event`
-from block arguments like this:
+ブロックの引数を毎回定義しなくても済むよう、次のようなブロック付きの`ActiveSupport::Notifications::Event`を
+簡単に定義できます。
 
 ```ruby
 ActiveSupport::Notifications.subscribe "process_action.action_controller" do |*args|
@@ -485,50 +485,50 @@ ActiveSupport::Notifications.subscribe "process_action.action_controller" do |*a
   event.payload   # => {:extra=>information}
 
   Rails.logger.info "#{event} Received!"
-end 
+end
 ```
 
-Most times you only care about the data itself. Here is a shortcut to just get the data.
+ほとんどのデータはすぐに利用できます。次はデータの取り出し方の例です。
 
 ```ruby
 ActiveSupport::Notifications.subscribe "process_action.action_controller" do |*args|
   data = args.extract_options!
   data # { extra: :information }
-end 
+end
 ```
 
-You may also subscribe to events matching a regular expression. This enables you to subscribe to
-multiple events at once. Here's you could subscribe to everything from `ActionController`.
+正規表現に一致するイベントだけをサブスクライブすることもできます。
+さまざまなイベントを一括でサブスクライブしたい場合に便利です。次は、`ActionController`のイベントをすべて登録する場合の例です。
 
 ```ruby
 ActiveSupport::Notifications.subscribe /action_controller/ do |*args|
-  # inspect all ActionController events
-end 
+  # ActionControllerの全イベントをチェック
+end
 ```
 
-Creating custom events
+カスタムイベントの作成
 ----------------------
 
-Adding your own events is easy as well. `ActiveSupport::Notifications` will take care of
-all the heavy lifting for you. Simply call `instrument` with a `name`, `payload` and a block.
-The notification will be sent after the block returns. `ActiveSupport` will generate the start and end times
-as well as the unique ID. All data passed into the `instrument` call will make it into the payload.
+独自のイベントを自由に追加できます。イベント追加は、`ActiveSupport::Notifications`メソッドで
+すべてまかなえます。`name`、`payload`、ブロックを指定して`instrument`を呼び出すだけで追加完了します。
+通知は、ブロックが戻ってから送信されます。`ActiveSupport`では、開始時刻、終了時刻、
+ユニークIDが生成されます。`instrument`呼び出しに渡されるすべてのデータがペイロードに含まれます。
 
 以下に例を示します。
 
 ```ruby
 ActiveSupport::Notifications.instrument "my.custom.event", this: :data do
-  # do your custom stuff here
-end 
+  # 自分のコードをここに書く
+end
 ```
 
-Now you can listen to this event with:
+これで、次のようにイベントをリッスンできるようになります。
 
 ```ruby
 ActiveSupport::Notifications.subscribe "my.custom.event" do |name, started, finished, unique_id, data|
   puts data.inspect # {:this=>:data}
-end 
+end
 ```
 
-You should follow Rails conventions when defining your own events. The format is: `event.library`.
-If you application is sending Tweets, you should create an event named `tweet.twitter`.
+独自のイベントを作成するときは、Railsの規則に従ってください。形式は「`event.library`」を使います
+たとえば、アプリケーションがツイートを送信するのであれば、イベント名は`tweet.twitter`となります。
