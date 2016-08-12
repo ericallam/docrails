@@ -219,7 +219,7 @@ client = Client.last
 SELECT * FROM clients ORDER BY clients.id DESC LIMIT 1
 ```
 
-last`メソッドは、モデルにレコードが1つもない場合に`nil`を返します。このとき例外は発生しません。
+lastメソッドは、モデルにレコードが1つもない場合に`nil`を返します。このとき例外は発生しません。
 
 `last`メソッドで返すレコードの最大数を数値の引数で指定することもできます。例:
 

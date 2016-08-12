@@ -546,7 +546,7 @@ SELECT * FROM clients ORDER BY clients.id DESC LIMIT 1
 
 </pre>
 </div>
-<p>last<code>メソッドは、モデルにレコードが1つもない場合に</code>nil`を返します。このとき例外は発生しません。</p><p><code>last</code>メソッドで返すレコードの最大数を数値の引数で指定することもできます。例:</p><div class="code_container">
+<p>lastメソッドは、モデルにレコードが1つもない場合に<code>nil</code>を返します。このとき例外は発生しません。</p><p><code>last</code>メソッドで返すレコードの最大数を数値の引数で指定することもできます。例:</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 client = Client.last(3)
 # =&gt; [
