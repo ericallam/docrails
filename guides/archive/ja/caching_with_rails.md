@@ -1,81 +1,58 @@
 ﻿
 
 
-Caching with Rails: An Overview
+Rails のキャッシュ: 概要
 ===============================
 
-This guide is an introduction to speeding up your Rails application with caching.
+本ガイドでは、キャッシュを導入してRailsアプリケーションを高速化する方法をご紹介します。
 
-Caching means to store content generated during the request-response cycle and
-to reuse it when responding to similar requests.
+「キャッシュ（caching）」とは、リクエスト・レスポンスのサイクルの中で生成されたコンテンツを保存しておき、次回同じようなリクエストが発生したときのレスポンスでそのコンテンツを再利用することを指します。
 
-Caching is often the most effective way to boost an application's performance.
-Through caching, web sites running on a single server with a single database
-can sustain a load of thousands of concurrent users.
+ほとんどの場合、キャッシュは、アプリケーションのパフォーマンスを効果的に増大するのに最適な方法です。キャッシュを導入することで、単一サーバー、単一データベースのwebサイトでも数千ユーザーの同時接続による負荷に耐えられるようになります。
 
-Rails provides a set of caching features out of the box. This guide will teach
-you the scope and purpose of each one of them. Master these techniques and your
-Rails applications can serve millions of views without exorbitant response times
-or server bills.
+Railsには、面倒な設定なしですぐ利用できるキャッシュ機能がひととおり用意されています。本ガイドで、それぞれの機能について目的を解説します。Railsのキャッシュ機能を使いこなすことで、応答時間の低下や高額なサーバー使用料に悩まされずに、Railsアプリケーションが数百万ビューをこなせるようになります。
 
 このガイドの内容:
 
-* Fragment and Russian doll caching.
-* How to manage the caching dependencies.
-* Alternative cache stores.
-* Conditional GET support.
+* フラグメントキャッシュとロシアンドールキャッシュ
+* キャッシュの依存関係の管理
+* 代替キャッシュストア
+* 条件付きGETのサポート
 
 --------------------------------------------------------------------------------
 
-Basic Caching
+基本的なキャッシュ
 -------------
 
-This is an introduction to three types of caching techniques: page, action and
-fragment caching. By default Rails provides fragment caching. In order to use
-page and action caching you will need to add `actionpack-page_caching` and
-`actionpack-action_caching` to your Gemfile.
+ここでは、キャッシュの手法を3種類ご紹介します。「ページキャッシュ」「アクションキャッシュ」「フラグメントキャッシュ」です。Railsのフラグメントキャッシュは本体に組み込まれており、デフォルトで利用できます。ページキャッシュやアクションキャッシュを利用するには、Gemfileに`actionpack-page_caching` gemや`actionpack-action_caching` gemを追加する必要があります。
 
-By default, caching is only enabled in your production environment. To play
-around with caching locally you'll want to enable caching in your local
-environment by setting `config.action_controller.perform_caching` to `true` in
-the relevant `config/environments/*.rb` file:
+キャッシュは、デフォルトではproduction環境でのみ有効になります。ローカルでキャッシュを使ってみたい場合は、対応する`config/environments/*.rb`ファイルで`config.action_controller.perform_caching`を`true`に設定します。
 
 ```ruby
 config.action_controller.perform_caching = true
 ```
 
-NOTE: Changing the value of `config.action_controller.perform_caching` will
-only have an effect on the caching provided by the Action Controller component.
-For instance, it will not impact low-level caching, that we address
-[below](#low-level-caching).
+NOTE: `config.action_controller.perform_caching`値の変更は、Action Controllerコンポーネントで提供されるキャッシュでのみ有効になります。つまり、後述する [低レベルキャッシュ](#低レベルキャッシュ) の動作には影響しません。
 
-### Page Caching
+### ページキャッシュ
 
-Page caching is a Rails mechanism which allows the request for a generated page
-to be fulfilled by the webserver (i.e. Apache or NGINX) without having to go
-through the entire Rails stack. While this is super fast it can't be applied to
-every situation (such as pages that need authentication). Also, because the
-webserver is serving a file directly from the filesystem you will need to
-implement cache expiration.
+Railsのページキャッシュは、apacheやnginxなどのwebサーバーによって生成されるページへのリクエストを（Railsスタック全体を経由せずに）キャッシュするメカニズムです。ページキャッシュはきわめて高速ですが、常に有効とは限りません。たとえば、認証にはページキャッシュは適用されません。また、webサーバーはファイルシステムから直接ファイルを読み出して利用するので、キャッシュの有効期限の実装も必要です。
 
-INFO: Page Caching has been removed from Rails 4. See the [actionpack-page_caching gem](https://github.com/rails/actionpack-page_caching).
+INFO: ページキャッシュ機能は、Rails 4本体から取り除かれ、gem化されました。[actionpack-page_caching gem](https://github.com/rails/actionpack-page_caching)をご覧ください。
 
-### Action Caching
+### アクションキャッシュ
 
-Page Caching cannot be used for actions that have before filters - for example, pages that require authentication. This is where Action Caching comes in. Action Caching works like Page Caching except the incoming web request hits the Rails stack so that before filters can be run on it before the cache is served. This allows authentication and other restrictions to be run while still serving the result of the output from a cached copy.
+ページキャッシュは、before_filterのあるアクション（認証の必要なページなど）には適用できません。アクションキャッシュは、このような場合に使います。アクションキャッシュの動作は、ページキャッシュと似ていますが、webサーバーへのリクエストがRailsスタックにヒットしたときに、before_filterを実行してからキャッシュを返す点が異なります。これによって、キャッシュの恩恵を受けながら、認証などの制限をかけられるようになります。
 
-INFO: Action Caching has been removed from Rails 4. See the [actionpack-action_caching gem](https://github.com/rails/actionpack-action_caching). See [DHH's key-based cache expiration overview](http://signalvnoise.com/posts/3113-how-key-based-cache-expiration-works) for the newly-preferred method.
+INFO: アクションキャッシュ機能は、Rails 4本体から取り除かれ、gem化されました。[actionpack-action_caching gem](https://github.com/rails/actionpack-action_caching)をご覧ください。新しい推奨メソッドについては、[DHH's key-based cache expiration overview](http://signalvnoise.com/posts/3113-how-key-based-cache-expiration-works) をご覧ください。
 
-### Fragment Caching
+### フラグメントキャッシュ
 
-Dynamic web applications usually build pages with a variety of components not
-all of which have the same caching characteristics. When different parts of the
-page need to be cached and expired separately you can use Fragment Caching.
+通常、動的なwebアプリケーションでは、ページのキャッシュ時の特性が異なるさまざまなコンポーネントによってページが生成されます。ページ内の異なる部品について、キャッシュや期限切れを個別に設定したい場合は、フラグメントキャッシュを使います。
 
-Fragment Caching allows a fragment of view logic to be wrapped in a cache block and served out of the cache store when the next request comes in.
+フラグメントキャッシュでは、ビューのロジックのフラグメントをキャッシュブロックでラップし、次回のリクエストでそれをキャッシュストアから取り出して送信します。
 
-For example, if you wanted to cache each product on a page, you could use this
-code:
+たとえば、ページ内で表示する製品（product）を個別にキャッシュしたい場合、次のように書くことができます。
 
 ```html+erb
 <% @products.each do |product| %>
@@ -85,30 +62,19 @@ code:
 <% end %>
 ```
 
-When your application receives its first request to this page, Rails will write
-a new cache entry with a unique key. A key looks something like this:
+Railsアプリケーションが最初のリクエストを受信すると、一意のキーを備えた新しいキャッシュが保存されます。生成されるキーは次のようなものになります。
 
 ```
 views/products/1-201505056193031061005000/bea67108094918eeba42cd4a6e786901
 ```
 
-The number in the middle is the `product_id` followed by the timestamp value in
-the `updated_at` attribute of the product record. Rails uses the timestamp value
-to make sure it is not serving stale data. If the value of `updated_at` has
-changed, a new key will be generated. Then Rails will write a new cache to that
-key, and the old cache written to the old key will never be used again. This is
-called key-based expiration.
+キーの中間にある長い数字は、`product_id`と、productレコードの`updated_at`属性のタイムスタンプ値です。タイムスタンプ値は、古いデータを返さないようにするために使われます。`updated_at`値が更新されると新しいキーが生成され、そのキーで新しいキャッシュを保存します。古いキーで保存された古いキャッシュは二度と利用されなくなります。この手法は「キーベースの有効期限」と呼ばれます。
 
-Cache fragments will also be expired when the view fragment changes (e.g., the
-HTML in the view changes). The string of characters at the end of the key is a
-template tree digest. It is an MD5 hash computed based on the contents of the
-view fragment you are caching. If you change the view fragment, the MD5 hash
-will change, expiring the existing file.
+キャッシュされたフラグメントは、ビューのフラグメントが変更された場合（ビューのHTMLが変更された場合など）にも期限が切れます。キーの後半にある文字列は、「テンプレートツリーダイジェスト」です。これは、キャッシュされるビューフラグメントの内容から算出されたMD5ハッシュです。ビューフラグメントが変更されると、MD5ハッシュも変更され、既存のファイルが期限切れになります。
 
-TIP: Cache stores like Memcached will automatically delete old cache files.
+TIP: Memcachedなどのキャッシュストアでは、古いキャッシュファイルを自動的に削除します。
 
-If you want to cache a fragment under certain conditions, you can use
-`cache_if` or `cache_unless`:
+特定の条件を満たす場合にのみフラグメントをキャッシュしたい場合は、`cache_if`や`cache_unless`を使います。
 
 ```erb
 <% cache_if admin?, product do %>
@@ -116,35 +82,26 @@ If you want to cache a fragment under certain conditions, you can use
 <% end %>
 ```
 
-#### Collection caching
+#### コレクションキャッシュ
 
-The `render` helper can also cache individual templates rendered for a collection.
-It can even one up the previous example with `each` by reading all cache
-templates at once instead of one by one. This is done by passing `cached: true` when rendering the collection:
+`render`ヘルパーでは、コレクションを指定して個別のテンプレートをレンダリングするときにもキャッシュを利用できます。上の例で`each`を使っているコードで、全キャッシュテンプレートを（個別に読み出す代わりに）一括で読み出すこともできます。この機能を利用するには、コレクションをレンダリングするときに`cached: true`を指定します。
 
 ```html+erb
 <%= render partial: 'products/product', collection: @products, cached: true %>
 ```
 
-All cached templates from previous renders will be fetched at once with much
-greater speed. Additionally, the templates that haven't yet been cached will be
-written to cache and multi fetched on the next render.
+これにより、前回までにレンダリングされた全キャッシュテンプレートが一括で読み出され、劇的に速度が向上します。さらに、それまでキャッシュされていなかったテンプレートもキャッシュに追加され、次回のレンダリングでまとめて読み出されるようになります。
 
 
-### Russian Doll Caching
+### ロシアンドールキャッシュ
 
-You may want to nest cached fragments inside other cached fragments. This is
-called Russian doll caching.
+フラグメントキャッシュ内で、さらにフラグメントをキャッシュしたいことがあります。このようにキャッシュをネストする手法を、マトリョーシカ人形のイメージになぞらえて「ロシアンドールキャッシュ」（Russian doll caching）と呼びます。
 
-The advantage of Russian doll caching is that if a single product is updated,
-all the other inner fragments can be reused when regenerating the outer
-fragment.
+ロシアンドールキャッシュを使うことで、たとえば内側のフラグメントで製品（product）が1件だけ更新された場合に、内側の他のフラグメントを捨てずに再利用し、外側のフラグメントは通常通り再生成できます。
 
-As explained in the previous section, a cached file will expire if the value of
-`updated_at` changes for a record on which the cached file directly depends.
-However, this will not expire any cache the fragment is nested within.
+前節で解説したように、キャッシュされたファイルは、そのファイルが直接依存しているレコードの`updated_at`の値が変わると期限切れになりますが、そのフラグメント内でネストするキャッシュは期限切れになりません。
 
-For example, take the following view:
+次のビューを例に説明します。
 
 ```erb
 <% cache product do %>
@@ -152,7 +109,7 @@ For example, take the following view:
 <% end %>
 ```
 
-Which in turn renders this view:
+上のビューをレンダリングした後、次のビューをレンダリングします。
 
 ```erb
 <% cache game do %>
@@ -160,38 +117,27 @@ Which in turn renders this view:
 <% end %>
 ```
 
-If any attribute of game is changed, the `updated_at` value will be set to the
-current time, thereby expiring the cache. However, because `updated_at`
-will not be changed for the product object, that cache will not be expired and
-your app will serve stale data. To fix this, we tie the models together with
-the `touch` method:
+gameの属性で変更が発生すると、`updated_at`値が現在時刻で更新され、キャッシュが期限切れになります。しかし、productオブジェクトの`updated_at`は変更されないので、productのキャッシュは期限切れにならず、アプリケーションは古いデータを返します。これを修正したい場合は、次のように`touch`メソッドでモデル同士を結びつけます。
 
 ```ruby
 class Product < ApplicationRecord
   has_many :games
-end 
+end
 
 class Game < ApplicationRecord
   belongs_to :product, touch: true
 end 
 ```
 
-With `touch` set to true, any action which changes `updated_at` for a game
-record will also change it for the associated product, thereby expiring the
-cache.
+`touch`をtrueに設定すると、gameのレコードの`updated_at`を更新するアクションを実行すると、関連付けられているproductの`updated_at`も同様に更新されてキャッシュの期限が終了します。
 
-### Managing dependencies
+### 依存関係の管理
 
-In order to correctly invalidate the cache, you need to properly define the
-caching dependencies. Rails is clever enough to handle common cases so you don't
-have to specify anything. However, sometimes, when you're dealing with custom
-helpers for instance, you need to explicitly define them.
+キャッシュを正しく無効にするには、キャッシュの依存関係を適切に定義する必要があります。多くの場合、Railsでは依存関係が適切に処理されるので、特別な対応は不要です。ただし、カスタムヘルパーでキャッシュを扱うなどの場合は、明示的に依存関係を定義する必要があります。
 
-#### Implicit dependencies
+#### 暗黙の依存関係
 
-Most template dependencies can be derived from calls to `render` in the template
-itself. Here are some examples of render calls that `ActionView::Digestor` knows
-how to decode:
+ほとんどの場合、テンプレートの依存関係は、テンプレート自身で呼び出される`render`によって発生します。以下の例は、`ActionView::Digestor`でデコード方法を扱うrender呼び出しです。
 
 ```ruby
 render partial: "comments/comment", collection: commentable.comments
@@ -206,47 +152,41 @@ render(topics)         => render("topics/topic")
 render(message.topics) => render("topics/topic")
 ```
 
-On the other hand, some calls need to be changed to make caching work properly.
-For instance, if you're passing a custom collection, you'll need to change:
+一方、一部の呼び出しについて、キャッシュが適切に動作するよう変更が必要です。たとえば、独自のコレクションを渡す場合は、次のように変更する必要があります。
 
 ```ruby
 render @project.documents.where(published: true)
 ```
 
-to:
+上のコードを次のように変更します。
 
 ```ruby
 render partial: "documents/document", collection: @project.documents.where(published: true)
 ```
 
-#### Explicit dependencies
+#### 明示的な依存関係
 
-Sometimes you'll have template dependencies that can't be derived at all. This
-is typically the case when rendering happens in helpers. 以下に例を示します。
+テンプレートで、思わぬ依存関係が生じることがあります。典型的なのは、ヘルパー内でレンダリングする場合です。以下に例を示します。
 
 ```html+erb
 <%= render_sortable_todolists @project.todolists %>
 ```
 
-You'll need to use a special comment format to call those out:
+このような呼び出しには、次の特殊なコメント形式で明示的に依存関係を示す必要があります。
 
 ```html+erb
 <%# Template Dependency: todolists/todolist %>
 <%= render_sortable_todolists @project.todolists %>
 ```
 
-In some cases, like a single table inheritance setup, you might have a bunch of
-explicit dependencies. Instead of writing every template out, you can use a
-wildcard to match any template in a directory:
+特殊なケース（単一テーブル継承の設定など）では、こうした明示的な依存関係を多数含むことがあります。個別のテンプレートを記述する代わりに、次のようにディレクトリ内の全テンプレートをワイルドカードで指定できます。
 
 ```html+erb
 <%# Template Dependency: events/* %>
 <%= render_categorizable_events @person.events %>
 ```
 
-As for collection caching, if the partial template doesn't start with a clean
-cache call, you can still benefit from collection caching by adding a special
-comment format anywhere in the template, like:
+コレクションのキャッシュで、部分テンプレート（パーシャル）の冒頭でクリーンなキャッシュ呼び出しを行わない場合は、次の特殊コメント形式をテンプレートのどこかに追加することで、コレクションキャッシュを引き続き有効にできます。
 
 ```html+erb
 <%# Template Collection: notification %>
@@ -255,44 +195,38 @@ comment format anywhere in the template, like:
 <% end %>
 ```
 
-#### External dependencies
+#### 外部の依存関係
 
-If you use a helper method, for example, inside a cached block and you then update
-that helper, you'll have to bump the cache as well. It doesn't really matter how
-you do it, but the MD5 of the template file must change. One recommendation is to
-simply be explicit in a comment, like:
+たとえば、キャッシュされたブロック内にヘルパーメソッドがあるとします。このヘルパーを更新するときに、キャッシュにもヒットしてしまわないよう、テンプレートファイルのMD5が何らかの方法で変更されるようにする必要があります。推奨される方法のひとつは、次のようにコメントで明示的に更新を示すことです。
 
 ```html+erb
 <%# Helper Dependency Updated: Jul 28, 2015 at 7pm %>
 <%= some_helper_method(person) %>
 ```
 
-### Low-Level Caching
+### 低レベルキャッシュ
 
-Sometimes you need to cache a particular value or query result instead of caching view fragments. Rails' caching mechanism works great for storing __any__ kind of information.
+ビューのフラグメントをキャッシュするのではなく、特定の値やクエリ結果だけをキャッシュしたいことがあります。Railsのキャッシュメカニズムでは、どんな情報でもキャッシュに保存できます。
 
-The most efficient way to implement low-level caching is using the `Rails.cache.fetch` method. This method does both reading and writing to the cache. When passed only a single argument, the key is fetched and value from the cache is returned. If a block is passed, the result of the block will be cached to the given key and the result is returned.
+低レベルキャッシュの最も効果的な実装方法は、`Rails.cache.fetch`メソッドを利用することです。このメソッドは、キャッシュの書き込みと読み出しの両方に対応しています。引数が1つだけの場合、キーを読み出し、キャッシュから値を取り出して返します。ブロックを引数として渡すと、指定のキーでブロックの処理結果がキャッシュされ、その結果を返します。
 
-Consider the following example. An application has a `Product` model with an instance method that looks up the product’s price on a competing website. The data returned by this method would be perfect for low-level caching:
+次の例を考えてみましょう。アプリケーションに`Product`モデルがあり、競合webサイトの製品価格を検索するインスタンスメソッドがそのモデルにあるとします。低レベルキャッシュを使う場合、このメソッドから完全なデータが返ります。
 
 ```ruby
 class Product < ApplicationRecord
   def competing_price
     Rails.cache.fetch("#{cache_key}/competing_price", expires_in: 12.hours) do
       Competitor::API.find_price(id)
-　end 
+    end
   end
 end
 ```
 
-NOTE: Notice that in this example we used the `cache_key` method, so the resulting cache-key will be something like `products/233-20140225082222765838000/competing_price`. `cache_key` generates a string based on the model’s `id` and `updated_at` attributes. This is a common convention and has the benefit of invalidating the cache whenever the product is updated. In general, when you use low-level caching for instance level information, you need to generate a cache key.
+NOTE: 上の例では`cache_key`メソッドを使っているので、キャッシュキーは`products/233-20140225082222765838000/competing_price`のような形式になります。`cache_key`で生成される文字列は、モデルの`id`と`updated_at`属性を元にしています。この生成ルールは一般的に使われており、productが更新されるたびにキャッシュを無効にできます。一般に、インスタンスレベルの情報に低レベルキャッシュを適用する場合、キャッシュキーを生成する必要があります。
 
-### SQL Caching
+### SQL キャッシュ
 
-Query caching is a Rails feature that caches the result set returned by each
-query. If Rails encounters the same query again for that request, it will use
-the cached result set as opposed to running the query against the database
-again.
+Railsのクエリキャッシュは、各クエリによって返った結果セットをキャッシュする機能です。リクエストによって以前と同じクエリが発生すると、データベースへのクエリを実行する代わりに、キャッシュされた結果セットを利用します。
 
 以下に例を示します。
 
@@ -300,71 +234,62 @@ again.
 class ProductsController < ApplicationController
 
 def index
-    # Run a find query
+    # 検索クエリの実行
     @products = Product.all
 
     ... 
 
-    # Run the same query again
+    # 同じクエリの再実行
     @products = Product.all
   end 
 
 end
 ```
 
-The second time the same query is run against the database, it's not actually going to hit the database. The first time the result is returned from the query it is stored in the query cache (in memory) and the second time it's pulled from memory.
+データベースに対して同じクエリが2回実行されると、実際にはデータベースにアクセスしません。1回目のクエリでは、結果をメモリ上のクエリキャッシュに保存し、2回目のクエリではメモリから結果を読み出します。
 
-However, it's important to note that query caches are created at the start of
-an action and destroyed at the end of that action and thus persist only for the
-duration of the action. If you'd like to store query results in a more
-persistent fashion, you can with low level caching.
+ただし、次の点にご注意ください。クエリキャッシュはアクションの開始時に作成され、アクションの終了時に破棄されます。従って、キャッシュはアクションの実行中しか保持されません。キャッシュをもっと持続させたい場合は、低レベルキャッシュを使います。
 
-Cache Stores
+キャッシュストア
 ------------
 
-Rails provides different stores for the cached data (apart from SQL and page
-caching).
+Railsには、キャッシュデータの保存場所がいくつも用意されています。なお、SQLキャッシュやページキャッシュはこの中に含まれません。
 
-### Configuration
+### 設定
 
-You can set up your application's default cache store by setting the
-`config.cache_store` configuration option. Other parameters can be passed as
-arguments to the cache store's constructor:
+アプリケーションのデフォルトのキャッシュストアは、`config.cache_store`オプションで設定できます。キャッシュストアのコンストラクタには、引数として他にもパラメータを渡せます。
 
 ```ruby
 config.cache_store = :memory_store, { size: 64.megabytes }
 ```
 
-NOTE: Alternatively, you can call `ActionController::Base.cache_store` outside of a configuration block.
+NOTE: または、構成ブロックの外部で`ActionController::Base.cache_store`を呼び出すこともできます。
 
-You can access the cache by calling `Rails.cache`.
+キャッシュにアクセスするには、`Rails.cache`を呼び出します。
 
 ### ActiveSupport::Cache::Store
 
-This class provides the foundation for interacting with the cache in Rails. This is an abstract class and you cannot use it on its own. Rather you must use a concrete implementation of the class tied to a storage engine. Rails ships with several implementations documented below.
+このクラスは、Railsのキャッシュにアクセスするための基盤を提供します。抽象クラスであるため、直接利用できません。クラスを利用するには、ストレージエンジンに関連付けられたクラスを実装する必要があります。Railsでは以下が実装されています。
 
-The main methods to call are `read`, `write`, `delete`, `exist?`, and `fetch`. The fetch method takes a block and will either return an existing value from the cache, or evaluate the block and write the result to the cache if no value exists.
+主要なメソッドは、`read`、`write`、`delete`、`exist?`、`fetch`です。fetchメソッドはブロックを1つ取り、キャッシュの値か、ブロックの評価を返します。既存の値がキャッシュにない場合は、結果をキャッシュに書き込みます。
 
-There are some common options used by all cache implementations. These can be passed to the constructor or the various methods to interact with entries.
+いくつかのオプションについては、キャッシュのすべての実装で共通で利用できます。こうしたオプションは、コンストラクタに渡すことも、エントリーにアクセスするさまざまなメソッドに渡すこともできます。
 
-* `:namespace` - This option can be used to create a namespace within the cache store. It is especially useful if your application shares a cache with other applications.
+* `:namespace` - キャッシュストア内で名前空間を作成します。特に、キャッシュを他のアプリケーションと共有する場合に役立ちます。
 
-* `:compress` - This option can be used to indicate that compression should be used in the cache. This can be useful for transferring large cache entries over a slow network.
+* `:compress` - キャッシュ内での圧縮を有効にします。低速ネットワークで巨大なキャッシュエントリを転送する場合に役立ちます。
 
-* `:compress_threshold` - This option is used in conjunction with the `:compress` option to indicate a threshold under which cache entries should not be compressed. This defaults to 16 kilobytes.
+* `:compress_threshold` - `:compress`オプションと併用します。キャッシュのサイズが指定の閾値を下回る場合、圧縮しません。デフォルト値は16KBです。
 
-* `:expires_in` - This option sets an expiration time in seconds for the cache entry when it will be automatically removed from the cache.
+* `:expires_in` - 指定の秒数が経過すると、キャッシュを自動で削除します。
 
-* `:race_condition_ttl` - This option is used in conjunction with the `:expires_in` option. It will prevent race conditions when cache entries expire by preventing multiple processes from simultaneously regenerating the same entry (also known as the dog pile effect). This option sets the number of seconds that an expired entry can be reused while a new value is being regenerated. It's a good practice to set this value if you use the `:expires_in` option.
+* `:race_condition_ttl` - `:expires_in`と併用します。dog pile（乱闘）効果と呼ばれる競合状態を防止するのに使います。この競合状態は、マルチプロセスによって同じエントリが同時に再生成されたためにキャッシュの期限が切れた場合に発生します。このオプションでは、新しい値の再生成が完了していない状態で、期限切れのエントリを再利用してよい時間を秒で指定します。`:expires_in`オプションを利用する場合は、このオプションにも値を設定することをおすすめします。
 
-#### Custom Cache Stores
+#### カスタムのキャッシュストア
 
-You can create your own custom cache store by simply extending
-`ActiveSupport::Cache::Store` and implementing the appropriate methods. This way,
-you can swap in any number of caching technologies into your Rails application.
+キャッシュストアを独自に作成するには、`ActiveSupport::Cache::Store`をextendし、そこに適切なメソッドを実装します。これにより、Railsアプリケーションでさまざまなキャッシュ技術を差し替えることができます。
 
-To use a custom cache store, simply set the cache store to a new instance of your
-custom class.
+カスタムのキャッシュストアを利用するには、自作クラスの新しいインスタンスにキャッシュストアを設定します。
 
 ```ruby
 config.cache_store = MyCacheStore.new
@@ -372,50 +297,35 @@ config.cache_store = MyCacheStore.new
 
 ### ActiveSupport::Cache::MemoryStore
 
-This cache store keeps entries in memory in the same Ruby process. The cache
-store has a bounded size specified by sending the `:size` option to the
-initializer (default is 32Mb). When the cache exceeds the allotted size, a
-cleanup will occur and the least recently used entries will be removed.
+このキャッシュストアは、同じRubyプロセス内のメモリに保持されます。キャッシュストアのサイズを制限するには、イニシャライザに`:size`オプションを指定します（デフォルトは32MB）。キャッシュがこのサイズを超えるとクリーンアップが開始され、利用時期が最も古いエントリから削除されます。
 
 ```ruby
 config.cache_store = :memory_store, { size: 64.megabytes }
 ```
 
-If you're running multiple Ruby on Rails server processes (which is the case
-if you're using mongrel_cluster or Phusion Passenger), then your Rails server
-process instances won't be able to share cache data with each other. This cache
-store is not appropriate for large application deployments. However, it can
-work well for small, low traffic sites with only a couple of server processes,
-as well as development and test environments.
+Ruby on Railsサーバーのプロセスを複数実行している場合（mongrel_clusterやPhusion Passengerを利用中の場合）、Railsサーバーのキャッシュデータはプロセスのインスタンス間で共有されません。このキャッシュストアは、大規模にデプロイされるアプリケーションには向いていません。ただし、小規模でトラフィックの少ないサイトでサーバープロセスを数個動かす程度であれば問題なく動作します。もちろん、development環境やtest環境でも動作します。
 
 ### ActiveSupport::Cache::FileStore
 
-This cache store uses the file system to store entries. The path to the directory where the store files will be stored must be specified when initializing the cache.
+このキャッシュストアでは、エントリをファイルシステムに保存します。ファイル保存場所へのパスは、キャッシュを初期化するときに指定する必要があります。
 
 ```ruby
 config.cache_store = :file_store, "/path/to/cache/directory"
 ```
 
-With this cache store, multiple server processes on the same host can share a
-cache. The cache store is appropriate for low to medium traffic sites that are
-served off one or two hosts. Server processes running on different hosts could
-share a cache by using a shared file system, but that setup is not recommended.
+このキャッシュストアでは、複数のサーバープロセス間でキャッシュを共有できます。トラフィックが中規模程度のサイトを1、2個程度ホストする場合に向いています。異なるホストで実行するサーバープロセス間で、ファイルシステムによるキャッシュを共有することは一応可能ですが、おすすめできません。
 
-As the cache will grow until the disk is full, it is recommended to
-periodically clear out old entries.
+ディスク容量がいっぱいになるほどキャッシュが増加する場合は、古いエントリを定期的に削除することをおすすめします。
 
-This is the default cache store implementation.
+これは、デフォルトのキャッシュストア実装です。
 
 ### ActiveSupport::Cache::MemCacheStore
 
-This cache store uses Danga's `memcached` server to provide a centralized cache for your application. Rails uses the bundled `dalli` gem by default. This is currently the most popular cache store for production websites. It can be used to provide a single, shared cache cluster with very high performance and redundancy.
+このキャッシュストアでは、Dangaの`memcached`サーバーにアプリケーションのキャッシュを一元化保存します。Railsでは、本体にバンドルされている`dalli` gemをデフォルトで使います。現時点で、本番webサイトで最も広く利用されているキャッシュストアです。高性能かつ高冗長性を備えた、単一の共有キャッシュクラスタとして利用できます。
 
-When initializing the cache, you need to specify the addresses for all
-memcached servers in your cluster. If none are specified, it will assume
-memcached is running on localhost on the default port, but this is not an ideal
-setup for larger sites.
+キャッシュの初期化時には、クラスタ内の全memcachedサーバーのアドレスを指定する必要があります。指定がない場合、memcachedがローカルのデフォルトポートで動作していると仮定して起動しますが、この設定は大規模サイトには向いていません。
 
-The `write` and `fetch` methods on this cache accept two additional options that take advantage of features specific to memcached. You can specify `:raw` to send a value directly to the server with no serialization. The value must be a string or number. You can use memcached direct operations like `increment` and `decrement` only on raw values. You can also specify `:unless_exist` if you don't want memcached to overwrite an existing entry.
+このキャッシュの`write`メソッドや`fetch`メソッドでは、memcached固有の機能を利用する2つのオプションを指定できます。シリアル化を行わずに値を直接サーバーに送信するには、`:raw`を指定します。値は、文字列か数字を使用します。rawの値のみ、`increment`や`decrement`などを指定してmemcachedを直接操作できます。memcachedで既存エントリの上書きを許可しないようにするには、`:unless_exist`を指定します。
 
 ```ruby
 config.cache_store = :mem_cache_store, "cache-1.example.com", "cache-2.example.com"
@@ -423,42 +333,34 @@ config.cache_store = :mem_cache_store, "cache-1.example.com", "cache-2.example.c
 
 ### ActiveSupport::Cache::NullStore
 
-This cache store implementation is meant to be used only in development or test environments and it never stores anything. This can be very useful in development when you have code that interacts directly with `Rails.cache` but caching may interfere with being able to see the results of code changes. With this cache store, all `fetch` and `read` operations will result in a miss.
+このキャッシュストア実装は、development環境やtest環境のみで使用され、実際にはキャッシュをまったく保存しません。これは、たとえば`Rails.cache`に直接アクセスするコードの効果が、キャッシュのせいで確認しづらい場合にきわめて便利です。このキャッシュストアを使うと、`fetch`や`read`はまったくヒットしなくなります。
 
 ```ruby
 config.cache_store = :null_store
 ```
 
-Cache Keys
+キャッシュのキー
 ----------
 
-The keys used in a cache can be any object that responds to either `cache_key` or
-`to_param`. You can implement the `cache_key` method on your classes if you need
-to generate custom keys. Active Record will generate keys based on the class name
-and record id.
+キャッシュのキーは、`cache_key`や`to_param`のいずれかに対応するオブジェクトになります。独自のキーを生成したい場合は、`cache_key`メソッドをクラスで実装してください。Active Recordでは、クラス名とレコードIDに基いてキーを生成します。
 
-You can use Hashes and Arrays of values as cache keys.
+キャッシュのキーとして、値のハッシュや、値の配列を指定できます。
 
 ```ruby
-# This is a legal cache key
+# 通常のキャッシュキー
 Rails.cache.read(site: "mysite", owners: [owner_1, owner_2])
 ```
 
-The keys you use on `Rails.cache` will not be the same as those actually used with
-the storage engine. They may be modified with a namespace or altered to fit
-technology backend constraints. This means, for instance, that you can't save
-values with `Rails.cache` and then try to pull them out with the `dalli` gem.
-However, you also don't need to worry about exceeding the memcached size limit or
-violating syntax rules.
+`Rails.cache`のキーは、ストレージエンジンで実際に使われるキーと異なります。実際のキーは、名前空間によって修飾されたり、バックエンドの技術的制約に合わせて変更されていたりする可能性もあります。つまり、`Rails.cache`で値を保存してから`dalli` gemで値を取り出す、といったことはできません。その代わり、memcachedのサイズ制限や、構文規則違反について心配する必要もありません。
 
-Conditional GET support
+条件付きGETのサポート
 -----------------------
 
-Conditional GETs are a feature of the HTTP specification that provide a way for web servers to tell browsers that the response to a GET request hasn't changed since the last request and can be safely pulled from the browser cache.
+条件付きGETは、HTTP仕様で定められた機能です。GETリクエストへのレスポンスが前回のリクエストからまったく変わっていない場合はブラウザ内キャッシュを使ってもよいと、webサーバーからブラウザに通知します。
 
-They work by using the `HTTP_IF_NONE_MATCH` and `HTTP_IF_MODIFIED_SINCE` headers to pass back and forth both a unique content identifier and the timestamp of when the content was last changed. If the browser makes a request where the content identifier (etag) or last modified since timestamp matches the server's version then the server only needs to send back an empty response with a not modified status.
+この機能では、`HTTP_IF_NONE_MATCH`ヘッダと`HTTP_IF_MODIFIED_SINCE`ヘッダを使って、一意のコンテンツIDや最終変更タイムスタンプをやり取りします。コンテンツID（etag）か最終更新タイムスタンプが、サーバー側のバージョンと一致した場合は、サーバーから「変更なし」ステータスのみを持つ空レスポンスを返します。
 
-It is the server's (i.e. our) responsibility to look for a last modified timestamp and the if-none-match header and determine whether or not to send back the full response. With conditional-get support in Rails this is a pretty easy task:
+最終更新タイムスタンプやif-none-matchヘッダの有無を確認し、完全なレスポンスを返す必要があるかどうかを決定するのは、サーバー側（つまり開発者）の責任です。Railsでは、次のように条件付きGETを簡単に利用できます。
 
 ```ruby
 class ProductsController < ApplicationController
@@ -466,82 +368,76 @@ class ProductsController < ApplicationController
   def show
     @product = Product.find(params[:id])
 
-    # If the request is stale according to the given timestamp and etag value
-    # (i.e. it needs to be processed again) then execute this block
+    # 指定のタイムスタンプやetag値によって、リクエストが古いことがわかった場合
+    # （再処理が必要な場合）、このブロックを実行
     if stale?(last_modified: @product.updated_at.utc, etag: @product.cache_key)
       respond_to do |wants|
-        # ... normal response processing
+        # ... 通常のレスポンス処理
       end
-　end 
+　end
 
-    # If the request is fresh (i.e. it's not modified) then you don't need to do
-    # anything. The default render checks for this using the parameters
-    # used in the previous call to stale? and will automatically send a
-    # :not_modified. So that's it, you're done.
-  end 
+    # リクエストが新鮮（つまり前回から変更なし）な場合は
+    # 処理不要。デフォルトのレンダリングでは、前回の`stale?`呼び出しの結果に基いて
+    # 処理が必要かどうかを判断し、
+    # :not_modifiedを送信する。以上でおしまい。
+  end
 end
 ```
 
-Instead of an options hash, you can also simply pass in a model. Rails will use the `updated_at` and `cache_key` methods for setting `last_modified` and `etag`:
+オプションハッシュの代わりに、単にモデルで渡すこともできます。Railsの`last_modified`や`etag`の設定では、`updated_at`メソッドや`cache_key`メソッドが使われます。
 
 ```ruby
 class ProductsController < ApplicationController
-[W2]def show
+  def show
     @product = Product.find(params[:id])
 
     if stale?(@product)
       respond_to do |wants|
-        # ... normal response processing
+        # ... 通常のレスポンス処理
       end
     end
   end
 end
 ```
 
-If you don't have any special response processing and are using the default rendering mechanism (i.e. you're not using `respond_to` or calling render yourself) then you've got an easy helper in `fresh_when`:
+特殊なレスポンス処理を行わず、デフォルトのレンダリングメカニズムを使う（つまり`respond_to`を使ったり独自にレンダリングしたりしない）場合、`fresh_when`ヘルパーで簡単に処理できます。
 
 ```ruby
 class ProductsController < ApplicationController
 
-  # This will automatically send back a :not_modified if the request is fresh,
-  # and will render the default template (product.*) if it's stale.
+  # リクエストが古くなければ自動的に:not_modifiedを返す
+  # 古い場合はデフォルトのテンプレート（product.*）を返す
 
   def show
     @product = Product.find(params[:id])
     fresh_when last_modified: @product.published_at.utc, etag: @product
-  end 
+  end
 end
 ```
 
-### Strong v/s Weak ETags
+### 強いETagと弱いETag
 
-Rails generates weak ETags by default. Weak ETags allow semantically equivalent
-responses to have the same ETags, even if their bodies do not match exactly.
-This is useful when we don't want the page to be regenerated for minor changes in
-response body.
+Railsでは、デフォルトで「弱い」ETagを使います。弱いETagでは、レスポンスのbodyが微妙に異なっている場合にも同じETagを与えることで、事実上同じレスポンスとして扱えるようになります。レスポンスbodyのごく一部が変更されたときにページの再生成を避けたい場合に便利です。
 
-Weak ETags have a leading `W/` to differentiate them from strong ETags.
+弱いETagには`W/`が付けられ、強いETagと区別できます。
 
 ```
-  W/"618bbc92e2d35ea1945008b42799b0e7" → Weak ETag
-  "618bbc92e2d35ea1945008b42799b0e7" → Strong ETag
+  W/"618bbc92e2d35ea1945008b42799b0e7" → 弱いETag
+  "618bbc92e2d35ea1945008b42799b0e7" → 強いETag
 ```
 
-Unlike weak ETag, strong ETag implies that response should be exactly the same
-and byte by byte identical. Useful when doing Range requests within a
-large video or PDF file. Some CDNs support only strong ETags, like Akamai.
-If you absolutely need to generate a strong ETag, it can be done as follows.
+強いETagは、弱いETagと異なり、レスポンスがバイトレベルで完全一致することが求められます。巨大な動画やPDFファイル内でRangeリクエストを実行する場合に便利です。Akamaiなど一部のCDNでは、強いETagのみをサポートしています。強いETagの生成がどうしても必要な場合は、次のようにします。
 
 ```ruby
   class ProductsController < ApplicationController
     def show
       @product = Product.find(params[:id])
       fresh_when last_modified: @product.published_at.utc, strong_etag: @product
-　end 
+    end
   end
 ```
 
-You can also set the strong ETag directly on the response.
+次のように、レスポンスに強いETagを直接設定することもできます。
 
 ```ruby
   response.strong_etag = response.body # => "618bbc92e2d35ea1945008b42799b0e7"
@@ -550,5 +446,5 @@ You can also set the strong ETag directly on the response.
 参考資料
 ----------
 
-* [DHH's article on key-based expiration](https://signalvnoise.com/posts/3113-how-key-based-cache-expiration-works)
-* [Ryan Bates' Railscast on cache digests](http://railscasts.com/episodes/387-cache-digests)
+* [DHH: キーに基づく有効期限](https://signalvnoise.com/posts/3113-how-key-based-cache-expiration-works)
+* [Ryan Bates Railscast: キャッシュダイジェスト](http://railscasts.com/episodes/387-cache-digests)

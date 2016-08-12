@@ -118,11 +118,11 @@
                 <dd><a href="working_with_javascript_in_rails.html">Rails で JavaScript を使用する</a></dd>
                 <dd><a href="initialization.html">Rails の初期化プロセス</a></dd>
                 <dd><a href="autoloading_and_reloading_constants.html">定数の自動読み込みと再読み込み</a></dd>
-                <dd><a href="caching_with_rails.html">Caching with Rails: An Overview [未翻訳]</a></dd>
+                <dd><a href="caching_with_rails.html">Rails のキャッシュ: 概要</a></dd>
                 <dd><a href="active_support_instrumentation.html">Active Support の Instrumentation 機能</a></dd>
-                <dd><a href="profiling.html">Rails アプリケーションのプロファイリング</a></dd>
-                <dd><a href="api_app.html">Using Rails for API-only Applications [未翻訳]</a></dd>
-                <dd><a href="action_cable_overview.html">Action Cable Overview [未翻訳]</a></dd>
+                <dd><a href="profiling.html">Rails アプリのプロファイリング</a></dd>
+                <dd><a href="api_app.html">Rails による API 専用アプリ</a></dd>
+                <dd><a href="action_cable_overview.html">Action Cable の概要</a></dd>
                 <dt>Rails を拡張する</dt>
                 <dd><a href="plugins.html">Rails プラグイン作成入門</a></dd>
                 <dd><a href="rails_on_rack.html">Rails と Rack</a></dd>
@@ -190,11 +190,11 @@
                   <option value="working_with_javascript_in_rails.html">Rails で JavaScript を使用する</option>
                   <option value="initialization.html">Rails の初期化プロセス</option>
                   <option value="autoloading_and_reloading_constants.html">定数の自動読み込みと再読み込み</option>
-                  <option value="caching_with_rails.html">Caching with Rails: An Overview [未翻訳]</option>
+                  <option value="caching_with_rails.html">Rails のキャッシュ: 概要</option>
                   <option value="active_support_instrumentation.html">Active Support の Instrumentation 機能</option>
-                  <option value="profiling.html">Rails アプリケーションのプロファイリング</option>
-                  <option value="api_app.html">Using Rails for API-only Applications [未翻訳]</option>
-                  <option value="action_cable_overview.html">Action Cable Overview [未翻訳]</option>
+                  <option value="profiling.html">Rails アプリのプロファイリング</option>
+                  <option value="api_app.html">Rails による API 専用アプリ</option>
+                  <option value="action_cable_overview.html">Action Cable の概要</option>
               </optgroup>
               <optgroup label="Rails を拡張する">
                   <option value="plugins.html">Rails プラグイン作成入門</option>
@@ -232,8 +232,7 @@
   <hr class="hide" />
   <div id="feature">
   <div class="wrapper">
-      <h2>Action Cable の概要</h2><p>本ガイドでは、Action Cableのしくみと、WebSocketsをRailsアプリケーションに
-導入してリアルタイム機能を実現する方法について解説します。</p><p>このガイドの内容:</p>
+      <h2>Action Cable の概要</h2><p>本ガイドでは、Action Cableのしくみと、WebSocketsをRailsアプリケーションに導入してリアルタイム機能を実現する方法について解説します。</p><p>このガイドの内容:</p>
 <ul>
 <li>Action Cableの概要、バックエンドとフロントエンドの統合</li>
 <li>Action Cableの設定方法</li>
@@ -245,63 +244,63 @@
             <h3 class="chapter"><img src="images/chapters_icon.gif" alt="" />目次</h3>
             <ol class="chapters">
 <li><a href="#%E3%81%AF%E3%81%98%E3%82%81%E3%81%AB">はじめに</a></li>
-<li><a href="#what-is-pub-sub">What is Pub/Sub</a></li>
+<li><a href="#pub-sub%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6">Pub/Subについて</a></li>
 <li>
-<a href="#server-side-components">Server-Side Components</a>
+<a href="#%E3%82%B5%E3%83%BC%E3%83%90%E3%83%BC%E5%81%B4%E3%81%AE%E3%82%B3%E3%83%B3%E3%83%9D%E3%83%BC%E3%83%8D%E3%83%B3%E3%83%88">サーバー側のコンポーネント</a>
 
 <ul>
-<li><a href="#server-side-components-connections">Connections</a></li>
-<li><a href="#channels">Channels</a></li>
+<li><a href="#%E3%82%B5%E3%83%BC%E3%83%90%E3%83%BC%E5%81%B4%E3%81%AE%E3%82%B3%E3%83%B3%E3%83%9D%E3%83%BC%E3%83%8D%E3%83%B3%E3%83%88-%E6%8E%A5%E7%B6%9A">接続</a></li>
+<li><a href="#%E3%83%81%E3%83%A3%E3%83%8D%E3%83%AB">チャネル</a></li>
 </ul>
 </li>
 <li>
-<a href="#client-side-components">Client-Side Components</a>
+<a href="#%E3%82%AF%E3%83%A9%E3%82%A4%E3%82%A2%E3%83%B3%E3%83%88%E5%81%B4%E3%81%AE%E3%82%B3%E3%83%B3%E3%83%9D%E3%83%BC%E3%83%8D%E3%83%B3%E3%83%88">クライアント側のコンポーネント</a>
 
 <ul>
-<li><a href="#client-side-components-connections">Connections</a></li>
+<li><a href="#%E3%82%AF%E3%83%A9%E3%82%A4%E3%82%A2%E3%83%B3%E3%83%88%E5%81%B4%E3%81%AE%E3%82%B3%E3%83%B3%E3%83%9D%E3%83%BC%E3%83%8D%E3%83%B3%E3%83%88-%E6%8E%A5%E7%B6%9A">接続</a></li>
 </ul>
 </li>
 <li>
-<a href="#client-server-interactions">Client-Server Interactions</a>
+<a href="#%E3%82%AF%E3%83%A9%E3%82%A4%E3%82%A2%E3%83%B3%E3%83%88-%E3%82%B5%E3%83%BC%E3%83%90%E3%83%BC%E9%96%93%E3%81%AE%E3%82%84%E3%82%8A%E3%81%A8%E3%82%8A">クライアント-サーバー間のやりとり</a>
 
 <ul>
-<li><a href="#streams">Streams</a></li>
-<li><a href="#broadcasting">Broadcasting</a></li>
-<li><a href="#client-server-interactions-subscriptions">Subscriptions</a></li>
-<li><a href="#passing-parameters-to-channels">Passing Parameters to Channels</a></li>
-<li><a href="#rebroadcasting-a-message">Rebroadcasting a Message</a></li>
+<li><a href="#%E3%82%B9%E3%83%88%E3%83%AA%E3%83%BC%E3%83%A0">ストリーム</a></li>
+<li><a href="#%E3%83%96%E3%83%AD%E3%83%BC%E3%83%89%E3%82%AD%E3%83%A3%E3%82%B9%E3%83%88">ブロードキャスト</a></li>
+<li><a href="#%E3%82%AF%E3%83%A9%E3%82%A4%E3%82%A2%E3%83%B3%E3%83%88-%E3%82%B5%E3%83%BC%E3%83%90%E3%83%BC%E9%96%93%E3%81%AE%E3%82%84%E3%82%8A%E3%81%A8%E3%82%8A-%E3%82%B5%E3%83%96%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3">サブスクリプション</a></li>
+<li><a href="#%E3%83%81%E3%83%A3%E3%83%8D%E3%83%AB%E3%81%AB%E3%83%91%E3%83%A9%E3%83%A1%E3%83%BC%E3%82%BF%E3%82%92%E6%B8%A1%E3%81%99">チャネルにパラメータを渡す</a></li>
+<li><a href="#%E3%83%A1%E3%83%83%E3%82%BB%E3%83%BC%E3%82%B8%E3%82%92%E5%86%8D%E3%83%96%E3%83%AD%E3%83%BC%E3%83%89%E3%82%AD%E3%83%A3%E3%82%B9%E3%83%88%E3%81%99%E3%82%8B">メッセージを再ブロードキャストする</a></li>
 </ul>
 </li>
 <li>
-<a href="#full-stack-examples">Full-Stack Examples</a>
+<a href="#%E3%83%95%E3%83%AB%E3%82%B9%E3%82%BF%E3%83%83%E3%82%AF%E3%81%AE%E4%BE%8B">フルスタックの例</a>
 
 <ul>
-<li><a href="#example-1-user-appearances">Example 1: User Appearances</a></li>
-<li><a href="#example-2-receiving-new-web-notifications">Example 2: Receiving New Web Notifications</a></li>
-<li><a href="#more-complete-examples">More Complete Examples</a></li>
+<li><a href="#%E4%BE%8B1-%E3%83%A6%E3%83%BC%E3%82%B6%E3%83%BC%E3%82%A2%E3%83%94%E3%82%A2%E3%83%A9%E3%83%B3%E3%82%B9%E3%81%AE%E8%A1%A8%E7%A4%BA">例1: ユーザーアピアランスの表示</a></li>
+<li><a href="#%E4%BE%8B2-%E6%96%B0%E3%81%97%E3%81%84web%E9%80%9A%E7%9F%A5%E3%82%92%E5%8F%97%E4%BF%A1%E3%81%99%E3%82%8B">例2: 新しいweb通知を受信する</a></li>
+<li><a href="#%E3%82%88%E3%82%8A%E8%A9%B3%E3%81%97%E3%81%84%E4%BE%8B">より詳しい例</a></li>
 </ul>
 </li>
 <li>
-<a href="#configuration">Configuration</a>
+<a href="#%E8%A8%AD%E5%AE%9A">設定</a>
 
 <ul>
-<li><a href="#subscription-adapter">Subscription Adapter</a></li>
-<li><a href="#allowed-request-origins">Allowed Request Origins</a></li>
-<li><a href="#consumer-configuration">Consumer Configuration</a></li>
-<li><a href="#other-configurations">Other Configurations</a></li>
+<li><a href="#%E3%82%B5%E3%83%96%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%A2%E3%83%80%E3%83%97%E3%82%BF">サブスクリプションアダプタ</a></li>
+<li><a href="#%E8%A8%B1%E5%8F%AF%E3%81%95%E3%82%8C%E3%81%9F%E3%83%AA%E3%82%AF%E3%82%A8%E3%82%B9%E3%83%88%E9%80%81%E4%BF%A1%E5%85%83">許可されたリクエスト送信元</a></li>
+<li><a href="#%E3%82%B3%E3%83%B3%E3%82%B7%E3%83%A5%E3%83%BC%E3%83%9E%E3%83%BC%E3%81%AE%E8%A8%AD%E5%AE%9A">コンシューマーの設定</a></li>
+<li><a href="#%E3%81%9D%E3%81%AE%E4%BB%96%E3%81%AE%E8%A8%AD%E5%AE%9A">その他の設定</a></li>
 </ul>
 </li>
 <li>
-<a href="#running-standalone-cable-servers">Running Standalone Cable Servers</a>
+<a href="#action-cable%E5%B0%82%E7%94%A8%E3%82%B5%E3%83%BC%E3%83%90%E3%83%BC%E3%82%92%E5%AE%9F%E8%A1%8C%E3%81%99%E3%82%8B">Action Cable専用サーバーを実行する</a>
 
 <ul>
-<li><a href="#in-app">In App</a></li>
-<li><a href="#standalone">Standalone</a></li>
-<li><a href="#notes">Notes</a></li>
+<li><a href="#%E3%82%A2%E3%83%97%E3%83%AA%E3%81%A7%E5%AE%9F%E8%A1%8C">アプリで実行</a></li>
+<li><a href="#%E3%82%B9%E3%82%BF%E3%83%B3%E3%83%89%E3%82%A2%E3%83%AD%E3%83%B3">スタンドアロン</a></li>
+<li><a href="#%E3%83%A1%E3%83%A2">メモ</a></li>
 </ul>
 </li>
-<li><a href="#dependencies">Dependencies</a></li>
-<li><a href="#deployment">Deployment</a></li>
+<li><a href="#%E4%BE%9D%E5%AD%98%E9%96%A2%E4%BF%82">依存関係</a></li>
+<li><a href="#%E3%83%87%E3%83%97%E3%83%AD%E3%82%A4">デプロイ</a></li>
 </ol>
 
           </div>
@@ -311,26 +310,9 @@
   <div id="container">
     <div class="wrapper">
       <div id="mainCol">
-        <h3 id="はじめに"><a href="#%E3%81%AF%E3%81%98%E3%82%81%E3%81%AB">1 はじめに</a></h3><p>Action Cable seamlessly integrates
-<a href="https://en.wikipedia.org/wiki/WebSocket">WebSockets</a> with the rest of your
-Rails application. It allows for real-time features to be written in Ruby in the
-same style and form as the rest of your Rails application, while still being
-performant and scalable. It's a full-stack offering that provides both a
-client-side JavaScript framework and a server-side Ruby framework. You have
-access to your full domain model written with Active Record or your ORM of
-choice.</p><h3 id="what-is-pub-sub"><a href="#what-is-pub-sub">2 What is Pub/Sub</a></h3><p><a href="https://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern">Pub/Sub</a>, or
-Publish-Subscribe, refers to a message queue paradigm whereby senders of
-information (publishers), send data to an abstract class of recipients
-(subscribers), without specifying individual recipients. Action Cable uses this
-approach to communicate between the server and many clients.</p><h3 id="server-side-components"><a href="#server-side-components">3 Server-Side Components</a></h3><h4 id="server-side-components-connections"><a href="#server-side-components-connections">3.1 Connections</a></h4><p><em>Connections</em> form the foundation of the client-server relationship. For every
-WebSocket accepted by the server, a connection object is instantiated. This
-object becomes the parent of all the <em>channel subscriptions</em> that are created
-from there on. The connection itself does not deal with any specific application
-logic beyond authentication and authorization. The client of a WebSocket
-connection is called the connection <em>consumer</em>. An individual user will create
-one consumer-connection pair per browser tab, window, or device they have open.</p><p>Connections are instances of <code>ApplicationCable::Connection</code>. In this class, you
-authorize the incoming connection, and proceed to establish it if the user can
-be identified.</p><h5 id="connection-setup"><a href="#connection-setup">3.1.1 Connection Setup</a></h5><div class="code_container">
+        <h3 id="はじめに"><a href="#%E3%81%AF%E3%81%98%E3%82%81%E3%81%AB">1 はじめに</a></h3><p>Action Cableは、
+<a href="https://ja.wikipedia.org/wiki/WebSocket">WebSockets</a>とRailsのその他の部分をシームレスに統合するためのものです。Action Cable が導入されたことで、Rails アプリケーションの効率の良さとスケーラビリティを損なわずに、通常のRailsアプリケーションと同じスタイル・方法でリアルタイム機能をRubyで記述できます。クライアント側のJavaScriptフレームワークとサーバー側のRubyフレームワークを同時に提供する、フルスタックのフレームワークです。Active RecordなどのORMで書かれたすべてのドメインモデルにアクセスできます。</p><h3 id="pub-subについて"><a href="#pub-sub%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6">2 Pub/Subについて</a></h3><p><a href="https://ja.wikipedia.org/wiki/%E5%87%BA%E7%89%88-%E8%B3%BC%E8%AA%AD%E5%9E%8B%E3%83%A2%E3%83%87%E3%83%AB">Pub/Sub</a>はパブリッシュ/サブスクライブとも呼ばれる、メッセージキューのパラダイムです。パブリッシャ（送信者）が、サブスクライバ（受信者）の抽象クラスに情報を送信します。
+このとき、個別の受信者を指定しません。Action Cableでは、このアプローチを採用してサーバーと多数のクライアント間で通信を行います。</p><h3 id="サーバー側のコンポーネント"><a href="#%E3%82%B5%E3%83%BC%E3%83%90%E3%83%BC%E5%81%B4%E3%81%AE%E3%82%B3%E3%83%B3%E3%83%9D%E3%83%BC%E3%83%8D%E3%83%B3%E3%83%88">3 サーバー側のコンポーネント</a></h3><h4 id="サーバー側のコンポーネント-接続"><a href="#%E3%82%B5%E3%83%BC%E3%83%90%E3%83%BC%E5%81%B4%E3%81%AE%E3%82%B3%E3%83%B3%E3%83%9D%E3%83%BC%E3%83%8D%E3%83%B3%E3%83%88-%E6%8E%A5%E7%B6%9A">3.1 接続</a></h4><p><em>接続</em>（connection）は、クライアントとサーバー間の関係を成立させる基礎となります。サーバーでWebSocketを受け付けるたびに、接続オブジェクトがインスタンス化します。このオブジェクトは、今後作成されるすべての<em>チャネルサブスクリプション</em>の親となります。この接続自体は、認証や承認の後、特定のアプリケーションロジックを扱いません。WebSocket接続のクライアントは<em>コンシューマー</em>と呼ばれます。各ユーザーが開くブラウザタブ、ウィンドウ、デバイスごとに、コンシューマー接続ペアが1つずつ作成されます。</p><p>接続は、<code>ApplicationCable::Connection</code>のインスタンスです。このクラスでは、着信接続を承認し、ユーザーを特定できた場合に接続を確立します。</p><h5 id="接続の設定"><a href="#%E6%8E%A5%E7%B6%9A%E3%81%AE%E8%A8%AD%E5%AE%9A">3.1.1 接続の設定</a></h5><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # app/channels/application_cable/connection.rb
 module ApplicationCable
@@ -339,7 +321,7 @@ module ApplicationCable
 
     def connect
       self.current_user = find_verified_user
-    end 
+    end
 
     protected
       def find_verified_user
@@ -349,60 +331,47 @@ module ApplicationCable
           reject_unauthorized_connection
         end
       end
-  end 
+  end
 end
 
 </pre>
 </div>
-<p>Here <code>identified_by</code> is a connection identifier that can be used to find the
-specific connection later. Note that anything marked as an identifier will automatically
-create a delegate by the same name on any channel instances created off the connection.</p><p>This example relies on the fact that you will already have handled authentication of the user
-somewhere else in your application, and that a successful authentication sets a signed
-cookie with the user ID.</p><p>The cookie is then automatically sent to the connection instance when a new connection
-is attempted, and you use that to set the <code>current_user</code>. By identifying the connection
-by this same current user, you're also ensuring that you can later retrieve all open
-connections by a given user (and potentially disconnect them all if the user is deleted
-or unauthorized).</p><h4 id="channels"><a href="#channels">3.2 Channels</a></h4><p>A <em>channel</em> encapsulates a logical unit of work, similar to what a controller does in a
-regular MVC setup. By default, Rails creates a parent <code>ApplicationCable::Channel</code> class
-for encapsulating shared logic between your channels.</p><h5 id="parent-channel-setup"><a href="#parent-channel-setup">3.2.1 Parent Channel Setup</a></h5><div class="code_container">
+<p>上の<code>identified_by</code>は接続IDであり、後で特定の接続を見つけるときに利用できます。IDとしてマークされたものは、その接続以外で作成されるすべてのチャネルインスタンスに、同じ名前で自動的にデリゲートを作成します。</p><p>この例では、アプリケーションの他の場所で既にユーザー認証を扱っており、認証成功によってユーザーIDに署名済みcookieが設定されていることを前提としています。</p><p>次に、新しい接続を求められたときにこのcookieが接続インスタンスに自動で送信され、<code>current_user</code>の設定に使われます。現在の同じユーザーによる接続が識別されると、そのユーザーが開いているすべての接続を取得することも、ユーザーが削除されたり認証できない場合に切断することもできるようになります。</p><h4 id="チャネル"><a href="#%E3%83%81%E3%83%A3%E3%83%8D%E3%83%AB">3.2 チャネル</a></h4><p><em>チャネル</em>は、論理的な作業単位をカプセル化します。通常のMVC設定でコントローラが果たす役割と似ています。Railsはデフォルトで、チャネル間で共有されるロジックをカプセル化する<code>ApplicationCable::Channel</code>という親クラスを作成します。</p><h5 id="親チャネルの設定"><a href="#%E8%A6%AA%E3%83%81%E3%83%A3%E3%83%8D%E3%83%AB%E3%81%AE%E8%A8%AD%E5%AE%9A">3.2.1 親チャネルの設定</a></h5><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # app/channels/application_cable/channel.rb
 module ApplicationCable
   class Channel &lt; ActionCable::Channel::Base
-  end 
+  end
 end
 
 </pre>
 </div>
-<p>Then you would create your own channel classes. For example, you could have a
-<code>ChatChannel</code> and an <code>AppearanceChannel</code>:</p><div class="code_container">
+<p>上のコードによって、専用のChannelクラスを作成します。たとえば、
+<code>ChatChannel</code>や<code>AppearanceChannel</code>などは次のように作成します。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # app/channels/chat_channel.rb
 class ChatChannel &lt; ApplicationCable::Channel
-end 
+end
 
 # app/channels/appearance_channel.rb
 class AppearanceChannel &lt; ApplicationCable::Channel
-end 
-
-</pre>
-</div>
-<p>A consumer could then be subscribed to either or both of these channels.</p><h5 id="channels-subscriptions"><a href="#channels-subscriptions">3.2.2 Subscriptions</a></h5><p>Consumers subscribe to channels, acting as <em>subscribers</em>. Their connection is
-called a <em>subscription</em>. Produced messages are then routed to these channel
-subscriptions based on an identifier sent by the cable consumer.</p><div class="code_container">
-<pre class="brush: ruby; gutter: false; toolbar: false">
-# app/channels/chat_channel.rb
-class ChatChannel &lt; ApplicationCable::Channel
-  # Called when the consumer has successfully
-  # become a subscriber of this channel.
-  def subscribed
-  end 
 end
 
 </pre>
 </div>
-<h3 id="client-side-components"><a href="#client-side-components">4 Client-Side Components</a></h3><h4 id="client-side-components-connections"><a href="#client-side-components-connections">4.1 Connections</a></h4><p>Consumers require an instance of the connection on their side. This can be
-established using the following JavaScript, which is generated by default by Rails:</p><h5 id="connect-consumer"><a href="#connect-consumer">4.1.1 Connect Consumer</a></h5><div class="code_container">
+<p>これで、コンシューマはこうしたチャネルをサブスクライブできるようになります。</p><h5 id="チャネル-サブスクリプション"><a href="#%E3%83%81%E3%83%A3%E3%83%8D%E3%83%AB-%E3%82%B5%E3%83%96%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3">3.2.2 サブスクリプション</a></h5><p>コンシューマーは、チャネルをサブスクライブする<em>サブスクライバ</em>の役割を果たします。そして、コンシューマーの接続は<em>サブスクリプション</em>と呼ばれます。生成されたメッセージは、Active Cableコンシューマーが送信するIDに基いて、これらのチャネルサブスクリプションにルーティングされます。</p><div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+# app/channels/chat_channel.rb
+class ChatChannel &lt; ApplicationCable::Channel
+  # コンシューマーがこのチャネルのサブスクライバになると
+  # このコードが呼び出される
+  def subscribed
+  end
+end
+
+</pre>
+</div>
+<h3 id="クライアント側のコンポーネント"><a href="#%E3%82%AF%E3%83%A9%E3%82%A4%E3%82%A2%E3%83%B3%E3%83%88%E5%81%B4%E3%81%AE%E3%82%B3%E3%83%B3%E3%83%9D%E3%83%BC%E3%83%8D%E3%83%B3%E3%83%88">4 クライアント側のコンポーネント</a></h3><h4 id="クライアント側のコンポーネント-接続"><a href="#%E3%82%AF%E3%83%A9%E3%82%A4%E3%82%A2%E3%83%B3%E3%83%88%E5%81%B4%E3%81%AE%E3%82%B3%E3%83%B3%E3%83%9D%E3%83%BC%E3%83%8D%E3%83%B3%E3%83%88-%E6%8E%A5%E7%B6%9A">4.1 接続</a></h4><p>コンシューマー側でも、接続のインスタンスが必要になります。この接続は、Railsがデフォルトで生成する次のJavaScriptコードによって確立します。</p><h5 id="コンシューマーの接続"><a href="#%E3%82%B3%E3%83%B3%E3%82%B7%E3%83%A5%E3%83%BC%E3%83%9E%E3%83%BC%E3%81%AE%E6%8E%A5%E7%B6%9A">4.1.1 コンシューマーの接続</a></h5><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 // app/assets/javascripts/cable.js
 //= require action_cable
@@ -417,9 +386,7 @@ established using the following JavaScript, which is generated by default by Rai
 
 </pre>
 </div>
-<p>This will ready a consumer that'll connect against <code>/cable</code> on your server by default.
-The connection won't be established until you've also specified at least one subscription
-you're interested in having.</p><h5 id="subscriber"><a href="#subscriber">4.1.2 Subscriber</a></h5><p>A consumer becomes a subscriber by creating a subscription to a given channel:</p><div class="code_container">
+<p>これにより、サーバーの<code>/cable</code>にデフォルトで接続するコンシューマーが準備されます。利用したいサブスクリプションが指定されていない場合、接続は確立しません。</p><h5 id="サブスクライバ"><a href="#%E3%82%B5%E3%83%96%E3%82%B9%E3%82%AF%E3%83%A9%E3%82%A4%E3%83%90">4.1.2 サブスクライバ</a></h5><p>指定のチャネルにサブスクリプションを作成することで、コンシューマーがサブスクライバになります。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 # app/assets/javascripts/cable/subscriptions/chat.coffee
 App.cable.subscriptions.create { channel: "ChatChannel", room: "Best Room" }
@@ -429,30 +396,25 @@ App.cable.subscriptions.create { channel: "AppearanceChannel" }
 
 </pre>
 </div>
-<p>While this creates the subscription, the functionality needed to respond to
-received data will be described later on.</p><p>A consumer can act as a subscriber to a given channel any number of times. For
-example, a consumer could subscribe to multiple chat rooms at the same time:</p><div class="code_container">
+<p>サブスクリプションは上のコードで作成されます、受信したデータに応答する機能については後述します。</p><p>コンシューマーは、指定のチャネルに対するサブスクライバとして振る舞うことができます。回数の制限はありません。たとえば、コンシューマーはチャットルームを同時にいくつでもサブスクライブできます。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 App.cable.subscriptions.create { channel: "ChatChannel", room: "1st Room" }
 App.cable.subscriptions.create { channel: "ChatChannel", room: "2nd Room" }
 
 </pre>
 </div>
-<h3 id="client-server-interactions"><a href="#client-server-interactions">5 Client-Server Interactions</a></h3><h4 id="streams"><a href="#streams">5.1 Streams</a></h4><p><em>Streams</em> provide the mechanism by which channels route published content
-(broadcasts) to their subscribers.</p><div class="code_container">
+<h3 id="クライアント-サーバー間のやりとり"><a href="#%E3%82%AF%E3%83%A9%E3%82%A4%E3%82%A2%E3%83%B3%E3%83%88-%E3%82%B5%E3%83%BC%E3%83%90%E3%83%BC%E9%96%93%E3%81%AE%E3%82%84%E3%82%8A%E3%81%A8%E3%82%8A">5 クライアント-サーバー間のやりとり</a></h3><h4 id="ストリーム"><a href="#%E3%82%B9%E3%83%88%E3%83%AA%E3%83%BC%E3%83%A0">5.1 ストリーム</a></h4><p><em>ストリーム</em>は、ブロードキャストでパブリッシュするコンテンツをサブスクライバにルーティングする機能をチャネルに提供します。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # app/channels/chat_channel.rb
 class ChatChannel &lt; ApplicationCable::Channel
   def subscribed
     stream_from "chat_#{params[:room]}"
-  end 
+  end
 end
 
 </pre>
 </div>
-<p>If you have a stream that is related to a model, then the broadcasting used
-can be generated from the model and channel. The following example would
-subscribe to a broadcasting like <code>comments:Z2lkOi8vVGVzdEFwcC9Qb3N0LzE</code></p><div class="code_container">
+<p>あるモデルに関連するストリームを作成すると、利用するブロードキャストがそのモデルとチャネルから生成されます。次の例 では、<code>comments:Z2lkOi8vVGVzdEFwcC9Qb3N0LzE</code>のような形式のブロードキャストにサブスクライブします。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class CommentsChannel &lt; ApplicationCable::Channel
   def subscribed
@@ -463,17 +425,13 @@ end
 
 </pre>
 </div>
-<p>You can then broadcast to this channel like this:</p><div class="code_container">
+<p>これで、このチャネルに次のようにブロードキャストできるようになります。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 CommentsChannel.broadcast_to(@post, @comment)
 
 </pre>
 </div>
-<h4 id="broadcasting"><a href="#broadcasting">5.2 Broadcasting</a></h4><p>A <em>broadcasting</em> is a pub/sub link where anything transmitted by a publisher
-is routed directly to the channel subscribers who are streaming that named
-broadcasting. Each channel can be streaming zero or more broadcastings.</p><p>Broadcastings are purely an online queue and time dependent. If a consumer is
-not streaming (subscribed to a given channel), they'll not get the broadcast
-should they connect later.</p><p>Broadcasts are called elsewhere in your Rails application:</p><div class="code_container">
+<h4 id="ブロードキャスト"><a href="#%E3%83%96%E3%83%AD%E3%83%BC%E3%83%89%E3%82%AD%E3%83%A3%E3%82%B9%E3%83%88">5.2 ブロードキャスト</a></h4><p><em>ブロードキャスト</em>（broadcasting）は、pub/subのリンクです。パブリッシャーからの送信内容はすべてブロードキャスト経由を経由し、その名前のブロードキャストをストリーミングするチャネルサブスクライバに直接ルーティングされます。各チャネルは、0個以上のブロードキャストをストリーミングできます。</p><p>ブロードキャストは純粋なオンラインキューであり、時間に依存します。ストリーミング（指定のチャンネルへのサブスクライブ）を行っていないコンシューマーは、後で接続するときにブロードキャストを取得できません。</p><p>ブロードキャストは、Railsアプリケーションの別の場所で呼び出されます。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 WebNotificationsChannel.broadcast_to(
   current_user,
@@ -483,17 +441,10 @@ WebNotificationsChannel.broadcast_to(
 
 </pre>
 </div>
-<p>The <code>WebNotificationsChannel.broadcast_to</code> call places a message in the current
-subscription adapter (Redis by default)'s pubsub queue under a separate
-broadcasting name for each user. For a user with an ID of 1, the broadcasting
-name would be <code>web_notifications_1</code>.</p><p>The channel has been instructed to stream everything that arrives at
-<code>web_notifications_1</code> directly to the client by invoking the <code>received</code>
-callback.</p><h4 id="client-server-interactions-subscriptions"><a href="#client-server-interactions-subscriptions">5.3 Subscriptions</a></h4><p>When a consumer is subscribed to a channel, they act as a subscriber. This
-connection is called a subscription. Incoming messages are then routed to
-these channel subscriptions based on an identifier sent by the cable consumer.</p><div class="code_container">
+<p><code>WebNotificationsChannel.broadcast_to</code>呼び出しでは、現在のサブスクリプションアダプタ（デフォルトはRedis）のpubsubキューにメッセージを設定します。ユーザーごとに異なるブロードキャスト名が使用されます。IDが1のユーザーなら、ブロードキャスト名は<code>web_notifications_1</code>のようになります。</p><p><code>received</code>コールバックを呼び出すことで、このチャネルは<code>web_notifications_1</code>に着信するものをすべてクライアントに直接ストリーミングするようになります。</p><h4 id="クライアント-サーバー間のやりとり-サブスクリプション"><a href="#%E3%82%AF%E3%83%A9%E3%82%A4%E3%82%A2%E3%83%B3%E3%83%88-%E3%82%B5%E3%83%BC%E3%83%90%E3%83%BC%E9%96%93%E3%81%AE%E3%82%84%E3%82%8A%E3%81%A8%E3%82%8A-%E3%82%B5%E3%83%96%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3">5.3 サブスクリプション</a></h4><p>チャネルにサブスクライブしたコンシューマーは、サブスクライバとして振る舞います。この接続はサブスクリプションと呼ばれます。着信メッセージは、Active Cableコンシューマーが送信するIDに基いて、これらのチャネルサブスクリプションにルーティングされます。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 # app/assets/javascripts/cable/subscriptions/chat.coffee
-# Assumes you've already requested the right to send web notifications
+# web通知の送信権をサーバーからリクエスト済みであることが前提
 App.cable.subscriptions.create { channel: "ChatChannel", room: "Best Room" },
   received: (data) -&gt;
     @appendLine(data)
@@ -512,20 +463,18 @@ App.cable.subscriptions.create { channel: "ChatChannel", room: "Best Room" },
 
 </pre>
 </div>
-<h4 id="passing-parameters-to-channels"><a href="#passing-parameters-to-channels">5.4 Passing Parameters to Channels</a></h4><p>You can pass parameters from the client side to the server side when creating a
-subscription. 以下に例を示します。</p><div class="code_container">
+<h4 id="チャネルにパラメータを渡す"><a href="#%E3%83%81%E3%83%A3%E3%83%8D%E3%83%AB%E3%81%AB%E3%83%91%E3%83%A9%E3%83%A1%E3%83%BC%E3%82%BF%E3%82%92%E6%B8%A1%E3%81%99">5.4 チャネルにパラメータを渡す</a></h4><p>サブスクリプション作成時に、クライアント側のパラメータをサーバー側に渡すことができます。以下に例を示します。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # app/channels/chat_channel.rb
 class ChatChannel &lt; ApplicationCable::Channel
   def subscribed
     stream_from "chat_#{params[:room]}"
-  end 
+  end
 end
 
 </pre>
 </div>
-<p>An object passed as the first argument to <code>subscriptions.create</code> becomes the
-params hash in the cable channel. The keyword <code>channel</code> is required:</p><div class="code_container">
+<p><code>subscriptions.create</code>に最初の引数として渡されるオブジェクトは、Active Cableチャネルのparamsハッシュになります。キーワード<code>channel</code>の指定は省略できません。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 # app/assets/javascripts/cable/subscriptions/chat.coffee
 App.cable.subscriptions.create { channel: "ChatChannel", room: "Best Room" },
@@ -548,28 +497,27 @@ App.cable.subscriptions.create { channel: "ChatChannel", room: "Best Room" },
 </div>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-# Somewhere in your app this is called, perhaps
-# from a NewCommentJob.
+# このコードはアプリのどこかで呼び出される
+# おそらくNewCommentJobなどのあたりで
 ChatChannel.broadcast_to(
   "chat_#{room}",
   sent_by: 'Paul',
-  body: 'This is a cool chat app.'
+  body: 'This is a cool chat app. '
 )
 
 </pre>
 </div>
-<h4 id="rebroadcasting-a-message"><a href="#rebroadcasting-a-message">5.5 Rebroadcasting a Message</a></h4><p>A common use case is to <em>rebroadcast</em> a message sent by one client to any
-other connected clients.</p><div class="code_container">
+<h4 id="メッセージを再ブロードキャストする"><a href="#%E3%83%A1%E3%83%83%E3%82%BB%E3%83%BC%E3%82%B8%E3%82%92%E5%86%8D%E3%83%96%E3%83%AD%E3%83%BC%E3%83%89%E3%82%AD%E3%83%A3%E3%82%B9%E3%83%88%E3%81%99%E3%82%8B">5.5 メッセージを再ブロードキャストする</a></h4><p>あるクライアントから、接続している別のクライアントに、メッセージを<em>再ブロードキャスト</em>することはよくあります。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # app/channels/chat_channel.rb
 class ChatChannel &lt; ApplicationCable::Channel
   def subscribed
     stream_from "chat_#{params[:room]}"
-  end 
+  end
 
   def receive(data)
     ChatChannel.broadcast_to("chat_#{params[:room]}", data)
-  end 
+  end
 end
 
 </pre>
@@ -585,67 +533,61 @@ App.chatChannel.send({ sent_by: "Paul", body: "This is a cool chat app." })
 
 </pre>
 </div>
-<p>The rebroadcast will be received by all connected clients, <em>including</em> the
-client that sent the message. Note that params are the same as they were when
-you subscribed to the channel.</p><h3 id="full-stack-examples"><a href="#full-stack-examples">6 Full-Stack Examples</a></h3><p>The following setup steps are common to both examples:</p>
+<p>再ブロードキャストは、接続しているすべてのクライアントで受信されます。送信元クライアント自身も再ブロードキャストを受信します。利用するparamsは、チャネルにサブスクライブするときと同じです。</p><h3 id="フルスタックの例"><a href="#%E3%83%95%E3%83%AB%E3%82%B9%E3%82%BF%E3%83%83%E3%82%AF%E3%81%AE%E4%BE%8B">6 フルスタックの例</a></h3><p>以下の設定手順は、2つの例で共通です。</p>
 <ol>
 <li>
-<a href="#connection-setup">Setup your connection</a>.</li>
+<a href="#connection-setup">接続を設定</a>.</li>
 <li>
-<a href="#parent-channel-setup">Setup your parent channel</a>.</li>
+<a href="#parent-channel-setup">親チャネルを設定</a>.</li>
 <li>
-<a href="#connect-consumer">Connect your consumer</a>.</li>
+<a href="#connect-consumer">コンシューマーを接続</a>.</li>
 </ol>
-<h4 id="example-1-user-appearances"><a href="#example-1-user-appearances">6.1 Example 1: User Appearances</a></h4><p>Here's a simple example of a channel that tracks whether a user is online or not
-and what page they're on. (This is useful for creating presence features like showing
-a green dot next to a user name if they're online).</p><p>Create the server-side appearance channel:</p><div class="code_container">
+<h4 id="例1-ユーザーアピアランスの表示"><a href="#%E4%BE%8B1-%E3%83%A6%E3%83%BC%E3%82%B6%E3%83%BC%E3%82%A2%E3%83%94%E3%82%A2%E3%83%A9%E3%83%B3%E3%82%B9%E3%81%AE%E8%A1%A8%E7%A4%BA">6.1 例1: ユーザーアピアランスの表示</a></h4><p>これは、ユーザーがオンラインかどうか、ユーザーがどのページを開いているかという情報を追跡するチャネルの簡単な例です（オンラインユーザーの横に緑の点を表示する機能を作成する場合などに便利です）。</p><p>サーバー側のアピアランスチャネルを作成します。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # app/channels/appearance_channel.rb
 class AppearanceChannel &lt; ApplicationCable::Channel
   def subscribed
     current_user.appear
-  end 
+  end
 
   def unsubscribed
     current_user.disappear
-  end 
+  end
 
   def appear(data)
     current_user.appear(on: data['appearing_on'])
-  end 
+  end
 
   def away
     current_user.away
-  end 
+  end
 end
 
 </pre>
 </div>
-<p>When a subscription is initiated the <code>subscribed</code> callback gets fired and we
-take that opportunity to say "the current user has indeed appeared". That
-appear/disappear API could be backed by Redis, a database, or whatever else.</p><p>Create the client-side appearance channel subscription:</p><div class="code_container">
+<p>サブスクリプションが開始されると、<code>subscribed</code>コールバックがトリガーされ、そのユーザーがオンラインであることが示されます。このアピアランスAPIをRadisやデータベースなどと連携することもできます。</p><p>クライアント側のアピアランスチャネルを作成します。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 # app/assets/javascripts/cable/subscriptions/appearance.coffee
 App.cable.subscriptions.create "AppearanceChannel",
-  # Called when the subscription is ready for use on the server.
+  # サブスクリプションがサーバー側で利用可能になると呼び出される
   connected: -&gt;
     @install()
     @appear()
 
-  # Called when the WebSocket connection is closed.
+  # WebSocket接続が閉じると呼び出される
   disconnected: -&gt;
     @uninstall()
 
-  # Called when the subscription is rejected by the server.
+  # サブスクリプションがサーバーに拒否されると呼び出される
   rejected: -&gt;
     @uninstall()
 
   appear: -&gt;
-    # Calls `AppearanceChannel#appear(data)` on the server.
+    # サーバーの`AppearanceChannel#appear(data)`を呼び出す
     @perform("appear", appearing_on: $("main").data("appearing-on"))
 
   away: -&gt;
-    # Calls `AppearanceChannel#away` on the server.
+    # サーバーの`AppearanceChannel#away`を呼び出す
     @perform("away")
 
 
@@ -667,59 +609,40 @@ App.cable.subscriptions.create "AppearanceChannel",
 
 </pre>
 </div>
-<h6 id="client-server-interaction"><a href="#client-server-interaction">6.1.1 Client-Server Interaction</a></h6>
+<h6 id="例1-ユーザーアピアランスの表示-クライアント-サーバー間のやりとり"><a href="#%E4%BE%8B1-%E3%83%A6%E3%83%BC%E3%82%B6%E3%83%BC%E3%82%A2%E3%83%94%E3%82%A2%E3%83%A9%E3%83%B3%E3%82%B9%E3%81%AE%E8%A1%A8%E7%A4%BA-%E3%82%AF%E3%83%A9%E3%82%A4%E3%82%A2%E3%83%B3%E3%83%88-%E3%82%B5%E3%83%BC%E3%83%90%E3%83%BC%E9%96%93%E3%81%AE%E3%82%84%E3%82%8A%E3%81%A8%E3%82%8A">6.1.1 クライアント-サーバー間のやりとり</a></h6>
 <ol>
-<li><p><strong>Client</strong> connects to the <strong>Server</strong> via <code>App.cable =
-ActionCable.createConsumer("ws://cable.example.com")</code>. (<code>cable.js</code>). The
-<strong>Server</strong> identifies this connection by <code>current_user</code>.</p></li>
-<li><p><strong>Client</strong> subscribes to the appearance channel via
-<code>App.cable.subscriptions.create(channel: "AppearanceChannel")</code>. (<code>appearance.coffee</code>)</p></li>
-<li><p><strong>Server</strong> recognizes a new subscription has been initiated for the
-appearance channel and runs its <code>subscribed</code> callback, calling the <code>appear</code>
-method on <code>current_user</code>. (<code>appearance_channel.rb</code>)</p></li>
-<li><p><strong>Client</strong> recognizes that a subscription has been established and calls
-<code>connected</code> (<code>appearance.coffee</code>) which in turn calls <code>@install</code> and <code>@appear</code>.
-<code>@appear</code> calls <code>AppearanceChannel#appear(data)</code> on the server, and supplies a
-data hash of <code>{ appearing_on: $("main").data("appearing-on") }</code>. This is
-possible because the server-side channel instance automatically exposes all
-public methods declared on the class (minus the callbacks), so that these can be
-reached as remote procedure calls via a subscription's <code>perform</code> method.</p></li>
-<li><p><strong>Server</strong> receives the request for the <code>appear</code> action on the appearance
-channel for the connection identified by <code>current_user</code>
-(<code>appearance_channel.rb</code>). <strong>Server</strong> retrieves the data with the
-<code>:appearing_on</code> key from the data hash and sets it as the value for the <code>:on</code>
-key being passed to <code>current_user.appear</code>.</p></li>
+<li><p><strong>クライアント</strong>は<strong>サーバー</strong>に<code>App.cable = ActionCable.createConsumer("ws://cable.example.com")</code>経由で接続する（<code>cable.js</code>）<strong>サーバー</strong>は、この接続の認識に<code>current_user</code>を使う。</p></li>
+<li><p><strong>クライアント</strong>はアピアランスチャネルに<code>App.cable.subscriptions.create(channel: "AppearanceChannel")</code>経由で接続する（<code>appearance.coffee</code>）</p></li>
+<li><p><strong>サーバー</strong>は、アピアランスチャネル向けに新しいサブスクリプションを開始したことを認識し、サーバーの<code>subscribed</code>コールバックを呼び出し、<code>current_user</code>の<code>appear</code>メソッドを呼び出す。（<code>appearance_channel.rb</code>）</p></li>
+<li><p><strong>クライアント</strong>は、サブスクリプションが確立したことを認識し、<code>connected</code>（<code>appearance.coffee</code>）を呼び出す。これにより、<code>@install</code>と<code>@appear</code>が呼び出される。<code>@appear</code>はサーバーの<code>AppearanceChannel#appear(data)</code>を呼び出して<code>{ appearing_on: $("main").data("appearing-on") }</code>のデータハッシュを渡す。なお、この動作が可能なのは、クラスで宣言されている（コールバックを除く）全パブリックメソッドが、サーバー側のチャネルインスタンスから自動的に公開されるからです。公開されたパブリックメソッドは、サブスクリプションで<code>perform</code>メソッドを使って、RPC（リモートプロシージャコール）として利用できます。</p></li>
+<li><p><strong>サーバー</strong>は、<code>current_user</code>で認識した接続のアピアランスチャネルで、<code>appear</code>アクションへのリクエストを受信する。（<code>appearance_channel.rb</code>）<strong>サーバー</strong>は<code>:appearing_on</code>キーを使ってデータをデータハッシュから取り出し、
+<code>current_user.appear</code>に渡される<code>:on</code>キーの値として設定する。</p></li>
 </ol>
-<h4 id="example-2-receiving-new-web-notifications"><a href="#example-2-receiving-new-web-notifications">6.2 Example 2: Receiving New Web Notifications</a></h4><p>The appearance example was all about exposing server functionality to
-client-side invocation over the WebSocket connection. But the great thing
-about WebSockets is that it's a two-way street. So now let's show an example
-where the server invokes an action on the client.</p><p>This is a web notification channel that allows you to trigger client-side
-web notifications when you broadcast to the right streams:</p><p>Create the server-side web notifications channel:</p><div class="code_container">
+<h4 id="例2-新しいweb通知を受信する"><a href="#%E4%BE%8B2-%E6%96%B0%E3%81%97%E3%81%84web%E9%80%9A%E7%9F%A5%E3%82%92%E5%8F%97%E4%BF%A1%E3%81%99%E3%82%8B">6.2 例2: 新しいweb通知を受信する</a></h4><p>この例では、WebSocket接続を使って、サーバーからクライアント側の機能をリモート実行するときのアピアランスを扱います。WebSocketでは双方向通信を利用できます。そこで、例としてサーバーからクライアントでアクションを起動してみます。</p><p>このweb通知チャネルは、正しいストリームにブロードキャストを行ったときに、クライアント側でweb通知を表示します。</p><p>サーバー側のweb通知チャネルを作成します。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # app/channels/web_notifications_channel.rb
 class WebNotificationsChannel &lt; ApplicationCable::Channel
   def subscribed
     stream_for current_user
-  end 
+  end
 end
 
 </pre>
 </div>
-<p>Create the client-side web notifications channel subscription:</p><div class="code_container">
+<p>クライアント側のweb通知チャネルを作成します。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 # app/assets/javascripts/cable/subscriptions/web_notifications.coffee
-# Client-side which assumes you've already requested
-# the right to send web notifications.
+# クライアント側では、サーバーからweb通知の送信権を
+# リクエスト済みであることが前提
 App.cable.subscriptions.create "WebNotificationsChannel",
   received: (data) -&gt;
     new Notification data["title"], body: data["body"]
 
 </pre>
 </div>
-<p>Broadcast content to a web notification channel instance from elsewhere in your
-application:</p><div class="code_container">
+<p>web通知のコンテンツは、アプリケーションのどこからでもweb通知チャネルのインスタンスに送信できます。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
-# Somewhere in your app this is called, perhaps from a NewCommentJob
+# このコードはアプリのどこか（NewCommentJob あたり）で呼び出される
 WebNotificationsChannel.broadcast_to(
   current_user,
   title: 'New things!',
@@ -728,17 +651,7 @@ WebNotificationsChannel.broadcast_to(
 
 </pre>
 </div>
-<p>The <code>WebNotificationsChannel.broadcast_to</code> call places a message in the current
-subscription adapter's pubsub queue under a separate broadcasting name for each
-user. For a user with an ID of 1, the broadcasting name would be
-"web_notifications_1".</p><p>The channel has been instructed to stream everything that arrives at
-"web_notifications_1" directly to the client by invoking the <code>received</code>
-callback. The data passed as argument is the hash sent as the second parameter
-to the server-side broadcast call, JSON encoded for the trip across the wire,
-and unpacked for the data argument arriving to <code>received</code>.</p><h4 id="more-complete-examples"><a href="#more-complete-examples">6.3 More Complete Examples</a></h4><p>See the <a href="https://github.com/rails/actioncable-examples">rails/actioncable-examples</a>
-repository for a full example of how to setup Action Cable in a Rails app and adding channels.</p><h3 id="configuration"><a href="#configuration">7 Configuration</a></h3><p>Action Cable has two required configurations: a subscription adapter and allowed request origins.</p><h4 id="subscription-adapter"><a href="#subscription-adapter">7.1 Subscription Adapter</a></h4><p>By default, Action Cable looks for a configuration file in <code>config/cable.yml</code>.
-The file must specify an adapter and a URL for each Rails environment. ポストプロセッサが実行されるときの詳細については
-<a href="#dependencies">Dependencies</a> section for additional information on adapters.</p><div class="code_container">
+<p><code>WebNotificationsChannel.broadcast_to</code>呼び出しでは、現在のサブスクリプションアダプタのpubsubキューにメッセージを設定します。ユーザーごとに異なるブロードキャスト名が使用されます。IDが1のユーザーなら、ブロードキャスト名は<code>web_notifications_1</code>のようになります。</p><p><code>received</code>コールバックを呼び出すことで、このチャネルは<code>web_notifications_1</code>に着信するものをすべてクライアントに直接ストリーミングするようになります。引数として渡されたデータは、サーバー側のブロードキャスト呼び出しに2番目のパラメータとして渡されたハッシュです。このハッシュはJSONでエンコードされ、<code>received</code>で受信したときにデータ引数から取り出されます。</p><h4 id="より詳しい例"><a href="#%E3%82%88%E3%82%8A%E8%A9%B3%E3%81%97%E3%81%84%E4%BE%8B">6.3 より詳しい例</a></h4><p>RailsアプリにAction Cableを設定する方法やチャネルの追加方法については、<a href="https://github.com/rails/actioncable-examples">rails/actioncable-examples</a> で完全な例をご覧いただけます。</p><h3 id="設定"><a href="#%E8%A8%AD%E5%AE%9A">7 設定</a></h3><p>Action Cableで必須となる設定は、「サブスクリプションアダプタ」と「許可されたリクエスト送信元」の2つです。</p><h4 id="サブスクリプションアダプタ"><a href="#%E3%82%B5%E3%83%96%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%A2%E3%83%80%E3%83%97%E3%82%BF">7.1 サブスクリプションアダプタ</a></h4><p>Action Cableは、デフォルトで<code>config/cable.yml</code>の設定ファイルを利用します。Railsの環境ごとに、アダプタとURLを1つずつ指定する必要があります。アダプタについて詳しくは、<a href="#dependencies">依存関係</a> の節をご覧ください。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 development:
   adapter: async
@@ -752,26 +665,19 @@ production:
 
 </pre>
 </div>
-<h4 id="allowed-request-origins"><a href="#allowed-request-origins">7.2 Allowed Request Origins</a></h4><p>Action Cable will only accept requests from specified origins, which are
-passed to the server config as an array. The origins can be instances of
-strings or regular expressions, against which a check for match will be performed.</p><div class="code_container">
+<h4 id="許可されたリクエスト送信元"><a href="#%E8%A8%B1%E5%8F%AF%E3%81%95%E3%82%8C%E3%81%9F%E3%83%AA%E3%82%AF%E3%82%A8%E3%82%B9%E3%83%88%E9%80%81%E4%BF%A1%E5%85%83">7.2 許可されたリクエスト送信元</a></h4><p>Action Cableは、指定されていない送信元からのリクエストを受け付けません。送信元リストは、配列の形でサーバー設定に渡します。送信元リストのインスタンスでは、文字列を利用することも、正規表現で一致をチェックすることもできます。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 config.action_cable.allowed_request_origins = ['http://rubyonrails.com', %r{http://ruby.*}]
 
 </pre>
 </div>
-<p>To disable and allow requests from any origin:</p><div class="code_container">
+<p>すべての送信元からのリクエストを許可または拒否するには、次を設定します。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 config.action_cable.disable_request_forgery_protection = true
 
 </pre>
 </div>
-<p>By default, Action Cable allows all requests from localhost:3000 when running
-in the development environment.</p><h4 id="consumer-configuration"><a href="#consumer-configuration">7.3 Consumer Configuration</a></h4><p>To configure the URL, add a call to <code>action_cable_meta_tag</code> in your HTML layout
-HEAD. This uses a URL or path typically set via <code>config.action_cable.url</code> in the
-environment configuration files.</p><h4 id="other-configurations"><a href="#other-configurations">7.4 Other Configurations</a></h4><p>The other common option to configure, is the log tags applied to the
-per-connection logger. Here's an example that uses
-the user account id if available, else "no-account" while tagging:</p><div class="code_container">
+<p>development環境で実行中、Action Cableはlocalhost:3000からのすべてのリクエストをデフォルトで許可します。</p><h4 id="コンシューマーの設定"><a href="#%E3%82%B3%E3%83%B3%E3%82%B7%E3%83%A5%E3%83%BC%E3%83%9E%E3%83%BC%E3%81%AE%E8%A8%AD%E5%AE%9A">7.3 コンシューマーの設定</a></h4><p>URLを設定するには、HTMLレイアウトのHEADセクションに<code>action_cable_meta_tag呼び出しを追加します。通常、ここで使うURLは、環境ごとの設定ファイルで</code>config.action_cable.url`に設定されます。</p><h4 id="その他の設定"><a href="#%E3%81%9D%E3%81%AE%E4%BB%96%E3%81%AE%E8%A8%AD%E5%AE%9A">7.4 その他の設定</a></h4><p>他にも、接続ごとのロガーにタグを保存するオプションがあります。次の例は、ユーザーアカウントIDがある場合はそれを使い、ない場合は「no-account」を使うタグ付けです。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 config.action_cable.log_tags = [
   -&gt; request { request.env['user_account_id'] || "no-account" },
@@ -781,13 +687,7 @@ config.action_cable.log_tags = [
 
 </pre>
 </div>
-<p>For a full list of all configuration options, see the
-<code>ActionCable::Server::Configuration</code> class.</p><p>Also note that your server must provide at least the same number of database
-connections as you have workers. The default worker pool size is set to 4, so
-that means you have to make at least that available. You can change that in
-<code>config/database.yml</code> through the <code>pool</code> attribute.</p><h3 id="running-standalone-cable-servers"><a href="#running-standalone-cable-servers">8 Running Standalone Cable Servers</a></h3><h4 id="in-app"><a href="#in-app">8.1 In App</a></h4><p>Action Cable can run alongside your Rails application. For example, to
-listen for WebSocket requests on <code>/websocket</code>, specify that path to
-<code>config.action_cable.mount_path</code>:</p><div class="code_container">
+<p>利用可能なすべての設定オプションについては、<code>ActionCable::Server::Configuration</code>クラスをご覧ください。</p><p>もう1つ注意が必要な点があります。サーバーが提供するデータベース接続の数は、少なくともワーカー数を下回らないようにする必要があります。デフォルトのワーカープールサイズは4なので、データベース接続も4つは用意する必要があります。この値は、<code>config/database.yml</code>の<code>pool</code>属性で変更できます。</p><h3 id="action-cable専用サーバーを実行する"><a href="#action-cable%E5%B0%82%E7%94%A8%E3%82%B5%E3%83%BC%E3%83%90%E3%83%BC%E3%82%92%E5%AE%9F%E8%A1%8C%E3%81%99%E3%82%8B">8 Action Cable専用サーバーを実行する</a></h3><h4 id="アプリで実行"><a href="#%E3%82%A2%E3%83%97%E3%83%AA%E3%81%A7%E5%AE%9F%E8%A1%8C">8.1 アプリで実行</a></h4><p>Action CableはRailsアプリケーションと一緒に実行できます。たとえば、<code>/websocket</code>でWebSocketリクエストをリッスンするには、<code>config.action_cable.mount_path</code>でパスを指定します。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # config/application.rb
 class Application &lt; Rails::Application
@@ -796,14 +696,7 @@ end
 
 </pre>
 </div>
-<p>You can use <code>App.cable = ActionCable.createConsumer()</code> to connect to the cable
-server if <code>action_cable_meta_tag</code> is invoked in the layout. A custom path is
-specified as first argument to <code>createConsumer</code> (e.g. <code>App.cable =
-ActionCable.createConsumer("/websocket")</code>).</p><p>For every instance of your server you create and for every worker your server
-spawns, you will also have a new instance of Action Cable, but the use of Redis
-keeps messages synced across connections.</p><h4 id="standalone"><a href="#standalone">8.2 Standalone</a></h4><p>The cable servers can be separated from your normal application server. It's
-still a Rack application, but it is its own Rack application. The recommended
-basic setup is as follows:</p><div class="code_container">
+<p>レイアウトで<code>action_cable_meta_tag</code>を呼び出すと、<code>App.cable = ActionCable.createConsumer()</code>でAction Cableサーバーに接続できるようになります。<code>createConsumer</code>の最初の引数にはカスタムパスが指定されます（例: <code>App.cable = ActionCable.createConsumer("/websocket")</code>）。</p><p>作成したサーバーの全インスタンスと、サーバーが作成した全ワーカーのインスタンスには、Action Cableの新しいインスタンスも含まれます。接続間のメッセージ同期は、Redisによって行われます。</p><h4 id="スタンドアロン"><a href="#%E3%82%B9%E3%82%BF%E3%83%B3%E3%83%89%E3%82%A2%E3%83%AD%E3%83%B3">8.2 スタンドアロン</a></h4><p>アプリケーション・サーバーとAction Cableサーバーを分けることもできます。Action CableサーバーはRackアプリケーションですが、独自のRackアプリケーションでもあります。推奨される基本設定は次のとおりです。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # cable/config.ru
 require_relative '../config/environment'
@@ -813,26 +706,15 @@ run ActionCable.server
 
 </pre>
 </div>
-<p>Then you start the server using a binstub in <code>bin/cable</code> ala:</p><div class="code_container">
+<p>続いて、 <code>bin/cable</code>のbinstubを使ってサーバーを起動します。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 #!/bin/bash
 bundle exec puma -p 28080 cable/config.ru
 
 </pre>
 </div>
-<p>The above will start a cable server on port 28080.</p><h4 id="notes"><a href="#notes">8.3 Notes</a></h4><p>The WebSocket server doesn't have access to the session, but it has
-access to the cookies. This can be used when you need to handle
-authentication. You can see one way of doing that with Devise in this <a href="http://www.rubytutorial.io/actioncable-devise-authentication">article</a>.</p><h3 id="dependencies"><a href="#dependencies">9 Dependencies</a></h3><p>Action Cable provides a subscription adapter interface to process its
-pubsub internals. By default, asynchronous, inline, PostgreSQL, evented
-Redis, and non-evented Redis adapters are included. The default adapter
-in new Rails applications is the asynchronous (<code>async</code>) adapter.</p><p>The Ruby side of things is built on top of <a href="https://github.com/faye/websocket-driver-ruby">websocket-driver</a>,
-<a href="https://github.com/celluloid/nio4r">nio4r</a>, and <a href="https://github.com/ruby-concurrency/concurrent-ruby">concurrent-ruby</a>.</p><h3 id="deployment"><a href="#deployment">10 Deployment</a></h3><p>Action Cable is powered by a combination of WebSockets and threads. Both the
-framework plumbing and user-specified channel work are handled internally by
-utilizing Ruby's native thread support. This means you can use all your regular
-Rails models with no problem, as long as you haven't committed any thread-safety sins.</p><p>The Action Cable server implements the Rack socket hijacking API,
-thereby allowing the use of a multithreaded pattern for managing connections
-internally, irrespective of whether the application server is multi-threaded or not.</p><p>Accordingly, Action Cable works with popular servers like Unicorn, Puma, and
-Passenger.</p>
+<p>ポート28080でAction Cableサーバーが起動します。</p><h4 id="メモ"><a href="#%E3%83%A1%E3%83%A2">8.3 メモ</a></h4><p>WebSocketサーバーからはセッションにアクセスできませんが、cookieにはアクセスできます。これを利用して認証を処理できます。<a href="http://www.rubytutorial.io/actioncable-devise-authentication">Action CableとDeviseでの認証</a> 記事をご覧ください。</p><h3 id="依存関係"><a href="#%E4%BE%9D%E5%AD%98%E9%96%A2%E4%BF%82">9 依存関係</a></h3><p>Action Cableは、自身のpubsub内部のプロセスへのサブスクリプションアダプタインターフェイスを提供します。非同期、インライン、PostgreSQL、イベント化Redis、非イベント化Redisなどのアダプタをデフォルトで利用できます。新規Railsアプリケーションのデフォルトアダプタは非同期（<code>async</code>）アダプタです。</p><p>Ruby側では、<a href="https://github.com/faye/websocket-driver-ruby">websocket-driver</a>、
+<a href="https://github.com/celluloid/nio4r">nio4r</a>、<a href="https://github.com/ruby-concurrency/concurrent-ruby">concurrent-ruby</a>の上に構築されています。</p><h3 id="デプロイ"><a href="#%E3%83%87%E3%83%97%E3%83%AD%E3%82%A4">10 デプロイ</a></h3><p>Action Cableを支えているのは、WebSocketsとスレッドの組み合わせです。フレームワーク内部の流れや、ユーザー指定のチャネルの動作は、Rubyのネイティブスレッドによって処理されます。つまり、スレッドセーフを損なわない限り、Railsの正規のモデルはすべて問題なく利用できるということです。</p><p>Action Cableサーバーには、RackソケットをハイジャックするAPIが実装されています。これによって、アプリケーション・サーバーがマルチスレッドであるかどうかにかかわらず、内部の接続をマルチスレッドパターンで管理できます。</p><p>つまり、Action Cableは、Unicorn、Puma、Passengerなどの有名なサーバーと問題なく連携できるのです。</p>
         
 
         <h3 id="feedback"><a href="#feedback">フィードバックについて</a></h3>
@@ -903,11 +785,11 @@ Passenger.</p>
               <dd><a href="working_with_javascript_in_rails.html">Rails で JavaScript を使用する</a></dd>
               <dd><a href="initialization.html">Rails の初期化プロセス</a></dd>
               <dd><a href="autoloading_and_reloading_constants.html">定数の自動読み込みと再読み込み</a></dd>
-              <dd><a href="caching_with_rails.html">Caching with Rails: An Overview [未翻訳]</a></dd>
+              <dd><a href="caching_with_rails.html">Rails のキャッシュ: 概要</a></dd>
               <dd><a href="active_support_instrumentation.html">Active Support の Instrumentation 機能</a></dd>
-              <dd><a href="profiling.html">Rails アプリケーションのプロファイリング</a></dd>
-              <dd><a href="api_app.html">Using Rails for API-only Applications [未翻訳]</a></dd>
-              <dd><a href="action_cable_overview.html">Action Cable Overview [未翻訳]</a></dd>
+              <dd><a href="profiling.html">Rails アプリのプロファイリング</a></dd>
+              <dd><a href="api_app.html">Rails による API 専用アプリ</a></dd>
+              <dd><a href="action_cable_overview.html">Action Cable の概要</a></dd>
             <dt>Rails を拡張する</dt>
               <dd><a href="plugins.html">Rails プラグイン作成入門</a></dd>
               <dd><a href="rails_on_rack.html">Rails と Rack</a></dd>

@@ -7,7 +7,7 @@ Rails による API 専用アプリ
 
 このガイドの内容:
 
-* API専用アプリに役立つRailsの機能
+* API専用アプリを支援するRailsの機能
 * Railsの起動時にブラウザ向け機能をオフにする方法
 * ミドルウェアの選定
 * コントローラで使うモジュールの選定
@@ -17,123 +17,62 @@ Rails による API 専用アプリ
 APIアプリについて
 ---------------------------
 
-Traditionally, when people said that they used Rails as an "API", they meant
-providing a programmatically accessible API alongside their web application.
-For example, GitHub provides [an API](http://developer.github.com) that you
-can use from your own custom clients.
+従来、Railsの「API」というと、プログラムからアクセスできるAPIをwebアプリに追加することを指すのが通例でした。たとえば、GitHubが提供する[API](http://developer.github.com) をカスタムクライアントから利用できます。
 
-With the advent of client-side frameworks, more developers are using Rails to
-build a back-end that is shared between their web application and other native
-applications.
+近年、さまざまなクライアント側フレームワークが登場したことによって、Railsで作ったバックエンドサーバ―を、他のwebアプリケーションとネイティブアプリケーションの間で共有する手法が増えてきました。
 
-For example, Twitter uses its [public API](https://dev.twitter.com) in its web
-application, which is built as a static site that consumes JSON resources.
+たとえば、Twitterは自社のwebアプリで [パブリックAPI](https://dev.twitter.com) を利用しています。このwebアプリは、JSONリソースを消費するだけの静的サイトとして構築されています。
 
-Instead of using Rails to generate HTML that communicates with the server
-through forms and links, many developers are treating their web application as
-just an API client delivered as HTML with JavaScript that consumes a JSON API.
+多くの開発者が、Railsで生成したHTMLフォームやリンクをサーバー間のやりとりに使うではなく、webアプリケーションを単なるAPIクライアントにとどめて、JSON APIを利用するHTMLとJavaScriptの提供に徹するようになってきました。
 
-This guide covers building a Rails application that serves JSON resources to an
-API client, including client-side frameworks.
+本ガイドでは、JSONリソースをAPIクライアントに提供するRailsアプリの構築方法を解説します。クライアント側フレームワークについても言及します。
 
-Why Use Rails for JSON APIs?
+JSON APIにRailsを使う理由
 ----------------------------
 
-The first question a lot of people have when thinking about building a JSON API
-using Rails is: "isn't using Rails to spit out some JSON overkill? Shouldn't I
-just use something like Sinatra?".
+RailsでJSON APIを構築することについて、多くの開発者から真っ先に受ける質問といえば「RailsでJSONを出力するのは大げさすぎませんか？Shinatraじゃだめなんですか？」です。
 
-For very simple APIs, this may be true. However, even in very HTML-heavy
-applications, most of an application's logic lives outside of the view
-layer.
+単なるAPIサーバーであれば、おそらくそうでしょう。しかし、フロントのHTMLの比重が非常に大きいアプリであっても、ロジックのほとんどはビューレイヤ以外の部分にあるのです。
 
-The reason most people use Rails is that it provides a set of defaults that
-allows developers to get up and running quickly, without having to make a lot of trivial
-decisions.
+Railsが多くの開発者に採用されている理由は、細かな設定をいちいち決めなくても、すばやくアプリを立ち上げられるからこそです。
 
-Let's take a look at some of the things that Rails provides out of the box that are
-still applicable to API applications.
+APIアプリケーションの開発にすぐ役立つRailsの機能をいくつかご紹介します。
 
-Handled at the middleware layer:
+ミドルウェア層で提供される機能
 
-- Reloading: Rails applications support transparent reloading. This works even if
-  your application gets big and restarting the server for every request becomes
-  non-viable.
-- Development Mode: Rails applications come with smart defaults for development,
-  making development pleasant without compromising production-time performance.
-- Test Mode: Ditto development mode.
-- Logging: Rails applications log every request, with a level of verbosity
-  appropriate for the current mode. Rails logs in development include information
-  about the request environment, database queries, and basic performance
-  information.
-- Security: Rails detects and thwarts [IP spoofing
-  attacks](http://en.wikipedia.org/wiki/IP_address_spoofing) and handles
-  cryptographic signatures in a [timing
-  attack](http://en.wikipedia.org/wiki/Timing_attack) aware way. Don't know what
-  an IP spoofing attack or a timing attack is? Exactly.
-- Parameter Parsing: Want to specify your parameters as JSON instead of as a
-  URL-encoded String? No problem. Rails will decode the JSON for you and make
-  it available in `params`. Want to use nested URL-encoded parameters? That
-  works too.
-- Conditional GETs: Rails handles conditional `GET` (`ETag` and `Last-Modified`)
-  processing request headers and returning the correct response headers and status
-  code. All you need to do is use the
-  [`stale?`](http://api.rubyonrails.org/classes/ActionController/ConditionalGet.html#method-i-stale-3F)
-  check in your controller, and Rails will handle all of the HTTP details for you.
-- HEAD requests: Rails will transparently convert `HEAD` requests into `GET` ones,
-  and return just the headers on the way out. This makes `HEAD` work reliably in
-  all Rails APIs.
+- 再読み込み: Railsアプリでは「透過的な再読み込み」がサポートされます。たとえアプリケーションが巨大化し、リクエストごとにサーバーを再起動する方法が使えなくなっても、透過的な再読み込みは有効です。
+- developmentモード: Railsアプリのdevelopmentモードには洗練されたデフォルト値が設定されているので、本番のパフォーマンスなどの問題にわずらわされません。
+- test モード: developmentと同様です。
+- ログ出力: Railsアプリはリクエストごとにログを出力します。また、現在のモードに応じてログの詳細レベルが調整されます。developmentモードのログには、リクエスト環境、データベースクエリ、基本的なパフォーマンス情報などが出力されます。
+- セキュリティ: [IPスプーフィング攻撃](https://ja.wikipedia.org/wiki/IP%E3%82%B9%E3%83%97%E3%83%BC%E3%83%95%E3%82%A3%E3%83%B3%E3%82%B0) を検出・防御します。また、[タイミング攻撃](http://en.wikipedia.org/wiki/Timing_attack) に対応できる暗号化署名を扱います。ところでIPスプーフィング攻撃やタイミング攻撃って何でしょうね。
+- パラメータ解析: URLエンコード文字列の代わりにJSONでパラメータを指定できます。JSONはRailsでデコードされ、`params`でアクセスできます。もちろん、ネストしたURLエンコードパラメータも扱えます。
+- 条件付きGET: Railsでは、`ETag`や`Last-Modified`を使った条件付き`GET`を扱えます。条件付き`GET`はリクエストヘッダを処理し、正しいレスポンスヘッダとステータスコードを返します。コントローラに
+  [`stale?`](http://api.rubyonrails.org/classes/ActionController/ConditionalGet.html#method-i-stale-3F) チェックを追加するだけで、HTTPの細かなやりとりはRailsが代行してくれます。
+- HEADリクエスト: Railsでは、`HEAD`リクエストを透過的に`GET`リクエストに変換し、ヘッダだけを返します。これによって、すべてのRails APIで`HEAD`リクエストを確実に利用できます。
 
-While you could obviously build these up in terms of existing Rack middleware,
-this list demonstrates that the default Rails middleware stack provides a lot
-of value, even if you're "just generating JSON".
+Rackミドルウェアのこうした既存の機能を自前で構築することもできますが、Railsのデフォルトのミドルウェアを「JSON生成専用」に使うだけでも多数のメリットが得られます。
 
-Handled at the Action Pack layer:
+Action Pack層で提供される機能
 
-- Resourceful Routing: If you're building a RESTful JSON API, you want to be
-  using the Rails router. Clean and conventional mapping from HTTP to controllers
-  means not having to spend time thinking about how to model your API in terms
-  of HTTP.
-- URL Generation: The flip side of routing is URL generation. A good API based
-  on HTTP includes URLs (see [the GitHub Gist API](http://developer.github.com/v3/gists/)
-  for an example).
-- Header and Redirection Responses: `head :no_content` and
-  `redirect_to user_url(current_user)` come in handy. Sure, you could manually
-  add the response headers, but why?
-- Caching: Rails provides page, action and fragment caching. Fragment caching
-  is especially helpful when building up a nested JSON object.
-- Basic, Digest, and Token Authentication: Rails comes with out-of-the-box support
-  for three kinds of HTTP authentication.
-- Instrumentation: Rails has an instrumentation API that triggers registered
-  handlers for a variety of events, such as action processing, sending a file or
-  data, redirection, and database queries. The payload of each event comes with
-  relevant information (for the action processing event, the payload includes
-  the controller, action, parameters, request format, request method and the
-  request's full path).
-- Generators: It is often handy to generate a resource and get your model,
-  controller, test stubs, and routes created for you in a single command for
-  further tweaking. Same for migrations and others.
-- Plugins: Many third-party libraries come with support for Rails that reduce
-  or eliminate the cost of setting up and gluing together the library and the
-  web framework. This includes things like overriding default generators, adding
-  Rake tasks, and honoring Rails choices (like the logger and cache back-end).
+- リソースベースのルーティング: RESTful JSON APIを開発するなら、Railsのルーターも使いたいところです。RailsでおなじみのHTTPからコントローラへの明確なマッピングを利用できるので、生のHTTPに沿ってAPIモデルをゼロから設計する必要がありません。
+- URL生成: ルーティングは、URL生成にも便利です。よくできたHTTPベースのAPIにはURLも含まれています（[GitHub Gist API](http://developer.github.com/v3/gists/) がよい例）。
+- ヘッダレスポンスやリダイレクトレスポンス: `head :no_content`や`redirect_to user_url(current_user)`などをすぐ利用できます。ヘッダレスポンスを自分で書かずに済みます。
+- キャッシュ: Railsでは、ページキャッシュ、アクションキャッシュ、フラグメントキャッシュを利用できます。特に、フラグメントキャッシュはネストJSONオブジェクトを構成するときに便利です。
+- 基本認証、ダイジェスト認証、トークン認証: 3種類のHTTP認証を簡単に導入できます。
+- Instrumentation（計測）: Railsのinstrumentation APIは、登録したさまざまなイベントハンドラをトリガーできます。アクションの処理、ファイルやデータの送信、リダイレクト、データベースクエリなどを扱えます。各イベントのペイロードにはさまざまな関連情報が含まれます。たとえば、イベントを処理するアクションの場合、ペイロードにはコントローラ、アクション、パラメータ、リクエスト形式、リクエストの完全なパスなどが含まれます。
+- ジェネレータ: コマンド1つでリソースを手軽に生成して、APIに合うモデル、コントローラ、テストスタブ、ルーティングをすぐに利用できます。マイグレーションなども同じコマンドで行えます。
+- プラグイン: サードパーティのライブラリを多数利用できます。ライブラリの設定やwebフレームワークとの連携も簡単なので、コストを削減できます。プラグインによっては、デフォルトのジェネレータをオーバーライドするものがあります。追加されるRakeタスクは、Rails標準に沿ったものになります（ロガーやキャッシュのバックエンドなど）。
 
-Of course, the Rails boot process also glues together all registered components.
-For example, the Rails boot process is what uses your `config/database.yml` file
-when configuring Active Record.
+もちろん、Railsのブートプロセスでは、登録済みのコンポーネントをすべて読み込んで連携します。たとえば、ブート中に`config/database.yml`ファイルを使ってActive Recordを設定します。
 
-**The short version is**: you may not have thought about which parts of Rails
-are still applicable even if you remove the view layer, but the answer turns out
-to be most of it.
+**忙しい方へ**: Railsからビュー層を取り除いた後で、どんな機能を引き続き利用できるのでしょう。手短に言うと「ほとんどの機能」です。
 
-The Basic Configuration
+基本設定
 -----------------------
 
-If you're building a Rails application that will be an API server first and
-foremost, you can start with a more limited subset of Rails and add in features
-as needed.
+APIサーバーにするRailsアプリをすぐにでも構築したいのであれば、機能を限定したRailsサブセットを作って、必要な機能を順次追加するのがよいでしょう。
 
-### Creating a new application
+### アプリケーションを新規作成する
 
 API Railsアプリの生成には次のコマンドを使います。
 
@@ -141,65 +80,56 @@ API Railsアプリの生成には次のコマンドを使います。
 $ rails new my_api --api
 ```
 
-This will do three main things for you:
+上のコマンドを実行すると、次の3つの操作を行います。
 
-- Configure your application to start with a more limited set of middleware
-  than normal. Specifically, it will not include any middleware primarily useful
-  for browser applications (like cookies support) by default.
-- Make `ApplicationController` inherit from `ActionController::API` instead of
-  `ActionController::Base`. As with middleware, this will leave out any Action
-  Controller modules that provide functionalities primarily used by browser
-  applications.
-- Configure the generators to skip generating views, helpers and assets when
-  you generate a new resource.
+- 利用するミドルウェアを通常よりも絞り込んでアプリケーションを起動するよう設定します。特に、ブラウザ向けアプリケーションで有用なミドルウェア（cookiesのサポートなど）を一切利用しなくなります。
+- `ApplicationController`を、通常の`ActionController::Base`の代わりに`ActionController::API`から継承します。ミドルウェアと同様、Action Controllerモジュールのうち、ブラウザ向けアプリケーションでしか使われないモジュールをすべて除外します。
+- ビュー、ヘルパー、アセットを生成しないようジェネレーターを設定します。
 
-### Changing an existing application
+### 既存アプリを変更する
 
-If you want to take an existing application and make it an API one, read the
-following steps.
+既存のアプリをAPI専用に変えるには、次の手順をお読みください。
 
-In `config/application.rb` add the following line at the top of the `Application`
-class definition:
+`config/application.rb`の`Application`クラス定義の冒頭に、次を追加します
 
 ```ruby
 config.api_only = true
 ```
 
-In `config/environments/development.rb`, set `config.debug_exception_response_format`
-to configure the format used in responses when errors occur in development mode.
+developmentモードでのエラー発生時にレスポンスで使う形式を設定するには、`config/environments/development.rb`ファイルで`config.debug_exception_response_format`を設定します。
 
-To render an HTML page with debugging information, use the value `:default`.
+値を`:default`にすると、HTMLページにデバッグ情報を表示します。
 
 ```ruby
 config.debug_exception_response_format = :default
 ```
 
-To render debugging information preserving the response format, use the value `:api`.
+値を`:api`にすると、レスポンスの形式を保ったままデバッグ情報を表示します。
 
 ```ruby
 config.debug_exception_response_format = :api
 ```
 
-By default, `config.debug_exception_response_format` is set to `:api`, when `config.api_only` is set to true.
+`config.api_only`をtrueに設定すると、`config.debug_exception_response_format`がデフォルトで`:api`に設定されます。
 
-Finally, inside `app/controllers/application_controller.rb`, instead of:
+最後に、`app/controllers/application_controller.rb`の以下のコードを置き換えます。
 
 ```ruby
 class ApplicationController < ActionController::Base
 end 
 ```
 
-do:
+上を以下に変更します。
 
 ```ruby
 class ApplicationController < ActionController::API
 end 
 ```
 
-Choosing Middleware
+ミドルウェアの選択
 --------------------
 
-An API application comes with the following middleware by default:
+APIアプリケーションでは、デフォルトで以下のミドルウェアを利用できます。
 
 - `Rack::Sendfile`
 - `ActionDispatch::Static`
@@ -218,26 +148,21 @@ An API application comes with the following middleware by default:
 - `Rack::ConditionalGet`
 - `Rack::ETag`
 
-See the [internal middleware](rails_on_rack.html#internal-middleware-stack)
-section of the Rack guide for further information on them.
+詳しくは、Rackガイドの[内部ミドルウェア](rails_on_rack.html#internal-middleware-stack) をご覧ください。
 
-Other plugins, including Active Record, may add additional middleware. In
-general, these middleware are agnostic to the type of application you are
-building, and make sense in an API-only Rails application.
+ミドルウェアは、Active Recordなど他のプラグインによって追加されることがあります。一般に、構築するアプリの種類とミドルウェアは関係ありませんが、API専用Railsアプリでは意味があります。
 
-You can get a list of all middleware in your application via:
+アプリの全ミドルウェアを表示するには次のコマンドを使います。
 
 ```bash
 $ rails middleware
 ```
 
-### Using the Cache Middleware
+### キャッシュミドルウェアを使う
 
-By default, Rails will add a middleware that provides a cache store based on
-the configuration of your application (memcache by default). This means that
-the built-in HTTP cache will rely on it.
+Railsにデフォルトで追加されるミドルウェアは、アプリケーションの設定に基づくキャッシュストア（デフォルトはmemcache）を提供します。このため、Railsに組み込まれているHTTPキャッシュはこのキャッシュストアに依存します。
 
-For instance, using the `stale?` method:
+たとえば、次のように`stale?`メソッドを呼び出すとします。
 
 ```ruby
 def show
@@ -245,18 +170,13 @@ def show
 
   if stale?(last_modified: @post.updated_at)
     render json: @post
-  end 
+  end
 end
 ```
 
-The call to `stale?` will compare the `If-Modified-Since` header in the request
-with `@post.updated_at`. If the header is newer than the last modified, this
-action will return a "304 Not Modified" response. Otherwise, it will render the
-response and include a `Last-Modified` header in it.
+`stale?`呼び出しは、`@post.updated_at`のリクエストにある`If-Modified-Since`ヘッダと比較されます。ヘッダが最終更新時より新しい場合、「304 Not Modified」を返すか、レスポンスをレンダリングして`Last-Modified`ヘッダをそこに表示します。
 
-Normally, this mechanism is used on a per-client basis. The cache middleware
-allows us to share this caching mechanism across clients. We can enable
-cross-client caching in the call to `stale?`:
+通常、この動作はクライアントごとに行われますが、キャッシュミドルウェアがあるとクライアント間でこのキャッシュを共有できるようになります。クロスクライアントキャッシュは、`stale?`の呼び出し時に有効にできます。
 
 ```ruby
 def show
@@ -268,52 +188,39 @@ def show
 end
 ```
 
-This means that the cache middleware will store off the `Last-Modified` value
-for a URL in the Rails cache, and add an `If-Modified-Since` header to any
-subsequent inbound requests for the same URL.
+キャッシュミドルウェアは、URLに対応する`Last-Modified`値をRailsキャッシュに保存し、以後同じURLへのリクエストを受信したときに`If-Modified-Since`ヘッダを追加します。
 
-Think of it as page caching using HTTP semantics.
+キャッシュミドルウェアは、HTTPセマンティクスを利用したページキャッシュと考えることができます。
 
-### Using Rack::Sendfile
+### Rack::Sendfileを使う
 
-When you use the `send_file` method inside a Rails controller, it sets the
-`X-Sendfile` header. `Rack::Sendfile` is responsible for actually sending the
-    FIL
+Railsコントローラ内部で`send_file`メソッドを実行すると、`X-Sendfile`ヘッダが設定されます。実際のファイル送信を担当するのは`Rack::Sendfile`です。
 
-If your front-end server supports accelerated file sending, `Rack::Sendfile`
-will offload the actual file sending work to the front-end server.
+ファイル送信のアクセラレーションをサポートするフロントエンドサーバーでは、`Rack::Sendfile`がフロントエンドサーバーに代わって実際にファイルを送信します。
 
-You can configure the name of the header that your front-end server uses for
-this purpose using `config.action_dispatch.x_sendfile_header` in the appropriate
-environment's configuration file.
+フロントエンドサーバーでのファイル送信に使うヘッダの名前は、該当する環境設定ファイルの`config.action_dispatch.x_sendfile_header`で設定できます。
 
-You can learn more about how to use `Rack::Sendfile` with popular
-front-ends in [the Rack::Sendfile
-documentation](http://rubydoc.info/github/rack/rack/master/Rack/Sendfile).
+著名なフロントエンドで`Rack::Sendfile`を使う方法について、詳しくは [the Rack::Sendfile documentation](http://rubydoc.info/github/rack/rack/master/Rack/Sendfile) をご覧ください。
 
-Here are some values for this header for some popular servers, once these servers are configured to support
-accelerated file sending:
+定番のサーバーでファイル送信アクセラレーションを有効にするには、ヘッダに次のような値を設定します。
 
 ```ruby
-# Apache and lighttpd
+# Apacheやlighttpd
 config.action_dispatch.x_sendfile_header = "X-Sendfile"
 
 # Nginx
 config.action_dispatch.x_sendfile_header = "X-Accel-Redirect"
 ```
 
-Make sure to configure your server to support these options following the
-instructions in the `Rack::Sendfile` documentation.
+これらのオプションを有効にするには、`Rack::Sendfile`ドキュメントに従ってサーバーを設定してください。
 
-### Using ActionDispatch::Request
+### ActionDispatch::Requestを使う
 
-`ActionDispatch::Request#params` will take parameters from the client in the JSON
-format and make them available in your controller inside `params`.
+`ActionDispatch::Request#params`は、クライアントからのパラメータをJSON形式で受け取り、コントローラ内部の`params`でアクセスできるようにします。
 
-To use this, your client will need to make a request with JSON-encoded parameters
-and specify the `Content-Type` as `application/json`.
+この機能を使うには、JSONエンコード化したパラメータをクライアントから送信し、`Content-Type`に`application/json`を指定する必要があります。
 
-Here's an example in jQuery:
+jQueryでは次のように行います。
 
 ```javascript
 jQuery.ajax({
@@ -326,71 +233,61 @@ jQuery.ajax({
 });
 ```
 
-`ActionDispatch::Request` will see the `Content-Type` and your parameters
-will be:
+`ActionDispatch::Request`では、この`Content-Type`で
+次のパラメータを受け取ります。
 
 ```ruby
 { :person => { :firstName => "Yehuda", :lastName => "Katz" } }
 ```
 
-### Other Middleware
+### その他のミドルウェア
 
-Rails ships with a number of other middleware that you might want to use in an
-API application, especially if one of your API clients is the browser:
+Railsではこの他にも、APIアプリ向けのミドルウェアを多数利用できます。特に、ブラウザがAPIクライアントになる場合は、次のミドルウェアが便利です。
 
 - `Rack::MethodOverride`
 - `ActionDispatch::Cookies`
 - `ActionDispatch::Flash`
-- For session management
+- セッション管理向け
     * `ActionDispatch::Session::CacheStore`
     * `ActionDispatch::Session::CookieStore`
     * `ActionDispatch::Session::MemCacheStore`
 
-Any of these middleware can be added via:
+これらのミドルウェアは、次の方法で追加できます。
 
 ```ruby
 config.middleware.use Rack::MethodOverride
 ```
 
-### Removing Middleware
+### ミドルウェアを削除する
 
-If you don't want to use a middleware that is included by default in the API-only
-middleware set, you can remove it with:
+API専用ミドルウェアに含めたくないミドルウェアは、次の方法で削除できます。
 
 ```ruby
 config.middleware.delete ::Rack::Sendfile
 ```
 
-Keep in mind that removing these middleware will remove support for certain
-features in Action Controller.
+これらのミドルウェアを削除すると、Action Controllerの一部の機能が利用できなくなりますので、ご注意ください。
 
-Choosing Controller Modules
+コントローラモジュールを選択する
 ---------------------------
 
-An API application (using `ActionController::API`) comes with the following
-controller modules by default:
+APIアプリケーション（`ActionController::API`を利用）には、デフォルトで次のコントローラモジュールが含まれます。
 
-- `ActionController::UrlFor`: Makes `url_for` and similar helpers available.
-- `ActionController::Redirecting`: Support for `redirect_to`.
-- `AbstractController::Rendering` and `ActionController::ApiRendering`: Basic support for rendering.
-- `ActionController::Renderers::All`: Support for `render :json` and friends.
-- `ActionController::ConditionalGet`: Support for `stale?`
-- `ActionController::BasicImplicitRender`: Makes sure to return an empty response, if there isn't an explicit one.
-- `ActionController::StrongParameters`: Support for parameters white-listing in combination with Active Model mass assignment.
-- `ActionController::ForceSSL`: Support for `force_ssl`.
-- `ActionController::DataStreaming`: Support for `send_file` and `send_data`.
-- `AbstractController::Callbacks`: Support for `before_action` and
-  similar helpers.
-- `ActionController::Rescue`: Support for `rescue_from`.
-- `ActionController::Instrumentation`: Support for the instrumentation
-  hooks defined by Action Controller (see [the instrumentation
-  guide](active_support_instrumentation.html#action-controller) for
-more information regarding this).
-- `ActionController::ParamsWrapper`: Wraps the parameters hash into a nested hash, 
-  so that you don't have to specify root elements sending POST requests for instance.
+- `ActionController::UrlFor`: `url_for`などのヘルパーを提供
+- `ActionController::Redirecting`: `redirect_to`をサポート
+- `AbstractController::Rendering`と`ActionController::ApiRendering`: 基本的なレンダリングのサポート
+- `ActionController::Renderers::All`: `render :json`などのサポート
+- `ActionController::ConditionalGet`: `stale?`のサポート
+- `ActionController::BasicImplicitRender`: 指定がない限り、空のレスポンスを返す
+- `ActionController::StrongParameters`: パラメータのホワイトリストをサポート（Active Modelのマスアサインメントと連携）
+- `ActionController::ForceSSL`: `force_ssl`のサポート
+- `ActionController::DataStreaming`: `send_file`や`send_data`のサポート
+- `AbstractController::Callbacks`: `before_action`などのヘルパーをサポート
+- `ActionController::Rescue`: `rescue_from`をサポート
+- `ActionController::Instrumentation`: Action Controllerで定義するinstrumentationフックをサポート（詳しくは[the instrumentation guide](active_support_instrumentation.html#action-controller) を参照）
+- `ActionController::ParamsWrapper`: パラメータハッシュをラップしてネスト化ハッシュにする。これにより、たとえばPOSTリクエスト送信時にルート要素を指定する必要がなくなる。
 
-Other plugins may add additional modules. You can get a list of all modules
-included into `ActionController::API` in the rails console:
+他のプラグインによってモジュールが追加されることもあります。`ActionController::API`の全モジュールのリストは、次のコマンドで表示できます。
 
 ```bash
 $ bin/rails c
@@ -404,22 +301,16 @@ $ bin/rails c
     ActionView::ViewPaths]
 ```
 
-### Adding Other Modules
+### その他のモジュールを追加する
 
-All Action Controller modules know about their dependent modules, so you can feel
-free to include any modules into your controllers, and all dependencies will be
-included and set up as well.
+Action Controllerのどのモジュールも、自身が依存するモジュールを把握しているので、コントローラにモジュールを含めるだけで、必要な依存モジュールも同様に設定できます。
 
-Some common modules you might want to add:
+よく追加されるのは、次のようなモジュールです。
 
-- `AbstractController::Translation`: Support for the `l` and `t` localization
-  and translation methods.
-- `ActionController::HttpAuthentication::Basic` (or `Digest` or `Token`): Support
-  for basic, digest or token HTTP authentication.
-- `ActionView::Layouts`: Support for layouts when rendering.
-- `ActionController::MimeResponds`: Support for `respond_to`.
-- `ActionController::Cookies`: Support for `cookies`, which includes
-  support for signed and encrypted cookies. This requires the cookies middleware.
+- `AbstractController::Translation`: ローカライズ用の`l`メソッドや、翻訳用の`t`メソッド
+- `ActionController::HttpAuthentication::Basic`（および`Digest`、`Token`）: HTTPのBasic認証、ダイジェスト認証、トークン認証
+- `ActionView::Layouts`: レンダリングのレイアウトをサポート
+- `ActionController::MimeResponds`: `respond_to`をサポート
+- `ActionController::Cookies`: `cookies`のサポート（署名や暗号化も含む）。cookiesミドルウェアが必要。
 
-The best place to add a module is in your `ApplicationController`, but you can
-also add modules to individual controllers.
+モジュールは`ApplicationController`に追加するのが最適ですが、個別のコントローラに追加しても構いません。
