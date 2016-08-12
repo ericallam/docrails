@@ -32,7 +32,7 @@ Railsには、面倒な設定なしですぐ利用できるキャッシュ機能
 config.action_controller.perform_caching = true
 ```
 
-NOTE: `config.action_controller.perform_caching`値の変更は、Action Controllerコンポーネントで提供されるキャッシュでのみ有効になります。つまり、後述する [低レベルキャッシュ](#low-level-caching) の動作には影響しません。
+NOTE: `config.action_controller.perform_caching`値の変更は、Action Controllerコンポーネントで提供されるキャッシュでのみ有効になります。つまり、後述する [低レベルキャッシュ](#低レベルキャッシュ) の動作には影響しません。
 
 ### ページキャッシュ
 
