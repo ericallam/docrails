@@ -362,6 +362,7 @@ end
 ### Productionログのレベル
 
 Rails 5のproduction環境では、デフォルトのログレベルが`:info`から`:debug`に変更される予定です。現在のログレベルを変更したくない場合は`production.rb`に以下の行を追加してください。
+
 ```ruby
 # `:info`を指定すると現在のデフォルト設定が使用され、
 # `:debug`を指定すると今後のデフォルト設定が使用される
@@ -816,7 +817,8 @@ Railsアプリケーションのバージョンが3.2より前の場合、まず
 Rails 4では、`config/routes.rb`でRESTfulなリソースが宣言されたときに、更新用の主要なHTTP verbとして`PATCH`が使用されるようになりました。`update`アクションは従来通り使用でき、`PUT`リクエストは今後も`update`アクションにルーティングされます。
 標準的なRESTfulのみを使用しているのであれば、これに関する変更は不要です。
 
-```ruby resources :users
+```ruby
+resources :users
 ```
 
 ```erb
