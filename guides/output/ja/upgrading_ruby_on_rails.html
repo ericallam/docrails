@@ -562,11 +562,15 @@ end
 
 </pre>
 </div>
-<h4 id="シリアル化属性"><a href="#%E3%82%B7%E3%83%AA%E3%82%A2%E3%83%AB%E5%8C%96%E5%B1%9E%E6%80%A7">3.5 シリアル化属性</a></h4><p><code>serialize :metadata, JSON</code>などのカスタムコーダーを使用している場合に、シリアル化属性 (serialized attribute) に<code>nil</code>を割り当てると、コーダー内で<code>nil</code>値を渡すのではなく、データベースに<code>NULL</code>として保存されるようになりました (<code>JSON</code>コーダーを使用している場合の<code>"null"</code>など)。</p><h4 id="productionログのレベル"><a href="#production%E3%83%AD%E3%82%B0%E3%81%AE%E3%83%AC%E3%83%99%E3%83%AB">3.6 Productionログのレベル</a></h4><p>Rails 5のproduction環境では、デフォルトのログレベルが<code>:info</code>から<code>:debug</code>に変更される予定です。現在のログレベルを変更したくない場合は<code>production.rb</code>に以下の行を追加してください。 
-```ruby</p><h2>
-<code>:info</code>を指定すると現在のデフォルト設定が使用され、</h2><h2>
-<code>:debug</code>を指定すると今後のデフォルト設定が使用される</h2><p>config.log_level = :info
-```</p><h4 id="railsテンプレートのafter-bundle"><a href="#rails%E3%83%86%E3%83%B3%E3%83%97%E3%83%AC%E3%83%BC%E3%83%88%E3%81%AEafter-bundle">3.7 Railsテンプレートの<code>after_bundle</code></a></h4><p>Railsテンプレートを使用し、かつすべてのファイルを (Gitなどで) バージョン管理している場合、生成されたbinstubをバージョン管理システムに追加できません。これは、binstubの生成がBundlerの実行前に行われるためです。</p><div class="code_container">
+<h4 id="シリアル化属性"><a href="#%E3%82%B7%E3%83%AA%E3%82%A2%E3%83%AB%E5%8C%96%E5%B1%9E%E6%80%A7">3.5 シリアル化属性</a></h4><p><code>serialize :metadata, JSON</code>などのカスタムコーダーを使用している場合に、シリアル化属性 (serialized attribute) に<code>nil</code>を割り当てると、コーダー内で<code>nil</code>値を渡すのではなく、データベースに<code>NULL</code>として保存されるようになりました (<code>JSON</code>コーダーを使用している場合の<code>"null"</code>など)。</p><h4 id="productionログのレベル"><a href="#production%E3%83%AD%E3%82%B0%E3%81%AE%E3%83%AC%E3%83%99%E3%83%AB">3.6 Productionログのレベル</a></h4><p>Rails 5のproduction環境では、デフォルトのログレベルが<code>:info</code>から<code>:debug</code>に変更される予定です。現在のログレベルを変更したくない場合は<code>production.rb</code>に以下の行を追加してください。</p><div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+# `:info`を指定すると現在のデフォルト設定が使用され、
+# `:debug`を指定すると今後のデフォルト設定が使用される
+config.log_level = :info
+
+</pre>
+</div>
+<h4 id="railsテンプレートのafter-bundle"><a href="#rails%E3%83%86%E3%83%B3%E3%83%97%E3%83%AC%E3%83%BC%E3%83%88%E3%81%AEafter-bundle">3.7 Railsテンプレートの<code>after_bundle</code></a></h4><p>Railsテンプレートを使用し、かつすべてのファイルを (Gitなどで) バージョン管理している場合、生成されたbinstubをバージョン管理システムに追加できません。これは、binstubの生成がBundlerの実行前に行われるためです。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # template.rb
 generate(:scaffold, "person name:string")
