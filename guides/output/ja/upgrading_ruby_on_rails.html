@@ -889,8 +889,13 @@ set_callback :save, :around, -&gt;(r, block) { stuff; result = block.call; stuff
 </pre>
 </div>
 <h3 id="rails-3-2からrails-4-0へのアップグレード"><a href="#rails-3-2%E3%81%8B%E3%82%89rails-4-0%E3%81%B8%E3%81%AE%E3%82%A2%E3%83%83%E3%83%97%E3%82%B0%E3%83%AC%E3%83%BC%E3%83%89">5 Rails 3.2からRails 4.0へのアップグレード</a></h3><p>Railsアプリケーションのバージョンが3.2より前の場合、まず3.2へのアップグレードを完了してからRails 4.0へのアップグレードを開始してください。</p><p>以下の変更は、アプリケーションをRails 4.0にアップグレードするためのものです。</p><h4 id="http-patch"><a href="#http-patch">5.1 HTTP PATCH</a></h4><p>Rails 4では、<code>config/routes.rb</code>でRESTfulなリソースが宣言されたときに、更新用の主要なHTTP verbとして<code>PATCH</code>が使用されるようになりました。<code>update</code>アクションは従来通り使用でき、<code>PUT</code>リクエストは今後も<code>update</code>アクションにルーティングされます。
-標準的なRESTfulのみを使用しているのであれば、これに関する変更は不要です。</p><p><code>ruby resources :users
-</code></p><div class="code_container">
+標準的なRESTfulのみを使用しているのであれば、これに関する変更は不要です。</p><div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+ resources :users
+
+</pre>
+</div>
+<div class="code_container">
 <pre class="brush: ruby; html-script: true; gutter: false; toolbar: false">
 &lt;%= form_for @user do |f| %&gt;
 

@@ -815,7 +815,7 @@ Railsアプリケーションのバージョンが3.2より前の場合、まず
 Rails 4では、`config/routes.rb`でRESTfulなリソースが宣言されたときに、更新用の主要なHTTP verbとして`PATCH`が使用されるようになりました。`update`アクションは従来通り使用でき、`PUT`リクエストは今後も`update`アクションにルーティングされます。
 標準的なRESTfulのみを使用しているのであれば、これに関する変更は不要です。
 
-```ruby resources :users
+```ruby [BR] resources :users
 ```
 
 ```erb
