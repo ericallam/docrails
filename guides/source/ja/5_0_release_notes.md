@@ -823,7 +823,7 @@ Active Support
     ([Pull Request](https://github.com/rails/rails/pull/18335))
 
 *  `Date`、`Time`、`DateTime`の`#yesterday`と`#tomorrow`に、`#prev_day`と`#next_day`に対応するメソッドを追加。
-    ([Pull Request](httpshttps://github.com/rails/rails/pull/18335))
+    ([Pull Request](https://github.com/rails/rails/pull/18335))
 
 *  ランダムなbase58文字列を生成する`SecureRandom.base58`を追加。
     ([commit](https://github.com/rails/rails/commit/b1093977110f18ae0cafe56c3d99fc22a7d54d1b))
