@@ -206,7 +206,7 @@ Railties
 *   生成したアプリケーションは、`RAILS_LOG_TO_STDOUT`環境変数を使ってproduction環境でSTDOUTへのログ出力を指定できる。
     ([Pull Request](https://github.com/rails/rails/pull/23734))
 
-*   新しいアプリケーションでは、IncludeSudomainsヘッダのHSTS（HTTP Strict Transport Security）が基本で有効になった。
+*   新しいアプリケーションでは、IncludeSudomainsヘッダのHSTS（HTTP Strict Transport Security）がデフォルトで有効になる。
     ([Pull Request](https://github.com/rails/rails/pull/23852))
 
 *   アプリケーション ジェネレータから、新しく`config/spring.rb`ファイルが出力される。これを使用してSpringの監視対象となる共通ファイルを追加できる。
@@ -608,7 +608,7 @@ Active Record
     ([Pull Request](https://github.com/rails/rails/pull/21720))
 
 *   `connection.data_sources`と`connection.data_source_exists?`を追加。
-    Active Recordモデル（通常はテーブルやビュー）を支えるリレーションを特定するのに利用できる。
+Active Recordモデル（通常はテーブルやビュー）を支えるリレーションを特定するのに利用できる。
     ([Pull Request](https://github.com/rails/rails/pull/21715))
 
 *  フィクスチャファイルを使って、モデルのクラスをYAMLファイルそのものの中に設定できるようになった。
@@ -625,7 +625,7 @@ Active Record
 *  クラスのマイグレーションに出現するAPIのバージョンを管理し、既存のマイグレーションを損なわずにパラメータを変更したり、非推奨サイクルの間に書き換えるためにバージョンを強制適用したりできるようにした。
     ([Pull Request](https://github.com/rails/rails/pull/21538))
 
-*   `ActionController::Base`に代わって`ApplicationController`を継承するように、`ApplicationRecord`がアプリのすべてのモデルのスーパークラスとして新設される。この変更により、アプリ全体のモデルの動作を1か所で変更できるようになった。
+* `ActionController::Base`に代わって`ApplicationController`を継承するように、`ApplicationRecord`がアプリのすべてのモデルのスーパークラスとして新設される。この変更により、アプリ全体のモデルの動作を1か所で変更できるようになった。
     ([Pull Request](https://github.com/rails/rails/pull/22567))
 
 *  ActiveRecordに`#second_to_last`メソッドと`#third_to_last`メソッドを追加。
@@ -716,7 +716,7 @@ Active Job
 
 ### 主な変更点
 
-*   `ActiveJob::Base.deserialize`をジョブクラスに委譲（delegate）。これにより、ジョブがシリアライズされたときやジョブ実行時に再度読み込まれたときに、任意のメタデータをジョブにアタッチできるようになる。
+*   `ActiveJob::Base.deserialize`をジョブクラスに委譲（delegate）。これにより、ジョブがシリアライズされたときやジョブ実行時に再度読み込まれたときに、任意のメタデータをジョブに渡せるようになる。
     ([Pull Request](https://github.com/rails/rails/pull/18260))
 
 *  キューアダプタをジョブ単位で構成する機能を追加。ジョブ同士が影響しないように構成できる。
@@ -790,9 +790,7 @@ Active Support
     ([Pull Request](https://github.com/rails/rails/pull/22598))
 
 *  `ActiveSupport::Cache::Store#namespaced_key`、`ActiveSupport::Cache::MemCachedStore#escape_key`、`ActiveSupport::Cache::FileStore#key_file_path`を非推奨に指定。
-   今後は`normalize_key`を使用。
-    ([Pull Request](https://github.com/rails/rails/pull/22215)、[commit](https://github.com/rails/rails/commit/a8f773b0))
-
+   今後は`normalize_key`を使用。([Pull Request](https://github.com/rails/rails/pull/22215)、[commit](https://github.com/rails/rails/commit/a8f773b0))
 
 *   `ActiveSupport::Cache::LocaleCache#set_cache_value`を非推奨に指定。今後は`write_cache_value`を使用。
     ([Pull Request](https://github.com/rails/rails/pull/22215))

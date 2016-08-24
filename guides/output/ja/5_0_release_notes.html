@@ -389,7 +389,7 @@ store_listing.price_in_cents # =&gt; 10
 StoreListing.new.my_string # =&gt; "new default"
 StoreListing.new.my_default_proc # =&gt; 2015-05-30 11:04:48 -0600
 model = StoreListing.new(field_without_db_column: ["1", "2", "3"])
-model.attributes #=&gt; {field_without_db_column: [1, 2, 3]}
+model.attributes # =&gt; {field_without_db_column: [1, 2, 3]}
 
 </pre>
 </div>
@@ -458,7 +458,7 @@ model.attributes #=&gt; {field_without_db_column: [1, 2, 3]}
 (<a href="https://github.com/rails/rails/commit/de6ad5665d2679944a9ee9407826ba88395a1003">commit</a>、<a href="https://github.com/rails/rails/commit/94dbc48887bf39c241ee2ce1741ee680d773f202">commit</a>)</p></li>
 <li><p>  生成したアプリケーションは、<code>RAILS_LOG_TO_STDOUT</code>環境変数を使ってproduction環境でSTDOUTへのログ出力を指定できる。
 (<a href="https://github.com/rails/rails/pull/23734">Pull Request</a>)</p></li>
-<li><p>  新しいアプリケーションでは、HSTS（HTTP Strict Transport Security）でIncludeSudomainsヘッダを利用できる。
+<li><p>  新しいアプリケーションでは、IncludeSudomainsヘッダのHSTS（HTTP Strict Transport Security）がデフォルトで有効になる。
 (<a href="https://github.com/rails/rails/pull/23852">Pull Request</a>)</p></li>
 <li><p>  アプリケーション ジェネレータから、新しく<code>config/spring.rb</code>ファイルが出力される。これを使用してSpringの監視対象となる共通ファイルを追加できる。
 (<a href="https://github.com/rails/rails/commit/b04d07337fd7bc17e88500e9d6bcd361885a45f8">commit</a>)</p></li>
@@ -504,7 +504,7 @@ model.attributes #=&gt; {field_without_db_column: [1, 2, 3]}
 <ul>
 <li><p>  <code>*_filter</code>コールバックをすべて非推奨に指定。今後は<code>*_action</code>コールバックを使用。
 (<a href="https://github.com/rails/rails/pull/18410">Pull Request</a>)</p></li>
-<li><p>  結合テストメソッド<code>*_via_redirect</code>を非推奨に指定。今後同じ動作が必要な場合は、はリクエストの呼出し後にUse <code>follow_redirect!</code>を手動で実行すること。
+<li><p>  結合テストメソッド<code>*_via_redirect</code>を非推奨に指定。今後同じ動作が必要な場合は、はリクエストの呼出し後に <code>follow_redirect!</code>を手動で実行すること。
 (<a href="https://github.com/rails/rails/pull/18693">Pull Request</a>)</p></li>
 <li><p> <code>AbstractController#skip_action_callback</code>を非推奨に指定。今後は個別のskip_callbackメソッドを使用。
 (<a href="https://github.com/rails/rails/pull/19060">Pull Request</a>)</p></li>
@@ -530,7 +530,7 @@ model.attributes #=&gt; {field_without_db_column: [1, 2, 3]}
 <ul>
 <li><p> コントローラのアクションの外部で任意のテンプレートでレンダリングする<code>ActionController::Renderer</code>を追加。
 (<a href="https://github.com/rails/rails/pull/18546">Pull Request</a>)</p></li>
-<li><p>  HTTPリクエスト メソッド<code>ActionController::TestCase</code>と<code>ActionDispatch::Integration</code>にキーワード引数構文を統合。
+<li><p>  <code>ActionController::TestCase</code>と<code>ActionDispatch::Integration</code>のHTTPリクエストメソッドにキーワード引数構文を統合。
 (<a href="https://github.com/rails/rails/pull/18323">Pull Request</a>)</p></li>
 <li><p>  期限切れのないレスポンスをキャッシュする<code>http_cache_forever</code>をAction Controllerに追加。
 (<a href="https://github.com/rails/rails/pull/18394">Pull Request</a>)</p></li>
@@ -648,9 +648,10 @@ model.attributes #=&gt; {field_without_db_column: [1, 2, 3]}
 (<a href="https://github.com/rails/rails/commit/f4fbc0301021f13ae05c8e941c8efc4ae351fdf9">commit</a>)</p></li>
 <li><p> PostgreSQL 9.1以前のサポートを削除。
 (<a href="https://github.com/rails/rails/pull/23434">Pull Request</a>)</p></li>
+<li><p>  <code>activerecord-deprecated_finders</code> gem のサポートを終了。
+(<a href="https://github.com/rails/rails/commit/78dab2a8569408658542e462a957ea5a35aa4679">commit</a>)</p></li>
 </ul>
-<p><code>activerecord-deprecated_finders</code> gem のサポートを終了。
-    (<a href="https://github.com/rails/rails/commit/78dab2a8569408658542e462a957ea5a35aa4679">commit</a>)</p><h4 id="active-record-非推奨"><a href="#active-record-%E9%9D%9E%E6%8E%A8%E5%A5%A8">7.2 非推奨</a></h4>
+<h4 id="active-record-非推奨"><a href="#active-record-%E9%9D%9E%E6%8E%A8%E5%A5%A8">7.2 非推奨</a></h4>
 <ul>
 <li><p>  クエリでクラスを値として渡すことを非推奨に指定。ユーザーは文字列を渡すこと。(<a href="https://github.com/rails/rails/pull/17916">Pull Request</a>)</p></li>
 <li><p>  Active Recordのコールバックチェーンを止めるために<code>false</code>を返すことを非推奨に指定。代わりに<code>throw(:abort)</code>の利用を推奨。(<a href="https://github.com/rails/rails/pull/17227">Pull Request</a>)</p></li>
@@ -674,7 +675,7 @@ model.attributes #=&gt; {field_without_db_column: [1, 2, 3]}
 (<a href="https://github.com/rails/rails/pull/21601">Pull Request</a>)</p></li>
 <li><p>  <code>table_exists?</code>を非推奨に指定。<code>#table_exists?</code>メソッドでテーブルとビューが両方チェックされていることがあるため。<code>#tables</code>の動作を統一するため、今後<code>#table_exists?</code>はテーブルのみをチェックするようになる予定。
 (<a href="https://github.com/rails/rails/pull/21601">Pull Request</a>)</p></li>
-<li><p>  `<code>find_nth</code>に<code>offset</code>を引数として渡すことを非推奨に指定。今後リレーションでは<code>offset</code>メソッドを使用。
+<li><p>  <code>find_nth</code>に<code>offset</code>を引数として渡すことを非推奨に指定。今後リレーションでは<code>offset</code>メソッドを使用。
 (<a href="https://github.com/rails/rails/pull/22053">Pull Request</a>)</p></li>
 <li><p>  <code>DatabaseStatements</code>の<code>{insert|update|delete}_sql</code>を非推奨に指定。
 今後は<code>{insert|update|delete}</code>パブリックメソッドを使用。
@@ -700,7 +701,7 @@ model.attributes #=&gt; {field_without_db_column: [1, 2, 3]}
 (<a href="https://github.com/rails/rails/commit/a939506f297b667291480f26fa32a373a18ae06a">commit</a>)</p></li>
 <li><p>  <code>ActiveRecord::SecureToken</code>を追加。<code>SecureRandom</code>を使うモデル内の属性で一意のトークン生成をカプセル化するメソッド。
 (<a href="https://github.com/rails/rails/pull/18217">Pull Request</a>)</p></li>
-<li><p>  <code>:if_exists</code> option for <code>drop_table</code>を追加。
+<li><p>  <code>drop_table</code>に<code>:if_exists</code>オプションを追加。
 (<a href="https://github.com/rails/rails/pull/18597">Pull Request</a>)</p></li>
 <li><p>  <code>ActiveRecord::Base#accessed_fields</code>を追加。データベース内の必要なデータだけをselectしたい場合に、参照したモデルでどのフィールドが読み出されたかをこのメソッドで簡単に調べられる。
 (<a href="https://github.com/rails/rails/commit/be9b68038e83a617eb38c26147659162e4ac3d2c">commit</a>)</p></li>
@@ -724,7 +725,7 @@ model.attributes #=&gt; {field_without_db_column: [1, 2, 3]}
 (<a href="https://github.com/rails/rails/pull/21609">Pull Request</a>)</p></li>
 <li><p> <code>ActiveRecord::Base.ignored_columns</code>を追加。カラムの一部をActive Recordに対して隠蔽する。
 (<a href="https://github.com/rails/rails/pull/21720">Pull Request</a>)</p></li>
-<li><p>  <code>connection.data_sources</code>と<code>connection.data_source_exists?</code>
+<li><p>  <code>connection.data_sources</code>と<code>connection.data_source_exists?</code>を追加。
 Active Recordモデル（通常はテーブルやビュー）を支えるリレーションを特定するのに利用できる。
 (<a href="https://github.com/rails/rails/pull/21715">Pull Request</a>)</p></li>
 <li><p> フィクスチャファイルを使って、モデルのクラスをYAMLファイルそのものの中に設定できるようになった。
@@ -736,10 +737,8 @@ Active Recordモデル（通常はテーブルやビュー）を支えるリレ�
 (<a href="https://github.com/rails/rails/pull/22516">Pull Request</a>)</p></li>
 <li><p> クラスのマイグレーションに出現するAPIのバージョンを管理し、既存のマイグレーションを損なわずにパラメータを変更したり、非推奨サイクルの間に書き換えるためにバージョンを強制適用したりできるようにした。
 (<a href="https://github.com/rails/rails/pull/21538">Pull Request</a>)</p></li>
-</ul>
-<p><code>ApplicationRecord</code>がアプリのすべてのモデルのスーパークラスとして新設され、<code>ActionController::Base</code>に代わって<code>ApplicationController</code>を継承する。この変更により、アプリ全体のモデルの動作を1か所で変更できるようになった。
-    (<a href="https://github.com/rails/rails/pull/22567">Pull Request</a>)</p>
-<ul>
+<li><p><code>ActionController::Base</code>に代わって<code>ApplicationController</code>を継承するように、<code>ApplicationRecord</code>がアプリのすべてのモデルのスーパークラスとして新設される。この変更により、アプリ全体のモデルの動作を1か所で変更できるようになった。
+(<a href="https://github.com/rails/rails/pull/22567">Pull Request</a>)</p></li>
 <li><p> ActiveRecordに<code>#second_to_last</code>メソッドと<code>#third_to_last</code>メソッドを追加。
 (<a href="https://github.com/rails/rails/pull/23583">Pull Request</a>)</p></li>
 <li><p> データベースオブジェクト（テーブル、カラム、インデックス）にコメントを追加して、PostgreSQLやMySQLのデータベースメタデータに保存する機能を追加。
@@ -799,7 +798,7 @@ config/database.ymlに<code>prepared_statements: true</code>と記述するこ�
 </ul>
 <h3 id="active-job"><a href="#active-job">9 Active Job</a></h3><p>変更の詳細については<a href="https://github.com/rails/rails/blob/5-0-stable/activejob/CHANGELOG.md">Changelog</a>を参照してください。</p><h4 id="active-job-主な変更点"><a href="#active-job-%E4%B8%BB%E3%81%AA%E5%A4%89%E6%9B%B4%E7%82%B9">9.1 主な変更点</a></h4>
 <ul>
-<li><p>  <code>ActiveJob::Base.deserialize</code>をジョブクラスに委譲（delegate）。これにより、ジョブがシリアライズされたときやジョブ実行時に再度読み込まれたときに、ジョブを任意のメタデータにアタッチできるようになる。
+<li><p>  <code>ActiveJob::Base.deserialize</code>をジョブクラスに委譲（delegate）。これにより、ジョブがシリアライズされたときやジョブ実行時に再度読み込まれたときに、任意のメタデータをジョブに渡せるようになる。
 (<a href="https://github.com/rails/rails/pull/18260">Pull Request</a>)</p></li>
 <li><p> キューアダプタをジョブ単位で構成する機能を追加。ジョブ同士が影響しないように構成できる。
 (<a href="https://github.com/rails/rails/pull/16992">Pull Request</a>)</p></li>
@@ -840,20 +839,18 @@ config/database.ymlに<code>prepared_statements: true</code>と記述するこ�
 (<a href="https://github.com/rails/rails/commit/734d97d2">commit</a>)</p></li>
 <li><p> <code>alias_method_chain</code>を非推奨に指定。今後はRuby 2.0 で導入された<code>Module#prepend</code>を使用。
 (<a href="https://github.com/rails/rails/pull/19434">Pull Request</a>)</p></li>
-<li><p> <code>ActiveSupport::Concurrency::Latch</code>を非推奨に指定。今後は<code>Concurrent::CountDownLatch</code> from concurrent-rubyを使用。
+<li><p> <code>ActiveSupport::Concurrency::Latch</code>を非推奨に指定。今後はconcurrent-rubyの<code>Concurrent::CountDownLatch</code>を使用。
 (<a href="https://github.com/rails/rails/pull/20866">Pull Request</a>)</p></li>
-<li><p> <code>:prefix</code> option of <code>number_to_human_size</code>を非推奨に指定。置き換え先はなし。
+<li><p> <code>number_to_human_size</code>の<code>:prefix</code>オプションを非推奨に指定。置き換え先はなし。
 (<a href="https://github.com/rails/rails/pull/21191">Pull Request</a>)</p></li>
 <li><p> <code>Module#qualified_const_</code>を非推奨に指定。今後はビルトインの<code>Module#const_</code>メソッドを使用。
 (<a href="https://github.com/rails/rails/pull/17845">Pull Request</a>)</p></li>
 <li><p> コールバック定義に文字列を渡すことを非推奨に指定。
 (<a href="https://github.com/rails/rails/pull/22598">Pull Request</a>)</p></li>
 <li><p> <code>ActiveSupport::Cache::Store#namespaced_key</code>、<code>ActiveSupport::Cache::MemCachedStore#escape_key</code>、<code>ActiveSupport::Cache::FileStore#key_file_path</code>を非推奨に指定。
-今後は<code>normalize_key</code>を使用。</p></li>
-</ul>
-<p>   <code>ActiveSupport::Cache::LocaleCache#set_cache_value</code>を非推奨に指定。今後は<code>write_cache_value</code>を使用。
-    (<a href="https://github.com/rails/rails/pull/22215">Pull Request</a>)</p>
-<ul>
+今後は<code>normalize_key</code>を使用。(<a href="https://github.com/rails/rails/pull/22215">Pull Request</a>、<a href="https://github.com/rails/rails/commit/a8f773b0">commit</a>)</p></li>
+<li><p>  <code>ActiveSupport::Cache::LocaleCache#set_cache_value</code>を非推奨に指定。今後は<code>write_cache_value</code>を使用。
+(<a href="https://github.com/rails/rails/pull/22215">Pull Request</a>)</p></li>
 <li><p> <code>assert_nothing_raised</code>に引数を渡すことを非推奨に指定。
 (<a href="https://github.com/rails/rails/pull/23789">Pull Request</a>)</p></li>
 <li><p> <code>Module.local_constants</code>を非推奨に指定。今後は<code>Module.constants(false)</code>を使用。
