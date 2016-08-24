@@ -99,7 +99,7 @@ store_listing.price_in_cents # => 10
 StoreListing.new.my_string # => "new default"
 StoreListing.new.my_default_proc # => 2015-05-30 11:04:48 -0600
 model = StoreListing.new(field_without_db_column: ["1", "2", "3"])
-model.attributes #=> {field_without_db_column: [1, 2, 3]}
+model.attributes # => {field_without_db_column: [1, 2, 3]}
 ```
 
 **カスタムTypeの作成:**
@@ -206,7 +206,7 @@ Railties
 *   生成したアプリケーションは、`RAILS_LOG_TO_STDOUT`環境変数を使ってproduction環境でSTDOUTへのログ出力を指定できる。
     ([Pull Request](https://github.com/rails/rails/pull/23734))
 
-*   新しいアプリケーションでは、HSTS（HTTP Strict Transport Security）でIncludeSudomainsヘッダを利用できる。
+*   新しいアプリケーションでは、IncludeSudomainsヘッダのHSTS（HTTP Strict Transport Security）が基本で有効になった。
     ([Pull Request](https://github.com/rails/rails/pull/23852))
 
 *   アプリケーション ジェネレータから、新しく`config/spring.rb`ファイルが出力される。これを使用してSpringの監視対象となる共通ファイルを追加できる。
@@ -275,7 +275,7 @@ Action Pack
 *   `*_filter`コールバックをすべて非推奨に指定。今後は`*_action`コールバックを使用。
     ([Pull Request](https://github.com/rails/rails/pull/18410))
 
-*   結合テストメソッド`*_via_redirect`を非推奨に指定。今後同じ動作が必要な場合は、はリクエストの呼出し後にUse `follow_redirect!`を手動で実行すること。
+*   結合テストメソッド`*_via_redirect`を非推奨に指定。今後同じ動作が必要な場合は、はリクエストの呼出し後に `follow_redirect!`を手動で実行すること。
     ([Pull Request](https://github.com/rails/rails/pull/18693))
 
 *  `AbstractController#skip_action_callback`を非推奨に指定。今後は個別のskip_callbackメソッドを使用。
@@ -312,7 +312,7 @@ Action Pack
 *  コントローラのアクションの外部で任意のテンプレートでレンダリングする`ActionController::Renderer`を追加。
     ([Pull Request](https://github.com/rails/rails/pull/18546))
 
-*   HTTPリクエスト メソッド`ActionController::TestCase`と`ActionDispatch::Integration`にキーワード引数構文を統合。
+*   `ActionController::TestCase`と`ActionDispatch::Integration`のHTTPリクエストメソッドにキーワード引数構文を統合。
     ([Pull Request](https://github.com/rails/rails/pull/18323))
 
 *   期限切れのないレスポンスをキャッシュする`http_cache_forever`をAction Controllerに追加。
@@ -495,7 +495,7 @@ Active Record
 *  PostgreSQL 9.1以前のサポートを削除。
     ([Pull Request](https://github.com/rails/rails/pull/23434))
 
-`activerecord-deprecated_finders` gem のサポートを終了。
+*   `activerecord-deprecated_finders` gem のサポートを終了。
     ([commit](https://github.com/rails/rails/commit/78dab2a8569408658542e462a957ea5a35aa4679))
 
 ### 非推奨
@@ -534,7 +534,7 @@ Active Record
 *   `table_exists?`を非推奨に指定。`#table_exists?`メソッドでテーブルとビューが両方チェックされていることがあるため。`#tables`の動作を統一するため、今後`#table_exists?`はテーブルのみをチェックするようになる予定。
     ([Pull Request](https://github.com/rails/rails/pull/21601))
 
-*   ``find_nth`に`offset`を引数として渡すことを非推奨に指定。今後リレーションでは`offset`メソッドを使用。
+*   `find_nth`に`offset`を引数として渡すことを非推奨に指定。今後リレーションでは`offset`メソッドを使用。
     ([Pull Request](https://github.com/rails/rails/pull/22053))
 
 *   `DatabaseStatements`の`{insert|update|delete}_sql`を非推奨に指定。
@@ -571,7 +571,7 @@ Active Record
 *   `ActiveRecord::SecureToken`を追加。`SecureRandom`を使うモデル内の属性で一意のトークン生成をカプセル化するメソッド。
     ([Pull Request](https://github.com/rails/rails/pull/18217))
 
-*   `:if_exists` option for `drop_table`を追加。
+*   `drop_table`に`:if_exists`オプションを追加。
     ([Pull Request](https://github.com/rails/rails/pull/18597))
 
 *   `ActiveRecord::Base#accessed_fields`を追加。データベース内の必要なデータだけをselectしたい場合に、参照したモデルでどのフィールドが読み出されたかをこのメソッドで簡単に調べられる。
@@ -607,8 +607,8 @@ Active Record
 *  `ActiveRecord::Base.ignored_columns`を追加。カラムの一部をActive Recordに対して隠蔽する。
     ([Pull Request](https://github.com/rails/rails/pull/21720))
 
-*   `connection.data_sources`と`connection.data_source_exists?`
-Active Recordモデル（通常はテーブルやビュー）を支えるリレーションを特定するのに利用できる。
+*   `connection.data_sources`と`connection.data_source_exists?`を追加。
+    Active Recordモデル（通常はテーブルやビュー）を支えるリレーションを特定するのに利用できる。
     ([Pull Request](https://github.com/rails/rails/pull/21715))
 
 *  フィクスチャファイルを使って、モデルのクラスをYAMLファイルそのものの中に設定できるようになった。
@@ -625,7 +625,7 @@ Active Recordモデル（通常はテーブルやビュー）を支えるリレ�
 *  クラスのマイグレーションに出現するAPIのバージョンを管理し、既存のマイグレーションを損なわずにパラメータを変更したり、非推奨サイクルの間に書き換えるためにバージョンを強制適用したりできるようにした。
     ([Pull Request](https://github.com/rails/rails/pull/21538))
 
-`ApplicationRecord`がアプリのすべてのモデルのスーパークラスとして新設され、`ActionController::Base`に代わって`ApplicationController`を継承する。この変更により、アプリ全体のモデルの動作を1か所で変更できるようになった。
+*   `ActionController::Base`に代わって`ApplicationController`を継承するように、`ApplicationRecord`がアプリのすべてのモデルのスーパークラスとして新設される。この変更により、アプリ全体のモデルの動作を1か所で変更できるようになった。
     ([Pull Request](https://github.com/rails/rails/pull/22567))
 
 *  ActiveRecordに`#second_to_last`メソッドと`#third_to_last`メソッドを追加。
@@ -716,7 +716,7 @@ Active Job
 
 ### 主な変更点
 
-*   `ActiveJob::Base.deserialize`をジョブクラスに委譲（delegate）。これにより、ジョブがシリアライズされたときやジョブ実行時に再度読み込まれたときに、ジョブを任意のメタデータにアタッチできるようになる。
+*   `ActiveJob::Base.deserialize`をジョブクラスに委譲（delegate）。これにより、ジョブがシリアライズされたときやジョブ実行時に再度読み込まれたときに、任意のメタデータをジョブにアタッチできるようになる。
     ([Pull Request](https://github.com/rails/rails/pull/18260))
 
 *  キューアダプタをジョブ単位で構成する機能を追加。ジョブ同士が影響しないように構成できる。
@@ -777,10 +777,10 @@ Active Support
 *  `alias_method_chain`を非推奨に指定。今後はRuby 2.0 で導入された`Module#prepend`を使用。
     ([Pull Request](https://github.com/rails/rails/pull/19434))
 
-*  `ActiveSupport::Concurrency::Latch`を非推奨に指定。今後は`Concurrent::CountDownLatch` from concurrent-rubyを使用。
+*  `ActiveSupport::Concurrency::Latch`を非推奨に指定。今後はconcurrent-rubyの`Concurrent::CountDownLatch`を使用。
     ([Pull Request](https://github.com/rails/rails/pull/20866))
 
-*  `:prefix` option of `number_to_human_size`を非推奨に指定。置き換え先はなし。
+*  `number_to_human_size`の`:prefix`オプションを非推奨に指定。置き換え先はなし。
     ([Pull Request](https://github.com/rails/rails/pull/21191))
 
 *  `Module#qualified_const_`を非推奨に指定。今後はビルトインの`Module#const_`メソッドを使用。
@@ -791,8 +791,10 @@ Active Support
 
 *  `ActiveSupport::Cache::Store#namespaced_key`、`ActiveSupport::Cache::MemCachedStore#escape_key`、`ActiveSupport::Cache::FileStore#key_file_path`を非推奨に指定。
    今後は`normalize_key`を使用。
+    ([Pull Request](https://github.com/rails/rails/pull/22215)、[commit](https://github.com/rails/rails/commit/a8f773b0))
 
-   `ActiveSupport::Cache::LocaleCache#set_cache_value`を非推奨に指定。今後は`write_cache_value`を使用。
+
+*   `ActiveSupport::Cache::LocaleCache#set_cache_value`を非推奨に指定。今後は`write_cache_value`を使用。
     ([Pull Request](https://github.com/rails/rails/pull/22215))
 
 *  `assert_nothing_raised`に引数を渡すことを非推奨に指定。
