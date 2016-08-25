@@ -94,7 +94,7 @@ end
 
 #### サブスクリプション
 
-コンシューマーは、チャネルをサブスクライブする*サブスクライバ*の役割を果たします。そして、コンシューマーの接続は*サブスクリプション*と呼ばれます。生成されたメッセージは、Active Cableコンシューマーが送信するIDに基いて、これらのチャネルサブスクリプションにルーティングされます。
+コンシューマーは、チャネルをサブスクライブする*サブスクライバ*の役割を果たします。そして、コンシューマーの接続は*サブスクリプション*と呼ばれます。生成されたメッセージは、Action Cableコンシューマーが送信するIDに基いて、これらのチャネルサブスクリプションにルーティングされます。
 
 ```ruby
 # app/channels/chat_channel.rb
@@ -141,7 +141,7 @@ App.cable.subscriptions.create { channel: "ChatChannel", room: "Best Room" }
 App.cable.subscriptions.create { channel: "AppearanceChannel" }
 ```
 
-サブスクリプションは上のコードで作成されます、受信したデータに応答する機能については後述します。
+サブスクリプションは上のコードで作成されます。受信したデータに応答する機能については後述します。
 
 コンシューマーは、指定のチャネルに対するサブスクライバとして振る舞うことができます。回数の制限はありません。たとえば、コンシューマーはチャットルームを同時にいくつでもサブスクライブできます。
 
@@ -204,7 +204,7 @@ WebNotificationsChannel.broadcast_to(
 
 ### サブスクリプション
 
-チャネルにサブスクライブしたコンシューマーは、サブスクライバとして振る舞います。この接続はサブスクリプションと呼ばれます。着信メッセージは、Active Cableコンシューマーが送信するIDに基いて、これらのチャネルサブスクリプションにルーティングされます。
+チャネルにサブスクライブしたコンシューマーは、サブスクライバとして振る舞います。この接続はサブスクリプションと呼ばれます。着信メッセージは、Action Cableコンシューマーが送信するIDに基いて、これらのチャネルサブスクリプションにルーティングされます。
 
 ```coffeescript
 # app/assets/javascripts/cable/subscriptions/chat.coffee
@@ -239,7 +239,7 @@ class ChatChannel < ApplicationCable::Channel
 end
 ```
 
-`subscriptions.create`に最初の引数として渡されるオブジェクトは、Active Cableチャネルのparamsハッシュになります。キーワード`channel`の指定は省略できません。
+`subscriptions.create`に最初の引数として渡されるオブジェクトは、Action Cableチャネルのparamsハッシュになります。キーワード`channel`の指定は省略できません。
 
 ```coffeescript
 # app/assets/javascripts/cable/subscriptions/chat.coffee
@@ -266,7 +266,7 @@ App.cable.subscriptions.create { channel: "ChatChannel", room: "Best Room" },
 ChatChannel.broadcast_to(
   "chat_#{room}",
   sent_by: 'Paul',
-  body: 'This is a cool chat app. '
+  body: 'This is a cool chat app.'
 )
 ```
 
@@ -333,7 +333,7 @@ class AppearanceChannel < ApplicationCable::Channel
 end
 ```
 
-サブスクリプションが開始されると、`subscribed`コールバックがトリガーされ、そのユーザーがオンラインであることが示されます。このアピアランスAPIをRadisやデータベースなどと連携することもできます。
+サブスクリプションが開始されると、`subscribed`コールバックがトリガーされ、そのユーザーがオンラインであることが示されます。このアピアランスAPIをRedisやデータベースなどと連携することもできます。
 
 クライアント側のアピアランスチャネルを作成します。
 
@@ -381,7 +381,7 @@ App.cable.subscriptions.create "AppearanceChannel",
 
 ##### クライアント-サーバー間のやりとり
 
-1. **クライアント**は**サーバー**に`App.cable = ActionCable.createConsumer("ws://cable.example.com")`経由で接続する（`cable.js`）**サーバー**は、この接続の認識に`current_user`を使う。
+1. **クライアント**は**サーバー**に`App.cable = ActionCable.createConsumer("ws://cable.example.com")`経由で接続する。（`cable.js`）**サーバー**は、この接続の認識に`current_user`を使う。
 
 2. **クライアント**はアピアランスチャネルに`App.cable.subscriptions.create(channel: "AppearanceChannel")`経由で接続する（`appearance.coffee`）
 
@@ -420,7 +420,7 @@ App.cable.subscriptions.create "WebNotificationsChannel",
     new Notification data["title"], body: data["body"]
 ```
 
-web通知のコンテンツは、アプリケーションのどこからでもweb通知チャネルのインスタンスに送信できます。
+アプリケーションのどこからでもweb通知チャネルのインスタンスにコンテンツをブロードキャストするのはできます。
 
 ```ruby
 # このコードはアプリのどこか（NewCommentJob あたり）で呼び出される
@@ -445,7 +445,7 @@ Action Cableで必須となる設定は、「サブスクリプションアダ�
 
 ### サブスクリプションアダプタ
 
-Action Cableは、デフォルトで`config/cable.yml`の設定ファイルを利用します。Railsの環境ごとに、アダプタとURLを1つずつ指定する必要があります。アダプタについて詳しくは、[依存関係](#dependencies) の節をご覧ください。
+Action Cableは、デフォルトで`config/cable.yml`の設定ファイルを利用します。Railsの環境ごとに、アダプタとURLを1つずつ指定する必要があります。アダプタについて詳しくは、[依存関係](#依存関係) の節をご覧ください。
 
 ```yaml
 development:
@@ -477,7 +477,7 @@ development環境で実行中、Action Cableはlocalhost:3000からのすべて�
 
 ### コンシューマーの設定
 
-URLを設定するには、HTMLレイアウトのHEADセクションに`action_cable_meta_tag呼び出しを追加します。通常、ここで使うURLは、環境ごとの設定ファイルで`config.action_cable.url`に設定されます。
+URLを設定するには、HTMLレイアウトのHEADセクションに`action_cable_meta_tag`呼び出しを追加します。通常、ここで使うURLは、環境ごとの設定ファイルで`config.action_cable.url`に設定されます。
 
 ### その他の設定
 
@@ -550,4 +550,4 @@ Action Cableを支えているのは、WebSocketsとスレッドの組み合わ�
 
 Action Cableサーバーには、RackソケットをハイジャックするAPIが実装されています。これによって、アプリケーション・サーバーがマルチスレッドであるかどうかにかかわらず、内部の接続をマルチスレッドパターンで管理できます。
 
-つまり、Action Cableは、Unicorn、Puma、Passengerなどの有名なサーバーと問題なく連携できるのです。
+つまり、Action CableはUnicorn、Puma、Passengerなどの有名なサーバーと問題なく連携できるのです。
