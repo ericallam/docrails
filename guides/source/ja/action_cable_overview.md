@@ -266,7 +266,7 @@ App.cable.subscriptions.create { channel: "ChatChannel", room: "Best Room" },
 ChatChannel.broadcast_to(
   "chat_#{room}",
   sent_by: 'Paul',
-  body: 'This is a cool chat app.'
+  body: 'This is a cool chat app. '
 )
 ```
 
@@ -381,7 +381,7 @@ App.cable.subscriptions.create "AppearanceChannel",
 
 ##### クライアント-サーバー間のやりとり
 
-1. **クライアント**は**サーバー**に`App.cable = ActionCable.createConsumer("ws://cable.example.com")`経由で接続する。（`cable.js`）**サーバー**は、この接続の認識に`current_user`を使う。
+1. **クライアント**は**サーバー**に`App.cable = ActionCable.createConsumer("ws://cable.example.com")`経由で接続する（`cable.js`）。**サーバー**は、この接続の認識に`current_user`を使う。
 
 2. **クライアント**はアピアランスチャネルに`App.cable.subscriptions.create(channel: "AppearanceChannel")`経由で接続する（`appearance.coffee`）
 
@@ -420,7 +420,7 @@ App.cable.subscriptions.create "WebNotificationsChannel",
     new Notification data["title"], body: data["body"]
 ```
 
-アプリケーションのどこからでもweb通知チャネルのインスタンスにコンテンツをブロードキャストするのはできます。
+アプリケーションのどこからでも、web通知チャネルのインスタンスにコンテンツを送信できます。
 
 ```ruby
 # このコードはアプリのどこか（NewCommentJob あたり）で呼び出される
@@ -550,4 +550,4 @@ Action Cableを支えているのは、WebSocketsとスレッドの組み合わ�
 
 Action Cableサーバーには、RackソケットをハイジャックするAPIが実装されています。これによって、アプリケーション・サーバーがマルチスレッドであるかどうかにかかわらず、内部の接続をマルチスレッドパターンで管理できます。
 
-つまり、Action CableはUnicorn、Puma、Passengerなどの有名なサーバーと問題なく連携できるのです。
+つまり、Action Cableは、Unicorn、Puma、Passengerなどの有名なサーバーと問題なく連携できるのです。
