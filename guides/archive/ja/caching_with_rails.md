@@ -137,7 +137,7 @@ end
 
 #### 暗黙の依存関係
 
-ほとんどの場合、テンプレートの依存関係は、テンプレート自身で呼び出される`render`によって発生します。以下の例は、`ActionView::Digestor`でデコード方法を扱うrender呼び出しです。
+ほとんどの場合、テンプレートの依存関係は、テンプレート自身で呼び出される`render`によって発生します。以下の例は、デコード方法を取り扱う`ActionView::Digestor`でrender呼び出しする方法です。
 
 ```ruby
 render partial: "comments/comment", collection: commentable.comments

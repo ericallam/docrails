@@ -137,7 +137,7 @@ end
 
 #### 暗黙の依存関係
 
-ほとんどの場合、テンプレートの依存関係は、テンプレート自身で呼び出される`render`によって発生します。以下の例は、デコード方法を知っている`ActionView::Digestor`を使用するrender呼び出しです。
+ほとんどの場合、テンプレートの依存関係は、テンプレート自身で呼び出される`render`によって発生します。以下の例は、デコード方法を取り扱う`ActionView::Digestor`でrender呼び出しする方法です。
 
 ```ruby
 render partial: "comments/comment", collection: commentable.comments
@@ -233,7 +233,7 @@ Railsのクエリキャッシュは、各クエリによって返った結果セ
 ```ruby
 class ProductsController < ApplicationController
 
-  def index
+def index
     # 検索クエリの実行
     @products = Product.all
 
