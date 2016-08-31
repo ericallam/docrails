@@ -90,7 +90,7 @@ $ rails new my_api --api
 
 既存のアプリをAPI専用に変えるには、次の手順をお読みください。
 
-`config/application.rb`の`Application`クラス定義の冒頭に、次を追加します
+`config/application.rb`の`Application`クラス定義の冒頭に、次を追加します。
 
 ```ruby
 config.api_only = true
@@ -174,7 +174,7 @@ def show
 end
 ```
 
-`stale?`呼び出しは、`@post.updated_at`のリクエストにある`If-Modified-Since`ヘッダと比較されます。ヘッダが最終更新時より新しい場合、「304 Not Modified」を返すか、レスポンスをレンダリングして`Last-Modified`ヘッダをそこに表示します。
+`stale?`呼び出しは、リクエストにある`If-Modified-Since`ヘッダと`@post.updated_at`を比較します。ヘッダが最終更新時より新しい場合、「304 Not Modified」を返すか、レスポンスをレンダリングして`Last-Modified`ヘッダをそこに表示します。
 
 通常、この動作はクライアントごとに行われますが、キャッシュミドルウェアがあるとクライアント間でこのキャッシュを共有できるようになります。クロスクライアントキャッシュは、`stale?`の呼び出し時に有効にできます。
 
@@ -190,13 +190,13 @@ end
 
 キャッシュミドルウェアは、URLに対応する`Last-Modified`値をRailsキャッシュに保存し、以後同じURLへのリクエストを受信したときに`If-Modified-Since`ヘッダを追加します。
 
-キャッシュミドルウェアは、HTTPセマンティクスを利用したページキャッシュと考えることができます。
+これは、HTTPセマンティクスを利用したページキャッシュと考えることができます。
 
 ### Rack::Sendfileを使う
 
 Railsコントローラ内部で`send_file`メソッドを実行すると、`X-Sendfile`ヘッダが設定されます。実際のファイル送信を担当するのは`Rack::Sendfile`です。
 
-ファイル送信のアクセラレーションをサポートするフロントエンドサーバーでは、`Rack::Sendfile`がフロントエンドサーバーに代わって実際にファイルを送信します。
+ファイル送信のアクセラレーションをサポートするフロントエンドサーバーでは、`Rack::Sendfile`の代わりにフロントエンドサーバーがファイルを送信します。
 
 フロントエンドサーバーでのファイル送信に使うヘッダの名前は、該当する環境設定ファイルの`config.action_dispatch.x_sendfile_header`で設定できます。
 
