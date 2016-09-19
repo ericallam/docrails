@@ -576,7 +576,7 @@ config.assets.debug = false
 </div>
 <div class="note"><p>アセットパイプラインの:cacheオプションと:concatオプションは廃止されました。これらのオプションは<code>javascript_include_tag</code>と<code>stylesheet_link_tag</code>から削除してください。</p></div><p>フィンガープリントの振る舞いについては<code>config.assets.digest</code>初期化オプションで制御できます。productionモードではデフォルトで<code>true</code>、それ以外では<code>false</code>です。</p><div class="note"><p>デフォルトの<code>config.assets.digest</code>オプションは、通常は変更しないでください。ファイル名にダイジェストが含まれないと、遠い将来にヘッダが設定されたときに (ブラウザなどの) リモートクライアントがファイルの内容変更を検出して再度取得することができなくなってしまいます。</p></div><h4 id="アセットをプリコンパイルする"><a href="#%E3%82%A2%E3%82%BB%E3%83%83%E3%83%88%E3%82%92%E3%83%97%E3%83%AA%E3%82%B3%E3%83%B3%E3%83%91%E3%82%A4%E3%83%AB%E3%81%99%E3%82%8B">4.1 アセットをプリコンパイルする</a></h4><p>Railsには、パイプラインにあるアセットマニフェストなどのファイルを手動でコンパイルするためのタスクが1つバンドルされています。</p><p>コンパイルされたアセットは、<code>config.assets.prefix</code>で指定された場所に保存されます。この保存場所は、デフォルトでは<code>/assets</code>ディレクトリです。</p><p>デプロイ時にこのタスクをサーバー上で呼び出すと、コンパイル済みアセットをサーバー上で直接作成できます。ローカル環境でコンパイルする方法については次のセクションを参照してください。</p><p>以下がそのタスクです。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-$ RAILS_ENV=production bin/bin/rails assets:precompile
+$ RAILS_ENV=production bin/rails assets:precompile
 
 </pre>
 </div>

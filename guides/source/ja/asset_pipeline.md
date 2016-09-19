@@ -470,7 +470,7 @@ Railsには、パイプラインにあるアセットマニフェストなどの
 以下がそのタスクです。
 
 ```bash
-$ RAILS_ENV=production bin/bin/rails assets:precompile
+$ RAILS_ENV=production bin/rails assets:precompile
 ```
 
 Capistrano (v2.15.1以降) にはデプロイ中にこのタスクを扱うレシピが含まれています。
