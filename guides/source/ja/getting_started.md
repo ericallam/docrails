@@ -1468,12 +1468,12 @@ class CommentsController < ApplicationController
 * [Ruby on Railsメーリングリスト](http://www.ruby.or.jp/ja/tech/development/web_application/100_community.html)
 * irc.freenode.net上の[#rubyonrails](irc://irc.freenode.net/#rubyonrails)チャンネル
 
-Railsには、コマンドラインユーティリティを使用して生成できるビルトインヘルプもあります。
 
-* `bin/rails doc:guides`を実行すると、本Railsガイドの完全なコピーがアプリケーションの`doc/guides`フォルダに生成されます。ブラウザで`doc/guides/index.html`を開くことでガイドを参照できます。
-* `bin/rails doc:rails`を実行すると、Rails APIドキュメントの完全なコピーがアプリケーションの`doc/api`フォルダに生成されます。ブラウザで`doc/api/index.html`を開いてAPIドキュメントを参照できます。
 
-TIP: `doc:guides` bin/railsタスクを使用してRailsガイドをローカル生成するには、RedCloth gemをインストールする必要があります。RedCloth gemを`Gemfile`に追記して`bundle install`を実行することで利用できるようになります。
+
+
+
+
 
 設定の落とし穴
 ---------------------
