@@ -487,7 +487,7 @@ end
 
 </pre>
 </div>
-<p>エンジンのルートディレクトリで<code>rake db:migrate</code>を実行すると、scaffoldジェネレータによって生成されたマイグレーションが実行されます。続いて<code>test/dummy</code>ディレクトリで<code>rails server</code>を実行してみましょう。<code>http://localhost:3000/blorgh/articles</code>をブラウザで表示すると、生成されたデフォルトのscaffoldが表示されます。表示されたものをいろいろクリックしてみてください。これで、最初の機能を備えたエンジンの生成に成功しました。</p><p>コンソールで遊んでみたいのであれば、<code>rails console</code>でRailsアプリケーションをコンソールで動かせます。先ほどから申し上げているように、<code>Article</code>モデルは名前空間化されていますので、このモデルを参照する際には<code>Blorgh::Article</code>と指定する必要があります。</p><div class="code_container">
+<p>エンジンのルートディレクトリで<code>bin/rails db:migrate</code>を実行すると、scaffoldジェネレータによって生成されたマイグレーションが実行されます。続いて<code>test/dummy</code>ディレクトリで<code>rails server</code>を実行してみましょう。<code>http://localhost:3000/blorgh/articles</code>をブラウザで表示すると、生成されたデフォルトのscaffoldが表示されます。表示されたものをいろいろクリックしてみてください。これで、最初の機能を備えたエンジンの生成に成功しました。</p><p>コンソールで遊んでみたいのであれば、<code>rails console</code>でRailsアプリケーションをコンソールで動かせます。先ほどから申し上げているように、<code>Article</code>モデルは名前空間化されていますので、このモデルを参照する際には<code>Blorgh::Article</code>と指定する必要があります。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 &gt;&gt; Blorgh::Article.find(1)
 =&gt; #&lt;Blorgh::Article id: 1 ...&gt;
@@ -519,7 +519,7 @@ create      test/fixtures/blorgh/comments.yml
 </div>
 <p>このジェネレータ呼び出しでは必要なモデルファイルだけが生成されます。さらに<code>blorgh</code>ディレクトリの下で名前空間化され、<code>Blorgh::Comment</code>というモデルクラスも作成されます。それではマイグレーションを実行してblorgh_commentsテーブルを生成してみましょう。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-$ rake db:migrate
+$ bin/rails db:migrate
 
 </pre>
 </div>
@@ -653,13 +653,13 @@ mount Blorgh::Engine, at: "/blog"
 </div>
 <p>この行を記述することで、エンジンがアプリケーションの<code>/blog</code>パスにマウントされます。<code>rails server</code>を実行してRailsを起動すること、<code>http://localhost:3000/blog</code>にアクセスできるようになります。</p><div class="note"><p>Deviseなどの他のエンジンではこの点が若干異なり、ルーティングで (<code>devise_for</code>などの) カスタムヘルパーを指定するものがあります。これらのヘルパーの動作は完全に同じです。事前に定義されたカスタマイズ可能なパスにエンジンの機能の一部をマウントします。</p></div><h4 id="エンジンの設定"><a href="#%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%B3%E3%81%AE%E8%A8%AD%E5%AE%9A">4.2 エンジンの設定</a></h4><p>作成したエンジンには<code>blorgh_articles</code>テーブルと<code>blorgh_comments</code>テーブル用のマイグレーションが含まれます。これらのテーブルをアプリケーションのデータベースに作成し、エンジンのモデルからこれらのテーブルにアクセスできるようにする必要があります。これらのマイグレーションをアプリケーションにコピーするには、以下のコマンドを実行します。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-$ rake blorgh:install:migrations
+$ bin/rails blorgh:install:migrations
 
 </pre>
 </div>
 <p>マイグレーションをコピーする必要のあるエンジンがいくつもある場合は、代りに<code>railties:install:migrations</code>を使用します。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-$ rake railties:install:migrations
+$ bin/rails railties:install:migrations
 
 </pre>
 </div>
@@ -670,15 +670,15 @@ Copied migration [timestamp_2]_create_blorgh_comments.rb from blorgh
 
 </pre>
 </div>
-<p>最初のタイムスタンプ (<code>[timestamp_1]</code>) が現在時刻、次のタイムスタンプ (<code>[timestamp_2]</code>) が現在時刻に1秒追加した値になります。このようになっているのは、エンジンのマイグレーションはアプリケーションの既存のマイグレーションがすべて終わってから実行する必要があるためです。</p><p>アプリケーションのコンテキストでマイグレーションを実行するには、単に<code>rake db:migirate</code>を実行します。<code>http://localhost:3000/blog</code>でエンジンにアクセスすると、記事は空の状態です。これは、アプリケーションの内部で作成されたテーブルはエンジンの内部で作成されたテーブルとは異なるためです。新しくマウントしたエンジンでもっといろいろやってみましょう。アプリケーションの動作は、エンジンを単体で動かしているときと同じであることに気付くことでしょう。</p><p>エンジンを1つだけマイグレーションしたい場合、以下のように<code>SCOPE</code>を指定します。</p><div class="code_container">
+<p>最初のタイムスタンプ (<code>[timestamp_1]</code>) が現在時刻、次のタイムスタンプ (<code>[timestamp_2]</code>) が現在時刻に1秒追加した値になります。このようになっているのは、エンジンのマイグレーションはアプリケーションの既存のマイグレーションがすべて終わってから実行する必要があるためです。</p><p>アプリケーションのコンテキストでマイグレーションを実行するには、単に<code>bin/rails db:migirate</code>を実行します。<code>http://localhost:3000/blog</code>でエンジンにアクセスすると、記事は空の状態です。これは、アプリケーションの内部で作成されたテーブルはエンジンの内部で作成されたテーブルとは異なるためです。新しくマウントしたエンジンでもっといろいろやってみましょう。アプリケーションの動作は、エンジンを単体で動かしているときと同じであることに気付くことでしょう。</p><p>エンジンを1つだけマイグレーションしたい場合、以下のように<code>SCOPE</code>を指定します。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-rake db:migrate SCOPE=blorgh
+bin/rails db:migrate SCOPE=blorgh
 
 </pre>
 </div>
 <p>このオプションは、エンジンを削除する前にマイグレーションを元に戻したい場合などに便利です。blorghエンジンによるすべてのマイグレーションを元に戻したい場合は以下のようなコマンドを実行します。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-rake db:migrate SCOPE=blorgh VERSION=0
+bin/rails db:migrate SCOPE=blorgh VERSION=0
 
 </pre>
 </div>
@@ -688,7 +688,7 @@ rails g model user name:string
 
 </pre>
 </div>
-<p>今後<code>users</code>テーブルをアプリケーションで使用できるようにするために、ここで<code>rake db:migrate</code>を実行する必要があります。</p><p>話を簡単にするため、記事のフォームのテキストフィールドは<code>author_name</code>とすることにします。記事を書くユーザーがここに自分の名前を入れられるようにします。エンジンはこの名前を使用して<code>User</code>オブジェクトを新規作成するか、その名前が既にあるかどうかを調べます。続いて、エンジンは作成または見つけた<code>User</code>オブジェクトを記事と関連付けます。</p><p>最初に、<code>author_name</code>テキストフィールドをエンジンのパーシャル<code>app/views/blorgh/articles/_form.html.erb</code>に追加する必要があります。そこで、以下のコードを<code>title</code>フィールドのすぐ上に追加します。</p><div class="code_container">
+<p>今後<code>users</code>テーブルをアプリケーションで使用できるようにするために、ここで<code>bin/rails db:migrate</code>を実行する必要があります。</p><p>話を簡単にするため、記事のフォームのテキストフィールドは<code>author_name</code>とすることにします。記事を書くユーザーがここに自分の名前を入れられるようにします。エンジンはこの名前を使用して<code>User</code>オブジェクトを新規作成するか、その名前が既にあるかどうかを調べます。続いて、エンジンは作成または見つけた<code>User</code>オブジェクトを記事と関連付けます。</p><p>最初に、<code>author_name</code>テキストフィールドをエンジンのパーシャル<code>app/views/blorgh/articles/_form.html.erb</code>に追加する必要があります。そこで、以下のコードを<code>title</code>フィールドのすぐ上に追加します。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 &lt;div class="field"&gt;
   &lt;%= f.label :author_name %&gt;&lt;br&gt;
@@ -727,7 +727,7 @@ $ bin/rails g migration add_author_id_to_blorgh_articles author_id:integer
 </div>
 <div class="note"><p>上のようにコマンドオプションでマイグレーション名とカラムの仕様を指定することで、特定のテーブルに追加しようとしているカラムがRailsによって自動的に認識され、そのためのマイグレーションが作成されます。この他にオプションを指定する必要はありません。</p></div><p>このマイグレーションはアプリケーションに対して実行する必要があります。これを行なうには、最初に以下のコマンドを実行してマイグレーションをエンジンからコピーする必要があります。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-$ rake blorgh:install:migrations
+$ bin/rails blorgh:install:migrations
 
 </pre>
 </div>
@@ -739,7 +739,7 @@ NOTE Migration [timestamp]_create_blorgh_articles.rb from blorgh has been skippe
 </div>
 <p>このマイグレーションを実行するコマンドは以下のとおりです。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-$ rake db:migrate
+$ bin/rails db:migrate
 
 </pre>
 </div>
@@ -1017,7 +1017,7 @@ end
 
 </pre>
 </div>
-<div class="info"><p>SassやCoffeeScriptなどの言語を使用する場合は、必要なライブラリを<code>.gemspec</code>に追加する必要があります。</p></div><h4 id="アセットとプリコンパイルを分離する"><a href="#%E3%82%A2%E3%82%BB%E3%83%83%E3%83%88%E3%81%A8%E3%83%97%E3%83%AA%E3%82%B3%E3%83%B3%E3%83%91%E3%82%A4%E3%83%AB%E3%82%92%E5%88%86%E9%9B%A2%E3%81%99%E3%82%8B">6.5 アセットとプリコンパイルを分離する</a></h4><p>エンジンが持つアセットは、ホスト側のアプリケーションでは必ずしも必要ではないことがあります。たとえば、エンジンでしか使用しない管理機能を作成したとしましょう。この場合、ホストアプリケーションでは<code>admin.css</code>や<code>admin.js</code>は不要です。これらのアセットを必要とするのは、gemのadminレイアウトしかないからです。ホストアプリケーションから見れば、自分が持つスタイルシートに<code>"blorgh/admin.css"</code>を追加する意味はありません。このような場合、これらのアセットを明示的にプリコンパイルする必要があります。それにより、<code>rake assets:precompile</code>が実行されたときにエンジンのアセットを追加するようsprocketsに指示されます。</p><p>プリコンパイルの対象となるアセットは<code>engine.rb</code>で定義できます。</p><div class="code_container">
+<div class="info"><p>SassやCoffeeScriptなどの言語を使用する場合は、必要なライブラリを<code>.gemspec</code>に追加する必要があります。</p></div><h4 id="アセットとプリコンパイルを分離する"><a href="#%E3%82%A2%E3%82%BB%E3%83%83%E3%83%88%E3%81%A8%E3%83%97%E3%83%AA%E3%82%B3%E3%83%B3%E3%83%91%E3%82%A4%E3%83%AB%E3%82%92%E5%88%86%E9%9B%A2%E3%81%99%E3%82%8B">6.5 アセットとプリコンパイルを分離する</a></h4><p>エンジンが持つアセットは、ホスト側のアプリケーションでは必ずしも必要ではないことがあります。たとえば、エンジンでしか使用しない管理機能を作成したとしましょう。この場合、ホストアプリケーションでは<code>admin.css</code>や<code>admin.js</code>は不要です。これらのアセットを必要とするのは、gemのadminレイアウトしかないからです。ホストアプリケーションから見れば、自分が持つスタイルシートに<code>"blorgh/admin.css"</code>を追加する意味はありません。このような場合、これらのアセットを明示的にプリコンパイルする必要があります。それにより、<code>bin/rails assets:precompile</code>が実行されたときにエンジンのアセットを追加するようsprocketsに指示されます。</p><p>プリコンパイルの対象となるアセットは<code>engine.rb</code>で定義できます。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 initializer "blorgh.assets.precompile" do |app|
   app.config.assets.precompile += %w(admin.css admin.js)

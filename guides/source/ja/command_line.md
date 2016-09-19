@@ -252,7 +252,7 @@ $ bin/rails generate scaffold HighScore game:string score:integer
 **migrate**を実行してマイグレーションを走らせる必要があります。つまりデータベースのスキーマを変更するためにRubyのコード(コードとは`20130717151933_create_high_scores.rb`に書かれたコードのことです)を実行する必要があります。データベースとはどのデータベースでしょうか？`rake db:migrate`コマンドを実行すると、RailsはSQLite3に新しいデータベースを作ります。Rakeについては後ほど詳しく説明します。
 
 ```bash
-$ bin/rake db:migrate
+$ bin/rails db:migrate
 ==  CreateHighScores: migrating ===============================================
 -- create_table(:high_scores)
    -> 0.0017s
@@ -373,7 +373,7 @@ RakeはRuby版のMakeです。Unixの 'make' に代わるような独立したRu
 例えば ```rake db:create --trace``` のようにしてタスクを実行します。
 
 ```bash
-$ bin/rake --tasks
+$ bin/rails --tasks
 rake about              # List versions of all Rails frameworks and the environment
 rake assets:clean       # Remove old compiled assets
 rake assets:clobber     # Remove compiled assets
@@ -393,7 +393,7 @@ INFO: ```rake -T```でもタスクの一覧を表示することができます�
 `rake about`を実行すると、Ruby、RubyGems、Rails、Railsのサブコンポーネント (訳注: Active RecordやAction Packなど) のバージョン、Railsアプリケーションのフォルダー名、現在のRailsの環境名とデータベースアダプター、そして、スキーマのバージョンが表示されます。誰かに質問をしたいときや、セキュリティパッチが自分のアプリケーションに影響するか確認したいときなど、現在使用しているRailsに関する情報が必要なときに役立ちます。
 
 ```bash
-$ bin/rake about
+$ bin/rails about
 About your application's environment
 Ruby version              1.9.3 (x86_64-linux)
 RubyGems version          1.3.6
@@ -437,7 +437,7 @@ Rakeの`db:`という名前空間に属するタスクのうち、最もよく�
 `rake notes`は、コードのコメントからFIXME、OPTIMIZE、TODOで始まる行を探し出して表示します (訳注: [FIXME]のように[から始まるものはヒットしません)。検索対象となるファイルの拡張子は`.builder`、`.rb`、`.rake`、`.yml`、`.yaml`、`.ruby`、`.css`、`.js`、`.erb`で、デフォルトのアノテーション以外に独自のアノテーションも使用できます。
 
 ```bash
-$ bin/rake notes
+$ bin/rails notes
 (in /home/foobar/commandsapp)
 app/controllers/admin/users_controller.rb:
   * [ 20] [TODO] any other way to do this?
@@ -457,7 +457,7 @@ config.annotations.register_extensions("scss", "sass", "less") { |annotation| /\
 特定のアノテーションのみを表示したいとき(例えばFIXMEのみを表示したいとき)は`rake notes:fixme`のように実行します。このとき、アノテーションは小文字で書くことに注意してください。
 
 ```bash
-$ bin/rake notes:fixme
+$ bin/rails notes:fixme
 (in /home/foobar/commandsapp)
 app/controllers/admin/users_controller.rb:
   * [132] high priority for next deploy
@@ -469,7 +469,7 @@ app/models/school.rb:
 独自のアノテーションを使う際には、`rake notes:custom`と書いて、`ANNOTATION`環境変数を使ってアノテーション名を指定します。
 
 ```bash
-$ bin/rake notes:custom ANNOTATION=BUG
+$ bin/rails notes:custom ANNOTATION=BUG
 (in /home/foobar/commandsapp)
 app/models/article.rb:
   * [ 23] Have to fix this one before pushing!
@@ -481,7 +481,7 @@ NOTE: 特定のアノテーションのみを表示するときや、独自の�
 
 ```bash
 $ export SOURCE_ANNOTATION_DIRECTORIES='spec,vendor'
-$ bin/rake notes
+$ bin/rails notes
 (in /home/foobar/commandsapp)
 app/models/user.rb:
   * [ 35] [FIXME] User should have a subscription at this point
@@ -553,9 +553,9 @@ end
 そして、以下のようにしてタスクを呼び出します。
 
 ```bash
-$ bin/rake task_name
-$ bin/rake "task_name[value 1]" # entire argument string should be quoted
-$ bin/rake db:nothing
+$ bin/rails task_name
+$ bin/rails "task_name[value 1]" # entire argument string should be quoted
+$ bin/rails db:nothing
 ```
 
 NOTE: アプリケーション内のモデルを使用したり、データベースに対してクエリを投げたりしたいときは、タスクから`environment`タスクへの依存関係を定義する必要があります。`environment`タスクはアプリケーションのコードを読み込むタスクです。

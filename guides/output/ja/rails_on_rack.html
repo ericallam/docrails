@@ -358,7 +358,7 @@ $ rackup --help
 </div>
 <h3 id="action-dispatcherのミドルウェアスタック"><a href="#action-dispatcher%E3%81%AE%E3%83%9F%E3%83%89%E3%83%AB%E3%82%A6%E3%82%A7%E3%82%A2%E3%82%B9%E3%82%BF%E3%83%83%E3%82%AF">3 Action Dispatcherのミドルウェアスタック</a></h3><p>Action Dispatcher内部のコンポーネントの多くは、Rackのミドルウェアとして実装されています。Rails内外の様々なミドルウェアを結合して、完全なRailsのRackアプリケーションを作るために、<code>Rails::Application</code>は<code>ActionDispatch::MiddlewareStack</code>を使用しています。</p><div class="note"><p><code>ActionDispatch::MiddlewareStack</code>は<code>Rack::Builder</code>のRails版ですが、Railsアプリケーションの要求を満たすために、より柔軟性があり、多機能なクラスになっています。</p></div><h4 id="ミドルウェアスタックを調べる"><a href="#%E3%83%9F%E3%83%89%E3%83%AB%E3%82%A6%E3%82%A7%E3%82%A2%E3%82%B9%E3%82%BF%E3%83%83%E3%82%AF%E3%82%92%E8%AA%BF%E3%81%B9%E3%82%8B">3.1 ミドルウェアスタックを調べる</a></h4><p>Railsにはミドルウェアスタックを調べるための便利なRakeタスクがあります。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-$ bin/rake middleware
+$ bin/rails middleware
 
 </pre>
 </div>
@@ -428,7 +428,7 @@ config.middleware.delete "Rack::Lock"
 </div>
 <p>ミドルウェアスタックを調べると、<code>Rack::Lock</code>が消えていることが分かります。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-$ bin/rake middleware
+$ bin/rails middleware
 (in /Users/lifo/Rails/blog)
 use ActionDispatch::Static
 use #&lt;ActiveSupport::Cache::Strategy::LocalCache::Middleware:0x00000001c304c8&gt;

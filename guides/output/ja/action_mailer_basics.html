@@ -383,7 +383,7 @@ example.comへのサインアップが成功しました。ユーザー名は「
 <p>現在のAction Mailerでは、<code>mail</code>メソッドを呼び出すと2種類のテンプレート (テキストおよびHTML) があるかどうかを探し、<code>multipart/alternative</code>形式のメールを自動生成します。</p><h5 id="メイラーを呼び出す"><a href="#%E3%83%A1%E3%82%A4%E3%83%A9%E3%83%BC%E3%82%92%E5%91%BC%E3%81%B3%E5%87%BA%E3%81%99">2.1.4 メイラーを呼び出す</a></h5><p>Railsのメイラーは、ビューのレンダリングと本質的に同じことを行っています。ビューのレンダリングではHTTPプロトコルとして送信されますが、メイラーではメールのプロトコルを経由して送信する点のみが異なります。従って、ユーザー作成に成功したときにメールを送信するようコントローラからメイラーに指示するだけで機能するようになります。</p><p>メイラー呼び出しは非常に簡単です。</p><p>例として、最初にscaffoldで<code>User</code>を作成してみましょう。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ bin/rails generate scaffold user name email login
-$ bin/rake db:migrate
+$ bin/rails db:migrate
 
 </pre>
 </div>

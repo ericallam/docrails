@@ -443,7 +443,7 @@ assert true
 </ul>
 <p>1つのテストには必ず1つ以上のアサーションが含まれます。すべてのアサーションに成功してはじめてテストがパスします。</p><h4 id="テストデータベースのスキーマを管理する"><a href="#%E3%83%86%E3%82%B9%E3%83%88%E3%83%87%E3%83%BC%E3%82%BF%E3%83%99%E3%83%BC%E3%82%B9%E3%81%AE%E3%82%B9%E3%82%AD%E3%83%BC%E3%83%9E%E3%82%92%E7%AE%A1%E7%90%86%E3%81%99%E3%82%8B">3.1 テストデータベースのスキーマを管理する</a></h4><p>テストを実行するには、テストデータベースが最新の状態で構成されている必要があります。テストヘルパーは、テストデータベースに未完了のマイグレーションが残っていないかどうかをチェックします。マイグレーションがすべて終わっている場合、<code>db/schema.rb</code>や<code>db/structure.sql</code>をテストデータベースに読み込みます。ペンディングされたマイグレーションがある場合、エラーが発生します。</p><h4 id="テストを実行する"><a href="#%E3%83%86%E3%82%B9%E3%83%88%E3%82%92%E5%AE%9F%E8%A1%8C%E3%81%99%E3%82%8B">3.2 テストを実行する</a></h4><p><code>rake test</code>コマンドでテストケースを含むファイルを呼び出すことで、簡単にテストを実行できます。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-$ bin/rake test test/models/article_test.rb
+$ bin/rails test test/models/article_test.rb
 .
 
 Finished tests in 0.009262s, 107.9680 tests/s, 107.9680 assertions/s.
@@ -454,7 +454,7 @@ Finished tests in 0.009262s, 107.9680 tests/s, 107.9680 assertions/s.
 </div>
 <p>テスト実行時にテストメソッド名を与えれば、テストケースに含まれる特定のテストメソッドだけを実行することもできます。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-$ bin/rake test test/models/article_test.rb test_the_truth
+$ bin/rails test test/models/article_test.rb test_the_truth
 .
 
 Finished tests in 0.009064s, 110.3266 tests/s, 110.3266 assertions/s.
@@ -474,7 +474,7 @@ end
 </div>
 <p>それでは、新しく追加したテストを実行してみましょう。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-$ bin/rake test test/models/article_test.rb test_should_not_save_article_without_title
+$ bin/rails test test/models/article_test.rb test_should_not_save_article_without_title
 F
 
 Finished tests in 0.044632s, 22.4054 tests/s, 22.4054 assertions/s.
@@ -514,7 +514,7 @@ end
 </div>
 <p>このテストはパスするはずです。もう一度テストを実行してみましょう。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-$ bin/rake test test/models/article_test.rb test_should_not_save_article_without_title
+$ bin/rails test test/models/article_test.rb test_should_not_save_article_without_title
 .
 
 Finished tests in 0.047721s, 20.9551 tests/s, 20.9551 assertions/s.
@@ -535,7 +535,7 @@ end
 </div>
 <p>これで、このテストを実行するとさらに多くのメッセージがコンソールに表示されるようになりました。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-$ bin/rake test test/models/article_test.rb test_should_report_error
+$ bin/rails test test/models/article_test.rb test_should_report_error
 E:
 
 Finished tests in 0.030974s, 32.2851 tests/s, 0.0000 assertions/s.
@@ -551,7 +551,7 @@ NameError: undefined local variable or method `some_undefined_variable' for #&lt
 </div>
 <p>今度は'E'が出力されます。これはエラーが発生したテストが1つあることを示しています。</p><div class="note"><p>テストスイートに含まれる各テストメソッドは、エラーまたはアサーション失敗が発生するとそこで実行を中止し、次のメソッドに進みます。すべてのテストメソッドはアルファベット順に実行されます。</p></div><p>テストが失敗すると、それに応じたバックトレースが出力されます。Railsはデフォルトでバックトレースをフィルタし、アプリケーションに関連するバックトレースのみを出力します。これによって、フレームワークから発生する不要な情報を排除して作成中のコードに集中できます。完全なバックトレースを参照しなければならなくなった場合は、<code>BACKTRACE</code>環境変数を設定するだけで動作を変更できます。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-$ BACKTRACE=1 bin/rake test test/models/article_test.rb
+$ BACKTRACE=1 bin/rails test test/models/article_test.rb
 
 </pre>
 </div>

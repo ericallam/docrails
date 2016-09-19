@@ -574,13 +574,13 @@ config.assets.debug = false
 
 </pre>
 </div>
-<div class="note"><p>アセットパイプラインの:cacheオプションと:concatオプションは廃止されました。これらのオプションは<code>javascript_include_tag</code>と<code>stylesheet_link_tag</code>から削除してください。</p></div><p>フィンガープリントの振る舞いについては<code>config.assets.digest</code>初期化オプションで制御できます。productionモードではデフォルトで<code>true</code>、それ以外では<code>false</code>です。</p><div class="note"><p>デフォルトの<code>config.assets.digest</code>オプションは、通常は変更しないでください。ファイル名にダイジェストが含まれないと、遠い将来にヘッダが設定されたときに (ブラウザなどの) リモートクライアントがファイルの内容変更を検出して再度取得することができなくなってしまいます。</p></div><h4 id="アセットをプリコンパイルする"><a href="#%E3%82%A2%E3%82%BB%E3%83%83%E3%83%88%E3%82%92%E3%83%97%E3%83%AA%E3%82%B3%E3%83%B3%E3%83%91%E3%82%A4%E3%83%AB%E3%81%99%E3%82%8B">4.1 アセットをプリコンパイルする</a></h4><p>Railsには、パイプラインにあるアセットマニフェストなどのファイルを手動でコンパイルするためのrakeタスクが1つバンドルされています。</p><p>コンパイルされたアセットは、<code>config.assets.prefix</code>で指定された場所に保存されます。この保存場所は、デフォルトでは<code>/assets</code>ディレクトリです。</p><p>デプロイ時にこのrakeタスクをサーバー上で呼び出すと、コンパイル済みアセットをサーバー上で直接作成できます。ローカル環境でコンパイルする方法については次のセクションを参照してください。</p><p>以下がそのrakeタスクです。</p><div class="code_container">
+<div class="note"><p>アセットパイプラインの:cacheオプションと:concatオプションは廃止されました。これらのオプションは<code>javascript_include_tag</code>と<code>stylesheet_link_tag</code>から削除してください。</p></div><p>フィンガープリントの振る舞いについては<code>config.assets.digest</code>初期化オプションで制御できます。productionモードではデフォルトで<code>true</code>、それ以外では<code>false</code>です。</p><div class="note"><p>デフォルトの<code>config.assets.digest</code>オプションは、通常は変更しないでください。ファイル名にダイジェストが含まれないと、遠い将来にヘッダが設定されたときに (ブラウザなどの) リモートクライアントがファイルの内容変更を検出して再度取得することができなくなってしまいます。</p></div><h4 id="アセットをプリコンパイルする"><a href="#%E3%82%A2%E3%82%BB%E3%83%83%E3%83%88%E3%82%92%E3%83%97%E3%83%AA%E3%82%B3%E3%83%B3%E3%83%91%E3%82%A4%E3%83%AB%E3%81%99%E3%82%8B">4.1 アセットをプリコンパイルする</a></h4><p>Railsには、パイプラインにあるアセットマニフェストなどのファイルを手動でコンパイルするためのタスクが1つバンドルされています。</p><p>コンパイルされたアセットは、<code>config.assets.prefix</code>で指定された場所に保存されます。この保存場所は、デフォルトでは<code>/assets</code>ディレクトリです。</p><p>デプロイ時にこのタスクをサーバー上で呼び出すと、コンパイル済みアセットをサーバー上で直接作成できます。ローカル環境でコンパイルする方法については次のセクションを参照してください。</p><p>以下がそのタスクです。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-$ RAILS_ENV=production bin/rake assets:precompile
+$ RAILS_ENV=production bin/rails assets:precompile
 
 </pre>
 </div>
-<p>Capistrano (v2.15.1以降) にはデプロイ中にこのrakeタスクを扱うレシピが含まれています。
+<p>Capistrano (v2.15.1以降) にはデプロイ中にこのタスクを扱うレシピが含まれています。
 <code>Capfile</code>に以下を追加します。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 load 'deploy/assets'
@@ -622,7 +622,7 @@ end
 
 </pre>
 </div>
-<div class="note"><p>プリコンパイル配列にSassやCoffeeScriptファイルなどを追加する場合にも、必ず.jsや.cssで終わるファイル名 (つまりコンパイル後のファイル名として期待されているファイル名) も指定してください。</p></div><p>このrakeタスクは、<code>manifest-md5hash.json</code>ファイルも生成します。これはすべてのアセットとそれらのフィンガープリントのリストです。Railsヘルパーはこれを使用して、マッピングリクエストがSprocketsへ戻されることを回避します。典型的なマニフェストファイルの内容は以下のような感じになっています。</p><div class="code_container">
+<div class="note"><p>プリコンパイル配列にSassやCoffeeScriptファイルなどを追加する場合にも、必ず.jsや.cssで終わるファイル名 (つまりコンパイル後のファイル名として期待されているファイル名) も指定してください。</p></div><p>このタスクは、<code>manifest-md5hash.json</code>ファイルも生成します。これはすべてのアセットとそれらのフィンガープリントのリストです。Railsヘルパーはこれを使用して、マッピングリクエストがSprocketsへ戻されることを回避します。典型的なマニフェストファイルの内容は以下のような感じになっています。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 {"files":{"application-723d1be6cc741a3aabb1cec24276d681.js":{"logical_path":"application.js","mtime":"2013-07-26T22:55:03-07:00","size":302506,
 "digest":"723d1be6cc741a3aabb1cec24276d681"},"application-12b3c7dd74d2e9df37e7cbb1efa76a6d.css":{"logical_path":"application.css","mtime":"2013-07-26T22:54:54-07:00","size":1560,

@@ -306,7 +306,7 @@ config.active_record.schema_format = :ruby
 <p>この設定は、特にActive Recordの設定に使用されます。</p><h4 id="rails全般の設定"><a href="#rails%E5%85%A8%E8%88%AC%E3%81%AE%E8%A8%AD%E5%AE%9A">3.1 Rails全般の設定</a></h4><p>Rails全般に対する設定を行うには、<code>Rails::Railtie</code>オブジェクトを呼び出すか、<code>Rails::Engine</code>や<code>Rails::Application</code>のサブクラスを呼び出します。</p>
 <ul>
 <li>
-<p><code>config.after_initialize</code>にはブロックを渡すことができます。このブロックは、Railsによるアプリケーションの初期化が完了した <em>直後</em> に実行されます。アプリケーションの初期化作業には、フレームワーク自体の初期化、エンジンの初期化、そして<code>config/initializers</code>に記述されたすべてのアプリケーションイニシャライザの実行が含まれます。ここで渡すブロックはrakeタスクとして<em>実行される</em> ことにご注意ください。このブロックは、他のイニシャライザによって設定される値を設定するのに便利です。</p>
+<p><code>config.after_initialize</code>にはブロックを渡すことができます。このブロックは、Railsによるアプリケーションの初期化が完了した <em>直後</em> に実行されます。アプリケーションの初期化作業には、フレームワーク自体の初期化、エンジンの初期化、そして<code>config/initializers</code>に記述されたすべてのアプリケーションイニシャライザの実行が含まれます。ここで渡すブロックはタスクとして<em>実行される</em> ことにご注意ください。このブロックは、他のイニシャライザによって設定される値を設定するのに便利です。</p>
 <div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 config.after_initialize do
@@ -381,7 +381,7 @@ config.session_store :my_custom_store
 <li><p><code>config.assets.css_compressor</code>は、CSSの圧縮に使用するプログラムを定義します。このオプションは、<code>sass-rails</code>を使用するとデフォルトで設定されます。このオプションでは<code>:yui</code>という一風変わったオプションを指定できます。これは<code>yui-compressor</code> gemのことです。</p></li>
 <li><p><code>config.assets.js_compressor</code>は、JavaScriptの圧縮に使用するプログラムを定義します。指定できる値は<code>:closure</code>、<code>:uglifier</code>、<code>:yui</code>です。それぞれ<code>closure-compiler</code>、<code>uglifier</code>、<code>yui-compressor</code> gemに対応します。</p></li>
 <li><p><code>config.assets.paths</code>には、アセット探索用のパスを指定します。この設定オプションにパスを追加すると、アセットの検索先として追加されます。</p></li>
-<li><p><code>config.assets.precompile</code>は、<code>application.css</code>と<code>application.js</code>以外に追加したいアセットがある場合に指定します。これらは<code>rake assets:precompile</code>を実行するときに一緒にプリコンパイルされます。</p></li>
+<li><p><code>config.assets.precompile</code>は、<code>application.css</code>と<code>application.js</code>以外に追加したいアセットがある場合に指定します。これらは<code>bin/rails assets:precompile</code>を実行するときに一緒にプリコンパイルされます。</p></li>
 <li><p><code>config.assets.prefix</code>はアセットを置くディレクトリを指定します。デフォルトは<code>/assets</code>です。</p></li>
 <li><p><code>config.assets.digest</code>は、アセット名に使用するMD5フィンガープリントを有効にするかどうかを指定します。<code>production.rb</code>ではデフォルトで<code>true</code>に設定されます。</p></li>
 <li><p><code>config.assets.debug</code>は、デバッグ用にアセットの連結と圧縮をやめるかどうかを指定します。<code>development.rb</code>ではデフォルトで<code>true</code>に設定されます。</p></li>

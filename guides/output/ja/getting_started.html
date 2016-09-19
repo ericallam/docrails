@@ -527,9 +527,9 @@ end
 
 </pre>
 </div>
-<p>コマンドラインで<code>rake routes</code>コマンドを実行すると、標準的なRESTfulアクションへのルーティングがすべて定義されていることが確認できます。以下の出力のprefix列や他の列については後ほど解説しますが、ここでご注目いただきたいのは、Railsは「articles」というリソース名から単数形の「article」を推測し、両者をその意味にそって使い分けているという点です。prefix列で単一の項目には単数形のarticle、複数項目を扱う場合には複数形のarticlesが使われているという具合です。</p><div class="code_container">
+<p>コマンドラインで<code>bin/rails routes</code>コマンドを実行すると、標準的なRESTfulアクションへのルーティングがすべて定義されていることが確認できます。以下の出力のprefix列や他の列については後ほど解説しますが、ここでご注目いただきたいのは、Railsは「articles」というリソース名から単数形の「article」を推測し、両者をその意味にそって使い分けているという点です。prefix列で単一の項目には単数形のarticle、複数項目を扱う場合には複数形のarticlesが使われているという具合です。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-$ rake routes
+$ bin/rails routes
       Prefix Verb   URI Pattern                  Controller#Action
     articles GET    /articles(.:format)          articles#index
              POST   /articles(.:format)          articles#create
@@ -600,9 +600,9 @@ Missing template articles/new, application/new with {locale:[:en], formats:[:htm
 </pre>
 </div>
 <p>この例では、<code>:url</code>オプションに<code>articles_path</code>ヘルパーが渡されています。
-このときRailsの内部で何が行われているのかを知るために、<code>rake routes</code>の出力結果をもう一度見てみましょう。</p><div class="code_container">
+このときRailsの内部で何が行われているのかを知るために、<code>bin/rails routes</code>の出力結果をもう一度見てみましょう。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-$ rake routes
+$ bin/rails routes
       Prefix Verb   URI Pattern                  Controller#Action
     articles GET    /articles(.:format)          articles#index
              POST   /articles(.:format)          articles#create
@@ -648,7 +648,7 @@ $ rails generate model Article title:string text:text
 
 </pre>
 </div>
-<p>このコマンドを実行すると、<code>Article</code>モデルが作成されます。その中にはstring型の <em>title</em> 属性とtext型の <em>text</em> 属性が作成されています。これらの属性は、データベースの<code>articles</code>テーブルに自動的に追加され、<code>Article</code>モデルと対応付けられます (訳注: 実際には後述するマイグレーションを行わないとデータベースとの対応付けは完了しません)。</p><p>Railsによって多数のファイルが作成されました。ここで必要なのは、<code>app/models/article.rb</code>と<code>db/migrate/20140120191729_create_articles.rb</code>の2つだけです (後者のファイル名には日付が含まれているのでこれと同じにはなりません)。後者のマイグレーションファイルは、データベース構造を作成するためのものであり、この次に説明します。</p><div class="info"><p>Active Recordは、データベースのカラム名とモデルの属性を自動的に対応付けるインテリジェントな機能を有しています。このおかげで、Railsのモデルでは属性をいちいち宣言する必要がありません。そうした作業はActive Recordが自動的にやってくれます。</p></div><h4 id="マイグレーションを実行する"><a href="#%E3%83%9E%E3%82%A4%E3%82%B0%E3%83%AC%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%92%E5%AE%9F%E8%A1%8C%E3%81%99%E3%82%8B">5.5 マイグレーションを実行する</a></h4><p>既に見たように<code>rails generate model</code>を実行すると <em>データベースマイグレーション</em> ファイルが<code>db/migrate</code>の下に作成されます。マイグレーションはRubyのクラスであり、データベーステーブルの作成や変更を簡単に行うためのしくみです。マイグレーションを実行するにはrakeコマンドを実行します。マイグレーションを使用して行ったデータベース構成の変更は、後から取り消すことができます。マイグレーションファイルの名前にはタイムスタンプが含まれており、これに基いて、マイグレーションは作成された順に実行されます。</p><p>ここで<code>db/migrate/20140120191729_create_articles.rb</code> ファイルをエディタで開いてみると (タイムスタンプは各自異なることにご注意ください)、以下のようになっています。</p><div class="code_container">
+<p>このコマンドを実行すると、<code>Article</code>モデルが作成されます。その中にはstring型の <em>title</em> 属性とtext型の <em>text</em> 属性が作成されています。これらの属性は、データベースの<code>articles</code>テーブルに自動的に追加され、<code>Article</code>モデルと対応付けられます (訳注: 実際には後述するマイグレーションを行わないとデータベースとの対応付けは完了しません)。</p><p>Railsによって多数のファイルが作成されました。ここで必要なのは、<code>app/models/article.rb</code>と<code>db/migrate/20140120191729_create_articles.rb</code>の2つだけです (後者のファイル名には日付が含まれているのでこれと同じにはなりません)。後者のマイグレーションファイルは、データベース構造を作成するためのものであり、この次に説明します。</p><div class="info"><p>Active Recordは、データベースのカラム名とモデルの属性を自動的に対応付けるインテリジェントな機能を有しています。このおかげで、Railsのモデルでは属性をいちいち宣言する必要がありません。そうした作業はActive Recordが自動的にやってくれます。</p></div><h4 id="マイグレーションを実行する"><a href="#%E3%83%9E%E3%82%A4%E3%82%B0%E3%83%AC%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%92%E5%AE%9F%E8%A1%8C%E3%81%99%E3%82%8B">5.5 マイグレーションを実行する</a></h4><p>既に見たように<code>rails generate model</code>を実行すると <em>データベースマイグレーション</em> ファイルが<code>db/migrate</code>の下に作成されます。マイグレーションはRubyのクラスであり、データベーステーブルの作成や変更を簡単に行うためのしくみです。マイグレーションを実行するにはコマンドを実行します。マイグレーションを使用して行ったデータベース構成の変更は、後から取り消すことができます。マイグレーションファイルの名前にはタイムスタンプが含まれており、これに基いて、マイグレーションは作成された順に実行されます。</p><p>ここで<code>db/migrate/20140120191729_create_articles.rb</code> ファイルをエディタで開いてみると (タイムスタンプは各自異なることにご注意ください)、以下のようになっています。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class CreateArticles &lt; ActiveRecord::Migration
   def change
@@ -663,9 +663,9 @@ end
 
 </pre>
 </div>
-<p>上のマイグレーションファイルには<code>change</code>という名前のメソッドが作成されており、マイグレーションの実行時に呼び出されます。このメソッドで定義されてる操作は取り消しが可能です。つまり、Railsはchangeメソッドで行われたマイグレーションを必要に応じて元に戻すことができます。このマイグレーションを実行すると、<code>articles</code>というテーブルが作成され、文字列カラムとテキストカラムが1つずつ作成されます。Railsは、マイグレーション時に作成日と更新日を追跡するためのタイムスタンプフィールドを2つ作成します。これは指定がなくても自動的に行われます。</p><div class="info"><p>マイグレーションの詳細については、<a href="active_record_migrations.html">Active Recordマイグレーション</a>を参照してください。</p></div><p>ここでは、以下のようにrakeコマンドでマイグレーションを実行します。</p><div class="code_container">
+<p>上のマイグレーションファイルには<code>change</code>という名前のメソッドが作成されており、マイグレーションの実行時に呼び出されます。このメソッドで定義されてる操作は取り消しが可能です。つまり、Railsはchangeメソッドで行われたマイグレーションを必要に応じて元に戻すことができます。このマイグレーションを実行すると、<code>articles</code>というテーブルが作成され、文字列カラムとテキストカラムが1つずつ作成されます。Railsは、マイグレーション時に作成日と更新日を追跡するためのタイムスタンプフィールドを2つ作成します。これは指定がなくても自動的に行われます。</p><div class="info"><p>マイグレーションの詳細については、<a href="active_record_migrations.html">Active Recordマイグレーション</a>を参照してください。</p></div><p>ここでは、以下のようにコマンドでマイグレーションを実行します。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-$ rake db:migrate
+$ bin/rails db:migrate
 
 </pre>
 </div>
@@ -678,7 +678,7 @@ $ rake db:migrate
 
 </pre>
 </div>
-<div class="note"><p>マイグレーションはデフォルトではdevelopment (開発) 環境で実行されます。そのため、<code>config/database.yml</code>ファイルの<code>development</code>セクションで定義されている開発用データベースに対して実行される点にご注意ください。production (本番) 環境など、development以外の環境に対してもマイグレーションを実行したい場合は、<code>rake db:migrate RAILS_ENV=production</code>のように環境変数を明示的に指定する必要があります。</p></div><h4 id="コントローラでデータを保存する"><a href="#%E3%82%B3%E3%83%B3%E3%83%88%E3%83%AD%E3%83%BC%E3%83%A9%E3%81%A7%E3%83%87%E3%83%BC%E3%82%BF%E3%82%92%E4%BF%9D%E5%AD%98%E3%81%99%E3%82%8B">5.6 コントローラでデータを保存する</a></h4><p>ふたたび<code>ArticlesController</code>に戻りましょう。先ほど作成した<code>Article</code>モデルを使用して、<code>create</code>アクションを変更しなければなりません。<code>app/controllers/articles_controller.rb</code>をエディタで開き、<code>create</code>アクションを次のように変更します。</p><div class="code_container">
+<div class="note"><p>マイグレーションはデフォルトではdevelopment (開発) 環境で実行されます。そのため、<code>config/database.yml</code>ファイルの<code>development</code>セクションで定義されている開発用データベースに対して実行される点にご注意ください。production (本番) 環境など、development以外の環境に対してもマイグレーションを実行したい場合は、<code>bin/rails db:migrate RAILS_ENV=production</code>のように環境変数を明示的に指定する必要があります。</p></div><h4 id="コントローラでデータを保存する"><a href="#%E3%82%B3%E3%83%B3%E3%83%88%E3%83%AD%E3%83%BC%E3%83%A9%E3%81%A7%E3%83%87%E3%83%BC%E3%82%BF%E3%82%92%E4%BF%9D%E5%AD%98%E3%81%99%E3%82%8B">5.6 コントローラでデータを保存する</a></h4><p>ふたたび<code>ArticlesController</code>に戻りましょう。先ほど作成した<code>Article</code>モデルを使用して、<code>create</code>アクションを変更しなければなりません。<code>app/controllers/articles_controller.rb</code>をエディタで開き、<code>create</code>アクションを次のように変更します。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 def create
   @article = Article.new(params[:article])
@@ -712,7 +712,7 @@ private
 
 </pre>
 </div>
-<div class="info"><p>詳細については、上に挙げた参考資料に加えて<a href="http://weblog.rubyonrails.org/2012/3/21/strong-parameters/">Strong Parametersに関する公式ブログの記事</a> (英語) を参照してください。</p></div><h4 id="記事を表示する"><a href="#%E8%A8%98%E4%BA%8B%E3%82%92%E8%A1%A8%E7%A4%BA%E3%81%99%E3%82%8B">5.7 記事を表示する</a></h4><p>現時点の状態でフォームを再度送信すると、<code>show</code>アクションがないというメッセージがRailsから返されます。このままでは実用に耐えないので、<code>show</code>アクションを追加して先に進むことにしましょう。</p><p><code>rake routes</code>の出力結果にもあったように<code>show</code>アクションへのルーティングは以下のようになります。</p><div class="code_container">
+<div class="info"><p>詳細については、上に挙げた参考資料に加えて<a href="http://weblog.rubyonrails.org/2012/3/21/strong-parameters/">Strong Parametersに関する公式ブログの記事</a> (英語) を参照してください。</p></div><h4 id="記事を表示する"><a href="#%E8%A8%98%E4%BA%8B%E3%82%92%E8%A1%A8%E7%A4%BA%E3%81%99%E3%82%8B">5.7 記事を表示する</a></h4><p>現時点の状態でフォームを再度送信すると、<code>show</code>アクションがないというメッセージがRailsから返されます。このままでは実用に耐えないので、<code>show</code>アクションを追加して先に進むことにしましょう。</p><p><code>bin/rails routes</code>の出力結果にもあったように<code>show</code>アクションへのルーティングは以下のようになります。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 article GET    /articles/:id(.:format)      articles#show
 
@@ -742,7 +742,7 @@ end
 </div>
 <p>上のように変更したことで、新しい記事の作成がようやくできるようになりました。
 <a href="http://localhost:3000/articles/new">http://localhost:3000/articles/new</a>をブラウザで開いて試してみましょう。</p><p><img src="images/getting_started/show_action_for_articles.png" alt="Show action for articles"></p><h4 id="すべての記事を一覧表示する"><a href="#%E3%81%99%E3%81%B9%E3%81%A6%E3%81%AE%E8%A8%98%E4%BA%8B%E3%82%92%E4%B8%80%E8%A6%A7%E8%A1%A8%E7%A4%BA%E3%81%99%E3%82%8B">5.8 すべての記事を一覧表示する</a></h4><p>単独の記事は表示できるようになりましたが、今度は記事の一覧も表示できるようにしてみましょう。
-今度も<code>rake routes</code>でルーティングを確認すると、以下のようなルーティングが既にあります。</p><div class="code_container">
+今度も<code>bin/rails routes</code>でルーティングを確認すると、以下のようなルーティングが既にあります。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 articles GET    /articles(.:format)          articles#index
 
@@ -1031,7 +1031,7 @@ private
 
 </pre>
 </div>
-<h4 id="記事を削除する"><a href="#%E8%A8%98%E4%BA%8B%E3%82%92%E5%89%8A%E9%99%A4%E3%81%99%E3%82%8B">5.13 記事を削除する</a></h4><p>いよいよCRUDのDまで到達しました。ここでは記事をデータベースから削除します。RESTの慣例に従い、記事の削除に使用するルーティングを<code>rake routes</code>の出力結果から取り出したのが以下です。</p><div class="code_container">
+<h4 id="記事を削除する"><a href="#%E8%A8%98%E4%BA%8B%E3%82%92%E5%89%8A%E9%99%A4%E3%81%99%E3%82%8B">5.13 記事を削除する</a></h4><p>いよいよCRUDのDまで到達しました。ここでは記事をデータベースから削除します。RESTの慣例に従い、記事の削除に使用するルーティングを<code>bin/rails routes</code>の出力結果から取り出したのが以下です。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 DELETE /articles/:id(.:format)      articles#destroy
 
@@ -1141,7 +1141,7 @@ end
 </div>
 <p><code>t.references</code>という行は、2つのモデルの関連付けを指定するための外部キーを設定します。このとき、関連付け用のインデックスもカラム上に作成されます。それではマイグレーションを実行しましょう。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-$ rake db:migrate
+$ bin/rails db:migrate
 
 </pre>
 </div>
@@ -1505,14 +1505,7 @@ class CommentsController &lt; ApplicationController
 <li><a href="http://www.ruby.or.jp/ja/tech/development/web_application/100_community.html">Ruby on Railsメーリングリスト</a></li>
 <li>irc.freenode.net上の<a href="irc://irc.freenode.net/#rubyonrails">#rubyonrails</a>チャンネル</li>
 </ul>
-<p>Railsには、rakeコマンドラインユーティリティを使用して生成できるビルトインヘルプもあります。</p>
-<ul>
-<li>
-<code>rake doc:guides</code>を実行すると、本Railsガイドの完全なコピーがアプリケーションの<code>doc/guides</code>フォルダに生成されます。ブラウザで<code>doc/guides/index.html</code>を開くことでガイドを参照できます。</li>
-<li>
-<code>rake doc:rails</code>を実行すると、Rails APIドキュメントの完全なコピーがアプリケーションの<code>doc/api</code>フォルダに生成されます。ブラウザで<code>doc/api/index.html</code>を開いてAPIドキュメントを参照できます。</li>
-</ul>
-<div class="info"><p><code>doc:guides</code> rakeタスクを使用してRailsガイドをローカル生成するには、RedCloth gemをインストールする必要があります。RedCloth gemを<code>Gemfile</code>に追記して<code>bundle install</code>を実行することで利用できるようになります。</p></div><h3 id="設定の落とし穴"><a href="#%E8%A8%AD%E5%AE%9A%E3%81%AE%E8%90%BD%E3%81%A8%E3%81%97%E7%A9%B4">11 設定の落とし穴</a></h3><p>Railsでの無用なトラブルを避けるための最も初歩的な方法は、外部データを常にUTF-8で保存することです。このとおりにしないと、RubyライブラリやRailsはネイティブデータをたびたびUTF-8に変換しなければならず、しかもときに失敗することがあります。外部データを常にUTF-8にしておくことをぜひお勧めします。</p><p>外部データのエンコードが不統一な場合によく起きる症状としては、たとえば画面に黒い菱型◆と疑問符が表示されるというものがあります。他にも、"ü"という文字のはずが"Ã¼"という文字に変わっている、などの症状もあります。Railsではこうした問題を緩和するため、問題の原因を自動的に検出して修正するために内部で多くの手順を行っています。しかし、UTF-8で保存されていない外部データがあると、Railsによる自動検出/修正が効かずに文字化けが発生することがあります。</p><p>UTF-8でないデータの主な原因は以下の2つです。</p>
+<h3 id="設定の落とし穴"><a href="#%E8%A8%AD%E5%AE%9A%E3%81%AE%E8%90%BD%E3%81%A8%E3%81%97%E7%A9%B4">11 設定の落とし穴</a></h3><p>Railsでの無用なトラブルを避けるための最も初歩的な方法は、外部データを常にUTF-8で保存することです。このとおりにしないと、RubyライブラリやRailsはネイティブデータをたびたびUTF-8に変換しなければならず、しかもときに失敗することがあります。外部データを常にUTF-8にしておくことをぜひお勧めします。</p><p>外部データのエンコードが不統一な場合によく起きる症状としては、たとえば画面に黒い菱型◆と疑問符が表示されるというものがあります。他にも、"ü"という文字のはずが"Ã¼"という文字に変わっている、などの症状もあります。Railsではこうした問題を緩和するため、問題の原因を自動的に検出して修正するために内部で多くの手順を行っています。しかし、UTF-8で保存されていない外部データがあると、Railsによる自動検出/修正が効かずに文字化けが発生することがあります。</p><p>UTF-8でないデータの主な原因は以下の2つです。</p>
 <ul>
 <li>テキストエディタ: TextMateを含む多くのテキストエディタは、デフォルトでUTF-8エンコードでテキストを保存してくれます。使用しているテキストエディタがこのようになっていない場合、テンプレートを表示する時にéなどの特殊文字が◆?のような感じでブラウザで表示されることがあります。これはi18n(国際化)用の翻訳ファイルで発生することもあります。一部のDreamweaverのようにUTF-8保存がデフォルトでないエディタであっても、デフォルトをUTF-8に変更する方法は用意されているはずです。エンコードはUTF-8に変えてください。</li>
 <li>データベース: Railsはデータベースから読みだしたデータを境界上でUTF-8に変換します。しかし、使用しているデータベースの内部エンコード設定がUTF-8になっていない場合、UTF-8の文字の一部をデータベースにそのまま保存できないことがあります。たとえばデータベースの内部エンコードがLatin-1になっていると、ロシア語・ヘブライ語・日本語などの文字をデータベースに保存したときにこれらの情報は永久に失われてしまいます。できるかぎり、データベースの内部エンコードはUTF-8にしておいてください。</li>

@@ -8,6 +8,7 @@ if [ -n "$GTT_DOWNLOADER" ]; then
     bundle exec gtt-downloader
 fi
 ruby allocate.rb
+ruby replacer.rb
 rm -rf output/ja
 bundle exec rake guides:generate:html GUIDES_LANGUAGE=ja
 cp ./source/ja/favicon.ico ./output/ja

@@ -449,7 +449,7 @@ $ bin/rails generate model Wickwall last_squawk:string last_tweet:string
 <p>これで必要なデータベーステーブルをテストデータベース内に作成するための準備が整いました。作成は、ダミーアプリケーションのディレクトリに移動してデータベースのマイグレーションを実行することで行います。最初に以下を実行します。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ cd test/dummy
-$ bin/rake db:migrate
+$ bin/rails db:migrate
 
 </pre>
 </div>
@@ -631,7 +631,7 @@ RubyGemsサイトでgemを公開する方法の詳細については、<a href="
 </ul>
 <p>READMEの内容が固まってきたら、コードをひととおりチェックしてすべてのメソッドにrdoc形式のコメントを追加します。このコメントは開発者にとって役立つ情報となります。パブリックAPIにしたくない箇所には'#:nodoc:'というコメントを追加します。</p><p>コメントを付け終わったらプラグインのルートディレクトリに移動して以下を実行します。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-$ bin/rake rdoc
+$ bin/rails rdoc
 
 </pre>
 </div>
