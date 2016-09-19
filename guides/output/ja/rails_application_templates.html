@@ -288,10 +288,10 @@ $ rails new blog -m http://example.com/template.rb
 
 </pre>
 </div>
-<p>rakeタスク<code>rails:template</code>を使用して、既存のRailsアプリケーションにテンプレートを適用することもできます。テンプレートの場所はLOCATION環境変数を使用して渡す必要があります。ここでも、ファイルパスまたはURLのどちらを使用してもかまいません。</p><div class="code_container">
+<p>rakeタスク<code>app:template</code>を使用して、既存のRailsアプリケーションにテンプレートを適用することもできます。テンプレートの場所はLOCATION環境変数を使用して渡す必要があります。ここでも、ファイルパスまたはURLのどちらを使用してもかまいません。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-$ bin/rake rails:template LOCATION=~/template.rb
-$ bin/rake rails:template LOCATION=http://example.com/template.rb
+$ bin/rails app:template LOCATION=~/template.rb
+$ bin/rails app:template LOCATION=http://example.com/template.rb
 
 </pre>
 </div>

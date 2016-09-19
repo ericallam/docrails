@@ -481,7 +481,7 @@ $ bin/rails generate scaffold HighScore game:string score:integer
 </div>
 <p>ジェネレータはモデル、コントローラ、ヘルパー、レイアウト、機能テスト、ユニットテスト、スタイルシート用のディレクトリが存在することをチェックし、ビュー、コントローラ、モデル、マイグレーション(<code>high_scores</code>テーブルとフィールドを作成する)を生成し、この<strong>resource</strong>のためのルーティングを用意します。またこれらのためのテストも作成します。</p><p><strong>migrate</strong>を実行してマイグレーションを走らせる必要があります。つまりデータベースのスキーマを変更するためにRubyのコード(コードとは<code>20130717151933_create_high_scores.rb</code>に書かれたコードのことです)を実行する必要があります。データベースとはどのデータベースでしょうか？<code>rake db:migrate</code>コマンドを実行すると、RailsはSQLite3に新しいデータベースを作ります。Rakeについては後ほど詳しく説明します。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-$ bin/rake db:migrate
+$ bin/rails db:migrate
 ==  CreateHighScores: migrating ===============================================
 -- create_table(:high_scores)
    -&gt; 0.0017s
@@ -570,7 +570,7 @@ $ bin/rails destroy model Oops
 <h3 id="rake"><a href="#rake">2 Rake</a></h3><p>RakeはRuby版のMakeです。Unixの 'make' に代わるような独立したRubyのユーティリティで、'Rakefile'と<code>.rake</code>ファイルでタスクを定義・管理します。 Railsでは、管理系のタスクはRakeタスクで書かれています。Railsのタスクは洗練されていて、タスク同士が協調して動くようになっています。</p><p><code>rake --tasks</code>とタイプすると、実行可能なRakeタスクの一覧が表示されます。カレントディレクトリによって、表示される内容が変化します。各タスクには説明がついているので、必要なタスクを見つけるのに役立つはずです。</p><p><code>--trace</code>を使うことで、タスクを実行する際のバックトレースをすべて表示することができます (訳注: バックトレースには、依存するタスクの呼び出しと実行順序が表示されます)。
 例えば <code>rake db:create --trace</code> のようにしてタスクを実行します。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-$ bin/rake --tasks
+$ bin/rails --tasks
 rake about              # List versions of all Rails frameworks and the environment
 rake assets:clean       # Remove old compiled assets
 rake assets:clobber     # Remove compiled assets
@@ -587,7 +587,7 @@ rake tmp:create         # Creates tmp directories for sessions, cache, sockets, 
 </div>
 <div class="info"><p><code>rake -T</code>でもタスクの一覧を表示することができます。</p></div><h4 id="about"><a href="#about">2.1 <code>about</code></a></h4><p><code>rake about</code>を実行すると、Ruby、RubyGems、Rails、Railsのサブコンポーネント (訳注: Active RecordやAction Packなど) のバージョン、Railsアプリケーションのフォルダー名、現在のRailsの環境名とデータベースアダプター、そして、スキーマのバージョンが表示されます。誰かに質問をしたいときや、セキュリティパッチが自分のアプリケーションに影響するか確認したいときなど、現在使用しているRailsに関する情報が必要なときに役立ちます。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-$ bin/rake about
+$ bin/rails about
 About your application's environment
 Ruby version              1.9.3 (x86_64-linux)
 RubyGems version          1.3.6
@@ -618,7 +618,7 @@ Database schema version   20110805173523
 </ul>
 <h4 id="notes"><a href="#notes">2.5 <code>notes</code></a></h4><p><code>rake notes</code>は、コードのコメントからFIXME、OPTIMIZE、TODOで始まる行を探し出して表示します (訳注: [FIXME]のように[から始まるものはヒットしません)。検索対象となるファイルの拡張子は<code>.builder</code>、<code>.rb</code>、<code>.rake</code>、<code>.yml</code>、<code>.yaml</code>、<code>.ruby</code>、<code>.css</code>、<code>.js</code>、<code>.erb</code>で、デフォルトのアノテーション以外に独自のアノテーションも使用できます。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-$ bin/rake notes
+$ bin/rails notes
 (in /home/foobar/commandsapp)
 app/controllers/admin/users_controller.rb:
   * [ 20] [TODO] any other way to do this?
@@ -638,7 +638,7 @@ config.annotations.register_extensions("scss", "sass", "less") { |annotation| /\
 </div>
 <p>特定のアノテーションのみを表示したいとき(例えばFIXMEのみを表示したいとき)は<code>rake notes:fixme</code>のように実行します。このとき、アノテーションは小文字で書くことに注意してください。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-$ bin/rake notes:fixme
+$ bin/rails notes:fixme
 (in /home/foobar/commandsapp)
 app/controllers/admin/users_controller.rb:
   * [132] high priority for next deploy
@@ -650,7 +650,7 @@ app/models/school.rb:
 </div>
 <p>独自のアノテーションを使う際には、<code>rake notes:custom</code>と書いて、<code>ANNOTATION</code>環境変数を使ってアノテーション名を指定します。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-$ bin/rake notes:custom ANNOTATION=BUG
+$ bin/rails notes:custom ANNOTATION=BUG
 (in /home/foobar/commandsapp)
 app/models/article.rb:
   * [ 23] Have to fix this one before pushing!
@@ -660,7 +660,7 @@ app/models/article.rb:
 <div class="note"><p>特定のアノテーションのみを表示するときや、独自のアノテーションを表示する際には、FIXMEやBUGといったアノテーション名は表示されません。</p></div><p><code>rake notes</code>タスクはデフォルトでは<code>app</code>、<code>config</code>、<code>lib</code>、<code>bin</code>、<code>test</code>ディレクトリを対象とします。他のディレクトリも対象にしたい場合は、<code>SOURCE_ANNOTATION_DIRECTORIES</code>環境変数にディレクトリ名をカンマ区切りで与えてください。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ export SOURCE_ANNOTATION_DIRECTORIES='spec,vendor'
-$ bin/rake notes
+$ bin/rails notes
 (in /home/foobar/commandsapp)
 app/models/user.rb:
   * [ 35] [FIXME] User should have a subscription at this point
@@ -724,9 +724,9 @@ end
 </div>
 <p>そして、以下のようにしてタスクを呼び出します。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
-$ bin/rake task_name
-$ bin/rake "task_name[value 1]" # entire argument string should be quoted
-$ bin/rake db:nothing
+$ bin/rails task_name
+$ bin/rails "task_name[value 1]" # entire argument string should be quoted
+$ bin/rails db:nothing
 
 </pre>
 </div>

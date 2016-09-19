@@ -491,7 +491,7 @@ User.create! # =&gt; ActiveRecord::RecordInvalid: Validation failed: Name can't 
 
 </pre>
 </div>
-<p>検証の詳細については<a href="active_record_validations.html">Active Record検証ガイド</a>を参照してください。</p><h3 id="コールバック"><a href="#%E3%82%B3%E3%83%BC%E3%83%AB%E3%83%90%E3%83%83%E3%82%AF">7 コールバック</a></h3><p>Active Recordコールバックを使用することで、モデルのライフサイクルにおける特定のイベント実行時にコードをアタッチして実行することができます。これにより、モデルで特定のイベントが発生したときにコードが透過的に実行されるようになります。レコードの作成、更新、削除などさまざまなイベントに対してコールバックを設定できます。コールバックの詳細については<a href="active_record_callbacks.html">Active Recordコールバックガイド</a>を参照してください。</p><h3 id="マイグレーション"><a href="#%E3%83%9E%E3%82%A4%E3%82%B0%E3%83%AC%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3">8 マイグレーション</a></h3><p>Railsにはデータベーススキーマを管理するためのドメイン固有言語(DSL: Domain Specific Language)があり、マイグレーション(migration)と呼ばれています。マイグレーションはファイルに保存されます。<code>rake</code>を実行すると、Active Recordがサポートするあらゆるデータベースに対してマイグレーションが実行されます。以下はテーブルを作成するマイグレーションです。</p><div class="code_container">
+<p>検証の詳細については<a href="active_record_validations.html">Active Record検証ガイド</a>を参照してください。</p><h3 id="コールバック"><a href="#%E3%82%B3%E3%83%BC%E3%83%AB%E3%83%90%E3%83%83%E3%82%AF">7 コールバック</a></h3><p>Active Recordコールバックを使用することで、モデルのライフサイクルにおける特定のイベント実行時にコードをアタッチして実行することができます。これにより、モデルで特定のイベントが発生したときにコードが透過的に実行されるようになります。レコードの作成、更新、削除などさまざまなイベントに対してコールバックを設定できます。コールバックの詳細については<a href="active_record_callbacks.html">Active Recordコールバックガイド</a>を参照してください。</p><h3 id="マイグレーション"><a href="#%E3%83%9E%E3%82%A4%E3%82%B0%E3%83%AC%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3">8 マイグレーション</a></h3><p>Railsにはデータベーススキーマを管理するためのドメイン固有言語(DSL: Domain Specific Language)があり、マイグレーション(migration)と呼ばれています。マイグレーションはファイルに保存されます。<code>bin/rails</code>を実行すると、Active Recordがサポートするあらゆるデータベースに対してマイグレーションが実行されます。以下はテーブルを作成するマイグレーションです。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class CreatePublications &lt; ActiveRecord::Migration
   def change
@@ -511,7 +511,7 @@ end
 
 </pre>
 </div>
-<p>Railsはどのマイグレーションファイルがデータベースにコミットされたかを把握しており、その情報を使用してロールバック機能を提供しています。テーブルを実際に作成するには<code>rake db:migrate</code>を実行します。ロールバックするには<code>rake db:rollback</code>を実行します。</p><p>上のマイグレーションコードはデータベースに依存していないことにご注目ください。MySQL、PostgreSQL、Oracleなど多くのデータベースに対して実行できます。マイグレーションの詳細については<a href="active_record_migrations.html">Active Recordマイグレーション</a>を参照してください。</p>
+<p>Railsはどのマイグレーションファイルがデータベースにコミットされたかを把握しており、その情報を使用してロールバック機能を提供しています。テーブルを実際に作成するには<code>bin/rails db:migrate</code>を実行します。ロールバックするには<code>bin/rails db:rollback</code>を実行します。</p><p>上のマイグレーションコードはデータベースに依存していないことにご注目ください。MySQL、PostgreSQL、Oracleなど多くのデータベースに対して実行できます。マイグレーションの詳細については<a href="active_record_migrations.html">Active Recordマイグレーション</a>を参照してください。</p>
         
 
         <h3 id="feedback"><a href="#feedback">フィードバックについて</a></h3>
