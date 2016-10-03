@@ -18,7 +18,7 @@ Rails をはじめよう
 
 本ガイドは、ゼロからRailsアプリケーションを構築したいと考えている初心者を対象にしています。読者がRailsの経験がないことを前提としています。ただし、このドキュメントを最大限に活用するために、以下のソフトウェアがインストールされ、利用可能な状態になっていることを前提としています。
 
-* [Ruby](https://www.ruby-lang.org/ja/downloads/) 1.9.3以降。
+* [Ruby](https://www.ruby-lang.org/ja/downloads/) 2.2.2以降。
 * [RubyGems](http://rubygems.org)パッケージングシステム。これはRuby 1.9以降であればRubyをインストールすると自動的に導入されます。RubyGemsの詳細については、[RubyGemsガイド](http://rubygems-guides-jp.herokuapp.com/)を参照してください。
 * [SQLite3データベース](http://www.sqlite.org)がインストールされ、正常に動作する状態になっていること。
 
@@ -61,7 +61,7 @@ TIP: RubyやRuby on Railsを素早くインストールするためのツール�
 
 ```bash
 $ ruby -v
-ruby 2.0.0p353
+ruby 2.3.0p0
 ```
 
 
@@ -91,7 +91,7 @@ $ gem install rails
 $ rails --version
 ```
 
-"Rails 4.2.1"のように表示されれば、次に進むことができます。
+"Rails 5.0.0"のように表示されれば、次に進むことができます。
 
 ### ブログアプリケーションを作成する
 

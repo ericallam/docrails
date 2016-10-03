@@ -329,7 +329,7 @@
         <h3 id="本ガイドの前提条件"><a href="#%E6%9C%AC%E3%82%AC%E3%82%A4%E3%83%89%E3%81%AE%E5%89%8D%E6%8F%90%E6%9D%A1%E4%BB%B6">1 本ガイドの前提条件</a></h3><p>本ガイドは、ゼロからRailsアプリケーションを構築したいと考えている初心者を対象にしています。読者がRailsの経験がないことを前提としています。ただし、このドキュメントを最大限に活用するために、以下のソフトウェアがインストールされ、利用可能な状態になっていることを前提としています。</p>
 <ul>
 <li>
-<a href="https://www.ruby-lang.org/ja/downloads/">Ruby</a> 1.9.3以降。</li>
+<a href="https://www.ruby-lang.org/ja/downloads/">Ruby</a> 2.2.2以降。</li>
 <li>
 <a href="http://rubygems.org">RubyGems</a>パッケージングシステム。これはRuby 1.9以降であればRubyをインストールすると自動的に導入されます。RubyGemsの詳細については、<a href="http://rubygems-guides-jp.herokuapp.com/">RubyGemsガイド</a>を参照してください。</li>
 <li>
@@ -353,7 +353,7 @@ Rails経験の長い多くの開発者から、おかげでWebアプリケーシ
 <h3 id="railsプロジェクトを新規作成する"><a href="#rails%E3%83%97%E3%83%AD%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E6%96%B0%E8%A6%8F%E4%BD%9C%E6%88%90%E3%81%99%E3%82%8B">3 Railsプロジェクトを新規作成する</a></h3><p>本ガイドを活用するための最善の方法は、以下の手順を文字どおり1つずつ実行し、手順を取りこぼさないようにすることです。取りこぼしがあると、その後の手順が期待どおりに進まない可能性があります。この手順で作成された完全なRailsプロジェクトのコードは<a href="https://github.com/yasslab/getting_started">コチラ</a>で公開されているので、躓いてしまったときなどに参照してください。また、完成したサンプルアプリケーションは<a href="https://getting-started-jp.herokuapp.com/">コチラ</a>で公開されています。</p><p>本ガイドの手順に従うことで、<code>blog</code>という名前の非常にシンプルなブログのRailsプロジェクトを作成できます。Railsアプリケーションを構築する前に、Rails本体がインストールされていることを確認してください。</p><div class="info"><p>以下の例では、Unix系OSのプロンプトとして<code>$</code>記号を使用していますが、これはカスタマイズ可能であり、自分の環境では異なる記号になっていることもあります。Windowsでは<code>c:\source_code&gt;</code>のように表示されます。</p></div><h4 id="railsのインストール"><a href="#rails%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB">3.1 Railsのインストール</a></h4><p>ターミナル (コマンドプロンプトとも言います) ウィンドウを開いてください。Mac OS Xの場合、ターミナル (Terminal.app) という名前のアプリケーションを実行します。Windowsの場合は[スタート] メニューから [ファイル名を指定して実行] をクリックして'cmd.exe'と入力します。<code>$</code>で始まる記述はコマンド行なので、これらはコマンドラインに入力して実行してください。続いて現在インストールされているRubyのバージョンが最新のものであることを確認してください。</p><div class="info"><p>RubyやRuby on Railsを素早くインストールするためのツールは多数存在します。Windowsユーザーの場合は<a href="http://railsinstaller.org">Railsインストーラ</a>をお使いください。Mac OS Xユーザーは<a href="https://github.com/tokaido/tokaidoapp">Tokaido</a>をお使いください。(訳注: 具体的なインストール方法については<a href="http://railstutorial.jp/chapters/beginning?version=4.0#sec-up_and_running">Railsチュートリアル 1.2 さっそく動作させる</a>を参照してください)</p></div><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ ruby -v
-ruby 2.0.0p353
+ruby 2.3.0p0
 
 </pre>
 </div>
@@ -376,7 +376,7 @@ $ rails --version
 
 </pre>
 </div>
-<p>"Rails 4.2.1"のように表示されれば、次に進むことができます。</p><h4 id="ブログアプリケーションを作成する"><a href="#%E3%83%96%E3%83%AD%E3%82%B0%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%92%E4%BD%9C%E6%88%90%E3%81%99%E3%82%8B">3.2 ブログアプリケーションを作成する</a></h4><p>Railsには、ジェネレータという多数のスクリプトが付属しており、これらが特定のタスクを開始するために必要なものを自動的に作り出してくれるので、開発が容易になります。その中から、新規アプリケーション作成用のジェネレータを使ってみましょう。これを実行すればRailsアプリケーションの基本的な部分が提供されるので、開発者が自分でこれらを作成する必要はありません。</p><p>ジェネレータを実行するには、ターミナルを開き、Railsファイルを作成したいディレクトリに移動して、以下を入力します。</p><div class="code_container">
+<p>"Rails 5.0.0"のように表示されれば、次に進むことができます。</p><h4 id="ブログアプリケーションを作成する"><a href="#%E3%83%96%E3%83%AD%E3%82%B0%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%92%E4%BD%9C%E6%88%90%E3%81%99%E3%82%8B">3.2 ブログアプリケーションを作成する</a></h4><p>Railsには、ジェネレータという多数のスクリプトが付属しており、これらが特定のタスクを開始するために必要なものを自動的に作り出してくれるので、開発が容易になります。その中から、新規アプリケーション作成用のジェネレータを使ってみましょう。これを実行すればRailsアプリケーションの基本的な部分が提供されるので、開発者が自分でこれらを作成する必要はありません。</p><p>ジェネレータを実行するには、ターミナルを開き、Railsファイルを作成したいディレクトリに移動して、以下を入力します。</p><div class="code_container">
 <pre class="brush: plain; gutter: false; toolbar: false">
 $ rails new blog
 
