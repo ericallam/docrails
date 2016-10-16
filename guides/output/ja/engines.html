@@ -705,12 +705,12 @@ end
 
 </pre>
 </div>
-<p>次に、<code>Blorgh::Article</code>モデルにも<code>author_name</code>フィールドを実際の<code>User</code>オブジェクトに変換し、<code>User</code>オブジェクトを記事の<code>author</code>と関連付けてから記事を保存するコードが必要です。このフィールド用の<code>attr_accessor</code>も設定する必要があります。これにより、このフィールド用のゲッターとセッターが定義されます。</p><p>これらをすべて行なうには、<code>author_name</code>用の<code>attr_accessor</code>と、authorとの関連付け、および<code>before_save</code>呼び出しを<code>app/models/blorgh/article.rb</code>に追加する必要があります。<code>author</code>関連付けは、この時点ではあえて<code>User</code>クラスとハードコードしておきます。</p><div class="code_container">
+<p>次に、<code>Blorgh::Article</code>モデルにも<code>author_name</code>フィールドを実際の<code>User</code>オブジェクトに変換し、<code>User</code>オブジェクトを記事の<code>author</code>と関連付けてから記事を保存するコードが必要です。このフィールド用の<code>attr_accessor</code>も設定する必要があります。これにより、このフィールド用のゲッターとセッターが定義されます。</p><p>これらをすべて行なうには、<code>author_name</code>用の<code>attr_accessor</code>と、authorとの関連付け、および<code>before_validation</code>呼び出しを<code>app/models/blorgh/article.rb</code>に追加する必要があります。<code>author</code>関連付けは、この時点ではあえて<code>User</code>クラスとハードコードしておきます。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 attr_accessor :author_name
 belongs_to :author, class_name: "User"
 
-before_save :set_author
+before_validation :set_author
 
 private
   def set_author
@@ -943,7 +943,7 @@ module Blorgh::Concerns::Models::Article
     attr_accessor :author_name
     belongs_to :author, class_name: "User"
 
-    before_save :set_author
+    before_validation :set_author
 
     private
       def set_author

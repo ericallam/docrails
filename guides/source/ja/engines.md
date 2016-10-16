@@ -201,7 +201,7 @@ invoke  resource_route
 route    resources :articles
 invoke  scaffold_controller
 create    app/controllers/blorgh/articles_controller.rb
-invoke    erb
+invoke    erb 
 create      app/views/blorgh/articles
 create      app/views/blorgh/articles/index.html.erb
 create      app/views/blorgh/articles/edit.html.erb
