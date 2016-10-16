@@ -201,7 +201,7 @@ invoke  resource_route
 route    resources :articles
 invoke  scaffold_controller
 create    app/controllers/blorgh/articles_controller.rb
-invoke    erb
+invoke    erb 
 create      app/views/blorgh/articles
 create      app/views/blorgh/articles/index.html.erb
 create      app/views/blorgh/articles/edit.html.erb
@@ -542,13 +542,13 @@ end
 
 次に、`Blorgh::Article`モデルにも`author_name`フィールドを実際の`User`オブジェクトに変換し、`User`オブジェクトを記事の`author`と関連付けてから記事を保存するコードが必要です。このフィールド用の`attr_accessor`も設定する必要があります。これにより、このフィールド用のゲッターとセッターが定義されます。
 
-これらをすべて行なうには、`author_name`用の`attr_accessor`と、authorとの関連付け、および`before_validation`呼び出しを`app/models/blorgh/article.rb`に追加する必要があります。`author`関連付けは、この時点ではあえて`User`クラスとハードコードしておきます。
+これらをすべて行なうには、`author_name`用の`attr_accessor`と、authorとの関連付け、および`before_save`呼び出しを`app/models/blorgh/article.rb`に追加する必要があります。`author`関連付けは、この時点ではあえて`User`クラスとハードコードしておきます。
 
 ```ruby
 attr_accessor :author_name
 belongs_to :author, class_name: "User"
 
-before_validation :set_author
+before_save :set_author
 
 private
   def set_author
@@ -853,7 +853,7 @@ module Blorgh::Concerns::Models::Article
     attr_accessor :author_name
     belongs_to :author, class_name: "User"
 
-    before_validation :set_author
+    before_save :set_author
 
     private
       def set_author
