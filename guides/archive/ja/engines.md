@@ -201,7 +201,7 @@ invoke  resource_route
 route    resources :articles
 invoke  scaffold_controller
 create    app/controllers/blorgh/articles_controller.rb
-invoke    erb 
+invoke    erb
 create      app/views/blorgh/articles
 create      app/views/blorgh/articles/index.html.erb
 create      app/views/blorgh/articles/edit.html.erb
@@ -332,7 +332,7 @@ has_many :comments
 
 ```ruby
 module Blorgh
-  class Article < ActiveRecord::Base
+  class Article < ApplicationRecord
     has_many :comments
   end
 end
@@ -781,7 +781,7 @@ end
 ```ruby
 # Blorgh/app/models/article.rb
 
-class Article < ActiveRecord::Base
+class Article < ApplicationRecord
   has_many :comments
 end
 ```
@@ -802,7 +802,7 @@ end
 ```ruby
 # Blorgh/app/models/article.rb
 
-class Article < ActiveRecord::Base
+class Article < ApplicationRecord
   has_many :comments
   def summary
     "#{title}"
@@ -819,7 +819,7 @@ end
 ```ruby
 # MyApp/app/models/blorgh/article.rb
 
-class Blorgh::Article < ActiveRecord::Base
+class Blorgh::Article < ApplicationRecord
   include Blorgh::Concerns::Models::Article
 
   def time_since_created
@@ -835,7 +835,7 @@ end
 ```ruby
 # Blorgh/app/models/article.rb
 
-class Article < ActiveRecord::Base
+class Article < ApplicationRecord
   include Blorgh::Concerns::Models::Article
 end
 ```

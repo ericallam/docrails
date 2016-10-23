@@ -430,7 +430,7 @@ invoke  resource_route
 route    resources :articles
 invoke  scaffold_controller
 create    app/controllers/blorgh/articles_controller.rb
-invoke    erb 
+invoke    erb
 create      app/views/blorgh/articles
 create      app/views/blorgh/articles/index.html.erb
 create      app/views/blorgh/articles/edit.html.erb
@@ -539,7 +539,7 @@ has_many :comments
 <p>これにより、モデルは以下のようになります。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 module Blorgh
-  class Article &lt; ActiveRecord::Base
+  class Article &lt; ApplicationRecord
     has_many :comments
   end
 end
@@ -870,7 +870,7 @@ end
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # Blorgh/app/models/article.rb
 
-class Article &lt; ActiveRecord::Base
+class Article &lt; ApplicationRecord
   has_many :comments
 end
 
@@ -892,7 +892,7 @@ end
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # Blorgh/app/models/article.rb
 
-class Article &lt; ActiveRecord::Base
+class Article &lt; ApplicationRecord
   has_many :comments
   def summary
     "#{title}"
@@ -905,7 +905,7 @@ end
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # MyApp/app/models/blorgh/article.rb
 
-class Blorgh::Article &lt; ActiveRecord::Base
+class Blorgh::Article &lt; ApplicationRecord
   include Blorgh::Concerns::Models::Article
 
   def time_since_created
@@ -923,7 +923,7 @@ end
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # Blorgh/app/models/article.rb
 
-class Article &lt; ActiveRecord::Base
+class Article &lt; ApplicationRecord
   include Blorgh::Concerns::Models::Article
 end
 
