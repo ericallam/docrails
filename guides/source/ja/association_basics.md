@@ -1467,7 +1467,7 @@ Railsのデフォルトの`has_many`関連付けは、ほとんどの場合カ�
 
 ```ruby
 class Customer < ActiveRecord::Base
-  has_many :orders, dependent: :delete_all, validate: :false
+  has_many :orders, dependent: :delete_all, validate: false
 end
 ```
 

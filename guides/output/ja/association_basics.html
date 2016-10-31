@@ -1433,7 +1433,7 @@ orders.create!(attributes = {})
 <h6 id="has-manyで追加されるメソッド-collection-create-bang-attributes"><a href="#has-many%E3%81%A7%E8%BF%BD%E5%8A%A0%E3%81%95%E3%82%8C%E3%82%8B%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89-collection-create-bang-attributes">4.3.1.16 <code>collection.create!(attributes = {})</code></a></h6><p>上の<code>collection.create</code>と同じですが、レコードがinvalidの場合に<code>ActiveRecord::RecordInvalid</code>がraiseされる点が異なります。</p><h5 id="has-manyのオプション"><a href="#has-many%E3%81%AE%E3%82%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3">4.3.2 <code>has_many</code>のオプション</a></h5><p>Railsのデフォルトの<code>has_many</code>関連付けは、ほとんどの場合カスタマイズ不要ですが、時には関連付けの動作をカスタマイズしたくなることもあると思います。これは、作成するときにオプションを渡すことで簡単にカスタマイズできます。たとえば、以下のようなオプションを関連付けに追加できます。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 class Customer &lt; ActiveRecord::Base
-  has_many :orders, dependent: :delete_all, validate: :false
+  has_many :orders, dependent: :delete_all, validate: false
 end
 
 </pre>
