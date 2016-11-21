@@ -839,7 +839,7 @@ config.assets.prefix = "/他のパス"
 
 </pre>
 </div>
-<p>このオプションは次のような場合に便利です。アセットパイプラインを使用しない既存のプロジェクトがあり、そのプロジェクトの既存のパスを指定したり、別途新しいリソース用のパスを指定したりする場合なのです。</p><h4 id="x-sendfileヘッダー"><a href="#x-sendfile%E3%83%98%E3%83%83%E3%83%80%E3%83%BC">5.5 X-Sendfileヘッダー</a></h4><p>X-SendfileヘッダーはWebサーバーに対するディレクティブであり、アプリケーションからのレスポンスをブラウザに送信せずに破棄し、代りに別のファイルをディスクから読みだしてブラウザに送信します。このオプションはデフォルトでは無効です。サーバーがこのヘッダーをサポートしていればオンにできます。このオプションをオンにすると、それらのファイル送信はWebサーバーに一任され、それによって高速化されます。この機能の使用法については<a href="http://api.rubyonrails.org/classes/ActionController/DataStreaming.html#method-i-send_file">send_file</a>を参照してください。</p><p>ApacheとNGINXではこのオプションがサポートされており、以下のように<code>config/environments/production.rb</code>で有効にすることができます。</p><div class="code_container">
+<p>このオプションは次のような場合に便利です。アセットパイプラインを使用しない既存のプロジェクトがあり、そのプロジェクトの既存のパスを指定したり、別途新しいリソース用のパスを指定したりする場合です。</p><h4 id="x-sendfileヘッダー"><a href="#x-sendfile%E3%83%98%E3%83%83%E3%83%80%E3%83%BC">5.5 X-Sendfileヘッダー</a></h4><p>X-SendfileヘッダーはWebサーバーに対するディレクティブであり、アプリケーションからのレスポンスをブラウザに送信せずに破棄し、代りに別のファイルをディスクから読みだしてブラウザに送信します。このオプションはデフォルトでは無効です。サーバーがこのヘッダーをサポートしていればオンにできます。このオプションをオンにすると、それらのファイル送信はWebサーバーに一任され、それによって高速化されます。この機能の使用法については<a href="http://api.rubyonrails.org/classes/ActionController/DataStreaming.html#method-i-send_file">send_file</a>を参照してください。</p><p>ApacheとNGINXではこのオプションがサポートされており、以下のように<code>config/environments/production.rb</code>で有効にすることができます。</p><div class="code_container">
 <pre class="brush: ruby; gutter: false; toolbar: false">
 # config.action_dispatch.x_sendfile_header = "X-Sendfile" # Apache用
 # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # NGINX用
