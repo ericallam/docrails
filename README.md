@@ -88,10 +88,10 @@ and supported/sponsored by [YassLab](http://yasslab.jp/).
 
 ### 協力者の相談部屋 (チャットルーム)
 
-[idobata.io](https://idobata.io) の [yasslab/railsguides.jp](https://idobata.io/organizations/yasslab/rooms/railsguides/join_request/c89d1d3b-d6d1-4baa-9271-145fbd0c4734) 部屋にて，Rails ガイドに関する情報交換しています．   
+[idobata.io](https://idobata.io) の [yasslab/railsguides.jp](https://idobata.io/#/organization/yasslab/room/railsguides) 部屋にて，Rails ガイドに関する情報交換しています．   
 覗いてみるだけの方も歓迎なので，是非お気軽に立ち寄ってみてください :D
 
-[![井戸端会議の風景](https://raw.githubusercontent.com/yasslab/railsguides.jp/japanese/images/idobata-ss.png)](https://idobata.io/organizations/yasslab/rooms/railsguides/join_request/c89d1d3b-d6d1-4baa-9271-145fbd0c4734)
+[![井戸端会議の風景](https://raw.githubusercontent.com/yasslab/railsguides.jp/japanese/images/idobata-ss.png)](https://idobata.io/#/organization/yasslab/room/railsguides)
 
 ## ライセンス
 
