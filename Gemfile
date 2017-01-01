@@ -21,6 +21,7 @@ gem 'json', '~> 2.0'
 
 # SSL in Production
 gem 'acme_challenge'
+gem 'rack-rewrite', '~> 1.5.0'
 
 group :development do
   gem 'gtt-downloader'
