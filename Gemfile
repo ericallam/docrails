@@ -3,7 +3,7 @@ ruby '2.4.0'
 
 gem 'bundler'
 gem 'jekyll'
-gem 'rack-jekyll'
+gem 'rack-jekyll', '~> 0.5'
 gem 'kramdown'
 gem 'puma'
 
@@ -15,6 +15,9 @@ gem 'nokogiri'
 
 # Monitoring tools
 gem 'newrelic_rpm'
+
+# Need latest json for using Ruby 2.4.0
+gem 'json', '~> 2.0'
 
 group :development do
   gem 'gtt-downloader'
