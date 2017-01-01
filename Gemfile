@@ -4,6 +4,7 @@ ruby '2.4.0'
 gem 'bundler'
 gem 'jekyll'
 gem 'rack-jekyll'
+gem 'kramdown'
 gem 'unicorn'
 
 # Gems to generate RailsGuides HTML from MD

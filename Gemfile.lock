@@ -179,6 +179,7 @@ DEPENDENCIES
   gtt-downloader
   jekyll
   kindlerb (= 0.1.1)
+  kramdown
   newrelic_rpm
   nokogiri
   pry-byebug
