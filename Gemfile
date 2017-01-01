@@ -19,12 +19,15 @@ group :development do
   gem 'gtt-downloader'
 end
 
-# for test
+group :development, :test do
+  gem 'rb-readline'
+  gem 'pry-byebug'
+end
+
 group :test do
   gem 'capybara'
   gem 'rspec'
   gem 'turnip'
-  gem 'pry-byebug'
   gem 'wraith'
 end
 
