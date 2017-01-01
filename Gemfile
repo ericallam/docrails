@@ -5,7 +5,7 @@ gem 'bundler'
 gem 'jekyll'
 gem 'rack-jekyll'
 gem 'kramdown'
-gem 'unicorn'
+gem 'puma'
 
 # Gems to generate RailsGuides HTML from MD
 gem 'rake'

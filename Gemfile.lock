@@ -71,7 +71,6 @@ GEM
       sass (~> 3.4)
     jekyll-watch (1.5.0)
       listen (~> 3.0, < 3.1)
-    kgio (2.11.0)
     kindlerb (0.1.1)
       mustache
       nokogiri
@@ -106,6 +105,7 @@ GEM
       byebug (~> 9.0)
       pry (~> 0.10)
     public_suffix (2.0.4)
+    puma (3.6.2)
     rack (2.0.1)
     rack-jekyll (0.3.5)
       jekyll
@@ -117,7 +117,6 @@ GEM
       nokogiri (~> 1.6)
     rails-html-sanitizer (1.0.3)
       loofah (~> 2.0)
-    raindrops (0.17.0)
     rake (12.0.0)
     rb-fsevent (0.9.8)
     rb-inotify (0.9.7)
@@ -153,9 +152,6 @@ GEM
       rspec (>= 3.0, < 4.0)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
-    unicorn (5.2.0)
-      kgio (~> 2.6)
-      raindrops (~> 0.7)
     websocket (1.2.3)
     wraith (4.0.0)
       anemone
@@ -183,12 +179,12 @@ DEPENDENCIES
   newrelic_rpm
   nokogiri
   pry-byebug
+  puma
   rack-jekyll
   rake
   rb-readline
   rspec
   turnip
-  unicorn
   wraith
 
 RUBY VERSION
