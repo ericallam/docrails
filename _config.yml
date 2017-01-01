@@ -12,6 +12,7 @@ destination: ./_site
 
 # Build settings
 markdown: kramdown
+gems:     ['kramdown']
 exclude:
   - unicorn.rb
   - README.md

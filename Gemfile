@@ -1,13 +1,11 @@
 source 'https://rubygems.org'
-ruby '2.3.0'
+ruby '2.4.0'
 
 gem 'bundler'
 gem 'jekyll'
-#gem 'rack-jekyll'
-gem 'rack'
-gem 'rack-jekyll', github: 'adaoraul/rack-jekyll'
-#gem 'rack-jekyll', github: 'adaoraul/rack-jekyll', ref: '6a4b832c5b2350c8c1263b534ebf02135deb6363'
-gem 'unicorn'
+gem 'rack-jekyll', '~> 0.5'
+gem 'kramdown'
+gem 'puma'
 
 # Gems to generate RailsGuides HTML from MD
 gem 'rake'
@@ -18,16 +16,22 @@ gem 'nokogiri'
 # Monitoring tools
 gem 'newrelic_rpm'
 
+# Need latest json for using Ruby 2.4.0
+gem 'json', '~> 2.0'
+
 group :development do
   gem 'gtt-downloader'
 end
 
-# for test
+group :development, :test do
+  gem 'rb-readline'
+  gem 'pry-byebug'
+end
+
 group :test do
   gem 'capybara'
   gem 'rspec'
   gem 'turnip'
-  gem 'pry-byebug'
   gem 'wraith'
 end
 

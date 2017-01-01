@@ -1,5 +1,2 @@
-#require 'rack/jekyll'
-require 'bundler/setup'
-Bundler.require(:default)
-
-run Rack::Jekyll.new(:destination => '_site')
+require 'rack/jekyll'
+run Rack::Jekyll.new
