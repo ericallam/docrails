@@ -19,6 +19,9 @@ gem 'newrelic_rpm'
 # Need latest json for using Ruby 2.4.0
 gem 'json', '~> 2.0'
 
+# SSL in Production
+gem 'acme_challenge'
+
 group :development do
   gem 'gtt-downloader'
 end
