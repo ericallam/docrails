@@ -7,11 +7,12 @@ set -ex
 if [ -n "$GTT_DOWNLOADER" ]; then
     bundle exec gtt-downloader
 fi
-ruby allocate.rb
-ruby replacer.rb
+bundle exec ruby allocate.rb
+bundle exec ruby replacer.rb
 rm -rf output/ja
-bundle exec rake guides:generate:html GUIDES_LANGUAGE=ja
+bundle exec rake guides:generate:html GUIDES_LANGUAGE=ja --trace
 cp ./source/ja/favicon.ico ./output/ja
+cp ./source/ja/404.html    ./output/ja
 
 # Then, manually type these commands:
 #   $ git add .
