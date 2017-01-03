@@ -12,12 +12,18 @@ gem 'rake'
 gem 'activesupport'
 gem 'actionpack'
 gem 'nokogiri'
+gem 'redcarpet'
 
 # Monitoring tools
 gem 'newrelic_rpm'
 
 # Need latest json for using Ruby 2.4.0
 gem 'json', '~> 2.0'
+
+# SSL in Production
+gem 'acme_challenge'
+gem 'rack-rewrite', '~> 1.5.0'
+gem 'rack-contrib', '~> 1.4'
 
 group :development do
   gem 'gtt-downloader'

@@ -12,8 +12,8 @@
     <meta property="fb:admins"      content="715330868" />
     <meta property="og:title"       content="Ruby on Rails ガイド：体系的に Rails を学ぼう"/>
     <meta property="og:site_name"   content="Ruby on Rails ガイド：体系的に Rails を学ぼう"/>
-    <meta property="og:image"       content="http://railsguides.jp/images/cover_for_facebook.png"/>
-    <meta property="og:url"         content="http://railsguides.jp/" />
+    <meta property="og:image"       content="https://railsguides.jp/images/cover_for_facebook.png"/>
+    <meta property="og:url"         content="https://railsguides.jp/" />
     <meta property="og:type"        content="article" />
     <meta property="og:description" content="Railsガイドは、Ruby on Rails Guidesに基づいた大型リファレンスガイドです。Rails開発の生産性を高めたいときや、Railsの各機能を体系的に学びたいときに役立ちます。" />
 
@@ -21,8 +21,8 @@
     <meta name="twitter:site"  content="@RailsGuidesJP" />
     <meta name="twitter:title" content="Ruby on Rails ガイド：体系的に Rails を学ぼう" />
     <meta name="twitter:description" content="Railsガイドは、Ruby on Rails Guidesに基づいた大型リファレンスガイドです。Rails開発の生産性を高めたいときや、Railsの各機能を体系的に学びたいときに役立ちます。" />
-    <meta name="twitter:image" content="http://railsguides.jp/images/cover_for_twitter.png" />
-    <meta name="twitter:url"   content="http://railsguides.jp/" />
+    <meta name="twitter:image" content="https://railsguides.jp/images/cover_for_twitter.png" />
+    <meta name="twitter:url"   content="https://railsguides.jp/" />
 
     <title>Action View フォームヘルパー | Rails ガイド</title>
     <meta name="apple-mobile-web-app-title" content="Railsガイド" />
@@ -71,7 +71,7 @@
       <ul class="more-info-links s-hidden">
         <li class="more-info"><a href="http://guides.rubyonrails.org/">原著 (英語)</a></li>
         <li class="more-info"><a href="https://github.com/yasslab/railsguides.jp">ソースコード (GitHub)</a></li>
-        <li class="more-info"><a href="http://railstutorial.jp/">Rails チュートリアル</a></li>
+        <li class="more-info"><a href="https://railstutorial.jp/">Rails チュートリアル</a></li>
       </ul>
     </div>
   </div>
@@ -387,7 +387,7 @@ form_tag({controller: "people", action: "search"}, method: "get", class: "nifty_
 
 </pre>
 </div>
-<h4 id="フォーム要素生成に使用するヘルパー"><a href="#%E3%83%95%E3%82%A9%E3%83%BC%E3%83%A0%E8%A6%81%E7%B4%A0%E7%94%9F%E6%88%90%E3%81%AB%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B%E3%83%98%E3%83%AB%E3%83%91%E3%83%BC">1.3 フォーム要素生成に使用するヘルパー</a></h4><p>Railsには、チェックボックス/テキストフィールド/ラジオボタンなどのフォーム要素を生成するためのヘルパーが多数用意されています。これらの基本的なヘルパーは名前が"<em>tag"で終わっており (<code>text_field_tag</code>や<code>check_box_tag</code>など)、それぞれただ1つの<code>&lt;input&gt;</code>要素を生成します。これらのヘルパーの1番目のパラメータは、inputの名前と決まっています。フォームが送信されると、この名前がフォームデータに含まれて渡され、ユーザーが入力した値とともに、コントローラ内で<code>params</code>ハッシュとなってアクセス可能になります。たとえば、フォームに`&lt;%= text</em>field_tag(:query) %&gt;<code>というコードが含まれていたとすると、コントローラで</code>params[:query]`と指定することによってこのフィールドの値にアクセスできます。</p><p>Railsは、inputに名前を与えるときに一定のルールに従っています。これにより、配列やハッシュのような「非スカラー値」のパラメータをフォームから送信できるようになり、その結果<code>params</code>としてコントローラでアクセスできるようになるのです。詳細については<a href="#%E3%83%91%E3%83%A9%E3%83%A1%E3%83%BC%E3%82%BF%E3%81%AE%E5%91%BD%E5%90%8D%E3%83%AB%E3%83%BC%E3%83%AB%E3%82%92%E7%90%86%E8%A7%A3%E3%81%99%E3%82%8B">本ガイドの7章</a>を参照してください。これらのヘルパーの正確な使用法については<a href="http://api.rubyonrails.org/classes/ActionView/Helpers/FormTagHelper.html">APIドキュメント</a>を参照してください。</p><h5 id="チェックボックス"><a href="#%E3%83%81%E3%82%A7%E3%83%83%E3%82%AF%E3%83%9C%E3%83%83%E3%82%AF%E3%82%B9">1.3.1 チェックボックス</a></h5><p>チェックボックスはフォームコントロールの一種で、ユーザーがオプションをオンまたはオフにできるようにするためのものです。</p><div class="code_container">
+<h4 id="フォーム要素生成に使用するヘルパー"><a href="#%E3%83%95%E3%82%A9%E3%83%BC%E3%83%A0%E8%A6%81%E7%B4%A0%E7%94%9F%E6%88%90%E3%81%AB%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B%E3%83%98%E3%83%AB%E3%83%91%E3%83%BC">1.3 フォーム要素生成に使用するヘルパー</a></h4><p>Railsには、チェックボックス/テキストフィールド/ラジオボタンなどのフォーム要素を生成するためのヘルパーが多数用意されています。これらの基本的なヘルパーは名前が"_tag"で終わっており (<code>text_field_tag</code>や<code>check_box_tag</code>など)、それぞれただ1つの<code>&lt;input&gt;</code>要素を生成します。これらのヘルパーの1番目のパラメータは、inputの名前と決まっています。フォームが送信されると、この名前がフォームデータに含まれて渡され、ユーザーが入力した値とともに、コントローラ内で<code>params</code>ハッシュとなってアクセス可能になります。たとえば、フォームに<code>&lt;%= text_field_tag(:query) %&gt;</code>というコードが含まれていたとすると、コントローラで<code>params[:query]</code>と指定することによってこのフィールドの値にアクセスできます。</p><p>Railsは、inputに名前を与えるときに一定のルールに従っています。これにより、配列やハッシュのような「非スカラー値」のパラメータをフォームから送信できるようになり、その結果<code>params</code>としてコントローラでアクセスできるようになるのです。詳細については<a href="#%E3%83%91%E3%83%A9%E3%83%A1%E3%83%BC%E3%82%BF%E3%81%AE%E5%91%BD%E5%90%8D%E3%83%AB%E3%83%BC%E3%83%AB%E3%82%92%E7%90%86%E8%A7%A3%E3%81%99%E3%82%8B">本ガイドの7章</a>を参照してください。これらのヘルパーの正確な使用法については<a href="http://api.rubyonrails.org/classes/ActionView/Helpers/FormTagHelper.html">APIドキュメント</a>を参照してください。</p><h5 id="チェックボックス"><a href="#%E3%83%81%E3%82%A7%E3%83%83%E3%82%AF%E3%83%9C%E3%83%83%E3%82%AF%E3%82%B9">1.3.1 チェックボックス</a></h5><p>チェックボックスはフォームコントロールの一種で、ユーザーがオプションをオンまたはオフにできるようにするためのものです。</p><div class="code_container">
 <pre class="brush: ruby; html-script: true; gutter: false; toolbar: false">
 &lt;%= check_box_tag(:pet_dog) %&gt;
 &lt;%= label_tag(:pet_dog, "I own a dog") %&gt;
@@ -467,7 +467,7 @@ form_tag({controller: "people", action: "search"}, method: "get", class: "nifty_
 </div>
 <p>隠しフィールドはユーザーには表示されず、事前に与えられた値を種類を問わず保持します。隠しフィールドに含まれている値はJavaScriptを使用して変更できます。</p><div class="warning"><p>「検索、電話、日付、時刻、色、日時、ローカル日時、月、週、URL、メールアドレス、数値、範囲」フィールドはHTML5から利用できるようになったコントロールです。
 これらのフィールドを古いブラウザでも同じように扱いたいのであれば、CSSやJavaScriptを使用したHTML5ポリフィルが必要になるでしょう。
-古いブラウザでHTML5に対応する方法は<a href="https://github.com/Modernizr/Modernizr/wiki/HTML5-Cross-Browser-Polyfills">山ほどあります</a>が、現時点で代表的なものは<a href="http://www.modernizr.com/">Modernizr</a>と<a href="http://yepnopejs.com/">yepnope</a>でしょう(訳注: yepnopeについては<a href="https://github.com/SlexAxton/yepnope.js#deprecation-notice">非推奨宣言</a>が出されています)。これらは、HTML5の新機能が使用されていることが検出された場合に、機能を追加するためのシンプルな方法を提供します。</p></div><div class="info"><p>パスワード入力フィールドを使用しているのであれば、入力されたパスワードをRailsのログに残さないようにしたいと思うことでしょう。その方法については<a href="security.html#%E3%83%AD%E3%82%B0%E5%87%BA%E5%8A%9B">セキュリティガイド</a>を参照してください。</p></div><h3 id="モデルオブジェクトの取り扱い"><a href="#%E3%83%A2%E3%83%87%E3%83%AB%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%81%AE%E5%8F%96%E3%82%8A%E6%89%B1%E3%81%84">2 モデルオブジェクトの取り扱い</a></h3><h4 id="モデルオブジェクトの取り扱い-モデルオブジェクトヘルパー"><a href="#%E3%83%A2%E3%83%87%E3%83%AB%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%81%AE%E5%8F%96%E3%82%8A%E6%89%B1%E3%81%84-%E3%83%A2%E3%83%87%E3%83%AB%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%83%98%E3%83%AB%E3%83%91%E3%83%BC">2.1 モデルオブジェクトヘルパー</a></h4><p>フォームの主な仕事といえば、モデルオブジェクトの作成および修正でしょう。<code>*_tag</code>ヘルパーをモデルオブジェクトの作成/修正に用いることはもちろん可能ですが、1つ1つのタグについて正しいパラメータが使用されているか、入力のデフォルト値は適切に設定されているかなどをいちいちコーディングするのは何とも面倒です。Railsにはまさにこのような作業を軽減するのにうってつけのヘルパーがあります。なお、これらのヘルパー名には<em>tagが付いていません (`text</em>field<code>、</code>text_area`など)</p><p>これらのヘルパーの最初の引数はインスタンス変数名、2番目の引数はオブジェクトを呼び出すためのメソッド名 (通常は属性名を使用します)です。Railsは、オブジェクトのそのメソッドから値が返され、かつ適切な入力名が設定されるように、入力コントロールの値を設定してくれます。たとえば、コントローラで<code>@person</code>が定義されており、その人物の名前がHenryだとします。</p><div class="code_container">
+古いブラウザでHTML5に対応する方法は<a href="https://github.com/Modernizr/Modernizr/wiki/HTML5-Cross-Browser-Polyfills">山ほどあります</a>が、現時点で代表的なものは<a href="http://www.modernizr.com/">Modernizr</a>と<a href="http://yepnopejs.com/">yepnope</a>でしょう(訳注: yepnopeについては<a href="https://github.com/SlexAxton/yepnope.js#deprecation-notice">非推奨宣言</a>が出されています)。これらは、HTML5の新機能が使用されていることが検出された場合に、機能を追加するためのシンプルな方法を提供します。</p></div><div class="info"><p>パスワード入力フィールドを使用しているのであれば、入力されたパスワードをRailsのログに残さないようにしたいと思うことでしょう。その方法については<a href="security.html#%E3%83%AD%E3%82%B0%E5%87%BA%E5%8A%9B">セキュリティガイド</a>を参照してください。</p></div><h3 id="モデルオブジェクトの取り扱い"><a href="#%E3%83%A2%E3%83%87%E3%83%AB%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%81%AE%E5%8F%96%E3%82%8A%E6%89%B1%E3%81%84">2 モデルオブジェクトの取り扱い</a></h3><h4 id="モデルオブジェクトの取り扱い-モデルオブジェクトヘルパー"><a href="#%E3%83%A2%E3%83%87%E3%83%AB%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%81%AE%E5%8F%96%E3%82%8A%E6%89%B1%E3%81%84-%E3%83%A2%E3%83%87%E3%83%AB%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%83%98%E3%83%AB%E3%83%91%E3%83%BC">2.1 モデルオブジェクトヘルパー</a></h4><p>フォームの主な仕事といえば、モデルオブジェクトの作成および修正でしょう。<code>*_tag</code>ヘルパーをモデルオブジェクトの作成/修正に用いることはもちろん可能ですが、1つ1つのタグについて正しいパラメータが使用されているか、入力のデフォルト値は適切に設定されているかなどをいちいちコーディングするのは何とも面倒です。Railsにはまさにこのような作業を軽減するのにうってつけのヘルパーがあります。なお、これらのヘルパー名には_tagが付いていません (<code>text_field</code>、<code>text_area</code>など)</p><p>これらのヘルパーの最初の引数はインスタンス変数名、2番目の引数はオブジェクトを呼び出すためのメソッド名 (通常は属性名を使用します)です。Railsは、オブジェクトのそのメソッドから値が返され、かつ適切な入力名が設定されるように、入力コントロールの値を設定してくれます。たとえば、コントローラで<code>@person</code>が定義されており、その人物の名前がHenryだとします。</p><div class="code_container">
 <pre class="brush: ruby; html-script: true; gutter: false; toolbar: false">
 &lt;%= text_field(:person, :name) %&gt;
 
@@ -1078,9 +1078,9 @@ end
         </p>
         <ol class="snsb" style="margin-left: 0px">
 	  <li><div class="fb-like" data-href="http://railsguides.jp/" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true"></div></li>
-	  <li><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://railsguides.jp/" data-text="Ruby on Rails ガイド：体系的に Rails を学ぼう" data-lang="en" data-hashtags="Railsガイド" data-via="RailsGuidesJP" width="100">Tweet</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script></li>
-          <li><iframe src="http://ghbtns.com/github-btn.html?user=yasslab&repo=railsguides.jp&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="80" height="20"></iframe></li>
-          <li><a href="http://b.hatena.ne.jp/entry/railsguides.jp" class="hatena-bookmark-button" data-hatena-bookmark-title="Ruby on Rails ガイド：体系的に Rails を学ぼう" data-hatena-bookmark-layout="standard-balloon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="http://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="http://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script></li>          
+	  <li><a href="https://twitter.com/share" class="twitter-share-button" data-url="https://railsguides.jp/" data-text="Ruby on Rails ガイド：体系的に Rails を学ぼう" data-lang="en" data-hashtags="Railsガイド" data-via="RailsGuidesJP" width="100">Tweet</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script></li>
+          <li><a class="github-button" href="https://github.com/yasslab/railsguides.jp" data-count-href="/yasslab/railsguides.jp/stargazers" data-count-api="/repos/yasslab/railsguides.jp#stargazers_count" data-count-aria-label="# stargazers on GitHub" aria-label="Star yasslab/railsguides.jp on GitHub">Star</a></li>
+          <li><a href="https://b.hatena.ne.jp/entry/railsguides.jp" class="hatena-bookmark-button" data-hatena-bookmark-title="Ruby on Rails ガイド：体系的に Rails を学ぼう" data-hatena-bookmark-layout="standard-balloon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script></li>          
 	  <li><div class="g-plusone" data-size="medium" data-lang="ja"></div>
 	    <script type="text/javascript">
 	      (function() {
@@ -1184,6 +1184,7 @@ end
     SyntaxHighlighter.all();
     $(guidesIndex.bind);
   </script>
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
   <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
