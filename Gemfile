@@ -12,6 +12,7 @@ gem 'rake'
 gem 'activesupport'
 gem 'actionpack'
 gem 'nokogiri'
+gem 'redcarpet'
 
 # Monitoring tools
 gem 'newrelic_rpm'
