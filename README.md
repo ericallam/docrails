@@ -6,20 +6,20 @@
 Railsガイドでは、Railsの各機能の仕組みや最新の機能、リリース情報などがまとまっています。
 
 Ruby on Rails ガイド   
-http://railsguides.jp/
+https://railsguides.jp/
 
 これからRailsを勉強する方は「Railsチュートリアル」がオススメです。   
 Railsガイドと同様に、RailsチュートリアルもWeb版は無料で読めます :)
 
 Ruby on Rails チュートリアル：実例を使ってRailsを学ぼう   
-http://railstutorial.jp/
+https://railstutorial.jp/
 
 
 ## フィードバックについて
 
 本ガイドを読んで、誤字・脱字・誤訳などを見かけましたら、本リポジトリの [Issue](https://github.com/yasslab/railsguides.jp/issues) にてお気軽に報告して頂けると幸いです。「直接Pull Request を送りたい!」という場合には、下記の「翻訳の流れ」や「チャットルーム」を参照してください。
 
-なお、原著レベルでの間違いを見つけましたら、[Railsのドキュメントに貢献する](http://railsguides.jp/contributing_to_ruby_on_rails.html#rails%E3%81%AE%E3%83%89%E3%82%AD%E3%83%A5%E3%83%A1%E3%83%B3%E3%83%88%E3%81%AB%E8%B2%A2%E7%8C%AE%E3%81%99%E3%82%8B) を参考にしてください。また、Railsガイドの生成方法については、[Railsガイドのガイドライン](http://railsguides.jp/ruby_on_rails_guides_guidelines.html)を参考にしてください。
+なお、原著レベルでの間違いを見つけましたら、[Railsのドキュメントに貢献する](https://railsguides.jp/contributing_to_ruby_on_rails.html#rails%E3%81%AE%E3%83%89%E3%82%AD%E3%83%A5%E3%83%A1%E3%83%B3%E3%83%88%E3%81%AB%E8%B2%A2%E7%8C%AE%E3%81%99%E3%82%8B) を参考にしてください。また、Railsガイドの生成方法については、[Railsガイドのガイドライン](https://railsguides.jp/ruby_on_rails_guides_guidelines.html)を参考にしてください。
 
 本ガイドの品質向上に向けて、皆さまのご協力が得られれば幸いです。よろしくお願い致します。
 
@@ -39,7 +39,7 @@ http://railstutorial.jp/
 ### ①  原著との差分更新の方法
    - [bin/merge-upstream](https://github.com/yasslab/railsguides.jp/blob/japanese/bin/merge-upstream) を実行すると最新版が `guides/source` 内に取り込まれます。
    - 特に、原著を手元で確認したいとき、原著にPRを送付したいときに便利です。
-   - 原著にPRを送るときは、事前に[Railsのドキュメントに貢献する](http://railsguides.jp/contributing_to_ruby_on_rails.html#rails%E3%81%AE%E3%83%89%E3%82%AD%E3%83%A5%E3%83%A1%E3%83%B3%E3%83%88%E3%81%AB%E8%B2%A2%E7%8C%AE%E3%81%99%E3%82%8B)に目を通しておくとよいです :)
+   - 原著にPRを送るときは、事前に[Railsのドキュメントに貢献する](https://railsguides.jp/contributing_to_ruby_on_rails.html#rails%E3%81%AE%E3%83%89%E3%82%AD%E3%83%A5%E3%83%A1%E3%83%B3%E3%83%88%E3%81%AB%E8%B2%A2%E7%8C%AE%E3%81%99%E3%82%8B)に目を通しておくとよいです :)
 
 ### ②  GTTに最新のドキュメントをアップロードする
 
