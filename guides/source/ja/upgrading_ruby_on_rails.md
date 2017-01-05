@@ -80,7 +80,7 @@ Rails 4.2 の Active Record モデルは `ActiveRecord::Base` を継承してい
 
 アプリのコントローラーが`ActionController::Base`に代わって`ApplicationController`を継承するように、アプリのすべてのモデルが`ApplicationRecord`をスーパークラスとして使うようになりました。この変更により、アプリ全体のモデルの動作を1か所で変更できるようになりました。
 
-Rails 4.2 を Rails 5.0 にアップグレードする場合、`app/models/`ディレクトリに`application_record.rb`ファイルを追加し、このファイルに以下の設定を追加する必要があります。
+Rails 4.2 を Rails 5.0 にアップグレードする場合、`app/jobs/`ディレクトリに`application_record.rb`ファイルを追加し、このファイルに以下の設定を追加する必要があります。
 
 ```
 class ApplicationRecord < ActiveRecord::Base
@@ -90,7 +90,7 @@ end
 
 ### `throw(:abort)`でコールバックチェーンを停止する
 
-Rails 4.2 では、Active RecordやActive Modelで'before'コールバックが`false`を返すと、すべてのコールバックチェインが停止する仕様でした。この場合、以後'before'コールバックは実行されず、コールバック内にラップされているアクションも実行されません。
+Rails 4.2 では、Active RecordやActive Modelで'before'コールバックが`false`を返すと、すべてのコールバックチェーンが停止する仕様でした。この場合、以後'before'コールバックは実行されず、コールバック内にラップされているアクションも実行されません。
 
 Rails 5.0 ではこの副作用が修正され、Active RecordやActive Modelのコールバックで`false`が返ってもコールバックチェーンが停止しなくなりました。その代わり、今後コールバックチェーンは`throw(:abort)`で明示的に停止する必要があります。
 
