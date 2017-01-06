@@ -13,6 +13,7 @@ rm -rf output/ja
 bundle exec rake guides:generate:html GUIDES_LANGUAGE=ja --trace
 cp ./source/ja/favicon.ico ./output/ja
 cp ./source/ja/404.html    ./output/ja
+cp ./source/ja/humans.txt  ./output/ja
 
 # Then, manually type these commands:
 #   $ git add .
