@@ -14,7 +14,6 @@ destination: ./_site
 markdown: kramdown
 gems:     ['kramdown']
 exclude:
-  - unicorn.rb
   - README.md
   - Procfile
   - Gemfile
