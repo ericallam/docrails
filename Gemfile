@@ -25,6 +25,9 @@ gem 'acme_challenge'
 gem 'rack-rewrite', '~> 1.5.0'
 gem 'rack-contrib', '~> 1.4'
 
+# Testing links by hand
+gem 'html-proofer'
+
 group :development do
   gem 'gtt-downloader'
 end
