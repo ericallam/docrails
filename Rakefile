@@ -15,6 +15,7 @@ task test: [:build] do
                       check_opengraph: true,
                       check_favicon: true,
                       check_html: true,
+                      disable_external: true,
                       file_ignore: %w(),
                       url_ignore:  %w(),
                       http_status_ignore: [0, 500, 999],
