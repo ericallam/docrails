@@ -108,7 +108,7 @@ Active Support のコールバックはこのオプションの影響を受け�
 
 Rails 4.2 のActive Jobは`ActiveJob::Base`を継承しますが、Rails 5.0 ではデフォルトで`ApplicationJob`を継承するよう変更されました。
 
-Rails 4.2 を Rails 5.0 にアップグレードする場合、`app/models/`ディレクトリに`application_job.rb`ファイルを追加し、このファイルに以下の設定を追加する必要があります。
+Rails 4.2 を Rails 5.0 にアップグレードする場合、`app/jobs/`ディレクトリに`application_job.rb`ファイルを追加し、このファイルに以下の設定を追加する必要があります。
 
 ```
 class ApplicationJob < ActiveJob::Base
