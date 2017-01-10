@@ -15,10 +15,11 @@ cd guides
 if [ -n "$GTT_DOWNLOADER" ]; then
     bundle exec gtt-downloader
 fi
-bundle exec ruby allocate.rb
-bundle exec ruby replacer.rb
+ruby allocate.rb
+ruby replacer.rb
 rm -rf output/ja
-bundle exec rake guides:generate:html GUIDES_LANGUAGE=ja --trace
+rake guides:generate:html GUIDES_LANGUAGE=ja --trace
+
 cp ./source/ja/favicon.ico ./output/ja
 cp ./source/ja/404.html    ./output/ja
 cp ./source/ja/humans.txt  ./output/ja
