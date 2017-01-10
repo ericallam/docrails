@@ -1,6 +1,7 @@
 # Ignore Google downloaded files from Translator Toolkit
 #archive
-#archive*
+guides/archive/
+guides/output/
 
 ### https://raw.github.com/github/gitignore/master/Global/OSX.gitignore
 
