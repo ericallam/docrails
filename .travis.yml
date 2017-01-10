@@ -1,14 +1,14 @@
 language: ruby
 rvm:
 - 2.3.3
-sudo: false
 script:
 - bundle exec rake assets:precompile
 - bundle exec rspec spec/features/
 deploy:
   provider: heroku
   api_key:
-    secure: c0PPn1m2dQ3OUk0/34F+wBnB8K8+IgAQ2h2ydPbTNeqa+AYM50PZfQ2lo9YjcHfBtXCf8s9u2QDE8xBXaTOQtRulp0tuP+DcQv/Pw0aujBbb1UFTdHNqos3rD29ywByEj4xI1FNO+ElN4MK9NRawuSAFZ9rcJ3bRO7VV4mZitus=
-  on: japanese
-  app:
-    master: railsguides-jp
+    secure: JHaaojmt64klUFQElkjE0arLV02cumMH0oDinvdRnnbMGCQVNJwTq8jlv9o1n9DctUDk+BvYJCU6B0cZHvqDlWgkZOR8VvXlaO644AmGKkCLEW1/6FCjEAitLkiRZ04kkGgVpDq5spcPDmjhSznYlUdonVgXq55M3IV3Yt+9GmU=
+  on:
+    branch: japanese
+  before_deploy: "echo 'ready?'"
+  app: railsguides-jp
