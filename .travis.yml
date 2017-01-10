@@ -2,4 +2,6 @@ language: ruby
 rvm:
   - 2.3.3
 sudo: false
-script: "bundle exec rspec spec/features/"
+script:
+- "bundle exec rake assets:precompile"
+- "bundle exec rspec spec/features/"
