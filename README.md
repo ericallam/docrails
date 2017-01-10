@@ -82,9 +82,9 @@ https://railstutorial.jp/
 - [@riseshia](https://github.com/riseshia) (コミッター)
 - 他，[Issues](https://github.com/yasslab/railsguides.jp/issues?q=) や [Pull Request](https://github.com/yasslab/railsguides.jp/graphs/contributors)  を送ってくださった多くの方々.
 
-and supported/sponsored by [YassLab](http://yasslab.jp/).
+and supported/sponsored by [YassLab](https://yasslab.jp/).
 
-[![YassLab Logo](https://dl.dropboxusercontent.com/u/2819285/yasslab_logo_copy.png)](http://yasslab.jp)
+[![YassLab Logo](https://dl.dropboxusercontent.com/u/2819285/yasslab_logo_copy.png)](https://yasslab.jp)
 
 ### 協力者の相談部屋 (チャットルーム)
 
