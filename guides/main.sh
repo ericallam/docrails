@@ -1,6 +1,14 @@
 #!/bin/sh
 
+current_dir=`pwd`
+if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+    cd `pwd`/`git rev-parse --show-cdup`
+else
+    echo "You're not in Git direcoty."
+fi
+
 set -ex
+cd guides
 
 # Update HTMLs using 'archive.zip' downloaded by GTT
 
@@ -14,6 +22,7 @@ bundle exec rake guides:generate:html GUIDES_LANGUAGE=ja --trace
 cp ./source/ja/favicon.ico ./output/ja
 cp ./source/ja/404.html    ./output/ja
 cp ./source/ja/humans.txt  ./output/ja
+cd ${current_dir}
 
 # Then, manually type these commands:
 #   $ git add .
