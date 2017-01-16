@@ -3,6 +3,7 @@
 
 Dir.glob(["./source/ja/*.md", "./source/ja/*.yaml"]) do |filename|
   text = File.read(filename)
+  puts "\tReplace: #{filename} ..."
 
   # Global replacement
   unless %w(release_notes upgrading_ruby_on_rails).any? { |s| filename.include? s }

@@ -13,7 +13,7 @@ ARCHIVE_NAME="archive.zip"
 # Correct wrong file extensions in GTT
 Dir.glob("./archive/ja/**") do |filename|
   new_name = filename.gsub(".txt", "").gsub(/\.(erb|yaml)\.md/, "#{$1}")
-  puts "Rename: #{filename}\t->\t#{new_name}"
+  puts "\tRename: #{filename}\t->\t#{new_name}"
   FileUtils.mv(filename, new_name) unless filename == new_name
   FileUtils.cp(new_name, "./source/ja/")
 end
