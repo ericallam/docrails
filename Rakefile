@@ -3,7 +3,18 @@ task default: 'assets:precompile'
 namespace :assets do
   task :precompile do
     Rake::Task['clean'].invoke
-    sh 'bundle exec guides/main.sh'
+
+    load './guides/Rakefile'
+    Dir.chdir('./guides') do
+      Rake::Task['gtt:allocate'].invoke
+      Rake::Task['gtt:replacer'].invoke
+      Rake::Task['guides:clean'].invoke
+
+      ENV['GUIDES_LANGUAGE'] = 'ja'
+      Rake::Task['guides:generate:html'].invoke('--trace')
+      Rake::Task['guides:tanpopo'].invoke
+    end
+
     sh 'JEKYLL_ENV=production bundle exec jekyll build'
   end
 end

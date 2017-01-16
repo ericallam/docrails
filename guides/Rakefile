@@ -1,10 +1,20 @@
-namespace :guides do
+namespace :gtt do
+  desc 'Unzip archive.zip downloaded from GTT and fix GTT-specific issues'
+  task :allocate do
+    ruby "allocate.rb"
+  end
 
+  desc 'Globally replace with regexes for all guides instead of GTT'
+  task :replacer do
+    ruby "replacer.rb"
+  end
+end
+
+namespace :guides do
   desc 'Generate guides (for authors), use ONLY=foo to process just "foo.md"'
   task :generate => 'generate:html'
 
   namespace :generate do
-
     desc "Generate HTML guides"
     task :html do
       ENV["WARN_BROKEN_LINKS"] = "1" # authors can't disable this
@@ -79,6 +89,18 @@ Examples:
   $ rake guides:generate:kindle EDGE=1
   $ rake guides:generate GUIDES_LANGUAGE=es
     help
+  end
+
+  desc "Clean up generated files"
+  task :clean do
+    system 'rm -rf output/ja'
+  end
+
+  desc "Add missing files to deploy to Heroku"
+  task :tanpopo do
+    system 'cp ./source/ja/favicon.ico ./output/ja'
+    system 'cp ./source/ja/404.html    ./output/ja'
+    system 'cp ./source/ja/humans.txt  ./output/ja'
   end
 end
 
