@@ -46,29 +46,42 @@ https://railstutorial.jp/
 
 ## GTTを扱った翻訳メモリの修正 (コミッター向け)
 
-### 翻訳の流れ (継続的翻訳システム移行前の構成)
+以下は、コミット権のある人向けの情報です。
+
+<details>
+  <summary><h3>翻訳の流れ (継続的翻訳システム移行前の構成)</h3></summary>
 
 ![翻訳の流れ](https://raw.githubusercontent.com/yasslab/railsguides.jp/japanese/images/flow-of-translation.png)
 参考: [[翻訳]Ruby on Rails 4.1リリース前にアップグレードガイドを先行翻訳した & 同じ翻訳を2回しないで済むようにした](http://techracho.bpsinc.jp/hachi8833/2014_03_28/16037)
+</details>
 
-### 3. 原著との差分更新の方法
-   - [bin/merge-upstream](https://github.com/yasslab/railsguides.jp/blob/japanese/bin/merge-upstream) を実行すると最新版が `guides/source` 内に取り込まれます。
-   - 特に、原著を手元で確認したいとき、原著にPRを送付したいときに便利です。
-   - 原著にPRを送るときは、事前に[Railsのドキュメントに貢献する](https://railsguides.jp/contributing_to_ruby_on_rails.html#rails%E3%81%AE%E3%83%89%E3%82%AD%E3%83%A5%E3%83%A1%E3%83%B3%E3%83%88%E3%81%AB%E8%B2%A2%E7%8C%AE%E3%81%99%E3%82%8B)に目を通しておくとよいです :)
+<details>
+  <summary><h3>原著との差分更新の方法</h3></summary>
 
-### 4. GTTに最新のドキュメントをアップロードする
+- [bin/merge-upstream](https://github.com/yasslab/railsguides.jp/blob/japanese/bin/merge-upstream) を実行すると最新版が `guides/source` 内に取り込まれます。
+- 特に、原著を手元で確認したいとき、原著にPRを送付したいときに便利です。
+- 原著にPRを送るときは、事前に[Railsのドキュメントに貢献する](https://railsguides.jp/contributing_to_ruby_on_rails.html#rails%E3%81%AE%E3%83%89%E3%82%AD%E3%83%A5%E3%83%A1%E3%83%B3%E3%83%88%E3%81%AB%E8%B2%A2%E7%8C%AE%E3%81%99%E3%82%8B)に目を通しておくとよいです :)
+
+</details>
+
+<details>
+  <summary><h3>GTTに最新のドキュメントをアップロードする</h3></summary>
 
 - Google Translator Toolkit: https://translate.google.com/toolkit/
 - Markdownは対応してないので、必要に応じてファイル名を `hogehoge.md.txt` などに変更する。
 - **NOTE: 必ずRailsガイド用の翻訳メモリに結びつけること。(shared TM は使わない)**
    - cf. [翻訳メモリの使用 - Translate ヘルプ - Google Help](https://support.google.com/translate/toolkit/answer/147863?hl=ja)
 
-### 5. GTT上で英語から日本語に翻訳する
+</details>
+
+<details>
+<summary><h3>GTT上で英語から日本語に翻訳する</h3></summary>
 
 - 詳細: [Google Translator Toolkitと翻訳メモリ(ノーカット版) : RubyWorld Conference 2013より](http://techracho.bpsinc.jp/hachi8833/2013_12_16/14889)
 - GTTの使用方法や文体などに関しては[こちら](https://www.facebook.com/notes/ruby-on-rails-tutorial-%E7%BF%BB%E8%A8%B3%E3%82%B0%E3%83%AB%E3%83%BC%E3%83%97/google-translator-toolkit-gtt-%E3%81%AE%E4%BD%BF%E3%81%84%E6%96%B9/170100333166820)を参考にしてください。
 - NOTE: 行頭にある`(TIP|IMPORTANT|CAUTION|WARNING|NOTE|INFO|TODO)[.:]`は、`guides:generate:html` で使われるタグです。 **これらのタグは訳さないでください。**
 
+</details>
 
 ## 協力者
 
