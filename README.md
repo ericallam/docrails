@@ -23,30 +23,36 @@ https://railstutorial.jp/
 
 本ガイドの品質向上に向けて、皆さまのご協力が得られれば幸いです。よろしくお願い致します。
 
-## 継続的翻訳システムについて (現在移行中)
+## Railsガイドの生成方法
+
+本リポジトリにPull Requestを送付したい方は、下記を参照してください。    
+
+### 1. HTMLファイルの生成 (Jekyll)
+
+1. `/guides/source/ja` 内の Markdown ファイルを編集する
+2. `$ bundle exec rake assets:precompile` 
+3. `$ bundle exec jekyll server`
+4. localhost:4000 から変更結果を確認する
+5. (問題なければ) PRを送付する
+
+### 2. CI と Heroku
+
+- PRが送られると、[railsguides.jpのTravis CI](https://travis-ci.org/yasslab/railsguides.jp) が走ります。
+- CIが通らなかった場合は、該当箇所を修正してください。
+- マージされない限り本番環境 (Heroku) には反映されないので、気軽にPRを送っていただいて大丈夫です。
+
+## 翻訳に関する細かなアレコレ
+
+以下は原著へのフィードバックや、翻訳に関するより詳細な情報です。必要に応じてご参照ください ;)
+
+<details>
+  <summary><strong>継続的翻訳システムについて (現在移行中)</strong></summary>
 
 [![Railsガイドを支える継続的翻訳システム - SpeakerDeck](https://raw.githubusercontent.com/yasslab/railsguides.jp/japanese/images/continuous_translation_system.png)](https://speakerdeck.com/yasulab/continuous-translation-system-at-rwc2015)
 
 本リポジトリの仕組みについては、上記のスライドで詳しく解説されています。    
-本リポジトリにPull Requestを送付したい方は、下記のを参照してください。    
-(初めての方は`1.`と`2.`を眺めておくだけで大丈夫です :ok_hand: )
+</details>
 
-### 1. 日本語のHTMLファイルの生成方法
-
-1. `/guides` ディレクトリに移動する
-2. `/guides/source/ja` 内の Markdown ファイルを編集する
-3. `$ GUIDES_LANGUAGE=ja bundle exec rake guides:generate:html` を実行する
-
-**NOTE: Pull Request (PR) を送る場合これだけで大丈夫です** :ok_woman:
-
-### 2. Herokuにデプロイ
-
-- PRが送られると、[railsguides.jpのTravis CI](https://travis-ci.org/yasslab/railsguides.jp) が走ります。
-- マージされない限り本番環境 (Heroku) には反映されないので、気軽にPRを送ってください。
-
-## 翻訳に関する細かなアレコレ
-
-以下は原著へのフィードバックや、GTTの扱い方などの細かな情報です。必要に応じてご参照ください ;)
 
 <details>
   <summary><strong>翻訳の流れ (継続的翻訳システム移行前の構成)</strong></summary>
