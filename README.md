@@ -17,9 +17,9 @@ https://railstutorial.jp/
 
 ## フィードバックについて
 
-本ガイドを読んで、誤字・脱字・誤訳などを見かけましたら、本リポジトリの [Issue](https://github.com/yasslab/railsguides.jp/issues) にてお気軽に報告して頂けると幸いです。「直接Pull Request を送りたい!」という場合には、下記の「翻訳の流れ」や「チャットルーム」を参照してください。
+本ガイドを読んで、誤字・脱字・誤訳などを見かけましたら、本リポジトリの [Issue](https://github.com/yasslab/railsguides.jp/issues) にてお気軽に報告して頂けると幸いです。「直接Pull Request を送りたい!」という場合には、下記の「Railsガイドの生成方法」を参照してください。
 
-なお、原著レベルでの間違いを見つけましたら、[Railsのドキュメントに貢献する](https://railsguides.jp/contributing_to_ruby_on_rails.html#rails%E3%81%AE%E3%83%89%E3%82%AD%E3%83%A5%E3%83%A1%E3%83%B3%E3%83%88%E3%81%AB%E8%B2%A2%E7%8C%AE%E3%81%99%E3%82%8B) を参考にしてください。また、Railsガイドの生成方法については、[Railsガイドのガイドライン](https://railsguides.jp/ruby_on_rails_guides_guidelines.html)を参考にしてください。
+なお、原著レベルでの間違いを見つけましたら、[Railsのドキュメントに貢献する](https://railsguides.jp/contributing_to_ruby_on_rails.html#rails%E3%81%AE%E3%83%89%E3%82%AD%E3%83%A5%E3%83%A1%E3%83%B3%E3%83%88%E3%81%AB%E8%B2%A2%E7%8C%AE%E3%81%99%E3%82%8B) を参考にしてください。
 
 本ガイドの品質向上に向けて、皆さまのご協力が得られれば幸いです。よろしくお願い致します。
 
