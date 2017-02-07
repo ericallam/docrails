@@ -193,7 +193,7 @@ Railties
 *   developmentモードでのキャッシュのオンとオフを指定する`bin/rails dev:cache`を追加。
     ([Pull Request](https://github.com/rails/rails/pull/20961))
 
-*   developement環境を自動でアップデートする`bin/update`スクリプトを追加。
+*   development環境を自動でアップデートする`bin/update`スクリプトを追加。
     ([Pull Request](https://github.com/rails/rails/pull/20972))
 
 *   rakeタスクを`bin/rails`で置き換え。
