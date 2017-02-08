@@ -8,8 +8,8 @@ namespace :assets do
     Dir.chdir('./guides') do
       Rake::Task['gtt:allocate'].invoke
       Rake::Task['gtt:replacer'].invoke
-      Rake::Task['guides:clean'].invoke
 
+      Rake::Task['guides:clean'].invoke
       ENV['GUIDES_LANGUAGE'] = 'ja'
       Rake::Task['guides:generate:html'].invoke('--trace')
       Rake::Task['guides:tanpopo'].invoke
@@ -19,8 +19,8 @@ namespace :assets do
   end
 end
 
-# cf. How to test a Jekyll site
-# http://joenyland.me/blog/how_to_test_a_jekyll_site/
+# Test if generated HTML files include dead links
+# cf. http://joenyland.me/blog/how_to_test_a_jekyll_site/
 require 'html/proofer'
 task test: [:build] do
   HTML::Proofer.new('./_site', {
