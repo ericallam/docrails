@@ -1,8 +1,8 @@
 task default: 'assets:precompile'
 
 namespace :assets do
-  task :precompile do
-    Rake::Task['clean'].invoke
+  desc "Make ready for deploying to Heroku from GTT"
+  task precompile: [:clean] do
 
     load './guides/Rakefile'
     Dir.chdir('./guides') do
