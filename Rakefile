@@ -6,8 +6,10 @@ namespace :assets do
 
     load './guides/Rakefile'
     Dir.chdir('./guides') do
-      Rake::Task['gtt:allocate'].invoke
-      Rake::Task['gtt:replacer'].invoke
+      if ENV['SKIP_GTT'] != '1'
+        Rake::Task['gtt:allocate'].invoke
+        Rake::Task['gtt:replacer'].invoke
+      end
 
       Rake::Task['guides:clean'].invoke
       ENV['GUIDES_LANGUAGE'] = 'ja'

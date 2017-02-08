@@ -30,7 +30,7 @@ https://railstutorial.jp/
 ### 1. HTMLファイルの生成 (Jekyll)
 
 1. `/guides/source/ja` 内の Markdown ファイルを編集する
-2. `$ bundle exec rake assets:precompile` 
+2. `$ bundle exec rake assets:precompile SKIP_GTT=1` 
 3. `$ bundle exec jekyll server`
 4. localhost:4000 から変更結果を確認する
 5. (問題なければ) PRを送付する
