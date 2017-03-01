@@ -404,7 +404,7 @@ edit_article GET    /articles/:id/edit(.:format) articles#edit
 "Unknown action"エラーを解消するには、`app/controllers/articles_controller.rb`ファイル内の`ArticlesController`クラス内の`new`アクションの下に`create`アクションを追加します。
 
 ```ruby
-class ArticlesController < ApplicationController 
+class ArticlesController < ApplicationController
   def new
   end
 
@@ -1323,10 +1323,10 @@ end
   <%= @article.title %>
 </p>
 
-      <p>
+<p>
   <strong>Text:</strong>
   <%= @article.text %>
-      </p>
+</p>
 
 <h2>Comments</h2>
 <%= render @article.comments %>
