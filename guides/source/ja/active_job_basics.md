@@ -67,19 +67,27 @@ end
 キューへのジョブ登録は以下のように行います。
 
 ```ruby
-MyJob.perform_later record  # 「キューイングシステムが空いたらジョブを実行する」とキューに登録する
+# 「キューイングシステムが空いたらジョブを実行する」とキューに登録する
+GuestsCleanupJob.perform_later guest
 ```
 
 ```ruby
-MyJob.set(wait_until: Date.tomorrow.noon).perform_later(record)  # 明日正午に実行したいジョブをキューに登録する
+# 明日正午に実行したいジョブをキューに登録する
+GuestsCleanupJob.set(wait_until: Date.tomorrow.noon).perform_later(guest)
 ```
 
 ```ruby
-MyJob.set(wait: 1.week).perform_later(record) # 一週間後に実行したいジョブをキューに登録する
+# 一週間後に実行したいジョブをキューに登録する
+GuestsCleanupJob.set(wait: 1.week).perform_later(guest)
+```
+
+```ruby
+# `perform_now`と`perform_later`は`perform`を呼び出すので、
+# 定義した引数を渡すことができる
+GuestsCleanupJob.perform_later(guest1, guest2, filter: 'some_filter')
 ```
 
 以上で終わりです。
-
 
 ジョブを実行する
 -------------
