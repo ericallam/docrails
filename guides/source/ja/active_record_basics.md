@@ -80,10 +80,10 @@ NOTE: これらのカラム名は必須ではありませんが、Active Record�
 Active Recordのモデルを作成する
 -----------------------------
 
-Active Recordモデルの作成は非常に簡単です。以下のように`ActiveRecord::Base`クラスのサブクラスを作成するだけで完了します。
+Active Recordモデルの作成は非常に簡単です。以下のように`ApplicationRecord`クラスのサブクラスを作成するだけで完了します。
 
 ```ruby
-class Product < ActiveRecord::Base
+class Product < ApplicationRecord
 end
 ```
 
@@ -113,7 +113,7 @@ Railsアプリケーションで別の命名ルールを使用しなければな
 `ActiveRecord::Base.table_name=`メソッドを使用して、使用すべきテーブル名を明示的に指定できます。
 
 ```ruby
-class Product < ActiveRecord::Base
+class Product < ApplicationRecord
   self.table_name = "PRODUCT"
 end
 ```
@@ -131,7 +131,7 @@ end
 `ActiveRecord::Base.primary_key=`メソッドを使用して、テーブルの主キーとして使用されるカラム名もオーバーライドできます。
 
 ```ruby
-class Product < ActiveRecord::Base
+class Product < ApplicationRecord
   self.primary_key = "product_id"
 end
 ```
@@ -237,7 +237,7 @@ Active Recordを使用して、モデルがデータベースに書き込まれ�
 以下の例で簡単に説明します。
 
 ```ruby
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   validates :name, presence: true
 end
 
