@@ -2,7 +2,7 @@
 Action Cable の概要
 =====================
 
-本ガイドでは、Action Cableのしくみと、WebSocketsをRailsアプリケーションに導入してリアルタイム機能を実現する方法について解説します。
+本ガイドでは、Action Cableのしくみと、WebSocketをRailsアプリケーションに導入してリアルタイム機能を実現する方法について解説します。
 
 このガイドの内容:
 
@@ -17,7 +17,7 @@ Action Cable の概要
 ------------
 
 Action Cableは、
-[WebSockets](https://ja.wikipedia.org/wiki/WebSocket)とRailsのその他の部分をシームレスに統合するためのものです。Action Cable が導入されたことで、Rails アプリケーションの効率の良さとスケーラビリティを損なわずに、通常のRailsアプリケーションと同じスタイル・方法でリアルタイム機能をRubyで記述できます。クライアント側のJavaScriptフレームワークとサーバー側のRubyフレームワークを同時に提供する、フルスタックのフレームワークです。Active RecordなどのORMで書かれたすべてのドメインモデルにアクセスできます。
+[WebSocket](https://ja.wikipedia.org/wiki/WebSocket)とRailsのその他の部分をシームレスに統合するためのものです。Action Cable が導入されたことで、Rails アプリケーションの効率の良さとスケーラビリティを損なわずに、通常のRailsアプリケーションと同じスタイル・方法でリアルタイム機能をRubyで記述できます。クライアント側のJavaScriptフレームワークとサーバー側のRubyフレームワークを同時に提供する、フルスタックのフレームワークです。Active RecordなどのORMで書かれたすべてのドメインモデルにアクセスできます。
 
 Pub/Subについて
 ---------------
@@ -546,7 +546,7 @@ Ruby側では、[websocket-driver](https://github.com/faye/websocket-driver-ruby
 
 ## デプロイ
 
-Action Cableを支えているのは、WebSocketsとスレッドの組み合わせです。フレームワーク内部の流れや、ユーザー指定のチャネルの動作は、Rubyのネイティブスレッドによって処理されます。つまり、スレッドセーフを損なわない限り、Railsの正規のモデルはすべて問題なく利用できるということです。
+Action Cableを支えているのは、WebSocketとスレッドの組み合わせです。フレームワーク内部の流れや、ユーザー指定のチャネルの動作は、Rubyのネイティブスレッドによって処理されます。つまり、スレッドセーフを損なわない限り、Railsの正規のモデルはすべて問題なく利用できるということです。
 
 Action Cableサーバーには、RackソケットをハイジャックするAPIが実装されています。これによって、アプリケーション・サーバーがマルチスレッドであるかどうかにかかわらず、内部の接続をマルチスレッドパターンで管理できます。
 
