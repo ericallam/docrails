@@ -83,7 +83,7 @@ Active Recordのモデルを作成する
 Active Recordモデルの作成は非常に簡単です。以下のように`ApplicationRecord`クラスのサブクラスを作成するだけで完了します。
 
 ```ruby
-class Product < ApplicationRecord 
+class Product < ApplicationRecord
 end
 ```
 
@@ -113,7 +113,7 @@ Railsアプリケーションで別の命名ルールを使用しなければな
 `ApplicationRecord.table_name=`メソッドを使用して、使用すべきテーブル名を明示的に指定できます。
 
 ```ruby
-class Product < ApplicationRecord 
+class Product < ApplicationRecord
   self.table_name = "PRODUCT"
 end
 ```
@@ -131,7 +131,7 @@ end
 `ApplicationRecord.primary_key=`メソッドを使用して、テーブルの主キーとして使用されるカラム名もオーバーライドできます。
 
 ```ruby
-class Product < ApplicationRecord 
+class Product < ApplicationRecord
   self.primary_key = "product_id"
 end
 ```
@@ -237,7 +237,7 @@ Active Recordを使用して、モデルがデータベースに書き込まれ�
 以下の例で簡単に説明します。
 
 ```ruby
-class User < ApplicationRecord 
+class User < ApplicationRecord
   validates :name, presence: true
 end
 
@@ -258,7 +258,7 @@ Active Recordコールバックを使用することで、モデルのライフ�
 Railsにはデータベーススキーマを管理するためのドメイン固有言語(DSL: Domain Specific Language)があり、マイグレーション(migration)と呼ばれています。マイグレーションはファイルに保存されます。`bin/rails`を実行すると、Active Recordがサポートするあらゆるデータベースに対してマイグレーションが実行されます。以下はテーブルを作成するマイグレーションです。
 
 ```ruby
-class CreatePublications < ActiveRecord::Migration
+class CreatePublications < ActiveRecord::Migration[5.0]
   def change
     create_table :publications do |t|
       t.string :title
