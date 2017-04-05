@@ -170,21 +170,7 @@ end
 >> Person.create.errors[:name].any? # => true
 ```
 
-より高度なレベルでのバリデーションエラーについては、[バリデーションエラーの取り扱い](#バリデーションエラーに対応する)セクションを参照してください。
-
-### `errors.details`
-
-無効(invalid)な属性において、どのバリデーションが失敗したのか調べるために`errors.details[:attribute]`が利用できます。これは`:error`がキーで、失敗したバリデーターのシンボルが値となるハッシュの配列を返します。
-
-```ruby
-class Person < ApplicationRecord
-  validates :name, presence: true
-end
-
->> person = Person.new
->> person.valid?
->> person.errors.details[:name] # => [{error: :blank}]
-```
+より高度なレベルでのバリデーションエラーについては、[バリデーションエラーの取り扱い](#バリデーションエラーに対応する)セクションを参照してください。 ### `errors.details` 無効(invalid)な属性において、どのバリデーションが失敗したのか調べるために`errors.details[:attribute]`が利用できます。これは`:error`がキーで、失敗したバリデーターのシンボルが値となるハッシュの配列を返します。 ```ruby class Person < ApplicationRecord validates :name, presence: true end >> person = Person.new >> person.valid? >> person.errors.details[:name] # => [{error: :blank}] ``` 
 
 バリデーションヘルパー
 ------------------
@@ -540,7 +526,7 @@ class GoodnessValidator
 
   def validate
     if some_complex_condition_involving_ivars_and_private_methods?
-      @person.errors[:base] << "これは悪人だ"
+      @person.errors[:base] << "これは悪人だ" 
     end
   end
 
@@ -718,7 +704,7 @@ end
 class MyValidator < ActiveModel::Validator
   def validate(record)
     unless record.name.starts_with? 'X'
-      record.errors[:name] << '名前はXで始まる必要があります'
+      record.errors[:name] << '名前はXで始まる必要があります' 
     end
   end
 end
