@@ -121,9 +121,9 @@ end
 この指定を行った場合、テストの定義で`set_fixture_class`メソッドを使用し、フィクスチャ (クラス名.yml) に対応するクラス名を別途定義する必要があります。
 
 ```ruby
-class FunnyJoke < ActiveSupport::TestCase
-  set_fixture_class funny_jokes: Joke
-  fixtures :funny_jokes
+class ProductTest < ActiveSupport::TestCase
+  set_fixture_class my_products: Product
+  fixtures :my_products
   ...
 end
 ```
