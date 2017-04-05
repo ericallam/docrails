@@ -159,7 +159,7 @@ end
 
 `errors[:attribute]`を使用して、特定のオブジェクトの属性が有効であるかどうかを確認できます。このメソッドは、`:attribute`のすべてのエラーの配列を返します。指定された属性でエラーが発生しなかった場合は、空の配列が返されます。
 
-このメソッドが便利なのは、 _after_ で始まるバリデーションを実行する場合だけです。このメソッドはエラーのコレクションを調べるだけで、バリデーションそのものをトリガしないからです。このメソッドは、前述の`ActiveRecord::Base#invalid?`メソッドとは異なります。このメソッドはオブジェクト全体の正当性については確認しないためです。オブジェクトの個別の属性についてエラーがあるかどうかだけを調べます。
+このメソッドが便利なのは、バリデーションを実行した後だけです。このメソッドはエラーのコレクションを調べるだけで、バリデーションそのものをトリガしないからです。このメソッドは、前述の`ActiveRecord::Base#invalid?`メソッドとは異なります。このメソッドはオブジェクト全体の正当性については確認しないためです。オブジェクトの個別の属性についてエラーがあるかどうかだけを調べます。
 
 ```ruby
 class Person < ActiveRecord::Base
@@ -526,7 +526,7 @@ class GoodnessValidator
 
   def validate
     if some_complex_condition_involving_ivars_and_private_methods?
-      @person.errors[:base] << "これは悪人だ" 
+      @person.errors[:base] << "これは悪人だ"
     end
   end
 
@@ -704,7 +704,7 @@ end
 class MyValidator < ActiveModel::Validator
   def validate(record)
     unless record.name.starts_with? 'X'
-      record.errors[:name] << '名前はXで始まる必要があります' 
+      record.errors[:name] << '名前はXで始まる必要があります'
     end
   end
 end
