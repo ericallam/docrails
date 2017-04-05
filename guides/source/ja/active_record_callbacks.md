@@ -34,7 +34,7 @@ class User < ActiveRecord::Base
 
   before_validation :ensure_login_has_a_value
 
-  protected
+  private
     def ensure_login_has_a_value
       if login.nil?
         self.login = email unless email.blank?
@@ -64,7 +64,7 @@ class User < ActiveRecord::Base
   # :onは配列を取ることもできる
   after_validation :set_location, on: [ :create, :update ]
 
-  protected
+  private
     def normalize_name
       self.name = self.name.downcase.titleize
     end
@@ -75,7 +75,7 @@ class User < ActiveRecord::Base
 end
 ```
 
-コールバックの宣言はprotectedまたはprivateキーワードの後で行なうのが好ましい方法です。コールバックメソッドがpublicな状態のままだと、このメソッドがモデルの外から呼び出され、オブジェクトのカプセル化の原則に違反する可能性があります。
+コールバックはprivateメソッドとして宣言するのが好ましい方法です。コールバックメソッドがpublicな状態のままだと、このメソッドがモデルの外から呼び出され、オブジェクトのカプセル化の原則に違反する可能性があります。
 
 利用可能なコールバック
 -------------------
