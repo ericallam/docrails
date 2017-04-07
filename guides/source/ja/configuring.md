@@ -260,8 +260,8 @@ config.middleware.delete "Rack::MethodOverride"
 * `config.active_record.logger`は、Log4rのインターフェイスまたはデフォルトのRuby Loggerクラスに従うロガーを引数として取ります。このロガーは以後作成されるすべての新しいデータベース接続に渡されます。Active Recordのモデルクラスまたはモデルインスタンスに対して`logger`メソッドを呼び出すと、このロガーを取り出せます。ログ出力を無効にするには`nil`を設定します。
 
 * `config.active_record.primary_key_prefix_type`は、主キーカラムの命名法を変更するのに使用します。Railsのデフォルトでは、主キーカラムの名前に`id`が使用されます (なお`id`にしたい場合は値を設定する必要はありません)。`id`以外に以下の2つを指定できます。
-** `:table_name`を指定すると、たとえばCustomerクラスの主キーは`customerid`になります
-** `:table_name_with_underscore`を指定すると、たとえばCustomerクラスの主キーは`customer_id`になります
+    * `:table_name`を指定すると、たとえばCustomerクラスの主キーは`customerid`になります
+    * `:table_name_with_underscore`を指定すると、たとえばCustomerクラスの主キーは`customer_id`になります
 
 * `config.active_record.table_name_prefix`は、テーブル名の冒頭にグローバルに追加したい文字列を指定します。たとえば`northwest_`を指定すると、Customerクラスは`northwest_customers`をテーブルとして探します。デフォルトは空文字列です。
 
