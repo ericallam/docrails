@@ -316,7 +316,7 @@ end
 ```ruby
 class Person < ActiveRecord::Base
   validates :bio, length: { maximum: 1000,
-too_long: "最大%{count}文字まで使用できます" }
+    too_long: "最大%{count}文字まで使用できます" }
 end
 ```
 
@@ -329,7 +329,7 @@ class Essay < ActiveRecord::Base
     maximum: 400,
     tokenizer: lambda { |str| str.scan(/\w+/) },
     too_short: "%{count}語以上必要です",
-too_long: "使用可能な最大語数は%{count}です"
+    too_long: "使用可能な最大語数は%{count}です"
   }
 end
 ```
