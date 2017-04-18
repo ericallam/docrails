@@ -83,7 +83,7 @@ Active Recordのモデルを作成する
 Active Recordモデルの作成は非常に簡単です。以下のように`ApplicationRecord`クラスのサブクラスを作成するだけで完了します。
 
 ```ruby
-class Product < ApplicationRecord
+class Product < ApplicationRecord 
 end
 ```
 
@@ -110,7 +110,7 @@ puts p.name # "Some Book"
 
 Railsアプリケーションで別の命名ルールを使用しなければならない、レガシデータベースを使用してRailsアプリケーションを作成しないといけないなどの場合にはどうすればよいでしょうか。そんなときにはデフォルトの命名ルールを簡単にオーバーライドできます。
 
-`ActiveRecord::Base.table_name=`メソッドを使用して、使用すべきテーブル名を明示的に指定できます。
+`ApplicationRecord`は、いくつかの便利なメソッドが定義された`ActiveRecord::Base`を継承しています。このため、例えば`ActiveRecord::Base.table_name=`メソッドを使用して、使用すべきテーブル名を明示的に指定することができます。
 
 ```ruby
 class Product < ApplicationRecord
@@ -128,10 +128,10 @@ class ProductTest < ActiveSupport::TestCase
 end
 ```
 
-`ActiveRecord::Base.primary_key=`メソッドを使用して、テーブルの主キーとして使用されるカラム名もオーバーライドできます。
+他にも、`ActiveRecord::Base.primary_key=`メソッドを使用して、テーブルの主キーとして使用されるカラム名の上書きもできます。
 
 ```ruby
-class Product < ApplicationRecord
+class Product < ApplicationRecord 
   self.primary_key = "product_id"
 end
 ```
@@ -237,7 +237,7 @@ Active Recordを使用して、モデルがデータベースに書き込まれ�
 以下の例で簡単に説明します。
 
 ```ruby
-class User < ApplicationRecord
+class User < ApplicationRecord 
   validates :name, presence: true
 end
 
