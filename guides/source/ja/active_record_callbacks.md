@@ -29,7 +29,7 @@ Railsアプリケーションを普通に操作すると、その内部でオブ
 コールバックを利用するためには、コールバックを登録する必要があります。コールバックの実装は普通のメソッドと特に違うところはありません。これをコールバックとして登録するには、マクロのようなスタイルのクラスメソッドを使用します。
 
 ```ruby
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   validates :login, :email, presence: true
 
   before_validation :ensure_login_has_a_value
@@ -46,7 +46,7 @@ end
 このマクロスタイルのクラスメソッドはブロックを受け取ることもできます。以下のようにコールバックしたいコードがきわめて短く、1行に収まるような場合にこのスタイルを使ってみます。
 
 ```ruby
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   validates :login, :email, presence: true
 
   before_create do
@@ -58,7 +58,7 @@ end
 コールバックは、特定のライフサイクルのイベントでのみ呼び出されるように登録することもできます。
 
 ```ruby
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   before_validation :normalize_name, on: :create
 
   # :onは配列を取ることもできる
@@ -121,7 +121,7 @@ WARNING: `after_save`は作成と更新の両方で呼び出されますが、�
 `after_initialize`と`after_find`コールバックには、対応する`before_*`メソッドはありませんが、他のActive Recordコールバックと同様に登録できます。
 
 ```ruby
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   after_initialize do |user|
     puts "オブジェクトは初期化されました"
   end
@@ -146,7 +146,7 @@ end
 `after_touch`コールバックは、Active Recordオブジェクトがタッチされるたびに呼び出されます。
 
 ```ruby
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   after_touch do |user|
     puts "オブジェクトにタッチしました"
   end
@@ -163,14 +163,14 @@ end
 このコールバックは`belongs_to`と併用できます。
 
 ```ruby
-class Employee < ActiveRecord::Base
+class Employee < ApplicationRecord
   belongs_to :company, touch: true
   after_touch do
     puts 'Employeeモデルにタッチされました'
   end
 end
 
-class Company < ActiveRecord::Base
+class Company < ApplicationRecord
   has_many :employees
   after_touch :log_when_employees_or_company_touched
 
@@ -261,11 +261,11 @@ WARNING: `ActiveRecord::Rollback`以外の例外は、その例外によって�
 コールバックはモデルのリレーションシップを経由して動作できます。また、リレーションシップを使用してコールバックを定義することすらできます。1人のユーザーが多数のポストを持っている状況を例に取ります。あるユーザーが所有するポストは、そのユーザーがdestroyされたらdestroyされる必要があります。`User`モデルに`after_destroy`コールバックを追加し、このコールバックで`Post`モデルへのリレーションシップを経由すると以下のようになります。
 
 ```ruby
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   has_many :posts, dependent: :destroy
 end
 
-class Post < ActiveRecord::Base
+class Post < ApplicationRecord
   after_destroy :log_destroy_action
 
   def log_destroy_action
@@ -292,7 +292,7 @@ Post destroyed
 `:if`オプションまたは`:unless`オプションは、コールバックの直前に呼び出される述語メソッド(訳注: trueかfalseのいずれかの値のみを返すメソッド)の名前に対応するシンボルと関連付けることができます。`:if`オプションを使用する場合、述語メソッドがfalseを返せばコールバックは実行されません。`:unless`オプションを使用する場合、述語メソッドがtrueを返せばコールバックは実行されません。これはコールバックで最もよく使用されるオプションです。この方法で登録することで、いくつもの異なる述語メソッドを登録して、コールバックを呼び出すべきかどうかをチェックすることができます。
 
 ```ruby
-class Order < ActiveRecord::Base
+class Order < ApplicationRecord
   before_save :normalize_card_number, if: :paid_with_card?
 end
 ```
@@ -302,7 +302,7 @@ end
 文字列を使用することもできます。この文字列は後で`eval`で評価されるため、実行可能な正しいRubyコードを含んでいる必要があります。オプションで文字列を使用するのは、文字列に含まれる条件が十分に短い場合だけにしてください。
 
 ```ruby
-class Order < ActiveRecord::Base
+class Order < ApplicationRecord
   before_save :normalize_card_number, if: "paid_with_card?"
 end
 ```
@@ -312,7 +312,7 @@ end
 最後に、`:if`および`:unless`オプションで`Proc`オブジェクトを使用することもできます。このオプションは、1行以内に収まるワンライナーで検証を行う場合に最適です。
 
 ```ruby
-class Order < ActiveRecord::Base
+class Order < ApplicationRecord
   before_save :normalize_card_number,
     if: Proc.new { |order| order.paid_with_card? }
 end
@@ -323,7 +323,7 @@ end
 1つの条件付きコールバック宣言内で、`:if`オプションと`:unless`オプションを同時に使用することができます。
 
 ```ruby
-class Comment < ActiveRecord::Base
+class Comment < ApplicationRecord
   after_create :send_email_to_author, if: :author_wants_emails?,
     unless: Proc.new { |comment| comment.post.ignore_comments? }
 end
@@ -349,7 +349,7 @@ end
 上のようにクラス内で宣言することにより、コールバックメソッドはモデルオブジェクトをパラメータとして受け取れるようになります。これでこのコールバッククラスをモデルで使用できます。
 
 ```ruby
-class PictureFile < ActiveRecord::Base
+class PictureFile < ApplicationRecord
   after_destroy PictureFileCallbacks.new
 end
 ```
@@ -369,7 +369,7 @@ end
 コールバックメソッドを上のように宣言した場合は、`PictureFileCallbacks`オブジェクトのインスタンス化は不要です。
 
 ```ruby
-class PictureFile < ActiveRecord::Base
+class PictureFile < ApplicationRecord
   after_destroy PictureFileCallbacks
 end
 ```
@@ -393,7 +393,7 @@ end
 `after_commit`コールバックを使用することで、このような場合に対応することができます。
 
 ```ruby
-class PictureFile < ActiveRecord::Base
+class PictureFile < ApplicationRecord
   after_commit :delete_picture_file_from_disk, on: [:destroy]
 
   def delete_picture_file_from_disk
