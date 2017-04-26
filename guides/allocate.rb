@@ -25,7 +25,9 @@ Dir.glob(["./source/ja/*.md", "./source/ja/*.yaml"]) do |filename|
   text    = File.read(filename)
   revised = text.gsub("　", "    ").gsub(/\[W(\d)\]/) {' ' * $1.to_i}
   revised.gsub!(/\[BR\]/, "\n")   # GTT replaces '\n' with ' '
-  revised.gsub!(/\[W4\]/, "    ") # GTT squashes white spaces at the beginning
+  revised.gsub!(/\[W2\]/, "  ")   # GTT squashes white spaces at the beginning
+  revised.gsub!(/\[W4\]/, "    ")
+  revised.gsub!(/\[W4\]/, "      ")
   revised.gsub!(/(\r\n)/, "\n")   # GTT uses CR＋LF but should be LF
   revised.gsub!(/\[DLF\]\n/, "")  # Delete new line (LF) after this tag
   revised.gsub!(/\[DLF\]/, "")    # Delete invalid DLF tags left
