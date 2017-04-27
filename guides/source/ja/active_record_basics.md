@@ -83,7 +83,7 @@ Active Recordのモデルを作成する
 Active Recordモデルの作成は非常に簡単です。以下のように`ApplicationRecord`クラスのサブクラスを作成するだけで完了します。
 
 ```ruby
-class Product < ApplicationRecord 
+class Product < ApplicationRecord
 end
 ```
 
@@ -131,7 +131,7 @@ end
 他にも、`ActiveRecord::Base.primary_key=`メソッドを使用して、テーブルの主キーとして使用されるカラム名の上書きもできます。
 
 ```ruby
-class Product < ApplicationRecord 
+class Product < ApplicationRecord
   self.primary_key = "product_id"
 end
 ```
@@ -233,16 +233,17 @@ user.destroy
 
 Active Recordを使用して、モデルがデータベースに書き込まれる前にモデルの状態を検証することができます。モデルをチェックするためのさまざまなメソッドが用意されています。属性が空でないこと、一意であること、既にデータベースにないこと、特定のフォーマットに従っていることなど、多岐にわたった検証が行えます。
 
-検証は、データベースを永続化するうえで極めて重要です。そのため、`create`、`save`、`update`メソッドは、検証に失敗した場合に`false`を返します。このとき実際のデータベース操作は行われません。上の3つのメソッドにはそれぞれ破壊的なバージョン (`create!`、`save!`、`update!`)があり、こちらは検証に失敗した場合にさらに厳しい対応、つまり`ActiveRecord::RecordInvalid`例外を発生します。
+検証は、データベースを永続化するうえで極めて重要です。そのため、`save`、`update`メソッドは、検証に失敗した場合に`false`を返します。このとき実際のデータベース操作は行われません。上のメソッドにはそれぞれ破壊的なバージョン (`save!`、`update!`)があり、こちらは検証に失敗した場合にさらに厳しい対応、つまり`ActiveRecord::RecordInvalid`例外を発生します。
 以下の例で簡単に説明します。
 
 ```ruby
-class User < ApplicationRecord 
+class User < ApplicationRecord
   validates :name, presence: true
 end
 
-User.create  # => false
-User.create! # => ActiveRecord::RecordInvalid: Validation failed: Name can't be blank
+user = User.new
+user.save  # => false
+user.save! # => ActiveRecord::RecordInvalid: Validation failed: Name can't be blank
 ```
 
 検証の詳細については[Active Record検証ガイド](active_record_validations.html)を参照してください。
