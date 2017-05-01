@@ -64,6 +64,35 @@ Overwrite /myapp/config/application.rb? (enter "h" for help) [Ynaqdh]
 
 予期しなかった変更が発生した場合は、必ず差分を十分にチェックしてください。
 
+Rails 5.0からRails 5.1へのアップグレード
+-------------------------------------
+
+Rails 5.0 の変更点について詳しくは、[リリースノート](5_1_release_notes.html)を参照してください。
+
+### トップレベルの`HashWithIndifferentAccess`が弱く非推奨化された
+
+アプリでトップレベルの`HashWithIndifferentAccess`クラスを使っている場合、すぐでなくてもよいので`ActiveSupport::HashWithIndifferentAccess`に置き換えてください。
+
+これは「弱い非推奨化」であり、しばらくは正常に動作し、非推奨警告も表示されません。ただし、この定数は将来削除されます。
+
+また、こうしたオブジェクトのダンプを含むかなり古いYAMLドキュメントがある場合は、YAMLを再度読み込み/ダンプして、正しい定数が参照されるようにしておく必要があるかもしれません。また、読み込みについては今後も行えます。
+
+### `config.secrets`ですべてのキーをシンボルとして読み込むようになった
+
+`config/secrets.yml`に保存されているアプリの設定がネストしている場合、すべてのキーがシンボルとして読み込まれます。このため、文字列による設定へのアクセス方法を以下のように変更する必要があります。
+
+変更前:
+
+```ruby
+Rails.appplication.config.secrets[:smtp_settings]["address"]
+```
+
+変更後:
+
+```ruby
+Rails.application.config.secrets[:smtp_settings][:address]
+```
+
 Rails 4.2からRails 5.0へのアップグレード
 -------------------------------------
 
