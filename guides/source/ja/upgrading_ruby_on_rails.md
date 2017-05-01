@@ -45,8 +45,7 @@ TIP: Ruby 1.8.7 p248およびp249にはRailsをクラッシュさせるマーシ
 
 ### アップデートタスク
 
-Rails では`app:update`というタスクが提供されています（Rails 4.2 以前では `rails:update` という名前でした）。Gemfileに記載されているRailsのバージョンを更新後、このタスクを実行することで、
-新しいバージョンでのファイル作成や既存ファイルの変更を対話形式で行うことができます。
+Rails では`app:update`というタスクが提供されています (Rails 4.2 以前では `rails:update` という名前でした)。Gemfileに記載されているRailsのバージョンを更新後、このタスクを実行することで、新しいバージョンでのファイル作成や既存ファイルの変更を対話形式で行うことができます。
 
 ```bash
 $ rails app:update
@@ -77,20 +76,20 @@ Rails 5.0 の変更点について詳しくは、[リリースノート](5_1_rel
 
 また、こうしたオブジェクトのダンプを含むかなり古いYAMLドキュメントがある場合は、YAMLを再度読み込み/ダンプして、正しい定数が参照されるようにしておく必要があるかもしれません。また、読み込みについては今後も行えます。
 
-### `config.secrets`ですべてのキーをシンボルとして読み込むようになった
+### `application.secrets`ですべてのキーをシンボルとして読み込むようになった
 
 `config/secrets.yml`に保存されているアプリの設定がネストしている場合、すべてのキーがシンボルとして読み込まれます。このため、文字列による設定へのアクセス方法を以下のように変更する必要があります。
 
 変更前:
 
 ```ruby
-Rails.appplication.config.secrets[:smtp_settings]["address"]
+Rails.application.secrets[:smtp_settings]["address"]
 ```
 
 変更後:
 
 ```ruby
-Rails.application.config.secrets[:smtp_settings][:address]
+Rails.application.secrets[:smtp_settings][:address]
 ```
 
 Rails 4.2からRails 5.0へのアップグレード
@@ -114,8 +113,10 @@ Rails 4.2 を Rails 5.0 にアップグレードする場合、`app/models/`デ�
 ```
 class ApplicationRecord < ActiveRecord::Base
   self.abstract_class = true
-end
+end 
 ```
+
+最後に、すべてのモデルが `ApplicationRecord` を継承するように変更および確認してください。
 
 ### `throw(:abort)`でコールバックチェーンを停止する
 
@@ -141,7 +142,7 @@ Rails 4.2 を Rails 5.0 にアップグレードする場合、`app/jobs/`ディ
 
 ```
 class ApplicationJob < ActiveJob::Base
-end
+end 
 ```
 
 これにより、すべてのjobクラスがActiveJob::Baseを継承するようになります。
@@ -150,13 +151,21 @@ end
 
 ### Rails コントローラのテスト
 
+#### `rails-controller-testing`からヘルパーメソッドを抽出する
+
 `assigns`メソッドと`assert_template`メソッドは`rails-controller-testing` gemに移転しました。これらのメソッドを引き続きコントローラのテストで使いたい場合は、Gemfileに`gem 'rails-controller-testing'`を追加してください。
 
 テストでRspecを使っている場合は、このgemのドキュメントで必須となっている追加の設定方法もご確認ください。
 
+#### ファイルアップロード時の新しい振る舞い
+
+ファイルアップロードのテストで`ActionDispatch::Http::UploadedFile`クラスを使用している場合、`Rack::Test::UploadedFile`クラスに変更する必要があります。
+
+詳細については[#26404](https://github.com/rails/rails/issues/26404)を参照してください。
+
 ### production 環境での起動後は自動読み込みが無効になる
 
-今後Railsがproduction 環境で起動されると、自動読み込みがデフォルトで無効になります。
+今後Railsがproduction環境で起動されると、自動読み込みがデフォルトで無効になります。
 
 アプリケーションの一括読み込み（eager loading）は起動プロセスに含まれています。このため、トップレベルの定数についてはファイルをrequireしなくても問題なく利用でき、従来と同様に自動読み込みされます。
 
@@ -198,8 +207,7 @@ Rails 5 では、rakeに代わって`bin/rails`でタスクやテストを実行
 
 ### デフォルトのテンプレート ハンドラは今後 RAW になる
 
-拡張子がテンプレート ハンドラになっていないファイルは、今後rawハンドラで出力されるようになります。
-従来のRailsでは、このような場合にはERBテンプレートハンドラで出力されました。
+拡張子がテンプレートハンドラになっていないファイルは、今後rawハンドラで出力されるようになります。従来のRailsでは、このような場合にはERBテンプレートハンドラで出力されました。
 
 ファイルをrawハンドラで出力したくない場合は、ファイルに明示的に拡張子を与え、適切なテンプレート ハンドラで処理されるようにしてください。
 
@@ -235,7 +243,7 @@ Rails 5 では、rakeに代わって`bin/rails`でタスクやテストを実行
 # config/environments/test.rb
 Rails.application.configure do
   config.active_support.test_order = :sorted
-end
+end 
 ```
 
 ### `ActionController::Live` は `Concern` に変更された
@@ -302,7 +310,7 @@ Rails 5 では、JavaScriptで作成されたフォームによるコードイ�
 
 #### `db:structure:dump`の出力形式のカスタマイズ
 
-`schema_search_path`やその他のPostgreSQL 拡張を使っている場合、スキーマのダンプ方法を指定できます。以下のように`:all`を指定するとすべてのダンプが生成され、`:schema_search_path`を指定するとスキーマ検索パスからダンプが生成されます。
+`schema_search_path`や、その他のPostgreSQLエクステンションを使っている場合、スキーマのダンプ方法を指定できます。以下のように`:all`を指定するとすべてのダンプが生成され、`:schema_search_path`を指定するとスキーマ検索パスからダンプが生成されます。
 
     config.active_record.dump_schemas = :all
 
@@ -362,8 +370,7 @@ end
 
 ### トランザクションコールバックのエラー処理
 
-現在のActive Recordでは、`after_rollback`や`after_commit`コールバックでの例外を抑制しており、例外時にはログ出力のみが行われます。次のバージョンからは、これらのエラーは抑制されなくなりますのでご注意ください。
-今後は他のActive Recordコールバックと同様のエラー処理を行います。
+現在のActive Recordでは、`after_rollback`や`after_commit`コールバックでの例外を抑制しており、例外時にはログ出力のみが行われます。次のバージョンからは、これらのエラーは抑制されなくなりますのでご注意ください。今後は他のActive Recordコールバックと同様のエラー処理を行います。
 
 `after_rollback`コールバックや`after_commit`コールバックを定義すると、この変更にともなう非推奨警告が表示されるようになりました。この変更内容を十分理解し、受け入れる準備ができているのであれば、`config/application.rb`に以下の記述を行なうことで非推奨警告が表示されないようにすることができます。
 
@@ -391,7 +398,7 @@ end
 ### Productionログのレベル
 
 Rails 5のproduction環境では、デフォルトのログレベルが`:info`から`:debug`に変更される予定です。現在のログレベルを変更したくない場合は`production.rb`に以下の行を追加してください。
- 
+
 ```ruby
 # `:info`を指定すると現在のデフォルト設定が使用され、
 # `:debug`を指定すると今後のデフォルト設定が使用される
@@ -436,11 +443,9 @@ end
 
 新しいサニタイザは、内部で[Loofah](https://github.com/flavorjones/loofah)を使用しています。そしてLoofahはNokogiriを使用しています。Nokogiriで使用されているXMLパーサーはCとJavaの両方で記述されているので、使用しているRubyのバージョンにかかわらずサニタイズが高速化されるようになりました。
 
-新しいRailsでは`sanitize`メソッドが更新され、`Loofah::Scrubber`を使用して強力なスクラブを行なうことができます。
-[スクラブの使用例はここを参照](https://github.com/flavorjones/loofah#loofahscrubber)。
+新しいRailsでは`sanitize`メソッドが更新され、`Loofah::Scrubber`を使用して強力なスクラブを行なうことができます。[スクラブの使用例はここを参照](https://github.com/flavorjones/loofah#loofahscrubber)。
 
-`PermitScrubber`および`TargetScrubber`という2つのスクラバーが新たに追加されました。
-詳細については、[gemのReadme](https://github.com/rails/rails-html-sanitizer)を参照してください。
+`PermitScrubber`および`TargetScrubber`という2つのスクラバーが新たに追加されました。詳細については、[gemのReadme](https://github.com/rails/rails-html-sanitizer)を参照してください。
 
 `PermitScrubber`および`TargetScrubber`のドキュメントには、どの要素をどのタイミングで除去すべきかを完全に制御する方法が記載されています。
 
@@ -475,8 +480,7 @@ mail = Notifier.notify(user, ...) # Notifier#notifyはこの時点では呼び�
 mail = mail.deliver_now           # "Called"を出力する
 ```
 
-この変更によって実行結果が大きく異なるアプリケーションはほとんどないと思われます。
-ただし、メイラー以外のメソッドを同期的に実行したい場合、かつ従来の同期的プロキシ動作に依存している場合は、これらのメソッドをメイラークラスにクラスメソッドとして直接定義する必要があります。
+この変更によって実行結果が大きく異なるアプリケーションはそれほどないと思われます。ただし、メイラー以外のメソッドを同期的に実行したい場合、かつ従来の同期的プロキシ動作に依存している場合は、これらのメソッドをメイラークラスにクラスメソッドとして直接定義する必要があります。
 
 ```ruby
 class Notifier < ActionMailer::Base
@@ -488,8 +492,7 @@ end
 
 ### 外部キーのサポート
 
-移行DSLが拡張され、外部キー定義をサポートするようになりました。Foreigner gemを使っていた場合は、この機会に削除するとよいでしょう。
-Railsの外部キーサポートは、Foreignerの全機能ではなく、一部のみである点にご注意ください。このため、Foreignerの定義を必ずしもRailsの移行DSLに置き換えられないことがあります。
+移行DSLが拡張され、外部キー定義をサポートするようになりました。Foreigner gemを使っていた場合は、この機会に削除するとよいでしょう。Railsの外部キーサポートは、Foreignerの全機能ではなく、一部のみである点にご注意ください。このため、Foreignerの定義を必ずしもRailsの移行DSLに置き換えられないことがあります。
 
 移行手順は次のとおりです。
 
@@ -497,6 +500,7 @@ Railsの外部キーサポートは、Foreignerの全機能ではなく、一部
 2. `bundle install`を実行します。
 3. `bin/rake db:schema:dump`を実行します。
 4. 外部キー定義と必要なオプションが`db/schema.rb`にすべて含まれていることを確認します。
+
 
 Rails 4.0からRails 4.1へのアップグレード
 -------------------------------------
@@ -531,8 +535,7 @@ NOTE: 自サイトの`<script>`はクロス参照の出発点として扱われ�
 2. `bundle install`を実行してSpringをインストールする
 3. `bundle exec spring binstub --all`を実行してbinstubをSpring化する
 
-NOTE: ユーザーが定義したRakeタスクはデフォルトでdevelopment環境で動作するようになります。他の環境で実行したい場合は
-[Spring README](https://github.com/rails/spring#rake)を参照してください。
+NOTE: ユーザーが定義したRakeタスクはデフォルトでdevelopment環境で動作するようになります。これらのRakeタスクを他の環境でも実行したい場合は[Spring README](https://github.com/rails/spring#rake)を参考にしてください。
 
 ### `config/secrets.yml`
 
@@ -588,8 +591,7 @@ class CookiesController < ApplicationController
 end
 ```
 
-cookieには文字列や数字などの単純なデータだけを保存することをお勧めします。
-cookieに複雑なオブジェクトを保存しなければならない場合は、後続のリクエストでcookiesから値を読み出す場合の変換については自分で面倒を見る必要があります。
+cookieには文字列や数字などの単純なデータだけを保存することをお勧めします。cookiesに複雑なオブジェクトを保存しなければならない場合は、後続のリクエストでcookiesから値を読み出す場合の変換については自分で面倒を見る必要があります。
 
 cookieセッションストアを使用する場合、`session`や`flash`ハッシュについてもこのことは該当します。
 
@@ -709,7 +711,7 @@ module FixtureFileHelpers
   def file_sha(path)
     Digest::SHA2.hexdigest(File.read(Rails.root.join('test/fixtures', path)))
   end
-end
+end 
 ActiveRecord::FixtureSet.context_class.include FixtureFileHelpers
 ```
 
@@ -725,17 +727,17 @@ config.i18n.enforce_available_locales = false
 
 available_localesの強制はセキュリティのために行われていることにご注意ください。つまり、アプリケーションが把握していないロケールを持つユーザー入力が、ロケール情報として使用されることのないようにするためのものです。従って、やむを得ない理由がない限りこのオプションはfalseにしないでください。
 
-### リレーションに対するミューテーターメソッド呼び出し
+### リレーションに対する破壊的メソッド呼び出し
 
-`Relation`には`#map!`や`#delete_if`などのミューテーターメソッド (mutator method) が含まれなくなりました。これらのメソッドを使用したい場合は`#to_a`を呼び出して`Array`に変更してからにしてください。
+`Relation`には`#map!`や`#delete_if`などの破壊的メソッド (mutator method) が含まれなくなりました。これらのメソッドを使用したい場合は`#to_a`を呼び出して`Array`に変更してからにしてください。
 
-この変更は、`Relation`に対して直接ミューテーターメソッドを呼び出すことによる奇妙なバグや混乱を防止するために行われました。
+この変更は、`Relation`に対して破壊的メソッドを直接呼び出すことによる奇妙なバグや混乱を防止するために行われました。
 
 ```ruby
-# 以前のミューテーター呼び出し方法
+# 以前の破壊的な呼び出し方法
 Author.where(name: 'Hank Moody').compact!
 
-# 今後のミューテーター呼び出し方法
+# 今後の破壊的な呼び出し方法
 authors = Author.where(name: 'Hank Moody').to_a
 authors.compact!
 ```
@@ -814,13 +816,11 @@ Rails 4.1の`render`に`:plain`、`:html`、`:body`オプションが導入さ�
 
 セキュリティ上の観点から、レスポンスのbodyにマークアップを含めない場合には`render :plain`を使用すべきです。これによって多くのブラウザが安全でないコンテンツをエスケープできるからです。
 
-今後のバージョンでは、`render :text`は非推奨にされる予定です。今のうちに、正しい`:plain`、`:html`、`:body`オプションに切り替えてください。
-`render :text`を使用すると`text/html`で送信されるため、セキュリティ上のリスクが生じる可能性があります。
+今後のバージョンでは、`render :text`は非推奨にされる予定です。今のうちに、正しい`:plain`、`:html`、`:body`オプションに切り替えてください。`render :text`を使用すると`text/html`で送信されるため、セキュリティ上のリスクが生じる可能性があります。
 
 ### PostgreSQLのデータ型'json'と'hstore'について
 
-Rails 4.1では、PostgreSQLの`json`カラムと`hstore`カラムを、文字列をキーとするRubyの`Hash`に対応付けるようになりました。
-なお、以前のバージョンでは`HashWithIndifferentAccess`が使用されていました。この変更は、Rails 4.1以降ではシンボルを使用してこれらのデータ型にアクセスできなくなるということを意味します。`store_accessors`メソッドは`json`カラムや`hstore`カラムに依存しているので、同様にシンボルでのアクセスが行えなくなります。今後は常に文字列をキーにするようにしてください。
+Rails 4.1では、PostgreSQLの`json`カラムと`hstore`カラムを、文字列をキーとするRubyの`Hash`に対応付けるようになりました。なお、以前のバージョンでは`HashWithIndifferentAccess`が使用されていました。この変更は、Rails 4.1以降ではシンボルを使用してこれらのデータ型にアクセスできなくなるということを意味します。`store_accessors`メソッドは`json`カラムや`hstore`カラムに依存しているので、同様にシンボルでのアクセスが行えなくなります。今後は常に文字列をキーにするようにしてください。
 
 ### `ActiveSupport::Callbacks`では明示的にブロックを使用すること
 
@@ -843,11 +843,10 @@ Railsアプリケーションのバージョンが3.2より前の場合、まず
 
 ### HTTP PATCH
 
-Rails 4では、`config/routes.rb`でRESTfulなリソースが宣言されたときに、更新用の主要なHTTP verbとして`PATCH`が使用されるようになりました。`update`アクションは従来通り使用でき、`PUT`リクエストは今後も`update`アクションにルーティングされます。
-標準的なRESTfulのみを使用しているのであれば、これに関する変更は不要です。
+Rails 4では、`config/routes.rb`でRESTfulなリソースが宣言されたときに、更新用の主要なHTTP verbとして`PATCH`が使用されるようになりました。`update`アクションは従来通り使用でき、`PUT`リクエストは今後も`update`アクションにルーティングされます。標準的なRESTfulのみを使用しているのであれば、これに関する変更は不要です。
 
-```ruby 
- resources :users
+```ruby
+resources :users
 ```
 
 ```erb
@@ -884,8 +883,7 @@ end
 
 このアクションがパブリックなAPIで使用されておらず、HTTPメソッドを自由に変更できるのであれば、ルーティングを更新して`patch`を`put`の代りに使用できます。
 
-Rails 4で`PUT`リクエストを`/users/:id`に送信すると、従来と同様`update`にルーティングされます。このため、実際のPUTリクエストを受け取るAPIは今後も利用できます。
-この場合、`PATCH`リクエストも`/users/:id`経由で`update`アクションにルーティングされます。
+Rails 4で`PUT`リクエストを`/users/:id`に送信すると、従来と同様`update`にルーティングされます。このため、実際のPUTリクエストを受け取るAPIは今後も利用できます。この場合、`PATCH`リクエストも`/users/:id`経由で`update`アクションにルーティングされます。
 
 ```ruby
 resources :users do
@@ -971,8 +969,7 @@ Rails 4.0 では `vendor/plugins` 読み込みのサポートは完全に終了�
 
 * Rails 4.0では、ハッシュを使用する旧来のfinder APIが非推奨となりました。これまでfinderオプションを受け付けていたメソッドは、これらのオプションを今後受け付けなくなります。たとえば、`Book.find(:all, conditions: { name: '1984' })`は非推奨です。今後は`Book.where(name: '1984')`をご使用ください。
 
-* 動的なメソッドは、`find_by_...`と`find_by_...!`を除いて非推奨となりました。
-  以下のように変更してください。
+* 動的なメソッドは、`find_by_...`と`find_by_...!`を除いて非推奨になりました。以下のように変更してください。
 
       * `find_all_by_...`           に代えて `where(...)` を使用
       * `find_last_by_...`          に代えて `where(...).last` を使用
@@ -991,11 +988,11 @@ Rails 4.0 では `vendor/plugins` 読み込みのサポートは完全に終了�
 ```ruby
 CatalogCategory < ActiveRecord::Base
   has_and_belongs_to_many :catalog_products, join_table: 'catalog_categories_catalog_products'
-end
+end 
 
 CatalogProduct < ActiveRecord::Base
   has_and_belongs_to_many :catalog_categories, join_table: 'catalog_categories_catalog_products'
-end
+end 
 ```
 
 * プレフィックスではスコープも同様に考慮されるので、`Catalog::Category`と`Catalog::Product`間のリレーションや、`Catalog::Category`と`CatalogProduct`間のリレーションも同様に更新する必要があります。
@@ -1049,8 +1046,7 @@ Rails 4.0 では、シンボルやprocがnilを返す場合の、デフォルト
 
 * Rails 4.0ではコントローラでの`dom_id`および`dom_class`メソッドの使用が非推奨になりました (ビューでの使用は問題ありません)。この機能が必要なコントローラでは`ActionView::RecordIdentifier`モジュールをインクルードする必要があります。
 
-* Rails 4.0では`link_to`ヘルパーでの`:confirm`オプションが非推奨になりました。代りにデータ属性を使用してください (例： `data: { confirm: 'Are you sure?' }`)。
-`link_to_if`や`link_to_unless`などでも同様の対応が必要です。
+* Rails 4.0では`link_to`ヘルパーでの`:confirm`オプションが非推奨になりました。代わりにデータ属性を使用してください (例： `data: { confirm: 'Are you sure?' }`)。`link_to_if`や`link_to_unless`などでも同様の対応が必要です。
 
 * Rails 4.0では`assert_generates`、`assert_recognizes`、`assert_routing`の動作が変更されました。これらのアサーションからは`ActionController::RoutingError`の代りに`Assertion`が発生するようになりました。
 
@@ -1124,6 +1120,10 @@ config.middleware.insert_before(Rack::Lock, ActionDispatch::BestStandardsSupport
 ### Active Support
 
 Rails 4.0では`ERB::Util#json_escape`のエイリアス`j`が廃止されました。このエイリアス`j`は既に`ActionView::Helpers::JavaScriptHelper#escape_javascript`で使用されているためです。
+
+#### キャッシュ
+
+Rails 3系とRails 4.0とで、キャッシュ用のメソッドが変更されました[キャッシュの名前空間を変更](http://guides.rubyonrails.org/caching_with_rails.html#activesupport-cache-store)し、コールドキャッシュ (cold cache) を使って更新してください。
 
 ### ヘルパーの読み込み順序
 
@@ -1271,7 +1271,7 @@ config.assets.digest = true
 # config.assets.manifest = 該当するパス
 
 # 追加のアセット (application.js、application.cssおよびすべての非JS/CSSが追加済み) をプリコンパイルする
-# config.assets.precompile += %w( search.js )
+# config.assets.precompile += %w( admin.js admin.css )
 
 # アプリケーションへのすべてのアクセスを強制的にSSLにし、Strict-Transport-Securityとセキュアクッキーを使用する
 # config.force_ssl = true
