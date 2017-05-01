@@ -72,13 +72,15 @@ production環境では、マスターキーを`RAILS_MASTER_KEY`環境変数や�
 
 mailer用クラス内の全メソッドで利用する共通のパラメータを指定できるようになりました。これにより、インスタンス変数やヘッダーなどの共通設定を共有できます。
 
-``` ruby class InvitationsMailer < ApplicationMailer
+```ruby
+ class InvitationsMailer < ApplicationMailer
   before_action { @inviter, @invitee = params[:inviter], params[:invitee] }
   before_action { @account = params[:inviter].account }
 
   def account_invitation
     mail subject: "#{@inviter.name} invited you to their Basecamp (#{@account.name})"
-  end end
+  end 
+end
 
 InvitationsMailer.with(inviter: person_a, invitee: person_b)
                  .account_invitation.deliver_later
@@ -90,7 +92,8 @@ InvitationsMailer.with(inviter: person_a, invitee: person_b)
 
 Rails 5.1のルーティングDSLに`resolve`と`direct`という2つのメソッドが追加されました。`resolve`メソッドを使うと、モデルのポリモーフィックマッピングを以下のようにカスタマイズできます。
 
-``` ruby resource :basket
+```ruby
+ resource :basket
 
 resolve("Basket") { [:basket] }
 ```
@@ -105,7 +108,8 @@ resolve("Basket") { [:basket] }
 
 `direct`メソッドを使うと、以下のようにカスタムURLヘルパーメソッドを作成できます。
 
-``` ruby direct(:homepage) { "http://www.rubyonrails.org" }
+```ruby
+ direct(:homepage) { "http://www.rubyonrails.org" }
 
 >> homepage_url
 => "http://www.rubyonrails.org"
@@ -113,7 +117,8 @@ resolve("Basket") { [:basket] }
 
 ブロックの戻り値には、`url_for`メソッドに引数として渡せる有効なものを使う必要があります。つまり、`direct`メソッドには、有効な文字列URL、ハッシュ、配列、Active Modelインスタンス、Active Modelクラスを渡せます。
 
-``` ruby direct :commentable do |model|
+```ruby
+ direct :commentable do |model|
   [ model, anchor: model.dom_id ]
 end 
 
@@ -132,7 +137,7 @@ Rails 5.1ではこの2つのインターフェイスを`form_with`に統合し�
 
 URLのみを指定する場合は次のようにします。
 
-``` erb
+```erb
 <%= form_with url: posts_path do |form| %>
   <%= form.text_field :title %>
 <% end %>
@@ -146,7 +151,7 @@ URLのみを指定する場合は次のようにします。
 
 inputフィールド名にスコープをプレフィックスとして追加する場合は以下のようにします。
 
-``` erb
+```erb
 <%= form_with scope: :post, url: posts_path do |form| %>
   <%= form.text_field :title %>
 <% end %>
@@ -160,7 +165,7 @@ inputフィールド名にスコープをプレフィックスとして追加す
 
 モデルを指定して、URLとスコープを自動推論させるには以下のようにします。
 
-``` erb
+```erb
 <%= form_with model: Post.new do |form| %>
   <%= form.text_field :title %>
 <% end %>
@@ -174,7 +179,7 @@ inputフィールド名にスコープをプレフィックスとして追加す
 
 既存のモデルの場合は更新用フォームが生成され、フィールドに値が表示されます。
 
-``` erb
+```erb
 <%= form_with model: Post.first do |form| %>
   <%= form.text_field :title %>
 <% end %>
