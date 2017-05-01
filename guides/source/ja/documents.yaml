@@ -37,7 +37,7 @@
       name: Active Model の基礎
       url: active_model_basics.html
       description: Active Recordを使わずにモデルクラスを扱う方法について解説します。
-      work_in_progress: false
+      work_in_progress: true
 -
   name: ビュー
   documents:
@@ -101,9 +101,9 @@
       url: configuring.html
       description: Railsアプリケーションの基本的な設定方法について解説します。
     -
-      name: コマンドラインツールと Rake タスク
+      name: コマンドラインツール
       url: command_line.html
-      description: Railsが提供する各種コマンドラインツールとRakeタスクについて解説します。
+      description: Railsが提供する各種コマンドラインツールについて解説します。
     -
       name: アセットパイプライン
       url: asset_pipeline.html
