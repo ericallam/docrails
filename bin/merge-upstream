@@ -21,6 +21,7 @@ git checkout -f  $branch_upstream_local
 git reset --hard $branch_upstream_local
 git clean -fd
 git filter-branch -f --subdirectory-filter guides HEAD
+git push origin $branch_upstream_local
 
 git checkout -f  $branch_head_local
 git reset --hard $branch_head_local
