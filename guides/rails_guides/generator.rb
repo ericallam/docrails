@@ -193,8 +193,8 @@ module RailsGuides
       layout = kindle? ? 'kindle/layout' : 'layout'
 
       File.open(output_path, 'w') do |f|
-        view = ActionView::Base.new(source_dir, :edge => @edge, :version => @version, :mobi => "kindle/#{mobi}", :lang => @lang)
-        view.extend(HelpersJa)
+        view = ActionView::Base.new(source_dir, :edge => @edge, :version => @version, :mobi => "kindle/#{mobi}")
+        view.extend(Helpers)
 
         if guide =~ /\.(\w+)\.erb$/
           # Generate the special pages like the home.
@@ -202,8 +202,7 @@ module RailsGuides
           result = view.render(:layout => layout, :formats => [$1], :file => $`)
         else
           body = File.read(File.join(source_dir, guide))
-          body = body << references_md(guide) if references?(guide)
-          result = RailsGuides::MarkdownJa.new(view, layout).render(body)
+          result = RailsGuides::Markdown.new(view, layout).render(body)
 
           warn_about_broken_links(result) if @warnings
         end
