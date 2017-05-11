@@ -8,6 +8,11 @@ module RailsGuides
       @dash = ENV['DASH'] == '1'
     end
 
+    def generate
+      super
+      generate_docset if dash?
+    end
+
     private
 
     def dash?
