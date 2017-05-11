@@ -346,7 +346,7 @@ require 'erb'
 このコレクションは`config.autoload_paths`で設定できます。たとえば`lib`ディレクトリは以前はコレクションに含まれていましたが、現在は含まれていません。必要であれば、`config/application.rb`にあえて以下のコードを追加して (オプトイン)、`lib`ディレクトリをautoload_pathsに追加することもできます。
 
 ```ruby
-config.autoload_paths += "#{Rails.root}/lib"
+config.autoload_paths << "#{Rails.root}/lib"
 ```
 
 `autoload_paths`の値を検査することもできます。生成したRailsアプリケーションでは以下のようになります (ただし編集済み)。
