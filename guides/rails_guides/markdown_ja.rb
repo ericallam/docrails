@@ -98,10 +98,10 @@ module RailsGuides
           end.to_html
 
           @index = <<-INDEX.html_safe
-            <div id="subCol">
-              <h3 class="chapter"><img src="images/chapters_icon.gif" alt="" />目次</h3>
-              #{@index}
-            </div>
+          <div id="subCol">
+            <h3 class="chapter"><img src="images/chapters_icon.gif" alt="" />目次</h3>
+            #{@index}
+          </div>
           INDEX
         end
       end
