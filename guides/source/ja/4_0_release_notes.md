@@ -34,7 +34,7 @@ $ cd myapp
 
 Rails 4.0からは、アプリケーションのルートディレクトリに置かれる`Gemfile`を使用して、アプリケーションの起動に必要なgemを指定するようになりました。この`Gemfile`は[Bundler](https://github.com/carlhuda/bundler)というgemによって処理され、依存関係のある必要なgemをすべてインストールします。依存するgemをそのアプリケーションの中にだけインストールして、OS環境にある既存のgemに影響を与えないようにすることもできます。
 
-詳細情報: [Bundlerホームページ](http://gembundler.com)
+詳細情報: [Bundlerホームページ](http://bundler.io/)
 
 ### 最新のgemを使用する
 
