@@ -62,7 +62,7 @@ module Dash
     doc = Nokogiri::HTML.parse(html_body, nil, 'utf-8')
     doc.search("#topNav").remove
     doc.search("#header").remove
-    html_body = doc.to_html
+    doc.to_html
   end
 
   def copy_assets(source_dir, destination_dir)
