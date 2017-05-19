@@ -23,14 +23,14 @@ module RailsGuides
       require 'rails_guides/dash'
       out = "#{output_dir}/docset.out"
       Dash.generate @source_dir, output_dir,
-                    "ruby_on_rails_guides_#@version%s.docset" % (@lang.present? ? ".#@lang" : ''),
+                    "ruby_on_rails_guides_#@version%s.docset" % (@language.present? ? ".#@language" : ''),
                     out
       puts "(docset generate log at #{out})."
     end
 
     def initialize_dirs(output)
       super
-      @output_dir = "#@guides_dir/output/dash/#@lang".sub(%r</$>, '') if dash?
+      @output_dir = "#@guides_dir/output/dash/#@language".sub(%r</$>, '') if dash?
     end
 
     def generate_guide(guide, output_file)
