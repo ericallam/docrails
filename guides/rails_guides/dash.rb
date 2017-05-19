@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 require 'nokogiri'
 require 'cgi'
+require 'docset'
 
 class Dash < Struct.new(:output_dir, :docset_filename)
   class << self
@@ -104,21 +105,13 @@ class Dash < Struct.new(:output_dir, :docset_filename)
   end
 
   def build_info_plist
-    File.write("#{contents_dir}/Info.plist", <<-HTML)
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-  <dict>
-    <key>CFBundleIdentifier</key>
-    <string>railsguidesjp</string>
-    <key>CFBundleName</key>
-    <string>Railsガイド</string>
-    <key>DocSetPlatformFamily</key>
-    <string>rails</string>
-    <key>isDashDocset</key>
-    <true/>
-  </dict>
-</plist>
-    HTML
+    plist = Docset::Plist.new(
+      id: 'railsguidesjp',
+      name: 'Railsガイド',
+      family: 'rails',
+      js: false
+    )
+    file = "#{contents_dir}/Info.plist"
+    File.write(file, plist.to_s)
   end
 end
