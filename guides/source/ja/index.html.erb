@@ -7,7 +7,7 @@ Ruby on Rails ガイド：体系的に Rails を学ぼう
 <% end %>
 
 <% content_for :header_section do %>
-  <h2>Ruby on Rails ガイド (5.0 対応)</h2> <!--(<%= @edge ? @version[0, 7] : @version %>)-->
+  <h2>Ruby on Rails ガイド (5.0 対応)</h2> <!--(<%= @edge ? @edge[0, 7] : @version %>)-->
   <% if @edge %>
     本ガイドはEdge Guidesであり、現時点のmasterブランチをベースとしています。
     安定版のガイドが必要な場合は、http://guides.rubyonrails.orgを参照ください。
