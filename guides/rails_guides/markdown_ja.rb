@@ -1,4 +1,5 @@
 require "rails_guides/markdown"
+require "rails_guides/markdown/renderer_ja"
 
 module RailsGuides
   class MarkdownJa < Markdown
@@ -16,6 +17,17 @@ module RailsGuides
     end
 
     private
+
+      def engine
+        @engine ||= Redcarpet::Markdown.new(RendererJa,
+          no_intra_emphasis: true,
+          fenced_code_blocks: true,
+          autolink: true,
+          strikethrough: true,
+          superscript: true,
+          tables: true
+        )
+      end
 
       def extract_raw_body_and_references
         if @raw_body =~ /^references\-{40,}$/
