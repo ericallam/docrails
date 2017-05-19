@@ -29,10 +29,8 @@ class Dash < Struct.new(:output_dir, :docset_filename)
     each_file_paths do |file_path|
       doc_name = File.basename(file_path).sub(".md", "")
 
-      File.open(file_path) do |file|
-        html = create_html_and_register_index(file, doc_name)
-        File.write("#{documents_dir}/#{doc_name}", html)
-      end
+      html = create_html_and_register_index(file_path, doc_name)
+      File.write("#{documents_dir}/#{doc_name}", html)
     end
   end
 
@@ -62,8 +60,8 @@ class Dash < Struct.new(:output_dir, :docset_filename)
     File.join(output_dir, docset_filename)
   end
 
-  def create_html_and_register_index(file, doc_name)
-    html_body = file.read
+  def create_html_and_register_index(html_path, doc_name)
+    html_body = File.read(html_path)
     html_body.scan(/(<h[1-5]( [^>]+)?>(.*?)<\/h([1-5])>)/).each do |match|
       tag = match[0]
       name = ActionView::Base.full_sanitizer.sanitize(match[2])
