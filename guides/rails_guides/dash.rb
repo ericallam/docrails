@@ -4,10 +4,10 @@ require 'coderay'
 require 'nokogiri'
 require "cgi"
 
-class Dash < Struct.new(:source_dir, :output_dir, :out_dir)
+class Dash < Struct.new(:source_dir, :output_dir, :docset_filename)
   class << self
-    def generate(source_dir, output_dir, out_dir)
-      new(source_dir, output_dir, out_dir).generate
+    def generate(source_dir, output_dir, docset_filename)
+      new(source_dir, output_dir, docset_filename).generate
     end
   end
 
@@ -46,7 +46,7 @@ class Dash < Struct.new(:source_dir, :output_dir, :out_dir)
   private
 
   def docset_path
-    File.join(output_dir, out_dir)
+    File.join(output_dir, docset_filename)
   end
 
   def create_html_and_register_index(file, doc_name)
