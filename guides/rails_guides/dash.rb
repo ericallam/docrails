@@ -7,7 +7,7 @@ require "cgi"
 module Dash
   extend self
 
-  def generate(source_dir, output_dir, out_dir, logfile, debug: false)
+  def generate(source_dir, output_dir, out_dir, debug: false)
     puts "Output Dir: #{output_dir}"
     @debug = debug
     @stylesheets = []
