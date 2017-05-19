@@ -14,6 +14,9 @@ gem 'actionpack'
 gem 'nokogiri'
 gem 'redcarpet'
 
+# Generate docset
+gem 'docset'
+
 # Monitoring tools
 gem 'newrelic_rpm'
 
