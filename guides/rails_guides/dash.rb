@@ -20,14 +20,11 @@ class Dash < Struct.new(:output_dir, :docset_filename)
     puts "Output Dir: #{output_dir}"
 
     FileUtils.rm_r(docset_path) if Dir.exists? docset_path
-    @contents_dir = "#{docset_path}/Contents"
-    @resources_dir = "#{@contents_dir}/Resources"
-    @documents_dir = "#{@resources_dir}/Documents"
 
-    FileUtils.mkdir_p @documents_dir
+    FileUtils.mkdir_p documents_dir
     build_info_plist
     initialize_sqlite
-    copy_assets output_dir, @documents_dir
+    copy_assets output_dir, documents_dir
 
     Dir.chdir output_dir do
       Dir.glob("#{output_dir}/*.html").each do|file_path|
@@ -37,13 +34,25 @@ class Dash < Struct.new(:output_dir, :docset_filename)
 
         File.open(file_path) do |file|
           html = create_html_and_register_index(file, doc_name)
-          File.write("#{@documents_dir}/#{doc_name}", html)
+          File.write("#{documents_dir}/#{doc_name}", html)
         end
       end
     end
   end
 
   private
+
+  def contents_dir
+    File.join(docset_path, 'Contents')
+  end
+
+  def resources_dir
+    File.join(contents_dir, 'Resources')
+  end
+
+  def documents_dir
+    File.join(resources_dir, 'Documents')
+  end
 
   def docset_path
     File.join(output_dir, docset_filename)
@@ -85,7 +94,7 @@ class Dash < Struct.new(:output_dir, :docset_filename)
   end
 
   def initialize_sqlite
-    @sqlite_db = "#{@resources_dir}/docSet.dsidx"
+    @sqlite_db = "#{resources_dir}/docSet.dsidx"
     sqlite "DROP TABLE IF EXISTS searchIndex;"
     sqlite "CREATE TABLE IF NOT EXISTS searchIndex(id INTEGER PRIMARY KEY, name TEXT, type TEXT, path TEXT);"
     sqlite "CREATE UNIQUE INDEX anchor ON searchIndex (name, type, path);"
@@ -96,7 +105,7 @@ class Dash < Struct.new(:output_dir, :docset_filename)
   end
 
   def build_info_plist
-    File.write("#{@contents_dir}/Info.plist", <<-HTML)
+    File.write("#{contents_dir}/Info.plist", <<-HTML)
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
