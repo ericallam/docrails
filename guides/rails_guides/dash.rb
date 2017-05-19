@@ -26,14 +26,12 @@ class Dash < Struct.new(:output_dir, :docset_filename)
     initialize_sqlite
     copy_assets output_dir, documents_dir
 
-    Dir.chdir output_dir do
-      each_file_paths do |file_path|
-        doc_name = File.basename(file_path).sub(".md", "")
+    each_file_paths do |file_path|
+      doc_name = File.basename(file_path).sub(".md", "")
 
-        File.open(file_path) do |file|
-          html = create_html_and_register_index(file, doc_name)
-          File.write("#{documents_dir}/#{doc_name}", html)
-        end
+      File.open(file_path) do |file|
+        html = create_html_and_register_index(file, doc_name)
+        File.write("#{documents_dir}/#{doc_name}", html)
       end
     end
   end
