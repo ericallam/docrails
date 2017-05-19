@@ -11,6 +11,11 @@ class Dash < Struct.new(:source_dir, :output_dir, :out_dir)
     end
   end
 
+  def initialize(*)
+    super
+    self.output_dir = File.absolute_path(output_dir)
+  end
+
   def generate
     puts "Output Dir: #{output_dir}"
 
@@ -25,7 +30,6 @@ class Dash < Struct.new(:source_dir, :output_dir, :out_dir)
     initialize_sqlite
     copy_assets output_dir, @documents_dir
 
-    output_dir = File.absolute_path(self.output_dir)
     Dir.chdir output_dir do
       Dir.glob("#{output_dir}/*.html").each do|file_path|
         next if file_path =~ /release_notes.html\z/
