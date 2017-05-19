@@ -60,13 +60,15 @@ Ruby on Rails ガイド：体系的に Rails を学ぼう
 <dl>
   <dd class="work-in-progress">このアイコンが付いているガイドは現在作業中 (Work in progress) であり、上部のガイド目次からは参照できません。作業中のガイドはそれなりに有用ではありますが、不完全な情報やエラーが含まれている可能性があります。</dd>
 </dl>
-<% documents_by_section.each do |section| %><h3><%= section['name'] %></h3>
-  <% section['documents'].each do |document| %>
-    <%= guide(document['name'], document['url'],
-	work_in_progress: document['work_in_progress']) do %>
-      <%= document['description'] %>
+<% documents_by_section.each do |section| %><h3>
+  <%= section['name'] %></h3>
+  <dl>
+    <% section['documents'].each do |document| %>
+      <%= guide(document['name'], document['url'], work_in_progress: document['work_in_progress']) do %>
+        <p><%= document['description'] %></p>
+      <% end %>
     <% end %>
-  <% end %>
+  </dl>
 <% end %>
 
 <h3 id="contributors"><a href="#contributors">協力者</a></h3>
