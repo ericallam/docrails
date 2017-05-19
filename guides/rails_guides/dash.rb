@@ -77,7 +77,7 @@ class Dash < Struct.new(:output_dir, :docset_filename)
     html_body.gsub!('src="/images/', 'src="./images/')
     html_body.gsub!('href="/"', 'src="./index.html"')
 
-    # Rremove Navigation and Header
+    # Remove Navigation and Header
     doc = Nokogiri::HTML.parse(html_body, nil, 'utf-8')
     doc.search("#topNav").remove
     doc.search("#header").remove
