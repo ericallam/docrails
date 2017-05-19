@@ -27,9 +27,7 @@ class Dash < Struct.new(:output_dir, :docset_filename)
     copy_assets output_dir, documents_dir
 
     Dir.chdir output_dir do
-      Dir.glob("#{output_dir}/*.html").each do|file_path|
-        next if file_path =~ /release_notes.html\z/
-        next if File.basename(file_path) =~ /\A_/
+      each_file_paths do |file_path|
         doc_name = File.basename(file_path).sub(".md", "")
 
         File.open(file_path) do |file|
@@ -41,6 +39,14 @@ class Dash < Struct.new(:output_dir, :docset_filename)
   end
 
   private
+
+  def each_file_paths
+    Dir.glob("#{output_dir}/*.html").each do|file_path|
+      next if file_path =~ /release_notes.html\z/
+      next if File.basename(file_path) =~ /\A_/
+      yield file_path
+    end
+  end
 
   def contents_dir
     File.join(docset_path, 'Contents')
