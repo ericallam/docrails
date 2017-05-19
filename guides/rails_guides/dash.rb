@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
-require 'redcarpet'
-require 'coderay'
 require 'nokogiri'
-require "cgi"
+require 'cgi'
 
 class Dash < Struct.new(:output_dir, :docset_filename)
   class << self
