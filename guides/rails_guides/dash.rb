@@ -19,7 +19,6 @@ class Dash < Struct.new(:source_dir, :output_dir, :out_dir)
   def generate
     puts "Output Dir: #{output_dir}"
 
-    docset_path = "#{output_dir}/#{out_dir}"
     FileUtils.rm_r(docset_path) if Dir.exists? docset_path
     @contents_dir = "#{docset_path}/Contents"
     @resources_dir = "#{@contents_dir}/Resources"
@@ -45,6 +44,10 @@ class Dash < Struct.new(:source_dir, :output_dir, :out_dir)
   end
 
   private
+
+  def docset_path
+    File.join(output_dir, out_dir)
+  end
 
   def create_html_and_register_index(file, doc_name)
     html_body = file.read
