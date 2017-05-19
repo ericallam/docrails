@@ -28,7 +28,7 @@ module RailsGuides
       puts "(docset generate log at #{out})."
     end
 
-    def initialize_dirs(output)
+    def initialize_dirs
       super
       @output_dir = "#@guides_dir/output/dash/#@language".sub(%r</$>, '') if dash?
     end
