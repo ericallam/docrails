@@ -36,7 +36,7 @@ module RailsGuides
     def generate_guide(guide, output_file)
       output_path = output_path_for(output_file)
       puts "Generating #{guide} as #{output_file}"
-      layout = kindle? ? 'kindle/layout' : 'layout'
+      layout = @kindle ? 'kindle/layout' : 'layout'
 
       File.open(output_path, 'w') do |f|
         view = ActionView::Base.new(source_dir, :edge => @edge, :version => @version, :mobi => "kindle/#{mobi}", :lang => @lang)
@@ -47,7 +47,7 @@ module RailsGuides
           # Passing a template handler in the template name is deprecated. So pass the file name without the extension.
           result = view.render(:layout => layout, :formats => [$1], :file => $`)
         else
-          body = File.read(File.join(source_dir, guide))
+          body = File.read(File.join(@source_dir, guide))
           body = body << references_md(guide) if references?(guide)
           result = RailsGuides::MarkdownJa.new(view, layout).render(body)
 
@@ -59,7 +59,7 @@ module RailsGuides
     end
 
     def yml
-      @yml ||= YAML.load_file(File.join(source_dir, "references.yml"))
+      @yml ||= YAML.load_file(File.join(@source_dir, "references.yml"))
     end
 
     def references?(guide)
