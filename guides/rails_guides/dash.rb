@@ -4,10 +4,10 @@ require 'coderay'
 require 'nokogiri'
 require "cgi"
 
-class Dash < Struct.new(:source_dir, :output_dir, :docset_filename)
+class Dash < Struct.new(:output_dir, :docset_filename)
   class << self
-    def generate(source_dir, output_dir, docset_filename)
-      new(source_dir, output_dir, docset_filename).generate
+    def generate(output_dir, docset_filename)
+      new(output_dir, docset_filename).generate
     end
   end
 

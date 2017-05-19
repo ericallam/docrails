@@ -21,8 +21,8 @@ module RailsGuides
 
     def generate_docset
       require 'rails_guides/dash'
-      Dash.generate @source_dir, output_dir,
-                    "ruby_on_rails_guides_#@version%s.docset" % (@lang.present? ? ".#@lang" : '')
+      docset_name = "ruby_on_rails_guides_#@version%s.docset" % (@lang.present? ? ".#@lang" : '')
+      Dash.generate(output_dir, docset_name)
     end
 
     def initialize_dirs(output)
