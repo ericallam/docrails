@@ -44,6 +44,8 @@ class Dash < Struct.new(:source_dir, :output_dir, :out_dir)
     end
   end
 
+  private
+
   def create_html_and_register_index(file, doc_name)
     html_body = file.read
     html_body.scan(/(<h[1-5]( [^>]+)?>(.*?)<\/h([1-5])>)/).each do |match|
