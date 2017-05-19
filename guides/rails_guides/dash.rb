@@ -4,10 +4,14 @@ require 'coderay'
 require 'nokogiri'
 require "cgi"
 
-module Dash
-  extend self
+class Dash < Struct.new(:source_dir, :output_dir, :out_dir)
+  class << self
+    def generate(source_dir, output_dir, out_dir)
+      new(source_dir, output_dir, out_dir).generate
+    end
+  end
 
-  def generate(source_dir, output_dir, out_dir)
+  def generate
     puts "Output Dir: #{output_dir}"
 
     docset_path = "#{output_dir}/#{out_dir}"
@@ -21,7 +25,7 @@ module Dash
     initialize_sqlite
     copy_assets output_dir, @documents_dir
 
-    output_dir = File.absolute_path(output_dir)
+    output_dir = File.absolute_path(self.output_dir)
     Dir.chdir output_dir do
       Dir.glob("#{output_dir}/*.html").each do|file_path|
         next if file_path =~ /release_notes.html\z/
