@@ -25,10 +25,7 @@ class Dash < Struct.new(:output_dir, :docset_filename)
     copy_assets output_dir, documents_dir
 
     each_file_paths do |file_path|
-      doc_name = File.basename(file_path).sub(".md", "")
-
-      html = create_html_and_register_index(file_path, doc_name)
-      File.write("#{documents_dir}/#{doc_name}", html)
+      create_html_and_register_index(file_path)
     end
   end
 
@@ -58,7 +55,8 @@ class Dash < Struct.new(:output_dir, :docset_filename)
     File.join(output_dir, docset_filename)
   end
 
-  def create_html_and_register_index(html_path, doc_name)
+  def create_html_and_register_index(html_path)
+    doc_name = File.basename(html_path)
     html_body = File.read(html_path)
     html_body.scan(/(<h[1-5]( [^>]+)?>(.*?)<\/h([1-5])>)/).each do |match|
       tag = match[0]
@@ -81,7 +79,8 @@ class Dash < Struct.new(:output_dir, :docset_filename)
     doc = Nokogiri::HTML.parse(html_body, nil, 'utf-8')
     doc.search("#topNav").remove
     doc.search("#header").remove
-    doc.to_html
+
+    File.write("#{documents_dir}/#{doc_name}", doc.to_html)
   end
 
   def copy_assets(source_dir, destination_dir)
