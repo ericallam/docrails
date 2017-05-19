@@ -9,7 +9,6 @@ module Dash
 
   def generate(source_dir, output_dir, out_dir)
     puts "Output Dir: #{output_dir}"
-    @stylesheets = []
 
     docset_path = "#{output_dir}/#{out_dir}"
     FileUtils.rm_r(docset_path) if Dir.exists? docset_path
@@ -69,13 +68,6 @@ module Dash
       dst = "#{destination_dir}/#{dir}"
       FileUtils.rm_r dst if Dir.exists? dst
       FileUtils.cp_r src, dst
-
-      if dir == 'stylesheets'
-        Dir.glob("#{dst}/*").each do |stylesheet|
-          next if stylesheet =~ /kindle.css\z/
-          @stylesheets << File.basename(stylesheet)
-        end
-      end
     end
   end
 
