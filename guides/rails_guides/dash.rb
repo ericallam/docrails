@@ -11,7 +11,6 @@ module Dash
     puts "Output Dir: #{output_dir}"
     @debug = debug
     @stylesheets = []
-    html_body = ''
 
     docset_path = "#{output_dir}/#{out_dir}"
     FileUtils.rm_r(docset_path) if Dir.exists? docset_path
@@ -115,4 +114,3 @@ module Dash
     HTML
   end
 end
-
