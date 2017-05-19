@@ -70,7 +70,8 @@ class Dash < Struct.new(:output_dir, :docset_filename)
   end
 
   def each_file_paths
-    Dir.glob("#{output_dir}/*.html").each do|file_path|
+    pattern = File.join(output_dir, '*.html')
+    Dir.glob(pattern).each do|file_path|
       next if file_path =~ /release_notes.html\z/
       next if File.basename(file_path) =~ /\A_/
       yield file_path
