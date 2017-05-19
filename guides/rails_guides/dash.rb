@@ -39,7 +39,6 @@ module Dash
   end
 
   def create_html_and_register_index(file, doc_name)
-    title = ''
     html_body = file.read
     html_body.scan(/(<h[1-5]( [^>]+)?>(.*?)<\/h([1-5])>)/).each do |match|
       tag = match[0]
@@ -51,7 +50,7 @@ module Dash
       html_body.sub!(tag, %{<a name="#{hash}"></a>#{tag}})
 
       # Add Search Index
-      title = index_name = CGI.unescapeHTML(name).gsub("'"){ "''" }
+      index_name = CGI.unescapeHTML(name).gsub("'"){ "''" }
       sqlite %{INSERT OR IGNORE INTO searchIndex(name, type, path) VALUES ('#{index_name}', 'Guide', '#{doc_name}##{hash}');}
     end
     # relative
