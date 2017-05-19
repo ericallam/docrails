@@ -18,45 +18,22 @@ class Dash < Struct.new(:output_dir, :docset_filename)
   def generate
     puts "Output Dir: #{output_dir}"
 
-    FileUtils.rm_r(docset_path) if Dir.exists? docset_path
+    clean_docset
 
-    FileUtils.mkdir_p documents_dir
-    build_info_plist
-    initialize_sqlite
-    copy_assets output_dir, documents_dir
+    docset = Docset::Base.new(docset_path)
+    docset.add_plist(plist)
+    %w(images stylesheets).each do |dir|
+      docset.add_document(File.join(output_dir, dir))
+    end
 
     each_file_paths do |file_path|
-      create_html_and_register_index(file_path)
+      create_html_and_register_index(docset, file_path)
     end
   end
 
   private
 
-  def each_file_paths
-    Dir.glob("#{output_dir}/*.html").each do|file_path|
-      next if file_path =~ /release_notes.html\z/
-      next if File.basename(file_path) =~ /\A_/
-      yield file_path
-    end
-  end
-
-  def contents_dir
-    File.join(docset_path, 'Contents')
-  end
-
-  def resources_dir
-    File.join(contents_dir, 'Resources')
-  end
-
-  def documents_dir
-    File.join(resources_dir, 'Documents')
-  end
-
-  def docset_path
-    File.join(output_dir, docset_filename)
-  end
-
-  def create_html_and_register_index(html_path)
+  def create_html_and_register_index(docset, html_path)
     doc_name = File.basename(html_path)
     html_body = File.read(html_path)
     html_body.scan(/(<h[1-5]( [^>]+)?>(.*?)<\/h([1-5])>)/).each do |match|
@@ -69,8 +46,7 @@ class Dash < Struct.new(:output_dir, :docset_filename)
       html_body.sub!(tag, %{<a name="#{hash}"></a>#{tag}})
 
       # Add Search Index
-      index_name = CGI.unescapeHTML(name).gsub("'"){ "''" }
-      sqlite %{INSERT OR IGNORE INTO searchIndex(name, type, path) VALUES ('#{index_name}', 'Guide', '#{doc_name}##{hash}');}
+      docset.add_index(CGI.unescapeHTML(name), 'Guide', "#{doc_name}##{hash}")
     end
     # relative
     html_body.gsub!('src="/images/', 'src="./images/')
@@ -81,37 +57,32 @@ class Dash < Struct.new(:output_dir, :docset_filename)
     doc.search("#topNav").remove
     doc.search("#header").remove
 
-    File.write("#{documents_dir}/#{doc_name}", doc.to_html)
+    docset.write_document(doc_name, doc.to_html)
   end
 
-  def copy_assets(source_dir, destination_dir)
-    %w{images stylesheets}.each do |dir|
-      src = "#{source_dir}/#{dir}"
-      dst = "#{destination_dir}/#{dir}"
-      FileUtils.rm_r dst if Dir.exists? dst
-      FileUtils.cp_r src, dst
+  def clean_docset
+    return unless Dir.exist?(docset_path)
+    FileUtils.rm_r(docset_path)
+  end
+
+  def docset_path
+    File.join(output_dir, docset_filename)
+  end
+
+  def each_file_paths
+    Dir.glob("#{output_dir}/*.html").each do|file_path|
+      next if file_path =~ /release_notes.html\z/
+      next if File.basename(file_path) =~ /\A_/
+      yield file_path
     end
   end
 
-  def initialize_sqlite
-    @sqlite_db = "#{resources_dir}/docSet.dsidx"
-    sqlite "DROP TABLE IF EXISTS searchIndex;"
-    sqlite "CREATE TABLE IF NOT EXISTS searchIndex(id INTEGER PRIMARY KEY, name TEXT, type TEXT, path TEXT);"
-    sqlite "CREATE UNIQUE INDEX anchor ON searchIndex (name, type, path);"
-  end
-
-  def sqlite(query)
-    `sqlite3  #{@sqlite_db} "#{query}"`
-  end
-
-  def build_info_plist
-    plist = Docset::Plist.new(
+  def plist
+    Docset::Plist.new(
       id: 'railsguidesjp',
       name: 'Railsガイド',
       family: 'rails',
       js: false
     )
-    file = "#{contents_dir}/Info.plist"
-    File.write(file, plist.to_s)
   end
 end
