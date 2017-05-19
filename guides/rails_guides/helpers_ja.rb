@@ -1,4 +1,4 @@
-require_relative 'helpers'
+require "rails_guides/helpers"
 
 module RailsGuides
   module HelpersJa
@@ -16,11 +16,11 @@ module RailsGuides
 
     def docs_for_sitemap(position)
       case position
-        when 'L'
+        when "L"
           documents_by_section.to(3)
-        when 'C'
+        when "C"
           documents_by_section.from(4).take(2)
-        when 'R'
+        when "R"
           documents_by_section.from(6)
         else
           raise "Unknown position: #{position}"

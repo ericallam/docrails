@@ -1,4 +1,4 @@
-require_relative 'markdown'
+require "rails_guides/markdown"
 
 module RailsGuides
   class MarkdownJa < Markdown
@@ -84,7 +84,7 @@ module RailsGuides
 
       def generate_index
         if @headings_for_index.present?
-          raw_index = ''
+          raw_index = ""
           @headings_for_index.each do |level, node, label|
             if level == 1
               raw_index += "1. [#{label}](##{node[:id]})\n"
@@ -94,7 +94,7 @@ module RailsGuides
           end
 
           @index = Nokogiri::HTML.fragment(engine.render(raw_index)).tap do |doc|
-            doc.at('ol')[:class] = 'chapters'
+            doc.at("ol")[:class] = "chapters"
           end.to_html
 
           @index = <<-INDEX.html_safe
