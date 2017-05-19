@@ -57,7 +57,7 @@ module Dash
     # relative
     html_body.gsub!('src="/images/', 'src="./images/')
     html_body.gsub!('href="/"', 'src="./index.html"')
-    html_body
+
     # Rremove Navigation and Header
     doc = Nokogiri::HTML.parse(html_body, nil, 'utf-8')
     doc.search("#topNav").remove
