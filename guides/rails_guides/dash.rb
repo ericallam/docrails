@@ -7,9 +7,8 @@ require "cgi"
 module Dash
   extend self
 
-  def generate(source_dir, output_dir, out_dir, debug: false)
+  def generate(source_dir, output_dir, out_dir)
     puts "Output Dir: #{output_dir}"
-    @debug = debug
     @stylesheets = []
 
     docset_path = "#{output_dir}/#{out_dir}"
@@ -88,7 +87,6 @@ module Dash
   end
 
   def sqlite(query)
-    puts "[SQLite] #{query}" if @debug
     `sqlite3  #{@sqlite_db} "#{query}"`
   end
 
