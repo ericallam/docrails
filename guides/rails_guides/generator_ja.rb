@@ -1,13 +1,10 @@
-require_relative "generator"
-require_relative "helpers_ja"
+require 'rails_guides/generator'
+require 'rails_guides/helpers_ja'
+
+require 'rails_guides/markdown_ja'
 
 module RailsGuides
   class GeneratorJa < Generator
-    def set_flags_from_environment
-      super
-      @dash = ENV['DASH'] == '1'
-    end
-
     def generate
       super
       generate_docset if dash?
@@ -25,28 +22,39 @@ module RailsGuides
       Dash.generate(output_dir, docset_name)
     end
 
-    def initialize_dirs(output)
+    def initialize_dirs
       super
-      @output_dir = "#@guides_dir/output/dash/#@lang".sub(%r</$>, '') if dash?
+      @output_dir = "#@guides_dir/output/dash/#@language".sub(%r</$>, '') if dash?
     end
 
     def generate_guide(guide, output_file)
       output_path = output_path_for(output_file)
       puts "Generating #{guide} as #{output_file}"
-      layout = kindle? ? 'kindle/layout' : 'layout'
+      layout = @kindle ? 'kindle/layout' : 'layout'
 
       File.open(output_path, 'w') do |f|
-        view = ActionView::Base.new(source_dir, :edge => @edge, :version => @version, :mobi => "kindle/#{mobi}", :lang => @lang)
+        view = ActionView::Base.new(
+          @source_dir,
+          edge:     @edge,
+          version:  @version,
+          mobi:     "kindle/#{mobi}",
+          language: @language
+        )
         view.extend(HelpersJa)
 
         if guide =~ /\.(\w+)\.erb$/
           # Generate the special pages like the home.
           # Passing a template handler in the template name is deprecated. So pass the file name without the extension.
-          result = view.render(:layout => layout, :formats => [$1], :file => $`)
+          result = view.render(layout: layout, formats: [$1], file: $`)
         else
-          body = File.read(File.join(source_dir, guide))
+          body = File.read(File.join(@source_dir, guide))
           body = body << references_md(guide) if references?(guide)
-          result = RailsGuides::MarkdownJa.new(view, layout).render(body)
+          result = RailsGuides::MarkdownJa.new(
+            view:    view,
+            layout:  layout,
+            edge:    @edge,
+            version: @version
+          ).render(body)
 
           warn_about_broken_links(result) if @warnings
         end
@@ -56,7 +64,7 @@ module RailsGuides
     end
 
     def yml
-      @yml ||= YAML.load_file(File.join(source_dir, "references.yml"))
+      @yml ||= YAML.load_file(File.join(@source_dir, "references.yml"))
     end
 
     def references?(guide)
