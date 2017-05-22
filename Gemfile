@@ -14,9 +14,6 @@ gem 'actionpack'
 gem 'nokogiri'
 gem 'redcarpet'
 
-# Generate docset
-gem 'docset'
-
 # Monitoring tools
 gem 'newrelic_rpm'
 
@@ -32,6 +29,8 @@ gem 'rack-contrib', '~> 1.4'
 gem 'html-proofer'
 
 group :development do
+  # Generate docset
+  gem 'docset'
   gem 'gtt-downloader'
 end
 
