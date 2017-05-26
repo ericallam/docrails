@@ -65,3 +65,5 @@ task :publish_docs do
     puts response.body
   end
 end
+
+load 'railsguides.jp/Rakefile'
