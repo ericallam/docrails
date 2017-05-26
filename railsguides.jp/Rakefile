@@ -23,7 +23,7 @@ end
 
 # Test if generated HTML files include dead links
 # cf. http://joenyland.me/blog/how_to_test_a_jekyll_site/
-require 'html/proofer'
+require 'html-proofer'
 task test: [:build] do
   HTML::Proofer.new('./_site', {
                       check_opengraph: true,
