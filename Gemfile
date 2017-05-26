@@ -103,6 +103,12 @@ group :test do
   end
 
   gem "benchmark-ips"
+
+  # railsguides.jp test gems
+  gem "rspec"
+  gem "pry-byebug"
+  gem "turnip"
+  gem "wraith"
 end
 
 platforms :ruby, :mswin, :mswin64, :mingw, :x64_mingw do
