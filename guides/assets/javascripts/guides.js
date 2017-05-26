@@ -51,3 +51,15 @@ var guidesIndex = {
     window.location = url;
   }
 };
+
+// Link to 特設ページ
+jQuery('.ebook-button').click(function() {
+  window.location=$(this).find("a").attr("href");
+  return false;
+});
+
+// Link to Gumroad
+jQuery('.gumroad-button').click(function() {
+  window.location=$(this).find("a").attr("href");
+  return false;
+});
