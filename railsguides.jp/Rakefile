@@ -4,7 +4,7 @@ namespace :assets do
   desc "Make ready for deploying to Heroku from GTT"
   task precompile: [:clean] do
 
-    load './guides/Rakefile'
+    load 'railsguides.jp/guides/Rakefile'
     Dir.chdir('./guides') do
       if ENV['SKIP_GTT'] != '1'
         Rake::Task['gtt:allocate'].invoke
