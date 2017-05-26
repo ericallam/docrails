@@ -22,3 +22,21 @@ pkg
 /guides/output
 node_modules/
 /actionview/log
+
+### https://raw.github.com/github/gitignore/master/Jekyll.gitignore
+
+_site/
+vendor/
+
+## rack log
+log/
+
+## wraith
+shots/
+
+## Ignore needless files to host
+guides/output/kindle
+guides/output/dash
+
+# Ignore for direnv
+.envrc
