@@ -1,2 +1,4 @@
+language: ruby
 script:
-  - echo hi
+- bundle exec rake assets:precompile
+- bundle exec rspec spec/features/
