@@ -1,5 +1,7 @@
 source "https://rubygems.org"
 
+ruby '2.4.1'
+
 git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
   "https://github.com/#{repo_name}.git"
@@ -165,7 +167,21 @@ platforms :ruby_25 do
   gem "mathn"
 end
 
-gem 'jekyll'
-gem 'rack-jekyll'
+# Monitoring tools
+gem "newrelic_rpm"
+
+# SSL in Production
+gem "acme_challenge"
+gem "rack-rewrite", "~> 1.5.0"
+# FIXME: Remove this fork after https://github.com/rack/rack-contrib/pull/129 is merged.
+gem "rack-contrib", github: "bigcartel/rack-contrib", branch: "master"
+
+
+# Set up Jekyll on Heroku
+gem "jekyll"
+gem "kramdown"
+gem "rack-jekyll"
+gem "puma"
+
 # Testing links by hand
-gem 'html-proofer'
+gem "html-proofer"
