@@ -119,8 +119,9 @@ platforms :ruby, :mswin, :mswin64, :mingw, :x64_mingw do
   # Needed for compiling the ActionDispatch::Journey parser.
   gem "racc", ">=1.4.6", require: false
 
+  # FIXME: Remove this comment after Heroku support sqlite3 gem.
   # Active Record.
-  gem "sqlite3", "~> 1.3.6"
+  # gem "sqlite3", "~> 1.3.6"
 
   group :db do
     gem "pg", ">= 0.18.0"
@@ -163,9 +164,10 @@ gem "ibm_db" if ENV["IBM_DB"]
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem "wdm", ">= 0.1.0", platforms: [:mingw, :mswin, :x64_mingw, :mswin64]
 
-platforms :ruby_25 do
-  gem "mathn"
-end
+# FIXME: Remove this comment after Heroku support ruby_25 platforms.
+# platforms :ruby_25 do
+#   gem "mathn"
+# end
 
 # Monitoring tools
 gem "newrelic_rpm"

@@ -257,7 +257,6 @@ GEM
       nokogiri (>= 1.5.9)
     mail (2.6.5)
       mime-types (>= 1.16, < 4)
-    mathn (0.1.0)
     mercenary (0.3.6)
     metaclass (0.0.4)
     method_source (0.8.2)
@@ -413,9 +412,6 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
-    sqlite3 (1.3.13)
-    sqlite3 (1.3.13-x64-mingw32)
-    sqlite3 (1.3.13-x86-mingw32)
     stackprof (0.2.10)
     sucker_punch (2.0.2)
       concurrent-ruby (~> 1.0.0)
@@ -498,7 +494,6 @@ DEPENDENCIES
   kramdown
   libxml-ruby
   listen (>= 3.0.5, < 3.2)
-  mathn
   minitest (< 5.3.4)
   mocha (~> 0.14)
   mysql2 (>= 0.4.4)
@@ -531,7 +526,6 @@ DEPENDENCIES
   sidekiq
   sneakers
   sprockets-export
-  sqlite3 (~> 1.3.6)
   stackprof
   sucker_punch
   turbolinks (~> 5)
