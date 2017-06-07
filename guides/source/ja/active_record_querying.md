@@ -1811,6 +1811,6 @@ EXPLAINの出力を解釈することは、本ガイドの範疇を超えます�
 
 * SQLite3: [EXPLAIN QUERY PLAN](http://www.sqlite.org/eqp.html)
 
-* MySQL: [EXPLAIN Output Format](http://dev.mysql.com/doc/refman/5.6/en/explain-output.html)
+* MySQL: [EXPLAIN Output Format](http://dev.mysql.com/doc/refman/5.6/en/explain-output.html) 
 
 * PostgreSQL: [Using EXPLAIN](http://www.postgresql.org/docs/current/static/using-explain.html)
