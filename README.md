@@ -48,7 +48,7 @@ https://railstutorial.jp/
 <details>
   <summary><strong>継続的翻訳システムについて (現在移行中)</strong></summary>
 
-[![Railsガイドを支える継続的翻訳システム - SpeakerDeck](https://raw.githubusercontent.com/yasslab/railsguides.jp/japanese/images/continuous_translation_system.png)](https://speakerdeck.com/yasulab/continuous-translation-system-at-rwc2015)
+[![Railsガイドを支える継続的翻訳システム - SpeakerDeck](https://raw.githubusercontent.com/yasslab/railsguides.jp/japanese/yasslab/continuous_translation_system.png)](https://speakerdeck.com/yasulab/continuous-translation-system-at-rwc2015)
 
 本リポジトリの仕組みについては、上記のスライドで詳しく解説されています。    
 </details>
@@ -57,7 +57,7 @@ https://railstutorial.jp/
 <details>
   <summary><strong>翻訳の流れ (継続的翻訳システム移行前の構成)</strong></summary>
 
-![翻訳の流れ](https://raw.githubusercontent.com/yasslab/railsguides.jp/japanese/images/flow-of-translation.png)
+![翻訳の流れ](https://raw.githubusercontent.com/yasslab/railsguides.jp/japanese/yasslab/flow-of-translation.png)
 参考: [[翻訳]Ruby on Rails 4.1リリース前にアップグレードガイドを先行翻訳した & 同じ翻訳を2回しないで済むようにした](http://techracho.bpsinc.jp/hachi8833/2014_03_28/16037)
 </details>
 
@@ -108,11 +108,11 @@ https://railstutorial.jp/
 [idobata.io](https://idobata.io) の [yasslab/railsguides.jp](https://idobata.io/#/organization/yasslab/room/railsguides) 部屋にて、Rails ガイドに関する情報交換しています。   
 覗いてみるだけの方も歓迎なので、是非お気軽に立ち寄ってみてください :D
 
-[![井戸端会議の風景](https://raw.githubusercontent.com/yasslab/railsguides.jp/japanese/images/idobata-ss.png)](https://idobata.io/#/organization/yasslab/room/railsguides)
+[![井戸端会議の風景](https://raw.githubusercontent.com/yasslab/railsguides.jp/japanese/yasslab/idobata-ss.png)](https://idobata.io/#/organization/yasslab/room/railsguides)
 
 ## ライセンス
 
-[![CC BY-SA International](https://raw.githubusercontent.com/yasslab/railsguides.jp/japanese/images/CC-BY-SA.png)](https://creativecommons.org/licenses/by-sa/4.0/deed.ja)
+[![CC BY-SA International](https://raw.githubusercontent.com/yasslab/railsguides.jp/japanese/yasslab/CC-BY-SA.png)](https://creativecommons.org/licenses/by-sa/4.0/deed.ja)
 
 本ガイドは[クリエイティブ・コモンズ 表示-継承 4.0 国際](https://creativecommons.org/licenses/by-sa/4.0/deed.ja) (CC BY-SA 4.0) ライセンスに基づいて公開されています。
 
