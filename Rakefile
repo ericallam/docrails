@@ -1,45 +1,69 @@
-task default: 'assets:precompile'
+require "net/http"
 
-namespace :assets do
-  desc "Make ready for deploying to Heroku from GTT"
-  task precompile: [:clean] do
+$:.unshift File.expand_path("..", __FILE__)
+require "tasks/release"
+require "railties/lib/rails/api/task"
 
-    load './guides/Rakefile'
-    Dir.chdir('./guides') do
-      if ENV['SKIP_GTT'] != '1'
-        Rake::Task['gtt:allocate'].invoke
-        Rake::Task['gtt:replacer'].invoke
-      end
+desc "Build gem files for all projects"
+task build: "all:build"
 
-      Rake::Task['guides:clean'].invoke
-      ENV['GUIDES_LANGUAGE'] = 'ja'
-      Rake::Task['guides:generate:html'].invoke('--trace')
-      Rake::Task['guides:tanpopo'].invoke
+desc "Prepare the release"
+task prep_release: "all:prep_release"
+
+desc "Release all gems to rubygems and create a tag"
+task release: "all:release"
+
+desc "Run all tests by default"
+task default: %w(test test:isolated)
+
+%w(test test:isolated package gem).each do |task_name|
+  desc "Run #{task_name} task for all projects"
+  task task_name do
+    errors = []
+    FRAMEWORKS.each do |project|
+      system(%(cd #{project} && #{$0} #{task_name} --trace)) || errors << project
     end
-
-    sh 'JEKYLL_ENV=production bundle exec jekyll build'
+    fail("Errors in #{errors.join(', ')}") unless errors.empty?
   end
 end
 
-# Test if generated HTML files include dead links
-# cf. http://joenyland.me/blog/how_to_test_a_jekyll_site/
-require 'html/proofer'
-task test: [:build] do
-  HTML::Proofer.new('./_site', {
-                      check_opengraph: true,
-                      check_favicon: true,
-                      check_html: true,
-                      disable_external: true,
-                      file_ignore: %w(),
-                      url_ignore:  %w(),
-                      http_status_ignore: [0, 500, 999],
-                    }).run
+desc "Smoke-test all projects"
+task :smoke do
+  (FRAMEWORKS - %w(activerecord)).each do |project|
+    system %(cd #{project} && #{$0} test:isolated --trace)
+  end
+  system %(cd activerecord && #{$0} sqlite3:isolated_test --trace)
 end
 
-task build: [:clean] do
-  system 'bundle exec jekyll build'
+desc "Install gems for all projects."
+task install: "all:install"
+
+desc "Generate documentation for the Rails framework"
+if ENV["EDGE"]
+  Rails::API::EdgeTask.new("rdoc")
+else
+  Rails::API::StableTask.new("rdoc")
 end
 
-task :clean do
-  system 'bundle exec jekyll clean'
+desc "Bump all versions to match RAILS_VERSION"
+task update_versions: "all:update_versions"
+
+# We have a webhook configured in GitHub that gets invoked after pushes.
+# This hook triggers the following tasks:
+#
+#   * updates the local checkout
+#   * updates Rails Contributors
+#   * generates and publishes edge docs
+#   * if there's a new stable tag, generates and publishes stable docs
+#
+# Everything is automated and you do NOT need to run this task normally.
+desc "Publishes docs, run this AFTER a new stable tag has been pushed"
+task :publish_docs do
+  Net::HTTP.new("api.rubyonrails.org", 8080).start do |http|
+    request  = Net::HTTP::Post.new("/rails-master-hook")
+    response = http.request(request)
+    puts response.body
+  end
 end
+
+load 'railsguides.jp/Rakefile'
