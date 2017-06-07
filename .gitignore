@@ -43,3 +43,6 @@ guides/archive
 
 ## Ignore github template files
 .github
+
+## Ignore contributing guide
+CONTRIBUTING.md
