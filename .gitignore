@@ -36,6 +36,7 @@ shots/
 ## Ignore needless files to host
 guides/output/kindle
 guides/output/dash
+guides/archive
 
 # Ignore for direnv
 .envrc
