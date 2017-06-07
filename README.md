@@ -101,7 +101,7 @@ https://railstutorial.jp/
 
 本リポジトリは [YassLab](https://yasslab.jp/) 社によってメンテナンスされております。
 
-[![YassLab Logo](https://yasslab.jp/img/logo_800x200.png)](https://yasslab.jp/)
+[![YassLab Logo](https://raw.githubusercontent.com/yasslab/railsguides.jp/japanese/yasslab/logo_800x200.png)](https://yasslab.jp/)
 
 ### 協力者の相談部屋
 
