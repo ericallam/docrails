@@ -819,7 +819,7 @@ Article.none # 空のリレーションを返し、クエリを生成しない�
 ```
 
 ```ruby
-# visible_articles メソッドはリレーションを1つ返すことが期待されている
+# visible_articles メソッドはリレーションを返すことが期待されている
 @articles = current_user.visible_articles.where(name: params[:name])
 
 def visible_articles
@@ -829,7 +829,7 @@ def visible_articles
   when 'Reviewer'
     Article.published
   when 'Bad User'
-    Article.none # => この場合[]またはnilを返し、呼び出し側のコードを中断する
+    Article.none # => []またはnilを返すと、このコード例では呼び出し元のコードを壊してしまう
   end
 end
 ```
@@ -1811,6 +1811,6 @@ EXPLAINの出力を解釈することは、本ガイドの範疇を超えます�
 
 * SQLite3: [EXPLAIN QUERY PLAN](http://www.sqlite.org/eqp.html)
 
-* MySQL: [EXPLAIN Output Format](http://dev.mysql.com/doc/refman/5.6/en/explain-output.html) 
+* MySQL: [EXPLAIN Output Format](http://dev.mysql.com/doc/refman/5.6/en/explain-output.html)
 
 * PostgreSQL: [Using EXPLAIN](http://www.postgresql.org/docs/current/static/using-explain.html)
