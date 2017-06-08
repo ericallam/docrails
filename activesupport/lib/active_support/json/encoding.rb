@@ -1,19 +1,18 @@
-require 'active_support/core_ext/object/json'
-require 'active_support/core_ext/module/delegation'
+require "active_support/core_ext/object/json"
+require "active_support/core_ext/module/delegation"
 
 module ActiveSupport
   class << self
     delegate :use_standard_json_time_format, :use_standard_json_time_format=,
       :time_precision, :time_precision=,
       :escape_html_entities_in_json, :escape_html_entities_in_json=,
-      :encode_big_decimal_as_string, :encode_big_decimal_as_string=,
       :json_encoder, :json_encoder=,
-      :to => :'ActiveSupport::JSON::Encoding'
+      to: :'ActiveSupport::JSON::Encoding'
   end
 
   module JSON
     # Dumps objects in JSON (JavaScript Object Notation).
-    # See www.json.org for more info.
+    # See http://www.json.org for more info.
     #
     #   ActiveSupport::JSON.encode({ team: 'rails', players: '36' })
     #   # => "{\"team\":\"rails\",\"players\":\"36\"}"
@@ -41,9 +40,9 @@ module ActiveSupport
           ESCAPED_CHARS = {
             "\u2028" => '\u2028',
             "\u2029" => '\u2029',
-            '>'      => '\u003e',
-            '<'      => '\u003c',
-            '&'      => '\u0026',
+            ">"      => '\u003e',
+            "<"      => '\u003c',
+            "&"      => '\u0026',
             }
 
           ESCAPE_REGEX_WITH_HTML_ENTITIES = /[\u2028\u2029><&]/u
@@ -58,6 +57,10 @@ module ActiveSupport
                 super.gsub ESCAPE_REGEX_WITHOUT_HTML_ENTITIES, ESCAPED_CHARS
               end
             end
+
+            def to_s
+              self
+            end
           end
 
           # Mark these as private so we don't leak encoding-specific constructs
@@ -65,7 +68,8 @@ module ActiveSupport
             :ESCAPE_REGEX_WITHOUT_HTML_ENTITIES, :EscapedString
 
           # Convert an object into a "JSON-ready" representation composed of
-          # primitives like Hash, Array, String, Numeric, and true/false/nil.
+          # primitives like Hash, Array, String, Numeric,
+          # and +true+/+false+/+nil+.
           # Recursively calls #as_json to the object to recursively build a
           # fully JSON-ready object.
           #
@@ -81,7 +85,7 @@ module ActiveSupport
             when String
               EscapedString.new(value)
             when Numeric, NilClass, TrueClass, FalseClass
-              value
+              value.as_json
             when Hash
               Hash[value.map { |k, v| [jsonify(k), jsonify(v)] }]
             when Array
@@ -113,54 +117,6 @@ module ActiveSupport
         # Sets the encoder used by Rails to encode Ruby objects into JSON strings
         # in +Object#to_json+ and +ActiveSupport::JSON.encode+.
         attr_accessor :json_encoder
-
-        def encode_big_decimal_as_string=(as_string)
-          message = \
-            "The JSON encoder in Rails 4.1 no longer supports encoding BigDecimals as JSON numbers. Instead, " \
-            "the new encoder will always encode them as strings.\n\n" \
-            "You are seeing this error because you have 'active_support.encode_big_decimal_as_string' in " \
-            "your configuration file. If you have been setting this to true, you can safely remove it from " \
-            "your configuration. Otherwise, you should add the 'activesupport-json_encoder' gem to your " \
-            "Gemfile in order to restore this functionality."
-
-          raise NotImplementedError, message
-        end
-
-        def encode_big_decimal_as_string
-          message = \
-            "The JSON encoder in Rails 4.1 no longer supports encoding BigDecimals as JSON numbers. Instead, " \
-            "the new encoder will always encode them as strings.\n\n" \
-            "You are seeing this error because you are trying to check the value of the related configuration, " \
-            "'active_support.encode_big_decimal_as_string'. If your application depends on this option, you should " \
-            "add the 'activesupport-json_encoder' gem to your Gemfile. For now, this option will always be true. " \
-            "In the future, it will be removed from Rails, so you should stop checking its value."
-
-          ActiveSupport::Deprecation.warn message
-
-          true
-        end
-
-        # Deprecate CircularReferenceError
-        def const_missing(name)
-          if name == :CircularReferenceError
-            message = "The JSON encoder in Rails 4.1 no longer offers protection from circular references. " \
-                      "You are seeing this warning because you are rescuing from (or otherwise referencing) " \
-                      "ActiveSupport::Encoding::CircularReferenceError. In the future, this error will be " \
-                      "removed from Rails. You should remove these rescue blocks from your code and ensure " \
-                      "that your data structures are free of circular references so they can be properly " \
-                      "serialized into JSON.\n\n" \
-                      "For example, the following Hash contains a circular reference to itself:\n" \
-                      "   h = {}\n" \
-                      "   h['circular'] = h\n" \
-                      "In this case, calling h.to_json would not work properly."
-
-            ActiveSupport::Deprecation.warn message
-
-            SystemStackError
-          else
-            super
-          end
-        end
       end
 
       self.use_standard_json_time_format = true

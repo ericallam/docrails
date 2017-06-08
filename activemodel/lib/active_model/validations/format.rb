@@ -1,5 +1,4 @@
 module ActiveModel
-
   module Validations
     class FormatValidator < EachValidator # :nodoc:
       def validate_each(record, attribute, value)
@@ -8,7 +7,7 @@ module ActiveModel
           record_error(record, attribute, :with, value) if value.to_s !~ regexp
         elsif options[:without]
           regexp = option_call(record, :without)
-          record_error(record, attribute, :without, value) if value.to_s =~ regexp
+          record_error(record, attribute, :without, value) if regexp.match?(value.to_s)
         end
       end
 
@@ -23,38 +22,38 @@ module ActiveModel
 
       private
 
-      def option_call(record, name)
-        option = options[name]
-        option.respond_to?(:call) ? option.call(record) : option
-      end
+        def option_call(record, name)
+          option = options[name]
+          option.respond_to?(:call) ? option.call(record) : option
+        end
 
-      def record_error(record, attribute, name, value)
-        record.errors.add(attribute, :invalid, options.except(name).merge!(value: value))
-      end
+        def record_error(record, attribute, name, value)
+          record.errors.add(attribute, :invalid, options.except(name).merge!(value: value))
+        end
 
-      def check_options_validity(name)
-        if option = options[name]
-          if option.is_a?(Regexp)
-            if options[:multiline] != true && regexp_using_multiline_anchors?(option)
-              raise ArgumentError, "The provided regular expression is using multiline anchors (^ or $), " \
-              "which may present a security risk. Did you mean to use \\A and \\z, or forgot to add the " \
-              ":multiline => true option?"
+        def check_options_validity(name)
+          if option = options[name]
+            if option.is_a?(Regexp)
+              if options[:multiline] != true && regexp_using_multiline_anchors?(option)
+                raise ArgumentError, "The provided regular expression is using multiline anchors (^ or $), " \
+                "which may present a security risk. Did you mean to use \\A and \\z, or forgot to add the " \
+                ":multiline => true option?"
+              end
+            elsif !option.respond_to?(:call)
+              raise ArgumentError, "A regular expression or a proc or lambda must be supplied as :#{name}"
             end
-          elsif !option.respond_to?(:call)
-            raise ArgumentError, "A regular expression or a proc or lambda must be supplied as :#{name}"
           end
         end
-      end
 
-      def regexp_using_multiline_anchors?(regexp)
-        source = regexp.source
-        source.start_with?("^") || (source.end_with?("$") && !source.end_with?("\\$"))
-      end
+        def regexp_using_multiline_anchors?(regexp)
+          source = regexp.source
+          source.start_with?("^") || (source.end_with?("$") && !source.end_with?("\\$"))
+        end
     end
 
     module HelperMethods
       # Validates whether the value of the specified attribute is of the correct
-      # form, going by the regular expression provided.You can require that the
+      # form, going by the regular expression provided. You can require that the
       # attribute matches the regular expression:
       #
       #   class Person < ActiveRecord::Base
@@ -77,7 +76,7 @@ module ActiveModel
       #                         with: ->(person) { person.admin? ? /\A[a-z0-9][a-z0-9_\-]*\z/i : /\A[a-z][a-z0-9_\-]*\z/i }
       #   end
       #
-      # Note: use <tt>\A</tt> and <tt>\Z</tt> to match the start and end of the
+      # Note: use <tt>\A</tt> and <tt>\z</tt> to match the start and end of the
       # string, <tt>^</tt> and <tt>$</tt> match the start/end of a line.
       #
       # Due to frequent misuse of <tt>^</tt> and <tt>$</tt>, you need to pass
@@ -104,7 +103,7 @@ module ActiveModel
       #
       # There is also a list of default options supported by every validator:
       # +:if+, +:unless+, +:on+, +:allow_nil+, +:allow_blank+, and +:strict+.
-      # See <tt>ActiveModel::Validation#validates</tt> for more information
+      # See <tt>ActiveModel::Validations#validates</tt> for more information
       def validates_format_of(*attr_names)
         validates_with FormatValidator, _merge_attributes(attr_names)
       end

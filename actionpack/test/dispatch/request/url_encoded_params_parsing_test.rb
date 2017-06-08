@@ -1,4 +1,4 @@
-require 'abstract_unit'
+require "abstract_unit"
 
 class UrlEncodedParamsParsingTest < ActionDispatch::IntegrationTest
   class TestController < ActionController::Base
@@ -18,7 +18,7 @@ class UrlEncodedParamsParsingTest < ActionDispatch::IntegrationTest
 
   test "parses unbalanced query string with array" do
     query    = "location[]=1&location[]=2&age_group[]=2"
-    expected = { 'location' => ["1", "2"], 'age_group' => ["2"] }
+    expected = { "location" => ["1", "2"], "age_group" => ["2"] }
     assert_parses expected, query
   end
 
@@ -55,7 +55,7 @@ class UrlEncodedParamsParsingTest < ActionDispatch::IntegrationTest
       "products[second]=Pc",
       "=Save"
     ].join("&")
-    expected =  {
+    expected = {
       "customers" => {
         "boston" => {
           "first" => {
@@ -107,7 +107,7 @@ class UrlEncodedParamsParsingTest < ActionDispatch::IntegrationTest
     query = [
       "customers[boston][first][name]=David",
       "something_else=blah",
-      "logo=#{File.expand_path(__FILE__)}"
+      "logo=#{__FILE__}"
     ].join("&")
     expected = {
       "customers" => {
@@ -118,7 +118,7 @@ class UrlEncodedParamsParsingTest < ActionDispatch::IntegrationTest
         }
       },
       "something_else" => "blah",
-      "logo" => File.expand_path(__FILE__),
+      "logo" => __FILE__,
     }
     assert_parses expected, query
   end
@@ -131,7 +131,7 @@ class UrlEncodedParamsParsingTest < ActionDispatch::IntegrationTest
 
   test "ambiguous params returns a bad request" do
     with_test_routing do
-      post "/parse", "foo[]=bar&foo[4]=bar"
+      post "/parse", params: "foo[]=bar&foo[4]=bar"
       assert_response :bad_request
     end
   end
@@ -140,7 +140,9 @@ class UrlEncodedParamsParsingTest < ActionDispatch::IntegrationTest
     def with_test_routing
       with_routing do |set|
         set.draw do
-          post ':action', to: ::UrlEncodedParamsParsingTest::TestController
+          ActiveSupport::Deprecation.silence do
+            post ":action", to: ::UrlEncodedParamsParsingTest::TestController
+          end
         end
         yield
       end
@@ -148,7 +150,7 @@ class UrlEncodedParamsParsingTest < ActionDispatch::IntegrationTest
 
     def assert_parses(expected, actual)
       with_test_routing do
-        post "/parse", actual
+        post "/parse", params: actual
         assert_response :ok
         assert_equal expected, TestController.last_request_parameters
         assert_utf8 TestController.last_request_parameters

@@ -1,4 +1,4 @@
-require 'isolation/abstract_unit'
+require "isolation/abstract_unit"
 
 module ApplicationTests
   class MultipleApplicationsTest < ActiveSupport::TestCase
@@ -6,8 +6,8 @@ module ApplicationTests
 
     def setup
       build_app(initializers: true)
-      boot_rails
       require "#{rails_root}/config/environment"
+      Rails.application.config.some_setting = "something_or_other"
     end
 
     def teardown
@@ -18,7 +18,7 @@ module ApplicationTests
       clone = Rails.application.clone
 
       assert_equal Rails.application.config, clone.config, "The cloned application should get a copy of the config"
-      assert_equal Rails.application.config.secret_key_base, clone.config.secret_key_base, "The base secret key on the config should be the same"
+      assert_equal Rails.application.config.some_setting, clone.config.some_setting, "The some_setting on the config should be the same"
     end
 
     def test_inheriting_multiple_times_from_application
@@ -87,9 +87,9 @@ module ApplicationTests
       require "#{app_path}/config/environment"
 
       assert_equal 0, run_count, "The count should stay at zero without any calls to the rake tasks"
-      require 'rake'
-      require 'rake/testtask'
-      require 'rdoc/task'
+      require "rake"
+      require "rake/testtask"
+      require "rdoc/task"
       Rails.application.load_tasks
       assert_equal 2, run_count, "Calling a rake task should result in two increments to the count"
     end
@@ -117,7 +117,7 @@ module ApplicationTests
       assert_equal 0, run_count, "Without loading the initializers, the count should be 0"
 
       # Set config.eager_load to false so that an eager_load warning doesn't pop up
-      AppTemplate::Application.new { config.eager_load = false }.initialize!
+      AppTemplate::Application.create { config.eager_load = false }.initialize!
 
       assert_equal 3, run_count, "There should have been three initializers that incremented the count"
     end
@@ -160,13 +160,14 @@ module ApplicationTests
 
     def test_inserting_configuration_into_application
       app = AppTemplate::Application.new(config: Rails.application.config)
-      new_config = Rails::Application::Configuration.new("root_of_application")
-      new_config.secret_key_base = "some_secret_key_dude"
-      app.config.secret_key_base = "a_different_secret_key"
+      app.config.some_setting = "a_different_setting"
+      assert_equal "a_different_setting", app.config.some_setting, "The configuration's some_setting should be set."
 
-      assert_equal "a_different_secret_key", app.config.secret_key_base, "The configuration's secret key should be set."
+      new_config = Rails::Application::Configuration.new("root_of_application")
+      new_config.some_setting = "some_setting_dude"
       app.config = new_config
-      assert_equal "some_secret_key_dude", app.config.secret_key_base, "The configuration's secret key should have changed."
+
+      assert_equal "some_setting_dude", app.config.some_setting, "The configuration's some_setting should have changed."
       assert_equal "root_of_application", app.config.root, "The root should have changed to the new config's root."
       assert_equal new_config, app.config, "The application's config should have changed to the new config."
     end

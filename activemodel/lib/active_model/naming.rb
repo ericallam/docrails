@@ -1,5 +1,6 @@
-require 'active_support/core_ext/hash/except'
-require 'active_support/core_ext/module/introspection'
+require "active_support/core_ext/hash/except"
+require "active_support/core_ext/module/introspection"
+require "active_support/core_ext/module/remove_method"
 
 module ActiveModel
   class Name
@@ -129,7 +130,7 @@ module ActiveModel
     #
     # Equivalent to +to_s+.
     delegate :==, :===, :<=>, :=~, :"!~", :eql?, :to_s,
-             :to_str, to: :name
+             :to_str, :as_json, to: :name
 
     # Returns a new ActiveModel::Name instance. By default, the +namespace+
     # and +name+ option will take the namespace and name of the given class
@@ -147,7 +148,7 @@ module ActiveModel
 
       raise ArgumentError, "Class name cannot be blank. You need to supply a name argument when anonymous class given" if @name.blank?
 
-      @unnamespaced = @name.sub(/^#{namespace.name}::/, '') if namespace
+      @unnamespaced = @name.sub(/^#{namespace.name}::/, "") if namespace
       @klass        = klass
       @singular     = _singularize(@name)
       @plural       = ActiveSupport::Inflector.pluralize(@singular)
@@ -162,7 +163,7 @@ module ActiveModel
       @route_key << "_index" if @plural == @singular
     end
 
-    # Transform the model name into a more humane format, using I18n. By default,
+    # Transform the model name into a more human format, using I18n. By default,
     # it will underscore then humanize the class name.
     #
     #   class BlogPost
@@ -172,7 +173,7 @@ module ActiveModel
     #   BlogPost.model_name.human # => "Blog post"
     #
     # Specify +options+ with additional translating options.
-    def human(options={})
+    def human(options = {})
       return @human unless @klass.respond_to?(:lookup_ancestors) &&
                            @klass.respond_to?(:i18n_scope)
 
@@ -189,9 +190,9 @@ module ActiveModel
 
     private
 
-    def _singularize(string, replacement='_')
-      ActiveSupport::Inflector.underscore(string).tr('/', replacement)
-    end
+      def _singularize(string)
+        ActiveSupport::Inflector.underscore(string).tr("/".freeze, "_".freeze)
+      end
   end
 
   # == Active \Model \Naming
@@ -211,7 +212,7 @@ module ActiveModel
   #   BookModule::BookCover.model_name.i18n_key  # => :"book_module/book_cover"
   #
   # Providing the functionality that ActiveModel::Naming provides in your object
-  # is required to pass the Active Model Lint test. So either extending the
+  # is required to pass the \Active \Model Lint test. So either extending the
   # provided method below, or rolling your own is required.
   module Naming
     def self.extended(base) #:nodoc:
@@ -224,7 +225,7 @@ module ActiveModel
     # (See ActiveModel::Name for more information).
     #
     #   class Person
-    #     include ActiveModel::Model
+    #     extend ActiveModel::Naming
     #   end
     #
     #   Person.model_name.name     # => "Person"
@@ -233,7 +234,7 @@ module ActiveModel
     #   Person.model_name.plural   # => "people"
     def model_name
       @_model_name ||= begin
-        namespace = self.parents.detect do |n|
+        namespace = parents.detect do |n|
           n.respond_to?(:use_relative_model_naming?) && n.use_relative_model_naming?
         end
         ActiveModel::Name.new(self, namespace)

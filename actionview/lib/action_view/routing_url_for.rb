@@ -1,8 +1,7 @@
-require 'action_dispatch/routing/polymorphic_routes'
+require "action_dispatch/routing/polymorphic_routes"
 
 module ActionView
   module RoutingUrlFor
-
     # Returns the URL for the set of +options+ provided. This takes the
     # same options as +url_for+ in Action Controller (see the
     # documentation for <tt>ActionController::Base#url_for</tt>). Note that by default
@@ -32,7 +31,7 @@ module ActionView
     #
     # ==== Examples
     #   <%= url_for(action: 'index') %>
-    #   # => /blog/
+    #   # => /blogs/
     #
     #   <%= url_for(action: 'find', controller: 'books') %>
     #   # => /books/find
@@ -80,21 +79,41 @@ module ActionView
       when String
         options
       when nil
-        super({:only_path => true})
+        super(only_path: _generate_paths_by_default)
       when Hash
         options = options.symbolize_keys
-        options[:only_path] = options[:host].nil? unless options.key?(:only_path)
+        unless options.key?(:only_path)
+          options[:only_path] = only_path?(options[:host])
+        end
+
+        super(options)
+      when ActionController::Parameters
+        unless options.key?(:only_path)
+          options[:only_path] = only_path?(options[:host])
+        end
+
         super(options)
       when :back
         _back_url
-      when Symbol
-        ActionDispatch::Routing::PolymorphicRoutes::HelperMethodBuilder.path.handle_string_call self, options
       when Array
-        polymorphic_path(options, options.extract_options!)
-      when Class
-        ActionDispatch::Routing::PolymorphicRoutes::HelperMethodBuilder.path.handle_class_call self, options
+        components = options.dup
+        if _generate_paths_by_default
+          polymorphic_path(components, components.extract_options!)
+        else
+          polymorphic_url(components, components.extract_options!)
+        end
       else
-        ActionDispatch::Routing::PolymorphicRoutes::HelperMethodBuilder.path.handle_model_call self, options
+        method = _generate_paths_by_default ? :path : :url
+        builder = ActionDispatch::Routing::PolymorphicRoutes::HelperMethodBuilder.send(method)
+
+        case options
+        when Symbol
+          builder.handle_string_call(self, options)
+        when Class
+          builder.handle_class_call(self, options)
+        else
+          builder.handle_model_call(self, options)
+        end
       end
     end
 
@@ -103,15 +122,22 @@ module ActionView
       controller.url_options
     end
 
-    def _routes_context #:nodoc:
-      controller
-    end
-    protected :_routes_context
+    private
+      def _routes_context
+        controller
+      end
 
-    def optimize_routes_generation? #:nodoc:
-      controller.respond_to?(:optimize_routes_generation?, true) ?
-        controller.optimize_routes_generation? : super
-    end
-    protected :optimize_routes_generation?
+      def optimize_routes_generation?
+        controller.respond_to?(:optimize_routes_generation?, true) ?
+          controller.optimize_routes_generation? : super
+      end
+
+      def _generate_paths_by_default
+        true
+      end
+
+      def only_path?(host)
+        _generate_paths_by_default unless host
+      end
   end
 end

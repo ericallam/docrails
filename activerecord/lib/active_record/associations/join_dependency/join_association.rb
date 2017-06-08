@@ -1,4 +1,4 @@
-require 'active_record/associations/join_dependency/join_part'
+require "active_record/associations/join_dependency/join_part"
 
 module ActiveRecord
   module Associations
@@ -23,13 +23,10 @@ module ActiveRecord
 
         JoinInformation = Struct.new :joins, :binds
 
-        def join_constraints(foreign_table, foreign_klass, node, join_type, tables, scope_chain, chain)
+        def join_constraints(foreign_table, foreign_klass, join_type, tables, chain)
           joins         = []
-          bind_values   = []
+          binds         = []
           tables        = tables.reverse
-
-          scope_chain_index = 0
-          scope_chain = scope_chain.reverse
 
           # The chain starts with the target table, but we want to end with it here (makes
           # more sense in this context), so we reverse
@@ -37,39 +34,33 @@ module ActiveRecord
             table = tables.shift
             klass = reflection.klass
 
-            join_keys   = reflection.join_keys(klass)
+            join_keys   = reflection.join_keys
             key         = join_keys.key
             foreign_key = join_keys.foreign_key
 
             constraint = build_constraint(klass, table, key, foreign_table, foreign_key)
 
-            scope_chain_items = scope_chain[scope_chain_index].map do |item|
-              if item.is_a?(Relation)
-                item
-              else
-                ActiveRecord::Relation.create(klass, table).instance_exec(node, &item)
-              end
-            end
-            scope_chain_index += 1
+            predicate_builder = PredicateBuilder.new(TableMetadata.new(klass, table))
+            scope_chain_items = reflection.join_scopes(table, predicate_builder)
+            klass_scope       = reflection.klass_join_scope(table, predicate_builder)
 
-            scope_chain_items.concat [klass.send(:build_default_scope, ActiveRecord::Relation.create(klass, table))].compact
+            scope_chain_items.concat [klass_scope].compact
 
             rel = scope_chain_items.inject(scope_chain_items.shift) do |left, right|
               left.merge right
             end
 
             if rel && !rel.arel.constraints.empty?
-              bind_values.concat rel.bind_values
+              binds += rel.bound_attributes
               constraint = constraint.and rel.arel.constraints
             end
 
             if reflection.type
               value = foreign_klass.base_class.name
-              column = klass.columns_hash[column.to_s]
+              column = klass.columns_hash[reflection.type.to_s]
 
-              substitute = klass.connection.substitute_at(column, bind_values.length)
-              bind_values.push [column, value]
-              constraint = constraint.and table[reflection.type].eq substitute
+              binds << Relation::QueryAttribute.new(column.name, value, klass.type_for_attribute(column.name))
+              constraint = constraint.and klass.arel_attribute(reflection.type, table).eq(Arel::Nodes::BindParam.new)
             end
 
             joins << table.create_join(table, table.create_on(constraint), join_type)
@@ -78,7 +69,7 @@ module ActiveRecord
             foreign_table, foreign_klass = table, klass
           end
 
-          JoinInformation.new joins, bind_values
+          JoinInformation.new joins, binds
         end
 
         #  Builds equality condition.

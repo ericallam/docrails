@@ -1,15 +1,12 @@
-require 'active_support/dependencies'
+require "active_support/dependencies"
 
 module AbstractController
   module Helpers
     extend ActiveSupport::Concern
 
     included do
-      class_attribute :_helpers
-      self._helpers = Module.new
-
-      class_attribute :_helper_methods
-      self._helper_methods = Array.new
+      class_attribute :_helpers, default: Module.new
+      class_attribute :_helper_methods, default: Array.new
     end
 
     class MissingHelperError < LoadError
@@ -38,7 +35,8 @@ module AbstractController
       end
 
       # Declare a controller method as a helper. For example, the following
-      # makes the +current_user+ controller method available to the view:
+      # makes the +current_user+ and +logged_in?+ controller methods available
+      # to the view:
       #   class ApplicationController < ActionController::Base
       #     helper_method :current_user, :logged_in?
       #
@@ -150,7 +148,17 @@ module AbstractController
             rescue LoadError => e
               raise AbstractController::Helpers::MissingHelperError.new(e, file_name)
             end
-            file_name.camelize.constantize
+
+            mod_name = file_name.camelize
+            begin
+              mod_name.constantize
+            rescue LoadError
+              # dependencies.rb gives a similar error message but its wording is
+              # not as clear because it mentions autoloading. To the user all it
+              # matters is that a helper module couldn't be loaded, autoloading
+              # is an internal mechanism that should not leak.
+              raise NameError, "Couldn't find #{mod_name}, expected it to be defined in helpers/#{file_name}.rb"
+            end
           when Module
             arg
           else
@@ -160,25 +168,25 @@ module AbstractController
       end
 
       private
-      # Makes all the (instance) methods in the helper module available to templates
-      # rendered through this controller.
-      #
-      # ==== Parameters
-      # * <tt>module</tt> - The module to include into the current helper module
-      #   for the class
-      def add_template_helper(mod)
-        _helpers.module_eval { include mod }
-      end
+        # Makes all the (instance) methods in the helper module available to templates
+        # rendered through this controller.
+        #
+        # ==== Parameters
+        # * <tt>module</tt> - The module to include into the current helper module
+        #   for the class
+        def add_template_helper(mod)
+          _helpers.module_eval { include mod }
+        end
 
-      def default_helper_module!
-        module_name = name.sub(/Controller$/, '')
-        module_path = module_name.underscore
-        helper module_path
-      rescue MissingSourceFile => e
-        raise e unless e.is_missing? "helpers/#{module_path}_helper"
-      rescue NameError => e
-        raise e unless e.missing_name? "#{module_name}Helper"
-      end
+        def default_helper_module!
+          module_name = name.sub(/Controller$/, "".freeze)
+          module_path = module_name.underscore
+          helper module_path
+        rescue LoadError => e
+          raise e unless e.is_missing? "helpers/#{module_path}_helper"
+        rescue NameError => e
+          raise e unless e.missing_name? "#{module_name}Helper"
+        end
     end
   end
 end

@@ -51,7 +51,7 @@ module ActiveRecord
     #   end
     #
     # Database-specific information on row locking:
-    #   MySQL: http://dev.mysql.com/doc/refman/5.1/en/innodb-locking-reads.html
+    #   MySQL: http://dev.mysql.com/doc/refman/5.7/en/innodb-locking-reads.html
     #   PostgreSQL: http://www.postgresql.org/docs/current/interactive/sql-select.html#SQL-FOR-UPDATE-SHARE
     module Pessimistic
       # Obtain a row lock on this record. Reloads the record to obtain the requested
@@ -59,7 +59,16 @@ module ActiveRecord
       # or pass true for "FOR UPDATE" (the default, an exclusive row lock). Returns
       # the locked record.
       def lock!(lock = true)
-        reload(:lock => lock) if persisted?
+        if persisted?
+          if changed?
+            ActiveSupport::Deprecation.warn(<<-MSG.squish)
+              Locking a record with unpersisted changes is deprecated and will raise an
+              exception in Rails 5.2. Use `save` to persist the changes, or `reload` to
+              discard them explicitly.
+            MSG
+          end
+          reload(lock: lock)
+        end
         self
       end
 

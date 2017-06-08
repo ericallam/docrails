@@ -1,4 +1,4 @@
-require 'abstract_unit'
+require "abstract_unit"
 
 module CallbacksTest
   class Record
@@ -23,10 +23,6 @@ module CallbacksTest
         method_name
       end
 
-      def callback_string(callback_method)
-        "history << [#{callback_method.to_sym.inspect}, :string]"
-      end
-
       def callback_proc(callback_method)
         Proc.new { |model| model.history << [callback_method, :proc] }
       end
@@ -49,34 +45,37 @@ module CallbacksTest
     def self.before(model)
       model.history << [:before_save, :class]
     end
-    
+
     def self.after(model)
       model.history << [:after_save, :class]
     end
   end
 
   class Person < Record
+    attr_accessor :save_fails
+
     [:before_save, :after_save].each do |callback_method|
       callback_method_sym = callback_method.to_sym
       send(callback_method, callback_symbol(callback_method_sym))
-      send(callback_method, callback_string(callback_method_sym))
       send(callback_method, callback_proc(callback_method_sym))
-      send(callback_method, callback_object(callback_method_sym.to_s.gsub(/_save/, '')))
+      send(callback_method, callback_object(callback_method_sym.to_s.gsub(/_save/, "")))
       send(callback_method, CallbackClass)
       send(callback_method) { |model| model.history << [callback_method_sym, :block] }
     end
 
     def save
-      run_callbacks :save
+      run_callbacks :save do
+        raise "inside save" if save_fails
+      end
     end
   end
 
   class PersonSkipper < Person
-    skip_callback :save, :before, :before_save_method, :if => :yes
-    skip_callback :save, :after, :before_save_method, :unless => :yes
-    skip_callback :save, :after, :before_save_method, :if => :no
-    skip_callback :save, :before, :before_save_method, :unless => :no
-    skip_callback :save, :before, CallbackClass , :if => :yes
+    skip_callback :save, :before, :before_save_method, if: :yes
+    skip_callback :save, :after,  :after_save_method, unless: :yes
+    skip_callback :save, :after,  :after_save_method, if: :no
+    skip_callback :save, :before, :before_save_method, unless: :no
+    skip_callback :save, :before, CallbackClass , if: :yes
     def yes; true; end
     def no; false; end
   end
@@ -89,7 +88,7 @@ module CallbacksTest
 
     define_callbacks :dispatch
 
-    set_callback :dispatch, :before, :log, :unless => proc {|c| c.action_name == :index || c.action_name == :show }
+    set_callback :dispatch, :before, :log, unless: proc { |c| c.action_name == :index || c.action_name == :show }
     set_callback :dispatch, :after, :log2
 
     attr_reader :action_name, :logger
@@ -114,7 +113,7 @@ module CallbacksTest
   end
 
   class Child < ParentController
-    skip_callback :dispatch, :before, :log, :if => proc {|c| c.action_name == :update}
+    skip_callback :dispatch, :before, :log, if: proc { |c| c.action_name == :update }
     skip_callback :dispatch, :after, :log2
   end
 
@@ -125,10 +124,10 @@ module CallbacksTest
       super
     end
 
-    before_save Proc.new {|r| r.history << [:before_save, :starts_true, :if] }, :if => :starts_true
-    before_save Proc.new {|r| r.history << [:before_save, :starts_false, :if] }, :if => :starts_false
-    before_save Proc.new {|r| r.history << [:before_save, :starts_true, :unless] }, :unless => :starts_true
-    before_save Proc.new {|r| r.history << [:before_save, :starts_false, :unless] }, :unless => :starts_false
+    before_save Proc.new { |r| r.history << [:before_save, :starts_true, :if] }, if: :starts_true
+    before_save Proc.new { |r| r.history << [:before_save, :starts_false, :if] }, if: :starts_false
+    before_save Proc.new { |r| r.history << [:before_save, :starts_true, :unless] }, unless: :starts_true
+    before_save Proc.new { |r| r.history << [:before_save, :starts_false, :unless] }, unless: :starts_false
 
     def starts_true
       if @@starts_true
@@ -181,27 +180,27 @@ module CallbacksTest
     end
   end
 
-
-
   class ConditionalPerson < Record
     # proc
-    before_save Proc.new { |r| r.history << [:before_save, :proc] }, :if => Proc.new { |r| true }
-    before_save Proc.new { |r| r.history << "b00m" }, :if => Proc.new { |r| false }
-    before_save Proc.new { |r| r.history << [:before_save, :proc] }, :unless => Proc.new { |r| false }
-    before_save Proc.new { |r| r.history << "b00m" }, :unless => Proc.new { |r| true }
+    before_save Proc.new { |r| r.history << [:before_save, :proc] }, if: Proc.new { |r| true }
+    before_save Proc.new { |r| r.history << "b00m" }, if: Proc.new { |r| false }
+    before_save Proc.new { |r| r.history << [:before_save, :proc] }, unless: Proc.new { |r| false }
+    before_save Proc.new { |r| r.history << "b00m" }, unless: Proc.new { |r| true }
     # symbol
-    before_save Proc.new { |r| r.history << [:before_save, :symbol] }, :if => :yes
-    before_save Proc.new { |r| r.history << "b00m" }, :if => :no
-    before_save Proc.new { |r| r.history << [:before_save, :symbol] }, :unless => :no
-    before_save Proc.new { |r| r.history << "b00m" }, :unless => :yes
+    before_save Proc.new { |r| r.history << [:before_save, :symbol] }, if: :yes
+    before_save Proc.new { |r| r.history << "b00m" }, if: :no
+    before_save Proc.new { |r| r.history << [:before_save, :symbol] }, unless: :no
+    before_save Proc.new { |r| r.history << "b00m" }, unless: :yes
     # string
-    before_save Proc.new { |r| r.history << [:before_save, :string] }, :if => 'yes'
-    before_save Proc.new { |r| r.history << "b00m" }, :if => 'no'
-    before_save Proc.new { |r| r.history << [:before_save, :string] }, :unless => 'no'
-    before_save Proc.new { |r| r.history << "b00m" }, :unless => 'yes'
+    ActiveSupport::Deprecation.silence do
+      before_save Proc.new { |r| r.history << [:before_save, :string] }, if: "yes"
+      before_save Proc.new { |r| r.history << "b00m" }, if: "no"
+      before_save Proc.new { |r| r.history << [:before_save, :string] }, unless: "no"
+      before_save Proc.new { |r| r.history << "b00m" }, unless: "yes"
+    end
     # Combined if and unless
-    before_save Proc.new { |r| r.history << [:before_save, :combined_symbol] }, :if => :yes, :unless => :no
-    before_save Proc.new { |r| r.history << "b00m" }, :if => :yes, :unless => :yes
+    before_save Proc.new { |r| r.history << [:before_save, :combined_symbol] }, if: :yes, unless: :no
+    before_save Proc.new { |r| r.history << "b00m" }, if: :yes, unless: :yes
 
     def yes; true; end
     def other_yes; true; end
@@ -222,25 +221,63 @@ module CallbacksTest
     define_callbacks :save
   end
 
-  class AroundPerson < MySuper
+  class MySlate < MySuper
     attr_reader :history
+    attr_accessor :save_fails
 
-    set_callback :save, :before, :nope,           :if =>     :no
-    set_callback :save, :before, :nope,           :unless => :yes
-    set_callback :save, :after,  :tweedle
-    set_callback :save, :before, "tweedle_dee"
-    set_callback :save, :before, proc {|m| m.history << "yup" }
-    set_callback :save, :before, :nope,           :if =>     proc { false }
-    set_callback :save, :before, :nope,           :unless => proc { true }
-    set_callback :save, :before, :yup,            :if =>     proc { true }
-    set_callback :save, :before, :yup,            :unless => proc { false }
-    set_callback :save, :around, :tweedle_dum
-    set_callback :save, :around, :w0tyes,         :if =>     :yes
-    set_callback :save, :around, :w0tno,          :if =>     :no
-    set_callback :save, :around, :tweedle_deedle
+    def initialize
+      @history = []
+    end
+
+    def save
+      run_callbacks :save do
+        raise "inside save" if save_fails
+        @history << "running"
+      end
+    end
 
     def no; false; end
     def yes; true; end
+
+    def method_missing(sym, *)
+      case sym
+      when /^log_(.*)/
+        @history << $1
+        nil
+      when /^wrap_(.*)/
+        @history << "wrap_#$1"
+        yield
+        @history << "unwrap_#$1"
+        nil
+      when /^double_(.*)/
+        @history << "first_#$1"
+        yield
+        @history << "second_#$1"
+        yield
+        @history << "third_#$1"
+      else
+        super
+      end
+    end
+
+    def respond_to_missing?(sym)
+      sym =~ /^(log|wrap)_/ || super
+    end
+  end
+
+  class AroundPerson < MySlate
+    set_callback :save, :before, :nope,           if: :no
+    set_callback :save, :before, :nope,           unless: :yes
+    set_callback :save, :after,  :tweedle
+    set_callback :save, :before, proc { |m| m.history << "yup" }
+    set_callback :save, :before, :nope,           if: proc { false }
+    set_callback :save, :before, :nope,           unless: proc { true }
+    set_callback :save, :before, :yup,            if: proc { true }
+    set_callback :save, :before, :yup,            unless: proc { false }
+    set_callback :save, :around, :tweedle_dum
+    set_callback :save, :around, :w0tyes,         if: :yes
+    set_callback :save, :around, :w0tno,          if: :no
+    set_callback :save, :around, :tweedle_deedle
 
     def nope
       @history << "boom"
@@ -261,10 +298,6 @@ module CallbacksTest
       yield
     end
 
-    def tweedle_dee
-      @history << "tweedle dee"
-    end
-
     def tweedle_dum
       @history << "tweedle dum pre"
       yield
@@ -279,16 +312,6 @@ module CallbacksTest
       @history << "tweedle deedle pre"
       yield
       @history << "tweedle deedle post"
-    end
-
-    def initialize
-      @history = []
-    end
-
-    def save
-      run_callbacks :save do
-        @history << "running"
-      end
     end
   end
 
@@ -323,7 +346,7 @@ module CallbacksTest
     define_callbacks :save
     attr_reader :stuff
 
-    set_callback :save, :before, :action, :if => :yes
+    set_callback :save, :before, :action, if: :yes
 
     def yes() true end
 
@@ -361,7 +384,6 @@ module CallbacksTest
   end
 
   class ExtendCallbacks
-
     include ActiveSupport::Callbacks
 
     define_callbacks :save
@@ -391,7 +413,6 @@ module CallbacksTest
       around = AroundPerson.new
       around.save
       assert_equal [
-        "tweedle dee",
         "yup", "yup",
         "tweedle dum pre",
         "w0tyes before",
@@ -402,6 +423,97 @@ module CallbacksTest
         "tweedle dum post",
         "tweedle"
       ], around.history
+    end
+  end
+
+  class DoubleYieldTest < ActiveSupport::TestCase
+    class DoubleYieldModel < MySlate
+      set_callback :save, :around, :wrap_outer
+      set_callback :save, :around, :double_trouble
+      set_callback :save, :around, :wrap_inner
+    end
+
+    def test_double_save
+      double = DoubleYieldModel.new
+      double.save
+      assert_equal [
+        "wrap_outer",
+        "first_trouble",
+        "wrap_inner",
+        "running",
+        "unwrap_inner",
+        "second_trouble",
+        "wrap_inner",
+        "running",
+        "unwrap_inner",
+        "third_trouble",
+        "unwrap_outer",
+      ], double.history
+    end
+  end
+
+  class CallStackTest < ActiveSupport::TestCase
+    def test_tidy_call_stack
+      around = AroundPerson.new
+      around.save_fails = true
+
+      exception = (around.save rescue $!)
+
+      # Make sure we have the exception we're expecting
+      assert_equal "inside save", exception.message
+
+      call_stack = exception.backtrace_locations
+      call_stack.pop caller_locations(0).size
+
+      # Yes, this looks like an implementation test, but it's the least
+      # obtuse way of asserting that there aren't a load of entries in
+      # the call stack for each callback.
+      #
+      # If you've renamed a method, or squeezed more lines out, go ahead
+      # and update this assertion. But if you're here because a
+      # refactoring added new lines, please reconsider.
+
+      # As shown here, our current budget is one line for run_callbacks
+      # itself, plus N+1 lines where N is the number of :around
+      # callbacks that have been invoked, if there are any (plus
+      # whatever the callbacks do themselves, of course).
+
+      assert_equal [
+        "block in save",
+        "block in run_callbacks",
+        "tweedle_deedle",
+        "block in run_callbacks",
+        "w0tyes",
+        "block in run_callbacks",
+        "tweedle_dum",
+        "block in run_callbacks",
+        ("call" if RUBY_VERSION < "2.3"),
+        "run_callbacks",
+        "save"
+      ].compact, call_stack.map(&:label)
+    end
+
+    def test_short_call_stack
+      person = Person.new
+      person.save_fails = true
+
+      exception = (person.save rescue $!)
+
+      # Make sure we have the exception we're expecting
+      assert_equal "inside save", exception.message
+
+      call_stack = exception.backtrace_locations
+      call_stack.pop caller_locations(0).size
+
+      # This budget much simpler: with no :around callbacks invoked,
+      # there should be just one line. run_callbacks yields directly
+      # back to its caller.
+
+      assert_equal [
+        "block in save",
+        "run_callbacks",
+        "save"
+      ], call_stack.map(&:label)
     end
   end
 
@@ -419,7 +531,6 @@ module CallbacksTest
       assert_equal [], person.history
       person.save
       assert_equal [
-        [:before_save, :string],
         [:before_save, :proc],
         [:before_save, :object],
         [:before_save, :block],
@@ -427,7 +538,6 @@ module CallbacksTest
         [:after_save, :class],
         [:after_save, :object],
         [:after_save, :proc],
-        [:after_save, :string],
         [:after_save, :symbol]
       ], person.history
     end
@@ -446,21 +556,18 @@ module CallbacksTest
         [:after_save, :class],
         [:after_save, :object],
         [:after_save, :proc],
-        [:after_save, :string],
         [:after_save, :symbol]
       ], person.history
     end
   end
 
   class CallbacksTest < ActiveSupport::TestCase
-
     def test_save_person
       person = Person.new
       assert_equal [], person.history
       person.save
       assert_equal [
         [:before_save, :symbol],
-        [:before_save, :string],
         [:before_save, :proc],
         [:before_save, :object],
         [:before_save, :class],
@@ -469,7 +576,6 @@ module CallbacksTest
         [:after_save, :class],
         [:after_save, :object],
         [:after_save, :proc],
-        [:after_save, :string],
         [:after_save, :symbol]
       ], person.history
     end
@@ -491,8 +597,6 @@ module CallbacksTest
     end
   end
 
-
-
   class ResetCallbackTest < ActiveSupport::TestCase
     def test_save_conditional_person
       person = CleanPerson.new
@@ -501,21 +605,18 @@ module CallbacksTest
     end
   end
 
-  class CallbackTerminator
+  class AbstractCallbackTerminator
     include ActiveSupport::Callbacks
 
-    define_callbacks :save, :terminator => ->(_,result) { result == :halt }
-
-    set_callback :save, :before, :first
-    set_callback :save, :before, :second
-    set_callback :save, :around, :around_it
-    set_callback :save, :before, :third
-    set_callback :save, :after, :first
-    set_callback :save, :around, :around_it
-    set_callback :save, :after, :second
-    set_callback :save, :around, :around_it
-    set_callback :save, :after, :third
-
+    def self.set_save_callbacks
+      set_callback :save, :before, :first
+      set_callback :save, :before, :second
+      set_callback :save, :around, :around_it
+      set_callback :save, :before, :third
+      set_callback :save, :after, :first
+      set_callback :save, :around, :around_it
+      set_callback :save, :after, :third
+    end
 
     attr_reader :history, :saved, :halted
     def initialize
@@ -550,6 +651,39 @@ module CallbacksTest
     def halted_callback_hook(filter)
       @halted = filter
     end
+  end
+
+  class CallbackTerminator < AbstractCallbackTerminator
+    define_callbacks :save, terminator: ->(_, result_lambda) { result_lambda.call == :halt }
+    set_save_callbacks
+  end
+
+  class CallbackTerminatorSkippingAfterCallbacks < AbstractCallbackTerminator
+    define_callbacks :save, terminator: ->(_, result_lambda) { result_lambda.call == :halt },
+                            skip_after_callbacks_if_terminated: true
+    set_save_callbacks
+  end
+
+  class CallbackDefaultTerminator < AbstractCallbackTerminator
+    define_callbacks :save
+
+    def second
+      @history << "second"
+      throw(:abort)
+    end
+
+    set_save_callbacks
+  end
+
+  class CallbackFalseTerminator < AbstractCallbackTerminator
+    define_callbacks :save
+
+    def second
+      @history << "second"
+      false
+    end
+
+    set_save_callbacks
   end
 
   class CallbackObject
@@ -607,7 +741,7 @@ module CallbacksTest
   class CustomScopeObject
     include ActiveSupport::Callbacks
 
-    define_callbacks :save, :scope => [:kind, :name]
+    define_callbacks :save, scope: [:kind, :name]
     set_callback :save, :before, CallbackObject.new
 
     attr_accessor :record
@@ -688,10 +822,10 @@ module CallbacksTest
   end
 
   class CallbackTerminatorTest < ActiveSupport::TestCase
-    def test_termination
+    def test_termination_skips_following_before_and_around_callbacks
       terminator = CallbackTerminator.new
       terminator.save
-      assert_equal ["first", "second", "third", "second", "first"], terminator.history
+      assert_equal ["first", "second", "third", "first"], terminator.history
     end
 
     def test_termination_invokes_hook
@@ -707,6 +841,43 @@ module CallbacksTest
     end
   end
 
+  class CallbackTerminatorSkippingAfterCallbacksTest < ActiveSupport::TestCase
+    def test_termination_skips_after_callbacks
+      terminator = CallbackTerminatorSkippingAfterCallbacks.new
+      terminator.save
+      assert_equal ["first", "second"], terminator.history
+    end
+  end
+
+  class CallbackDefaultTerminatorTest < ActiveSupport::TestCase
+    def test_default_termination
+      terminator = CallbackDefaultTerminator.new
+      terminator.save
+      assert_equal ["first", "second", "third", "first"], terminator.history
+    end
+
+    def test_default_termination_invokes_hook
+      terminator = CallbackDefaultTerminator.new
+      terminator.save
+      assert_equal :second, terminator.halted
+    end
+
+    def test_block_never_called_if_abort_is_thrown
+      obj = CallbackDefaultTerminator.new
+      obj.save
+      assert !obj.saved
+    end
+  end
+
+  class CallbackFalseTerminatorTest < ActiveSupport::TestCase
+    def test_returning_false_does_not_halt_callback
+      obj = CallbackFalseTerminator.new
+      obj.save
+      assert_nil obj.halted
+      assert obj.saved
+    end
+  end
+
   class HyphenatedKeyTest < ActiveSupport::TestCase
     def test_save
       obj = HyphenatedCallbacks.new
@@ -717,7 +888,7 @@ module CallbacksTest
 
   class WriterSkipper < Person
     attr_accessor :age
-    skip_callback :save, :before, :before_save_method, :if => lambda {self.age > 21}
+    skip_callback :save, :before, :before_save_method, if: -> { age > 21 }
   end
 
   class WriterCallbacksTest < ActiveSupport::TestCase
@@ -728,7 +899,6 @@ module CallbacksTest
       writer.save
       assert_equal [
         [:before_save, :symbol],
-        [:before_save, :string],
         [:before_save, :proc],
         [:before_save, :object],
         [:before_save, :class],
@@ -737,7 +907,6 @@ module CallbacksTest
         [:after_save, :class],
         [:after_save, :object],
         [:after_save, :proc],
-        [:after_save, :string],
         [:after_save, :symbol]
       ], writer.history
     end
@@ -792,7 +961,7 @@ module CallbacksTest
 
     def test_proc_arity_2
       assert_raises(ArgumentError) do
-        klass = build_class(->(x,y) { })
+        klass = build_class(->(x, y) {})
         klass.new.run
       end
     end
@@ -810,7 +979,7 @@ module CallbacksTest
       Class.new {
         include ActiveSupport::Callbacks
         define_callbacks :foo
-        set_callback :foo, :before, :foo, :if => callback
+        set_callback :foo, :before, :foo, if: callback
         def foo; end
         def run; run_callbacks :foo; end
       }
@@ -825,11 +994,11 @@ module CallbacksTest
       }
       klass = Class.new {
         include ActiveSupport::Callbacks
-        define_callbacks :foo, :scope => [:name]
-        set_callback :foo, :before, :foo, :if => callback
+        define_callbacks :foo, scope: [:name]
+        set_callback :foo, :before, :foo, if: callback
         def run; run_callbacks :foo; end
         private
-        def foo; end
+          def foo; end
       }
       object = klass.new
       object.run
@@ -871,7 +1040,7 @@ module CallbacksTest
 
     def test_proc_arity2
       assert_raises(ArgumentError) do
-        object = build_class(->(a,b) { }).new
+        object = build_class(->(a, b) {}).new
         object.run
       end
     end
@@ -924,7 +1093,7 @@ module CallbacksTest
         define_callbacks :foo
         n.times { set_callback :foo, :before, callback }
         def run; run_callbacks :foo; end
-        def self.skip(thing); skip_callback :foo, :before, thing; end
+        def self.skip(*things); skip_callback :foo, :before, *things; end
       }
     end
 
@@ -951,14 +1120,6 @@ module CallbacksTest
       assert_equal 1, calls.length
     end
 
-    def test_add_eval
-      calls = []
-      klass = build_class("bar")
-      klass.class_eval { define_method(:bar) { calls << klass } }
-      klass.new.run
-      assert_equal 1, calls.length
-    end
-
     def test_skip_class # removes one at a time
       calls = []
       callback = Class.new {
@@ -973,11 +1134,11 @@ module CallbacksTest
       }
     end
 
-    def test_skip_lambda # removes nothing
+    def test_skip_lambda # raises error
       calls = []
       callback = ->(o) { calls << o }
       klass = build_class(callback)
-      10.times { klass.skip callback }
+      assert_raises(ArgumentError) { klass.skip callback }
       klass.new.run
       assert_equal 10, calls.length
     end
@@ -991,13 +1152,52 @@ module CallbacksTest
       assert_equal 0, calls.length
     end
 
-    def test_skip_eval # removes nothing
+    def test_skip_string # raises error
       calls = []
-      klass = build_class("bar")
+      klass = build_class(:bar)
       klass.class_eval { define_method(:bar) { calls << klass } }
-      klass.skip "bar"
+      assert_raises(ArgumentError) { klass.skip "bar" }
       klass.new.run
       assert_equal 1, calls.length
+    end
+
+    def test_skip_undefined_callback # raises error
+      calls = []
+      klass = build_class(:bar)
+      klass.class_eval { define_method(:bar) { calls << klass } }
+      assert_raises(ArgumentError) { klass.skip :qux }
+      klass.new.run
+      assert_equal 1, calls.length
+    end
+
+    def test_skip_without_raise # removes nothing
+      calls = []
+      klass = build_class(:bar)
+      klass.class_eval { define_method(:bar) { calls << klass } }
+      klass.skip :qux, raise: false
+      klass.new.run
+      assert_equal 1, calls.length
+    end
+  end
+
+  class DeprecatedWarningTest < ActiveSupport::TestCase
+    def test_deprecate_string_conditional_options
+      klass = Class.new(Record)
+
+      assert_deprecated { klass.before_save :tweedle, if: "true" }
+      assert_deprecated { klass.after_save :tweedle, unless: "false" }
+      assert_deprecated { klass.skip_callback :save, :before, :tweedle, if: "true" }
+      assert_deprecated { klass.skip_callback :save, :after, :tweedle, unless: "false" }
+    end
+  end
+
+  class NotPermittedStringCallbackTest < ActiveSupport::TestCase
+    def test_passing_string_callback_is_not_permitted
+      klass = Class.new(Record)
+
+      assert_raises(ArgumentError) do
+        klass.before_save "tweedle"
+      end
     end
   end
 end

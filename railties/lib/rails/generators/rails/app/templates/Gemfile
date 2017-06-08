@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 <% gemfile_entries.each do |gem| -%>
 <% if gem.comment -%>
@@ -15,34 +16,46 @@ source 'https://rubygems.org'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
-# Use Rails Html Sanitizer for HTML sanitization
-gem 'rails-html-sanitizer', '~> 1.0'
-
-# Use Unicorn as the app server
-# gem 'unicorn'
-
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
-group :development, :test do
-<% unless defined?(JRUBY_VERSION) -%>
-  # Call 'debugger' anywhere in the code to stop execution and get a debugger console
-  <%- if RUBY_VERSION < '2.0.0' -%>
-  gem 'debugger'
-  <%- else -%>
-  gem 'byebug'
-  <%- end -%>
+<%- if options.api? -%>
+# Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
+# gem 'rack-cors'
 
-  # Access an IRB console on exception pages or by using <%%= console %> in views
-  gem 'web-console', github: 'rails/web-console', branch: 'master'
-<%- if spring_install? %>
+<%- end -%>
+<% if RUBY_ENGINE == 'ruby' -%>
+group :development, :test do
+  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
+  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  <%- if depends_on_system_test? -%>
+  # Adds support for Capybara system testing and selenium driver
+  gem 'capybara', '~> 2.13'
+  gem 'selenium-webdriver'
+  <%- end -%>
+end
+
+group :development do
+<%- unless options.api? -%>
+  # Access an IRB console on exception pages or by using <%%= console %> anywhere in the code.
+  <%- if options.dev? || options.edge? -%>
+  gem 'web-console', github: 'rails/web-console'
+  <%- else -%>
+  gem 'web-console', '>= 3.3.0'
+  <%- end -%>
+<%- end -%>
+<% if depend_on_listen? -%>
+  gem 'listen', '>= 3.0.5', '< 3.2'
+<% end -%>
+<% if spring_install? -%>
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
+<% if depend_on_listen? -%>
+  gem 'spring-watcher-listen', '~> 2.0.0'
 <% end -%>
 <% end -%>
 end
-
-<% if RUBY_PLATFORM.match(/bccwin|cygwin|emx|mingw|mswin|wince/) -%>
-# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
 <% end -%>
+
+# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
+gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]

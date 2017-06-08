@@ -1,37 +1,25 @@
-require 'abstract_unit'
-require 'active_support/xml_mini'
+require_relative "xml_mini_engine_test"
 
-class REXMLEngineTest < ActiveSupport::TestCase
-  include ActiveSupport
-
+class REXMLEngineTest < XMLMiniEngineTest
   def test_default_is_rexml
-    assert_equal XmlMini_REXML, XmlMini.backend
+    assert_equal ActiveSupport::XmlMini_REXML, ActiveSupport::XmlMini.backend
   end
 
-  def test_set_rexml_as_backend
-    XmlMini.backend = 'REXML'
-    assert_equal XmlMini_REXML, XmlMini.backend
+  def test_parse_from_empty_string
+    assert_equal({}, ActiveSupport::XmlMini.parse(""))
   end
 
-  def test_parse_from_io
-    XmlMini.backend = 'REXML'
-    io = StringIO.new(<<-eoxml)
-    <root>
-      good
-      <products>
-        hello everyone
-      </products>
-      morning
-    </root>
-    eoxml
-    assert_equal_rexml(io)
+  def test_parse_from_frozen_string
+    xml_string = "<root></root>".freeze
+    assert_equal({ "root" => {} }, ActiveSupport::XmlMini.parse(xml_string))
   end
 
   private
-    def assert_equal_rexml(xml)
-      parsed_xml = XmlMini.parse(xml)
-      xml.rewind if xml.respond_to?(:rewind)
-      hash = XmlMini.with_backend('REXML') { XmlMini.parse(xml) }
-      assert_equal(hash, parsed_xml)
+    def engine
+      "REXML"
+    end
+
+    def expansion_attack_error
+      RuntimeError
     end
 end

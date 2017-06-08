@@ -1,5 +1,4 @@
 module ActiveModel
-
   module Validations
     class NumericalityValidator < EachValidator # :nodoc:
       CHECKS = { greater_than: :>, greater_than_or_equal_to: :>=,
@@ -20,21 +19,27 @@ module ActiveModel
       def validate_each(record, attr_name, value)
         before_type_cast = :"#{attr_name}_before_type_cast"
 
-        raw_value = record.send(before_type_cast) if record.respond_to?(before_type_cast)
+        raw_value = record.send(before_type_cast) if record.respond_to?(before_type_cast) && record.send(before_type_cast) != value
         raw_value ||= value
 
-        return if options[:allow_nil] && raw_value.nil?
+        if record_attribute_changed_in_place?(record, attr_name)
+          raw_value = value
+        end
 
-        unless value = parse_raw_value_as_a_number(raw_value)
+        unless is_number?(raw_value)
           record.errors.add(attr_name, :not_a_number, filtered_options(raw_value))
           return
         end
 
-        if allow_only_integer?(record)
-          unless value = parse_raw_value_as_an_integer(raw_value)
-            record.errors.add(attr_name, :not_an_integer, filtered_options(raw_value))
-            return
-          end
+        if allow_only_integer?(record) && !is_integer?(raw_value)
+          record.errors.add(attr_name, :not_an_integer, filtered_options(raw_value))
+          return
+        end
+
+        if raw_value.is_a?(Numeric)
+          value = raw_value
+        else
+          value = parse_raw_value_as_a_number(raw_value)
         end
 
         options.slice(*CHECKS.keys).each do |option, option_value|
@@ -58,16 +63,21 @@ module ActiveModel
         end
       end
 
-    protected
+    private
 
-      def parse_raw_value_as_a_number(raw_value)
-        Kernel.Float(raw_value) if raw_value !~ /\A0[xX]/
+      def is_number?(raw_value)
+        !parse_raw_value_as_a_number(raw_value).nil?
       rescue ArgumentError, TypeError
-        nil
+        false
       end
 
-      def parse_raw_value_as_an_integer(raw_value)
-        raw_value.to_i if raw_value.to_s =~ /\A[+-]?\d+\Z/
+      def parse_raw_value_as_a_number(raw_value)
+        return raw_value.to_i if is_integer?(raw_value)
+        Kernel.Float(raw_value) if raw_value !~ /\A0[xX]/
+      end
+
+      def is_integer?(raw_value)
+        /\A[+-]?\d+\z/ === raw_value.to_s
       end
 
       def filtered_options(value)
@@ -86,12 +96,17 @@ module ActiveModel
           options[:only_integer]
         end
       end
+
+      def record_attribute_changed_in_place?(record, attr_name)
+        record.respond_to?(:attribute_changed_in_place?) &&
+          record.attribute_changed_in_place?(attr_name.to_s)
+      end
     end
 
     module HelperMethods
       # Validates whether the value of the specified attribute is numeric by
       # trying to convert it to a float with Kernel.Float (if <tt>only_integer</tt>
-      # is +false+) or applying it to the regular expression <tt>/\A[\+\-]?\d+\Z/</tt>
+      # is +false+) or applying it to the regular expression <tt>/\A[\+\-]?\d+\z/</tt>
       # (if <tt>only_integer</tt> is set to +true+).
       #
       #   class Person < ActiveRecord::Base
@@ -103,7 +118,7 @@ module ActiveModel
       # * <tt>:only_integer</tt> - Specifies whether the value has to be an
       #   integer, e.g. an integral value (default is +false+).
       # * <tt>:allow_nil</tt> - Skip validation if attribute is +nil+ (default is
-      #   +false+). Notice that for fixnum and float columns empty strings are
+      #   +false+). Notice that for Integer and Float columns empty strings are
       #   converted to +nil+.
       # * <tt>:greater_than</tt> - Specifies the value must be greater than the
       #   supplied value.
@@ -122,7 +137,7 @@ module ActiveModel
       #
       # There is also a list of default options supported by every validator:
       # +:if+, +:unless+, +:on+, +:allow_nil+, +:allow_blank+, and +:strict+ .
-      # See <tt>ActiveModel::Validation#validates</tt> for more information
+      # See <tt>ActiveModel::Validations#validates</tt> for more information
       #
       # The following checks can also be supplied with a proc or a symbol which
       # corresponds to a method:

@@ -1,26 +1,27 @@
-require 'cases/helper'
-require 'models/author'
-require 'models/comment'
-require 'models/developer'
-require 'models/post'
-require 'models/project'
-require 'models/rating'
+require "cases/helper"
+require "models/author"
+require "models/comment"
+require "models/developer"
+require "models/computer"
+require "models/post"
+require "models/project"
+require "models/rating"
 
 class RelationMergingTest < ActiveRecord::TestCase
-  fixtures :developers, :comments, :authors, :posts
+  fixtures :developers, :comments, :authors, :author_addresses, :posts
 
   def test_relation_merging
-    devs = Developer.where("salary >= 80000").merge(Developer.limit(2)).merge(Developer.order('id ASC').where("id < 3"))
+    devs = Developer.where("salary >= 80000").merge(Developer.limit(2)).merge(Developer.order("id ASC").where("id < 3"))
     assert_equal [developers(:david), developers(:jamis)], devs.to_a
 
-    dev_with_count = Developer.limit(1).merge(Developer.order('id DESC')).merge(Developer.select('developers.*'))
+    dev_with_count = Developer.limit(1).merge(Developer.order("id DESC")).merge(Developer.select("developers.*"))
     assert_equal [developers(:poor_jamis)], dev_with_count.to_a
   end
 
   def test_relation_to_sql
     post = Post.first
     sql = post.comments.to_sql
-    assert_match(/.?post_id.? = #{post.id}\Z/i, sql)
+    assert_match(/.?post_id.? = #{post.id}\z/i, sql)
   end
 
   def test_relation_merging_with_arel_equalities_keeps_last_equality
@@ -33,10 +34,10 @@ class RelationMergingTest < ActiveRecord::TestCase
   def test_relation_merging_with_arel_equalities_keeps_last_equality_with_non_attribute_left_hand
     salary_attr = Developer.arel_table[:salary]
     devs = Developer.where(
-      Arel::Nodes::NamedFunction.new('abs', [salary_attr]).eq(80000)
+      Arel::Nodes::NamedFunction.new("abs", [salary_attr]).eq(80000)
     ).merge(
       Developer.where(
-        Arel::Nodes::NamedFunction.new('abs', [salary_attr]).eq(9000)
+        Arel::Nodes::NamedFunction.new("abs", [salary_attr]).eq(9000)
       )
     )
     assert_equal [developers(:poor_jamis)], devs.to_a
@@ -44,8 +45,8 @@ class RelationMergingTest < ActiveRecord::TestCase
 
   def test_relation_merging_with_eager_load
     relations = []
-    relations << Post.order('comments.id DESC').merge(Post.eager_load(:last_comment)).merge(Post.all)
-    relations << Post.eager_load(:last_comment).merge(Post.order('comments.id DESC')).merge(Post.all)
+    relations << Post.order("comments.id DESC").merge(Post.eager_load(:last_comment)).merge(Post.all)
+    relations << Post.eager_load(:last_comment).merge(Post.order("comments.id DESC")).merge(Post.all)
 
     relations.each do |posts|
       post = posts.find { |p| p.id == 1 }
@@ -55,7 +56,7 @@ class RelationMergingTest < ActiveRecord::TestCase
 
   def test_relation_merging_with_locks
     devs = Developer.lock.where("salary >= 80000").order("id DESC").merge(Developer.limit(2))
-    assert devs.locked.present?
+    assert devs.locked?
   end
 
   def test_relation_merging_with_preload
@@ -65,14 +66,14 @@ class RelationMergingTest < ActiveRecord::TestCase
   end
 
   def test_relation_merging_with_joins
-    comments = Comment.joins(:post).where(:body => 'Thank you for the welcome').merge(Post.where(:body => 'Such a lovely day'))
+    comments = Comment.joins(:post).where(body: "Thank you for the welcome").merge(Post.where(body: "Such a lovely day"))
     assert_equal 1, comments.count
   end
 
   def test_relation_merging_with_association
     assert_queries(2) do  # one for loading post, and another one merged query
-      post = Post.where(:body => 'Such a lovely day').first
-      comments = Comment.where(:body => 'Thank you for the welcome').merge(post.comments)
+      post = Post.where(body: "Such a lovely day").first
+      comments = Comment.where(body: "Thank you for the welcome").merge(post.comments)
       assert_equal 1, comments.count
     end
   end
@@ -81,24 +82,13 @@ class RelationMergingTest < ActiveRecord::TestCase
     left  = Post.where(title: "omg").where(comments_count: 1)
     right = Post.where(title: "wtf").where(title: "bbq")
 
-    expected = [left.bind_values[1]] + right.bind_values
+    expected = [left.bound_attributes[1]] + right.bound_attributes
     merged   = left.merge(right)
 
-    assert_equal expected, merged.bind_values
-    assert !merged.to_sql.include?("omg")
-    assert merged.to_sql.include?("wtf")
-    assert merged.to_sql.include?("bbq")
-  end
-
-  def test_merging_keeps_lhs_bind_parameters
-    column = Post.columns_hash['id']
-    binds = [[column, 20]]
-
-    right  = Post.where(id: 20)
-    left   = Post.where(id: 10)
-
-    merged = left.merge(right)
-    assert_equal binds, merged.bind_values
+    assert_equal expected, merged.bound_attributes
+    assert_not_includes merged.to_sql, "omg"
+    assert_includes merged.to_sql, "wtf"
+    assert_includes merged.to_sql, "bbq"
   end
 
   def test_merging_reorders_bind_params
@@ -114,10 +104,17 @@ class RelationMergingTest < ActiveRecord::TestCase
     post = PostThatLoadsCommentsInAnAfterSaveHook.create!(title: "First Post", body: "Blah blah blah.")
     assert_equal "First comment!", post.comments.where(body: "First comment!").first_or_create.body
   end
+
+  def test_merging_with_from_clause
+    relation = Post.all
+    assert relation.from_clause.empty?
+    relation = relation.merge(Post.from("posts"))
+    refute relation.from_clause.empty?
+  end
 end
 
 class MergingDifferentRelationsTest < ActiveRecord::TestCase
-  fixtures :posts, :authors
+  fixtures :posts, :authors, :author_addresses, :developers
 
   test "merging where relations" do
     hello_by_bob = Post.where(body: "hello").joins(:author).

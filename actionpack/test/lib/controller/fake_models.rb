@@ -1,12 +1,12 @@
 require "active_model"
 
-class Customer < Struct.new(:name, :id)
+Customer = Struct.new(:name, :id) do
   extend ActiveModel::Naming
   include ActiveModel::Conversion
 
   undef_method :to_json
 
-  def to_xml(options={})
+  def to_xml(options = {})
     if options[:builder]
       options[:builder].name name
     else
@@ -14,7 +14,7 @@ class Customer < Struct.new(:name, :id)
     end
   end
 
-  def to_js(options={})
+  def to_js(options = {})
     "name: #{name.inspect}"
   end
   alias :to_text :to_js
@@ -26,33 +26,13 @@ class Customer < Struct.new(:name, :id)
   def persisted?
     id.present?
   end
-end
 
-class ValidatedCustomer < Customer
-  def errors
-    if name =~ /Sikachu/i
-      []
-    else
-      [{:name => "is invalid"}]
-    end
+  def cache_key
+    "#{name}/#{id}"
   end
 end
 
-module Quiz
-  class Question < Struct.new(:name, :id)
-    extend ActiveModel::Naming
-    include ActiveModel::Conversion
-
-    def persisted?
-      id.present?
-    end
-  end
-
-  class Store < Question
-  end
-end
-
-class Post < Struct.new(:title, :author_name, :body, :secret, :persisted, :written_on, :cost)
+Post = Struct.new(:title, :author_name, :body, :secret, :persisted, :written_on, :cost) do
   extend ActiveModel::Naming
   include ActiveModel::Conversion
   extend ActiveModel::Translation
@@ -94,25 +74,4 @@ class Comment
   def relevances_attributes=(attributes); end
 
   attr_accessor :body
-end
-
-module Blog
-  def self.use_relative_model_naming?
-    true
-  end
-
-  class Post < Struct.new(:title, :id)
-    extend ActiveModel::Naming
-    include ActiveModel::Conversion
-
-    def persisted?
-      id.present?
-    end
-  end
-end
-
-class RenderJsonTestException < Exception
-  def as_json(options = nil)
-    { :error => self.class.name, :message => self.to_s }
-  end
 end

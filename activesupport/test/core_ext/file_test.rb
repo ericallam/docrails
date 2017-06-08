@@ -1,5 +1,5 @@
-require 'abstract_unit'
-require 'active_support/core_ext/file'
+require "abstract_unit"
+require "active_support/core_ext/file"
 
 class AtomicWriteTest < ActiveSupport::TestCase
   def test_atomic_write_without_errors
@@ -53,6 +53,16 @@ class AtomicWriteTest < ActiveSupport::TestCase
     assert File.exist?(file_name)
     assert_equal File.probe_stat_in(Dir.pwd).mode, file_mode
     assert_equal contents, File.read(file_name)
+  ensure
+    File.unlink(file_name) rescue nil
+  end
+
+  def test_atomic_write_returns_result_from_yielded_block
+    block_return_value = File.atomic_write(file_name, Dir.pwd) do |file|
+      "Hello world!"
+    end
+
+    assert_equal "Hello world!", block_return_value
   ensure
     File.unlink(file_name) rescue nil
   end

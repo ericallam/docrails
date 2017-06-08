@@ -1,5 +1,5 @@
-require 'generators/generators_test_helper'
-require 'rails/generators/rails/migration/migration_generator'
+require "generators/generators_test_helper"
+require "rails/generators/rails/migration/migration_generator"
 
 class MigrationGeneratorTest < Rails::Generators::TestCase
   include GeneratorsTestHelper
@@ -7,7 +7,7 @@ class MigrationGeneratorTest < Rails::Generators::TestCase
   def test_migration
     migration = "change_title_body_from_posts"
     run_generator [migration]
-    assert_migration "db/migrate/#{migration}.rb", /class ChangeTitleBodyFromPosts < ActiveRecord::Migration/
+    assert_migration "db/migrate/#{migration}.rb", /class ChangeTitleBodyFromPosts < ActiveRecord::Migration\[[0-9.]+\]/
   end
 
   def test_migrations_generated_simultaneously
@@ -17,7 +17,7 @@ class MigrationGeneratorTest < Rails::Generators::TestCase
       run_generator [migration]
       file_name = migration_file_name "db/migrate/#{migration}.rb"
 
-      File.basename(file_name).split('_').first
+      File.basename(file_name).split("_").first
     end
 
     assert_not_equal first_migration_number, second_migration_number
@@ -26,7 +26,7 @@ class MigrationGeneratorTest < Rails::Generators::TestCase
   def test_migration_with_class_name
     migration = "ChangeTitleBodyFromPosts"
     run_generator [migration]
-    assert_migration "db/migrate/change_title_body_from_posts.rb", /class #{migration} < ActiveRecord::Migration/
+    assert_migration "db/migrate/change_title_body_from_posts.rb", /class #{migration} < ActiveRecord::Migration\[[0-9.]+\]/
   end
 
   def test_migration_with_invalid_file_name
@@ -79,8 +79,21 @@ class MigrationGeneratorTest < Rails::Generators::TestCase
 
     assert_migration "db/migrate/#{migration}.rb" do |content|
       assert_method :change, content do |change|
-        assert_match(/remove_reference :books, :author, index: true/, change)
-        assert_match(/remove_reference :books, :distributor, polymorphic: true, index: true/, change)
+        assert_match(/remove_reference :books, :author/, change)
+        assert_match(/remove_reference :books, :distributor, polymorphic: true/, change)
+      end
+    end
+  end
+
+  def test_remove_migration_with_references_removes_foreign_keys
+    migration = "remove_references_from_books"
+    run_generator [migration, "author:belongs_to", "distributor:references{polymorphic}"]
+
+    assert_migration "db/migrate/#{migration}.rb" do |content|
+      assert_method :change, content do |change|
+        assert_match(/remove_reference :books, :author,.*\sforeign_key: true/, change)
+        assert_match(/remove_reference :books, :distributor/, change) # sanity check
+        assert_no_match(/remove_reference :books, :distributor,.*\sforeign_key: true/, change)
       end
     end
   end
@@ -153,8 +166,8 @@ class MigrationGeneratorTest < Rails::Generators::TestCase
 
     assert_migration "db/migrate/#{migration}.rb" do |content|
       assert_method :change, content do |change|
-        assert_match(/add_reference :books, :author, index: true/, change)
-        assert_match(/add_reference :books, :distributor, polymorphic: true, index: true/, change)
+        assert_match(/add_reference :books, :author/, change)
+        assert_match(/add_reference :books, :distributor, polymorphic: true/, change)
       end
     end
   end
@@ -165,8 +178,21 @@ class MigrationGeneratorTest < Rails::Generators::TestCase
 
     assert_migration "db/migrate/#{migration}.rb" do |content|
       assert_method :change, content do |change|
-        assert_match(/add_reference :books, :author, index: true, null: false/, change)
-        assert_match(/add_reference :books, :distributor, polymorphic: true, index: true, null: false/, change)
+        assert_match(/add_reference :books, :author, null: false/, change)
+        assert_match(/add_reference :books, :distributor, polymorphic: true, null: false/, change)
+      end
+    end
+  end
+
+  def test_add_migration_with_references_adds_foreign_keys
+    migration = "add_references_to_books"
+    run_generator [migration, "author:belongs_to", "distributor:references{polymorphic}"]
+
+    assert_migration "db/migrate/#{migration}.rb" do |content|
+      assert_method :change, content do |change|
+        assert_match(/add_reference :books, :author,.*\sforeign_key: true/, change)
+        assert_match(/add_reference :books, :distributor/, change) # sanity check
+        assert_no_match(/add_reference :books, :distributor,.*\sforeign_key: true/, change)
       end
     end
   end
@@ -178,8 +204,8 @@ class MigrationGeneratorTest < Rails::Generators::TestCase
     assert_migration "db/migrate/#{migration}.rb" do |content|
       assert_method :change, content do |change|
         assert_match(/create_join_table :artists, :musics/, change)
-        assert_match(/# t.index \[:artist_id, :music_id\]/, change)
-        assert_match(/  t.index \[:music_id, :artist_id\], unique: true/, change)
+        assert_match(/# t\.index \[:artist_id, :music_id\]/, change)
+        assert_match(/  t\.index \[:music_id, :artist_id\], unique: true/, change)
       end
     end
   end
@@ -195,6 +221,15 @@ class MigrationGeneratorTest < Rails::Generators::TestCase
     end
   end
 
+  def test_add_uuid_to_create_table_migration
+    run_generator ["create_books", "--primary_key_type=uuid"]
+    assert_migration "db/migrate/create_books.rb" do |content|
+      assert_method :change, content do |change|
+        assert_match(/create_table :books, id: :uuid/, change)
+      end
+    end
+  end
+
   def test_should_create_empty_migrations_if_name_not_start_with_add_or_remove_or_create
     migration = "delete_books"
     run_generator [migration, "title:string", "content:text"]
@@ -205,7 +240,7 @@ class MigrationGeneratorTest < Rails::Generators::TestCase
       end
     end
   end
-  
+
   def test_properly_identifies_usage_file
     assert generator_class.send(:usage_path)
   end
@@ -213,7 +248,7 @@ class MigrationGeneratorTest < Rails::Generators::TestCase
   def test_migration_with_singular_table_name
     with_singular_table_name do
       migration = "add_title_body_to_post"
-      run_generator [migration, 'title:string']
+      run_generator [migration, "title:string"]
       assert_migration "db/migrate/#{migration}.rb" do |content|
         assert_method :change, content do |change|
           assert_match(/add_column :post, :title, :string/, change)
@@ -230,8 +265,8 @@ class MigrationGeneratorTest < Rails::Generators::TestCase
       assert_migration "db/migrate/#{migration}.rb" do |content|
         assert_method :change, content do |change|
           assert_match(/create_join_table :artist, :music/, change)
-          assert_match(/# t.index \[:artist_id, :music_id\]/, change)
-          assert_match(/  t.index \[:music_id, :artist_id\], unique: true/, change)
+          assert_match(/# t\.index \[:artist_id, :music_id\]/, change)
+          assert_match(/  t\.index \[:music_id, :artist_id\], unique: true/, change)
         end
       end
     end
@@ -248,6 +283,41 @@ class MigrationGeneratorTest < Rails::Generators::TestCase
         end
       end
     end
+  end
+
+  def test_create_table_migration_with_token_option
+    run_generator ["create_users", "token:token", "auth_token:token"]
+    assert_migration "db/migrate/create_users.rb" do |content|
+      assert_method :change, content do |change|
+        assert_match(/create_table :users/, change)
+        assert_match(/  t\.string :token/, change)
+        assert_match(/  t\.string :auth_token/, change)
+        assert_match(/add_index :users, :token, unique: true/, change)
+        assert_match(/add_index :users, :auth_token, unique: true/, change)
+      end
+    end
+  end
+
+  def test_add_migration_with_token_option
+    migration = "add_token_to_users"
+    run_generator [migration, "auth_token:token"]
+    assert_migration "db/migrate/#{migration}.rb" do |content|
+      assert_method :change, content do |change|
+        assert_match(/add_column :users, :auth_token, :string/, change)
+        assert_match(/add_index :users, :auth_token, unique: true/, change)
+      end
+    end
+  end
+
+  def test_add_migration_to_configured_path
+    old_paths = Rails.application.config.paths["db/migrate"]
+    Rails.application.config.paths.add "db/migrate", with: "db2/migrate"
+
+    migration = "migration_in_custom_path"
+    run_generator [migration]
+    assert_migration "db2/migrate/#{migration}.rb", /.*/
+  ensure
+    Rails.application.config.paths["db/migrate"] = old_paths
   end
 
   private

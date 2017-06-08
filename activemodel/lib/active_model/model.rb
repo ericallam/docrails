@@ -1,12 +1,11 @@
 module ActiveModel
-
   # == Active \Model \Basic \Model
   #
   # Includes the required interface for an object to interact with
-  # <tt>ActionPack</tt>, using different <tt>ActiveModel</tt> modules.
+  # Action Pack and Action View, using different Active Model modules.
   # It includes model name introspections, conversions, translations and
   # validations. Besides that, it allows you to initialize the object with a
-  # hash of attributes, pretty much like <tt>ActiveRecord</tt> does.
+  # hash of attributes, pretty much like Active Record does.
   #
   # A minimal implementation could be:
   #
@@ -57,6 +56,7 @@ module ActiveModel
   # (see below).
   module Model
     extend ActiveSupport::Concern
+    include ActiveModel::AttributeAssignment
     include ActiveModel::Validations
     include ActiveModel::Conversion
 
@@ -75,10 +75,8 @@ module ActiveModel
     #   person = Person.new(name: 'bob', age: '18')
     #   person.name # => "bob"
     #   person.age  # => "18"
-    def initialize(params={})
-      params.each do |attr, value|
-        self.public_send("#{attr}=", value)
-      end if params
+    def initialize(attributes = {})
+      assign_attributes(attributes) if attributes
 
       super()
     end

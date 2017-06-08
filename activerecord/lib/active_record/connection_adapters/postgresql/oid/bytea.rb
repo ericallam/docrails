@@ -3,9 +3,10 @@ module ActiveRecord
     module PostgreSQL
       module OID # :nodoc:
         class Bytea < Type::Binary # :nodoc:
-          def type_cast_from_database(value)
+          def deserialize(value)
             return if value.nil?
-            PGconn.unescape_bytea(super)
+            return value.to_s if value.is_a?(Type::Binary::Data)
+            PG::Connection.unescape_bytea(super)
           end
         end
       end
