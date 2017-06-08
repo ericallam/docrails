@@ -1,4 +1,4 @@
-require 'abstract_unit'
+require "abstract_unit"
 
 module ControllerLayouts
   class ImplicitController < ::ApplicationController
@@ -10,15 +10,15 @@ module ControllerLayouts
     )]
 
     def index
-      render :template => "basic"
+      render template: "basic"
     end
 
     def override
-      render :template => "basic", :layout => "override"
+      render template: "basic", layout: "override"
     end
 
     def layout_false
-      render :layout => false
+      render layout: false
     end
 
     def builder_override
@@ -32,7 +32,7 @@ module ControllerLayouts
     )]
 
     def index
-      render :template => "basic"
+      render template: "basic"
     end
   end
 
@@ -55,7 +55,6 @@ module ControllerLayouts
       get "/controller_layouts/implicit/override"
       assert_body "Override! Hello world!"
     end
-
   end
 
   class LayoutOptionsTest < Rack::TestCase
@@ -76,7 +75,7 @@ module ControllerLayouts
     )]
 
     def explicit
-      render :layout => "application"
+      render layout: "application"
     end
   end
 
@@ -86,7 +85,7 @@ module ControllerLayouts
     XML_INSTRUCT = %Q(<?xml version="1.0" encoding="UTF-8"?>\n)
 
     test "if XML is selected, an HTML template is not also selected" do
-      get :index, :format => "xml"
+      get :index, params: { format: "xml" }
       assert_response XML_INSTRUCT
     end
 
@@ -96,7 +95,7 @@ module ControllerLayouts
     end
 
     test "a layout for JS is ignored even if explicitly provided for HTML" do
-      get :explicit, { :format => "js" }
+      get :explicit, params: { format: "js" }
       assert_response "alert('foo');"
     end
   end
@@ -120,7 +119,7 @@ module ControllerLayouts
     testing ControllerLayouts::FalseLayoutMethodController
 
     test "access false layout returned by a method/proc" do
-      get :index, :format => "js"
+      get :index, params: { format: "js" }
       assert_response "alert('foo');"
     end
   end

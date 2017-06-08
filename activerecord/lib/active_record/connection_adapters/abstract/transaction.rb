@@ -1,13 +1,10 @@
 module ActiveRecord
   module ConnectionAdapters
     class TransactionState
-      attr_reader :parent
-
       VALID_STATES = Set.new([:committed, :rolledback, nil])
 
       def initialize(state = nil)
         @state = state
-        @parent = nil
       end
 
       def finalized?
@@ -27,7 +24,7 @@ module ActiveRecord
       end
 
       def set_state(state)
-        if !VALID_STATES.include?(state)
+        unless VALID_STATES.include?(state)
           raise ArgumentError, "Invalid transaction state: #{state}"
         end
         @state = state
@@ -36,6 +33,7 @@ module ActiveRecord
 
     class NullTransaction #:nodoc:
       def initialize; end
+      def state; end
       def closed?; true; end
       def open?; false; end
       def joinable?; false; end
@@ -43,23 +41,19 @@ module ActiveRecord
     end
 
     class Transaction #:nodoc:
-
       attr_reader :connection, :state, :records, :savepoint_name
       attr_writer :joinable
 
-      def initialize(connection, options)
+      def initialize(connection, options, run_commit_callbacks: false)
         @connection = connection
         @state = TransactionState.new
         @records = []
         @joinable = options.fetch(:joinable, true)
+        @run_commit_callbacks = run_commit_callbacks
       end
 
       def add_record(record)
-        if record.has_transactional_callbacks?
-          records << record
-        else
-          record.set_transaction_state(@state)
-        end
+        records << record
       end
 
       def rollback
@@ -69,16 +63,11 @@ module ActiveRecord
       def rollback_records
         ite = records.uniq
         while record = ite.shift
-          begin
-            record.rolledback! full_rollback?
-          rescue => e
-            raise if ActiveRecord::Base.raise_in_transactional_callbacks
-            record.logger.error(e) if record.respond_to?(:logger) && record.logger
-          end
+          record.rolledback!(force_restore_state: full_rollback?)
         end
       ensure
         ite.each do |i|
-          i.rolledback!(full_rollback?, false)
+          i.rolledback!(force_restore_state: full_rollback?, should_run_callbacks: false)
         end
       end
 
@@ -86,20 +75,22 @@ module ActiveRecord
         @state.set_state(:committed)
       end
 
+      def before_commit_records
+        records.uniq.each(&:before_committed!) if @run_commit_callbacks
+      end
+
       def commit_records
         ite = records.uniq
         while record = ite.shift
-          begin
+          if @run_commit_callbacks
             record.committed!
-          rescue => e
-            raise if ActiveRecord::Base.raise_in_transactional_callbacks
-            record.logger.error(e) if record.respond_to?(:logger) && record.logger
+          else
+            # if not running callbacks, only adds the record to the parent transaction
+            record.add_to_transaction
           end
         end
       ensure
-        ite.each do |i|
-          i.committed!(false)
-        end
+        ite.each { |i| i.committed!(should_run_callbacks: false) }
       end
 
       def full_rollback?; true; end
@@ -109,9 +100,8 @@ module ActiveRecord
     end
 
     class SavepointTransaction < Transaction
-
-      def initialize(connection, savepoint_name, options)
-        super(connection, options)
+      def initialize(connection, savepoint_name, options, *args)
+        super(connection, options, *args)
         if options[:isolation]
           raise ActiveRecord::TransactionIsolationError, "cannot set transaction isolation in a nested transaction"
         end
@@ -121,22 +111,18 @@ module ActiveRecord
       def rollback
         connection.rollback_to_savepoint(savepoint_name)
         super
-        rollback_records
       end
 
       def commit
         connection.release_savepoint(savepoint_name)
         super
-        parent = connection.transaction_manager.current_transaction
-        records.each { |r| parent.add_record(r) }
       end
 
       def full_rollback?; false; end
     end
 
     class RealTransaction < Transaction
-
-      def initialize(connection, options)
+      def initialize(connection, options, *args)
         super
         if options[:isolation]
           connection.begin_isolated_db_transaction(options[:isolation])
@@ -148,13 +134,11 @@ module ActiveRecord
       def rollback
         connection.rollback_db_transaction
         super
-        rollback_records
       end
 
       def commit
         connection.commit_db_transaction
         super
-        commit_records
       end
     end
 
@@ -165,36 +149,69 @@ module ActiveRecord
       end
 
       def begin_transaction(options = {})
-        transaction =
-          if @stack.empty?
-            RealTransaction.new(@connection, options)
-          else
-            SavepointTransaction.new(@connection, "active_record_#{@stack.size}", options)
-          end
-        @stack.push(transaction)
-        transaction
+        @connection.lock.synchronize do
+          run_commit_callbacks = !current_transaction.joinable?
+          transaction =
+            if @stack.empty?
+              RealTransaction.new(@connection, options, run_commit_callbacks: run_commit_callbacks)
+            else
+              SavepointTransaction.new(@connection, "active_record_#{@stack.size}", options,
+                                       run_commit_callbacks: run_commit_callbacks)
+            end
+
+          @stack.push(transaction)
+          transaction
+        end
       end
 
       def commit_transaction
-        @stack.pop.commit
+        @connection.lock.synchronize do
+          transaction = @stack.last
+
+          begin
+            transaction.before_commit_records
+          ensure
+            @stack.pop
+          end
+
+          transaction.commit
+          transaction.commit_records
+        end
       end
 
-      def rollback_transaction
-        @stack.pop.rollback
+      def rollback_transaction(transaction = nil)
+        @connection.lock.synchronize do
+          transaction ||= @stack.pop
+          transaction.rollback
+          transaction.rollback_records
+        end
       end
 
       def within_new_transaction(options = {})
-        transaction = begin_transaction options
-        yield
-      rescue Exception => error
-        rollback_transaction if transaction
-        raise
-      ensure
-        begin
-          commit_transaction unless error
-        rescue Exception
-          transaction.rollback unless transaction.state.completed?
-          raise
+        @connection.lock.synchronize do
+          begin
+            transaction = begin_transaction options
+            yield
+          rescue Exception => error
+            if transaction
+              rollback_transaction
+              after_failure_actions(transaction, error)
+            end
+            raise
+          ensure
+            unless error
+              if Thread.current.status == "aborting"
+                rollback_transaction if transaction
+              else
+                begin
+                  commit_transaction
+                rescue Exception
+                  rollback_transaction(transaction) unless transaction.state.completed?
+                  raise
+                end
+              end
+            end
+          end
         end
       end
 
@@ -207,7 +224,15 @@ module ActiveRecord
       end
 
       private
+
         NULL_TRANSACTION = NullTransaction.new
+
+        # Deallocate invalidated prepared statements outside of the transaction
+        def after_failure_actions(transaction, error)
+          return unless transaction.is_a?(RealTransaction)
+          return unless error.is_a?(ActiveRecord::PreparedStatementCacheExpired)
+          @connection.clear_cache!
+        end
     end
   end
 end

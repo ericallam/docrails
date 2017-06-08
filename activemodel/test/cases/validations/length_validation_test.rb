@@ -1,8 +1,7 @@
-# encoding: utf-8
-require 'cases/helper'
+require "cases/helper"
 
-require 'models/topic'
-require 'models/person'
+require "models/topic"
+require "models/person"
 
 class LengthValidationTest < ActiveModel::TestCase
   def teardown
@@ -10,7 +9,7 @@ class LengthValidationTest < ActiveModel::TestCase
   end
 
   def test_validates_length_of_with_allow_nil
-    Topic.validates_length_of( :title, is: 5, allow_nil: true )
+    Topic.validates_length_of(:title, is: 5, allow_nil: true)
 
     assert Topic.new("title" => "ab").invalid?
     assert Topic.new("title" => "").invalid?
@@ -19,7 +18,7 @@ class LengthValidationTest < ActiveModel::TestCase
   end
 
   def test_validates_length_of_with_allow_blank
-    Topic.validates_length_of( :title, is: 5, allow_blank: true )
+    Topic.validates_length_of(:title, is: 5, allow_blank: true)
 
     assert Topic.new("title" => "ab").invalid?
     assert Topic.new("title" => "").valid?
@@ -105,7 +104,7 @@ class LengthValidationTest < ActiveModel::TestCase
     assert_equal ["is too short (minimum is 3 characters)"], t.errors[:content]
 
     t.title = "abe"
-    t.content  = "mad"
+    t.content = "mad"
     assert t.valid?
   end
 
@@ -126,7 +125,7 @@ class LengthValidationTest < ActiveModel::TestCase
   def test_optionally_validates_length_of_using_within
     Topic.validates_length_of :title, :content, within: 3..5, allow_nil: true
 
-    t = Topic.new('title' => 'abc', 'content' => 'abcd')
+    t = Topic.new("title" => "abc", "content" => "abcd")
     assert t.valid?
 
     t.title = nil
@@ -162,8 +161,8 @@ class LengthValidationTest < ActiveModel::TestCase
   end
 
   def test_validates_length_of_using_bignum
-    bigmin = 2 ** 30
-    bigmax = 2 ** 32
+    bigmin = 2**30
+    bigmax = 2**32
     bigrange = bigmin...bigmax
     assert_nothing_raised do
       Topic.validates_length_of :title, is: bigmin + 5
@@ -184,7 +183,7 @@ class LengthValidationTest < ActiveModel::TestCase
   end
 
   def test_validates_length_of_custom_errors_for_minimum_with_message
-    Topic.validates_length_of( :title, minimum: 5, message: "boo %{count}" )
+    Topic.validates_length_of(:title, minimum: 5, message: "boo %{count}")
     t = Topic.new("title" => "uhoh", "content" => "whatever")
     assert t.invalid?
     assert t.errors[:title].any?
@@ -192,7 +191,7 @@ class LengthValidationTest < ActiveModel::TestCase
   end
 
   def test_validates_length_of_custom_errors_for_minimum_with_too_short
-    Topic.validates_length_of( :title, minimum: 5, too_short: "hoo %{count}" )
+    Topic.validates_length_of(:title, minimum: 5, too_short: "hoo %{count}")
     t = Topic.new("title" => "uhoh", "content" => "whatever")
     assert t.invalid?
     assert t.errors[:title].any?
@@ -200,7 +199,7 @@ class LengthValidationTest < ActiveModel::TestCase
   end
 
   def test_validates_length_of_custom_errors_for_maximum_with_message
-    Topic.validates_length_of( :title, maximum: 5, message: "boo %{count}" )
+    Topic.validates_length_of(:title, maximum: 5, message: "boo %{count}")
     t = Topic.new("title" => "uhohuhoh", "content" => "whatever")
     assert t.invalid?
     assert t.errors[:title].any?
@@ -221,7 +220,7 @@ class LengthValidationTest < ActiveModel::TestCase
   end
 
   def test_validates_length_of_custom_errors_for_maximum_with_too_long
-    Topic.validates_length_of( :title, maximum: 5, too_long: "hoo %{count}" )
+    Topic.validates_length_of(:title, maximum: 5, too_long: "hoo %{count}")
     t = Topic.new("title" => "uhohuhoh", "content" => "whatever")
     assert t.invalid?
     assert t.errors[:title].any?
@@ -229,21 +228,21 @@ class LengthValidationTest < ActiveModel::TestCase
   end
 
   def test_validates_length_of_custom_errors_for_both_too_short_and_too_long
-    Topic.validates_length_of :title, minimum: 3, maximum: 5, too_short: 'too short', too_long: 'too long'
+    Topic.validates_length_of :title, minimum: 3, maximum: 5, too_short: "too short", too_long: "too long"
 
-    t = Topic.new(title: 'a')
+    t = Topic.new(title: "a")
     assert t.invalid?
     assert t.errors[:title].any?
-    assert_equal ['too short'], t.errors['title']
+    assert_equal ["too short"], t.errors["title"]
 
-    t = Topic.new(title: 'aaaaaa')
+    t = Topic.new(title: "aaaaaa")
     assert t.invalid?
     assert t.errors[:title].any?
-    assert_equal ['too long'], t.errors['title']
+    assert_equal ["too long"], t.errors["title"]
   end
 
   def test_validates_length_of_custom_errors_for_is_with_message
-    Topic.validates_length_of( :title, is: 5, message: "boo %{count}" )
+    Topic.validates_length_of(:title, is: 5, message: "boo %{count}")
     t = Topic.new("title" => "uhohuhoh", "content" => "whatever")
     assert t.invalid?
     assert t.errors[:title].any?
@@ -251,7 +250,7 @@ class LengthValidationTest < ActiveModel::TestCase
   end
 
   def test_validates_length_of_custom_errors_for_is_with_wrong_length
-    Topic.validates_length_of( :title, is: 5, wrong_length: "hoo %{count}" )
+    Topic.validates_length_of(:title, is: 5, wrong_length: "hoo %{count}")
     t = Topic.new("title" => "uhohuhoh", "content" => "whatever")
     assert t.invalid?
     assert t.errors[:title].any?
@@ -290,7 +289,7 @@ class LengthValidationTest < ActiveModel::TestCase
     assert_equal ["is too short (minimum is 3 characters)"], t.errors[:title]
     assert_equal ["is too long (maximum is 5 characters)"], t.errors[:content]
     t.title = "一二三"
-    t.content  = "12三"
+    t.content = "12三"
     assert t.valid?
   end
 
@@ -319,19 +318,7 @@ class LengthValidationTest < ActiveModel::TestCase
     assert_equal ["is the wrong length (should be 5 characters)"], t.errors["title"]
   end
 
-  def test_validates_length_of_with_block
-    Topic.validates_length_of :content, minimum: 5, too_short: "Your essay must be at least %{count} words.",
-                                        tokenizer: lambda {|str| str.scan(/\w+/) }
-    t = Topic.new(content: "this content should be long enough")
-    assert t.valid?
-
-    t.content = "not long enough"
-    assert t.invalid?
-    assert t.errors[:content].any?
-    assert_equal ["Your essay must be at least 5 words."], t.errors[:content]
-  end
-
-  def test_validates_length_of_for_fixnum
+  def test_validates_length_of_for_integer
     Topic.validates_length_of(:approved, is: 4)
 
     t = Topic.new("title" => "uhohuhoh", "content" => "whatever", approved: 1)
@@ -416,7 +403,7 @@ class LengthValidationTest < ActiveModel::TestCase
 
   def test_validates_with_diff_in_option
     Topic.validates_length_of(:title, is: 5)
-    Topic.validates_length_of(:title, is: 5, if: Proc.new { false } )
+    Topic.validates_length_of(:title, is: 5, if: Proc.new { false })
 
     assert Topic.new("title" => "david").valid?
     assert Topic.new("title" => "david2").invalid?

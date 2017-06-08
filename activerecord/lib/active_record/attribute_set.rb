@@ -1,8 +1,9 @@
-require 'active_record/attribute_set/builder'
+require "active_record/attribute_set/builder"
+require "active_record/attribute_set/yaml_encoder"
 
 module ActiveRecord
   class AttributeSet # :nodoc:
-    delegate :keys, to: :initialized_attributes
+    delegate :each_value, :fetch, to: :attributes
 
     def initialize(attributes)
       @attributes = attributes
@@ -10,6 +11,10 @@ module ActiveRecord
 
     def [](name)
       attributes[name] || Attribute.null(name)
+    end
+
+    def []=(name, value)
+      attributes[name] = value
     end
 
     def values_before_type_cast
@@ -25,8 +30,20 @@ module ActiveRecord
       attributes.key?(name) && self[name].initialized?
     end
 
-    def fetch_value(name, &block)
-      self[name].value(&block)
+    def keys
+      attributes.each_key.select { |name| self[name].initialized? }
+    end
+
+    if defined?(JRUBY_VERSION)
+      # This form is significantly faster on JRuby, and this is one of our biggest hotspots.
+      # https://github.com/jruby/jruby/pull/2562
+      def fetch_value(name, &block)
+        self[name].value(&block)
+      end
+    else
+      def fetch_value(name)
+        self[name].value { |n| yield n if block_given? }
+      end
     end
 
     def write_from_database(name, value)
@@ -37,13 +54,23 @@ module ActiveRecord
       attributes[name] = self[name].with_value_from_user(value)
     end
 
+    def write_cast_value(name, value)
+      attributes[name] = self[name].with_cast_value(value)
+    end
+
     def freeze
       @attributes.freeze
       super
     end
 
+    def deep_dup
+      self.class.allocate.tap do |copy|
+        copy.instance_variable_set(:@attributes, attributes.deep_dup)
+      end
+    end
+
     def initialize_dup(_)
-      @attributes = attributes.transform_values(&:dup)
+      @attributes = attributes.dup
       super
     end
 
@@ -58,20 +85,29 @@ module ActiveRecord
       end
     end
 
-    def ensure_initialized(key)
-      unless self[key].initialized?
-        write_from_database(key, nil)
-      end
+    def accessed
+      attributes.select { |_, attr| attr.has_been_read? }.keys
     end
 
+    def map(&block)
+      new_attributes = attributes.transform_values(&block)
+      AttributeSet.new(new_attributes)
+    end
+
+    def ==(other)
+      attributes == other.attributes
+    end
+
+    # TODO Change this to private once we've dropped Ruby 2.2 support.
+    # Workaround for Ruby 2.2 "private attribute?" warning.
     protected
 
-    attr_reader :attributes
+      attr_reader :attributes
 
     private
 
-    def initialized_attributes
-      attributes.select { |_, attr| attr.initialized? }
-    end
+      def initialized_attributes
+        attributes.select { |_, attr| attr.initialized? }
+      end
   end
 end

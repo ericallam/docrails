@@ -1,83 +1,122 @@
-## Welcome to Rails
+[![Build Status](https://travis-ci.org/yasslab/railsguides.jp.svg?branch=japanese)](https://travis-ci.org/yasslab/railsguides.jp)
 
-Rails is a web-application framework that includes everything needed to
-create database-backed web applications according to the
-[Model-View-Controller (MVC)](http://en.wikipedia.org/wiki/Model-view-controller)
-pattern.
+## 日本語訳について 
 
-Understanding the MVC pattern is key to understanding Rails. MVC divides your
-application into three layers, each with a specific responsibility.
+本リポジトリは[Ruby on Rails Guides](http://guides.rubyonrails.org/)を日本語に訳したものです。   
+Railsガイドでは、Railsの各機能の仕組みや最新の機能、リリース情報などがまとまっています。
 
-The _Model layer_ represents your domain model (such as Account, Product,
-Person, Post, etc.) and encapsulates the business logic that is specific to
-your application. In Rails, database-backed model classes are derived from
-`ActiveRecord::Base`. Active Record allows you to present the data from
-database rows as objects and embellish these data objects with business logic
-methods. Although most Rails models are backed by a database, models can also
-be ordinary Ruby classes, or Ruby classes that implement a set of interfaces
-as provided by the Active Model module. You can read more about Active Record
-in its [README](activerecord/README.rdoc).
+Ruby on Rails ガイド   
+https://railsguides.jp/
 
-The _Controller layer_ is responsible for handling incoming HTTP requests and
-providing a suitable response. Usually this means returning HTML, but Rails controllers
-can also generate XML, JSON, PDFs, mobile-specific views, and more. Controllers load and
-manipulate models, and render view templates in order to generate the appropriate HTTP response.
-In Rails, incoming requests are routed by Action Dispatch to an appropriate controller, and
-controller classes are derived from `ActionController::Base`. Action Dispatch and Action Controller
-are bundled together in Action Pack. You can read more about Action Pack in its
-[README](actionpack/README.rdoc).
+これからRailsを勉強する方は「Railsチュートリアル」がオススメです。   
+Railsガイドと同様に、RailsチュートリアルもWeb版は無料で読めます :)
 
-The _View layer_ is composed of "templates" that are responsible for providing
-appropriate representations of your application's resources. Templates can
-come in a variety of formats, but most view templates are HTML with embedded
-Ruby code (ERB files). Views are typically rendered to generate a controller response,
-or to generate the body of an email. In Rails, View generation is handled by Action View.
-You can read more about Action View in its [README](actionview/README.rdoc).
+Ruby on Rails チュートリアル：実例を使ってRailsを学ぼう   
+https://railstutorial.jp/
 
-Active Record, Action Pack, and Action View can each be used independently outside Rails.
-In addition to them, Rails also comes with Action Mailer ([README](actionmailer/README.rdoc)), a library
-to generate and send emails; and Active Support ([README](activesupport/README.rdoc)), a collection of
-utility classes and standard library extensions that are useful for Rails, and may also be used
-independently outside Rails.
 
-## Getting Started
+## フィードバックについて
 
-1. Install Rails at the command prompt if you haven't yet:
+本ガイドを読んで、誤字・脱字・誤訳などを見かけましたら、本リポジトリの [Issue](https://github.com/yasslab/railsguides.jp/issues) にてお気軽に報告して頂けると幸いです。「直接Pull Request を送りたい!」という場合には、下記の「Railsガイドの生成方法」を参照してください。
 
-        gem install rails
+なお、原著レベルでの間違いを見つけましたら、[Railsのドキュメントに貢献する](https://railsguides.jp/contributing_to_ruby_on_rails.html#rails%E3%81%AE%E3%83%89%E3%82%AD%E3%83%A5%E3%83%A1%E3%83%B3%E3%83%88%E3%81%AB%E8%B2%A2%E7%8C%AE%E3%81%99%E3%82%8B) を参考にしてください。
 
-2. At the command prompt, create a new Rails application:
+本ガイドの品質向上に向けて、皆さまのご協力が得られれば幸いです。よろしくお願い致します。
 
-        rails new myapp
+## Railsガイドの生成方法
 
-   where "myapp" is the application name.
+本リポジトリにPull Requestを送付したい方は、下記を参照してください。    
 
-3. Change directory to `myapp` and start the web server:
+### 1. HTMLファイルの生成 (Jekyll)
 
-        cd myapp
-        rails server
+1. `/guides/source/ja` 内の Markdown ファイルを編集する
+2. `$ bundle exec rake assets:precompile SKIP_GTT=1` 
+3. `$ bundle exec jekyll server`
+4. localhost:4000 から変更結果を確認する
+5. (問題なければ) PRを送付する
 
-   Run with `--help` or `-h` for options.
+### 2. CI と Heroku
 
-4. Using a browser, go to `http://localhost:3000` and you'll see:
-"Welcome aboard: You're riding Ruby on Rails!"
+- PRが送られると、[railsguides.jpのTravis CI](https://travis-ci.org/yasslab/railsguides.jp) が走ります。
+- CIが通らなかった場合は、該当箇所を修正してください。
+- マージされない限り本番環境 (Heroku) には反映されないので、気軽にPRを送っていただいて大丈夫です。
 
-5. Follow the guidelines to start developing your application. You may find
-   the following resources handy:
-    * [Getting Started with Rails](http://guides.rubyonrails.org/getting_started.html)
-    * [Ruby on Rails Guides](http://guides.rubyonrails.org)
-    * [The API Documentation](http://api.rubyonrails.org)
-    * [Ruby on Rails Tutorial](http://www.railstutorial.org/book)
+## 翻訳に関する細かなアレコレ
 
-## Contributing
+以下は原著へのフィードバックや、翻訳に関するより詳細な情報です。必要に応じてご参照ください ;)
 
-We encourage you to contribute to Ruby on Rails! Please check out the
-[Contributing to Ruby on Rails guide](http://edgeguides.rubyonrails.org/contributing_to_ruby_on_rails.html) for guidelines about how to proceed. [Join us!](http://contributors.rubyonrails.org)
+<details>
+  <summary><strong>継続的翻訳システムについて (現在移行中)</strong></summary>
 
-## Code Status
+[![Railsガイドを支える継続的翻訳システム - SpeakerDeck](https://raw.githubusercontent.com/yasslab/railsguides.jp/japanese/yasslab/continuous_translation_system.png)](https://speakerdeck.com/yasulab/continuous-translation-system-at-rwc2015)
 
-* [![Build Status](https://travis-ci.org/rails/rails.svg?branch=master)](https://travis-ci.org/rails/rails)
+本リポジトリの仕組みについては、上記のスライドで詳しく解説されています。    
+</details>
 
-## License
 
-Ruby on Rails is released under the [MIT License](http://www.opensource.org/licenses/MIT).
+<details>
+  <summary><strong>翻訳の流れ (継続的翻訳システム移行前の構成)</strong></summary>
+
+![翻訳の流れ](https://raw.githubusercontent.com/yasslab/railsguides.jp/japanese/yasslab/flow-of-translation.png)
+参考: [[翻訳]Ruby on Rails 4.1リリース前にアップグレードガイドを先行翻訳した & 同じ翻訳を2回しないで済むようにした](http://techracho.bpsinc.jp/hachi8833/2014_03_28/16037)
+</details>
+
+<details>
+  <summary><strong>原著との差分を更新する方法</strong></summary>
+
+- [bin/merge-upstream](https://github.com/yasslab/railsguides.jp/blob/japanese/bin/merge-upstream) を実行すると最新版が `guides/source` 内に取り込まれます。
+- 特に、原著を手元で確認したいとき、原著にPRを送付したいときに便利です。
+- 原著にPRを送るときは、事前に[Railsのドキュメントに貢献する](https://railsguides.jp/contributing_to_ruby_on_rails.html#rails%E3%81%AE%E3%83%89%E3%82%AD%E3%83%A5%E3%83%A1%E3%83%B3%E3%83%88%E3%81%AB%E8%B2%A2%E7%8C%AE%E3%81%99%E3%82%8B)に目を通しておくとよいです :)
+
+</details>
+
+<details>
+  <summary><strong>GTTに最新のドキュメントをアップロードする</strong></summary>
+
+- Google Translator Toolkit: https://translate.google.com/toolkit/
+- Markdownは対応してないので、必要に応じてファイル名を `hogehoge.md.txt` などに変更する。
+- **NOTE: 必ずRailsガイド用の翻訳メモリに結びつけること。(shared TM は使わない)**
+   - cf. [翻訳メモリの使用 - Translate ヘルプ - Google Help](https://support.google.com/translate/toolkit/answer/147863?hl=ja)
+
+</details>
+
+<details>
+<summary><b>GTT上で英語から日本語に翻訳する</b></summary>
+
+- 詳細: [Google Translator Toolkitと翻訳メモリ(ノーカット版) : RubyWorld Conference 2013より](http://techracho.bpsinc.jp/hachi8833/2013_12_16/14889)
+- GTTの使用方法や文体などに関しては[こちら](https://www.facebook.com/notes/ruby-on-rails-tutorial-%E7%BF%BB%E8%A8%B3%E3%82%B0%E3%83%AB%E3%83%BC%E3%83%97/google-translator-toolkit-gtt-%E3%81%AE%E4%BD%BF%E3%81%84%E6%96%B9/170100333166820)を参考にしてください。
+- NOTE: 行頭にある`(TIP|IMPORTANT|CAUTION|WARNING|NOTE|INFO|TODO)[.:]`は、`guides:generate:html` で使われるタグです。 **これらのタグは訳さないでください。**
+
+</details>
+
+## 協力者
+
+- [@hachi8833](https://github.com/hachi8833) (共同発起人)
+- [@yasulab](https://github.com/yasulab) (共同発起人)
+- [@yui-knk](https://github.com/yui-knk) (コミッター)
+- [@riseshia](https://github.com/riseshia) (コミッター)
+- 他，[Issues](https://github.com/yasslab/railsguides.jp/issues?q=) や [Pull Request](https://github.com/yasslab/railsguides.jp/graphs/contributors)  を送ってくださった多くの方々。
+
+### 運営者・スポンサー
+
+本リポジトリは [YassLab](https://yasslab.jp/) 社によってメンテナンスされております。
+
+[![YassLab Logo](https://raw.githubusercontent.com/yasslab/railsguides.jp/japanese/yasslab/logo_800x200.png)](https://yasslab.jp/)
+
+### 協力者の相談部屋
+
+[idobata.io](https://idobata.io) の [yasslab/railsguides.jp](https://idobata.io/#/organization/yasslab/room/railsguides) 部屋にて、Rails ガイドに関する情報交換しています。   
+覗いてみるだけの方も歓迎なので、是非お気軽に立ち寄ってみてください :D
+
+[![井戸端会議の風景](https://raw.githubusercontent.com/yasslab/railsguides.jp/japanese/yasslab/idobata-ss.png)](https://idobata.io/#/organization/yasslab/room/railsguides)
+
+## ライセンス
+
+[![CC BY-SA International](https://raw.githubusercontent.com/yasslab/railsguides.jp/japanese/yasslab/CC-BY-SA.png)](https://creativecommons.org/licenses/by-sa/4.0/deed.ja)
+
+本ガイドは[クリエイティブ・コモンズ 表示-継承 4.0 国際](https://creativecommons.org/licenses/by-sa/4.0/deed.ja) (CC BY-SA 4.0) ライセンスに基づいて公開されています。
+
+「Rails」および「Ruby on Rails」という名称、そして Rails のロゴは、David Heinemeier Hansson による登録商標で、すべての権利を有しています。
+
+[Ruby on Rails](http://rubyonrails.org/)は[MITライセンス](http://www.opensource.org/licenses/MIT)に基づいて公開されています。
+

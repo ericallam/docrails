@@ -1,6 +1,5 @@
-# encoding: utf-8
-
-require 'active_support/inflections'
+require "active_support/inflections"
+require "active_support/core_ext/regexp"
 
 module ActiveSupport
   # The Inflector transforms words from singular to plural, class names to table
@@ -22,58 +21,58 @@ module ActiveSupport
     # pluralized using rules defined for that language. By default,
     # this parameter is set to <tt>:en</tt>.
     #
-    #   'post'.pluralize             # => "posts"
-    #   'octopus'.pluralize          # => "octopi"
-    #   'sheep'.pluralize            # => "sheep"
-    #   'words'.pluralize            # => "words"
-    #   'CamelOctopus'.pluralize     # => "CamelOctopi"
-    #   'ley'.pluralize(:es)         # => "leyes"
+    #   pluralize('post')             # => "posts"
+    #   pluralize('octopus')          # => "octopi"
+    #   pluralize('sheep')            # => "sheep"
+    #   pluralize('words')            # => "words"
+    #   pluralize('CamelOctopus')     # => "CamelOctopi"
+    #   pluralize('ley', :es)         # => "leyes"
     def pluralize(word, locale = :en)
-      apply_inflections(word, inflections(locale).plurals)
+      apply_inflections(word, inflections(locale).plurals, locale)
     end
 
-    # The reverse of +pluralize+, returns the singular form of a word in a
+    # The reverse of #pluralize, returns the singular form of a word in a
     # string.
     #
     # If passed an optional +locale+ parameter, the word will be
     # singularized using rules defined for that language. By default,
     # this parameter is set to <tt>:en</tt>.
     #
-    #   'posts'.singularize            # => "post"
-    #   'octopi'.singularize           # => "octopus"
-    #   'sheep'.singularize            # => "sheep"
-    #   'word'.singularize             # => "word"
-    #   'CamelOctopi'.singularize      # => "CamelOctopus"
-    #   'leyes'.singularize(:es)       # => "ley"
+    #   singularize('posts')            # => "post"
+    #   singularize('octopi')           # => "octopus"
+    #   singularize('sheep')            # => "sheep"
+    #   singularize('word')             # => "word"
+    #   singularize('CamelOctopi')      # => "CamelOctopus"
+    #   singularize('leyes', :es)       # => "ley"
     def singularize(word, locale = :en)
-      apply_inflections(word, inflections(locale).singulars)
+      apply_inflections(word, inflections(locale).singulars, locale)
     end
 
-    # By default, +camelize+ converts strings to UpperCamelCase. If the argument
-    # to +camelize+ is set to <tt>:lower</tt> then +camelize+ produces
+    # Converts strings to UpperCamelCase.
+    # If the +uppercase_first_letter+ parameter is set to false, then produces
     # lowerCamelCase.
     #
-    # +camelize+ will also convert '/' to '::' which is useful for converting
+    # Also converts '/' to '::' which is useful for converting
     # paths to namespaces.
     #
-    #   'active_model'.camelize                # => "ActiveModel"
-    #   'active_model'.camelize(:lower)        # => "activeModel"
-    #   'active_model/errors'.camelize         # => "ActiveModel::Errors"
-    #   'active_model/errors'.camelize(:lower) # => "activeModel::Errors"
+    #   camelize('active_model')                # => "ActiveModel"
+    #   camelize('active_model', false)         # => "activeModel"
+    #   camelize('active_model/errors')         # => "ActiveModel::Errors"
+    #   camelize('active_model/errors', false)  # => "activeModel::Errors"
     #
     # As a rule of thumb you can think of +camelize+ as the inverse of
-    # +underscore+, though there are cases where that does not hold:
+    # #underscore, though there are cases where that does not hold:
     #
-    #   'SSLError'.underscore.camelize # => "SslError"
+    #   camelize(underscore('SSLError'))        # => "SslError"
     def camelize(term, uppercase_first_letter = true)
       string = term.to_s
       if uppercase_first_letter
-        string = string.sub(/^[a-z\d]*/) { inflections.acronyms[$&] || $&.capitalize }
+        string = string.sub(/^[a-z\d]*/) { |match| inflections.acronyms[match] || match.capitalize }
       else
-        string = string.sub(/^(?:#{inflections.acronym_regex}(?=\b|[A-Z_])|\w)/) { $&.downcase }
+        string = string.sub(/^(?:#{inflections.acronym_regex}(?=\b|[A-Z_])|\w)/) { |match| match.downcase }
       end
       string.gsub!(/(?:_|(\/))([a-z\d]*)/i) { "#{$1}#{inflections.acronyms[$2] || $2.capitalize}" }
-      string.gsub!('/', '::')
+      string.gsub!("/".freeze, "::".freeze)
       string
     end
 
@@ -81,125 +80,146 @@ module ActiveSupport
     #
     # Changes '::' to '/' to convert namespaces to paths.
     #
-    #   'ActiveModel'.underscore         # => "active_model"
-    #   'ActiveModel::Errors'.underscore # => "active_model/errors"
+    #   underscore('ActiveModel')         # => "active_model"
+    #   underscore('ActiveModel::Errors') # => "active_model/errors"
     #
     # As a rule of thumb you can think of +underscore+ as the inverse of
-    # +camelize+, though there are cases where that does not hold:
+    # #camelize, though there are cases where that does not hold:
     #
-    #   'SSLError'.underscore.camelize # => "SslError"
+    #   camelize(underscore('SSLError'))  # => "SslError"
     def underscore(camel_cased_word)
-      return camel_cased_word unless camel_cased_word =~ /[A-Z-]|::/
-      word = camel_cased_word.to_s.gsub('::', '/')
-      word.gsub!(/(?:([A-Za-z\d])|^)(#{inflections.acronym_regex})(?=\b|[^a-z])/) { "#{$1}#{$1 && '_'}#{$2.downcase}" }
-      word.gsub!(/([A-Z\d]+)([A-Z][a-z])/,'\1_\2')
-      word.gsub!(/([a-z\d])([A-Z])/,'\1_\2')
-      word.tr!("-", "_")
+      return camel_cased_word unless /[A-Z-]|::/.match?(camel_cased_word)
+      word = camel_cased_word.to_s.gsub("::".freeze, "/".freeze)
+      word.gsub!(/(?:(?<=([A-Za-z\d]))|\b)(#{inflections.acronym_regex})(?=\b|[^a-z])/) { "#{$1 && '_'.freeze }#{$2.downcase}" }
+      word.gsub!(/([A-Z\d]+)([A-Z][a-z])/, '\1_\2'.freeze)
+      word.gsub!(/([a-z\d])([A-Z])/, '\1_\2'.freeze)
+      word.tr!("-".freeze, "_".freeze)
       word.downcase!
       word
     end
 
     # Tweaks an attribute name for display to end users.
     #
-    # Specifically, +humanize+ performs these transformations:
+    # Specifically, performs these transformations:
     #
-    #   * Applies human inflection rules to the argument.
-    #   * Deletes leading underscores, if any.
-    #   * Removes a "_id" suffix if present.
-    #   * Replaces underscores with spaces, if any.
-    #   * Downcases all words except acronyms.
-    #   * Capitalizes the first word.
-    #
+    # * Applies human inflection rules to the argument.
+    # * Deletes leading underscores, if any.
+    # * Removes a "_id" suffix if present.
+    # * Replaces underscores with spaces, if any.
+    # * Downcases all words except acronyms.
+    # * Capitalizes the first word.
     # The capitalization of the first word can be turned off by setting the
     # +:capitalize+ option to false (default is true).
     #
-    #   humanize('employee_salary')              # => "Employee salary"
-    #   humanize('author_id')                    # => "Author"
-    #   humanize('author_id', capitalize: false) # => "author"
-    #   humanize('_id')                          # => "Id"
+    # The trailing '_id' can be kept and capitalized by setting the
+    # optional parameter +keep_id_suffix+ to true (default is false).
+    #
+    #   humanize('employee_salary')                  # => "Employee salary"
+    #   humanize('author_id')                        # => "Author"
+    #   humanize('author_id', capitalize: false)     # => "author"
+    #   humanize('_id')                              # => "Id"
+    #   humanize('author_id', keep_id_suffix: true)  # => "Author Id"
     #
     # If "SSL" was defined to be an acronym:
     #
     #   humanize('ssl_error') # => "SSL error"
     #
-    def humanize(lower_case_and_underscored_word, options = {})
+    def humanize(lower_case_and_underscored_word, capitalize: true, keep_id_suffix: false)
       result = lower_case_and_underscored_word.to_s.dup
 
       inflections.humans.each { |(rule, replacement)| break if result.sub!(rule, replacement) }
 
-      result.sub!(/\A_+/, '')
-      result.sub!(/_id\z/, '')
-      result.tr!('_', ' ')
+      result.sub!(/\A_+/, "".freeze)
+      unless keep_id_suffix
+        result.sub!(/_id\z/, "".freeze)
+      end
+      result.tr!("_".freeze, " ".freeze)
 
       result.gsub!(/([a-z\d]*)/i) do |match|
         "#{inflections.acronyms[match] || match.downcase}"
       end
 
-      if options.fetch(:capitalize, true)
+      if capitalize
         result.sub!(/\A\w/) { |match| match.upcase }
       end
 
       result
     end
 
+    # Converts just the first character to uppercase.
+    #
+    #   upcase_first('what a Lovely Day') # => "What a Lovely Day"
+    #   upcase_first('w')                 # => "W"
+    #   upcase_first('')                  # => ""
+    def upcase_first(string)
+      string.length > 0 ? string[0].upcase.concat(string[1..-1]) : ""
+    end
+
     # Capitalizes all the words and replaces some characters in the string to
     # create a nicer looking title. +titleize+ is meant for creating pretty
     # output. It is not used in the Rails internals.
     #
+    # The trailing '_id','Id'.. can be kept and capitalized by setting the
+    # optional parameter +keep_id_suffix+ to true.
+    # By default, this parameter is false.
+    #
     # +titleize+ is also aliased as +titlecase+.
     #
-    #   'man from the boondocks'.titleize   # => "Man From The Boondocks"
-    #   'x-men: the last stand'.titleize    # => "X Men: The Last Stand"
-    #   'TheManWithoutAPast'.titleize       # => "The Man Without A Past"
-    #   'raiders_of_the_lost_ark'.titleize  # => "Raiders Of The Lost Ark"
-    def titleize(word)
-      humanize(underscore(word)).gsub(/\b(?<!['’`])[a-z]/) { $&.capitalize }
+    #   titleize('man from the boondocks')                       # => "Man From The Boondocks"
+    #   titleize('x-men: the last stand')                        # => "X Men: The Last Stand"
+    #   titleize('TheManWithoutAPast')                           # => "The Man Without A Past"
+    #   titleize('raiders_of_the_lost_ark')                      # => "Raiders Of The Lost Ark"
+    #   titleize('string_ending_with_id', keep_id_suffix: true)  # => "String Ending With Id"
+    def titleize(word, keep_id_suffix: false)
+      humanize(underscore(word), keep_id_suffix: keep_id_suffix).gsub(/\b(?<!\w['’`])[a-z]/) do |match|
+        match.capitalize
+      end
     end
 
-    # Create the name of a table like Rails does for models to table names. This
-    # method uses the +pluralize+ method on the last word in the string.
+    # Creates the name of a table like Rails does for models to table names.
+    # This method uses the #pluralize method on the last word in the string.
     #
-    #   'RawScaledScorer'.tableize # => "raw_scaled_scorers"
-    #   'egg_and_ham'.tableize     # => "egg_and_hams"
-    #   'fancyCategory'.tableize   # => "fancy_categories"
+    #   tableize('RawScaledScorer') # => "raw_scaled_scorers"
+    #   tableize('ham_and_egg')     # => "ham_and_eggs"
+    #   tableize('fancyCategory')   # => "fancy_categories"
     def tableize(class_name)
       pluralize(underscore(class_name))
     end
 
-    # Create a class name from a plural table name like Rails does for table
+    # Creates a class name from a plural table name like Rails does for table
     # names to models. Note that this returns a string and not a Class (To
-    # convert to an actual class follow +classify+ with +constantize+).
+    # convert to an actual class follow +classify+ with #constantize).
     #
-    #   'egg_and_hams'.classify # => "EggAndHam"
-    #   'posts'.classify        # => "Post"
+    #   classify('ham_and_eggs') # => "HamAndEgg"
+    #   classify('posts')        # => "Post"
     #
     # Singular names are not handled correctly:
     #
-    #   'calculus'.classify     # => "Calculu"
+    #   classify('calculus')     # => "Calculus"
     def classify(table_name)
       # strip out any leading schema name
-      camelize(singularize(table_name.to_s.sub(/.*\./, '')))
+      camelize(singularize(table_name.to_s.sub(/.*\./, "".freeze)))
     end
 
     # Replaces underscores with dashes in the string.
     #
-    #   'puni_puni'.dasherize # => "puni-puni"
+    #   dasherize('puni_puni') # => "puni-puni"
     def dasherize(underscored_word)
-      underscored_word.tr('_', '-')
+      underscored_word.tr("_".freeze, "-".freeze)
     end
 
     # Removes the module part from the expression in the string.
     #
-    #   'ActiveRecord::CoreExtensions::String::Inflections'.demodulize # => "Inflections"
-    #   'Inflections'.demodulize                                       # => "Inflections"
-    #   '::Inflections'.demodulize                                     # => "Inflections"
-    #   ''.demodulize                                                  # => ""
+    #   demodulize('ActiveSupport::Inflector::Inflections') # => "Inflections"
+    #   demodulize('Inflections')                           # => "Inflections"
+    #   demodulize('::Inflections')                         # => "Inflections"
+    #   demodulize('')                                      # => ""
     #
-    # See also +deconstantize+.
+    # See also #deconstantize.
     def demodulize(path)
       path = path.to_s
-      if i = path.rindex('::')
-        path[(i+2)..-1]
+      if i = path.rindex("::")
+        path[(i + 2)..-1]
       else
         path
       end
@@ -207,32 +227,32 @@ module ActiveSupport
 
     # Removes the rightmost segment from the constant expression in the string.
     #
-    #   'Net::HTTP'.deconstantize   # => "Net"
-    #   '::Net::HTTP'.deconstantize # => "::Net"
-    #   'String'.deconstantize      # => ""
-    #   '::String'.deconstantize    # => ""
-    #   ''.deconstantize            # => ""
+    #   deconstantize('Net::HTTP')   # => "Net"
+    #   deconstantize('::Net::HTTP') # => "::Net"
+    #   deconstantize('String')      # => ""
+    #   deconstantize('::String')    # => ""
+    #   deconstantize('')            # => ""
     #
-    # See also +demodulize+.
+    # See also #demodulize.
     def deconstantize(path)
-      path.to_s[0, path.rindex('::') || 0] # implementation based on the one in facets' Module#spacename
+      path.to_s[0, path.rindex("::") || 0] # implementation based on the one in facets' Module#spacename
     end
 
     # Creates a foreign key name from a class name.
     # +separate_class_name_and_id_with_underscore+ sets whether
     # the method should put '_' between the name and 'id'.
     #
-    #   'Message'.foreign_key        # => "message_id"
-    #   'Message'.foreign_key(false) # => "messageid"
-    #   'Admin::Post'.foreign_key    # => "post_id"
+    #   foreign_key('Message')        # => "message_id"
+    #   foreign_key('Message', false) # => "messageid"
+    #   foreign_key('Admin::Post')    # => "post_id"
     def foreign_key(class_name, separate_class_name_and_id_with_underscore = true)
       underscore(demodulize(class_name)) + (separate_class_name_and_id_with_underscore ? "_id" : "id")
     end
 
     # Tries to find a constant with the name specified in the argument string.
     #
-    #   'Module'.constantize     # => Module
-    #   'Test::Unit'.constantize # => Test::Unit
+    #   constantize('Module')   # => Module
+    #   constantize('Foo::Bar') # => Foo::Bar
     #
     # The name is assumed to be the one of a top-level constant, no matter
     # whether it starts with "::" or not. No lexical context is taken into
@@ -241,14 +261,14 @@ module ActiveSupport
     #   C = 'outside'
     #   module M
     #     C = 'inside'
-    #     C               # => 'inside'
-    #     'C'.constantize # => 'outside', same as ::C
+    #     C                # => 'inside'
+    #     constantize('C') # => 'outside', same as ::C
     #   end
     #
     # NameError is raised when the name is not in CamelCase or the constant is
     # unknown.
     def constantize(camel_cased_word)
-      names = camel_cased_word.split('::')
+      names = camel_cased_word.split("::".freeze)
 
       # Trigger a built-in NameError exception including the ill-formed constant in the message.
       Object.const_get(camel_cased_word) if names.empty?
@@ -266,7 +286,7 @@ module ActiveSupport
 
           # Go down the ancestors to check if it is owned directly. The check
           # stops when we reach Object or the end of ancestors tree.
-          constant = constant.ancestors.inject do |const, ancestor|
+          constant = constant.ancestors.inject(constant) do |const, ancestor|
             break const    if ancestor == Object
             break ancestor if ancestor.const_defined?(name, false)
             const
@@ -280,8 +300,8 @@ module ActiveSupport
 
     # Tries to find a constant with the name specified in the argument string.
     #
-    #   'Module'.safe_constantize     # => Module
-    #   'Test::Unit'.safe_constantize # => Test::Unit
+    #   safe_constantize('Module')   # => Module
+    #   safe_constantize('Foo::Bar') # => Foo::Bar
     #
     # The name is assumed to be the one of a top-level constant, no matter
     # whether it starts with "::" or not. No lexical context is taken into
@@ -290,23 +310,23 @@ module ActiveSupport
     #   C = 'outside'
     #   module M
     #     C = 'inside'
-    #     C                    # => 'inside'
-    #     'C'.safe_constantize # => 'outside', same as ::C
+    #     C                     # => 'inside'
+    #     safe_constantize('C') # => 'outside', same as ::C
     #   end
     #
     # +nil+ is returned when the name is not in CamelCase or the constant (or
     # part of it) is unknown.
     #
-    #   'blargle'.safe_constantize  # => nil
-    #   'UnknownModule'.safe_constantize  # => nil
-    #   'UnknownModule::Foo::Bar'.safe_constantize  # => nil
+    #   safe_constantize('blargle')                  # => nil
+    #   safe_constantize('UnknownModule')            # => nil
+    #   safe_constantize('UnknownModule::Foo::Bar')  # => nil
     def safe_constantize(camel_cased_word)
       constantize(camel_cased_word)
     rescue NameError => e
       raise if e.name && !(camel_cased_word.to_s.split("::").include?(e.name.to_s) ||
         e.name.to_s == camel_cased_word.to_s)
     rescue ArgumentError => e
-      raise unless e.message =~ /not missing constant #{const_regexp(camel_cased_word)}\!$/
+      raise unless /not missing constant #{const_regexp(camel_cased_word)}!$/.match?(e.message)
     end
 
     # Returns the suffix that should be added to a number to denote the position
@@ -325,9 +345,9 @@ module ActiveSupport
         "th"
       else
         case abs_number % 10
-          when 1; "st"
-          when 2; "nd"
-          when 3; "rd"
+        when 1; "st"
+        when 2; "nd"
+        when 3; "rd"
           else    "th"
         end
       end
@@ -348,36 +368,39 @@ module ActiveSupport
 
     private
 
-    # Mounts a regular expression, returned as a string to ease interpolation,
-    # that will match part by part the given constant.
-    #
-    #   const_regexp("Foo::Bar::Baz") # => "Foo(::Bar(::Baz)?)?"
-    #   const_regexp("::")            # => "::"
-    def const_regexp(camel_cased_word) #:nodoc:
-      parts = camel_cased_word.split("::")
+      # Mounts a regular expression, returned as a string to ease interpolation,
+      # that will match part by part the given constant.
+      #
+      #   const_regexp("Foo::Bar::Baz") # => "Foo(::Bar(::Baz)?)?"
+      #   const_regexp("::")            # => "::"
+      def const_regexp(camel_cased_word)
+        parts = camel_cased_word.split("::".freeze)
 
-      return Regexp.escape(camel_cased_word) if parts.blank?
+        return Regexp.escape(camel_cased_word) if parts.blank?
 
-      last  = parts.pop
+        last = parts.pop
 
-      parts.reverse.inject(last) do |acc, part|
-        part.empty? ? acc : "#{part}(::#{acc})?"
+        parts.reverse.inject(last) do |acc, part|
+          part.empty? ? acc : "#{part}(::#{acc})?"
+        end
       end
-    end
 
-    # Applies inflection rules for +singularize+ and +pluralize+.
-    #
-    #  apply_inflections('post', inflections.plurals)    # => "posts"
-    #  apply_inflections('posts', inflections.singulars) # => "post"
-    def apply_inflections(word, rules)
-      result = word.to_s.dup
+      # Applies inflection rules for +singularize+ and +pluralize+.
+      #
+      # If passed an optional +locale+ parameter, the uncountables will be
+      # found for that locale.
+      #
+      #  apply_inflections('post', inflections.plurals, :en)    # => "posts"
+      #  apply_inflections('posts', inflections.singulars, :en) # => "post"
+      def apply_inflections(word, rules, locale = :en)
+        result = word.to_s.dup
 
-      if word.empty? || inflections.uncountables.include?(result.downcase[/\b\w+\Z/])
-        result
-      else
-        rules.each { |(rule, replacement)| break if result.sub!(rule, replacement) }
-        result
+        if word.empty? || inflections(locale).uncountables.uncountable?(result)
+          result
+        else
+          rules.each { |(rule, replacement)| break if result.sub!(rule, replacement) }
+          result
+        end
       end
-    end
   end
 end

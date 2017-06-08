@@ -1,7 +1,7 @@
-require 'rails/generators/named_base'
-require 'rails/generators/active_model'
-require 'rails/generators/active_record/migration'
-require 'active_record'
+require "rails/generators/named_base"
+require "rails/generators/active_model"
+require "rails/generators/active_record/migration"
+require "active_record"
 
 module ActiveRecord
   module Generators # :nodoc:
@@ -10,7 +10,7 @@ module ActiveRecord
 
       # Set the current directory as base for the inherited generators.
       def self.base_root
-        File.dirname(__FILE__)
+        __dir__
       end
     end
   end

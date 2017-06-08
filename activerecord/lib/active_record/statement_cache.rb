@@ -1,22 +1,34 @@
 module ActiveRecord
-
   # Statement cache is used to cache a single statement in order to avoid creating the AST again.
-  # Initializing the cache is done by passing the statement in the initialization block:
+  # Initializing the cache is done by passing the statement in the create block:
   #
-  #   cache = ActiveRecord::StatementCache.new do
-  #     Book.where(name: "my book").limit(100)
+  #   cache = StatementCache.create(Book.connection) do |params|
+  #     Book.where(name: "my book").where("author_id > 3")
   #   end
   #
-  # The cached statement is executed by using the +execute+ method:
+  # The cached statement is executed by using the
+  # {connection.execute}[rdoc-ref:ConnectionAdapters::DatabaseStatements#execute] method:
   #
-  #   cache.execute
+  #   cache.execute([], Book, Book.connection)
   #
-  # The relation returned by the block is cached, and for each +execute+ call the cached relation gets duped.
-  # Database is queried when +to_a+ is called on the relation.
-  class StatementCache
-    class Substitute; end
+  # The relation returned by the block is cached, and for each
+  # {execute}[rdoc-ref:ConnectionAdapters::DatabaseStatements#execute]
+  # call the cached relation gets duped. Database is queried when +to_a+ is called on the relation.
+  #
+  # If you want to cache the statement without the values you can use the +bind+ method of the
+  # block parameter.
+  #
+  #   cache = StatementCache.create(Book.connection) do |params|
+  #     Book.where(name: params.bind)
+  #   end
+  #
+  # And pass the bind values as the first argument of +execute+ call.
+  #
+  #   cache.execute(["my book"], Book, Book.connection)
+  class StatementCache # :nodoc:
+    class Substitute; end # :nodoc:
 
-    class Query
+    class Query # :nodoc:
       def initialize(sql)
         @sql = sql
       end
@@ -26,51 +38,50 @@ module ActiveRecord
       end
     end
 
-    class PartialQuery < Query
-      def initialize values
+    class PartialQuery < Query # :nodoc:
+      def initialize(values)
         @values = values
-        @indexes = values.each_with_index.find_all { |thing,i|
+        @indexes = values.each_with_index.find_all { |thing, i|
           Arel::Nodes::BindParam === thing
         }.map(&:last)
       end
 
       def sql_for(binds, connection)
         val = @values.dup
-        binds = binds.dup
-        @indexes.each { |i| val[i] = connection.quote(*binds.shift.reverse) }
+        casted_binds = binds.map(&:value_for_database)
+        @indexes.each { |i| val[i] = connection.quote(casted_binds.shift) }
         val.join
       end
     end
 
-    def self.query(visitor, ast)
-      Query.new visitor.accept(ast, Arel::Collectors::SQLString.new).value
+    def self.query(sql)
+      Query.new(sql)
     end
 
-    def self.partial_query(visitor, ast, collector)
-      collected = visitor.accept(ast, collector).value
-      PartialQuery.new collected
+    def self.partial_query(values)
+      PartialQuery.new(values)
     end
 
-    class Params
+    class Params # :nodoc:
       def bind; Substitute.new; end
     end
 
-    class BindMap
-      def initialize(bind_values)
-        @indexes   = []
-        @bind_values = bind_values
+    class BindMap # :nodoc:
+      def initialize(bound_attributes)
+        @indexes = []
+        @bound_attributes = bound_attributes
 
-        bind_values.each_with_index do |(_, value), i|
-          if Substitute === value
+        bound_attributes.each_with_index do |attr, i|
+          if Substitute === attr.value
             @indexes << i
           end
         end
       end
 
       def bind(values)
-        bvs = @bind_values.map { |pair| pair.dup }
-        @indexes.each_with_index { |offset,i| bvs[offset][1] = values[i] }
-        bvs
+        bas = @bound_attributes.dup
+        @indexes.each_with_index { |offset, i| bas[offset] = bas[offset].with_cast_value(values[i]) }
+        bas
       end
     end
 
@@ -78,8 +89,8 @@ module ActiveRecord
 
     def self.create(connection, block = Proc.new)
       relation      = block.call Params.new
-      bind_map      = BindMap.new relation.bind_values
-      query_builder = connection.cacheable_query relation.arel
+      bind_map      = BindMap.new relation.bound_attributes
+      query_builder = connection.cacheable_query(self, relation.arel)
       new query_builder, bind_map
     end
 
@@ -88,12 +99,12 @@ module ActiveRecord
       @bind_map      = bind_map
     end
 
-    def execute(params, klass, connection)
+    def execute(params, klass, connection, &block)
       bind_values = bind_map.bind params
 
       sql = query_builder.sql_for bind_values, connection
 
-      klass.find_by_sql sql, bind_values
+      klass.find_by_sql(sql, bind_values, preparable: true, &block)
     end
     alias :call :execute
   end

@@ -36,5 +36,4 @@ class Topic
   def my_validation_with_arg(attr)
     errors.add attr, "is missing" unless send(attr)
   end
-
 end

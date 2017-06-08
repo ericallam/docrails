@@ -1,7 +1,6 @@
-require 'delegate'
+require "delegate"
 
 module ActionMailer
-
   # The <tt>ActionMailer::MessageDelivery</tt> class is used by
   # <tt>ActionMailer::Base</tt> when creating a new mailer.
   # <tt>MessageDelivery</tt> is a wrapper (+Delegator+ subclass) around a lazy
@@ -14,23 +13,33 @@ module ActionMailer
   #   Notifier.welcome(User.first).deliver_later # enqueue email delivery as a job through Active Job
   #   Notifier.welcome(User.first).message       # a Mail::Message object
   class MessageDelivery < Delegator
-    def initialize(mailer, mail_method, *args) #:nodoc:
-      @mailer = mailer
-      @mail_method = mail_method
-      @args = args
+    def initialize(mailer_class, action, *args) #:nodoc:
+      @mailer_class, @action, @args = mailer_class, action, args
+
+      # The mail is only processed if we try to call any methods on it.
+      # Typical usage will leave it unloaded and call deliver_later.
+      @processed_mailer = nil
+      @mail_message = nil
     end
 
+    # Method calls are delegated to the Mail::Message that's ready to deliver.
     def __getobj__ #:nodoc:
-      @obj ||= @mailer.send(:new, @mail_method, *@args).message
+      @mail_message ||= processed_mailer.message
     end
 
-    def __setobj__(obj) #:nodoc:
-      @obj = obj
+    # Unused except for delegator internals (dup, marshaling).
+    def __setobj__(mail_message) #:nodoc:
+      @mail_message = mail_message
     end
 
-    # Returns the Mail::Message object
+    # Returns the resulting Mail::Message
     def message
       __getobj__
+    end
+
+    # Was the delegate loaded, causing the mailer action to be processed?
+    def processed?
+      @processed_mailer || @mail_message
     end
 
     # Enqueues the email to be delivered through Active Job. When the
@@ -39,14 +48,15 @@ module ActionMailer
     # and +raise_delivery_errors+, so use with caution.
     #
     #   Notifier.welcome(User.first).deliver_later!
-    #   Notifier.welcome(User.first).deliver_later!(in: 1.hour)
-    #   Notifier.welcome(User.first).deliver_later!(at: 10.hours.from_now)
+    #   Notifier.welcome(User.first).deliver_later!(wait: 1.hour)
+    #   Notifier.welcome(User.first).deliver_later!(wait_until: 10.hours.from_now)
     #
     # Options:
     #
-    # * <tt>:in</tt> - Enqueue the email to be delivered with a delay
-    # * <tt>:at</tt> - Enqueue the email to be delivered at (after) a specific date / time
-    def deliver_later!(options={})
+    # * <tt>:wait</tt> - Enqueue the email to be delivered with a delay
+    # * <tt>:wait_until</tt> - Enqueue the email to be delivered at (after) a specific date / time
+    # * <tt>:queue</tt> - Enqueue the email on the specified queue
+    def deliver_later!(options = {})
       enqueue_delivery :deliver_now!, options
     end
 
@@ -54,14 +64,15 @@ module ActionMailer
     # job runs it will send the email using +deliver_now+.
     #
     #   Notifier.welcome(User.first).deliver_later
-    #   Notifier.welcome(User.first).deliver_later(in: 1.hour)
-    #   Notifier.welcome(User.first).deliver_later(at: 10.hours.from_now)
+    #   Notifier.welcome(User.first).deliver_later(wait: 1.hour)
+    #   Notifier.welcome(User.first).deliver_later(wait_until: 10.hours.from_now)
     #
     # Options:
     #
-    # * <tt>:in</tt> - Enqueue the email to be delivered with a delay
-    # * <tt>:at</tt> - Enqueue the email to be delivered at (after) a specific date / time
-    def deliver_later(options={})
+    # * <tt>:wait</tt> - Enqueue the email to be delivered with a delay.
+    # * <tt>:wait_until</tt> - Enqueue the email to be delivered at (after) a specific date / time.
+    # * <tt>:queue</tt> - Enqueue the email on the specified queue.
+    def deliver_later(options = {})
       enqueue_delivery :deliver_now, options
     end
 
@@ -71,7 +82,9 @@ module ActionMailer
     #   Notifier.welcome(User.first).deliver_now!
     #
     def deliver_now!
-      message.deliver!
+      processed_mailer.handle_exceptions do
+        message.deliver!
+      end
     end
 
     # Delivers an email:
@@ -79,34 +92,34 @@ module ActionMailer
     #   Notifier.welcome(User.first).deliver_now
     #
     def deliver_now
-      message.deliver
-    end
-
-    def deliver! #:nodoc:
-      ActiveSupport::Deprecation.warn "#deliver! is deprecated and will be removed in Rails 5. " \
-        "Use #deliver_now! to deliver immediately or #deliver_later! to deliver through Active Job."
-      deliver_now!
-    end
-
-    def deliver #:nodoc:
-      ActiveSupport::Deprecation.warn "#deliver is deprecated and will be removed in Rails 5. " \
-        "Use #deliver_now to deliver immediately or #deliver_later to deliver through Active Job."
-      deliver_now
+      processed_mailer.handle_exceptions do
+        message.deliver
+      end
     end
 
     private
-
-      def enqueue_delivery(delivery_method, options={})
-        args = @mailer.name, @mail_method.to_s, delivery_method.to_s, *@args
-        enqueue_method = :enqueue
-        if options[:at]
-          enqueue_method = :enqueue_at
-          args.unshift options[:at]
-        elsif options[:in]
-          enqueue_method = :enqueue_in
-          args.unshift options[:in]
+      # Returns the processed Mailer instance. We keep this instance
+      # on hand so we can delegate exception handling to it.
+      def processed_mailer
+        @processed_mailer ||= @mailer_class.new.tap do |mailer|
+          mailer.process @action, *@args
         end
-        ActionMailer::DeliveryJob.send enqueue_method, *args
+      end
+
+      def enqueue_delivery(delivery_method, options = {})
+        if processed?
+          ::Kernel.raise "You've accessed the message before asking to " \
+            "deliver it later, so you may have made local changes that would " \
+            "be silently lost if we enqueued a job to deliver it. Why? Only " \
+            "the mailer method *arguments* are passed with the delivery job! " \
+            "Do not access the message in any way if you mean to deliver it " \
+            "later. Workarounds: 1. don't touch the message before calling " \
+            "#deliver_later, 2. only touch the message *within your mailer " \
+            "method*, or 3. use a custom Active Job instead of #deliver_later."
+        else
+          args = @mailer_class.name, @action.to_s, delivery_method.to_s, *@args
+          ::ActionMailer::DeliveryJob.set(options).perform_later(*args)
+        end
       end
   end
 end

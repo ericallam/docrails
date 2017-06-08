@@ -7,6 +7,12 @@ module ActiveSupport
 
     config.eager_load_namespaces << ActiveSupport
 
+    initializer "active_support.reset_all_current_attributes_instances" do |app|
+      app.reloader.before_class_unload { ActiveSupport::CurrentAttributes.clear_all }
+      app.executor.to_run              { ActiveSupport::CurrentAttributes.reset_all }
+      app.executor.to_complete         { ActiveSupport::CurrentAttributes.reset_all }
+    end
+
     initializer "active_support.deprecation_behavior" do |app|
       if deprecation = app.config.active_support.deprecation
         ActiveSupport::Deprecation.behavior = deprecation
@@ -16,21 +22,19 @@ module ActiveSupport
     # Sets the default value for Time.zone
     # If assigned value cannot be matched to a TimeZone, an exception will be raised.
     initializer "active_support.initialize_time_zone" do |app|
-      require 'active_support/core_ext/time/zones'
-      zone_default = Time.find_zone!(app.config.time_zone)
-
-      unless zone_default
-        raise 'Value assigned to config.time_zone not recognized. ' \
-          'Run "rake -D time" for a list of tasks for finding appropriate time zone names.'
+      begin
+        TZInfo::DataSource.get
+      rescue TZInfo::DataSourceNotFound => e
+        raise e.exception "tzinfo-data is not present. Please add gem 'tzinfo-data' to your Gemfile and run bundle install"
       end
-
-      Time.zone_default = zone_default
+      require "active_support/core_ext/time/zones"
+      Time.zone_default = Time.find_zone!(app.config.time_zone)
     end
 
     # Sets the default week start
     # If assigned value is not a valid day symbol (e.g. :sunday, :monday, ...), an exception will be raised.
     initializer "active_support.initialize_beginning_of_week" do |app|
-      require 'active_support/core_ext/date/calculations'
+      require "active_support/core_ext/date/calculations"
       beginning_of_week_default = Date.find_beginning_of_week!(app.config.beginning_of_week)
 
       Date.beginning_of_week_default = beginning_of_week_default

@@ -1,9 +1,8 @@
-require 'active_support/core_ext/array/extract_options'
-require 'active_support/core_ext/hash/keys'
-require 'active_support/core_ext/hash/except'
+require "active_support/core_ext/array/extract_options"
+require "active_support/core_ext/hash/keys"
+require "active_support/core_ext/hash/except"
 
 module ActiveModel
-
   # == Active \Model \Validations
   #
   # Provides a full validation framework to your objects.
@@ -47,10 +46,10 @@ module ActiveModel
       include HelperMethods
 
       attr_accessor :validation_context
+      private :validation_context=
       define_callbacks :validate, scope: :name
 
-      class_attribute :_validators
-      self._validators = Hash.new { |h,k| h[k] = [] }
+      class_attribute :_validators, instance_writer: false, default: Hash.new { |h, k| h[k] = [] }
     end
 
     module ClassMethods
@@ -68,8 +67,9 @@ module ActiveModel
       #
       # Options:
       # * <tt>:on</tt> - Specifies the contexts where this validation is active.
-      #   You can pass a symbol or an array of symbols.
-      #   (e.g. <tt>on: :create</tt> or <tt>on: :custom_validation_context</tt> or
+      #   Runs in all validation contexts by default +nil+. You can pass a symbol
+      #   or an array of symbols. (e.g. <tt>on: :create</tt> or
+      #   <tt>on: :custom_validation_context</tt> or
       #   <tt>on: [:create, :custom_validation_context]</tt>)
       # * <tt>:allow_nil</tt> - Skip validation if attribute is +nil+.
       # * <tt>:allow_blank</tt> - Skip validation if attribute is blank.
@@ -85,6 +85,8 @@ module ActiveModel
       def validates_each(*attr_names, &block)
         validates_with BlockValidator, _merge_attributes(attr_names), &block
       end
+
+      VALID_OPTIONS_FOR_VALIDATE = [:on, :if, :unless, :prepend].freeze # :nodoc:
 
       # Adds a validation method or block to the class. This is useful when
       # overriding the +validate+ instance method becomes too unwieldy and
@@ -126,10 +128,14 @@ module ActiveModel
       #     end
       #   end
       #
+      # Note that the return value of validation methods is not relevant.
+      # It's not possible to halt the validate callback chain.
+      #
       # Options:
       # * <tt>:on</tt> - Specifies the contexts where this validation is active.
-      #   You can pass a symbol or an array of symbols.
-      #   (e.g. <tt>on: :create</tt> or <tt>on: :custom_validation_context</tt> or
+      #   Runs in all validation contexts by default +nil+. You can pass a symbol
+      #   or an array of symbols. (e.g. <tt>on: :create</tt> or
+      #   <tt>on: :custom_validation_context</tt> or
       #   <tt>on: [:create, :custom_validation_context]</tt>)
       # * <tt>:if</tt> - Specifies a method, proc or string to call to determine
       #   if the validation should occur (e.g. <tt>if: :allow_validation</tt>,
@@ -140,18 +146,25 @@ module ActiveModel
       #   or <tt>unless: Proc.new { |user| user.signup_step <= 2 }</tt>). The
       #   method, proc or string should return or evaluate to a +true+ or +false+
       #   value.
+      #
+      # NOTE: Calling +validate+ multiple times on the same method will overwrite previous definitions.
+      #
       def validate(*args, &block)
         options = args.extract_options!
 
         if args.all? { |arg| arg.is_a?(Symbol) }
-          options.assert_valid_keys([:on, :if, :unless])
+          options.each_key do |k|
+            unless VALID_OPTIONS_FOR_VALIDATE.include?(k)
+              raise ArgumentError.new("Unknown key: #{k.inspect}. Valid keys are: #{VALID_OPTIONS_FOR_VALIDATE.map(&:inspect).join(', ')}. Perhaps you meant to call `validates` instead of `validate`?")
+            end
+          end
         end
 
         if options.key?(:on)
           options = options.dup
           options[:if] = Array(options[:if])
-          options[:if].unshift lambda { |o|
-            Array(options[:on]).include?(o.validation_context)
+          options[:if].unshift ->(o) {
+            !(Array(options[:on]) & Array(o.validation_context)).empty?
           }
         end
 
@@ -292,8 +305,6 @@ module ActiveModel
     # Runs all the specified validations and returns +true+ if no errors were
     # added otherwise +false+.
     #
-    # Aliased as validate.
-    #
     #   class Person
     #     include ActiveModel::Validations
     #
@@ -363,6 +374,15 @@ module ActiveModel
       !valid?(context)
     end
 
+    # Runs all the validations within the specified context. Returns +true+ if
+    # no errors are found, raises +ValidationError+ otherwise.
+    #
+    # Validations with no <tt>:on</tt> option will run no matter the context. Validations with
+    # some <tt>:on</tt> option will only run in the specified context.
+    def validate!(context = nil)
+      valid?(context) || raise_validation_error
+    end
+
     # Hook method defining how an attribute value should be retrieved. By default
     # this is assumed to be an instance named after the attribute. Override this
     # method in subclasses should you need to retrieve the value for a given
@@ -381,13 +401,37 @@ module ActiveModel
     #   end
     alias :read_attribute_for_validation :send
 
-  protected
+  private
 
-    def run_validations! #:nodoc:
-      run_callbacks :validate
+    def run_validations!
+      _run_validate_callbacks
       errors.empty?
+    end
+
+    def raise_validation_error # :doc:
+      raise(ValidationError.new(self))
+    end
+  end
+
+  # = Active Model ValidationError
+  #
+  # Raised by <tt>validate!</tt> when the model is invalid. Use the
+  # +model+ method to retrieve the record which did not validate.
+  #
+  #   begin
+  #     complex_operation_that_internally_calls_validate!
+  #   rescue ActiveModel::ValidationError => invalid
+  #     puts invalid.model.errors
+  #   end
+  class ValidationError < StandardError
+    attr_reader :model
+
+    def initialize(model)
+      @model = model
+      errors = @model.errors.full_messages.join(", ")
+      super(I18n.t(:"#{@model.class.i18n_scope}.errors.messages.model_invalid", errors: errors, default: :"errors.messages.model_invalid"))
     end
   end
 end
 
-Dir[File.dirname(__FILE__) + "/validations/*.rb"].each { |file| require file }
+Dir[File.expand_path("validations/*.rb", __dir__)].each { |file| require file }

@@ -1,10 +1,7 @@
-# -*- coding: utf-8 -*-
 require "cases/helper"
-require 'support/connection_helper'
-require 'active_record/base'
-require 'active_record/connection_adapters/postgresql_adapter'
+require "support/connection_helper"
 
-class PostgresqlEnumTest < ActiveRecord::TestCase
+class PostgresqlEnumTest < ActiveRecord::PostgreSQLTestCase
   include ConnectionHelper
 
   class PostgresqlEnum < ActiveRecord::Base
@@ -17,15 +14,15 @@ class PostgresqlEnumTest < ActiveRecord::TestCase
       @connection.execute <<-SQL
         CREATE TYPE mood AS ENUM ('sad', 'ok', 'happy');
       SQL
-      @connection.create_table('postgresql_enums') do |t|
+      @connection.create_table("postgresql_enums") do |t|
         t.column :current_mood, :mood
       end
     end
   end
 
   teardown do
-    @connection.execute 'DROP TABLE IF EXISTS postgresql_enums'
-    @connection.execute 'DROP TYPE IF EXISTS mood'
+    @connection.drop_table "postgresql_enums", if_exists: true
+    @connection.execute "DROP TYPE IF EXISTS mood"
     reset_connection
   end
 
@@ -33,16 +30,17 @@ class PostgresqlEnumTest < ActiveRecord::TestCase
     column = PostgresqlEnum.columns_hash["current_mood"]
     assert_equal :enum, column.type
     assert_equal "mood", column.sql_type
-    assert_not column.number?
-    assert_not column.binary?
-    assert_not column.array
+    assert_not column.array?
+
+    type = PostgresqlEnum.type_for_attribute("current_mood")
+    assert_not type.binary?
   end
 
   def test_enum_defaults
-    @connection.add_column 'postgresql_enums', 'good_mood', :mood, default: 'happy'
+    @connection.add_column "postgresql_enums", "good_mood", :mood, default: "happy"
     PostgresqlEnum.reset_column_information
 
-    assert_equal "happy", PostgresqlEnum.column_defaults['good_mood']
+    assert_equal "happy", PostgresqlEnum.column_defaults["good_mood"]
     assert_equal "happy", PostgresqlEnum.new.good_mood
   ensure
     PostgresqlEnum.reset_column_information
@@ -81,5 +79,13 @@ class PostgresqlEnumTest < ActiveRecord::TestCase
     enum.current_mood = :happy
 
     assert_equal "happy", enum.current_mood
+  end
+
+  def test_assigning_enum_to_nil
+    model = PostgresqlEnum.new(current_mood: nil)
+
+    assert_nil model.current_mood
+    assert model.save
+    assert_nil model.reload.current_mood
   end
 end

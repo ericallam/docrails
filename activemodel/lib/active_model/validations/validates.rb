@@ -1,4 +1,4 @@
-require 'active_support/core_ext/hash/slice'
+require "active_support/core_ext/hash/slice"
 
 module ActiveModel
   module Validations
@@ -18,7 +18,6 @@ module ActiveModel
       #   validates :first_name, length: { maximum: 30 }
       #   validates :age, numericality: true
       #   validates :username, presence: true
-      #   validates :username, uniqueness: true
       #
       # The power of the +validates+ method comes when using custom validators
       # and default validators in one call for a given attribute.
@@ -34,7 +33,7 @@ module ActiveModel
       #     include ActiveModel::Validations
       #     attr_accessor :name, :email
       #
-      #     validates :name, presence: true, uniqueness: true, length: { maximum: 100 }
+      #     validates :name, presence: true, length: { maximum: 100 }
       #     validates :email, presence: true, email: true
       #   end
       #
@@ -71,9 +70,11 @@ module ActiveModel
       #
       # There is also a list of options that could be used along with validators:
       #
-      # * <tt>:on</tt> - Specifies when this validation is active. Runs in all
-      #   validation contexts by default (+nil+), other options are <tt>:create</tt>
-      #   and <tt>:update</tt>.
+      # * <tt>:on</tt> - Specifies the contexts where this validation is active.
+      #   Runs in all validation contexts by default +nil+. You can pass a symbol
+      #   or an array of symbols. (e.g. <tt>on: :create</tt> or
+      #   <tt>on: :custom_validation_context</tt> or
+      #   <tt>on: [:create, :custom_validation_context]</tt>)
       # * <tt>:if</tt> - Specifies a method, proc or string to call to determine
       #   if the validation should occur (e.g. <tt>if: :allow_validation</tt>,
       #   or <tt>if: Proc.new { |user| user.signup_step > 2 }</tt>). The method,
@@ -92,7 +93,7 @@ module ActiveModel
       # Example:
       #
       #   validates :password, presence: true, confirmation: true, if: :password_required?
-      #   validates :token, uniqueness: true, strict: TokenGenerationException
+      #   validates :token, length: 24, strict: TokenLengthException
       #
       #
       # Finally, the options +:if+, +:unless+, +:on+, +:allow_blank+, +:allow_nil+, +:strict+
@@ -113,7 +114,7 @@ module ActiveModel
           key = "#{key.to_s.camelize}Validator"
 
           begin
-            validator = key.include?('::') ? key.constantize : const_get(key)
+            validator = key.include?("::".freeze) ? key.constantize : const_get(key)
           rescue NameError
             raise ArgumentError, "Unknown validator: '#{key}'"
           end
@@ -146,15 +147,15 @@ module ActiveModel
         validates(*(attributes << options))
       end
 
-    protected
+    private
 
       # When creating custom validators, it might be useful to be able to specify
       # additional default keys. This can be done by overwriting this method.
-      def _validates_default_keys # :nodoc:
+      def _validates_default_keys
         [:if, :unless, :on, :allow_blank, :allow_nil , :strict]
       end
 
-      def _parse_validates_options(options) # :nodoc:
+      def _parse_validates_options(options)
         case options
         when TrueClass
           {}
