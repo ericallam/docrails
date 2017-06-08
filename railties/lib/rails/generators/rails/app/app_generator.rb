@@ -201,10 +201,12 @@ module Rails
   module Generators
     # We need to store the RAILS_DEV_PATH in a constant, otherwise the path
     # can change in Ruby 1.8.7 when we FileUtils.cd.
-    RAILS_DEV_PATH = File.expand_path("../../../../../..", File.dirname(__FILE__))
+    RAILS_DEV_PATH = File.expand_path("../../../../../..", __dir__)
     RESERVED_NAMES = %w[application destroy plugin runner test]
 
     class AppGenerator < AppBase # :nodoc:
+      WEBPACKS = %w( react vue angular elm )
+
       add_shared_options_for "application"
 
       # Add bin/rails options
@@ -216,6 +218,9 @@ module Rails
 
       class_option :skip_bundle, type: :boolean, aliases: "-B", default: false,
                                  desc: "Don't run bundle install"
+
+      class_option :webpack, type: :string, default: nil,
+                             desc: "Preconfigure for app-like JavaScript with Webpack (options: #{WEBPACKS.join('/')})"
 
       def initialize(*args)
         super

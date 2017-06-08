@@ -1,3 +1,52 @@
+*   Cache: `write_multi`
+
+        Rails.cache.write_multi foo: 'bar', baz: 'qux'
+
+    Plus faster fetch_multi with stores that implement `write_multi_entries`.
+    Keys that aren't found may be written to the cache store in one shot
+    instead of separate writes.
+
+    The default implementation simply calls `write_entry` for each entry.
+    Stores may override if they're capable of one-shot bulk writes, like
+    Redis `MSET`.
+
+    *Jeremy Daer*
+
+*   Add default option to module and class attribute accessors.
+
+        mattr_accessor :settings, default: {}
+
+    Works for `mattr_reader`, `mattr_writer`, `cattr_accessor`, `cattr_reader`,
+    and `cattr_writer` as well.
+
+    *Genadi Samokovarov*
+
+*   Add `Date#prev_occurring` and `Date#next_occurring` to return specified next/previous occurring day of week.
+
+    *Shota Iguchi*
+
+*   Add default option to `class_attribute`.
+
+    Before:
+
+        class_attribute :settings
+        self.settings = {}
+
+    Now:
+
+        class_attribute :settings, default: {}
+
+    *DHH*
+
+*   `#singularize` and `#pluralize` now respect uncountables for the specified locale.
+
+    *Eilis Hamilton*
+
+*   Add `ActiveSupport::CurrentAttributes` to provide a thread-isolated attributes singleton.
+    Primary use case is keeping all the per-request attributes easily available to the whole system.
+
+    *DHH*
+
 *   Fix implicit coercion calculations with scalars and durations
 
     Previously calculations where the scalar is first would be converted to a duration
