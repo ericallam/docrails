@@ -1,3 +1,17 @@
+*   Prevent making bind param if casted value is nil.
+
+    *Ryuta Kamizono*
+
+*   Deprecate passing arguments and block at the same time to `count` and `sum` in `ActiveRecord::Calculations`.
+
+    *Ryuta Kamizono*
+
+*   Loading model schema from database is now thread-safe.
+
+    Fixes #28589.
+
+    *Vikrant Chaudhary*, *David Abdemoulaie*
+
 *   Add `ActiveRecord::Base#cache_version` to support recyclable cache keys via the new versioned entries
     in `ActiveSupport::Cache`. This also means that `ActiveRecord::Base#cache_key` will now return a stable key
     that does not include a timestamp any more.
