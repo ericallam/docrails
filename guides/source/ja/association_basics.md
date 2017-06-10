@@ -1632,7 +1632,7 @@ end
 
 ##### `:counter_cache`
 
-このオプションは、`:counter_cache`オプションを任意の名前に変更したい場合に使います。このオプションは、[belongs_toの関連付け](#belongs_toのオプション)で`:counter_cache`の名前を変更したときに必要になります。
+このオプションは、`:counter_cache`オプションを任意の名前に変更したい場合に使います。このオプションは、[belongs_toの関連付け](#belongs-to%E3%81%AE%E3%82%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3)で`:counter_cache`の名前を変更したときに必要になります。
 
 ##### `:dependent`
 
