@@ -1805,7 +1805,7 @@ end
 class Author < ApplicationRecord
   has_many :recent_books,
     -> { order('published_at desc').limit(100) },
-    class_name: "Book",
+    class_name: "Book"
 end 
 ```
 
