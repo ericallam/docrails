@@ -149,9 +149,7 @@ class CreateSuppliers < ActiveRecord::Migration[5.0]
 end
 ```
 
-ユースケースにもよりますが、アカウントとの関連付けのために、供給者のカラムに一意のインデックスや外部キー制約を追加する必要もある場合もあります。
-
-その場合、カラムの定義は次のようになる可能性があります。
+ユースケースにもよりますが、アカウントとの関連付けのために、供給者のカラムに一意のインデックスや外部キー制約を追加する必要もある場合もあります。その場合、カラムの定義は次のようになる可能性があります。
 
 ```ruby
 create_table :accounts do |t|
@@ -241,15 +239,13 @@ class CreateAppointments < ActiveRecord::Migration[5.0]
 end
 ```
 
-結合モデル(join model)のコレクションは、[`has_many`](#has-many関連付け)経由で管理することができます。
-たとえば、以下のような割り当てを実行したとします。
+結合モデル(join model)のコレクションは、[`has_many`](#has-many関連付け)経由で管理することができます。たとえば、以下のような割り当てを実行したとします。
 
 ```ruby
 physician.patients = patients
 ```
 
-このとき、新たに関連付けられたオブジェクトについて、新しい結合モデルが自動的に作成されます。
-結合時に不足している部分があれば、その行は結合モデルから削除され、結合モデルに含まれなくなります。
+このとき、新たに関連付けられたオブジェクトについて、新しい結合モデルが自動的に作成されます。結合時に不足している部分があれば、その行は結合モデルから削除され、結合モデルに含まれなくなります。
 
 WARNING: モデル結合時の不足分自動削除は即座に行われます。さらに、その際にdestroyコールバックはトリガーされませんので注意が必要です。
 
@@ -279,10 +275,7 @@ end
 
 ### `has_one :through`関連付け
 
-`has_one :through`関連付けは、他方のモデルに対して「1対1」のつながりを設定します。この関連付けは、
-そのモデルのインスタンスが「第3のモデル」(結合モデル)を介して別のモデルのインスタンスと1対1でマッチすることを示します。
-たとえば、供給者1人につき1つのアカウントがあり、さらにアカウント1つごとにアカウント履歴が1つ関連付けられるとします。
-その場合、供給者のモデルは次のようになります。
+`has_one :through`関連付けは、他方のモデルに対して「1対1」のつながりを設定します。この関連付けは、2つのモデルの間に「第3のモデル」(結合モデル)が介在する点が特徴です。それによって、相手モデルの1つのインスタンスとマッチします。たとえば、1人の提供者(supplier)が1つのアカウントに関連付けられ、さらに1つのアカウントが1つのアカウント履歴に関連付けられる場合、supplierモデルは以下のような感じになります。
 
 ```ruby
 class Supplier < ApplicationRecord
@@ -541,7 +534,7 @@ RailsアプリケーションでActive Recordの関連付けを効率的に使�
 関連付けのメソッドは、すべてキャッシュを中心に構築されています。最後に実行したクエリの結果はキャッシュに保持され、次回以降の操作で使用できます。このキャッシュはメソッド間でも共有されることに注意してください。例:
 
 ```ruby
-author.books                 # データベースからordersを取得する
+author.books                 # データベースからbooksを取得する
 author.books.size            # booksのキャッシュコピーが使用される
 author.books.empty?          # booksのキャッシュコピーが使用される
 ```
@@ -590,7 +583,7 @@ end
 モデルを先に作り、しばらく経過してから関連を追加で設定する場合は、`add_column`マイグレーションを作成して、必要な外部キーをモデルのテーブルに追加するのを忘れないようにしてください。
 
 クエリのパフォーマンスを向上させたり、外部キー制約が正しくデータを参照しているかを保証するために、インデックスを追加するのは良い方法です。
-
+performance and a foreign key constraint to ensure referential data integrity
 
 ```ruby
 class CreateBooks < ActiveRecord::Migration[5.0]
@@ -637,7 +630,7 @@ class CreateAssembliesPartsJoinTable < ActiveRecord::Migration[5.0]
 
     add_index :assemblies_parts, :assembly_id
     add_index :assemblies_parts, :part_id
-end
+  end
 end
 ```
 
@@ -726,7 +719,7 @@ class Book < ApplicationRecord
 end 
 ```
 
-Active Record will attempt to automatically identify that these two models share a bi-directional association based on the association name. In this way, Active Record will only load one copy of the `Author` object, making your application more efficient and preventing inconsistent data:
+Active Recordは関連付けの設定から、これら２つのモデルが双方向の関連を共有していることを自動的に認識します。以下に示すとおり、Active Recordは`Author`オブジェクトのコピーを１つだけ読み出し、アプリケーションをより効率的かつ一貫性のあるデータに仕上げます。 
 
 ```ruby
 a = Author.first
@@ -736,7 +729,7 @@ a.first_name = 'David'
 a.first_name == b.author.first_name # => true
 ```
 
-Active Record supports automatic identification for most associations with standard names. However, Active Record will not automatically identify bi-directional associations that contain any of the following options:
+Active Recordでは標準的な名前同士の関連付けのほとんどをサポートしていて、自動的に認識することができます。一方で、Active Recordで次のようなオプションが使った場合、双方向の関連付けが自動的に認識されないようにすることもできます。
 
 * `:conditions`
 * `:through`
@@ -744,7 +737,7 @@ Active Record supports automatic identification for most associations with stand
 * `:class_name`
 * `:foreign_key`
 
-For example, consider the following model declarations:
+例えば、次のようなモデルを宣言したケースを考えてみましょう。
 
 ```ruby
 class Author < ApplicationRecord
@@ -756,7 +749,7 @@ class Book < ApplicationRecord
 end 
 ```
 
-Active Record will no longer automatically recognize the bi-directional association:
+この場合、Active Recordは双方向の関連付けを自動的に認識しません。
 
 ```ruby
 a = Author.first
@@ -766,7 +759,7 @@ a.first_name = 'David'
 a.first_name == b.writer.first_name # => false
 ```
 
-Active Record provides the `:inverse_of` option so you can explicitly declare bi-directional associations:
+Active Recordは`:inverse_of`オプションを提供していて、これを使うと双方向の関連付けを明示的に宣言することができます。
 
 ```ruby
 class Author < ApplicationRecord
@@ -778,7 +771,7 @@ class Book < ApplicationRecord
 end 
 ```
 
-By including the `:inverse_of` option in the `has_many` association declaration, Active Record will now recognize the bi-directional association:
+`has_many`の関連付けを宣言するときに`:inverse_of`オプションも含めることで、Active Recordは双方向の関連付けを認識するようになります。
 
 ```ruby
 a = Author.first
@@ -821,7 +814,7 @@ class Book < ApplicationRecord
 end 
 ```
 
-これにより、`Part`モデルのインスタンスで以下のメソッドが使えるようになります。
+これにより、`Book`モデルのインスタンスで以下のメソッドが使えるようになります。
 
 ```ruby
 author
@@ -841,7 +834,7 @@ NOTE: 新しく作成した`has_one`関連付けまたは`belongs_to`関連付�
 @author = @book.author
 ```
 
-関連付けられたオブジェクトがデータベースから検索されたことがある場合は、キャッシュされたものを返します。To override this behavior (and force a database read), call `#reload` on the parent object.
+関連付けられたオブジェクトがデータベースから検索されたことがある場合は、キャッシュされたものを返します。キャッシュを読み出さずにデータベースから直接読み込ませたい場合は、親オブジェクトが持つ`#reload`メソッドを呼び出します。
 
 ```ruby
 @author = @book.reload.author
@@ -909,7 +902,7 @@ end
 
 ##### `:class_name`
 
-関連名から関連相手のオブジェクト名を生成できない事情がある場合、`:class_name`オプションを使用してモデル名を直接指定できます。For example, if a book belongs to an author, but the actual name of the model containing authors is `Patron`, you'd set things up this way:
+関連名から関連相手のオブジェクト名を生成できない事情がある場合、`:class_name`オプションを使用してモデル名を直接指定できます。たとえば、書籍(book)が著者(author)に従属しているが実際の著者のモデル名が`Patron`である場合には、以下のように指定します。 
 
 ```ruby
 class Book < ApplicationRecord
@@ -930,7 +923,7 @@ class Author < ApplicationRecord
 end 
 ```
 
-上の宣言のままでは、`@customer.orders.size`の値を知るためにデータベースに対して`COUNT(*)`クエリを実行する必要があります。この呼び出しを避けるために、「従属している方のモデル(`belongs_to`を宣言している方のモデル)」にカウンタキャッシュを追加することができます。
+上の宣言のままでは、`@author.books.size`の値を知るためにデータベースに対して`COUNT(*)`クエリを実行する必要があります。この呼び出しを避けるために、「従属している方のモデル(`belongs_to`を宣言している方のモデル)」にカウンタキャッシュを追加することができます。
 
 ```ruby
 class Book < ApplicationRecord
@@ -943,14 +936,9 @@ end
 
 上のように宣言すると、キャッシュ値が最新の状態に保たれ、次に`size`メソッドが呼び出されたときにその値が返されます。
 
-Although the `:counter_cache` option is specified on the model that includes
-the `belongs_to` declaration, the actual column must be added to the
-_associated_ (`has_many`) model. In the case above, you would need to add a
-column named `books_count` to the `Author` model.
+ここで1つ注意が必要です。`:counter_cache`オプションは`belongs_to`宣言で指定しますが、実際に数を数えたいカラムは、相手のモデル(関連付けられているモデル)の方に追加する必要があります。上の場合には、`Author`モデルの方に`books_count`カラムを追加する必要があります。
 
-You can override the default column name by specifying a custom column name in
-the `counter_cache` declaration instead of `true`. For example, to use
-`count_of_books` instead of `books_count`:
+必要であれば、`counter_cache`オプションに`true`ではなく任意のカラム名を設定することで、デフォルトのカラム名をオーバーライドすることができます。以下は、`books_count`の代わりに`count_of_books`を設定した場合の例です。
 
 ```ruby
 class Book < ApplicationRecord
@@ -961,17 +949,16 @@ class Author < ApplicationRecord
 end 
 ```
 
-NOTE: You only need to specify the :counter_cache option on the `belongs_to`
-side of the association.
+NOTE: `belongs_to`の関連付けをする時に、`:counter_cache`オプションを設定する必要があります。
 
 カウンタキャッシュ用のカラムは、`attr_readonly`によって読み出し専用属性となるモデルのリストに追加されます。
 
 ##### `:dependent`
-オーナーオブジェクトがdestroyされたときに、オーナーに関連付けられたオブジェクトをどうするかを制御します。
+オーナーオブジェクトが削除されたときに、オーナーに関連付けられたオブジェクトをどうするかを制御します。
 
-* `:destroy`を指定すると、関連付けられたオブジェクトもすべて同時にdestroyされます。
-* `:delete_all` causes the associated objects to be deleted directly from the database (callbacks are not executed).
-* `:nullify` causes the foreign keys to be set to `NULL` (callbacks are not executed).
+* `:destroy`を指定すると、関連付けられたオブジェクトがデータベース上から削除されます。
+* `:delete_all`を指定すると、関連付けされたオブジェクトがデータベース上から削除されます。ただし、コールバックは実行されません。
+* `:nullify`を指定すると、外部キーが`NULL`にセットされます。ただし、コールバックは実行されません。
 * `:restrict_with_exception`を指定すると、関連付けられたレコードが1つでもある場合に例外が発生します。
 * `:restrict_with_error`を指定すると、関連付けられたオブジェクトが1つでもある場合にエラーがオーナーに追加されます。
 
@@ -992,14 +979,13 @@ TIP: Railsは外部キーのカラムを自動的に作ることはありませ�
 
 ##### `:primary_key`
 
-By convention, Rails assumes that the `id` column is used to hold the primary key
-of its tables. The `:primary_key` option allows you to specify a different column.
+Railsでは慣習として、`id`カラムはそのテーブルの主キーとして使われます。`:primary_key`オプションを指定すると、指定された別のカラムを主キーとして設定することができます
 
-For example, given we have a `users` table with `guid` as the primary key. If we want a separate `todos` table to hold the foreign key `user_id` in the `guid` column, then we can use `primary_key` to achieve this like so:
+例えば、 `users`テーブルには`guid`という主キーを持っているとしましょう。 `todos`テーブルの外部キーである `user_id`カラムを、その`guid`カラムと結びつけたい時は、次のように`primary_key`を設定します。
 
 ```ruby
 class User < ApplicationRecord
-  self.primary_key = 'guid' # primary key is guid and not id
+  self.primary_key = 'guid' # 主キーが guid になります
 end 
 
 class Todo < ApplicationRecord
@@ -1007,8 +993,7 @@ class Todo < ApplicationRecord
 end 
 ```
 
-When we execute `@user.todos.create` then the `@todo` record will have its
-`user_id` value as the `guid` value of `@user`.
+この時に`@user.todos.create`を実行すると、`@todo`レコードは`user_id`を`@user`の`guid`として持つようになります。
 
 ##### `:inverse_of`
 
@@ -1042,7 +1027,7 @@ class Author < ApplicationRecord
 end 
 ```
 
-In this case, saving or destroying a book will update the timestamp on the associated author. 更新時に特定のタイムスタンプ属性を指定することもできます。
+上の例の場合、Bookクラスは、関連付けられているAuthorのタイムスタンプを保存時またはdestroy時に更新します。 In this case, saving or destroying a book will update the timestamp on the associated author. 更新時に特定のタイムスタンプ属性を指定することもできます。
 
 ```ruby
 class Book < ApplicationRecord
@@ -1056,8 +1041,7 @@ end
 
 ##### `:optional`
 
-If you set the `:optional` option to `true`, then the presence of the associated
-object won't be validated. By default, this option is set to `false`.
+`:optional`オプションを`true`に設定すると、関連付けされたオブジェクトの存在性のバリデーションが実行されないようになります。デフォルトではこのオプションは`false`となっています。
 
 #### `belongs_to`のスコープ
 
@@ -1065,7 +1049,7 @@ object won't be validated. By default, this option is set to `false`.
 
 ```ruby
 class Book < ApplicationRecord
-  belongs_to :author, -> { where active: true }
+  belongs_to :author, -> { where active: true },
                         dependent: :destroy 
 end
 ```
@@ -1106,7 +1090,7 @@ class Author < ApplicationRecord
 end 
 ```
 
-If you frequently retrieve authors directly from line items (`@line_item.book.author`), then you can make your code somewhat more efficient by including authors in the association from line items to books:
+LineItemから著者名(Author)を`@line_item.order.author`のように直接取り出す機会が頻繁にあるのであれば、LineItemとBookの関連付けを行なう時にAuthorをあらかじめincludeしておくことで無駄なクエリを減らし、効率を高めることができます。
 
 ```ruby
 class LineItem < ApplicationRecord
@@ -1123,7 +1107,7 @@ class Author < ApplicationRecord
 end 
 ```
 
-NOTE: 直接の関連付けでは`includes`を使用する必要はありません。`Order belongs_to :customer`のような直接の関連付けでは必要に応じて自動的にeager-loadされます。
+NOTE: 直接の関連付けでは`includes`を使用する必要はありません。`Book belongs_to :author`のような直接の関連付けでは必要に応じて自動的にeager-loadされます。
 
 ##### `readonly`
 
@@ -1191,7 +1175,7 @@ NOTE: 新しく作成した`has_one`関連付けまたは`belongs_to`関連付�
 @account = @supplier.account
 ```
 
-関連付けられたオブジェクトがデータベースから検索されたことがある場合は、キャッシュされたものを返します。To override this behavior (and force a database read), call `#reload` on the parent object.
+関連付けられたオブジェクトがデータベースから検索されたことがある場合は、キャッシュされたものを返します。キャッシュを読み出さずにデータベースから直接読み込ませたい場合は、親オブジェクトが持つ`#reload`メソッドを呼び出します。
 
 ```ruby
 @account = @supplier.reload.account
@@ -1251,7 +1235,7 @@ end
 
 ##### `:as`
 
-`:as`オプションに`true`を設定すると、ポリモーフィック関連付けを指定できます。Polymorphic associations were discussed in detail [earlier in this guide](#polymorphic-associations).
+`:as`オプションに`true`を設定すると、ポリモーフィック関連付けを指定できます。ポリモーフィック関連付けの詳細については[このガイドの説明](#ポリモーフィック関連付け)を参照してください。
 
 ##### `:autosave`
 
@@ -1277,11 +1261,7 @@ end
 * `:restrict_with_exception`を指定すると、関連付けられたレコードがある場合に例外が発生します。
 * `:restrict_with_error`を指定すると、関連付けられたオブジェクトがある場合にエラーがオーナーに追加されます。
 
-It's necessary not to set or leave `:nullify` option for those associations
-that have `NOT NULL` database constraints. If you don't set `dependent` to
-destroy such associations you won't be able to change the associated object
-because the initial associated object's foreign key will be set to the
-unallowed `NULL` value.
+`NOT NULL`データベース制約のある関連付けでは、`:nullify`オプションを与えないようにする必要があります。そのような関連付けをdestroyする`dependent`を設定しなかった場合、関連付けられたオブジェクトを変更できなくなってしまいます。これは、最初に関連付けられたオブジェクトの外部キーが`NULL`値になってしまい、この値は許されていないためです。
 
 ##### `:foreign_key`
 
@@ -1323,7 +1303,7 @@ Railsの慣例では、モデルの主キーは`id`カラムに保存されて�
 
 ##### `:through`
 
-The `:through` option specifies a join model through which to perform the query. `has_one :through` associations were discussed in detail [earlier in this guide](#the-has-one-through-association).
+`:through`オプションは、[このガイドで既に説明した](#has-one-through関連付け)`has_one :through`関連付けのクエリを実行する際に経由する結合モデルを指定します。
 
 ##### `:validate`
 
@@ -1416,7 +1396,7 @@ end
 
 関連付けられているオブジェクト同士のいずれか一方が検証(validation)のために保存に失敗すると、アサインの状態からは`false`が返され、アサインはキャンセルされます。
 
-親オブジェクト(つまり`has_one`関連付けを宣言している側のオブジェクト)は保存されません` returns `true`) then the child objects are not saved. 親オブジェクトが保存された場合は、子オブジェクトは保存されます。
+親オブジェクト(`has_one`関連付けを宣言している側のオブジェクト)が保存されない場合(つまり`new_record?`が`true`を返す場合)、子オブジェクトは追加時に保存されません。親オブジェクトが保存された場合は、子オブジェクトは保存されます。
 
 `has_one`関連付けにオブジェクトをアサインし、しかもそのオブジェクトを保存したくない場合、`association.build`メソッドを使用してください。
 
@@ -1453,7 +1433,7 @@ class Author < ApplicationRecord
 end 
 ```
 
-これにより、`Part`モデルのインスタンスで以下のメソッドが使えるようになります。
+これにより、`Author`モデルのインスタンスで以下のメソッドが使えるようになります。
 
 ```ruby
 books
@@ -1512,7 +1492,7 @@ WARNING: この場合オブジェクトは_無条件で_データベースから
 
 ##### `collection=(objects)`
 
-`collection=`メソッドは、指定したオブジェクトでそのコレクションの内容を置き換えます。元からあったオブジェクトは削除されます。The changes are persisted to the database.
+`collection=`メソッドは、指定したオブジェクトでそのコレクションの内容を置き換えます。元からあったオブジェクトは削除されます。この変更はデータベースの中で存続します。
 
 ##### `collection_singular_ids`
 
@@ -1524,7 +1504,7 @@ WARNING: この場合オブジェクトは_無条件で_データベースから
 
 ##### `collection_singular_ids=(ids)`
 
-`collection_singular_ids=`メソッドは、指定された主キーidを持つオブジェクトの集まりでコレクションの内容を置き換えます。元からあったオブジェクトは削除されます。The changes are persisted to the database.
+`collection_singular_ids=`メソッドは、指定された主キーidを持つオブジェクトの集まりでコレクションの内容を置き換えます。元からあったオブジェクトは削除されます。この変更はデータベースの中で存続します。
 
 ##### `collection.clear`
 
@@ -1534,8 +1514,7 @@ The `collection.clear` method removes all objects from the collection according 
 @author.books.clear
 ```
 
-WARNING: Objects will be deleted if they're associated with `dependent: :destroy`,
-just like `dependent: :delete_all`.
+WARNING: Objects will be deleted if they're associated with `dependent: :destroy`, just like `dependent: :delete_all`.
 
 ##### `collection.empty?`
 
@@ -1555,7 +1534,7 @@ The `collection.empty?` method returns `true` if the collection does not contain
 @book_count = @author.books.size
 ```
 
-##### `collection.find(...)    ... 
+##### `collection.find(...)`
 
 `collection.find`メソッドは、コレクションに含まれるオブジェクトを検索します。このメソッドで使用される文法は、`ActiveRecord::Base.find`で使用されているものと同じです。
 
@@ -1563,7 +1542,7 @@ The `collection.empty?` method returns `true` if the collection does not contain
 @available_book = @author.books.find(1)
 ```
 
-##### `collection.where(...)    ... 
+##### `collection.where(...)`
 
 `collection.where`メソッドは、コレクションに含まれているメソッドを指定された条件に基いて検索します。このメソッドではオブジェクトは遅延読み込み(lazy load)される点にご注意ください。つまり、オブジェクトに実際にアクセスが行われる時にだけデータベースへのクエリが発生します。
 
@@ -1576,7 +1555,7 @@ The `collection.empty?` method returns `true` if the collection does not contain
 
 The `collection.exists?` method checks whether an object meeting the supplied conditions exists in the collection. このメソッドで使用される文法は、`ActiveRecord::Base.exists?`で使用されているものと同じです。`](http://api.rubyonrails.org/classes/ActiveRecord/FinderMethods.html#method-i-exists-3F).
 
-##### `collection.build(attributes = {}, ...)    ... 
+##### `collection.build(attributes = {}, ...)`
 
 The `collection.build` method returns a single or array of new objects of the associated type. The object(s) will be instantiated from the passed attributes, and the link through their foreign key will be created, but the associated objects will _not_ yet be saved.
 
@@ -1873,8 +1852,7 @@ person.articles.inspect # => [#<Article id: 5, name: "a1">, #<Article id: 5, nam
 Reading.all.inspect     # => [#<Reading id: 12, person_id: 5, article_id: 5>, #<Reading id: 13, person_id: 5, article_id: 5>]
 ```
 
-In the above case there are two readings and `person.articles` brings out both of
-them even though these records are pointing to the same article.
+上の例の場合、readingが2つあって重複しており、`person.posts`を実行すると、どちらも同じポストを指しているにもかかわらず、両方とも取り出されてしまいます。
 
 今度は`distinct`を設定してみましょう。
 
@@ -1900,7 +1878,8 @@ Reading.all.inspect     # => [#<Reading id: 16, person_id: 7, article_id: 7>, #<
 add_index :readings, [:person_id, :article_id], unique: true
 ```
 
-Once you have this unique index, attempting to add the article to a person twice will raise an `ActiveRecord::RecordNotUnique` error:
+Once you have this unique index, attempting to add the article to a person twice
+will raise an `ActiveRecord::RecordNotUnique` error:
 
 ```ruby
 person = Person.create(name: 'Honda')
@@ -1934,9 +1913,9 @@ person.articles << article unless person.articles.include?(article)
 `has_and_belongs_to_many`関連付けを宣言したクラスでは、以下の16のメソッドを自動的に利用できるようになります。
 
 * `collection`
-* `collection<<(object, ...)    ... 
-* `collection.delete(object, ...)    ... 
-* `collection.destroy(object, ...)    ... 
+* `collection<<(object, ...)`
+* `collection.delete(object, ...)`
+* `collection.destroy(object, ...)`
 * `collection=(objects)`
 * `collection_singular_ids`
 * `collection_singular_ids=(ids)`
@@ -2004,7 +1983,7 @@ WARNING: `has_and_belongs_to_many`関連付けで使用する結合テーブル�
 
 NOTE: このメソッドは`collection.concat`および`collection.push`のエイリアスです。
 
-##### `collection.delete(object, ...)    ... 
+##### `collection.delete(object, ...)`
 
 `collection.delete`メソッドは、結合テーブル上のレコードを削除し、それによって1つまたは複数のオブジェクトをコレクションから削除します。このメソッドを実行してもオブジェクトはdestroyされません。
 
@@ -2313,7 +2292,7 @@ class Author < ApplicationRecord
 
   def check_credit_limit(book)
     ... 
-end
+  end
 
   def calculate_shipping_charges(book)
     ... 
@@ -2343,7 +2322,7 @@ end
 module FindRecentExtension
   def find_recent
     where("created_at > ?", 5.days.ago)
-  end
+end
 end 
 
 class Author < ApplicationRecord
