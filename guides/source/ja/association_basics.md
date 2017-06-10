@@ -806,7 +806,7 @@ a.first_name == b.writer.first_name # => true
 * `create_association(attributes = {})`
 * `create_association!(attributes = {})`
 
-これらのメソッドのうち、`association`の部分はプレースホルダであり、`belongs_to`の最初の引数である関連付け名をシンボルにしたものに置き換えられます。以下の例ではcustomerが宣言されています。
+これらのメソッドのうち、`association`の部分はプレースホルダであり、`belongs_to`の最初の引数である関連付け名をシンボルにしたものに置き換えられます。例えば次のように宣言をした場合
 
 ```ruby
 class Book < ApplicationRecord
@@ -814,7 +814,7 @@ class Book < ApplicationRecord
 end 
 ```
 
-これにより、`Book`モデルのインスタンスで以下のメソッドが使えるようになります。
+`Book`モデルのインスタンスで以下のメソッドが使えるようになります。
 
 ```ruby
 author
@@ -1508,17 +1508,17 @@ WARNING: この場合オブジェクトは_無条件で_データベースから
 
 ##### `collection.clear`
 
-The `collection.clear` method removes all objects from the collection according to the strategy specified by the `dependent` option. If no option is given, it follows the default strategy. The default strategy for `has_many :through` associations is `delete_all`, and for `has_many` associations is to set the foreign keys to `NULL`.
+`collection.clear`メソッドは、`dependent`オプションによって指定された手法に従って、コレクションからすべてのオブジェクトを削除します。もしオプションが渡されていなかった場合、デフォルトの手法に従います。デフォルトでは、`has_many :through`の関連付けの場合は`delete_all`が渡され、`has_many`の関連付けの場合は外部キーに`NULL`がセットされます。
 
 ```ruby
 @author.books.clear
 ```
 
-WARNING: Objects will be deleted if they're associated with `dependent: :destroy`, just like `dependent: :delete_all`.
+WARNING: `dependent: :delete_all`の場合と同様に、オブジェクトが`dependent: :destroy`で関連付けされていた場合、それらのオブジェクトは削除されます。
 
 ##### `collection.empty?`
 
-The `collection.empty?` method returns `true` if the collection does not contain any associated objects.
+`collection.empty?`メソッドは、関連付けられたオブジェクトがコレクションの中に1つもない場合に`true`を返します。
 
 ```erb
 <% if @author.books.empty? %>
@@ -1553,11 +1553,11 @@ The `collection.empty?` method returns `true` if the collection does not contain
 
 ##### `collection.exists?(...)`
 
-The `collection.exists?` method checks whether an object meeting the supplied conditions exists in the collection. このメソッドで使用される文法は、`ActiveRecord::Base.exists?`で使用されているものと同じです。`](http://api.rubyonrails.org/classes/ActiveRecord/FinderMethods.html#method-i-exists-3F).
+`collection.exists?`メソッドは、指定された条件に合うオブジェクトがコレクションの中に存在するかどうかをチェックします。このメソッドで使用される文法は、[`ActiveRecord::Base.exists?`](http://api.rubyonrails.org/classes/ActiveRecord/FinderMethods.html#method-i-exists-3F)で使用されているものと同じです。
 
 ##### `collection.build(attributes = {}, ...)`
 
-The `collection.build` method returns a single or array of new objects of the associated type. The object(s) will be instantiated from the passed attributes, and the link through their foreign key will be created, but the associated objects will _not_ yet be saved.
+`collection.build`メソッドは、関連付けが行われたオブジェクトを1つまたは複数返します。返されるオブジェクトは、渡された属性に基いてインスタンス化され、外部キーを経由するリンクが作成されます。関連付けられたオブジェクトは、値が返された時点ではまだ保存されて_いない_ことにご注意ください。
 
 ```ruby
 @book = @author.books.build(published_at: Time.now,
@@ -1571,7 +1571,7 @@ The `collection.build` method returns a single or array of new objects of the as
 
 ##### `collection.create(attributes = {})`
 
-The `collection.create` method returns a single or array of new objects of the associated type. このオブジェクトは、渡された属性を使用してインスタンス化され、そのオブジェクトの外部キーを介してリンクが作成されます。そして、関連付けられたモデルで指定されている検証がすべてパスすると、この関連付けられたオブジェクトは保存されます。
+`collection.create`メソッドは、関連付けされた新しいオブジェクトを1つまたは複数返します。このオブジェクトは、渡された属性を使用してインスタンス化され、そのオブジェクトの外部キーを介してリンクが作成されます。そして、関連付けられたモデルで指定されている検証がすべてパスすると、この関連付けられたオブジェクトは保存されます。
 
 ```ruby
 @book = @author.books.create(published_at: Time.now,
@@ -1614,7 +1614,7 @@ end
 
 ##### `:as`
 
-Setting the `:as` option indicates that this is a polymorphic association, as discussed [earlier in this guide](#polymorphic-associations).
+`:as`オプションを設定すると、ポリモーフィック関連付けであることが指定されます。([このガイドの説明](#ポリモーフィック関連付け)を参照)
 
 ##### `:autosave`
 
@@ -1622,7 +1622,7 @@ Setting the `:as` option indicates that this is a polymorphic association, as di
 
 ##### `:class_name`
 
-関連名から関連相手のオブジェクト名を生成できない事情がある場合、`:class_name`オプションを使用してモデル名を直接指定できます。For example, if an author has many books, but the actual name of the model containing books is `Transaction`, you'd set things up this way:
+関連名から関連相手のオブジェクト名を生成できない事情がある場合、`:class_name`オプションを使用してモデル名を直接指定できます。たとえば、1人の著者(author)が複数の書籍(books)を持っているが、実際の書籍モデル名が`Transaction`である場合には以下のように指定します。
 
 ```ruby
 class Author < ApplicationRecord
@@ -1632,7 +1632,7 @@ end
 
 ##### `:counter_cache`
 
-This option can be used to configure a custom named `:counter_cache`. You only need this option when you customized the name of your `:counter_cache` on the [belongs_to association](#options-for-belongs-to).
+このオプションは、`:counter_cache`オプションを任意の名前に変更したい場合に使います。このオプションは、[belongs_toの関連付け](#belongs_toのオプション)で`:counter_cache`の名前を変更したときに必要になります。
 
 ##### `:dependent`
 
@@ -1674,7 +1674,7 @@ end
 
 Railsの慣例では、関連付けの主キーは`id`カラムに保存されていることを前提とします。`:primary_key`オプションで主キーを明示的に指定することでこれを上書きすることができます。
 
-`users`テーブルに主キーとして`id`カラムがあり、その他に`guid`カラムもあるとします。The requirement is that the `todos` table should hold the `guid` column value as the foreign key and not `id` value. これは以下のようにすることで実現できます。
+`users`テーブルに主キーとして`id`カラムがあり、その他に`guid`カラムもあるとします。要件として、`todos`テーブルが (`id`ではなく) `guid`カラムの値を外部キーとして使いたいとします。これは以下のようにすることで実現できます。
 
 ```ruby
 class User < ApplicationRecord
@@ -1682,7 +1682,7 @@ class User < ApplicationRecord
 end
 ```
 
-Now if we execute `@todo = @user.todos.create` then the `@todo` record's `user_id` value will be the `guid` value of `@user`.
+このとき `@todo = @user.todos.create`を実行すると、`@todo`レコードの`user_id`の値は `@user`の`guid`になります。
 
 
 ##### `:source`
@@ -1695,7 +1695,7 @@ Now if we execute `@todo = @user.todos.create` then the `@todo` record's `user_i
 
 ##### `:through`
 
-The `:through` option specifies a join model through which to perform the query. `has_many :through` associations provide a way to implement many-to-many relationships, as discussed [earlier in this guide](#the-has-many-through-association).
+`:through`オプションは、[このガイドで既に説明した](#has-one-through関連付け)`has_one :through`関連付けのクエリを実行する際に経由する結合モデルを指定します。
 
 ##### `:validate`
 
@@ -1744,11 +1744,11 @@ class Author < ApplicationRecord
 end 
 ```
 
-`where`オプションでハッシュを使用した場合、この関連付けで作成されたレコードは自動的にこのハッシュを使用したスコープに含まれるようになります。In this case, using `@author.confirmed_books.create` or `@author.confirmed_books.build` will create books where the confirmed column has the value `true`.
+`where`オプションでハッシュを使用した場合、この関連付けで作成されたレコードは自動的にこのハッシュを使用したスコープに含まれるようになります。この例の場合、`@author.confirmed_books.create`または`@author.confirmed.books.build`を実行すると、confirmedカラムの値が`true`の書籍(book)が常に作成されます。
 
 ##### `extending`
 
-`extending`メソッドは、関連付けプロキシを拡張する名前付きモジュールを指定します。Association extensions are discussed in detail [later in this guide](#association-extensions).
+`extending`メソッドは、関連付けプロキシを拡張する名前付きモジュールを指定します。関連付けの拡張については[後述します](#関連付けの拡張)。
 
 ##### `group`
 
@@ -1780,7 +1780,7 @@ class LineItem < ApplicationRecord
 end 
 ```
 
-If you frequently retrieve line items directly from authors (`@author.books.line_items`), then you can make your code somewhat more efficient by including line items in the association from authors to books:
+著者名(Author)からLineItemを`@author.books.line_items`のように直接取り出す機会が頻繁にあるのであれば、AuthorとBookの関連付けを行なう時にLineItemをあらかじめincludeしておくことで無駄なクエリを減らし、効率を高めることができます。
 
 ```ruby
 class Author < ApplicationRecord
@@ -1835,8 +1835,8 @@ WARNING: 独自の`select`メソッドを使用する場合には、関連付け
 
 ##### `distinct`
 
-`distinct`メソッドは、コレクション内で重複が発生しないようにします。This is
-mostly useful together with the `:through` option.
+`distinct`メソッドは、コレクション内で重複が発生しないようにします。
+このメソッドは`:through`オプションと併用するときに特に便利です。
 
 ```ruby
 class Person < ApplicationRecord
@@ -1852,7 +1852,7 @@ person.articles.inspect # => [#<Article id: 5, name: "a1">, #<Article id: 5, nam
 Reading.all.inspect     # => [#<Reading id: 12, person_id: 5, article_id: 5>, #<Reading id: 13, person_id: 5, article_id: 5>]
 ```
 
-上の例の場合、readingが2つあって重複しており、`person.posts`を実行すると、どちらも同じポストを指しているにもかかわらず、両方とも取り出されてしまいます。
+上の例の場合、readingが2つあって重複しており、`person.articles`を実行すると、どちらも同じ記事を指しているにもかかわらず、両方とも取り出されてしまいます。
 
 今度は`distinct`を設定してみましょう。
 
@@ -1870,16 +1870,16 @@ person.articles.inspect # => [#<Article id: 7, name: "a1">]
 Reading.all.inspect     # => [#<Reading id: 16, person_id: 7, article_id: 7>, #<Reading id: 17, person_id: 7, article_id: 7>]
 ```
 
-上の例でもreadingは2つあって重複しています。However `person.articles` shows only one article because the collection loads only unique records.
+上の例でもreadingは2つあって重複しています。一方で、`person.articles`を実行すると、１つのarticleのみを表示します。これはコレクションが一位のレコードのみを読み出しているからです。
 
-挿入時にも同様に、現在残っているすべてのレコードが一意であるようにする(関連付けを検査したときに重複レコードが決して発生しないようにする)には、テーブル自体に一意のインデックスを追加する必要があります。For example, if you have a table named `readings` and you want to make sure the articles can only be added to a person once, you could add the following in a migration:
+挿入時にも同様に、現在残っているすべてのレコードが一意であるようにする(関連付けを検査したときに重複レコードが決して発生しないようにする)には、テーブル自体に一意のインデックスを追加する必要があります。たとえば、`readings`というテーブルがあり、すべての記事が一意であるようにしたいのであれば、マイグレーションに以下を追加します。
 
 ```ruby
 add_index :readings, [:person_id, :article_id], unique: true
 ```
 
-Once you have this unique index, attempting to add the article to a person twice
-will raise an `ActiveRecord::RecordNotUnique` error:
+一度ユニークなインデクスを持つと、ある記事をpersonに２回追加したときに
+`ActiveRecord::RecordNotUnique`エラーが発生するようになります
 
 ```ruby
 person = Person.create(name: 'Honda')
@@ -1888,7 +1888,7 @@ person.articles << article
 person.articles << article # => ActiveRecord::RecordNotUnique
 ```
 
-Note that checking for uniqueness using something like `include?` is subject to race conditions. Do not attempt to use `include?` to enforce distinctness in an association. たとえば上のpostを例にとると、以下のコードでは競合が発生しやすくなります。これは、複数のユーザーが同時にこのコードを実行する可能性があるためです。
+なお、`include?`などを使用して一意性をチェックすると競合が発生しやすいので注意が必要です。関連付けで強制的に一意になるようにするために`include?`を使用しないでください。たとえば上のarticleを例にとると、以下のコードでは競合が発生しやすくなります。これは、複数のユーザーが同時にこのコードを実行する可能性があるためです。
 
 ```ruby
 person.articles << article unless person.articles.include?(article)
@@ -1900,7 +1900,7 @@ person.articles << article unless person.articles.include?(article)
 
 関連付けられているオブジェクトの1つでも検証(validation)エラーで保存に失敗すると、アサインの式からは`false`が返され、アサインはキャンセルされます。
 
-親オブジェクト(つまり`has_many`関連付けを宣言している側のオブジェクト)は保存されません` returns `true`) then the child objects are not saved when they are added. 親オブジェクトが保存されると、関連付けられていたオブジェクトのうち保存されていなかったメンバはすべて保存されます。
+親オブジェクト(`has_many`関連付けを宣言している側のオブジェクト)が保存されない場合(つまり`new_record?`が`true`を返す場合)、子オブジェクトは追加時に保存されません。親オブジェクトが保存されると、関連付けられていたオブジェクトのうち保存されていなかったメンバはすべて保存されます。
 
 `has_many`関連付けにオブジェクトをアサインし、しかもそのオブジェクトを保存したくない場合、`collection.build`メソッドを使用してください。
 
@@ -2001,7 +2001,7 @@ NOTE: このメソッドは`collection.concat`および`collection.push`のエ�
 
 ##### `collection=(objects)`
 
-`collection=`メソッドは、指定したオブジェクトでそのコレクションの内容を置き換えます。元からあったオブジェクトは削除されます。The changes are persisted to the database.
+`collection=`メソッドは、指定したオブジェクトでそのコレクションの内容を置き換えます。元からあったオブジェクトは削除されます。この変更はデータベース上に保持されます。
 
 ##### `collection_singular_ids`
 
@@ -2013,7 +2013,7 @@ NOTE: このメソッドは`collection.concat`および`collection.push`のエ�
 
 ##### `collection_singular_ids=(ids)`
 
-`collection_singular_ids=`メソッドは、指定された主キーidを持つオブジェクトの集まりでコレクションの内容を置き換えます。元からあったオブジェクトは削除されます。The changes are persisted to the database.
+`collection_singular_ids=`メソッドは、指定された主キーidを持つオブジェクトの集まりでコレクションの内容を置き換えます。元からあったオブジェクトは削除されます。この変更はデータベース上に保持されます。
 
 ##### `collection.clear`
 
@@ -2021,7 +2021,7 @@ NOTE: このメソッドは`collection.concat`および`collection.push`のエ�
 
 ##### `collection.empty?`
 
-The `collection.empty?` method returns `true` if the collection does not contain any associated objects.
+`collection.empty?`メソッドは、関連付けられたオブジェクトがコレクションに含まれていない場合に`true`を返します。
 
 ```ruby
 <% if @part.assemblies.empty? %>
@@ -2055,7 +2055,7 @@ The `collection.empty?` method returns `true` if the collection does not contain
 
 ##### `collection.exists?(...)`
 
-The `collection.exists?` method checks whether an object meeting the supplied conditions exists in the collection. このメソッドで使用される文法は、`ActiveRecord::Base.exists?`で使用されているものと同じです。`](http://api.rubyonrails.org/classes/ActiveRecord/FinderMethods.html#method-i-exists-3F).
+`collection.exists?`メソッドは、指定された条件に合うオブジェクトがコレクションの中に存在するかどうかをチェックします。このメソッドで使用される文法は、[`ActiveRecord::Base.exists?`](http://api.rubyonrails.org/classes/ActiveRecord/FinderMethods.html#method-i-exists-3F)で使用されているものと同じです。
 
 ##### `collection.build(attributes = {})`
 
@@ -2190,11 +2190,11 @@ class Parts < ApplicationRecord
 end
 ```
 
-`where`オプションでハッシュを使用した場合、この関連付けで作成されたレコードは自動的にこのハッシュを使用したスコープに含まれるようになります。この例の場合、`@parts.assemblies.create`または`@parts.assemblies.build`を実行すると、`factory`カラムの値が`Seattle`の注文(order)が常に作成されます。
+`where`オプションでハッシュを使用した場合、この関連付けで作成されたレコードは自動的にこのハッシュを使用したスコープに含まれるようになります。この例の場合、`@parts.assemblies.create`または`@parts.assemblies.build`を実行すると、`factory`カラムに`Seattle`を持つオブジェクトが作成されます。
 
 ##### `extending`
 
-`extending`メソッドは、関連付けプロキシを拡張する名前付きモジュールを指定します。Association extensions are discussed in detail [later in this guide](#association-extensions).
+`extending`メソッドは、関連付けプロキシを拡張する名前付きモジュールを指定します。関連付けの拡張については[後述します](#関連付けの拡張)。
 
 ##### `group`
 
@@ -2254,7 +2254,7 @@ end
 
 関連付けられているオブジェクト同士の1つでも検証(validation)のために保存に失敗すると、アサインの状態からは`false`が返され、アサインはキャンセルされます。
 
-親オブジェクト(つまり`has_many`関連付けを宣言している側のオブジェクト)は保存されません` returns `true`) then the child objects are not saved when they are added. 親オブジェクトが保存されると、関連付けられていたオブジェクトのうち保存されていなかったメンバはすべて保存されます。
+親オブジェクト(`has_and_belongs_to_many`関連付けを宣言している側のオブジェクト)が保存されない場合(つまり`new_record?`が`true`を返す場合)、子オブジェクトは追加時に保存されません。親オブジェクトが保存されると、関連付けられていたオブジェクトのうち保存されていなかったメンバはすべて保存されます。
 
 `has_and_belongs_to_many`関連付けにオブジェクトをアサインし、しかもそのオブジェクトを保存したくない場合、`collection.build`メソッドを使用してください。
 
@@ -2287,7 +2287,7 @@ Railsは、追加されるオブジェクトや削除されるオブジェクト
 
 ```ruby
 class Author < ApplicationRecord
-  has_many :books
+  has_many :books,
     before_add: [:check_credit_limit, :calculate_shipping_charges]
 
   def check_credit_limit(book)
@@ -2311,7 +2311,7 @@ class Author < ApplicationRecord
   has_many :books do
     def find_by_book_prefix(book_number)
       find_by(category_id: book_number[0..2])
-  end
+    end
   end
 end
 ```
@@ -2322,7 +2322,7 @@ end
 module FindRecentExtension
   def find_recent
     where("created_at > ?", 5.days.ago)
-end
+  end
 end 
 
 class Author < ApplicationRecord
@@ -2340,55 +2340,55 @@ end
 * `proxy_association.reflection`は、関連付けを記述するリフレクションオブジェクトを返します。
 * `proxy_association.target`は、`belongs_to`または`has_one`関連付けのオブジェクトを返すか、`has_many`または`has_and_belongs_to_many`関連付けオブジェクトのコレクションを返します。
 
-Single Table Inheritance
+シングルテーブル継承
 ------------------------
 
-Sometimes, you may want to share fields and behavior between different models. Let's say we have Car, Motorcycle and Bicycle models. We will want to share the `color` and `price` fields and some methods for all of them, but having some specific behavior for each, and separated controllers too.
+ときには、異なるモデル間でフィールドや振る舞いを共有したいときがあります。Carモデル、Motorcycleモデル、Bicycleモデルを持っていた場合を考えてみましょう。このとき`color`や`price`といったフィールド、そしていくつかの関連メソッドを共有したい場合が考えられます。 しかし各モデルはそれぞれ別の振る舞い、別のコントローラーも持っています。
 
-Rails makes this quite easy. First, let's generate the base Vehicle model:
+Railsではこのような状況にも簡単に対応できます。まず、各モデルのベースとなるVehicleモデルを生成します。
 
 ```bash
 $ rails generate model vehicle type:string color:string price:decimal{10.2}
 ```
 
-Did you note we are adding a "type" field? Since all models will be saved in a single database table, Rails will save in this column the name of the model that is being saved. In our example, this can be "Car", "Motorcycle" or "Bicycle." STI won't work without a "type" field in the table.
+"type"フィールドを追加している点に注目してください。すべてのモデルはデータベース上のテーブルに保存されるため、Railsはこのカラムに該当するモデル名を保存します。この例では、カラムには "Car"、"Motorcycle"、もしくは"Bicycle"が保存されます。今回のシングルテーブル継承 (STI: Single Table Inheritance) ではテーブルにこの"type"フィールドがないとうまく動きません。
 
-Next, we will generate the three models that inherit from Vehicle. For this, we can use the `--parent=PARENT` option, which will generate a model that inherits from the specified parent and without equivalent migration (since the table already exists).
+次に、Vehicleモデルを継承して３つの各モデルを生成します。このとき、`--parent=PARENT`オプションを使って特定の親モデルを継承している点に注目してください。このオプションを使うと、(該当するテーブルは既に存在しているため) マイグレーションファイルが生成されずに済みます。
 
-For example, to generate the Car model:
+たとえばCarモデルの場合は以下のようになります。
 
 ```bash
 $ rails generate model car --parent=Vehicle
 ```
 
-The generated model will look like this:
+このときに生成されるモデルは次のとおりです。
 
 ```ruby
 class Car < Vehicle
 end 
 ```
 
-This means that all behavior added to Vehicle is available for Car too, as associations, public methods, etc.
+これによってVehicleに追加されたすべての振る舞いがCarモデルでも追加されるようになります。関連付けやpublicメソッドなども同様に追加されます。
 
-Creating a car will save it in the `vehicles` table with "Car" as the `type` field:
+この状態で新しく作成したCarを保存すると、`type`フィールドに"Car"が代入されたデータが`vehicles`テーブルに追加されます。
 
 ```ruby
 Car.create(color: 'Red', price: 10000)
 ```
 
-will generate the following SQL:
+なお、実際に発行されるSQLは次のようになります。
 
 ```sql
 INSERT INTO "vehicles" ("type", "color", "price") VALUES ('Car', 'Red', 10000)
 ```
 
-Querying car records will just search for vehicles that are cars:
+Carのレコードを取得するクエリを投げると、vehiclesテーブル中のCarが検索されるようになります。
 
 ```ruby
 Car.all
 ```
 
-will run a query like:
+実際のクエリは次のようになります。
 
 ```sql
 SELECT "vehicles".* FROM "vehicles" WHERE "vehicles"."type" IN ('Car')
