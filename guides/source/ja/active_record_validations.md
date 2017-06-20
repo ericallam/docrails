@@ -174,17 +174,18 @@ end
 
 ### `errors.details`
 
-無効(invalid)な属性において、どのバリデーションが失敗したのか調べるために`errors.details[:attribute]`が利用できます。これは`:error`がキーで、失敗したバリデーターのシンボルが値となるハッシュの配列を返します。
-
-```ruby
-class Person < ApplicationRecord
-  validates :name, presence: true
-end
->> person = Person.new
->> person.valid?
->> person.errors.details[:name]
-# => [{error: :blank}]
-```
+ 無効(invalid)な属性において、どのバリデーションが失敗したのか調べるために`errors.details[:attribute]`が利用できます。これは`:error`がキーで、失敗したバリデーターのシンボルが値となるハッシュの配列を返します。
+ 
+ ```ruby
+ class Person < ApplicationRecord
+ validates :name, presence: true
+ end
+ 
+ >> person = Person.new
+ >> person.valid?
+ >> person.errors.details[:name] # => [{error: :blank}]
+ ```
+ 
 
 バリデーションヘルパー
 ------------------
