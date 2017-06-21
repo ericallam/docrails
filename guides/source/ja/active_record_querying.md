@@ -1335,6 +1335,31 @@ Active Recordは、テーブルに定義されたすべてのフィールド (�
 
 nameとlockedの両方を検索したいのであれば、2つのフィールド名をandでつなぐだけでメソッドを利用できます。たとえば、`Client.find_by_first_name_and_locked("Ryan", true)`のようにかくことができます
 
+Enums
+---------------
+
+`enum`マクロは整数のカラムを設定可能な値の集合にマッピングします
+
+```ruby
+class Book < ApplicationRecord
+  enum availability: [:available, :unavailable]
+end
+```
+
+これは対応する[スコープ](#スコープ)を自動的に作成します。状態の遷移や現在の状態の問い合わせ用のメソッドも追加されます。
+
+```ruby
+# 下の両方の例で、利用可能な本を問い合わせている
+Book.available
+# or
+Book.where(availability: :available)
+
+book = Book.new(availability: :available)
+book.available?   # => true
+book.unavailable! # => true
+book.available?   # => false
+```
+
 メソッドチェーンを理解する
 ---------------------------------
 
@@ -1811,6 +1836,6 @@ EXPLAINの出力を解釈することは、本ガイドの範疇を超えます�
 
 * SQLite3: [EXPLAIN QUERY PLAN](http://www.sqlite.org/eqp.html)
 
-* MySQL: [EXPLAIN Output Format](http://dev.mysql.com/doc/refman/5.6/en/explain-output.html) 
+* MySQL: [EXPLAIN Output Format](http://dev.mysql.com/doc/refman/5.6/en/explain-output.html)
 
 * PostgreSQL: [Using EXPLAIN](http://www.postgresql.org/docs/current/static/using-explain.html)
