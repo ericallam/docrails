@@ -5,6 +5,19 @@ require 'rails_guides/markdown_ja'
 
 module RailsGuides
   class GeneratorJa < Generator
+    def initialize(edge:, version:, all:, only:, kindle:, dash:, language:)
+      @dash = dash
+
+      super(
+        edge:     edge,
+        version:  version,
+        all:      all,
+        only:     only,
+        kindle:   kindle,
+        language: language
+      )
+    end
+
     def generate
       super
       generate_docset if dash?
