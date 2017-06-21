@@ -184,3 +184,8 @@ gem "puma"
 
 # Testing links by hand
 gem "html-proofer"
+
+group :development do
+  # Generate docset
+  gem 'docset'
+end

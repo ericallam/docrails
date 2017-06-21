@@ -5,6 +5,19 @@ require 'rails_guides/markdown_ja'
 
 module RailsGuides
   class GeneratorJa < Generator
+    def initialize(edge:, version:, all:, only:, kindle:, dash:, language:)
+      @dash = dash
+
+      super(
+        edge:     edge,
+        version:  version,
+        all:      all,
+        only:     only,
+        kindle:   kindle,
+        language: language
+      )
+    end
+
     def generate
       super
       generate_docset if dash?
@@ -19,7 +32,7 @@ module RailsGuides
     def generate_docset
       require 'rails_guides/dash'
       docset_name = "ruby_on_rails_guides_#@version%s.docset" % (@lang.present? ? ".#@lang" : '')
-      Dash.generate(output_dir, docset_name)
+      Dash.generate(@output_dir, docset_name)
     end
 
     def initialize_dirs
