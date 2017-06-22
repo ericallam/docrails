@@ -99,9 +99,14 @@ https://railstutorial.jp/
 
 ### 運営者・スポンサー
 
-本リポジトリは [YassLab](https://yasslab.jp/) 社によってメンテナンスされております。
+本リポジトリは、Ruby/Railsの開発を支援する [YassLab](https://yasslab.jp/ja/) 社によってメンテナンスされております。
 
-[![YassLab Logo](https://raw.githubusercontent.com/yasslab/railsguides.jp/master/yasslab/logo_800x200.png)](https://yasslab.jp/)
+公式ドキュメントを支えるチームで、御社のプロジェクトを支援します。お気軽にお問い合わせください。
+
+Ruby/Rails の開発支援サービス - YassLab  
+[https://yasslab.jp/ja/agile](https://yasslab.jp/ja/agile)
+
+[![YassLab Logo](https://raw.githubusercontent.com/yasslab/railsguides.jp/master/yasslab/logo_800x200.png)](https://yasslab.jp/ja/)
 
 ### 協力者の相談部屋
 
