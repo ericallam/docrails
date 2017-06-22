@@ -487,7 +487,7 @@ NOTE: ハッシュによる条件は、等値、範囲、サブセットのチ�
 Client.where(locked: true)
 ```
 
-This will generate SQL like this:
+これは以下のようなSQLを生成します。
 
 ```sql
 SELECT * FROM clients WHERE (clients.locked = 1)
@@ -600,7 +600,7 @@ Client.order("orders_count ASC, created_at DESC")
 Client.order("orders_count ASC", "created_at DESC")
 ```
 
-If you want to call `order` multiple times, subsequent orders will be appended to the first: `order`メソッドを複数回呼び出すと、続く並び順は最初の並び順に追加されていきます。
+`order`メソッドを複数回呼び出スト、続く並び順は最初の並び順に追加されていきます。
 
 ```ruby
 Client.order("orders_count ASC").order("created_at DESC")
@@ -1674,7 +1674,7 @@ Client.connection.select_all("SELECT first_name, created_at FROM clients WHERE i
 # => [
 #   {"first_name"=>"Rafael", "created_at"=>"2012-11-10 23:23:45.281189"},
 #   {"first_name"=>"Eileen", "created_at"=>"2013-12-09 11:22:35.221282"}
--------------------------------------
+# ]
 ```
 
 ### `pluck`
@@ -1905,7 +1905,7 @@ User.where(id: 1).joins(:articles).explain
 EXPLAIN for: SELECT `users`.* FROM `users` INNER JOIN `articles` ON `articles`.`user_id` = `users`.`id` WHERE `users`.`id` = 1
 +----+-------------+----------+-------+---------------+
 | id | select_type | table    | type  | possible_keys |
-`
++----+-------------+----------+-------+---------------+
 |  1 | SIMPLE      | users    | const | PRIMARY       |
 |  1 | SIMPLE      | articles | ALL   | NULL          |
 +----+-------------+----------+-------+---------------+
