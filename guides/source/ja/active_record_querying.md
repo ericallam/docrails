@@ -328,7 +328,7 @@ TIP: `find_each`メソッドと`find_in_batches`メソッドは、一度にメ�
 
 #### `find_each`
 
-`find_each`メソッドは、レコードのバッチを1つ取り出し、続いて _各_ レコードを1つのブロックにyieldします。In the following example, `find_each` retrieves users in batches of 1000 and yields them to the block one by one: 以下の例では、`find_each`でバッチから1000件のレコードを取り出し、各レコードをブロックにyieldします。
+`find_each`メソッドは、レコードのバッチを1つ取り出し、続いて _各_ レコードを1つのブロックにyieldします。以下の例では、`find_each`でバッチから1000件のレコードを取り出し、各レコードをブロックにyieldします。
 
 ```ruby
 User.find_each do |user|
@@ -744,9 +744,9 @@ SELECT date(created_at) as ordered_date, sum(price) as total_price
 FROM orders
 GROUP BY date(created_at)
 HAVING sum(price) > 100
-`
+```
 
-This returns the date and total price for each order object, grouped by the day they were ordered and where the price is more than $100.
+これは各orderオブジェクトの注文日と合計金額を返します。具体的には、priceが$100を超えているものが、date毎にまとめられて返されます。
 
 条件を上書きする
 ---------------------
@@ -820,7 +820,7 @@ SELECT * FROM articles WHERE id = 10
 SELECT * FROM comments WHERE article_id = 10 ORDER BY name
 ```
 
-In the case where the `reorder` clause is not used, the SQL executed would be:
+`reorder`句が使われていない場合、実行されるSQLは以下のようになります。
 
 ```sql
 SELECT * FROM articles WHERE id = 10
@@ -902,7 +902,7 @@ def visible_articles
     Article.published
   when 'Bad User'
     Article.none # => []またはnilを返すと、このコード例では呼び出し元のコードを壊してしまう
-end
+  end
 end
 ```
 
@@ -1006,11 +1006,11 @@ end
 テーブルを結合する
 --------------
 
-Active Record provides two finder methods for specifying `JOIN` clauses on the resulting SQL: `joins` and `left_outer_joins`. While `joins` should be used for `INNER JOIN` or custom queries, `left_outer_joins` is used for queries using `LEFT OUTER JOIN`.
+Active Recordは `JOIN`句のSQLを具体的に指定する２つの検索メソッドを提供しています。１つは`joins`、もう１つは`left_outer_joins`です。`joins`メソッドは`INNER JOIN`やカスタムクエリに使われ、`left_outer_joins`は `LEFT OUTER JOIN`を使ったクエリの生成に使われます。
 
 ### `joins`
 
-There are multiple ways to use the `joins` method.
+`joins`メソッドには複数の使い方があります。
 
 #### SQLフラグメント文字列を使用する
 
@@ -1122,7 +1122,7 @@ SELECT categories.* FROM categories
   INNER JOIN tags ON tags.article_id = articles.id
 ```
 
-Or, in English: "return all categories that have articles, where those articles have a comment made by a guest, and where those articles also have a tag."
+上のSQLを日本語で書くと「ゲストによってコメントされた記事 (articles) の中で、タグを含んでいるCategoryオブジェクトをすべて返す」となります。
 
 #### 結合されたテーブルで条件を指定する
 
@@ -1144,20 +1144,20 @@ Client.joins(:orders).where(orders: { created_at: time_range })
 
 ### `left_outer_joins`
 
-If you want to select a set of records whether or not they have associated records you can use the `left_outer_joins` method.
+もし関連レコードがあるかどうかにかかわらずレコードのセットを取得したい場合は、`left_outer_joins`メソッドを使います。
 
 ```ruby
 Author.left_outer_joins(:posts).distinct.select('authors.*, COUNT(posts.*) AS posts_count').group('authors.id')
 ```
 
-Which produces:
+上のコードは、以下のクエリを生成します。Which produces
 
 ```sql
 SELECT DISTINCT authors.*, COUNT(posts.*) AS posts_count FROM "authors"
 LEFT OUTER JOIN posts ON posts.author_id = authors.id GROUP BY authors.id
 ```
 
-Which means: "return all authors with their count of posts, whether or not they have any posts at all"
+上のSQLを日本語で書くと「著者 (authors) が記事 (posts) を持っているかどうかにかかわらず、すべての著者とその記事の数を返す」となります。
 
 
 関連付けを一括読み込みする
@@ -1247,7 +1247,7 @@ Article.includes(:comments).where("comments.visible = true").references(:comment
 
 この`includes`クエリの場合、どの記事にもコメントがついていないので、すべての記事が読み込まれます。`joins` (INNER JOIN) を使用する場合、結合条件は必ずマッチ **しなければならず** 、それ以外の場合にはレコードは返されません。
 
-NOTE: If an association is eager loaded as part of a join, any fields from a custom select clause will not present be on the loaded models. This is because it is ambiguous whether they should appear on the parent record, or the child.
+NOTE: もしjoinに一部で関連付けが一括読み込みされている場合、読み込まれたモデルの中にカスタマイズされたSelect句のフィールドが存在しなくなります。これは親レコード (または子レコード) の中で表示して良いかどうかが曖昧になってしまうためです。
 
 スコープ
 ------
@@ -1326,9 +1326,9 @@ end
 category.articles.created_before(time)
 ```
 
-### Using conditionals
+### 条件文を使う
 
-Your scope can utilize conditionals:
+スコープでは条件文を使うこともできます。
 
 ```ruby
 class Article < ApplicationRecord
@@ -1336,7 +1336,7 @@ class Article < ApplicationRecord
 end 
 ```
 
-Like the other examples, this will behave similarly to a class method.
+以下の例からもわかるように、これはクラスメソッドのように振る舞います。
 
 ```ruby
 class Article < ApplicationRecord
@@ -1346,7 +1346,7 @@ class Article < ApplicationRecord
 end
 ```
 
-However, there is one important caveat: A scope will always return an `ActiveRecord::Relation` object, even if the conditional evaluates to `false`, whereas a class method, will return `nil`. This can cause `NoMethodError` when chaining class methods with conditionals, if any of the conditionals return `false`.
+ただし１つ注意点があります。それは条件文を評価した結果が`false`になった場合であっても、スコープは常に`ActiveRecord::Relation`オブジェクトを返すという点です。クラスメソッドの場合は`nil`を返すので、この振る舞いが異なります。したがって、条件文を使ってクラスメソッドを連鎖させていて、かつ、条件文のいずれかが`false`を返す場合、`NoMethodError`を発生することがあります。
 
 ### デフォルトスコープを適用する
 
@@ -1374,7 +1374,7 @@ class Client < ApplicationRecord
 end
 ```
 
-NOTE: The `default_scope` is also applied while creating/building a record when the scope arguments are given as a `Hash`. It is not applied while updating a record. E.g.:
+NOTE: レコードを作成するときも、スコープの引数が`Hash`として与えられた場合は`default_scope`が適用されます。ただし、レコードを更新する場合は適用されません。例:
 
 ```ruby
 class Client < ApplicationRecord
@@ -1385,7 +1385,7 @@ Client.new          # => #<Client id: nil, active: true>
 Client.unscoped.new # => #<Client id: nil, active: nil>
 ```
 
-Be aware that, when given in the `Array` format, `default_scope` query arguments cannot be converted to a `Hash` for default attribute assignment. E.g.:
+引数に`Array`が与えられた場合は、`default_scope`クエリの引数は`Hash`のデフォルト値に変換されない点に注意してください。例:
 
 ```ruby
 class Client < ApplicationRecord
@@ -1475,7 +1475,7 @@ Client.unscoped {
 
 Active Recordは、テーブルに定義されたすべてのフィールド (属性とも呼ばれます) に対して自動的に検索メソッドを提供します。たとえば、`Client`モデルに`first_name`というフィールドがあると、`find_by_first_name`というメソッドがActive Recordによって自動的に作成されます。`Client`モデルに`locked`というフィールドがあれば、`find_by_locked`というメソッドを使用できます。
 
-You can specify an exclamation point (`!`) on the end of the dynamic finders to get them to raise an `ActiveRecord::RecordNotFound` error if they do not return any records, like `Client.find_by_name!("Ryan")`
+この動的検索メソッドの末尾に`Client.find_by_name!("Ryan")`のように感嘆符 (`!`) を追加すると、該当するレコードがない場合に`ActiveRecord::RecordNotFound`エラーが発生します。
 
 nameとlockedの両方を検索したいのであれば、2つのフィールド名をandでつなぐだけでメソッドを利用できます。たとえば、`Client.find_by_first_name_and_locked("Ryan", true)`のようにかくことができます。
 
@@ -1901,7 +1901,7 @@ User.where(id: 1).joins(:articles).explain
 
 以下のような結果が生成されます。
 
-`
+```
 EXPLAIN for: SELECT `users`.* FROM `users` INNER JOIN `articles` ON `articles`.`user_id` = `users`.`id` WHERE `users`.`id` = 1
 +----+-------------+----------+-------+---------------+
 | id | select_type | table    | type  | possible_keys |
@@ -1964,7 +1964,7 @@ EXPLAIN for: SELECT `articles`.* FROM `articles`  WHERE `articles`.`user_id` IN 
 | id | select_type | table    | type | possible_keys |
 +----+-------------+----------+------+---------------+
 |  1 | SIMPLE      | articles | ALL  | NULL          |
-`
++----+-------------+----------+------+---------------+
 +------+---------+------+------+-------------+
 | key  | key_len | ref  | rows | Extra       |
 +------+---------+------+------+-------------+
@@ -1973,7 +1973,7 @@ EXPLAIN for: SELECT `articles`.* FROM `articles`  WHERE `articles`.`user_id` IN 
 
 
 1 row in set (0.00 sec)
-`
+```
 
 上の結果はMySQLとMariaDBの場合です。
 
