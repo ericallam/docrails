@@ -915,7 +915,7 @@ Active Recordには、返されたどのオブジェクトに対しても変更�
 client = Client.readonly.first
 client.visits += 1
 client.save
-`
+```
 
 上のコードでは `client`に対して明示的に`readonly`が指定されているため、 _visits_ の値を更新して `client.save`を行なうと`ActiveRecord::ReadOnlyRecord`例外が発生します。
 
