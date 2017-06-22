@@ -224,7 +224,7 @@ Employeeにタッチされました
 
 `after_initialize`コールバックは、そのクラスの新しいオブジェクトが初期化されるたびに呼び出されます。
 
-NOTE: `find_by_*`メソッドと`find_by_*!`メソッドは、属性ごとに自動的に生成される動的なfinderメソッドです。詳細については[動的finderのセクション](active_record_querying.html#動的ファインダ)を参照してください。
+NOTE: `find_by_*`メソッドと`find_by_*!`メソッドは、属性ごとに自動的に生成される動的なfinderメソッドです。詳細については[動的finderのセクション](active_record_querying.html#動的検索)を参照してください。
 
 コールバックをスキップする
 ------------------
