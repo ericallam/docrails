@@ -107,7 +107,7 @@ class CreateBooks < ActiveRecord::Migration[5.0]
     create_table :authors do |t|
       t.string  :name
       t.timestamps
-  end
+    end
 
     create_table :books do |t|
       t.belongs_to :author, index: true
@@ -180,7 +180,7 @@ class CreateAuthors < ActiveRecord::Migration[5.0]
     create_table :authors do |t|
       t.string  :name
       t.timestamps
-  end
+    end
 
     create_table :books do |t|
       t.belongs_to :author, index: true
@@ -354,7 +354,7 @@ class CreateAssembliesAndParts < ActiveRecord::Migration[5.0]
     create_table :assemblies_parts, id: false do |t|
       t.belongs_to :assembly, index: true
       t.belongs_to :part, index: true
-  end
+    end
   end
 end
 ```
@@ -389,7 +389,7 @@ class CreateSuppliers < ActiveRecord::Migration[5.0]
       t.integer :supplier_id
       t.string  :account_number
       t.timestamps
-  end
+    end
 
     add_index :accounts, :supplier_id
   end
@@ -467,7 +467,7 @@ class CreatePictures < ActiveRecord::Migration[5.0]
       t.integer :imageable_id
       t.string  :imageable_type
       t.timestamps
-  end
+    end
 
     add_index :pictures, [:imageable_type, :imageable_id]
   end
@@ -592,7 +592,7 @@ class CreateBooks < ActiveRecord::Migration[5.0]
       t.datetime :published_at
       t.string   :book_number
       t.integer  :author_id
-  end
+    end
 
     add_index :books, :author_id
     add_foreign_key :books, :authors
@@ -626,7 +626,7 @@ class CreateAssembliesPartsJoinTable < ActiveRecord::Migration[5.0]
     create_table :assemblies_parts, id: false do |t|
       t.integer :assembly_id
       t.integer :part_id
-  end
+    end
 
     add_index :assemblies_parts, :assembly_id
     add_index :assemblies_parts, :part_id
@@ -658,7 +658,7 @@ module MyApplication
   module Business
     class Supplier < ApplicationRecord
        has_one :account
-  end
+    end
 
     class Account < ApplicationRecord
        belongs_to :supplier
