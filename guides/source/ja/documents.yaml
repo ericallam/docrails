@@ -64,7 +64,7 @@
     -
       name: Rails ルーティング
       url: routing.html
-      description: Railsのルーティング機能について解説しますRailsアプリケーションで行われているルーティングのしくみについて理解したい場合は、ここからお読みください。
+      description: Railsのルーティング機能について解説します。Railsアプリケーションで行われているルーティングのしくみについて理解したい場合は、ここからお読みください。
 -
   name: 高度なトピック
   documents:
