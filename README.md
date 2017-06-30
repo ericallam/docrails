@@ -57,8 +57,11 @@ https://railstutorial.jp/
 <details>
   <summary><strong>翻訳の流れ (継続的翻訳システム移行前の構成)</strong></summary>
 
-![翻訳の流れ](https://raw.githubusercontent.com/yasslab/railsguides.jp/master/yasslab/flow-of-translation.png)
+![翻訳の流れ_v0](https://raw.githubusercontent.com/yasslab/railsguides.jp/master/yasslab/flow-of-translation_v0.png)
 参考: [[翻訳]Ruby on Rails 4.1リリース前にアップグレードガイドを先行翻訳した & 同じ翻訳を2回しないで済むようにした](http://techracho.bpsinc.jp/hachi8833/2014_03_28/16037)
+
+なお、移行後は次のようなフローで更新していく予定です。
+![翻訳の流れ_v1](https://raw.githubusercontent.com/yasslab/railsguides.jp/master/yasslab/flow-of-translation_v1.png)
 </details>
 
 <details>
