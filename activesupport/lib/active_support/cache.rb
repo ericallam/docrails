@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "zlib"
 require_relative "core_ext/array/extract_options"
 require_relative "core_ext/array/wrap"
@@ -100,7 +101,7 @@ module ActiveSupport
         # Obtains the specified cache store class, given the name of the +store+.
         # Raises an error when the store class cannot be found.
         def retrieve_store_class(store)
-          require_relative "cache/#{store}"
+          require "active_support/cache/#{store}"
         rescue LoadError => e
           raise "Could not find cache store adapter for #{store} (#{e})"
         else
