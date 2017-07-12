@@ -6,7 +6,7 @@ namespace :assets do
 
     load 'railsguides.jp/guides/Rakefile'
     Dir.chdir('./guides') do
-      if ENV['SKIP_GTT'] != '1'
+      if ENV['GENERATE_VIA_GTT'] == '1'
         Rake::Task['gtt:allocate'].invoke
         Rake::Task['gtt:replacer'].invoke
       end
