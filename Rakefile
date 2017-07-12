@@ -66,4 +66,4 @@ task :publish_docs do
   end
 end
 
-load 'railsguides.jp/Rakefile'
+load 'yasslab/Rakefile'
