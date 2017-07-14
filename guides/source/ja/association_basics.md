@@ -583,7 +583,6 @@ end
 モデルを先に作り、しばらく経過してから関連を追加で設定する場合は、`add_column`マイグレーションを作成して、必要な外部キーをモデルのテーブルに追加するのを忘れないようにしてください。
 
 クエリのパフォーマンスを向上させたり、外部キー制約が正しくデータを参照しているかを保証するために、インデックスを追加するのは良い方法です。
-performance and a foreign key constraint to ensure referential data integrity
 
 ```ruby
 class CreateBooks < ActiveRecord::Migration[5.0]
