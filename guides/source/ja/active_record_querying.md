@@ -600,7 +600,7 @@ Client.order("orders_count ASC, created_at DESC")
 Client.order("orders_count ASC", "created_at DESC")
 ```
 
-`order`メソッドを複数回呼び出スト、続く並び順は最初の並び順に追加されていきます。
+`order`メソッドを複数回呼び出すと、続く並び順は最初の並び順に追加されていきます。
 
 ```ruby
 Client.order("orders_count ASC").order("created_at DESC")
