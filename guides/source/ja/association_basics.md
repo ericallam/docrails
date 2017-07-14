@@ -545,7 +545,7 @@ author.books.empty?          # booksのキャッシュコピーが使用され�
 author.books                 # データベースからbooksを取得する
 author.books.size            # booksのキャッシュコピーが使用される
 author.books.reload.empty?   # booksのキャッシュコピーが破棄される
-                                # その後データベースから再度読み込まれる
+                             # その後データベースから再度読み込まれる
 ```
 
 ### 名前衝突の回避
