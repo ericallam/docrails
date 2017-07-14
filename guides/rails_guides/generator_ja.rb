@@ -31,7 +31,7 @@ module RailsGuides
 
     def generate_docset
       require 'rails_guides/dash'
-      docset_name = "ruby_on_rails_guides_#{@version || @edge[0, 7]}%s.docset" % (@language.present? ? ".#@language" : '')
+      docset_name = ["ruby_on_rails_guides", @language, @version].compact.join(?_) + ".docset"
       Dash.generate(@output_dir, docset_name)
     end
 
