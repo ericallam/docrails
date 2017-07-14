@@ -547,7 +547,7 @@ Client.where.not(locked: true)
 言い換えれば、このクエリは`where`に引数を付けずに呼び出し、直後に`where`条件に`not`を渡して連鎖させることによって生成されています。これは以下のようなSQLを出力します。
 
 ```sql
-SELECT * FROM clients WHERE (clients.locked !`
+SELECT * FROM clients WHERE (clients.locked != 1)
 ```
 
 ### OR条件
