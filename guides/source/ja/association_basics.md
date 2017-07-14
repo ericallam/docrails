@@ -1954,7 +1954,7 @@ assemblies.where(...)
 assemblies.exists?(...)
 assemblies.build(attributes = {}, ...)
 assemblies.create(attributes = {})
-assemblies.create!(attributes = {})`
+assemblies.create!(attributes = {})
 ```
 
 ##### 追加のカラムメソッド
