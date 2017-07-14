@@ -1450,7 +1450,7 @@ books.where(...)
 books.exists?(...)
 books.build(attributes = {}, ...)
 books.create(attributes = {})
-books.create!(attributes = {})`
+books.create!(attributes = {})
 ```
 
 ##### `collection`
