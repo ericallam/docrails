@@ -1923,7 +1923,7 @@ person.articles << article unless person.articles.include?(article)
 * `collection.size`
 * `collection.find(...)`
 * `collection.where(...)`
-* `collection.exists?(...)    ... 
+* `collection.exists?(...)`
 * `collection.build(attributes = {})`
 * `collection.create(attributes = {})`
 * `collection.create!(attributes = {})`
