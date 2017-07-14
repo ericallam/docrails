@@ -510,25 +510,6 @@ image_tag("icon.png") # => <img src="/assets/icon.png" alt="Icon" />
 javascript_include_tag "common" # => <script src="/assets/common.js"></script>
 ```
 
-アプリケーションでアセットパイプラインを使用せずにjQuery JavaScriptライブラリをインクルードする場合は、ソースとして`:defaults`を渡してください。`:defaults`を指定した場合、`app/assets/javascripts`ディレクトリに`application.js`というファイルがあればこれもインクルードされます。
-
-```ruby
-javascript_include_tag :defaults
-```
-
-ソースに`:all`を指定すると、`app/assets/javascripts`ディレクトリ以下にあるJavaScriptファイルをすべてインクルードできます。
-
-```ruby
-javascript_include_tag :all
-```
-
-複数のJavaScriptファイルをキャッシュして1つのファイルにすることができます。こうすることでJavaScriptファイルのダウンロードに必要なHTTP接続数を減らすことができ、速度が向上します。gzip圧縮すればさらに転送が速くなります。キャッシュが有効になるのは、`ActionController::Base.perform_caching`をtrueに設定した場合のみです。production環境ではデフォルトでtrueになりますが、development環境ではデフォルトではtrueになりません。
-
-```ruby
-javascript_include_tag :all, cache: true # =>
-  <script src="/javascripts/all.js"></script>
-```
-
 #### javascript_path
 
 `app/assets/javascripts`に置かれているJavaScriptアセットへのパスを算出します。ソースのファイル名に拡張子`.js`がない場合は自動的に補われます。ドキュメントルート・ディレクトリからの完全なパスが返されます。このメソッドは`javascript_include_tag`の内部でスクリプトパス作成に使用されています。
@@ -551,19 +532,6 @@ javascript_url "common" # => http://www.example.com/assets/common.js
 
 ```ruby
 stylesheet_link_tag "application" # => <link href="/assets/application.css" media="screen" rel="stylesheet" />
-```
-
-ソースに`:all`を指定すると、stylesheetディレクトリにあるすべてのスタイルシートを含めることができます。
-
-```ruby
-stylesheet_link_tag :all
-```
-
-複数のスタイルシートファイルをキャッシュして1つのファイルにすることができます。こうすることでスタイルシートファイルのダウンロードに必要なHTTP接続数を減らすことができ、速度が向上します。gzip圧縮すればさらに転送が速くなります。キャッシュが有効になるのは、`ActionController::Base.perform_caching`をtrueに設定した場合のみです。production環境ではデフォルトでtrueになりますが、development環境ではデフォルトではtrueになりません。
-
-```ruby
-stylesheet_link_tag :all, cache: true
-# => <link href="/assets/all.css" media="screen" rel="stylesheet" />
 ```
 
 #### stylesheet_path
@@ -857,7 +825,7 @@ debug(my_hash)
 ```html
 <pre class='debug_dump'>---
 first: 1
-second: two 
+second: two
 third:
 - 1
 - 2
@@ -917,7 +885,7 @@ form_forのような特定のモデルオブジェクトの外側にスコープ
 
 ```html+erb
 <%= form_for @person, url: {action: "update"} do |person_form| %>
-  First name: <%= person_form.text_field :first_name %> 
+  First name: <%= person_form.text_field :first_name %>
   Last name : <%= person_form.text_field :last_name %>
 
   <%= fields_for @person.permission do |permission_fields| %>
