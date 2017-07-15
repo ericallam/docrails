@@ -1089,7 +1089,7 @@ class Author < ApplicationRecord
 end 
 ```
 
-LineItemから著者名(Author)を`@line_item.order.author`のように直接取り出す機会が頻繁にあるのであれば、LineItemとBookの関連付けを行なう時にAuthorをあらかじめincludeしておくことで無駄なクエリを減らし、効率を高めることができます。
+LineItemから著者名(Author)を`@line_item.book.author`のように直接取り出す機会が頻繁にあるのであれば、LineItemとBookの関連付けを行なう時にAuthorをあらかじめincludeしておくことで無駄なクエリを減らし、効率を高めることができます。
 
 ```ruby
 class LineItem < ApplicationRecord
