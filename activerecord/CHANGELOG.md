@@ -1,3 +1,15 @@
+*   `Relation#or` now accepts two relations who have different values for
+    `references` only, as `references` can be implicitly called by `where`.
+
+    Fixes #29411.
+
+    *Sean Griffin*
+
+*   ApplicationRecord is no longer generated when generating models.  If you
+    need to generate it, it can be created with `rails g application_record`.
+
+    *Lisa Ugray*
+
 *   Fix `COUNT(DISTINCT ...)` with `ORDER BY` and `LIMIT` to keep the existing select list.
 
     *Ryuta Kamizono*
