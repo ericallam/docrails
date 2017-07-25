@@ -635,6 +635,7 @@ module ActiveRecord
 
       self.where_clause = self.where_clause.or(other.where_clause)
       self.having_clause = having_clause.or(other.having_clause)
+      self.references_values += other.references_values
 
       self
     end
@@ -1014,11 +1015,8 @@ module ActiveRecord
           klass, table, association_joins, join_list
         )
 
-        join_infos = join_dependency.join_constraints stashed_association_joins, join_type
-
-        join_infos.each do |info|
-          info.joins.each { |join| manager.from(join) }
-        end
+        joins = join_dependency.join_constraints(stashed_association_joins, join_type)
+        joins.each { |join| manager.from(join) }
 
         manager.join_sources.concat(join_list)
 
@@ -1161,7 +1159,7 @@ module ActiveRecord
         end
       end
 
-      STRUCTURAL_OR_METHODS = Relation::VALUE_METHODS - [:extending, :where, :having, :unscope]
+      STRUCTURAL_OR_METHODS = Relation::VALUE_METHODS - [:extending, :where, :having, :unscope, :references]
       def structurally_incompatible_values_for_or(other)
         STRUCTURAL_OR_METHODS.reject do |method|
           get_value(method) == other.get_value(method)
