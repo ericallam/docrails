@@ -219,7 +219,7 @@ assert true
 
 ### テストを実行する
 
-`rake test`コマンドでテストケースを含むファイルを呼び出すことで、簡単にテストを実行できます。
+`bin/rails test`コマンドでテストケースを含むファイルを呼び出すことで、簡単にテストを実行できます。
 
 ```bash
 $ bin/rails test test/models/article_test.rb
