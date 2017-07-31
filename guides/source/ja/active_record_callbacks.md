@@ -197,11 +197,9 @@ Employeeにタッチされました
 
 * `create`
 * `create!`
-* `decrement!`
 * `destroy`
 * `destroy!`
 * `destroy_all`
-* `increment!`
 * `save`
 * `save!`
 * `save(validate: false)`
