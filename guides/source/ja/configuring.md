@@ -86,8 +86,6 @@ Rails全般に対する設定を行うには、`Rails::Railtie`オブジェク�
     end
     ```
 
-* `config.dependency_loading`をfalseに設定すると、定数自動読み込み設定をオフにします。このオプションが効くのは`config.cache_classes`がtrueの場合のみです(`config.cache_classes`はproductionモードではデフォルトでtrueです)。`config.threadsafe!`を使用するとこのフラグはfalseになります。
-
 * `config.eager_load`をtrueにすると、`config.eager_load_namespaces`に登録された事前一括読み込み(eager loading)用の名前空間をすべて読み込みます。ここにはアプリケーション、エンジン、Railsフレームワークを含むあらゆる登録済み名前空間が含まれます。
 
 * `config.eager_load_namespaces`を使用して登録した名前は、`config.eager_load`がtrueのときに読み込まれます。登録された名前空間は、必ず`eager_load!`メソッドに応答しなければなりません。
