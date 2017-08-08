@@ -92,6 +92,8 @@ Rails全般に対する設定を行うには、`Rails::Railtie`オブジェク�
 
 * `config.eager_load_paths`は、パスの配列を引数に取ります。Railsは、cache_classesがオンの場合にこのパスから事前一括読み込み(eager load)します。デフォルトではアプリケーションの`app`ディレクトリ以下のすべてのディレクトリが対象です。
 
+* `config.enable_dependency_loading`：trueの場合、アプリケーションが事前に読み込まれ、` config.cache_classes`がtrueに設定されていても、自動読み込みを有効にします。 デフォルトはfalseです。
+
 * `config.encoding`はアプリケーション全体のエンコーディングを指定します。デフォルトはUTF-8です。
 
 * `config.exceptions_app`は、例外が発生したときにShowExceptionミドルウェアによって呼び出されるアプリケーション例外を設定します。デフォルトは`ActionDispatch::PublicExceptions.new(Rails.public_path)`です。
