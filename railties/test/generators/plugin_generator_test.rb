@@ -75,11 +75,28 @@ class PluginGeneratorTest < Rails::Generators::TestCase
     assert_no_file "bin/rails"
   end
 
+  def test_generating_in_full_mode_with_almost_of_all_skip_options
+    run_generator [destination_root, "--full", "-M", "-O", "-C", "-S", "-T"]
+    assert_file "bin/rails" do |content|
+      assert_no_match(/\s+require\s+["']rails\/all["']/, content)
+    end
+    assert_file "bin/rails", /#\s+require\s+["']active_record\/railtie["']/
+    assert_file "bin/rails", /#\s+require\s+["']action_mailer\/railtie["']/
+    assert_file "bin/rails", /#\s+require\s+["']action_cable\/engine["']/
+    assert_file "bin/rails", /#\s+require\s+["']sprockets\/railtie["']/
+    assert_file "bin/rails", /#\s+require\s+["']rails\/test_unit\/railtie["']/
+  end
+
   def test_generating_test_files_in_full_mode
     run_generator [destination_root, "--full"]
     assert_directory "test/integration/"
 
     assert_file "test/integration/navigation_test.rb", /ActionDispatch::IntegrationTest/
+  end
+
+  def test_inclusion_of_git_source
+    run_generator [destination_root]
+    assert_file "Gemfile", /git_source/
   end
 
   def test_inclusion_of_a_debugger
@@ -97,23 +114,44 @@ class PluginGeneratorTest < Rails::Generators::TestCase
     run_generator [destination_root, "-T", "--full"]
 
     assert_no_directory "test/integration/"
-    assert_no_file "test"
+    assert_no_directory "test"
     assert_file "Rakefile" do |contents|
       assert_no_match(/APP_RAKEFILE/, contents)
     end
+    assert_file "bin/rails" do |contents|
+      assert_no_match(/APP_PATH/, contents)
+    end
   end
 
-  def test_generating_adds_dummy_app_in_full_mode_without_sprockets
-    run_generator [destination_root, "-S", "--full"]
+  def test_generating_adds_dummy_app_without_sprockets
+    run_generator [destination_root, "--skip-sprockets"]
 
-    assert_file "test/dummy/config/environments/production.rb" do |contents|
-      assert_no_match(/config\.assets/, contents)
+    assert_no_file "test/dummy/config/initializers/assets.rb"
+
+    assert_file "test/dummy/config/application.rb", /#\s+require\s+["']sprockets\/railtie["']/
+
+    assert_file "Gemfile" do |content|
+      assert_no_match(/sass-rails/, content)
+      assert_no_match(/uglifier/, content)
+      assert_no_match(/coffee-rails/, content)
+    end
+
+    assert_file "test/dummy/config/environments/development.rb" do |content|
+      assert_no_match(/config\.assets\.debug/, content)
+    end
+
+    assert_file "test/dummy/config/environments/production.rb" do |content|
+      assert_no_match(/config\.assets\.digest/, content)
+      assert_no_match(/config\.assets\.js_compressor/, content)
+      assert_no_match(/config\.assets\.css_compressor/, content)
+      assert_no_match(/config\.assets\.compile/, content)
     end
   end
 
   def test_generating_adds_dummy_app_rake_tasks_without_unit_test_files
     run_generator [destination_root, "-T", "--mountable", "--dummy-path", "my_dummy_app"]
     assert_file "Rakefile", /APP_RAKEFILE/
+    assert_file "bin/rails", /APP_PATH/
   end
 
   def test_generating_adds_dummy_app_without_javascript_and_assets_deps
@@ -134,8 +172,8 @@ class PluginGeneratorTest < Rails::Generators::TestCase
   def test_ensure_that_test_dummy_can_be_generated_from_a_template
     FileUtils.cd(Rails.root)
     run_generator([destination_root, "-m", "lib/create_test_dummy_template.rb", "--skip-test"])
-    assert_file "spec/dummy"
-    assert_no_file "test"
+    assert_directory "spec/dummy"
+    assert_no_directory "test"
   end
 
   def test_database_entry_is_generated_for_sqlite3_by_default_in_full_mode
@@ -169,7 +207,17 @@ class PluginGeneratorTest < Rails::Generators::TestCase
     end
     assert_file "test/dummy/config/environments/production.rb" do |content|
       assert_match(/# config\.action_mailer\.raise_delivery_errors = false/, content)
+      assert_match(/^  config\.read_encrypted_secrets = true/, content)
     end
+  end
+
+  def test_default_frameworks_are_required_when_others_are_removed
+    run_generator [destination_root, "--skip-active-record", "--skip-action-mailer", "--skip-action-cable", "--skip-sprockets"]
+    assert_file "test/dummy/config/application.rb", /require\s+["']rails["']/
+    assert_file "test/dummy/config/application.rb", /require\s+["']active_model\/railtie["']/
+    assert_file "test/dummy/config/application.rb", /require\s+["']active_job\/railtie["']/
+    assert_file "test/dummy/config/application.rb", /require\s+["']action_controller\/railtie["']/
+    assert_file "test/dummy/config/application.rb", /require\s+["']action_view\/railtie["']/
   end
 
   def test_active_record_is_removed_from_frameworks_if_skip_active_record_is_given
@@ -196,6 +244,18 @@ class PluginGeneratorTest < Rails::Generators::TestCase
     end
     assert_file "test/dummy/config/environments/production.rb" do |content|
       assert_no_match(/config\.action_mailer/, content)
+    end
+    assert_no_directory "test/dummy/app/mailers"
+  end
+
+  def test_action_cable_is_removed_from_frameworks_if_skip_action_cable_is_given
+    run_generator [destination_root, "--skip-action-cable"]
+    assert_file "test/dummy/config/application.rb", /#\s+require\s+["']action_cable\/engine["']/
+    assert_no_file "test/dummy/config/cable.yml"
+    assert_no_file "test/dummy/app/assets/javascripts/cable.js"
+    assert_no_directory "test/dummy/app/channels"
+    assert_file "Gemfile" do |content|
+      assert_no_match(/redis/, content)
     end
   end
 
@@ -277,7 +337,7 @@ class PluginGeneratorTest < Rails::Generators::TestCase
     assert_file "app/views"
     assert_file "app/helpers"
     assert_file "app/mailers"
-    assert_file "bin/rails"
+    assert_file "bin/rails", /\s+require\s+["']rails\/all["']/
     assert_file "config/routes.rb", /Rails.application.routes.draw do/
     assert_file "lib/bukkits/engine.rb", /module Bukkits\n  class Engine < ::Rails::Engine\n  end\nend/
     assert_file "lib/bukkits.rb", /require "bukkits\/engine"/
@@ -459,10 +519,9 @@ class PluginGeneratorTest < Rails::Generators::TestCase
 
   def test_creating_dummy_without_tests_but_with_dummy_path
     run_generator [destination_root, "--dummy_path", "spec/dummy", "--skip-test"]
-    assert_file "spec/dummy"
-    assert_file "spec/dummy/config/application.rb"
-    assert_no_file "test"
-    assert_no_file "test/test_helper.rb"
+    assert_directory "spec/dummy"
+    assert_file "spec/dummy/config/application.rb", /#\s+require\s+["']rails\/test_unit\/railtie["']/
+    assert_no_directory "test"
     assert_file ".gitignore" do |contents|
       assert_match(/spec\/dummy/, contents)
     end
@@ -499,9 +558,9 @@ class PluginGeneratorTest < Rails::Generators::TestCase
 
   def test_skipping_test_files
     run_generator [destination_root, "--skip-test"]
-    assert_no_file "test"
+    assert_no_directory "test"
     assert_file ".gitignore" do |contents|
-      assert_no_match(/test\dummy/, contents)
+      assert_no_match(/test\/dummy/, contents)
     end
   end
 

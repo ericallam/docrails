@@ -76,8 +76,8 @@ module Rails
       template "test/test_helper.rb"
       template "test/%namespaced_name%_test.rb"
       append_file "Rakefile", <<-EOF
-#{rakefile_test_tasks}
 
+#{rakefile_test_tasks}
 task default: :test
       EOF
       if engine?
@@ -86,7 +86,7 @@ task default: :test
     end
 
     PASSTHROUGH_OPTIONS = [
-      :skip_active_record, :skip_action_mailer, :skip_javascript, :skip_sprockets, :database,
+      :skip_active_record, :skip_action_mailer, :skip_javascript, :skip_action_cable, :skip_sprockets, :database,
       :javascript, :quiet, :pretend, :force, :skip
     ]
 

@@ -1,3 +1,19 @@
+*   Optimize indentation for generator actions.
+
+    *Yoshiyuki Hirano*
+
+*   Skip unused components when running `bin/rails` in Rails plugin.
+
+    *Yoshiyuki Hirano*
+
+*   Add git_source to `Gemfile` for plugin generator.
+
+    *Yoshiyuki Hirano*
+
+*   Add `--skip-action-cable` option to the plugin generator.
+
+    *bogdanvlviv*
+
 *   Deprecate support of use `Rails::Application` subclass to start Rails server.
 
     *Yuji Yaginuma*
