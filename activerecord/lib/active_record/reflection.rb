@@ -512,7 +512,7 @@ module ActiveRecord
       alias :check_eager_loadable! :check_preloadable!
 
       def join_id_for(owner) # :nodoc:
-        owner[active_record_primary_key]
+        owner[join_foreign_key]
       end
 
       def through_reflection
@@ -750,10 +750,6 @@ module ActiveRecord
         end
       end
 
-      def join_id_for(owner) # :nodoc:
-        owner[foreign_key]
-      end
-
       def join_foreign_key
         foreign_key
       end
@@ -780,7 +776,7 @@ module ActiveRecord
     # Holds all the metadata about a :through association as it was specified
     # in the Active Record class.
     class ThroughReflection < AbstractReflection #:nodoc:
-      delegate :foreign_key, :foreign_type, :association_foreign_key,
+      delegate :foreign_key, :foreign_type, :association_foreign_key, :join_id_for,
                :active_record_primary_key, :type, :get_join_keys, to: :source_reflection
 
       def initialize(delegate_reflection)
@@ -943,10 +939,6 @@ module ActiveRecord
         through_reflection.options
       end
 
-      def join_id_for(owner) # :nodoc:
-        source_reflection.join_id_for(owner)
-      end
-
       def check_validity!
         if through_reflection.nil?
           raise HasManyThroughAssociationNotFoundError.new(active_record.name, self)
@@ -1085,15 +1077,16 @@ module ActiveRecord
         @reflection.constraints + [source_type_info]
       end
 
-      def source_type_info
-        type = @previous_reflection.foreign_type
-        source_type = @previous_reflection.options[:source_type]
-        lambda { |object| where(type => source_type) }
-      end
-
       def get_join_keys(association_klass)
         @reflection.get_join_keys(association_klass)
       end
+
+      private
+        def source_type_info
+          type = @previous_reflection.foreign_type
+          source_type = @previous_reflection.options[:source_type]
+          lambda { |object| where(type => source_type) }
+        end
     end
 
     class RuntimeReflection < PolymorphicReflection # :nodoc:
@@ -1110,10 +1103,6 @@ module ActiveRecord
 
       def constraints
         @reflection.constraints
-      end
-
-      def source_type_info
-        @reflection.source_type_info
       end
 
       def alias_candidate(name)
