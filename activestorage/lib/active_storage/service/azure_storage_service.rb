@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require "active_support/core_ext/numeric/bytes"
 require "azure/storage"
 require "azure/storage/core/auth/shared_access_signature"
 
 module ActiveStorage
   # Wraps the Microsoft Azure Storage Blob Service as a Active Storage service.
-  # See `ActiveStorage::Service` for the generic API documentation that applies to all services.
+  # See ActiveStorage::Service for the generic API documentation that applies to all services.
   class Service::AzureStorageService < Service
     attr_reader :client, :path, :blobs, :container, :signer
 

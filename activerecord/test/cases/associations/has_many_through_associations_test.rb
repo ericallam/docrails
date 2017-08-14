@@ -817,7 +817,7 @@ class HasManyThroughAssociationsTest < ActiveRecord::TestCase
     sarah = Person.create!(first_name: "Sarah", primary_contact_id: people(:susan).id, gender: "F", number1_fan_id: 1)
     john = Person.create!(first_name: "John", primary_contact_id: sarah.id, gender: "M", number1_fan_id: 1)
     assert_equal sarah.agents, [john]
-    assert_equal people(:susan).agents.flat_map(&:agents), people(:susan).agents_of_agents
+    assert_equal people(:susan).agents.flat_map(&:agents).sort, people(:susan).agents_of_agents.sort
   end
 
   def test_associate_existing_with_nonstandard_primary_key_on_belongs_to
@@ -891,7 +891,8 @@ class HasManyThroughAssociationsTest < ActiveRecord::TestCase
     company = companies(:rails_core)
     ids = [Developer.first.id, -9999]
     e = assert_raises(ActiveRecord::RecordNotFound) { company.developer_ids = ids }
-    assert_match(/Couldn't find all Developers with 'id'/, e.message)
+    msg = "Couldn't find all Developers with 'id': (1, -9999) (found 1 results, but was looking for 2). Couldn't find Developer with id -9999."
+    assert_equal(msg, e.message)
   end
 
   def test_collection_singular_ids_setter_raises_exception_when_invalid_ids_set_with_changed_primary_key
@@ -905,7 +906,8 @@ class HasManyThroughAssociationsTest < ActiveRecord::TestCase
     author = authors(:david)
     ids = [categories(:general).name, "Unknown"]
     e = assert_raises(ActiveRecord::RecordNotFound) { author.essay_category_ids = ids }
-    assert_equal "Couldn't find all Categories with 'name': (General, Unknown) (found 1 results, but was looking for 2)", e.message
+    msg = "Couldn't find all Categories with 'name': (General, Unknown) (found 1 results, but was looking for 2). Couldn't find Category with name Unknown."
+    assert_equal msg, e.message
   end
 
   def test_build_a_model_from_hm_through_association_with_where_clause

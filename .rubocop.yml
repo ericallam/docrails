@@ -82,16 +82,8 @@ Style/MethodDefParentheses:
 Style/FrozenStringLiteralComment:
   Enabled: true
   EnforcedStyle: always
-  Include:
-    - 'activesupport/**/*'
-    - 'activemodel/**/*'
-    - 'actioncable/**/*'
-    - 'activejob/**/*'
-    - 'activerecord/**/*'
-    - 'actionmailer/**/*'
-    - 'actionview/**/*'
-    - 'actionpack/**/*'
   Exclude:
+    - 'railties/**/*'
     - 'actionview/test/**/*.builder'
     - 'actionview/test/**/*.ruby'
     - 'actionpack/test/**/*.builder'
