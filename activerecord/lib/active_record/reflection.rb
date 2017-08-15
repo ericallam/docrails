@@ -221,13 +221,8 @@ module ActiveRecord
       end
 
       def klass_join_scope(table, predicate_builder) # :nodoc:
-        current_scope = klass.current_scope
-
-        if current_scope && current_scope.empty_scope?
-          build_scope(table, predicate_builder)
-        else
-          klass.default_scoped(build_scope(table, predicate_builder))
-        end
+        relation = build_scope(table, predicate_builder)
+        klass.scope_for_association(relation)
       end
 
       def constraints
@@ -328,6 +323,10 @@ module ActiveRecord
 
         def join_pk(_)
           foreign_key
+        end
+
+        def primary_key(klass)
+          klass.primary_key || raise(UnknownPrimaryKey.new(klass))
         end
     end
 
@@ -697,10 +696,6 @@ module ActiveRecord
         def derive_join_table
           ModelSchema.derive_join_table_name active_record.table_name, klass.table_name
         end
-
-        def primary_key(klass)
-          klass.primary_key || raise(UnknownPrimaryKey.new(klass))
-        end
     end
 
     class HasManyReflection < AssociationReflection # :nodoc:
@@ -714,6 +709,10 @@ module ActiveRecord
         else
           Associations::HasManyAssociation
         end
+      end
+
+      def association_primary_key(klass = nil)
+        primary_key(klass || self.klass)
       end
     end
 
@@ -1014,10 +1013,6 @@ module ActiveRecord
           else
             through_reflection.add_as_through a
           end
-        end
-
-        def primary_key(klass)
-          klass.primary_key || raise(UnknownPrimaryKey.new(klass))
         end
 
         def inverse_name; delegate_reflection.send(:inverse_name); end
