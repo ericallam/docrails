@@ -537,14 +537,6 @@ class AppGeneratorTest < Rails::Generators::TestCase
     end
   end
 
-  def test_generator_if_api_is_given
-    run_generator [destination_root, "--api"]
-    assert_file "Gemfile" do |content|
-      assert_no_match(/capybara/, content)
-      assert_no_match(/selenium-webdriver/, content)
-    end
-  end
-
   def test_inclusion_of_javascript_runtime
     run_generator
     if defined?(JRUBY_VERSION)
@@ -589,32 +581,6 @@ class AppGeneratorTest < Rails::Generators::TestCase
     assert_file "Gemfile" do |content|
       assert_no_match(/coffee-rails/, content)
       assert_match(/uglifier/, content)
-    end
-  end
-
-  def test_generator_for_yarn
-    run_generator([destination_root])
-    assert_file "package.json", /dependencies/
-    assert_file "config/initializers/assets.rb", /node_modules/
-
-    assert_file ".gitignore" do |content|
-      assert_match(/node_modules/, content)
-      assert_match(/yarn-error\.log/, content)
-    end
-  end
-
-  def test_generator_for_yarn_skipped
-    run_generator([destination_root, "--skip-yarn"])
-    assert_no_file "package.json"
-    assert_no_file "bin/yarn"
-
-    assert_file "config/initializers/assets.rb" do |content|
-      assert_no_match(/node_modules/, content)
-    end
-
-    assert_file ".gitignore" do |content|
-      assert_no_match(/node_modules/, content)
-      assert_no_match(/yarn-error\.log/, content)
     end
   end
 
