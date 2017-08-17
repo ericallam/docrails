@@ -335,20 +335,6 @@ class Person < ActiveRecord::Base
 end
 ```
 
-このヘルパーはデフォルトでは文字単位で長さをチェックしますが、`:tokenizer`オプションを使用することで他の方法で値を区分することもできます。
-
-```ruby
-class Essay < ActiveRecord::Base
-  validates :content, length: {
-    minimum: 300,
-    maximum: 400,
-    tokenizer: lambda { |str| str.scan(/\w+/) },
-    too_short: "%{count}語以上必要です",
-    too_long: "使用可能な最大語数は%{count}です"
-  }
-end
-```
-
 デフォルトのエラーメッセージは複数形で表現されていることにご注意ください (例: "is too short (minimum is %{count} characters)")。このため、`:minimum`を1に設定するのであればメッセージをカスタマイズして単数形にするか、代りに`presence: true`を使用します。`:in`または`:within`の下限に1を指定する場合、メッセージをカスタマイズして単数形にするか、`length`より先に`presence`を呼ぶようにします。
 
 ### `numericality`
