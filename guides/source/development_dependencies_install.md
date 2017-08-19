@@ -30,7 +30,7 @@ Ruby on Rails uses Git for source code control. The [Git homepage](https://git-s
 
 * [Try Git course](https://try.github.io/) is an interactive course that will teach you the basics.
 * The [official Documentation](https://git-scm.com/documentation) is pretty comprehensive and also contains some videos with the basics of Git.
-* [Everyday Git](http://schacon.github.io/git/everyday.html) will teach you just enough about Git to get by.
+* [Everyday Git](https://schacon.github.io/git/everyday.html) will teach you just enough about Git to get by.
 * [GitHub](https://help.github.com/) offers links to a variety of Git resources.
 * [Pro Git](https://git-scm.com/book) is an entire book about Git with a Creative Commons license.
 
@@ -364,7 +364,7 @@ sudo apt-get update && sudo apt-get install yarn
 
 On Fedora or CentOS, just run:
 
-``bash
+```bash
 sudo wget https://dl.yarnpkg.com/rpm/yarn.repo -O /etc/yum.repos.d/yarn.repo
 
 sudo yum install yarn
