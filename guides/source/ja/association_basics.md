@@ -1026,7 +1026,7 @@ class Author < ApplicationRecord
 end 
 ```
 
-上の例の場合、Bookクラスは、関連付けられているAuthorのタイムスタンプを保存時またはdestroy時に更新します。 In this case, saving or destroying a book will update the timestamp on the associated author. 更新時に特定のタイムスタンプ属性を指定することもできます。
+上の例の場合、Bookクラスは、関連付けられているAuthorのタイムスタンプを保存時またはdestroy時に更新します。更新時に特定のタイムスタンプ属性を指定することもできます。
 
 ```ruby
 class Book < ApplicationRecord
