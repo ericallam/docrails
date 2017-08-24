@@ -21,10 +21,10 @@ Railsでは、「関連付け(アソシエーション: association)」とは2�
 
 ```ruby
 class Author < ApplicationRecord
-end 
+end
 
 class Book < ApplicationRecord
-end 
+end
 ```
 
 ここで、既存の著者が新しい書籍を1つ執筆したくなったとします。この場合、以下のようなコードを実行する必要があるでしょう。
@@ -39,7 +39,7 @@ end
 @books = Book.where(author_id: @author.id)
 @books.each do |book|
   book.destroy
-end 
+end
 @author.destroy
 ```
 
@@ -48,11 +48,11 @@ Active Recordの関連付け機能を使用すると、2つのモデルの間に
 ```ruby
 class Author < ApplicationRecord
   has_many :books, dependent: :destroy
-end 
+end
 
 class Book < ApplicationRecord
   belongs_to :author
-end 
+end
 ```
 
 上のように関連付けを追加したことで、特定の著者用に新しい書籍を1つ追加する作業が以下のように一行でできるようになりました。
@@ -92,7 +92,7 @@ Railsでサポートされている関連付けは以下の6種類です。
 ```ruby
 class Book < ApplicationRecord
   belongs_to :author
-end 
+end
 ```
 
 ![belongs_to 関連付けの図](images/belongs_to.png)
@@ -165,7 +165,7 @@ end
 ```ruby
 class Author < ApplicationRecord
   has_many :books
-end 
+end
 ```
 
 NOTE: `has_many`関連付けを宣言する場合、相手のモデル名は「複数形」にする必要があります。
@@ -199,12 +199,12 @@ end
 class Physician < ApplicationRecord
   has_many :appointments
   has_many :patients, through: :appointments
-end 
+end
 
 class Appointment < ApplicationRecord
   belongs_to :physician
   belongs_to :patient
-end 
+end
 
 class Patient < ApplicationRecord
   has_many :appointments
@@ -255,12 +255,12 @@ WARNING: モデル結合時の不足分自動削除は即座に行われます�
 class Document < ApplicationRecord
   has_many :sections
   has_many :paragraphs, through: :sections
-end 
+end
 
 class Section < ApplicationRecord
   belongs_to :document
   has_many :paragraphs
-end 
+end
 
 class Paragraph < ApplicationRecord
   belongs_to :section
@@ -281,12 +281,12 @@ end
 class Supplier < ApplicationRecord
   has_one :account
   has_one :account_history, through: :account
-end 
+end
 
 class Account < ApplicationRecord
   belongs_to :supplier
   has_one :account_history
-end 
+end
 
 class AccountHistory < ApplicationRecord
   belongs_to :account
@@ -327,7 +327,7 @@ end
 ```ruby
 class Assembly < ApplicationRecord
   has_and_belongs_to_many :parts
-end 
+end
 
 class Part < ApplicationRecord
   has_and_belongs_to_many :assemblies
@@ -368,7 +368,7 @@ end
 ```ruby
 class Supplier < ApplicationRecord
   has_one :account
-end 
+end
 
 class Account < ApplicationRecord
   belongs_to :supplier
@@ -405,7 +405,7 @@ Railsでは、モデル間の多対多リレーションシップを宣言する
 ```ruby
 class Assembly < ApplicationRecord
   has_and_belongs_to_many :parts
-end 
+end
 
 class Part < ApplicationRecord
   has_and_belongs_to_many :assemblies
@@ -418,12 +418,12 @@ end
 class Assembly < ApplicationRecord
   has_many :manifests
   has_many :parts, through: :manifests
-end 
+end
 
 class Manifest < ApplicationRecord
   belongs_to :assembly
   belongs_to :part
-end 
+end
 
 class Part < ApplicationRecord
   has_many :manifests
@@ -442,11 +442,11 @@ _ポリモーフィック関連付け_は、関連付けのやや高度な応用
 ```ruby
 class Picture < ApplicationRecord
   belongs_to :imageable, polymorphic: true
-end 
+end
 
 class Employee < ApplicationRecord
   has_many :pictures, as: :imageable
-end 
+end
 
 class Product < ApplicationRecord
   has_many :pictures, as: :imageable
@@ -563,7 +563,7 @@ author.books.reload.empty?   # booksのキャッシュコピーが破棄され�
 ```ruby
 class Book < ApplicationRecord
   belongs_to :author
-end 
+end
 ```
 
 上の宣言は、以下のようにbooksテーブル上の外部キー宣言によって裏付けられている必要があります。
@@ -610,7 +610,7 @@ WARNING: モデル名の並び順は`String`クラスの`<=>`演算子を使用�
 ```ruby
 class Assembly < ApplicationRecord
   has_and_belongs_to_many :parts
-end 
+end
 
 class Part < ApplicationRecord
   has_and_belongs_to_many :assemblies
@@ -711,14 +711,14 @@ end
 ```ruby
 class Author < ApplicationRecord
   has_many :books
-end 
+end
 
 class Book < ApplicationRecord
   belongs_to :author
-end 
+end
 ```
 
-Active Recordは関連付けの設定から、これら２つのモデルが双方向の関連を共有していることを自動的に認識します。以下に示すとおり、Active Recordは`Author`オブジェクトのコピーを１つだけ読み出し、アプリケーションをより効率的かつ一貫性のあるデータに仕上げます。 
+Active Recordは関連付けの設定から、これら２つのモデルが双方向の関連を共有していることを自動的に認識します。以下に示すとおり、Active Recordは`Author`オブジェクトのコピーを１つだけ読み出し、アプリケーションをより効率的かつ一貫性のあるデータに仕上げます。
 
 ```ruby
 a = Author.first
@@ -741,11 +741,11 @@ Active Recordでは標準的な名前同士の関連付けのほとんどをサ�
 ```ruby
 class Author < ApplicationRecord
   has_many :books
-end 
+end
 
 class Book < ApplicationRecord
   belongs_to :writer, class_name: 'Author', foreign_key: 'author_id'
-end 
+end
 ```
 
 この場合、Active Recordは双方向の関連付けを自動的に認識しません。
@@ -763,11 +763,11 @@ Active Recordは`:inverse_of`オプションを提供していて、これを使
 ```ruby
 class Author < ApplicationRecord
   has_many :books, inverse_of: 'writer'
-end 
+end
 
 class Book < ApplicationRecord
   belongs_to :writer, class_name: 'Author', foreign_key: 'author_id'
-end 
+end
 ```
 
 `has_many`の関連付けを宣言するときに`:inverse_of`オプションも含めることで、Active Recordは双方向の関連付けを認識するようになります。
@@ -810,7 +810,7 @@ a.first_name == b.writer.first_name # => true
 ```ruby
 class Book < ApplicationRecord
   belongs_to :author
-end 
+end
 ```
 
 `Book`モデルのインスタンスで以下のメソッドが使えるようになります。
@@ -901,12 +901,12 @@ end
 
 ##### `:class_name`
 
-関連名から関連相手のオブジェクト名を生成できない事情がある場合、`:class_name`オプションを使用してモデル名を直接指定できます。たとえば、書籍(book)が著者(author)に従属しているが実際の著者のモデル名が`Patron`である場合には、以下のように指定します。 
+関連名から関連相手のオブジェクト名を生成できない事情がある場合、`:class_name`オプションを使用してモデル名を直接指定できます。たとえば、書籍(book)が著者(author)に従属しているが実際の著者のモデル名が`Patron`である場合には、以下のように指定します。
 
 ```ruby
 class Book < ApplicationRecord
   belongs_to :author, class_name: "Patron"
-end 
+end
 ```
 
 ##### `:counter_cache`
@@ -916,10 +916,10 @@ end
 ```ruby
 class Book < ApplicationRecord
   belongs_to :author
-end 
+end
 class Author < ApplicationRecord
   has_many :books
-end 
+end
 ```
 
 上の宣言のままでは、`@author.books.size`の値を知るためにデータベースに対して`COUNT(*)`クエリを実行する必要があります。この呼び出しを避けるために、「従属している方のモデル(`belongs_to`を宣言している方のモデル)」にカウンタキャッシュを追加することができます。
@@ -927,10 +927,10 @@ end
 ```ruby
 class Book < ApplicationRecord
   belongs_to :author, counter_cache: true
-end 
+end
 class Author < ApplicationRecord
   has_many :books
-end 
+end
 ```
 
 上のように宣言すると、キャッシュ値が最新の状態に保たれ、次に`size`メソッドが呼び出されたときにその値が返されます。
@@ -942,10 +942,10 @@ end
 ```ruby
 class Book < ApplicationRecord
   belongs_to :author, counter_cache: :count_of_books
-end 
+end
 class Author < ApplicationRecord
   has_many :books
-end 
+end
 ```
 
 NOTE: `belongs_to`の関連付けをする時に、`:counter_cache`オプションを設定する必要があります。
@@ -953,13 +953,11 @@ NOTE: `belongs_to`の関連付けをする時に、`:counter_cache`オプショ�
 カウンタキャッシュ用のカラムは、`attr_readonly`によって読み出し専用属性となるモデルのリストに追加されます。
 
 ##### `:dependent`
-オーナーオブジェクトが削除されたときに、オーナーに関連付けられたオブジェクトをどうするかを制御します。
 
-* `:destroy`を指定すると、関連付けられたオブジェクトがデータベース上から削除されます。
-* `:delete_all`を指定すると、関連付けされたオブジェクトがデータベース上から削除されます。ただし、コールバックは実行されません。
-* `:nullify`を指定すると、外部キーが`NULL`にセットされます。ただし、コールバックは実行されません。
-* `:restrict_with_exception`を指定すると、関連付けられたレコードが1つでもある場合に例外が発生します。
-* `:restrict_with_error`を指定すると、関連付けられたオブジェクトが1つでもある場合にエラーがオーナーに追加されます。
+もし `:dependent` オプションの値が
+
+* `:destroy` のときは、オブジェクトが削除された際に、関連付けられたオブジェクトの`destroy`メソッドが実行されます。
+* `:delete` のときは、オブジェクトが削除された際に、関連付けられたオブジェクトが直接データベースから削除されます。`destroy`メソッドは実行されません。
 
 WARNING: 他のクラスの`has_many` 関連付けとつながりのある `belongs_to` 関連付けに対してこのオプションを使用してはいけません。孤立したレコードがデータベースに残ってしまう可能性があります。
 
@@ -985,11 +983,11 @@ Railsでは慣習として、`id`カラムはそのテーブルの主キーと�
 ```ruby
 class User < ApplicationRecord
   self.primary_key = 'guid' # 主キーが guid になります
-end 
+end
 
 class Todo < ApplicationRecord
   belongs_to :user, primary_key: 'guid'
-end 
+end
 ```
 
 この時に`@user.todos.create`を実行すると、`@todo`レコードは`user_id`を`@user`の`guid`として持つようになります。
@@ -1001,11 +999,11 @@ end
 ```ruby
 class Author < ApplicationRecord
   has_many :books, inverse_of: :author
-end 
+end
 
 class Book < ApplicationRecord
   belongs_to :author, inverse_of: :books
-end 
+end
 ```
 
 ##### `:polymorphic`
@@ -1019,11 +1017,11 @@ end
 ```ruby
 class Book < ApplicationRecord
   belongs_to :author, touch: true
-end 
+end
 
 class Author < ApplicationRecord
   has_many :books
-end 
+end
 ```
 
 上の例の場合、Bookクラスは、関連付けられているAuthorのタイムスタンプを保存時またはdestroy時に更新します。更新時に特定のタイムスタンプ属性を指定することもできます。
@@ -1031,7 +1029,7 @@ end
 ```ruby
 class Book < ApplicationRecord
   belongs_to :author, touch: :books_updated_at
-end 
+end
 ```
 
 ##### `:validate`
@@ -1049,7 +1047,7 @@ end
 ```ruby
 class Book < ApplicationRecord
   belongs_to :author, -> { where active: true },
-                        dependent: :destroy 
+                        dependent: :destroy
 end
 ```
 
@@ -1067,7 +1065,7 @@ end
 ```ruby
 class book < ApplicationRecord
   belongs_to :author, -> { where active: true }
-end 
+end
 ```
 
 ##### `includes`
@@ -1077,16 +1075,16 @@ end
 ```ruby
 class LineItem < ApplicationRecord
   belongs_to :book
-end 
+end
 
 class Book < ApplicationRecord
   belongs_to :author
   has_many :line_items
-end 
+end
 
 class Author < ApplicationRecord
   has_many :books
-end 
+end
 ```
 
 LineItemから著者名(Author)を`@line_item.book.author`のように直接取り出す機会が頻繁にあるのであれば、LineItemとBookの関連付けを行なう時にAuthorをあらかじめincludeしておくことで無駄なクエリを減らし、効率を高めることができます。
@@ -1094,16 +1092,16 @@ LineItemから著者名(Author)を`@line_item.book.author`のように直接取�
 ```ruby
 class LineItem < ApplicationRecord
   belongs_to :book, -> { includes :author }
-end 
+end
 
 class Book < ApplicationRecord
   belongs_to :author
   has_many :line_items
-end 
+end
 
 class Author < ApplicationRecord
   has_many :books
-end 
+end
 ```
 
 NOTE: 直接の関連付けでは`includes`を使用する必要はありません。`Book belongs_to :author`のような直接の関連付けでは必要に応じて自動的にeager-loadされます。
@@ -1125,7 +1123,7 @@ TIP: `select`を`belongs_to`関連付けで使用する場合、正しい結果�
 ```ruby
 if @book.author.nil?
   @msg = "No author found for this book"
-end 
+end
 ```
 
 #### オブジェクトが保存されるタイミング
@@ -1281,7 +1279,7 @@ TIP: Railsは外部キーのカラムを自動的に作ることはありませ�
 ```ruby
 class Supplier < ApplicationRecord
   has_one :account, inverse_of: :supplier
-end 
+end
 
 class Account < ApplicationRecord
   belongs_to :supplier, inverse_of: :account
@@ -1342,12 +1340,12 @@ end
 ```ruby
 class Supplier < ApplicationRecord
   has_one :account
-end 
+end
 
 class Account < ApplicationRecord
   belongs_to :supplier
   belongs_to :representative
-end 
+end
 
 class Representative < ApplicationRecord
   has_many :accounts
@@ -1359,12 +1357,12 @@ end
 ```ruby
 class Supplier < ApplicationRecord
   has_one :account, -> { includes :representative }
-end 
+end
 
 class Account < ApplicationRecord
   belongs_to :supplier
   belongs_to :representative
-end 
+end
 
 class Representative < ApplicationRecord
   has_many :accounts
@@ -1429,7 +1427,7 @@ end
 ```ruby
 class Author < ApplicationRecord
   has_many :books
-end 
+end
 ```
 
 これにより、`Author`モデルのインスタンスで以下のメソッドが使えるようになります。
@@ -1565,7 +1563,7 @@ WARNING: `dependent: :delete_all`の場合と同様に、オブジェクトが`d
 @books = @author.books.build([
   { published_at: Time.now, book_number: "A12346" },
   { published_at: Time.now, book_number: "A12347" }
-    ... 
+    ...
 ```
 
 ##### `collection.create(attributes = {})`
@@ -1579,7 +1577,7 @@ WARNING: `dependent: :delete_all`の場合と同様に、オブジェクトが`d
 @books = @author.books.create([
   { published_at: Time.now, book_number: "A12346" },
   { published_at: Time.now, book_number: "A12347" }
-    ... 
+    ...
 ```
 
 ##### `collection.create!(attributes = {})`
@@ -1593,7 +1591,7 @@ Railsのデフォルトの`has_many`関連付けは、ほとんどの場合カ�
 ```ruby
 class Author < ApplicationRecord
   has_many :books, dependent: :delete_all, validate: false
-end 
+end
 ```
 
 `has_many`関連付けでは以下のオプションがサポートされます。
@@ -1626,7 +1624,7 @@ end
 ```ruby
 class Author < ApplicationRecord
   has_many :books, class_name: "Transaction"
-end 
+end
 ```
 
 ##### `:counter_cache`
@@ -1650,7 +1648,7 @@ Railsの慣例では、相手のモデル上の外部キーを保持している
 ```ruby
 class Author < ApplicationRecord
   has_many :books, foreign_key: "cust_id"
-end 
+end
 ```
 
 TIP: Railsは外部キーのカラムを自動的に作ることはありません。外部キーを使用する場合には、マイグレーションで明示的に定義する必要があります。
@@ -1662,11 +1660,11 @@ TIP: Railsは外部キーのカラムを自動的に作ることはありませ�
 ```ruby
 class Author < ApplicationRecord
   has_many :books, inverse_of: :author
-end 
+end
 
 class Book < ApplicationRecord
   belongs_to :author, inverse_of: :books
-end 
+end
 ```
 
 ##### `:primary_key`
@@ -1707,7 +1705,7 @@ end
 ```ruby
 class Author < ApplicationRecord
   has_many :books, -> { where processed: true }
-end 
+end
 ```
 
 スコープブロック内では標準の[クエリメソッド](active_record_querying.html)をすべて使用できます。ここでは以下について説明します。
@@ -1731,7 +1729,7 @@ end
 class Author < ApplicationRecord
   has_many :confirmed_books, -> { where "confirmed = 1" },
     class_name: "Book"
-end 
+end
 ```
 
 条件はハッシュを使用して指定することもできます。
@@ -1740,7 +1738,7 @@ end
 class Author < ApplicationRecord
   has_many :confirmed_books, -> { where confirmed: true },
                               class_name: "Book"
-end 
+end
 ```
 
 `where`オプションでハッシュを使用した場合、この関連付けで作成されたレコードは自動的にこのハッシュを使用したスコープに含まれるようになります。この例の場合、`@author.confirmed_books.create`または`@author.confirmed.books.build`を実行すると、confirmedカラムの値が`true`の書籍(book)が常に作成されます。
@@ -1757,7 +1755,7 @@ end
 class Author < ApplicationRecord
   has_many :line_items, -> { group 'books.id' },
                         through: :books
-end 
+end
 ```
 
 ##### `includes`
@@ -1767,16 +1765,16 @@ end
 ```ruby
 class Author < ApplicationRecord
   has_many :books
-end 
+end
 
 class Book < ApplicationRecord
   belongs_to :author
   has_many :line_items
-end 
+end
 
 class LineItem < ApplicationRecord
   belongs_to :book
-end 
+end
 ```
 
 著者名(Author)からLineItemを`@author.books.line_items`のように直接取り出す機会が頻繁にあるのであれば、AuthorとBookの関連付けを行なう時にLineItemをあらかじめincludeしておくことで無駄なクエリを減らし、効率を高めることができます。
@@ -1784,16 +1782,16 @@ end
 ```ruby
 class Author < ApplicationRecord
   has_many :books, -> { includes :line_items }
-end 
+end
 
 class Book < ApplicationRecord
   belongs_to :author
   has_many :line_items
-end 
+end
 
 class LineItem < ApplicationRecord
   belongs_to :book
-end 
+end
 ```
 
 ##### `limit`
@@ -1805,7 +1803,7 @@ class Author < ApplicationRecord
   has_many :recent_books,
     -> { order('published_at desc').limit(100) },
     class_name: "Book"
-end 
+end
 ```
 
 ##### `offset`
@@ -1819,7 +1817,7 @@ end
 ```ruby
 class Author < ApplicationRecord
   has_many :books, -> { order "date_confirmed DESC" }
-end 
+end
 ```
 
 ##### `readonly`
@@ -1841,7 +1839,7 @@ WARNING: 独自の`select`メソッドを使用する場合には、関連付け
 class Person < ApplicationRecord
   has_many :readings
   has_many :articles, through: :readings
-end 
+end
 
 person = Person.create(name: 'John')
 article   = Article.create(name: 'a1')
@@ -1859,7 +1857,7 @@ Reading.all.inspect     # => [#<Reading id: 12, person_id: 5, article_id: 5>, #<
 class Person
   has_many :readings
   has_many :articles, -> { distinct }, through: :readings
-end 
+end
 
 person = Person.create(name: 'Honda')
 article   = Article.create(name: 'a1')
@@ -2084,7 +2082,7 @@ Railsのデフォルトの`has_and_belongs_to_many`関連付けは、ほとん�
 class Parts < ApplicationRecord
   has_and_belongs_to_many :assemblies, -> { readonly },
                                        autosave: true
-end 
+end
 ```
 
 `has_and_belongs_to_many`関連付けでは以下のオプションがサポートされます。
@@ -2275,7 +2273,7 @@ class Author < ApplicationRecord
   has_many :books, before_add: :check_credit_limit
 
   def check_credit_limit(book)
-    ... 
+    ...
   end
 end
 ```
@@ -2290,11 +2288,11 @@ class Author < ApplicationRecord
     before_add: [:check_credit_limit, :calculate_shipping_charges]
 
   def check_credit_limit(book)
-    ... 
+    ...
   end
 
   def calculate_shipping_charges(book)
-    ... 
+    ...
   end
 end
 ```
@@ -2322,11 +2320,11 @@ module FindRecentExtension
   def find_recent
     where("created_at > ?", 5.days.ago)
   end
-end 
+end
 
 class Author < ApplicationRecord
   has_many :books, -> { extending FindRecentExtension }
-end 
+end
 
 class Supplier < ApplicationRecord
   has_many :deliveries, -> { extending FindRecentExtension }
@@ -2364,7 +2362,7 @@ $ rails generate model car --parent=Vehicle
 
 ```ruby
 class Car < Vehicle
-end 
+end
 ```
 
 これによってVehicleに追加されたすべての振る舞いがCarモデルでも追加されるようになります。関連付けやpublicメソッドなども同様に追加されます。
