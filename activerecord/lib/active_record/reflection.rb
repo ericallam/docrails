@@ -1036,20 +1036,12 @@ module ActiveRecord
 
       def scopes
         scopes = @previous_reflection.scopes
-        if @previous_reflection.options[:source_type]
-          scopes + [@previous_reflection.source_type_scope]
-        else
-          scopes
-        end
+        scopes << @previous_reflection.source_type_scope
       end
 
       def join_scopes(table, predicate_builder) # :nodoc:
         scopes = @previous_reflection.join_scopes(table, predicate_builder) + super
-        if @previous_reflection.options[:source_type]
-          scopes + [@previous_reflection.source_type_scope]
-        else
-          scopes
-        end
+        scopes << @previous_reflection.source_type_scope
       end
 
       def klass
@@ -1098,10 +1090,6 @@ module ActiveRecord
 
       def constraints
         @reflection.constraints
-      end
-
-      def alias_candidate(name)
-        "#{plural_name}_#{name}_join"
       end
 
       def alias_name
