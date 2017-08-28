@@ -98,6 +98,7 @@ https://railstutorial.jp/
 - [@yasulab](https://github.com/yasulab) (共同発起人)
 - [@yui-knk](https://github.com/yui-knk) (コミッター)
 - [@riseshia](https://github.com/riseshia) (コミッター)
+- [@willnet](https://github.com/willnet) (コミッター)
 - 他，[Issues](https://github.com/yasslab/railsguides.jp/issues?q=) や [Pull Request](https://github.com/yasslab/railsguides.jp/graphs/contributors)  を送ってくださった多くの方々。
 
 ### 運営者・スポンサー
