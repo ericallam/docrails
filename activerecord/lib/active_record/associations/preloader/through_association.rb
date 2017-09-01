@@ -85,16 +85,21 @@ module ActiveRecord
 
             if options[:source_type]
               scope.where! reflection.foreign_type => options[:source_type]
-            else
-              unless reflection_scope.where_clause.empty?
-                scope.includes_values = Array(values[:includes] || options[:source])
-                scope.where_clause = reflection_scope.where_clause
-                if joins = values[:joins]
-                  scope.joins!(source_reflection.name => joins)
-                end
-                if left_outer_joins = values[:left_outer_joins]
-                  scope.left_outer_joins!(source_reflection.name => left_outer_joins)
-                end
+            elsif !reflection_scope.where_clause.empty?
+              scope.where_clause = reflection_scope.where_clause
+
+              if includes = values[:includes]
+                scope.includes!(source_reflection.name => includes)
+              else
+                scope.includes!(source_reflection.name)
+              end
+
+              if joins = values[:joins]
+                scope.joins!(source_reflection.name => joins)
+              end
+
+              if left_outer_joins = values[:left_outer_joins]
+                scope.left_outer_joins!(source_reflection.name => left_outer_joins)
               end
 
               scope.references! values[:references]
