@@ -103,7 +103,7 @@ mount Blorgh::Engine => "/blorgh"
 新しく作成したエンジンのルートディレクトリには、`blorgh.gemspec`というファイルが置かれます。アプリケーションにこのエンジンを後からインクルードするには、`Gemfile`に以下の行を追加します。
 
 ```ruby
-gem 'blorgh', path: "vendor/engines/blorgh"
+gem 'blorgh', path: 'engines/blorgh'
 ```
 
 Gemfileを更新したら、いつものように`bundle install`を実行するのを忘れずに。エンジンを通常のgemと同様に`Gemfile`に記述すると、Bundlerはgemと同様にエンジンを読み込み、`blorgh.gemspec`ファイルを解析し、`lib`以下に置かれているファイル (この場合`lib/blorgh.rb`) をrequireします。このファイルは、(`lib/blorgh/engine.rb`に置かれている) `blorgh/engine.rb`ファイルをrequireし、`Blorgh`という基本モジュールを定義します。
@@ -115,7 +115,7 @@ module Blorgh
 end
 ```
 
-TIP: エンジンによっては、このファイルをエンジンのためのグローバル設定オプションとして配置したいこともあるでしょう。これは比較的よいアイディアです。設定オプションを提供したい場合は、エンジンで`module`と呼ばれているファイルを、まさにこれを行なうのにふさわしい場所として定義します。そのモジュールの中にメソッドを置くことで準備は完了します。
+TIP: エンジンによっては、このファイルをエンジンのためのグローバル設定オプションとして配置したいこともあるでしょう。これは比較的よいアイディアです。設定オプションを提供したい場合は、エンジンの`module`が定義されているファイルがまさにこれを行なうのにふさわしい場所と言えます。そのモジュールの中にメソッドを置くことで準備は完了します。
 
 エンジンの基本クラスは`lib/blorgh/engine.rb`の中にあります。
 
@@ -129,7 +129,7 @@ end
 
 `Rails::Engine`クラスを継承することによって、指定されたパスにエンジンがあることがgemからRailsに通知され、アプリケーションの内部にエンジンが正しくマウントされます。そして、エンジンの`app`ディレクトリをモデル/メイラー/コントローラ/ビューの読み込みパスに追加します。
 
-ここで、`isolate_namespace`メソッドについて特別な注意が必要です。このメソッドの呼び出しは、エンジンのコントローラ/モデル/ルーティングなどが持つ固有の名前空間を、アプリケーション内部のコンポーネントが持つ類似の名前空間から分離する役目を担います。この呼び出しが行われないと、エンジンのコンポーネントがアプリケーション側に「漏れ出す」リスクが生じ、思わぬ動作が発生したり、エンジンの重要なコンポーネントが同じような名前のアプリケーション側コンポーネントによって上書きされてしまったりする可能性があります。名前の衝突の例として、ヘルパーを取り上げましょう。`isolate_namespace`が呼び出されないと、エンジンのヘルパーがアプリケーションのコントローラにインクルードされてしまう可能性があります。
+ここで、`isolate_namespace`メソッドについて特別な注意が必要です。このメソッドの呼び出しは、エンジンのコントローラ/モデル/ルーティングなどが持つ固有の名前空間を、アプリケーション内部のコンポーネントが持つ類似の名前空間から分離する役目を担います。この呼び出しが行われないと、エンジンのコンポーネントがアプリケーション側に「漏れ出す」リスクが生じ、思わぬ動作が発生したり、エンジンの重要なコンポーネントが同じような名前のアプリケーション側コンポーネントによって上書きされてしまったりする可能性があります。名前の衝突の例として、ヘルパーを取り上げましょう。`isolate_namespace`が呼び出されないと、エンジンのヘルパーがアプリケーションのコントローラにインクルードされてしまいます。
 
 NOTE: `Engine`クラスの定義に含まれる`isolate_namespace`の行を変更/削除しないことを **強く** 推奨します。この行が変更されると、生成されたエンジン内のクラスがアプリケーションと衝突する **可能性があります** 。
 
@@ -144,6 +144,21 @@ NOTE: `Engine`クラスの定義に含まれる`isolate_namespace`の行を変�
 エンジンの`app/assets`ディレクトリの下にも、通常のアプリケーションと同様に`images`、`javascripts`、`stylesheets`ディレクトリがそれぞれあります。通常のアプリケーションと異なる点は、これらのディレクトリの下にはさらにエンジン名を持つサブディレクトリがあることです。これは、エンジンが名前空間化されるのと同様、エンジンのアセットも同様に名前空間化される必要があるからです。
 
 `app/controllers`ディレクトリの下には`blorgh`ディレクトリが置かれます。この中には`application_controller.rb`というファイルが1つ置かれます。このファイルはエンジンのコントローラ共通の機能を提供するためのものです。この`blorgh`ディレクトリには、エンジンで使用するその他のコントローラを置きます。これらのファイルを名前空間化されたディレクトリに配置することで、他のエンジンやアプリケーションに同じ名前のコントローラがあっても名前の衝突を避ける事ができます。
+
+NOTE: Rubyが定数を探索する方法のせいで、エンジンのコントローラがエンジンのアプロケーションコントローラを継承するのではなく、メインアプリケーションコントローラを継承する場合があります。これはRubyはすでに`ApplicationController`定数を知っているので自動読み込みが動作されないためです。[定数がトリガーされない場合](autoloading_and_reloading_constants.html#定数がトリガーされない場合)と[定数の自動読み込みと再読み込み](autoloading_and_reloading_constants.html)に詳しい説明があります。この問題を解決する一番良い方法は`require_dependency`を使いエンジンのアプリケーションコントローラがロードされるのを保証することです。例を見ましょう。
+
+``` ruby
+# app/controllers/blorgh/articles_controller.rb:
+require_dependency "blorgh/application_controller"
+
+module Blorgh
+  class ArticlesController < ApplicationController
+    ...
+  end
+end
+```
+
+WARNING: `require`は開発環境でのクラス自動読み込みで誤作動を起こすので使わないでください。`require_dependency`を使ってクラスが読み込まれるかどうかを保証するのが正しい使い方です。
 
 NOTE: あるエンジンに含まれる`ApplicationController`というクラスの名前は、アプリケーションそのものが持つクラスと同じ名前になっています。これは、アプリケーションをエンジンに変換しやすくするためです。
 
@@ -221,9 +236,9 @@ invoke  css
 create    app/assets/stylesheets/scaffold.css
 ```
 
-scaffoldジェネレータが最初に行なうのは`active_record`ジェネレータの呼び出しです。これはマイグレーションの生成とそのリソースのモデルを生成します。ここでご注目いただきたいのは、マイグレーションは通常の`create_articles`ではなく`create_blorgh_articles`という名前で呼ばれるという点です。これは`Blorgh::Engine`クラスの定義で呼び出される`isolate_namespace`メソッドによるものです。このモデルも名前空間化されるので、`Engine`クラス内のisolate_namespace`呼び出しによって、`app/models/article.rb`ではなく`app/models/blorgh/article.rb`に置かれます。
+scaffoldジェネレータが最初に行なうのは`active_record`ジェネレータの呼び出しです。これはマイグレーションの生成とそのリソースのモデルを生成します。ここでご注目いただきたいのは、マイグレーションは通常の`create_articles`ではなく`create_blorgh_articles`という名前で呼ばれるという点です。これは`Blorgh::Engine`クラスの定義で呼び出される`isolate_namespace`メソッドによるものです。このモデルも名前空間化されるので、`Engine`クラス内の`isolate_namespace`呼び出しによって、`app/models/article.rb`ではなく`app/models/blorgh/article.rb`に置かれます。
 
-続いて、そのモデルに対応する`test_unit`ジェネレータが呼び出され、(`test/models/article_test.rb`ではなく) `test/models/blorgh/article_test.rb` にモデルのテストが置かれます (rather than )。フィクスチャも同様に (`test/fixtures/articles.yml`ではなく) `test/fixtures/blorgh/articles.yml`に置かれます。
+続いて、そのモデルに対応する`test_unit`ジェネレータが呼び出され、(`test/models/article_test.rb`ではなく) `test/models/blorgh/article_test.rb` にモデルのテストが置かれます。フィクスチャも同様に (`test/fixtures/articles.yml`ではなく) `test/fixtures/blorgh/articles.yml`に置かれます。
 
 その後、そのリソースに対応する行が`config/routes.rb`ファイルに挿入され、エンジンで使用されます。ここで挿入される行は単に`resources :articles`となっています。これにより、そのエンジンで使用する`config/routes.rb`ファイルが以下のように変更されます。
 
@@ -264,12 +279,6 @@ end
 最後に、以下の2つのファイルがこのリソースのアセットとして生成されます。
 `app/assets/javascripts/blorgh/articles.js`と
 `app/assets/stylesheets/blorgh/articles.css`です。これらの使用法についてはこのすぐ後で解説します。
-
-デフォルトでは、scaffoldで生成されたスタイルはエンジンに適用されません。これは、エンジンのレイアウトファイル`app/views/layouts/blorgh/application.html.erb`がscaffoldのスタイルを読み込んでいないためです。scaffoldで生成されたスタイルを適用するには、このレイアウトの`<head>`タグに以下の行を挿入します。
-
-```erb
-<%= stylesheet_link_tag "scaffold" %>
-```
 
 エンジンのルートディレクトリで`bin/rails db:migrate`を実行すると、scaffoldジェネレータによって生成されたマイグレーションが実行されます。続いて`test/dummy`ディレクトリで`rails server`を実行してみましょう。`http://localhost:3000/blorgh/articles`をブラウザで表示すると、生成されたデフォルトのscaffoldが表示されます。表示されたものをいろいろクリックしてみてください。これで、最初の機能を備えたエンジンの生成に成功しました。
 
@@ -485,8 +494,8 @@ $ bin/rails railties:install:migrations
 このコマンドは、初回実行時にエンジンからすべてのマイグレーションをコピーします。次回以降の実行時には、コピーされていないマイグレーションのみがコピーされます。このコマンドの初回実行時の出力結果は以下のようになります。
 
 ```bash
-Copied migration [timestamp_1]_create_blorgh_articles.rb from blorgh
-Copied migration [timestamp_2]_create_blorgh_comments.rb from blorgh
+Copied migration [timestamp_1]_create_blorgh_articles.blorgh.rb from blorgh
+Copied migration [timestamp_2]_create_blorgh_comments.blorgh.rb from blorgh
 ```
 
 最初のタイムスタンプ (`[timestamp_1]`) が現在時刻、次のタイムスタンプ (`[timestamp_2]`) が現在時刻に1秒追加した値になります。このようになっているのは、エンジンのマイグレーションはアプリケーションの既存のマイグレーションがすべて終わってから実行する必要があるためです。
@@ -575,7 +584,9 @@ $ bin/rails blorgh:install:migrations
 上のコマンドでコピーされるマイグレーションは _1つ_ だけである点にご注意ください。これは、最初の2つのマイグレーションはこのコマンドが初めて実行されたときにコピー済みであるためです。
 
 ```
-NOTE Migration [timestamp]_create_blorgh_articles.rb from blorgh has been skipped. Migration with the same name already exists. NOTE Migration [timestamp]_create_blorgh_comments.rb from blorgh has been skipped. Migration with the same name already exists. Copied migration [timestamp]_add_author_id_to_blorgh_articles.rb from blorgh
+NOTE Migration [timestamp]_create_blorgh_articles.blorgh.rb from blorgh has been skipped. Migration with the same name already exists.
+NOTE Migration [timestamp]_create_blorgh_comments.blorgh.rb from blorgh has been skipped. Migration with the same name already exists.
+Copied migration [timestamp]_add_author_id_to_blorgh_articles.blorgh.rb from blorgh
 ```
 
 このマイグレーションを実行するコマンドは以下のとおりです。
@@ -591,32 +602,18 @@ $ bin/rails db:migrate
 ```html+erb
 <p>
   <b>Author:</b>
-  <%= @article.author %>
+  <%= @article.author.name %>
 </p>
 ```
-
-`<%=`タグを使用して`@article.author`を出力すると、`to_s`メソッドがこのオブジェクトに対して呼び出されます。この出力はデフォルトのままでは整形されていません。
-
-```
-#<User:0x00000100ccb3b0>
-```
-
-これは期待していた結果ではありません。ここにユーザー名が表示される方がずっとよいでしょう。そのためには、`to_s`メソッドをアプリケーションの`User`クラスに追加します。
-
-```ruby
-def to_s
-  name
-end
-```
-
-これでRubyの生のオブジェクト出力が整形され、作者名が表示されるようになります。
 
 #### アプリケーションのコントローラを使用する
 
 Railsのコントローラでは、認証やセッション変数へのアクセスに関するコードをアプリケーション全体で共有するのが一般的です。従って、このようなコードはデフォルトで`ApplicationController`から継承します。しかし、Railsのエンジンは基本的にメインとなるアプリケーションから独立しているので、エンジンが利用できる`ApplicationController`はスコープで制限されています。名前空間が導入されていることでコードの衝突は回避されますが、エンジンのコントローラからメインアプリケーションの`ApplicationController`のメソッドにアクセスする必要も頻繁に発生します。エンジンのコントローラからメインアプリケーションの`ApplicationController`へのアクセスを提供するには、エンジンが所有するスコープ付きの`ApplicationController`に変更を加え、メインアプリケーションの`ApplicationController`を継承するのが簡単な方法です。Blorghエンジンの場合、`app/controllers/blorgh/application_controller.rb`を以下のように変更します。
 
 ```ruby
-class Blorgh::ApplicationController < ApplicationController
+module Blorgh
+  class ApplicationController < ::ApplicationController
+  end
 end
 ```
 
@@ -706,27 +703,41 @@ WARNING: このクラス名は必ず`String`で (=引用符で囲んで) 表し�
 
 ### 機能テスト
 
-特に機能テストを作成する際には、テストが実行されるのはエンジンではなく`test/dummy`に置かれるダミーアプリケーション上であるという点に留意する必要があります。このようになっているのは、testing環境がそのように設定されているためです。エンジンの主要な機能、特にコントローラをテストするには、エンジンをホストするアプリケーションが必要です。コントローラの機能は、通常であればたとえば以下のように`GET`をコントローラに送信することでテストするでしょう。
+特に機能テストを作成する際には、テストが実行されるのはエンジンではなく`test/dummy`に置かれるダミーアプリケーション上であるという点に留意する必要があります。このようになっているのは、testing環境がそのように設定されているためです。エンジンの主要な機能、特にコントローラをテストするには、エンジンをホストするアプリケーションが必要です。これはコントローラの機能テストのの中で一般的な`GET`をテストするためには以下のようにする必要があるという意味です。
 
 ```ruby
-get :index
+module Blorgh
+  class FooControllerTest < ActionDispatch::IntegrationTest
+    include Engine.routes.url_helpers
+
+    def test_index
+      get foos_url
+      ...
+    end
+  end
+end
 ```
 
-しかしこれは正常に機能しないでしょう。アプリケーションは、このようなリクエストをエンジンにルーティングする方法を知らないので、明示的にエンジンにルーティングする必要があります。これを行なうには、以下のようにリクエストのパラメータとして`:use_route`オプションを渡す必要があります。
+しかしこれは正常に機能しないでしょう。アプリケーションは、このようなリクエストをエンジンにルーティングする方法を知らないので、明示的にエンジンにルーティングする必要があります。これを行なうには、設定コードの中で`@routes`インスタンス変数にエンジンのルーティングを割り当てる必要があります。
 
 ```ruby
-get :index, use_route: :blorgh
+module Blorgh
+  class FooControllerTest < ActionDispatch::IntegrationTest
+    include Engine.routes.url_helpers
+
+    setup do
+      @routes = Engine.routes
+    end
+
+    def test_index
+      get foos_url
+      ...
+    end
+  end
+end
 ```
 
 上のようにすることで、このコントローラの`index`アクションに対して`GET`リクエストを送信しようとしていることがアプリケーションによって認識され、かつそのためにアプリケーションのルーティングではなくエンジンのルーティングが使用されるようになります。
-
-別の方法として、テスティング設定で`@routes`インスタンス変数に`Engine.routes`を割り当てることもできます。
-
-```ruby
-setup do
-  @routes = Engine.routes
-end
-```
 
 こうすることで、エンジン用のURLヘルパーもテストで期待どおりに動作します。
 
