@@ -1006,3 +1006,114 @@ module MyEngine
   end
 end
 ```
+
+ロードフック上のActive Support
+----------------------------
+
+Active SupportはRuby言語の拡張、ユーティリティとそれ以外の巡回用ユーティリティを提供する責任を持つRuby on Railsのコンポーネントです。
+
+Railsコードはアプリケーション読み込みの時点でよく参照されます。Railsはこれらのフレームワークの読み込み順番に責任があのので、`ActiveRecord::Base`みたいなフレームワークを読み込む時にはアプリケーションがRailsと交わした暗黙的な約束を違反してしまう可能性があります。延いては`ActiveRecord::Base`みたいなコードをアプリケーションの起動時に読み込むと全体のフレームワークを読み込むことになり、起動時間を長くなる可能性があり、アプリケーションの起動時の読み込み順番での衝突が起きる可能性もあります。
+
+ロードフックはRailsの読み込み契約を乱すことなく初期化プロセスに介入することができるAPIです。それだけではなく、起動時間の問題を軽減したり、衝突問題を回避できるようにします。
+
+## `on_load`フックはなんなのか
+
+Rubyは動的言語なのでとあるコードは違うRailsフレームワークを読み込んだりします。このコードを見てください。
+
+```ruby
+ActiveRecord::Base.include(MyActiveRecordHelper)
+```
+
+このスニペットはこのファイルが読み込まれた時に`ActiveRecord::Base`を発見することを意味します。この発見はRubyにこの定数の定義を探し、requireするようにします。これは昨日時に全てのActive Recordフレームワークが読み込みされることを意味します。
+
+`ActiveSupport.on_load`はコードの読み込みをそれが実際必要な時まで遅延することができるメカニズムです。このスニペットは以下のように変更できます。
+
+```ruby
+ActiveSupport.on_load(:active_record) { include MyActiveRecordHelper }
+```
+
+新しいスニペットは`ActiveRecord::Base`が読み込まれる時`MyActiveRecordHelper`だけをincludeします。
+
+## どうやって動くのか
+
+Railsフレームワークでは特定のライブラリーが読み込まれる時これらのフックが呼び出されます。たとえば、`ActionController::Base`が読み込まれる時、`:action_controller_base`フックが呼び出されます。これは`:action_controller_base`と一緒に呼び出しされた全ての`ActiveSupport.on_load`呼び出しが`ActionController::Base`のコンテキストで呼び出されるということです。すなわち、評価の時点では`self`が`ActionController::Base`になるという意味です。
+
+## `on_load`フックを使用してコードを変更する方法
+
+コードを変更することは一般的に難しくないです。もし、`ActiveRecord::Base`みたいなRailsフレームワークを参照する一行のコードがあるとしたら、これを`on_load`フックで囲むことで実現できます。
+
+### 例題1
+
+```ruby
+ActiveRecord::Base.include(MyActiveRecordHelper)
+```
+
+これは次のように書けます。
+
+```ruby
+ActiveSupport.on_load(:active_record) { include MyActiveRecordHelper } # ここではselfはActiveRecord::Baseを指してますのでシンプルに`#include`を呼び出せます。
+```
+
+### 例題2
+
+```ruby
+ActionController::Base.prepend(MyActionControllerHelper)
+```
+
+これは次のように書けます。
+
+```ruby
+ActiveSupport.on_load(:action_controller_base) { prepend MyActionControllerHelper } # ここではselfはActiveRecord::Baseを指してますのでシンプルに`#prepend`を呼び出せます。
+```
+
+### 例題3
+
+```ruby
+ActiveRecord::Base.include_root_in_json = true
+```
+
+これは次のように書けます。
+
+```ruby
+ActiveSupport.on_load(:active_record) { self.include_root_in_json = true } # ここではselfはActiveRecord::Baseを指してます。
+```
+
+## 利用可能なフック
+
+これらはコードで使えるフックです。
+
+以下のクラスの初期化プロセスをフックしたい場合はこれらを利用することができます。
+
+| クラス                             | 利用可能なフック                      |
+| --------------------------------- | ------------------------------------ |
+| `ActionCable`                     | `action_cable`                       |
+| `ActionController::API`           | `action_controller_api`              |
+| `ActionController::API`           | `action_controller`                  |
+| `ActionController::Base`          | `action_controller_base`             |
+| `ActionController::Base`          | `action_controller`                  |
+| `ActionController::TestCase`      | `action_controller_test_case`        |
+| `ActionDispatch::IntegrationTest` | `action_dispatch_integration_test`   |
+| `ActionMailer::Base`              | `action_mailer`                      |
+| `ActionMailer::TestCase`          | `action_mailer_test_case`            |
+| `ActionView::Base`                | `action_view`                        |
+| `ActionView::TestCase`            | `action_view_test_case`              |
+| `ActiveJob::Base`                 | `active_job`                         |
+| `ActiveJob::TestCase`             | `active_job_test_case`               |
+| `ActiveRecord::Base`              | `active_record`                      |
+| `ActiveSupport::TestCase`         | `active_support_test_case`           |
+| `i18n`                            | `i18n`                               |
+
+## 設定フック
+
+次は利用可能は設定フックです。これらは特定のフレームワークにフックしたりはしませんが、代わりにアプリケーション全体のコンテキストで実行されます。
+
+| フック                   | ユースケース                                                                              |
+| ---------------------- | ------------------------------------------------------------------------------------- |
+| `before_configuration` | 一番目の実行される設定可能なブロックです。イニシャライザより先に実行されます。              |
+| `before_initialize`    | 二番目の実行される設定可能なブロックです。フレームワークが初期化される前に呼び出されます。                |
+| `before_eager_load`    | 三番目の実行される設定可能なブロックです。`config.cache_classes`がfalseの場合は実行されません。 |
+| `after_initialize`     | 最後の実行される設定可能なブロックです。 フレームワークの初期化が終われば呼び出しされます。                   |
+
+### 例題
+
+`config.before_configuration { puts 'I am called before any initializers' }`
