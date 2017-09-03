@@ -1074,7 +1074,7 @@ ActiveRecord::Base.include_root_in_json = true
 これは次のように書けます。
 
 ```ruby
-ActiveSupport.on_load(:active_record) { self.include_root_in_json = true } # selfはActiveRecord::Baseを指します＼
+ActiveSupport.on_load(:active_record) { self.include_root_in_json = true } # selfはActiveRecord::Baseを指します
 ```
 
 ## 利用可能なフック
