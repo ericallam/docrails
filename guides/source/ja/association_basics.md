@@ -1741,7 +1741,7 @@ class Author < ApplicationRecord
 end
 ```
 
-`where`オプションでハッシュを使用した場合、この関連付けで作成されたレコードは自動的にこのハッシュを使用したスコープに含まれるようになります。この例の場合、`@author.confirmed_books.create`または`@author.confirmed.books.build`を実行すると、confirmedカラムの値が`true`の書籍(book)が常に作成されます。
+`where`オプションでハッシュを使用した場合、この関連付けで作成されたレコードは自動的にこのハッシュを使用したスコープに含まれるようになります。この例の場合、`@author.confirmed_books.create`または`@author.confirmed_books.build`を実行すると、confirmedカラムの値が`true`の書籍(book)が常に作成されます。
 
 ##### `extending`
 
