@@ -173,7 +173,7 @@ Railsは指定どおりコントローラを作成し、関連ファイルやル
 
 ```bash
 create  app/controllers/welcome_controller.rb
-route  get 'welcome/index'
+ route  get 'welcome/index'
 invoke  erb
 create    app/views/welcome
 create    app/views/welcome/index.html.erb
@@ -257,7 +257,7 @@ $ bin/rails routes
       Prefix Verb   URI Pattern                  Controller#Action
     articles GET    /articles(.:format)          articles#index
              POST   /articles(.:format)          articles#create
-new_article GET    /articles/new(.:format)      articles#new
+new_article  GET    /articles/new(.:format)      articles#new
 edit_article GET    /articles/:id/edit(.:format) articles#edit
      article GET    /articles/:id(.:format)      articles#show
              PATCH  /articles/:id(.:format)      articles#update
@@ -382,7 +382,7 @@ $ bin/rails routes
       Prefix Verb   URI Pattern                  Controller#Action
     articles GET    /articles(.:format)          articles#index
              POST   /articles(.:format)          articles#create
-new_article GET    /articles/new(.:format)      articles#new
+new_article  GET    /articles/new(.:format)      articles#new
 edit_article GET    /articles/:id/edit(.:format) articles#edit
      article GET    /articles/:id(.:format)      articles#show
              PATCH  /articles/:id(.:format)      articles#update
