@@ -363,7 +363,7 @@ end
 * `:greater_than` - 指定された値よりも大きくなければならないことを指定します。デフォルトのエラーメッセージは _"must be greater than %{count}"_ です。
 * `:greater_than_or_equal_to` - 指定された値と等しいか、それよりも大きくなければならないことを指定します。デフォルトのエラーメッセージは _"must be greater than or equal to %{count}"_ です。
 * `:equal_to` - 指定された値と等しくなければならないことを示します。デフォルトのエラーメッセージは _"must be equal to %{count}"_ です。
-* `:less_than` - 指定された値よりも小さくなければならないことを指定します。デフォルトのエラーメッセージは _"must be less than %{count}"_.です。
+* `:less_than` - 指定された値よりも小さくなければならないことを指定します。デフォルトのエラーメッセージは _"must be less than %{count}"_ です。
 * `:less_than_or_equal_to` - 指定された値と等しいか、それよりも小さくなければならないことを指定します。デフォルトのエラーメッセージは _"must be less than or equal to %{count}"_ です。
 * `:odd` - trueに設定されている場合は、奇数でなければなりません。デフォルトのエラーメッセージは _"must be odd"_ です。
 * `:even` - trueに設定されている場合は、偶数でなければなりません。デフォルトのエラーメッセージは _"must be even"_ です。
