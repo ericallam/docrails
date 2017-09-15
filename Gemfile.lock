@@ -519,7 +519,6 @@ GEM
       sprockets (>= 3.0.0)
     sqlite3 (1.3.13)
     stackprof (0.2.10)
-    stopgap_13632 (1.0.1)
     sucker_punch (2.0.2)
       concurrent-ruby (~> 1.0.0)
     thin (1.7.2)
@@ -640,7 +639,6 @@ DEPENDENCIES
   sneakers
   sprockets-export
   stackprof
-  stopgap_13632
   sucker_punch
   turbolinks (~> 5)
   turnip
