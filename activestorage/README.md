@@ -24,7 +24,7 @@ class User < ApplicationRecord
 end
 
 # Attach an avatar to the user.
-user.avatar.attach(io: File.open("~/face.jpg"), filename: "avatar.jpg", content_type: "image/jpg")
+user.avatar.attach(io: File.open("/path/to/face.jpg"), filename: "face.jpg", content_type: "image/jpg")
 
 # Does the user have an avatar?
 user.avatar.attached? # => true
@@ -63,7 +63,7 @@ end
 ```
 
 ```erb
-<%= form_with model: @message do |form| %>
+<%= form_with model: @message, local: true do |form| %>
   <%= form.text_field :title, placeholder: "Title" %><br>
   <%= form.text_area :content %><br><br>
 
