@@ -635,7 +635,7 @@ end
 
 このテーブルはモデルを表さないので、`create_table`に`id: false`を渡します。こうしておかないとこの関連付けは正常に動作しません。モデルのIDが破損する、IDの競合で例外が発生するなど、`has_and_belongs_to_many`関連付けの動作が怪しい場合は、この設定を忘れていないかどうか再度確認してみてください。
 
-You can also use the method `create_join_table`
+`create_join_table`メソッドを使用することも可能です。
 
 ```ruby
 class CreateAssembliesPartsJoinTable < ActiveRecord::Migration[5.0]
