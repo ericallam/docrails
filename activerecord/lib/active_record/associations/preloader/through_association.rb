@@ -28,6 +28,8 @@ module ActiveRecord
 
           middle_records = through_records.flat_map(&:last)
 
+          reflection_scope = reflection_scope() if reflection.scope
+
           preloaders = preloader.preload(middle_records,
                                          source_reflection.name,
                                          reflection_scope)
@@ -49,7 +51,7 @@ module ActiveRecord
               }.compact
 
               # Respect the order on `reflection_scope` if it exists, else use the natural order.
-              if reflection_scope.values[:order].present?
+              if reflection_scope && !reflection_scope.order_values.empty?
                 @id_map ||= id_to_index_map @preloaded_records
                 rhs_records.sort_by { |rhs| @id_map[rhs] }
               else
@@ -67,10 +69,7 @@ module ActiveRecord
             id_map
           end
 
-          def reset_association(owners, association_name, through_scope)
-            should_reset = (through_scope != through_reflection.klass.unscoped) ||
-               (options[:source_type] && through_reflection.collection?)
-
+          def reset_association(owners, association_name, should_reset)
             # Don't cache the association - we would only be caching a subset
             if should_reset
               owners.each { |owner|
@@ -81,6 +80,7 @@ module ActiveRecord
 
           def through_scope
             scope = through_reflection.klass.unscoped
+            options = reflection.options
 
             if options[:source_type]
               scope.where! reflection.foreign_type => options[:source_type]
@@ -113,7 +113,7 @@ module ActiveRecord
               end
             end
 
-            scope
+            scope unless scope.empty_scope?
           end
       end
     end

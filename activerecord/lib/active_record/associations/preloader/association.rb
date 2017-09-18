@@ -17,26 +17,20 @@ module ActiveRecord
         end
 
         def run(preloader)
-          preload(preloader)
-        end
-
-        def preload(preloader)
-          raise NotImplementedError
-        end
-
-        # The name of the key on the associated records
-        def association_key_name
-          raise NotImplementedError
-        end
-
-        # The name of the key on the model which declares the association
-        def owner_key_name
-          raise NotImplementedError
+          associated_records_by_owner(preloader).each do |owner, records|
+            associate_records_to_owner(owner, records)
+          end
         end
 
         private
-          def options
-            reflection.options
+          # The name of the key on the associated records
+          def association_key_name
+            reflection.join_primary_key(klass)
+          end
+
+          # The name of the key on the model which declares the association
+          def owner_key_name
+            reflection.join_foreign_key
           end
 
           def associated_records_by_owner(preloader)
@@ -49,6 +43,10 @@ module ActiveRecord
             owners.each_with_object({}) do |owner, result|
               result[owner] = records[convert_key(owner[owner_key_name])] || []
             end
+          end
+
+          def associate_records_to_owner(owner, records)
+            raise NotImplementedError
           end
 
           def owner_keys
