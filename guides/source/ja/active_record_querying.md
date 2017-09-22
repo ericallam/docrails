@@ -413,7 +413,7 @@ Invoice.pending.find_in_batches do |invoice|
 end 
 ```
 
-ただし内部でイテレートするための順序制約を持っていないため、順序に関する制約がない限ります。
+ただし内部でイテレートするための順序制約を持っていないため、順序に関する制約がない場合に限ります。
 
 ##### `find_in_batches`のオプション
 
@@ -1150,7 +1150,7 @@ Client.joins(:orders).where(orders: { created_at: time_range })
 Author.left_outer_joins(:posts).distinct.select('authors.*, COUNT(posts.*) AS posts_count').group('authors.id')
 ```
 
-上のコードは、以下のクエリを生成します。Which produces
+上のコードは、以下のクエリを生成します。
 
 ```sql
 SELECT DISTINCT authors.*, COUNT(posts.*) AS posts_count FROM "authors"
@@ -1462,7 +1462,7 @@ Client.where(published: false).unscoped.all
 # SELECT "clients".* FROM "clients"
 ```
 
-`unscoped` can also accept a block.
+`unscoped` はブロックも受け取れます。
 
 ```ruby
 Client.unscoped {

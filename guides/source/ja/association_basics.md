@@ -635,7 +635,7 @@ end
 
 このテーブルはモデルを表さないので、`create_table`に`id: false`を渡します。こうしておかないとこの関連付けは正常に動作しません。モデルのIDが破損する、IDの競合で例外が発生するなど、`has_and_belongs_to_many`関連付けの動作が怪しい場合は、この設定を忘れていないかどうか再度確認してみてください。
 
-You can also use the method `create_join_table`
+`create_join_table`メソッドを使用することも可能です。
 
 ```ruby
 class CreateAssembliesPartsJoinTable < ActiveRecord::Migration[5.0]
@@ -728,7 +728,7 @@ a.first_name = 'David'
 a.first_name == b.author.first_name # => true
 ```
 
-Active Recordでは標準的な名前同士の関連付けのほとんどをサポートしていて、自動的に認識することができます。一方で、Active Recordで次のようなオプションが使った場合、双方向の関連付けが自動的に認識されないようにすることもできます。
+Active Recordでは標準的な名前同士の関連付けのほとんどをサポートしていて、自動的に認識することができます。一方で、Active Recordで次のようなオプションを使った場合、双方向の関連付けが自動的に認識されないようにすることもできます。
 
 * `:conditions`
 * `:through`
@@ -1842,7 +1842,7 @@ class Person < ApplicationRecord
 end
 
 person = Person.create(name: 'John')
-article   = Article.create(name: 'a1')
+article = Article.create(name: 'a1')
 person.articles << article
 person.articles << article
 person.articles.inspect # => [#<Article id: 5, name: "a1">, #<Article id: 5, name: "a1">]
@@ -1860,7 +1860,7 @@ class Person
 end
 
 person = Person.create(name: 'Honda')
-article   = Article.create(name: 'a1')
+article = Article.create(name: 'a1')
 person.articles << article
 person.articles << article
 person.articles.inspect # => [#<Article id: 7, name: "a1">]
@@ -1875,7 +1875,7 @@ Reading.all.inspect     # => [#<Reading id: 16, person_id: 7, article_id: 7>, #<
 add_index :readings, [:person_id, :article_id], unique: true
 ```
 
-一度ユニークなインデクスを持つと、ある記事をpersonに２回追加したときに
+一度ユニークなインデックスを持つと、ある記事をpersonに２回追加したときに
 `ActiveRecord::RecordNotUnique`エラーが発生するようになります
 
 ```ruby
@@ -1990,7 +1990,7 @@ NOTE: このメソッドは`collection.concat`および`collection.push`のエ�
 
 ##### `collection.destroy(object, ...)`
 
-`collection.delete`メソッドは、結合テーブル上のレコードを削除し、それによって1つまたは複数のオブジェクトをコレクションから削除します。このメソッドを実行してもオブジェクトはdestroyされません。
+`collection.destroy`メソッドは、結合テーブル上のレコードを削除し、それによって1つまたは複数のオブジェクトをコレクションから削除します。このメソッドを実行してもオブジェクトはdestroyされません。
 
 ```ruby
 @part.assemblies.destroy(@assembly1)
@@ -2056,7 +2056,7 @@ NOTE: このメソッドは`collection.concat`および`collection.push`のエ�
 
 ##### `collection.build(attributes = {})`
 
-`collection.build`メソッドは、関連付けが行われたオブジェクトを1つ返します。このオブジェクトは、渡された属性でインスタンス化され、その結合テーブルを介してリンクが作成されます。ただし、関連付けられたオブジェクトはこの時点では保存s慣れて_いない_ことにご注意ください。
+`collection.build`メソッドは、関連付けが行われたオブジェクトを1つ返します。このオブジェクトは、渡された属性でインスタンス化され、その結合テーブルを介してリンクが作成されます。ただし、関連付けられたオブジェクトはこの時点では保存されて_いない_ことにご注意ください。
 
 ```ruby
 @assembly = @part.assemblies.build({assembly_name: "Transmission housing"})
