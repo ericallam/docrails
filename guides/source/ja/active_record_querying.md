@@ -1897,7 +1897,7 @@ EXPLAINを実行する
 
 ```ruby
 User.where(id: 1).joins(:articles).explain
-`
+```
 
 以下のような結果が生成されます。
 
@@ -1932,7 +1932,7 @@ Nested Loop Left Join  (cost=0.00..37.24 rows=8 width=0)
    ->  Index Scan using users_pkey on users  (cost=0.00..8.27 rows=1 width=4)
          Index Cond: (id = 1)
    ->  Seq Scan on articles  (cost=0.00..28.88 rows=8 width=4)
-         Filter: (articles.user_id = 1) 
+         Filter: (articles.user_id = 1)
 (6 rows)
 ```
 
