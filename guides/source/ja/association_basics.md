@@ -690,15 +690,15 @@ end
 module MyApplication
   module Business
     class Supplier < ApplicationRecord
-       has_one :account,
-        class_name: "MyApplication::Billing::Account"
+      has_one :account,
+      class_name: "MyApplication::Billing::Account"
     end
   end
 
   module Billing
     class Account < ApplicationRecord
-       belongs_to :supplier,
-        class_name: "MyApplication::Business::Supplier"
+      belongs_to :supplier,
+      class_name: "MyApplication::Business::Supplier"
     end
   end
 end
