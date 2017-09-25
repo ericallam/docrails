@@ -42,13 +42,13 @@ end
 ```ruby
 class Order < ApplicationRecord
   belongs_to :client, counter_cache: true
-end 
+end
 ```
 
 ```ruby
 class Role < ApplicationRecord
   has_and_belongs_to_many :clients
-end 
+end
 ```
 
 Active Recordは、ユーザーに代わってデータベースにクエリを発行します。発行されるクエリは多くのデータベースシステム (MySQL、PostgreSQL、SQLiteなど) と互換性があります。Active Recordを使用していれば、利用しているデータベースシステムの種類にかかわらず、同じ表記を使用できます。
@@ -410,7 +410,7 @@ end
 ```ruby
 Invoice.pending.find_in_batches do |invoice|
   pending_invoices_export.add_invoices(invoices)
-end 
+end
 ```
 
 ただし内部でイテレートするための順序制約を持っていないため、順序に関する制約がない場合に限ります。
@@ -466,7 +466,7 @@ TIP: SQLインジェクションの詳細については[Ruby on Railsセキュ�
 
 #### プレースホルダを使用した条件
 
-疑問符`(?)`をパラメータで置き換えるスタイルと同様、条件中でキー/値のハッシュを渡すことができます。ここで渡されハッシュは、条件中の対応するキー/値の部分に置き換えられます。
+疑問符`(?)`をパラメータで置き換えるスタイルと同様、条件中でキー/値のハッシュを渡すことができます。ここで渡されたハッシュは、条件中の対応するキー/値の部分に置き換えられます。
 
 ```ruby
 Client.where("created_at >= :start_date AND created_at <= :end_date",
@@ -631,7 +631,7 @@ SELECT viewable_by, locked FROM clients
 selectを使用すると、選択したフィールドだけを使用してモデルオブジェクトが初期化されるため、注意してください。モデルオブジェクトの初期化時に指定しなかったフィールドにアクセスしようとすると、以下のメッセージが表示されます。
 
 ```bash
-ActiveModel::MissingAttributeError: missing attribute: <属性名> 
+ActiveModel::MissingAttributeError: missing attribute: <属性名>
 ```
 
 `<属性名>`は、アクセスしようとした属性です。`id`メソッドは、この`ActiveRecord::MissingAttributeError`を発生しません。このため、関連付けを扱う場合には注意してください。関連付けが正常に動作するには`id`メソッドが必要だからです。
@@ -808,7 +808,7 @@ SELECT "articles".* FROM "articles" WHERE (id > 10) ORDER BY id desc LIMIT 20
 ```ruby
 class Article < ApplicationRecord
   has_many :comments, -> { order('posted_at DESC') }
-end 
+end
 
 Article.find(10).comments.reorder('name')
 ```
@@ -850,7 +850,7 @@ Client.where("orders_count > 10").reverse_order
 上で実行されるSQLは以下のようなものになります。
 
 ```sql
-SELECT * FROM clients WHERE orders_count > 10 ORDER BY clients.id DESC 
+SELECT * FROM clients WHERE orders_count > 10 ORDER BY clients.id DESC
 ```
 
 このメソッドは引数を**取りません**。
@@ -957,7 +957,7 @@ c2.save # ActiveRecord::StaleObjectErrorを発生
 ```ruby
 class Client < ApplicationRecord
   self.locking_column = :lock_client_column
-end 
+end
 ```
 
 ### 悲観的ロック (pessimistic)
@@ -971,13 +971,13 @@ Item.transaction do
   i = Item.lock.first
   i.name = 'Jones'
   i.save!
-end 
+end
 ```
 
 バックエンドでMySQLを使用している場合、上のセッションによって以下のSQLが生成されます。
 
 ```sql
-SQL (0.2ms)   BEGIN 
+SQL (0.2ms)   BEGIN
 Item Load (0.3ms)   SELECT * FROM `items` LIMIT 1 FOR UPDATE
 Item Update (0.4ms)   UPDATE `items` SET `updated_at` = '2009-02-07 18:05:56', `name` = 'Jones' WHERE `id` = 1
 SQL (0.8ms)   COMMIT
@@ -1000,7 +1000,7 @@ item.with_lock do
   # このブロックはトランザクション内で呼び出される
   # itemはロック済み
   item.increment!(:views)
-end 
+end
 ```
 
 テーブルを結合する
@@ -1035,22 +1035,22 @@ Active Recordでは、`joins`メソッドを使用して関連付けで`JOIN`句
 ```ruby
 class Category < ApplicationRecord
   has_many :articles
-end 
+end
 
 class Article < ApplicationRecord
   belongs_to :category
   has_many :comments
   has_many :tags
-end 
+end
 
 class Comment < ApplicationRecord
   belongs_to :article
   has_one :guest
-end 
+end
 
 class Guest < ApplicationRecord
   belongs_to :comment
-end 
+end
 
 class Tag < ApplicationRecord
   belongs_to :article
@@ -1259,7 +1259,7 @@ NOTE: もしjoinに一部で関連付けが一括読み込みされている場�
 ```ruby
 class Article < ApplicationRecord
   scope :published, -> { where(published: true) }
-end 
+end
 ```
 
 以下でもわかるように、スコープでのメソッドの設定は、クラスメソッドの定義と完全に同じ (というよりクラスメソッドの定義そのもの) です。どちらの形式を使用するかは好みの問題です。
@@ -1278,13 +1278,13 @@ end
 class Article < ApplicationRecord
   scope :published,               -> { where(published: true) }
   scope :published_and_commented, -> { published.where("comments_count > 0") }
-end 
+end
 ```
 
 この`published`スコープを呼び出すには、クラスでこのスコープを呼び出します。
 
 ```ruby
-Article.published # => [published articles] 
+Article.published # => [published articles]
 ```
 
 または、`Article`オブジェクトからなる関連付けでこのスコープを呼び出します。
@@ -1301,7 +1301,7 @@ category.articles.published # => [このカテゴリに属する、公開済み�
 ```ruby
 class Article < ApplicationRecord
   scope :created_before, ->(time) { where("created_at < ?", time) }
-end 
+end
 ```
 
 引数付きスコープの呼び出しは、クラスメソッドの呼び出しと同様の方法で行います。
@@ -1333,7 +1333,7 @@ category.articles.created_before(time)
 ```ruby
 class Article < ApplicationRecord
   scope :created_before, ->(time) { where("created_at < ?", time) if time.present? }
-end 
+end
 ```
 
 以下の例からもわかるように、これはクラスメソッドのように振る舞います。
@@ -1355,7 +1355,7 @@ end
 ```ruby
 class Client < ApplicationRecord
   default_scope { where("removed_at IS NULL") }
-end 
+end
 ```
 
 このモデルに対してクエリが実行されたときのSQLクエリは以下のような感じになります。
@@ -1379,7 +1379,7 @@ NOTE: レコードを作成するときも、スコープの引数が`Hash`と�
 ```ruby
 class Client < ApplicationRecord
   default_scope { where(active: true) }
-end 
+end
 
 Client.new          # => #<Client id: nil, active: true>
 Client.unscoped.new # => #<Client id: nil, active: nil>
@@ -1390,7 +1390,7 @@ Client.unscoped.new # => #<Client id: nil, active: nil>
 ```ruby
 class Client < ApplicationRecord
   default_scope { where("active = ?", true) }
-end 
+end
 
 Client.new # => #<Client id: nil, active: nil>
 ```
@@ -1403,7 +1403,7 @@ Client.new # => #<Client id: nil, active: nil>
 class User < ApplicationRecord
   scope :active, -> { where state: 'active' }
   scope :inactive, -> { where state: 'inactive' }
-end 
+end
 
 User.active.inactive
 # SELECT "users".* FROM "users" WHERE "users"."state" = 'active' AND "users"."state" = 'inactive'
@@ -1487,7 +1487,7 @@ Enums
 ```ruby
 class Book < ApplicationRecord
   enum availability: [:available, :unavailable]
-end 
+end
 ```
 
 これは対応する[スコープ](#スコープ)を自動的に作成します。状態の遷移や現在の状態の問い合わせ用のメソッドも追加されます。
@@ -1520,7 +1520,7 @@ Active Record パターンには [メソッドチェーン (Method chaining - Wi
 
 ```ruby
 Person
-  .select('people.id, people.name, comments.text') 
+  .select('people.id, people.name, comments.text')
   .joins(:comments)
   .where('comments.created_at > ?', 1.week.ago)
 ```
@@ -1599,7 +1599,7 @@ Client.create_with(locked: false).find_or_create_by(first_name: 'Andy')
 ```ruby
 Client.find_or_create_by(first_name: 'Andy') do |c|
   c.locked = false
-end 
+end
 ```
 
 このブロックは、クライアントが作成されるときにだけ実行されます。このコードを再度実行すると、このブロックは実行されません。
@@ -1720,7 +1720,7 @@ class Client < ApplicationRecord
   def name
     "私は#{super}"
   end
-end 
+end
 
 Client.select(:name).map &:name
 # => ["私はDavid", "私はJeremy", "私はJose"]
@@ -1751,7 +1751,7 @@ Person.ids
 ```ruby
 class Person < ApplicationRecord
   self.primary_key = "person_id"
-end 
+end
 
 Person.ids
 # SELECT person_id FROM people
