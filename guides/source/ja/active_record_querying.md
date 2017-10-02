@@ -1316,7 +1316,7 @@ Article.created_before(Time.zone.now)
 class Article < ApplicationRecord
   def self.created_before(time)
     where("created_at < ?", time)
-end
+  end
 end
 ```
 
