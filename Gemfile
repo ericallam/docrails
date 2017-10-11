@@ -63,7 +63,7 @@ gem "bootsnap", ">= 1.1.0", require: false
 # Active Job.
 group :job do
   gem "resque", require: false
-  gem "resque-scheduler", require: false
+  gem "resque-scheduler", github: "jeremy/resque-scheduler", branch: "redis-rb-4.0", require: false
   gem "sidekiq", require: false
   gem "sucker_punch", require: false
   gem "delayed_job", require: false
@@ -84,7 +84,10 @@ group :cable do
 
   gem "em-hiredis", require: false
   gem "hiredis", require: false
-  gem "redis", require: false
+  gem "redis", "~> 4.0", require: false
+
+  # For Redis 4.0 support. Unreleased 9cb81bf.
+  gem "redis-namespace", github: "resque/redis-namespace"
 
   gem "websocket-client-simple", github: "matthewd/websocket-client-simple", branch: "close-race", require: false
 
