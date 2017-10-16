@@ -1477,7 +1477,7 @@ Active Recordは、テーブルに定義されたすべてのフィールド (�
 
 この動的検索メソッドの末尾に`Client.find_by_name!("Ryan")`のように感嘆符 (`!`) を追加すると、該当するレコードがない場合に`ActiveRecord::RecordNotFound`エラーが発生します。
 
-nameとlockedの両方を検索したいのであれば、2つのフィールド名をandでつなぐだけでメソッドを利用できます。たとえば、`Client.find_by_first_name_and_locked("Ryan", true)`のようにかくことができます。
+nameとlockedの両方を検索したいのであれば、2つのフィールド名をandでつなぐだけでメソッドを利用できます。たとえば、`Client.find_by_first_name_and_locked("Ryan", true)`のように書くことができます。
 
 Enums
 -----
