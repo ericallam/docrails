@@ -1,3 +1,21 @@
+*   Fix longer sequence name detection for serial columns.
+
+    Fixes #28332.
+
+    *Ryuta Kamizono*
+
+*   MySQL: Don't lose `auto_increment: true` in the `db/schema.rb`.
+
+    Fixes #30894.
+
+    *Ryuta Kamizono*
+
+*   Fix `COUNT(DISTINCT ...)` for `GROUP BY` with `ORDER BY` and `LIMIT`.
+
+    Fixes #30886.
+
+    *Ryuta Kamizono*
+
 *   PostgreSQL `tsrange` now preserves subsecond precision.
 
     PostgreSQL 9.1+ introduced range types, and Rails added support for using

@@ -197,6 +197,12 @@ INFO. Additional keys may be added by the caller.
 }
 ```
 
+### unpermitted_parameters.action_controller
+
+| Key     | Value            |
+| ------- | ---------------- |
+| `:keys` | Unpermitted keys |
+
 Action View
 -----------
 
@@ -337,6 +343,22 @@ Action Mailer
 }
 ```
 
+### process.action_mailer
+
+| Key           | Value                    |
+| ------------- | ------------------------ |
+| `:mailer`     | Name of the mailer class |
+| `:action`     | The action               |
+| `:args`       | The arguments            |
+
+```ruby
+{
+  mailer: "Notification",
+  action: "welcome_email",
+  args: []
+}
+```
+
 Active Support
 --------------
 
@@ -449,6 +471,45 @@ Active Job
 | ------------ | -------------------------------------- |
 | `:adapter`   | QueueAdapter object processing the job |
 | `:job`       | Job object                             |
+
+Action Cable
+------------
+
+### perform_action.action_cable
+
+| Key              | Value                     |
+| ---------------- | ------------------------- |
+| `:channel_class` | Name of the channel class |
+| `:action`        | The action                |
+| `:data`          | A hash of data            |
+
+### transmit.action_cable
+
+| Key              | Value                     |
+| ---------------- | ------------------------- |
+| `:channel_class` | Name of the channel class |
+| `:data`          | A hash of data            |
+| `:via`           | Via                       |
+
+### transmit_subscription_confirmation.action_cable
+
+| Key              | Value                     |
+| ---------------- | ------------------------- |
+| `:channel_class` | Name of the channel class |
+
+### transmit_subscription_rejection.action_cable
+
+| Key              | Value                     |
+| ---------------- | ------------------------- |
+| `:channel_class` | Name of the channel class |
+
+### broadcast.action_cable
+
+| Key             | Value                |
+| --------------- | -------------------- |
+| `:broadcasting` | A named broadcasting |
+| `:message`      | A hash of message    |
+| `:coder`        | The coder            |
 
 Active Storage
 --------------
