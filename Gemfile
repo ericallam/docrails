@@ -20,7 +20,6 @@ gem "mocha", require: false
 gem "capybara", "~> 2.15"
 
 gem "rack-cache", "~> 1.2"
-gem "jquery-rails"
 gem "coffee-rails"
 gem "sass-rails", github: "rails/sass-rails", branch: "5-0-stable"
 gem "turbolinks", "~> 5"
@@ -96,6 +95,7 @@ group :cable do
   gem "sprockets-export", require: false
 end
 
+# Active Storage
 group :storage do
   gem "aws-sdk-s3", require: false
   gem "google-cloud-storage", "~> 1.3", require: false
