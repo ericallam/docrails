@@ -25,7 +25,6 @@ require "models/chef"
 require "models/department"
 require "models/cake_designer"
 require "models/drink_designer"
-require "models/mocktail_designer"
 require "models/recipe"
 
 class ReflectionTest < ActiveRecord::TestCase
@@ -366,9 +365,16 @@ class ReflectionTest < ActiveRecord::TestCase
     assert_raises(ActiveRecord::UnknownPrimaryKey) { reflection.active_record_primary_key }
   end
 
+  def test_type
+    assert_equal "taggable_type", Post.reflect_on_association(:taggings).type.to_s
+    assert_equal "imageable_class", Post.reflect_on_association(:images).type.to_s
+    assert_nil Post.reflect_on_association(:readers).type
+  end
+
   def test_foreign_type
     assert_equal "sponsorable_type", Sponsor.reflect_on_association(:sponsorable).foreign_type.to_s
     assert_equal "sponsorable_type", Sponsor.reflect_on_association(:thing).foreign_type.to_s
+    assert_nil Sponsor.reflect_on_association(:sponsor_club).foreign_type
   end
 
   def test_collection_association
