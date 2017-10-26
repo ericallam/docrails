@@ -464,7 +464,7 @@ redirect_to root_url, flash: { referral_code: 1234 }
 
     <!-- 以下略 -->
   </body>
-</html> 
+</html>
 ```
 
 このように、アクションで通知(notice)や警告(alert)メッセージを設置すると、レイアウト側で自動的にそのメッセージが表示されます。
@@ -600,8 +600,8 @@ class UsersController < ApplicationController
     @users = User.all
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render xml: @users}
-      format.json { render json: @users}
+      format.xml  { render xml: @users }
+      format.json { render json: @users }
     end
   end
 end
