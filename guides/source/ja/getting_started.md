@@ -1075,7 +1075,7 @@ Active Recordの関連付け機能により、2つのモデルの間にリレー
 * 1つのコメントは1つの記事に属する (Each comment belongs to one article)。
 * 1つの記事は複数のコメントを持てる (One article can have many comments)。
 
-そして上の方法(における英語の記述)は、Railsで関連付けを宣言するために使用される文法と非常に似ています。`Comment` モデル (app/models/comment.rb) 内のコードに既に書かれていたように、1つの記事には1つのコメントが属しています。
+そして上の方法(における英語の記述)は、Railsで関連付けを宣言するために使用される文法と非常に似ています。`Comment` モデル (app/models/comment.rb) 内のコードに既に書かれていたように、各コメントは1つの記事に属しています。
 
 ```ruby
 class Comment < ActiveRecord::Base
