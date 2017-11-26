@@ -275,9 +275,6 @@ Action Cable
 *   `cable.yml`のRadisアダプタとイベントベースRedisのアダプタで`channel_prefix`をサポート: 複数のRailsアプリで同じRedisサーバーが使われている場合の名前衝突回避のため
     ([Pull Request](https://github.com/rails/rails/pull/27425))
 
-*   起源の同じ接続をデフォルトで許可
-    ([commit](https://github.com/rails/rails/commit/dae404473409fcab0e07976aec626df670e52282))
-
 *   データブロードキャスティング用の`ActiveSupport::Notifications`フックを追加
     ([Pull Request](https://github.com/rails/rails/pull/24988))
 
