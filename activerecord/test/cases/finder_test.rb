@@ -120,6 +120,21 @@ class FinderTest < ActiveRecord::TestCase
     assert_equal "The Fourth Topic of the day", records[2].title
   end
 
+  def test_find_with_ids_with_no_id_passed
+    exception = assert_raises(ActiveRecord::RecordNotFound) { Topic.find }
+    assert_equal exception.model, "Topic"
+    assert_equal exception.primary_key, "id"
+  end
+
+  def test_find_with_ids_with_id_out_of_range
+    exception = assert_raises(ActiveRecord::RecordNotFound) do
+      Topic.find("9999999999999999999999999999999")
+    end
+
+    assert_equal exception.model, "Topic"
+    assert_equal exception.primary_key, "id"
+  end
+
   def test_find_passing_active_record_object_is_not_permitted
     assert_raises(ArgumentError) do
       Topic.find(Topic.last)
@@ -239,7 +254,7 @@ class FinderTest < ActiveRecord::TestCase
 
   # Ensure +exists?+ runs without an error by excluding order value.
   def test_exists_with_order
-    assert_equal true, Topic.order("invalid sql here").exists?
+    assert_equal true, Topic.order(Arel.sql("invalid sql here")).exists?
   end
 
   def test_exists_with_joins
@@ -652,7 +667,7 @@ class FinderTest < ActiveRecord::TestCase
 
   def test_last_with_irreversible_order
     assert_raises(ActiveRecord::IrreversibleOrderError) do
-      Topic.order("coalesce(author_name, title)").last
+      Topic.order(Arel.sql("coalesce(author_name, title)")).last
     end
   end
 

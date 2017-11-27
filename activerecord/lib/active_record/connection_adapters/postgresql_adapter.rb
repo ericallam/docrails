@@ -273,6 +273,11 @@ module ActiveRecord
         end
       end
 
+      def discard! # :nodoc:
+        @connection.socket_io.reopen(IO::NULL)
+        @connection = nil
+      end
+
       def native_database_types #:nodoc:
         NATIVE_DATABASE_TYPES
       end
@@ -337,18 +342,12 @@ module ActiveRecord
       end
 
       def extension_enabled?(name)
-        if supports_extensions?
-          res = exec_query("SELECT EXISTS(SELECT * FROM pg_available_extensions WHERE name = '#{name}' AND installed_version IS NOT NULL) as enabled", "SCHEMA")
-          res.cast_values.first
-        end
+        res = exec_query("SELECT EXISTS(SELECT * FROM pg_available_extensions WHERE name = '#{name}' AND installed_version IS NOT NULL) as enabled", "SCHEMA")
+        res.cast_values.first
       end
 
       def extensions
-        if supports_extensions?
-          exec_query("SELECT extname FROM pg_extension", "SCHEMA").cast_values
-        else
-          super
-        end
+        exec_query("SELECT extname FROM pg_extension", "SCHEMA").cast_values
       end
 
       # Returns the configured supported identifier length supported by PostgreSQL
@@ -397,6 +396,8 @@ module ActiveRecord
         UNIQUE_VIOLATION      = "23505"
         SERIALIZATION_FAILURE = "40001"
         DEADLOCK_DETECTED     = "40P01"
+        LOCK_NOT_AVAILABLE    = "55P03"
+        QUERY_CANCELED        = "57014"
 
         def translate_exception(exception, message)
           return exception unless exception.respond_to?(:result)
@@ -416,6 +417,10 @@ module ActiveRecord
             SerializationFailure.new(message)
           when DEADLOCK_DETECTED
             Deadlocked.new(message)
+          when LOCK_NOT_AVAILABLE
+            TransactionTimeout.new(message)
+          when QUERY_CANCELED
+            StatementTimeout.new(message)
           else
             super
           end

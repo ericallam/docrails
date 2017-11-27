@@ -295,6 +295,7 @@ module ActiveRecord
       spawn.order!(*args)
     end
 
+    # Same as #order but operates on relation in-place instead of copying.
     def order!(*args) # :nodoc:
       preprocess_order_args(args)
 
@@ -316,6 +317,7 @@ module ActiveRecord
       spawn.reorder!(*args)
     end
 
+    # Same as #reorder but operates on relation in-place instead of copying.
     def reorder!(*args) # :nodoc:
       preprocess_order_args(args)
 
@@ -924,13 +926,13 @@ module ActiveRecord
       def build_arel(aliases)
         arel = Arel::SelectManager.new(table)
 
-        build_joins(arel, joins_values.flatten, aliases) unless joins_values.empty?
+        aliases = build_joins(arel, joins_values.flatten, aliases) unless joins_values.empty?
         build_left_outer_joins(arel, left_outer_joins_values.flatten, aliases) unless left_outer_joins_values.empty?
 
         arel.where(where_clause.ast) unless where_clause.empty?
         arel.having(having_clause.ast) unless having_clause.empty?
         if limit_value
-          limit_attribute = Attribute.with_cast_value(
+          limit_attribute = ActiveModel::Attribute.with_cast_value(
             "LIMIT".freeze,
             connection.sanitize_limit(limit_value),
             Type.default_value,
@@ -938,7 +940,7 @@ module ActiveRecord
           arel.take(Arel::Nodes::BindParam.new(limit_attribute))
         end
         if offset_value
-          offset_attribute = Attribute.with_cast_value(
+          offset_attribute = ActiveModel::Attribute.with_cast_value(
             "OFFSET".freeze,
             offset_value.to_i,
             Type.default_value,
@@ -963,6 +965,9 @@ module ActiveRecord
         name = from_clause.name
         case opts
         when Relation
+          if opts.eager_loading?
+            opts = opts.send(:apply_join_dependency)
+          end
           name ||= "subquery"
           opts.arel.as(name.to_s)
         else
@@ -1011,9 +1016,10 @@ module ActiveRecord
         string_joins              = buckets[:string_join].map(&:strip).uniq
 
         join_list = join_nodes + convert_join_strings_to_ast(manager, string_joins)
+        alias_tracker = alias_tracker(join_list, aliases)
 
         join_dependency = ActiveRecord::Associations::JoinDependency.new(
-          klass, table, association_joins, alias_tracker(join_list, aliases)
+          klass, table, association_joins, alias_tracker
         )
 
         joins = join_dependency.join_constraints(stashed_association_joins, join_type)
@@ -1021,7 +1027,7 @@ module ActiveRecord
 
         manager.join_sources.concat(join_list)
 
-        manager
+        alias_tracker.aliases
       end
 
       def convert_join_strings_to_ast(table, joins)
@@ -1034,6 +1040,8 @@ module ActiveRecord
       def build_select(arel)
         if select_values.any?
           arel.project(*arel_columns(select_values.uniq))
+        elsif @klass.ignored_columns.any?
+          arel.project(*arel_columns(@klass.column_names))
         else
           arel.project(table[Arel.star])
         end
@@ -1070,7 +1078,7 @@ module ActiveRecord
             end
             o.split(",").map! do |s|
               s.strip!
-              s.gsub!(/\sasc\Z/i, " DESC") || s.gsub!(/\sdesc\Z/i, " ASC") || s.concat(" DESC")
+              s.gsub!(/\sasc\Z/i, " DESC") || s.gsub!(/\sdesc\Z/i, " ASC") || (s << " DESC")
             end
           else
             o
@@ -1079,6 +1087,10 @@ module ActiveRecord
       end
 
       def does_not_support_reverse?(order)
+        # Account for String subclasses like Arel::Nodes::SqlLiteral that
+        # override methods like #count.
+        order = String.new(order) unless order.instance_of?(String)
+
         # Uses SQL function with multiple arguments.
         (order.include?(",") && order.split(",").find { |section| section.count("(") != section.count(")") }) ||
           # Uses "nulls first" like construction.
@@ -1112,6 +1124,12 @@ module ActiveRecord
           klass.send(:sanitize_sql_for_order, arg)
         end
         order_args.flatten!
+
+        @klass.enforce_raw_sql_whitelist(
+          order_args.flat_map { |a| a.is_a?(Hash) ? a.keys : a },
+          whitelist: AttributeMethods::ClassMethods::COLUMN_NAME_ORDER_WHITELIST
+        )
+
         validate_order_args(order_args)
 
         references = order_args.grep(String)

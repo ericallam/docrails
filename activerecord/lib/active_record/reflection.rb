@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "active_support/core_ext/string/filters"
-require "active_support/deprecation"
 require "concurrent/map"
 
 module ActiveRecord
@@ -173,11 +172,6 @@ module ActiveRecord
       def scopes
         scope ? [scope] : []
       end
-
-      def scope_chain
-        chain.map(&:scopes)
-      end
-      deprecate :scope_chain
 
       def build_join_constraint(table, foreign_table)
         key         = join_keys.key
@@ -431,14 +425,7 @@ module ActiveRecord
         @association_scope_cache = Concurrent::Map.new
 
         if options[:class_name] && options[:class_name].class == Class
-          ActiveSupport::Deprecation.warn(<<-MSG.squish)
-            Passing a class to the `class_name` is deprecated and will raise
-            an ArgumentError in Rails 5.2. It eagerloads more classes than
-            necessary and potentially creates circular dependencies.
-
-            Please pass the class name as a string:
-            `#{macro} :#{name}, class_name: '#{options[:class_name]}'`
-          MSG
+          raise ArgumentError, "A class was passed to `:class_name` but we are expecting a string."
         end
       end
 
@@ -852,10 +839,6 @@ module ActiveRecord
         source_reflection.join_scopes(table, predicate_builder) + super
       end
 
-      def source_type_scope
-        through_reflection.klass.where(foreign_type => options[:source_type])
-      end
-
       def has_scope?
         scope || options[:source_type] ||
           source_reflection.has_scope? ||
@@ -1015,29 +998,24 @@ module ActiveRecord
     end
 
     class PolymorphicReflection < AbstractReflection # :nodoc:
-      delegate :klass, :scope, :plural_name, :type, :get_join_keys, to: :@reflection
+      delegate :klass, :scope, :plural_name, :type, :get_join_keys, :scope_for, to: :@reflection
 
       def initialize(reflection, previous_reflection)
         @reflection = reflection
         @previous_reflection = previous_reflection
       end
 
-      def scopes
-        scopes = @previous_reflection.scopes
-        scopes << @previous_reflection.source_type_scope
-      end
-
       def join_scopes(table, predicate_builder) # :nodoc:
         scopes = @previous_reflection.join_scopes(table, predicate_builder) + super
-        scopes << @previous_reflection.source_type_scope
+        scopes << build_scope(table, predicate_builder).instance_exec(nil, &source_type_scope)
       end
 
       def constraints
-        @reflection.constraints + [source_type_info]
+        @reflection.constraints + [source_type_scope]
       end
 
       private
-        def source_type_info
+        def source_type_scope
           type = @previous_reflection.foreign_type
           source_type = @previous_reflection.options[:source_type]
           lambda { |object| where(type => source_type) }
