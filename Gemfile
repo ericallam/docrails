@@ -109,6 +109,10 @@ end
 local_gemfile = File.dirname(__FILE__) + "/.Gemfile"
 instance_eval File.read local_gemfile if File.exist? local_gemfile
 
+# Add railsguides.jp required gems.
+railsguides_jp_gemfile = File.expand_path("yasslab/Gemfile", __dir__)
+instance_eval File.read railsguides_jp_gemfile if File.exist? railsguides_jp_gemfile
+
 group :test do
   gem "minitest-bisect"
 
@@ -118,12 +122,6 @@ group :test do
   end
 
   gem "benchmark-ips"
-
-  # railsguides.jp test gems
-  gem "rspec"
-  gem "pry-byebug"
-  gem "turnip"
-  gem "wraith"
 end
 
 platforms :ruby, :mswin, :mswin64, :mingw, :x64_mingw do
@@ -181,27 +179,3 @@ gem "wdm", ">= 0.1.0", platforms: [:mingw, :mswin, :x64_mingw, :mswin64]
 # platforms :ruby_25 do
 #   gem "mathn"
 # end
-
-# Monitoring tools
-gem "newrelic_rpm"
-
-# SSL in Production
-gem "acme_challenge"
-gem "rack-rewrite", "~> 1.5.0"
-# FIXME: Remove this fork after https://github.com/rack/rack-contrib/pull/129 is merged.
-gem "rack-contrib", github: "bigcartel/rack-contrib", branch: "master"
-
-
-# Set up Jekyll on Heroku
-gem "jekyll"
-gem "kramdown"
-gem "rack-jekyll"
-gem "puma"
-
-# Testing links by hand
-gem "html-proofer"
-
-group :development do
-  # Generate docset
-  gem 'docset'
-end
