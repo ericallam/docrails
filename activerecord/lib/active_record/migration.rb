@@ -581,7 +581,8 @@ module ActiveRecord
       def load_schema_if_pending!
         if ActiveRecord::Migrator.needs_migration? || !ActiveRecord::Migrator.any_migrations?
           # Roundtrip to Rake to allow plugins to hook into database initialization.
-          FileUtils.cd Rails.root do
+          root = defined?(ENGINE_ROOT) ? ENGINE_ROOT : Rails.root
+          FileUtils.cd(root) do
             current_config = Base.connection_config
             Base.clear_all_connections!
             system("bin/rails db:test:prepare")
@@ -731,6 +732,24 @@ module ActiveRecord
     def reversible
       helper = ReversibleBlockHelper.new(reverting?)
       execute_block { yield helper }
+    end
+
+    # Used to specify an operation that is only run when migrating up
+    # (for example, populating a new column with its initial values).
+    #
+    # In the following example, the new column +published+ will be given
+    # the value +true+ for all existing records.
+    #
+    #    class AddPublishedToPosts < ActiveRecord::Migration[5.2]
+    #      def change
+    #        add_column :posts, :published, :boolean, default: false
+    #        up_only do
+    #          execute "update posts set published = 'true'"
+    #        end
+    #      end
+    #    end
+    def up_only
+      execute_block { yield } unless reverting?
     end
 
     # Runs the given migration classes.
@@ -1026,11 +1045,6 @@ module ActiveRecord
         new(:up, migrations(migrations_paths), nil)
       end
 
-      def schema_migrations_table_name
-        SchemaMigration.table_name
-      end
-      deprecate :schema_migrations_table_name
-
       def get_all_versions(connection = Base.connection)
         if SchemaMigration.table_exists?
           SchemaMigration.all_versions.map(&:to_i)
@@ -1229,7 +1243,7 @@ module ActiveRecord
 
       # Return true if a valid version is not provided.
       def invalid_target?
-        !target && @target_version && @target_version > 0
+        @target_version && @target_version != 0 && !target
       end
 
       def execute_migration_in_transaction(migration, direction)

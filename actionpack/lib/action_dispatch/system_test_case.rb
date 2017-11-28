@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+gem "capybara", "~> 2.15"
+
 require "capybara/dsl"
 require "capybara/minitest"
 require "action_controller"
@@ -129,6 +131,8 @@ module ActionDispatch
     end
 
     driven_by :selenium
+
+    ActiveSupport.run_load_hooks(:action_dispatch_system_test_case, self)
   end
 
   SystemTestCase.start_application

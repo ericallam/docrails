@@ -8,8 +8,6 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 gemspec
 
-gem "arel", github: "rails/arel"
-
 # We need a newish Rake since Active Job sets its test tasks' descriptions.
 gem "rake", ">= 11.1"
 
@@ -21,7 +19,7 @@ gem "capybara", "~> 2.15"
 
 gem "rack-cache", "~> 1.2"
 gem "coffee-rails"
-gem "sass-rails", github: "rails/sass-rails", branch: "5-0-stable"
+gem "sass-rails"
 gem "turbolinks", "~> 5"
 
 # require: false so bcrypt is loaded only when has_secure_password is used.
@@ -41,6 +39,9 @@ gem "rubocop", ">= 0.47", require: false
 # https://github.com/guard/rb-inotify/pull/79
 gem "rb-inotify", github: "matthewd/rb-inotify", branch: "close-handling", require: false
 
+# https://github.com/puma/puma/pull/1345
+gem "stopgap_13632", platforms: :mri if RUBY_VERSION == "2.2.8"
+
 group :doc do
   gem "sdoc", github: "robin850/sdoc", branch: "upgrade"
   gem "redcarpet", "~> 3.2.3", platforms: :ruby
@@ -53,16 +54,13 @@ gem "dalli", ">= 2.2.1"
 gem "listen", ">= 3.0.5", "< 3.2", require: false
 gem "libxml-ruby", platforms: :ruby
 
-# Action View. For testing Erubis handler deprecation.
-gem "erubis", "~> 2.7.0", require: false
-
 # for railties app_generator_test
 gem "bootsnap", ">= 1.1.0", require: false
 
 # Active Job.
 group :job do
   gem "resque", require: false
-  gem "resque-scheduler", github: "jeremy/resque-scheduler", branch: "redis-rb-4.0", require: false
+  gem "resque-scheduler", github: "resque/resque-scheduler", require: false
   gem "sidekiq", require: false
   gem "sucker_punch", require: false
   gem "delayed_job", require: false
@@ -81,12 +79,10 @@ end
 group :cable do
   gem "puma", require: false
 
-  gem "em-hiredis", require: false
   gem "hiredis", require: false
   gem "redis", "~> 4.0", require: false
 
-  # For Redis 4.0 support. Unreleased 9cb81bf.
-  gem "redis-namespace", github: "resque/redis-namespace"
+  gem "redis-namespace"
 
   gem "websocket-client-simple", github: "matthewd/websocket-client-simple", branch: "close-race", require: false
 
@@ -113,6 +109,10 @@ end
 local_gemfile = File.dirname(__FILE__) + "/.Gemfile"
 instance_eval File.read local_gemfile if File.exist? local_gemfile
 
+# Add railsguides.jp required gems.
+railsguides_jp_gemfile = File.expand_path("yasslab/Gemfile", __dir__)
+instance_eval File.read railsguides_jp_gemfile if File.exist? railsguides_jp_gemfile
+
 group :test do
   gem "minitest-bisect"
 
@@ -122,12 +122,6 @@ group :test do
   end
 
   gem "benchmark-ips"
-
-  # railsguides.jp test gems
-  gem "rspec"
-  gem "pry-byebug"
-  gem "turnip"
-  gem "wraith"
 end
 
 platforms :ruby, :mswin, :mswin64, :mingw, :x64_mingw do
@@ -185,27 +179,3 @@ gem "wdm", ">= 0.1.0", platforms: [:mingw, :mswin, :x64_mingw, :mswin64]
 # platforms :ruby_25 do
 #   gem "mathn"
 # end
-
-# Monitoring tools
-gem "newrelic_rpm"
-
-# SSL in Production
-gem "acme_challenge"
-gem "rack-rewrite", "~> 1.5.0"
-# FIXME: Remove this fork after https://github.com/rack/rack-contrib/pull/129 is merged.
-gem "rack-contrib", github: "bigcartel/rack-contrib", branch: "master"
-
-
-# Set up Jekyll on Heroku
-gem "jekyll"
-gem "kramdown"
-gem "rack-jekyll"
-gem "puma"
-
-# Testing links by hand
-gem "html-proofer"
-
-group :development do
-  # Generate docset
-  gem 'docset'
-end

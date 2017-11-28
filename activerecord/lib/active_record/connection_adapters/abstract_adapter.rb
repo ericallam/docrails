@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require "active_record/type"
 require "active_record/connection_adapters/determine_if_preparable_visitor"
 require "active_record/connection_adapters/schema_cache"
 require "active_record/connection_adapters/sql_type_metadata"
 require "active_record/connection_adapters/abstract/schema_dumper"
 require "active_record/connection_adapters/abstract/schema_creation"
+require "active_support/concurrency/load_interlock_aware_monitor"
 require "arel/collectors/bind"
 require "arel/collectors/composite"
 require "arel/collectors/sql_string"
@@ -105,10 +105,11 @@ module ActiveRecord
         @logger              = logger
         @config              = config
         @pool                = nil
+        @idle_since          = Concurrent.monotonic_time
         @schema_cache        = SchemaCache.new self
         @quoted_column_names, @quoted_table_names = {}, {}
         @visitor = arel_visitor
-        @lock = Monitor.new
+        @lock = ActiveSupport::Concurrency::LoadInterlockAwareMonitor.new
 
         if self.class.type_cast_config_to_boolean(config.fetch(:prepared_statements) { true })
           @prepared_statements = true
@@ -164,6 +165,7 @@ module ActiveRecord
               "Current thread: #{Thread.current}."
           end
 
+          @idle_since = Concurrent.monotonic_time
           @owner = nil
         else
           raise ActiveRecordError, "Cannot expire connection, it is not currently leased."
@@ -183,6 +185,12 @@ module ActiveRecord
         end
       end
 
+      # Seconds since this connection was returned to the pool
+      def seconds_idle # :nodoc:
+        return 0 if in_use?
+        Concurrent.monotonic_time - @idle_since
+      end
+
       def unprepared_statement
         old_prepared_statements, @prepared_statements = @prepared_statements, false
         yield
@@ -195,16 +203,6 @@ module ActiveRecord
       def adapter_name
         self.class::ADAPTER_NAME
       end
-
-      def supports_migrations? # :nodoc:
-        true
-      end
-      deprecate :supports_migrations?
-
-      def supports_primary_key? # :nodoc:
-        true
-      end
-      deprecate :supports_primary_key?
 
       # Does this adapter support DDL rollbacks in transactions? That is, would
       # CREATE TABLE or ALTER TABLE get rolled back by a transaction?
@@ -377,6 +375,19 @@ module ActiveRecord
         reset_transaction
       end
 
+      # Immediately forget this connection ever existed. Unlike disconnect!,
+      # this will not communicate with the server.
+      #
+      # After calling this method, the behavior of all other methods becomes
+      # undefined. This is called internally just before a forked process gets
+      # rid of a connection that belonged to its parent.
+      def discard!
+        # This should be overridden by concrete adapters.
+        #
+        # Prevent @connection's finalizer from touching the socket, or
+        # otherwise communicating with its server, when it is collected.
+      end
+
       # Reset the state of this connection, directing the DBMS to clear
       # transactions and other connection-related server-side state. Usually a
       # database-dependent operation.
@@ -402,10 +413,7 @@ module ActiveRecord
       # Checks whether the connection to the database is still active (i.e. not stale).
       # This is done under the hood by calling #active?. If the connection
       # is no longer active, then this method will reconnect to the database.
-      def verify!(*ignored)
-        if ignored.size > 0
-          ActiveSupport::Deprecation.warn("Passing arguments to #verify method of the connection has no effect and has been deprecated. Please remove all arguments from the #verify method call.")
-        end
+      def verify!
         reconnect! unless active?
       end
 

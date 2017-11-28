@@ -130,7 +130,7 @@ module ActiveRecord
     #      end
     def calculate(operation, column_name)
       if has_include?(column_name)
-        relation = apply_join_dependency(construct_join_dependency)
+        relation = apply_join_dependency
         relation.distinct! if operation.to_s.downcase == "count"
 
         relation.calculate(operation, column_name)
@@ -180,9 +180,10 @@ module ActiveRecord
       end
 
       if has_include?(column_names.first)
-        relation = apply_join_dependency(construct_join_dependency)
+        relation = apply_join_dependency
         relation.pluck(*column_names)
       else
+        enforce_raw_sql_whitelist(column_names)
         relation = spawn
         relation.select_values = column_names.map { |cn|
           @klass.has_attribute?(cn) || @klass.attribute_alias?(cn) ? arel_attribute(cn) : cn

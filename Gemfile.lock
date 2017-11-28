@@ -7,25 +7,6 @@ GIT
       pg (>= 0.17, < 0.20)
 
 GIT
-  remote: https://github.com/bigcartel/rack-contrib.git
-  revision: b5253f9debdaee1622eb25c80ace2c142d1e4a96
-  branch: master
-  specs:
-    rack-contrib (1.5.0)
-      rack (>= 1.4)
-
-GIT
-  remote: https://github.com/jeremy/resque-scheduler.git
-  revision: 7cccf7d8db4dbbf54bf549a98b6cbb38106dbed2
-  branch: redis-rb-4.0
-  specs:
-    resque-scheduler (4.3.0)
-      mono_logger (~> 1.0)
-      redis (>= 3.3, < 5)
-      resque (~> 1.26)
-      rufus-scheduler (~> 3.2)
-
-GIT
   remote: https://github.com/matthewd/rb-inotify.git
   revision: 856730aad4b285969e8dd621e44808a7c5af4242
   branch: close-handling
@@ -43,29 +24,14 @@ GIT
       websocket
 
 GIT
-  remote: https://github.com/rails/arel.git
-  revision: 42510bf71472e2e35d9becb546edd05562672344
+  remote: https://github.com/resque/resque-scheduler.git
+  revision: 284b862dd63967da1cf3a7e6abd9d2052067c8be
   specs:
-    arel (9.0.0.alpha)
-
-GIT
-  remote: https://github.com/rails/sass-rails.git
-  revision: bb5c1d34e8acad2e2960cc785184ffe17d7b3bca
-  branch: 5-0-stable
-  specs:
-    sass-rails (5.0.6)
-      railties (>= 4.0.0, < 6)
-      sass (~> 3.1)
-      sprockets (>= 2.8, < 4.0)
-      sprockets-rails (>= 2.0, < 4.0)
-      tilt (>= 1.1, < 3)
-
-GIT
-  remote: https://github.com/resque/redis-namespace.git
-  revision: 1403f511f6ae1ec9a8f330298a4cacf73fb10afc
-  specs:
-    redis-namespace (1.5.3)
-      redis (>= 3.0.4)
+    resque-scheduler (4.3.0)
+      mono_logger (~> 1.0)
+      redis (>= 3.3, < 5)
+      resque (~> 1.26)
+      rufus-scheduler (~> 3.2)
 
 GIT
   remote: https://github.com/robin850/sdoc.git
@@ -109,7 +75,7 @@ PATH
     activerecord (5.2.0.alpha)
       activemodel (= 5.2.0.alpha)
       activesupport (= 5.2.0.alpha)
-      arel (= 9.0.0.alpha)
+      arel (>= 9.0)
     activestorage (5.2.0.alpha)
       actionpack (= 5.2.0.alpha)
       activerecord (= 5.2.0.alpha)
@@ -141,7 +107,6 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    acme_challenge (0.1.0)
     activerecord-jdbc-adapter (1.3.24)
       activerecord (>= 2.2, < 5.0)
     activerecord-jdbcmysql-adapter (1.3.24)
@@ -156,11 +121,9 @@ GEM
     addressable (2.5.1)
       public_suffix (~> 2.0, >= 2.0.2)
     amq-protocol (2.2.0)
-    anemone (0.7.2)
-      nokogiri (>= 1.3.0)
-      robotex (>= 1.0.0)
     archive-zip (0.7.0)
       io-like (~> 0.3.0)
+    arel (9.0.0)
     ast (2.3.0)
     aws-partitions (1.20.0)
     aws-sdk-core (3.3.0)
@@ -227,7 +190,6 @@ GEM
       xpath (~> 2.0)
     childprocess (0.7.1)
       ffi (~> 1.0, >= 1.0.11)
-    coderay (1.1.1)
     chromedriver-helper (1.1.0)
       archive-zip (~> 0.7.0)
       nokogiri (~> 1.6)
@@ -238,8 +200,6 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.12.2)
-    colorator (1.1.0)
-    colored (1.2)
     concurrent-ruby (1.0.5)
     concurrent-ruby (1.0.5-java)
     connection_pool (2.2.1)
@@ -255,13 +215,7 @@ GEM
     delayed_job_active_record (4.1.2)
       activerecord (>= 3.0, < 5.2)
       delayed_job (>= 3.0, < 5)
-    diff-lcs (1.3)
     digest-crc (0.4.1)
-    docset (0.1.0)
-      sqlite3 (~> 1.3)
-    em-hiredis (0.3.1)
-      eventmachine (~> 1.0)
-      hiredis (~> 0.6.0)
     em-http-request (1.1.5)
       addressable (>= 2.3.4)
       cookiejar (!= 0.3.1)
@@ -271,16 +225,10 @@ GEM
     em-socksify (0.3.1)
       eventmachine (>= 1.0.0.beta.4)
     erubi (1.6.1)
-    erubis (2.7.0)
-    ethon (0.10.1)
-      ffi (>= 1.3.0)
-    et-orbi (1.0.5)
+    et-orbi (1.0.8)
       tzinfo
     event_emitter (0.2.6)
     eventmachine (1.2.5)
-    eventmachine (1.2.5-java)
-    eventmachine (1.2.5-x64-mingw32)
-    eventmachine (1.2.5-x86-mingw32)
     execjs (2.7.0)
     faraday (0.13.1)
       multipart-post (>= 1.2, < 3)
@@ -301,8 +249,6 @@ GEM
     ffi (1.9.18-java)
     ffi (1.9.18-x64-mingw32)
     ffi (1.9.18-x86-mingw32)
-    forwardable-extended (2.6.0)
-    gherkin (4.1.3)
     globalid (0.4.0)
       activesupport (>= 4.2.0)
     google-api-client (0.13.1)
@@ -330,38 +276,14 @@ GEM
       os (~> 0.9)
       signet (~> 0.7)
     hiredis (0.6.1)
-    html-proofer (3.6.0)
-      activesupport (>= 4.2, < 6.0)
-      addressable (~> 2.3)
-      colored (~> 1.2)
-      mercenary (~> 0.3.2)
-      nokogiri (~> 1.5)
-      parallel (~> 1.3)
-      typhoeus (~> 0.7)
-      yell (~> 2.0)
+    hiredis (0.6.1-java)
     http_parser.rb (0.6.0)
     httpclient (2.8.3)
     i18n (0.8.6)
-    image_size (1.5.0)
     io-like (0.3.0)
     jdbc-mysql (5.1.44)
     jdbc-postgres (9.4.1206)
     jdbc-sqlite3 (3.8.11.2)
-    jekyll (3.4.3)
-      addressable (~> 2.4)
-      colorator (~> 1.0)
-      jekyll-sass-converter (~> 1.0)
-      jekyll-watch (~> 1.1)
-      kramdown (~> 1.3)
-      liquid (~> 3.0)
-      mercenary (~> 0.3.3)
-      pathutil (~> 0.9)
-      rouge (~> 1.7)
-      safe_yaml (~> 1.0)
-    jekyll-sass-converter (1.5.0)
-      sass (~> 3.4)
-    jekyll-watch (1.3.1)
-      listen (~> 3.0)
     jmespath (1.3.1)
     json (2.1.0)
     json (2.1.0-java)
@@ -369,25 +291,20 @@ GEM
     kindlerb (1.2.0)
       mustache
       nokogiri
-    kramdown (1.13.2)
-    libxml-ruby (2.9.0)
     libxml-ruby (3.0.0)
-    liquid (3.0.6)
     listen (3.1.5)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
       ruby_dep (~> 1.2)
     little-plugger (1.1.4)
-    log4r (1.1.10)
     logging (2.2.2)
       little-plugger (~> 1.1)
       multi_json (~> 1.10)
     loofah (2.0.3)
       nokogiri (>= 1.5.9)
-    mail (2.6.6)
-      mime-types (>= 1.16, < 4)
+    mail (2.7.0)
+      mini_mime (>= 0.1.1)
     memoist (0.16.0)
-    mercenary (0.3.6)
     metaclass (0.0.4)
     method_source (0.8.2)
     mime-types (3.1)
@@ -416,8 +333,8 @@ GEM
     mysql2 (0.4.9)
     mysql2 (0.4.9-x64-mingw32)
     mysql2 (0.4.9-x86-mingw32)
-    newrelic_rpm (4.1.0.333)
     nio4r (2.1.0)
+    nio4r (2.1.0-java)
     nokogiri (1.8.0)
       mini_portile2 (~> 2.2.0)
     nokogiri (1.8.0-java)
@@ -429,21 +346,11 @@ GEM
     parallel (1.12.0)
     parser (2.4.0.0)
       ast (~> 2.2)
-    pathutil (0.14.0)
-      forwardable-extended (~> 2.6)
     path_expander (1.0.2)
     pg (0.19.0)
     pg (0.19.0-x64-mingw32)
     pg (0.19.0-x86-mingw32)
     powerpack (0.1.1)
-    pry (0.10.4)
-      coderay (~> 1.1.0)
-      method_source (~> 0.8.1)
-      slop (~> 3.4)
-    pry-byebug (3.4.2)
-      byebug (~> 9.0)
-      pry (~> 0.10)
-    psych (2.2.2)
     psych (2.2.4)
     public_suffix (2.0.5)
     puma (3.9.1)
@@ -456,13 +363,9 @@ GEM
     rack (2.0.3)
     rack-cache (1.7.0)
       rack (>= 0.4)
-    rack-jekyll (0.3.5)
-      jekyll
-      rack
     rack-protection (2.0.0)
       rack
-    rack-rewrite (1.5.1)
-    rack-test (0.7.0)
+    rack-test (0.8.0)
       rack (>= 1.0, < 3)
     rails-dom-testing (2.0.3)
       activesupport (>= 4.2.0)
@@ -471,11 +374,13 @@ GEM
       loofah (~> 2.0)
     rainbow (2.2.2)
       rake
-    rake (12.0.0)
+    rake (12.2.1)
     rb-fsevent (0.10.2)
     rdoc (5.1.0)
     redcarpet (3.2.3)
     redis (4.0.1)
+    redis-namespace (1.6.0)
+      redis (>= 3.0.4)
     representable (3.0.4)
       declarative (< 0.1.0)
       declarative-option (< 0.2.0)
@@ -487,22 +392,7 @@ GEM
       sinatra (>= 0.9.2)
       vegas (~> 0.1.2)
     retriable (3.1.1)
-    robotex (1.0.0)
-    rouge (1.11.1)
-    rspec (3.6.0)
-      rspec-core (~> 3.6.0)
-      rspec-expectations (~> 3.6.0)
-      rspec-mocks (~> 3.6.0)
-    rspec-core (3.6.0)
-      rspec-support (~> 3.6.0)
-    rspec-expectations (3.6.0)
-      diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.6.0)
-    rspec-mocks (3.6.0)
-      diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.6.0)
-    rspec-support (3.6.0)
-    rubocop (0.50.0)
+    rubocop (0.51.0)
       parallel (~> 1.10)
       parser (>= 2.3.3.1, < 3.0)
       powerpack (~> 0.1)
@@ -514,12 +404,17 @@ GEM
     rubyzip (1.2.1)
     rufus-scheduler (3.4.2)
       et-orbi (~> 1.0)
-    safe_yaml (1.0.4)
-    sass (3.5.1)
+    sass (3.5.3)
       sass-listen (~> 4.0.0)
     sass-listen (4.0.0)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
+    sass-rails (5.0.7)
+      railties (>= 4.0.0, < 6)
+      sass (~> 3.1)
+      sprockets (>= 2.8, < 4.0)
+      sprockets-rails (>= 2.0, < 4.0)
+      tilt (>= 1.1, < 3)
     selenium-webdriver (3.5.1)
       childprocess (~> 0.5)
       rubyzip (~> 1.0)
@@ -542,7 +437,6 @@ GEM
       rack (~> 2.0)
       rack-protection (= 2.0.0)
       tilt (~> 2.0)
-    slop (3.6.0)
     sneakers (2.5.0)
       bunny (~> 2.6.4)
       serverengine (~> 1.5.11)
@@ -557,6 +451,8 @@ GEM
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
     sqlite3 (1.3.13)
+    sqlite3 (1.3.13-x64-mingw32)
+    sqlite3 (1.3.13-x86-mingw32)
     stackprof (0.2.10)
     sucker_punch (2.0.2)
       concurrent-ruby (~> 1.0.0)
@@ -572,11 +468,6 @@ GEM
     turbolinks (5.0.1)
       turbolinks-source (~> 5)
     turbolinks-source (5.0.3)
-    turnip (3.0.0)
-      gherkin (~> 4.0)
-      rspec (>= 3.0, < 4.0)
-    typhoeus (0.8.0)
-      ethon (>= 0.8.0)
     tzinfo (1.2.3)
       thread_safe (~> 0.1)
     tzinfo-data (1.2017.2)
@@ -595,18 +486,11 @@ GEM
     websocket (1.2.4)
     websocket-driver (0.6.5)
       websocket-extensions (>= 0.1.0)
+    websocket-driver (0.6.5-java)
+      websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.2)
-    wraith (4.0.1)
-      anemone
-      image_size
-      log4r
-      parallel
-      rake
-      robotex
-      thor
-    xpath (2.0.0)
+    xpath (2.1.0)
       nokogiri (~> 1.3)
-    yell (2.0.7)
 
 PLATFORMS
   java
@@ -615,11 +499,9 @@ PLATFORMS
   x86-mingw32
 
 DEPENDENCIES
-  acme_challenge
   activerecord-jdbcmysql-adapter (>= 1.3.0)
   activerecord-jdbcpostgresql-adapter (>= 1.3.0)
   activerecord-jdbcsqlite3-adapter (>= 1.3.0)
-  arel!
   aws-sdk-s3
   azure-storage
   backburner
@@ -635,26 +517,18 @@ DEPENDENCIES
   dalli (>= 2.2.1)
   delayed_job
   delayed_job_active_record
-  docset
-  em-hiredis
-  erubis (~> 2.7.0)
   google-cloud-storage (~> 1.3)
   hiredis
-  html-proofer
-  jekyll
   json (>= 2.0.0)
   kindlerb (~> 1.2.0)
-  kramdown
   libxml-ruby
   listen (>= 3.0.5, < 3.2)
   mini_magick
   minitest-bisect
   mocha
   mysql2 (>= 0.4.4)
-  newrelic_rpm
   nokogiri (>= 1.6.8)
   pg (>= 0.18.0)
-  pry-byebug
   psych (~> 2.0)
   puma
   que
@@ -662,38 +536,30 @@ DEPENDENCIES
   qunit-selenium
   racc (>= 1.4.6)
   rack-cache (~> 1.2)
-  rack-contrib!
-  rack-jekyll
-  rack-rewrite (~> 1.5.0)
   rails!
   rake (>= 11.1)
   rb-inotify!
   redcarpet (~> 3.2.3)
   redis (~> 4.0)
-  redis-namespace!
+  redis-namespace
   resque
   resque-scheduler!
-  rspec
   rubocop (>= 0.47)
-  sass-rails!
+  sass-rails
   sdoc!
   sequel
   sidekiq
   sneakers
   sprockets-export
+  sqlite3 (~> 1.3.6)
   stackprof
   sucker_punch
   turbolinks (~> 5)
-  turnip
   tzinfo-data
   uglifier (>= 1.3.0)
   w3c_validators
   wdm (>= 0.1.0)
   websocket-client-simple!
-  wraith
-
-RUBY VERSION
-   ruby 2.4.1p111
 
 BUNDLED WITH
-   1.15.4
+   1.16.0

@@ -114,7 +114,7 @@ module Rails
         template "cable.yml" unless options[:skip_action_cable]
         template "puma.rb"   unless options[:skip_puma]
         template "spring.rb" if spring_install?
-        template "storage.yml"
+        template "storage.yml" unless skip_active_storage?
 
         directory "environments"
         directory "initializers"
@@ -139,7 +139,7 @@ module Rails
         template "config/cable.yml"
       end
 
-      if !active_storage_config_exist
+      if !skip_active_storage? && !active_storage_config_exist
         template "config/storage.yml"
       end
 
@@ -159,23 +159,19 @@ module Rails
     end
 
     def master_key
-      return if options[:pretend]
+      return if options[:pretend] || options[:dummy_app]
 
       require "rails/generators/rails/master_key/master_key_generator"
-
-      after_bundle do
-        Rails::Generators::MasterKeyGenerator.new([], quiet: options[:quiet]).add_master_key_file
-      end
+      master_key_generator = Rails::Generators::MasterKeyGenerator.new([], quiet: options[:quiet])
+      master_key_generator.add_master_key_file_silently
+      master_key_generator.ignore_master_key_file_silently
     end
 
     def credentials
-      return if options[:pretend]
+      return if options[:pretend] || options[:dummy_app]
 
       require "rails/generators/rails/credentials/credentials_generator"
-
-      after_bundle do
-        Rails::Generators::CredentialsGenerator.new([], quiet: options[:quiet]).add_credentials_file_silently
-      end
+      Rails::Generators::CredentialsGenerator.new([], quiet: options[:quiet]).add_credentials_file_silently
     end
 
     def database_yml
@@ -355,6 +351,10 @@ module Rails
         build(:system_test) if depends_on_system_test?
       end
 
+      def create_storage_files
+        build(:storage) unless skip_active_storage?
+      end
+
       def create_tmp_files
         build(:tmp)
       end
@@ -457,6 +457,7 @@ module Rails
 
       public_task :apply_rails_template, :run_bundle
       public_task :run_webpack, :generate_spring_binstubs
+      public_task :run_active_storage
 
       def run_after_bundle_callbacks
         @after_bundle_callbacks.each(&:call)
@@ -507,10 +508,6 @@ module Rails
         elsif Object.const_defined?(app_const_base)
           raise Error, "Invalid application name #{app_name}, constant #{app_const_base} is already in use. Please choose another application name."
         end
-      end
-
-      def app_secret
-        SecureRandom.hex(64)
       end
 
       def mysql_socket

@@ -140,26 +140,6 @@ module ActiveRecord
   class HasOneThroughCantAssociateThroughHasOneOrManyReflection < ThroughCantAssociateThroughHasOneOrManyReflection #:nodoc:
   end
 
-  class HasManyThroughCantAssociateNewRecords < ActiveRecordError #:nodoc:
-    def initialize(owner = nil, reflection = nil)
-      if owner && reflection
-        super("Cannot associate new records through '#{owner.class.name}##{reflection.name}' on '#{reflection.source_reflection.class_name rescue nil}##{reflection.source_reflection.name rescue nil}'. Both records must have an id in order to create the has_many :through record associating them.")
-      else
-        super("Cannot associate new records.")
-      end
-    end
-  end
-
-  class HasManyThroughCantDissociateNewRecords < ActiveRecordError #:nodoc:
-    def initialize(owner = nil, reflection = nil)
-      if owner && reflection
-        super("Cannot dissociate new records through '#{owner.class.name}##{reflection.name}' on '#{reflection.source_reflection.class_name rescue nil}##{reflection.source_reflection.name rescue nil}'. Both records must have an id in order to delete the has_many :through record associating them.")
-      else
-        super("Cannot dissociate new records.")
-      end
-    end
-  end
-
   class ThroughNestedAssociationsAreReadonly < ActiveRecordError #:nodoc:
     def initialize(owner = nil, reflection = nil)
       if owner && reflection
@@ -185,16 +165,6 @@ module ActiveRecord
         super("Cannot eagerly load the polymorphic association #{reflection.name.inspect}")
       else
         super("Eager load polymorphic error.")
-      end
-    end
-  end
-
-  class ReadOnlyAssociation < ActiveRecordError #:nodoc:
-    def initialize(reflection = nil)
-      if reflection
-        super("Cannot add to a has_many :through association. Try adding to #{reflection.through_reflection.name.inspect}.")
-      else
-        super("Read-only reflection error.")
       end
     end
   end
@@ -483,14 +453,14 @@ module ActiveRecord
       # The tables for these classes could look something like:
       #
       #   CREATE TABLE users (
-      #     id int NOT NULL auto_increment,
-      #     account_id int default NULL,
+      #     id bigint NOT NULL auto_increment,
+      #     account_id bigint default NULL,
       #     name varchar default NULL,
       #     PRIMARY KEY  (id)
       #   )
       #
       #   CREATE TABLE accounts (
-      #     id int NOT NULL auto_increment,
+      #     id bigint NOT NULL auto_increment,
       #     name varchar default NULL,
       #     PRIMARY KEY  (id)
       #   )
@@ -557,9 +527,8 @@ module ActiveRecord
       #     has_many :birthday_events, ->(user) { where(starts_on: user.birthday) }, class_name: 'Event'
       #   end
       #
-      # Note: Joining, eager loading and preloading of these associations is not fully possible.
+      # Note: Joining, eager loading and preloading of these associations is not possible.
       # These operations happen before instance creation and the scope will be called with a +nil+ argument.
-      # This can lead to unexpected behavior and is deprecated.
       #
       # == Association callbacks
       #
@@ -1848,7 +1817,7 @@ module ActiveRecord
 
           builder = Builder::HasAndBelongsToMany.new name, self, options
 
-          join_model = ActiveSupport::Deprecation.silence { builder.through_model }
+          join_model = builder.through_model
 
           const_set join_model.name, join_model
           private_constant join_model.name
@@ -1877,7 +1846,7 @@ module ActiveRecord
             hm_options[k] = options[k] if options.key? k
           end
 
-          ActiveSupport::Deprecation.silence { has_many name, scope, hm_options, &extension }
+          has_many name, scope, hm_options, &extension
           _reflections[name.to_s].parent_reflection = habtm_reflection
         end
       end

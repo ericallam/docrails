@@ -1,3 +1,11 @@
+*   Make `assert_recognizes` to traverse mounted engines
+
+    *Yuichiro Kaneko*
+
+*   Remove deprecated `ActionController::ParamsParser::ParseError`.
+
+    *Rafael Mendonça França*
+
 *   Add `:allow_other_host` option to `redirect_back` method.
     When `allow_other_host` is set to `false`, the `redirect_back`
     will not allow a redirecting from a different host.
@@ -82,7 +90,7 @@
 
     *Kir Shatrov*
 
-*   `driven_by` now registers poltergeist and capybara-webkit
+*   `driven_by` now registers poltergeist and capybara-webkit.
 
     If poltergeist or capybara-webkit are set as drivers is set for System Tests,
     `driven_by` will register the driver and set additional options passed via
@@ -92,7 +100,7 @@
 
     *Mario Chavez*
 
-*   AEAD encrypted cookies and sessions with GCM
+*   AEAD encrypted cookies and sessions with GCM.
 
     Encrypted cookies now use AES-GCM which couples authentication and
     encryption in one faster step and produces shorter ciphertexts. Cookies

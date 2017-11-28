@@ -88,7 +88,7 @@ module ActiveRecord
       where(arg, *args).take!
     rescue ::RangeError
       raise RecordNotFound.new("Couldn't find #{@klass.name} with an out of range value",
-                               @klass.name)
+                               @klass.name, @klass.primary_key)
     end
 
     # Gives a record (or N records if a parameter is supplied) without any implied
@@ -284,7 +284,7 @@ module ActiveRecord
     # * Hash - Finds the record that matches these +find+-style conditions
     #   (such as <tt>{name: 'David'}</tt>).
     # * +false+ - Returns always +false+.
-    # * No args - Returns +false+ if the table is empty, +true+ otherwise.
+    # * No args - Returns +false+ if the relation is empty, +true+ otherwise.
     #
     # For more information about specifying conditions as a hash or array,
     # see the Conditions section in the introduction to ActiveRecord::Base.
@@ -300,6 +300,7 @@ module ActiveRecord
     #   Person.exists?(name: 'David')
     #   Person.exists?(false)
     #   Person.exists?
+    #   Person.where(name: 'Spartacus', rating: 4).exists?
     def exists?(conditions = :none)
       if Base === conditions
         raise ArgumentError, <<-MSG.squish
@@ -338,7 +339,7 @@ module ActiveRecord
       if ids.nil?
         error = "Couldn't find #{name}".dup
         error << " with#{conditions}" if conditions
-        raise RecordNotFound.new(error, name)
+        raise RecordNotFound.new(error, name, key)
       elsif Array(ids).size == 1
         error = "Couldn't find #{name} with '#{key}'=#{ids}#{conditions}"
         raise RecordNotFound.new(error, name, key, ids)
@@ -346,7 +347,7 @@ module ActiveRecord
         error = "Couldn't find all #{name.pluralize} with '#{key}': ".dup
         error << "(#{ids.join(", ")})#{conditions} (found #{result_size} results, but was looking for #{expected_size})."
         error << " Couldn't find #{name.pluralize(not_found_ids.size)} with #{key.to_s.pluralize(not_found_ids.size)} #{not_found_ids.join(', ')}." if not_found_ids
-        raise RecordNotFound.new(error, name, primary_key, ids)
+        raise RecordNotFound.new(error, name, key, ids)
       end
     end
 
@@ -394,7 +395,7 @@ module ActiveRecord
         )
       end
 
-      def apply_join_dependency(join_dependency)
+      def apply_join_dependency(join_dependency = construct_join_dependency)
         relation = except(:includes, :eager_load, :preload).joins!(join_dependency)
 
         if using_limitable_reflections?(join_dependency.reflections)
@@ -432,9 +433,12 @@ module ActiveRecord
 
         ids = ids.flatten.compact.uniq
 
+        model_name = @klass.name
+
         case ids.size
         when 0
-          raise RecordNotFound, "Couldn't find #{@klass.name} without an ID"
+          error_message = "Couldn't find #{model_name} without an ID"
+          raise RecordNotFound.new(error_message, model_name, primary_key)
         when 1
           result = find_one(ids.first)
           expects_array ? [ result ] : result
@@ -442,7 +446,8 @@ module ActiveRecord
           find_some(ids)
         end
       rescue ::RangeError
-        raise RecordNotFound, "Couldn't find #{@klass.name} with an out of range ID"
+        error_message = "Couldn't find #{model_name} with an out of range ID"
+        raise RecordNotFound.new(error_message, model_name, primary_key, ids)
       end
 
       def find_one(id)

@@ -1,3 +1,116 @@
+*   Add `#up_only` to database migrations for code that is only relevant when
+    migrating up, e.g. populating a new column.
+
+    *Rich Daley*
+
+*   Require raw SQL fragments to be explicitly marked when used in
+    relation query methods.
+
+    Before:
+    ```
+    Article.order("LENGTH(title)")
+    ```
+
+    After:
+    ```
+    Article.order(Arel.sql("LENGTH(title)"))
+    ```
+
+    This prevents SQL injection if applications use the [strongly
+    discouraged] form `Article.order(params[:my_order])`, under the
+    mistaken belief that only column names will be accepted.
+
+    Raw SQL strings will now cause a deprecation warning, which will
+    become an UnknownAttributeReference error in Rails 6.0. Applications
+    can opt in to the future behavior by setting `allow_unsafe_raw_sql`
+    to `:disabled`.
+
+    Common and judged-safe string values (such as simple column
+    references) are unaffected:
+    ```
+    Article.order("title DESC")
+    ```
+
+    *Ben Toews*
+
+*   `update_all` will now pass its values to `Type#cast` before passing them to
+    `Type#serialize`. This means that `update_all(foo: 'true')` will properly
+    persist a boolean.
+
+    *Sean Griffin*
+
+*   Add new error class `StatementTimeout` which will be raised
+    when statement timeout exceeded.
+
+    *Ryuta Kamizono*
+
+*   Fix `bin/rails db:migrate` with specified `VERSION`.
+    `bin/rails db:migrate` with empty VERSION behaves as without `VERSION`.
+    Check a format of `VERSION`: Allow a migration version number
+    or name of a migration file. Raise error if format of `VERSION` is invalid.
+    Raise error if target migration doesn't exist.
+
+    *bogdanvlviv*
+
+*   Fixed a bug where column orders for an index weren't written to
+    db/schema.rb when using the sqlite adapter.
+
+    Fixes #30902.
+
+    *Paul Kuruvilla*
+
+*   Remove deprecated method `#sanitize_conditions`.
+
+    *Rafael Mendonça França*
+
+*   Remove deprecated method `#scope_chain`.
+
+    *Rafael Mendonça França*
+
+*   Remove deprecated configuration `.error_on_ignored_order_or_limit`.
+
+    *Rafael Mendonça França*
+
+*   Remove deprecated arguments from `#verify!`.
+
+    *Rafael Mendonça França*
+
+*   Remove deprecated argument `name` from `#indexes`.
+
+    *Rafael Mendonça França*
+
+*   Remove deprecated method `ActiveRecord::Migrator.schema_migrations_table_name`.
+
+    *Rafael Mendonça França*
+
+*   Remove deprecated method `supports_primary_key?`.
+
+    *Rafael Mendonça França*
+
+*   Remove deprecated method `supports_migrations?`.
+
+    *Rafael Mendonça França*
+
+*   Remove deprecated methods `initialize_schema_migrations_table` and `initialize_internal_metadata_table`.
+
+    *Rafael Mendonça França*
+
+*   Raises when calling `lock!` in a dirty record.
+
+    *Rafael Mendonça França*
+
+*   Remove deprecated support to passing a class to `:class_name` on associations.
+
+    *Rafael Mendonça França*
+
+*   Remove deprecated argument `default` from `index_name_exists?`.
+
+    *Rafael Mendonça França*
+
+*   Remove deprecated support to `quoted_id` when typecasting an Active Record object.
+
+    *Rafael Mendonça França*
+
 *   Fix `bin/rails db:setup` and `bin/rails db:test:prepare` create  wrong
     ar_internal_metadata's data for a test database.
 
@@ -77,8 +190,8 @@
 
     *Jeremy Green*
 
-*   Add new error class `TransactionTimeout` for MySQL adapter which will be raised
-    when lock wait time expires.
+*   Add new error class `TransactionTimeout` which will be raised
+    when lock wait timeout exceeded.
 
     *Gabriel Courtemanche*
 
@@ -287,10 +400,6 @@
 *   Deprecate `supports_statement_cache?`.
 
     *Ryuta Kamizono*
-
-*   Quote database name in `db:create` grant statement (when database user does not have access to create the database).
-
-    *Rune Philosof*
 
 *   Raise error `UnknownMigrationVersionError` on the movement of migrations
     when the current migration does not exist.

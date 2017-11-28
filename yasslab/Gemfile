@@ -1,0 +1,46 @@
+source 'https://rubygems.org'
+ruby "2.4.1"
+
+gem "jekyll"
+gem "rack-jekyll"
+gem "kramdown"
+gem "puma"
+
+# Gems to generate RailsGuides HTML from MD
+gem "rack-cache", "~> 1.2"
+
+# Monitoring tools
+gem "newrelic_rpm"
+
+# SSL in Production
+gem "acme_challenge"
+gem "rack-rewrite", "~> 1.5.0"
+# FIXME: Remove this fork after https://github.com/rack/rack-contrib/pull/129 is merged.
+gem "rack-contrib", github: "bigcartel/rack-contrib", branch: "master"
+
+# Testing links by hand
+gem "html-proofer"
+
+group :doc do
+  gem "sdoc", github: "robin850/sdoc", branch: "upgrade"
+  gem "redcarpet", "~> 3.2.3", platforms: :ruby
+  gem "w3c_validators"
+  gem "kindlerb", "~> 1.2.0"
+end
+
+group :development do
+  # Generate docset
+  gem "docset"
+  gem "gtt-downloader"
+end
+
+group :development, :test do
+  gem "rb-readline"
+  gem "pry-byebug"
+end
+
+group :test do
+  gem "rspec"
+  gem "turnip"
+  gem "wraith"
+end
