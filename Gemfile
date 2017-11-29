@@ -94,7 +94,7 @@ end
 # Active Storage
 group :storage do
   gem "aws-sdk-s3", require: false
-  gem "google-cloud-storage", "~> 1.3", require: false
+  gem "google-cloud-storage", "~> 1.8", require: false
   gem "azure-storage", require: false
 
   gem "mini_magick"
