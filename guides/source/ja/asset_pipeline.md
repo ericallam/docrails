@@ -331,7 +331,7 @@ Rails 4は`app/assets/javascripts/application.js`と`app/assets/stylesheets/appl
 
 JavaScriptで使用できるディレクティブはスタイルシートでも使用できます (なおJavaScriptと異なりスタイルシートは明示的にインクルードされるという違いがあります)。CSSマニフェストにおける`require_tree`ディレクティブの動作はJavaScriptの場合と同様に現在のディレクトリにあるすべてのスタイルシートをrequireします。
 
-上の例では`require_self`が使用されています。このディレクティブは、`require_self`呼び出しが行われたその場所にCSSファイルがあれば読み込みます。
+上の例では`require_self`が使用されています。このディレクティブは、`require_self`呼び出しが行われた場所にそのファイルが持っているCSSを書き込みます。
 
 NOTE: Sassファイルを複数使用しているのであれば、Sprocketsディレクティブで読み込まずに[Sass `@import`ルール](http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html#import)を使用する必要があります。このような場合にSprocketsディレクティブを使用してしまうと、Sassファイルが自分自身のスコープに置かれるため、その中で定義されている変数やミックスインが他のSassから利用できなくなってしまいます。
 
