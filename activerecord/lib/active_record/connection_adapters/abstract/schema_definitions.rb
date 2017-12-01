@@ -6,7 +6,7 @@ module ActiveRecord
     # this type are typically created and returned by methods in database
     # adapters. e.g. ActiveRecord::ConnectionAdapters::MySQL::SchemaStatements#indexes
     class IndexDefinition # :nodoc:
-      attr_reader :table, :name, :unique, :columns, :lengths, :orders, :where, :type, :using, :comment
+      attr_reader :table, :name, :unique, :columns, :lengths, :orders, :where, :type, :using, :opclass, :comment
 
       def initialize(
         table, name,
@@ -17,6 +17,7 @@ module ActiveRecord
         where: nil,
         type: nil,
         using: nil,
+        opclass: {},
         comment: nil
       )
         @table = table
@@ -28,6 +29,7 @@ module ActiveRecord
         @where = where
         @type = type
         @using = using
+        @opclass = opclass
         @comment = comment
       end
     end
@@ -84,6 +86,11 @@ module ActiveRecord
       def custom_primary_key?
         options[:primary_key] != default_primary_key
       end
+
+      def validate?
+        options.fetch(:validate, true)
+      end
+      alias validated? validate?
 
       def defined_for?(to_table_ord = nil, to_table: nil, **options)
         if to_table_ord
