@@ -738,6 +738,28 @@ module ActiveRecord
       #
       # Note: only supported by PostgreSQL and MySQL
       #
+      # ====== Creating an index with a specific operator class
+      #
+      #   add_index(:developers, :name, using: 'gist', opclass: :gist_trgm_ops)
+      #
+      # generates:
+      #
+      #   CREATE INDEX developers_on_name ON developers USING gist (name gist_trgm_ops) -- PostgreSQL
+      #
+      #   add_index(:developers, [:name, :city], using: 'gist', opclass: { city: :gist_trgm_ops })
+      #
+      # generates:
+      #
+      #   CREATE INDEX developers_on_name_and_city ON developers USING gist (name, city gist_trgm_ops) -- PostgreSQL
+      #
+      #   add_index(:developers, [:name, :city], using: 'gist', opclass: :gist_trgm_ops)
+      #
+      # generates:
+      #
+      #   CREATE INDEX developers_on_name_and_city ON developers USING gist (name gist_trgm_ops, city gist_trgm_ops) -- PostgreSQL
+      #
+      # Note: only supported by PostgreSQL
+      #
       # ====== Creating an index with a specific type
       #
       #   add_index(:developers, :name, type: :fulltext)
@@ -942,6 +964,8 @@ module ActiveRecord
       #   Action that happens <tt>ON DELETE</tt>. Valid values are +:nullify+, +:cascade+ and +:restrict+
       # [<tt>:on_update</tt>]
       #   Action that happens <tt>ON UPDATE</tt>. Valid values are +:nullify+, +:cascade+ and +:restrict+
+      # [<tt>:validate</tt>]
+      #   (Postgres only) Specify whether or not the constraint should be validated. Defaults to +true+.
       def add_foreign_key(from_table, to_table, options = {})
         return unless supports_foreign_keys?
 
@@ -1120,7 +1144,7 @@ module ActiveRecord
       def add_index_options(table_name, column_name, comment: nil, **options) # :nodoc:
         column_names = index_column_names(column_name)
 
-        options.assert_valid_keys(:unique, :order, :name, :where, :length, :internal, :using, :algorithm, :type)
+        options.assert_valid_keys(:unique, :order, :name, :where, :length, :internal, :using, :algorithm, :type, :opclass)
 
         index_type = options[:type].to_s if options.key?(:type)
         index_type ||= options[:unique] ? "UNIQUE" : ""
@@ -1186,7 +1210,8 @@ module ActiveRecord
           quoted_columns
         end
 
-        # Overridden by the MySQL adapter for supporting index lengths
+        # Overridden by the MySQL adapter for supporting index lengths and by
+        # the PostgreSQL adapter for supporting operator classes.
         def add_options_for_index_columns(quoted_columns, **options)
           if supports_index_sort_order?
             quoted_columns = add_index_sort_order(quoted_columns, options)
