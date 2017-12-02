@@ -109,6 +109,9 @@ module ActiveRecord
 
             using, expressions, where = inddef.scan(/ USING (\w+?) \((.+?)\)(?: WHERE (.+))?\z/).flatten
 
+            orders = {}
+            opclasses = {}
+
             if indkey.include?(0)
               columns = expressions
             else
@@ -119,20 +122,11 @@ module ActiveRecord
                 AND a.attnum IN (#{indkey.join(",")})
               SQL
 
-              orders = {}
-              opclasses = {}
-
               # add info on sort order (only desc order is explicitly specified, asc is the default)
               # and non-default opclasses
               expressions.scan(/(\w+)(?: (?!DESC)(\w+))?(?: (DESC))?/).each do |column, opclass, desc|
-                opclasses[column] = opclass if opclass
+                opclasses[column] = opclass.to_sym if opclass
                 orders[column] = :desc if desc
-              end
-
-              # Use a string for the opclass description (instead of a hash) when all columns
-              # have the same opclass specified.
-              if columns.count == opclasses.count && opclasses.values.uniq.count == 1
-                opclasses = opclasses.values.first
               end
             end
 
@@ -142,9 +136,9 @@ module ActiveRecord
               unique,
               columns,
               orders: orders,
+              opclasses: opclasses,
               where: where,
               using: using.to_sym,
-              opclass: opclasses,
               comment: comment.presence
             )
           end
@@ -399,51 +393,24 @@ module ActiveRecord
         end
 
         def change_column(table_name, column_name, type, options = {}) #:nodoc:
-          clear_cache!
           quoted_table_name = quote_table_name(table_name)
-          quoted_column_name = quote_column_name(column_name)
-          sql_type = type_to_sql(type, options)
-          sql = "ALTER TABLE #{quoted_table_name} ALTER COLUMN #{quoted_column_name} TYPE #{sql_type}".dup
-          if options[:collation]
-            sql << " COLLATE \"#{options[:collation]}\""
-          end
-          if options[:using]
-            sql << " USING #{options[:using]}"
-          elsif options[:cast_as]
-            cast_as_type = type_to_sql(options[:cast_as], options)
-            sql << " USING CAST(#{quoted_column_name} AS #{cast_as_type})"
-          end
-          execute sql
-
-          change_column_default(table_name, column_name, options[:default]) if options.key?(:default)
-          change_column_null(table_name, column_name, options[:null], options[:default]) if options.key?(:null)
-          change_column_comment(table_name, column_name, options[:comment]) if options.key?(:comment)
+          sqls, procs = change_column_for_alter(table_name, column_name, type, options)
+          execute "ALTER TABLE #{quoted_table_name} #{sqls.join(", ")}"
+          procs.each(&:call)
         end
 
         # Changes the default value of a table column.
         def change_column_default(table_name, column_name, default_or_changes) # :nodoc:
-          clear_cache!
-          column = column_for(table_name, column_name)
-          return unless column
-
-          default = extract_new_default_value(default_or_changes)
-          alter_column_query = "ALTER TABLE #{quote_table_name(table_name)} ALTER COLUMN #{quote_column_name(column_name)} %s"
-          if default.nil?
-            # <tt>DEFAULT NULL</tt> results in the same behavior as <tt>DROP DEFAULT</tt>. However, PostgreSQL will
-            # cast the default to the columns type, which leaves us with a default like "default NULL::character varying".
-            execute alter_column_query % "DROP DEFAULT"
-          else
-            execute alter_column_query % "SET DEFAULT #{quote_default_expression(default, column)}"
-          end
+          execute "ALTER TABLE #{quote_table_name(table_name)} #{change_column_default_for_alter(table_name, column_name, default_or_changes)}"
         end
 
         def change_column_null(table_name, column_name, null, default = nil) #:nodoc:
           clear_cache!
           unless null || default.nil?
             column = column_for(table_name, column_name)
-            execute("UPDATE #{quote_table_name(table_name)} SET #{quote_column_name(column_name)}=#{quote_default_expression(default, column)} WHERE #{quote_column_name(column_name)} IS NULL") if column
+            execute "UPDATE #{quote_table_name(table_name)} SET #{quote_column_name(column_name)}=#{quote_default_expression(default, column)} WHERE #{quote_column_name(column_name)} IS NULL" if column
           end
-          execute("ALTER TABLE #{quote_table_name(table_name)} ALTER #{quote_column_name(column_name)} #{null ? 'DROP' : 'SET'} NOT NULL")
+          execute "ALTER TABLE #{quote_table_name(table_name)} #{change_column_null_for_alter(table_name, column_name, null, default)}"
         end
 
         # Adds comment for given table column or drops it if +comment+ is a +nil+
@@ -594,7 +561,7 @@ module ActiveRecord
         #
         # Validates the constraint named +constraint_name+ on +accounts+.
         #
-        #   validate_foreign_key :accounts, :constraint_name
+        #   validate_constraint :accounts, :constraint_name
         def validate_constraint(table_name, constraint_name)
           return unless supports_validate_constraints?
 
@@ -677,6 +644,53 @@ module ActiveRecord
             when "n"; :nullify
             when "r"; :restrict
             end
+          end
+
+          def change_column_for_alter(table_name, column_name, type, options = {})
+            clear_cache!
+            quoted_column_name = quote_column_name(column_name)
+            sql_type = type_to_sql(type, options)
+            sql = "ALTER COLUMN #{quoted_column_name} TYPE #{sql_type}".dup
+            if options[:collation]
+              sql << " COLLATE \"#{options[:collation]}\""
+            end
+            if options[:using]
+              sql << " USING #{options[:using]}"
+            elsif options[:cast_as]
+              cast_as_type = type_to_sql(options[:cast_as], options)
+              sql << " USING CAST(#{quoted_column_name} AS #{cast_as_type})"
+            end
+
+            sqls = [sql]
+            procs = []
+            sqls << change_column_default_for_alter(table_name, column_name, options[:default]) if options.key?(:default)
+            sqls << change_column_null_for_alter(table_name, column_name, options[:null], options[:default]) if options.key?(:null)
+            procs << Proc.new { change_column_comment(table_name, column_name, options[:comment]) } if options.key?(:comment)
+
+            [sqls, procs]
+          end
+
+
+          # Changes the default value of a table column.
+          def change_column_default_for_alter(table_name, column_name, default_or_changes) # :nodoc:
+            clear_cache!
+            column = column_for(table_name, column_name)
+            return unless column
+
+            default = extract_new_default_value(default_or_changes)
+            alter_column_query = "ALTER COLUMN #{quote_column_name(column_name)} %s"
+            if default.nil?
+              # <tt>DEFAULT NULL</tt> results in the same behavior as <tt>DROP DEFAULT</tt>. However, PostgreSQL will
+              # cast the default to the columns type, which leaves us with a default like "default NULL::character varying".
+              alter_column_query % "DROP DEFAULT"
+            else
+              alter_column_query % "SET DEFAULT #{quote_default_expression(default, column)}"
+            end
+          end
+
+          def change_column_null_for_alter(table_name, column_name, null, default = nil) #:nodoc:
+            clear_cache!
+            "ALTER #{quote_column_name(column_name)} #{null ? 'DROP' : 'SET'} NOT NULL"
           end
 
           def data_source_sql(name = nil, type: nil)
