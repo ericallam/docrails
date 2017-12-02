@@ -1039,6 +1039,38 @@ end
 
 上のルーティングによって、`magazine_periodical_ads_url`や`edit_magazine_periodical_ad_path`などのルーティングヘルパーが生成されます。
 
+### 名前付きルーティングのパラメータをオーバーライドする
+
+`:param`オプションは、デフォルトのリソース識別子`:id` (ルーティングを生成するために使用される[動的なセグメント](routing.html#%E5%8B%95%E7%9A%84%E3%81%AA%E3%82%BB%E3%82%B0%E3%83%A1%E3%83%B3%E3%83%88)の名前) をオーバーライドします。`params[<:param>]`を使用して、コントローラからそのセグメントにアクセスできます。
+
+```ruby
+resources :videos, param: :identifier
+```
+
+```
+     videos GET  /videos(.:format)                  videos#index
+            POST /videos(.:format)                  videos#create
+ new_videos GET  /videos/new(.:format)              videos#new
+edit_videos GET  /videos/:identifier/edit(.:format) videos#edit
+```
+
+```ruby
+Video.find_by(identifier: params[:identifier])
+```
+
+関連するモデルの `ActiveRecord::Base#to_param` をオーバーライドしてURLを作成することができます。
+
+```ruby
+class Video < ApplicationRecord
+  def to_param
+    identifier
+  end
+end
+
+video = Video.find_by(identifier: "Roman-Holiday")
+edit_videos_path(video) # => "/videos/Roman-Holiday"
+```
+
 ルーティングの調査とテスト
 -----------------------------
 
