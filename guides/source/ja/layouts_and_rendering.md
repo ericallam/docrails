@@ -561,11 +561,13 @@ HTTPリクエストにレスポンスを返すもう一つの方法は、`redire
 redirect_to photos_url
 ```
 
-`redirect_to`の引数にはどんな値も指定できますが、`link_to`や`url_for`を使用するのが普通です。ユーザーを直前のページに戻す、特殊なリダイレクトも行えます。
+`redirect_back`を使うと、ユーザを直前のページに戻すことができます。戻る場所は`HTTP_REFERER`ヘッダを利用していますが、これはブラウザが必ず設定しているとは限りません。そのため、`fallback_location`は必ず設定しなければなりません。
 
 ```ruby
-redirect_to :back
+redirect_back(fallback_location: root_path)
 ```
+
+NOTE: `redirect_to`や`redirect_back`はメソッドの実行を即座に中断したりはしません。これらは単にHTTPのレスポンスを設定するだけです。もしこれらの後にメソッドがあった場合そのメソッドは実行されてしまいます。必要であれば、明示的な`return`もしくは他の中断用の手法を使うことで中断可能です。
 
 #### リダイレクトのステータスコードを変更する
 
