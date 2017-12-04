@@ -887,7 +887,7 @@ end
 ```ruby
 def new
   @person = Person.new
-  2.times { @person.addresses.build}
+  2.times { @person.addresses.build }
 end
 ```
 
