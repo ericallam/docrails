@@ -44,10 +44,10 @@ class ActiveStorage::Variation
   end
 
   # Accepts an open MiniMagick image instance, like what's returned by <tt>MiniMagick::Image.read(io)</tt>,
-  # and performs the +transformations+ against it.
+  # and performs the +transformations+ against it. The transformed image instance is then returned.
   def transform(image)
-    image.mogrify do |command|
-      transformations.each do |method, argument|
+    transformations.each do |method, argument|
+      image.mogrify do |command|
         if eligible_argument?(argument)
           command.public_send(method, argument)
         else

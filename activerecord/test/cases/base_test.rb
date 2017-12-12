@@ -629,7 +629,7 @@ class BasicsTest < ActiveRecord::TestCase
   end
 
   def test_readonly_attributes
-    assert_equal Set.new([ "title" , "comments_count" ]), ReadonlyTitlePost.readonly_attributes
+    assert_equal Set.new([ "title", "comments_count" ]), ReadonlyTitlePost.readonly_attributes
 
     post = ReadonlyTitlePost.create(title: "cannot change this", body: "changeable")
     post.reload
@@ -1494,5 +1494,13 @@ class BasicsTest < ActiveRecord::TestCase
 
     # regular column
     assert query.include?("name")
+  end
+
+  test "column names are quoted when using #from clause and model has ignored columns" do
+    refute_empty Developer.ignored_columns
+    query = Developer.from("`developers`").to_sql
+    quoted_id = Developer.connection.quote_table_name("id")
+
+    assert_match(/SELECT #{quoted_id}.* FROM `developers`/, query)
   end
 end
