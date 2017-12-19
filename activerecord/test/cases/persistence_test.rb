@@ -59,13 +59,42 @@ class PersistenceTest < ActiveRecord::TestCase
 
     def test_update_all_with_order_and_limit_updates_subset_only
       author = authors(:david)
-      assert_nothing_raised do
-        assert_equal 1, author.posts_sorted_by_id_limited.size
-        assert_equal 2, author.posts_sorted_by_id_limited.limit(2).to_a.size
-        assert_equal 1, author.posts_sorted_by_id_limited.update_all([ "body = ?", "bulk update!" ])
-        assert_equal "bulk update!", posts(:welcome).body
-        assert_not_equal "bulk update!", posts(:thinking).body
-      end
+      limited_posts = author.posts_sorted_by_id_limited
+      assert_equal 1, limited_posts.size
+      assert_equal 2, limited_posts.limit(2).size
+      assert_equal 1, limited_posts.update_all([ "body = ?", "bulk update!" ])
+      assert_equal "bulk update!", posts(:welcome).body
+      assert_not_equal "bulk update!", posts(:thinking).body
+    end
+
+    def test_update_all_with_order_and_limit_and_offset_updates_subset_only
+      author = authors(:david)
+      limited_posts = author.posts_sorted_by_id_limited.offset(1)
+      assert_equal 1, limited_posts.size
+      assert_equal 2, limited_posts.limit(2).size
+      assert_equal 1, limited_posts.update_all([ "body = ?", "bulk update!" ])
+      assert_equal "bulk update!", posts(:thinking).body
+      assert_not_equal "bulk update!", posts(:welcome).body
+    end
+
+    def test_delete_all_with_order_and_limit_deletes_subset_only
+      author = authors(:david)
+      limited_posts = Post.where(author: author).order(:id).limit(1)
+      assert_equal 1, limited_posts.size
+      assert_equal 2, limited_posts.limit(2).size
+      assert_equal 1, limited_posts.delete_all
+      assert_raise(ActiveRecord::RecordNotFound) { posts(:welcome) }
+      assert posts(:thinking)
+    end
+
+    def test_delete_all_with_order_and_limit_and_offset_deletes_subset_only
+      author = authors(:david)
+      limited_posts = Post.where(author: author).order(:id).limit(1).offset(1)
+      assert_equal 1, limited_posts.size
+      assert_equal 2, limited_posts.limit(2).size
+      assert_equal 1, limited_posts.delete_all
+      assert_raise(ActiveRecord::RecordNotFound) { posts(:thinking) }
+      assert posts(:welcome)
     end
   end
 
@@ -1106,13 +1135,18 @@ class PersistenceTest < ActiveRecord::TestCase
   end
 
   def test_reset_column_information_resets_children
-    child = Class.new(Topic)
-    child.new # force schema to load
+    child_class = Class.new(Topic)
+    child_class.new # force schema to load
 
     ActiveRecord::Base.connection.add_column(:topics, :foo, :string)
     Topic.reset_column_information
 
-    assert_equal "bar", child.new(foo: :bar).foo
+    # this should redefine attribute methods
+    child_class.new
+
+    assert child_class.instance_methods.include?(:foo)
+    assert child_class.instance_methods.include?(:foo_changed?)
+    assert_equal "bar", child_class.new(foo: :bar).foo
   ensure
     ActiveRecord::Base.connection.remove_column(:topics, :foo)
     Topic.reset_column_information
