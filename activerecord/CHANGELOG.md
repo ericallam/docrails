@@ -1,3 +1,12 @@
+*   Using subselect for `delete_all` with `limit` or `offset`.
+
+    *Ryuta Kamizono*
+
+*   Undefine attribute methods on descendants when resetting column
+    information.
+
+    *Chris Salzberg*
+
 *   Log database query callers
 
     Add `verbose_query_logs` configuration option to display the caller
@@ -547,5 +556,6 @@
     Previously this method always returned an empty array.
 
     *Kevin McPhillips*
+
 
 Please check [5-1-stable](https://github.com/rails/rails/blob/5-1-stable/activerecord/CHANGELOG.md) for previous changes.
