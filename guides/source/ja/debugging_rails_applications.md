@@ -139,7 +139,7 @@ config.log_level = :warn # 環境ごとのイニシャライザで使用可能
 Rails.logger.level = 0 # いつでも使用可能
 ```
 
-これは、development環境やstating環境ではログを出力し、production環境では不要な情報をログに出力したくない場合などに便利です。
+これは、development環境やstaging環境ではログを出力し、production環境では不要な情報をログに出力したくない場合などに便利です。
 
 TIP: Railsのデフォルトログレベルは全環境で`debug`です。
 
