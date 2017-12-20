@@ -117,11 +117,11 @@ module ActiveRecord
       end
 
       def get_advisory_lock(lock_name, timeout = 0) # :nodoc:
-        query_value("SELECT GET_LOCK(#{quote(lock_name)}, #{timeout})") == 1
+        query_value("SELECT GET_LOCK(#{quote(lock_name.to_s)}, #{timeout})") == 1
       end
 
       def release_advisory_lock(lock_name) # :nodoc:
-        query_value("SELECT RELEASE_LOCK(#{quote(lock_name)})") == 1
+        query_value("SELECT RELEASE_LOCK(#{quote(lock_name.to_s)})") == 1
       end
 
       def native_database_types
@@ -290,10 +290,6 @@ module ActiveRecord
           WHERE table_schema = #{scope[:schema]}
             AND table_name = #{scope[:name]}
         SQL
-      end
-
-      def create_table(table_name, **options) #:nodoc:
-        super(table_name, options: "ENGINE=InnoDB", **options)
       end
 
       def bulk_change_table(table_name, operations) #:nodoc:

@@ -1,3 +1,7 @@
+*   Fix `count(:all)` to correctly work `distinct` with custom SELECT list.
+
+    *Ryuta Kamizono*
+
 *   Using subselect for `delete_all` with `limit` or `offset`.
 
     *Ryuta Kamizono*
@@ -11,11 +15,11 @@
 
     Add `verbose_query_logs` configuration option to display the caller
     of database queries in the log to facilitate N+1 query resolution
-    and other debugging. Excludes Ruby and Rails callers but not gems.
+    and other debugging.
 
     Enabled in development only for new and upgraded applications. Not
     recommended for use in the production environment since it relies
-    on Ruby's `Kernel#caller` which is fairly slow.
+    on Ruby's `Kernel#caller_locations` which is fairly slow.
 
     *Olivier Lacan*
 
