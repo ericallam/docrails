@@ -114,6 +114,7 @@ railsguides_jp_gemfile = File.expand_path("yasslab/Gemfile", __dir__)
 instance_eval File.read railsguides_jp_gemfile if File.exist? railsguides_jp_gemfile
 
 group :test do
+  gem "minitest", "~> 5.10.0"
   gem "minitest-bisect"
 
   platforms :mri do
