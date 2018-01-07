@@ -148,7 +148,7 @@ module ActiveRecord
     #
     #   [#<Person id:4>, #<Person id:3>, #<Person id:2>]
     def last(limit = nil)
-      return find_last(limit) if loaded? || limit_value
+      return find_last(limit) if loaded? || has_limit_or_offset?
 
       result = ordered_relation.limit(limit)
       result = result.reverse_order!
@@ -402,7 +402,7 @@ module ActiveRecord
         if using_limitable_reflections?(join_dependency.reflections)
           relation
         else
-          if relation.limit_value
+          if has_limit_or_offset?
             limited_ids = limited_ids_for(relation)
             limited_ids.empty? ? relation.none! : relation.where!(primary_key => limited_ids)
           end
@@ -547,12 +547,11 @@ module ActiveRecord
         else
           relation = ordered_relation
 
-          relation.to_a[-index]
-          # TODO: can be made more performant on large result sets by
-          # for instance, last(index)[-index] (which would require
-          # refactoring the last(n) finder method to make test suite pass),
-          # or by using a combination of reverse_order, limit, and offset,
-          # e.g., reverse_order.offset(index-1).first
+          if equal?(relation) || has_limit_or_offset?
+            relation.records[-index]
+          else
+            relation.last(index)[-index]
+          end
         end
       end
 
