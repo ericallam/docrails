@@ -4,9 +4,20 @@ module ActiveRecord
   module Associations
     # = Active Record Through Association
     module ThroughAssociation #:nodoc:
-      delegate :source_reflection, :through_reflection, to: :reflection
+      delegate :source_reflection, to: :reflection
 
       private
+        def through_reflection
+          @through_reflection ||= begin
+            refl = reflection.through_reflection
+
+            while refl.through_reflection?
+              refl = refl.through_reflection
+            end
+
+            refl
+          end
+        end
 
         # We merge in these scopes for two reasons:
         #
