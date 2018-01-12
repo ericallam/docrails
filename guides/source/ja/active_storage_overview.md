@@ -294,7 +294,7 @@ rails_blob_path(user.avatar, disposition: "attachment")
 ----------------
 
 画像のバリエーションを作成するには、Blobで`variant`を呼び出します。
-[MiniMagick]（https://github.com/minimagick/minimagick）でサポートされている変換をメソッドに渡すことができます。
+[MiniMagick](https://github.com/minimagick/minimagick) でサポートされている変換をメソッドに渡すことができます。
 
 バリアントを有効にするには、`mini_magick`を`Gemfile`に追加してください：
 
@@ -325,7 +325,7 @@ gem 'mini_magick'
 </ul>
 ```
 
-警告：プレビューを抽出するにはサードパーティのアプリケーション、ビデオの場合は`ffmpeg`、PDFの場合は` mutool`が必要です。
+WARNING: プレビューを抽出するにはサードパーティのアプリケーション、ビデオの場合は`ffmpeg`、PDFの場合は` mutool`が必要です。
 これらのライブラリはRailsでは提供されていません。組み込みのプレビューアを使用するには、それらを自分でインストールする必要があります。
 サードパーティのソフトウェアをインストールして使用する前に、ライセンスの影響を理解していることを確認してください。
 
@@ -380,7 +380,7 @@ Active Storageは、付属のJavaScriptライブラリを使用して、クラ�
 
 これらのイベントを使用して、アップロードの進行状況を表示できます。
 
-![direct-uploads](https://user-images.githubusercontent.com/5355/28694528-16e69d0c-72f8-11e7-91a7-c0b8cfc90391.gif)
+![direct-uploads](https://raw.githubusercontent.com/yasslab/railsguides.jp/master/yasslab/direct-uploads.gif)
 
 アップロードされたファイルをフォームに表示するには
 
@@ -509,4 +509,4 @@ config.active_storage.service = :local_test
 ---------------------------------
 
 これら以外のクラウドサービスをサポートする必要がある場合は、サービスを実装する必要があります。
-各サービスは、ファイルをアップロードしてクラウドにダウンロードするのに必要なメソッドを実装することで、[`ActiveStorage :: Service`](https://github.com/rails/rails/blob/master/activestorage/lib/active_storage/service.rb)を拡張します 。
+各サービスは、ファイルをアップロードしてクラウドにダウンロードするのに必要なメソッドを実装することで、[ActiveStorage::Service](https://github.com/rails/rails/blob/master/activestorage/lib/active_storage/service.rb)を拡張します 。
