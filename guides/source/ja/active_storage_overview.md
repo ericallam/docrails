@@ -380,7 +380,7 @@ Active Storageは、付属のJavaScriptライブラリを使用して、クラ�
 
 これらのイベントを使用して、アップロードの進行状況を表示できます。
 
-![direct-uploads](https://raw.githubusercontent.com/yasslab/railsguides.jp/master/yasslab/direct-uploads.gif)
+![direct-uploads](https://user-images.githubusercontent.com/5355/28694528-16e69d0c-72f8-11e7-91a7-c0b8cfc90391.gif)
 
 アップロードされたファイルをフォームに表示するには
 
