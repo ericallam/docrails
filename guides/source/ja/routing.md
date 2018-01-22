@@ -752,7 +752,7 @@ get 'books/*section/:title', to: 'books#show'
 get '*a/foo/*b', to: 'test#index'
 ```
 
-上のルーティングは`zoo/woo/foo/bar/baz`にマッチし、`params[:a]`には`'zoo/woo'`が保存され、and `params[:b]`には`'bar/baz'`が保存されます。
+上のルーティングは`zoo/woo/foo/bar/baz`にマッチし、`params[:a]`には`'zoo/woo'`が保存され、`params[:b]`には`'bar/baz'`が保存されます。
 
 NOTE: `'/foo/bar.json'`をリクエストすると`params[:pages]`には`'foo/bar'`がJSONリクエストフォーマットで保存されます。Rails 3.0.xの動作に戻したい場合は、以下のように`format: false`を指定することができます。
 
