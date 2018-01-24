@@ -1,4 +1,4 @@
-﻿
+
 
 
 Active Record の関連付け (アソシエーション)
@@ -729,7 +729,9 @@ a.first_name == b.author.first_name # => true
 ```
 
 Active Recordでは標準的な名前同士の関連付けのほとんどをサポートしていて、自動的に認識することができます。一方で、Active Recordで次のようなオプションを使った場合、双方向の関連付けが自動的に認識されないようにすることもできます。
-
+<!--
+TODO: https://github.com/yasslab/railsguides.jp/commit/192f67bc3563a54d1bc406bce076be80a6ff0b1e#r27066124
+-->
 * `:conditions`
 * `:through`
 * `:polymorphic`
@@ -832,7 +834,9 @@ NOTE: 新しく作成した`has_one`関連付けまたは`belongs_to`関連付�
 ```ruby
 @author = @book.author
 ```
-
+<!--
+TODO: https://github.com/yasslab/railsguides.jp/commit/192f67bc3563a54d1bc406bce076be80a6ff0b1e#r27088643
+-->
 関連付けられたオブジェクトがデータベースから検索されたことがある場合は、キャッシュされたものを返します。キャッシュを読み出さずにデータベースから直接読み込ませたい場合は、親オブジェクトが持つ`#reload`メソッドを呼び出します。
 
 ```ruby
@@ -896,7 +900,9 @@ end
 * `:optional`
 
 ##### `:autosave`
-
+<!--
+TODO: https://github.com/yasslab/railsguides.jp/commit/192f67bc3563a54d1bc406bce076be80a6ff0b1e#r27091104
+-->
 `:autosave`オプションを`true`に設定すると、親オブジェクトが保存されるたびに、読み込まれているすべてのメンバを保存し、destroyフラグが立っているメンバを破棄します。
 
 ##### `:class_name`
@@ -1012,7 +1018,7 @@ end
 
 ##### `:touch`
 
-`:touch`オプションを`:true`に設定すると、関連付けられているオブジェクトが保存またはdestroyされるたびに、そのオブジェクトの`updated_at`または`updated_on`タイムスタンプが現在時刻に設定されます。
+`:touch`オプションを`true`に設定すると、関連付けられているオブジェクトが保存またはdestroyされるたびに、そのオブジェクトの`updated_at`または`updated_on`タイムスタンプが現在時刻に設定されます。
 
 ```ruby
 class Book < ApplicationRecord
@@ -1235,7 +1241,9 @@ end
 `:as`オプションを設定すると、ポリモーフィック関連付けを指定できます。ポリモーフィック関連付けの詳細については[このガイドの説明](#ポリモーフィック関連付け)を参照してください。
 
 ##### `:autosave`
-
+<!--
+TODO: https://github.com/yasslab/railsguides.jp/commit/192f67bc3563a54d1bc406bce076be80a6ff0b1e#r27091895
+-->
 `:autosave`オプションを`true`に設定すると、親オブジェクトが保存されるたびに、読み込まれているすべてのメンバを保存し、destroyフラグが立っているメンバを破棄します。
 
 ##### `:class_name`
@@ -1421,6 +1429,7 @@ end
 * `collection.build(attributes = {}, ...)`
 * `collection.create(attributes = {})`
 * `collection.create!(attributes = {})`
+* `collection.reload`
 
 上のメソッドの`collection`の部分はプレースホルダであり、実際には`has_many`への1番目の引数として渡されたシンボルに置き換えられます。また、`collection_singular`の部分はシンボルの単数形に置き換えられます。たとえば以下の宣言を見てみましょう。
 
@@ -1614,7 +1623,9 @@ end
 `:as`オプションを設定すると、ポリモーフィック関連付けであることが指定されます。([このガイドの説明](#ポリモーフィック関連付け)を参照)
 
 ##### `:autosave`
-
+<!--
+TODO: https://github.com/yasslab/railsguides.jp/commit/192f67bc3563a54d1bc406bce076be80a6ff0b1e#r27095569
+-->
 `:autosave`オプションを`true`に設定すると、親オブジェクトが保存されるたびに、読み込まれているすべてのメンバを保存し、destroyフラグが立っているメンバを破棄します。
 
 ##### `:class_name`
@@ -1925,6 +1936,7 @@ person.articles << article unless person.articles.include?(article)
 * `collection.build(attributes = {})`
 * `collection.create(attributes = {})`
 * `collection.create!(attributes = {})`
+* `collection.reload`
 
 上のメソッドの`collection`の部分はプレースホルダであり、実際には`has_and_belongs_to_many`への1番目の引数として渡されたシンボルに置き換えられます。また、`collection_singular`の部分はシンボルの単数形に置き換えられます。たとえば以下の宣言を見てみましょう。
 
@@ -2073,7 +2085,9 @@ NOTE: このメソッドは`collection.concat`および`collection.push`のエ�
 ##### `collection.create!(attributes = {})`
 
 上の`collection.create`と同じですが、レコードがinvalidの場合に`ActiveRecord::RecordInvalid`がraiseされる点が異なります。
-
+<!--
+TODO: https://github.com/yasslab/railsguides.jp/commit/192f67bc3563a54d1bc406bce076be80a6ff0b1e#r27118899
+-->
 #### `has_and_belongs_to_many`のオプション
 
 Railsのデフォルトの`has_and_belongs_to_many`関連付けは、ほとんどの場合カスタマイズ不要ですが、時には関連付けの動作をカスタマイズしたくなることもあると思います。これは、作成するときにオプションを渡すことで簡単にカスタマイズできます。たとえば、以下のようなオプションを関連付けに追加できます。
@@ -2110,7 +2124,9 @@ end
 ```
 
 ##### `:autosave`
-
+<!--
+TODO: https://github.com/yasslab/railsguides.jp/commit/192f67bc3563a54d1bc406bce076be80a6ff0b1e#r27118921
+-->
 `:autosave`オプションを`true`に設定すると、親オブジェクトが保存されるたびに、読み込まれているすべてのメンバを保存し、destroyフラグが立っているメンバを破棄します。
 
 ##### `:class_name`
@@ -2243,7 +2259,7 @@ end
 
 ##### `distinct`
 
-`uniq`メソッドは、コレクション内の重複を削除します。
+`distinct`メソッドは、コレクション内の重複を削除します。
 
 #### オブジェクトが保存されるタイミング
 
