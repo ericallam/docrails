@@ -27,7 +27,16 @@ https://railstutorial.jp/
 
 本リポジトリにPull Requestを送付したい方は、下記を参照してください。    
 
-### 1. HTMLファイルの生成 (Jekyll)
+### 1. 既存のHTMLファイルをローカルで生成および確認(Jekyll)
+
+(rubyのバージョンは[.ruby_version](https://github.com/yasslab/railsguides.jp/blob/master/.ruby-version)に記載があります。)
+
+1. `$ bundle install`
+2. `$ bundle exec rake assets:precompile`
+3. `$ bundle exec jekyll server`
+4. localhost:4000 から既存のHTMLファイルを確認する
+
+### 2. 編集したHTMLをローカルで生成および確認 (Jekyll)
 
 1. `/guides/source/ja` 内の Markdown ファイルを編集する
 2. `$ bundle exec rake assets:precompile` 
@@ -35,7 +44,7 @@ https://railstutorial.jp/
 4. localhost:4000 から変更結果を確認する
 5. (問題なければ) PRを送付する
 
-### 2. CI と Heroku
+### 3. CI と Heroku
 
 - PRが送られると、[railsguides.jpのTravis CI](https://travis-ci.org/yasslab/railsguides.jp) が走ります。
 - CIが通らなかった場合は、該当箇所を修正してください。
