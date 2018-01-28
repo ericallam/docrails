@@ -1011,7 +1011,7 @@ end
 Railsアプリケーションではビルトインの`minitest`ベースのテスティング以外のテストしか利用できないわけではありません。Rails開発者は以下のような実にさまざまなアプローチでテストの実行や支援を行っています。
 
 * [NullDB](http://avdi.org/projects/nulldb/)はデータベースの利用を避けてテスティングを高速化する方法です。
-* [Factory Girl](https://github.com/thoughtbot/factory_girl/tree/master)はフィクスチャーに代わるテストデータ提供/生成ツールです。
+* [Factory Bot](https://github.com/thoughtbot/factory_bot/tree/master)はフィクスチャーに代わるテストデータ提供/生成ツールです。
 * [Fixture Builder](https://github.com/rdy/fixture_builder)はテスト実行直前にRubyのファクトリーをコンパイルしてフィクスチャーに変換するツールです。
 * [MiniTest::Spec Rails](https://github.com/metaskills/minitest-spec-rails)、RailsのテストではMiniTest::Spec DSLを利用します。
 * [Shoulda](http://www.thoughtbot.com/projects/shoulda)`test/unit`を拡張してさまざまなヘルパー/マクロ/アサーションを追加します。
