@@ -65,7 +65,7 @@ Rails全般に対する設定を行うには、`Rails::Railtie`オブジェク�
 
 * `config.cache_classes`は、アプリケーションのクラスやモジュールをリクエストごとに再読み込みするか(=キャッシュしないかどうか)どうかを指定します。`config.cache_classes`のデフォルト値は、developmentモードではfalseなのでコードの更新がすぐ反映され、testモードとproductionモードではtrueなので動作が高速になります。同時に`threadsafe!`をオンにすることもできます。
 
-* `config.action_view.cache_template_loading`は、リクエストのたびにビューテンプレートを再読み込みするか(=キャッシュしないか)を指定します。
+* `config.action_view.cache_template_loading`は、リクエストのたびにビューテンプレートを再読み込みするか(=キャッシュしないか)を指定します。`config.action_view.cache_template_loading`のデフォルト値は`config.cache_classes`がtrueならtrue、falseならfalseとして設定されます。
 
 * `config.beginning_of_week`は、アプリケーションにおける週の初日を設定します。引数には、曜日を表す正しいシンボルを渡します(`:monday`など)。
 
