@@ -66,7 +66,7 @@ Overwrite /myapp/config/application.rb? (enter "h" for help) [Ynaqdh]
 Rails 5.0からRails 5.1へのアップグレード
 -------------------------------------
 
-Rails 5.0 の変更点について詳しくは、[リリースノート](5_1_release_notes.html)を参照してください。
+Rails 5.1 の変更点について詳しくは、[リリースノート](5_1_release_notes.html)を参照してください。
 
 ### トップレベルの`HashWithIndifferentAccess`が弱く非推奨化された
 
