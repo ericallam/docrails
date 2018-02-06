@@ -116,14 +116,14 @@ config.debug_exception_response_format = :api
 
 ```ruby
 class ApplicationController < ActionController::Base
-end 
+end
 ```
 
 上を以下に変更します。
 
 ```ruby
 class ApplicationController < ActionController::API
-end 
+end
 ```
 
 ミドルウェアの選択
@@ -147,6 +147,7 @@ APIアプリケーションでは、デフォルトで以下のミドルウェ�
 - `Rack::Head`
 - `Rack::ConditionalGet`
 - `Rack::ETag`
+- `MyApi::Application::Routes`
 
 詳しくは、Rackガイドの[内部ミドルウェア](rails_on_rack.html#internal-middleware-stack) をご覧ください。
 
@@ -184,7 +185,7 @@ def show
 
   if stale?(last_modified: @post.updated_at, public: true)
     render json: @post
-  end 
+  end
 end
 ```
 
@@ -287,17 +288,21 @@ APIアプリケーション（`ActionController::API`を利用）には、デフ
 - `ActionController::Instrumentation`: Action Controllerで定義するinstrumentationフックをサポート（詳しくは[the instrumentation guide](active_support_instrumentation.html#action-controller) を参照）
 - `ActionController::ParamsWrapper`: パラメータハッシュをラップしてネスト化ハッシュにする。これにより、たとえばPOSTリクエスト送信時にルート要素を指定する必要がなくなる。
 
+<!--
+TODO: https://github.com/yasslab/railsguides.jp/commit/bc868b0eb35712469adb049f913add99f3986ae1#r27038293
+-->
+
 他のプラグインによってモジュールが追加されることもあります。`ActionController::API`の全モジュールのリストは、次のコマンドで表示できます。
 
 ```bash
 $ bin/rails c
 >> ActionController::API.ancestors - ActionController::Metal.ancestors
-=> [ActionController::API, 
-    ActiveRecord::Railties::ControllerRuntime, 
-    ActionDispatch::Routing::RouteSet::MountedHelpers, 
-    ActionController::ParamsWrapper, 
-    ... , 
-    AbstractController::Rendering, 
+=> [ActionController::API,
+    ActiveRecord::Railties::ControllerRuntime,
+    ActionDispatch::Routing::RouteSet::MountedHelpers,
+    ActionController::ParamsWrapper,
+    ... ,
+    AbstractController::Rendering,
     ActionView::ViewPaths]
 ```
 
