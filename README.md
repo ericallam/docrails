@@ -29,7 +29,7 @@ https://railstutorial.jp/
 
 1. ブラウザ上で [guides/source/ja](https://github.com/yasslab/railsguides.jp/tree/master/guides/source/ja) を開く
 2. 直したいファイルを開く (例: [upgrading_ruby_on_rails.md](https://github.com/yasslab/railsguides.jp/blob/master/guides/source/ja/upgrading_ruby_on_rails.md))
-3. 右上の :pencil: アイコン (Fork this project and edit this file) をクリックする
+3. 右上の ✎ アイコン (Fork this project and edit this file) をクリックする
 4. 気になる箇所を修正し、修正内容にタイトルと説明文を付け、Propose file change をクリックする
 5. 修正内容を確認し、問題なければ Create pull request をクリックする
 
