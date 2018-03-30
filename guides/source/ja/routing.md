@@ -102,7 +102,7 @@ resources :photos
 
 NOTE: Railsのルーターでは、サーバーへのリクエストをマッチさせる際にHTTP動詞とURLを使用しているため、4種類のURL (GET/POST/PATCH/DELETE) が7種類の異なるアクション (index/new/create/show/edit/update/destroy) に割り当てられています。
 
-NOTE: Railsのルーティングは、ルーティングファイルの「上からの記載順に」マッチします。このため、たとえば`resources :photos`というルーティングが`get 'photos/poll'`よりも前の行にあれば、`resources`行の`show`アクションが`get`行の記述よりも優先されますので、`get`行のルーティングは有効になりません。これを修正するには、`get`行を`resorces`行 **よりも上** の行に移動してください。これにより、`get`行がマッチするようになります。
+NOTE: Railsのルーティングは、ルーティングファイルの「上からの記載順に」マッチします。このため、たとえば`resources :photos`というルーティングが`get 'photos/poll'`よりも前の行にあれば、`resources`行の`show`アクションが`get`行の記述よりも優先されますので、`get`行のルーティングは有効になりません。これを修正するには、`get`行を`resources`行 **よりも上** の行に移動してください。これにより、`get`行がマッチするようになります。
 
 ### パスとURL用ヘルパー
 
