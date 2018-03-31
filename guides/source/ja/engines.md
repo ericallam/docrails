@@ -1050,7 +1050,7 @@ ActiveRecord::Base.include(MyActiveRecordHelper)
 これは次のように書けます。
 
 ```ruby
-ActiveSupport.on_load(:active_record) { include MyActiveRecordHelper } # ブselfはActiveRecord::Baseを指すので、簡潔に`#include`を呼び出せます。
+ActiveSupport.on_load(:active_record) { include MyActiveRecordHelper } # selfはActiveRecord::Baseを指すので、簡潔に`#include`を呼び出せます。
 ```
 
 ### 例題2
