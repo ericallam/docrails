@@ -129,10 +129,10 @@ https://railstutorial.jp/
 
 公式ドキュメントを支えるチームで、御社のプロジェクトを支援します。お気軽にお問い合わせください。
 
-Ruby/Rails の開発支援サービス - YassLab  
+Ruby/Rails の開発支援サービス - YassLab 株式会社  
 [https://yasslab.jp/ja/agile](https://yasslab.jp/ja/agile)
 
-[![YassLab Logo](https://raw.githubusercontent.com/yasslab/railsguides.jp/master/yasslab/logo_800x200.png)](https://yasslab.jp/ja/)
+[![YassLab Inc. Logo](https://raw.githubusercontent.com/yasslab/railsguides.jp/master/yasslab/logo_800x200.png)](https://yasslab.jp/ja/)
 
 ### 協力者の相談部屋
 
