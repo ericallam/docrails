@@ -66,7 +66,7 @@ $ bin/rails plugin --help
     end
     ```
 
-`--mountable`オプションを使用すると、`--full`オプションに以下が追加されます。
+`--mountable`オプションを使用すると、`--full`オプションによって以下が追加されます。
 
   * アセットマニフェストファイル (`application.js`および`application.css`)
   * 名前空間化された`ApplicationController`スタブ
