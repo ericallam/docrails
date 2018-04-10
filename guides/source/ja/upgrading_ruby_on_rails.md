@@ -151,7 +151,7 @@ end
 
 ### Rails コントローラのテスト
 
-#### `rails-controller-testing`からヘルパーメソッドを抽出する
+#### いくつかのヘルパーメソッドを `rails-controller-testing` に抽出
 
 `assigns`メソッドと`assert_template`メソッドは`rails-controller-testing` gemに移転しました。これらのメソッドを引き続きコントローラのテストで使いたい場合は、Gemfileに`gem 'rails-controller-testing'`を追加してください。
 
