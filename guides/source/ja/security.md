@@ -1011,4 +1011,4 @@ _'nosniff' はRailsではデフォルトです。_ - ファイルのMIMEタイ�
 * Ruby on Railsセキュリティプロジェクトには定期的にセキュリティ情報が掲載されます: [http://www.rorsecurity.info](http://www.rorsecurity.info)
 * Railsセキュリティ [メーリングリスト](http://groups.google.com/group/rubyonrails-security)を購読しましょう。
 * [アプリケーションのその他の層についても最新に保ってください](http://secunia.com/) (週刊のニュースレターも発行しています)
-* [優れたセキュリティブログ](http://ha.ckers.org/blog/)には[XSSチートシート](http://ha.ckers.org/xss.html)が掲載されています。
+* [優れたセキュリティブログ](https://www.owasp.org)には[XSSチートシート](https://www.owasp.org/index.php/DOM_based_XSS_Prevention_Cheat_Sheet)が掲載されています。
