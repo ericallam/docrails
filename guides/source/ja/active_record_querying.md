@@ -408,7 +408,7 @@ end
 `find_in_batches`はモデルクラスの上で動きます。これまでと同様に、リレーションについても同様です。
 
 ```ruby
-Invoice.pending.find_in_batches do |invoice|
+Invoice.pending.find_in_batches do |invoices|
   pending_invoices_export.add_invoices(invoices)
 end
 ```
