@@ -276,7 +276,7 @@ Action View
 *   `preload_link_tag`ヘルパーを追加しました。
     ([Pull Request](https://github.com/rails/rails/pull/31251))
 
-*   Allow the use of callable objects as group methods for grouped selects.
+*   グループ化されたセレクト用のgroupメソッドが呼び出し可能オブジェクトとして使えるようになりました。
     ([Pull Request](https://github.com/rails/rails/pull/31578))
 
 Action Mailer
@@ -625,9 +625,7 @@ Active Support
 * `MessageEncryptor`と`MessageVerifier`でキーのローテーションをサポート。
     ([Pull Request](https://github.com/rails/rails/pull/29716))
 
-* `HashWithIndifferentAccess#transform_keys`が`HashWithIndifferentAccess`のインスタンスを返すようになった。
-*   Return an instance of `HashWithIndifferentAccess` from
-    `HashWithIndifferentAccess#transform_keys`.
+* `HashWithIndifferentAccess#transform_keys` が `HashWithIndifferentAccess` のインスタンスを返すようになった。
     ([Pull Request](https://github.com/rails/rails/pull/30728))
 
 * `Hash#slice`がRuby 2.5以降の組み込み定義にフォールバックするようになった（定義済みの場合）。
