@@ -1,36 +1,33 @@
-**DO NOT READ THIS FILE ON GITHUB, GUIDES ARE PUBLISHED ON http://guides.rubyonrails.org.**
 
 Active Record and PostgreSQL
 ============================
 
-This guide covers PostgreSQL specific usage of Active Record.
+このガイドでは、PostgreSQLに特化したActive Recordの利用法について説明します。
 
-After reading this guide, you will know:
+このガイドの内容:
 
-* How to use PostgreSQL's datatypes.
-* How to use UUID primary keys.
-* How to implement full text search with PostgreSQL.
-* How to back your Active Record models with database views.
+* PostgreSQLのデータ型の使い方
+* UUID主キーの使い方
+* PostgreSQLで全文検索を実装する方法
+* Active Recordモデルで「データベースビュー」をサポートする方法
+
+> 訳注: 本ガイドでは、特記ない限り単独の「ビュー」はPostgreSQLの「データベースビュー」を指します。
 
 --------------------------------------------------------------------------------
 
-In order to use the PostgreSQL adapter you need to have at least version 9.1
-installed. Older versions are not supported.
+PostgreSQLアダプタを利用する場合、PostgreSQLバージョン9.1以上が必要です。これより古いバージョンはサポートされません。
 
-To get started with PostgreSQL have a look at the
-[configuring Rails guide](configuring.html#configuring-a-postgresql-database).
-It describes how to properly setup Active Record for PostgreSQL.
+PostgreSQLを使う方は、[Rails アプリケーションを設定する](configuring.html#postgresqlデータベースを設定する)ガイドをご覧ください。Active RecordをPostgreSQL向けに正しく設定する方法が記載されています。
 
-Datatypes
+データ型
 ---------
 
-PostgreSQL offers a number of specific datatypes. Following is a list of types,
-that are supported by the PostgreSQL adapter.
+PostgreSQLには固有のデータ型（datatype）が多数提供されています。PostgreSQLアダプタでサポートされるデータ型を以下にリストアップします。
 
-### Bytea
+### bytea（バイナリ列）
 
-* [type definition](https://www.postgresql.org/docs/current/static/datatype-binary.html)
-* [functions and operators](https://www.postgresql.org/docs/current/static/functions-binarystring.html)
+* [型の定義](https://www.postgresql.jp/document/current/html/datatype-binary.html)
+* [関数と演算子](https://www.postgresql.jp/document/current/html/functions-binarystring.html)
 
 ```ruby
 # db/migrate/20140207133952_create_documents.rb
@@ -47,10 +44,10 @@ data = File.read(Rails.root + "tmp/output.pdf")
 Document.create payload: data
 ```
 
-### Array
+### 配列
 
-* [type definition](https://www.postgresql.org/docs/current/static/arrays.html)
-* [functions and operators](https://www.postgresql.org/docs/current/static/functions-array.html)
+* [型の定義](https://www.postgresql.jp/document/current/html/arrays.html)
+* [関数と演算子](https://www.postgresql.jp/document/current/html/functions-array.html)
 
 ```ruby
 # db/migrate/20140207133952_create_books.rb
@@ -71,22 +68,22 @@ Book.create title: "Brave New World",
             tags: ["fantasy", "fiction"],
             ratings: [4, 5]
 
-## Books for a single tag
+## 1つのタグに対応する本
 Book.where("'fantasy' = ANY (tags)")
 
-## Books for multiple tags
+## 複数タグに対応する本
 Book.where("tags @> ARRAY[?]::varchar[]", ["fantasy", "fiction"])
 
-## Books with 3 or more ratings
+## ratingが3以上の本
 Book.where("array_length(ratings, 1) >= 3")
 ```
 
-### Hstore
+### hstore
 
-* [type definition](https://www.postgresql.org/docs/current/static/hstore.html)
-* [functions and operators](https://www.postgresql.org/docs/current/static/hstore.html#AEN179902)
+* [型の定義](https://www.postgresql.jp/document/current/html/hstore.html)
+* [関数と演算子](https://www.postgresql.jp/document/current/html/hstore.html#AEN179902)
 
-NOTE: You need to enable the `hstore` extension to use hstore.
+NOTE: hstoreを使うには、`hstore`拡張をオンにする必要があります。
 
 ```ruby
 # db/migrate/20131009135255_create_profiles.rb
@@ -114,10 +111,10 @@ Profile.where("settings->'color' = ?", "yellow")
 # => #<ActiveRecord::Relation [#<Profile id: 1, settings: {"color"=>"yellow", "resolution"=>"1280x1024"}>]>
 ```
 
-### JSON and JSONB
+### JSONとJSONB
 
-* [type definition](https://www.postgresql.org/docs/current/static/datatype-json.html)
-* [functions and operators](https://www.postgresql.org/docs/current/static/functions-json.html)
+* [型の定義](https://www.postgresql.jp/document/current/html/datatype-json.html)
+* [関数と演算子](https://www.postgresql.jp/document/current/html/functions-json.html)
 
 ```ruby
 # db/migrate/20131220144913_create_events.rb
@@ -140,17 +137,18 @@ Event.create(payload: { kind: "user_renamed", change: ["jack", "john"]})
 event = Event.first
 event.payload # => {"kind"=>"user_renamed", "change"=>["jack", "john"]}
 
-## Query based on JSON document
-# The -> operator returns the original JSON type (which might be an object), whereas ->> returns text
+## JSONドキュメントベースのクエリ
+# ->演算子は元のJSON型を返す（オブジェクトの可能性がある）
+# ->>ならテキストを返す
 Event.where("payload->>'kind' = ?", "user_renamed")
 ```
 
-### Range Types
+### 範囲型
 
-* [type definition](https://www.postgresql.org/docs/current/static/rangetypes.html)
-* [functions and operators](https://www.postgresql.org/docs/current/static/functions-range.html)
+* [型の定義](https://www.postgresql.jp/document/current/html/rangetypes.html)
+* [関数と演算子](https://www.postgresql.jp/document/current/html/functions-range.html)
 
-This type is mapped to Ruby [`Range`](http://www.ruby-doc.org/core-2.2.2/Range.html) objects.
+この型は、Rubyの[`Range`](https://docs.ruby-lang.org/ja/latest/class/Range.html)オブジェクトにマッピングされます。
 
 ```ruby
 # db/migrate/20130923065404_create_events.rb
@@ -162,16 +160,16 @@ end
 class Event < ApplicationRecord
 end
 
-# Usage
+# 使い方
 Event.create(duration: Date.new(2014, 2, 11)..Date.new(2014, 2, 12))
 
 event = Event.first
 event.duration # => Tue, 11 Feb 2014...Thu, 13 Feb 2014
 
-## All Events on a given date
+## 指定の日のすべての行事
 Event.where("duration @> ?::date", Date.new(2014, 2, 12))
 
-## Working with range bounds
+## 範囲を絞った操作
 event = Event.
   select("lower(duration) AS starts_at").
   select("upper(duration) AS ends_at").first
@@ -180,12 +178,11 @@ event.starts_at # => Tue, 11 Feb 2014
 event.ends_at # => Thu, 13 Feb 2014
 ```
 
-### Composite Types
+### 複合型（composite type）
 
-* [type definition](https://www.postgresql.org/docs/current/static/rowtypes.html)
+* [型の定義](https://www.postgresql.jp/document/current/html/rowtypes.html)
 
-Currently there is no special support for composite types. They are mapped to
-normal text columns:
+現時点では複合型に特化したサポートはありません。複合型は、通常のテキストカラムにマッピングされます。
 
 ```sql
 CREATE TYPE full_address AS
@@ -212,7 +209,7 @@ end
 class Contact < ApplicationRecord
 end
 
-# Usage
+# 使い方
 Contact.create address: "(Paris,Champs-Élysées)"
 contact = Contact.first
 contact.address # => "(Paris,Champs-Élysées)"
@@ -220,12 +217,11 @@ contact.address = "(Paris,Rue Basse)"
 contact.save!
 ```
 
-### Enumerated Types
+### 列挙型（enumrated type）
 
-* [type definition](https://www.postgresql.org/docs/current/static/datatype-enum.html)
+* [型の定義](https://www.postgresql.jp/document/current/html/datatype-enum.html)
 
-Currently there is no special support for enumerated types. They are mapped as
-normal text columns:
+現時点では列挙型に特化したサポートはありません。複合型は、通常のテキストカラムにマッピングされます。
 
 ```ruby
 # db/migrate/20131220144913_create_articles.rb
@@ -238,7 +234,7 @@ def up
   end
 end
 
-# NOTE: It's important to drop table before dropping enum.
+# メモ: enumをドロップする前にテーブルをドロップすることが重要
 def down
   drop_table :articles
 
@@ -251,7 +247,7 @@ end
 class Article < ApplicationRecord
 end
 
-# Usage
+# 使い方
 Article.create status: "draft"
 article = Article.first
 article.status # => "draft"
@@ -260,11 +256,13 @@ article.status = "published"
 article.save!
 ```
 
-To add a new value before/after existing one you should use [ALTER TYPE](https://www.postgresql.org/docs/current/static/sql-altertype.html):
+既存の値の直前または直後に新しい値を追加する場合は、[ALTER TYPE](https://www.postgresql.jp/document/current/html/sql-altertype.html)を使うべきです。
+
 
 ```ruby
 # db/migrate/20150720144913_add_new_state_to_articles.rb
-# NOTE: ALTER TYPE ... ADD VALUE cannot be executed inside of a transaction block so here we are using disable_ddl_transaction!
+# メモ: ALTER TYPE 〜 ADD VALUEはトランザクションブロック内では
+# 実行できませんので、disable_ddl_transaction!を使っています
 disable_ddl_transaction!
 
 def up
@@ -274,9 +272,9 @@ def up
 end
 ```
 
-NOTE: ENUM values can't be dropped currently. You can read why [here](https://www.postgresql.org/message-id/29F36C7C98AB09499B1A209D48EAA615B7653DBC8A@mail2a.alliedtesting.com).
+NOTE: ENUM値は現在ドロップできません。理由については[こちら](https://www.postgresql.org/message-id/29F36C7C98AB09499B1A209D48EAA615B7653DBC8A@mail2a.alliedtesting.com)をご覧ください。
 
-Hint: to show all the values of the all enums you have, you should call this query in `bin/rails db` or `psql` console:
+HINT: 現在あるすべてのenumについてすべての値を表示するには、`bin/rails db`または`psql`で以下のクエリを呼ぶべきです。
 
 ```sql
 SELECT n.nspname AS enum_schema,
@@ -289,12 +287,11 @@ SELECT n.nspname AS enum_schema,
 
 ### UUID
 
-* [type definition](https://www.postgresql.org/docs/current/static/datatype-uuid.html)
-* [pgcrypto generator function](https://www.postgresql.org/docs/current/static/pgcrypto.html#AEN182570)
-* [uuid-ossp generator functions](https://www.postgresql.org/docs/current/static/uuid-ossp.html)
+* [型の定義](https://www.postgresql.jp/document/current/html/datatype-uuid.html)
+* [pgcrypto生成関数](https://www.postgresql.jp/document/current/html/pgcrypto.html#AEN182570)
+* [uuid-ossp生成関数](https://www.postgresql.jp/document/current/html/uuid-ossp.html)
 
-NOTE: You need to enable the `pgcrypto` (only PostgreSQL >= 9.4) or `uuid-ossp`
-extension to use uuid.
+NOTE: UUIDを使うには、`pgcrypto`拡張（PostgreSQL 9.4以上）または`uuid=ossp`拡張を有効にする必要があります。
 
 ```ruby
 # db/migrate/20131220144913_create_revisions.rb
@@ -306,14 +303,14 @@ end
 class Revision < ApplicationRecord
 end
 
-# Usage
+# 使い方
 Revision.create identifier: "A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A11"
 
 revision = Revision.first
 revision.identifier # => "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
 ```
 
-You can use `uuid` type to define references in migrations:
+`uuid`型は、マイグレーション内で参照の定義に使えます。
 
 ```ruby
 # db/migrate/20150418012400_create_blog.rb
@@ -336,12 +333,14 @@ class Comment < ApplicationRecord
 end
 ```
 
-See [this section](#uuid-primary-keys) for more details on using UUIDs as primary key.
+UUIDについて詳しくは、[UUID主キー](#UUID主キー)のセクションを参照してください。
 
-### Bit String Types
+### ビット列（bit string）データ型
 
-* [type definition](https://www.postgresql.org/docs/current/static/datatype-bit.html)
-* [functions and operators](https://www.postgresql.org/docs/current/static/functions-bitstring.html)
+* [型の定義](https://www.postgresql.jp/document/current/html/datatype-bit.html)
+* [関数と演算子](https://www.postgresql.jp/document/current/html/functions-bitstring.html)
+
+> 訳注: bit stringはビット列またはビット文字列と訳されているようです。
 
 ```ruby
 # db/migrate/20131220144913_create_users.rb
@@ -353,7 +352,7 @@ end
 class User < ApplicationRecord
 end
 
-# Usage
+# 使い方
 User.create settings: "01010011"
 user = User.first
 user.settings # => "01010011"
@@ -362,13 +361,11 @@ user.settings # => 10101111
 user.save!
 ```
 
-### Network Address Types
+### ネットワークアドレス型
 
-* [type definition](https://www.postgresql.org/docs/current/static/datatype-net-types.html)
+* [型の定義](https://www.postgresql.jp/document/current/html/datatype-net-types.html)
 
-The types `inet` and `cidr` are mapped to Ruby
-[`IPAddr`](http://www.ruby-doc.org/stdlib-2.2.2/libdoc/ipaddr/rdoc/IPAddr.html)
-objects. The `macaddr` type is mapped to normal text.
+この型である`idet`や`cdir`は、[`IPAddr`](https://docs.ruby-lang.org/ja/latest/class/IPAddr.html)オブジェクトにマッピングされます。`macaddr`型は通常のテキストにマッピングされます。
 
 ```ruby
 # db/migrate/20140508144913_create_devices.rb
@@ -382,7 +379,7 @@ end
 class Device < ApplicationRecord
 end
 
-# Usage
+# 使い方
 macbook = Device.create(ip: "192.168.1.12",
                         network: "192.168.2.0/24",
                         address: "32:01:16:6d:05:ef")
@@ -397,19 +394,17 @@ macbook.address
 # => "32:01:16:6d:05:ef"
 ```
 
-### Geometric Types
+### 幾何（geometric）データ型
 
-* [type definition](https://www.postgresql.org/docs/current/static/datatype-geometric.html)
+* [型の定義](https://www.postgresql.jp/document/current/html/datatype-geometric.html)
 
-All geometric types, with the exception of `points` are mapped to normal text.
-A point is casted to an array containing `x` and `y` coordinates.
+`points`の例外を持つすべての幾何データ型は、通常のテキストにマッピングされます。
+1つの点は、`x`座標と`y`座標を含む1つの配列にキャストされます。
 
-
-UUID Primary Keys
+UUID主キー
 -----------------
 
-NOTE: You need to enable the `pgcrypto` (only PostgreSQL >= 9.4) or `uuid-ossp`
-extension to generate random UUIDs.
+NOTE: ランダムなUUIDを生成するには、`pgcrypto`拡張（PostgreSQL 9.4以上）または`uuid=ossp`拡張を有効にする必要があります。
 
 ```ruby
 # db/migrate/20131220144913_create_devices.rb
@@ -422,15 +417,14 @@ end
 class Device < ApplicationRecord
 end
 
-# Usage
+# 使い方
 device = Device.create
 device.id # => "814865cd-5a1d-4771-9306-4268f188fe9e"
 ```
 
-NOTE: `gen_random_uuid()` (from `pgcrypto`) is assumed if no `:default` option was
-passed to `create_table`.
+NOTE: `pgcrypto`の`gen_random_uuid()`は、`create_table`に`:default`オプションが何も渡されていないことを前提としています。
 
-Full Text Search
+全文検索
 ----------------
 
 ```ruby
@@ -446,20 +440,20 @@ add_index :documents, "to_tsvector('english', title || ' ' || body)", using: :gi
 class Document < ApplicationRecord
 end
 
-# Usage
+# 使い方
 Document.create(title: "Cats and Dogs", body: "are nice!")
 
-## all documents matching 'cat & dog'
+## 'cat & dog'にマッチするすべてのドキュメント
 Document.where("to_tsvector('english', title || ' ' || body) @@ to_tsquery(?)",
                  "cat & dog")
 ```
 
-Database Views
+データベースビュー
 --------------
 
-* [view creation](https://www.postgresql.org/docs/current/static/sql-createview.html)
+* [CREATE VIEW](https://www.postgresql.jp/document/current/html/sql-createview.html)
 
-Imagine you need to work with a legacy database containing the following table:
+以下のテーブルを含むレガシーなデータベースを使う必要が生じたとします。
 
 ```
 rails_pg_guide=# \d "TBL_ART"
@@ -475,9 +469,7 @@ Indexes:
     "TBL_ART_pkey" PRIMARY KEY, btree ("INT_ID")
 ```
 
-This table does not follow the Rails conventions at all.
-Because simple PostgreSQL views are updateable by default,
-we can wrap it as follows:
+このテーブルはRailsの慣習にまったく従っていません。PostgreSQLの単純なビューはデフォルトではアップデート不可なので、次のようにラップできます。
 
 ```ruby
 # db/migrate/20131220144913_create_articles_view.rb
@@ -500,7 +492,7 @@ class Article < ApplicationRecord
   end
 end
 
-# Usage
+# 使い方
 first = Article.create! title: "Winter is coming",
                         status: "published",
                         published_at: 1.year.ago
@@ -513,5 +505,4 @@ first.archive!
 Article.count # => 1
 ```
 
-NOTE: This application only cares about non-archived `Articles`. A view also
-allows for conditions so we can exclude the archived `Articles` directly.
+NOTE: このアプリでは、アーカイブされてない`Articles`のみを扱います。データベースビューでは、アーカイブされた`Articles`ディレクトリを除外する条件も使えます。
