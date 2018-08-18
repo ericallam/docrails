@@ -34,6 +34,11 @@
       url: active_record_querying.html
       description: Active Recordが提供するすべてのデータベースクエリインターフェイスについて解説します。
     -
+      name: Active Record と PostgreSQL
+      url: active_record_postgresql.html
+      description: PostgreSQLに特化したActive Recordの利用法について解説します。
+      work_in_progress: true
+    -
       name: Active Model の基礎
       url: active_model_basics.html
       description: Active Recordを使わずにモデルクラスを扱う方法について解説します。

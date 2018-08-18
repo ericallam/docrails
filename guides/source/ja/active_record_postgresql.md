@@ -1,5 +1,5 @@
 
-Active Record and PostgreSQL
+Active Record と PostgreSQL
 ============================
 
 このガイドでは、PostgreSQLに特化したActive Recordの利用法について説明します。
@@ -11,7 +11,7 @@ Active Record and PostgreSQL
 * PostgreSQLで全文検索を実装する方法
 * Active Recordモデルで「データベースビュー」をサポートする方法
 
-> 訳注: 本ガイドでは、特記ない限り単独の「ビュー」はPostgreSQLの「データベースビュー」を指します。
+> **訳注: 本ガイドにおける「ビュー」は、PostgreSQLの「データベースビュー」を指します。**
 
 --------------------------------------------------------------------------------
 
