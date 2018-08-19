@@ -187,8 +187,8 @@ end
 
 # @employee.company.touchをトリガーする
 >> @employee.touch
-Employee/Companyにタッチされました
 Employeeにタッチされました
+Employee/Companyにタッチされました
 => true
 ```
 
