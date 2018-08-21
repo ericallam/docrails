@@ -1097,7 +1097,7 @@ Railsにあるイニシャライザのリストを以下にまとめました。
 
 * `action_controller.compile_config_methods`: 指定された設定用メソッドを初期化し、より高速にアクセスできるようにします。
 
-* `active_record.initialize_timezone`: `ActiveRecord::Base.time_zone_aware_attributes`をtrueに設定し、`ActiveRecord::Base.default_timezone`をUTCに設定します。属性がデータベースから読み込まれた場合、それらの属性は`Time.zone`で指定されたタイムゾーンに変換されます。
+* `active_record.initialize_timezone`: `ActiveRecord::Base.time_zone_aware_attributes`を`true`に設定し、`ActiveRecord::Base.default_timezone`をUTCに設定します。属性がデータベースから読み込まれた場合、それらの属性は`Time.zone`で指定されたタイムゾーンに変換されます。
 
 * `active_record.logger`: `ActiveRecord::Base.logger`に`Rails.logger`を設定します（設定が行われていない場合）。
 
