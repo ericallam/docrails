@@ -171,7 +171,7 @@ Finished in 0.023918s, 41.8090 runs/s, 41.8090 assertions/s.
 
 ```
 
-出力に含まれている単独の文字`F`は失敗を表します。`Failure`の後にこの失敗に対応するトレースが、失敗したテスト名とともに表示されています。次の数行はスタックトレースで、アサーションの実際の値と期待されていた値がその後に表示されています。デフォルトのアサーションメッセージには、エラー箇所を特定するのに十分な情報が含まれています。アサーションメッセージをさらに読みやすくするために、すべてのアサーションに以下のようにメッセージをオプションパラメータを渡すことができます。
+出力に含まれている単独の文字`F`は失敗を表します。`Failure`の後にこの失敗に対応するトレースが、失敗したテスト名とともに表示されています。次の数行はスタックトレースで、アサーションの実際の値と期待されていた値がその後に表示されています。デフォルトのアサーションメッセージには、エラー箇所を特定するのに十分な情報が含まれています。すべてのアサーションは失敗時のメッセージをさらに読みやすくするために、以下のようにメッセージをオプションパラメータとして渡すことができます。
 
 ```ruby
 test "should not save article without title" do
@@ -295,8 +295,8 @@ end
 | `assert_no_match( regexp, string, [msg] )`                       | stringは正規表現 (regexp) にマッチしないと主張する。|
 | `assert_includes( collection, obj, [msg] )`                      | `obj`は`collection`に含まれると主張する。|
 | `assert_not_includes( collection, obj, [msg] )`                  | `obj`は`collection`に含まれないと主張する。|
-| `assert_in_delta( expected, actual, [delta], [msg] )`            | `expected`の個数と`actual`の個数の差分は`delta`以内であると主張する。|
-| `assert_not_in_delta( expected, actual, [delta], [msg] )`        | `expected`の個数と`actual`の個数の差分は`delta`以内にはないと主張する。|
+| `assert_in_delta( expected, actual, [delta], [msg] )`            | `expected`と`actual`の個数の差は`delta`以内であると主張する。|
+| `assert_not_in_delta( expected, actual, [delta], [msg] )`        | `expected`と`actual`の個数の差は`delta`以内にはないと主張する。|
 | `assert_throws( symbol, [msg] ) { block }`                       | 与えられたブロックはシンボルをスローすると主張する。|
 | `assert_raises( exception1, exception2, ... ) { block }`         | 渡されたブロックから、渡された例外のいずれかが発生すると主張する。|
 | `assert_instance_of( class, obj, [msg] )`                        | `obj`は`class`のインスタンスであると主張する。|
