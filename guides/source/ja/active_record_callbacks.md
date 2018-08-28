@@ -400,24 +400,6 @@ end
 
 NOTE: `:on`オプションは、コールバックがトリガされる条件を指定します。`:on`オプションを指定しないと、すべてのアクションでコールバックがトリガされます。
 
-`after_commit`コールバックを作成時、更新時、削除時に限定して使うのは一般的なので、それらのためのエイリアスが用意されています。
-
-* `after_create_commit`
-* `after_update_commit`
-* `after_destroy_commit`
-
-```ruby
-class PictureFile < ApplicationRecord
-  after_destroy_commit :delete_picture_file_from_disk
-
-  def delete_picture_file_from_disk
-    if File.exist?(filepath)
-      File.delete(filepath)
-    end
-  end
-end
-```
-
 `after_commit`コールバックは作成/更新/削除でのみ用いるのが普通であるため、それぞれのエイリアスも用意されています。
 
 * `after_create_commit`
