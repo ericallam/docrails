@@ -484,54 +484,6 @@ class HomeController < ApplicationController
 end
 ```
 
-### 「strong」Etagと「weak」ETag
-
-Railsはデフォルトでweak ETagを生成します。weak ETagは、同じETagを持つレスポンスと同等であることを意味します（HTML bodyが正確に一致していない場合であっても）。
-これは、レスポンスのbodyで微細な変更が生じたぐらいでページを再生したくない場合に便利です。
-
-weak ETagは`W/`で始まっている点がstrong ETagと異なります。
-
-```
-  W/"618bbc92e2d35ea1945008b42799b0e7" → Weak ETag
-  "618bbc92e2d35ea1945008b42799b0e7" → Strong ETag
-```
-
-strong ETagはweak ETagと異なり、レスポンスがバイトレベルで完全一致すべきであることを暗に求めます。これは、巨大な動画やPDFファイル内でRangeリクエストを行う場合に便利です。Akamaiなど一部のCDN（contents delivery network）ではstrong ETagのみをサポートしています。
-strong ETagの生成がどうしても必要な場合は、次の方法で行えます。
-
-```ruby
-  class ProductsController < ApplicationController
-    def show
-      @product = Product.find(params[:id])
-      fresh_when last_modified: @product.published_at.utc, strong_etag: @product
-    end
-  end
-```
-
-次のように、strong ETagをレスポンスに直接設定することもできます。
-
-```ruby
-  response.strong_etag = response.body # => "618bbc92e2d35ea1945008b42799b0e7"
-```
-
-development環境のキャッシュ
-----------------------
-
-アプリのキャッシュ戦略をdevelopmentモードでテストしたいことはよくあります。Railsの`dev:cache` rakeタスクを使うと、developmentモードのキャッシュを簡単にオンオフできます。
-
-```bash
-$ bin/rails dev:cache
-Development mode is now being cached.
-$ bin/rails dev:cache
-Development mode is no longer being cached.
-```
-
-参考
-----------
-
-* [DHHによるキーベースの期限切れに関する記事](https://signalvnoise.com/posts/3113-how-key-based-cache-expiration-works)（英語）
-* [Ryan BatesのRailsCast: キャッシュダイジェストについて](http://railscasts.com/episodes/387-cache-digests)（英語）
-
 ### 強いETagと弱いETag
 
 Railsでは、デフォルトで「弱い」ETagを使います。弱いETagでは、レスポンスのbodyが微妙に異なっている場合にも同じETagを与えることで、事実上同じレスポンスとして扱えるようになります。レスポンスbodyのごく一部が変更されたときにページの再生成を避けたい場合に便利です。
@@ -560,8 +512,20 @@ Railsでは、デフォルトで「弱い」ETagを使います。弱いETagで�
   response.strong_etag = response.body # => "618bbc92e2d35ea1945008b42799b0e7"
 ```
 
-参考資料
+development環境のキャッシュ
+----------------------
+
+アプリのキャッシュ戦略をdevelopmentモードでテストしたいことはよくあります。Railsの`dev:cache` rakeタスクを使うと、developmentモードのキャッシュを簡単にオンオフできます。
+
+```bash
+$ bin/rails dev:cache
+Development mode is now being cached.
+$ bin/rails dev:cache
+Development mode is no longer being cached.
+```
+
+参考
 ----------
 
-* [DHH: キーに基づく有効期限](https://signalvnoise.com/posts/3113-how-key-based-cache-expiration-works)
-* [Ryan Bates Railscast: キャッシュダイジェスト](http://railscasts.com/episodes/387-cache-digests)
+* [DHHによるキーベースの期限切れに関する記事](https://signalvnoise.com/posts/3113-how-key-based-cache-expiration-works)（英語）
+* [Ryan BatesのRailsCast: キャッシュダイジェストについて](http://railscasts.com/episodes/387-cache-digests)（英語）
