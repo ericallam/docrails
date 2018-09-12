@@ -701,7 +701,7 @@ class Article < ApplicationRecord
 end
 ```
 
-ファイルにはこれしか書かれていませんが、この`Article`クラスが`ActiveRecord::Base`クラスを継承していることにご注目ください。その`ActiveRecord::Base`はさらに`ActiveRecord::Base`を継承しており、これによって基本的なデータベースCRUD (Create、Read、Update、Destroy) 操作やデータの検証 (バリデーション)のほか、洗練された検索機能や複数のモデルを互いに関連付ける機能(リレーションシップ) など、きわめて多くの機能をRailsモデルに無償で提供しています。
+ファイルにはこれしか書かれていませんが、この`Article`クラスが`ApplicationRecord`クラスを継承していることにご注目ください。その`ApplicationRecord`はさらに`ActiveRecord::Base`を継承しており、これによって基本的なデータベースCRUD (Create、Read、Update、Destroy) 操作やデータの検証 (バリデーション)のほか、洗練された検索機能や複数のモデルを互いに関連付ける機能(リレーションシップ) など、きわめて多くの機能をRailsモデルに無償で提供しています。
 
 Railsには、モデルに渡したデータを検証する機能もあります。`app/models/article.rb`ファイルをエディタで開き、以下のように変更します。
 
@@ -1055,7 +1055,7 @@ end
 Commentモデルの内容は、これまでに見た`Article`モデルと非常によく似ています。違いといえば、Active Recordの _関連付け (アソシエーション)_ を設定するための`belongs_to :article`という行がある点です。関連付けについて詳しくは、本ガイドの次の節で説明します。
 
 bashコマンドで使われている`:references`キーワードは、モデルの特殊なデータ型を表します。
-これは、指定されたモデル名の後ろに`_id`を追加した名前を持つ新しいカラムをデータベーステーブルに作成します。マイグレーションの実行語に`db/schema.rb`ファイルを調べてみると理解が進みます。
+これは、指定されたモデル名の後ろに`_id`を追加した名前を持つ新しいカラムをデータベーステーブルに作成します。マイグレーションの実行後に`db/schema.rb`ファイルを調べてみると理解が進みます。
 
 モデルのファイルの他にマイグレーションファイルも生成されています。マイグレーションファイルは、モデルに対応するデータベーステーブルを生成するために使用されます。
 
@@ -1146,7 +1146,7 @@ $ rails generate controller Comments
 | ファイル/ディレクトリ                               | 目的                                  |
 | -------------------------------------------- | ---------------------------------------- |
 | app/controllers/comments_controller.rb       | コメント用コントローラ                  |
-| app/views/comments/                          | コントローラのビューはここにおかれる  |
+| app/views/comments/                          | コントローラのビューはここに置かれる  |
 | test/controllers/comments_controller_test.rb | コントローラのテスト用ファイル              |
 | app/helpers/comments_helper.rb               | ビューヘルパー                       |
 | test/helpers/comments_helper_test.rb         | ヘルパー用のファイル                  |
