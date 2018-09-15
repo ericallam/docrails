@@ -1,4 +1,4 @@
-﻿
+
 
 
 
@@ -17,7 +17,7 @@ Rails による API 専用アプリ
 APIアプリについて
 ---------------------------
 
-従来、Railsの「API」というと、プログラムからアクセスできるAPIをwebアプリに追加することを指すのが通例でした。たとえば、GitHubが提供する[API](http://developer.github.com) をカスタムクライアントから利用できます。
+従来、Railsの「API」というと、プログラムからアクセスできるAPIをwebアプリに追加することを指すのが通例でした。たとえば、GitHubが提供する[API](https://developer.github.com) をカスタムクライアントから利用できます。
 
 近年、さまざまなクライアント側フレームワークが登場したことによって、Railsで作ったバックエンドサーバ―を、他のwebアプリケーションとネイティブアプリケーションの間で共有する手法が増えてきました。
 
@@ -44,10 +44,10 @@ APIアプリケーションの開発にすぐ役立つRailsの機能をいくつ
 - developmentモード: Railsアプリのdevelopmentモードには洗練されたデフォルト値が設定されているので、本番のパフォーマンスなどの問題にわずらわされません。
 - test モード: developmentと同様です。
 - ログ出力: Railsアプリはリクエストごとにログを出力します。また、現在のモードに応じてログの詳細レベルが調整されます。developmentモードのログには、リクエスト環境、データベースクエリ、基本的なパフォーマンス情報などが出力されます。
-- セキュリティ: [IPスプーフィング攻撃](https://ja.wikipedia.org/wiki/IP%E3%82%B9%E3%83%97%E3%83%BC%E3%83%95%E3%82%A3%E3%83%B3%E3%82%B0) を検出・防御します。また、[タイミング攻撃](http://en.wikipedia.org/wiki/Timing_attack) に対応できる暗号化署名を扱います。ところでIPスプーフィング攻撃やタイミング攻撃って何でしょうね。
+- セキュリティ: [IPスプーフィング攻撃](https://ja.wikipedia.org/wiki/IP%E3%82%B9%E3%83%97%E3%83%BC%E3%83%95%E3%82%A3%E3%83%B3%E3%82%B0) を検出・防御します。また、[タイミング攻撃](https://en.wikipedia.org/wiki/Timing_attack) に対応できる暗号化署名を扱います。ところでIPスプーフィング攻撃やタイミング攻撃って何でしょうね。
 - パラメータ解析: URLエンコード文字列の代わりにJSONでパラメータを指定できます。JSONはRailsでデコードされ、`params`でアクセスできます。もちろん、ネストしたURLエンコードパラメータも扱えます。
 - 条件付きGET: Railsでは、`ETag`や`Last-Modified`を使った条件付き`GET`を扱えます。条件付き`GET`はリクエストヘッダを処理し、正しいレスポンスヘッダとステータスコードを返します。コントローラに
-  [`stale?`](http://api.rubyonrails.org/classes/ActionController/ConditionalGet.html#method-i-stale-3F) チェックを追加するだけで、HTTPの細かなやりとりはRailsが代行してくれます。
+  [`stale?`](https://api.rubyonrails.org/classes/ActionController/ConditionalGet.html#method-i-stale-3F) チェックを追加するだけで、HTTPの細かなやりとりはRailsが代行してくれます。
 - HEADリクエスト: Railsでは、`HEAD`リクエストを透過的に`GET`リクエストに変換し、ヘッダだけを返します。これによって、すべてのRails APIで`HEAD`リクエストを確実に利用できます。
 
 Rackミドルウェアのこうした既存の機能を自前で構築することもできますが、Railsのデフォルトのミドルウェアを「JSON生成専用」に使うだけでも多数のメリットが得られます。
@@ -137,10 +137,10 @@ APIアプリケーションでは、デフォルトで以下のミドルウェ�
 - `ActiveSupport::Cache::Strategy::LocalCache::Middleware`
 - `Rack::Runtime`
 - `ActionDispatch::RequestId`
+- `ActionDispatch::RemoteIp`
 - `Rails::Rack::Logger`
 - `ActionDispatch::ShowExceptions`
 - `ActionDispatch::DebugExceptions`
-- `ActionDispatch::RemoteIp`
 - `ActionDispatch::Reloader`
 - `ActionDispatch::Callbacks`
 - `ActiveRecord::Migration::CheckPending`
@@ -287,10 +287,7 @@ APIアプリケーション（`ActionController::API`を利用）には、デフ
 - `ActionController::Rescue`: `rescue_from`をサポート
 - `ActionController::Instrumentation`: Action Controllerで定義するinstrumentationフックをサポート（詳しくは[the instrumentation guide](active_support_instrumentation.html#action-controller) を参照）
 - `ActionController::ParamsWrapper`: パラメータハッシュをラップしてネスト化ハッシュにする。これにより、たとえばPOSTリクエスト送信時にルート要素を指定する必要がなくなる。
-
-<!--
-TODO: https://github.com/yasslab/railsguides.jp/commit/bc868b0eb35712469adb049f913add99f3986ae1#r27038293
--->
+- `ActionController::Head`: コンテンツのないヘッダーのみのレスポンス返信をサポートします。
 
 他のプラグインによってモジュールが追加されることもあります。`ActionController::API`の全モジュールのリストは、次のコマンドで表示できます。
 
@@ -313,7 +310,10 @@ Action Controllerのどのモジュールも、自身が依存するモジュー
 よく追加されるのは、次のようなモジュールです。
 
 - `AbstractController::Translation`: ローカライズ用の`l`メソッドや、翻訳用の`t`メソッド
-- `ActionController::HttpAuthentication::Basic`（および`Digest`、`Token`）: HTTPのBasic認証、ダイジェスト認証、トークン認証
+- HTTPのBasic認証、ダイジェスト認証、トークン認証:
+  * `ActionController::HttpAuthentication::Basic::ControllerMethods`,
+  * `ActionController::HttpAuthentication::Digest::ControllerMethods`,
+  * `ActionController::HttpAuthentication::Token::ControllerMethods`
 - `ActionView::Layouts`: レンダリングのレイアウトをサポート
 - `ActionController::MimeResponds`: `respond_to`をサポート
 - `ActionController::Cookies`: `cookies`のサポート（署名や暗号化も含む）。cookiesミドルウェアが必要。
