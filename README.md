@@ -121,7 +121,7 @@ Railsガイドの品質向上に向けて、皆さまのご協力が得られれ
 
 📣 【PR】YassLab 社では開発支援も承っております。もし興味あればお気軽にご相談ください ;)
 
-Ruby/Rails の開発支援サービス - YassLab 株式会社  
+Ruby/Rails の開発支援サービス
 [https://yasslab.jp/ja/agile](https://yasslab.jp/ja/agile)
 
 [![Logo of YassLab Inc.](https://yasslab.jp/img/logo_rect.png)](https://yasslab.jp/ja/)
