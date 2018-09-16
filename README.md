@@ -17,15 +17,15 @@ https://railstutorial.jp/
 
 ## フィードバックについて
 
-本ガイドを読んで、誤字・脱字・誤訳などを見かけましたら、本リポジトリの [Issue](https://github.com/yasslab/railsguides.jp/issues) にてお気軽に報告して頂けると幸いです。「直接Pull Request を送りたい!」という場合には、下記の「Railsガイドの生成方法」を参照してください。
+本ガイドを読んで、誤字・脱字・誤訳などを見かけましたら、本リポジトリの [Issue](https://github.com/yasslab/railsguides.jp/issues) にてお気軽に報告して頂けると幸いです。「直接Pull Request を送りたい!」という場合には、下記の[Railsガイドの生成方法](https://github.com/yasslab/railsguides.jp#rails%E3%82%AC%E3%82%A4%E3%83%89%E3%81%AE%E7%94%9F%E6%88%90%E6%96%B9%E6%B3%95)を参照してください。
 
-もし原著の間違いを見つけましたら、本ガイドの[Railsのドキュメントに貢献する](https://railsguides.jp/contributing_to_ruby_on_rails.html#rails%E3%81%AE%E3%83%89%E3%82%AD%E3%83%A5%E3%83%A1%E3%83%B3%E3%83%88%E3%81%AB%E8%B2%A2%E7%8C%AE%E3%81%99%E3%82%8B) を参考にしてください。
+もし原著の間違いを見つけましたら、Railsガイドの[Railsのドキュメントに貢献する](https://railsguides.jp/contributing_to_ruby_on_rails.html#rails%E3%81%AE%E3%83%89%E3%82%AD%E3%83%A5%E3%83%A1%E3%83%B3%E3%83%88%E3%81%AB%E8%B2%A2%E7%8C%AE%E3%81%99%E3%82%8B)を参考にしてください。
 
-本ガイドの品質向上に向けて、皆さまのご協力が得られれば幸いです。よろしくお願い致します。
+Railsガイドの品質向上に向けて、皆さまのご協力が得られれば幸いです。よろしくお願い致します。
 
 ### ブラウザでRailsガイドの修正を提案する
 
-多分これが一番簡単だと思います。
+多分これが一番簡単だと思います...!!
 
 1. ブラウザ上で [guides/source/ja](https://github.com/yasslab/railsguides.jp/tree/master/guides/source/ja) を開く
 2. 直したいファイルを開く (例: [upgrading_ruby_on_rails.md](https://github.com/yasslab/railsguides.jp/blob/master/guides/source/ja/upgrading_ruby_on_rails.md))
@@ -65,7 +65,8 @@ https://railstutorial.jp/
 
 ## 翻訳方法の変遷
 
-以下は原著へのフィードバックや、翻訳に関するより詳細な情報です。必要に応じてご参照ください ;)
+以下はこれまでの翻訳フロー改善の流れを過去ログとしてまとめています。   
+基本的に読む必要はありませんが、もし興味あれば適宜ご参照ください ;)
 
 <details>
   <summary><strong>継続的翻訳システムについて (現在移行中)</strong></summary>
@@ -116,9 +117,9 @@ https://railstutorial.jp/
 
 ## 運営チーム
 
-本リポジトリは、Ruby/Railsの開発を支援する [YassLab](https://yasslab.jp/ja/) 社によってメンテナンスされております。
+本リポジトリは Ruby/Rails の開発を支援する [YassLab](https://yasslab.jp/ja/) 株式会社によって制作・運用されております。
 
-公式ドキュメントを支えるチームで、御社のプロジェクトを支援します。お気軽にお問い合わせください。
+📣 【PR】YassLab 社では開発支援も承っております。もし興味あればお気軽にご相談ください ;)
 
 Ruby/Rails の開発支援サービス - YassLab 株式会社  
 [https://yasslab.jp/ja/agile](https://yasslab.jp/ja/agile)
