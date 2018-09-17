@@ -61,7 +61,7 @@ NOTE: 本ガイドでは以後、隠しinput要素の例を簡潔にするため
 <%= form_tag("/search", method: "get") do %>
   <%= label_tag(:q, "Search for:") %>
   <%= text_field_tag(:q) %>
-  <%= submit_tag("Search") %
+  <%= submit_tag("Search") %>
 <% end %>
 ```
 
@@ -751,7 +751,7 @@ WARNING: 配列パラメータは、`check_box`ヘルパーとの相性がよく
 <%= form_for @person do |person_form| %>
   <%= person_form.text_field :name %>
   <% @person.addresses.each do |address| %>
-    <%= person_form.fields_for address, index: address.id do |address_form|%>
+    <%= person_form.fields_for address, index: address.id do |address_form| %>
       <%= address_form.text_field :city %>
     <% end %>
   <% end %>
@@ -950,7 +950,7 @@ end
   <ul>
     <%= f.fields_for :addresses do |addresses_form| %>
       <li>
-        <%= addresses_form.check_box :_destroy%>
+        <%= addresses_form.check_box :_destroy %>
         <%= addresses_form.label :kind %>
         <%= addresses_form.text_field :kind %>
         ...
