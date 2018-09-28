@@ -2560,7 +2560,7 @@ NOTE: 定義ファイルの場所は`active_support/core_ext/hash/reverse_merge.
 
 `reverse_update`メソッドは、上で説明した`reverse_merge!`の別名です。
 
-WARN: `reverse_update`には破壊的なバージョンはありません。
+WARNING: `reverse_update`には!のついたバージョンはありません。
 
 NOTE: 定義ファイルの場所は`active_support/core_ext/hash/reverse_merge.rb`です。
 
