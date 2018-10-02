@@ -1040,7 +1040,7 @@ Railsは、第三者のcredentialをリポジトリに保存するための`conf
 
 このファイルには、アプリの`secret_key_base`がデフォルトで含まれますが、外部API向けのアクセスキーなどのcredentialを含めることもできます。
 
-このファイルに追加されたcredentialには`Rails.application.credentials`でアクセスできます。たとえば、複合した`config/credentials.yml.enc`ファイルに以下があるとします。
+このファイルに追加されたcredentialには`Rails.application.credentials`でアクセスできます。たとえば、復号した`config/credentials.yml.enc`ファイルに以下があるとします。
 
     secret_key_base: 3b7cd727ee24e8444053437c36cc66c3
     some_api_key: SOMEKEY
