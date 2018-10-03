@@ -22,7 +22,7 @@ Railsとは、Rubyプログラミング言語の上で動作するWebアプリ�
 Rubyの経験がまったくない場合、Railsを学ぶのはかなり大変な作業になるでしょう。Rubyを学ぶための精選されたオンラインリソース一覧はたくさんありますので、その中から以下をご紹介します。
 
 * [Rubyプログラミング言語公式Webサイトの情報](https://www.ruby-lang.org/ja/documentation/)
-* [無料のプログラミング学習用書籍一覧 (英語)]((https://github.com/vhf/free-programming-books/blob/master/free-programming-books.md#ruby)
+* [無料のプログラミング学習用書籍一覧 (英語)](https://github.com/vhf/free-programming-books/blob/master/free-programming-books.md#ruby)
 
 これらはいずれもよくできていますが、中にはRubyのバージョンが1.6など古いものもありますのでご注意ください。また、バージョン1.8を対象にしているものが多く、Railsでの日常的な開発に使用されている新しい文法が含まれていないこともあります。
 
