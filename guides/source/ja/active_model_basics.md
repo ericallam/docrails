@@ -364,7 +364,7 @@ end
 
 * config/locales/app.pt-BR.yml
 
-```yml
+```
 pt-BR:
   activemodel:
     attributes:
