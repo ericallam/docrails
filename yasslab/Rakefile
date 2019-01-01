@@ -21,6 +21,7 @@ end
 # cf. https://github.com/gjtorikian/html-proofer
 require 'html-proofer'
 task test: [:build] do
+  sh "bundle exec rake assets:precompile" unless ENV['SKIP_BUILD'] == '1'
   options = {
     alt_ignore: [/.*\.(png|gif)/],  # TODO: Set empty, run, and fix errors
     allow_hash_href:  true,
