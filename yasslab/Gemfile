@@ -4,10 +4,10 @@ ruby "2.5.1"
 gem "jekyll"
 gem "rack-jekyll"
 gem "kramdown"
-gem "puma"
+#gem "puma"
 
 # Gems to generate RailsGuides HTML from MD
-gem "rack-cache", "~> 1.2"
+#gem "rack-cache", "~> 1.2"
 
 # Monitoring tools
 gem "newrelic_rpm"
@@ -21,12 +21,12 @@ gem "rack-contrib", github: "bigcartel/rack-contrib", branch: "master"
 # Testing links by hand
 gem "html-proofer"
 
-group :doc do
-  gem "sdoc", github: "robin850/sdoc", branch: "upgrade"
-  gem "redcarpet", "~> 3.2.3", platforms: :ruby
-  gem "w3c_validators"
-  gem "kindlerb", "~> 1.2.0"
-end
+#group :doc do
+#  gem "sdoc", github: "robin850/sdoc", branch: "upgrade"
+#  gem "redcarpet", "~> 3.2.3", platforms: :ruby
+#  gem "w3c_validators"
+#  gem "kindlerb", "~> 1.2.0"
+#end
 
 group :development do
   # Generate docset
