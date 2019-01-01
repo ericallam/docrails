@@ -32,6 +32,9 @@ task test: [:build] do
     file_ignore: [
       /.*\.xml/,
       /.*\.json/,
+      "./_site/2_2_release_notes.html", # TODO: Delete this line when translated
+      "./_site/5_2_release_notes.html", # TODO: Delete this line when #763 fixed
+      # https://github.com/yasslab/railsguides.jp/issues/763
       "./_site/humanx.txt"
     ],
     url_ignore:  %w(),
