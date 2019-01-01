@@ -1,13 +1,27 @@
 source 'https://rubygems.org'
 ruby "2.5.1"
 
+# Required gems to build Rails Guides (same as rails/rails)
+gem "rake"
+gem 'rails-html-sanitizer'
+gem 'erubi'
+group :doc do
+  #gem "sdoc", github: "robin850/sdoc", branch: "upgrade"
+  gem "sdoc"
+  gem "redcarpet", "~> 3.2.3", platforms: :ruby
+  gem "w3c_validators"
+  gem "kindlerb", "~> 1.2.0"
+end
+
+# Required gems to build yasslab/railsguides.jp (newly added)
 gem "jekyll"
 gem "rack-jekyll"
 gem "kramdown"
-#gem "puma"
+gem "puma"
+gem 'pry'
 
 # Gems to generate RailsGuides HTML from MD
-#gem "rack-cache", "~> 1.2"
+gem "rack-cache", "~> 1.2"
 
 # Monitoring tools
 gem "newrelic_rpm"
@@ -16,17 +30,11 @@ gem "newrelic_rpm"
 gem "acme_challenge"
 gem "rack-rewrite", "~> 1.5.0"
 # FIXME: Remove this fork after https://github.com/rack/rack-contrib/pull/129 is merged.
-gem "rack-contrib", github: "bigcartel/rack-contrib", branch: "master"
+#gem "rack-contrib", github: "bigcartel/rack-contrib", branch: "master"
+gem "rack-contrib"
 
 # Testing links by hand
 gem "html-proofer"
-
-#group :doc do
-#  gem "sdoc", github: "robin850/sdoc", branch: "upgrade"
-#  gem "redcarpet", "~> 3.2.3", platforms: :ruby
-#  gem "w3c_validators"
-#  gem "kindlerb", "~> 1.2.0"
-#end
 
 group :development do
   # Generate docset
@@ -44,3 +52,8 @@ group :test do
   gem "turnip"
   gem "wraith"
 end
+
+# FIXME: Remove this comment after Heroku support ruby_25 platforms.
+# platforms :ruby_25 do
+#   gem "mathn"
+# end
