@@ -1032,7 +1032,7 @@ config.action_dispatch.default_headers.clear
 
 アプリのコードや実行環境をセキュアにする方法については、本ガイドの範疇を超えます。ただし、`config/database.yml`などに置かれるデータベース接続設定や、`config/secrets.yml`などに置かれるサーバーサイドの秘密鍵のセキュリティは保つようにしてください。これらのファイルや、その他重要な情報を含む可能性のあるファイルを、環境に合わせて複数のバージョンを使い分けることでさらなるアクセス制限を行なうことができます。
 
-### カスタムcredential
+### 独自のcredential
 
 Railsは、第三者のcredentialをリポジトリに保存するための`config/credentials.yml.enc`を生成します。生成したマスターキーをこのファイルに含めてRailsが暗号化し、`config/master.key`を除外したバージョンコントロールシステムに登録することで初めて意味があります。Railsは`ENV["RAILS_MASTER_KEY"]`にマスターキーがあるかどうかもチェックします。またRailsはproduction環境での起動時にcredentialを読み出すためにこのマスターキーを必要とします。
 
