@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby "2.6.0"
+ruby "2.5.3"
 
 # Required gems to build Rails Guides (same as rails/rails)
 gem "rake"
@@ -7,37 +7,19 @@ gem 'rails-html-sanitizer'
 gem 'rack-test'
 gem 'erubi'
 group :doc do
-  #gem "sdoc", github: "robin850/sdoc", branch: "upgrade"
   gem "sdoc"
-  gem "redcarpet", "~> 3.2.3", platforms: :ruby
+  gem "redcarpet" #, "~> 3.2.3", platforms: :ruby
   gem "w3c_validators"
-  gem "kindlerb", "~> 1.2.0"
+  gem "kindlerb" #, "~> 1.2.0"
 end
 
 # Required gems to host yasslab/railsguides.jp
 gem "jekyll"
 gem "rack-jekyll"
 gem "kramdown"
-gem "puma"
-gem 'pry'
-
-# Gems to generate RailsGuides HTML from MD
-gem "rack-cache", "~> 1.2"
-
-# Monitoring tools
-gem "newrelic_rpm"
-
-# SSL in Production
-gem "acme_challenge"
-gem "rack-rewrite", "~> 1.5.0"
-gem "rack-contrib"
-
-# Testing links by hand
-gem "html-proofer"
 
 group :development do
-  # Generate docset
-  gem "docset"
+  gem "docset" # For generating docset (Dash)
 
   # TODO: We don't use GTT now. Delete this line
   #       with other GTT-associated codes.
@@ -45,13 +27,29 @@ group :development do
 end
 
 group :development, :test do
-  gem "rb-readline"
-  gem "pry-byebug"
+  gem "pry-byebug"  # For debugging codes
 end
 
 group :test do
+  # Test HTML files by: `bundle exec rake test`
+  gem "html-proofer"
+
+  # Required to exec: `bundle exec rspec spec/features/`
   gem "rspec"
   gem "capybara"
   gem "turnip"
-  gem "wraith"
+end
+
+group :production do
+  # Enable HTTP caching for Rack-based applications
+  gem "rack-cache" #, "~> 1.2"
+
+  # Monitoring tools
+  gem "newrelic_rpm"
+
+  # SSL in Production
+  gem "puma"
+  gem "acme_challenge"
+  gem "rack-rewrite" #, "~> 1.5.0"
+  gem "rack-contrib"
 end
