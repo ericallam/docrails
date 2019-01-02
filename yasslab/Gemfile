@@ -39,7 +39,6 @@ group :development do
 end
 
 group :development, :test do
-  gem "rb-readline" # TODO: Investigate why we use this?
   gem "pry-byebug"  # For debugging codes
 end
 
