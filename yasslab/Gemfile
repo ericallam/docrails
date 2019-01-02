@@ -18,6 +18,10 @@ gem "jekyll"
 gem "rack-jekyll"
 gem "kramdown"
 
+# Test HTML files by: `bundle exec rake test`
+# Required as well in production to check deployment
+gem "html-proofer"
+
 group :development do
   gem "docset" # For generating docset (Dash)
 
@@ -31,8 +35,6 @@ group :development, :test do
 end
 
 group :test do
-  # Test HTML files by: `bundle exec rake test`
-  gem "html-proofer"
 
   # Required to exec: `bundle exec rspec spec/features/`
   gem "rspec"
