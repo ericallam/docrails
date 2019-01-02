@@ -29,8 +29,6 @@ gem "newrelic_rpm"
 # SSL in Production
 gem "acme_challenge"
 gem "rack-rewrite", "~> 1.5.0"
-# FIXME: Remove this fork after https://github.com/rack/rack-contrib/pull/129 is merged.
-#gem "rack-contrib", github: "bigcartel/rack-contrib", branch: "master"
 gem "rack-contrib"
 
 # Testing links by hand
@@ -52,8 +50,3 @@ group :test do
   gem "turnip"
   gem "wraith"
 end
-
-# FIXME: Remove this comment after Heroku support ruby_25 platforms.
-# platforms :ruby_25 do
-#   gem "mathn"
-# end
