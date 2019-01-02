@@ -197,7 +197,6 @@ DEPENDENCIES
   kindlerb
   kramdown
   newrelic_rpm
-  pry
   pry-byebug
   puma
   rack-cache
