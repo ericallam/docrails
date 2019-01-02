@@ -4,6 +4,7 @@ ruby "2.5.1"
 # Required gems to build Rails Guides (same as rails/rails)
 gem "rake"
 gem 'rails-html-sanitizer'
+gem 'rack-test'
 gem 'erubi'
 group :doc do
   #gem "sdoc", github: "robin850/sdoc", branch: "upgrade"
@@ -13,7 +14,7 @@ group :doc do
   gem "kindlerb", "~> 1.2.0"
 end
 
-# Required gems to build yasslab/railsguides.jp (newly added)
+# Required gems to host yasslab/railsguides.jp
 gem "jekyll"
 gem "rack-jekyll"
 gem "kramdown"

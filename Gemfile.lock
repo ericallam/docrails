@@ -130,6 +130,8 @@ GEM
       jekyll
       rack
     rack-rewrite (1.5.1)
+    rack-test (1.1.0)
+      rack (>= 1.0, < 3)
     rails-html-sanitizer (1.0.4)
       loofah (~> 2.2, >= 2.2.2)
     rake (12.3.2)
@@ -220,6 +222,7 @@ DEPENDENCIES
   rack-contrib
   rack-jekyll
   rack-rewrite (~> 1.5.0)
+  rack-test
   rails-html-sanitizer
   rake
   rb-readline
