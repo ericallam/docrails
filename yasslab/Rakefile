@@ -166,7 +166,6 @@ HELP
   task :tanpopo do
     system 'echo "Tanpopo: Tweaking files for deploying to Heroku ..."'
     system 'cp ./source/ja/favicon.ico ./output/ja'
-    system 'cp ./source/ja/404.html    ./output/ja'
     system 'cp ./source/ja/humans.txt  ./output/ja'
     system 'rm ./output/ja/layout.html'
     system 'echo "Tanpopo: Done."'
