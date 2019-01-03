@@ -26,7 +26,7 @@ task test: [:build] do
     alt_ignore: [/.*\.(png|gif)/],  # TODO: Set empty, run, and fix errors
     allow_hash_href:  true,
     check_opengraph:  false, # TODO: Set true, run, and fix errors
-    check_favicon:    false, # TODO: Set true, run, and fix errors
+    check_favicon:    true,
     check_html:       true,
     disable_external: true,
     file_ignore: [
