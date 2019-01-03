@@ -52,6 +52,7 @@
 .snsb iframe {
     margin: 0 !important;
 }
+
 .sitemap{
   margin-left: 13px;
 }
@@ -70,6 +71,18 @@
 .sitemap dl dt {
   margin-top: 10px;
 }
+
+.trademark {
+    overflow: hidden;
+    clear: left;
+    margin-left: 13px;
+}
+.trademark li {
+    float: left;
+    margin-right: 4px;
+    list-style-type: none;
+}
+
 
 .left {float: left; margin-right: 1em;}
 .right {float: right; margin-left: 1em;}
