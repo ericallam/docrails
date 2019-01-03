@@ -27,7 +27,7 @@ task test: [:build] do
     allow_hash_href:  true,
     check_opengraph:  false, # TODO: Set true, run, and fix errors
     check_favicon:    false, # TODO: Set true, run, and fix errors
-    check_html:       false, # TODO: Set true, run, and fix errors
+    check_html:       true,
     disable_external: true,
     file_ignore: [
       /.*\.xml/,
