@@ -23,7 +23,7 @@ require 'html-proofer'
 task test: [:build] do
   sh "bundle exec rake assets:precompile" unless ENV['SKIP_BUILD'] == '1'
   options = {
-    alt_ignore: [/.*\.(png|gif)/],  # TODO: Set empty, run, and fix errors
+    alt_ignore: [/.*\.(png|gif)/],  # TODO: Set empty, run tests, and fix errors
     allow_hash_href:  true,
     check_opengraph:  true,
     check_favicon:    true,
