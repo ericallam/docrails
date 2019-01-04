@@ -145,19 +145,8 @@
               <%= yield.html_safe %>
               <%= yield :references %>
 
-              <% if yield(:not_need_feedback).present? %>
-		<h3 id="contact" class="section">お問い合わせ</h3>
-		<p>電子書籍や広告出稿、法人向け販売などのお問い合わせについては <i>yohei@yasslab.jp</i> までご連絡ください。</p>
-		<p>
-		  YassLab 株式会社<br>
-		  <a href="https://yasslab.jp/">https://yasslab.jp/</a><br>
-		  <br>
-		  <a href="https://yasslab.jp/" target="_blank">
-		    <img src="/images/yasslab_logo.png"
-		     alt="YassLab 株式会社" width="320px" /></a><br>
-		</p>
-              <% else %>
-		<h3 id="feedback"><a href="#feedback">フィードバックについて</a></h3>
+	      <% unless yield(:hide_feedback).present? %>
+		<h3 id="feedback" class="section" style="padding-top: 30px;"><a href="#feedback">フィードバックについて</a></h3>
 		<p>
 		  本ガイドは GitHub の <%= link_to 'yasslab/railsguides.jp', 'https://github.com/yasslab/railsguides.jp' %> で管理・公開されております。本ガイドを読んで気になる文章や間違ったコードを見かけたら、上記リポジトリにてお気軽に <%= link_to 'Pull Request', 'https://github.com/yasslab/railsguides.jp/pulls' %> を出して頂けると嬉しいです。Pull Request の送り方については <%= link_to 'GitHub の README', 'https://github.com/yasslab/railsguides.jp#%E7%BF%BB%E8%A8%B3%E3%81%AE%E6%B5%81%E3%82%8C'%> をご参照ください。
 		</p>
@@ -167,7 +156,10 @@
 		<p>
 		  本ガイドの品質向上に向けて、皆さまのご協力が得られれば嬉しいです。よろしくお願いします。
 		</p>
-		<p style="text-align: right"><%= link_to 'YassLab 株式会社', 'https://yasslab.jp/' %></p>
+		<p style="text-align: right">
+		  YassLab 株式会社<br>
+		  <%= link_to 'https://yasslab.jp/', 'https://yasslab.jp/' %>
+		</p>
 		<ol class="snsb" style="margin-left: 0px">
 		  <li><div class="fb-like" data-href="https://railsguides.jp/" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true"></div></li>
 		  <li><a href="https://twitter.com/share" class="twitter-share-button" data-url="https://railsguides.jp/" data-text="Ruby on Rails ガイド：体系的に Rails を学ぼう" data-lang="ja" data-hashtags="Railsガイド" data-via="RailsGuidesJP" width="100">Tweet</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script></li>
