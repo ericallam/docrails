@@ -137,10 +137,10 @@ Ruby/Rails の開発支援サービス
 
 ### 相談部屋
 
-[idobata.io](https://idobata.io) の [yasslab/railsguides.jp](https://idobata.io/#/organization/yasslab/room/railsguides) 部屋にて、Rails ガイドに関する情報交換しています。   
+[idobata.io](https://idobata.io) の [yasslab/railsguides-public](https://idobata.io/#/organization/yasslab/room/railsguides-public) 部屋にて、Rails ガイドに関する情報交換しています。   
 覗いてみるだけの方も歓迎なので、是非お気軽に立ち寄ってみてください :D
 
-[![井戸端会議の風景](https://raw.githubusercontent.com/yasslab/railsguides.jp/master/yasslab/idobata-ss.png)](https://idobata.io/#/organization/yasslab/room/railsguides)
+[![井戸端会議の風景](https://raw.githubusercontent.com/yasslab/railsguides.jp/master/yasslab/idobata-ss.png)](https://idobata.io/#/organization/yasslab/room/railsguides-public)
 
 ## ライセンス
 
