@@ -155,5 +155,5 @@ Ruby/Rails の開発支援サービス
 ### クレジット
 
 - 原著: http://guides.rubyonrails.org/credits.html
-- 本書: [@hachi8833](https://github.com/hachi8833), [@yasulab](https://github.com/yasulab)
+- 本書: [YassLab 株式会社](https://yasslab.jp/)
 
