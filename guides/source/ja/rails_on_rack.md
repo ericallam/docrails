@@ -26,7 +26,7 @@ RailsとRack
 
 ### RackアプリケーションとしてのRailsアプリケーション
 
-`Rails.application`はRailsアプリケーションをRackアプリケーションとして実装したものです。Rackに準拠したWebサーバーで、Railsアプリケーションを提供するには、`Rails.application`オブジェクトを使用する必要があります。
+`Rails.application`はRailsアプリケーションをRackアプリケーションとして実装したものです。Rackに準拠したWebサーバーで、Railsアプリケーションを提供するには、`Rails.application`オブジェクトを使う必要があります。
 
 ### `rails server`コマンド
 
@@ -55,7 +55,7 @@ end
 
 ### `rackup`コマンド
 
-Railsの`rails server`コマンドの代わりに`rackup`コマンドを使用するときは、下記の内容を`config.ru`に記述して、Railsアプリケーションのルートディレクトリに保存します。
+Railsの`rails server`コマンドの代わりに`rackup`コマンドを使うときは、下記の内容を`config.ru`に記述して、Railsアプリケーションのルートディレクトリに保存します。
 
 ```ruby
 # Rails.root/config.ru
@@ -78,7 +78,7 @@ $ rackup --help
 Action Dispatcherのミドルウェアスタック
 ----------------------------------
 
-Action Dispatcher内部のコンポーネントの多くは、Rackのミドルウェアとして実装されています。Rails内外の様々なミドルウェアを結合して、完全なRailsのRackアプリケーションを作るために、`Rails::Application`は`ActionDispatch::MiddlewareStack`を使用しています。
+Action Dispatcher内部のコンポーネントの多くは、Rackのミドルウェアとして実装されています。Rails内外の様々なミドルウェアを結合して、完全なRailsのRackアプリケーションを作るために、`Rails::Application`は`ActionDispatch::MiddlewareStack`を使っています。
 
 NOTE: `ActionDispatch::MiddlewareStack`は`Rack::Builder`のRails版ですが、Railsアプリケーションの要求を満たすために、より柔軟性があり、多機能なクラスになっています。
 
@@ -127,7 +127,7 @@ run Rails.application.routes
 
 #### ミドルウェアを追加する
 
-次のメソッドを使用すると、ミドルウェアスタックに新しいミドルウェアを追加することができます。
+次のメソッドを使うと、ミドルウェアスタックに新しいミドルウェアを追加できます。
 
 * `config.middleware.use(new_middleware, args)` - ミドルウェアスタックの一番下に新しいミドルウェアを追加します。
 
@@ -148,7 +148,7 @@ config.middleware.insert_after ActionDispatch::Executor, Lifo::Cache, page_cache
 
 #### ミドルウェアを交換する
 
-`config.middleware.swap`を使用することで、ミドルウェアスタック内のミドルウェアを交換できます。
+`config.middleware.swap`を使って、ミドルウェアスタック内のミドルウェアを交換できます。
 
 ```ruby
 # config/application.rb
@@ -203,7 +203,7 @@ Action Controllerの機能の多くはミドルウェアとして実装されて
 
 **`ActionDispatch::Static`**
 
-* 静的ファイルを配信する際に使用します。`config.public_file_server.enabled`を`false`にするとオフになります。
+* 静的ファイルを配信する際に使います。`config.public_file_server.enabled`を`false`にするとオフになります。
 
 **`Rack::Lock`**
 
@@ -215,7 +215,7 @@ Action Controllerの機能の多くはミドルウェアとして実装されて
 
 **`ActiveSupport::Cache::Strategy::LocalCache::Middleware`**
 
-* メモリによるキャッシュを行うために使用します。このキャッシュはスレッドセーフではありません。
+* メモリによるキャッシュを行うために使います。このキャッシュはスレッドセーフではありません。
 
 **`Rack::Runtime`**
 
@@ -283,7 +283,7 @@ Action Controllerの機能の多くはミドルウェアとして実装されて
 
 **`Rack::ETag`**
 
-* bodyが文字列のみのレスポンスに対して、ETagヘッダを追加します。 ETagはキャッシュの有効性を検証するのに使用されます。
+* bodyが文字列のみのレスポンスに対して、ETagヘッダを追加します。 ETagはキャッシュの有効性を検証するのに使われます。
 
 TIP: これらのミドルウェアはいずれも、Rackのミドルウェアスタックに利用できます。
 
