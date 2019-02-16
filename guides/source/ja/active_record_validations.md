@@ -1054,4 +1054,3 @@ person.errors.size # => 0
 ```
 
 このCSSは、エラーを含むフィールドを赤い枠で囲みます。
-Person < ApplicationRecord
