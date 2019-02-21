@@ -130,16 +130,13 @@ Railsガイドの品質向上に向けて、皆さまのご協力が得られれ
     <img width="60%" src="https://yasslab.jp/img/skills.png"
          alt="YassLab Skills" />
   </a>
-  <p>🤝🏢✨ 詳細：<a href="https://yasslab.jp/ja/agile">Ruby/Rails の開発支援サービス - YassLab 株式会社</a></p>
+  <p>【PR END】詳細：<a href="https://yasslab.jp/ja/agile">Ruby/Rails の開発支援サービス - YassLab 株式会社</a></p>
 </div>
 
-
+ 
 
 YassLab 社以外にも、次の方々が協力してくれました! 🤝✨    
 様々なご意見・フィードバックありがとうございます! (＞人＜ )✨
-
-　
-
 
 ### 協力者
 
