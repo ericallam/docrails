@@ -121,10 +121,14 @@ Railsガイドの品質向上に向けて、皆さまのご協力が得られれ
 
 📣 【PR】YassLab 社では開発支援も承っております。もし興味あればお気軽にご相談ください ;)
 
+[![YassLab Images](https://yasslab.jp/img/join_image.png)](https://yasslab.jp/ja/agile)
+[![YassLab Skills](https://yasslab.jp/img/skills.png)](https://yasslab.jp/ja/agile)
+
 Ruby/Rails の開発支援サービス
 [https://yasslab.jp/ja/agile](https://yasslab.jp/ja/agile)
 
-[![Logo of YassLab Inc.](https://yasslab.jp/img/logo_rect.png)](https://yasslab.jp/ja/)
+YassLab 社以外にも、次の方々が協力してくれました! ありがとうございます! (＞人＜ )✨
+
 
 ### 協力者
 
@@ -157,3 +161,4 @@ Ruby/Rails の開発支援サービス
 - 原著: http://guides.rubyonrails.org/credits.html
 - 本書: [YassLab 株式会社](https://yasslab.jp/)
 
+[![YassLab Inc.](https://yasslab.jp/img/logo_800x200.png)](https://yasslab.jp/ja/)
