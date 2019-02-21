@@ -117,11 +117,11 @@ Railsガイドの品質向上に向けて、皆さまのご協力が得られれ
 
 ## 運営チーム
 
-本リポジトリは Ruby/Rails の開発を支援する [YassLab](https://yasslab.jp/ja/) 株式会社によって制作・運用されております。
+本リポジトリは Ruby/Rails の開発を支援する [YassLab 株式会社](https://yasslab.jp/ja/) によって制作・運用されております。
 
 📣 【PR】YassLab 社では開発支援も承っております。もし興味あればお気軽にご相談ください ;)
 
-<div>
+<div >
   <a href="https://yasslab.jp/ja/agile">
     <img width="60%" src="https://yasslab.jp/img/join_image.png"
          alt="YassLab Images" />
@@ -130,12 +130,15 @@ Railsガイドの品質向上に向けて、皆さまのご協力が得られれ
     <img width="60%" src="https://yasslab.jp/img/skills.png"
          alt="YassLab Skills" />
   </a>
-  <p style="padding-left: 30px;">参考: <a href="https://yasslab.jp/ja/agile">Ruby/Rails の開発支援サービス - YassLab 株式会社</a></p>
+  <p>🤝🏢✨ 詳細：<a href="https://yasslab.jp/ja/agile">Ruby/Rails の開発支援サービス - YassLab 株式会社</a></p>
 </div>
 
 
 
-YassLab 社以外にも、次の方々が協力してくれました! ありがとうございます! (＞人＜ )✨
+YassLab 社以外にも、次の方々が協力してくれました! 🤝✨    
+様々なご意見・フィードバックありがとうございます! (＞人＜ )✨
+
+　
 
 
 ### 協力者
