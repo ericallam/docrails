@@ -43,7 +43,7 @@ APIアプリケーションの開発にすぐ役立つRailsの機能をいくつ
 - セキュリティ: [IPスプーフィング攻撃](https://ja.wikipedia.org/wiki/IP%E3%82%B9%E3%83%97%E3%83%BC%E3%83%95%E3%82%A3%E3%83%B3%E3%82%B0) を検出・防御します。また、[タイミング攻撃](https://en.wikipedia.org/wiki/Timing_attack) に対応できる暗号化署名を扱います。ところでIPスプーフィング攻撃やタイミング攻撃って何でしょうね。
 - パラメータ解析: URLエンコード文字列の代わりにJSONでパラメータを指定できます。JSONはRailsでデコードされ、`params`でアクセスできます。もちろん、ネストしたURLエンコードパラメータも扱えます。
 - 条件付きGET: Railsでは、`ETag`や`Last-Modified`を使った条件付き`GET`を扱えます。条件付き`GET`はリクエストヘッダを処理し、正しいレスポンスヘッダとステータスコードを返します。コントローラに
-  [`stale?`](http://api.rubyonrails.org/classes/ActionController/ConditionalGet.html#method-i-stale-3F) チェックを追加するだけで、HTTPの細かなやりとりはRailsが代行してくれます。
+  [`stale?`](https://api.rubyonrails.org/classes/ActionController/ConditionalGet.html#method-i-stale-3F) チェックを追加するだけで、HTTPの細かなやりとりはRailsが代行してくれます。
 - HEADリクエスト: Railsでは、`HEAD`リクエストを透過的に`GET`リクエストに変換し、ヘッダだけを返します。これによって、すべてのRails APIで`HEAD`リクエストを確実に利用できます。
 
 Rackミドルウェアのこうした既存の機能を自前で構築することもできますが、Railsのデフォルトのミドルウェアを「JSON生成専用」に使うだけでも多数のメリットが得られます。
@@ -112,14 +112,14 @@ config.debug_exception_response_format = :api
 
 ```ruby
 class ApplicationController < ActionController::Base
-end 
+end
 ```
 
 上を以下に変更します。
 
 ```ruby
 class ApplicationController < ActionController::API
-end 
+end
 ```
 
 ミドルウェアの選択
@@ -143,6 +143,7 @@ APIアプリケーションでは、デフォルトで以下のミドルウェ�
 - `Rack::Head`
 - `Rack::ConditionalGet`
 - `Rack::ETag`
+- `MyApi::Application::Routes`
 
 詳しくは、Rackガイドの「[Rails と Rack - ミドルウェアスタックの内容](rails_on_rack.html#ミドルウェアスタックの内容)」をご覧ください。
 
@@ -180,7 +181,7 @@ def show
 
   if stale?(last_modified: @post.updated_at, public: true)
     render json: @post
-  end 
+  end
 end
 ```
 
@@ -305,10 +306,10 @@ Action Controllerのどのモジュールも、自身が依存するモジュー
 よく追加されるのは、次のようなモジュールです。
 
 - `AbstractController::Translation`: ローカライズ用の`l`メソッドや、翻訳用の`t`メソッド
-- HTTPのBASIC認証、ダイジェスト認証、トークン認証
-    * `ActionController::HttpAuthentication::Basic::ControllerMethods`
-    * `ActionController::HttpAuthentication::Digest::ControllerMethods`
-    *  `ActionController::HttpAuthentication::Token::ControllerMethods`
+- HTTPのBasic認証、ダイジェスト認証、トークン認証:
+  * `ActionController::HttpAuthentication::Basic::ControllerMethods`
+  * `ActionController::HttpAuthentication::Digest::ControllerMethods`
+  * `ActionController::HttpAuthentication::Token::ControllerMethods`
 - `ActionView::Layouts`: レンダリングのレイアウトをサポート
 - `ActionController::MimeResponds`: `respond_to`をサポート
 - `ActionController::Cookies`: `cookies`のサポート（署名や暗号化も含む）。cookiesミドルウェアが必要。
