@@ -2,14 +2,22 @@ language: ruby
 install: bundle install --jobs=3 --retry=3 --no-deployment
 script:
 - bundle exec rake assets:precompile
-- bundle exec rspec spec/features/
+- bundle exec rake test SKIP_BUILD=1
+
+# `rake test` covers the following tests.
+# Use RSpec if needed to cover more in CI.
+#- bundle exec rspec spec/features/
+
 deploy:
   provider: heroku
   api_key:
-    secure: JHaaojmt64klUFQElkjE0arLV02cumMH0oDinvdRnnbMGCQVNJwTq8jlv9o1n9DctUDk+BvYJCU6B0cZHvqDlWgkZOR8VvXlaO644AmGKkCLEW1/6FCjEAitLkiRZ04kkGgVpDq5spcPDmjhSznYlUdonVgXq55M3IV3Yt+9GmU=
+    secure: bwUZT5EFoq5CDcrgZeu7iy7tAlSUv4SVtxyPuZtVdQklT93zZ8QQXZFeWZicyVCxRTanAYvIKKY4viSJXRn4Hxb6+PonbexuRuyhT9dkbPgNnpPPxW0QcuiyCD2qpHrEp8wUMeYfr+SxPr6PJluq9ENwzCQyACwXMxJ6+dxHzS0=
   on:
     branch: master
   app: railsguides-jp
 notifications:
   webhooks:
     secure: HFPm4OWPWKheXFkRLZIlJckLEjZ8eW9a5o/dEZoeKQFjrK2kGrBDft4Xp6aKuqJmv4g/VoDDG5x9ZwTDNAxT4u4q2YbXikkmIFbLsc7cQz4hywXRbkWOTKZHaIdorLF0eZnxPybEVZCflH7LopyobwrBo/KC9SLnn7IUnalCwvg=
+env:
+  global:
+    secure: XaRnC33Blzfr2Qy+IIcA746ZyXg+fgT9ov6XZu0zNXwlYch/GAt0Ixw1ywMXvq4oH5xCHnGCvtJ29EUhTWg3fKnowHXbCTmrUj/F8jsMQCLly7+M9oDW9kRY/oa2iSTUgG3DeGq4IxBcMB2osOBTUWFF1aXkHzvxsKT3QT8KZZo=

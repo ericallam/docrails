@@ -1,4 +1,4 @@
-﻿
+
 Active Record バリデーション
 ==========================
 
@@ -18,7 +18,7 @@ Active Record バリデーション
 きわめてシンプルなバリデーションの例を以下に紹介します。
 
 ```ruby
-class Person < ActiveRecord::Base
+class Person < ApplicationRecord
   validates :name, presence: true
 end
 
@@ -48,7 +48,7 @@ Active Recordのオブジェクトには2種類あります。オブジェクト
 次の単純なActive Recordクラスを例に取ってみましょう。
 
 ```ruby
-class Person < ActiveRecord::Base
+class Person < ApplicationRecord
 end
 ```
 
@@ -105,12 +105,13 @@ CAUTION: データベース上のオブジェクトの状態を変える方法�
 
 ### `valid?`と`invalid?`
 
-Railsでオブジェクトが有効(valid)であるかどうかを検証するには、`valid?`メソッドを使用します。
-このメソッドは単独で使用できます。`valid?`を実行するとバリデーションがトリガされ、オブジェクトにエラーがない場合はtrueが返され、そうでなければfalseが返されます。
+Railsは、Active Recordオブジェクトを保存する前にバリデーションを実行します。バリデーションで何らかのエラーが発生すると、オブジェクトを保存しません。
+
+`valid?`メソッドを使って、バリデーションを手動でトリガすることもできます。`valid?`を実行するとバリデーションがトリガされ、オブジェクトにエラーがない場合はtrueが返され、そうでなければfalseが返されます。
 これは以下のように実装できます。
 
 ```ruby
-class Person < ActiveRecord::Base
+class Person < ApplicationRecord
   validates :name, presence: true
 end
 
@@ -121,10 +122,10 @@ Person.create(name: nil).valid? # => false
 Active Recordでバリデーションが行われた後は、`errors.messages`インスタンスメソッドを使用すると、発生したエラーにアクセスできます。このメソッドはエラーのコレクションを返します。
 定義上は、バリデーション実行後にコレクションが空になった場合は有効です。
 
-`new`を使用してインスタンス化されたオブジェクトは、仮に技術的に無効であってもエラーは報告されないので、注意が必要です。`new`ではバリデーションは実行されません。
+ただし、`new`でインスタンス化されたオブジェクトでは、仮に技術的に無効であってもエラーが報告されないので、注意が必要です。これは、バリデーションがオブジェクトが`create`や`save`メソッドなどで保存されたときに自動的に実行されるためです。
 
 ```ruby
-class Person < ActiveRecord::Base
+class Person < ApplicationRecord
   validates :name, presence: true
 end
 
@@ -162,7 +163,7 @@ end
 このメソッドが便利なのは、バリデーションを実行した後だけです。このメソッドはエラーのコレクションを調べるだけで、バリデーションそのものをトリガしないからです。このメソッドは、前述の`ActiveRecord::Base#invalid?`メソッドとは異なります。このメソッドはオブジェクト全体の正当性については確認しないためです。オブジェクトの個別の属性についてエラーがあるかどうかだけを調べます。
 
 ```ruby
-class Person < ActiveRecord::Base
+class Person < ApplicationRecord
   validates :name, presence: true
 end
 
@@ -186,6 +187,7 @@ end
  >> person.errors.details[:name] # => [{error: :blank}]
  ```
  
+カスタムバリデータで`details`を使う方法については、[バリデーションエラーの取り扱い](#バリデーションエラーに対応する)セクションを参照してください。
 
 バリデーションヘルパー
 ------------------
@@ -198,30 +200,41 @@ Active Recordには、クラス定義の内側で直接使用できる定義済�
 
 ### `acceptance`
 
-このメソッドは、フォームが送信されたときにユーザーインターフェイス上のチェックボックスがオンになっているかどうかを検証します。ユーザーにサービス利用条項への同意、何らかの文書に目を通すことなどを義務付けるのに使用するのが典型的な利用法です。このバリデーションはWebアプリケーション特有のものなので、'acceptance'はデータベースに保存する必要はありません。保存用のフィールドを作成しなかった場合、ヘルパーは単に仮想の属性を作成します。
+このメソッドは、フォームが送信されたときにユーザーインターフェイス上のチェックボックスがオンになっているかどうかを検証します。ユーザーにサービス利用条項への同意、何らかの文書に目を通すことなどを義務付けるのに使用するのが典型的な利用法です。
 
 ```ruby
-class Person < ActiveRecord::Base
+class Person < ApplicationRecord
   validates :terms_of_service, acceptance: true
 end
 ```
 
+このチェックは、`terms_of_service`が`nil`でない場合にのみ実行されます。
 このヘルパーのデフォルトエラーメッセージは _"must be accepted"_ です。
 
-このヘルパーでは`:accept`オプションを使用できます。このオプションは、「受付済み」を表す値を指定します。デフォルトは"1"ですが、容易に変更できます。
+次のようにカスタムメッセージを`message`オプションで渡すこともできます。
 
 ```ruby
-class Person < ActiveRecord::Base
-  validates :terms_of_service, acceptance: { accept: 'yes' }
+class Person < ApplicationRecord
+  validates :terms_of_service, acceptance: { message: 'must be abided' }
 end
 ```
+
+このヘルパーでは`:accept`オプションも渡せます。このオプションは、「受領済み」とみなす値を指定します。デフォルトは"1"ですが、容易に変更できます。
+
+```ruby
+class Person < ApplicationRecord
+  validates :eula, acceptance: { accept: ['TRUE', 'accepted'] }
+end
+```
+
+これはWebアプリで非常に特有のバリデーションであり、この`acceptance`はデータベースのどこにも保存する必要はありません。そのためのフィールドがない場合は、単に仮想の属性がヘルパーによって作成されます。データベースにこのフィールドがある場合は、`accept`オプションを設定するか`true`を含めなければなりません。さもないとバリデーションが実行されません。
 
 ### `validates_associated`
 
 モデルが他のモデルに関連付けられていて、両方のモデルに対してバリデーションを実行する必要がある場合はこのヘルパーを使用します。オブジェクトを保存しようとすると、関連付けられているオブジェクトごとに`valid?`が呼び出されます。
 
 ```ruby
-class Library < ActiveRecord::Base
+class Library < ApplicationRecord
   has_many :books
   validates_associated :books
 end
@@ -239,7 +252,7 @@ CAUTION: `validates_associated`は関連付けの両側のオブジェクトで�
 このヘルパーは、2つのテキストフィールドが完全に一致する内容を受け取る必要がある場合に使用します。たとえば、メールアドレスやパスワードで、確認フィールドを使用するとします。このバリデーションヘルパーは仮想の属性を作成します。その属性の名前は、確認したい属性名に "_confirmation" を追加したものになります。
 
 ```ruby
-class Person < ActiveRecord::Base
+class Person < ApplicationRecord
   validates :email, confirmation: true
 end
 ```
@@ -254,9 +267,17 @@ end
 このチェックは、`email_confirmation`が`nil`でない場合のみ実施されます。確認を必須にするには、確認用の属性について存在チェックも追加しておくようにしてください。`presence`を使用した存在チェックについてはこの後解説します。
 
 ```ruby
-class Person < ActiveRecord::Base
+class Person < ApplicationRecord
   validates :email, confirmation: true
   validates :email_confirmation, presence: true
+end
+```
+
+`:case_sensitive`オプションを用いて、大文字小文字の違いを確認する制約をかけるかどうかを定義することもできます。デフォルトでは、このオプションは`true`になります。
+
+```ruby
+class Person < ApplicationRecord
+  validates :email, confirmation: { case_sensitive: false }
 end
 ```
 
@@ -267,13 +288,14 @@ end
 このヘルパーは、与えられた集合に属性の値が含まれて「いない」ことを検証します。集合としては任意のenumerableオブジェクトが使用できます。
 
 ```ruby
-class Account < ActiveRecord::Base
+class Account < ApplicationRecord
   validates :subdomain, exclusion: { in: %w(www us ca jp),
     message: "%{value}は予約済みです" }
 end
 ```
 
-`exclusion`ヘルパーの`:in`オプションには、バリデーションを行った属性の値に含めたくない値の集合を指定します。`:in`オプションには`:within`というエイリアスもあり、好みに応じてどちらでも使用できます。上の例では、`:message`オプションを使用して属性の値を含める方法を示しています。
+`exclusion`ヘルパーの`:in`オプションには、バリデーションを行った属性の値に含めたくない値の集合を指定します。`:in`オプションには`:within`というエイリアスもあり、好みに応じてどちらでも使用できます。上の例では、`:message`オプションを使用して属性の値を含める方法を示しています。`message`引数の完全なオプションについては、[`:message`のドキュメント](#message)を参照してください。
+
 
 デフォルトのエラーメッセージは _"is reserved"_ です。
 
@@ -282,7 +304,7 @@ end
 このヘルパーは、`with`オプションで与えられた正規表現と属性の値がマッチするかどうかをテストすることによってバリデーションを行います。
 
 ```ruby
-class Product < ActiveRecord::Base
+class Product < ApplicationRecord
   validates :legacy_code, format: { with: /\A[a-zA-Z]+\z/,
     message: "英文字のみが使用できます" }
 end
@@ -296,13 +318,13 @@ end
 集合としては任意のenumerableオブジェクトが使用できます。
 
 ```ruby
-class Coffee < ActiveRecord::Base
+class Coffee < ApplicationRecord
   validates :size, inclusion: { in: %w(small medium large),
 message: "%{value} のサイズは無効です" }
 end
 ```
 
-`inclusion`ヘルパーには`:in`オプションがあり、受け付け可能とする値の集合を指定します。`:in`オプションには`:within`というエイリアスもあり、好みに応じてどちらでも使用できます。上の例では、属性の値をインクルードする方法を示すために`:message`オプションも使用しています。
+`inclusion`ヘルパーには`:in`オプションがあり、受け付け可能とする値の集合を指定します。`:in`オプションには`:within`というエイリアスもあり、好みに応じてどちらでも使用できます。上の例では、属性の値をインクルードする方法を示すために`:message`オプションも使用しています。完全なオプションについては、[`:message`のドキュメント](#message)を参照してください。
 
 このヘルパーのデフォルトのエラーメッセージは _"is not included in the list"_ です。
 
@@ -311,7 +333,7 @@ end
 このヘルパーは、属性の値の長さを検証します。多くのオプションがあり、長さ制限をさまざまな方法で指定できます。
 
 ```ruby
-class Person < ActiveRecord::Base
+class Person < ApplicationRecord
   validates :name, length: { minimum: 2 }
   validates :bio, length: { maximum: 500 }
   validates :password, length: { in: 6..20 }
@@ -329,7 +351,7 @@ end
 デフォルトのエラーメッセージは、実行されるバリデーションの種類によって異なります。デフォルトのメッセージは`:wrong_length`、`:too_long`、`:too_short`オプションを使用してカスタマイズしたり、`%{count}`を長さ制限に対応する数値のプレースホルダとして使用したりできます。`:message`オプションを使用してエラーメッセージを指定することもできます。
 
 ```ruby
-class Person < ActiveRecord::Base
+class Person < ApplicationRecord
   validates :bio, length: { maximum: 1000,
     too_long: "最大%{count}文字まで使用できます" }
 end
@@ -344,15 +366,13 @@ end
 `:only_integer`を`true`に設定すると、
 
 ```ruby
-/\A[+-]?\d+\Z/
+/\A[+-]?\d+\z/
 ```
 
 上の正規表現を使用して属性の値に対するバリデーションが行われます。それ以外の場合は、`Float`で値を数値に変換してからバリデーションを行おうとします。
 
-WARNING: 上の正規表現では末尾に改行記号があってもマッチします。
-
 ```ruby
-class Player < ActiveRecord::Base
+class Player < ApplicationRecord
   validates :points, numericality: true
   validates :games_played, numericality: { only_integer: true }
 end
@@ -365,8 +385,11 @@ end
 * `:equal_to` - 指定された値と等しくなければならないことを示します。デフォルトのエラーメッセージは _"must be equal to %{count}"_ です。
 * `:less_than` - 指定された値よりも小さくなければならないことを指定します。デフォルトのエラーメッセージは _"must be less than %{count}"_ です。
 * `:less_than_or_equal_to` - 指定された値と等しいか、それよりも小さくなければならないことを指定します。デフォルトのエラーメッセージは _"must be less than or equal to %{count}"_ です。
+* `:other_than` - 渡した値以外の値でなければならないことを指定します。デフォルトのエラーメッセージは _"must be other than %{count}"_ です。
 * `:odd` - trueに設定されている場合は、奇数でなければなりません。デフォルトのエラーメッセージは _"must be odd"_ です。
 * `:even` - trueに設定されている場合は、偶数でなければなりません。デフォルトのエラーメッセージは _"must be even"_ です。
+
+NOTE: デフォルトでは、`numericality`の`nil`値は許容されません。`allow_nil: true`オプションで`nil`値を許可できます。
 
 デフォルトのエラーメッセージは _"is not a number"_ です。
 
@@ -375,7 +398,7 @@ end
 このヘルパーは、指定された属性が空でないことを確認します。値が`nil`や空文字でない(つまり空欄でもなければホワイトスペースでもない)ことを確認するために、内部では`blank?`メソッドを使用しています。
 
 ```ruby
-class Person < ActiveRecord::Base
+class Person < ApplicationRecord
   validates :name, :login, :email, presence: true
 end
 ```
@@ -383,7 +406,7 @@ end
 関連付けが存在することを確認したい場合は、関連付けられたオブジェクト自体が存在することを確認し、そのオブジェクトが関連付けにマッピングされた外部キーでないことを確認する必要があります。
 
 ```ruby
-class LineItem < ActiveRecord::Base
+class LineItem < ApplicationRecord
   belongs_to :order
   validates :order, presence: true
 end
@@ -392,7 +415,7 @@ end
 関連付けられたレコードの存在が必須である場合、これを検証するには`:inverse_of`オプションでその関連付けを指定する必要があります。
 
 ```ruby
-class Order < ActiveRecord::Base
+class Order < ApplicationRecord
   has_many :line_items, inverse_of: :order
 end
 ```
@@ -401,14 +424,19 @@ end
 
 `false.blank?`は常にtrueなので、真偽値に対してこのメソッドを使用すると正しい結果が得られません。真偽値の存在をチェックしたい場合は、`validates :field_name, inclusion: { in: [true, false] }`を使用する必要があります。
 
-デフォルトのエラーメッセージは _"can't be blank"_ です。
+```ruby
+validates :boolean_field_name, inclusion: { in: [true, false] }
+validates :boolean_field_name, exclusion: { in: [nil] }
+```
+
+これらのバリデーションのいずれかを使うことで、値が**決して**`nil`にならないようにできます。`nil`があると、ほとんどの場合`NULL`値になります。
 
 ### `absence`
 
 このヘルパーは、指定された属性が空であることを検証します。値が`nil`や空文字である (つまり空欄またはホワイトスペースである) かどうかを確認するために、内部では`present?`メソッドを使用しています。
 
 ```ruby
-class Person < ActiveRecord::Base
+class Person < ApplicationRecord
   validates :name, :login, :email, absence: true
 end
 ```
@@ -416,7 +444,7 @@ end
 関連付けが存在しないことを確認したい場合は、関連付けられたオブジェクト自体が存在しないかどうかを確認し、そのオブジェクトが関連付けにマッピングされた外部キーでないことを確認する必要があります。
 
 ```ruby
-class LineItem < ActiveRecord::Base
+class LineItem < ApplicationRecord
   belongs_to :order
   validates :order, absence: true
 end
@@ -425,7 +453,7 @@ end
 関連付けられたレコードが存在してはならない場合、これを検証するには`:inverse_of`オプションでその関連付けを指定する必要があります。
 
 ```ruby
-class Order < ActiveRecord::Base
+class Order < ApplicationRecord
   has_many :line_items, inverse_of: :order
 end
 ```
@@ -438,10 +466,10 @@ end
 
 ### `uniqueness`
 
-このヘルパーは、オブジェクトが保存される直前に、属性の値が一意であり重複していないことを検証します。このヘルパーはデータベース自体に一意性の制約を作成するわけではないので、2つのデータベース接続がたまたま、一意であってほしいカラムについて同じ値を持つレコードを2つ作成するようなことが起こり得ます。これを避けるには、データベースの両方のカラムに一意インデックスを作成する必要があります。複合インデックスの詳細については[MySQLのマニュアル](http://dev.mysql.com/doc/refman/5.6/en/multiple-column-indexes.html) (英語) を参照してください。
+このヘルパーは、オブジェクトが保存される直前に、属性の値が一意であり重複していないことを検証します。このヘルパーはデータベース自体に一意性の制約を作成するわけではないので、2つのデータベース接続がたまたま、一意であってほしいカラムについて同じ値を持つレコードを2つ作成するようなことが起こり得ます。これを避けるには、データベースのカラムにも一意インデックスを作成する必要があります。
 
 ```ruby
-class Account < ActiveRecord::Base
+class Account < ApplicationRecord
   validates :email, uniqueness: true
 end
 ```
@@ -451,16 +479,18 @@ end
 このヘルパーには、一意性チェックを制限するために使用される別の属性を指定するための`:scope`オプションがあります。
 
 ```ruby
-class Holiday < ActiveRecord::Base
+class Holiday < ApplicationRecord
   validates :name, uniqueness: { scope: :year,
     message: "発生は年に1度までである必要があります" }
 end
 ```
 
+データベース制約を作成することで`:scope`を用いる一意性バリデーションの違反を防止したいのであれば、データベースで両方のカラムに一意のインデックスを作成しなければなりません。[MySQLのマニュアル](https://dev.mysql.com/doc/refman/5.6/ja/multiple-column-indexes.html)でマルチカラムインデックスについての情報を参照するか、[PostgreSQLのマニュアル](https://www.postgresql.jp/document/current/html/ddl-constraints.html)でカラムのグループを参照する一意性制約についての例を参照してください。
+
 このヘルパーには`:case_sensitive`というオプションもあります。これは一意性制約で大文字小文字を区別するかどうかを指定します。このオプションはデフォルトでtrueです。
 
 ```ruby
-class Person < ActiveRecord::Base
+class Person < ApplicationRecord
   validates :name, uniqueness: { case_sensitive: false }
 end
 ```
@@ -482,7 +512,7 @@ class GoodnessValidator < ActiveModel::Validator
   end
 end
 
-class Person < ActiveRecord::Base
+class Person < ApplicationRecord
   validates_with GoodnessValidator
 end
 ```
@@ -495,6 +525,7 @@ NOTE: `record.errors[:base]`に追加されるエラーは、概して特定の�
 
 他のバリデーションと同様、`validates_with`ヘルパーでも`:if`、`:unless`、`:on`オプションを取ることができます。これら以外のオプションを渡すと、バリデータクラスに`options`として渡されます。
 
+
 ```ruby
 class GoodnessValidator < ActiveModel::Validator
   def validate(record)
@@ -504,7 +535,7 @@ class GoodnessValidator < ActiveModel::Validator
   end
 end
 
-class Person < ActiveRecord::Base
+class Person < ApplicationRecord
   validates_with GoodnessValidator, fields: [:first_name, :last_name]
 end
 ```
@@ -514,7 +545,7 @@ end
 作成したバリデータが複雑になってインスタンス変数を使いたくなった場合は、旧来のRubyオブジェクトを簡単に使うことができます。
 
 ```ruby
-class Person < ActiveRecord::Base
+class Person < ApplicationRecord
   validate do |person|
     GoodnessValidator.new(person).validate
   end
@@ -540,7 +571,7 @@ end
 このヘルパーは、1つのブロックに対して属性を検証します。定義済みのバリデーション関数はありません。このため、ブロックを使用するバリデーションを自分で作成し、`validates_each`に渡す属性がすべてブロックに対してテストされるようにする必要があります。以下の例では、苗字と名前が小文字で始まらないようにしたいと考えています。
 
 ```ruby
-class Person < ActiveRecord::Base
+class Person < ApplicationRecord
   validates_each :name, :surname do |record, attr, value|
     record.errors.add(attr, 'must start with upper case') if value =~ /\A[a-z]/
   end
@@ -559,18 +590,20 @@ end
 `:allow_nil`オプションは、対象の値が`nil`の場合にバリデーションをスキップします。
 
 ```ruby
-class Coffee < ActiveRecord::Base
+class Coffee < ApplicationRecord
   validates :size, inclusion: { in: %w(small medium large),
     message: "%{value}は有効な値ではありません" }, allow_nil: true
 end
 ```
+
+`message:`引数の完全なオプションについては、[`:message`のドキュメント](#message)を参照してください。
 
 ### `:allow_blank`
 
 `:allow_blank`オプションは`:allow_nil`オプションと似ています。このオプションを指定すると、属性の値が`blank?`に該当する場合にバリデーションがパスします。`blank?`に該当する値には`nil`と空文字も含まれます。
 
 ```ruby
-class Topic < ActiveRecord::Base
+class Topic < ApplicationRecord
   validates :title, length: { is: 5 }, allow_blank: true
 end
 
@@ -580,14 +613,39 @@ Topic.create(title: nil).valid? # => true
 
 ### `:message`
 
-既に例示したように、`:message`オプションを使用することで、バリデーション失敗時に`errors`コレクションに追加されるカスタムエラーメッセージを指定できます。このオプションを使用しない場合、Active Recordはバリデーションヘルパーのデフォルトのエラーメッセージを使用します。
+既に例示したように、`:message`オプションを使用することで、バリデーション失敗時に`errors`コレクションに追加されるカスタムエラーメッセージを指定できます。このオプションを使用しない場合、Active Recordはバリデーションヘルパーごとにデフォルトのエラーメッセージを使用します。`:message`オプションは`String`か`Proc`を受け取ります。
+
+`String`の`:message`値には、`%{value}`や`%{attribute}`や`%{model}`をオプションで含められます。これらはバリデーション失敗時に動的に置き換えられます。置き換えにはI18n gemが用いられており、プレースホルダーはこのとおりでなければならず、スペース文字を含めることはできません。
+
+`Proc`の`:message`値には引数が2つ与えられます。バリデーションの対象となるオブジェクトと、`:model`と`:attribute`と`:value`のキー/値ペアを含むハッシュです。
+
+```ruby
+class Person < ApplicationRecord
+  # メッセージを直書きした場合
+  validates :name, presence: { message: "must be given please" }
+
+  # 動的な属性値を含むメッセージの場合。%{value}は実際の属性値に
+  # 置き換えられる。%{attribute}や%{model}も利用可能。
+  validates :age, numericality: { message: "%{value} seems wrong" }
+
+  # Procの場合
+  validates :username,
+    uniqueness: {
+      # object = バリデーションされる人物のオブジェクト
+      # data = { model: "Person", attribute: "Username", value: <username> }
+      message: ->(object, data) do
+        "Hey #{object.name}!, #{data[:value]} is taken already! Try again #{Time.zone.tomorrow}"
+      end
+    }
+end
+```
 
 ### `:on`
 
 `:on`オプションは、バリデーション実行のタイミングを指定します。ビルトインのバリデーションヘルパーは、デフォルトでは保存時に実行されます。これはレコードの作成時および更新時のどちらの場合にも行われます。バリデーションのタイミングを変更したい場合、`on: :create`を指定すればレコード新規作成時にのみ検証が行われ、`on: :update`を指定すればレコードの更新時にのみ検証が行われます。
 
 ```ruby
-class Person < ActiveRecord::Base
+class Person < ApplicationRecord
   # 値が重複していてもemailを更新できる
   validates :email, uniqueness: true, on: :create
 
@@ -599,13 +657,27 @@ class Person < ActiveRecord::Base
 end
 ```
 
+`on:`でカスタムコンテキストを定義することもできます。カスタムコンテキストは、名前を`valid?`や`invalid?`や`save`のコンテキストで渡すことによって明示的にトリガーされる必要があります。
+
+```ruby
+class Person < ApplicationRecord
+  validates :email, uniqueness: true, on: :account_setup
+  validates :age, numericality: true, on: :account_setup
+end
+
+person = Person.new
+```
+
+`person.valid?(:account_setup)`は、モデルを保存せずにバリデーションを2つとも実行します。`person.save(context: :account_setup)`は、保存前に、`account_setup`コンテキストで`person`をバリデーションします。
+明示的なトリガーによって、そのコンテキストのみのバリデーションと、コンテキストなしのバリデーションがモデルで行われます。
+
 厳密なバリデーション
 ------------------
 
 バリデーションを厳密にし、オブジェクトが無効だった場合に`ActiveModel::StrictValidationFailed`が発生するようにすることができます。
 
 ```ruby
-class Person < ActiveRecord::Base
+class Person < ApplicationRecord
   validates :name, presence: { strict: true }
 end
 
@@ -615,7 +687,7 @@ Person.new.valid?  # => ActiveModel::StrictValidationFailed: 名前は空欄に�
 カスタムの例外を`:strict`オプションに追加することもできます。
 
 ```ruby
-class Person < ActiveRecord::Base
+class Person < ApplicationRecord
   validates :token, presence: true, uniqueness: true, strict: TokenGenerationException
 end
 
@@ -633,7 +705,7 @@ Person.new.valid?  # => TokenGenerationException: トークンは空欄にでき
 これは最も頻繁に使用されるオプションです。
 
 ```ruby
-class Order < ActiveRecord::Base
+class Order < ApplicationRecord
   validates :card_number, presence: true, if: :paid_with_card?
 
   def paid_with_card?
@@ -647,7 +719,7 @@ end
 呼び出したい`Proc`オブジェクトを`:if`や`:unless`で使用することもできます。`Proc`オブジェクトを使用すると、個別のメソッドを指定する代りに、その場で条件を書くことができるようになります。ワンライナーに収まる条件を使用したい場合に最適です。
 
 ```ruby
-class Account < ActiveRecord::Base
+class Account < ApplicationRecord
   validates :password, confirmation: true,
     unless: Proc.new { |a| a.password.blank? }
 end
@@ -658,7 +730,7 @@ end
 1つの条件を複数のバリデーションで共用できると便利なことがあります。これは`with_options`を使用することで簡単に実現できます。
 
 ```ruby
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   with_options if: :is_admin? do |admin|
     admin.validates :password, length: { minimum: 10 }
     admin.validates :email, presence: true
@@ -673,9 +745,9 @@ end
 逆に、バリデーションを行なう条件を複数定義したい場合、`Array`を使用できます。同じバリデーションに対して、`:if`または`:unless`のどちらでも使用できます。
 
 ```ruby
-class Computer < ActiveRecord::Base
+class Computer < ApplicationRecord
   validates :mouse, presence: true,
-                    if: ["market.retail?", :desktop?]
+                    if: [Proc.new  { |c| c.market.retail? }, :desktop?],
                     unless: Proc.new { |c| c.trackpad.present? }
 end
 ```
@@ -689,7 +761,7 @@ end
 
 ### カスタムバリデータ
 
-カスタムバリデータ (validator) は、`ActiveModel::Validator`を拡張したクラスです。これらのクラスでは、`validate`メソッドが実装されている必要があります。このメソッドはレコードを1つ引数に取り、それに対してバリデーションを実行します。カスタムバリデータは`validates_with`メソッドを使用して呼び出します。
+カスタムバリデータ (validator) は、`ActiveModel::Validator`を継承するクラスです。これらのクラスでは、`validate`メソッドが実装されている必要があります。このメソッドはレコードを1つ引数に取り、それに対してバリデーションを実行します。カスタムバリデータは`validates_with`メソッドを使用して呼び出します。
 
 ```ruby
 class MyValidator < ActiveModel::Validator
@@ -706,7 +778,7 @@ class Person
 end
 ```
 
-個別の属性を検証するためのカスタムバリデータを追加するには、`ActiveModel::EachValidator`を使用するのが最も簡単で便利です。この場合、このカスタムバリデータクラスは`validate_each`メソッドを実装する必要があります。このメソッドは、そのインスタンスに対応する「レコードと属性と値」、バリデーションを行なう属性、そして渡されたインスタンスの属性の値の3つの引数を取ります。
+個別の属性を検証するためのカスタムバリデータを追加するには、`ActiveModel::EachValidator`を使用するのが最も簡単で便利です。この場合、このカスタムバリデータクラスは`validate_each`メソッドを実装する必要があります。このメソッドは、そのインスタンスに対応するレコード、バリデーションを行う属性、そして渡されたインスタンスの属性の値の3つの引数を取ります。
 
 ```ruby
 class EmailValidator < ActiveModel::EachValidator
@@ -717,7 +789,7 @@ class EmailValidator < ActiveModel::EachValidator
   end
 end
 
-class Person < ActiveRecord::Base
+class Person < ApplicationRecord
   validates :email, presence: true, email: true
 end
 ```
@@ -730,8 +802,10 @@ end
 
 1つのクラスメソッドには複数のシンボルを渡すことができます。バリデーションは、登録されたとおりの順序で実行されます。
 
+`valid?`メソッドは`errors`コレクションが空であることを検証するので、カスタムバリデーションはバリデーションが失敗したときにエラーを追加すべきです。
+
 ```ruby
-class Invoice < ActiveRecord::Base
+class Invoice < ApplicationRecord
   validate :expiration_date_cannot_be_in_the_past,
     :discount_cannot_be_greater_than_total_value
 
@@ -749,10 +823,10 @@ class Invoice < ActiveRecord::Base
 end
 ```
 
-これらのバリデーションは、`valid?`を呼び出すたびに実行されます。カスタムバリデーションが実行されるタイミングは、`:on`オプションを使用して変更できます。`validate`に対して`on: :create`または`on: :update`を指定します。
+これらのバリデーションは、デフォルトでは`valid?`を呼び出すかオブジェクトを保存するたびに実行されます。しかし`:on`オプションを使えば、カスタムバリデーションが実行されるタイミングを変更できます。`validate`に対して`on: :create`または`on: :update`を指定します。
 
 ```ruby
-class Invoice < ActiveRecord::Base
+class Invoice < ApplicationRecord
   validate :active_customer, on: :create
 
   def active_customer
@@ -773,7 +847,7 @@ end
 すべてのエラーを含む`ActiveModel::Errors`クラスのインスタンスを1つ返します。キーは属性名、値はすべてのエラー文字列の配列です。
 
 ```ruby
-class Person < ActiveRecord::Base
+class Person < ApplicationRecord
   validates :name, presence: true, length: { minimum: 3 }
 end
 
@@ -792,7 +866,7 @@ person.errors.messages # => {}
 `errors[]`は、特定の属性についてエラーメッセージをチェックしたい場合に使用します。指定の属性に関するすべてのエラーメッセージの文字列の配列を返します。1つの文字列が1つのエラーメッセージです。属性に関連するエラーがない場合は空の配列を返します。
 
 ```ruby
-class Person < ActiveRecord::Base
+class Person < ApplicationRecord
   validates :name, presence: true, length: { minimum: 3 }
 end
 
@@ -812,10 +886,12 @@ person.errors[:name]
 
 ### `errors.add`
 
-`add`メソッドを使用して、特定の属性に関連するメッセージを手動で追加できます。`errors.full_messages`メソッドまたは`errors.to_a`メソッドを使用して、ユーザーが実際に見ることのできるフォーム内のメッセージを表示できます。これら特定のメッセージの前には、大文字で始まる属性名が追加されます。`add`メソッドは、メッセージを追加したい属性名、およびメッセージ自身を受け取ります。
+`add`メソッドを使用して、特定の属性に関連するエラーメッセージを手動で追加できます。このメソッドは属性とエラーメッセージを引数として受け取ります。
+
+`errors.full_messages`（または同等の`errors.to_a`）メソッドは、エラーメッセージをユーザーが読みやすい形式で返します。以下のように、メッセージごとに頭が大文字の属性名を冒頭に追加します。
 
 ```ruby
-class Person < ActiveRecord::Base
+class Person < ApplicationRecord
   def a_method_used_for_validation_purposes
     errors.add(:name, "は以下の文字を含むことができません !@#%*()_-+=")
   end
@@ -830,12 +906,12 @@ person.errors.full_messages
 # => ["Name は以下の文字を含むことができません !@#%*()_-+="]
 ```
 
-`[]=`セッターを使用して同じことを行えます。
+`errors#add`と同等の`<<`メソッドを使うと、属性の`errors.messages`配列にメッセージを追加できます。
 
 ```ruby
-class Person < ActiveRecord::Base
+class Person < ApplicationRecord
   def a_method_used_for_validation_purposes
-    errors[:name] = "は以下の文字を含むことができません !@#%*()_-+="
+    errors.messages[:name] <<  "は以下の文字を含むことができません !@#%*()_-+="
   end
 end
 
@@ -848,12 +924,46 @@ person.errors.to_a
 # => ["Name は以下の文字を含むことができません !@#%*()_-+="]
 ```
 
+### `errors.details`
+
+`errors.add`メソッドを使って、返されたエラーの`details`ハッシュにバリデータの種類を指定できます。
+
+```ruby
+class Person < ApplicationRecord
+  def a_method_used_for_validation_purposes
+    errors.add(:name, :invalid_characters)
+  end
+end
+
+person = Person.create(name: "!@#")
+
+person.errors.details[:name]
+# => [{error: :invalid_characters}]
+```
+
+たとえば、使ってはならない文字セットをエラーの`details`に追加するには、`errors.add`で追加のキーを渡します。
+
+```ruby
+class Person < ApplicationRecord
+  def a_method_used_for_validation_purposes
+    errors.add(:name, :invalid_characters, not_allowed: "!@#%*()_-+=")
+  end
+end
+
+person = Person.create(name: "!@#")
+
+person.errors.details[:name]
+# => [{error: :invalid_characters, not_allowed: "!@#%*()_-+="}]
+```
+
+対応するバリデータの種類を持つ`details`ハッシュは、すべての組み込みRailsバリデータによって展開されます。
+
 ### `errors[:base]`
 
 個別の属性に関連するエラーメッセージを追加する代りに、オブジェクトの状態全体に関連するエラーメッセージを追加することもできます。属性の値がどのようなものであってもオブジェクトが無効であることを通知したい場合にこのメソッドを使用できます。`errors[:base]`は配列なので、これに文字列を単に追加するだけでエラーメッセージとして使用できるようになります。
 
 ```ruby
-class Person < ActiveRecord::Base
+class Person < ApplicationRecord
   def a_method_used_for_validation_purposes
     errors[:base] << "この人物は以下の理由で無効です..."
   end
@@ -865,7 +975,7 @@ end
 `clear`メソッドは、`errors`コレクションに含まれるメッセージをすべてクリアしたい場合に使用できます。無効なオブジェクトに対して`errors.clear`メソッドを呼び出しても、それだけでオブジェクトが有効になるわけではありませんのでご注意ください。`errors`は空になりますが、`valid?`やオブジェクトをデータベースに保存しようとするメソッドが次回呼び出されたときに、バリデーションが再実行されます。そしていずれかのバリデーションが失敗すると、`errors`コレクションに再びメッセージが格納されます。
 
 ```ruby
-class Person < ActiveRecord::Base
+class Person < ApplicationRecord
   validates :name, presence: true, length: { minimum: 3 }
 end
 
@@ -877,9 +987,9 @@ person.errors[:name]
 person.errors.clear
 person.errors.empty? # => true
 
-p.save # => false
+person.save # => false
 
-p.errors[:name]
+person.errors[:name]
 # => ["空欄にはできません", "短すぎます (最小3文字)"]
 ```
 
@@ -888,7 +998,7 @@ p.errors[:name]
 `size`メソッドは、そのオブジェクトのエラーメッセージの総数を返します。
 
 ```ruby
-class Person < ActiveRecord::Base
+class Person < ApplicationRecord
   validates :name, presence: true, length: { minimum: 3 }
 end
 

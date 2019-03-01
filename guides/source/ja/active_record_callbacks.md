@@ -1,4 +1,4 @@
-﻿
+
 Active Record コールバック
 =======================
 
@@ -66,7 +66,7 @@ class User < ApplicationRecord
 
   private
     def normalize_name
-      self.name = self.name.downcase.titleize
+      self.name = name.downcase.titleize
     end
 
     def set_location
@@ -111,6 +111,8 @@ Active Recordで利用可能なコールバックの一覧を以下に示しま�
 * `after_destroy`
 
 WARNING: `after_save`は作成と更新の両方で呼び出されますが、コールバックマクロの呼び出し順にかかわらず、必ず、より具体的な`after_create`および`after_update`より _後_ に呼び出されます。
+
+NOTE: `before_destroy`コールバックは、`dependent: :destroy`よりも前に配置する（または`prepend: true`オプションを用いる）べきです。これは、そのレコードが`dependent: :destroy`によって削除されるよりも前に`before_destroy`コールバックが実行されるようにするためです。
 
 ### `after_initialize`と`after_find`
 
@@ -185,8 +187,8 @@ end
 
 # @employee.company.touchをトリガーする
 >> @employee.touch
-Employee/Companyにタッチされました
 Employeeにタッチされました
+Employee/Companyにタッチされました
 => true
 ```
 
@@ -204,6 +206,7 @@ Employeeにタッチされました
 * `save!`
 * `save(validate: false)`
 * `toggle!`
+* `touch`
 * `update_attribute`
 * `update`
 * `update!`
@@ -236,22 +239,25 @@ NOTE: `find_by_*`メソッドと`find_by_*!`メソッドは、属性ごとに自
 * `increment`
 * `increment_counter`
 * `toggle`
-* `touch`
 * `update_column`
 * `update_columns`
 * `update_all`
 * `update_counters`
 
-重要なビジネスルールやアプリケーションロジックはたいていコールバックに仕込まれていますので、これらのメソッドの使用には十分気をつけてください。コールバックをうかつにバイパスすると、データの不整合が発生する可能性があります。
+重要なビジネスルールやアプリケーションロジックがコールバックに実装されている可能性があるので、これらのメソッドの使用には十分気をつけてください。コールバックをうかつにバイパスすると、データの不整合が発生する可能性があります。
 
 コールバックの停止
 -----------------
 
 モデルに新しくコールバックを登録すると、コールバックは実行キューに入ります。このキューには、あらゆるモデルに対する検証、登録済みコールバック、実行待ちのデータベース操作が置かれます。
 
-コールバックの連鎖の全体は、1つのトランザクションに含まれます。_before_ コールバックの1つが`false`を返すか例外を発生するという動作をする場合、実行の連鎖全体が停止してロールバックが発行されます。_after_ コールバックの場合は例外を発生することによってのみ、コールバック連鎖の停止とトランザクションのロールバックを実行させることができます。
+コールバックチェイン全体は、1つのトランザクションにラップされます。コールバックの1つで例外が発生すると、実行チェイン全体が停止してロールバックが発行されます。チェインを意図的に停止するには次のようにします。
 
-WARNING: `ActiveRecord::Rollback`以外の例外は、その例外によってコールバック連鎖が停止した後で、Railsによって再び発生させられます。このため、ActiveRecord::Rollback以外の例外を発生させると、saveやupdate_attributesのようなメソッド (つまり通常trueかfalseを返そうとするメソッド) が、例外を起こすことを想定していないコードを破壊する恐れがあります。
+```ruby
+throw :abort
+```
+
+WARNING: `ActiveRecord::Rollback`や`ActiveRecord::RecordInvalid`を除く例外は、その例外によってコールバックチェインが停止した後も、Railsによって再び発生します。このため、`ActiveRecord::Rollback`や`ActiveRecord::RecordInvalid`以外の例外を発生させると、`save`や`update_attributes`のようなメソッド (つまり通常`true`か`false`を返そうとするメソッド) が例外を発生させることを想定していないコードが中断する恐れがあります。
 
 リレーションシップのコールバック
 --------------------
@@ -394,7 +400,7 @@ end
 
 NOTE: `:on`オプションは、コールバックがトリガされる条件を指定します。`:on`オプションを指定しないと、すべてのアクションでコールバックがトリガされます。
 
-`after_commit`コールバックを作成時、更新時、削除時に限定して使うのは一般的なので、それらのためのエイリアスが用意されています。
+`after_commit`コールバックは作成/更新/削除でのみ用いるのが普通であるため、それぞれのエイリアスも用意されています。
 
 * `after_create_commit`
 * `after_update_commit`
@@ -412,4 +418,33 @@ class PictureFile < ApplicationRecord
 end
 ```
 
-WARNING: `after_commit`コールバックおよび`after_rollback`コールバックは、1つのトランザクションブロック内におけるあらゆるモデルの作成/更新/destroy時に呼び出されます。これらのコールバックのいずれかで何らかの例外が発生すると、例外は無視されるため、他のコールバックに干渉しません。従って、もし自作のコールバックが例外を発生する可能性がある場合は、自分のコールバック内でrescueし、適切にエラー処理を行なう必要があります。
+WARNING: `after_commit`コールバックおよび`after_rollback`コールバックは、1つのトランザクションブロック内におけるあらゆるモデルの作成/更新/destroy時に呼び出されます。これらのコールバックのいずれかで何らかの例外が発生すると、その例外のせいで以後の`after_commit`コールバックや`after_rollback`コールバックのメソッドは**実行されなくなります**。このため、もし自作のコールバックが例外を発生する可能性がある場合は、自分のコールバック内で`rescue`して適切にエラー処理を行い、他のコールバックが停止しないようにする必要があります。
+
+WARNING: 同一のモデル内で`after_create_commit`と`after_update_commit`を両方用いると、最後に定義された方のコールバックだけが有効になり、その他はすべてオーバライドされます。
+
+```ruby
+class User < ApplicationRecord
+  after_create_commit :log_user_saved_to_db
+  after_update_commit :log_user_saved_to_db
+
+  private
+  def log_user_saved_to_db
+    puts 'User was saved to database'
+  end
+end
+
+# 何も出力されない
+>> @user = User.create
+
+# @userを更新する
+>> @user.save
+=> User was saved to database
+```
+
+`create`アクションのコールバックと`update`アクションのコールバックを両方とも登録するには、代わりに`after_commit`を使います。
+
+```ruby
+class User < ApplicationRecord
+  after_commit :log_user_saved_to_db, on: [:create, :update]
+end
+```
