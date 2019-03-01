@@ -17,16 +17,16 @@ WARNING: このガイドはRackのミドルウェア、urlマップ、`Rack::Bui
 Rack入門
 --------------------
 
-Rackは、RubyのWebアプリに対して、モジュール化された最小限のインターフェイスを提供して、インターフェイスを広範囲に使えるようにします。RackはHTTPリクエストとレスポンスを可能なかぎり簡単な方法でラッピングすることで、Webサーバー、Webフレームワーク、その間に位置するソフトウェア (ミドルウェアと呼ばれています) のAPIを1つのメソッド呼び出しの形にまとめます。
+Rackは、RubyのWebアプリケーションに対して、モジュール化された最小限のインターフェイスを提供して、インターフェイスを広範囲に使えるようにします。RackはHTTPリクエストとレスポンスを可能なかぎり簡単な方法でラッピングすることで、Webサーバー、Webフレームワーク、その間に位置するソフトウェア (ミドルウェアと呼ばれています) のAPIを1つのメソッド呼び出しの形にまとめます。
 
 Rackに関する解説はこのガイドの範疇を超えてしまいます。Rackに関する基本的な知識が不足している場合は、下記の[リソース](#参考資料) を参照してください。
 
 RailsとRack
 -------------
 
-### RailsアプリのRackオブジェクト
+### RailsアプリケーションのRackオブジェクト
 
-`Rails.application`は、Railsアプリにおける主要なRackアプリです。Rackに準拠したWebサーバーで、Railsアプリを提供するには、`Rails.application`オブジェクトを使う必要があります。
+`Rails.application`は、Railsアプリケーションにおける主要なRackアプリケーションです。Rackに準拠したWebサーバーで、Railsアプリケーションを提供するには、`Rails.application`オブジェクトを使う必要があります。
 
 ### `rails server`コマンド
 
@@ -55,7 +55,7 @@ end
 
 ### `rackup`コマンド
 
-Railsの`rails server`コマンドの代わりに`rackup`コマンドを使うときは、以下の内容を`config.ru`に記述して、Railsアプリのルートディレクトリに保存します。
+Railsの`rails server`コマンドの代わりに`rackup`コマンドを使うときは、以下の内容を`config.ru`に記述して、Railsアプリケーションのルートディレクトリに保存します。
 
 ```ruby
 # Rails.root/config.ru
@@ -77,12 +77,12 @@ $ rackup --help
 
 ### 開発中の自動再読み込みについて
 
-一度読み込まれたミドルウェアは、変更が発生しても検出されません。現在実行中のアプリでミドルウェアの変更を反映するには、サーバーの再起動が必要です。
+一度読み込まれたミドルウェアは、変更が発生しても検出されません。現在実行中のアプリケーションでミドルウェアの変更を反映するには、サーバーの再起動が必要です。
 
 Action Dispatcherのミドルウェアスタック
 ----------------------------------
 
-Action Dispatcher内部のコンポーネントの多くは、「Rackミドルウェア」として実装されています。`Rails::Application`は、`ActionDispatch::MiddlewareStack`を用いて内部ミドルウェアや外部ミドルウェアを組み合わせることで、完全なRailsのRackアプリを構築します。
+Action Dispatcher内部のコンポーネントの多くは、「Rackミドルウェア」として実装されています。`Rails::Application`は、`ActionDispatch::MiddlewareStack`を用いて内部ミドルウェアや外部ミドルウェアを組み合わせることで、完全なRailsのRackアプリケーションを構築します。
 
 NOTE: Railsの`ActionDispatch::MiddlewareStack`クラスは`Rack::Builder`クラスと同等ですが、Railsアプリケーションの要求を満たすために柔軟性が高く多機能です。
 
@@ -94,7 +94,7 @@ Railsには、ミドルウェアスタックを調べるための便利なタス
 $ bin/rails middleware
 ```
 
-作成直後のRailsアプリでは、以下のように出力されるはずです。
+作成直後のRailsアプリケーションでは、以下のように出力されるはずです。
 
   ```ruby
 use Rack::Sendfile
@@ -212,7 +212,7 @@ Action Controllerの機能の多くはミドルウェアとして実装されて
 
 **`Rack::Lock`**
 
-* `env["rack.multithread"]`を`false`に設定し、アプリをMutexでラップします。
+* `env["rack.multithread"]`を`false`に設定し、アプリケーションをMutexでラップします。
 
 **`ActionDispatch::Executor`**
 
@@ -252,7 +252,7 @@ Action Controllerの機能の多くはミドルウェアとして実装されて
 
 **`ActionDispatch::ShowExceptions`**
 
-* アプリが返すすべての例外をrescueし、例外処理用アプリ（エンドユーザー向けに例外を整形するアプリ）を起動します。
+* アプリケーションが返すすべての例外をrescueし、例外処理用アプリケーション （エンドユーザー向けに例外を整形するアプリケーション） を起動します。
 
 **`ActionDispatch::DebugExceptions`**
 
