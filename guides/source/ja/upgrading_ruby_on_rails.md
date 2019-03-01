@@ -1,7 +1,4 @@
-﻿
-
-
-Rails アップグレードガイド
+﻿Rails アップグレードガイド
 ===================================
 
 本章では、アプリケーションで使用されているRuby on Railsのバージョンを、新しいバージョンにアップグレードする際の手順について示します。アップグレードの手順は、Railsのバージョンごとに記載されています。
@@ -63,10 +60,27 @@ Overwrite /myapp/config/application.rb? (enter "h" for help) [Ynaqdh]
 
 予期しなかった変更が発生した場合は、必ず差分を十分にチェックしてください。
 
+Rails 5.1からRails 5.2へのアップグレード
+-------------------------------------
+
+Rails 5.2 の変更点の詳細は[リリースノート](5_2_release_notes.html)を参照してください。
+
+### Bootsnap
+
+Rails 5.2 では[新規作成したアプリケーションのGemfile](https://github.com/rails/rails/pull/29313)に bootsnap gem が追加されました。`boot.rb`の`app:update`タスクを実行するとセットアップが行われます。使いたい場合は、Gemfileにbootsnap gemを追加してください。`boot.rb`を変更し、bootsnapを使わないようにすることもできます。
+
+### 暗号化または署名付きcookieに有効期限情報が付与されました
+
+セキュリティ向上のため、Railsでは暗号化または署名付きcookieに有効期限情報を埋め込むようになりました。
+
+有効期限情報が付与されたcookieは、Rails 5.1 以前のバージョンとの互換性はありません。
+
+Rails 5.1 以前で新しいcookieを読み込みたい場合、もしくは Rails 5.2 でうまくデプロイできるか確認したい場合は (必要に応じてロールバックできるようにしたい場合は) `Rails.application.config` の `action_dispatch.use_authenticated_cookie_encryption` を `false` に設定してください。
+
 Rails 5.0からRails 5.1へのアップグレード
 -------------------------------------
 
-Rails 5.1 の変更点について詳しくは、[リリースノート](5_1_release_notes.html)を参照してください。
+Rails 5.1 の変更点の詳細は[リリースノート](5_1_release_notes.html)を参照してください。
 
 ### トップレベルの`HashWithIndifferentAccess`が弱く非推奨化された
 
@@ -95,7 +109,7 @@ Rails.application.secrets[:smtp_settings][:address]
 Rails 4.2からRails 5.0へのアップグレード
 -------------------------------------
 
-Rails 5.0 の変更点について詳しくは、[リリースノート](5_0_release_notes.html)を参照してください。
+Rails 5.0 の変更点の詳細は[リリースノート](5_0_release_notes.html)を参照してください。
 
 ### Ruby 2.2.2以上が必須
 
@@ -151,7 +165,7 @@ end
 
 ### Rails コントローラのテスト
 
-#### `rails-controller-testing`からヘルパーメソッドを抽出する
+#### いくつかのヘルパーメソッドを `rails-controller-testing` に抽出
 
 `assigns`メソッドと`assert_template`メソッドは`rails-controller-testing` gemに移転しました。これらのメソッドを引き続きコントローラのテストで使いたい場合は、Gemfileに`gem 'rails-controller-testing'`を追加してください。
 
@@ -226,6 +240,16 @@ Rails 5 では、rakeに代わって`bin/rails`でタスクやテストを実行
 ```erb
 <% # Template Dependency: recordings/threads/events/* %>
 ```
+
+### `ActionView::Helpers::RecordTagHelper` は、外部のgemに移動（`record_tag_helper`）
+
+`content_tag_for` と `div_for` が削除され、 `content_tag` のみの利用が推奨されます。これらの古いメソッドを使い続けたい場合、 `record_tag_helper` gemをGemfileに追加してください。
+
+```ruby
+gem 'record_tag_helper', '~> 1.0'
+```
+
+詳細については[#18411](https://github.com/rails/rails/pull/18411)を参照してください。
 
 ### `protected_attributes` gem のサポートを終了
 
@@ -331,7 +355,7 @@ Rails 4.1からRails 4.2へのアップグレード
 
 ### Web Console gem
 
-最初に、Gemfileの`development`グループに`gem 'web-console', '~> 2.0'`を追加し、`bundle install`を実行してください (このgemはRailsを過去のバージョンからアップグレードした場合には含まれないので、手動で追加する必要があります)。gemのインストール完了後、`<%= console %>`などのコンソールヘルパーへの参照をビューに追加するだけで、どのビューでもコンソールを利用できるようになります。このコンソールは、development環境のビューで表示されるすべてのエラーページにも表示されます。
+最初に、`Gemfile`の`development`グループに`gem 'web-console', '~> 2.0'`を追加し、`bundle install`を実行してください (このgemはRailsを過去のバージョンからアップグレードした場合には含まれないので、手動で追加する必要があります)。gemのインストール完了後、`<%= console %>`などのコンソールヘルパーへの参照をビューに追加するだけで、どのビューでもコンソールを利用できるようになります。このコンソールは、development環境のビューで表示されるすべてのエラーページにも表示されます。
 
 ### Responders gem
 
@@ -901,7 +925,7 @@ PATCHおよびこの変更が行われた理由についてはRailsブログの 
 
 #### メディアタイプに関するメモ
 
-`PATCH` verbに関する追加情報 [`PATCH`では異なるメディアタイプを使用する必要がある](http://www.rfc-editor.org/errata_search.php?rfc=5789)。[JSON Patch](http://tools.ietf.org/html/rfc6902) などが該当します。RailsはJSON Patchをネイティブではサポートしませんが、サポートは簡単に追加できます。
+`PATCH` verbに関する追加情報 [`PATCH`では異なるメディアタイプを使用する必要がある](http://www.rfc-editor.org/errata_search.php?rfc=5789)。[JSON Patch](https://tools.ietf.org/html/rfc6902) などが該当します。RailsはJSON Patchをネイティブではサポートしませんが、サポートは簡単に追加できます。
 
 ```
 # コントローラに以下を書く
@@ -926,7 +950,7 @@ JSON Patchは最近RFC化されたばかりなのでRubyライブラリはそれ
 
 ### Gemfile
 
-Rails 4.0では`assets`グループがGemfileから削除されました。アップグレード時にはこの記述をGemfileから削除する必要があります。アプリケーションの`config/application.rb`ファイルも以下のように更新する必要があります。
+Rails 4.0では`assets`グループがGemfileから削除されました。アップグレード時にはこの記述を`Gemfile`から削除する必要があります。アプリケーションの`config/application.rb`ファイルも以下のように更新する必要があります。
 
 ```ruby
 # Require the gems listed in Gemfile, including any gems
@@ -1036,7 +1060,7 @@ Rails 4.0ではActive Resourceがgem化されました。この機能が必要�
 
 * Rails 4.0では`ActionController::Base.page_cache_extension`オプションが非推奨になりました。代りに`ActionController::Base.default_static_extension`をご利用ください。
 
-* Rails 4.0のAction PackからActionとPageのキャッシュ機能が取り除かれました。コントローラで`caches_action`を使用したい場合は`actionpack-action_caching` gemを、`caches_pages`を使用したい場合は`actionpack-page_caching` gemをそれぞれGemfileに追加する必要があります。
+* Rails 4.0のAction PackからActionとPageのキャッシュ機能が取り除かれました。コントローラで`caches_action`を使用したい場合は`actionpack-action_caching` gemを、`caches_page`を使用したい場合は`actionpack-page_caching` gemをそれぞれGemfileに追加する必要があります。
 
 * Rails 4.0からXMLパラメータパーサーが取り除かれました。この機能が必要な場合は`actionpack-xml_parser` gemを追加する必要があります。
 
@@ -1089,7 +1113,7 @@ get 'こんにちは', controller: 'welcome', action: 'index'
   get '/' => 'root#index'
 ```
 
-* Rails 4.0から`ActionDispatch::BestStandardsSupport`ミドルウェアが削除されました。`<!DOCTYPE html>`は既に http://msdn.microsoft.com/en-us/library/jj676915(v=vs.85).aspx の標準モードをトリガするようになり、ChromeFrameヘッダは`config.action_dispatch.default_headers`に移動されました。
+* Rails 4.0から`ActionDispatch::BestStandardsSupport`ミドルウェアが削除されました。`<!DOCTYPE html>`は既に https://msdn.microsoft.com/en-us/library/jj676915(v=vs.85).aspx の標準モードをトリガするようになり、ChromeFrameヘッダは`config.action_dispatch.default_headers`に移動されました。
 
 アプリケーションコード内にあるこのミドルウェアへの参照はすべて削除する必要がありますのでご注意ください。例：
 

@@ -1,7 +1,3 @@
-
-
-
-
 Rails による API 専用アプリ
 =====================================
 
@@ -55,10 +51,10 @@ Rackミドルウェアのこうした既存の機能を自前で構築するこ�
 Action Pack層で提供される機能
 
 - リソースベースのルーティング: RESTful JSON APIを開発するなら、Railsのルーターも使いたいところです。RailsでおなじみのHTTPからコントローラへの明確なマッピングを利用できるので、生のHTTPに沿ってAPIモデルをゼロから設計する必要がありません。
-- URL生成: ルーティングは、URL生成にも便利です。よくできたHTTPベースのAPIにはURLも含まれています（[GitHub Gist API](http://developer.github.com/v3/gists/) がよい例）。
+- URL生成: ルーティングは、URL生成にも便利です。よくできたHTTPベースのAPIにはURLも含まれています（[GitHub Gist API](https://developer.github.com/v3/gists/) がよい例）。
 - ヘッダレスポンスやリダイレクトレスポンス: `head :no_content`や`redirect_to user_url(current_user)`などをすぐ利用できます。ヘッダレスポンスを自分で書かずに済みます。
 - キャッシュ: Railsでは、ページキャッシュ、アクションキャッシュ、フラグメントキャッシュを利用できます。特に、フラグメントキャッシュはネストJSONオブジェクトを構成するときに便利です。
-- 基本認証、ダイジェスト認証、トークン認証: 3種類のHTTP認証を簡単に導入できます。
+- BASIC認証、ダイジェスト認証、トークン認証: 3種類のHTTP認証を簡単に導入できます。
 - Instrumentation（計測）: Railsのinstrumentation APIは、登録したさまざまなイベントハンドラをトリガーできます。アクションの処理、ファイルやデータの送信、リダイレクト、データベースクエリなどを扱えます。各イベントのペイロードにはさまざまな関連情報が含まれます。たとえば、イベントを処理するアクションの場合、ペイロードにはコントローラ、アクション、パラメータ、リクエスト形式、リクエストの完全なパスなどが含まれます。
 - ジェネレータ: コマンド1つでリソースを手軽に生成して、APIに合うモデル、コントローラ、テストスタブ、ルーティングをすぐに利用できます。マイグレーションなども同じコマンドで行えます。
 - プラグイン: サードパーティのライブラリを多数利用できます。ライブラリの設定やwebフレームワークとの連携も簡単なので、コストを削減できます。プラグインによっては、デフォルトのジェネレータをオーバーライドするものがあります。追加されるRakeタスクは、Rails標準に沿ったものになります（ロガーやキャッシュのバックエンドなど）。
@@ -149,7 +145,7 @@ APIアプリケーションでは、デフォルトで以下のミドルウェ�
 - `Rack::ETag`
 - `MyApi::Application::Routes`
 
-詳しくは、Rackガイドの[内部ミドルウェア](rails_on_rack.html#internal-middleware-stack) をご覧ください。
+詳しくは、Rackガイドの「[Rails と Rack - ミドルウェアスタックの内容](rails_on_rack.html#ミドルウェアスタックの内容)」をご覧ください。
 
 ミドルウェアは、Active Recordなど他のプラグインによって追加されることがあります。一般に、構築するアプリの種類とミドルウェアは関係ありませんが、API専用Railsアプリでは意味があります。
 
@@ -286,8 +282,8 @@ APIアプリケーション（`ActionController::API`を利用）には、デフ
 - `AbstractController::Callbacks`: `before_action`などのヘルパーをサポート
 - `ActionController::Rescue`: `rescue_from`をサポート
 - `ActionController::Instrumentation`: Action Controllerで定義するinstrumentationフックをサポート（詳しくは[the instrumentation guide](active_support_instrumentation.html#action-controller) を参照）
-- `ActionController::ParamsWrapper`: パラメータハッシュをラップしてネスト化ハッシュにする。これにより、たとえばPOSTリクエスト送信時にルート要素を指定する必要がなくなる。
-- `ActionController::Head`: コンテンツのないヘッダーのみのレスポンス返信をサポートします。
+- `ActionController::ParamsWrapper`: パラメータハッシュをラップしてネスト化ハッシュにし、POSTリクエスト送信時のルート要素指定などを不要にする
+- `ActionController::Head`: コンテンツのないヘッダのみのレスポンスを返すのに用いる
 
 他のプラグインによってモジュールが追加されることもあります。`ActionController::API`の全モジュールのリストは、次のコマンドで表示できます。
 
@@ -311,8 +307,8 @@ Action Controllerのどのモジュールも、自身が依存するモジュー
 
 - `AbstractController::Translation`: ローカライズ用の`l`メソッドや、翻訳用の`t`メソッド
 - HTTPのBasic認証、ダイジェスト認証、トークン認証:
-  * `ActionController::HttpAuthentication::Basic::ControllerMethods`,
-  * `ActionController::HttpAuthentication::Digest::ControllerMethods`,
+  * `ActionController::HttpAuthentication::Basic::ControllerMethods`
+  * `ActionController::HttpAuthentication::Digest::ControllerMethods`
   * `ActionController::HttpAuthentication::Token::ControllerMethods`
 - `ActionView::Layouts`: レンダリングのレイアウトをサポート
 - `ActionController::MimeResponds`: `respond_to`をサポート
