@@ -81,7 +81,7 @@ Railsでサポートされている関連付けは以下の6種類です。
 * `has_one :through`
 * `has_and_belongs_to_many`
 
-関連付けは、一種のマクロ的な呼び出しとして実装されており、これによってモデル間の関連付けを宣言的に追加することができます。たとえば、あるモデルが他のモデルに従属している(`belongs_to`)と宣言すると、2つのモデルのそれぞれのインスタンス間で「[主キー](https://ja.wikipedia.org/wiki/%E4%B8%BB%E3%82%AD%E3%83%BC) - [外部キー](https://ja.wikipedia.org/wiki/%E5%A4%96%E9%83%A8%E3%82%AD%E3%83%BC)」情報を保持しておくようにRailsに指示が伝わります。また、それに伴って幾つかの役立つメソッドもそのモデルに追加されます。
+関連付けは、一種のマクロ的な呼び出しとして実装されており、これによってモデル間の関連付けを宣言的に追加することができます。たとえば、あるモデルが他のモデルに従属している(`belongs_to`)と宣言すると、2つのモデルのそれぞれのインスタンス間で「[主キー](https://ja.wikipedia.org/wiki/%E4%B8%BB%E3%82%AD%E3%83%BC) - [外部キー](https://ja.wikipedia.org/wiki/%E5%A4%96%E9%83%A8%E3%82%AD%E3%83%BC)」情報を保持しておくようにRailsに指示が伝わります。同時に、いくつかの便利なメソッドもそのモデルに追加されます。
 
 本ガイドではこの後、それぞれの関連付けの宣言方法と使用方法について詳しく解説します。その前に、それぞれの関連付けが適切となる状況について簡単にご紹介しましょう。
 
@@ -160,7 +160,7 @@ end
 
 ### `has_many`関連付け
 
-`has_many`関連付けは、他のモデルとの間に「1対多」のつながりがあることを示します。`has_many`関連付けが使用されている場合、「反対側」のモデルでは`belongs_to`が使用されることが多くあります。`has_many`関連付けが使用されている場合、そのモデルのインスタンスは、反対側のモデルのインスタンスを「0個以上」所有します。たとえば、著者(Author)と書籍(Book)を含むRailsアプリケーションでは、著者のモデルを以下のように宣言することができます。
+`has_many`関連付けは、他のモデルとの間に「1対多」のつながりがあることを示します。`has_many`関連付けが使用されている場合、「反対側」のモデルでは多くの場合`belongs_to`が使われます。`has_many`関連付けが使用されている場合、そのモデルのインスタンスは、反対側のモデルの「0個以上の」インスタンスを所有します。たとえば、著者(Author)と書籍(Book)を含むRailsアプリケーションでは、著者のモデルを以下のように宣言することができます。
 
 ```ruby
 class Author < ApplicationRecord
@@ -433,7 +433,7 @@ end
 
 どちらを使用するかについてですが、経験上、リレーションシップのモデルそれ自体を独立したエンティティとして扱いたい(両モデルの関係そのものについて処理を行いたい)のであれば、中間に結合モデルを使用する`has_many :through`リレーションシップを選ぶのが最もシンプルです。リレーションシップのモデルで何か特別なことをする必要がまったくないのであれば、結合モデルの不要な`has_and_belongs_to_many`リレーションシップを使用するのがシンプルです(ただし、こちらの場合は結合モデルが不要な代わりに、専用の結合テーブルを別途データベースに作成しておく必要がありますので、お忘れなきよう)。
 
-結合モデルで検証(validation)、コールバック、追加の属性が必要なのであれば、`has_many :through`を使用しましょう。
+結合モデルで検証(validation)、コールバック、追加の属性が必要な場合は、`has_many :through`を使用しましょう。
 
 ### ポリモーフィック関連付け
 
@@ -492,7 +492,7 @@ end
 
 ### 自己結合
 
-データモデルを設計していると、時に自分自身に関連付けられる必要のあるモデルに出会うことがあります。たとえば、1つのデータベースモデルに全従業員を格納しておきたいが、マネージャーと部下(subordinate)の関係も追えるようにしておきたい場合が考えられます。この状況は、自己結合関連付けを使用してモデル化することができます。
+データモデルを設計していると、時に自分自身に関連付けられる必要のあるモデルに出会うことがあります。たとえば、1つのデータベースモデルに全従業員を格納しておきたいが、マネージャーと部下(subordinate)の関係も追えるようにしておきたい場合が考えられます。この状況は、自己結合関連付けを使用してモデル化できます。
 
 ```ruby
 class Employee < ApplicationRecord
@@ -566,7 +566,7 @@ class Book < ApplicationRecord
 end
 ```
 
-上の宣言は、以下のようにbooksテーブル上の外部キー宣言によって裏付けられている必要があります。
+上の宣言は、以下のようにbooksテーブル上の対応する外部キーカラムと整合している必要があります。作成した直後のテーブルの場合、マイグレーションは次のような感じになります。
 
 ```ruby
 class CreateBooks < ActiveRecord::Migration[5.0]
@@ -574,36 +574,29 @@ class CreateBooks < ActiveRecord::Migration[5.0]
     create_table :books do |t|
       t.datetime :published_at
       t.string   :book_number
-      t.integer  :author_id
+      t.references :author
     end
   end
 end
 ```
 
-モデルを先に作り、しばらく経過してから関連を追加で設定する場合は、`add_column`マイグレーションを作成して、必要な外部キーをモデルのテーブルに追加するのを忘れないようにしてください。
-
-クエリのパフォーマンスを向上させたり、外部キー制約が正しくデータを参照しているかを保証するために、インデックスを追加するのは良い方法です。
+一方、既存のテーブルの場合、マイグレーションは次のような感じになります。
 
 ```ruby
-class CreateBooks < ActiveRecord::Migration[5.0]
+class AddAuthorToBooks < ActiveRecord::Migration[5.0]
   def change
-    create_table :books do |t|
-      t.datetime :published_at
-      t.string   :book_number
-      t.integer  :author_id
-    end
-
-    add_index :books, :author_id
-    add_foreign_key :books, :authors
+    add_reference :books, :author
   end
 end
 ```
+
+NOTE: [データベースレベルでの参照整合性を強制する](/active_record_migrations.html#外部キー)には、上の‘reference’カラム宣言に`foreign_key: true`オプションを追加します。
 
 #### `has_and_belongs_to_many`関連付けに対応する結合テーブルを作成する
 
 `has_and_belongs_to_many`関連付けを作成した場合は、それに対応する結合(join)テーブルを明示的に作成する必要があります。`:join_table`オプションを使用して明示的に結合テーブルの名前が指定されていない場合、Active Recordは2つのクラス名を辞書の並び順に連結して、結合テーブル名を作成します。たとえばAuthorモデルとBookモデルを連結する場合、'a' は 'b' より辞書で先に出現するので "authors_books" というデフォルトの結合テーブル名が使用されます。
 
-WARNING: モデル名の並び順は`String`クラスの`<=>`演算子を使用して計算されます。これは、2つの文字列の長さが異なり、短い方が長い方の途中まで完全に一致しているような場合、長い方の文字列は短い方よりも辞書上の並び順が前として扱われるということです。たとえば、"paper\_boxes" テーブルと "papers" テーブルがある場合、これらを結合すれば "papers\_paper\_boxes" となると推測されます。 "paper\_boxes" の方が長いので、常識的には並び順が後ろになると予測できるからです。しかし実際の結合テーブル名は "paper\_boxes\_papers" になってしまいます。これはアンダースコア '\_' の方が 's' よりも並びが前になっているためです。
+WARNING: モデル名の並び順は`String`クラスの`<=>`演算子を使用して計算されます。これは、2つの文字列の長さが異なり、短い方が長い方の途中まで完全に一致しているような場合、長い方の文字列は短い方よりも辞書上の並び順が前として扱われるということです。たとえば、"paper\_boxes" テーブルと "papers" テーブルがある場合、これらを結合すれば "papers\_paper\_boxes" となると推測されます。 "paper\_boxes" の方が長いので、常識的には並び順が後ろになると予測できるからです。しかし実際の結合テーブル名は "paper\_boxes\_papers" になってしまいます。これはアンダースコア '\_' の方が 's' よりも並び順が前になるためです。
 
 生成された名前がどのようなものであれ、適切なマイグレーションを実行して結合テーブルを生成する必要があります。以下の関連付けを例にとって考えてみましょう。
 
@@ -656,11 +649,11 @@ end
 module MyApplication
   module Business
     class Supplier < ApplicationRecord
-       has_one :account
+      has_one :account
     end
 
     class Account < ApplicationRecord
-       belongs_to :supplier
+      belongs_to :supplier
     end
   end
 end
@@ -672,13 +665,13 @@ end
 module MyApplication
   module Business
     class Supplier < ApplicationRecord
-       has_one :account
+      has_one :account
     end
   end
 
   module Billing
     class Account < ApplicationRecord
-       belongs_to :supplier
+      belongs_to :supplier
     end
   end
 end
@@ -728,12 +721,9 @@ a.first_name = 'David'
 a.first_name == b.author.first_name # => true
 ```
 
-Active Recordでは標準的な名前同士の関連付けのほとんどをサポートしていて、自動的に認識することができます。一方で、Active Recordで次のようなオプションを使った場合、双方向の関連付けが自動的に認識されないようにすることもできます。
+Active Recordでは標準的な名前同士の関連付けのほとんどをサポートしていて、自動的に認識できます。ただし、Active Recordでスコープや次のオプションを使った場合、双方向の関連付けは自動的に認識されません。
 
-* `:conditions`
 * `:through`
-* `:polymorphic`
-* `:class_name`
 * `:foreign_key`
 
 たとえば、次のようなモデルを宣言したケースを考えてみましょう。
@@ -791,7 +781,7 @@ a.first_name == b.writer.first_name # => true
 
 #### `belongs_to`で追加されるメソッド
 
-`belongs_to`関連付けを宣言したクラスでは、以下の5つのメソッドを自動的に利用できるようになります。
+`belongs_to`関連付けを宣言したクラスでは、以下の6つのメソッドを自動的に利用できるようになります。
 
 * `association`
 * `association=(associate)`
@@ -829,7 +819,7 @@ NOTE: 新しく作成した`has_one`関連付けまたは`belongs_to`関連付�
 @author = @book.author
 ```
 
-このオブジェクトに関連付けられたオブジェクトがデータベースから検索されたことがある場合は、キャッシュされたものを返します。この振る舞いをオーバーライドする（キャッシュを読み出さずにデータベースから直接読み込む）には、親オブジェクトが持つ`#reload_association`メソッドを呼び出します。
+関連付けられたオブジェクトがデータベースから検索されたことがある場合は、キャッシュされたものを返します。キャッシュを読み出さずにデータベースから直接読み込ませたい場合は、親オブジェクトが持つ`#reload_association`メソッドを呼び出します。
 
 ```ruby
 @author = @book.reload_author
@@ -868,7 +858,7 @@ NOTE: 新しく作成した`has_one`関連付けまたは`belongs_to`関連付�
 
 #### `belongs_to`のオプション
 
-Railsのデフォルトの`belongs_to`関連付けは、ほとんどの場合カスタマイズ不要ですが、時には関連付けの動作をカスタマイズしたくなることもあると思います。これは、作成するときに渡すオプションとスコープブロックで簡単にカスタマイズできます。たとえば、以下のようなオプションを関連付けに追加できます。
+Railsのデフォルトの`belongs_to`関連付けは、ほとんどの場合カスタマイズ不要ですが、関連付けの動作をカスタマイズしたい場合もあります。これは、作成するときに渡すオプションとスコープブロックで簡単にカスタマイズできます。たとえば、以下のようなオプションを関連付けに追加できます。
 
 ```ruby
 class Book < ApplicationRecord
@@ -918,7 +908,7 @@ class Author < ApplicationRecord
 end
 ```
 
-上の宣言のままでは、`@author.books.size`の値を知るためにデータベースに対して`COUNT(*)`クエリを実行する必要があります。この呼び出しを避けるために、「従属している方のモデル(`belongs_to`を宣言している方のモデル)」にカウンタキャッシュを追加することができます。
+上の宣言のままでは、`@author.books.size`の値を知るためにデータベースに対して`COUNT(*)`クエリを実行する必要があります。この呼び出しを避けるために、「従属している方のモデル(`belongs_to`を宣言している方のモデル)」にカウンタキャッシュを追加できます。
 
 ```ruby
 class Book < ApplicationRecord
@@ -931,7 +921,7 @@ end
 
 上のように宣言すると、キャッシュ値が最新の状態に保たれ、次に`size`メソッドが呼び出されたときにその値が返されます。
 
-ここで1つ注意が必要です。`:counter_cache`オプションは`belongs_to`宣言で指定しますが、実際に数を数えたいカラムは、相手のモデル(関連付けられている`has_many`モデル)の方に追加する必要があります。上の場合には、`Author`モデルの方に`books_count`カラムを追加する必要があります。
+ここで1つ注意が必要です。`:counter_cache`オプションは`belongs_to`宣言で指定しますが、実際に数を数えたいカラムは「相手の」モデル(関連付けられているモデル)の方に追加する必要があります。上の場合には、`Author`モデルの方に`books_count`カラムを追加する必要があります。
 
 `counter_cache`オプションで`true`の代わりに任意のカラム名を設定すると、デフォルトのカラム名をオーバーライドできます。以下は、`books_count`の代わりに`count_of_books`を設定した場合の例です。
 
@@ -950,16 +940,16 @@ NOTE: `belongs_to`の関連付けをする時に、`:counter_cache`オプショ�
 
 ##### `:dependent`
 
-もし `:dependent` オプションの値が
+`:dependent`で指定するオプションの挙動は以下のとおりです。
 
-* `:destroy` のときは、オブジェクトが削除された際に、関連付けられたオブジェクトの`destroy`メソッドが実行されます。
-* `:delete` のときは、オブジェクトが削除された際に、関連付けられたオブジェクトが直接データベースから削除されます。`destroy`メソッドは実行されません。
+* `:destroy`: オブジェクトが削除されるときに、関連付けられたオブジェクトの`destroy`メソッドが実行されます。
+* `:delete`: オブジェクトが削除されるときに、関連付けられたオブジェクトが直接データベースから削除されます。`destroy`メソッドは実行されません。
 
-WARNING: 他のクラスの`has_many` 関連付けとつながりのある `belongs_to` 関連付けに対してこのオプションを使用してはいけません。孤立したレコードがデータベースに残ってしまう可能性があります。
+WARNING: このオプションは、他のクラスの`has_many`関連付けとつながりのある`belongs_to`関連付けに対して使ってはいけません。孤立したレコードがデータベースに残ってしまう可能性があります。
 
 ##### `:foreign_key`
 
-Railsの慣例では、相手のモデルを指す外部キーを保持している結合テーブル上のカラム名については、そのモデル名にサフィックス `_id` を追加した関連付け名が使用されることを前提とします。`:foreign_key`オプションを使用すると外部キーの名前を直接指定することができます。
+Railsの慣例では、相手のモデルを指す外部キーを保持している結合テーブル上のカラム名については、そのモデル名にサフィックス`_id`を追加した関連付け名が使われることを前提とします。`:foreign_key`オプションを使えば、外部キーの名前を直接指定できます。
 
 ```ruby
 class Book < ApplicationRecord
@@ -968,17 +958,17 @@ class Book < ApplicationRecord
 end
 ```
 
-TIP: Railsは外部キーのカラムを自動的に作ることはありません。外部キーを使用する場合には、マイグレーションで明示的に定義する必要があります。
+TIP: Railsは外部キーのカラムを自動的に作成することはありません。外部キーを使用するには、マイグレーションで明示的に定義する必要があります。
 
 ##### `:primary_key`
 
-Railsでは慣習として、`id`カラムはそのテーブルの主キーとして使われます。`:primary_key`オプションを指定すると、指定された別のカラムを主キーとして設定することができます
+Railsの慣例では、`id`カラムはそのテーブルの主キーとして使われます。`:primary_key`オプションを指定すると、指定された別のカラムを主キーとして設定することができます
 
-たとえば、 `users`テーブルに`guid`という主キーがあるとします。 `todos`テーブルの外部キーである`user_id`カラムをその`guid`カラムと紐づけたい場合は、次のように`primary_key`を設定します。
+たとえば、 `users`テーブルに`guid`という主キーがあるとします。その`guid`カラムに、別の`todos`テーブルの外部キーである`user_id`カラムを使いたい場合は、次のように`primary_key`を設定します。
 
 ```ruby
 class User < ApplicationRecord
-  self.primary_key = 'guid' # 主キーが guid になります
+  self.primary_key = 'guid' # 主キーがguidになる
 end
 
 class Todo < ApplicationRecord
@@ -986,11 +976,11 @@ class Todo < ApplicationRecord
 end
 ```
 
-この時に`@user.todos.create`を実行すると、`@todo`レコードは`user_id`を`@user`の`guid`として持つようになります。
+`@user.todos.create`を実行すると、`@todo`レコードは`user_id`を`@user`の`guid`として持つようになります。
 
 ##### `:inverse_of`
 
-`:inverse_of`オプションは、その関連付けの逆関連付けとなる`has_many`関連付けまたは`has_one`関連付けの名前を指定します。`:polymorphic`オプションと組み合わせた場合は無効です。
+`:inverse_of`オプションは、その関連付けの逆関連付けとなる`has_many`関連付けまたは`has_one`関連付けの名前を指定します。
 
 ```ruby
 class Author < ApplicationRecord
@@ -1059,7 +1049,7 @@ end
 `where`は、関連付けられるオブジェクトが満たすべき条件を指定します。
 
 ```ruby
-class book < ApplicationRecord
+class Book < ApplicationRecord
   belongs_to :author, -> { where active: true }
 end
 ```
@@ -1083,7 +1073,7 @@ class Author < ApplicationRecord
 end
 ```
 
-LineItemから著者名(Author)を`@line_item.book.author`のように直接取り出す機会が頻繁にある場合は、LineItemとBookの関連付けを行なう時にAuthorをあらかじめincludeしておくことで無駄なクエリを減らし、効率を高めることができます。
+LineItemから著者名(Author)を`@line_item.book.author`のように直接取り出す頻度が高い場合は、LineItemとBookの関連付けを行なう時にAuthorをあらかじめincludeしておくと、無駄なクエリが減って効率が高まります。
 
 ```ruby
 class LineItem < ApplicationRecord
@@ -1132,13 +1122,14 @@ end
 
 #### `has_one`で追加されるメソッド
 
-`has_one`関連付けを宣言したクラスでは、以下の5つのメソッドを自動的に利用できるようになります。
+`has_one`関連付けを宣言したクラスでは、以下の6つのメソッドを自動的に利用できるようになります。
 
 * `association`
 * `association=(associate)`
 * `build_association(attributes = {})`
 * `create_association(attributes = {})`
 * `create_association!(attributes = {})`
+* `reload_association`
 
 これらのメソッドのうち、`association`の部分はプレースホルダであり、`has_one`の最初の引数である関連付け名をシンボルにしたものに置き換えられます。たとえば以下の宣言を見てみましょう。
 
@@ -1156,6 +1147,7 @@ account=
 build_account
 create_account
 create_account!
+reload_account
 ```
 
 NOTE: 新しく作成した`has_one`関連付けまたは`belongs_to`関連付けを初期化するには、`build_`で始まるメソッドを使用する必要があります。この場合`has_many`関連付けや`has_and_belongs_to_many`関連付けで使用される`association.build`メソッドは使用しないでください。作成するには、`create_`で始まるメソッドを使用してください。
@@ -1168,10 +1160,10 @@ NOTE: 新しく作成した`has_one`関連付けまたは`belongs_to`関連付�
 @account = @supplier.account
 ```
 
-関連付けられたオブジェクトがデータベースから検索されたことがある場合は、キャッシュされたものを返します。キャッシュを読み出さずにデータベースから直接読み込ませたい場合は、親オブジェクトが持つ`#reload`メソッドを呼び出します。
+関連付けられたオブジェクトがデータベースから検索されたことがある場合は、キャッシュされたものを返します。キャッシュを読み出さずにデータベースから直接読み込ませたい場合は、親オブジェクトが持つ`#reload_association`メソッドを呼び出します。
 
 ```ruby
-@account = @supplier.reload.account
+@account = @supplier.reload_account
 ```
 
 ##### `association=(associate)`
@@ -1266,11 +1258,11 @@ class Supplier < ApplicationRecord
 end
 ```
 
-TIP: Railsは外部キーのカラムを自動的に作ることはありません。外部キーを使用する場合には、マイグレーションで明示的に定義する必要があります。
+TIP: Railsは外部キーのカラムを自動的に作成することはありません。外部キーを使用するには、マイグレーションで明示的に定義する必要があります。
 
 ##### `:inverse_of`
 
-`:inverse_of`オプションは、その関連付けの逆関連付けとなる`belongs_to`関連付けの名前を指定します。`:through`または`:as`オプションと組み合わせた場合は無効です。
+`:inverse_of`オプションは、その関連付けの逆関連付けとなる`belongs_to`関連付けの名前を指定します。
 
 ```ruby
 class Supplier < ApplicationRecord
@@ -1304,7 +1296,7 @@ Railsの慣例では、モデルの主キーは`id`カラムに保存されて�
 
 #### `has_one`のスコープについて
 
-場合によっては`has_one`で使用されるクエリをカスタマイズしたくなることがあります。スコープブロックを使用してこのようなカスタマイズを行うことができます。以下に例を示します。
+`has_one`で使用されるクエリをカスタマイズしたい場合があります。スコープブロックを使用してこのようなカスタマイズを行うことができます。以下に例を示します。
 
 ```ruby
 class Supplier < ApplicationRecord
@@ -1331,7 +1323,7 @@ end
 
 ##### `includes`
 
-`includes`メソッドを使用すると、その関連付けが使用されるときにeager-load (訳注:preloadとは異なる)しておきたい第2関連付けを指定することができます。以下のモデルを例にとって考えてみましょう。
+`includes`メソッドを使用すると、その関連付けが使われるときにeager-loadすべき第2関連付けを指定することができます。以下のモデルを例に考えてみましょう。
 
 ```ruby
 class Supplier < ApplicationRecord
@@ -1348,7 +1340,7 @@ class Representative < ApplicationRecord
 end
 ```
 
-上の例で、Supplierから代表(Representative)を`@supplier.account.representative`のように直接取り出す機会が頻繁にあるのであれば、SupplierからAccountへの関連付けにRepresentativeをあらかじめincludeしておくことで無駄なクエリを減らし、効率を高めることができます。
+上の例で、Supplierから代表(Representative)を`@supplier.account.representative`のように直接取り出す頻度が高い場合は、SupplierからAccountへの関連付けにRepresentativeをあらかじめincludeしておくと、無駄なクエリが減って効率が高まります。
 
 ```ruby
 class Supplier < ApplicationRecord
@@ -1399,7 +1391,7 @@ end
 
 #### `has_many`で追加されるメソッド
 
-`has_many`関連付けを宣言したクラスでは、以下の16のメソッドを自動的に利用できるようになります。
+`has_many`関連付けを宣言したクラスでは、以下の17のメソッドを自動的に利用できるようになります。
 
 * `collection`
 * `collection<<(object, ...)`
@@ -1531,7 +1523,8 @@ WARNING: `dependent: :delete_all`の場合と同様に、オブジェクトが`d
 
 ##### `collection.find(...)`
 
-`collection.find`メソッドは、コレクションに含まれるオブジェクトを検索します。このメソッドで使用される文法は、`ActiveRecord::Base.find`で使用されているものと同じです。
+`collection.find`メソッドは、コレクションに含まれるオブジェクトを検索します。このメソッドの構文は、
+[`ActiveRecord::Base.find`](http://api.rubyonrails.org/classes/ActiveRecord/FinderMethods.html#method-i-find)で使用されているものと同じです。
 
 ```ruby
 @available_book = @author.books.find(1)
@@ -1548,7 +1541,7 @@ WARNING: `dependent: :delete_all`の場合と同様に、オブジェクトが`d
 
 ##### `collection.exists?(...)`
 
-`collection.exists?`メソッドは、指定された条件に合うオブジェクトがコレクションの中に存在するかどうかをチェックします。このメソッドで使用される文法は、[`ActiveRecord::Base.exists?`](http://api.rubyonrails.org/classes/ActiveRecord/FinderMethods.html#method-i-exists-3F)で使用されているものと同じです。
+`collection.exists?`メソッドは、指定された条件に合うオブジェクトがコレクションの中に存在するかどうかをチェックします。このメソッドの構文は、[`ActiveRecord::Base.exists?`](http://api.rubyonrails.org/classes/ActiveRecord/FinderMethods.html#method-i-exists-3F)で使用されているものと同じです。
 
 ##### `collection.build(attributes = {}, ...)`
 
@@ -1584,7 +1577,7 @@ WARNING: `dependent: :delete_all`の場合と同様に、オブジェクトが`d
 
 ##### `collection.reload`
 
-`collection.reload`は、関連付けられたすべてのオブジェクトのリレーションを返し、データベースから強制的に読み込みます。関連付けられたオブジェクトがない場合は、空のリレーションを1つ返します。
+`collection.reload`メソッドは、関連付けられたすべてのオブジェクトのリレーションを1つ返し、データベースを強制的に読み出します。関連付けられたオブジェクトがない場合は、空のリレーションを1つ返します。
 
 ```ruby
 @books = @author.books.reload
@@ -1657,11 +1650,11 @@ class Author < ApplicationRecord
 end
 ```
 
-TIP: Railsは外部キーのカラムを自動的に作ることはありません。外部キーを使用する場合には、マイグレーションで明示的に定義する必要があります。
+TIP: Railsは外部キーのカラムを自動的に作成することはありません。外部キーを使用するには、マイグレーションで明示的に定義する必要があります。
 
 ##### `:inverse_of`
 
-`:inverse_of`オプションは、その関連付けの逆関連付けとなる`belongs_to`関連付けの名前を指定します。`:through`または`:as`オプションと組み合わせた場合は無効です。
+`:inverse_of`オプションは、その関連付けの逆関連付けとなる`belongs_to`関連付けの名前を指定します。
 
 ```ruby
 class Author < ApplicationRecord
@@ -1685,8 +1678,7 @@ class User < ApplicationRecord
 end
 ```
 
-このとき `@todo = @user.todos.create`を実行すると、`@todo`レコードの`user_id`の値は `@user`の`guid`になります。
-
+`@todo = @user.todos.create`を実行すると、`@todo`レコードの`user_id`の値は `@user`の`guid`になります。
 
 ##### `:source`
 
@@ -1706,7 +1698,7 @@ end
 
 #### `has_many`のスコープについて
 
-場合によっては`has_many`で使用されるクエリをカスタマイズしたくなることがあります。スコープブロックを使用してこのようなカスタマイズを行うことができます。以下に例を示します。
+`has_many`で使用されるクエリをカスタマイズしたい場合があります。スコープブロックを使用してこのようなカスタマイズを行うことができます。以下に例を示します。
 
 ```ruby
 class Author < ApplicationRecord
@@ -1766,7 +1758,7 @@ end
 
 ##### `includes`
 
-`includes`メソッドを使用すると、その関連付けが使用されるときにeager-load (訳注:preloadとは異なる)しておきたい第2関連付けを指定することができます。以下のモデルを例にとって考えてみましょう。
+`includes`メソッドを使用すると、その関連付けが使われるときにeager-loadされるべき第2関連付けを指定できます。以下のモデルを例に考えてみましょう。
 
 ```ruby
 class Author < ApplicationRecord
@@ -1783,7 +1775,7 @@ class LineItem < ApplicationRecord
 end
 ```
 
-著者名(Author)からLineItemを`@author.books.line_items`のように直接取り出す機会が頻繁にあるのであれば、AuthorとBookの関連付けを行なう時にLineItemをあらかじめincludeしておくことで無駄なクエリを減らし、効率を高めることができます。
+著者名(Author)からLineItemを`@author.books.line_items`のように直接取り出す頻度が高い場合は、AuthorとBookの関連付けを行なう時にLineItemをあらかじめincludeしておくと、無駄なクエリが減って効率が高まります。
 
 ```ruby
 class Author < ApplicationRecord
@@ -1875,13 +1867,13 @@ Reading.all.inspect     # => [#<Reading id: 16, person_id: 7, article_id: 7>, #<
 
 上の例でもreadingは2つあって重複しています。一方で、`person.articles`を実行すると、１つのarticleのみを表示します。これはコレクションが一意のレコードのみを読み出しているからです。
 
-挿入時にも同様に、現在残っているすべてのレコードが一意であるようにする(関連付けを検査したときに重複レコードが決して発生しないようにする)には、テーブル自体に一意のインデックスを追加する必要があります。たとえば、`readings`というテーブルがあり、その記事を1人の人物（person）にのみ追加できるようにしたい場合、マイグレーションに以下を追加します。
+挿入時にも同様に、現在残っているすべてのレコードが一意であるようにする (関連付けを検査したときに重複レコードが決して発生しないようにする) には、テーブル自体に一意のインデックスを追加する必要があります。たとえば`readings`というテーブルがあるとすると、記事を1人のpersonに1回しか追加できないようにするには、マイグレーションに以下を追加します。
 
 ```ruby
 add_index :readings, [:person_id, :article_id], unique: true
 ```
 
-一度ユニークなインデックスを持つと、ある記事をpersonに２回追加したときに
+インデックスがユニークになると、ある記事をpersonに２回追加しようとすると
 `ActiveRecord::RecordNotUnique`エラーが発生するようになります
 
 ```ruby
@@ -1891,7 +1883,7 @@ person.articles << article
 person.articles << article # => ActiveRecord::RecordNotUnique
 ```
 
-なお、`include?`などを使用して一意性をチェックすると競合が発生しやすいので注意が必要です。関連付けで強制的に一意になるようにするために`include?`を使用しないでください。たとえば上のarticleを例にとると、以下のコードでは競合が発生しやすくなります。これは、複数のユーザーが同時にこのコードを実行する可能性があるためです。
+なお、`include?`などを使用して一意性をチェックすると競合が発生しやすいので注意が必要です。関連付けで強制的に一意にする目的で`include?`を使用しないでください。たとえば上のarticleの場合、以下のコードで競合が発生しやすくなります。これは、複数のユーザーが同時にこのコードを実行する可能性があるためです。
 
 ```ruby
 person.articles << article unless person.articles.include?(article)
@@ -1913,7 +1905,7 @@ person.articles << article unless person.articles.include?(article)
 
 #### `has_and_belongs_to_many`で追加されるメソッド
 
-`has_and_belongs_to_many`関連付けを宣言したクラスでは、以下の16のメソッドを自動的に利用できるようになります。
+`has_and_belongs_to_many`関連付けを宣言したクラスでは、以下の17のメソッドを自動的に利用できるようになります。
 
 * `collection`
 * `collection<<(object, ...)`
@@ -1972,7 +1964,7 @@ WARNING: `has_and_belongs_to_many`関連付けで使用する結合テーブル�
 
 ##### `collection`
 
-`collection`メソッドは、関連付けられたすべてのオブジェクトのリレーションを返します。関連付けられたオブジェクトがない場合は、空のリレーションを1つ返します。
+`collection`メソッドは、関連付けられたすべてのオブジェクトのリレーションを1つ返します。関連付けられたオブジェクトがない場合は、空のリレーションを1つ返します。
 
 ```ruby
 @assemblies = @part.assemblies
@@ -2044,7 +2036,7 @@ NOTE: このメソッドは`collection.concat`および`collection.push`のエ�
 
 ##### `collection.find(...)`
 
-`collection.find`メソッドは、コレクションに含まれるオブジェクトを検索します。このメソッドで使用される文法は、`ActiveRecord::Base.find`で使用されているものと同じです。このメソッドでは、オブジェクトがコレクション内で従う必要のある追加条件も加味されます。
+`collection.find`メソッドは、コレクションに含まれるオブジェクトを検索します。このメソッドの構文は、[`ActiveRecord::Base.find`](http://api.rubyonrails.org/classes/ActiveRecord/FinderMethods.html#method-i-find)で使用されているものと同じです。
 
 ```ruby
 @assembly = @part.assemblies.find(1)
@@ -2052,7 +2044,7 @@ NOTE: このメソッドは`collection.concat`および`collection.push`のエ�
 
 ##### `collection.where(...)`
 
-`collection.where`メソッドは、コレクションに含まれているメソッドを指定された条件に基いて検索します。このメソッドではオブジェクトは遅延読み込み(lazy load)される点にご注意ください。つまり、オブジェクトに実際にアクセスが行われる時にだけデータベースへのクエリが発生します。このメソッドでは、オブジェクトがコレクション内で従う必要のある追加条件も加味されます。
+`collection.where`メソッドは、コレクションに含まれているメソッドを指定された条件に基いて検索します。このメソッドではオブジェクトは遅延読み込み(lazy load)される点にご注意ください。つまり、オブジェクトに実際にアクセスが行われる時にだけデータベースへのクエリが発生します。
 
 ```ruby
 @new_assemblies = @part.assemblies.where("created_at > ?", 2.days.ago)
@@ -2060,7 +2052,7 @@ NOTE: このメソッドは`collection.concat`および`collection.push`のエ�
 
 ##### `collection.exists?(...)`
 
-`collection.exists?`メソッドは、指定された条件に合うオブジェクトがコレクションの中に存在するかどうかをチェックします。このメソッドで使用される文法は、[`ActiveRecord::Base.exists?`](http://api.rubyonrails.org/classes/ActiveRecord/FinderMethods.html#method-i-exists-3F)で使用されているものと同じです。
+`collection.exists?`メソッドは、指定された条件に合うオブジェクトがコレクションの中に存在するかどうかをチェックします。このメソッドの構文は、[`ActiveRecord::Base.exists?`](http://api.rubyonrails.org/classes/ActiveRecord/FinderMethods.html#method-i-exists-3F)で使用されているものと同じです。
 
 ##### `collection.build(attributes = {})`
 
@@ -2084,9 +2076,9 @@ NOTE: このメソッドは`collection.concat`および`collection.push`のエ�
 
 ##### `collection.reload`
 
-`collection.reload`は、関連付けられたすべてのオブジェクトのリレーションを返し、データベースから強制的に読み込みます。関連付けられたオブジェクトがない場合は、空のリレーションを1つ返します。
+`collection.reload`メソッドは、関連付けられたすべてのオブジェクトのリレーションを1つ返し、データベースを強制的に読み出します。関連付けられたオブジェクトがない場合は、空のリレーションを1つ返します。
 
- ```ruby
+```ruby
 @assemblies = @part.assemblies.reload
 ```
 
@@ -2162,7 +2154,7 @@ end
 
 #### `has_and_belongs_to_many`のスコープについて
 
-場合によっては`has_and_belongs_to_many`で使用されるクエリをカスタマイズしたくなることがあります。スコープブロックを使用してこのようなカスタマイズを行うことができます。以下に例を示します。
+`has_and_belongs_to_many`で使用されるクエリをカスタマイズしたい場合があります。スコープブロックを使用してこのようなカスタマイズを行うことができます。以下に例を示します。
 
 ```ruby
 class Parts < ApplicationRecord
@@ -2296,7 +2288,7 @@ end
 
 Railsは、追加されるオブジェクトや削除されるオブジェクトをコールバックに(引数として)渡します。
 
-1つのイベントで複数のコールバックを使用したい場合には、配列を使用して渡します。
+1つのイベントで複数のコールバックを使用したい場合には、配列で渡します。
 
 ```ruby
 class Author < ApplicationRecord
@@ -2329,7 +2321,7 @@ class Author < ApplicationRecord
 end
 ```
 
-拡張を多くの関連付けで共有したい場合は、名前付きの拡張モジュールを使用することもできます。以下に例を示します。
+拡張をさまざまな関連付けで共有したい場合は、名前付きの拡張モジュールを使用することもできます。以下に例を示します。
 
 ```ruby
 module FindRecentExtension
@@ -2353,7 +2345,7 @@ end
 * `proxy_association.reflection`は、関連付けを記述するリフレクションオブジェクトを返します。
 * `proxy_association.target`は、`belongs_to`または`has_one`関連付けのオブジェクトを返すか、`has_many`または`has_and_belongs_to_many`関連付けオブジェクトのコレクションを返します。
 
-シングルテーブル継承
+シングルテーブル継承 （STI）
 ------------------------
 
 異なるモデル間でフィールドや振る舞いを共有したい場合があります。`Car`モデル、`Motorcycle`モデル、`Bicycle`モデルを持っていた場合を考えてみましょう。このとき`color`や`price`といったフィールド、そしていくつかの関連メソッドを共有したい場合が考えられます。しかし、モデルごとに振る舞いやコントローラーが異なります。
@@ -2374,7 +2366,7 @@ $ rails generate model vehicle type:string color:string price:decimal{10.2}
 $ rails generate model car --parent=Vehicle
 ```
 
-このときに生成されるモデルは次のとおりです。
+生成されたモデルは次のようになります。
 
 ```ruby
 class Car < Vehicle
@@ -2406,3 +2398,4 @@ Car.all
 ```sql
 SELECT "vehicles".* FROM "vehicles" WHERE "vehicles"."type" IN ('Car')
 ```
+
