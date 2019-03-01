@@ -12,27 +12,27 @@ Rails と Rack
 
 --------------------------------------------------------------------------------
 
-WARNING: このガイドはRackのミドルウェア、urlマップ、`Rack::Builder`といったRackのプロトコルや概念に関する実用的な知識があることを前提にしています。
+WARNING: このガイドはRackのミドルウェア、urlマップ、`Rack::Builder`といったRackのプロトコルや概念に関する実用的な知識を身につけていることを前提にしています。
 
 Rack入門
 --------------------
 
-Rackは、Rubyのウェブアプリケーションに対して、最小限でモジュール化されていて、応用の効くインターフェイスを提供します。RackはHTTPリクエストとレスポンスを可能なかぎり簡単な方法でラッピングすることで、ウェブサーバー、ウェブフレームワーク、その間に位置するソフトウェア (ミドルウェアと呼ばれています) のAPIを一つのメソッド呼び出しの形にまとめます。
+Rackは、RubyのWebアプリケーションに対して、モジュール化された最小限のインターフェイスを提供して、インターフェイスを広範囲に使えるようにします。RackはHTTPリクエストとレスポンスを可能なかぎり簡単な方法でラッピングすることで、Webサーバー、Webフレームワーク、その間に位置するソフトウェア (ミドルウェアと呼ばれています) のAPIを1つのメソッド呼び出しの形にまとめます。
 
-Rackに関する解説はこのガイドの範疇を超えてしまいます。Rackに関する基本的な知識が足らない場合、下記の[リソース](#参考資料) を参照してください。
+Rackに関する解説はこのガイドの範疇を超えてしまいます。Rackに関する基本的な知識が不足している場合は、下記の[リソース](#参考資料) を参照してください。
 
 RailsとRack
 -------------
 
-### RackアプリケーションとしてのRailsアプリケーション
+### RailsアプリケーションのRackオブジェクト
 
-`Rails.application`はRailsアプリケーションをRackアプリケーションとして実装したものです。Rackに準拠したWebサーバーで、Railsアプリケーションを提供するには、`Rails.application`オブジェクトを使用する必要があります。
+`Rails.application`は、Railsアプリケーションにおける主要なRackアプリケーションです。Rackに準拠したWebサーバーで、Railsアプリケーションを提供するには、`Rails.application`オブジェクトを使う必要があります。
 
 ### `rails server`コマンド
 
-`rails server`コマンドは`Rack::Server`のオブジェクトを作成し、ウェブサーバーを起動します。
+`rails server`コマンドは、`Rack::Server`のオブジェクトを作成し、Webサーバーを起動します。
 
-`rails server`コマンドは以下のようにして、`Rack::Server`のオブジェクトを作成します。
+`rails server`コマンドは、以下のように`Rack::Server`のオブジェクトを作成します。
 
 ```ruby
 Rails::Server.new.tap do |server|
@@ -42,7 +42,7 @@ Rails::Server.new.tap do |server|
 end
 ```
 
-`Rails::Server`クラスは`Rack::Server`クラスを継承しており、以下のようにして`Rack::Server#start`を呼び出します。
+`Rails::Server`クラスは`Rack::Server`クラスを継承しており、以下のように`Rack::Server#start`を呼び出します。
 
 ```ruby
 class Server < ::Rack::Server
@@ -55,7 +55,7 @@ end
 
 ### `rackup`コマンド
 
-Railsの`rails server`コマンドの代わりに`rackup`コマンドを使用するときは、下記の内容を`config.ru`に記述して、Railsアプリケーションのルートディレクトリに保存します。
+Railsの`rails server`コマンドの代わりに`rackup`コマンドを使うときは、以下の内容を`config.ru`に記述して、Railsアプリケーションのルートディレクトリに保存します。
 
 ```ruby
 # Rails.root/config.ru
@@ -63,34 +63,38 @@ require_relative 'config/environment'
 run Rails.application
 ```
 
-サーバーを起動します。
+続いて、サーバーを起動します。
 
 ```bash
 $ rackup config.ru
 ```
 
-`rackup`のオプションについて詳しく知りたいときは下記のようにします。
+`rackup`の他のオプションについて詳しく知りたいときは、以下を実行します。
 
 ```bash
 $ rackup --help
 ```
 
+### 開発中の自動再読み込みについて
+
+一度読み込まれたミドルウェアは、変更が発生しても検出されません。現在実行中のアプリケーションでミドルウェアの変更を反映するには、サーバーの再起動が必要です。
+
 Action Dispatcherのミドルウェアスタック
 ----------------------------------
 
-Action Dispatcher内部のコンポーネントの多くは、Rackのミドルウェアとして実装されています。Rails内外の様々なミドルウェアを結合して、完全なRailsのRackアプリケーションを作るために、`Rails::Application`は`ActionDispatch::MiddlewareStack`を使用しています。
+Action Dispatcher内部のコンポーネントの多くは、「Rackミドルウェア」として実装されています。`Rails::Application`は、`ActionDispatch::MiddlewareStack`を用いて内部ミドルウェアや外部ミドルウェアを組み合わせることで、完全なRailsのRackアプリケーションを構築します。
 
-NOTE: `ActionDispatch::MiddlewareStack`は`Rack::Builder`のRails版ですが、Railsアプリケーションの要求を満たすために、より柔軟性があり、多機能なクラスになっています。
+NOTE: Railsの`ActionDispatch::MiddlewareStack`クラスは`Rack::Builder`クラスと同等ですが、Railsアプリケーションの要求を満たすために柔軟性が高く多機能です。
 
 ### ミドルウェアスタックを調べる
 
-Railsにはミドルウェアスタックを調べるための便利なタスクがあります。
+Railsには、ミドルウェアスタックを調べるための便利なタスクがあります。
 
 ```bash
 $ bin/rails middleware
 ```
 
-作成したばかりのRailsアプリケーションでは、以下のように出力されるはずです。
+作成直後のRailsアプリケーションでは、以下のように出力されるはずです。
 
   ```ruby
 use Rack::Sendfile
@@ -116,39 +120,40 @@ use ActionDispatch::ContentSecurityPolicy::Middleware
 use Rack::Head
 use Rack::ConditionalGet
 use Rack::ETag
-run Rails.application.routes
+use Rack::TempfileReaper
+run MyApp::Application.routes
 ```
 
-デフォルトのミドルウェア(とその他のうちいくつか)については[ミドルウェアスタックの内容](#ミドルウェアスタックの内容) を参照してください。
+デフォルトのミドルウェアを含むいくつかのミドルウェアの概要については、[ミドルウェアスタックの内容](#ミドルウェアスタックの内容)を参照してください。
 
 ### ミドルウェアスタックを設定する
 
-ミドルウェアスタックにミドルウェアを追加したり、削除したり、変更したりするには`application.rb`もしくは環境ごとの`environments/<environment>.rb`ファイル内で`config.middleware`をいじります。
+Railsが提供するシンプルな`config.middleware`を用いることで、ミドルウェアスタックにミドルウェアを追加・削除・変更できます。これは`application.rb`設定ファイルで行うことも、環境ごとの`environments/<環境名>.rb`設定ファイルで行うこともできます。
 
 #### ミドルウェアを追加する
 
-次のメソッドを使用すると、ミドルウェアスタックに新しいミドルウェアを追加することができます。
+次のメソッドを使うと、ミドルウェアスタックに新しいミドルウェアを追加できます。
 
-* `config.middleware.use(new_middleware, args)` - ミドルウェアスタックの一番下に新しいミドルウェアを追加します。
+* `config.middleware.use(new_middleware, args)`: ミドルウェアスタックの末尾に新しいミドルウェアを追加します。
 
-* `config.middleware.insert_before(existing_middleware, new_middleware, args)` - (第一引数で)指定されたミドルウェアの前に新しいミドルウェアを追加します。
+* `config.middleware.insert_before(existing_middleware, new_middleware, args)`: 新しいミドルウェアを、(第1引数で)指定された既存のミドルウェアの直前に追加します。
 
-* `config.middleware.insert_after(existing_middleware, new_middleware, args)` - (第一引数で)指定されたミドルウェアの後に新しいミドルウェアを追加します。
+* `config.middleware.insert_after(existing_middleware, new_middleware, args)`: 新しいミドルウェアを、(第1引数で)指定された既存のミドルウェアの直後に追加します。
 
 ```ruby
 # config/application.rb
 
-# Rack::BounceFaviconを一番最後に追加する
+# Rack::BounceFaviconを末尾に追加する
 config.middleware.use Rack::BounceFavicon
 
-# ActionDispatch::Executorの後にLifo::Cacheを追加する
-# またLifo::Cacheに{ page_cache: false }を渡す
+# ActionDispatch::Executorの直後にLifo::Cacheを追加する
+# Lifo::Cacheに引数{ page_cache: false }を渡す
 config.middleware.insert_after ActionDispatch::Executor, Lifo::Cache, page_cache: false
 ```
 
-#### ミドルウェアを交換する
+#### ミドルウェアを置き換える
 
-`config.middleware.swap`を使用することで、ミドルウェアスタック内のミドルウェアを交換できます。
+`config.middleware.swap`を使って、ミドルウェアスタック内にあるミドルウェアを置き換えられます。
 
 ```ruby
 # config/application.rb
@@ -159,7 +164,7 @@ config.middleware.swap ActionDispatch::ShowExceptions, Lifo::ShowExceptions
 
 #### ミドルウェアを削除する
 
-アプリケーションの設定に、下記のコードを追加してください。
+アプリの設定に下記のコードを追加します。
 
 ```ruby
 # config/application.rb
@@ -177,7 +182,7 @@ use #<ActiveSupport::Cache::Strategy::LocalCache::Middleware:0x00000001c304c8>
 run Rails.application.routes
 ```
 
-セッション関連のミドルウェアを削除したいときは次のように書きます。
+セッション関連のミドルウェアを削除するには、次のように書きます。
 
 ```ruby
 # config/application.rb
@@ -193,9 +198,9 @@ config.middleware.delete ActionDispatch::Flash
 config.middleware.delete Rack::MethodOverride
 ```
 
-### ミドルウェアスタックの内容
+### 内部ミドルウェアスタック
 
-Action Controllerの機能の多くはミドルウェアとして実装されています。以下のリストでそれぞれの役割を説明します。
+Action Controllerの機能の多くはミドルウェアとして実装されています。それぞれの役割について以下のリストで説明します。
 
 **`Rack::Sendfile`**
 
@@ -203,19 +208,19 @@ Action Controllerの機能の多くはミドルウェアとして実装されて
 
 **`ActionDispatch::Static`**
 
-* 静的ファイルを配信する際に使用します。`config.public_file_server.enabled`を`false`にするとオフになります。
+* 静的ファイルの配信に使います。`config.public_file_server.enabled`を`false`にするとオフになります。
 
 **`Rack::Lock`**
 
-* `env["rack.multithread"]`を`false`に設定し、アプリケーションをMutexで包みます。
+* `env["rack.multithread"]`を`false`に設定し、アプリケーションをMutexでラップします。
 
 **`ActionDispatch::Executor`**
 
-* 開発中にスレッドセーフのコードをリロードするのに使います。
+* スレッドセーフのコードを開発中にリロードするときに使います。
 
 **`ActiveSupport::Cache::Strategy::LocalCache::Middleware`**
 
-* メモリによるキャッシュを行うために使用します。このキャッシュはスレッドセーフではありません。
+* メモリキャッシュで用います。このキャッシュはスレッドセーフではありません。
 
 **`Rack::Runtime`**
 
@@ -223,11 +228,11 @@ Action Controllerの機能の多くはミドルウェアとして実装されて
 
 **`Rack::MethodOverride`**
 
-* `params[:_method]`が存在するときに、(HTTPの)メソッドを上書きます。HTTPのPUTメソッド、DELETEメソッドを実現するためのミドルウェアです。
+* `params[:_method]`が設定されている場合に（HTTP）メソッドが上書きされるようになります。HTTPのPUTメソッド、DELETEメソッドを実現するためのミドルウェアです。
 
 **`ActionDispatch::RequestId`**
 
-* ユニークなidを生成して`X-Request-Id`ヘッダーに設定します。`ActionDispatch::Request#request_id`メソッドも同一のidを利用しています。
+* レスポンスで`X-Request-Id`ヘッダーを有効にして`ActionDispatch::Request#request_id`メソッドが使えるようにします。
 
 **`ActionDispatch::RemoteIp`**
 
@@ -237,17 +242,21 @@ Action Controllerの機能の多くはミドルウェアとして実装されて
 
 * アセットリクエストでのログ書き出しを抑制します。
 
+**`ActionDispatch::RemoteIp`**
+
+* IPスプーフィング攻撃をチェックします。
+
 **`Rails::Rack::Logger`**
 
-* リクエストの処理を開始したことを、ログに書き出します。リクエストが完了すると、すべてのログをフラッシュします。
+* リクエストの処理が開始されたことをログに出力します。リクエストが完了すると、すべてのログをフラッシュします。
 
 **`ActionDispatch::ShowExceptions`**
 
-* アプリケーションが返してくる例外を捕え、例外処理用のアプリケーションを起動します。例外処理用のアプリケーションは、エンドユーザー向けに例外を整形します。
+* アプリケーションが返すすべての例外をrescueし、例外処理用アプリケーション （エンドユーザー向けに例外を整形するアプリケーション） を起動します。
 
 **`ActionDispatch::DebugExceptions`**
 
-* 例外をログに残し、ローカルからのリクエストの場合は、デバッグ用のページを表示します。
+* 例外をログに出力します。ローカルからのリクエストの場合は、デバッグ用ページも表示します。
 
 **`ActionDispatch::Reloader`**
 
@@ -255,37 +264,49 @@ Action Controllerの機能の多くはミドルウェアとして実装されて
 
 **`ActionDispatch::Callbacks`**
 
-* リクエストの処理を開始する前に、prepareコールバックを起動します(訳注: この説明は原文レベルで間違っており、現在原文の修正を行っています)。
+* リクエストをディスパッチする直前および直後に実行されるコールバックを提供します。
 
 **`ActiveRecord::Migration::CheckPending`**
 
-* 未実行のマイグレーションがないか確認します。未実行のものがあった場合は、`ActiveRecord::PendingMigrationError`を発生さます。
+* 未実行のマイグレーションがないか確認します。未実行のものがあった場合は、`ActiveRecord::PendingMigrationError`を発生させます。
 
 **`ActionDispatch::Cookies`**
 
-* クッキー機能を提供します。
+* cookie機能を提供します。
 
 **`ActionDispatch::Session::CookieStore`**
 
-* クッキーにセッションを保存するようにします。
+* セッションをcookieに保存する役割を担当します。
 
 **`ActionDispatch::Flash`**
 
-* flash機能を提供します(flashとは連続するリクエスト間で値を共有する機能です)。これは、`config.action_controller.session_store`に値が設定されている場合にのみ有効です。
+* flashのキーをセットアップします(訳注: flashは連続するリクエスト間でメッセージを共有表示する機能です)。これは、`config.action_controller.session_store`に値が設定されている場合にのみ有効です。
+
+**`ActionDispatch::ContentSecurityPolicy::Middleware`**
+
+* Content-Security-Policyヘッダー設定用のDSLを提供します。
 
 **`ActionDispatch::Head`**
 
 * HEADリクエストを`GET`に変換して処理します。その上でbodyを空にしたレスポンスを返します(訳注: Rails4.0からはRack::Headを使うように変更されています)。
 
+**`Rack::Head`**
+
+* `HEAD`リクエストを`GET`に変換し、`GET`として処理します。
+
 **`Rack::ConditionalGet`**
 
-* "条件付き `GET`" (Conditional `GET`) 機能を提供します。"条件付き `GET`"が有効になっていると、リクエストされたページに変更がないときに空のbodyを返すようになります。
+* 「条件付き`GET`（Conditional `GET`）」機能を提供します。"条件付き `GET`"が有効になっていると、リクエストされたページで変更が発生していない場合に空のbodyを返します。
 
 **`Rack::ETag`**
 
-* bodyが文字列のみのレスポンスに対して、ETagヘッダを追加します。 ETagはキャッシュの有効性を検証するのに使用されます。
+* bodyが文字列のみのレスポンスにETagヘッダを追加します。ETagはキャッシュのバリデーションに使われます。
 
-TIP: これらのミドルウェアはいずれも、Rackのミドルウェアスタックに利用できます。
+**`Rack::TempfileReaper`**
+
+* マルチパートリクエストをバッファするのに使われる一時ファイルをクリーンアップします。
+
+TIP: これらのミドルウェアはいずれも、独自のRackスタックに利用することもできます。
 
 参考資料
 ---------
