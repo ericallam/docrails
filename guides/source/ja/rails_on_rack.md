@@ -84,7 +84,7 @@ Action Dispatcherのミドルウェアスタック
 
 Action Dispatcher内部のコンポーネントの多くは、「Rackミドルウェア」として実装されています。`Rails::Application`は、`ActionDispatch::MiddlewareStack`を用いて内部ミドルウェアや外部ミドルウェアを組み合わせることで、完全なRailsのRackアプリを構築します。
 
-NOTE: Railsの`ActionDispatch::MiddlewareStack`クラスは`Rack::Builder`クラスと同等ですが、Railsアプリの要求を満たすために柔軟性が高く多機能です。
+NOTE: Railsの`ActionDispatch::MiddlewareStack`クラスは`Rack::Builder`クラスと同等ですが、Railsアプリケーションの要求を満たすために柔軟性が高く多機能です。
 
 ### ミドルウェアスタックを調べる
 
@@ -242,9 +242,13 @@ Action Controllerの機能の多くはミドルウェアとして実装されて
 
 * アセットリクエストでのログ書き出しを抑制します。
 
+**`ActionDispatch::RemoteIp`**
+
+* IPスプーフィング攻撃をチェックします。
+
 **`Rails::Rack::Logger`**
 
-* リクエストが開始されたことをログに出力します。リクエストが完了すると、すべてのログをフラッシュします。
+* リクエストの処理が開始されたことをログに出力します。リクエストが完了すると、すべてのログをフラッシュします。
 
 **`ActionDispatch::ShowExceptions`**
 
@@ -280,7 +284,9 @@ Action Controllerの機能の多くはミドルウェアとして実装されて
 
 **`ActionDispatch::ContentSecurityPolicy::Middleware`**
 
-* Content-Security-Policyヘッダーを設定するDSLを提供します。
+* Content-Security-Policyヘッダー設定用のDSLを提供します。
+
+**`ActionDispatch::Head`**
 
 **`Rack::Head`**
 
