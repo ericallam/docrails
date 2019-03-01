@@ -288,6 +288,8 @@ Action Controllerの機能の多くはミドルウェアとして実装されて
 
 **`ActionDispatch::Head`**
 
+* HEADリクエストを`GET`に変換して処理します。その上でbodyを空にしたレスポンスを返します(訳注: Rails4.0からはRack::Headを使うように変更されています)。
+
 **`Rack::Head`**
 
 * `HEAD`リクエストを`GET`に変換し、`GET`として処理します。
