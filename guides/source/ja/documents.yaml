@@ -140,6 +140,11 @@
       url: active_support_instrumentation.html
       description: RailsなどのRubyコード内のイベント測定に使う、Active Support内のInstrumentation APIについて解説します。
     -
+      name: Rails アプリケーションのテンプレート
+      work_in_progress: true
+      url: rails_application_templates.html
+      description: テンプレートを使って生成/カスタマイズを行う方法や、テンプレートAPIを使って再利用可能なテンプレートを開発する方法について解説します。
+    -
       name: Rails アプリケーションを解析する
       work_in_progress: true
       url: profiling.html
