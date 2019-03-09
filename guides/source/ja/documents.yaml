@@ -67,7 +67,7 @@
       url: action_controller_overview.html
       description: 本ガイドでは、コントローラの動作と、アプリケーションのリクエストサイクルでコントローラがどのように使われるかについて説明します。セッション、フィルタ、cookie、データストリーミング、リクエストによって発生する例外、その他多くの話題を取り扱っています。
     -
-      name: Rails ルーティング
+      name: Rails のルーティング
       url: routing.html
       description: Railsのルーティング機能について解説します。Railsアプリケーションで行われているルーティングのしくみについて理解したい場合は、ここからお読みください。
 -
