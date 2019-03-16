@@ -143,9 +143,9 @@ YassLab 社以外にも、次の方々が協力してくれました! 🤝✨
   - [@hachi8833](https://github.com/hachi8833)
   - [@yasulab](https://github.com/yasulab)
 - 💎 コミッターの皆さん
-  - [@yui-knk](https://github.com/yui-knk) (コミッター)
-  - [@riseshia](https://github.com/riseshia) (コミッター)
-  - [@willnet](https://github.com/willnet) (コミッター)
+  - [@yui-knk](https://github.com/yui-knk)
+  - [@riseshia](https://github.com/riseshia)
+  - [@willnet](https://github.com/willnet)
 - 👏 他、[Issues](https://github.com/yasslab/railsguides.jp/issues) や [Pull Request](https://github.com/yasslab/railsguides.jp/graphs/contributors) を送ってくださった多くの方々。
 
 ### 相談部屋
