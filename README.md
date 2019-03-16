@@ -21,7 +21,7 @@ Railsガイドを読んで、誤字・脱字・誤訳などを見かけました
 
 もし原著の間違いを見つけましたら、Railsガイドの『[Railsのドキュメントに貢献する](https://railsguides.jp/contributing_to_ruby_on_rails.html#rails%E3%81%AE%E3%83%89%E3%82%AD%E3%83%A5%E3%83%A1%E3%83%B3%E3%83%88%E3%81%AB%E8%B2%A2%E7%8C%AE%E3%81%99%E3%82%8B)』を参考にしてください。
 
-『Railsガイド』および『Rails Guides』の品質向上に向けて、皆さまのご協力が得られれば嬉しいです ;)
+『[Railsガイド](https://railsguides.jp/)』および『[Rails Guides](https://guides.rubyonrails.org/)』の品質向上に向けて、皆さまのご協力が得られれば嬉しいです ;)
 
 ### ブラウザでRailsガイドの修正を提案する
 
@@ -89,7 +89,7 @@ Pull Request を送る前に生成結果を確認したい場合は下記をご�
 <details>
   <summary><strong>原著との差分を更新する方法</strong></summary>
 
-- [bin/merge-upstream](https://github.com/yasslab/railsguides.jp/blob/master/railsguides.jp/bin/merge-upstream) を実行すると最新版が `guides/source` 内に取り込まれます。
+- [bin/merge-upstream](https://github.com/yasslab/railsguides.jp/blob/master/railsguides.jp/bin/merge-upstrepam) を実行すると最新版が `guides/source` 内に取り込まれます。
 - 特に、原著を手元で確認したいとき、原著にPRを送付したいときに便利です。
 - 原著にPRを送るときは、事前に[Railsのドキュメントに貢献する](https://railsguides.jp/contributing_to_ruby_on_rails.html#rails%E3%81%AE%E3%83%89%E3%82%AD%E3%83%A5%E3%83%A1%E3%83%B3%E3%83%88%E3%81%AB%E8%B2%A2%E7%8C%AE%E3%81%99%E3%82%8B)に目を通しておくとよいです :)
 
