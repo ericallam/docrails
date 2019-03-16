@@ -38,11 +38,10 @@ Railsガイドの品質向上に向けて、皆さまのご協力が得られれ
 
 ## Railsガイドの生成方法
 
-本リポジトリにPull Requestを送付したい方は、下記を参照してください。    
+Pull Request を送る前に生成結果を確認したい場合は下記をご参照ください。
+(生成結果を確認せずに Pull Request を送って頂いても大丈夫です! 😆👌)
 
 ### 1. 既存のHTMLファイルをローカルで生成および確認(Jekyll)
-
-(rubyのバージョンは[.ruby_version](https://github.com/yasslab/railsguides.jp/blob/master/.ruby-version)に記載があります。)
 
 1. `$ bundle install`
 2. `$ bundle exec rake assets:precompile`
@@ -55,13 +54,13 @@ Railsガイドの品質向上に向けて、皆さまのご協力が得られれ
 2. `$ bundle exec rake assets:precompile` 
 3. `$ bundle exec jekyll server`
 4. localhost:4000 から変更結果を確認する
-5. (問題なければ) PRを送付する
+5. (問題なければ) PR を送付する
 
 ### 3. CI と Heroku
 
-- PRが送られると、[railsguides.jpのTravis CI](https://travis-ci.org/yasslab/railsguides.jp) が走ります。
-- CIが通らなかった場合は、該当箇所を修正してください。
-- マージされない限り本番環境 (Heroku) には反映されないので、気軽にPRを送っていただいて大丈夫です。
+- PR が送られると、[railsguides.jp の Travis CI](https://travis-ci.org/yasslab/railsguides.jp) が走ります。
+- CI が通らなかった場合は、該当箇所を修正してください。
+- マージされない限り本番環境には反映されないので、PR は気軽に送っていただければ ;)
 
 ## 翻訳方法の変遷
 
@@ -140,12 +139,14 @@ YassLab 社以外にも、次の方々が協力してくれました! 🤝✨
 
 ### 協力者
 
-- [@hachi8833](https://github.com/hachi8833) (共同発起人)
-- [@yasulab](https://github.com/yasulab) (共同発起人)
-- [@yui-knk](https://github.com/yui-knk) (コミッター)
-- [@riseshia](https://github.com/riseshia) (コミッター)
-- [@willnet](https://github.com/willnet) (コミッター)
-- 他，[Issues](https://github.com/yasslab/railsguides.jp/issues?q=) や [Pull Request](https://github.com/yasslab/railsguides.jp/graphs/contributors)  を送ってくださった多くの方々。
+- 👥 共同発起人 
+  - [@hachi8833](https://github.com/hachi8833)
+  - [@yasulab](https://github.com/yasulab)
+- 💎 コミッターの皆さん
+  - [@yui-knk](https://github.com/yui-knk) (コミッター)
+  - [@riseshia](https://github.com/riseshia) (コミッター)
+  - [@willnet](https://github.com/willnet) (コミッター)
+- 👏 他、[Issues](https://github.com/yasslab/railsguides.jp/issues) や [Pull Request](https://github.com/yasslab/railsguides.jp/graphs/contributors) を送ってくださった多くの方々。
 
 ### 相談部屋
 
