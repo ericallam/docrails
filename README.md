@@ -123,7 +123,7 @@ Railsガイドの品質向上に向けて、皆さまのご協力が得られれ
 
 <div >
   <a href="https://yasslab.jp/ja/agile">
-    <img width="60%" src="https://yasslab.jp/img/join_image.png"
+    <img width="60%" src="https://yasslab.jp/img/team.png"
          alt="YassLab Images" />
   </a>
   <a href="https://yasslab.jp/ja/agile">
@@ -169,4 +169,4 @@ YassLab 社以外にも、次の方々が協力してくれました! 🤝✨
 - 原著: http://guides.rubyonrails.org/credits.html
 - 本書: [YassLab 株式会社](https://yasslab.jp/)
 
-[![YassLab Inc.](https://yasslab.jp/img/logo_800x200.png)](https://yasslab.jp/ja/)
+[![YassLab Inc.](https://yasslab.jp/img/logos/800x200.png)](https://yasslab.jp/ja/)
