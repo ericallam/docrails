@@ -38,7 +38,7 @@ Railsガイドの品質向上に向けて、皆さまのご協力が得られれ
 
 ## Railsガイドの生成方法
 
-Pull Request を送る前に生成結果を確認したい場合は下記をご参照ください。
+Pull Request を送る前に生成結果を確認したい場合は下記をご参照ください。   
 (生成結果を確認せずに Pull Request を送って頂いても大丈夫です! 😆👌)
 
 ### 1. 既存のHTMLファイルをローカルで生成および確認(Jekyll)
@@ -56,7 +56,7 @@ Pull Request を送る前に生成結果を確認したい場合は下記をご�
 4. localhost:4000 から変更結果を確認する
 5. (問題なければ) PR を送付する
 
-### 3. CI と Heroku
+### 3. Pull Request (PR) と Continuous Integration (CI)
 
 - PR が送られると、[railsguides.jp の Travis CI](https://travis-ci.org/yasslab/railsguides.jp) が走ります。
 - CI が通らなかった場合は、該当箇所を修正してください。
