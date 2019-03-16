@@ -120,7 +120,7 @@ Pull Request を送る前に生成結果を確認したい場合は下記をご�
 
 📣 【PR】YassLab 社では開発支援も承っております。もし興味あればお気軽にご相談ください ;)
 
-<div >
+<div>
   <a href="https://yasslab.jp/ja/agile">
     <img width="60%" src="https://yasslab.jp/img/team.png"
          alt="YassLab Images" />
@@ -153,7 +153,12 @@ YassLab 社以外にも、次の方々が協力してくれました! 🤝✨
 [idobata.io](https://idobata.io) の [yasslab/railsguides-public](https://idobata.io/#/organization/yasslab/room/railsguides-public) 部屋にて、Rails ガイドに関する情報交換しています。   
 覗いてみるだけの方も歓迎なので、是非お気軽に立ち寄ってみてください :D
 
-[![井戸端会議の風景](https://raw.githubusercontent.com/yasslab/railsguides.jp/master/yasslab/idobata-ss.png)](https://idobata.io/#/organization/yasslab/room/railsguides-public)
+<a href="https://idobata.io/#/organization/yasslab/room/railsguides-public">
+  <img width="60%" alt="Idobata でのチャット例"
+   src="https://raw.githubusercontent.com/yasslab/railsguides.jp/master/yasslab/idobata-screenshot.png"
+  />
+</a>
+
 
 ## ライセンス
 
