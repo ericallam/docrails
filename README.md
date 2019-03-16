@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/yasslab/railsguides.jp.svg?branch=master)](https://travis-ci.org/yasslab/railsguides.jp)
 
-## 日本語訳について
+## 『Railsガイド』とは？
 
 『Railsガイド』は [Ruby on Rails Guides](http://guides.rubyonrails.org/) の[公式の日本語版](https://guides.rubyonrails.org/contributing_to_ruby_on_rails.html#translating-rails-guides)です。   
 では、Rails の各機能の仕組みや最新の機能、リリース情報などがまとまっています。
@@ -17,15 +17,15 @@ https://railstutorial.jp/
 
 ## フィードバックについて
 
-Railsガイドを読んで、誤字・脱字・誤訳などを見かけましたら、本リポジトリの [Issue](https://github.com/yasslab/railsguides.jp/issues) にてお気軽に報告して頂けると幸いです。「Pull Request を送ってみたい!」という場合は、下記の[Railsガイドの生成方法](https://github.com/yasslab/railsguides.jp#rails%E3%82%AC%E3%82%A4%E3%83%89%E3%81%AE%E7%94%9F%E6%88%90%E6%96%B9%E6%B3%95)を参照してください。
+Railsガイドを読んで、誤字・脱字・誤訳などを見かけましたら、本リポジトリの [Issue](https://github.com/yasslab/railsguides.jp/issues) にてお気軽に報告して頂けると幸いです。「Pull Request を送ってみたい!」という場合は、下記の『[Railsガイドの生成方法](https://github.com/yasslab/railsguides.jp#rails%E3%82%AC%E3%82%A4%E3%83%89%E3%81%AE%E7%94%9F%E6%88%90%E6%96%B9%E6%B3%95)』を参照してください。
 
-もし原著の間違いを見つけましたら、Railsガイドの[Railsのドキュメントに貢献する](https://railsguides.jp/contributing_to_ruby_on_rails.html#rails%E3%81%AE%E3%83%89%E3%82%AD%E3%83%A5%E3%83%A1%E3%83%B3%E3%83%88%E3%81%AB%E8%B2%A2%E7%8C%AE%E3%81%99%E3%82%8B)を参考にしてください。
+もし原著の間違いを見つけましたら、Railsガイドの『[Railsのドキュメントに貢献する](https://railsguides.jp/contributing_to_ruby_on_rails.html#rails%E3%81%AE%E3%83%89%E3%82%AD%E3%83%A5%E3%83%A1%E3%83%B3%E3%83%88%E3%81%AB%E8%B2%A2%E7%8C%AE%E3%81%99%E3%82%8B)』を参考にしてください。
 
-『Railsガイド』および『Rails Guides』の品質向上に向けて、皆さまのご協力が得られれば嬉しいです 😆
+『Railsガイド』および『Rails Guides』の品質向上に向けて、皆さまのご協力が得られれば嬉しいです ;)
 
 ### ブラウザでRailsガイドの修正を提案する
 
-多分これが一番簡単だと思います...!!
+多分これが一番簡単だと思います...!! 😆
 
 1. ブラウザ上で [guides/source/ja](https://github.com/yasslab/railsguides.jp/tree/master/guides/source/ja) を開く
 2. 直したいファイルを開く (例: [upgrading_ruby_on_rails.md](https://github.com/yasslab/railsguides.jp/blob/master/guides/source/ja/upgrading_ruby_on_rails.md))
