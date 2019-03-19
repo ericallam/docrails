@@ -258,7 +258,7 @@ end
 
 ```ruby
 class ApplicationJob
-  before_enqueue { |job| $statsd.increment #{job.name.underscore}.enqueue" }
+  before_enqueue { |job| $statsd.increment "#{job.name.underscore}.enqueue" }
 end
 ```
 
