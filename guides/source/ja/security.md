@@ -1042,7 +1042,7 @@ Rails.application.config.content_security_policy do |policy|
   policy.object_src  :none
   policy.script_src  :self, :https
   policy.style_src   :self, :https
-  # 違反をレポートする対象URIを指定する
+  # 違反レポートの対象URIを指定する
   policy.report_uri "/csp-violation-report-endpoint"
 end
 ```
