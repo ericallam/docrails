@@ -256,29 +256,27 @@ Action Pack
 
 * `ActionDispatch::RequestId`ミドルウェアが追加されました。これはレスポンスで一意のX-Request-Idヘッダーを有効にして`ActionDispatch::Request#uuid`メソッドを使えるようにします。これにより、スタック内のエンドツーエンドでのリクエストの追跡や、Syslogのようにさまざまなログが混在しているログで個別のリクエストを特定するのが容易になります。
 
-* `ShowExceptions`ミドルウェアで、アプリケーションが失敗した場合の例外レンダリングを受け持つ「例外アプリケーション」を指定できるようになりました。この例外アプリケーションは`ShowExceptions`の例外のコピー
+* `ShowExceptions`ミドルウェアで、アプリケーションが失敗した場合の例外レンダリングを受け持つ「例外アプリケーション」を受け取れるようになりました。この例外アプリケーションは起動時に`env["action_dispatch.exception"]`の例外のコピーを取り、ステータスコードに書き換えられた`PATH_INFO`を取ります。
 
-* The `ShowExceptions` middleware now accepts an exceptions application that is responsible to render an exception when the application fails. The application is invoked with a copy of the exception in `env["action_dispatch.exception"]` and with the `PATH_INFO` rewritten to the status code.
+* rescueのレスポンスを、railtie経由で`config.action_dispatch.rescue_responses`の指定に沿って設定できるようになりました。
 
-* Allow rescue responses to be configured through a railtie as in `config.action_dispatch.rescue_responses`.
+#### 非推奨
 
-#### Deprecations
-
-* Deprecated the ability to set a default charset at the controller level, use the new `config.action_dispatch.default_charset` instead.
+* コントローラレベルでのデフォルト文字セットをせってする機能が非推奨になりました。今後は`config.action_dispatch.default_charset`をお使いください。
 
 ### Action View
 
-* Add `button_tag` support to `ActionView::Helpers::FormBuilder`. This support mimics the default behavior of `submit_tag`.
+* `ActionView::Helpers::FormBuilder`に`button_tag`のサポートが追加されました。このサポートは、`submit_tag`のデフォルトの振る舞いを模倣します。
 
     ```erb
     <%= form_for @post do |f| %>
       <%= f.button %>
     <% end %>
     ```
+    
+* dateヘルパーが新しく`:use_two_digit_numbers => true`オプションを取れるようになりました。これは月や日のselectボックスの数字の頭にゼロを表示します（それぞれの値は変わりません）。たとえば、ISO 8601形式の「2011-08-01」といった日付を表示するのに便利です。
 
-* Date helpers accept a new option `:use_two_digit_numbers => true`, that renders select boxes for months and days with a leading zero without changing the respective values. For example, this is useful for displaying ISO 8601-style dates such as '2011-08-01'.
-
-* You can provide a namespace for your form to ensure uniqueness of id attributes on form elements. The namespace attribute will be prefixed with underscore on the generated HTML id.
+* フォームで名前空間を指定して、フォーム要素のid属性を一意にできるようになりました。この名前空間属性の名前は、生成されたHTML idの冒頭にアンダースコア付きで追加されます。
 
     ```erb
     <%= form_for(@offer, :namespace => 'namespace') do |f| %>
@@ -287,9 +285,9 @@ Action Pack
     <% end %>
     ```
 
-* Limit the number of options for `select_year` to 1000. Pass `:max_years_allowed` option to set your own limit.
+* `select_year`のオプション数の上限が1000になりました。`:max_years_allowed`オプションで上限を独自に設定できます。
 
-* `content_tag_for` and `div_for` can now take a collection of records. It will also yield the record as the first argument if you set a receiving argument in your block. So instead of having to do this:
+* `content_tag_for`と`div_for`がレコードのコレクションを受け取れるようになりました。受け取る引数をブロックで設定すると、そのレコードを最初の引数としてyieldすることもできるようになりました。x
 
     ```ruby
     @items.each do |item|
@@ -299,7 +297,7 @@ Action Pack
     end
     ```
 
-    You can do this:
+つまり、上のように書く代わりに、今後は以下のように書けます。
 
     ```ruby
     content_tag_for(:li, @items) do |item|
@@ -307,30 +305,30 @@ Action Pack
     end
     ```
 
-* Added `font_path` helper method that computes the path to a font asset in `public/fonts`.
+* `font_path`ヘルパーメソッドが追加されました。これは`public/fonts`にあるフォントアセットへのパスを算出します。
 
-#### Deprecations
+#### 非推奨
 
-* Passing formats or handlers to render :template and friends like `render :template => "foo.html.erb"` is deprecated. Instead, you can provide :handlers and :formats directly as options: ` render :template => "foo", :formats => [:html, :js], :handlers => :erb`.
+* フォーマットやハンドラを`render :template`などに渡すこと（例: `render :template => "foo.html.erb"`）は非推奨になりました。今後はオプションで直接`:handlers`や`:formats`を指定できるようになりました（例: ` render :template => "foo", :formats => [:html, :js], :handlers => :erb`）。
 
 ### Sprockets
 
-* Adds a configuration option `config.assets.logger` to control Sprockets logging. Set it to `false` to turn off logging and to `nil` to default to `Rails.logger`.
+* Sprocketsのログ出力を制御する`config.assets.logger`オプションが設定に追加されました。`false`にするとログ出力が止まり、`nil`にするとデフォルトの`Rails.logger`が使われます。
 
 Active Record
 -------------
 
-* Boolean columns with 'on' and 'ON' values are type cast to true.
+* 値が「on」や「ON」のbooleanカラムは`true`に型キャストされます。
 
-* When the `timestamps` method creates the `created_at` and `updated_at` columns, it makes them non-nullable by default.
+* `timestamps`メソッドで`created_at`カラムや`updated_at`カラムが作成されると、デフォルトでnullが許容されなくなります。
 
-* Implemented `ActiveRecord::Relation#explain`.
+* `ActiveRecord::Relation#explain`が実装されました。
 
-* Implements `AR::Base.silence_auto_explain` which allows the user to selectively disable automatic EXPLAINs within a block.
+* `ActiveRecord::Base.silence_auto_explain`が実装されました。これを用いると、ブロック内の自動EXPLAINを選択的に無効にできます。
 
-* Implements automatic EXPLAIN logging for slow queries. A new configuration parameter `config.active_record.auto_explain_threshold_in_seconds` determines what's to be considered a slow query. Setting that to nil disables this feature. Defaults are 0.5 in development mode, and nil in test and production modes. Rails 3.2 supports this feature in SQLite, MySQL (mysql2 adapter), and PostgreSQL.
+* 実行の遅いクエリの自動EXPLAINログ出力を実装しました。遅いクエリの判定基準は、新しく追加された`config.active_record.auto_explain_threshold_in_seconds`パラメータで設定します。パラメータを`nil`にするとこの機能を無効にできます。デフォルトはdevelopmentモードで`0.5`、testモードやproductionモードでは`nil`です。Rails 3.2でこの機能をサポートするのは、SQLite、MySQL（mysql2アダプタ）、PostgreSQLです。
 
-* Added `ActiveRecord::Base.store` for declaring simple single-column key/value stores.
+* 単一カラムのキーバリューストアを宣言する`ActiveRecord::Base.store`が追加されました。
 
     ```ruby
     class User < ActiveRecord::Base
@@ -338,101 +336,102 @@ Active Record
     end
 
     u = User.new(color: 'black', homepage: '37signals.com')
-    u.color                          # Accessor stored attribute
-    u.settings[:country] = 'Denmark' # Any attribute, even if not specified with an accessor
+    u.color                          # アクセサに保存されている属性
+    u.settings[:country] = 'Denmark' # アクセサで指定されていない属性でも使える
     ```
 
-* Added ability to run migrations only for a given scope, which allows to run migrations only from one engine (for example to revert changes from an engine that need to be removed).
+* マイグレーションを特定のスコープ（対象）に対してのみ実行する機能が追加されました。これを用いて、特定のエンジンのマイグレーションのみを実行できます（取り外す必要のあるエンジンでの変更を元に戻すなど）。
 
     ```
     rake db:migrate SCOPE=blog
     ```
 
-* Migrations copied from engines are now scoped with engine's name, for example `01_create_posts.blog.rb`.
+* エンジンからコピーしたマイグレーションファイルのスコープが、エンジンの名前で指定されるようになりました（例: `01_create_posts.blog.rb`）。
 
-* Implemented `ActiveRecord::Relation#pluck` method that returns an array of column values directly from the underlying table. This also works with serialized attributes.
+* `ActiveRecord::Relation#pluck`メソッドが実装されました。これは背後のテーブルのカラム値を直接配列として返します。シリアライズされた属性でも使えます
 
     ```ruby
     Client.where(:active => true).pluck(:id)
     # SELECT id from clients where active = 1
     ```
 
-* Generated association methods are created within a separate module to allow overriding and composition. For a class named MyModel, the module is named `MyModel::GeneratedFeatureMethods`. It is included into the model class immediately after the `generated_attributes_methods` module defined in Active Model, so association methods override attribute methods of the same name.
+* 関連付けメソッドの生成は、独立した1つのモジュール内で作成されるようになりました。これはオーバーライドやコンポジションできるようにするためです。たとえば`MyModel`というクラスがあり、そのモジュールが`MyModel::GeneratedFeatureMethods`だとします。Active Modelで定義された`generated_attributes_methods`が実行されると、このモジュールはただちにそのモデルクラスにincludeされるので、関連付けメソッドは同じ名前の属性メソッドをオーバーライドします。
 
-* Add `ActiveRecord::Relation#uniq` for generating unique queries.
+* 一意のクエリを生成する`ActiveRecord::Relation#uniq``ActiveRecord::Relation#uniq`が追加されました。
 
     ```ruby
     Client.select('DISTINCT name')
     ```
 
-    ..can be written as:
+    上は以下のように書けます。
 
     ```ruby
     Client.select(:name).uniq
     ```
 
-    This also allows you to revert the uniqueness in a relation:
+
+    リレーションでクエリの一意性を解除することもできます。
 
     ```ruby
     Client.select(:name).uniq.uniq(false)
     ```
 
-* Support index sort order in SQLite, MySQL and PostgreSQL adapters.
+* SQLite、MySQL、PostgreSQLでインデックスのソート順をサポートしました。
 
-* Allow the `:class_name` option for associations to take a symbol in addition to a string. This is to avoid confusing newbies, and to be consistent with the fact that other options like `:foreign_key` already allow a symbol or a string.
+* `:class_name`オプションで文字列の他にシンボルも取れるようになりました。Railsに慣れていない人の混乱を避けるのと、既に文字列とシンボルのどちらも取れる`:foreign_key`などとの一貫性を保つのが目的です。
 
     ```ruby
-    has_many :clients, :class_name => :Client # Note that the symbol need to be capitalized
+    has_many :clients, :class_name => :Client # シンボルの最初は大文字にする必要があることに注意
     ```
 
-* In development mode, `db:drop` also drops the test database in order to be symmetric with `db:create`.
+* developmentモードで`db:drop`を実行するとtestデータベースも削除されるようになりました。`db:create`と動作を対称的にするのが目的です。
 
-* Case-insensitive uniqueness validation avoids calling LOWER in MySQL when the column already uses a case-insensitive collation.
+* カラムの照合順序（collation）が既に大文字小文字を区別しないようになっている場合、大文字小文字を区別する一意性のバリデーションでMySQLのLOWERの呼び出しを回避するようになりました。
 
-* Transactional fixtures enlist all active database connections. You can test models on different connections without disabling transactional fixtures.
+* transactional fixture（トランザクションを用いるフィクスチャ）で、有効なデータベース接続がすべてリストされるようになりました。これにより、transactional fixtureを無効にしなくても異なる接続でモデルをテストできます。
 
-* Add `first_or_create`, `first_or_create!`, `first_or_initialize` methods to Active Record. This is a better approach over the old `find_or_create_by` dynamic methods because it's clearer which arguments are used to find the record and which are used to create it.
+* Active Recordに3つのメソッド`first_or_create`、`first_or_create!`、`first_or_initialize`が追加されました。これはレコードのfindに使われる引数とcreateに使われる引数が明確なので、従来の動的な`find_or_create_by`メソッドより優れたアプローチです。
 
     ```ruby
     User.where(:first_name => "Scarlett").first_or_create!(:last_name => "Johansson")
     ```
 
-* Added a `with_lock` method to Active Record objects, which starts a transaction, locks the object (pessimistically) and yields to the block. The method takes one (optional) parameter and passes it to `lock!`.
+* Active Recordオブジェクトに`with_lock`メソッドが追加されました。これはトランザクションを開始してオブジェクトを（悲観的に）ロックし、ブロックをyieldします。このメソッドはオプションパラメータを1つ取って`lock!`に渡します。
 
-    This makes it possible to write the following:
+    これを用いて以下のように書けるようになりました。
 
     ```ruby
     class Order < ActiveRecord::Base
       def cancel!
         transaction do
           lock!
-          # ... cancelling logic
+          # ... ロジックのキャンセル
         end
       end
     end
     ```
 
-    as:
+    上は以下のように書けます。
 
     ```ruby
     class Order < ActiveRecord::Base
       def cancel!
         with_lock do
-          # ... cancelling logic
+          # ... ロジックのキャンセル
         end
       end
     end
     ```
 
-### Deprecations
+### 非推奨
 
-* Automatic closure of connections in threads is deprecated. For example the following code is deprecated:
+* スレッド内での接続の自動切断が非推奨になりました。以下のようなコードは推奨されません。
 
     ```ruby
     Thread.new { Post.find(1) }.join
     ```
 
-    It should be changed to close the database connection at the end of the thread:
+    以下のようにスレッドの末尾ではデータベース接続を明示的に切断すべきです。
 
     ```ruby
     Thread.new {
@@ -440,10 +439,10 @@ Active Record
       Post.connection.close
     }.join
     ```
+    
+    この変更が必要になるのは、アプリケーションのコード内でスレッドを生成している場合だけです。
 
-    Only people who spawn threads in their application code need to worry about this change.
-
-* The `set_table_name`, `set_inheritance_column`, `set_sequence_name`, `set_primary_key`, `set_locking_column` methods are deprecated. Use an assignment method instead. For example, instead of `set_table_name`, use `self.table_name=`.
+* 5つのメソッド: `set_table_name`、`set_inheritance_column`、`set_sequence_name`、`set_primary_key`、`set_locking_column`が非推奨になりました。今後は代入メソッド（セッターメソッド）をお使いください。たとえば`set_table_name`ではなく、`self.table_name=`を使います。
 
     ```ruby
     class Project < ActiveRecord::Base
@@ -451,7 +450,7 @@ Active Record
     end
     ```
 
-    Or define your own `self.table_name` method:
+    あるいは以下のように独自の`self.table_name`メソッドを定義します。
 
     ```ruby
     class Post < ActiveRecord::Base
@@ -467,27 +466,27 @@ Active Record
 Active Model
 ------------
 
-* Add `ActiveModel::Errors#added?` to check if a specific error has been added.
+* 特定のエラーが1件追加されたかどうかをチェックする`ActiveModel::Errors#added?`が追加されました。
 
-* Add ability to define strict validations with `strict => true` that always raises exception when fails.
+* `strict => true`を指定することで、失敗すると常に例外をraiseする厳密なバリデーションを定義できるようになりました。
 
-* Provide mass_assignment_sanitizer as an easy API to replace the sanitizer behavior. Also support both :logger (default) and :strict sanitizer behavior.
+* サニタイザーの振る舞いを置き換える簡易APIとして`mass_assignment_sanitizer`オプションが提供されました。サニタイザーの`:logger`（デフォルト）の振る舞いや`:strict`の振る舞いもサポートされます。
 
-### Deprecations
+### 非推奨
 
-* Deprecated `define_attr_method` in `ActiveModel::AttributeMethods` because this only existed to support methods like `set_table_name` in Active Record, which are themselves being deprecated.
+* `ActiveModel::AttributeMethods`の`define_attr_method`が非推奨になりました。このメソッドは、Active Recordで非推奨になる`set_table_name`などのメソッドでしかサポートされていないためです。
 
-* Deprecated `Model.model_name.partial_path` in favor of `model.to_partial_path`.
+* `Model.model_name.partial_path`が非推奨になりました。今後は`model.to_partial_path`をお使いください。
 
 Active Resource
 ---------------
 
-* Redirect responses: 303 See Other and 307 Temporary Redirect now behave like 301 Moved Permanently and 302 Found.
+* リダイレクトレスポンスの「303 See Other」「307 Temporary Redirect」の振る舞いは、「301 Moved Permanently」「302 Found」のように変わりました。
 
 Active Support
 --------------
 
-* Added `ActiveSupport:TaggedLogging` that can wrap any standard `Logger` class to provide tagging capabilities.
+* `ActiveSupport:TaggedLogging`が追加されました。これは任意の標準`Logger`クラスをラップしてタグ付け機能を提供します。
 
     ```ruby
     Logger = ActiveSupport::TaggedLogging.new(Logger.new(STDOUT))
@@ -502,56 +501,56 @@ Active Support
     # Logs "[BCX] [Jason] Stuff"
     ```
 
-* The `beginning_of_week` method in `Date`, `Time` and `DateTime` accepts an optional argument representing the day in which the week is assumed to start.
+* `Date`や`Time`や`DateTime`の`beginning_of_week`メソッドで、その週の開始日と仮定される日を表すオプション引数を渡せるようになりました。
 
-* `ActiveSupport::Notifications.subscribed` provides subscriptions to events while a block runs.
+* ブロックの実行中にイベントのサブスクリプションを提供する`ActiveSupport::Notifications.subscribed`が追加されました。
 
-* Defined new methods `Module#qualified_const_defined?`, `Module#qualified_const_get` and `Module#qualified_const_set` that are analogous to the corresponding methods in the standard API, but accept qualified constant names.
+* 新しい3つのメソッド`Module#qualified_const_defined?`、`Module#qualified_const_get`、`Module#qualified_const_set`が定義されました。これらは標準APIで対応するメソッドと似ていますが、省略なしの定数名（qualified constant name）を取れます。
 
-* Added `#deconstantize` which complements `#demodulize` in inflections. This removes the rightmost segment in a qualified constant name.
+* 活用形の`#demodulize`を補完する`#deconstantize`メソッドが追加されました。これは省略なしの定数名から最も右のセグメントを除去します。
 
-* Added `safe_constantize` that constantizes a string but returns `nil` instead of raising an exception if the constant (or part of it) does not exist.
+* `safe_constantize`が追加されました。これは文字列を定数化しますが、定数（またはその一部）が存在しない場合に例外をraiseするのではなく`nil`を返す点が異なります。
 
-* `ActiveSupport::OrderedHash` is now marked as extractable when using `Array#extract_options!`.
+* `ActiveSupport::OrderedHash`は、`Array#extract_options!`を利用するとextract可能とマーキングされるようになりました。
 
-* Added `Array#prepend` as an alias for `Array#unshift` and `Array#append` as an alias for `Array#<<`.
+* `Array#prepend`（`Array#unshift`のエイリアス）と`Array#append`（`Array#<<`のエイリアス）が追加されました。
 
-* The definition of a blank string for Ruby 1.9 has been extended to Unicode whitespace. Also, in Ruby 1.8 the ideographic space U`3000 is considered to be whitespace.
+* Ruby 1.9での空文字の定義がUnicodeホワイトスペースに拡張されました。また、Ruby 1.8では「全角スペース（ideographic space: U`3000）」がホワイトスペースとみなされるようになりました。
 
-* The inflector understands acronyms.
+* 活用形を解釈するinflectorが頭字語を扱えるようになりました。
 
-* Added `Time#all_day`, `Time#all_week`, `Time#all_quarter` and `Time#all_year` as a way of generating ranges.
+* 期間を生成する`Time#all_day`、`Time#all_week`、`Time#all_quarter`、`Time#all_year`が追加されました。
 
     ```ruby
     Event.where(:created_at => Time.now.all_week)
     Event.where(:created_at => Time.now.all_day)
     ```
 
-* Added `instance_accessor: false` as an option to `Class#cattr_accessor` and friends.
+* `instance_accessor: false`オプションが`Class#cattr_accessor`および類似のメソッドに追加されました。
 
-* `ActiveSupport::OrderedHash` now has different behavior for `#each` and `#each_pair` when given a block accepting its parameters with a splat.
+* `ActiveSupport::OrderedHash`で、`#each`や`#each_pair`に渡すブロックがパラメータをsplatで受け取る場合の振る舞いが変わりました。
 
-* Added `ActiveSupport::Cache::NullStore` for use in development and testing.
+* developmentモードやtestingモードで使う`ActiveSupport::Cache::NullStore`が追加されました。
 
-* Removed `ActiveSupport::SecureRandom` in favor of `SecureRandom` from the standard library.
+* `ActiveSupport::SecureRandom`が削除され、標準ライブラリの`SecureRandom`に置き換えられました。
 
-### Deprecations
+### 非推奨
 
-* `ActiveSupport::Base64` is deprecated in favor of `::Base64`.
+* `ActiveSupport::Base64`が非推奨になりました。今後は`Base64`をお使いください。
 
-* Deprecated `ActiveSupport::Memoizable` in favor of Ruby memoization pattern.
+* `ActiveSupport::Memoizable`が非推奨になりました。今後はRuby標準のメモ化パターンをお使いください。
 
-* `Module#synchronize` is deprecated with no replacement. Please use monitor from ruby's standard library.
+* `Module#synchronize`が非推奨になりました。代替機能はありません。Ruby標準ライブラリのMonitorをお使いください。
 
-* Deprecated `ActiveSupport::MessageEncryptor#encrypt` and `ActiveSupport::MessageEncryptor#decrypt`.
+* `ActiveSupport::MessageEncryptor#encrypt`と`ActiveSupport::MessageEncryptor#decrypt`が非推奨になりました。
 
-* `ActiveSupport::BufferedLogger#silence` is deprecated. If you want to squelch logs for a certain block, change the log level for that block.
+* `ActiveSupport::BufferedLogger#silence`が非推奨になりました。特定のログを抑制したい場合は、ログレベルを適切なものに変更してください。
 
-* `ActiveSupport::BufferedLogger#open_log` is deprecated. This method should not have been public in the first place.
+* `ActiveSupport::BufferedLogger#open_log`は非推奨になりました。これはそもそもpublicにすべきではありませんでした。
 
-* `ActiveSupport::BufferedLogger's` behavior of automatically creating the directory for your log file is deprecated. Please make sure to create the directory for your log file before instantiating.
+* `ActiveSupport::BufferedLogger`で、ログファイル用のディレクトリを自動作成する振る舞いが非推奨になりました。利用する前にログファイルを置くディレクトリがあることをご確認ください。
 
-* `ActiveSupport::BufferedLogger#auto_flushing` is deprecated. Either set the sync level on the underlying file handle like this. Or tune your filesystem. The FS cache is now what controls flushing.
+* `ActiveSupport::BufferedLogger#auto_flushing`が非推奨になりました。今後は背後のファイルハンドルのsyncレベルを設定するか、ファイルシステムを調整してください。今後はFSのキャッシュがflushを制御するようになりました。
 
     ```ruby
     f = File.open('foo.log', 'w')
@@ -559,11 +558,11 @@ Active Support
     ActiveSupport::BufferedLogger.new f
     ```
 
-* `ActiveSupport::BufferedLogger#flush` is deprecated. Set sync on your filehandle, or tune your filesystem.
+* `ActiveSupport::BufferedLogger#flush`が非推奨になりました。ファイルハンドルでsyncを設定するか、ファイルシステムを調整してください。
 
-Credits
+クレジット表記
 -------
 
-See the [full list of contributors to Rails](http://contributors.rubyonrails.org/) for the many people who spent many hours making Rails, the stable and robust framework it is. Kudos to all of them.
+Railsを頑丈かつ安定したフレームワークにするために多大な時間を費やしてくださった多くの開発者については、[Railsコントリビューターの完全なリスト](http://contributors.rubyonrails.org/)を参照してください。これらの方々全員に深く敬意を表明いたします。
 
-Rails 3.2 Release Notes were compiled by [Vijay Dev](https://github.com/vijaydev.)
+Rails 3.2リリースノートの編集担当は[Vijay Dev](https://github.com/vijaydev)でした。
