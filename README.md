@@ -3,7 +3,7 @@
 ## 『Railsガイド』とは？
 
 『Railsガイド』は [Ruby on Rails Guides](http://guides.rubyonrails.org/) の[公式の日本語版](https://guides.rubyonrails.org/contributing_to_ruby_on_rails.html#translating-rails-guides)です。   
-では、Rails の各機能の仕組みや最新の機能、リリース情報などがまとまっています。
+Rails の各機能の仕組みや最新の機能、リリース情報などがまとまっています。
 
 Ruby on Rails ガイド   
 https://railsguides.jp/
