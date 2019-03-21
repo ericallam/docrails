@@ -1,148 +1,151 @@
-Ruby on Rails 3.1 Release Notes
+Ruby on Rails 3.1 リリースノート
 ===============================
 
-Highlights in Rails 3.1:
+Rails 3.1の注目ポイント
 
-* Streaming
-* Reversible Migrations
-* Assets Pipeline
-* jQuery as the default JavaScript library
+* ストリーミング
+* 逆進可能なマイグレーション
+* アセットパイプラリン
+* jQueryがデフォルトのJavaScriptライブラリになった
 
-This release notes cover the major changes, but don't include every little bug fix and change. If you want to see everything, check out the [list of commits](https://github.com/rails/rails/commits/master) in the main Rails repository on GitHub.
+本リリースノートでは、主要な変更についてのみ説明します。多数のバグ修正および変更点については、GithubのRailsリポジトリにある[コミットリスト](https://github.com/rails/rails/commits/3-1-stable)のchangelogを参照してください。
 
 --------------------------------------------------------------------------------
 
-Upgrading to Rails 3.1
+Rails 3.1へのアップグレード
 ----------------------
 
-If you're upgrading an existing application, it's a great idea to have good test coverage before going in. You should also first upgrade to Rails 3 in case you haven't and make sure your application still runs as expected before attempting to update to Rails 3.1. Then take heed of the following changes:
+既存のアプリケーションをアップグレードするのであれば、その前に質のよいテストカバレッジを用意するのはよい考えです。アプリケーションがRails 3までアップグレードされていない場合は先にそれを完了し、アプリケーションが正常に動作することを十分確認してからRails 3.1にアップデートしてください。以下の注意点を参照してからアップデートしてください。
 
-### Rails 3.1 requires at least Ruby 1.8.7
+### Rails 3.1ではRuby 1.8.7以上が必要
 
-Rails 3.1 requires Ruby 1.8.7 or higher. Support for all of the previous Ruby versions has been dropped officially and you should upgrade as early as possible. Rails 3.1 is also compatible with Ruby 1.9.2.
+Rails 3.1ではRuby 1.8.7以上が必須です。これより前のバージョンのRubyのサポートは公式に廃止されたため、速やかにRubyをアップグレードすべきです。Rails 3.1はRuby 1.9.2とも互換性があります。
 
-TIP: Note that Ruby 1.8.7 p248 and p249 have marshaling bugs that crash Rails. Ruby Enterprise Edition have these fixed since release 1.8.7-2010.02 though. On the 1.9 front, Ruby 1.9.1 is not usable because it outright segfaults, so if you want to use 1.9.x jump on 1.9.2 for smooth sailing.
+TIP: Ruby 1.8.7のp248とp249には、Railsクラッシュの原因となるマーシャリングのバグがあります。なおRuby Enterprise Editionでは1.8.7-2010.02のリリースでこの問題が修正されました。現行のRuby 1.9のうち、Ruby 1.9.1はセグメンテーションフォールト（segfault）で完全にダウンするため利用できません。Railsをスムーズに動かすため、Ruby 1.9.xを使いたい場合は1.9.2をお使いください。
 
-### What to update in your apps
+### Railsのアップグレード方法
 
-The following changes are meant for upgrading your application to Rails 3.1.3, the latest 3.1.x version of Rails.
+以下の変更点は、アプリケーションをRail 3.1.x系の中で最新のRails 3.1.3にアップグレードする場合を想定しています。
 
 #### Gemfile
 
-Make the following changes to your `Gemfile`.
+`Gemfile`を以下のように変更します。
 
 ```ruby
 gem 'rails', '= 3.1.3'
 gem 'mysql2'
 
-# Needed for the new asset pipeline
+# 新しいアセットパイプラインで必要
 group :assets do
   gem 'sass-rails',   "~> 3.1.5"
   gem 'coffee-rails', "~> 3.1.1"
   gem 'uglifier',     ">= 1.0.3"
 end
 
-# jQuery is the default JavaScript library in Rails 3.1
+# Rails 3.1ではjQueryがデフォルトのJavaScriptライブラリとなる
 gem 'jquery-rails'
 ```
 
 #### config/application.rb
 
-* The asset pipeline requires the following additions:
+* アセットパイプラインのために以下の追加が必要です。
 
     ```ruby
     config.assets.enabled = true
     config.assets.version = '1.0'
     ```
 
-* If your application is using the "/assets" route for a resource you may want change the prefix used for assets to avoid conflicts:
+* アプリケーションで、リソースへのルーティングに"/assets"を使っている場合、必要に応じてプレフィックスを変更してアセットのコンフリクトを避けてください。
 
     ```ruby
-    # Defaults to '/assets'
+    # デフォルトは'/assets'
     config.assets.prefix = '/asset-files'
     ```
 
 #### config/environments/development.rb
 
-* Remove the RJS setting `config.action_view.debug_rjs = true`.
+* RJSの設定`config.action_view.debug_rjs = true`を削除します。
 
-* Add the following, if you enable the asset pipeline.
+* アセットパイプラインを有効にする場合は以下を追加します。
 
     ```ruby
-    # Do not compress assets
+    # アセットを圧縮しない
     config.assets.compress = false
 
-    # Expands the lines which load the assets
+    # アセットを読み込む行を拡大する
     config.assets.debug = true
     ```
 
 #### config/environments/production.rb
 
-* Again, most of the changes below are for the asset pipeline. You can read more about these in the [Asset Pipeline](asset_pipeline.html) guide.
+* 以下の変更のほとんどもアセットパイプライン用です。詳しくは[アセットパイプライン](asset_pipeline.html)ガイドを参照してください。
 
     ```ruby
-    # Compress JavaScripts and CSS
+    # JavaScriptsとCSSの圧縮
     config.assets.compress = true
 
-    # Don't fallback to assets pipeline if a precompiled asset is missed
+    # プリコンパイル済みアセットがない場合はアセットパイプラインにフォールバックしない
     config.assets.compile = false
 
-    # Generate digests for assets URLs
+    # アセットURL用のダイジェストを生成する
     config.assets.digest = true
 
-    # Defaults to Rails.root.join("public/assets")
+    # デフォルトはRails.root.join("public/assets")
     # config.assets.manifest = YOUR_PATH
 
-    # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
+    # 追加のアセットをプリコンパイルする（application.js、application.css、およびすべてのnon-JS/CSSは既に追加済み）
     # config.assets.precompile `= %w( search.js )
 
 
-    # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
+    # アプリへの全アクセスのSSL、Strict-Transport-Security、secure cookieを強制する
     # config.force_ssl = true
     ```
 
 #### config/environments/test.rb
 
 ```ruby
-# Configure static asset server for tests with Cache-Control for performance
+# テストの静的アセットサーバーをCache-Controlで構成（パフォーマンス向上用）
 config.serve_static_assets = true
 config.static_cache_control = "public, max-age=3600"
 ```
 
 #### config/initializers/wrap_parameters.rb
 
-* Add this file with the following contents, if you wish to wrap parameters into a nested hash. This is on by default in new applications.
+* パラメータをラップしてネスト済みハッシュにしたい場合は、以下の内容のファイルを追加します。新規アプリケーションでは今後これがデフォルトになります。
 
     ```ruby
-    # Be sure to restart your server when you modify this file.
-    # This file contains settings for ActionController::ParamsWrapper which
-    # is enabled by default.
+    # このファイルを変更したら必ずサーバーをリスタートすること
+    # このファイルに含まれるActionController::ParamsWrapperの設定は
+    # デフォルトで有効になる
 
-    # Enable parameter wrapping for JSON. You can disable this by setting :format to an empty array.
+    # JSONパラメーターのラップを有効にする
+    # 空配列に:formatを設定すると無効にできる
     ActiveSupport.on_load(:action_controller) do
       wrap_parameters :format => [:json]
     end
 
-    # Disable root element in JSON by default.
+    # JSONのroot要素を無効にする（デフォルト）
     ActiveSupport.on_load(:active_record) do
       self.include_root_in_json = false
     end
     ```
 
-#### Remove :cache and :concat options in asset helpers references in views
+#### ビューのアセットヘルパー参照から`:cache`と`:concat`オプションを削除する
 
-* With the Asset Pipeline the :cache and :concat options aren't used anymore, delete these options from your views.
+* アセットパイプラインの`:cache`と`:concat`オプションは今後使われないので、このオプションをビューから削除します。
 
-Creating a Rails 3.1 application
+Rails 3.1アプリケーションを作成する
 --------------------------------
 
 ```bash
-# You should have the 'rails' RubyGem installed
+# 以下を実行する前に'rails RubyGemをインストールしておくこと
 $ rails new myapp
 $ cd myapp
 ```
 
-### Vendoring Gems
+### gemに移行する
+
+現在のRailsでは、アプリケーションのルートディレクトリに置かれる`Gemfile`を使って、アプリケーションの起動に必要なgemを指定します。この`Gemfile`は[Bundler](https://github.com/carlhuda/bundler)というgemによって処理され、依存関係のある必要なgemをすべてインストールします。依存するgemをそのアプリケーションの中にだけインストールして、OS環境にある既存のgemに影響を与えないようにすることもできます。
 
 Rails now uses a `Gemfile` in the application root to determine the gems you require for your application to start. This `Gemfile` is processed by the [Bundler](https://github.com/carlhuda/bundler) gem, which then installs all your dependencies. It can even install all the dependencies locally to your application so that it doesn't depend on the system gems.
 
