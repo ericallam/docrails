@@ -72,9 +72,9 @@ $ rails new myapp
 $ cd myapp
 ```
 
-### gemのベンダリング（vendoring）
+### gemに移行する
 
-今回からRailsのアプリケーションルートディレクトリに`Gemfile`が置かれるようになりました。アプリケーション起動時に必要なgemは今後ここで決定されます。`Gemfile`の処理は[Bundler](https://github.com/carlhuda/bundler)というgemで行われます。今後はBundlerがすべての依存gemをインストールします。依存gemをアプリケーションディレクトリにローカルインストールして、システムのgem（OS環境にあるgem）に依存しないようにすることも可能です（訳注: Rails開発ではこの方法が主流です）。
+現在のRailsでは、アプリケーションのルートディレクトリに置かれる`Gemfile`を使って、アプリケーションの起動に必要なgemを指定します。アプリケーション起動時に必要なgemは今後ここで決定されます。`Gemfile`の処理は[Bundler](https://github.com/carlhuda/bundler)というgemで行われます。今後はBundlerがすべての依存gemをインストールします。依存gemをアプリケーションディレクトリにローカルインストールして、システムのgem（OS環境にあるgem）に依存しないようにすることも可能です（訳注: Rails開発ではこの方法が主流です）。
 
 詳細情報: [Bundlerホームページ](https://bundler.io/)
 
@@ -216,7 +216,7 @@ Action Pack
     ```
 
     今後`HTTP_COOKIE`は出力されません。cookie jarはリクエスト間で保たれるため、テスト時に環境を人為的に操作する場合は、cookie jarの作成前に行う必要があります。
-    
+
 * `send_file`で`:type`が指定されていない場合にファイル拡張子からMIMEタイプを推測するようになりました。
 
 * PDFやZIPなどのMIMEタイプが追加されました。
@@ -273,7 +273,7 @@ Action Pack
       <%= f.button %>
     <% end %>
     ```
-    
+
 * dateヘルパーが新しく`:use_two_digit_numbers => true`オプションを取れるようになりました。これは月や日のselectボックスの数字の頭にゼロを表示します（それぞれの値は変わりません）。たとえば、ISO 8601形式の「2011-08-01」といった日付を表示するのに便利です。
 
 * フォームで名前空間を指定して、フォーム要素のid属性を一意にできるようになりました。この名前空間属性の名前は、生成されたHTML idの冒頭にアンダースコア付きで追加されます。
@@ -439,7 +439,7 @@ Active Record
       Post.connection.close
     }.join
     ```
-    
+
     この変更が必要になるのは、アプリケーションのコード内でスレッドを生成している場合だけです。
 
 * 5つのメソッド: `set_table_name`、`set_inheritance_column`、`set_sequence_name`、`set_primary_key`、`set_locking_column`が非推奨になりました。今後は代入メソッド（セッターメソッド）をお使いください。たとえば`set_table_name`ではなく、`self.table_name=`を使います。
