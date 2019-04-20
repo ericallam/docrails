@@ -1,183 +1,184 @@
-Ruby on Rails 3.1 Release Notes
+Ruby on Rails 3.1 リリースノート
 ===============================
 
-Highlights in Rails 3.1:
+Rails 3.1の注目ポイント
 
-* Streaming
-* Reversible Migrations
-* Assets Pipeline
-* jQuery as the default JavaScript library
+* ストリーミング
+* 逆進可能なマイグレーション
+* アセットパイプラリン
+* jQueryがデフォルトのJavaScriptライブラリになった
 
-This release notes cover the major changes, but don't include every little bug fix and change. If you want to see everything, check out the [list of commits](https://github.com/rails/rails/commits/master) in the main Rails repository on GitHub.
+本リリースノートでは、主要な変更についてのみ説明します。多数のバグ修正および変更点については、GithubのRailsリポジトリにある[コミットリスト](https://github.com/rails/rails/commits/3-1-stable)のchangelogを参照してください。
 
 --------------------------------------------------------------------------------
 
-Upgrading to Rails 3.1
+Rails 3.1へのアップグレード
 ----------------------
 
-If you're upgrading an existing application, it's a great idea to have good test coverage before going in. You should also first upgrade to Rails 3 in case you haven't and make sure your application still runs as expected before attempting to update to Rails 3.1. Then take heed of the following changes:
+既存のアプリケーションをアップグレードするのであれば、その前に質のよいテストカバレッジを用意するのはよい考えです。アプリケーションがRails 3までアップグレードされていない場合は先にそれを完了し、アプリケーションが正常に動作することを十分確認してからRails 3.1にアップデートしてください。以下の注意点を参照してからアップデートしてください。
 
-### Rails 3.1 requires at least Ruby 1.8.7
+### Rails 3.1ではRuby 1.8.7以上が必要
 
-Rails 3.1 requires Ruby 1.8.7 or higher. Support for all of the previous Ruby versions has been dropped officially and you should upgrade as early as possible. Rails 3.1 is also compatible with Ruby 1.9.2.
+Rails 3.1ではRuby 1.8.7以上が必須です。これより前のバージョンのRubyのサポートは公式に廃止されたため、速やかにRubyをアップグレードすべきです。Rails 3.1はRuby 1.9.2とも互換性があります。
 
-TIP: Note that Ruby 1.8.7 p248 and p249 have marshaling bugs that crash Rails. Ruby Enterprise Edition have these fixed since release 1.8.7-2010.02 though. On the 1.9 front, Ruby 1.9.1 is not usable because it outright segfaults, so if you want to use 1.9.x jump on 1.9.2 for smooth sailing.
+TIP: Ruby 1.8.7のp248とp249には、Railsクラッシュの原因となるマーシャリングのバグがあります。なおRuby Enterprise Editionでは1.8.7-2010.02のリリースでこの問題が修正されました。現行のRuby 1.9のうち、Ruby 1.9.1はセグメンテーションフォールト（segfault）で完全にダウンするため利用できません。Railsをスムーズに動かすため、Ruby 1.9.xを使いたい場合は1.9.2をお使いください。
 
-### What to update in your apps
+### Railsのアップグレード方法
 
-The following changes are meant for upgrading your application to Rails 3.1.3, the latest 3.1.x version of Rails.
+以下の変更点は、アプリケーションをRail 3.1.x系の中で最新のRails 3.1.3にアップグレードする場合を想定しています。
 
 #### Gemfile
 
-Make the following changes to your `Gemfile`.
+`Gemfile`を以下のように変更します。
 
 ```ruby
 gem 'rails', '= 3.1.3'
 gem 'mysql2'
 
-# Needed for the new asset pipeline
+# 新しいアセットパイプラインで必要
 group :assets do
   gem 'sass-rails',   "~> 3.1.5"
   gem 'coffee-rails', "~> 3.1.1"
   gem 'uglifier',     ">= 1.0.3"
 end
 
-# jQuery is the default JavaScript library in Rails 3.1
+# Rails 3.1ではjQueryがデフォルトのJavaScriptライブラリとなる
 gem 'jquery-rails'
 ```
 
 #### config/application.rb
 
-* The asset pipeline requires the following additions:
+* アセットパイプラインのために以下の追加が必要です。
 
     ```ruby
     config.assets.enabled = true
     config.assets.version = '1.0'
     ```
 
-* If your application is using the "/assets" route for a resource you may want change the prefix used for assets to avoid conflicts:
+* アプリケーションで、リソースへのルーティングに"/assets"を使っている場合、必要に応じてプレフィックスを変更してアセットのコンフリクトを避けてください。
 
     ```ruby
-    # Defaults to '/assets'
+    # デフォルトは'/assets'
     config.assets.prefix = '/asset-files'
     ```
 
 #### config/environments/development.rb
 
-* Remove the RJS setting `config.action_view.debug_rjs = true`.
+* RJSの設定`config.action_view.debug_rjs = true`を削除します。
 
-* Add the following, if you enable the asset pipeline.
+* アセットパイプラインを有効にする場合は以下を追加します。
 
     ```ruby
-    # Do not compress assets
+    # アセットを圧縮しない
     config.assets.compress = false
 
-    # Expands the lines which load the assets
+    # アセットを読み込む行を拡大する
     config.assets.debug = true
     ```
 
 #### config/environments/production.rb
 
-* Again, most of the changes below are for the asset pipeline. You can read more about these in the [Asset Pipeline](asset_pipeline.html) guide.
+* 以下の変更のほとんどもアセットパイプライン用です。詳しくは[アセットパイプライン](asset_pipeline.html)ガイドを参照してください。
 
     ```ruby
-    # Compress JavaScripts and CSS
+    # JavaScriptsとCSSの圧縮
     config.assets.compress = true
 
-    # Don't fallback to assets pipeline if a precompiled asset is missed
+    # プリコンパイル済みアセットがない場合はアセットパイプラインにフォールバックしない
     config.assets.compile = false
 
-    # Generate digests for assets URLs
+    # アセットURL用のダイジェストを生成する
     config.assets.digest = true
 
-    # Defaults to Rails.root.join("public/assets")
+    # デフォルトはRails.root.join("public/assets")
     # config.assets.manifest = YOUR_PATH
 
-    # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
+    # 追加のアセットをプリコンパイルする（application.js、application.css、およびすべてのnon-JS/CSSは既に追加済み）
     # config.assets.precompile `= %w( search.js )
 
 
-    # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
+    # アプリへの全アクセスのSSL、Strict-Transport-Security、secure cookieを強制する
     # config.force_ssl = true
     ```
 
 #### config/environments/test.rb
 
 ```ruby
-# Configure static asset server for tests with Cache-Control for performance
+# テストの静的アセットサーバーをCache-Controlで構成（パフォーマンス向上用）
 config.serve_static_assets = true
 config.static_cache_control = "public, max-age=3600"
 ```
 
 #### config/initializers/wrap_parameters.rb
 
-* Add this file with the following contents, if you wish to wrap parameters into a nested hash. This is on by default in new applications.
+* パラメータをラップしてネスト済みハッシュにしたい場合は、以下の内容のファイルを追加します。新規アプリケーションでは今後これがデフォルトになります。
 
     ```ruby
-    # Be sure to restart your server when you modify this file.
-    # This file contains settings for ActionController::ParamsWrapper which
-    # is enabled by default.
+    # このファイルを変更したら必ずサーバーをリスタートすること
+    # このファイルに含まれるActionController::ParamsWrapperの設定は
+    # デフォルトで有効になる
 
-    # Enable parameter wrapping for JSON. You can disable this by setting :format to an empty array.
+    # JSONパラメーターのラップを有効にする
+    # 空配列に:formatを設定すると無効にできる
     ActiveSupport.on_load(:action_controller) do
       wrap_parameters :format => [:json]
     end
 
-    # Disable root element in JSON by default.
+    # JSONのroot要素を無効にする（デフォルト）
     ActiveSupport.on_load(:active_record) do
       self.include_root_in_json = false
     end
     ```
 
-#### Remove :cache and :concat options in asset helpers references in views
+#### ビューのアセットヘルパー参照から`:cache`と`:concat`オプションを削除する
 
-* With the Asset Pipeline the :cache and :concat options aren't used anymore, delete these options from your views.
+* アセットパイプラインの`:cache`と`:concat`オプションは今後使われないので、このオプションをビューから削除します。
 
-Creating a Rails 3.1 application
+Rails 3.1アプリケーションを作成する
 --------------------------------
 
 ```bash
-# You should have the 'rails' RubyGem installed
+# 以下を実行する前に'rails RubyGemをインストールしておくこと
 $ rails new myapp
 $ cd myapp
 ```
 
-### Vendoring Gems
+### gemに移行する
 
-Rails now uses a `Gemfile` in the application root to determine the gems you require for your application to start. This `Gemfile` is processed by the [Bundler](https://github.com/carlhuda/bundler) gem, which then installs all your dependencies. It can even install all the dependencies locally to your application so that it doesn't depend on the system gems.
+現在のRailsでは、アプリケーションのルートディレクトリに置かれる`Gemfile`を使って、アプリケーションの起動に必要なgemを指定します。この`Gemfile`は[Bundler](https://github.com/carlhuda/bundler)というgemによって処理され、依存関係のある必要なgemをすべてインストールします。依存するgemをそのアプリケーションの中にだけインストールして、OS環境にある既存のgemに影響を与えないようにすることもできます。
 
-More information: - [bundler homepage](http://bundler.io/)
+詳細情報: [Bundlerホームページ](https://bundler.io/)
 
-### Living on the Edge
+### 最新のgemを使う
 
-`Bundler` and `Gemfile` makes freezing your Rails application easy as pie with the new dedicated `bundle` command. If you want to bundle straight from the Git repository, you can pass the `--edge` flag:
+`Bundler`と`Gemfile`のおかげで、専用の`bundle`コマンド一発でRailsアプリケーションのgemを簡単に安定させることができます。Gitリポジトリから直接bundleしたい場合は`--edge`フラグを追加します。
 
-```bash
+```
 $ rails new myapp --edge
 ```
 
-If you have a local checkout of the Rails repository and want to generate an application using that, you can pass the `--dev` flag:
+Railsアプリケーションのリポジトリをローカルにチェックアウトしたものがあり、それを使ってアプリケーションを生成したい場合は、`--dev`フラグを追加します。
 
-```bash
+```
 $ ruby /path/to/rails/railties/bin/rails new myapp --dev
 ```
 
-Rails Architectural Changes
+Railsアーキテクチャの変更点
 ---------------------------
 
-### Assets Pipeline
+### アセットパイプライン
 
-The major change in Rails 3.1 is the Assets Pipeline. It makes CSS and JavaScript first-class code citizens and enables proper organization, including use in plugins and engines.
+アセットパイプライン（Assets Pipeline）はRails 3.1の大きな変更点です。アセットパイプラインは、CSSやJavaScriptのコードを第一級市民として扱い、プラグインやエンジンの利用を含めて正式に編成できるようにします。
 
-The assets pipeline is powered by [Sprockets](https://github.com/sstephenson/sprockets) and is covered in the [Asset Pipeline](asset_pipeline.html) guide.
+アセットパイプラインは[Sprockets](https://github.com/sstephenson/sprockets)によって強化されています。また、[アセットパイプライン](asset_pipeline.html)ガイドに解説があります。
 
-### HTTP Streaming
+### HTTPストリーミング
 
-HTTP Streaming is another change that is new in Rails 3.1. This lets the browser download your stylesheets and JavaScript files while the server is still generating the response. This requires Ruby 1.9.2, is opt-in and requires support from the web server as well, but the popular combo of nginx and unicorn is ready to take advantage of it.
+HTTPストリーミングもRails 3.1の変更点のひとつです。これにより、サーバーがレスポンス生成の途中でもスタイルシートやJavaScriptファイルをブラウザからダウンロードできるようになります。利用にはRuby 1.9.2の他に、Webサーバーでのサポートも必要ですが、よく使われているNginxとUnicornの組み合わせで利用可能です。
 
-### Default JS library is now jQuery
+### デフォルトのJSライブラリがjQueryになった
 
-jQuery is the default JavaScript library that ships with Rails 3.1. But if you use Prototype, it's simple to switch.
+Rails 3.1で同梱されるデフォルトのJavaScriptがjQueryになりました。Prototype.jsを使いたい場合は以下のように簡単に切り替えられます。
 
 ```bash
 $ rails new myapp -j prototype
@@ -185,59 +186,59 @@ $ rails new myapp -j prototype
 
 ### Identity Map
 
-Active Record has an Identity Map in Rails 3.1. An identity map keeps previously instantiated records and returns the object associated with the record if accessed again. The identity map is created on a per-request basis and is flushed at request completion.
+Rails 3.1のActive RecordにIdentity Mapが搭載されました。Identity Mapは直前にインスタンス化された複数のレコードを保持し、次のアクセス時にそのレコードに関連付けられたオブジェクトを返します。Identity Mapはリクエストごとに作成され、リクエストの完了時に破棄されます。
 
-Rails 3.1 comes with the identity map turned off by default.
+Rails 3.1のIdentity Mapはデフォルトでオフになっています（訳注: Identity Mapはその後Rails 4.0で削除されました）。
 
 Railties
 --------
 
-* jQuery is the new default JavaScript library.
+* jQueryが新たにデフォルトのJavaScriptライブラリになりました。
 
-* jQuery and Prototype are no longer vendored and is provided from now on by the jquery-rails and prototype-rails gems.
+* jQueryやPrototype.jsは今後ベンダリングされません。代わりにjquery-rails gemやprototype-rails gemで提供されます。
 
-* The application generator accepts an option `-j` which can be an arbitrary string. If passed "foo", the gem "foo-rails" is added to the `Gemfile`, and the application JavaScript manifest requires "foo" and "foo_ujs". Currently only "prototype-rails" and "jquery-rails" exist and provide those files via the asset pipeline.
+* アプリケーションジェネレータで、任意の文字列を取れる`-j`オプションを使えるようになりました。"foo"を渡すと`Gemfile`に"foo-rails" gemが追加され、アプリケーションのJavaScriptマニフェストで"foo"と"foo_ujs"がrequireされます。現時点では"prototype-rails"と"jquery-rails"のみが存在し、それらのファイルはアセットパイプライン経由で提供されます。
 
-* Generating an application or a plugin runs `bundle install` unless `--skip-gemfile` or `--skip-bundle` is specified.
+* アプリやプラグインの生成時に`--skip-gemfile`や`--skip-bundle`を指定しない場合、`bundle install`を実行します。
 
-* The controller and resource generators will now automatically produce asset stubs (this can be turned off with `--skip-assets`). These stubs will use CoffeeScript and Sass, if those libraries are available.
+* コントローラやリソースをジェネレータで生成すると、アセットのスタブが自動で作成されるようになりました（`--skip-assets`でオフにできます）。CoffeeScriptやSassのライブラリが利用可能な場合、生成されたスタブでCoffeeScriptやSassが使われます。
 
-* Scaffold and app generators use the Ruby 1.9 style hash when running on Ruby 1.9. To generate old style hash, `--old-style-hash` can be passed.
+* scaffoldやアプリをRuby 1.9で生成すると、ハッシュのスタイルがRuby 1.9のスタイルになります。`--old-style-hash`を渡すと従来のハッシュスタイルで生成できます。
 
-* Scaffold controller generator creates format block for JSON instead of XML.
+* scaffoldのコントローラジェネレータが、XMLフォーマットブロックに代えてJSONフォーマットブロックを生成するようになりました。
 
-* Active Record logging is directed to STDOUT and shown inline in the console.
+* コンソールでActive RecordログがSTDOUTにインライン出力されるようになりました。
 
-* Added `config.force_ssl` configuration which loads `Rack::SSL` middleware and force all requests to be under HTTPS protocol.
+* 設定に`config.force_ssl`が追加されました。これは`Rack::SSL`ミドルウェアを読み込んであらゆるリクエストを強制的にHTTPSプロトコルにします。
 
-* Added `rails plugin new` command which generates a Rails plugin with gemspec, tests and a dummy application for testing.
+* Railsプラグインを生成する`rails plugin new`コマンドが追加されました。生成されるプラグインにはgemspec、テスト、テスト用ダミーアプリケーションが含まれます。
 
-* Added `Rack::Etag` and `Rack::ConditionalGet` to the default middleware stack.
+* `Rack::Etag`と`Rack::ConditionalGet`がデフォルトのミドルウェアスタックに追加されました。
 
-* Added `Rack::Cache` to the default middleware stack.
+* `Rack::Cache`がデフォルトのミドルウェアスタックに追加されます。
 
-* Engines received a major update - You can mount them at any path, enable assets, run generators etc.
+* エンジンでメジャーアップデートが行われました。任意のパスをマウントする、アセットの有効化、ジェネレータの実行などを含みます。
 
 Action Pack
 -----------
 
 ### Action Controller
 
-* A warning is given out if the CSRF token authenticity cannot be verified.
+* CSRFトークンの認証を照合できない場合にwarningが出力されるようになりました。
 
-* Specify `force_ssl` in a controller to force the browser to transfer data via HTTPS protocol on that particular controller. To limit to specific actions, `:only` or `:except` can be used.
+* 特定のコントローラで`force_ssl`を指定すると、そのコントローラからブラウザにHTTPSプロトコルによるデータ通信を強制できるようになりました。HTTPSを特定のアクションに限定する`:only`や`:except`も利用できます。
 
-* Sensitive query string parameters specified in `config.filter_parameters` will now be filtered out from the request paths in the log.
+* （個人情報などの）重要な情報を含むクエリ文字列パラメータを`config.filter_parameters`で指定すると、そのリクエストパスをクエリのログから除外できるようになりました。
 
-* URL parameters which return `nil` for `to_param` are now removed from the query string.
+* `to_param`すると`nil`を返すURLパラメータは、クエリ文字列から削除されるようになりました。
 
-* Added `ActionController::ParamsWrapper` to wrap parameters into a nested hash, and will be turned on for JSON request in new applications by default. This can be customized in `config/initializers/wrap_parameters.rb`.
+* パラメータをラップしてnestedハッシュにする`ActionController::ParamsWrapper`が追加されました。かつ、新しいアプリのJSONリクエストではこの機能がデフォルトでオンになります。`config/initializers/wrap_parameters.rb`でカスタマイズできます。
 
-* Added `config.action_controller.include_all_helpers`. By default `helper :all` is done in `ActionController::Base`, which includes all the helpers by default. Setting `include_all_helpers` to `false` will result in including only application_helper and the helper corresponding to controller (like foo_helper for foo_controller).
+* `config.action_controller.include_all_helpers`が追加されました。デフォルトでは、`ActionController::Base`で`helper :all`が適用されます（デフォルトですべてのヘルパーを含む）。`include_all_helpers`設定を`false`にすると、`application_helper`と、コントローラ名に対応するヘルパー（例: foo_controllerの場合はfoo_helper）だけが含まれます。
 
-* `url_for` and named url helpers now accept `:subdomain` and `:domain` as options.
+* `url_for`や名前付きURLヘルパーで`:subdomain`オプションや`:domain`オプションを指定できるようになりました。
 
-* Added `Base.http_basic_authenticate_with` to do simple http basic authentication with a single class method call.
+* `Base.http_basic_authenticate_with`が追加されました。このクラスメソッドを1度呼び出すだけでシンプルなHTTP BASIC認証を行えます。
 
     ```ruby
     class PostsController < ApplicationController
@@ -246,11 +247,11 @@ Action Pack
       before_filter :authenticate, :except => [ :index ]
 
       def index
-        render :text => "Everyone can see me!"
+        render :text => "ここは誰でも見える！"
       end
 
       def edit
-        render :text => "I'm only accessible if you know the password"
+        render :text => "ここはパスワードを知らないと見えない"
       end
 
       private
@@ -262,23 +263,23 @@ Action Pack
     end
     ```
 
-    ..can now be written as
+    上のコードは以下のように書けます。
 
     ```ruby
     class PostsController < ApplicationController
       http_basic_authenticate_with :name => "dhh", :password => "secret", :except => :index
 
       def index
-        render :text => "Everyone can see me!"
+        render :text => "ここは誰でも見える！"
       end
 
       def edit
-        render :text => "I'm only accessible if you know the password"
+        render :text => "ここはパスワードを知らないと見えない"
       end
     end
     ```
 
-* Added streaming support, you can enable it with:
+* ストリーミングのサポートが追加されました。有効にするには以下のようにします。
 
     ```ruby
     class PostsController < ActionController::Base
@@ -286,11 +287,13 @@ Action Pack
     end
     ```
 
-    You can restrict it to some actions by using `:only` or `:except`. Please read the docs at [`ActionController::Streaming`](http://api.rubyonrails.org/v3.1.0/classes/ActionController/Streaming.html) for more information.
+    `:only`や`:except`を用いてストリーミングを特定のアクションに限定できます。詳しくは[`ActionController::Streaming`](http://api.rubyonrails.org/v3.1.0/classes/ActionController/Streaming.html)を参照してください。
 
-* The redirect route method now also accepts a hash of options which will only change the parts of the url in question, or an object which responds to call, allowing for redirects to be reused.
+* ルーティングの`redirect`メソッドが、対象URLの一部のみを変更するオプションハッシュを1つ受け取ることも、呼び出しに応答できるオブジェクト（リダイレクトで再利用できる）を1つ受け取ることもできるようになりました。
 
 ### Action Dispatch
+
+* `config.action_dispatch.x_sendfile_header`がデフォルトで`nil`になりました。なおこの設定は`config/environments/production.rb`にはデフォルトで値が設定されません。
 
 * `config.action_dispatch.x_sendfile_header` now defaults to `nil` and `config/environments/production.rb` doesn't set any particular value for it. This allows servers to set it through `X-Sendfile-Type`.
 
@@ -524,33 +527,33 @@ Active Resource
 Active Support
 --------------
 
-* `ActiveSupport::Dependencies` now raises `NameError` if it finds an existing constant in `load_missing_constant`.
+* `ActiveSupport::Dependencies`で既存の定数が`load_missing_constant`にある場合に`NameError`をraiseするようになりました。
 
-* Added a new reporting method `Kernel#quietly` which silences both `STDOUT` and `STDERR`.
+* レポート用メソッド`Kernel#quietly`が新たに追加されました。これは`STDOUT`と`STDERR`を両方とも抑制します。
 
-* Added `String#inquiry` as a convenience method for turning a String into a `StringInquirer` object.
+* `String#inquiry`が追加されました。これは文字列を`StringInquirer`オブジェクトに変換するのに便利です。
 
-* Added `Object#in?` to test if an object is included in another object.
+* `Object#in?`が追加されました。これはオブジェクトが別のオブジェクトに含まれているかどうかをテストします。
 
-* `LocalCache` strategy is now a real middleware class and no longer an anonymous class.
+* `LocalCache`ストラテジーが、無名クラスではなくミドルウェアに実在するクラスになりました。
 
-* `ActiveSupport::Dependencies::ClassCache` class has been introduced for holding references to reloadable classes.
+* `ActiveSupport::Dependencies::ClassCache`クラスが導入されました。再読み込み可能なクラスへの参照がこのクラスに保持されます。
 
-* `ActiveSupport::Dependencies::Reference` has been refactored to take direct advantage of the new `ClassCache`.
+* `ActiveSupport::Dependencies::Reference`がリファクタリングされ、新しい`ClassCache`を直接利用するようになりました。
 
-* Backports `Range#cover?` as an alias for `Range#include?` in Ruby 1.8.
+* `Range#cover?`がRuby 1.8の`Range#include?`のエイリアスとしてバックポートされました。
 
-* Added `weeks_ago` and `prev_week` to Date/DateTime/Time.
+* Date/DateTime/Timeに`weeks_ago`と`prev_week`が追加されました。
 
-* Added `before_remove_const` callback to `ActiveSupport::Dependencies.remove_unloadable_constants!`.
+* `before_remove_const`コールバックが`ActiveSupport::Dependencies.remove_unloadable_constants!`に追加されました。
 
-Deprecations:
+非推奨化:
 
-* `ActiveSupport::SecureRandom` is deprecated in favor of `SecureRandom` from the Ruby standard library.
+* `ActiveSupport::SecureRandom`が非推奨化されました。今後はRuby標準ライブラリの`SecureRandom`が推奨されます。
 
-Credits
+クレジット表記
 -------
 
-See the [full list of contributors to Rails](http://contributors.rubyonrails.org/) for the many people who spent many hours making Rails, the stable and robust framework it is. Kudos to all of them.
+Railsを頑丈かつ安定したフレームワークにするために多大な時間を費やしてくださった多くの開発者については、[Railsコントリビューターの完全なリスト](http://contributors.rubyonrails.org/)を参照してください。これらの方々全員に敬意を表明いたします。
 
-Rails 3.1 Release Notes were compiled by [Vijay Dev](https://github.com/vijaydev.)
+Rails 3.1リリースノートの編集は[Vijay Dev](https://github.com/vijaydev)が担当しました。

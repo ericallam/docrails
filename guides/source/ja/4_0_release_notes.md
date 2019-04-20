@@ -32,7 +32,7 @@ $ cd myapp
 
 ### gemに移行する
 
-現在のRailsでは、アプリケーションのルートディレクトリに置かれる`Gemfile`を使って、アプリケーションの起動に必要なgemを指定します。`Gemfile`の処理は[Bundler](https://github.com/carlhuda/bundler)というgemで行われます。今後はBundlerがすべての依存gemをインストールします。依存gemをアプリケーションディレクトリにローカルインストールして、システムのgem（OS環境にあるgem）に依存しないようにすることも可能です（訳注: Rails開発ではこの方法が主流です）。
+Railsでは、アプリケーションのルートディレクトリに置かれる`Gemfile`を使って、アプリケーションの起動に必要なgemを指定します。この`Gemfile`は[Bundler](https://github.com/carlhuda/bundler)というgemによって処理され、依存関係のある必要なgemをすべてインストールします。依存するgemをそのアプリケーションの中にだけインストールして、OS環境にある既存のgemに影響を与えないようにすることもできます。
 
 詳細情報: [Bundlerホームページ](https://bundler.io/)
 
