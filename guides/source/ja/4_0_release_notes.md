@@ -32,7 +32,7 @@ $ cd myapp
 
 ### gemに移行する
 
-Rails 4.0からは、アプリケーションのルートディレクトリに置かれる`Gemfile`を使って、アプリケーションの起動に必要なgemを指定するようになりました。この`Gemfile`は[Bundler](https://github.com/carlhuda/bundler)というgemによって処理され、依存関係のある必要なgemをすべてインストールします。依存するgemをそのアプリケーションの中にだけインストールして、OS環境にある既存のgemに影響を与えないようにすることもできます。
+現在のRailsでは、アプリケーションのルートディレクトリに置かれる`Gemfile`を使って、アプリケーションの起動に必要なgemを指定します。`Gemfile`の処理は[Bundler](https://github.com/carlhuda/bundler)というgemで行われます。今後はBundlerがすべての依存gemをインストールします。依存gemをアプリケーションディレクトリにローカルインストールして、システムのgem（OS環境にあるgem）に依存しないようにすることも可能です（訳注: Rails開発ではこの方法が主流です）。
 
 詳細情報: [Bundlerホームページ](https://bundler.io/)
 
@@ -79,7 +79,7 @@ $ ruby /path/to/rails/railties/bin/rails new myapp --dev
 
 ### 一般
 
-* **ActiveModel::Model** ([commit](https://github.com/rails/rails/commit/3b822e91d1a6c4eab0064989bbd07aae3a6d0d08)) - `ActiveModel::Model`は通常のRubyオブジェクトでもActionPackの機能を利用できるようにする (`form_for`など) ためのミックスイン。 
+* **ActiveModel::Model** ([commit](https://github.com/rails/rails/commit/3b822e91d1a6c4eab0064989bbd07aae3a6d0d08)) - `ActiveModel::Model`は通常のRubyオブジェクトでもActionPackの機能を利用できるようにする (`form_for`など) ためのミックスイン。
 * **新しい「スコープAPI」** ([コミット](https://github.com/rails/rails/commit/50cbc03d18c5984347965a94027879623fc44cce)) - scopeメソッドの引数は常にcallメソッドを実装していなくてはならない。
 * **スキーマキャッシュダンプ** ([コミット](https://github.com/rails/rails/commit/5ca4fc95818047108e69e22d200e7a4a22969477)) - Railsの起動時間短縮のため、スキーマをデータベースから直接読み込むのではなくダンプファイルから読み込む。
 * **トランザクション分離レベル指定のサポート** ([コミット](https://github.com/rails/rails/commit/392eeecc11a291e406db927a18b75f41b2658253)) - 読み出しを頻繁に行うか、書き込みのパフォーマンスを重視してロックを減らすかを選択できる。
