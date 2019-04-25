@@ -312,13 +312,21 @@ body {
 }
 
 #container {
+  overflow: hidden;
   color: #333;
   padding: 0.5em 0 1.0em 0;
 }
 
 #mainCol {
-  max-width: 630px;
-  margin-left: 2em;
+  float:left;
+  width: 630px;
+  /*margin-left: 2em;*/
+}
+@media screen and (max-width: 920px) {
+  #mainCol {
+    clear:both;
+    width: 100%;
+  }
 }
 
 #subCol {
@@ -334,8 +342,11 @@ body {
   margin-right: 1em;
 }
 
+#subCol.remove-bg-color {
+  background: unset;
+}
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 920px) {
   #subCol {
     position: static;
     width: inherit;
@@ -347,6 +358,22 @@ body {
 
 #extraCol {display: none;}
 
+aside#toppage {
+  float:right;
+  width:220px;
+}
+@media screen and (max-width: 920px) {
+  aside#toppage {
+    float:unset;
+    width:100%;
+    clear:both;
+    text-align: center;
+  }
+  aside#toppage img{
+    max-width:300px;
+  }
+}
+
 #footer {
   padding: 2em 0;
   background: #222 url(../images/footer_tile.gif) repeat-x;
@@ -356,10 +383,12 @@ body {
   max-width: 960px;
 }
 
-#header .wrapper, #topNav .wrapper, #feature .wrapper {padding-left: 1em; max-width: 960px;}
+#header .wrapper, #topNav .wrapper, #feature .wrapper {
+  padding-left: 1em; max-width: 960px;
+}
 #feature .wrapper {max-width: 640px; padding-right: 23em; position: relative; z-index: 0;}
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 920px) {
   #feature .wrapper { padding-right: 0; }
 }
 
@@ -796,7 +825,7 @@ div.code_container {
   -moz-border-radius: 1em;
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 920px) {
   .top #subCol {
     min-height: 491px;
     margin-right: 6px;
@@ -815,7 +844,7 @@ div.code_container {
   }
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 920px) {
   .top #subCol dd.work-in-progress, #subCol dd.kindle {
     margin-left: 215px;
   }
@@ -856,7 +885,7 @@ div.code_container {
   cursor: pointer;
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 920px) {
   #subCol .ebook {
     width: 100%;
     margin: 0px;
@@ -902,7 +931,7 @@ div.code_container {
   display:none;
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 920px) {
   #subCol .ebook img {
     width: 47%;
     float: left;
