@@ -447,152 +447,149 @@ Active Recordのコアメソッド群が、Arelを用いて自身のリレーシ
 
 Active Recordブランチでは他にも多数の修正が行われました。
 
-* SQLite 2 support has been dropped in favor of SQLite 3.
-* MySQL support for column order.
-* PostgreSQL adapter has had its `TIME ZONE` support fixed so it no longer inserts incorrect values.
-* Support multiple schemas in table names for PostgreSQL.
-* PostgreSQL support for the XML data type column.
-* `table_name` is now cached.
-* A large amount of work done on the Oracle adapter as well with many bug fixes.
+* SQLite2のサポートが終了し、SQLite3がサポート対象になった
+* MySQLのカラム順をサポート
+* PostgreSQLアダプタの`TIME ZONE`サポートが修正され、誤った値が挿入されないようになった
+* PostgreSQLテーブル名で複数のスキーマをサポート
+* PostgreSQLでXMLデータ型カラムをサポート
+* `table_name`がキャッシュされるようになった
+* Oracleアダプタで多くの作業が行われ、バグも多数修正された
 
-As well as the following deprecations:
+以下の非推奨化も行われました。
 
-* `named_scope` in an Active Record class is deprecated and has been renamed to just `scope`.
-* In `scope` methods, you should move to using the relation methods, instead of a `:conditions => {}` finder method, for example `scope :since, lambda {|time| where("created_at > ?", time) }`.
-* `save(false)` is deprecated, in favor of `save(:validate => false)`.
-* I18n error messages for Active Record should be changed from :en.activerecord.errors.template to `:en.errors.template`.
-* `model.errors.on` is deprecated in favor of `model.errors[]`
-* validates_presence_of => validates... :presence => true
-* `ActiveRecord::Base.colorize_logging` and `config.active_record.colorize_logging` are deprecated in favor of `Rails::LogSubscriber.colorize_logging` or `config.colorize_logging`
+* Active Recordクラスの`named_scope`が非推奨化され、シンプルな`scope`にリネームされた
+* `scope`メソッドでは、従来の`:conditions => {}`ではなく今後リレーションメソッドを使うべき（例: `scope :since, lambda {|time| where("created_at > ?", time) }`）
+* `save(false)`が非推奨化され、今後は`save(:validate => false)`に
+* Active RecordのI18nエラーメッセージは`:en.activerecord.errors.template`から今後`:en.errors.template`に変更すべき
+* `model.errors.on`が非推奨化され、今後は`model.errors[]`に
+* `validates_presence_of => validates`は今後`:presence => true`に
+* `ActiveRecord::Base.colorize_logging`と`config.active_record.colorize_logging`が非推奨化され、今後はそれぞれ`Rails::LogSubscriber.colorize_logging`や`config.colorize_logging`に
 
-NOTE: While an implementation of State Machine has been in Active Record edge for some months now, it has been removed from the Rails 3.0 release.
-
+NOTE: 数か月前にActive Recordのedge版にState Machineが実装されていましたが、Rails 3.0リリースからは削除されました。
 
 Active Resource
 ---------------
 
-Active Resource was also extracted out to Active Model allowing you to use Active Resource objects with Action Pack seamlessly.
+Active ResourceもActive Modelに切り出されたことで、Action PackでActive Resourceオブジェクトをシームレスに利用できるようになりました。
 
-* Added validations through Active Model.
-* Added observing hooks.
-* HTTP proxy support.
-* Added support for digest authentication.
-* Moved model naming into Active Model.
-* Changed Active Resource attributes to a Hash with indifferent access.
-* Added `first`, `last` and `all` aliases for equivalent find scopes.
-* `find_every` now does not return a `ResourceNotFound` error if nothing returned.
-* Added `save!` which raises `ResourceInvalid` unless the object is `valid?`.
-* `update_attribute` and `update_attributes` added to Active Resource models.
-* Added `exists?`.
-* Renamed `SchemaDefinition` to `Schema` and `define_schema` to `schema`.
-* Use the `format` of Active Resources rather than the `content-type` of remote errors to load errors.
-* Use `instance_eval` for schema block.
-* Fix `ActiveResource::ConnectionError#to_s` when `@response` does not respond to #code or #message, handles Ruby 1.9 compatibility.
-* Add support for errors in JSON format.
-* Ensure `load` works with numeric arrays.
-* Recognizes a 410 response from remote resource as the resource has been deleted.
-* Add ability to set SSL options on Active Resource connections.
-* Setting connection timeout also affects `Net::HTTP` `open_timeout`.
+* Active Modelで使えるバリデーションを追加
+* observer用フックを追加
+* HTTPプロキシのサポート
+* ダイジェスト認証のサポートを追加
+* モデルの命名をActive Modelに移動
+* Active Resource属性をHashWithIndifferentAccessに変更
+* findスコープと同等なエイリアス`first`、`last`、`all`を追加
+* `find_every`で何も返されなかった場合に`ResourceNotFound`を返さないようになった
+* `save!`を追加（オブジェクトが`valid?`でなければ`ResourceInvalid`をraiseする）
+* `update_attribute`と`update_attributes`をActive Resourceモデルに追加
+* `exists?`を追加
+* `SchemaDefinition`を`Schema`にリネーム、`define_schema`を`schema`にリネーム
+* エラーの読み込みにリモートエラーの`content-type`ではなくActive Resourcesの`format`を用いるようになった
+* スキーマブロックには`instance_eval`を用いるようになった
+* `ActiveResource::ConnectionError#to_s`を修正（`@response`が#codeや#messageに応答しない場合にRuby 1.9互換になるようにする）
+* JSONフォーマットのエラーをサポート
+* `load`が数値の配列でも使えるようになった
+* リモートリソースの410レスポンスを、リソースが削除されたと認識するようになった
+* Active Resource接続にSSLオプションを設定する機能を追加
+* 接続のタイムアウト設定が`Net::HTTP` `open_timeout`にも効くようになった
 
-Deprecations:
+以下は非推奨化されました。
 
-* `save(false)` is deprecated, in favor of `save(:validate => false)`.
-* Ruby 1.9.2: `URI.parse` and `.decode` are deprecated and are no longer used in the library.
-
+* `save(false)`が非推奨化され、今後は`save(:validate => false)`に
+* Ruby 1.9.2: `URI.parse`と`.decode`が非推奨化され、今後はライブラリで使われなくなった
 
 Active Support
 --------------
 
-A large effort was made in Active Support to make it cherry pickable, that is, you no longer have to require the entire Active Support library to get pieces of it. This allows the various core components of Rails to run slimmer.
+Active Supportの必要な機能だけを利用できるよう、多くの作業が行われました。これにより、Active Supportライブラリの一部の機能だけを使うために全体を`require`する必要がなくなりました。これにより、Railsのさまざまなコアコンポーネントがスリム化できるようになります。
 
-These are the main changes in Active Support:
+Active Supportの主な変更点は以下のとおりです。
 
-* Large clean up of the library removing unused methods throughout.
-* Active Support no longer provides vendored versions of [TZInfo](http://tzinfo.rubyforge.org/), [Memcache Client](http://deveiate.org/projects/RMemCache/) and [Builder](http://builder.rubyforge.org/,) these are all included as dependencies and installed via the `bundle install` command.
-* Safe buffers are implemented in `ActiveSupport::SafeBuffer`.
-* Added `Array.uniq_by` and `Array.uniq_by!`.
-* Removed `Array#rand` and backported `Array#sample` from Ruby 1.9.
-* Fixed bug on `TimeZone.seconds_to_utc_offset` returning wrong value.
-* Added `ActiveSupport::Notifications` middleware.
-* `ActiveSupport.use_standard_json_time_format` now defaults to true.
-* `ActiveSupport.escape_html_entities_in_json` now defaults to false.
-* `Integer#multiple_of?` accepts zero as an argument, returns false unless the receiver is zero.
-* `string.chars` has been renamed to `string.mb_chars`.
-* `ActiveSupport::OrderedHash` now can de-serialize through YAML.
-* Added SAX-based parser for XmlMini, using LibXML and Nokogiri.
-* Added `Object#presence` that returns the object if it's `#present?` otherwise returns `nil`.
-* Added `String#exclude?` core extension that returns the inverse of `#include?`.
-* Added `to_i` to `DateTime` in `ActiveSupport` so `to_yaml` works correctly on models with `DateTime` attributes.
-* Added `Enumerable#exclude?` to bring parity to `Enumerable#include?` and avoid if `!x.include?`.
-* Switch to on-by-default XSS escaping for rails.
-* Support deep-merging in `ActiveSupport::HashWithIndifferentAccess`.
-* `Enumerable#sum` now works will all enumerables, even if they don't respond to `:size`.
-* `inspect` on a zero length duration returns '0 seconds' instead of empty string.
-* Add `element` and `collection` to `ModelName`.
-* `String#to_time` and `String#to_datetime` handle fractional seconds.
-* Added support to new callbacks for around filter object that respond to `:before` and `:after` used in before and after callbacks.
-* The `ActiveSupport::OrderedHash#to_a` method returns an ordered set of arrays. Matches Ruby 1.9's `Hash#to_a`.
-* `MissingSourceFile` exists as a constant but it is now just equals to `LoadError`.
-* Added `Class#class_attribute`, to be able to declare a class-level attribute whose value is inheritable and overwritable by subclasses.
-* Finally removed `DeprecatedCallbacks` in `ActiveRecord::Associations`.
-* `Object#metaclass` is now `Kernel#singleton_class` to match Ruby.
+* ライブラリをクリーンアップし、不要なメソッドを徹底的に削除しました。
+* Active Supportで[TZInfo](http://tzinfo.rubyforge.org/)や[Memcache Client](http://deveiate.org/projects/RMemCache/)や[Builder](http://builder.rubyforge.org/)のベンダリングバージョンの提供が終了しました。今後これらはすべて依存ライブラリに含まれ、`bundle install`コマンドでインストールされます。
+* `ActiveSupport::SafeBuffer`に安全なバッファが実装された
+* `Array.uniq_by`と`Array.uniq_by!`を追加
+* `Array#rand`を削除し、Ruby 1.9から`Array#sample`をバックポートした
+* `TimeZone.seconds_to_utc_offset`が誤った値を返すバグを修正した
+* `ActiveSupport::Notifications`ミドルウェアを追加
+* `ActiveSupport.use_standard_json_time_format`のデフォルトがtrueになった
+* `ActiveSupport.escape_html_entities_in_json`のデフォルトがfalseになった
+* `Integer#multiple_of?`がゼロを引数として受け取れるようになり、レシーバーがゼロでない場合にfalseを返すようになった
+* `string.chars`が`string.mb_chars`にリネームされた
+* `ActiveSupport::OrderedHash`がYAMLでデシリアライズできるようになった
+* XmlMini用のSaxベースのパーサーを追加（LibXMLとNokogiriを利用）
+* `Object#presence`を追加（`#present?`の場合はオブジェクトを、それ以外の場合は`nil`を返す）
+* `String#exclude?`コア拡張を追加（`#include?`と逆の結果を返す）
+* `DateTime`属性を持つモデルで`to_yaml`が正しく動作するために、`to_i`を`ActiveSupport`の`DateTime`に追加
+* `Enumerable#exclude?`を追加（`if !x.include?`という書き方を避けるため`Enumerable#include?`と逆の結果を返す）
+* RailsのXSS（クロスサイトスクリプティング）のエスケープがデフォルトでオンになった
+* `ActiveSupport::HashWithIndifferentAccess`のdeepマージをサポート
+* `Enumerable#sum`があらゆるenumerableで動作するようになった（`:size`に応答しない場合でも利用可能）
+* 長さゼロのdurationを`inspect`すると空文字列ではなく'0 seconds'が返るようになった
+* `element`と`collection`を`ModelName`に追加
+* `String#to_time`や`String#to_datetime`で分数形式の秒を扱うようになった
+* beforeコールバックやafterコールバックで`:before`や`:after`の両方に応答するaroundフィルタオブジェクトのコールバックを新たにサポートした
+* `ActiveSupport::OrderedHash#to_a`メソッドが返す配列セットがソート済みになった（Ruby 1.9の`Hash#to_a`と一致）
+* `MissingSourceFile`は定数として存在するが`LoadError`と等価になった
+* `Class#class_attribute`を追加（値を継承可能でサブクラスから上書きできるクラスレベルの属性を宣言できる）
+* `ActiveRecord::Associations`の`DeprecatedCallbacks`がついに削除された
+* `Object#metaclass`が`Kernel#singleton_class`になりRubyと一致するようになった
 
-The following methods have been removed because they are now available in Ruby 1.8.7 and 1.9.
+以下のメソッドはRuby 1.8.7と1.9で利用できるようになったため削除されました。
 
-* `Integer#even?` and `Integer#odd?`
+* `Integer#even?`と`Integer#odd?`
 * `String#each_char`
-* `String#start_with?` and `String#end_with?` (3rd person aliases still kept)
+* `String#start_with?`と`String#end_with?`（三人称のエイリアスは保持）
 * `String#bytesize`
 * `Object#tap`
 * `Symbol#to_proc`
 * `Object#instance_variable_defined?`
 * `Enumerable#none?`
 
-The security patch for REXML remains in Active Support because early patch-levels of Ruby 1.8.7 still need it. Active Support knows whether it has to apply it or not.
+REXMLのセキュリティパッチは、初期パッチレベルのRuby 1.8.7で必要なため引き続きActive Supportに置かれています。適用が必要かどうかはActive Supportで認識されます。
 
-The following methods have been removed because they are no longer used in the framework:
+以下のメソッドはフレームワークで今後使われないため削除されました。
 
 * `Kernel#daemonize`
-* `Object#remove_subclasses_of` `Object#extend_with_included_modules_from`, `Object#extended_by`
+* `Object#remove_subclasses_of`、`Object#extend_with_included_modules_from`、`Object#extended_by`
 * `Class#remove_class`
-* `Regexp#number_of_captures`, `Regexp.unoptionalize`, `Regexp.optionalize`, `Regexp#number_of_captures`
-
+* `Regexp#number_of_captures`、`Regexp.unoptionalize`、`Regexp.optionalize`、`Regexp#number_of_captures`
 
 Action Mailer
 -------------
 
-Action Mailer has been given a new API with TMail being replaced out with the new [Mail](http://github.com/mikel/mail) as the email library. Action Mailer itself has been given an almost complete re-write with pretty much every line of code touched. The result is that Action Mailer now simply inherits from Abstract Controller and wraps the Mail gem in a Rails DSL. This reduces the amount of code and duplication of other libraries in Action Mailer considerably.
+Action Mailerで、メールライブラリとしてTMailに代えて新たに[Mail](http://github.com/mikel/mail)に置き換えられた新しいAPIが提供されました。Action Mailer自身はほぼ完全に書き換えられ、多くのコードに手が入れられました。その結果Action MailerはAbstract Controllerをシンプルに継承するようになり、Rails DSLでMail gemをラップするようになりました。これにより、Action Mailer内の他のライブラリとのコード量や重複が著しく削減されました。
 
-* All mailers are now in `app/mailers` by default.
-* Can now send email using new API with three methods: `attachments`, `headers` and `mail`.
-* Action Mailer now has native support for inline attachments using the `attachments.inline` method.
-* Action Mailer emailing methods now return `Mail::Message` objects, which can then be sent the `deliver` message to send itself.
-* All delivery methods are now abstracted out to the Mail gem.
-* The mail delivery method can accept a hash of all valid mail header fields with their value pair.
-* The `mail` delivery method acts in a similar way to Action Controller's `respond_to`, and you can explicitly or implicitly render templates. Action Mailer will turn the email into a multipart email as needed.
-* You can pass a proc to the `format.mime_type` calls within the mail block and explicitly render specific types of text, or add layouts or different templates. The `render` call inside the proc is from Abstract Controller and supports the same options.
-* What were mailer unit tests have been moved to functional tests.
-* Action Mailer now delegates all auto encoding of header fields and bodies to Mail Gem
-* Action Mailer will auto encode email bodies and headers for you
+* すべてのメイラーがデフォルトで`app/mailers`に置かれるようになった
+* 新しいAPIを用いて3とおりの方法（`attachments`、`headers`、`mail`）でメールを送信できるようになった
+* Action Mailerが`attachments.inline`メソッドを用いてインライン添付ファイルをネイティブでサポートするようになった
+* Action Mailerのメール送信メソッドが`Mail::Message`オブジェクトを返すようになり、`deliver`メッセージを送信することで自分自身を送信できるようになった
+* 配信メソッドがすべてMail gemに抽象化された
+* `mail`配信メソッドが、有効なメールヘッダーのハッシュ（それらの値ペアを含む）を受け取れるようになった
+* `mail`配信メソッドがAction Controllerの`respond_to`と似た振る舞いになり、テンプレートを明示的または暗黙的にレンダリングできるようになった（Action Mailerはメールを必要に応じてマルチパートメールにする）
+* `mail`のブロック内で`format.mime_type`呼び出しにprocを1つ渡すことで、特定の種類のテキストを明示的にレンダリングしたり、レイアウトや別のテンプレートを追加したりできるようになった。そのproc内の`render`呼び出しはAbstract Controllerのもので、同じオプションをサポートする。
+* メイラーの単体テスト項目が機能テストに移動した
+* Action Mailerがヘッダーフィールドや本文（body）の自動エンコーディングをMail gemに委譲した
+* Action Mailerがメールの本文やヘッダーを自動エンコードするようになった
 
-Deprecations:
+以下は非推奨化されました。
 
-* `:charset`, `:content_type`, `:mime_version`, `:implicit_parts_order` are all deprecated in favor of `ActionMailer.default :key => value` style declarations.
-* Mailer dynamic `create_method_name` and `deliver_method_name` are deprecated, just call `method_name` which now returns a `Mail::Message` object.
-* `ActionMailer.deliver(message)` is deprecated, just call `message.deliver`.
-* `template_root` is deprecated, pass options to a render call inside a proc from the `format.mime_type` method inside the `mail` generation block
-* The `body` method to define instance variables is deprecated (`body {:ivar => value}`), just declare instance variables in the method directly and they will be available in the view.
-* Mailers being in `app/models` is deprecated, use `app/mailers` instead.
+* `:charset`、`:content_type`、`:mime_version`、`:implicit_parts_order`はすべて非推奨化され、今後は`ActionMailer.default :key => value`方式の宣言になった
+* メイラーの動的な`create_method_name`や`deliver_method_name`が非推奨化された: 今後は単に`method_name`を呼ぶこと（`Mail::Message`オブジェクトが1つ返る）
+* `ActionMailer.deliver(message)`が非推奨化された: 今後は単に`message.deliver`を呼ぶこと
+* `template_root`が非推奨化された: 今後は`mail`生成ブロック内の`format.mime_type`メソッドからのproc内でrender呼び出しにオプションを渡すこと
+* インスタンス変数を定義する`body`メソッド（`body {:ivar => value}`）が非推奨化された: 今後はインスタンス変数をメソッド内で直接宣言するだけでビューで利用できるようになる
+* メイラーを`app/models`に配置することが非推奨化された: 今後は`app/mailers`を使うこと
 
-More Information:
+詳しくは以下を参照してください。
 
 * [New Action Mailer API in Rails 3](http://lindsaar.net/2010/1/26/new-actionmailer-api-in-rails-3)
 * [New Mail Gem for Ruby](http://lindsaar.net/2010/1/23/mail-gem-version-2-released)
 
 
-Credits
+クレジット表記
 -------
 
-See the [full list of contributors to Rails](http://contributors.rubyonrails.org/) for the many people who spent many hours making Rails 3. Kudos to all of them.
+Rails3を頑丈かつ安定したフレームワークにするために多大な時間を費やしてくださった多くの開発者については、[Railsコントリビューターの完全なリスト](http://contributors.rubyonrails.org/)を参照してください。これらの方々全員に敬意を表明いたします。
 
-Rails 3.0 Release Notes were compiled by [Mikel Lindsaar](http://lindsaar.net.)
+Rails 3.0リリースノート編集担当: [Mikel Lindsaar](http://lindsaar.net)
