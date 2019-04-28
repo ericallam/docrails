@@ -293,65 +293,63 @@ Action Pack
 
 ### Action Dispatch
 
-* `config.action_dispatch.x_sendfile_header`がデフォルトで`nil`になりました。なおこの設定は`config/environments/production.rb`にはデフォルトで値が設定されません。
+* `config.action_dispatch.x_sendfile_header`がデフォルトで`nil`になりました。なおこの設定は`config/environments/production.rb`にはデフォルトで値が設定されません。サーバーは`X-Sendfile-Type`で値を設定できます。
 
-* `config.action_dispatch.x_sendfile_header` now defaults to `nil` and `config/environments/production.rb` doesn't set any particular value for it. This allows servers to set it through `X-Sendfile-Type`.
+* `ActionDispatch::MiddlewareStack`が「継承よりコンポジション」を採用し、配列を使わなくなりました。
 
-* `ActionDispatch::MiddlewareStack` now uses composition over inheritance and is no longer an array.
+* acceptヘッダーを無視できる`ActionDispatch::Request.ignore_accept_header`が追加されました。
 
-* Added `ActionDispatch::Request.ignore_accept_header` to ignore accept headers.
+* `Rack::Cache`がデフォルトスタックに追加されました。
 
-* Added `Rack::Cache` to the default stack.
+* etagの責務が`ActionDispatch::Response`ミドルウェアスタックに移動しました。
 
-* Moved etag responsibility from `ActionDispatch::Response` to the middleware stack.
+* Ruby世界全体との互換性を高めるAPIを含む`Rack::Session`依存するようになりました。これにより後方互換性が失われます。理由は`Rack::Session`が`#get_session`で引数を4つ受け取ることを期待するのと、単なる`#destroy`ではなく`#destroy_session`が必須であるためです。
 
-* Rely on `Rack::Session` stores API for more compatibility across the Ruby world. This is backwards incompatible since `Rack::Session` expects `#get_session` to accept four arguments and requires `#destroy_session` instead of simply `#destroy`.
-
-* Template lookup now searches further up in the inheritance chain.
+* テンプレートが継承チェインまで深く探索するようになりました。
 
 ### Action View
 
-* Added an `:authenticity_token` option to `form_tag` for custom handling or to omit the token by passing `:authenticity_token => false`.
+* `:authenticity_token`オプションが`form_tag`に追加されました。これはカスタムハンドリングに使ったり、`:authenticity_token => false`を渡してトークンを省略したりできます。
 
-* Created `ActionView::Renderer` and specified an API for `ActionView::Context`.
+* `ActionView::Renderer`を作成し、`ActionView::Context`のAPIを指定しました。
 
-* In place `SafeBuffer` mutation is prohibited in Rails 3.1.
+* `SafeBuffer`をインプレースで改変することはRuby 3.1で禁止されました。
 
-* Added HTML5 `button_tag` helper.
+* HTML5の`button_tag`ヘルパーが追加されました。
 
-* `file_field` automatically adds `:multipart => true` to the enclosing form.
+* `file_field`に、`:multipart => true`が自動的に同封フォームに追加されるようになりました。
 
-* Added a convenience idiom to generate HTML5 data-* attributes in tag helpers from a `:data` hash of options:
+* オプションの`:data`ハッシュでHTML5の`data-*`属性を追加するのに便利なイディオムがタグヘルパーに追加されました。
 
     ```ruby
     tag("div", :data => {:name => 'Stephen', :city_state => %w(Chicago IL)})
     # => <div data-name="Stephen" data-city-state="[&quot;Chicago&quot;,&quot;IL&quot;]" />
     ```
 
-Keys are dasherized. Values are JSON-encoded, except for strings and symbols.
+キーはハイフンつなぎに変換され、値は文字列とシンボルを除いてJSONエンコードされます。
 
-* `csrf_meta_tag` is renamed to `csrf_meta_tags` and aliases `csrf_meta_tag` for backwards compatibility.
+* `csrf_meta_tag`が`csrf_meta_tags`にリネームされ、後方互換性のために`csrf_meta_tag`エイリアスが置かれました。
 
-* The old template handler API is deprecated and the new API simply requires a template handler to respond to call.
+* 旧来のテンプレートハンドラAPIは非推奨となり、新しいAPIでは単にcallに応答するテンプレートハンドラが要求されるようになりました。
 
-* rhtml and rxml are finally removed as template handlers.
+* テンプレートハンドラのrhtmlやrxmlが最終的に削除されました。
 
-* `config.action_view.cache_template_loading` is brought back which allows to decide whether templates should be cached or not.
+* テンプレートをキャッシュすべきかどうかを指定する`config.action_view.cache_template_loading`が復活しました。
 
-* The submit form helper does not generate an id "object_name_id" anymore.
+* submitフォームヘルパーで"object_name_id"というidは今後生成されません。
 
-* Allows `FormHelper#form_for` to specify the `:method` as a direct option instead of through the `:html` hash. `form_for(@post, remote: true, method: :delete)` instead of `form_for(@post, remote: true, html: { method: :delete })`.
+* `FormHelper#form_for`で、`:method`を`:html`ハッシュではなく直接のオプションとして指定できるようになりました。`form_for(@post, remote: true, html: { method: :delete })`ではなく、`form_for(@post, remote: true, method: :delete)`のように指定します。
 
-* Provided `JavaScriptHelper#j()` as an alias for `JavaScriptHelper#escape_javascript()`. This supersedes the `Object#j()` method that the JSON gem adds within templates using the JavaScriptHelper.
+* `JavaScriptHelper#escape_javascript()`のエイリアス`JavaScriptHelper#j()`が提供されました。これは、JSON gemがJavaScriptHelperを用いるテンプレート内に追加する`Object#j()`メソッドに代わる後継メソッドとなります。
 
-* Allows AM/PM format in datetime selectors.
+* 日時セレクタでAM/PM形式が利用できるようになりました。
 
-* `auto_link` has been removed from Rails and extracted into the [rails_autolink gem](https://github.com/tenderlove/rails_autolink)
+* `auto_link`がRailsから削除され、[rails_autolink](https://github.com/tenderlove/rails_autolink) gemに切り出されました。
 
 Active Record
 -------------
 
-* Added a class method `pluralize_table_names` to singularize/pluralize table names of individual models. Previously this could only be set globally for all models through `ActiveRecord::Base.pluralize_table_names`.
+* 個別のモデルのテーブル名を単数形や複数形にする`pluralize_table_names`というクラスメソッドが追加されました。従来は`ActiveRecord::Base.pluralize_table_names`を用いて全モデルでグローバルにしか設定できませんでした。
 
     ```ruby
     class User < ActiveRecord::Base
@@ -359,7 +357,7 @@ Active Record
     end
     ```
 
-* Added block setting of attributes to singular associations. The block will get called after the instance is initialized.
+* 単一の関連付け（`has_one`や`belongs_to`）に属性を設定するブロックが追加されました。このブロックはインスタンスが初期化された後に呼び出されます。
 
     ```ruby
     class User < ActiveRecord::Base
@@ -369,11 +367,11 @@ Active Record
     user.build_account{ |a| a.credit_limit = 100.0 }
     ```
 
-* Added `ActiveRecord::Base.attribute_names` to return a list of attribute names. This will return an empty array if the model is abstract or the table does not exist.
+* 属性名のリストを返す`ActiveRecord::Base.attribute_names`が追加されました。抽象モデルの場合やモデルにテーブルがない場合は空の配列を返します。
 
-* CSV Fixtures are deprecated and support will be removed in Rails 3.2.0.
+* CSVフィクスチャーが非推奨になりました。同サポートはRails 3.2.0で削除される予定です。
 
-* `ActiveRecord#new`, `ActiveRecord#create` and `ActiveRecord#update_attributes` all accept a second hash as an option that allows you to specify which role to consider when assigning attributes. This is built on top of Active Model's new mass assignment capabilities:
+* `ActiveRecord#new`、`ActiveRecord#create`、`ActiveRecord#update_attributes`がすべてオプションハッシュをもうひとつ取れるようになりました。この第2ハッシュを用いて、属性への代入時に考慮されるロールを指定できます。この機能は、Active Modelの新しいマスアサインメント機能の上に構築されます。
 
     ```ruby
     class Post < ActiveRecord::Base
@@ -384,21 +382,21 @@ Active Record
     Post.new(params[:post], :as => :admin)
     ```
 
-* `default_scope` can now take a block, lambda, or any other object which responds to call for lazy evaluation.
+* `default_scope`がブロックやlambdaや（遅延評価の呼び出しに応答する）任意のオブジェクトを1つ取れるようになりました。
 
-* Default scopes are now evaluated at the latest possible moment, to avoid problems where scopes would be created which would implicitly contain the default scope, which would then be impossible to get rid of via Model.unscoped.
+* デフォルトスコープが、可能な限り最新のタイミングで評価されるようになりました。これは、デフォルトスコープを含むスコープが暗黙で作成されると`Model.unscoped`を用いてスコープが削除できなくなることがある問題を回避するためのものです。
 
-* PostgreSQL adapter only supports PostgreSQL version 8.2 and higher.
+* PostgreSQLアダプタでサポートされるPostgreSQLバージョンが8.2以降のみとなりました。
 
-* `ConnectionManagement` middleware is changed to clean up the connection pool after the rack body has been flushed.
+* `ConnectionManagement`ミドルウェアが変更され、rackの本体が破棄された後でコネクションプールをクリーンアップするようになりました。
 
-* Added an `update_column` method on Active Record. This new method updates a given attribute on an object, skipping validations and callbacks. It is recommended to use `update_attributes` or `update_attribute` unless you are sure you do not want to execute any callback, including the modification of the `updated_at` column. It should not be called on new records.
+* Active Recordに`update_column`メソッドが新たに追加されました。これはオブジェクト上で指定の属性を更新し、バリデーションやコールバックをスキップしますが、（`updated_at`カラムの変更を含む）コールバックを一切実行したくない事情があるのでなければ、この`update_column`ではなく`update_attributes`か`update_attribute`をおすすめします。新規レコードに対して`update_column`メソッドを呼び出すべきではありません。
 
-* Associations with a `:through` option can now use any association as the through or source association, including other associations which have a `:through` option and `has_and_belongs_to_many` associations.
+* `:through`オプションを用いる関連付けで、（`:through`オプションと`has_and_belongs_to_many`関連付けの両方を持つ関連付けなどを含む）任意の関連付けをthrough関連付けやsource関連付けとして利用できるようになりました。
 
-* The configuration for the current database connection is now accessible via `ActiveRecord::Base.connection_config`.
+* `ActiveRecord::Base.connection_config`で現在のデータベース接続の設定にアクセスできるようになりました。
 
-* limits and offsets are removed from COUNT queries unless both are supplied.
+* COUNTクエリで`limit`と`offset`を両方指定しない限り、LIMITとOFFSETが削除されるようになりました。
 
     ```ruby
     People.limit(1).count           # => 'SELECT COUNT(*) FROM people'
@@ -406,21 +404,21 @@ Active Record
     People.limit(1).offset(1).count # => 'SELECT COUNT(*) FROM people LIMIT 1 OFFSET 1'
     ```
 
-* `ActiveRecord::Associations::AssociationProxy` has been split. There is now an `Association` class (and subclasses) which are responsible for operating on associations, and then a separate, thin wrapper called `CollectionProxy`, which proxies collection associations. This prevents namespace pollution, separates concerns, and will allow further refactorings.
+* `ActiveRecord::Associations::AssociationProxy`が分割されました。`Association`クラス（およびサブクラス）は関連付けへの操作を担当し、それとは別の`CollectionProxy`というラッパーはコレクション関連付けをプロキシします。これによって名前空間の汚染を防止し、concernsが分離されるので、リファクタリングをさらに進められるようになります。
 
-* Singular associations (`has_one`, `belongs_to`) no longer have a proxy and simply returns the associated record or `nil`. This means that you should not use undocumented methods such as `bob.mother.create` - use `bob.create_mother` instead.
+* 単一の関連付け（`has_one`や`belongs_to`）にプロキシが含まれなくなり、関連付けられたレコードか`nil`のいずれかを単に返すようになりました。これは、`bob.mother.create`のようなドキュメントのないメソッドを使うべきではないという意図を表しています。今後は`bob.create_mother`などをお使いください。
 
-* Support the `:dependent` option on `has_many :through` associations. For historical and practical reasons, `:delete_all` is the default deletion strategy employed by `association.delete(*records)`, despite the fact that the default strategy is `:nullify` for regular has_many. Also, this only works at all if the source reflection is a belongs_to. For other situations, you should directly modify the through association.
+* `has_many :through`関連付けで`:dependent`オプションがサポートされるようになりました。通常のhas_many関連付けでは`:nullify`がデフォルトの削除ストラテジーですが、歴史的な理由と実用上の理由によって、`association.delete(*records)`の`:delete_all`がデフォルトの削除ストラテジーとなっています。また、この機能をすべて使えるのは、ソースリフレクションがbelongs_toの場合に限られます。それ以外の場合は、through関連付けを直接変更すべきです。
 
-* The behavior of `association.destroy` for `has_and_belongs_to_many` and `has_many :through` is changed. From now on, 'destroy' or 'delete' on an association will be taken to mean 'get rid of the link', not (necessarily) 'get rid of the associated records'.
+* `has_and_belongs_to_many`や`has_many :through`における`association.destroy`の振る舞いが変更されました。今後、ある関連付けにおけるdestroyやdeleteは、「関連付けられたそのレコードを必ず削除する」ではなく、「そのリンクを削除する」と認識されます。
 
-* Previously, `has_and_belongs_to_many.destroy(*records)` would destroy the records themselves. It would not delete any records in the join table. Now, it deletes the records in the join table.
+* 従来の`has_and_belongs_to_many.destroy(*records)`はレコードそのものをdestroyし、joinテーブルのレコードは削除しませんでした。今後はjoinテーブルのレコードを削除します。
 
-* Previously, `has_many_through.destroy(*records)` would destroy the records themselves, and the records in the join table. [Note: This has not always been the case; previous version of Rails only deleted the records themselves.] Now, it destroys only the records in the join table.
+* 従来の`has_many_through.destroy(*records)`はレコードそのものをdestroyし、joinテーブルのレコードは削除しませんでした[メモ: これは常にそうとは限りませんでした。従来バージョンのRailsではレコードそのものだけが削除されました]。今後はjoinテーブルのレコードだけを削除します。
 
-* Note that this change is backwards-incompatible to an extent, but there is unfortunately no way to 'deprecate' it before changing it. The change is being made in order to have consistency as to the meaning of 'destroy' or 'delete' across the different types of associations. If you wish to destroy the records themselves, you can do `records.association.each(&:destroy)`.
+* この変更によって後方互換性がある程度失われますが、残念ながら、この変更を実施する前に「非推奨化する」方法がありません。この変更は、さまざまな関連付けの種類全体でdestroyやdeleteの意味を統一するために実施中です。レコードそのものをdestroyしたい場合は`records.association.each(&:destroy)`が使えます。
 
-* Add `:bulk => true` option to `change_table` to make all the schema changes defined in a block using a single ALTER statement.
+* `:bulk => true`オプションが`change_table`に追加されました。これはあらゆるスキーマ変更を、ブロック内で1つのALTERステートメントを用いて定義します。
 
     ```ruby
     change_table(:users, :bulk => true) do |t|
@@ -429,11 +427,11 @@ Active Record
     end
     ```
 
-* Removed support for accessing attributes on a `has_and_belongs_to_many` join table. `has_many :through` needs to be used.
+* `has_and_belongs_to_many`のjoinテーブルで属性にアクセスするためのサポートが削除されました。`has_many :through`を利用する必要があります。
 
-* Added a `create_association!` method for `has_one` and `belongs_to` associations.
+* `create_association!`メソッドが追加されました。`has_one`関連付けや`belongs_to`関連付けで利用できます。
 
-* Migrations are now reversible, meaning that Rails will figure out how to reverse your migrations. To use reversible migrations, just define the `change` method.
+* マイグレーションがリバース（巻き戻し）可能になりました。つまりRailsがマイグレーションをリバースする方法を認識できるということです。リバース可能なマイグレーションを利用するには、以下のように単に`change`メソッドを定義します。
 
     ```ruby
     class MyMigration < ActiveRecord::Migration
@@ -446,38 +444,38 @@ Active Record
     end
     ```
 
-* Some things cannot be automatically reversed for you. If you know how to reverse those things, you should define `up` and `down` in your migration. If you define something in change that cannot be reversed, an `IrreversibleMigration` exception will be raised when going down.
+* 自動的にはリバース可能にならないものもあります。リバースする方法を自分が知っているのであれば、マイグレーションで`up`や`down`を定義すべきです。`change`の中にリバースできないものがあると、リバース中に`IrreversibleMigration`例外が発生します。
 
-* Migrations now use instance methods rather than class methods:
+* マイグレーションで、クラスメソッドではなくインスタンスメソッドが使われるようになりました。
 
     ```ruby
     class FooMigration < ActiveRecord::Migration
-      def up # Not self.up
+      def up # self.upではなくなった
         ...
       end
     end
     ```
 
-* Migration files generated from model and constructive migration generators (for example, add_name_to_users) use the reversible migration's `change` method instead of the ordinary `up` and `down` methods.
+* モデルから生成したマイグレーションファイルや、構成可能なマイグレーションジェネレータで生成したマイグレーションファイル（add_name_to_usersなど）で、通常の`up`メソッドや`down`メソッドではなく、リバース可能な`change`メソッドが使われるようになりました。
 
-* Removed support for interpolating string SQL conditions on associations. Instead, a proc should be used.
+* 関連付けで文字列のSQL条件を展開する機能のサポートが削除されました。今後は`proc`を使うべきです。
 
     ```ruby
-    has_many :things, :conditions => 'foo = #{bar}'          # before
-    has_many :things, :conditions => proc { "foo = #{bar}" } # after
+    has_many :things, :conditions => 'foo = #{bar}'          # 従来
+    has_many :things, :conditions => proc { "foo = #{bar}" } # 今後
     ```
 
-    Inside the proc, `self` is the object which is the owner of the association, unless you are eager loading the association, in which case `self` is the class which the association is within.
+    `proc`の内部では、関連付けをeager loadingしない限り、関連付けのオーナーは`self`というオブジェクトになります。ここで`self`は、関連付けを含んでいるクラスを表します。
 
-    You can have any "normal" conditions inside the proc, so the following will work too:
+    `proc`の内部では「通常の」条件を何でも使えるので、以下も機能します。
 
     ```ruby
     has_many :things, :conditions => proc { ["foo = ?", bar] }
     ```
 
-* Previously `:insert_sql` and `:delete_sql` on `has_and_belongs_to_many` association allowed you to call 'record' to get the record being inserted or deleted. This is now passed as an argument to the proc.
+* 従来は`has_and_belongs_to_many`関連付けの`:insert_sql`メソッドや`:delete_sql`メソッドで「レコード」を呼び出すことで、挿入されるレコードや削除されるレコードを取得できました。今後これらのレコードは引数としてそのprocに渡されるようになりました。
 
-* Added `ActiveRecord::Base#has_secure_password` (via `ActiveModel::SecurePassword`) to encapsulate dead-simple password usage with BCrypt encryption and salting.
+* `ActiveRecord::Base#has_secure_password`（`ActiveModel::SecurePassword`を利用）が追加されました。BCrypt暗号化やsalt追加が使える極めてシンプルなパスワード利用機能がこのメソッドにカプセル化されています。
 
     ```ruby
     # Schema: User(name:string, password_digest:string, password_salt:string)
@@ -486,37 +484,37 @@ Active Record
     end
     ```
 
-* When a model is generated `add_index` is added by default for `belongs_to` or `references` columns.
+* モデルを生成するときに、`belongs_to`や`references`カラムにデフォルトで`add_index`が追加されるようになりました。
 
-* Setting the id of a `belongs_to` object will update the reference to the object.
+* `belongs_to`オブジェクトのidを設定すると、そのオブジェクトの参照が更新されるようになりました。
 
-* `ActiveRecord::Base#dup` and `ActiveRecord::Base#clone` semantics have changed to closer match normal Ruby dup and clone semantics.
+* `ActiveRecord::Base#dup`や`ActiveRecord::Base#clone`のセマンティクス（意味付け）が変更され、Rubyの通常の`dup`や`clone`のセマンティクスに近くなりました。
 
-* Calling `ActiveRecord::Base#clone` will result in a shallow copy of the record, including copying the frozen state. No callbacks will be called.
+* `ActiveRecord::Base#clone`を呼ぶと、frozenされたステートのコピーを含むレコードの浅い（shallow）コピーが返されます。コールバックは呼ばれません。
 
-* Calling `ActiveRecord::Base#dup` will duplicate the record, including calling after initialize hooks. Frozen state will not be copied, and all associations will be cleared. A duped record will return `true` for `new_record?`, have a `nil` id field, and is saveable.
+* `ActiveRecord::Base#dup`を呼ぶとレコードが複製され、after_initializeフックも呼び出されます。frozenなステートはコピーされず、関連付けはすべてクリアされます。`dup`されたレコードは`new_record?`で`true`を返し、idフィールドは`nil`に設定され、かつ保存可能になります。
 
-* The query cache now works with prepared statements. No changes in the applications are required.
+* クエリキャッシュがprepared statmentで使えるようになりました。アプリケーションの変更は不要です。
 
 Active Model
 ------------
 
-* `attr_accessible` accepts an option `:as` to specify a role.
+* `attr_accessible`で`:as`オプションを用いてロールを指定できるようになりました。
 
-* `InclusionValidator`, `ExclusionValidator`, and `FormatValidator` now accepts an option which can be a proc, a lambda, or anything that respond to `call`. This option will be called with the current record as an argument and returns an object which respond to `include?` for `InclusionValidator` and `ExclusionValidator`, and returns a regular expression object for `FormatValidator`.
+* `InclusionValidator`、`ExclusionValidator`、`FormatValidator`が、ブロックやlambda、または`call`に応答する任意のオブジェクトをオプションとして1つ取れるようになりました。このオプションは現在のレコードを引数として呼び出され、`InclusionValidator`や`ExclusionValidator`の場合は`include?`に応答するオブジェクトを1つ返し、`FormatValidator`の場合は正規表現オブジェクトを1つ返します。
 
-* Added `ActiveModel::SecurePassword` to encapsulate dead-simple password usage with BCrypt encryption and salting.
+* `ActiveModel::SecurePassword`が追加されました。BCrypt暗号化やsalt追加が使える極めてシンプルなパスワード利用機能がこのメソッドにカプセル化されています。
 
-* `ActiveModel::AttributeMethods` allows attributes to be defined on demand.
+* `ActiveModel::AttributeMethods`で属性を必要に応じて定義できるようになりました。
 
-* Added support for selectively enabling and disabling observers.
+* オブザーバー（observer）を選択的に有効にしたり無効にしたりする機能が追加されました。
 
-* Alternate `I18n` namespace lookup is no longer supported.
+* `I18n`名前空間を交互に探索する機能はサポートされなくなりました。
 
 Active Resource
 ---------------
 
-* The default format has been changed to JSON for all requests. If you want to continue to use XML you will need to set `self.format = :xml` in the class. For example,
+* すべてのリクエストでデフォルトのフォーマットがJSONに変更されました。XMLを使い続けたい場合は、次のようにこのクラスで`self.format = :xml`を設定する必要があります。
 
     ```ruby
     class User < ActiveResource::Base
