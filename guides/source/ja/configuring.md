@@ -1237,7 +1237,7 @@ NOTE: アプリケーションをマルチスレッド環境で実行してい�
 カスタム設定
 --------------------
 
-Railsの設定オブジェクトをカスタマイズして独自のコードを設定するには、`config.x`名前空間か`config`ディレクトリの下にコードを配置します。両者の大きな違いは、**ネストした**設定（`config.x.nested.nested.hi`など）の場合は`config.x`を利用すべきであるという点です。**単一レベル**の設定（`config.hello`など）は単に`config`で行います。
+Railsの設定オブジェクトをカスタマイズして独自のコードを設定するには、`config.x`名前空間か`config`の直下にコードを配置します。両者の大きな違いは、**ネストした**設定（`config.x.nested.nested.hi`など）の場合は`config.x`を利用すべきであるという点です。**単一レベル**の設定（`config.hello`など）は単に`config`で行います。
 
   ```ruby
   config.x.payment_processing.schedule = :daily
