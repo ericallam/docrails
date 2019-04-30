@@ -1,73 +1,59 @@
-**DO NOT READ THIS FILE ON GITHUB, GUIDES ARE PUBLISHED ON https://guides.rubyonrails.org.**
 
-Action Mailbox Basics
+Action Mailbox の基礎
 =====================
 
-This guide provides you with all you need to get started in receiving
-emails to your application.
+本ガイドでは、アプリケーションでメールを受信するために必要なすべての情報を提供します。
 
-After reading this guide, you will know:
+このガイドの内容:
 
-* How to receive email within a Rails application.
-* How to configure Action Mailbox.
-* How to generate and route emails to a mailbox.
-* How to test incoming emails.
+* メールをRailsアプリケーションで受信する方法
+* Action Mailboxの設定方法
+* メールボックスの生成方法とメールをメールボックスにルーティングする方法
+* 受信メールをテストする方法
 
 --------------------------------------------------------------------------------
 
-Introduction
+はじめに
 ------------
 
-Action Mailbox routes incoming emails to controller-like mailboxes for
-processing in Rails. It ships with ingresses for Mailgun, Mandrill, Postmark,
-and SendGrid. You can also handle inbound mails directly via the built-in Exim,
-Postfix, and Qmail ingresses.
+Action Mailboxは、受信したメールをコントローラに似たメールボックスにルーティングし、Railsで処理できるようにします。Action Mailboxは、Mailgun、Mandrill、Postmark、SendGridへの入り口（ingress）を備えています。受信メールを組み込みのEximやPostfixやQmail用のingressで直接扱うこともできます。
 
-The inbound emails are turned into `InboundEmail` records using Active Record
-and feature lifecycle tracking, storage of the original email on cloud storage
-via Active Storage, and responsible data handling with
-on-by-default incineration.
+受信メールはActive Recordを用いて`InboundEmail`レコードになり、Active Storageによってライフサイクルトラッキングや元のメールのクラウドストレージ保存を行い、データの扱いを「on-by-default incineration（焼却）」で扱います。
 
-These inbound emails are routed asynchronously using Active Job to one or
-several dedicated mailboxes, which are capable of interacting directly
-with the rest of your domain model.
+受信メールはActive Jobによって非同期的に1つまたは複数の専用メールボックスにルーティングされ、ドメインモデルの他の部分と直接やりとりできます。
 
-## Setup
+## セットアップ
 
-Install migrations needed for `InboundEmail` and ensure Active Storage is set up:
+`InboundEmail`で必要なマイグレーションをインストールし、Active Storageがセットアップ済みであることを確認します。
 
 ```bash
 $ rails action_mailbox:install
 $ rails db:migrate
 ```
 
-## Configuration
+## 設定
 
 ### Exim
 
-Tell Action Mailbox to accept emails from an SMTP relay:
+SMTPリレーからのメールを受け取るようAction Mailboxに指示します。
 
 ```ruby
 # config/environments/production.rb
 config.action_mailbox.ingress = :relay
 ```
 
-Generate a strong password that Action Mailbox can use to authenticate requests to the relay ingress.
+Action Mailboxがrelay ingressへのリクエストを認証するのに使える強力なパスワードを生成します。
 
-Use `rails credentials:edit` to add the password to your application's encrypted credentials under
-`action_mailbox.ingress_password`, where Action Mailbox will automatically find it:
+`action_mailbox.ingress_password`の下にあるアプリケーションの暗号化済みcredential（Action Mailboxはこのcredentialを自動的に見つけます）に`rails credentials:edit`でパスワードを追加します。
 
 ```yaml
 action_mailbox:
   ingress_password: ...
 ```
 
-Alternatively, provide the password in the `RAILS_INBOUND_EMAIL_PASSWORD` environment variable.
+または、`RAILS_INBOUND_EMAIL_PASSWORD`環境変数でパスワードを指定します。
 
-Configure Exim to pipe inbound emails to `bin/rails action_mailbox:ingress:exim`,
-providing the `URL` of the relay ingress and the `INGRESS_PASSWORD` you
-previously generated. If your application lived at `https://example.com`, the
-full command would look like this:
+Eximが受信メールを`bin/rails action_mailbox:ingress:exim`にパイプでつなぐよう設定し、relay ingressの`URL`と先ほど生成した`INGRESS_PASSWORD`を指定します。アプリケーションが`https://example.com`にある場合の完全なコマンドは以下のような感じになります。
 
 ```shell
 bin/rails action_mailbox:ingress:exim URL=https://example.com/rails/action_mailbox/relay/inbound_emails INGRESS_PASSWORD=...
@@ -75,89 +61,69 @@ bin/rails action_mailbox:ingress:exim URL=https://example.com/rails/action_mailb
 
 ### Mailgun
 
-Give Action Mailbox your
-[Mailgun API key](https://help.mailgun.com/hc/en-us/articles/203380100-Where-can-I-find-my-API-key-and-SMTP-credentials)
-so it can authenticate requests to the Mailgun ingress.
+Action Mailboxに自分の[Mailgun API key](https://help.mailgun.com/hc/en-us/articles/203380100-Where-can-I-find-my-API-key-and-SMTP-credentials)を渡して、Mailgunのingressへのリクエストを認証できるようにします。
 
-Use `rails credentials:edit` to add your API key to your application's
-encrypted credentials under `action_mailbox.mailgun_api_key`,
-where Action Mailbox will automatically find it:
+`action_mailbox.mailgun_api_key`の下にあるアプリケーションの暗号化済みcredential（Action Mailboxはこのcredentialを自動的に見つけます）に`rails credentials:edit`でAPIキーを追加します。
 
 ```yaml
 action_mailbox:
   mailgun_api_key: ...
 ```
 
-Alternatively, provide your API key in the `MAILGUN_INGRESS_API_KEY` environment
-variable.
+または、`MAILGUN_INGRESS_API_KEY`環境変数でパスワードを指定します。
 
-Tell Action Mailbox to accept emails from Mailgun:
+Mailgunからのメールを受け取るようAction Mailboxに指示します。
 
 ```ruby
 # config/environments/production.rb
 config.action_mailbox.ingress = :mailgun
 ```
 
-[Configure Mailgun](https://documentation.mailgun.com/en/latest/user_manual.html#receiving-forwarding-and-storing-messages)
-to forward inbound emails to `/rails/action_mailbox/mailgun/inbound_emails/mime`.
-If your application lived at `https://example.com`, you would specify the
-fully-qualified URL `https://example.com/rails/action_mailbox/mailgun/inbound_emails/mime`.
+受信メールを`/rails/action_mailbox/mailgun/inbound_emails/mime`に転送するよう[Mailgunを設定](https://documentation.mailgun.com/en/latest/user_manual.html#receiving-forwarding-and-storing-messages)します。アプリケーションが`https://example.com`にある場合、完全修飾済みURLを`https://example.com/rails/action_mailbox/mailgun/inbound_emails/mime`のように指定します。
 
 ### Mandrill
 
-Give Action Mailbox your Mandrill API key so it can authenticate requests to
-the Mandrill ingress.
+Action Mailboxに自分のMandrill API keyを渡して、Mandrillのingressへのリクエストを認証できるようにします。
 
-Use `rails credentials:edit` to add your API key to your application's
-encrypted credentials under `action_mailbox.mandrill_api_key`,
-where Action Mailbox will automatically find it:
+`action_mailbox.mandrill_api_key`の下にあるアプリケーションの暗号化済みcredential（Action Mailboxはこのcredentialを自動的に見つけます）に`rails credentials:edit`でAPIキーを追加します。
 
 ```yaml
 action_mailbox:
   mandrill_api_key: ...
 ```
 
-Alternatively, provide your API key in the `MANDRILL_INGRESS_API_KEY`
-environment variable.
+または、`MANDRILL_INGRESS_API_KEY`環境変数でパスワードを指定します。
 
-Tell Action Mailbox to accept emails from Mandrill:
+Mandrillからのメールを受け取るようAction Mailboxに指示します。
 
 ```ruby
 # config/environments/production.rb
 config.action_mailbox.ingress = :mandrill
 ```
 
-[Configure Mandrill](https://mandrill.zendesk.com/hc/en-us/articles/205583197-Inbound-Email-Processing-Overview)
-to route inbound emails to `/rails/action_mailbox/mandrill/inbound_emails`.
-If your application lived at `https://example.com`, you would specify
-the fully-qualified URL `https://example.com/rails/action_mailbox/mandrill/inbound_emails`.
+受信メールを`/rails/action_mailbox/mandrill/inbound_emails`にルーティングするよう[Mandrillを設定](https://mandrill.zendesk.com/hc/en-us/articles/205583197-Inbound-Email-Processing-Overview)します。アプリケーションが`https://example.com`にある場合、完全修飾済みURLを`https://example.com/rails/action_mailbox/mandrill/inbound_emails`のように指定します。
 
 ### Postfix
 
-Tell Action Mailbox to accept emails from an SMTP relay:
+SMTPリレーからのメールを受け取るようAction Mailboxに指示します。
 
 ```ruby
 # config/environments/production.rb
 config.action_mailbox.ingress = :relay
 ```
 
-Generate a strong password that Action Mailbox can use to authenticate requests to the relay ingress.
+Action Mailboxがrelay ingressへのリクエストを認証するのに使える強力なパスワードを生成します。
 
-Use `rails credentials:edit` to add the password to your application's encrypted credentials under
-`action_mailbox.ingress_password`, where Action Mailbox will automatically find it:
+`action_mailbox.ingress_password`の下にあるアプリケーションの暗号化済みcredential（Action Mailboxはこのcredentialを自動的に見つけます）に`rails credentials:edit`でAPIキーを追加します。
 
 ```yaml
 action_mailbox:
   ingress_password: ...
 ```
 
-Alternatively, provide the password in the `RAILS_INBOUND_EMAIL_PASSWORD` environment variable.
+または、`RAILS_INBOUND_EMAIL_PASSWORD `環境変数でパスワードを指定します。
 
-[Configure Postfix](https://serverfault.com/questions/258469/how-to-configure-postfix-to-pipe-all-incoming-email-to-a-script)
-to pipe inbound emails to `bin/rails action_mailbox:ingress:postfix`, providing
-the `URL` of the Postfix ingress and the `INGRESS_PASSWORD` you previously
-generated. If your application lived at `https://example.com`, the full command
-would look like this:
+受信メールを`bin/rails action_mailbox:ingress:postfix`にルーティングするよう[Postfixを設定](https://serverfault.com/questions/258469/how-to-configure-postfix-to-pipe-all-incoming-email-to-a-script)します。アプリケーションが`https://example.com`にある場合、完全なコマンドは次のような感じになります。
 
 ```shell
 $ bin/rails action_mailbox:ingress:postfix URL=https://example.com/rails/action_mailbox/relay/inbound_emails INGRESS_PASSWORD=...
@@ -165,65 +131,53 @@ $ bin/rails action_mailbox:ingress:postfix URL=https://example.com/rails/action_
 
 ### Postmark
 
-Tell Action Mailbox to accept emails from Postmark:
+Postmarkからのメールを受け取るようAction Mailboxに指示します。
 
 ```ruby
 # config/environments/production.rb
 config.action_mailbox.ingress = :postmark
 ```
 
-Generate a strong password that Action Mailbox can use to authenticate
-requests to the Postmark ingress.
+Action MailboxがPostmarkのingressへのリクエストを認証するのに使える強力なパスワードを生成します。
 
-Use `rails credentials:edit` to add the password to your application's
-encrypted credentials under `action_mailbox.ingress_password`,
-where Action Mailbox will automatically find it:
+`action_mailbox.ingress_password`の下にあるアプリケーションの暗号化済みcredential（Action Mailboxはこのcredentialを自動的に見つけます）に`rails credentials:edit`でAPIキーを追加します。
 
 ```yaml
 action_mailbox:
   ingress_password: ...
 ```
 
-Alternatively, provide the password in the `RAILS_INBOUND_EMAIL_PASSWORD`
-environment variable.
+または、`RAILS_INBOUND_EMAIL_PASSWORD `環境変数でパスワードを指定します。
 
-[Configure Postmark inbound webhook](https://postmarkapp.com/manual#configure-your-inbound-webhook-url)
-to forward inbound emails to `/rails/action_mailbox/postmark/inbound_emails` with the username `actionmailbox`
-and the password you previously generated. If your application lived at `https://example.com`, you would
-configure Postmark with the following fully-qualified URL:
+受信メールを`/rails/action_mailbox/postmark/inbound_emails`に転送するよう[Postmarkのinbound webhookを設定](https://postmarkapp.com/manual#configure-your-inbound-webhook-url)します。アプリケーションが`https://example.com`にある場合、完全なコマンドは次のような感じになります。
 
 ```
 https://actionmailbox:PASSWORD@example.com/rails/action_mailbox/postmark/inbound_emails
 ```
 
-NOTE: When configuring your Postmark inbound webhook, be sure to check the box labeled **"Include raw email content in JSON payload"**.
-Action Mailbox needs the raw email content to work.
+NOTE: Postmarkのinbound webhookを設定するときには、必ず**"Include raw email content in JSON payload"**というチェックボックスをオンにしてください。Action Mailboxがrawメールを処理するのに必要です。
 
 ### Qmail
 
-Tell Action Mailbox to accept emails from an SMTP relay:
+SMTPリレーからのメールを受け取るようAction Mailboxに指示します。
 
 ```ruby
 # config/environments/production.rb
 config.action_mailbox.ingress = :relay
 ```
 
-Generate a strong password that Action Mailbox can use to authenticate requests to the relay ingress.
+Action Mailboxがrelay ingressへのリクエストを認証するのに使える強力なパスワードを生成します。
 
-Use `rails credentials:edit` to add the password to your application's encrypted credentials under
-`action_mailbox.ingress_password`, where Action Mailbox will automatically find it:
+`action_mailbox.ingress_password`の下にあるアプリケーションの暗号化済みcredential（Action Mailboxはこのcredentialを自動的に見つけます）に`rails credentials:edit`でAPIキーを追加します。
 
 ```yaml
 action_mailbox:
   ingress_password: ...
 ```
 
-Alternatively, provide the password in the `RAILS_INBOUND_EMAIL_PASSWORD` environment variable.
+または、`RAILS_INBOUND_EMAIL_PASSWORD `環境変数でパスワードを指定します。
 
-Configure Qmail to pipe inbound emails to `bin/rails action_mailbox:ingress:qmail`,
-providing the `URL` of the relay ingress and the `INGRESS_PASSWORD` you
-previously generated. If your application lived at `https://example.com`, the
-full command would look like this:
+受信メールを`bin/rails action_mailbox:ingress:qmail`にパイプでつなぐようQmailを設定し、relay ingressの`URL`と先ほど生成した`INGRESS_PASSWORD`を指定します。アプリケーションが`https://example.com`にある場合の完全なコマンドは以下のような感じになります。
 
 ```shell
 bin/rails action_mailbox:ingress:qmail URL=https://example.com/rails/action_mailbox/relay/inbound_emails INGRESS_PASSWORD=...
@@ -231,43 +185,35 @@ bin/rails action_mailbox:ingress:qmail URL=https://example.com/rails/action_mail
 
 ### SendGrid
 
-Tell Action Mailbox to accept emails from SendGrid:
+SendGridからのメールを受け取るようAction Mailboxに指示します。
 
 ```ruby
 # config/environments/production.rb
 config.action_mailbox.ingress = :sendgrid
 ```
 
-Generate a strong password that Action Mailbox can use to authenticate
-requests to the SendGrid ingress.
+Action MailboxがSendGridのingressへのリクエストを認証するのに使える強力なパスワードを生成します。
 
-Use `rails credentials:edit` to add the password to your application's
-encrypted credentials under `action_mailbox.ingress_password`,
-where Action Mailbox will automatically find it:
+`action_mailbox.ingress_password`の下にあるアプリケーションの暗号化済みcredential（Action Mailboxはこのcredentialを自動的に見つけます）に`rails credentials:edit`でAPIキーを追加します。
 
 ```yaml
 action_mailbox:
   ingress_password: ...
 ```
 
-Alternatively, provide the password in the `RAILS_INBOUND_EMAIL_PASSWORD`
-environment variable.
+または、`RAILS_INBOUND_EMAIL_PASSWORD `環境変数でパスワードを指定します。
 
-[Configure SendGrid Inbound Parse](https://sendgrid.com/docs/for-developers/parsing-email/setting-up-the-inbound-parse-webhook/)
-to forward inbound emails to
-`/rails/action_mailbox/sendgrid/inbound_emails` with the username `actionmailbox`
-and the password you previously generated. If your application lived at `https://example.com`,
-you would configure SendGrid with the following URL:
+受信メールを`/rails/action_mailbox/sendgrid/inbound_emails`に転送するよう[SendGridのInbound Parseを設定](https://sendgrid.com/docs/for-developers/parsing-email/setting-up-the-inbound-parse-webhook/)します。アプリケーションが`https://example.com`にある場合、SendGridの設定に使うURLは次のような感じになります。
 
 ```
 https://actionmailbox:PASSWORD@example.com/rails/action_mailbox/sendgrid/inbound_emails
 ```
 
-NOTE: When configuring your SendGrid Inbound Parse webhook, be sure to check the box labeled **“Post the raw, full MIME message.”** Action Mailbox needs the raw MIME message to work.
+NOTE: SendGridのInbound Parse webhookを設定するときには、必ず**“Post the raw, full MIME message”**というチェックボックスをオンにしてください。Action Mailboxがraw MIMEメッセージを処理するのに必要です。
 
-## Examples
+## 例
 
-Configure basic routing:
+基本的なルーティングを設定します。
 
 ```ruby
 # app/mailboxes/application_mailbox.rb
@@ -277,17 +223,17 @@ class ApplicationMailbox < ActionMailbox::Base
 end
 ```
 
-Then set up a mailbox:
+続いてメールボックスを設定します。
 
 ```ruby
-# Generate new mailbox
+# 新しいメールボックスを生成する
 $ bin/rails generate mailbox forwards
 ```
 
 ```ruby
 # app/mailboxes/forwards_mailbox.rb
 class ForwardsMailbox < ApplicationMailbox
-  # Callbacks specify prerequisites to processing
+  # 処理に必要な条件をコールバックで指定する
   before_processing :require_forward
 
   def process
@@ -301,7 +247,8 @@ class ForwardsMailbox < ApplicationMailbox
   private
     def require_forward
       unless message.forward?
-        # Use Action Mailers to bounce incoming emails back to sender – this halts processing
+        # Action Mailersを用いて受信メールを送信者に送り返す（bounce back）
+        # ここで処理が停止する
         bounce_with Forwards::BounceMailer.missing_forward(
           inbound_email, forwarder: forwarder
         )
@@ -323,33 +270,19 @@ class ForwardsMailbox < ApplicationMailbox
 end
 ```
 
-## Incineration of InboundEmails
+## InboundEmailsの「焼却（incineration）」
 
-By default, an InboundEmail that has been successfully processed will be
-incinerated after 30 days. This ensures you're not holding on to people's data
-willy-nilly after they may have canceled their accounts or deleted their
-content. The intention is that after you've processed an email, you should have
-extracted all the data you needed and turned it into domain models and content
-on your side of the application. The InboundEmail simply stays in the system
-for the extra time to provide debugging and forensics options.
+デフォルトでは、処理が成功したInboundEmailは30日が経過すると焼却（incinerate）されます。これにより、アカウントをキャンセルまたはコンテンツを削除したユーザーのデータをぐずぐず保持せずに済みます。設計の意図は、メールを処理した後に必要なメールをすべて切り出してアプリケーションの業務ドメインモデルやコンテンツに取り込んでおくべきであるということです。InboundEmailは単に、デバッグや法医学的なオプションを提供する目的でシステムに余分な期間残されます。
 
-The actual incineration is done via the `IncinerationJob` that's scheduled
-to run after `config.action_mailbox.incinerate_after` time. This value is
-by default set to `30.days`, but you can change it in your production.rb
-configuration. (Note that this far-future incineration scheduling relies on
-your job queue being able to hold jobs for that long.)
+実際のincinerationは、`config.action_mailbox.incinerate_after`でスケジュールされた時刻の後、`IncinerationJob`で行われます。この値はデフォルトで`30.days`に設定されますが、production.rbで設定を変更できます（incinerationを遠い未来にスケジューリングする場合、その間ジョブキューがジョブを保持できることが重要です）。
 
-## Working with Action Mailbox in development
+## Action Mailboxをdevelopment環境で使う
 
-It's helpful to be able to test incoming emails in development without actually
-sending and receiving real emails. To accomplish this, there's a conductor
-controller mounted at `/rails/conductor/action_mailbox/inbound_emails`,
-which gives you an index of all the InboundEmails in the system, their
-state of processing, and a form to create a new InboundEmail as well.
+実際にメールを送受信せずに、development環境でメールの受信をテストできると便利です。このために、`/rails/conductor/action_mailbox/inbound_emails`に「コンダクター（conductor）」コントローラがマウントされます。これはシステム内にあるすべてのInboundEmailsのインデックスや処理の状態を提供し、新しいInboundEmailを作成できるフォームも提供します。
 
-## Testing mailboxes
+## メールボックスをテストする
 
-Example:
+例:
 
 ```ruby
 class ForwardsMailboxTest < ActionMailbox::TestCase
@@ -358,19 +291,19 @@ class ForwardsMailboxTest < ActionMailbox::TestCase
       receive_inbound_email_from_mail \
         to: 'save@example.com',
         from: people(:david).email_address,
-        subject: "Fwd: Status update?",
+        subject: "Fwd: ステータスは更新された？",
         body: <<~BODY
           --- Begin forwarded message ---
           From: Frank Holland <frank@microsoft.com>
 
-          What's the status?
+          現在のステータスは？
         BODY
     end
 
     recording = people(:david).buckets.first.recordings.last
     assert_equal people(:david), recording.creator
-    assert_equal "Status update?", recording.forward.subject
-    assert_match "What's the status?", recording.forward.content.to_s
+    assert_equal "ステータスは更新された？", recording.forward.subject
+    assert_match "現在のステータスは？", recording.forward.content.to_s
   end
 end
 ```
