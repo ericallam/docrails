@@ -32,9 +32,9 @@ module RailsGuides
       if position.nil?
         documents_by_section
       elsif position == "L"
-        documents_by_section.to(3)
+        documents_by_section.to(4)
       else
-        documents_by_section.from(4)
+        documents_by_section.from(5)
       end
     end
 
