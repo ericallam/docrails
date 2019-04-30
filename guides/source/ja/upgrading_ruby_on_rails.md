@@ -33,6 +33,7 @@ Railsのバージョンを変更する場合、マイナーバージョンを1�
 
 Railsは、そのバージョンがリリースされた時点で最新のバージョンのRubyに依存しています。
 
+* Rails 6: Ruby 2.5.0以降が必須です。
 * Rails 5: Ruby 2.2.2以降が必須です。
 * Rails 4: Ruby 2.0が推奨されます。Ruby 1.9.3以上が必須です。
 * Rails 3.2.x: Ruby 1.8.7の最終ブランチです。
@@ -42,7 +43,7 @@ TIP: Ruby 1.8.7 p248およびp249にはRailsをクラッシュさせるマーシ
 
 ### アップデートタスク
 
-Rails では`app:update`というタスクが提供されています (Rails 4.2以前では `rails:update` という名前でした)。`Gemfile`に記載されているRailsのバージョンを更新後、このタスクを実行することで、新しいバージョンでのファイル作成や既存ファイルの変更を対話形式で行うことができます。
+Rails では`app:update`というコマンドが提供されています (Rails 4.2以前では `rails:update` という名前でした)。`Gemfile`に記載されているRailsのバージョンを更新後、このコマンドを実行することで、新しいバージョンでのファイル作成や既存ファイルの変更を対話形式で行うことができます。
 
 ```bash
 $ rails app:update
@@ -59,6 +60,74 @@ Overwrite /myapp/config/application.rb? (enter "h" for help) [Ynaqdh]
 ```
 
 予期しなかった変更が発生した場合は、必ず差分を十分にチェックしてください。
+
+### Configure Framework Defaults
+
+The new Rails version might have different configuration defaults than the previous version. However, after following the steps described above, your application would still run with configuration defaults from the *previous* Rails version. That's because the value for `config.load_defaults` in `config/application.rb` has not been changed yet.
+
+To allow you to upgrade to new defaults one by one, the update task has created a file `config/initializers/new_framework_defaults.rb`. Once your application is ready to run with new defaults, you can remove this file and flip the `config.load_defaults` value.
+
+
+Upgrading from Rails 5.2 to Rails 6.0
+-------------------------------------
+
+For more information on changes made to Rails 6.0 please see the [release notes](6_0_release_notes.html).
+
+### Force SSL
+
+The `force_ssl` method on controllers has been deprecated and will be removed in
+Rails 6.1. You are encouraged to enable `config.force_ssl` to enforce HTTPS
+connections throughout your application. If you need to exempt certain endpoints
+from redirection, you can use `config.ssl_options` to configure that behavior.
+
+### Purpose in signed or encrypted cookie is now embedded within cookies
+
+To improve security, Rails embeds the purpose information in encrypted or signed cookies value.
+Rails can then thwart attacks that attempt to copy the signed/encrypted value
+of a cookie and use it as the value of another cookie.
+
+This new embed information make those cookies incompatible with versions of Rails older than 6.0.
+
+If you require your cookies to be read by Rails 5.2 and older, or you are still validating your 6.0 deploy and want
+to be able to rollback set
+`Rails.application.config.action_dispatch.use_cookies_with_metadata` to `false`.
+
+### Action Cable JavaScript API Changes
+
+The Action Cable JavaScript package has been converted from CoffeeScript
+to ES2015, and we now publish the source code in the npm distribution.
+
+This release includes some breaking changes to optional parts of the
+Action Cable JavaScript API:
+
+- Configuration of the WebSocket adapter and logger adapter have been moved
+  from properties of `ActionCable` to properties of `ActionCable.adapters`.
+  If you are configuring these adapters you will need to make
+  these changes:
+
+  ```diff
+  -    ActionCable.WebSocket = MyWebSocket
+  +    ActionCable.adapters.WebSocket = MyWebSocket
+  ```
+  ```diff
+  -    ActionCable.logger = myLogger
+  +    ActionCable.adapters.logger = myLogger
+  ```
+
+- The `ActionCable.startDebugging()` and `ActionCable.stopDebugging()`
+  methods have been removed and replaced with the property
+  `ActionCable.logger.enabled`. If you are using these methods you
+  will need to make these changes:
+
+  ```diff
+  -    ActionCable.startDebugging()
+  +    ActionCable.logger.enabled = true
+  ```
+  ```diff
+  -    ActionCable.stopDebugging()
+  +    ActionCable.logger.enabled = false
+  ```
+
 
 Rails 5.1からRails 5.2へのアップグレード
 -------------------------------------
