@@ -7,6 +7,9 @@ install:
 script:
   - bundle exec rake assets:precompile
   - bundle exec rake test SKIP_BUILD=1
+branches:
+  only: 
+    - master
 
 # `rake test` covers the following tests.
 # Use RSpec if needed to cover more in CI.
