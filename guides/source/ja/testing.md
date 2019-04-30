@@ -294,8 +294,8 @@ end
 | `assert_not_includes( collection, obj, [msg] )`                  | `obj`は`collection`に含まれないと主張する。|
 | `assert_in_delta( expected, actual, [delta], [msg] )`            | `expected`と`actual`の個数の差は`delta`以内であると主張する。|
 | `assert_in_epsilon ( expected, actual, [epsilon], [msg] )`       | `expected`と`actual`の数値の相対誤差が`epsilon`より小さいと主張する。|
-| `assert_not_in_epsilon ( expected, actual, [epsilon], [msg] )`   |  `expected`と`actual`の数値には`epsilon`より小さい相対誤差がないと主張する。|
 | `assert_not_in_delta( expected, actual, [delta], [msg] )`        | `expected`と`actual`の個数の差は`delta`以内にはないと主張する。|
+| `assert_not_in_epsilon ( expected, actual, [epsilon], [msg] )`   |  `expected`と`actual`の数値には`epsilon`より小さい相対誤差がないと主張する。|
 | `assert_throws( symbol, [msg] ) { block }`                       | 与えられたブロックはシンボルをスローすると主張する。|
 | `assert_raises( exception1, exception2, ... ) { block }`         | 渡されたブロックから、渡された例外のいずれかが発生すると主張する。|
 | `assert_instance_of( class, obj, [msg] )`                        | `obj`は`class`のインスタンスであると主張する。|
@@ -402,30 +402,30 @@ $ bin/rails test test/controllers # run all tests from specific directory
 テストランナーではこの他にも、「failing fast」やテスト終了時に必ずテストを出力するといったさまざまな機能が使えます。次を実行してテストランナーのドキュメントをチェックしてみましょう。
 
 ```bash
-$ bin/rails test -h
+$ rails test -h
+Usage: rails test [options] [files or directories]
+
+You can run a single test by appending a line number to a filename:
+
+    rails test test/models/user_test.rb:27
+
+You can run multiple files and directories at the same time:
+
+    rails test test/controllers test/integration/login_test.rb
+
+By default test failures and errors are reported inline during a run.
+
 minitest options:
     -h, --help                       Display this help.
+        --no-plugins                 Bypass minitest plugin auto-loading (or set $MT_NO_PLUGINS).
     -s, --seed SEED                  Sets random seed. Also via env. Eg: SEED=n rake
     -v, --verbose                    Verbose. Show progress processing files.
     -n, --name PATTERN               Filter run on /regexp/ or string.
         --exclude PATTERN            Exclude /regexp/ or string from run.
 
 Known extensions: rails, pride
-
-Usage: bin/rails test [options] [files or directories]
-You can run a single test by appending a line number to a filename:
-
-    bin/rails test test/models/user_test.rb:27
-
-You can run multiple files and directories at the same time:
-
-    bin/rails test test/controllers test/integration/login_test.rb
-
-By default test failures and errors are reported inline during a run.
-
-Rails options:
     -w, --warnings                   Run with Ruby warnings enabled
-    -e, --environment                Run tests in the ENV environment
+    -e, --environment ENV            Run tests in the ENV environment
     -b, --backtrace                  Show the complete backtrace
     -d, --defer-output               Output test failures and errors after the test run
     -f, --fail-fast                  Abort test run on first failure or error
@@ -433,20 +433,16 @@ Rails options:
     -p, --pride                      Pride. Show your testing pride!
 ```
 
-Parallel Testing
+パラレルテスト
 ----------------
 
-Parallel testing allows you to parallelize your test suite. While forking processes is the
-default method, threading is supported as well. Running tests in parallel reduces the time it
-takes your entire test suite to run.
+パラレルテストを用いてテストスイートをパラレル実行できます。デフォルトの手法はプロセスのforkですが、スレッディングもサポートされています。テストをパラレル実行することで、テストスイート全体の実行に要する時間を削減できます。
 
-### Parallel testing with processes
+### プロセスを用いるパラレルテスト
 
-The default parallelization method is to fork processes using Ruby's DRb system. The processes
-are forked based on the number of workers provided. The default number is the actual core count
-on the machine you are on, but can be changed by the number passed to the parallelize method.
+デフォルトのパラレル化手法は、RubyのDRbシステムを用いるプロセスのforkです。プロセスは、提供されるワーカー数に基づいてforkされます。デフォルトの数値は、実行されるマシンの実際のコア数ですが、`parallelize`メソッドに数値を渡すことで変更できます。
 
-To enable parallelization add the following to your `test_helper.rb`:
+パラレル化を有効にするには、`test_helper.rb`に以下を記述します。
 
 ```ruby
 class ActiveSupport::TestCase
@@ -454,50 +450,41 @@ class ActiveSupport::TestCase
 end
 ```
 
-The number of workers passed is the number of times the process will be forked. You may want to
-parallelize your local test suite differently from your CI, so an environment variable is provided
-to be able to easily change the number of workers a test run should use:
+渡されたワーカー数は、プロセスがforkされる回数です。ローカルテストスイートをCIとは別の方法でパラレル化したい場合は、以下の環境変数を用いてテスト実行時に使うべきワーカー数を簡単に変更できます。
 
 ```bash
 PARALLEL_WORKERS=15 rails test
 ```
 
-When parallelizing tests, Active Record automatically handles creating a database and loading the schema into the database for each
-process. The databases will be suffixed with the number corresponding to the worker. For example, if you
-have 2 workers the tests will create `test-database-0` and `test-database-1` respectively.
+テストをパラレル化すると、Active Recordはデータベースの作成やスキーマのデータベースへの読み込みを自動的にプロセスごとに扱います。データベース名の後ろには、ワーカー数に応じた数値が追加されます。たとえば、ワーカーが2つの場合は`test-database-0`と`test-database-1`がそれぞれ作成されます。
 
-If the number of workers passed is 1 or fewer the processes will not be forked and the tests will not
-be parallelized and the tests will use the original `test-database` database.
+渡されたワーカー数が1以下の場合はプロセスはforkされず、テストはパラレル化しません。テストのデータベースもオリジナルの`test-database`が使われます。
 
-Two hooks are provided, one runs when the process is forked, and one runs before the forked process is closed.
-These can be useful if your app uses multiple databases or perform other tasks that depend on the number of
-workers.
+2つのフックが提供されます。1つはプロセスがforkされるときに実行され、1つはforkしたプロセスがcloseする直前に実行されます。これらのフックは、データベースを複数使っている場合や、ワーカー数に応じた他のタスクを実行する場合に便利です。
 
-The `parallelize_setup` method is called right after the processes are forked. The `parallelize_teardown` method
-is called right before the processes are closed.
+`parallelize_setup`メソッドは、プロセスがforkした直後に呼び出されます。`parallelize_teardown`メソッドは、プロセスがcloseする直前に呼び出されます。
 
 ```ruby
 class ActiveSupport::TestCase
   parallelize_setup do |worker|
-    # setup databases
+    # データベースをセットアップする
   end
 
   parallelize_teardown do |worker|
-    # cleanup databases
+    # データベースをクリーンアップする
   end
 
   parallelize(workers: :number_of_processors)
 end
 ```
 
-These methods are not needed or available when using parallel testing with threads.
+これらのメソッドは、スレッドを用いるパラレルテストでは不要であり、利用できません。
 
-### Parallel testing with threads
+### スレッドを用いるパラレルテスト
 
-If you prefer using threads or are using JRuby, a threaded parallelization option is provided. The threaded
-parallelizer is backed by Minitest's `Parallel::Executor`.
+スレッドを使いたい場合やJRubyを利用する場合のために、スレッドによるパラレル化オプションも提供されています。スレッドによるパラレル化は、Minitestの`Parallel::Executor`によって支えられています。
 
-To change the parallelization method to use threads over forks put the following in your `test_helper.rb`
+パラレル化手法をforkからスレッドに変更するには、`test_helper.rb`に以下を記述します。
 
 ```ruby
 class ActiveSupport::TestCase
@@ -505,11 +492,9 @@ class ActiveSupport::TestCase
 end
 ```
 
-Rails applications generated from JRuby will automatically include the `with: :threads` option.
+JRubyで生成されたRailsアプリケーションには、自動的に`with: :threads`オプションが含まれます。
 
-The number of workers passed to `parallelize` determines the number of threads the tests will use. You may
-want to parallelize your local test suite differently from your CI, so an environment variable is provided
-to be able to easily change the number of workers a test run should use:
+`parallelize`に渡されたワーカー数は、テストで使うスレッド数を決定します。ローカルテストスイートをCIとは別の方法でパラレル化したい場合は、以下の環境変数を用いてテスト実行時に使うべきワーカー数を簡単に変更できます。
 
 ```bash
 PARALLEL_WORKERS=15 rails test
