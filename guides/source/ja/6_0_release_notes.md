@@ -42,7 +42,7 @@ Action Textについて詳しくはガイドの[Action Text の概要](action_te
 
 [Pull Request](https://github.com/rails/rails/pull/31900)
 
-[並列テスト](testing.html#parallel-testing)（parallel testing）機能によってテストスイートを並列化できます。デフォルトではプロセスをforkしますが、スレッド（threading）もサポートされます。テストを並列実行することで、テストスイート全体の実行時間を削減できます。
+[並列テスト](testing.html#並列テスト)（parallel testing）機能によってテストスイートを並列化できます。デフォルトではプロセスをforkしますが、スレッド（threading）もサポートされます。テストを並列実行することで、テストスイート全体の実行時間を削減できます。
 
 ### Action Cableのテスト支援
 
