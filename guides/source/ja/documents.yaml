@@ -71,20 +71,26 @@
       url: routing.html
       description: Railsのルーティング機能について解説します。Railsアプリケーションで行われているルーティングのしくみについて理解したい場合は、ここからお読みください。
 -
-  name: 高度なトピック
+  name: 他の構成要素
   documents:
     -
       name: Active Support コア拡張機能
       url: active_support_core_extensions.html
       description: Active Supportで定義されているRubyのコア拡張機能に関するドキュメントです。
     -
-      name: Rails 国際化 (i18n) API
-      url: i18n.html
-      description: Railsアプリケーションを国際化する方法について解説します。これによりアプリケーションを異なる言語に翻訳することができ、さらに単数形/複数形ルールを変更したり、その国に適した日付フォーマットを設定したりできます。
-    -
       name: Action Mailer の基礎
       url: action_mailer_basics.html
       description: Action Mailerを使用してメールを送受信する方法について解説します。
+    -
+      name: Action Mailbox Basics [未訳]
+      work_in_progress: true
+      url: action_mailbox_basics.html
+      description: This guide describes how to use Action Mailbox to receive emails.
+    -
+      name: Action Text Overview [未訳]
+      work_in_progress: true
+      url: action_text_overview.html
+      description: This guide describes how to use Action Text to handle rich text content.
     -
       name: Active Job の基礎
       url: active_job_basics.html
@@ -93,6 +99,19 @@
       name: Active Storage の概要
       url: active_storage_overview.html
       description: Active Record のモデルにファイルを添付する方法について解説します。
+    -
+      name: Action Cable の概要
+      url: action_cable_overview.html
+      description: リアルタイム機能を実現するAction Cableの動作と、WebSocketsの利用法について解説します。
+
+
+-
+  name: 高度なトピック
+  documents:
+    -
+      name: Rails 国際化 (i18n) API
+      url: i18n.html
+      description: Railsアプリケーションを国際化する方法について解説します。これによりアプリケーションを異なる言語に翻訳することができ、さらに単数形/複数形ルールを変更したり、その国に適した日付フォーマットを設定したりできます。
     -
       name: Rails テスティングガイド
       url: testing.html
@@ -131,7 +150,7 @@
       url: autoloading_and_reloading_constants.html
       description: 定数の自動読み込みや再読み込みの動作について解説します。
     -
-      name: "Rails のキャッシュ: 概要"
+      name: "Rails のキャッシュ機構"
       url: caching_with_rails.html
       description: キャッシュを活用してRailsを高速化する方法について解説します。
     -
@@ -153,10 +172,6 @@
       name: Rails による API 専用アプリケーション
       url: api_app.html
       description: JSON APIアプリケーションをRailsで効果的に作成する方法を解説します。
-    -
-      name: Action Cable の概要
-      url: action_cable_overview.html
-      description: リアルタイム機能を実現するAction Cableの動作と、WebSocketsの利用法について解説します。
 
 -
   name: Rails を拡張する
@@ -218,50 +233,50 @@
       url: upgrading_ruby_on_rails.html
       description: アプリケーションのRuby on Railsを最新バージョンにアップグレードする方法について解説します。
     -
-      name: Ruby on Rails 6.0 リリースノート
+      name: Rails 6.0 - 2019年4月
       url: 6_0_release_notes.html
       description: Rails 6.0のリリースノートです。
     -
-      name: Ruby on Rails 5.2 リリースノート
+      name: Rails 5.2 - 2018年4月
       url: 5_2_release_notes.html
       description: Rails 5.2のリリースノートです。
     -
-      name: Ruby on Rails 5.1 リリースノート
+      name: Rails 5.1 - 2017年4月
       url: 5_1_release_notes.html
       description: Rails 5.1のリリースノートです。
     -
-      name: Ruby on Rails 5.0 リリースノート
+      name: Rails 5.0 - 2016年6月
       url: 5_0_release_notes.html
       description: Rails 5.0のリリースノートです。
     -
-      name: Ruby on Rails 4.2 リリースノート
+      name: Rails 4.2 - 2014年12月
       url: 4_2_release_notes.html
       description: Rails 4.2のリリースノートです。
     -
-      name: Ruby on Rails 4.1 リリースノート
+      name: Rails 4.1 - 2014年4月
       url: 4_1_release_notes.html
       description: Rails 4.1のリリースノートです。
     -
-      name: Ruby on Rails 4.0 リリースノート
+      name: Rails 4.0 - 2013年6月
       url: 4_0_release_notes.html
       description: Rails 4.0のリリースノートです。
     -
-      name: Ruby on Rails 3.2 リリースノート
+      name: Rails 3.2 - 2012年1月
       url: 3_2_release_notes.html
       description: Rails 3.2のリリースノートです。
     -
-      name: Ruby on Rails 3.1 リリースノート
+      name: Rails 3.1 - 2011年8月
       url: 3_1_release_notes.html
       description: Rails 3.1のリリースノートです。
     -
-      name: Ruby on Rails 3.0 Release Notes [未訳]
+      name: Rails 3.0 - 2010年8月 [未訳]
       url: 3_0_release_notes.html
       description: Rails 3.0のリリースノートです。
     -
-      name: Ruby on Rails 2.3 Release Notes [未訳]
+      name: Rails 2.3 - 2009年3月 [未訳]
       url: 2_3_release_notes.html
       description: Rails 2.3のリリースノートです。
     -
-      name: Ruby on Rails 2.2 Release Notes [未訳]
+      name: Rails 2.2 - 2008年11月 [未訳]
       url: 2_2_release_notes.html
       description: Rails 2.2のリリースノートです。
