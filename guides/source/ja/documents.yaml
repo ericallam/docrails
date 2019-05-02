@@ -233,50 +233,50 @@
       url: upgrading_ruby_on_rails.html
       description: アプリケーションのRuby on Railsを最新バージョンにアップグレードする方法について解説します。
     -
-      name: Rails 6.0 - 2019年4月
+      name: Rails 6.0 - 2019/04
       url: 6_0_release_notes.html
       description: Rails 6.0のリリースノートです。
     -
-      name: Rails 5.2 - 2018年4月
+      name: Rails 5.2 - 2018/04
       url: 5_2_release_notes.html
       description: Rails 5.2のリリースノートです。
     -
-      name: Rails 5.1 - 2017年4月
+      name: Rails 5.1 - 2017/04
       url: 5_1_release_notes.html
       description: Rails 5.1のリリースノートです。
     -
-      name: Rails 5.0 - 2016年6月
+      name: Rails 5.0 - 2016/06
       url: 5_0_release_notes.html
       description: Rails 5.0のリリースノートです。
     -
-      name: Rails 4.2 - 2014年12月
+      name: Rails 4.2 - 2014/12
       url: 4_2_release_notes.html
       description: Rails 4.2のリリースノートです。
     -
-      name: Rails 4.1 - 2014年4月
+      name: Rails 4.1 - 2014/04
       url: 4_1_release_notes.html
       description: Rails 4.1のリリースノートです。
     -
-      name: Rails 4.0 - 2013年6月
+      name: Rails 4.0 - 2013/06
       url: 4_0_release_notes.html
       description: Rails 4.0のリリースノートです。
     -
-      name: Rails 3.2 - 2012年1月
+      name: Rails 3.2 - 2012/01
       url: 3_2_release_notes.html
       description: Rails 3.2のリリースノートです。
     -
-      name: Rails 3.1 - 2011年8月
+      name: Rails 3.1 - 2011/08
       url: 3_1_release_notes.html
       description: Rails 3.1のリリースノートです。
     -
-      name: Rails 3.0 - 2010年8月 [未訳]
+      name: Rails 3.0 - 2010/08 [未訳]
       url: 3_0_release_notes.html
       description: Rails 3.0のリリースノートです。
     -
-      name: Rails 2.3 - 2009年3月 [未訳]
+      name: Rails 2.3 - 2009/03 [未訳]
       url: 2_3_release_notes.html
       description: Rails 2.3のリリースノートです。
     -
-      name: Rails 2.2 - 2008年11月 [未訳]
+      name: Rails 2.2 - 2008/11 [未訳]
       url: 2_2_release_notes.html
       description: Rails 2.2のリリースノートです。
