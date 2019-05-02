@@ -13,11 +13,11 @@ module RailsGuides
     def docs_for_sitemap(position)
       case position
         when "L"
-          documents_by_section.to(3)
+          documents_by_section.to(4)
         when "C"
-          documents_by_section.from(4).take(2)
+          documents_by_section.from(5).take(2)
         when "R"
-          documents_by_section.from(6)
+          documents_by_section.from(7)
         else
           raise "Unknown position: #{position}"
       end
