@@ -82,15 +82,15 @@
       url: action_mailer_basics.html
       description: Action Mailerを使用してメールを送受信する方法について解説します。
     -
-      name: Action Mailbox Basics [未訳]
+      name: Action Mailbox の基礎
       work_in_progress: true
       url: action_mailbox_basics.html
-      description: This guide describes how to use Action Mailbox to receive emails.
+      description: Action Mailboxを使ってメールを受信する方法について解説します。
     -
-      name: Action Text Overview [未訳]
+      name: Action Text の概要
       work_in_progress: true
       url: action_text_overview.html
-      description: This guide describes how to use Action Text to handle rich text content.
+      description: Action Text を使ったリッチテキスト形式のデータの取り扱い方法について解説します。
     -
       name: Active Job の基礎
       url: active_job_basics.html
