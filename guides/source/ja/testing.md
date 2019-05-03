@@ -294,8 +294,8 @@ end
 | `assert_not_includes( collection, obj, [msg] )`                  | `obj`は`collection`に含まれないと主張する。|
 | `assert_in_delta( expected, actual, [delta], [msg] )`            | `expected`と`actual`の個数の差は`delta`以内であると主張する。|
 | `assert_in_epsilon ( expected, actual, [epsilon], [msg] )`       | `expected`と`actual`の数値の相対誤差が`epsilon`より小さいと主張する。|
-| `assert_not_in_epsilon ( expected, actual, [epsilon], [msg] )`   |  `expected`と`actual`の数値には`epsilon`より小さい相対誤差がないと主張する。|
 | `assert_not_in_delta( expected, actual, [delta], [msg] )`        | `expected`と`actual`の個数の差は`delta`以内にはないと主張する。|
+| `assert_not_in_epsilon ( expected, actual, [epsilon], [msg] )`   |  `expected`と`actual`の数値には`epsilon`より小さい相対誤差がないと主張する。|
 | `assert_throws( symbol, [msg] ) { block }`                       | 与えられたブロックはシンボルをスローすると主張する。|
 | `assert_raises( exception1, exception2, ... ) { block }`         | 渡されたブロックから、渡された例外のいずれかが発生すると主張する。|
 | `assert_instance_of( class, obj, [msg] )`                        | `obj`は`class`のインスタンスであると主張する。|
@@ -402,34 +402,102 @@ $ bin/rails test test/controllers # run all tests from specific directory
 テストランナーではこの他にも、「failing fast」やテスト終了時に必ずテストを出力するといったさまざまな機能が使えます。次を実行してテストランナーのドキュメントをチェックしてみましょう。
 
 ```bash
-$ bin/rails test -h
+$ rails test -h
+Usage: rails test [options] [files or directories]
+
+You can run a single test by appending a line number to a filename:
+
+    rails test test/models/user_test.rb:27
+
+You can run multiple files and directories at the same time:
+
+    rails test test/controllers test/integration/login_test.rb
+
+By default test failures and errors are reported inline during a run.
+
 minitest options:
     -h, --help                       Display this help.
+        --no-plugins                 Bypass minitest plugin auto-loading (or set $MT_NO_PLUGINS).
     -s, --seed SEED                  Sets random seed. Also via env. Eg: SEED=n rake
     -v, --verbose                    Verbose. Show progress processing files.
     -n, --name PATTERN               Filter run on /regexp/ or string.
         --exclude PATTERN            Exclude /regexp/ or string from run.
 
 Known extensions: rails, pride
-
-Usage: bin/rails test [options] [files or directories]
-You can run a single test by appending a line number to a filename:
-
-    bin/rails test test/models/user_test.rb:27
-
-You can run multiple files and directories at the same time:
-
-    bin/rails test test/controllers test/integration/login_test.rb
-
-By default test failures and errors are reported inline during a run.
-
-Rails options:
     -w, --warnings                   Run with Ruby warnings enabled
-    -e, --environment                Run tests in the ENV environment
+    -e, --environment ENV            Run tests in the ENV environment
     -b, --backtrace                  Show the complete backtrace
     -d, --defer-output               Output test failures and errors after the test run
     -f, --fail-fast                  Abort test run on first failure or error
     -c, --[no-]color                 Enable color in the output
+    -p, --pride                      Pride. Show your testing pride!
+```
+
+並列テスト
+----------------
+
+並列テストを用いてテストスイートを並列に実行できます。デフォルトの手法はプロセスのforkですが、スレッディングもサポートされています。テストを並列に実行することで、テストスイート全体の実行に要する時間を削減できます。
+
+### プロセスを用いた並列テスト
+
+デフォルトの並列化手法は、RubyのDRbシステムを用いるプロセスのforkです。プロセスは、提供されるワーカー数に基づいてforkされます。デフォルトの数値は、実行されるマシンの実際のコア数ですが、`parallelize`メソッドに数値を渡すことで変更できます。
+
+並列化を有効にするには、`test_helper.rb`に以下を記述します。
+
+```ruby
+class ActiveSupport::TestCase
+  parallelize(workers: 2)
+end
+```
+
+渡されたワーカー数は、プロセスがforkされる回数です。ローカルテストスイートをCIとは別の方法で並列化したい場合は、以下の環境変数を用いてテスト実行時に使うべきワーカー数を簡単に変更できます。
+
+```bash
+PARALLEL_WORKERS=15 rails test
+```
+
+テストを並列化すると、Active Recordはデータベースの作成やスキーマのデータベースへの読み込みを自動的にプロセスごとに扱います。データベース名の後ろには、ワーカー数に応じた数値が追加されます。たとえば、ワーカーが2つの場合は`test-database-0`と`test-database-1`がそれぞれ作成されます。
+
+渡されたワーカー数が1以下の場合はプロセスはforkされず、テストは並列化しません。テストのデータベースもオリジナルの`test-database`が使われます。
+
+2つのフックが提供されます。1つはプロセスがforkされるときに実行され、1つはforkしたプロセスがcloseする直前に実行されます。これらのフックは、データベースを複数使っている場合や、ワーカー数に応じた他のタスクを実行する場合に便利です。
+
+`parallelize_setup`メソッドは、プロセスがforkした直後に呼び出されます。`parallelize_teardown`メソッドは、プロセスがcloseする直前に呼び出されます。
+
+```ruby
+class ActiveSupport::TestCase
+  parallelize_setup do |worker|
+    # データベースをセットアップする
+  end
+
+  parallelize_teardown do |worker|
+    # データベースをクリーンアップする
+  end
+
+  parallelize(workers: :number_of_processors)
+end
+```
+
+これらのメソッドは、スレッドを用いる並列テストでは不要であり、利用できません。
+
+### スレッドを用いた並列テスト
+
+スレッドを使いたい場合やJRubyを利用する場合のために、スレッドによる並列化オプションも提供されています。スレッドによる並列化は、Minitestの`Parallel::Executor`によって支えられています。
+
+並列化手法をforkからスレッドに変更するには、`test_helper.rb`に以下を記述します。
+
+```ruby
+class ActiveSupport::TestCase
+  parallelize(workers: :number_of_processors, with: :threads)
+end
+```
+
+JRubyで生成されたRailsアプリケーションには、自動的に`with: :threads`オプションが含まれます。
+
+`parallelize`に渡されたワーカー数は、テストで使うスレッド数を決定します。ローカルテストスイートをCIとは別の方法で並列化したい場合は、以下の環境変数を用いてテスト実行時に使うべきワーカー数を簡単に変更できます。
+
+```bash
+PARALLEL_WORKERS=15 rails test
 ```
 
 テスト用データベース
@@ -1426,6 +1494,158 @@ class ProductTest < ActiveJob::TestCase
   test 'billing job scheduling' do
     assert_enqueued_with(job: BillingJob) do
       product.charge(account)
+    end
+  end
+end
+```
+
+### Asserting Time Arguments in Jobs
+
+When serializing job arguments, `Time`, `DateTime`, and `ActiveSupport::TimeWithZone` lose microsecond precision. This means comparing deserialized time with actual time doesn't always work. To compensate for the loss of precision, `assert_enqueued_with` and `assert_performed_with` will remove microseconds from time objects in argument assertions.
+
+```ruby
+require 'test_helper'
+
+class ProductTest < ActiveSupport::TestCase
+  include ActiveJob::TestHelper
+
+  test 'that product is reserved at a given time' do
+    now = Time.now
+    assert_performed_with(job: ReservationJob, args: [product, now]) do
+      product.reserve(now)
+    end
+  end
+end
+```
+
+Testing Action Cable
+--------------------
+
+Since Action Cable is used at different levels inside your application,
+you'll need to test both the channels, connection classes themselves, and that other
+entities broadcast correct messages.
+
+### Connection Test Case
+
+By default, when you generate new Rails application with Action Cable, a test for the base connection class (`ApplicationCable::Connection`) is generated as well under `test/channels/application_cable` directory.
+
+Connection tests aim to check whether a connection's identifiers get assigned properly
+or that any improper connection requests are rejected. Here is an example:
+
+```ruby
+class ApplicationCable::ConnectionTest < ActionCable::Connection::TestCase
+  test "connects with params" do
+    # Simulate a connection opening by calling the `connect` method
+    connect params: { user_id: 42 }
+
+    # You can access the Connection object via `connection` in tests
+    assert_equal connection.user_id, "42"
+  end
+
+  test "rejects connection without params" do
+    # Use `assert_reject_connection` matcher to verify that
+    # connection is rejected
+    assert_reject_connection { connect }
+  end
+end
+```
+
+You can also specify request cookies the same way you do in integration tests:
+
+```ruby
+test "connects with cookies" do
+  cookies.signed[:user_id] = "42"
+
+  connect
+
+  assert_equal connection.user_id, "42"
+end
+```
+
+See the API documentation for [`ActionCable::Connection::TestCase`](https://api.rubyonrails.org/classes/ActionCable/Connection/TestCase.html) for more information.
+
+### Channel Test Case
+
+By default, when you generate a channel, an associated test will be generated as well
+under the `test/channels` directory. Here's an example test with a chat channel:
+
+```ruby
+require "test_helper"
+
+class ChatChannelTest < ActionCable::Channel::TestCase
+  test "subscribes and stream for room" do
+    # Simulate a subscription creation by calling `subscribe`
+    subscribe room: "15"
+
+    # You can access the Channel object via `subscription` in tests
+    assert subscription.confirmed?
+    assert_has_stream "chat_15"
+  end
+end
+```
+
+This test is pretty simple and only asserts that the channel subscribes the connection to a particular stream.
+
+You can also specify the underlying connection identifiers. Here's an example test with a web notifications channel:
+
+```ruby
+require "test_helper"
+
+class WebNotificationsChannelTest < ActionCable::Channel::TestCase
+  test "subscribes and stream for user" do
+    stub_connection current_user: users(:john)
+
+    subscribe
+
+    assert_has_stream_for users(:john)
+  end
+end
+```
+
+See the API documentation for [`ActionCable::Channel::TestCase`](https://api.rubyonrails.org/classes/ActionCable/Channel/TestCase.html) for more information.
+
+### Custom Assertions And Testing Broadcasts Inside Other Components
+
+Action Cable ships with a bunch of custom assertions that can be used to lessen the verbosity of tests. For a full list of available assertions, see the API documentation for [`ActionCable::TestHelper`](https://api.rubyonrails.org/classes/ActionCable/TestHelper.html).
+
+It's a good practice to ensure that the correct message has been broadcasted inside other components (e.g. inside your controllers). This is precisely where
+the custom assertions provided by Action Cable are pretty useful. For instance,
+within a model:
+
+```ruby
+require 'test_helper'
+
+class ProductTest < ActionCable::TestCase
+  test "broadcast status after charge" do
+    assert_broadcast_on("products:#{product.id}", type: "charged") do
+      product.charge(account)
+    end
+  end
+end
+```
+
+If you want to test the broadcasting made with `Channel.broadcast_to`, you shoud use
+`Channel.broadcasting_for` to generate an underlying stream name:
+
+```ruby
+# app/jobs/chat_relay_job.rb
+class ChatRelayJob < ApplicationJob
+  def perform_later(room, message)
+    ChatChannel.broadcast_to room, text: message
+  end
+end
+
+# test/jobs/chat_relay_job_test.rb
+require 'test_helper'
+
+class ChatRelayJobTest < ActiveJob::TestCase
+  include ActionCable::TestHelper
+
+  test "broadcast message to room" do
+    room = rooms(:all)
+
+    assert_broadcast_on(ChatChannel.broadcasting_for(room), text: "Hi!") do
+      ChatRelayJob.perform_now(room, "Hi!")
     end
   end
 end
