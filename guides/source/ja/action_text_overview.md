@@ -1,6 +1,4 @@
-**DO NOT READ THIS FILE ON GITHUB, GUIDES ARE PUBLISHED ON https://guides.rubyonrails.org.**
-
-Action Textの概要
+Action Text の概要
 ====================
 
 本ガイドでは、リッチテキストコンテンツの扱いを始めるのに必要なものをすべて提供します。
