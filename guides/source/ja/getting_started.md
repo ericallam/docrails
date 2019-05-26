@@ -844,10 +844,9 @@ end
 
 このフォームの送信先は`update`アクションになります。今の時点では未定義ですが、この後すぐ定義します。
 
-`article`オブジェクトをこのメソッドに渡すと、編集済みの記事を送信するときに使うURLが魔法のように自動作成されます。
-Railsはこのオプションによって、`PATCH`というHTTPメソッドでこのフォームを送信しようとしていることを認識します。`PATCH`メソッドは、RESTプロトコルに基いてリソースを**更新**する場合に使います。
+`article`オブジェクトを`form_with`メソッドに渡すと、編集済みの記事を送信するときに使うURLが魔法のように自動作成されます。Railsは`model`オプションに渡された値を読み取り、(今回の場合は) `PATCH`というHTTPメソッドでこのフォームを送信しようとします。`PATCH`メソッドは、RESTプロトコルに基いてリソースを**更新**する場合に使います。
 
-`form_with`メソッドの引数にはモデルオブジェクトを渡せます（`model: @article`など）。このときヘルパーはこのオブジェクトに含まれているフィールドでフォームの項目を埋めます。`scope: :article`のようにスコープにシンボルを指定すると、フィールドが空の状態で作成されます。詳しくは[form_withに関するAPIドキュメント](http://api.rubyonrails.org/classes/ActionView/Helpers/FormHelper.html#method-i-form_with) (英語) を参照してください。
+`form_with`メソッドの引数にはモデルオブジェクトを渡せます（`model: @article`など）。このときヘルパーは`article`オブジェクトに含まれているフィールドでフォームの項目を埋めます。`scope: :article`のようにスコープにシンボルを指定すると、フィールドが空の状態で作成されます。詳しくは[form_withに関するAPIドキュメント](http://api.rubyonrails.org/classes/ActionView/Helpers/FormHelper.html#method-i-form_with) (英語) を参照してください。
 
 続いて、`app/controllers/articles_controller.rb`に`update`アクションを作成しましょう。
 
