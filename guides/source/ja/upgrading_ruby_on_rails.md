@@ -112,6 +112,270 @@ Action Cable JavaScriptパッケージがCoffeeScriptからES2015に置き換え
   -    ActionCable.stopDebugging()
   +    ActionCable.logger.enabled = false
   ```
+  
+### `ActionDispatch::Response#content_type`がContent-Typeヘッダーを変更せずに返すようになった
+
+従来は、`ActionDispatch::Response#content_type`の戻り値にcharsetパートが**含まれていませんでした**。
+この振る舞いは変更され、従来省略されていたcharsetパートも含まれるようになりました。
+
+MIMEタイプだけが欲しい場合は、代わりに`ActionDispatch::Response#media_type`をお使いください。
+
+変更前:
+
+```ruby
+resp = ActionDispatch::Response.new(200, "Content-Type" => "text/csv; header=present; charset=utf-16")
+resp.content_type #=> "text/csv; header=present"
+```
+
+変更後:
+
+```ruby
+resp = ActionDispatch::Response.new(200, "Content-Type" => "text/csv; header=present; charset=utf-16")
+resp.content_type #=> "text/csv; header=present; charset=utf-16"
+resp.media_type   #=> "text/csv"
+```
+
+### オートローディング
+
+Rails 6のデフォルト設定では、CRubyで`zeitwerk`のオートローディングモードが有効になります。
+
+```ruby
+# config/application.rb
+
+config.load_defaults "6.0"
+```
+
+オートローディングモードでは、オートロード、再読み込み、eager loadingを[Zeitwerk](https://github.com/fxn/zeitwerk)で管理します。
+
+#### Public APIについて
+
+一般に、アプリケーションでZeitwerk APIの利用が直接必要になることはありません。Railsは、`config.autoload_paths`や`config.cache_classes`といった既存の約束事に沿ってセットアップを行います。
+
+アプリケーションはこのインターフェイスを遵守すべきですが、実際のZeitwerkローダーオブジェクトに以下のようにアクセスできます。
+
+```ruby
+Rails.autoloaders.main
+```
+
+上は、たとえばSTI（単一テーブル継承）をプリロードする必要がある場合や、カスタムのinflectorを設定する必要が生じた場合には役立つことがあるでしょう。
+
+#### プロジェクトの構成
+
+アップグレードしたアプリケーションのオートロードが正しく動いていれば、プロジェクトの構成はほとんど互換が取れているはずです。
+
+ただし`classic`モードは、見つからない定数名からファイル名を推測しますが（`underscore`）、`zeitwerk`モードはファイル名から定数名を推測します（`camelize`）。特に略語がからむ場合、これらのヘルパーの動作が互いにきれいに逆になるとは限りません。たとえば、`"FOO".underscore`は`"foo"`になりますが、 `"foo".camelize`は`"FOO"`ではなく`"Foo"`になります。これについては、最初に`classic`モードを一時的に設定することで互換性をチェックできます。
+
+```ruby
+# config/application.rb
+
+config.load_defaults "6.0"
+config.autoloader = :classic
+```
+
+続いて以下を実行します。
+
+```
+bin/rails zeitwerk:check
+```
+
+すべて問題ないことが確認できたら、`config.autoloader = :classic`を削除します。
+
+#### `require_dependency`について
+
+`require_dependency`の既知のユースケースはすべて排除されました。自分のプロジェクトをgrepして`require_dependency`を削除してください。
+
+階層レベルが2つより多いSTIの場合は、以下のようにイニシャライザで階層の葉（leave）をプリロードできます。
+
+```ruby
+# config/initializers/preload_stis.rb
+
+# 葉をプリロードすることで、階層が上に向かって
+# そのクラス定義でスーパークラスへの参照をたどって読み込まれる
+sti_leaves = %w(
+  app/models/leaf1.rb
+  app/models/leaf2.rb
+  app/models/leaf3.rb
+)
+Rails.autoloaders.main.preload(sti_leaves)
+```
+
+#### クラス定義やモジュール定義の完全修飾名
+
+クラス定義やモジュール定義で、定数パスを安定して使えるようになりました。
+
+```ruby
+# このクラスの本文のオートロードがRubyのセマンティクスと一致するようになった
+class Admin::UsersController < ApplicationController
+  # ...
+end
+```
+
+ここで知っておいていただきたいのは、`classic`モードのオートローダーでは、実行順序によっては以下のコードの`Foo::Wadus`をオートロードできてしまう場合があるということです。
+
+```ruby
+class Foo::Bar
+  Wadus
+end
+```
+
+上の`Foo`はネストしていないのでRubyのセマンティクスと一致せず、`zeitwerk`ではまったく動かなくなります。こうしたエッジケースが見つかったら、以下のように完全修飾名の`Foo::Wadus`を使えます。
+
+```ruby
+class Foo::Bar
+  Foo::Wadus
+end
+```
+
+または、以下のように`Foo`でネストすることもできます
+
+```ruby
+module Foo
+  class Bar
+    Wadus
+  end
+end
+```
+
+#### concernsについて
+
+以下のような標準的な構造は、オートロードもeager loadも可能です。
+
+```
+app/models
+app/models/concerns
+```
+
+上は、（オートロードパスに属するので）`app/models/concerns`がルートディレクトリであると仮定され、名前空間としては無視されます。したがって、`app/models/concerns/foo.rb`は`Concerns::Foo`ではなく`Foo`と定義すべきです。
+
+`Concerns::`名前空間は、`classic`モードのオートローダーでは実装の副作用によって動作していましたが、これは意図した動作ではありませんでした。`Concerns::`を使っているアプリケーションが`zeitwerk`モードで動くようにするには、こうしたクラスやモジュールをリネームする必要があります。
+
+#### 定数のオートロードと明示的な名前空間
+
+あるファイルの中で名前空間が1つ定義されているとします（ここでは`Hotel`）。
+
+```
+app/models/hotel.rb         # Defines Hotel.
+app/models/hotel/pricing.rb # Defines Hotel::Pricing.
+```
+
+この`Hotel`という定数の定義には、必ず`class`キーワードまたは`module`キーワードを使わなければなりません。次の例をご覧ください。
+
+```ruby
+class Hotel
+end
+```
+
+上は問題ありません。
+
+しかし以下はどちらも動きません。
+
+```ruby
+Hotel = Class.new
+```
+
+```ruby
+Hotel = Struct.new
+```
+
+どちらも、`Hotel::Pricing`などの子オブジェクトを探索できなくなります。
+
+この制約は、明示的な名前空間にのみ適用されます。名前空間を定義しないクラスやモジュールであれば、そうしたイディオムで定義することもできます。
+
+#### 「1つのファイルには1つの定数だけ」（同じトップレベルで）
+
+`classic`モードでは、同じトップレベルに複数の定数を定義して、それらをすべて再読み込みすることが技術的には可能でした。以下の例をご覧ください。
+
+```ruby
+# app/models/foo.rb
+
+class Foo
+end
+
+class Bar
+end
+```
+
+上で`Foo`をオートロードすると、`Bar`をオートロードできなかった場合にも`Bar`をオートロード済みとマーキングすることがありました。このようなコードは`zeitwerk`では対象外です。`Bar`はそれ専用の`bar.rb`というファイルに移すべきです。「1つのファイルには1つの定数だけ」となります。
+
+この影響を受けるのは、上の例のように「同じトップレベルにある」複数の定数だけです。ネストの内側にあるクラスやモジュールは影響を受けません。以下の例をご覧ください。
+
+```ruby
+# app/models/foo.rb
+
+class Foo
+  class InnerClass
+  end
+end
+```
+
+アプリケーションで`Foo`を再読み込みすれば、`Foo::InnerClass`も再読み込みされます。
+
+#### spring gemと`test`環境について
+
+spring gemは、アプリケーションのコードが変更されると再読み込みします。`test`環境では、そのために再読み込みを有効にしておく必要があります。
+
+```ruby
+# config/environments/test.rb
+
+config.cache_classes = false
+```
+
+有効にしておかないと、以下のエラーが表示されます。
+
+```
+reloading is disabled because config.cache_classes is true
+```
+
+#### Bootsnapについて
+
+Bootsnapのバージョンは1.4.2以上にするべきです。
+
+また、Ruby 2.5を実行中は、インタプリタのバグの関係で、iseqキャッシュを無効にする必要があります。その場合はBootsnap 1.4.4以上に依存させるようにしてください。
+
+#### `config.add_autoload_paths_to_load_path`
+
+以下の新しい設定は、後方互換性のためデフォルトで`true`になっていますが、これを使って`$LOAD_PATH`に追加されるオートロードパスを減らせます。
+
+```ruby
+config.add_autoload_paths_to_load_path
+```
+
+これは、ほとんどのアプリケーションにとって合理的です（`app/models`内のファイルをrequireするような行為は決してすべきではないので）。しかも、Zeirwerkは内部で絶対パスだけを使います。
+
+そうすることで、`$LOAD_PATH`の探索を最適化して（つまりチェックするディレクトリを減らして）、Bootsnapの動作を軽くしてメモリ消費量を削減できます。Bootsnapがそうしたディレクトリのインデックスをビルドする必要がなくなるからです。
+
+#### スレッド安全性について
+
+`classic`モードの定数オートロードはスレッド安全ではありません。Railsには、オートロードが有効な状態でWebのリクエストをスレッド安全にする（これは`development`モードでよくあることです）などのためのインプレースのロックがあるにもかかわらずです。
+
+`zeitwerk`モードの定数オートロードは、スレッド安全です。たとえば、`runner`コマンドで実行されるマルチスレッドでもオートロードが可能です。
+
+#### config.autoload_pathsの汚れに注意
+
+以下のような設定は要注意です。
+
+```ruby
+config.autoload_paths += Dir["#{config.root}/lib/**/"]
+```
+
+`config.autoload_paths`のあらゆる要素は、トップレベルの名前空間（`Object`）を表すべきなので、ネストできなくなります（前述の`concerns`ディレクトリは例外）。
+
+この修正は、ワイルドカードを削除するだけでできます。
+
+```ruby
+config.autoload_paths << "#{config.root}/lib"
+```
+
+#### Rails 6でclassicモードのオートローダーを使う方法
+
+アプリケーションはRails 6のデフォルトを読み込みますが、以下のように`config.autoloader`を設定することで`classic`モードのオートローダを使うこともできます。
+
+```ruby
+# config/application.rb
+
+config.load_defaults "6.0"
+config.autoloader = :classic
+```
 
 Rails 5.1からRails 5.2へのアップグレード
 -------------------------------------
