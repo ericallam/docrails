@@ -1519,4 +1519,4 @@ end
 
 これにより、たとえば`app/views/articles/show.expert.html.erb`のような特殊なビューをエキスパートユーザーにだけ表示することができます。
 
-詳しくは[Rails国際化 (I18n) API](i18n.html) を参照してください。
+詳しくは[Rails 国際化 (I18n) API](i18n.html) を参照してください。
