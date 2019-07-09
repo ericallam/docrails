@@ -257,7 +257,7 @@ user.save  # => false
 user.save! # => ActiveRecord::RecordInvalid: Validation failed: Name can't be blank
 ```
 
-バリデーションについて詳しくは、[Active Recordバリデーションガイド](active_record_validations.html)を参照してください。
+バリデーションについて詳しくは、[Active Record バリデーションガイド](active_record_validations.html)を参照してください。
 
 コールバック
 ---------

@@ -1,4 +1,4 @@
-Ruby on Rails 5.2 リリースノート
+Rails 5.2 - 2018/04
 ===============================
 
 Rails 5.2の注目ポイント:
@@ -34,7 +34,7 @@ Active Storageの詳細については[Active Storageの概要](active_storage_o
 [Pull Request](https://github.com/rails/rails/pull/31134)
 
 Rails 5.2にRedisキャッシュストアが組み込まれました。
-詳しくは、ガイドの[Rails のキャッシュ: 概要](caching_with_rails.html#activesupport-cache-rediscachestore)を参照してください。
+詳しくは、ガイドの[Rails のキャッシュ機構](caching_with_rails.html#activesupport-cache-rediscachestore)を参照してください。
 
 ### HTTP/2 Early Hints
 
