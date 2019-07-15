@@ -204,7 +204,7 @@ end
 
 上のルーティングにより、`articles`コントローラや`comments`コントローラへのルーティングが多数生成されます。たとえば、`Admin::ArticlesController`向けに作成されるルーティングは以下のとおりです。
 
-| HTTP 動詞 | パス                  | コントローラ#アクション   | 名前付きヘルパー              |
+| HTTP動詞  | パス                  | コントローラ#アクション   | 名前付きヘルパー              |
 | --------- | ------------------------ | ---------------------- | ---------------------------- |
 | GET       | /admin/articles          | admin/articles#index   | admin_articles_path          |
 | GET       | /admin/articles/new      | admin/articles#new     | new_admin_article_path       |
@@ -244,7 +244,7 @@ resources :articles, path: '/admin/articles'
 
 いずれの場合も、名前付きルート (named route)は、`scope`を使わなかった場合と同じであることにご注目ください。最後の例の場合は、以下のパスが`ArticlesController`に割り当てられます。
 
-| HTTP 動詞 | パス                  | コントローラ#アクション   | 名前付きヘルパー              |
+| HTTP動詞  | パス                  | コントローラ#アクション   | 名前付きヘルパー              |
 | --------- | ------------------------ | -------------------- | ---------------------- |
 | GET       | /admin/articles          | articles#index       | articles_path          |
 | GET       | /admin/articles/new      | articles#new         | new_article_path       |
@@ -367,7 +367,7 @@ end
 
 上の場合、commentsリソースのルーティングは以下のようになります。
 
-| HTTP 動詞 | パス                  | コントローラ#アクション   | 名前付きヘルパー              |
+| HTTP動詞  | パス                  | コントローラ#アクション   | 名前付きヘルパー              |
 | --------- | -------------------------------------------- | ----------------- | ------------------------ |
 | GET       | /articles/:article_id/comments(.:format)     | comments#index    | article_comments_path    |
 | POST      | /articles/:article_id/comments(.:format)     | comments#create   | article_comments_path    |
@@ -389,7 +389,7 @@ end
 
 上の場合、commentsリソースのルーティングは以下のようになります。
 
-| HTTP 動詞 | パス                  | コントローラ#アクション   | 名前付きヘルパー              |
+| HTTP動詞  | パス                  | コントローラ#アクション   | 名前付きヘルパー              |
 | --------- | -------------------------------------------- | ----------------- | --------------------------- |
 | GET       | /articles/:article_id/comments(.:format)     | comments#index    | article_comments_path       |
 | POST      | /articles/:article_id/comments(.:format)     | comments#create   | article_comments_path       |
@@ -921,7 +921,7 @@ resources :photos, controller: 'images'
 
 上のルーティングは、`/photos`で始まるパスを認識しますが、ルーティング先を`Images`コントローラにします。
 
-| HTTP 動詞 | パス                  | コントローラ#アクション   | 名前付きヘルパー              |
+| HTTP動詞  | パス                  | コントローラ#アクション   | 名前付きヘルパー              |
 | --------- | ---------------- | ----------------- | -------------------- |
 | GET       | /photos          | images#index      | photos_path          |
 | GET       | /photos/new      | images#new        | new_photo_path       |
@@ -976,7 +976,7 @@ resources :photos, as: 'images'
 
 上のルーティングでは、`/photos`で始まるブラウザからのパスを認識し、このリクエストを`Photos`コントローラにルーティングしますが、ヘルパーの命名に`:as`オプションの値が使用されます。
 
-| HTTP 動詞 | パス                  | コントローラ#アクション   | 名前付きヘルパー              |
+| HTTP動詞  | パス                  | コントローラ#アクション   | 名前付きヘルパー              |
 | --------- | ---------------- | ----------------- | -------------------- |
 | GET       | /photos          | photos#index      | images_path          |
 | GET       | /photos/new      | photos#new        | new_image_path       |
@@ -1081,7 +1081,7 @@ end
 
 上のようにすることで、以下のような`Categories`コントローラへのルーティングが作成されます。
 
-| HTTP 動詞 | パス | コントローラ#アクション | 名前付きヘルパー |
+| HTTP動詞  | パス | コントローラ#アクション | 名前付きヘルパー |
 | --------- | -------------------------- | ------------------ | ----------------------- |
 | GET       | /kategorien                | categories#index   | categories_path         |
 | GET       | /kategorien/neu            | categories#new     | new_category_path       |

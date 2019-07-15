@@ -90,7 +90,7 @@ $ ruby /path/to/rails/railties/bin/rails new myapp --dev
 NOTE: 追加したgemも同様にスレッドセーフであるかどうかをチェックしておいてください。
 
 
-* **PATCH動詞** ([コミット](https://github.com/rails/rails/commit/eed9f2539e3ab5a68e798802f464b8e4e95e619e)) - 従来の HTTP 動詞であるPUTはPATCHに置き換えられました。PATCHはリソースの部分的な更新に使われます。
+* **PATCH動詞** ([コミット](https://github.com/rails/rails/commit/eed9f2539e3ab5a68e798802f464b8e4e95e619e)) - 従来の HTTP動詞であるPUTはPATCHに置き換えられました。PATCHはリソースの部分的な更新に使われます。
 
 ### セキュリティ
 
