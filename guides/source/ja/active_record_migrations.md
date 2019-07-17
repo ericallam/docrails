@@ -693,10 +693,10 @@ $ bin/rails db:migrate RAILS_ENV=test
 class CreateProducts < ActiveRecord::Migration[5.0]
   def change
     suppress_messages do
-    create_table :products do |t|
-      t.string :name
-      t.text :description
-      t.timestamps
+      create_table :products do |t|
+        t.string :name
+        t.text :description
+        t.timestamps
       end
     end
 
