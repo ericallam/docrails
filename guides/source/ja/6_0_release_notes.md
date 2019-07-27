@@ -134,7 +134,7 @@ Action Cable
 
 ### 非推奨化
 
-*   There are no deprecations for Action Cable in Rails 6.0.
+*   Rails 6.0のAction Cableで非推奨化された振る舞いはありません。
 
 ### 主な変更
 
@@ -185,6 +185,9 @@ Action Pack
     ([Pull Request](https://github.com/rails/rails/pull/32277))
 
 ### 主な変更
+
+*   `ActionDispatch::Response#content_type`がContent-Typeヘッダーをそのまま返すよう変更
+    ([Pull Request](https://github.com/rails/rails/pull/36034))
 
 *   リソースparamにコロンが含まれている場合は`ArgumentError`をraiseするようになった
     ([Pull Request](https://github.com/rails/rails/pull/35236))
@@ -609,6 +612,10 @@ Active Storage
 
 *   レコードにアップロードされたファイルを即座でない形で保存するとストレージで永続化するようになった
     ([Pull Request](https://github.com/rails/rails/pull/33303))
+    
+*   添付ファイルのコレクションへの代入を、追加ではなく既存ファイルを置き換える（`@user.update!(images: [ … ])`のように）オプション。この振る舞いを制御するには`config.active_storage.replace_on_assign_to_many`を使うこと。
+    ([Pull Request](https://github.com/rails/rails/pull/33303)、
+     [Pull Request](https://github.com/rails/rails/pull/36716))
 
 *   既存のActive Recordリフレクションメカニズムで定義された添付ファイルをリフレクションできるようになった
     ([Pull Request](https://github.com/rails/rails/pull/33018))
@@ -621,9 +628,6 @@ Active Storage
 
 *   Active Storageのvariantに`image_processing` gemを使うようになった（`mini_magick`の利用を直接置き換える）
     ([Pull Request](https://github.com/rails/rails/pull/32471)
-
-*   アタッチされるモデルを`update`や`update!`で更新すると（例: `@user.update!(images: [ … ])`）、単に追加するのではなく既存の画像を置き換えるようになった
-    ([Pull Request](https://github.com/rails/rails/pull/33303))
 
 Active Model
 ------------

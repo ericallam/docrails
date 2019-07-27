@@ -727,6 +727,60 @@ text/javascript image/svg+xml application/postscript application/x-shockwave-fla
   config.active_job.logger = ActiveSupport::Logger.new(STDOUT)
   ```
 
+* `config.active_storage.service_urls_expire_in`: 以下によって生成されるURLのデフォルトの期限を指定します。
+  * `ActiveStorage::Blob#service_url`
+  * `ActiveStorage::Blob#service_url_for_direct_upload`
+  * `ActiveStorage::Variant#service_url`
+
+  デフォルトは5分です。
+
+* `config.active_storage.routes_prefix`: Active Storageでサービスするルーティングのプレフィックスを設定できます。生成されるルーティングの冒頭に追加する文字列を渡せます。
+
+  ```ruby
+  config.active_storage.routes_prefix = '/files'
+  ```
+
+ デフォルトは`/rails/active_storage`です。
+
+* `config.active_storage.replace_on_assign_to_many`: `has_many_attached`で宣言された添付ファイルのコレクションに代入したときに、既存の添付ファイルをすべて置き換えるか、追加（append）するかを指定します。デフォルトは`true`です。
+
+### `load_defaults`の結果
+
+#### '5.0'を指定した場合
+
+- `config.action_controller.per_form_csrf_tokens`: `true`
+- `config.action_controller.forgery_protection_origin_check`: `true`
+- `ActiveSupport.to_time_preserves_timezone`: `true`
+- `config.active_record.belongs_to_required_by_default`: `true`
+- `config.ssl_options`: `{ hsts: { subdomains: true } }`
+
+#### '5.1'を指定した場合
+
+- `config.assets.unknown_asset_fallback`: `false`
+- `config.action_view.form_with_generates_remote_forms`: `true`
+
+#### '5.2'を指定した場合
+
+- `config.active_record.cache_versioning`: `true`
+- `action_dispatch.use_authenticated_cookie_encryption`: `true`
+- `config.active_support.use_authenticated_message_encryption`: `true`
+- `config.active_support.use_sha1_digests`: `true`
+- `config.action_controller.default_protect_from_forgery`: `true`
+- `config.action_view.form_with_generates_ids`: `true`
+
+#### '6.0'を指定した場合
+
+- `config.autoloader`: `:zeitwerk`
+- `config.action_view.default_enforce_utf8`: `false`
+- `config.action_dispatch.use_cookies_with_metadata`: `true`
+- `config.action_dispatch.return_only_media_type_on_content_type`: `false`
+- `config.action_mailer.delivery_job`: `"ActionMailer::MailDeliveryJob"`
+- `config.active_job.return_false_on_aborted_enqueue`: `true`
+- `config.active_storage.queues.analysis`: `:active_storage_analysis`
+- `config.active_storage.queues.purge`: `:active_storage_purge`
+- `config.active_storage.replace_on_assign_to_many`: `true`
+- `config.active_record.collection_cache_versioning`: `true`
+
 ### データベースを設定する
 
 ほぼすべてのRailsアプリケーションは、何らかの形でデータベースにアクセスします。データベースへの接続は、環境変数`ENV['DATABASE_URL']`を設定するか、`config/database.yml`というファイルを設定することで行えます。
