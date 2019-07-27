@@ -374,6 +374,46 @@ config.load_defaults "6.0"
 config.autoloader = :classic
 ```
 
+### Active Storageの代入の振る舞いの変更
+
+Rails 5.2では、`has_many_attached`で宣言された添付ファイル（attachment）のコレクションへの代入は、新しいファイルの追加（append）操作になります。
+
+```ruby
+class User < ApplicationRecord
+  has_many_attached :highlights
+end
+user.highlights.attach(filename: "funky.jpg", ...)
+user.higlights.count # => 1
+blob = ActiveStorage::Blob.create_after_upload!(filename: "town.jpg", ...)
+user.update!(highlights: [ blob ])
+user.highlights.count # => 2
+user.highlights.first.filename # => "funky.jpg"
+user.highlights.second.filename # => "town.jpg"
+```
+
+Rails 6.0のデフォルト設定では、添付ファイルのコレクションへの代入は、追加ではなく既存ファイルの置き換え操作になります。これにより、Active Recordでコレクションの関連付けに代入するときの振る舞いと一貫するようになります。
+
+```ruby
+user.highlights.attach(filename: "funky.jpg", ...)
+user.highlights.count # => 1
+blob = ActiveStorage::Blob.create_after_upload!(filename: "town.jpg", ...)
+user.update!(highlights: [ blob ])
+user.highlights.count # => 1
+user.highlights.first.filename # => "town.jpg"
+```
+
+既存のものを削除せずに添付ファイルを新たに追加するには、`#attach`が利用できます。
+
+```ruby
+blob = ActiveStorage::Blob.create_after_upload!(filename: "town.jpg", ...)
+user.highlights.attach(blob)
+user.highlights.count # => 2
+user.highlights.first.filename # => "funky.jpg"
+user.highlights.second.filename # => "town.jpg"
+```
+
+設定で`config.active_storage.replace_on_assign_to_many`を`true`にすることで、新しいデフォルトの振る舞いを選択できます。従来の振る舞いはRails 6.1で非推奨化され、その後のリリースで削除される予定です。
+
 Rails 5.1からRails 5.2へのアップグレード
 -------------------------------------
 
