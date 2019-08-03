@@ -1,49 +1,39 @@
-**DO NOT READ THIS FILE ON GITHUB, GUIDES ARE PUBLISHED ON https://guides.rubyonrails.org.**
-
-Multiple Databases with Active Record
+Active Recordでマルチプルデータベースを使う
 =====================================
 
-This guide covers using multiple databases with your Rails application.
+このガイドでは、Active Recordでデータベースを複数利用する方法について説明します。
 
-After reading this guide you will know:
+このガイドの内容:
 
-* How to setup your application for multiple databases.
-* How automatic connection switching works.
-* What features are supported and what's still a work in progress.
+* アプリケーションで複数のデータベースをセットアップする方法
+* コネクションの自動切り替えの仕組み
+* サポートされている機能と現在進行中の機能
 
 --------------------------------------------------------------------------------
 
-As an application grows in popularity and usage you'll need to scale the application
-to support your new users and their data. One way in which your application may need
-to scale is on the database level. Rails now has support for multiple databases
-so you don't have to store your data all in one place.
+アプリケーションが人気を得て利用されるようになってくると、新しいユーザーやユーザーのデータをサポートするためにアプリケーションをスケールする必要が生じてきます。アプリケーションをスケールする方法のひとつが、データベースレベルでのスケールでしょう。Railsが複数のデータベースをサポートするようになりましたので（マルチプルデータベース）、すべてのデータを1箇所に保存する必要はありません。
 
-At this time the following features are supported:
+現時点でサポートされている機能は以下のとおりです。
 
-* Multiple primary databases and a replica for each
-* Automatic connection switching for the model you're working with
-* Automatic swapping between the primary and replica depending on the HTTP verb
-and recent writes
-* Rails tasks for creating, dropping, migrating, and interacting with the multiple
-databases
+* 複数の「primary」データベースと、それぞれに対応する1つの「replica」
+* モデルでのコネクション自動切り替え
+* HTTP verbや直近の書き込みに応じたprimaryとreplicaの自動スワップ
+* マルチプルデータベースの作成、削除、マイグレーション、やりとりを行うRailsタスク
 
-The following features are not (yet) supported:
+以下の機能は現時点では（まだ）サポートされていません。
 
-* Sharding
-* Joining across clusters
-* Load balancing replicas
-* Dumping schema caches for multiple databases
+* シャーディング（sharding）
+* クラスタを越えるJOIN
+* replicaのロードバランシング
+* マルチプルデータベースのスキーマキャッシュのダンプ
 
-## Setting up your application
+## アプリケーションのセットアップ
 
-While Rails tries to do most of the work for you there are still some steps you'll
-need to do to get your application ready for multiple databases.
+アプリケーションでマルチプルデータベースを利用する場合、大半の機能についてはRailsが代わりに行いますが、一部手動で行う手順があります。
 
-Let's say we have an application with a single primary database and we need to add a
-new database for some new tables we're adding. The name of the new database will be
-"animals".
+たとえば、primaryデータベースがひとつあるアプリケーションに、新しいテーブルがいくつかあるデータベースを1つ追加するとします。新しいデータベースの名前は「animal」とします。
 
-The database.yml looks like this:
+この場合のdatabase.ymlは以下のような感じになります。
 
 ```yaml
 production:
@@ -52,8 +42,7 @@ production:
   adapter: mysql
 ```
 
-Let's add a replica for the primary, a new writer called animals and a replica for that
-as well. To do this we need to change our database.yml from a 2-tier to a 3-tier config.
+このprimaryで使うreplicaを1つ追加してみましょう。animalという新しいライター（writer）を1つと、それに対応するreplicaも1つ追加します。これを行うには、database.ymlを以下のように2-tierから3-tier設定に変更する必要があります。
 
 ```yaml
 production:
@@ -78,22 +67,15 @@ production:
     replica: true
 ```
 
-When using multiple databases there are a few important settings.
+マルチプルデータベースを用いる場合に重要な設定がいくつかあります。
 
-First, the database name for the primary and replica should be the same because they contain
-the same data. Second, the username for the primary and replica should be different, and the
-replica user's permissions should be to read and not write.
+第1に、primaryとreplicaのデータベース名は同じにすべきです。理由は、primaryとreplicaが同じデータを持つからです。第2に、primaryとreplicaでは異なるユーザー名を使い、かつreplicaのパーミッションは（writeではなく）readにすべきです。
 
-When using a replica database you need to add a `replica: true` entry to the replica in the
-`database.yml`. This is because Rails otherwise has no way of knowing which one is a replica
-and which one is the primary.
+replicaデータベースを使う場合、`database.yml`のreplicaには`replica: true`というエントリを1つ追加する必要があります。このエントリがないと、どちらがreplicaでどちらがprimaryかをRailsが区別できなくなるためです。
 
-Lastly, for new primary databases you need to set the `migrations_paths` to the directory
-where you will store migrations for that database. We'll look more at `migrations_paths`
-later on in this guide.
+最後に、新しいprimaryデータベースで利用するために、そのデータベースのマイグレーションを置くディレクトリを`migrations_paths`に設定する必要があります。`migrations_paths`については本ガイドで後述します。
 
-Now that we have a new database, let's set up the model. In order to use the new database we
-need to create a new abstract class and connect to the animals databases.
+新しいデータベースができたら、モデルをセットアップしましょう。新しいデータベースを使うには、抽象クラスを1つ作成してanimalsデータベースに接続する必要があります。
 
 ```ruby
 class AnimalsBase < ApplicationRecord
@@ -102,8 +84,8 @@ class AnimalsBase < ApplicationRecord
   connects_to database: { writing: :animals, reading: :animals_replica }
 end
 ```
- Then we need to
-update `ApplicationRecord` to be aware of our new replica.
+
+続いて`ApplicationRecord`を更新し、新しいreplicaを認識させる必要があります。
 
 ```ruby
 class ApplicationRecord < ActiveRecord::Base
@@ -113,25 +95,18 @@ class ApplicationRecord < ActiveRecord::Base
 end
 ```
 
-By default Rails expects the database roles to be `writing` and `reading` for the primary
-and replica respectively. If you have a legacy system you may already have roles set up that
-you don't want to change. In that case you can set a new role name in your application config.
+Railsはデフォルトで、primaryのデータベースロールは`writing`、replicaのデータベースロールは`reading`であることを期待します。レガシーなシステムでは、既に設定されているロールを変更したくないこともあるでしょう。その場合はアプリケーションで以下のように新しいロール名を設定できます。
 
 ```ruby
 config.active_record.writing_role = :default
 config.active_record.reading_role = :readonly
 ```
 
-It's important to connect to your database in a single model and then inherit from that model
-for the tables rather than connect multiple individual models to the same database. Database
-clients have a limit to the number of open connections there can be and if you do this it will
-multiply the number of connections you have since Rails uses the model class name for the
-connection specification name.
+ここで重要なのは、データベースへの接続を「単一のモデル内」で行うことと、そのモデルを継承してテーブルを利用することです（複数のモデルから同じデータベースに接続するのではなく）。データベースクライアントにはコネクションをオープンできる数に上限があります。Railsはコネクションを指定する名前としてモデル名を用いるので、複数のモデルから同じデータベースに接続するとコネクション数が増加します。
 
-Now that we have the database.yml and the new model set up it's time to create the databases.
-Rails 6.0 ships with all the rails tasks you need to use multiple databases in Rails.
+database.ymlと新しいモデルをセットアップできたので、いよいよデータベースを作成しましょう。Rails 6.0にはマルチプルデータベースを使うのに必要なrailsタスクがすべて揃っています。
 
-You can run `rails -T` to see all the commands you're able to run. You should see the following:
+`rails -T`を実行すると、利用可能なコマンド一覧がすべて表示されます。出力は以下のようになります。
 
 ```
 $ rails -T
@@ -149,42 +124,29 @@ rails db:migrate:status:animals          # Display status of migrations for anim
 rails db:migrate:status:primary          # Display status of migrations for primary database
 ```
 
-Running a command like `rails db:create` will create both the primary and animals databases.
-Note that there is no command for creating the users and you'll need to do that manually
-to support the readonly users for your replicas. If you want to create just the animals
-database you can run `rails db:create:animals`.
+`rails db:create`などのコマンドを実行すると、primaryとanimalsデータベースの両方が作成されます。ただし（データベースの）ユーザーを作成するコマンドはないので、replicaでreadonlyをサポートするには手動で行う必要があります。animalデータベースだけを作成するには、`rails db:create:animals`を実行します。
 
-## Migrations
+## マイグレーション
 
-Migrations for multiple databases should live in their own folders prefixed with the
-name of the database key in the configuration.
+マルチプルデータベースでのマイグレーションは、設定ファイルにあるデータベースキー名を冒頭に付けた個別のフォルダに配置すべきです。
 
-You also need to set the `migrations_paths` in the database configurations to tell Rails
-where to find the migrations.
+データベース設定の`migrations_paths`を設定し、マイグレーションファイルを探索する場所をRailsに認識させる必要もあります。
 
-For example the `animals` database would look in the `db/animals_migrate` directory and
-`primary` would look in `db/migrate`. Rails generators now take a `--database` option
-so that the file is generated in the correct directory. The command can be run like so:
+たとえば、`animals`データベースは`db/animals_migrate`ディレクトリに配置、`primary`は`db/migrate`ディレクトリに配置、という具合になります。Railsのジェネレータは、ファイルを正しいディレクトリで生成するための`--database`オプションを受け取るようになりました。このコマンドは次のような感じで実行します。
 
 ```
 $ rails g migration CreateDogs name:string --database animals
 ```
 
-## Activating automatic connection switching
+## コネクションの自動切り替えを有効にする
 
-Finally, in order to use the read-only replica in your application you'll need to activate
-the middleware for automatic switching.
+最後に、アプリケーションでread-onlyのレプリカを利用するために、自動切り替え用のミドルウェアを有効にする必要があります。
 
-Automatic switching allows the application to switch from the primary to replica or replica
-to primary based on the HTTP verb and whether there was a recent write.
+自動切り替え機能によって、アプリケーションはHTTP verbや直近の書き込みの有無に応じてprimaryからreplica、またはreplicaからprimaryへと切り替えます。
 
-If the application is receiving a POST, PUT, DELETE, or PATCH request the application will
-automatically write to the primary. For the specified time after the write the application
-will read from the primary. For a GET or HEAD request the application will read from the
-replica unless there was a recent write.
+アプリケーションがPOST、PUT、DELETE、PATCHのいずれかのリクエストを受け取ると、自動的にprimaryに書き込みます。書き込み後に指定の時間が経過すると、アプリケーションはprimaryから読み出します。アプリケーションがGETリクエストやHEADリクエストを受け取ると、直近の書き込みがなければreplicaから読み出します。
 
-To activate the automatic connection switching middleware, add or uncomment the following
-lines in your application config.
+コネクション自動切り替えのミドルウェアを有効にするには、アプリケーション設定に以下の行を追加するか、コメントを解除します。
 
 ```ruby
 config.active_record.database_selector = { delay: 2.seconds }
@@ -192,27 +154,19 @@ config.active_record.database_resolver = ActiveRecord::Middleware::DatabaseSelec
 config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
 ```
 
-Rails guarantees "read your own write" and will send your GET or HEAD request to the
-primary if it's within the `delay` window. By default the delay is set to 2 seconds. You
-should change this based on your database infrastructure. Rails doesn't guarantee "read
-a recent write" for other users within the delay window and will send GET and HEAD requests
-to the replicas unless they wrote recently.
+Railsは「自分が書き込んだものを読み取る」ことを保証するので、`delay`ウィンドウの期間内であればGETリクエストやHEADリクエストをprimaryに送信します。この`delay`は、デフォルトで2秒に設定されます。この値の変更は、利用するデータベースのインフラストラクチャに基づいて行うべきです。Railsは、`delay`ウィンドウの期間内で他のユーザーが「最近書き込んだものを読み取る」ことについては保証しないので、最近書き込まれたものでなければGETリクエストやHEADリクエストをreplicaに送信します。
 
-The automatic connection switching in Rails is relatively primitive and deliberately doesn't
-do a whole lot. The goal was a system that demonstrated how to do automatic connection
-switching that was flexible enough to be customizable by app developers.
+Railsのコネクション自動切り替えは、どちらかというと原始的であり、多機能とは言えません。もともとこの機能は、アプリケーションの開発者でも十分カスタマイズ可能な柔軟性を備えたコネクション自動切り替えシステムをデモンストレーションするためのものでした。
 
-The setup in Rails allows you to easily change how the switching is done and what
-parameters it's based on. Let's say you want to use a cookie instead of a session to
-decide when to swap connections. You can write your own class:
+Railsでのコネクション自動切り替え方法や、切り替えに使うパラメータはセットアップで簡単に変更できます。たとえば、コネクションをスワップするかどうかを、セッションではなくcookieで行いたいのであれば、以下のように独自のクラスを作成できます。
 
 ```ruby
 class MyCookieResolver
-  # code for your cookie class
+  # cookieクラスで使うコードをここに書く
 end
 ```
 
-And then pass it to the middleware:
+続いて、これをミドルウェアに渡します。
 
 ```ruby
 config.active_record.database_selector = { delay: 2.seconds }
@@ -220,69 +174,51 @@ config.active_record.database_resolver = ActiveRecord::Middleware::DatabaseSelec
 config.active_record.database_resolver_context = MyCookieResolver
 ```
 
-## Using manual connection switching
+## コネクションを手動で切り替える
 
-There are some cases where you may want your application to connect to a primary or a replica
-and the automatic connection switching isn't adequate. For example, you may know that for a
-particular request you always want to send the request to a replica, even when you are in a
-POST request path.
+アプリケーションでprimaryやreplicaに接続するときに、コネクションの自動切り替えが適切ではないことがあります。たとえば、特定のリクエストについては、たとえPOSTリクエストパスにいる場合であっても常にreplicaに送信したいとします。
 
-To do this Rails provides a `connected_to` method that will switch to the connection you
-need.
+Railsはこのような場合のために、必要なコネクションに切り替える`connected_to`メソッドを提供しています。
+
 
 ```ruby
 ActiveRecord::Base.connected_to(role: :reading) do
-  # all code in this block will be connected to the reading role
+  # このブロック内のコードはすべてreadingロールで接続される
 end
 ```
 
-The "role" in the `connected_to` call looks up the connections that are connected on that
-connection handler (or role). The `reading` connection handler will hold all the connections
-that were connected via `connects_to` with the role name of `reading`.
 
-There also may be a case where you have a database that you don't always want to connect to
-on application boot but may need for a slow query or analytics. After defining that database
-in the database.yml you can connect by passing a database argument to `connected_to`
+`connected_to`呼び出しの「ロール」では、そのコネクションハンドラ（またはロール）で接続されたコネクションを探索します。`reading`コネクションハンドラは、`reading`というロール名を持つ`connects_to`を介して接続されたすべてのコネクションを維持します。
+
+他のケースとして、アプリケーションの起動時には必ずしも接続しないが、スロークエリ時や分析時に用いたいデータベースがある場合も考えられます。database.ymlでデータベースを定義した後、`connected_to`にデータベース引数を渡すことで接続できます。
+
 
 ```ruby
 ActiveRecord::Base.connected_to(database: { reading_slow: :animals_slow_replica }) do
-  # do something while connected to the slow replica
+  # 遅いreplicaへの接続時に行う処理をここに書く
 end
 ```
 
-The `database` argument for `connected_to` will take a symbol or a config hash.
+`connected_to`の`database`引数には、シンボルまたは設定ハッシュを1つ渡します。
 
-Note that `connected_to` with a role will look up an existing connection and switch
-using the connection specification name. This means that if you pass an unknown role
-like `connected_to(role: :nonexistent)` you will get an error that says
-`ActiveRecord::ConnectionNotEstablished (No connection pool with 'AnimalsBase' found
-for the 'nonexistent' role.)`
+ここで注意したいのは、ロールを設定した`connected_to`では、既存のコネクションの探索や切り替えにそのコネクションのspecification名が用いられることです。つまり、`connected_to(role: :nonexistent)`のように不明なロールを渡すと、`ActiveRecord::ConnectionNotEstablished (No connection pool with 'AnimalsBase' found
+for the 'nonexistent' role.)`エラーが発生します。
 
-## Caveats
 
-### Sharding
+## 注意点
 
-As noted at the top, Rails doesn't (yet) support sharding. We had to do a lot of work
-to support multiple databases for Rails 6.0. The lack of support for sharding isn't
-an oversight, but does require additional work that didn't make it in for 6.0. For now
-if you need sharding it may be advisable to continue using one of the many gems
-that supports this.
+### シャーディング
 
-### Load Balancing Replicas
+最初に申し上げておきたいのは、現時点のRailsではシャーディング（sharding）はまだサポートされていないという点です。私たちはRails 6.0でマルチプルデータベースをサポートするために膨大な作業をこなさなければなりませんでした。シャーディングのサポートを忘れていたわけではありませんが、そのために必要な追加作業は6.0では間に合いませんでした。さしあたってシャーディングが必要なのであれば、シャーディングをサポートするさまざまなgemのどれかを引き続き利用するのがおすすめと言えるかもしれません。
 
-Rails also doesn't support automatic load balancing of replicas. This is very
-dependent on your infrastructure. We may implement basic, primitive load balancing
-in the future, but for an application at scale this should be something your application
-handles outside of Rails.
+### replicaのロードバランシング
 
-### Joining Across Databases
+replicaのロードバランシングはインフラストラクチャに強く依存するため、これもRailsではサポート対象外です。今後、基本的かつ原始的なreplicaロードバランシング機能が実装されるかもしれませんが、アプリケーションをスケールさせるためにもRailsの外部でアプリケーションを扱えるものにすべきです。
 
-Applications cannot join across databases. Rails 6.1 will support using `has_many`
-relationships and creating 2 queries instead of joining, but Rails 6.0 will require
-you to split the joins into 2 selects manually.
+### データベースをまたがるJOIN
 
-### Schema Cache
+アプリケーションは複数のデータベースにまたがるJOINを行えません。Rails 6.1では、JOINの代わりに`has_many`リレーションシップを用いて2つのクエリを作成することをサポートする予定ですが、Rails 6.0ではJOINを手動で2つのSELECT文に分ける必要があります。
 
-If you use a schema cache and multiple databases you'll need to write an initializer
-that loads the schema cache from your app. This wasn't an issue we could resolve in
-time for Rails 6.0 but hope to have it in a future version soon.
+### スキーマキャッシュ
+
+スキーマキャッシュとマルチプルデータベースを利用する場合、アプリのスキーマキャッシュを読み込むためのイニシャライザを自分で書く必要があります。Rails 6.0には間に合いませんでしたが、いずれ今後のバージョンで解決できればと思います。
