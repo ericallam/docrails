@@ -796,7 +796,7 @@ third:
 ここで扱うフォームヘルパーの中心となるのは`form_for`メソッドです。このメソッドはモデルのインスタンスからフォームを作成することができます。たとえば、以下のようにPersonというモデルがあり、このモデルをもとにしてインスタンスを1つ作成するとします。
 
 ```html+erb
-# メモ: a @person変数はコントローラ側で設定済みであるとする (@person = Person.newなど)
+# メモ: @person変数はコントローラ側で設定済みであるとする (@person = Person.newなど)
 <%= form_for @person, url: { action: "create" } do |f| %>
   <%= f.text_field :first_name %>
   <%= f.text_field :last_name %>
