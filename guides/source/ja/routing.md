@@ -210,8 +210,8 @@ end
 | GET       | /admin/articles/new      | admin/articles#new     | new_admin_article_path       |
 | POST      | /admin/articles          | admin/articles#create  | admin_articles_path          |
 | GET       | /admin/articles/:id      | admin/articles#show    | admin_article_path(:id)      |
-| GET       | /admin/articles/:id/edit | admin/articles#edit    | edit_admin_post_path(:id)    |
-| PATCH/PUT | /admin/articles/:id      | admin/articles#update  | edit_admin_article_path(:id) |
+| GET       | /admin/articles/:id/edit | admin/articles#edit    | edit_admin_article_path(:id)    |
+| PATCH/PUT | /admin/articles/:id      | admin/articles#update  | admin_article_path(:id) |
 | DELETE    | /admin/articles/:id      | admin/articles#destroy | admin_article_path(:id)      |
 
 例外的に、(`/admin`が前についていない) `/articles`を`Admin::ArticlesController`にルーティングしたい場合は、以下のようにすることもできます。
@@ -248,7 +248,7 @@ resources :articles, path: '/admin/articles'
 | --------- | --------------------- | ----------------- | ------------------- |
 | GET       | /admin/articles          | articles#index       | articles_path          |
 | GET       | /admin/articles/new      | articles#new         | new_article_path       |
-| POST      | /admin/articles          | articles#create      | new_article_path          |
+| POST      | /admin/articles          | articles#create      | articles_path          |
 | GET       | /admin/articles/:id      | articles#show        | article_path(:id)      |
 | GET       | /admin/articles/:id/edit | articles#edit        | edit_article_path(:id) |
 | PATCH/PUT | /admin/articles/:id      | articles#update      | article_path(:id)      |
