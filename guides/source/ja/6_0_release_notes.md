@@ -901,6 +901,9 @@ Ruby on Rails Guides
 
 ### 主な変更
 
+*   Active Recordでのマルチプルデータベースガイドを追加
+    ([Pull Request](https://github.com/rails/rails/pull/36389))
+
 *   定数オートローディングのトラブルシューティングに関するセクションを追加
     ([Commit](https://github.com/rails/rails/commit/c03bba4f1f03bad7dc034af555b7f2b329cf76f5))
 
