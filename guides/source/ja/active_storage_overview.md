@@ -257,6 +257,22 @@ end
 @message.images.attached?
 ```
 
+### File/IO Objectsを送付する
+
+HTTPリクエスト経由で届かないファイルを添付する必要がある場合があります。例えば、ディスクに生成したファイル、またはユーザーが送信したURLからダウンロードしたファイル等を添付したい。または、モデルテストでfixtureファイルを添付したい等のケースです。これらを実現する為には最低１つ以上のオープンIOオブジェクトとファイル名を含むハッシュを用意します。
+
+```ruby
+@message.image.attach(io: File.open('/path/to/file'), filename: 'file.pdf')
+```
+
+可能であれば、コンテントタイプも入力してください。Active Storageは与えられたデータからファイルのコンテントタイプを判断しようとしますが、できない場合は提供したコンテントタイプを使用します。
+
+```ruby
+@message.image.attach(io: File.open('/path/to/file'), filename: 'file.pdf', content_type: 'application/pdf')
+```
+
+コンテントタイプを指定せず、Active Storageがファイルのコンテントタイプを自動的に判別できない場合は、デフォルトで`application/octet-stream`が設定されます。
+
 モデルに添付されたファイルを削除する
 -----------------------------
 
