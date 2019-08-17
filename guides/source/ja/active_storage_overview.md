@@ -257,6 +257,22 @@ end
 @message.images.attached?
 ```
 
+### File/IO Objectsを送付する
+
+HTTPリクエスト経由で届かないファイルを添付する必要がある場合があります。例えば、ディスクに生成したファイル、またはユーザーが送信したURLからダウンロードしたファイル等を添付したい。または、モデルテストでfixtureファイルを添付したい等のケースです。これらを実現する為には最低１つ以上のオープンIOオブジェクトとファイル名を含むハッシュを用意します。
+
+```ruby
+@message.image.attach(io: File.open('/path/to/file'), filename: 'file.pdf')
+```
+
+可能であれば、コンテントタイプも入力してください。Active Storageは与えられたデータからファイルのコンテントタイプを判断しようとしますが、できない場合は提供したコンテントタイプを使用します。
+
+```ruby
+@message.image.attach(io: File.open('/path/to/file'), filename: 'file.pdf', content_type: 'application/pdf')
+```
+
+コンテントタイプを指定せず、Active Storageがファイルのコンテントタイプを自動的に判別できない場合は、デフォルトで`application/octet-stream`が設定されます。
+
 モデルに添付されたファイルを削除する
 -----------------------------
 
@@ -480,7 +496,7 @@ input[type=file][data-direct-upload-url][disabled] {
 システムテストでは、トランザクションをロールバックしてテストデータをクリーンアップします。
 destroyはオブジェクトに対して呼び出されないため、添付ファイルは決してクリーンアップされません。
 ファイルを消去したい場合は、`after_teardown`コールバックで行うことができます。
-ここでは、テスト中に作成されたすべての接続が確実に行われ、アクティブストレージからファイルを見つけることができないというエラーは表示されません。
+ここでは、テスト中に作成されたすべての接続が確実に行われ、Active Storageからファイルを見つけることができないというエラーは表示されません。
 
 ``` ruby
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
@@ -497,7 +513,7 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
 end
 ```
 
-システムが添付ファイルを含むモデルの削除を検証し、アクティブジョブを使用している場合は、インラインキューアダプタを使用するようにテスト環境を設定して、未知の時間ではなく即時にパージジョブを実行します。
+システムが添付ファイルを含むモデルの削除を検証し、Active Jobを使用している場合は、インラインキューアダプタを使用するようにテスト環境を設定して、未知の時間ではなく即時にパージジョブを実行します。
 
 また、テスト環境で別のサービス定義を使用して、開発中に作成したファイルをテストで削除しないようにすることもできます。
 
