@@ -28,7 +28,7 @@ Action ViewをRailsで使用する
 scaffoldを使用してリソースを生成するときに、Railsがデフォルトでどんなことを行なうのか見てみましょう。
 
 ```bash
-$ bin/rails generate scaffold article
+$ rails generate scaffold article
       [...]
       invoke  scaffold_controller
       create    app/controllers/articles_controller.rb
@@ -90,7 +90,7 @@ BuilderテンプレートはERBの代わりに使用できる、よりプログ�
 ```ruby
 xml.em("emphasized")
 xml.em { xml.b("emph & bold") }
-xml.a("A Link", "href" => "http://rubyonrails.org")
+xml.a("A Link", "href" => "https://rubyonrails.org")
 xml.target("name" => "compile", "option" => "fast")
 ```
 
@@ -99,7 +99,7 @@ xml.target("name" => "compile", "option" => "fast")
 ```html
 <em>emphasized</em>
 <em><b>emph &amp; bold</b></em>
-<a href="http://rubyonrails.org">A link</a>
+<a href="https://rubyonrails.org">A link</a>
 <target option="fast" name="compile" />
 ```
 
@@ -402,9 +402,9 @@ append_view_path "app/views/direct"
 Action Viewのヘルパーメソッドの概要
 -------------------------------------------
 
-WIP: ここに記載されているヘルパーは一部のみです。完全なリストについては[APIドキュメント](http://api.rubyonrails.org/classes/ActionView/Helpers.html)を参照してください。
+WIP: ここに記載されているヘルパーは一部のみです。完全なリストについては[APIドキュメント](https://api.rubyonrails.org/classes/ActionView/Helpers.html)を参照してください。
 
-以下に記載されているのは、Action Viewで提供されているヘルパーのごく一部の概要にとどまっています。詳しくは[APIドキュメント](http://api.rubyonrails.org/classes/ActionView/Helpers.html)で参照できますが、本セクションは最初に参照する概要として有用です。
+以下に記載されているのは、Action Viewで提供されているヘルパーのごく一部の概要にとどまっています。詳しくは[APIドキュメント](https://api.rubyonrails.org/classes/ActionView/Helpers.html)で参照できますが、本セクションは最初に参照する概要として有用です。
 
 ### AssetTagHelper
 
@@ -1265,8 +1265,8 @@ password_field_tag 'pass'
 ラジオボタンを作成します。ユーザーが同じオプショングループ内から選択できるよう、同じname属性でラジオボタンをグループ化してください。
 
 ```ruby
-radio_button_tag 'gender', 'male'
-# => <input id="gender_male" name="gender" type="radio" value="male" />
+radio_button_tag 'favorite_color', 'maroon'
+# => <input id="favorite_color_maroon" name="favorite_color" type="radio" value="maroon" />
 ```
 
 #### select_tag
@@ -1457,7 +1457,7 @@ CSSコードをサニタイズします。
 リンクテキストを残してリンクタグをすべて削除します。
 
 ```ruby
-strip_links('<a href="http://rubyonrails.org">Ruby on Rails</a>')
+strip_links('<a href="https://rubyonrails.org">Ruby on Rails</a>')
 # => Ruby on Rails
 ```
 
