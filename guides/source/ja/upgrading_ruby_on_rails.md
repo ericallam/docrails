@@ -72,6 +72,19 @@ Rails 5.2からRails 6.0へのアップグレード
 
 Rails 6.0の変更点の詳細は[リリースノート](6_0_release_notes.html)を参照してください。
 
+### Webpackerの利用について
+
+[Webpacker](https://github.com/rails/webpacker)はRails 6におけるデフォルトのJavaScriptコンパイラですが、アプリケーションを以前のバージョンからアップグレードした場合は自動的には有効になりません。
+Webpackerを使いたい場合は、以下をGemfileに追記し、`rails webpacker:install`コマンドを実行してインストールしてください。
+
+```ruby
+gem "webpacker"
+```
+
+```sh
+rails webpacker:install
+```
+
 ### Force SSL
 
 コントローラの`force_ssl`メソッドは非推奨化され、Rails 6.1で削除される予定です。`config.force_ssl`を有効にしてアプリ全体でHTTPS接続を強制することをおすすめします。特定のエンドポイントのみをリダイレクトしないようにする必要がある場合は、`config.ssl_options`で振る舞いを変更できます。
@@ -373,6 +386,8 @@ config.autoload_paths << "#{config.root}/lib"
 config.load_defaults "6.0"
 config.autoloader = :classic
 ```
+
+Rails 6アプリケーションでclassicオートローダーを使う場合は、Webサーバーやバックグラウンド処理におけるスレッド安全性上の懸念がありますので、development環境でconcurrency levelを1に設定することをおすすめします。
 
 ### Active Storageの代入の振る舞いの変更
 
