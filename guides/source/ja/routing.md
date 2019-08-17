@@ -204,14 +204,14 @@ end
 
 上のルーティングにより、`articles`コントローラや`comments`コントローラへのルーティングが多数生成されます。たとえば、`Admin::ArticlesController`向けに作成されるルーティングは以下のとおりです。
 
-| HTTP 動詞 | パス                  | コントローラ#アクション   | 名前付きルーティングヘルパー              |
-| --------- | --------------------- | ------------------- | ------------------------- |
+| HTTP動詞  | パス                  | コントローラ#アクション   | 名前付きヘルパー              |
+| --------- | ------------------------ | ---------------------- | ---------------------------- |
 | GET       | /admin/articles          | admin/articles#index   | admin_articles_path          |
 | GET       | /admin/articles/new      | admin/articles#new     | new_admin_article_path       |
 | POST      | /admin/articles          | admin/articles#create  | admin_articles_path          |
 | GET       | /admin/articles/:id      | admin/articles#show    | admin_article_path(:id)      |
-| GET       | /admin/articles/:id/edit | admin/articles#edit    | edit_admin_post_path(:id)    |
-| PATCH/PUT | /admin/articles/:id      | admin/articles#update  | edit_admin_article_path(:id) |
+| GET       | /admin/articles/:id/edit | admin/articles#edit    | edit_admin_article_path(:id) |
+| PATCH/PUT | /admin/articles/:id      | admin/articles#update  | admin_article_path(:id)      |
 | DELETE    | /admin/articles/:id      | admin/articles#destroy | admin_article_path(:id)      |
 
 例外的に、(`/admin`が前についていない) `/articles`を`Admin::ArticlesController`にルーティングしたい場合は、以下のようにすることもできます。
@@ -244,11 +244,11 @@ resources :articles, path: '/admin/articles'
 
 いずれの場合も、名前付きルート (named route)は、`scope`を使わなかった場合と同じであることにご注目ください。最後の例の場合は、以下のパスが`ArticlesController`に割り当てられます。
 
-| HTTP 動詞 | パス                  | コントローラ#アクション   | 名前付きルーティングヘルパー              |
+| HTTP動詞  | パス                  | コントローラ#アクション   | 名前付きヘルパー              |
 | --------- | --------------------- | ----------------- | ------------------- |
 | GET       | /admin/articles          | articles#index       | articles_path          |
 | GET       | /admin/articles/new      | articles#new         | new_article_path       |
-| POST      | /admin/articles          | articles#create      | new_article_path          |
+| POST      | /admin/articles          | articles#create      | articles_path          |
 | GET       | /admin/articles/:id      | articles#show        | article_path(:id)      |
 | GET       | /admin/articles/:id/edit | articles#edit        | edit_article_path(:id) |
 | PATCH/PUT | /admin/articles/:id      | articles#update      | article_path(:id)      |
@@ -367,15 +367,15 @@ end
 
 上の場合、commentsリソースのルーティングは以下のようになります。
 
-| HTTP 動詞 | パス                  | コントローラ#アクション   | 名前付きヘルパー              |
-| --------- | -------------------------------------- | ----------------- | --------------------- |
+| HTTP動詞  | パス                  | コントローラ#アクション   | 名前付きヘルパー              |
+| --------- | -------------------------------------------- | ----------------- | ------------------------ |
 | GET       | /articles/:article_id/comments(.:format)     | comments#index    | article_comments_path    |
-| POST      | /articles/:article_id/comments(.:format)    | comments#create   | article_comments_path    |
+| POST      | /articles/:article_id/comments(.:format)     | comments#create   | article_comments_path    |
 | GET       | /articles/:article_id/comments/new(.:format) | comments#new      | new_article_comment_path |
-| GET       | /sekret/comments/:id/edit(.:format)    | comments#edit     | edit_comment_path     |
-| GET       | /sekret/comments/:id(.:format)         | comments#show     | comment_path          |
-| PATCH/PUT | /sekret/comments/:id(.:format)         | comments#update   | comment_path          |
-| DELETE    | /sekret/comments/:id(.:format)         | comments#destroy  | comment_path          |
+| GET       | /sekret/comments/:id/edit(.:format)          | comments#edit     | edit_comment_path        |
+| GET       | /sekret/comments/:id(.:format)               | comments#show     | comment_path             |
+| PATCH/PUT | /sekret/comments/:id(.:format)               | comments#update   | comment_path             |
+| DELETE    | /sekret/comments/:id(.:format)               | comments#destroy  | comment_path             |
 
 `:shallow_prefix`オプションを使うと、指定されたパラメータを (パスではなく) 名前付きルーティングヘルパー名の冒頭に追加します。
 
@@ -389,15 +389,16 @@ end
 
 上の場合、commentsリソースのルーティングは以下のようになります。
 
-| HTTP 動詞 | パス                  | コントローラ#アクション   | 名前付きルーティングヘルパー              |
-| --------- | -------------------------------------- | ----------------- | ------------------------ |
-| GET       | /articles/:article_id/comments(.:format)     | comments#index    | article_comments_path    |
-| POST      | /articles/:article_id/comments(.:format)     | comments#create   | article_comments_path    |
-| GET       | /articles/:article_id/comments/new(.:format) | comments#new      | article_comments_path    |
-| GET       | /comments/:id/edit(.:format)           | comments#edit     | edit_sekret_comment_path |
-| GET       | /comments/:id(.:format)                | comments#show     | sekret_comment_path      |
-| PATCH/PUT | /comments/:id(.:format)                | comments#update   | sekret_comment_path      |
-| DELETE    | /comments/:id(.:format)                | comments#destroy  | sekret_comment_path      |
+| HTTP動詞  | パス                  | コントローラ#アクション   | 名前付きヘルパー              |
+| --------- | -------------------------------------------- | ----------------- | --------------------------- |
+| GET       | /articles/:article_id/comments(.:format)     | comments#index    | article_comments_path       |
+| POST      | /articles/:article_id/comments(.:format)     | comments#create   | article_comments_path       |
+| GET       | /articles/:article_id/comments/new(.:format) | comments#new      | new_article_comment_path    |
+| GET       | /comments/:id/edit(.:format)                 | comments#edit     | edit_sekret_comment_path    |
+| GET       | /comments/:id(.:format)                      | comments#show     | sekret_comment_path         |
+| PATCH/PUT | /comments/:id(.:format)                      | comments#update   | sekret_comment_path         |
+| DELETE    | /comments/:id(.:format)                      | comments#destroy  | sekret_comment_path         |
+
 
 ### ルーティングの「concern」機能
 
@@ -921,7 +922,7 @@ resources :photos, controller: 'images'
 
 上のルーティングは、`/photos`で始まるパスを認識しますが、ルーティング先を`Images`コントローラにします。
 
-| HTTP 動詞 | パス                  | コントローラ#アクション   | 名前付きルーティングヘルパー              |
+| HTTP動詞  | パス                  | コントローラ#アクション   | 名前付きヘルパー              |
 | --------- | ---------------- | ----------------- | -------------------- |
 | GET       | /photos          | images#index      | photos_path          |
 | GET       | /photos/new      | images#new        | new_photo_path       |
@@ -976,7 +977,7 @@ resources :photos, as: 'images'
 
 上のルーティングでは、`/photos`で始まるブラウザからのパスを認識し、このリクエストを`Photos`コントローラにルーティングしますが、ヘルパーの命名に`:as`オプションの値が使用されます。
 
-| HTTP 動詞 | パス                  | コントローラ#アクション   | 名前付きルーティングヘルパー              |
+| HTTP動詞  | パス                  | コントローラ#アクション   | 名前付きヘルパー              |
 | --------- | ---------------- | ----------------- | -------------------- |
 | GET       | /photos          | photos#index      | images_path          |
 | GET       | /photos/new      | photos#new        | new_image_path       |
@@ -1081,7 +1082,7 @@ end
 
 上のようにすることで、以下のような`Categories`コントローラへのルーティングが作成されます。
 
-| HTTP 動詞 | パス | コントローラ#アクション | 名前付きルーティングヘルパー |
+| HTTP動詞  | パス | コントローラ#アクション | 名前付きヘルパー |
 | --------- | -------------------------- | ------------------ | ----------------------- |
 | GET       | /kategorien                | categories#index   | categories_path         |
 | GET       | /kategorien/neu            | categories#new     | new_category_path       |
