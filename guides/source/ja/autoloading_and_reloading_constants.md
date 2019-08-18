@@ -58,7 +58,7 @@ Zeitwerkモードを有効にする
 
 ```ruby
 # config/application.rb
-config.load_defaults "6.x" # CRubyでzeitwerkモードが有効になる
+config.load_defaults "6.0" # CRubyでzeitwerkモードが有効になる
 ```
 
 `zeitwerk`モードのRailsは、内部で自動読み込み、再読み込み、eager loadingに[Zeitwerk](https://github.com/fxn/zeitwerk)を用います。Railsは、プロジェクトを管理する専用のZeitwerkインスタンスのインスタンス化や設定を行います。
@@ -250,7 +250,7 @@ module StiPreload
 end
 ```
 
-続いて、プロジェクトでSTIのルートクラスで`include`します。s
+続いて、プロジェクトでSTIのルートクラスで`include`します。
 
 ```ruby
 # app/models/shape.rb
@@ -267,6 +267,32 @@ end
 # app/models/triangle.rb
 class Triangle < Polygon
 end
+```
+
+トラブルシューティング
+---------------
+
+ローダーの振る舞いを追跡するベストの方法は、ローダーの活動を調べることです。
+
+最も簡単な方法は、フレームワークのデフォルトが読み込まれた後で以下を`config/application.rb`に設定することです。
+
+```ruby
+Rails.autoloaders.log!
+```
+
+これにより、標準出力にトレースが出力されます。
+
+ログをファイルに出力したい場合は、上の代わりに以下を設定します。
+
+```ruby
+Rails.autoloaders.logger = Logger.new("#{Rails.root}/log/autoloading.log")
+```
+
+Railsロガーは`config/application.rb`には設定されていませんが、以下のようにイニシャライザで設定されています。
+
+```ruby
+# config/initializers/log_autoloaders.rb
+Rails.autoloaders.logger = Rails.logger
 ```
 
 `Rails.autoloaders`
@@ -294,7 +320,7 @@ Zeitwerkを使わない場合
 
 ```ruby
 # config/application.rb
-config.load_defaults "6.x"
+config.load_defaults "6.0"
 config.autoloader = :classic
 ```
 
