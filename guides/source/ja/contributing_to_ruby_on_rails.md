@@ -13,7 +13,7 @@ Ruby on Rails に貢献する方法
 
 Ruby on Railsは、「どこかで誰かがうまくやってくれているフレームワーク」ではありません。Ruby on Railsには、長年に渡って数千人もの人々が貴重な貢献を行ってくださいました。その内容は、わずか1文字の修正から、大規模なアーキテクチャ変更、重要なドキュメント作成まで多岐に渡ります。それらの努力は、いずれもRuby on Railsをすべての人々にとってよりよいものにすることを目標に置いています。コードを書いたりドキュメントを作成したりするまでには至らなくても、issueのレポートやパッチのテストなど、さまざまな方法で貢献することができます (訳注: **サンプルの文章も日本語に翻訳されていますが、実際には必ず英語を使うようにしてください** )。
 
-[RailsのREADME](https://github.com/rails/rails/blob/master/README.md)にも記載されているように、Railsのコードベースやサブプロジェクトのコードベースについて、issueトラッカーやチャットルームやメーリングリストでやり取りする方は誰であっても、Railsの[行動規範](http://rubyonrails.org/conduct/)に従うことが期待されます。
+[RailsのREADME](https://github.com/rails/rails/blob/master/README.md)にも記載されているように、Railsのコードベースやサブプロジェクトのコードベースについて、issueトラッカーやチャットルームやメーリングリストでやり取りする方は誰であっても、Railsの[行動規範](https://rubyonrails.org/conduct/)に従うことが期待されます。
 
 --------------------------------------------------------------------------------
 
@@ -48,7 +48,7 @@ issueレポートには、最低でもタイトルとissueの明快な説明が�
 
 ### セキュリティissueの特殊な取り扱い方法について
 
-WARNING: セキュリティ脆弱性に関する問題は、一般公開されているGithubのissueレポート機能には「絶対に掲載しないでください」。セキュリティ関連のissueを扱う方法の詳細については、[Railsセキュリティポリシーページ](http://rubyonrails.org/security) (英語) を参照してください。
+WARNING: セキュリティ脆弱性に関する問題は、一般公開されているGithubのissueレポート機能には「絶対に掲載しないでください」。セキュリティ関連のissueを扱う方法の詳細については、[Railsセキュリティポリシーページ](https://rubyonrails.org/security) (英語) を参照してください。
 
 ### 機能リクエストについて
 
@@ -223,7 +223,7 @@ Railsのコーディングを行う場合は、以下のシンプルなスタイ
 
 * インデントはスペース2つを使用する。タブ文字は使用しないこと。
 * 行末にスペースを置かないこと。空行に余分なスペースを置かないこと。
-* privateやprotectedの後の行はインデントする。
+* privateやprotectedの直後の行は空行にせず、以降の行をインデントする。
 * ハッシュの記法は Ruby 1.9 以降の書式を使用する。つまり「`{ :a => :b }`」よりも「`{ a: :b }`」が望ましい。
 * 「`and`/`or`」よりも「`&&`/`||`」が望ましい。
 * クラスメソッドは「self.method」よりも「class << self」が望ましい。
@@ -247,7 +247,7 @@ Railsのコーディングを行う場合は、以下のシンプルなスタイ
 
 Railsでは、変更をプッシュする時にテストスイートをフル実行するという慣習があるわけではありません。おすすめのワークフーロー[rails-dev-box](https://github.com/rails/rails-dev-box)で説明しているように、railtiesのテストは特に時間がかかり、ソースコードを`/vagrant`にマウントするとさらに時間がかかります。
 
-現実的な妥協案として、作成したコードによって影響が生じるかどうかをテストするようにしてください。そして、変更がrailtiesで行われていないのであれば、影響を受けるコンポーネントのすべてのテストスイートを実行してください。テストにすべてパスすれば、貢献を提案する準備が整います。Rails では、他の箇所で予想外のエラーが生じたときに検出できるよう、[Travis CI](https://travis-ci.org/rails/rails)を使用しています。
+現実的な妥協案として、作成したコードによって影響が生じるかどうかをテストするようにしてください。そして、変更がrailtiesで行われていないのであれば、影響を受けるコンポーネントのすべてのテストスイートを実行してください。テストにすべてパスすれば、貢献を提案する準備が整います。Rails では、他の箇所で予想外のエラーが生じたときに検出できるよう、[Buildkite](https://buildkite.com/rails/rails)を使用しています。
 
 #### Rails 全体のテストを実行する
 
@@ -278,6 +278,24 @@ $ ruby -w -Itest test/mail_layout_test.rb -n test_explicit_class_layout
 
 `-n`オプションを指定すると、ファイル全体ではなく指定した単一のメソッドだけを実行します。
 
+
+#### 特定のseedでテストを実行する
+
+テストの実行はseedでランダム化されます。テストがランダムに失敗する場合、ランダム化用のseedを指定することで、失敗するテストをより正確に再現できます。
+
+あるコンポーネントのテストをすべて実行するには、以下のようにします。
+
+```bash
+$ cd actionmailer
+$ SEED=15002 bundle exec rake test
+```
+
+特定のテストファイル1件を実行する場合は以下のようにします。
+
+```bash
+$ cd actionmailer
+$ SEED=15002 bundle exec ruby -w -Itest test/mail_layout_test.rb
+```
 
 #### Active Recordをテストする
 
@@ -317,7 +335,7 @@ $ ARCONN=sqlite3 bundle exec ruby -Itest test/cases/associations/has_many_associ
 $ bundle exec rake TEST=test/cases/associations/has_many_associations_test.rb
 ```
 
-これで`test_jdbcmysql`、`test_jdbcsqlite3`、`test_jdbcpostgresql`も呼び出されます。特定のデータベーステストにターゲットを絞って実行する方法の詳細については`activerecord/RUNNING_UNIT_TESTS.rdoc`を参照してください。CI (Continuous Integration: 継続的インテグレーション)サーバーでテストスイートを実行する方法の詳細については`ci/travis.rb`を参照してください。
+これで`test_jdbcmysql`、`test_jdbcsqlite3`、`test_jdbcpostgresql`も呼び出されます。特定のデータベーステストにターゲットを絞って実行する方法の詳細については`activerecord/RUNNING_UNIT_TESTS.rdoc`を参照してください。より多くのデータベースを対象にテストスイートを実行する方法について詳しくは、`activerecord/RUNNING_UNIT_TESTS.rdoc`を参照してください。
 
 ### 警告
 
@@ -426,15 +444,7 @@ Rails [GitHubリポジトリ](https://github.com/rails/rails) を開いて、右
 $ git remote add mine https://github.com/<自分のユーザー名>/rails.git
 ```
 
-リモートにプッシュします。
-
-```bash
-$ git push mine my_new_branch
-```
-
-フォークしたリポジトリをローカルにクローンし、オリジナルのRailsリポジトリをリモートとして追加することもできます。このような場合は次のように行う必要があります。
-
-フォークのクローンを保存したディレクトリで以下を実行します。
+ローカルリポジトリは、オリジナルのrails/railsリポジトリからローカルリポジトリに`clone`して作ることも、自分のリポジトリにフォークしたものをローカルリポジトリに`clone`して作ることもできます。曖昧さを避けるため、以降のgitコマンドでは、rails/railsを指す`remote`コマンドを実行したと仮定します。
 
 ```bash
 $ git remote add rails https://github.com/rails/rails.git
@@ -451,20 +461,15 @@ $ git fetch rails
 ```bash
 $ git checkout master
 $ git rebase rails/master
+$ git checkout my_new_branch
+$ git rebase rails/master
 ```
 
 フォークをアップデートします。
 
 ```bash
-$ git push origin master
-```
-
-別のブランチをアップデートしたい場合は以下のようにします。
-
-```bash
-$ git checkout branch_name
-$ git rebase rails/branch_name
-$ git push origin branch_name
+$ git push fork master
+$ git push fork my_new_branch
 ```
 
 
@@ -492,27 +497,17 @@ Railsに貢献すべく活動していれば、そのプルリクエストはこ
 
 #### コミットをスカッシュする
 
-Railsに貢献する皆様には、必ず「コミットをスカッシュ」していただくようお願いします。スカッシュとは、複数のコミットをひとつにまとめることです (訳注: 後述の`git rebase -i`でスカッシュできます)。プルリクエストは、ひとつのコミットにまとめておくことが望まれます。コミットをひとつにまとめることで、安定版ブランチに新しい変更をバックポートしやすくなり、よくないコミットを取り消しやすくなり、Gitの履歴を多少なりとも追いやすくなります。Railsは巨大プロジェクトであり、異質なコミットが多数加わると膨大なノイズが生じる可能性があります。
-
-以下の作業を行うには、メインのRailsリポジトリを指すGitリモートを取得する必要があります。Gitリモートは他の場面でも何かと便利なものですが、まだ作成していない場合は以下を最初に行ってください。
+Railsに貢献する皆様にお願いしたいのは、「コミットのスカッシュ」です。スカッシュ（squash）とは、複数のコミットをひとつにまとめることです (訳注: 後述の`git rebase -i`でスカッシュできます)。プルリクエストは、ひとつのコミットにまとめておくことが望まれます。コミットをひとつにまとめることで、安定版ブランチに新しい変更をバックポートしやすくなり、よくないコミットを取り消しやすくなり、Gitの履歴を多少なりとも追いやすくなります。Railsは巨大プロジェクトであり、異質なコミットが多数加わると膨大なノイズが生じる可能性があります。
 
 ```bash
-$ git remote add upstream https://github.com/rails/rails.git
-```
-
-このリモートはupstream以外の名前にも設定できます。`upstream`という名前にしたくない場合は、以下の手順に従って名前を変更します。
-
-リモートブランチ名が`my_pull_request`の場合は、以下を実行します。
-
-```bash
-$ git fetch upstream
-$ git checkout my_pull_request
-$ git rebase -i upstream/master
+$ git fetch rails
+$ git checkout my_new_branch
+$ git rebase -i rails/master
 
 < 最初のひとつを除くすべてのコミットに対して'squash'を選択する >
 < コミットメッセージを編集して、すべての変更をわかりやすく記述する >
 
-$ git push origin my_pull_request -f
+$ git push fork my_new_branch --force-with-lease
 ```
 
 以上でGitHub上のプルリクエストを更新できるようになり、実際に更新されたことを確認できます。
@@ -522,11 +517,10 @@ $ git push origin my_pull_request -f
 あなたがコミットしたコードに対して変更を求められることがあります。既存のコミットそのものを修正することを求められることもあります。ただし、Gitでは既存のコミットをさかのぼって変更したものをプッシュすることは許されていません。既にプッシュされたブランチとローカルのブランチが一致しないからです。このような場合は、新しいプルリクエストを作成する代わりに、コミットのスカッシュについて既に説明した方法を使用して、自分のブランチをGitHubに強制的にプッシュすることもできます。
 
 ```bash
-$ git push origin my_pull_request -f
+$ git push fork my_new_branch --force-with-lease
 ```
 
 これにより、GitHub上のブランチとプルリクエストが新しいコードによって更新されます。強制的にプッシュを行うと、リモートブランチのコミットが失われる危険性がありますので、くれぐれもご注意ください。
-
 
 ### 旧バージョンのRuby on Rails
 
@@ -566,9 +560,9 @@ $ git apply ~/my_changes.patch
 
 単純な変更であればこれで十分バックポートできます。しかし、複雑な変更を行っていた場合や、masterと対象ブランチの差が甚だしくなっている場合は、もう少し手を加える必要があるかもしれません。バックポートがどのぐらい難しくなるかは場合によって大きく異なります。ときには、それほどの手間をかけてバックポートするほどの意味がないこともあります。
 
-コンフリクトをすべて解消してすべてのテストがパスすることを確認できたら、変更をプッシュして、バックポート用のプルリクエストを別に作成します。なお、古いブランチではビルドのターゲットがmasterと異なるセットになっている場合がありますのでご注意ください。できれば、`.travis.yml`に記載されているバージョンのRubyを使用してバックポートをローカルでテストしてからプルリクエストを送信するようにしてください。
+コンフリクトをすべて解消してすべてのテストがパスすることを確認できたら、変更をプッシュして、バックポート用のプルリクエストを別に作成します。なお、古いブランチではビルドのターゲットがmasterと異なるセットになっている場合がありますのでご注意ください。できれば、対象となるブランチの`rails.gemspec`で許されているRubyバージョンのうち、最も古いRubyを用いてバックポートをローカルでテストしてからプルリクエストを送信するようにしてください。
 
-以上で解説はおしまいです。次はどんな貢献をしようか楽しみつつ考えるとしましょう。
+以上で解説はおしまいです。ここから先は、どんな貢献をしようか楽しみつつ考えるとしましょう。
 
 Railsコントリビュータ
 ------------------
