@@ -17,23 +17,24 @@ Active Storage の概要
 
 --------------------------------------------------------------------------------
 
-Active Storage とは何か?
+Active Storageについて
 -----------------------
 
-Active StorageとはAmazon S3、Google Cloud Storage、Microsoft Azure Storageのような
-クラウドストレージサービスへのファイルのアップロードとそれらのファイルをActive Recordオブジェクトに添付することを容易にします。
-開発およびテスト用のローカルディスクベースのサービスが付属しており、ファイルをバックアップおよび移行用の従属サービスにミラーリングすることができます。
+Active StorageとはAmazon S3、Google Cloud Storage、Microsoft Azure Storageなどの
+クラウドストレージサービスへのファイルのアップロードや、ファイルをActive Recordオブジェクトにアタッチする機能を提供します。development環境とtest環境向けのローカルディスクベースのサービスを利用できるようになっており、ファイルを下位のサービスにミラーリングしてバックアップや移行に用いることもできます。
 
-Active Storageを使用すると、アプリケーションは[ImageMagick](https://www.imagemagick.org)で画像のアップロードを変換し、
-PDFやビデオなどの非画像アップロードの画像表現を生成し、任意のファイルからメタデータを抽出することができます。
+アプリケーションでActive Storageを用いることで、[ImageMagick](https://www.imagemagick.org)で画像のアップロードを変換したり、
+PDFやビデオなどの非画像アップロードの画像表現を生成したり、任意のファイルからメタデータを抽出したりできます。
 
 ## セットアップ
 
 Active Storageは、アプリケーションのデータベースで `active_storage_blobs`と`active_storage_attachments`という名前の2つのテーブルを使用します。
-新規アプリケーション作成後または既存のアプリケーションをRails 5.2にアップグレードした後に、`rails active_storage:install`を実行して、これらのテーブルを作成するmigrationファイルを作成します。 
-migrationファイルを実行するには`rails db:migrate`を使用してください。
+新規アプリケーション作成した後（または既存のアプリケーションをRails 5.2にアップグレードした後）に、`rails active_storage:install`を実行して、これらのテーブルを作成するmigrationファイルを作成します。 
+migrationファイルを実行するには`rails db:migrate`をお使いください。
 
-Active Storageのサービスを`config/storage.yml`で宣言してください。 アプリケーションが使用するサービスごとに、名前と必要な構成を指定します。 
+WARNING: `active_storage_attachments`は、使うモデルのクラス名を保存するポリモーフィックjoinテーブルです。モデルのクラス名を変更した場合は、このテーブルに対してマイグレーションを実行して背後の`record_type`をモデルの新しいクラス名に更新する必要があります。
+
+Active Storageのサービスは`config/storage.yml`で宣言します。アプリケーションが使うサービスごとに、名前と必要な構成を指定します。 
 次の例では、`local`、`test`、`amazon`という3つのサービスを宣言しています。
 
 ```yaml
@@ -51,26 +52,26 @@ amazon:
   secret_access_key: ""
 ```
 
-`Rails.application.config.active_storage.service`を設定することによって、どのサービスを使うべきかをActive Storageに教えてください。
-それぞれの環境では異なるサービスが使用される可能性が高いため、これを環境ごとに行うことをお勧めします。 開発環境の前の例のディスクサービスを使用するには、`config/environments/development.rb`に以下を追加します。
+利用するサービスをActive Storageに認識させるには、`Rails.application.config.active_storage.service`を設定します。
+使うサービスは環境ごとに異なることもあるため、この設定を環境ごとに行うことをおすすめします。前述したローカルDiskサービスをdevelopment環境で使うには、`config/environments/development.rb`に以下を追加します。
 
 ```ruby
-# Store files locally.
+# ファイルをローカルに保存する
 config.active_storage.service = :local
 ```
 
-本番環境でAmazon S3を利用するには`config/environments/production.rb`に以下を追加します。
+production環境でAmazon S3を利用するには、`config/environments/production.rb`に以下を追加します。
 
 ```ruby
-# Store files on Amazon S3.
+# ファイルをAmazon S3に保存する
 config.active_storage.service = :amazon
 ```
 
-内蔵のサービスアダプタ(`Disk`や`S3`など)とそれに必要な設定の詳細については、引き続きお読みください。
+内蔵されているサービスアダプタ(`Disk`や`S3`など)およびそれらに必要な設定について、詳しくは後述します。
 
-### Disk Service
+### Diskサービス
 
-`config/storage.yml`にDiskサービスを宣言してください。
+Diskサービスは`config/storage.yml`で宣言します。
 
 ``` yaml
 local:
@@ -78,9 +79,9 @@ local:
   root: <%= Rails.root.join("storage") %>
 ```
 
-### Amazon S3 Service
+### Amazon S3サービス
 
-`config/storage.yml`にS3サービスを宣言してください。
+S3サービスは`config/storage.yml`で宣言します。
 
 ``` yaml
 amazon:
@@ -90,64 +91,77 @@ amazon:
   region: ""
   bucket: ""
 ```
-また、`Gemfile`にS3クライアントのgemを追加してください。
+
+`Gemfile`に`aws-sdk-s3` gemを追加します。
 
 ``` ruby
 gem "aws-sdk-s3", require: false
 ```
 
-### Microsoft Azure Storage Service
+NOTE: Active Storageのコア機能では、`s3:ListBucket`、`s3:PutObject`、`s3:GetObject`、`s3:DeleteObject`という4つのパーミッションが必要です。ACLの設定といったアップロードオプションを追加で設定した場合は、この他にもパーミッションが必要になることがあります。
 
-`config/storage.yml`にAzure Storageサービスを宣言してください。
+NOTE: 環境変数、標準SDKの設定ファイル、プロファイル、IAMインスタンスのプロファイルやタスクロールを使いたい場合は、上述の`access_key_id`、`secret_access_key`、`region`を省略できます。Amazon S3サービスでは、[AWS SDK documentation]
+(https://docs.aws.amazon.com/sdk-for-ruby/v3/developer-guide/setup-config.html)に記載されている認証オプションをすべてサポートします。
+
+### Microsoft Azure Storageサービス
+
+Azure Storageサービスは`config/storage.yml`で宣言します。
 
 ``` yaml
 azure:
   service: AzureStorage
-  path: ""
   storage_account_name: ""
   storage_access_key: ""
   container: ""
 ```
 
-また、`Gemfile`にMicrosoft Azure Storageクライアントのgemを追加してください。
+`Gemfile`にMicrosoft Azure Storageクライアントのgemを追加します。
 
 ``` ruby
 gem "azure-storage", require: false
 ```
 
-### Google Cloud Storage Service
+### Google Cloud Storageサービス
 
-`config/storage.yml`にGoogle Cloud Storageサービスを宣言してください。
+Google Cloud Storageサービスは`config/storage.yml`で宣言します。
 
-``` yaml
+```yaml
 google:
   service: GCS
-  keyfile: {
-    type: "service_account",
-    project_id: "",
-    private_key_id: "",
-    private_key: "",
-    client_email: "",
-    client_id: "",
-    auth_uri: "https://accounts.google.com/o/oauth2/auth",
-    token_uri: "https://accounts.google.com/o/oauth2/token",
-    auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs",
-    client_x509_cert_url: ""
-  }
+  credentials: <%= Rails.root.join("path/to/keyfile.json") %>
   project: ""
   bucket: ""
 ```
 
-また、`Gemfile`にGoogle Cloud Storageクライアントのgemを追加してください。
+keyfileパスの代わりに、credentialのハッシュを渡すこともできます。
 
-``` ruby
-gem "google-cloud-storage", "~> 1.3", require: false
+```yaml
+google:
+  service: GCS
+  credentials:
+    type: "service_account"
+    project_id: ""
+    private_key_id: <%= Rails.application.credentials.dig(:gcs, :private_key_id) %>
+    private_key:```` <%= Rails.application.credentials.dig(:gcs, :private_key) %>
+    client_email: ""
+    client_id: ""
+    auth_uri: "https://accounts.google.com/o/oauth2/auth"
+    token_uri: "https://accounts.google.com/o/oauth2/token"
+    auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs"
+    client_x509_cert_url: ""
+  project: ""
+  bucket: ""
 ```
 
-### Mirror Service
-ミラーサービスを定義することで、複数のサービスを同期させることができます。ファイルがアップロードまたは削除されると、
-ミラー化されたすべてのサービスで実行されます。ミラーリングされたサービスを使用して、プロダクション内のサービス間の移行を容易にすることができます。 新しいサービスへのミラーリングを開始したり、既存のファイルを古いサービスから新しいものにコピーしたり、新しいサービスにオールインすることができます。
-上記のように使用する各サービスを定義し、ミラー化されたサービスから参照します。
+`Gemfile`にGoogle Cloud Storageクライアントのgemを追加します。
+
+``` ruby
+gem "google-cloud-storage", "~> 1.8", require: false
+```
+
+### ミラーサービス
+
+ミラーサービスを定義すると、複数のサービスを同期できます。ファイルのアップロードや削除は、ミラー化されたすべてのサービスに渡って行われます。ミラーリングされたサービスを用いることで、production環境内のサービス間の移行も行えます。新しいサービスへのミラーリングを開始したり、既存のファイルを古いサービスから新しいサービスにコピーしたり、新しいサービスに完全に切り替えたりできます。利用したいサービスごとに上と同じ要領で定義し、ミラー化されたサービスから参照します。
 
 ``` yaml
 s3_west_coast:
@@ -171,26 +185,32 @@ production:
     - s3_west_coast
 ```
 
-NOTE: ファイルはプライマリサービスから提供されます。
+NOTE: ファイルはprimaryサービスから提供されます。
 
-ファイルをモデルに添付する
+NOTE: この機能は[ダイレクトアップロード](#ダイレクトアップロード)機能との互換性がありません。
+
+ファイルをレコードに添付する
 -----------------------
 
 ### `has_one_attached`
 
 `has_one_attached`マクロは、レコードとファイルの間に1対1のマッピングを設定します。各レコードには1つのファイルを添付できます。
 
-たとえば、アプリケーションに`User`モデルがあるとします。各userにavatarを持たせたい場合は、以下のように`User`モデルを定義してください。
+たとえば、アプリケーションに`User`モデルがあるとします。各userにavatarを持たせたい場合は、以下のように`User`モデルを定義します。
 
-``` ruby
+```ruby
 class User < ApplicationRecord
   has_one_attached :avatar
 end
 ```
 
-avatarと一緒にuserを作成することができます。
+以下のように書くことでavatar付きのuserを作成できます。
 
-``` ruby
+```erb
+<%= form.file_field :avatar %>
+```
+
+```ruby
 class SignupController < ApplicationController
   def create
     user = User.create!(user_params)
@@ -211,7 +231,7 @@ end
 Current.user.avatar.attach(params[:avatar])
 ```
 
-`avatar.attached?`で特定のuserがavatarを持っているかどうかを判断します。
+`avatar.attached?`で特定のuserがavatarを持っているかどうかを調べられます。
 
 ```ruby
 Current.user.avatar.attached?
@@ -219,9 +239,9 @@ Current.user.avatar.attached?
 
 ### `has_many_attached`
 
-`has_many_attached`マクロは、レコードとファイルの間に1対多の関係を設定します。各レコードには、多数のファイルを添付することができます。
+`has_many_attached`マクロは、レコードとファイルの間に1対多の関係を設定します。各レコードには、多数の添付ファイルをアタッチできます。
 
-たとえば、アプリケーションに`Message`モデルがあるとします。それぞれのメッセージに多くのイメージを含めるには、次のように`Message`モデルを定義します.
+たとえば、アプリケーションに`Message`モデルがあるとします。メッセージごとに多数の画像を持たせるには、次のような`Message`モデルを定義します.
 
 ```ruby
 class Message < ApplicationRecord
@@ -229,7 +249,7 @@ class Message < ApplicationRecord
 end
 ```
 
-imagesと一緒にmessageを作成することができます。
+以下のように書くことで、画像付きのメッセージを作成できます。
 
 ```ruby
 class MessagesController < ApplicationController
@@ -245,38 +265,38 @@ class MessagesController < ApplicationController
 end
 ```
 
-`images.attach`を呼び出して、新しいimageを既存のmessageに追加します。
+`images.attach`を呼び出すと、既存のメッセージに新しい画像を追加できます。
 
 ```ruby
 @message.images.attach(params[:images])
 ```
 
-`image.attached?`で特定のmessageがimageを持っているかどうかを判断します。
+あるメッセージに何らかの画像がアタッチされているかどうかを調べるには、`image.attached?`を呼び出します。
 
 ```ruby
 @message.images.attached?
 ```
 
-### File/IO Objectsを送付する
+### File/IO Objectsをアタッチする
 
-HTTPリクエスト経由で届かないファイルを添付する必要がある場合があります。例えば、ディスクに生成したファイル、またはユーザーが送信したURLからダウンロードしたファイル等を添付したい。または、モデルテストでfixtureファイルを添付したい等のケースです。これらを実現する為には最低１つ以上のオープンIOオブジェクトとファイル名を含むハッシュを用意します。
+HTTPリクエスト経由では配信されないファイルをアタッチする必要が生じる場合があります。たとえば、ディスク上で生成したファイルやユーザーが送信したURLからダウンロードしたファイルをアタッチしたい場合や、モデルのテストでfixtureファイルをアタッチしたい場合などが考えられます。これを行うには、オープンIOオブジェクトとファイル名を1つ以上含むハッシュを渡します。
 
 ```ruby
 @message.image.attach(io: File.open('/path/to/file'), filename: 'file.pdf')
 ```
 
-可能であれば、コンテントタイプも入力してください。Active Storageは与えられたデータからファイルのコンテントタイプを判断しようとしますが、できない場合は提供したコンテントタイプを使用します。
+可能であれば、`content_type:`も指定しましょう。Active Storageは、渡されたデータからファイルのcontent_typeの判定を試みますが、判定できない場合はcontent_typeにフォールバックします。
 
 ```ruby
 @message.image.attach(io: File.open('/path/to/file'), filename: 'file.pdf', content_type: 'application/pdf')
 ```
 
-コンテントタイプを指定せず、Active Storageがファイルのコンテントタイプを自動的に判別できない場合は、デフォルトで`application/octet-stream`が設定されます。
+`content_type:`を指定せず、Active Storageがファイルのcontent_typeを自動的に判別できない場合は、デフォルトで`application/octet-stream`が設定されます。
 
-モデルに添付されたファイルを削除する
+ファイルを削除する
 -----------------------------
 
-モデルから添付ファイルを削除するには、添付ファイルに対して `purge`を呼び出します。
+添付ファイルをモデルから削除するには、添付ファイルに対して `purge`を呼び出します。
 Active Jobを使用するようにアプリケーションが設定されている場合は、バックグラウンドで削除を実行できます。消去すると、BLOBとファイルがストレージサービスから削除されます。
 
 ```ruby
@@ -287,53 +307,76 @@ user.avatar.purge
 user.avatar.purge_later
 ```
 
-添付ファイルへのリンク
+ファイルにリンクする
 -------------------
 
-アプリケーションを指すblobの永続URLを生成します。アクセス時には、実際のサービスエンドポイントへのリダイレクトが返されます。
-このインダイレクションはパブリックURLを実際のURLと切り離し、たとえば、高可用性のために異なるサービスの添付ファイルをミラーリングすることを可能にします。
-リダイレクトのHTTPの有効期限は5分です。
+アプリケーションを指すblobのパーマネントURLを生成します。アクセス時には、実際のサービスエンドポイントへのリダイレクトが返されます。
+このインダイレクションによってパブリックURLを実際のURLと切り離し、たとえば、高可用性のために添付ファイルを別サービスにミラーリングすることもできます。リダイレクトのHTTPの有効期限は5分です。
 
 ```ruby
 url_for(user.avatar)
 ```
 
-ダウンロードリンクを作成するには、`rails_blob_ {path | url}`ヘルパーを使用してください。このヘルパーを使用すると、処理を設定できます。
+ダウンロードリンクを作成するには、`rails_blob_ {path | url}`ヘルパーを使います。このヘルパーで`disposition:`を設定できます。
 
 ```ruby
 rails_blob_path(user.avatar, disposition: "attachment")
 ```
 
-controller/viewのコンテクスト以外(Background jobs, Cronjobs, etc.)からリンクを作成したい場合、rails_blob_pathに以下の様にアクセス出来ます。
+コントローラやビューのコンテキストの外(バックグラウンドジョブやcronジョブなど)からリンクを作成したい場合、`rails_blob_path`を用いて以下のようにアクセスできます。
 
 ```ruby
 Rails.application.routes.url_helpers.rails_blob_path(user.avatar, only_path: true)
 ```
 
+ファイルをダウンロードする
+-----------------
+
+アップロードしたblobに対して処理を行う（別フォーマットへの変換など）必要が生じることがあります。`ActiveStorage::Blob#download`を用いてblobのバイナリデータをメモリに読み込めます。
+
+```ruby
+binary = user.avatar.download
+```
+
+場合によっては、blobをディスク上のファイルとしてダウンロードし、外部プログラム（ウイルススキャナーやメディアコンバーターなど）で処理できるようにしたいことがあります。`ActiveStorage::Blob#open`でblobをディスク上のtempfileにダウンロードできます。
+
+```ruby
+message.video.open do |file|
+  system '/path/to/virus/scanner', file.path
+  # ...
+end
+```
+
 画像を変換する
 ----------------
 
-画像のバリエーションを作成するには、Blobで`variant`を呼び出します。
-[MiniMagick](https://github.com/minimagick/minimagick) でサポートされている変換をメソッドに渡すことができます。
+画像のバリエーションを作成するには、`Blob`で`variant`を呼び出します。このメソッドには、画像プロセッサでサポートされる任意の変換方法を渡せます。デフォルトの画像プロセッサは[MiniMagick](https://github.com/minimagick/minimagick)ですが、[Vips](https://www.rubydoc.info/gems/ruby-vips/Vips/Image)も使えます。
 
-バリアントを有効にするには、`mini_magick`を`Gemfile`に追加してください：
+バリアントを有効にするには、`image_processing` gemを`Gemfile`に追加します。
 
 ``` ruby
-gem 'mini_magick'
+gem 'image_processing', '~> 1.2'
 ```
 
-ブラウザがバリアントURLにヒットすると、Active Storageは元のBLOBを指定したフォーマットに遅延変換し、新しいサービスロケーションにリダイレクトします。
+ブラウザがバリアントURLにヒットすると、Active Storageは元のblobを指定のフォーマットに遅延変換し、新しいサービスのロケーションにリダイレクトします。
 
 ```erb
 <%= image_tag user.avatar.variant(resize: "100x100") %>
 ```
 
 
-非画像ファイルのプレビュー
+画像プロセッサをVipsに切り替えるには、`config/application.rb`に以下を追加します。
+
+```ruby
+# 別の画像プロセッサとしてVipsを使う
+config.active_storage.variant_processor = :vips
+```
+
+
+ファイルのプレビュー
 -----------------------
 
-非画像ファイルの一部はプレビューすることができます。つまり、画像として表示することができます。 
-たとえば、最初のフレームを抽出してビデオファイルをプレビューすることができます。アウトオブボックスで、Active StorageはビデオとPDFドキュメントのプレビューをサポートしています。
+画像でないファイルの中にはプレビューできるものもあります（画像として表示されます）。たとえば、動画ファイルの最初のフレームを抽出してプレビューできます。Active Storageでは、動画とPDFドキュメントについてすぐ使えるプレビュー機能をサポートしています。
 
 ```erb
 <ul>
@@ -345,45 +388,41 @@ gem 'mini_magick'
 </ul>
 ```
 
-WARNING: プレビューを抽出するにはサードパーティのアプリケーション、ビデオの場合は`ffmpeg`、PDFの場合は` mutool`が必要です。
-これらのライブラリはRailsでは提供されていません。組み込みのプレビューアを使用するには、それらを自分でインストールする必要があります。
-サードパーティのソフトウェアをインストールして使用する前に、ライセンスの影響を理解していることを確認してください。
+WARNING: プレビュー画像の抽出にはサードパーティのアプリケーションが必要です（動画の場合は`ffmpeg`、PDFの場合は` mutool`）。これらのライブラリはRailsでは提供されていません。組み込みのプレビューソフトウェアを使う場合は、自分でインストールしなければなりません。サードパーティのソフトウェアをインストールして使う場合、そのソフトウェアがライセンスにどのように影響をするかを理解しておいてください。
 
-
-サービスに直接アップロードする
+ダイレクトアップロード
 --------------------------
 
-Active Storageは、付属のJavaScriptライブラリを使用して、クライアントからクラウドへの直接アップロードをサポートします。
+Active Storageは、付属のJavaScriptライブラリを用いて、クライアントからクラウドへのダイレクトアップロードをサポートします。
 
 ### ダイレクトアップロードのインストール
 
-1. アプリケーションのJavaScriptバンドルに`activestorage.js`を含めます。
+1. アプリケーションのJavaScriptバンドルに`activestorage.js`を追記します。
 
-    アセットパイプラインを使います。
+    アセットパイプラインを使う場合は以下のようにします。
     
     ```js
     //= require activestorage
-
     ```
     
-    npmパッケージを使います。
+    npmパッケージを使う場合は以下のようにします。
     
     ```js
     import * as ActiveStorage from "activestorage"
     ActiveStorage.start()
     ```
     
-2. ダイレクトアップロードURLでファイル入力に注釈を付けます。
+2. ファイル入力に以下を記述してダイレクトアップロードのURLを指定します。
 
      ```ruby
      <%= form.file_field :attachments, multiple: true, direct_upload: true %>
      ```
      
-3. それだけです！ アップロードはフォーム送信時に開始されます。
+3. 以上で完了です。アップロードはフォーム送信時に開始されます。
 
 ### ダイレクトアップロードのJavascriptイベント
 
-| Event name | Event target | Event data (`event.detail`) | Description |
+| イベント名 | イベントの対象 | イベントデータ（`event.detail`） | 説明 |
 | --- | --- | --- | --- |
 | `direct-uploads:start` | `<form>` | None | ダイレクトアップロードフィールドのファイルを含むフォームが送信された。 |
 | `direct-upload:initialize` | `<input>` | `{id, file}` | フォーム送信後のすべてのファイルにディスパッチされる。 |
@@ -397,12 +436,11 @@ Active Storageは、付属のJavaScriptライブラリを使用して、クラ�
 
 ### 例
 
-
-これらのイベントを使用して、アップロードの進行状況を表示できます。
+上記のイベントを用いて、アップロードの進行状況をプログレスバー表示できます。
 
 ![direct-uploads](https://user-images.githubusercontent.com/5355/28694528-16e69d0c-72f8-11e7-91a7-c0b8cfc90391.gif)
 
-アップロードされたファイルをフォームに表示するには
+以下は、アップロードされたファイルをフォームに表示するコードです。
 
 
 ```js
@@ -446,7 +484,7 @@ addEventListener("direct-upload:end", event => {
 })
 ```
 
-スタイルを追加
+以下のスタイルを追加します。
 
 ```css
 /* direct_uploads.css */
@@ -490,13 +528,88 @@ input[type=file][data-direct-upload-url][disabled] {
 }
 ```
 
-システムテスト中にストアドファイルストアをクリーンアップする
+### ライブラリやフレームワークとの統合
+
+ダイレクトアップロード機能をJavaScriptフレームワークから利用したい場合や、ドラッグアンドドロップをカスタマイズしたい場合は、`DirectUpload`クラスを利用して行えます。選択したライブラリからファイルを1件受信したら、`DirectUpload`をインスタンス化してそのインスタンスの`create`メソッドを呼び出します。`create`には、アップロード完了時に呼び出すコールバックを1つ渡せます。
+
+```
+import { DirectUpload } from "@rails/activestorage"
+
+const input = document.querySelector('input[type=file]')
+
+// ファイルドロップへのバインド: 親要素のondropか、
+// Dropzoneなどのライブラリを使う
+const onDrop = (event) => {
+  event.preventDefault()
+  const files = event.dataTransfer.files;
+  Array.from(files).forEach(file => uploadFile(file))
+}
+
+// 通常のファイル選択へのバインド
+input.addEventListener('change', (event) => {
+  Array.from(input.files).forEach(file => uploadFile(file))
+  // 選択されたファイルを入力からクリアしておく
+  input.value = null
+})
+
+const uploadFile = (file) => {
+  // フォームではfile_field direct_upload: trueが必要
+  // （これでdata-direct-upload-urlを提供する）
+  const url = input.dataset.directUploadUrl
+  const upload = new DirectUpload(file, url)
+
+  upload.create((error, blob) => {
+    if (error) {
+      // エラーハンドリングをここに書く
+    } else {
+      // 名前が似ているhidden inputをblob.signed_idの値とともにフォームに追加する
+      // これによりblob idが通常のアップロードフローで転送される
+      const hiddenField = document.createElement('input')
+      hiddenField.setAttribute("type", "hidden");
+      hiddenField.setAttribute("value", blob.signed_id);
+      hiddenField.name = input.name
+      document.querySelector('form').appendChild(hiddenField)
+    }
+  })
+}
+```
+
+ファイルアップロードの進行状況をトラッキングする必要がある場合は、`DirectUpload`コンストラクタに3番目のパラメータを渡せます。`DirectUpload`はアップロード中にオブジェクトの`directUploadWillStoreFileWithXHR`メソッドを呼び出すので、以後XHRの独自のプログレスハンドラをバインドできるようになります。
+
+```ruby
+import { DirectUpload } from "@rails/activestorage"
+
+class Uploader {
+  constructor(file, url) {
+    this.upload = new DirectUpload(this.file, this.url, this)
+  }
+
+  upload(file) {
+    this.upload.create((error, blob) => {
+      if (error) {
+        // エラーハンドリングをここに書く
+      } else {
+        // 名前が似ているhidden inputをblob.signed_idの値とともにフォームに追加する
+      }
+    })
+  }
+
+  directUploadWillStoreFileWithXHR(request) {
+    request.upload.addEventListener("progress",
+      event => this.directUploadDidProgress(event))
+  }
+
+  directUploadDidProgress(event) {
+    // Use event.loaded and event.total to update the progress bar
+  }
+}
+```
+
+システムテスト中に保存したファイルを破棄する
 -----------------------------------------------
 
-システムテストでは、トランザクションをロールバックしてテストデータをクリーンアップします。
-destroyはオブジェクトに対して呼び出されないため、添付ファイルは決してクリーンアップされません。
-ファイルを消去したい場合は、`after_teardown`コールバックで行うことができます。
-ここでは、テスト中に作成されたすべての接続が確実に行われ、Active Storageからファイルを見つけることができないというエラーは表示されません。
+システムテストでは、トランザクションをロールバックすることでテストデータをクリーンアップしますが、`destroy`はオブジェクトに対して呼び出されないため、添付ファイルはそのままでは決してクリーンアップされません。
+添付ファイルを破棄したい場合は、`after_teardown`コールバックで行えます。このコールバックを実行すると、テスト中に作成されたすべての接続を確実に完了するので、Active Storageでファイルが見つからないというエラーは表示されなくなります。
 
 ``` ruby
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
@@ -513,19 +626,45 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
 end
 ```
 
-システムが添付ファイルを含むモデルの削除を検証し、Active Jobを使用している場合は、インラインキューアダプタを使用するようにテスト環境を設定して、未知の時間ではなく即時にパージジョブを実行します。
+システムテストで添付ファイルを含むモデルの削除を検証し、かつActive Jobを使っている場合は、test環境でインラインキューアダプタを使うよう設定します。これにより、purgeジョブが（未来の不確定の時刻ではなく）ただちに実行するようになります。
 
-また、テスト環境で別のサービス定義を使用して、開発中に作成したファイルをテストで削除しないようにすることもできます。
+また、test環境向けに別のサービス定義を使えば、開発中に作成したファイルがテスト中に削除されないようにできます。
 
 ``` ruby
-# Use inline job processing to make things happen immediately
+# インラインジョブ処理でただちにジョブを実行する
 config.active_job.queue_adapter = :inline
 
-# Separate file storage in the test environment
+# test環境では別のファイルストレージをもしいる
 config.active_storage.service = :local_test
 ```
 
-追加のクラウドサービスをサポート
+結合テスト中に保存したファイルを破棄する
+-----------------------------------------------
+
+システムテストの場合と同様、結合テスト（integration test）の場合もアップロードしたファイルの自動クリーンアップは行われません。アップロードしたファイルをクリーンアップしたい場合は、`after_teardown`コールバックで行えます。このコールバックを実行すると、テスト中に作成されたすべての接続を確実に完了するので、Active Storageでファイルが見つからないというエラーは表示されなくなります。
+
+```ruby
+module RemoveUploadedFiles
+  def after_teardown
+    super
+    remove_uploaded_files
+  end
+
+  private
+
+  def remove_uploaded_files
+    FileUtils.rm_rf(Rails.root.join('tmp', 'storage'))
+  end
+end
+
+module ActionDispatch
+  class IntegrationTest
+    prepend RemoveUploadedFiles
+  end
+end
+```
+
+その他のクラウドサービスのサポートを実装する
 ---------------------------------
 
 これら以外のクラウドサービスをサポートする必要がある場合は、サービスを実装する必要があります。
