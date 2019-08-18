@@ -41,7 +41,7 @@ INFO: ページキャッシュ機能は、Rails 4本体から取り除かれ、g
 
 ページキャッシュは、before_filterのあるアクション（認証の必要なページなど）には適用できません。アクションキャッシュは、このような場合に使います。アクションキャッシュの動作は、ページキャッシュと似ていますが、webサーバーへのリクエストがRailsスタックにヒットしたときに、before_filterを実行してからキャッシュを返す点が異なります。これによって、キャッシュの恩恵を受けながら、認証などの制限をかけられるようになります。
 
-INFO: アクションキャッシュ機能は、Rails 4本体から取り除かれ、gem化されました。[actionpack-action_caching gem](https://github.com/rails/actionpack-action_caching)をご覧ください。新しい推奨メソッドについては、[DHH's key-based cache expiration overview](http://signalvnoise.com/posts/3113-how-key-based-cache-expiration-works) をご覧ください。
+INFO: アクションキャッシュ機能は、Rails 4本体から取り除かれ、gem化されました。[actionpack-action_caching gem](https://github.com/rails/actionpack-action_caching)をご覧ください。新しい推奨メソッドについては、[DHH's key-based cache expiration overview](https://signalvnoise.com/posts/3113-how-key-based-cache-expiration-works) をご覧ください。
 
 ### フラグメントキャッシュ
 
@@ -67,7 +67,7 @@ views/products/1-201505056193031061005000/bea67108094918eeba42cd4a6e786901
 
 キーの中間にある長い数字は、`product_id`と、productレコードの`updated_at`属性のタイムスタンプ値です。タイムスタンプ値は、古いデータを返さないようにするために使われます。`updated_at`値が更新されると新しいキーが生成され、そのキーで新しいキャッシュを保存します。古いキーで保存された古いキャッシュは二度と利用されなくなります。この手法は「キーベースの有効期限」と呼ばれます。
 
-キャッシュされたフラグメントは、ビューのフラグメントが変更された場合（ビューのHTMLが変更された場合など）にも期限が切れます。キーの後半にある文字列は、「テンプレートツリーダイジェスト」です。これは、キャッシュされるビューフラグメントの内容から算出されたハッシュダイジェストです。ビューフラグメントが変更されると、このダイジェストも変更され、既存のファイルが期限切れになります。
+キャッシュされたフラグメントは、ビューのフラグメントが変更された場合（ビューのHTMLが変更された場合など）にも期限が切れます。キーの後半にある文字列は「テンプレートツリーダイジェスト」です。これは、キャッシュされるビューフラグメントの内容から算出されたハッシュダイジェストです。ビューフラグメントが変更されると、このダイジェストも変更され、既存のファイルが期限切れになります。
 
 TIP: Memcachedなどのキャッシュストアでは、古いキャッシュファイルを自動的に削除します。
 
@@ -230,16 +230,16 @@ render partial: "documents/document", collection: @project.documents.where(publi
 ```ruby
 class Product < ApplicationRecord
   def competing_price
-    Rails.cache.fetch("#{cache_key}/competing_price", expires_in: 12.hours) do
+    Rails.cache.fetch("#{cache_key_with_version}/competing_price", expires_in: 12.hours) do
       Competitor::API.find_price(id)
     end
   end
 end
 ```
 
-NOTE: 上の例では`cache_key`メソッドを使っているので、キャッシュキーは`products/233-20140225082222765838000/competing_price`のような形式になります。`cache_key`で生成される文字列は、モデルの`id`と`updated_at`属性を元にしています。この生成ルールは一般的に使われており、productが更新されるたびにキャッシュを無効にできます。一般に、インスタンスレベルの情報に低レベルキャッシュを適用する場合、キャッシュキーを生成する必要があります。
+NOTE: 上の例では`cache_key_with_version `メソッドを使っているので、キャッシュキーは`products/233-20140225082222765838000/competing_price`のような形式になります。`cache_key_with_version `で生成される文字列は、モデルのクラス名と`id`と`updated_at`属性を元にしています。この生成ルールは一般的に使われており、productが更新されるたびにキャッシュを無効にできます。一般に、インスタンスレベルの情報に低レベルキャッシュを適用する場合、キャッシュキーを生成する必要があります。
 
-### SQL キャッシュ
+### SQLキャッシュ
 
 Railsのクエリキャッシュは、各クエリによって返った結果セットをキャッシュする機能です。リクエストによって以前と同じクエリが発生すると、データベースへのクエリを実行する代わりに、キャッシュされた結果セットを利用します。
 
@@ -296,7 +296,7 @@ NOTE: または、構成ブロックの外部で`ActionController::Base.cache_st
 
 * `:compress_threshold` - デフォルトは1KBです。このしきい値（バイト数を指定）を超えるキャッシュエントリを圧縮します。
 
-* `:expires_in` - 指定の秒数が経過すると、キャッシュを自動で削除します。
+* `:expires_in` - そのキャッシュエントリで期限を秒数で指定するオプションです。このオプションがキャッシュストアでサポートされていれば、キャッシュから自動で削除されます。
 
 * `:race_condition_ttl` - `:expires_in`と併用します。dog pile（乱闘）効果と呼ばれる競合状態を防止するのに使います。この競合状態は、マルチプロセスによって同じエントリが同時に再生成されたためにキャッシュの期限が切れた場合に発生します。このオプションでは、新しい値の再生成が完了していない状態で、期限切れのエントリを再利用してよい時間を秒で指定します。`:expires_in`オプションを利用する場合は、このオプションにも値を設定することをおすすめします。
 
@@ -352,17 +352,17 @@ config.cache_store = :mem_cache_store, "cache-1.example.com", "cache-2.example.c
 
 ### ActiveSupport::Cache::RedisCacheStore
 
-Redisキャッシュストアは、Redisがサポートするメモリ最大値到達時のLRU（least-recently-used: 最も最近使われたキャッシュ）やLFU（least-frequently-used: 最も使用頻度の少ないキャッシュ）に基づくキーのエビクション（喪失: eviction）を利用して、Memcachedキャッシュサーバーのように振る舞います。
+Redisキャッシュストアは、メモリ最大使用量に達した場合の自動エビクション（喪失: eviction）をサポートすることで、Memcachedキャッシュサーバーのように振る舞います。
 
 デプロイに関するメモ: Redisのキーはデフォルトでは無期限なので、専用のRedisキャッシュサーバーを使うときはご注意ください。永続化用のRedisサーバーに期限付きのキャッシュデータを保存してはいけません。詳しくは[Redis cache server setup guide](https://redis.io/topics/lru-cache)（英語）をご覧ください。
 
-「キャッシュのみ」のRedisサーバーでは、`maxmemory-policy`に`allkeys`ポリシーを設定します。Redis 4以降ではLFUエビクション（`allkeys-lfu`）がサポートされており、これはデフォルトの選択肢として非常によいものです。Redis 3以前では`allkeys-lru`を用いてLRUにすべきです。
+「キャッシュのみ」のRedisサーバーでは、`maxmemory-policy`にいずれかのallkeysを設定してください。Redis 4以降ではLFUエビクション（`allkeys-lfu`）がサポートされており、これはデフォルトの選択肢として非常によいものです。Redis 3以前では`allkeys-lru`を用いてLRUにすべきです。
 
-キャッシュの読み書きのタイムアウトは、比較的低めに設定しましょう。キャッシュの取り出しで1秒以上待つよりも、キャッシュ値を再生成する方が高速になることがよくあります。読み書きのデフォルトタイムアウト値は1秒ですが、ネットワークのレイテンシが恒に低い場合はさらに低い値がよいことがあります。
+キャッシュの読み書きのタイムアウトは、比較的低めに設定しましょう。キャッシュの取り出しで1秒以上待つよりも、キャッシュ値を再生成する方が高速になることがよくあります。読み書きのデフォルトタイムアウト値は1秒ですが、ネットワークのレイテンシが常に低い場合はもっと小さな値がよいことがあります。
 
 キャッシュの読み書きでは決して例外が発生せず、単に`nil`を返してあたかも何もキャッシュされていないかのように振る舞います。キャッシュで例外が生じているかどうかを測定するには、`error_handler`を渡して例外収集サービスにレポートを送信してもよいでしょう。収集サービスは次の3つの引数を受け取れる必要があります。`method`は元々呼び出されていたキャッシュ保存方法、`returning`はユーザーに返された値（通常は`nil`）、`exception`はrescueされた例外です。
 
-Redisの利用するには、まず`Gemfile`にredis gemを追加します。
+Redisを利用するには、まず`Gemfile`にredis gemを追加します。
 
 ```ruby
 gem 'redis'
@@ -382,15 +382,16 @@ hiredisが追加されると、Redisキャッシュストアによって自動�
 config.cache_store = :redis_cache_store, { url: ENV['REDIS_URL'] }
 ```
 
-これらをまとめたproduction向けRedisキャッシュストアは以下のような感じになります。
+もう少し複雑な、production向けRedisキャッシュストアは以下のような感じになります。
 
 ```ruby
 cache_servers = %w(redis://cache-01:6379/0 redis://cache-02:6379/0)
 config.cache_store = :redis_cache_store, { url: cache_servers,
 
-  connect_timeout: 30,  # Defaults to 20 seconds
-  read_timeout:    0.2, # Defaults to 1 second
-  write_timeout:   0.2, # Defaults to 1 second
+  connect_timeout:    30,  # Defaults to 20 seconds
+  read_timeout:       0.2, # Defaults to 1 second
+  write_timeout:      0.2, # Defaults to 1 second
+  reconnect_attempts: 1,   # Defaults to 0
 
   error_handler: -> (method:, returning:, exception:) {
     # Report errors to Sentry as warnings
@@ -439,7 +440,7 @@ class ProductsController < ApplicationController
 
     # 指定のタイムスタンプやetag値によって、リクエストが古いことがわかった場合
     # （再処理が必要な場合）、このブロックを実行
-    if stale?(last_modified: @product.updated_at.utc, etag: @product.cache_key)
+    if stale?(last_modified: @product.updated_at.utc, etag: @product.cache_key_with_version)
       respond_to do |wants|
         # ... 通常のレスポンス処理
       end
@@ -453,7 +454,7 @@ class ProductsController < ApplicationController
 end
 ```
 
-オプションハッシュの代わりに、単にモデルで渡すこともできます。Railsの`last_modified`や`etag`の設定では、`updated_at`メソッドや`cache_key`メソッドが使われます。
+オプションハッシュの代わりに、単にモデルで渡すこともできます。Railsの`last_modified`や`etag`の設定では、`updated_at`メソッドや`cache_key_with_version`メソッドが使われます。
 
 ```ruby
 class ProductsController < ApplicationController
@@ -533,12 +534,12 @@ Railsでは、デフォルトで「弱い」ETagを使います。弱いETagで�
 development環境のキャッシュ
 ----------------------
 
-アプリケーションのキャッシュ戦略をdevelopmentモードでテストしたいことはよくあります。Railsの`dev:cache` rakeタスクを使うと、developmentモードのキャッシュを簡単にオンオフできます。
+アプリケーションのキャッシュ戦略をdevelopmentモードでテストしたいことはよくあります。Railsコマンド`dev:cache`を使うと、developmentモードのキャッシュを簡単にオンオフできます。
 
 ```bash
-$ bin/rails dev:cache
+$ rails dev:cache
 Development mode is now being cached.
-$ bin/rails dev:cache
+$ rails dev:cache
 Development mode is no longer being cached.
 ```
 
