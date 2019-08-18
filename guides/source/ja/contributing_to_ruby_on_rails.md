@@ -20,7 +20,7 @@ Ruby on Railsは、「どこかで誰かがうまくやってくれているフ�
 issueのレポート
 ------------------
 
-Ruby on Railsでは[GitHubのIssueトラッキング](https://github.com/rails/rails/issues)機能を使用してissueをトラッキングしています。主にバグや、新しいコードの貢献に使用されます。Ruby on Railsでバグを見つけたら、そこから貢献を開始できます。Githubへのissue送信、コメント、プルリクエストの作成を行うには、まずGitHubアカウント (無料) を作成する必要があります。
+Ruby on Railsでは[GitHubのIssueトラッキング](https://github.com/rails/rails/issues)機能でissueをトラッキングしています。主にバグや、新しいコードの貢献に使用されます。Ruby on Railsでバグを見つけたら、そこから貢献を開始できます。Githubへのissue送信、コメント、プルリクエストの作成を行うには、まずGitHubアカウント (無料) を作成する必要があります。
 
 NOTE: Ruby on Railsの最新リリースで見つけたバグは最も注目を集める可能性があります。また、Railsコアチームは、_edge Rails_ (その時点での開発版Railsのコード) でのテストに時間を割いてくれる方からのフィードバックを常に歓迎しています。テスティング用にedge Railsを入手する方法については後述します。
 
@@ -62,7 +62,7 @@ GitHubのIssueには「機能リクエスト」を記入しないでください
 既存のissueの解決を手伝う
 ----------------------------------
 
-issueのレポートに続く貢献方法として、既存のissueにフィードバックすることでコアチームによるissue解決を手伝うこともできます。Railsのコア開発経験がない方にとってはまたとない初期の貢献となるでしょうし、Railsのコードベースや問題解決の手順に親しむチャンスにもなります。
+issueのレポートの次の段階となる貢献方法として、既存のissueにフィードバックすることでコアチームによるissue解決を手伝うこともできます。Railsのコア開発経験がない方にとってはまたとない初期の貢献となるでしょうし、Railsのコードベースや問題解決の手順に親しむチャンスにもなります。
 
 Githubのissueにあがっている[issueのリスト] (https://github.com/rails/rails/issues)を見てみると、注目を集めているissueがたくさん見つかります。自分も何かissueに貢献できる方法はあるでしょうか。もちろんあります。それもいろんな方法があります。
 
@@ -111,7 +111,7 @@ Ruby on Railsには2種類のドキュメントがあります。ひとつはこ
 
 どなたでもRailsガイドの改善に貢献することができます。Railsガイドに求められる改善とは、「一貫していること」「矛盾がないこと」「読みやすいこと」「情報の追加」「事実と異なっている部分の修正」「タイポの修正」「最新のedge Railsに追い付くこと」などです。
 
-英語ドキュメントに貢献したい方は、Railsガイドの[英語ソースファイル](https://github.com/rails/rails/tree/master/guides/source)から変更し、プルリクエストを通してmasterブランチに変更の反映を依頼してください。
+英語ドキュメントに貢献したい方は、Railsガイドの[英語ソースファイル](https://github.com/rails/rails/tree/master/guides/source)を変更してから、プルリクエストでmasterブランチに変更の反映を依頼してください。
 
 ドキュメント関連で貢献したい場合は、[API ドキュメント作成のガイドライン](api_documentation_guidelines.html) と[Rails ガイドのガイドライン](ruby_on_rails_guides_guidelines.html) をよく読んでからにしてください。
 
@@ -229,11 +229,23 @@ Railsのコーディングを行う場合は、以下のシンプルなスタイ
 * クラスメソッドは「self.method」よりも「class << self」が望ましい。
 * 引数の記述はかっこ+スペース「`my_method( my_arg )`」やかっこなし「`my_method my_arg`」ではなく、スペース無しかっこ「`my_method(my_arg)`」を使用すること。
 * 等号の前後にはスペースを置く。「`a=b`」ではなく「`a = b`」とすること。
-* refuteではなくassert_notを使用すること。
+* refuteではなくassert\_notを使用すること。
 * 単一行ブロックはスペース無しの「`method{do_stuff}`」よりもスペースありの「`method { do_stuff }`」が望ましい。
 * その他、Railsのコードにある既存の書式に従うこと。
 
 上はあくまでガイドラインであり、最適な使用方法については各自でご判断ください。
+
+その他に、私たちのコーディング規約の一部をコード化するために定義された[RuboCop](https://www.rubocop.org/)ルールも用いています。プルリクエストを送信する前に、ローカルで変更をかけたファイルに対してRuboCopを実行してください。
+
+```bash
+$ rubocop actionpack/lib/action_controller/metal/strong_parameters.rb
+Inspecting 1 file
+.
+1 file inspected, no offenses detected
+```
+
+
+`rails-ujs`のCoffeeScriptやJavaScriptファイルについては、`actionview`フォルダで`npm run lint`を実行できます。
 
 ### ベンチマークを行う
 
@@ -341,12 +353,6 @@ $ bundle exec rake TEST=test/cases/associations/has_many_associations_test.rb
 
 テストスイートの実行では、警告表示がオンになります。Ruby on Railsのテストで警告がひとつも表示されないのが理想ですが、サードパーティのものも含めて若干の警告が表示されてしまうことがあります。無視するという手もありますが、可能であれば修正をお願いします。そしてできれば、新しい警告を表示しないようにするためのパッチの送信もお願いします。
 
-出力を見やすくするためにフラグをオーバーライドすることもできます (ただしオプションの意味を十分理解したうえでですが)。
-
-```bash
-$ RUBYOPT=-W0 bundle exec rake test
-```
-
 ### CHANGELOGの更新
 
 CHANGELOGはすべてのリリースで重要な位置を占めます。Railsの各バージョンの変更点をここに記録します。
@@ -365,7 +371,7 @@ CHANGELOGのエントリには変更内容を的確に要約したものを記�
           end
         end
 
-    （コード例に続けてエントリを書くこともできます。issue番号はここに書きます）GH#1234
+    （コード例に続けてエントリを書くこともできます。issue番号は「Fixes #1234」などと書きます）
 
     *自分の名前*
 ```
@@ -441,7 +447,7 @@ Rails [GitHubリポジトリ](https://github.com/rails/rails) を開いて、右
 ローカルPC上のローカルリポジトリに新しいリモートを追加します。
 
 ```bash
-$ git remote add mine https://github.com/<自分のユーザー名>/rails.git
+$ git remote add fork https://github.com/<自分のユーザー名>/rails.git
 ```
 
 ローカルリポジトリは、オリジナルのrails/railsリポジトリからローカルリポジトリに`clone`して作ることも、自分のリポジトリにフォークしたものをローカルリポジトリに`clone`して作ることもできます。曖昧さを避けるため、以降のgitコマンドでは、rails/railsを指す`remote`コマンドを実行したと仮定します。
@@ -527,7 +533,7 @@ $ git push fork my_new_branch --force-with-lease
 以前のバージョンのRuby on Railsに修正パッチを当てたい場合は、設定を行ってローカルのトラッキングブランチに切り替える必要があります。たとえば4-0-stableブランチに切り替える場合は以下のようにします。
 
 ```bash
-$ git branch --track 4-0-stable origin/4-0-stable
+$ git branch --track 4-0-stable rails/4-0-stable
 $ git checkout 4-0-stable
 ```
 
