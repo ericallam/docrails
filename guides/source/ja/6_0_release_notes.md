@@ -45,7 +45,7 @@ Action Textについて詳しくはガイドの[Action Text の概要](action_te
 
 [Pull Request](https://github.com/rails/rails/pull/33659)
 
-[Action Cableテストツール](testing.html#testing-action-cable)を用いて、Action Cableの機能を任意のレベル（接続レベル/チャネルレベル/ブロードキャストレベル）でテストできます。
+[Action Cableテストツール](testing.html#action-cableをテストする)を用いて、Action Cableの機能を任意のレベル（接続レベル/チャネルレベル/ブロードキャストレベル）でテストできます。
 
 Railties
 --------

@@ -634,4 +634,4 @@ Action Cableサーバーには、RackソケットをハイジャックするAPI�
 
 ## テスト
 
-Action Cableで作成した機能のテスト方法について詳しくは、[テスティングガイド](testing.html#testing-action-cable)を参照してください。
+Action Cableで作成した機能のテスト方法について詳しくは、[テスティングガイド](testing.html#action-cableをテストする)を参照してください。
