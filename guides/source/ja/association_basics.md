@@ -132,7 +132,7 @@ end
 上の関連付けに対応するマイグレーションは以下のような感じになります。
 
 ```ruby
-class CreateSuppliers 使われて< ActiveRecord::Migration[5.0]
+class CreateSuppliers < ActiveRecord::Migration[5.0]
   def change
     create_table :suppliers do |t|
       t.string :name
