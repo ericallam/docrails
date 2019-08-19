@@ -24,7 +24,7 @@ Rails 6.0へのアップグレード
 
 [Pull Request](https://github.com/rails/rails/pull/34786)
 
-[Action Mailbox](https://github.com/rails/rails/tree/6-0-stable/actionmailbox)は、受信メールをコントローラ的なメールボックスにルーティングできます。Action Mailboxについて詳しくは、[Action Mailbox Basics](action_mailbox_basics.html)ガイドを参照してください。
+[Action Mailbox](https://github.com/rails/rails/tree/6-0-stable/actionmailbox)は、受信メールをコントローラ的なメールボックスにルーティングできます。Action Mailboxの詳細は[Action Mailboxの基礎](action_mailbox_basics.html)を参照してください。
 
 ### Action Text
 
