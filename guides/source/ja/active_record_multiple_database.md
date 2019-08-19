@@ -1,8 +1,7 @@
-Active Recordでマルチプルデータベースを使う
+Active Record で複数のデータベースを使う
 =====================================
 
 このガイドでは、Railsアプリケーションでマルチプルデータベースを使う方法について説明します。
-This guide covers using multiple databases with your Rails application.
 
 このガイドの内容:
 
