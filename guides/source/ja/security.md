@@ -40,7 +40,7 @@ INFO: アプリケーションはセッションを用いて、多くのユー�
 
 Railsは、アプリケーションにアクセスするユーザーごとにセッションオブジェクトを1つ提供します。ユーザーが既にアプリケーションを利用中であれば、Railsは既存のセッションを読み込み、その他の場合は新しいセッションを作成します。
 
-NOTE: セッションとその利用法について詳しくは、[Action Controllerの概要](action_controller_overview.html#session)ガイドを参照してください。
+NOTE: セッションとその利用法について詳しくは、[Action Controllerの概要](action_controller_overview.html#セッション)ガイドを参照してください。
 
 ### セッションハイジャック
 
@@ -68,7 +68,7 @@ WARNING: **ユーザーのセッションIDが盗まれると、攻撃者がそ�
 
 NOTE: Railsはデフォルトのセッションストレージとして`ActionDispatch::Session::CookieStore`を用います。
 
-TIP: その他のセッションストレージについて、[Action Controllerの概要](action_controller_overview.html#session)ガイドを参照してください。
+TIP: その他のセッションストレージについて、[Action Controllerの概要](action_controller_overview.html#セッション)ガイドを参照してください。
 
 Railsの`CookieStore`はクライアント側のcookieにセッションハッシュを保存します。サーバーはこのセッションハッシュをcookieから取得することで、セッションIDの必要性を解消します。こうすることで、アプリケーションのスピードは著しく向上しますが、このストレージオプションについては議論の余地があるため、セキュリティ上の意味やストレージでの制約について以下の点を十分考えておかなければなりません。
 
@@ -86,7 +86,7 @@ Railsの`CookieStore`はクライアント側のcookieにセッションハッ�
 
 TIP: 秘密鍵は十分に長く、かつランダムなものにしなければなりません。一意な秘密鍵を得るには`rails secret`を使います。
 
-INFO: 本ガイドで後述する[credential管理方法](security.html#c独自のcredential)も参照してください。
+INFO: 本ガイドで後述する[credential管理方法](security.html#独自のcredential)も参照してください。
 
 暗号化済みcookieと署名済みcookieで使うsalt値を同じにしないことも重要です。複数のsalt設定に異なる値ではなく同じsalt値を使ってしまうと、別のセキュリティ機能で同じ鍵が導出されてしまい鍵の強度が落ちる可能性があります。
 

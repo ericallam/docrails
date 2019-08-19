@@ -15,7 +15,7 @@ Rails 6.0の注目ポイント:
 Rails 6.0へのアップグレード
 ----------------------
 
-既存のアプリケーションをアップグレードするのであれば、その前に質のよいテストカバレッジを用意するのはよい考えです。アプリケーションがRails 5.2までアップグレードされていない場合は先にそれを完了し、アプリケーションが正常に動作することを十分確認してからRails 6.0にアップデートしてください。アップグレードの注意点などについては[Railsアップグレードガイド](upgrading_ruby_on_rails.html#upgrading-from-rails-5-2-to-rails-6-0)を参照してください。
+既存のアプリケーションをアップグレードするのであれば、その前に質のよいテストカバレッジを用意するのはよい考えです。アプリケーションがRails 5.2までアップグレードされていない場合は先にそれを完了し、アプリケーションが正常に動作することを十分確認してからRails 6.0にアップデートしてください。アップグレードの注意点などについては[Railsアップグレードガイド](upgrading_ruby_on_rails.html#rails-5-2からrails-6-0へのアップグレード)を参照してください。
 
 主要な機能
 --------------
@@ -39,7 +39,7 @@ Action Textについて詳しくはガイドの[Action Text の概要](action_te
 
 [Pull Request](https://github.com/rails/rails/pull/31900)
 
-[並列テスト](testing.html#parallel-testing)（parallel testing）機能によってテストスイートを並列化できます。デフォルトではプロセスをforkしますが、スレッド（threading）もサポートされます。テストを並列実行することで、テストスイート全体の実行時間を削減できます。
+[並列テスト](testing.html#並列テスト)（parallel testing）機能によってテストスイートを並列化できます。デフォルトではプロセスをforkしますが、スレッド（threading）もサポートされます。テストを並列実行することで、テストスイート全体の実行時間を削減できます。
 
 ### Action Cableのテスト支援
 
@@ -609,7 +609,7 @@ Active Storage
 
 *   レコードにアップロードされたファイルを即座でない形で保存するとストレージで永続化するようになった
     ([Pull Request](https://github.com/rails/rails/pull/33303))
-    
+
 *   添付ファイルのコレクションへの代入を、追加ではなく既存ファイルを置き換える（`@user.update!(images: [ … ])`のように）オプション。この振る舞いを制御するには`config.active_storage.replace_on_assign_to_many`を使うこと。
     ([Pull Request](https://github.com/rails/rails/pull/33303)、
      [Pull Request](https://github.com/rails/rails/pull/36716))

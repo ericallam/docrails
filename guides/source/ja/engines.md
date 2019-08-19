@@ -147,7 +147,7 @@ NOTE: `Engine`クラスの定義に含まれる`isolate_namespace`の行を変�
 
 NOTE: あるエンジンに含まれる`ApplicationController`というクラスの名前は、アプリケーションそのものが持つクラスと同じ名前です。その理由は、アプリケーションをエンジンに変換しやすくするためです。
 
-NOTE: Rubyの定数探索方法が原因で、エンジンのコントローラがエンジンのアプリケーションコントローラではなくメインアプリケーションのコントローラを継承してしまう場合があります。Rubyが`ApplicationController`定数を解決できる状態になっていると、自動読み込みがトリガされなくなります。詳しくは、[定数がトリガーされない場合](autoloading_and_reloading_constants.html#定数がトリガーされない場合)や[定数の自動読み込みと再読み込み](autoloading_and_reloading_constants.html)をご覧ください。この問題を防止するには、`require_dependency`を用いてエンジンのアプリケーションコントローラを確実に読み込むのが最善の方法です。次の例をご覧ください。
+NOTE: Rubyの定数探索方法が原因で、エンジンのコントローラがエンジンのアプリケーションコントローラではなくメインアプリケーションのコントローラを継承してしまう場合があります。Rubyが`ApplicationController`定数を解決できる状態になっていると、自動読み込みがトリガされなくなります。詳しくは、[定数がトリガーされない場合](constant_autoloading_and_reloading.html#定数がトリガーされない場合)や[定数の自動読み込みと再読み込み](autoloading_and_reloading_constants.html)をご覧ください。この問題を防止するには、`require_dependency`を用いてエンジンのアプリケーションコントローラを確実に読み込むのが最善の方法です。次の例をご覧ください。
 
 ``` ruby
 # app/controllers/blorgh/articles_controller.rb:
