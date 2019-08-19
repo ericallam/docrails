@@ -30,7 +30,7 @@ Rails 6.0へのアップグレード
 
 [Pull Request](https://github.com/rails/rails/pull/34873)
 
-[Action Text](https://github.com/rails/rails/tree/6-0-stable/actiontext)は、リッチテキストコンテンツと編集機能をRailsで使えるようにします。[Trixエディタ](https://trix-editor.org)は、リンク/引用/リスト/画像埋め込み/ギャラリー【原文怪しい】などあらゆるものを扱えます。Trixエディタで生成されるリッチテキストコンテンツは独自のRichTextモデルに保存され、アプリ内にある既存のActive Recordモデルに関連付けられます。
+[Action Text](https://github.com/rails/rails/tree/6-0-stable/actiontext)は、リッチテキストコンテンツと編集機能をRailsで使えるようにします。[Trixエディタ](https://trix-editor.org)は、リンク/引用/リスト/画像埋め込み/ギャラリーなどあらゆるものを扱えます。Trixエディタで生成されるリッチテキストコンテンツは独自のRichTextモデルに保存され、アプリ内にある既存のActive Recordモデルに関連付けられます。
 埋め込み画像などの添付ファイルは自動的にActive Storageを用いて保存され、RichTextモデルに関連付けられます。
 
 Action Textについて詳しくはガイドの[Action Text の概要](action_text_overview.html)を参照してください。
@@ -683,7 +683,7 @@ Active Support
 *   非推奨の`Module#reachable?`を削除
     ([Commit](https://github.com/rails/rails/commit/6eb1d56a333fd2015610d31793ed6281acd66551))
 
-*   ` Kernel#`を削除（代替はなし）【チェック】
+*   ` Kernel#`を削除（代替はなし）
     ([Pull Request](https://github.com/rails/rails/pull/31253))
 
 ### 非推奨化
