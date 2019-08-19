@@ -11,6 +11,7 @@ Rails で JavaScript を使用する
 * Railsのビルトインヘルパーの活用方法
 * サーバー側でAjaxを扱う方法
 * Turbolinks gem
+* CSRFトークンを独自にリクエストヘッダーに含める方法
 
 -------------------------------------------------------------------------------
 
@@ -114,7 +115,7 @@ RailsのJavaScriptは、「控えめなJavaScript」原則に基いて、JavaScr
 
 #### form_with
 
-[`form_with`](http://api.rubyonrails.org/classes/ActionView/Helpers/FormHelper.html#method-i-form_with) はフォーム作成を支援するヘルパーです。`form_with`では、デフォルトでAjaxをフォームで使えることが前提になっています。`form_with`に`:local`オプションを渡すことでこの振る舞いを変更できます。
+[`form_with`](https://api.rubyonrails.org/classes/ActionView/Helpers/FormHelper.html#method-i-form_with) はフォーム作成を支援するヘルパーです。`form_with`では、デフォルトでAjaxをフォームで使えることが前提になっています。`form_with`に`:local`オプションを渡すことでこの振る舞いを変更できます。
 
 ```erb
 <%= form_with(model: @article) do |f| %>
@@ -138,6 +139,7 @@ formタグに`data-remote="true"`という属性が追加されていること�
 $(document).ready ->
   $("#new_article").on("ajax:success", (event) ->
     [data, status, xhr] = event.detail
+    $("#new_article").append xhr.responseText
   ).on "ajax:error", (event) ->
     $("#new_article").append "<p>ERROR</p>"
 ```
@@ -148,7 +150,7 @@ NOTE: Rails 5.1では新しい`rails-ujs`が導入されたことにより、`da
 
 #### link_to
 
-[`link_to`](http://api.rubyonrails.org/classes/ActionView/Helpers/UrlHelper.html#method-i-link_to) はリンクの生成を支援するヘルパーです。このメソッドには`:remote`オプションがあり、以下のように使えます。
+[`link_to`](https://api.rubyonrails.org/classes/ActionView/Helpers/UrlHelper.html#method-i-link_to) はリンクの生成を支援するヘルパーです。このメソッドには`:remote`オプションがあり、以下のように使えます。
 
 ```erb
 <%= link_to "記事", @article, remote: true %>
@@ -176,7 +178,7 @@ $ ->
 
 #### button_to
 
-[`button_to`](http://api.rubyonrails.org/classes/ActionView/Helpers/UrlHelper.html#method-i-button_to)はボタン作成を支援するヘルパーです。このメソッドには`:remote`オプションがあり、以下のように使えます。
+[`button_to`](https://api.rubyonrails.org/classes/ActionView/Helpers/UrlHelper.html#method-i-button_to)はボタン作成を支援するヘルパーです。このメソッドには`:remote`オプションがあり、以下のように使えます。
 
 ```erb
 <%= button_to "記事", @article, remote: true %>
@@ -281,7 +283,7 @@ NOTE: UJSイベントハンドラ呼び出しのシグネチャは変更され�
 ```html
 document.body.addEventListener('ajax:success', function(event) {
   var detail = event.detail;
-  var data = detail[0], status = detail[1],  xhr = detail[2];
+  var data = detail[0], status = detail[1], xhr = detail[2];
 })
 ```
 
@@ -292,6 +294,8 @@ NOTE: Rails 5.1では新しい`rails-ujs`が導入されたことにより、`da
 ハンドラメソッドから`false`を返すことで`ajax:before`や`ajax:beforeSend`を停止すると、以後のAjaxリクエストがまったく発生しなくなります。`ajax:before`イベントがフォームのデータを操作できるのはシリアライズ前なので、独自のリクエストヘッダを追加するには`ajax:beforeSend`が便利です。
 
 `ajax:aborted:file`イベントを停止すると、ブラウザがフォームを通常の方法（Ajaxを用いない送信など）で送信するときのデフォルトの振る舞いがキャンセルされ、以後そのフォームは送信されなくなります。この動作は、独自のAjaxでファイルアップロードを実装するときの回避方法として便利です。
+
+なお、`jquery-ujs`のイベントを抑制するには`return false`を、 `rails-ujs`のイベントを抑制するには`e.preventDefault()`を使うべきです。
 
 サーバー側で考慮すべき点
 --------------------
@@ -373,8 +377,6 @@ Railsには[Turbolinksライブラリ](https://github.com/turbolinks/turbolinks)
 
 Turbolinksは、ページにあるすべての`<a>`タグにクリックハンドラを1つずつ追加します。ブラウザで[PushState](https://developer.mozilla.org/en-US/docs/Web/Guide/API/DOM/Manipulating_the_browser_history#The_pushState\(\).C2.A0method)がサポートされている場合、Turbolinksはそのページ用のAjaxリクエストを生成し、サーバーからのレスポンスを解析し、そのページの`<body>`全体をレスポンスの`<body>`で置き換えます。続いて、TurbolinksはPushStateを使ってURLを正しいものに書き換え、リフレッシュのセマンティクスを維持しながらプリティURLを与えます。
 
-Turbolinksを有効にするには、Turbolinksを`Gemfile`に追加し、JavaScriptのマニフェスト (通常は`app/assets/javascripts/application.js`) に`//= require turbolinks`を追加します。
-
 Turbolinksを特定のリンクでのみ無効にしたい場合は、タグに`data-turbolinks="false"`属性を追加します。
 
 ```html
@@ -398,6 +400,19 @@ $(document).on "turbolinks:load", ->
 ```
 
 この他にバインド可能なイベントなどの詳細については、[Turbolinks README](https://github.com/turbolinks/turbolinks/blob/master/README.md)を参照してください。
+
+AjaxのCSRF（Cross-Site Request Forgery）トークン
+----
+
+Ajax呼び出しのために別のライブラリを使う場合、そのライブラリでのAjax呼び出しにセキュリティトークンをデフォルトヘッダーのひとつとして追加する必要があります。このトークンは以下のように取得します。
+
+```javascript
+var token = document.getElementsByName('csrf-token')[0].content
+```
+
+続いてこのトークンをAjaxリクエストのヘッダーで`X-CSRF-Token`として送信します。GETリクエストにCSRFを追加する必要はありません。CSRFが必要なのはGET以外のリクエストです。
+
+CSRFについて詳しくは[セキュリティガイド](#クロスサイトリクエストフォージェリ-csrf)を参照してください。
 
 その他の情報源
 ---------------
