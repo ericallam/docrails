@@ -39,7 +39,7 @@
       description: PostgreSQLに特化したActive Recordの利用法について解説します。
       work_in_progress: true
     -
-      name: Active Record で複数のデータベースを使う
+      name: Active Record で複数のデータベース利用
       url: active_record_multiple_databases.html
       description: Active Recordでデータベースを複数利用する方法について解説します。
       work_in_progress: true
