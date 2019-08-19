@@ -50,7 +50,7 @@ $ ruby /path/to/rails/railties/bin/rails new myapp --dev
 主要な変更
 --------------
 
-[![Rails 4.0](images/4_0_release_notes/rails4_features.png)](https://guides.rubyonrails.org/images/4_0_release_notes/rails4_features.png)
+[![Rails 4.0](images/rails4_features.png)](https://guides.rubyonrails.org/images/4_0_release_notes/rails4_features.png)
 
 ### アップグレード
 

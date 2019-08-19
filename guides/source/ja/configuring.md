@@ -60,7 +60,7 @@ Rails全般に対する設定を行うには、`Rails::Railtie`オブジェク�
 
 * `config.autoload_once_paths`:、サーバーへのリクエストごとにクリアされない定数を自動読み込みするパスの配列を引数に取ります。この設定は`config.cache_classes`が`false`の場合に影響を受けます。`config.cache_classes`は、developmentモードではデフォルトでオフです。それ以外の場合、自動読み込みは1度しか行われません。この配列内にあるすべての要素は`autoload_paths`に存在しなければなりません。デフォルトは空の配列です。
 
-* `config.autoload_paths`: Railsが定数を自動読み込みするパスを含む配列を引数に取ります。`config.autoload_paths`のデフォルト値は、`app`以下のすべてのディレクトリです。この設定の変更は既に非推奨になりました。詳しくは[定数の自動読み込みと再読み込み](autoloading_and_reloading_constants.html#autoload-pathsとeager-load-paths)を参照してください。
+* `config.autoload_paths`: Railsが定数を自動読み込みするパスを含む配列を引数に取ります。`config.autoload_paths`のデフォルト値は、`app`以下のすべてのディレクトリです。この設定の変更は既に非推奨になりました。詳しくは[定数の自動読み込みと再読み込み](autoloading_and_reloading_constants.html)を参照してください。
 
 * `config.add_autoload_paths_to_load_path`: `$LOAD_PATH`にオートロードパスを足すべきかどうかを指定します。このフラグはデフォルトで`true`ですが、`:zeitwerk`モードでは早い段階で`config/application.rb`で`false`に設定することをおすすめします。Zeitwerkは内部で絶対パスを用いますし、`:zeitwerk`モードで動作するアプリケーションでは`require_dependency`が不要なので、モデルやコントローラやジョブなどが`$LOAD_PATH`に存在する必要はありません。これを`false`に設定すると、`require`の解決が相対パスで呼び出されるときにRubyがそれらのディレクトリのチェックを削減でき、Bootsnapの動作やメモリも節約できます。それらのインデックスの構築が不要になるからです。
 

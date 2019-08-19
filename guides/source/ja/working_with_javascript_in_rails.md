@@ -412,7 +412,7 @@ var token = document.getElementsByName('csrf-token')[0].content
 
 続いてこのトークンをAjaxリクエストのヘッダーで`X-CSRF-Token`として送信します。GETリクエストにCSRFを追加する必要はありません。CSRFが必要なのはGET以外のリクエストです。
 
-CSRFについて詳しくは[セキュリティガイド](#クロスサイトリクエストフォージェリ-csrf)を参照してください。
+CSRFについて詳しくは[セキュリティガイド](security.html#クロスサイトリクエストフォージェリ-csrf)を参照してください。
 
 その他の情報源
 ---------------
