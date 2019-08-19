@@ -205,7 +205,7 @@
     -
       name: Ruby on Rails に貢献する方法
       url: contributing_to_ruby_on_rails.html
-      description: Railsは「どこかで誰かがうまくやってくれているフレームワーク」ではありません。現在も継続しているRailsフレームワーク開発に貢献するさまざまな方法について解説します。 
+      description: Railsは「どこかで誰かがうまくやってくれているフレームワーク」ではありません。現在も継続しているRailsフレームワーク開発に貢献するさまざまな方法について解説します。
     -
       name: Rails コア開発環境の構築方法
       url: development_dependencies_install.html
@@ -233,7 +233,7 @@
       url: upgrading_ruby_on_rails.html
       description: アプリケーションのRuby on Railsを最新バージョンにアップグレードする方法について解説します。
     -
-      name: Rails 6.0 - 2019/04
+      name: Rails 6.0 - 2019/08
       url: 6_0_release_notes.html
       description: Rails 6.0のリリースノートです。
     -
