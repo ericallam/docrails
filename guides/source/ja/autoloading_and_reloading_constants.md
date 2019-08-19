@@ -1,7 +1,4 @@
-
-
-
-定数の自動読み込みと再読み込み（Zeitwerkモード）
+定数の自動読み込みと再読み込み (Zeitwerk)
 ===================================
 
 本書では`Zeitwerk`モードでの自動読み込み（オートロード）および再読み込みi仕組みについて説明します。
@@ -21,7 +18,7 @@
 はじめに
 ------------
 
-INFO: 本ガイドでは、Rails 6で新たに導入された`zeitwerk`モードの自動読み込みについて解説します。`classic`モードについては、[定数の自動読み込みと再読み込み（Classicモード）](autoloading_and_reloading_constants_classic_mode.html)を参照してください。
+INFO: 本ガイドでは、Rails 6.0で新たに導入された`Zeitwerk`モードの自動読み込みについて解説します。Rails 5.2以前の`Classic`モードについては、[定数の自動読み込みと再読み込み (Classic)](autoloading_and_reloading_constants_classic_mode.html) を参照してください。
 
 通常のRubyプログラムのクラスであれば、依存関係のあるプログラムを明示的に読み込む必要があります。たとえば、以下のコントローラでは`ApplicationController`クラスや`Post`クラスを用いており、通常、それらを呼び出すには`require`する必要があります。
 
