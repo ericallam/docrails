@@ -56,14 +56,14 @@ Railsをインストールする前に、必要な要件が自分のシステム
 
 ```bash
 $ ruby -v
-ruby 2.3.1p112
+ruby 2.5.0
 ```
 
-RailsではRubyバージョン2.2.2以降が必須です。これより低いバージョンが表示された場合は、新たにRubyをインストールする必要があります。
+RailsではRubyバージョン2.5.0以降が必須です。これより低いバージョンが表示された場合は、新たにRubyをインストールする必要があります。
 
-TIP: RubyやRuby on Railsを素早くインストールするためのツールは多数存在します。Windowsユーザーの場合は[Railsインストーラ](http://railsinstaller.org)をお使いください。Mac OS Xユーザーは[Tokaido](https://github.com/tokaido/tokaidoapp)をお使いください。(訳注: 具体的なインストール方法については[Railsチュートリアル 1.2 さっそく動作させる](http://railstutorial.jp/chapters/beginning?version=4.0#sec-up_and_running)を参照してください。Railsをとりあえずインストールするのではなく、本格的な開発に使う場合は[rbenv](https://github.com/rbenv/rbenv)などのツールを整備したり[Docker](https://www.docker.com/)と連携させる必要が生じることもあります)
+TIP: Windowsユーザーは、[Railsインストーラ](http://railsinstaller.org)を用いてRuby on Railsを短時間でインストールできます。さまざまなOS環境でのインストール方法について詳しくは、[ruby-lang.org](https://www.ruby-lang.org/en/documentation/installation/)を参照してください。
 
-Windowsで作業する場合は、[Ruby Installer Development Kit](http://rubyinstaller.org/downloads/)もインストールすべきです。
+Windowsで作業する場合は、[Ruby Installer Development Kit](https://rubyinstaller.org/downloads/)もインストールすべきです。
 
 SQLite3データベースのインストールも必要です。
 
@@ -87,7 +87,7 @@ $ gem install rails
 $ rails --version
 ```
 
-"Rails 5.1.1"のように表示されれば、次に進むことができます。
+"Rails 6.0.0"などと表示されれば、次に進むことができます。
 
 ### ブログアプリケーションを作成する
 
@@ -127,6 +127,7 @@ $ cd blog
 |public/|このフォルダの下にあるファイルは外部 (インターネット) からそのまま参照できます。静的なファイルやコンパイル済みアセットはここに置きます。|
 |Rakefile|このファイルには、コマンドラインから実行できるタスクを記述します。ここでのタスク定義は、Rails全体のコンポーネントに対して定義されます。独自のRakeタスクを定義したい場合は、`Rakefile`に直接書くと権限が強すぎるので、なるべく`lib/tasks`フォルダの下にRake用のファイルを追加するようにしてください。|
 |README.md|アプリケーションの概要を説明するマニュアルをここに記入します。このファイルにはアプリケーションの設定方法などを記入し、これさえ読めば誰でもアプリケーションを構築できるようにしておく必要があります。|
+|storage/|Diskサービスで用いるActive Storageファイルが置かれます。詳しくは[Active Storageの概要](active_storage_overview.html)を参照してください。|
 |test/|Unitテスト、フィクスチャなどのテスト関連ファイルをここに置きます。テストについては[Railsアプリケーションをテストする](testing.html)を参照してください。|
 |tmp/|キャッシュ、pidなどの一時ファイルが置かれます。|
 |vendor/|サードパーティによって書かれたコードはすべてここに置きます。通常のRailsアプリケーションの場合、外部からのgemファイルをここに置きます。|
@@ -146,7 +147,7 @@ Hello, Rails!
 $ rails server
 ```
 
-TIP: CoffeeScriptをJavaScriptにコンパイルするにはJavaScriptランタイムが必要です。ランタイムが環境にない場合は`execjs`エラーが発生します。macOSやWindowsにはJavaScriptランタイムが同梱されています。Railsが新規アプリケーション用に生成する`Gemfile`には`mini_racer`というgemがコメントアウトされた状態で含まれており、必要であればこのgemのコメントアウトを解除して有効にすることもできます。`therubyrhino`はJRubyユーザー向けに推奨されているランタイムであり、JRuby環境下ではデフォルトでアプリケーションの`Gemfile`に追加されます。サポートされているランタイムについて詳しくは[ExecJS](https://github.com/sstephenson/execjs#readme)で確認できます。
+TIP: JavaScriptによるアセットの圧縮にはJavaScriptランタイムが必要です。ランタイムが環境にない場合は`execjs`エラーが発生します。macOSやWindowsにはJavaScriptランタイムが同梱されています。Railsが新規アプリケーション用に生成する`Gemfile`には`mini_racer`というgemがコメントアウトされた状態で含まれており、必要であればこのgemのコメントアウトを解除して有効にすることもできます。`therubyrhino`はJRubyユーザー向けに推奨されているランタイムであり、JRuby環境下ではデフォルトでアプリケーションの`Gemfile`に追加されます。サポートされているランタイムについて詳しくは[ExecJS](https://github.com/sstephenson/execjs#readme)で確認できます。
 
 Railsで起動されるWebサーバーは、Railsにデフォルトで付属している[Puma](http://puma.io/)です。Webアプリケーションが実際に動作しているところを確認するには、ブラウザを開いて <http://localhost:3000> を表示してください。以下のようなRailsのデフォルト情報ページが表示されます。
 
@@ -184,8 +185,6 @@ invoke  helper
 create    app/helpers/welcome_helper.rb
 invoke    test_unit
 invoke  assets
-invoke    coffee
-create      app/assets/javascripts/welcome.coffee
 invoke    scss
 create      app/assets/stylesheets/welcome.scss
 ```
@@ -250,10 +249,10 @@ Rails.application.routes.draw do
 end
 ```
 
-コマンドラインで`bin/rails routes`コマンドを実行すると、標準的なRESTfulアクションへのルーティングがすべて定義されていることが確認できます。以下の出力のprefix列や他の列については後ほど解説しますが、ここでご注目いただきたいのは、Railsは「articles」というリソース名から単数形の「article」を推測し、両者をその意味にそって使い分けているという点です。prefix列で単一の項目には単数形のarticle、複数項目を扱う場合には複数形のarticlesが使われているという具合です。
+コマンドラインで`rails routes`コマンドを実行すると、標準的なRESTfulアクションへのルーティングがすべて定義されていることが確認できます。以下の出力のprefix列や他の列については後ほど解説しますが、ここでご注目いただきたいのは、Railsは「articles」というリソース名から単数形の「article」を推測し、両者をその意味にそって使い分けているという点です。prefix列で単一の項目には単数形のarticle、複数項目を扱う場合には複数形のarticlesが使われているという具合です。
 
 ```bash
-$ bin/rails routes
+$ rails routes
        Prefix Verb   URI Pattern                  Controller#Action
 welcome_index GET    /welcome/index(.:format)     welcome#index
      articles GET    /articles(.:format)          articles#index
@@ -282,7 +281,7 @@ welcome_index GET    /welcome/index(.:format)     welcome#index
 このエラーが発生したのは、ルーティングで指定された先に、リクエストを処理するように定義されたコントローラが見つからないためです。この問題を解決するには、それに対応する`ArticlesController`を作成すればよいのです。以下のコマンドを実行して解決します。
 
 ```bash
-$ bin/rails generate controller Articles
+$ rails generate controller Articles
 ```
 
 今作成された`app/controllers/articles_controller.rb`をエディタで開くと、以下のような空のコントローラが作成されています。
@@ -320,15 +319,15 @@ Railsでは、このシンプルなアクションに関連付けられたビュ
 以下の完全なメッセージを改めて見てみましょう。
 
 <blockquote>
-ArticlesController#new is missing a template for this request format and variant. request.formats: ["text/html"] request.variant: [] NOTE! For XHR/Ajax or API requests, this action would normally respond with 204 No Content: an empty white screen. Since you're loading it in a web browser, we assume that you expected to actually render a template, not… nothing, so we're showing an error to be extra-clear. If you expect 204 No Content, carry on. That's what you'll get from an XHR or API request. Give it a shot.
+>ArticlesController#new is missing a template for request formats: text/html
+
+>NOTE!
+>Unless told otherwise, Rails expects an action to render a template with the same name, contained in a folder named after its controller. If this controller is an API responding with 204 (No Content), which does not require a template, then this error will occur when trying to access it via browser, since we expect an HTML template to be rendered for such requests. If that's the case, carry on.
 </blockquote>
 
-何だかたくさんのテキストが表示されています。それぞれの部分がどういう意味なのかを見てみましょう。
+このメッセージでは、見つからないテンプレートを指摘してくれています。ここでは`articles/new`というテンプレートがあるはずだと言っています。Railsは最初にこのテンプレートを探します。見つからない場合は次に`application/new`というテンプレートがあるかどうかを探します。`application/new`にテンプレートがあるかどうかを探しているのは、`ArticlesController`コントローラが`ApplicationController`コントローラを継承しているからです。
 
-最初の部分では、どのテンプレートが見当たらないかが示されています。ここでは`articles/new`というテンプレートがあるはずだと言っています。Railsは最初にこのテンプレートを探します。見つからない場合は次に`application/new`というテンプレートがあるかどうかを探します。`application/new`にテンプレートがあるかどうかを探しているのは、`ArticlesController`コントローラは`ApplicationController`コントローラを継承しているからです。
-
-メッセージの次の部分にある`request.formats`は、レスポンスに適用されるテンプレートフォーマットを指定します。このページのリクエストをブラウザで行ったので`text/html`が設定されており、Railsはこれを用いて該当のHTMLテンプレートを探索します。
-`request.variant`は、レスポンスに使われる物理デバイスの種類を指定するもので、Railsはこれを用いてレスポンスに使うテンプレートを決定します。ここでは情報が提供されていないので空です。
+メッセージの次の部分にある`request.formats`は、レスポンスで返されるテンプレートのフォーマットを示します。このページのリクエストをブラウザで行ったので`text/html`が設定されており、Railsはこれを用いて該当のHTMLテンプレートを探索します。
 
 この場合、`app/views/articles/new.html.erb`に置かれている最もシンプルなテンプレートが使われます。テンプレートのファイル名に付いている拡張子が重要です。1つ目の拡張子はテンプレートの**フォーマット**を表し、2つ目の拡張子はここで使われる**ハンドラー**を示します。Railsは、`articles/new`というテンプレートをアプリケーションの`app/views`の下で探そうとします。ここではテンプレートのフォーマットは`html`でなければならず、デフォルトのハンドラーは`erb`でなければならないということになります。その他のハンドラーは別のフォーマットで扱われます。`builder`というハンドラーはXMLテンプレートのビルドに使われ、`coffee`というハンドラーはJavaScriptテンプレートのビルドにCoffeeScriptを用います。ここで新しく作成したいのはHTMLフォームなので、HTMLにRubyを埋め込むよう設計された`ERB`言語が使われます。
 
@@ -379,10 +378,10 @@ ArticlesController#new is missing a template for this request format and variant
 ```
 
 この例では、`:url`オプションに`articles_path`ヘルパーが渡されています。
-このときRailsの内部で何が行われているのかを知るために、`bin/rails routes`の出力結果をもう一度見てみましょう。
+このときRailsの内部で何が行われているのかを知るために、`rails routes`の出力結果をもう一度見てみましょう。
 
 ```bash
-$ bin/rails routes
+$ rails routes
       Prefix Verb   URI Pattern                  Controller#Action
 welcome_index GET    /welcome/index(.:format)     welcome#index
      articles GET    /articles(.:format)          articles#index
@@ -463,7 +462,7 @@ TIP: Active Recordは、データベースのカラム名とモデルの属性�
 ここで`db/migrate/YYYYMMDDHHMMSS_create_articles.rb` ファイルをエディタで開いてみると (タイムスタンプは各自異なることにご注意ください)、以下のようになっています。
 
 ```ruby
-class CreateArticles < ActiveRecord::Migration[5.0]
+class CreateArticles < ActiveRecord::Migration[6.0]
   def change
     create_table :articles do |t|
       t.string :title
@@ -482,7 +481,7 @@ TIP: マイグレーションについて詳しくは、[Active Recordマイグ�
 ここでは、以下のようにコマンドでマイグレーションを実行します。
 
 ```bash
-$ bin/rails db:migrate
+$ rails db:migrate
 ```
 
 マイグレーションコマンドによってArticlesテーブルがデータベース上に作成されます。
@@ -494,7 +493,7 @@ $ bin/rails db:migrate
 ==  CreateArticles: migrated (0.0020s) =========================================
 ```
 
-NOTE: マイグレーションはデフォルトではdevelopment (開発) 環境で実行されます。そのため、`config/database.yml`ファイルの`development`セクションで定義されている開発用データベースに対して実行される点にご注意ください。production (本番) 環境など、development以外の環境に対してもマイグレーションを実行したい場合は、`bin/rails db:migrate RAILS_ENV=production`のように環境変数を明示的に指定する必要があります。
+NOTE: マイグレーションはデフォルトではdevelopment (開発) 環境で実行されます。そのため、`config/database.yml`ファイルの`development`セクションで定義されている開発用データベースに対して実行される点にご注意ください。production (本番) 環境など、development以外の環境に対してもマイグレーションを実行したい場合は、`rails db:migrate RAILS_ENV=production`のように環境変数を明示的に指定する必要があります。
 
 ### コントローラでデータを保存する
 
@@ -523,7 +522,7 @@ Railsにはセキュリティの高いアプリケーションを開発するの
 
 なぜそんな面倒なことをしないといけないのでしょうか。コントローラが受け取ったパラメータをノーチェックでまるごと自動的にモデルに渡せるようにする方が確かに開発は楽なのですが、パラメータをこのように安易に渡してしまうと、パラメータがチェックされていない点を攻撃者に悪用される可能性があります。たとえば、サーバーへのリクエストに含まれる新規投稿送信フォームに、もともとフォームになかったフィールドが攻撃者によって密かに追加され、アプリケーションの整合性が損なわれる可能性が考えられます。チェックされていないパラメータをまるごとモデルに保存する行為は、モデルに対する「マスアサインメント」と呼ばれています。これが発生すると、正常なデータの中に悪意のあるデータが含まれてしまう可能性があります。
 
-そこで、コントローラで渡されるパラメータはホワイトリストでチェックし、不正なマスアサインメントを防がなければなりません。この場合、`create`でパラメータを安全に扱うために、`title`と`text`パラメータの利用を「許可」し、かつ「必須」であることを指定したいのです。この指定を文法化するために、`require`メソッドと`permit`メソッドが導入されました。これに基いて、該当行を以下のように変更します。
+そこで、コントローラで渡されるパラメータはホワイトリストでチェックし、不正なマスアサインメントを防がなければなりません。この場合、`create`でパラメータを安全に扱うために、`title`と`text`パラメータの利用を「許可」し、かつ「必須」であることを指定したいのです。そのための構文によって、`require`メソッドと`permit`メソッドが導入されます。これに基いて、該当行を以下のように変更します。
 
 ```ruby
   @article = Article.new(params.require(:article).permit(:title, :text))
@@ -552,7 +551,7 @@ TIP: 詳細については、上に挙げた参考資料に加えて[Strong Para
 
 現時点の状態でフォームを再度送信すると、`show`アクションがないというメッセージがRailsから返されます。このままでは実用に耐えないので、`show`アクションを追加して先に進むことにしましょう。
 
-`bin/rails routes`の出力結果にもあったように`show`アクションへのルーティングは以下のようになります。
+`rails routes`の出力結果にもあったように`show`アクションへのルーティングは以下のようになります。
 
 ```
 article GET    /articles/:id(.:format)      articles#show
@@ -602,7 +601,7 @@ class ArticlesController < ApplicationController
 ### すべての記事を一覧表示する
 
 単独の記事は表示できるようになりましたが、今度は記事の一覧も表示できるようにしてみましょう。
-今度も`bin/rails routes`でルーティングを確認すると、以下のようなルーティングが既にあります。
+今度も`rails routes`でルーティングを確認すると、以下のようなルーティングが既にあります。
 
 ```
 articles GET    /articles(.:format)          articles#index
@@ -846,7 +845,7 @@ end
 
 `article`オブジェクトを`form_with`メソッドに渡すと、編集済みの記事を送信するときに使うURLが魔法のように自動作成されます。Railsは`model`オプションに渡された値を読み取り、(今回の場合は) `PATCH`というHTTPメソッドでこのフォームを送信しようとします。`PATCH`メソッドは、RESTプロトコルに基いてリソースを**更新**する場合に使います。
 
-`form_with`メソッドの引数にはモデルオブジェクトを渡せます（`model: @article`など）。このときヘルパーは`article`オブジェクトに含まれているフィールドでフォームの項目を埋めます。`scope: :article`のようにスコープにシンボルを指定すると、フィールドが空の状態で作成されます。詳しくは[form_withに関するAPIドキュメント](http://api.rubyonrails.org/classes/ActionView/Helpers/FormHelper.html#method-i-form_with) (英語) を参照してください。
+`form_with`メソッドの引数にはモデルオブジェクトを（`model: @article`などのような形で）渡せます。このときヘルパーは`article`オブジェクトに含まれているフィールドでフォームの項目を埋めます。`scope: :article`のようにスコープにシンボルを指定すると、フィールドが空の状態で作成されます。詳しくは[form_withに関するAPIドキュメント](https://api.rubyonrails.org/classes/ActionView/Helpers/FormHelper.html#method-i-form_with) (英語) を参照してください。
 
 続いて、`app/controllers/articles_controller.rb`に`update`アクションを作成しましょう。
 
@@ -955,7 +954,7 @@ TIP: パーシャルについての詳細は本ガイドの[レイアウトと�
 ```
 
 このコードをよく観察してみると、`form_with`の宣言部分以外には元のコードとの違いがないことがわかります。他のフォーム内のコードを置き換えるパーシャル内での`form_with`宣言がこのように短くて簡潔で済むのは、`@article`がRESTfulルーティングの完全なセットに対応する **リソース** であり、必要なURIとメソッドをRailsがそれに基いて推測できるからです。
-`form_with`の利用法について詳しくは、[Rails APIのリソース指向のスタイル](http://api.rubyonrails.org/classes/ActionView/Helpers/FormHelper.html#method-i-form_with-label-Resource-oriented+style) (英語) を参照してください。
+`form_with`の利用法について詳しくは、[Rails APIのリソース指向のスタイル](https://api.rubyonrails.org/classes/ActionView/Helpers/FormHelper.html#method-i-form_with-label-Resource-oriented+style) (英語) を参照してください。
 
 今度は`app/views/articles/new.html.erb`ビューを完全に書き直して、今作成したパーシャルをここで使ってみましょう。
 
@@ -979,7 +978,7 @@ TIP: パーシャルについての詳細は本ガイドの[レイアウトと�
 
 ### 記事を削除する
 
-いよいよCRUDのDまで到達しました。ここでは記事をデータベースから削除します。RESTの慣例に従い、記事の削除に使うルーティングを`bin/rails routes`の出力結果から取り出したのが以下です。
+いよいよCRUDのDまで到達しました。ここでは記事をデータベースから削除します。RESTの慣例に従い、記事の削除に使うルーティングを`rails routes`の出力結果から取り出したのが以下です。
 
 ```ruby
 DELETE /articles/:id(.:format)      articles#destroy
@@ -1132,12 +1131,12 @@ bashコマンドで使われている`:references`キーワードは、モデル
 モデルのファイルの他にマイグレーションファイルも生成されています。マイグレーションファイルは、モデルに対応するデータベーステーブルを生成するために使われます。
 
  ```ruby
- class CreateComments < ActiveRecord::Migration[5.0]
+ class CreateComments < ActiveRecord::Migration[6.0]
    def change
      create_table :comments do |t|
        t.string :commenter
        t.text :body
-       t.references :article, foreign_key: true
+       t.references :article, null: false, foreign_key: true
  
        t.timestamps
      end
@@ -1148,7 +1147,7 @@ bashコマンドで使われている`:references`キーワードは、モデル
 `t.references`という行は、`article_id`という名前のinteger型カラムとそのインデックス、そして`articles`の`id`カラムを指す外部キー制約を設定します。それではマイグレーションを実行しましょう。
 
 ```bash
-$ bin/rails db:migrate
+$ rails db:migrate
 ```
 
 Railsは、これまで実行されていないマイグレーションだけを適切に見分けて実行しますので、以下のようなメッセージだけが表示されるはずです。
@@ -1211,7 +1210,7 @@ TIP: ルーティングについて詳しくは[Railsのルーティング](rout
 $ rails generate controller Comments
 ```
 
-上のコマンドを実行すると、5つのファイルと1つの空ディレクトリが作成されます。
+上のコマンドを実行すると、4つのファイルと1つの空ディレクトリが作成されます。
 
 | ファイル/ディレクトリ                               | 目的                                  |
 | -------------------------------------------- | ---------------------------------------- |
@@ -1219,7 +1218,6 @@ $ rails generate controller Comments
 | app/views/comments/                          | コントローラのビューはここに置かれる  |
 | test/controllers/comments_controller_test.rb | コントローラのテスト用ファイル              |
 | app/helpers/comments_helper.rb               | ビューヘルパー                       |
-| app/assets/javascripts/comment.coffee        | コントローラ用のCoffeeScript          |
 | app/assets/stylesheets/comment.scss          | コントローラ用のCSS (カスケーディングスタイルシート) ファイル |
 
 一般的なブログと同様、このブログの記事を読んだ人はそこに直接コメントを追加したくなるでしょう。そしてコメントを追加後に元の記事表示ページに戻り、コメントがそこに反映されていることを確認したいはずです。そこで、`CommentsController`を用いてコメントを作成したり、スパムコメントが書き込まれたら削除できるようにしたいと思います。
@@ -1556,8 +1554,8 @@ class CommentsController < ApplicationController
 もちろん、何の助けもなしにWebアプリケーションを作らなければならないなどということはないということを忘れてはなりません。RailsでWebアプリを立ち上げたり実行したりするうえで助けが必要になったら、以下のサポート用リソースを自由に参照できます。
 
 * [Ruby on Railsガイド](index.html) -- 本書です
-* [Ruby on Railsチュートリアル](https://railstutorial.jp)
-* [Ruby on Railsメーリングリスト](https://groups.google.com/forum/#!forum/rubyonrails-talk)
+* [Ruby on Railsチュートリアル](https://railstutorial.jp) -- 日本語版
+* [Ruby on Railsメーリングリスト](https://groups.google.com/group/rubyonrails-talk)
 * irc.freenode.net上の[#rubyonrails](irc://irc.freenode.net/#rubyonrails)チャンネル
 
 設定の落とし穴

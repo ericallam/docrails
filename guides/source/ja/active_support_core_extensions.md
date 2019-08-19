@@ -2793,8 +2793,6 @@ NOTE: 定義は`active_support/core_ext/range/conversions.rb`にあります。
 
 ### `===`、`include?`、`cover?`
 
-The methods `Range#===`, `Range#include?`, and `Range#cover?` say whether some value falls between the ends of a given instance:
-
 `Range#===`メソッド、`Range#include?`メソッド、`Range#cover?`メソッドは、与えられたインスタンスの範囲内に値が収まっているかどうかをチェックします。
 
 ```ruby
