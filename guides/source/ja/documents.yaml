@@ -103,6 +103,10 @@
       name: Action Cable の概要
       url: action_cable_overview.html
       description: リアルタイム機能を実現するAction Cableの動作と、WebSocketsの利用法について解説します。
+    -
+      name: Action Text の概要
+      url: action_text_overview.html
+      description: リッチテキストコンテンツの扱い始めるのに必要なものについて解説します。
 
 
 -
