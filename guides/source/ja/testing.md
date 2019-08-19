@@ -1499,9 +1499,9 @@ class ProductTest < ActiveJob::TestCase
 end
 ```
 
-### Asserting Time Arguments in Jobs
+### ジョブの時刻の引数アサーション
 
-When serializing job arguments, `Time`, `DateTime`, and `ActiveSupport::TimeWithZone` lose microsecond precision. This means comparing deserialized time with actual time doesn't always work. To compensate for the loss of precision, `assert_enqueued_with` and `assert_performed_with` will remove microseconds from time objects in argument assertions.
+ジョブの引数をシリアライズすると、`Time`や`DateTime`や`ActiveSupport::TimeWithZone`のマイクロ秒の桁が失われます。これは、デシリアライズされた時刻と実際の時刻の比較がうまくいかない場合があるということになります。失われた精度を補償するには、引数アサーションでは`assert_enqueued_with`や`assert_performed_with`でtimeオブジェクトからもマイクロ秒部分を削除します。
 
 ```ruby
 require 'test_helper'
@@ -1518,39 +1518,36 @@ class ProductTest < ActiveSupport::TestCase
 end
 ```
 
-Testing Action Cable
+Action Cableをテストする
 --------------------
 
-Since Action Cable is used at different levels inside your application,
-you'll need to test both the channels, connection classes themselves, and that other
-entities broadcast correct messages.
+Action Cableはアプリケーション内部の異なるレベルで用いられるため、チャネル、コネクションのクラス自身、および他のエンティティがいずれも正しいメッセージをブロードキャストすることをテストする必要があります。
 
-### Connection Test Case
+### コネクションのテストケース
 
-By default, when you generate new Rails application with Action Cable, a test for the base connection class (`ApplicationCable::Connection`) is generated as well under `test/channels/application_cable` directory.
+デフォルトでは、Action Cableを用いる新しいRailsアプリを生成すると、基本のコネクションクラス（`ApplicationCable::Connection`）のテストも`test/channels/application_cable`ディレクトリの下に生成されます。
 
-Connection tests aim to check whether a connection's identifiers get assigned properly
-or that any improper connection requests are rejected. Here is an example:
+コネクションテストの目的は、あるコネクションのidが正しく代入されているか、正しくないコネクションリクエストを却下できるかどうかをチェックすることです。以下はテスト例です。
 
 ```ruby
 class ApplicationCable::ConnectionTest < ActionCable::Connection::TestCase
   test "connects with params" do
-    # Simulate a connection opening by calling the `connect` method
+    # `connect`メソッドを呼ぶことでコネクションのオープンをシミュレートする
     connect params: { user_id: 42 }
 
-    # You can access the Connection object via `connection` in tests
+    # テストでは`connection`でConnectionオブジェクトにアクセスできる
     assert_equal connection.user_id, "42"
   end
 
   test "rejects connection without params" do
-    # Use `assert_reject_connection` matcher to verify that
-    # connection is rejected
+    # コネクションが却下されたことを
+    # `assert_reject_connection`マッチャーで検証する
     assert_reject_connection { connect }
   end
 end
 ```
 
-You can also specify request cookies the same way you do in integration tests:
+結合テストの場合と同様に、リクエストのcookieを指定することもできます。
 
 ```ruby
 test "connects with cookies" do
@@ -1562,31 +1559,30 @@ test "connects with cookies" do
 end
 ```
 
-See the API documentation for [`ActionCable::Connection::TestCase`](https://api.rubyonrails.org/classes/ActionCable/Connection/TestCase.html) for more information.
+詳しくは[`ActionCable::Connection::TestCase`](https://api.rubyonrails.org/classes/ActionCable/Connection/TestCase.html) APIドキュメントを参照してください。
 
-### Channel Test Case
+### チャネルのテストケース
 
-By default, when you generate a channel, an associated test will be generated as well
-under the `test/channels` directory. Here's an example test with a chat channel:
+デフォルトでは、チャネルを1つ生成するときに`test/channels`ディレクトリの下に関連するテストも生成されます。以下はチャットチャネルでのテスト例です。
 
 ```ruby
 require "test_helper"
 
 class ChatChannelTest < ActionCable::Channel::TestCase
   test "subscribes and stream for room" do
-    # Simulate a subscription creation by calling `subscribe`
+    # `subscribe`を呼ぶことでサブスクリプション作成をシミュレートする
     subscribe room: "15"
 
-    # You can access the Channel object via `subscription` in tests
+    # テストでは`subscription`でChannelオブジェクトにアクセスできる
     assert subscription.confirmed?
     assert_has_stream "chat_15"
   end
 end
 ```
 
-This test is pretty simple and only asserts that the channel subscribes the connection to a particular stream.
+このテストはかなりシンプルであり、チャネルが特定のストリームへのコネクションをサブスクライブするアサーションしかありません。
 
-You can also specify the underlying connection identifiers. Here's an example test with a web notifications channel:
+背後のコネクションidを指定することもできます。以下はWeb通知チャネルのテスト例です。
 
 ```ruby
 require "test_helper"
@@ -1602,15 +1598,13 @@ class WebNotificationsChannelTest < ActionCable::Channel::TestCase
 end
 ```
 
-See the API documentation for [`ActionCable::Channel::TestCase`](https://api.rubyonrails.org/classes/ActionCable/Channel/TestCase.html) for more information.
+詳しくは[`ActionCable::Channel::TestCase`](https://api.rubyonrails.org/classes/ActionCable/Channel/TestCase.html) APIドキュメントを参照してください。
 
-### Custom Assertions And Testing Broadcasts Inside Other Components
+### 他のコンポーネント内でのカスタムアサーションとブロードキャストテスト
 
-Action Cable ships with a bunch of custom assertions that can be used to lessen the verbosity of tests. For a full list of available assertions, see the API documentation for [`ActionCable::TestHelper`](https://api.rubyonrails.org/classes/ActionCable/TestHelper.html).
+Action Cableには、テストの量を削減するのに使えるカスタムアサーションが多数用意されています。利用できる全アサーションのリストについては、[`ActionCable::TestHelper`](https://api.rubyonrails.org/classes/ActionCable/TestHelper.html) APIドキュメントを参照してください。
 
-It's a good practice to ensure that the correct message has been broadcasted inside other components (e.g. inside your controllers). This is precisely where
-the custom assertions provided by Action Cable are pretty useful. For instance,
-within a model:
+正しいメッセージがブロードキャストされたことを（コントローラ内部などの）他のコンポーネント内で確認するのはよい方法です。Action Cableが提供するカスタムアサーションの有用さは、まさにここで発揮されます。たとえばモデル内では以下のように書けます。
 
 ```ruby
 require 'test_helper'
@@ -1624,8 +1618,7 @@ class ProductTest < ActionCable::TestCase
 end
 ```
 
-If you want to test the broadcasting made with `Channel.broadcast_to`, you shoud use
-`Channel.broadcasting_for` to generate an underlying stream name:
+`Channel.broadcast_to`によるブロードキャストをテストしたい場合は、`Channel.broadcasting_for`で背後のストリーム名を生成すべきです。
 
 ```ruby
 # app/jobs/chat_relay_job.rb
