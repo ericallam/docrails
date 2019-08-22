@@ -125,9 +125,7 @@ Action Cable
 
 ### 削除されたもの
 
-*   Replace `ActionCable.startDebugging()` and `ActionCable.stopDebugging()`
-    with `ActionCable.logger.enabled`.
-    ([Pull Request](https://github.com/rails/rails/pull/34370))
+*   `ActionCable.startDebugging()`と`ActionCable.stopDebugging()`を`ActionCable.logger.enabled`に置き換え（[Pull Request](https://github.com/rails/rails/pull/34370)）
 
 ### 非推奨化
 
@@ -585,9 +583,7 @@ Active Storage
 
 ### 主な変更
 
-*   BMP画像variant生成のサポートを追加
-*   Add support for generating BMP image variants.
-    ([Pull Request](https://github.com/rails/rails/pull/36051))
+*   BMP画像variant生成のサポートを追加（[Pull Request](https://github.com/rails/rails/pull/36051)）
 
 *   TIFF画像variant生成のサポートを追加
     ([Pull Request](https://github.com/rails/rails/pull/34824))
