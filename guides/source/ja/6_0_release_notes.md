@@ -125,9 +125,7 @@ Action Cable
 
 ### 削除されたもの
 
-*   Replace `ActionCable.startDebugging()` and `ActionCable.stopDebugging()`
-    with `ActionCable.logger.enabled`.
-    ([Pull Request](https://github.com/rails/rails/pull/34370))
+*   `ActionCable.startDebugging()`と`ActionCable.stopDebugging()`を`ActionCable.logger.enabled`に置き換え（[Pull Request](https://github.com/rails/rails/pull/34370)）
 
 ### 非推奨化
 
