@@ -121,7 +121,7 @@ resources :photos
 | PATCH/PUT | /photos/:id      | photos#update     | 特定の写真を更新する                      |
 | DELETE    | /photos/:id      | photos#destroy    | 特定の写真を削除する                      |
 
-NOTE: Railsのルーターでは、サーバーへのリクエストをマッチさせる際にHTTP動詞とURLを使っているため、4種類のURL (GET/POST/PATCH/DELETE) が7種類の異なるアクション (index/new/create/show/edit/update/destroy) に割り当てられています。
+NOTE: Railsのルーターでは、サーバーへのリクエストをマッチさせる際にHTTP動詞とURLを使っているため、4種類のURL (`/photos`,`/photos/new`,`/photos/:id`,`/photos/:id/edit`) が7種類の異なるアクション (index/new/create/show/edit/update/destroy) に割り当てられています。
 
 NOTE: Railsのルーティングは、ルーティングファイルの「上からの記載順に」マッチします。このため、たとえば`resources :photos`というルーティングが`get 'photos/poll'`よりも前の行にあれば、`resources`行の`show`アクションが`get`行の記述よりも優先されますので、`get`行のルーティングは有効になりません。これを修正するには、`get`行を`resources`行 **よりも上** の行に移動してください。これにより、`get`行がマッチするようになります。
 
