@@ -301,7 +301,7 @@ config.middleware.delete Rack::MethodOverride
      config.i18n.fallbacks = [:tr, :en]
      ```
 
-     * ロケールごとに個別のフォールバックを設定することもできます。たとえば`:az`と`:de`に`:tr`を、`:da`に`:en`をそれぞれフォールバック先として指定する場合は、次のようにします。
+     * ロケールごとに個別のフォールバックを設定することもできます。たとえば`:az`に`:tr`を、`:da`に`:de`と`:en`をそれぞれフォールバック先として指定する場合は、次のようにします。
 
      ```ruby
      config.i18n.fallbacks = { az: :tr, da: [:de, :en] }
