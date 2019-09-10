@@ -665,10 +665,11 @@ h6 code {
 
 #header h1 {
   float: left;
-  background: url(../images/rails_guides_logo.gif) no-repeat;
-  width: 297px;
+  background: url(../images/railsguidesjp_logo.png) no-repeat;
+  background-size: contain;
+  width: 282px;
   text-indent: -9999em;
-  margin: 0;
+  margin: 8px 0 -8px;
   padding: 0;
 }
 
