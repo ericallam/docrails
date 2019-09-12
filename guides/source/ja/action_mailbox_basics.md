@@ -54,7 +54,7 @@ action_mailbox:
 
 Eximが受信メールを`bin/rails action_mailbox:ingress:exim`にパイプでつなぐよう設定し、relay ingressの`URL`と先ほど生成した`INGRESS_PASSWORD`を指定します。アプリケーションが`https://example.com`にある場合の完全なコマンドは以下のような感じになります。
 
-```shell
+```bash
 bin/rails action_mailbox:ingress:exim URL=https://example.com/rails/action_mailbox/relay/inbound_emails INGRESS_PASSWORD=...
 ```
 
@@ -124,7 +124,7 @@ action_mailbox:
 
 受信メールを`bin/rails action_mailbox:ingress:postfix`にルーティングするよう[Postfixを設定](https://serverfault.com/questions/258469/how-to-configure-postfix-to-pipe-all-incoming-email-to-a-script)します。アプリケーションが`https://example.com`にある場合、完全なコマンドは次のような感じになります。
 
-```shell
+```bash
 $ bin/rails action_mailbox:ingress:postfix URL=https://example.com/rails/action_mailbox/relay/inbound_emails INGRESS_PASSWORD=...
 ```
 
@@ -178,7 +178,7 @@ action_mailbox:
 
 受信メールを`bin/rails action_mailbox:ingress:qmail`にパイプでつなぐようQmailを設定し、relay ingressの`URL`と先ほど生成した`INGRESS_PASSWORD`を指定します。アプリケーションが`https://example.com`にある場合の完全なコマンドは以下のような感じになります。
 
-```shell
+```bash
 bin/rails action_mailbox:ingress:qmail URL=https://example.com/rails/action_mailbox/relay/inbound_emails INGRESS_PASSWORD=...
 ```
 
