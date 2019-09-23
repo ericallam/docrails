@@ -475,6 +475,14 @@ Rails.application.secrets[:smtp_settings]["address"]
 Rails.application.secrets[:smtp_settings][:address]
 ```
 
+### 非推奨化された`render :text`と`render :nothing`サポートの削除
+
+ビューの`render :text`は今後利用できません。MIME typeを「`text/plain`」にしてテキストをレンダリングする新しい方法は`render :plain`を使うことです。
+
+`render :nothing`も同様に削除されますので、今後ヘッダーのみのレスポンスを返すには`head`メソッドをお使いください。
+例: `head :ok`は、bodyをレンダリングせずにresponse 200を返します。
+
+
 Rails 4.2からRails 5.0へのアップグレード
 -------------------------------------
 
