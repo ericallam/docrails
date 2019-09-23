@@ -482,7 +482,6 @@ Rails.application.secrets[:smtp_settings][:address]
 `render :nothing`も同様に削除されますので、今後ヘッダーのみのレスポンスを返すには`head`メソッドをお使いください。
 例: `head :ok`は、bodyをレンダリングせずにresponse 200を返します。
 
-訳注: [#37197](https://github.com/rails/rails/pull/37197)を反映しました。
 
 Rails 4.2からRails 5.0へのアップグレード
 -------------------------------------
