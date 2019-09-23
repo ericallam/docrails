@@ -152,8 +152,6 @@ Rubyには、メモリ上のクラスやモジュールを真の意味で再読�
 
 たとえば、あるイニシャライザが、特定のクラスオブジェクトを1つ保存してキャッシュするとします。
 
-For example, if an initializer stores and caches a certain class object
-
 ```ruby
 # config/initializers/configure_payment_gateway.rb
 # 実際にはこのように書かないこと
