@@ -271,7 +271,7 @@ module Blorgh
 end
 ```
 
-NOTE: このクラスで継承されている`ArticlesController`クラスは、実際には`ApplicationController`ではなく、`Blorgh::ApplicationController`です。
+NOTE: この`ArticlesController`クラスが継承しているのは、アプリケーションの`ApplicationController`ではなく、`Blorgh::ApplicationController`です。
 
 `app/helpers/blorgh/articles_helper.rb`のヘルパーも同様に名前空間化されます。
 
