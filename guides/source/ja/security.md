@@ -1102,9 +1102,9 @@ Rails.application.config.content_security_policy_nonce_generator = -> request { 
 
 ### 独自のcredential
 
-Railsは、第三者のcredential（秘密鍵などの秘密情報）をリポジトリに保存するための`config/credentials.yml.enc`を生成します。生成したマスターキーをこのファイルに含めてRailsが暗号化し、`config/master.key`を除外したバージョンコントロールシステムに登録することで初めて意味があります。Railsは`ENV["RAILS_MASTER_KEY"]`にマスターキーがあるかどうかもチェックします。またRailsはproduction環境での起動時にcredentialを読み出すためにこのマスターキーを必要とします。
+Railsはcredentialファイル`config/credentials.yml.enc`に秘密鍵を保存します。このファイルは暗号化されているため直接編集することはできません。Railsはcredentialファイルを暗号化するためのマスターキーに`config/master.key`か環境変数`ENV["RAILS_MASTER_KEY"]`を使用します。credentialファイルは、マスターキーが安全に保存されている場合に限り、バージョン管理システムに登録することができます。
 
-保存したcredentialを編集するには、まず`bin/rails credentials:edit`を実行して新しい秘密鍵を生成し、続いて`rails credentials:edit`でcredentialを編集して秘密鍵を追加します。`credentials:edit`を実行すると、credentialファイルとマスターキーがまだ存在してなければ新たに作成します。
+新しい秘密鍵をcredentialファイルに追加するには、まず`rails secret`を実行して新しい秘密鍵を生成し、続いて`rails credentials:edit`でcredentialを編集して秘密鍵を追加します。`credentials:edit`を実行すると、credentialファイルとマスターキーがまだ存在してなければ新たに作成します。
 
 このファイルには、アプリケーションの`secret_key_base`がデフォルトで含まれますが、外部API向けのアクセスキーなどのcredentialを含めることもできます。
 
