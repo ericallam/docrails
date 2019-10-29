@@ -1117,7 +1117,7 @@ NOTE: 定義は`active_support/core_ext/string/filters.rb`にあります。
 # => "Oh dear! Oh dear!..."
 ```
 
-`:omission`オプションを指定することで、省略文字 (…) をカスタマイズすることもできます。
+`:omission`オプションを指定することで、省略文字 (...) をカスタマイズすることもできます。
 
 ```ruby
 "Oh dear! Oh dear! I shall be late!".truncate(20, omission: '&hellip;')
@@ -1155,7 +1155,7 @@ NOTE: 定義は`active_support/core_ext/string/filters.rb`にあります。
 # => "Oh dear! Oh dear!..."
 ```
 
-`:omission`オプションを指定することで、省略文字 (…) をカスタマイズすることもできます。
+`:omission`オプションを指定することで、省略文字 (...) をカスタマイズすることもできます。
 
 ```ruby
 "Oh dear! Oh dear! I shall be late!".truncate_words(4, omission: '&hellip;')
@@ -2026,9 +2026,6 @@ NOTE: 定義は`active_support/core_ext/enumerable.rb`にあります。
 ### `index_with`
 
 `index_with`メソッドは、enumerableの要素をキーとして持つハッシュを生成します。値は渡されたデフォルト値か、ブロックで返されます。
-
-The method `index_with` generates a hash with the elements of an enumerable as keys. The value
-is either a passed default or returned in a block.
 
 ```ruby
 %i( title body created_at ).index_with { |attr_name| post.public_send(attr_name) }
