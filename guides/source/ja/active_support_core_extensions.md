@@ -2027,9 +2027,6 @@ NOTE: 定義は`active_support/core_ext/enumerable.rb`にあります。
 
 `index_with`メソッドは、enumerableの要素をキーとして持つハッシュを生成します。値は渡されたデフォルト値か、ブロックで返されます。
 
-The method `index_with` generates a hash with the elements of an enumerable as keys. The value
-is either a passed default or returned in a block.
-
 ```ruby
 %i( title body created_at ).index_with { |attr_name| post.public_send(attr_name) }
 # => { title: "hey", body: "what's up?", … }
