@@ -1117,7 +1117,7 @@ NOTE: 定義は`active_support/core_ext/string/filters.rb`にあります。
 # => "Oh dear! Oh dear!..."
 ```
 
-`:omission`オプションを指定することで、省略文字 (…) をカスタマイズすることもできます。
+`:omission`オプションを指定することで、省略文字 (...) をカスタマイズすることもできます。
 
 ```ruby
 "Oh dear! Oh dear! I shall be late!".truncate(20, omission: '&hellip;')
@@ -1155,7 +1155,7 @@ NOTE: 定義は`active_support/core_ext/string/filters.rb`にあります。
 # => "Oh dear! Oh dear!..."
 ```
 
-`:omission`オプションを指定することで、省略文字 (…) をカスタマイズすることもできます。
+`:omission`オプションを指定することで、省略文字 (...) をカスタマイズすることもできます。
 
 ```ruby
 "Oh dear! Oh dear! I shall be late!".truncate_words(4, omission: '&hellip;')
