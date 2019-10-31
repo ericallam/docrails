@@ -30,9 +30,6 @@ Trixでは`contenteditable`をI/Oデバイスとして扱うことで、こう�
 
 `rails action_text:install`を実行すると、Yarnパッケージが追加され、必要なマイグレーションがコピーされます。また、埋め込み画像や他の添付ファイルを扱うためにActive Storageのセットアップも必要です。詳しくは[Active Storageの概要](active_storage_overview.html)ガイドを参照してください。
 
-Also, you need to set up Active Storage for embedded images and other attachments.
-Please refer to the [Active Storage Overview](active_storage_overview.html) guide.
-
 ## 例
 
 既存のモデルにリッチテキストのフィールドを追加するには次のようにします。
