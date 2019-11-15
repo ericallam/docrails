@@ -172,7 +172,6 @@ YassLab 社以外にも、次の方々が協力してくれました! 🤝✨
 
 ### クレジット
 
-- 原著: http://guides.rubyonrails.org/credits.html
 - 本書: [YassLab 株式会社](https://yasslab.jp/)
 
 [![YassLab Inc.](https://yasslab.jp/img/logos/800x200.png)](https://yasslab.jp/ja/)
