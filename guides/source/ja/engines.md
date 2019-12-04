@@ -1073,7 +1073,7 @@ ActionController::Base.prepend(MyActionControllerHelper)
 
 ```ruby
 ActiveSupport.on_load(:action_controller_base) { prepend MyActionControllerHelper }
-# selfがActiveRecord::Baseを指すので`#prepend`呼び出しが簡潔になる
+# selfがActionController::Baseを指すので`#prepend`呼び出しが簡潔になる
 ```
 
 ### 例3
