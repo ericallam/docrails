@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.org/yasslab/railsguides.jp.svg?branch=master)](https://travis-ci.org/yasslab/railsguides.jp)
 
+[![Banner of Railsガイド](https://yasslab.jp/img/header-railsguides.png)](https://railsguides.jp/)
+
 ## 『Railsガイド』とは？
 
 『Railsガイド』は [Ruby on Rails Guides](http://guides.rubyonrails.org/) の[公式の日本語版](https://guides.rubyonrails.org/contributing_to_ruby_on_rails.html#translating-rails-guides)です。   
