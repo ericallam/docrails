@@ -4,9 +4,9 @@ use AcmeChallenge, ENV['ACME_CHALLENGE'] if ENV['ACME_CHALLENGE']
 require 'rack/rewrite'
 use Rack::Rewrite do
   if ENV['RACK_ENV'] == 'production'
-    r301 %r{.*}, 'https://staging.railsguides.jp$&', scheme: 'http'
-    r301 %r{.*}, 'https://staging.railsguides.jp$&',     if: Proc.new {|rack_env|
-      rack_env['SERVER_NAME'] != 'staging.railsguides.jp'
+    r301 %r{.*}, 'https://railsguides.jp$&', scheme: 'http'
+    r301 %r{.*}, 'https://railsguides.jp$&',     if: Proc.new {|rack_env|
+      rack_env['SERVER_NAME'] != 'railsguides-jp.herokuapp.com'
     }
   end
 end
