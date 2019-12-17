@@ -6,7 +6,7 @@ use Rack::Rewrite do
   if ENV['RACK_ENV'] == 'production'
     r301 %r{.*}, 'https://railsguides.jp$&', scheme: 'http'
     r301 %r{.*}, 'https://railsguides.jp$&',     if: Proc.new {|rack_env|
-      rack_env['SERVER_NAME'] != 'railsguides-jp.herokuapp.com'
+      rack_env['SERVER_NAME'] != 'railsguides.jp'
     }
   end
 end
