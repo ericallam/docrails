@@ -862,7 +862,7 @@ TIP: 詳細については、production環境用Webサーバーのドキュメ�
 アセットのキャッシュストア
 ------------------
 
-デフォルトのSprocketsは、development環境とproduction環境で`tmp/cache/assets`にあるアセットをキャッシュします。これは以下のように変更できます。
+デフォルトのSprocketsは、development環境とproduction環境で`tmp/cache/assets`にアセットをキャッシュします。これは以下のように変更できます。
 
 ```ruby
 config.assets.configure do |env|
