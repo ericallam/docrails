@@ -634,7 +634,7 @@ end
 # インラインジョブ処理でただちにジョブを実行する
 config.active_job.queue_adapter = :inline
 
-# test環境では別のファイルストレージをもしいる
+# test環境では別のファイルストレージを使う
 config.active_storage.service = :local_test
 ```
 
