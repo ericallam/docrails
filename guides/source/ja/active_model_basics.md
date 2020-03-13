@@ -265,7 +265,7 @@ email_contact.valid?     # => true
 email_contact.persisted? # => false
 ```
 
-`ActiveModel::Model`を`include`するクラスでは、Active Recordの場合と同様に`form_for`や`render`などのAction Viewヘルパーメソッドを使えるようになりま。
+`ActiveModel::Model`を`include`するクラスでは、Active Recordの場合と同様に`form_for`や`render`などのAction Viewヘルパーメソッドを使えるようになります。
 
 ### シリアライズ
 
