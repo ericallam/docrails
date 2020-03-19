@@ -339,7 +339,7 @@ require 'erb'
 
 * アプリケーションとエンジンの`app`ディレクトリ以下にあるすべてのサブディレクトリ。`app/controllers`などが対象。`app`以下に置かれる`app/workers`などのカスタムディレクトリはすべて`autoload_paths`に自動的に属するので、デフォルトのディレクトリとする必要はない。
 
-* アプリケーションとエンジンのすべての`app/*/concerns`第2サブディレクトリ。
+* アプリケーションとエンジンの`app/{controllers,models}/concerns`。
 
 * `test/mailers/previews`ディレクトリ。
 
