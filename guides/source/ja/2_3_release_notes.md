@@ -5,6 +5,9 @@ Rails 2.3 delivers a variety of new and improved features, including pervasive R
 
 --------------------------------------------------------------------------------
 
+<!-- Carbon Ads  -->
+<script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?serve=CE7ITK7L&placement=railsguidesjp" id="_carbonads_js"></script>
+
 Application Architecture
 ------------------------
 

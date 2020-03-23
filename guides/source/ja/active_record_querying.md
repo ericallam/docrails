@@ -19,6 +19,9 @@ Active Record クエリインターフェイス
 
 --------------------------------------------------------------------------------
 
+<!-- Carbon Ads  -->
+<script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?serve=CE7ITK7L&placement=railsguidesjp" id="_carbonads_js"></script>
+
 生のSQLを使用してデータベースのレコードを検索することに慣れきった人がRailsに出会うと、Railsでは同じ操作をずっと洗練された方法で実現できることに気付くでしょう。Active Recordを使用することで、SQLを直に実行する必要はほぼなくなります。
 
 本ガイドのコード例では、基本的に以下のモデルを使用します。

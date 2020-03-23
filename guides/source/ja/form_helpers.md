@@ -16,6 +16,9 @@ Webアプリケーションにおけるフォームは、ユーザー入力を�
 
 --------------------------------------------------------------------------------
 
+<!-- Carbon Ads  -->
+<script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?serve=CE7ITK7L&placement=railsguidesjp" id="_carbonads_js"></script>
+
 NOTE: このガイドはフォームヘルパーとその引数について網羅的に説明するものではありません。完全なリファレンスについては[Rails APIドキュメント](https://api.rubyonrails.org/)を参照してください。
 
 

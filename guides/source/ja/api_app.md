@@ -10,6 +10,9 @@ Rails による API 専用アプリケーション
 
 --------------------------------------------------------------------------------
 
+<!-- Carbon Ads  -->
+<script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?serve=CE7ITK7L&placement=railsguidesjp" id="_carbonads_js"></script>
+
 APIアプリケーションについて
 ---------------------------
 

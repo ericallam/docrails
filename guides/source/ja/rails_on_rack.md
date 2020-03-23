@@ -11,6 +11,9 @@ Rails と Rack
 
 --------------------------------------------------------------------------------
 
+<!-- Carbon Ads  -->
+<script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?serve=CE7ITK7L&placement=railsguidesjp" id="_carbonads_js"></script>
+
 WARNING: このガイドはRackのミドルウェア、urlマップ、`Rack::Builder`といったRackのプロトコルや概念に関する実用的な知識を身につけていることを前提にしています。
 
 Rack入門
