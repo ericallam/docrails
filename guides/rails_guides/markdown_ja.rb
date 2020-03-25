@@ -65,11 +65,12 @@ module RailsGuides
               <div>
               <a href="https://twitter.com/search?f=tweets&q=%20%23Rails%E3%82%AC%E3%82%A4%E3%83%89&src=typd&lang=ja" target="_blank" title="twitterへのリンク"><img src="images/btn-twitter.png" alt="みんなのつぶやき Railsガイド" /></a>
               </div>
-              <a href="https://twitter.com/share?url=https://railsguides.jp/&hashtags=Railsガイド" target="_blank" class="tweet-link">
+              <br><br>
+              <a class="tweet-link" href="https://twitter.com/intent/tweet?hashtags=Railsガイド&via=RailsGuidesJP&related=RailsGuidesJP,YassLab" target="_blank">
                 <div class="btn-tweet">
                   <div class="twitter-logo"><img src="images/btn-tweet.png" alt="twitterロゴ" /></div>
                   <div class="fukidashi"><p>ツイートする</p></div>
-              </div>
+                </div>
               </a>
             </aside>
           </div>
