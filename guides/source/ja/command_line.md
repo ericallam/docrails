@@ -11,6 +11,9 @@ Rails のコマンドラインツール
 
 --------------------------------------------------------------------------------
 
+<!-- Carbon Ads  -->
+<script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?serve=CE7ITK7L&placement=railsguidesjp" id="_carbonads_js"></script>
+
 NOTE: このチュートリアルは、[Railsをはじめよう](getting_started.html)で基本的なRailsの知識を身につけていることを前提としています。
 
 コマンドラインの基礎
