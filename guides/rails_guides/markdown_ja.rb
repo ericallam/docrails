@@ -60,18 +60,15 @@ module RailsGuides
             #{@index}
             <aside id="toppage">
               <div>
-              <a href="https://railsguides.jp/pro"><img src="images/bnr-pro-plan.jpg" alt="RailsガイドProプラン" class="bnr-proplan" /></a>
+                <a href="https://railsguides.jp/pro"><img src="images/bnr-pro-plan.jpg" alt="RailsガイドProプラン" class="bnr-proplan" /></a>
               </div>
-              <div>
-              <a href="https://twitter.com/search?f=tweets&q=%20%23Rails%E3%82%AC%E3%82%A4%E3%83%89&src=typd&lang=ja" target="_blank" title="twitterへのリンク"><img src="images/btn-twitter.png" alt="みんなのつぶやき Railsガイド" /></a>
+              <div style="margin-bottom: 10px;">
+                <a href="https://twitter.com/search?f=tweets&q=%20%23Rails%E3%82%AC%E3%82%A4%E3%83%89&src=typd&lang=ja" target="_blank" title="twitterへのリンク"><img src="images/btn-twitter.png" alt="みんなのつぶやき Railsガイド" /></a>
               </div>
-              <br><br>
-              <a class="tweet-link" href="https://twitter.com/intent/tweet?hashtags=Railsガイド&via=RailsGuidesJP&related=RailsGuidesJP,YassLab" target="_blank">
-                <div class="btn-tweet">
-                  <div class="twitter-logo"><img src="images/btn-tweet.png" alt="twitterロゴ" /></div>
-                  <div class="fukidashi"><p>ツイートする</p></div>
-                </div>
-              </a>
+              <ol class="snsb" style="margin-left: 0; margin-right: 0;">
+                <li><a class="twitter-share-button" href="https://twitter.com/intent/tweet" data-hashtags="Railsガイド" data-via="RailsGuidesJP" data-related="RailsGuidesJP,YassLab" data-size="large" lang="ja"></a></li>
+                <li style="margin-left: 12px;"><a class="github-button" href="https://github.com/yasslab/railsguides.jp" data-size="large" data-show-count="true" aria-label="Star yasslab/railsguides.jp on GitHub">Star</a></li>
+              </ol>
             </aside>
           </div>
           INDEX
