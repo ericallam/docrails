@@ -10,8 +10,6 @@ Railsのテンプレートは単純なRubyファイルであり、新規また�
 
 --------------------------------------------------------------------------------
 
-<!-- Carbon Ads  -->
-<script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?serve=CE7ITK7L&placement=railsguidesjp" id="_carbonads_js"></script>
 
 利用法
 -----

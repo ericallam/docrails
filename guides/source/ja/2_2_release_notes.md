@@ -7,9 +7,6 @@ Along with Rails, 2.2 marks the launch of the [Ruby on Rails Guides](http://guid
 
 --------------------------------------------------------------------------------
 
-<!-- Carbon Ads  -->
-<script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?serve=CE7ITK7L&placement=railsguidesjp" id="_carbonads_js"></script>
-
 Infrastructure
 --------------
 

@@ -99,17 +99,17 @@
             <a href="index.html" id="guidesMenu" class="guides-index-item nav-item">ガイド目次</a>
             <div id="guides" class="clearfix" style="display: none;">
               <hr />
-                <div class='guides-scroll'>
-              <% ['L', 'R'].each do |position| %>
-		<dl class="<%= position %>">
-		  <% docs_for_menu(position).each do |section| %>
-                    <dt><%= section['name'] %></dt>
-                    <% finished_documents(section['documents']).each do |document| %>
-                      <dd><a href="<%= document['url'] %>"><%= document['name'] %></a></dd>
-                    <% end %>
-		  <% end %>
-		</dl>
-              <% end %>
+              <div class='guides-scroll'>
+		<% ['L', 'R'].each do |position| %>
+		  <dl class="<%= position %>">
+		    <% docs_for_menu(position).each do |section| %>
+                      <dt><%= section['name'] %></dt>
+                      <% finished_documents(section['documents']).each do |document| %>
+			<dd><a href="<%= document['url'] %>"><%= document['name'] %></a></dd>
+                      <% end %>
+		    <% end %>
+		  </dl>
+		<% end %>
               </div>
             </div>
           </li>
@@ -136,30 +136,39 @@
     <hr class="hide" />
 
     <% if yield(:i_am_top).present? %>
-      <div id="feature" class="top">
+    <div id="feature" class="top">
     <% else %>
-	<div id="feature">
+    <div id="feature">
     <% end %>
-    <div class="wrapper">
-      <%= yield :header_section %>
-      <%= yield :index_section %></div>
-	</div>
+
+      <div class="wrapper">
+	<%= yield :header_section %>
+	<%= yield :index_section %>
+      </div>
+    </div>
 
 	<div id="container">
 	  <div class="wrapper">
 	    <div id="mainCol">
-        <%= yield.html_safe %>
-        <%= yield :references %>
+	      <!-- Announce    -->
+	      <div class="announce">
+		<h6>📜 お知らせ: <a href="https://note.com/yasslab/n/n4afda49ed786">Ralsガイドが Carbon Ads for Open Source の対象</a>になりました</h6>
+	      </div>
 
-        <h3 id="pr" class="section" style="padding-top: 30px;"><a href="#pr">[PR] Railsガイドを、もっと便利に。</a></h3>
-        <p>Railsガイドをもっと便利に使えるサービスをリリースしました! 本サービスで得られた売上はRailsガイドを継続的に更新・運営するために活用させていただきます。よければぜひご検討ください ;)</p>
-        <div class="bnr-pro-team">
-          <a href="https://railsguides.jp/pro"><img alt="Proプラン" src="/images/bnr_pro.jpg"/></a>
-          <a href="https://railsguides.jp/team"><img alt="Teamプラン" src="/images/bnr_team.jpg"/></a>
-        </div>
+	      <!-- Carbon Ads  -->
+	      <script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?serve=CE7ITK7L&placement=railsguidesjp" id="_carbonads_js"></script>
+	      
+              <%= yield.html_safe %>
+              <%= yield :references %>
 
-        <% unless yield(:hide_feedback).present? %>
+              <h3 id="pr" class="section" style="padding-top: 30px;"><a href="#pr">[PR] Railsガイドを、もっと便利に。</a></h3>
+              <p>Railsガイドをもっと便利に使えるサービスをリリースしました! 本サービスで得られた売上はRailsガイドを継続的に更新・運営するために活用させていただきます。よければぜひご検討ください ;)</p>
+              <div class="bnr-pro-team">
+		<a href="https://railsguides.jp/pro"><img alt="Proプラン" src="/images/bnr_pro.jpg"/></a>
+		<a href="https://railsguides.jp/team"><img alt="Teamプラン" src="/images/bnr_team.jpg"/></a>
+              </div>
 
+              <% unless yield(:hide_feedback).present? %>
 		<h3 id="feedback" class="section" style="padding-top: 30px;"><a href="#feedback">フィードバックについて</a></h3>
 		<p>
 		  Railsガイドは GitHub の <%= link_to 'yasslab/railsguides.jp', 'https://github.com/yasslab/railsguides.jp' %> で管理・公開されております。本ガイドを読んで気になる文章や間違ったコードを見かけたら、上記リポジトリにてお気軽に <%= link_to 'Pull Request', 'https://github.com/yasslab/railsguides.jp/pulls' %> を出して頂けると嬉しいです。Pull Request の送り方については <%= link_to 'GitHub の README', 'https://github.com/yasslab/railsguides.jp#%E7%BF%BB%E8%A8%B3%E3%81%AE%E6%B5%81%E3%82%8C'%> をご参照ください。
@@ -185,11 +194,11 @@
               <% end %>
 
 	      <ol class="snsb" style="margin-left: 0px; padding-top: 50px;">
-		  <li><div class="fb-like" data-href="https://railsguides.jp/" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true"></div></li>
-		  <li><a href="https://twitter.com/share" class="twitter-share-button" data-url="https://railsguides.jp/" data-text="Ruby on Rails ガイド：体系的に Rails を学ぼう" data-lang="ja" data-hashtags="Railsガイド" data-via="RailsGuidesJP" width="100">Tweet</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script></li>
-		  <li><a href="https://b.hatena.ne.jp/entry/s/railsguides.jp" class="hatena-bookmark-button" data-hatena-bookmark-title="Ruby on Rails ガイド：体系的に Rails を学ぼう" data-hatena-bookmark-layout="simple-balloon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script></li>
-		  <li><a class="github-button" href="https://github.com/yasslab/railsguides.jp" data-icon="octicon-star" data-show-count="true" aria-label="Star yasslab/railsguides.jp on GitHub">Star</a></li>
-		</ol>
+		<li><div class="fb-like" data-href="https://railsguides.jp/" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true"></div></li>
+		<li><a href="https://twitter.com/share" class="twitter-share-button" data-url="https://railsguides.jp/" data-text="Ruby on Rails ガイド：体系的に Rails を学ぼう" data-lang="ja" data-hashtags="Railsガイド" data-via="RailsGuidesJP" width="100">Tweet</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script></li>
+		<li><a href="https://b.hatena.ne.jp/entry/s/railsguides.jp" class="hatena-bookmark-button" data-hatena-bookmark-title="Ruby on Rails ガイド：体系的に Rails を学ぼう" data-hatena-bookmark-layout="simple-balloon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script></li>
+		<li><a class="github-button" href="https://github.com/yasslab/railsguides.jp" data-icon="octicon-star" data-show-count="true" aria-label="Star yasslab/railsguides.jp on GitHub">Star</a></li>
+	      </ol>
 	    </div><!--//mainCol-->
 	  </div><!--//wrapper-->
 	</div><!--//container-->
