@@ -835,27 +835,13 @@ div.code_container {
   -webkit-border-radius: 1em;
   -moz-border-radius: 1em;
   width: 220px;
-}
-
-#subCol .ebook-button:active {
-  box-shadow: -2px 1px 13px 2px rgba(0,0,0,0.4) inset;
-}
-
-#subCol .ebook-button:hover {
-  cursor: pointer;
-}
-
-@media screen and (max-width: 920px) {
-  #subCol .ebook {
+  @media screen and (max-width: 920px) {
     width: 100%;
     margin: 0px;
     float: left;
     position: absolute;
   }
-}
-
-@media screen and (max-width: 480px) {
-  #subCol .ebook {
+  @media screen and (max-width: 480px) {
     border: none;
     border-radius: 0;
     -webkit-border-radius: 0;
@@ -865,17 +851,24 @@ div.code_container {
     float: none;
     background-color: transparent;
   }
+  img{
+    box-shadow: 0px 6px 10px 0px rgba(0,0,0,0.4);
+    border-right: double 4px #B2231F;
+    width: 180px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    display: block;
+  }
 }
 
-#subCol .ebook img{
-  box-shadow: 0px 6px 10px 0px rgba(0,0,0,0.4);
-  border-right: double 4px #B2231F;
-  width: 180px;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 20px;
-  display: block;
+#subCol .ebook-button:active {
+  box-shadow: -2px 1px 13px 2px rgba(0,0,0,0.4) inset;
+}
+
+#subCol .ebook-button:hover {
+  cursor: pointer;
 }
 #subCol #ebook-ribbon {
   width: 100px;
