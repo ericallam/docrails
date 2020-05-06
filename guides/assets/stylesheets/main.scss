@@ -641,24 +641,24 @@ h6 {
   }
 }
 
-#feature p {
-  font-size: 1.2857em;
-  margin-bottom: 0.75em;
-}
-
-@media screen and (max-width: 480px) {
-  #feature p {
-    font-size: 1em;
+#feature {
+  p {
+    font-size: 1.2857em;
+    margin-bottom: 0.75em;
+    @media screen and (max-width: 480px) {
+      font-size: 1em;
+    }
   }
-}
-
-#feature ul {margin-left: 0;}
-#feature ul li {
-  list-style: none;
-  background: url(../images/check_bullet.gif) no-repeat left 0.5em;
-  padding: 0.5em 1.75em 0.5em 1.75em;
-  font-size: 1.1428em;
-  font-weight: bold;
+  ul {
+    margin-left: 0;
+    li {
+      list-style: none;
+      background: url(../images/check_bullet.gif) no-repeat left 0.5em;
+      padding: 0.5em 1.75em 0.5em 1.75em;
+      font-size: 1.1428em;
+      font-weight: bold;
+    }
+  }
 }
 
 #mainCol dd, #subCol dd {
