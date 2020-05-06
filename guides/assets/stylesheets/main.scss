@@ -394,14 +394,17 @@ aside#toppage {
 --------------------------------------- */
 
 a, a:link, a:visited {
-  color: #ee3f3f;
+  color: $main-dark;
   text-decoration: underline;
 }
+a:hover {
+  color: $main-light;
+}
 
-#mainCol a, #subCol a, #feature a {color: #980905;}
-#mainCol a code, #subCol a code, #feature a code {color: #980905;}
+#mainCol a, #subCol a, #feature a {color: $main-dark;}
+#mainCol a code, #subCol a code, #feature a code {color: $main-dark;}
 
-#mainCol a.anchorlink, #mainCol a.anchorlink code {color: #333;}
+#mainCol a.anchorlink, #mainCol a.anchorlink code {color: $gray-dark;}
 #mainCol a.anchorlink { text-decoration: none; }
 #mainCol a.anchorlink:hover { text-decoration: underline; }
 
