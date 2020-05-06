@@ -565,21 +565,9 @@ h3 {
   font-size: 1.7142em;
   line-height: 1.286em;
   margin: 0.875em 0 0.2916em;
-  font-weight: bold;
-}
-
-h3 a {
-  color: #333 !important;
-  background: none !important;
-  text-decoration: none !important;
-}
-
-h3 a:hover {
-  text-decoration: underline !important;
-}
-
-h3 code {
-  color: #333 !important;
+  a {
+    background: none !important;
+  }
 }
 
 @media screen and (max-width: 480px) {
@@ -592,60 +580,29 @@ h4 {
   font-size: 1.2857em;
   line-height: 1.2em;
   margin: 1.6667em 0 .3887em;
-  font-weight: bold;
 }
 
-h4 a {
+h3 a, h4 a, h5 a, h6 a {
   color: #333 !important;
   text-decoration: none !important;
+  &:hover {
+    text-decoration: underline !important;
+  }
 }
-
-h4 a:hover {
-  text-decoration: underline !important;
-}
-
-h4 code {
+h3 code, h4 code, h5 code, h6 code {
   color: #333 !important;
 }
 
-h5 {
+h5, h6 {
   font-size: 1em;
   line-height: 1.5em;
   margin: 1em 0 .5em;
+}
+h3, h4, h5 {
   font-weight: bold;
 }
-
-h5 a {
-  color: #333 !important;
-  text-decoration: none !important;
-}
-
-h5 a:hover {
-  text-decoration: underline !important;
-}
-
-h5 code {
-  color: #333 !important;
-}
-
 h6 {
-  font-size: 1em;
-  line-height: 1.5em;
-  margin: 1em 0 .5em;
   font-weight: normal;
-}
-
-h6 a {
-  color: #333 !important;
-  text-decoration: none !important;
-}
-
-h6 a:hover {
-  text-decoration: underline !important;
-}
-
-h6 code {
-  color: #333 !important;
 }
 
 .section {
