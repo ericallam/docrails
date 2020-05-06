@@ -105,7 +105,7 @@ pre, code {
   line-height: 1.5;
   margin: 1.5em 0;
   overflow: auto;
-  color: #222;
+  color: $black;
 }
 pre, tt, code {
  white-space: pre-wrap;       /* css-3 */
@@ -167,7 +167,7 @@ body {
   font-size: 87.5%;
   line-height: 1.8em; // Changed for better reading in Japanese
   background: #fff;
-  color: #999;
+  color: $gray-light;
 }
 
 .wrapper {
@@ -297,7 +297,7 @@ body {
 
 #feature {
   background: #d5e9f6 url(../images/feature_tile.gif) repeat-x;
-  color: #333;
+  color: $gray-dark;
   padding: 0.5em 0 1.5em;
 }
 #feature.top {
@@ -306,7 +306,7 @@ body {
 
 #container {
   overflow: hidden;
-  color: #333;
+  color: $gray-dark;
   padding: 0.5em 0 1.0em 0;
 }
 
@@ -393,14 +393,17 @@ aside#toppage {
 --------------------------------------- */
 
 a, a:link, a:visited {
-  color: #ee3f3f;
+  color: $main-dark;
   text-decoration: underline;
 }
+a:hover {
+  color: $main-light;
+}
 
-#mainCol a, #subCol a, #feature a {color: #980905;}
-#mainCol a code, #subCol a code, #feature a code {color: #980905;}
+#mainCol a, #subCol a, #feature a {color: $main-dark;}
+#mainCol a code, #subCol a code, #feature a code {color: $main-dark;}
 
-#mainCol a.anchorlink, #mainCol a.anchorlink code {color: #333;}
+#mainCol a.anchorlink, #mainCol a.anchorlink code {color: $gray-dark;}
 #mainCol a.anchorlink { text-decoration: none; }
 #mainCol a.anchorlink:hover { text-decoration: underline; }
 
@@ -584,14 +587,14 @@ h4 {
 }
 
 h3 a, h4 a, h5 a, h6 a {
-  color: #333 !important;
+  color: $gray-dark !important;
   text-decoration: none !important;
   &:hover {
     text-decoration: underline !important;
   }
 }
 h3 code, h4 code, h5 code, h6 code {
-  color: #333 !important;
+  color: $gray-dark !important;
 }
 
 h5, h6 {
@@ -618,7 +621,7 @@ h6 {
   margin: 0 2em 2em 0;
 }
 
-#topNav strong {color: #999; margin-right: 0.5em;}
+#topNav strong {color: $gray-light; margin-right: 0.5em;}
 #topNav strong a {color: #FFF;}
 
 #header h1 {
@@ -710,7 +713,6 @@ h6 {
 }
 
 #subCol .chapters {
-  color: #980905;
   a {font-weight: bold;}
   li {margin-bottom: 0.75em;}
   ul {
