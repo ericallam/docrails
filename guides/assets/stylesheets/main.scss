@@ -413,10 +413,9 @@ a, a:link, a:visited {
   float: right;
   margin-top: 1.5em;
   font-size: 1.2857em;
+  .nav-item {color: #FFF; text-decoration: none;}
+  .nav-item:hover {text-decoration: underline;}
 }
-
-.nav .nav-item {color: #FFF; text-decoration: none;}
-.nav .nav-item:hover {text-decoration: underline;}
 
 .guides-index-large, .guides-index-small .guides-index-item {
   padding: 0.5em 1.5em;
@@ -461,16 +460,16 @@ a, a:link, a:visited {
     float: none;
     width: 100%;
     text-align: center;
-  }
-  .nav .nav-item {
-    display: block;
-    margin: 0;
-    width: 100%;
-    background-color: #980905;
-    border: solid 1px #620c04;
-    border-top: 0;
-    padding: 15px 0;
-    text-align: center;
+    .nav-item {
+      display: block;
+      margin: 0;
+      width: 100%;
+      background-color: #980905;
+      border: solid 1px #620c04;
+      border-top: 0;
+      padding: 15px 0;
+      text-align: center;
+    }
   }
   .nav .nav-item, .nav-item.guides-index-item {
     text-transform: uppercase;
