@@ -51,21 +51,21 @@
 
 .sitemap{
   margin-left: 13px;
-}
-.sitemap .L, .sitemap .C, .sitemap .R {
-  float: left;
-  width: 33%;
-  margin: 0;
-  padding: 0;
-}
-@media screen and (max-width: 880px) {
-  .sitemap .L, .sitemap .C, .sitemap .R { width: 50%; }
-}
-@media screen and (max-width: 480px) {
-  .sitemap .L, .sitemap .C, .sitemap .R { width: 100%; }
-}
-.sitemap dl dt {
-  margin-top: 10px;
+  .L, .C, .R {
+    float: left;
+    width: 33%;
+    margin: 0;
+    padding: 0;
+    @media screen and (max-width: 880px) {
+      width: 50%;
+    }
+    @media screen and (max-width: 480px) {
+      width: 100%;
+    }
+  }
+  dl dt {
+    margin-top: 10px;
+  }
 }
 
 .trademark {
