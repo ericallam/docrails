@@ -388,7 +388,7 @@ config.load_defaults "6.0"
 config.autoloader = :classic
 ```
 
-Rails 6アプリケーションでclassicオートローダーを使う場合は、Webサーバーやバックグラウンド処理におけるスレッド安全性上の懸念がありますので、development環境でconcurrency levelを1に設定することをおすすめします。
+Rails 6アプリケーションでclassicオートローダーを使う場合は、スレッド安全性上の懸念があるため、development環境ではWebサーバーやバックグラウンド処理のconcurrency levelを1に設定することをおすすめします。
 
 ### Active Storageの代入の振る舞いの変更
 
