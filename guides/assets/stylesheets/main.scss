@@ -628,18 +628,17 @@ h6 {
   text-indent: -9999em;
   margin: 8px 0 -8px;
   padding: 0;
+  a {
+    text-decoration: none;
+    display: block;
+    height: 77px;
+  }
 }
 
 @media screen and (max-width: 480px) {
   #header h1 {
     float: none;
   }
-}
-
-#header h1 a {
-  text-decoration: none;
-  display: block;
-  height: 77px;
 }
 
 #feature p {
