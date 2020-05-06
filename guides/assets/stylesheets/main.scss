@@ -708,22 +708,25 @@ h6 {
   margin-top: 0.25em;
 }
 
-#subCol .chapters {color: #980905;}
-#subCol .chapters a {font-weight: bold;}
-#subCol .chapters ul a {font-weight: normal;}
-#subCol .chapters li {margin-bottom: 0.75em;}
+#subCol .chapters {
+  color: #980905;
+  a {font-weight: bold;}
+  li {margin-bottom: 0.75em;}
+  ul {
+    margin-left: 0; margin-top: 0.5em;
+    a {font-weight: normal;}
+    li {
+      list-style: none;
+      padding: 0 0 0 1em;
+      background: url(../images/bullet.gif) no-repeat left 0.45em;
+      margin-left: 0;
+      font-size: 1em;
+      font-weight: normal;
+    }
+  }
+}
 #subCol h3.chapter {margin-top: 0.25em;}
 #subCol h3.chapter img {vertical-align: text-bottom;}
-#subCol .chapters ul {margin-left: 0; margin-top: 0.5em;}
-#subCol .chapters ul li {
-  list-style: none;
-  padding: 0 0 0 1em;
-  background: url(../images/bullet.gif) no-repeat left 0.45em;
-  margin-left: 0;
-  font-size: 1em;
-  font-weight: normal;
-}
-
 #subCol li ul, li ol { margin:0 1.5em; }
 
 div.code_container {
