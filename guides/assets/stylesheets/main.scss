@@ -17,7 +17,7 @@
     // height: 18px;
     width: auto;
     border-radius: 70px;
-    background: #5280dd;
+    background: $blue;
     word-wrap: break-word;
     border: one;
     -webkit-appearance: none;
@@ -32,7 +32,7 @@
         color: #fff !important;
         text-decoration: underline !important;
         &:hover {
-            color: #eee !important;
+            color: $gray-lighter !important;
         }
     }
 }
