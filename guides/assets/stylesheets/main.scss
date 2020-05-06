@@ -13,13 +13,11 @@
 
 .announce {
     margin: 0px 0px 20px 0px;
-    padding: 0.001em 10px 0.001em 10px;
-    // height: 18px;
+    padding: 4px 10px 4px 10px;
     width: auto;
-    border-radius: 70px;
-    background: #5280dd;
+    border-radius: 5px;
+    background: $blue;
     word-wrap: break-word;
-    border: one;
     -webkit-appearance: none;
     h6 {
       color: #fff;
@@ -27,12 +25,13 @@
       font-size: .875em;
       text-align:  left;
       word-wrap: break-word;
+      margin: 4px 0;
     }
     a {
         color: #fff !important;
         text-decoration: underline !important;
         &:hover {
-            color: #eee !important;
+            color: $gray-lighter !important;
         }
     }
 }
