@@ -1,3 +1,5 @@
+---
+---
 /* Guides.rubyonrails.org */
 /* Main.css */
 /* Created January 30, 2009 */
@@ -1233,13 +1235,13 @@ table td, table th { padding: 9px 10px; text-align: left; }
 }
 /* banner
 --------------------------------------- */
-.bnr-pro-team { 
+.bnr-pro-team {
   display:flex;
   justify-content:space-between;
 }
 @media screen and (max-width: 630px) {
   .bnr-pro-team {
-    flex-direction:column; 
+    flex-direction:column;
   }
 }
 .bnr-pro-team img {
@@ -1249,4 +1251,3 @@ table td, table th { padding: 9px 10px; text-align: left; }
 .bnr-pro-team img:hover {
     opacity: 0.8;
 }
-
