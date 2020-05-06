@@ -373,10 +373,10 @@ aside#toppage {
 #footer {
   padding: 2em 0;
   background: #222 url(../images/footer_tile.gif) repeat-x;
-}
-#footer .wrapper {
-  padding-left: 1em;
-  max-width: 960px;
+  .wrapper {
+    padding-left: 1em;
+    max-width: 960px;
+  }
 }
 
 #header .wrapper, #topNav .wrapper, #feature .wrapper {
