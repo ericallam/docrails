@@ -12,34 +12,28 @@
 .announce {
     margin: 0px 0px 20px 0px;
     padding: 0.001em 10px 0.001em 10px;
-//    height: 18px;
+    // height: 18px;
     width: auto;
     border-radius: 70px;
     background: #5280dd;
     word-wrap: break-word;
     border: one;
     -webkit-appearance: none;
+    h6 {
+      color: #fff;
+      font-family: Helvetica, sans-serif;
+      font-size: .875em;
+      text-align:  left;
+      word-wrap: break-word;
+    }
+    a {
+        color: #fff !important;
+        text-decoration: underline !important;
+        &:hover {
+            color: #eee !important;
+        }
+    }
 }
-.announce h6 {
-
-    color: #fff;
-    font-family: Helvetica, sans-serif;
-    font-size: .875em;
-    text-align:  left;
-    word-wrap: break-word;
-}
-.announce a {
-    color: #fff !important;
-    text-decoration: underline !important;
-}
-.announce a {
-    color: #fff !important;
-    text-decoration: underline !important;
-}
-.announce a:hover {
-    color: #eee !important;
-}
-
 .snsb {
     overflow: hidden;
     clear: left;
