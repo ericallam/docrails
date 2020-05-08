@@ -164,8 +164,12 @@
               <h3 id="pr" class="section" style="padding-top: 30px;"><a href="#pr">[PR] Railsガイドを、もっと便利に。</a></h3>
               <p>Railsガイドをもっと便利に使えるサービスをリリースしました! 本サービスで得られた売上はRailsガイドを継続的に更新・運営するために活用させていただきます。よければぜひご検討ください ;)</p>
               <div class="bnr-pro-team">
-		<a href="https://railsguides.jp/pro"><img alt="Proプラン" src="/images/bnr_pro.jpg"/></a>
-		<a href="https://railsguides.jp/team"><img alt="Teamプラン" src="/images/bnr_team.jpg"/></a>
+                <div class="bnr-item">
+              		<a href="https://railsguides.jp/pro"><img alt="Proプラン" src="/images/bnr_pro.jpg"/></a>
+                </div>
+                <div class="bnr-item">
+              		<a href="https://railsguides.jp/team"><img alt="Teamプラン" src="/images/bnr_team.jpg"/></a>
+                </div>
               </div>
 
               <% unless yield(:hide_feedback).present? %>
@@ -188,9 +192,14 @@
 		<p>
 		  Railsガイドは下記のサポーターから継続的な支援を受けています。Railsガイドへの支援・協賛にご興味あれば info@yasslab.jp までお問い合わせください。
 		</p>
-		<ol class="snsb" style="margin-left: 0px;">
-		  <li style="padding-left: 30px;"><a href="https://www.carbonads.net/open-source?utm_source=railsguide&utm_medium=banner&utm_campaign=supporter" target="_blank" rel="noopener"><img height="72px" alt="Advertising For Open Source Projects | Carbon Ads" src="/images/logos/carbon.svg"/></a></li>
-		</ol>
+		<div class="footer-bnr">
+  		<div class="bnr-item">
+    		<a href="https://www.carbonads.net/open-source?utm_source=railsguide&utm_medium=banner&utm_campaign=supporter" target="_blank" rel="noopener"><img class="border" alt="Advertising For Open Source Projects | Carbon Ads" src="/images/logos/carbon.gif"/></a>
+  		</div>
+  		<div class="bnr-item">
+    		<a href="#" target="_blank" rel="noopener"><img alt="協賛募集" src="/images/logos/bnr-kyosan.gif"/></a>
+  		</div>
+		</div>
               <% end %>
 
 	      <ol class="snsb" style="margin-left: 0px; padding-top: 50px;">
