@@ -1103,9 +1103,11 @@ table td, table th { padding: 9px 10px; text-align: left; }
 .bnr-pro-team,.footer-bnr {
   display:flex;
   justify-content:space-between;
+  .bnr-item {
+    padding: 10px;
+  }
   img {
     max-width: 100%;
-    border:5px solid #fff;
     &:hover {
       opacity: 0.8;
     }
@@ -1117,6 +1119,6 @@ table td, table th { padding: 9px 10px; text-align: left; }
   }
 }
 .footer-bnr img.border {
-  border:1px solid #cc0000;
+  border:1px solid #e8e8e8;
   box-sizing: border-box;
 }
