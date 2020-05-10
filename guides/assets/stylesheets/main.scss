@@ -373,10 +373,13 @@ aside#toppage {
 
 #footer {
   padding: 2em 0;
-  background: #222 url(../images/footer_tile.gif) repeat-x;
+  background-color: $black;
   .wrapper {
     padding-left: 1em;
     max-width: 960px;
+  }
+  a {
+    color: $main-vivid;
   }
 }
 
