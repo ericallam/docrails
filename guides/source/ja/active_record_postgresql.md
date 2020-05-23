@@ -365,7 +365,7 @@ user.save!
 
 * [型の定義](https://www.postgresql.jp/document/current/html/datatype-net-types.html)
 
-この型である`idet`や`cdir`は、[`IPAddr`](https://docs.ruby-lang.org/ja/latest/class/IPAddr.html)オブジェクトにマッピングされます。`macaddr`型は通常のテキストにマッピングされます。
+この型である`inet`や`cidr`は、[`IPAddr`](https://docs.ruby-lang.org/ja/latest/class/IPAddr.html)オブジェクトにマッピングされます。`macaddr`型は通常のテキストにマッピングされます。
 
 ```ruby
 # db/migrate/20140508144913_create_devices.rb
