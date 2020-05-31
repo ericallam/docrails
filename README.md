@@ -4,14 +4,13 @@
 
 ## 『Railsガイド』とは？
 
-『Railsガイド』は [Ruby on Rails Guides](http://guides.rubyonrails.org/) の[公式の日本語版](https://guides.rubyonrails.org/contributing_to_ruby_on_rails.html#translating-rails-guides)です。   
-Rails の各機能の仕組みや最新の機能、リリース情報などがまとまっています。
+『Railsガイド』は [Ruby on Rails Guides](https://guides.rubyonrails.org/) に基づいた大型リファレンスガイドです。   
+Railsの各機能を体系的に学び、プロダクト開発の生産性を高めたいときに役立ちます。
 
 Ruby on Rails ガイド   
 https://railsguides.jp/
 
 これから Rails を勉強する方は『Railsチュートリアル』がオススメです。   
-Railsガイドと同様に、『Railsチュートリアル』もWeb版は無料で読めます :)
 
 Ruby on Rails チュートリアル：実例を使ってRailsを学ぼう   
 https://railstutorial.jp/
