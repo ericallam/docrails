@@ -272,7 +272,7 @@ end
 @message.images.attach(params[:images])
 ```
 
-あるメッセージに何らかの画像がアタッチされているかどうかを調べるには、`image.attached?`を呼び出します。
+あるメッセージに何らかの画像がアタッチされているかどうかを調べるには、`images.attached?`を呼び出します。
 
 ```ruby
 @message.images.attached?
