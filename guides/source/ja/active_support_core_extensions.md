@@ -80,7 +80,7 @@ require 'active_support/all'
 
 ただし、これを実行してもActive Support全体がメモリに読み込まれるわけではないことにご注意ください。一部は`autoload`として設定されており、実際に使うまで読み込まれません。
 
-### Ruby on RailsアプリケーションでActive Supportを使う
+### Ruby on RailsアプリケーションにおけるActive Support
 
 Ruby on Railsアプリケーションでは、基本的にすべてのActive Supportを読み込みます。例外は`config.active_support.bare`を`true`に設定した場合です。このオプションを`true`にすると、フレームワーク自体が必要とするまでアプリケーションは拡張機能を読み込みません。また上で解説したように、読み込まれる拡張機能はあらゆる粒度で選択されます。
 
