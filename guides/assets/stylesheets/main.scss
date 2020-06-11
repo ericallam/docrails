@@ -12,28 +12,21 @@
 @import "color";
 
 .announce {
-    margin: 0px 0px 20px 0px;
-    padding: 4px 10px 4px 10px;
-    width: auto;
-    border-radius: 5px;
-    background: $blue;
+  margin: 0px 0px 20px 0px;
+  padding: 4px 10px 4px 10px;
+  width: auto;
+  border-radius: 5px;
+  background: $blue;
+  word-wrap: break-word;
+  -webkit-appearance: none;
+  h6 {
+    color: #fff;
+    font-family: Helvetica, sans-serif;
+    font-size: .875em;
+    text-align:  left;
     word-wrap: break-word;
-    -webkit-appearance: none;
-    h6 {
-      color: #fff;
-      font-family: Helvetica, sans-serif;
-      font-size: .875em;
-      text-align:  left;
-      word-wrap: break-word;
-      margin: 4px 0;
-    }
-    a {
-        color: #fff !important;
-        text-decoration: underline !important;
-        &:hover {
-            color: $gray-lighter !important;
-        }
-    }
+    margin: 4px 0;
+  }
 }
 .snsb {
     overflow: hidden;
@@ -395,7 +388,7 @@ aside#toppage {
 /* Links
 --------------------------------------- */
 
-a, a:link, a:visited {
+a, a code {
   color: $main-dark;
   text-decoration: underline;
 }
@@ -403,12 +396,32 @@ a:hover {
   color: $main-light;
 }
 
-#mainCol a, #subCol a, #feature a {color: $main-dark;}
-#mainCol a code, #subCol a code, #feature a code {color: $main-dark;}
+#mainCol .anchorlink, #mainCol .anchorlink code {color: $gray-dark;}
+#mainCol .anchorlink { text-decoration: none; }
+#mainCol .anchorlink:hover { text-decoration: underline; }
 
-#mainCol a.anchorlink, #mainCol a.anchorlink code {color: $gray-dark;}
-#mainCol a.anchorlink { text-decoration: none; }
-#mainCol a.anchorlink:hover { text-decoration: underline; }
+//トップお知らせ
+.announce a {
+  color: #fff;
+  text-decoration: underline;
+  &:hover {
+    color: $gray-lighter;
+  }
+}
+//目次
+#guides a {
+  color: #fff;
+  text-decoration: none;
+  &:hover {text-decoration: underline;}
+}
+
+h3 a, h4 a, h5 a, h6 a {
+  color: $gray-dark;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+}
 
 /* Navigation
 --------------------------------------- */
@@ -528,12 +541,7 @@ a:hover {
     padding: 0;
   }
   dt {padding:0; margin: 0.5em 0 0;}
-  a {
-    color: #FFF;
-    background: none !important;
-    text-decoration: none;
-    &:hover {text-decoration: underline;}
-  }
+
   .L, .R {float: left; width: 50%; margin: 0; padding: 0;}
   .R {float: right;}
   hr {
@@ -589,13 +597,6 @@ h4 {
   margin: 1.6667em 0 .3887em;
 }
 
-h3 a, h4 a, h5 a, h6 a {
-  color: $gray-dark !important;
-  text-decoration: none !important;
-  &:hover {
-    text-decoration: underline !important;
-  }
-}
 h3 code, h4 code, h5 code, h6 code {
   color: $gray-dark !important;
 }
