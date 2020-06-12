@@ -96,9 +96,11 @@ pre, code {
   font-size: 1em;
   font-family: "Anonymous Pro", "Inconsolata", "Menlo", "Consolas", "Bitstream Vera Sans Mono", "Courier New", monospace;
   line-height: 1.5;
-  margin: 1.5em 0;
   overflow: auto;
   color: $black;
+}
+pre {
+  margin: 1em 0;
 }
 pre, tt, code {
  white-space: pre-wrap;       /* css-3 */
@@ -736,10 +738,6 @@ h6 {
 #subCol h3.chapter img {vertical-align: text-bottom;}
 #subCol li ul, li ol { margin:0 1.5em; }
 
-div.code_container {
-  background: #EEE url(../images/tab_grey.gif) no-repeat left top;
-  padding: 0.25em 1em 0.5em 48px;
-}
 
 .note {
   background: #fff9d8 url(../images/tab_note.gif) no-repeat left top;
@@ -1125,4 +1123,19 @@ table td, table th { padding: 9px 10px; text-align: left; }
 .footer-bnr img.border {
   border:1px solid #e8e8e8;
   box-sizing: border-box;
+}
+
+/* code block style */
+code {
+  background-color: $gray-lighter;
+  border-radius: 2px;
+  padding: 1px 0.3em;
+  margin: 0 0.2em;
+}
+
+.code_container {
+  background: $code-bg;
+  padding: 0 1em;
+  border-radius: 5px;
+  border: solid $gray-lighter 2px;
 }
