@@ -56,14 +56,14 @@ module RailsGuides
 
           @index = <<-INDEX.html_safe
           <div id="subCol">
-            <h3 class="chapter"><img src="images/chapters_icon.gif" alt="" />目次</h3>
+            <h3 class="chapter">目次</h3>
             #{@index}
             <aside id="toppage">
               <div>
                 <a href="https://railsguides.jp/pro"><img src="images/bnr-pro-plan.jpg" alt="RailsガイドProプラン" class="bnr-proplan" /></a>
               </div>
               <div style="margin-bottom: 10px;">
-                <a href="https://twitter.com/search?f=tweets&q=%20%23Rails%E3%82%AC%E3%82%A4%E3%83%89&src=typd&lang=ja" target="_blank" title="twitterへのリンク"><img src="images/btn-twitter.png" alt="みんなのつぶやき Railsガイド" /></a>
+                <a href="https://twitter.com/search?f=tweets&q=%20%23Rails%E3%82%AC%E3%82%A4%E3%83%89&src=typd&lang=ja" target="_blank" title="twitterへのリンク" rel="noopener"><img src="images/btn-twitter.png" alt="みんなのつぶやき Railsガイド" /></a>
               </div>
               <ol class="snsb" style="margin-left: 0; margin-right: 0;">
                 <li><a class="twitter-share-button" href="https://twitter.com/intent/tweet" data-hashtags="Railsガイド" data-via="RailsGuidesJP" data-related="RailsGuidesJP,YassLab" data-size="large" lang="ja"></a></li>
