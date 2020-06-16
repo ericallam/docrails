@@ -793,7 +793,7 @@ get '/stories', to: redirect('/articles')
 ```
 
 パスにマッチする動的セグメントを再利用してリダイレクトすることもできます。
-使うと
+
 ```ruby
 get '/stories/:name', to: redirect('/articles/%{name}')
 ```
