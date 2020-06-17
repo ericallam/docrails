@@ -60,8 +60,10 @@ module RailsGuides
             #{@index}
             <aside id="toppage">
               <div>
-                <a href="https://railsguides.jp/pro"><img src="images/bnr-pro-plan.jpg" alt="RailsガイドProプラン" class="bnr-proplan" /></a>
+                <a href="https://railsguides.jp/ebook"><img src="images/ebook_cover.png" alt="Railsガイド電子書籍版" class="bnr-proplan" /></a>
+                <!--<a href="https://railsguides.jp/ebook"><img src="images/bnr-pro-plan.jpg" alt="RailsガイドProプラン" class="bnr-proplan" /></a>-->
               </div>
+
               <div style="margin-bottom: 10px;">
                 <a href="https://twitter.com/search?f=tweets&q=%20%23Rails%E3%82%AC%E3%82%A4%E3%83%89&src=typd&lang=ja" target="_blank" title="twitterへのリンク" rel="noopener"><img src="images/btn-twitter.png" alt="みんなのつぶやき Railsガイド" /></a>
               </div>
