@@ -739,18 +739,38 @@ h6 {
 #subCol li ul, li ol { margin:0 1.5em; }
 
 
-.note {
-  background: #fff9d8 url(../images/tab_note.gif) no-repeat left top;
-  border: none;
-  padding: 1em 1em 0.25em 48px;
+@mixin comment-block($maincolor:#666,$lightcolor:#eee, $icon:'') {
+  background: $lightcolor;
+  border-left: 2px solid $maincolor;
+  padding: 1.5em 1em 1em;
   margin: 0.25em 0 1.5em 0;
+  position: relative;
+  &::before {
+    content: $icon;
+    font-weight: 900;
+    font-family: 'Font Awesome 5 Pro';
+    color: #fff;
+    display: block;
+    width: 20px;
+    height: 20px;
+    background: $maincolor;
+    position: absolute;
+    top: 0;
+    left: 0;
+    text-align: center;
+    padding-right: 2px;
+    line-height: 20px;
+    border-radius: 0 0 4px;
+  }
+  p {
+    margin-bottom: 0 !important;
+  }
 }
-
+.note {
+  @include comment-block(#d9a121, $yellow-light, '\f305');
+}
 .info {
-  background: #d5e9f6 url(../images/tab_info.gif) no-repeat left top;
-  border: none;
-  padding: 1em 1em 0.25em 48px;
-  margin: 0.25em 0 1.5em 0;
+  @include comment-block($blue, $blue-light, '\f129');
 }
 
 #mainCol div.todo {
