@@ -1,3 +1,4 @@
+
 #carbonads {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu,
     Cantarell, "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -83,30 +84,4 @@
   .carbon-text:after {
     display: none;
   }
-}
-
-#subCol #carbonads {
-  border: solid 2px #eee;
-  border-radius: 5px;
-  padding: 16px;
-  margin-bottom: 8px;
-}
-#subCol .carbon-wrap {
-  display: block;
-}
-#subCol .carbon-img img {
-  margin: auto;
-  margin-bottom: 8px;
-}
-#subCol .carbon-text {
-  display: block;
-  padding: 0;
-}
-#subCol .carbon-text:after {
-  content: none;
-}
-#subCol .carbon-poweredby {
-  position: static;
-  display: block;
-  margin-top: 4px;
 }

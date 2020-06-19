@@ -60,7 +60,9 @@ module RailsGuides
             #{@index}
             <aside id="toppage">
               <div>
-                <a href="https://railsguides.jp/ebook"><img src="images/ebook_cover.png" alt="Railsガイド電子書籍版" class="bnr-proplan" /></a>
+                <!-- Carbon Ads  -->
+                <script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?serve=CE7ITK7L&placement=railsguidesjp" id="_carbonads_js"></script>
+                <a href="https://railsguides.jp/ebook"><img src="/images/bnr-sidebar-ebook.png" alt="Railsガイド電子書籍版" class="bnr-proplan" /></a>
                 <!--<a href="https://railsguides.jp/ebook"><img src="images/bnr-pro-plan.jpg" alt="RailsガイドProプラン" class="bnr-proplan" /></a>-->
               </div>
 
