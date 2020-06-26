@@ -24,7 +24,7 @@ Railsガイドを読んで、誤字・脱字・誤訳などを見かけました
 
 『[Railsガイド](https://railsguides.jp/)』および『[Rails Guides](https://guides.rubyonrails.org/)』の品質向上に向けて、皆さまのご協力が得られれば嬉しいです ;)
 
-### ブラウザでRailsガイドの修正を提案する
+### ブラウザでRailsガイドの修正を提案する (オススメ)
 
 多分これが一番簡単だと思います...!! 😆
 
@@ -117,20 +117,20 @@ Pull Request を送る前に生成結果を確認したい場合は下記をご�
 
 ## 運営チーム
 
-本リポジトリは Ruby/Rails の開発を支援する [YassLab 株式会社](https://yasslab.jp/ja/) によって制作・運用されております。
+本リポジトリは『創る』『学ぶ』を支援する [YassLab 株式会社](https://yasslab.jp/ja/) によって制作・運用されております。
 
-📣 【PR】YassLab 社では開発支援も承っております。もし興味あればお気軽にご相談ください ;)
+📣 【PR】YassLab 社では法人・チーム向けサービスを提供しています。もし興味あればご相談ください :pray: :sparkling_heart: 
 
 <div>
-  <a href="https://yasslab.jp/ja/agile">
-    <img width="60%" src="https://yasslab.jp/img/team.png"
-         alt="YassLab Images" />
+  <a href="https://yasslab.jp/ja/">
+    <img width="60%" src="/guides/assets/images/yasslab-pr.png"
+         alt="Services for Teams by YassLab Inc." />
   </a>
   <a href="https://yasslab.jp/ja/agile">
     <img width="60%" src="https://yasslab.jp/img/skills.png"
          alt="YassLab Skills" />
   </a>
-  <p>【PR END】詳細：<a href="https://yasslab.jp/ja/agile">Ruby/Rails の開発支援サービス - YassLab 株式会社</a></p>
+  <p>【PR END】詳細：<a href="https://yasslab.jp/ja/">YassLab 株式会社 - Having a Good Life by Creating ;)</a></p>
 </div>
 
 　
