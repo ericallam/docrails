@@ -126,10 +126,6 @@ Pull Request を送る前に生成結果を確認したい場合は下記をご�
     <img width="60%" src="/guides/assets/images/yasslab-pr.png"
          alt="Services for Teams by YassLab Inc." />
   </a>
-  <a href="https://yasslab.jp/ja/agile">
-    <img width="60%" src="https://yasslab.jp/img/skills.png"
-         alt="YassLab Skills" />
-  </a>
   <p>【PR END】詳細：<a href="https://yasslab.jp/ja/">YassLab 株式会社 - Having a Good Life by Creating ;)</a></p>
 </div>
 
