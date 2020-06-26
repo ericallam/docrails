@@ -122,7 +122,7 @@ Pull Request を送る前に生成結果を確認したい場合は下記をご�
 📣 【PR】YassLab 社では法人・チーム向けサービスを提供しています。もし興味あればご相談ください :pray: :sparkling_heart: 
 
 <div>
-  <a href="https://yasslab.jp/ja/">
+  <a href="https://yasslab.jp/ja/#for-team">
     <img width="100%" src="/guides/assets/images/yasslab-pr.png"
          alt="Services for Teams by YassLab Inc." />
   </a>
