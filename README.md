@@ -119,14 +119,14 @@ Pull Request を送る前に生成結果を確認したい場合は下記をご�
 
 本リポジトリは『創る』『学ぶ』を支援する [YassLab 株式会社](https://yasslab.jp/ja/) によって制作・運用されております。
 
-📣 【PR】YassLab 社では法人・チーム向けサービスを提供しています。もし興味あればご相談ください :pray: :sparkling_heart: 
+📣 【PR】YassLab 社では法人・チーム向けサービスを提供しています。興味あればお気軽にご相談ください :pray: :sparkling_heart: 
 
 <div>
   <a href="https://yasslab.jp/ja/#for-team">
     <img width="100%" src="/guides/assets/images/yasslab-pr.png"
          alt="Services for Teams by YassLab Inc." />
   </a>
-  <p>【PR END】詳細：<a href="https://yasslab.jp/ja/">YassLab 株式会社 - Having a Good Life by Creating ;)</a></p>
+  <p>【PR END】詳細：<a href="https://yasslab.jp/ja/#for-team">法人・チーム向けサービス - YassLab 株式会社</a></p>
 </div>
 
 　
