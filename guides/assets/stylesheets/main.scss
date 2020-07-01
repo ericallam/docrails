@@ -665,6 +665,9 @@ h6 {
   }
   ul {
     margin-left: 0;
+    @media screen and (max-width: 920px) {
+      margin-right: 0;
+    }
     li {
       list-style: none;
       padding: 0.5em 1.75em 0.5em 1.75em;
