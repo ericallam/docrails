@@ -11,6 +11,17 @@
 
 @import "color";
 
+.main-description {
+  dt {
+    font-size: 1.3em;
+    background: url(../images/icon-ruby.png) no-repeat;
+    background-size:  35px;
+    padding-left: 40px;
+  }
+  dd {
+    margin: 0 0 20px 40px;
+  }
+}
 .announce {
   margin: 0px 0px 20px 0px;
   padding: 4px 10px 4px 10px;
