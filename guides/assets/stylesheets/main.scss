@@ -166,6 +166,44 @@ img {
   max-width: 100%;
 }
 
+/*基本の赤ボタン*/
+.main-button {
+  display: inline-block;
+  background: #c52f24;
+  padding: 12px 18px;
+  border-radius: 5px;
+  color: #fff;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 5px;
+  margin-top: 0;
+  box-shadow: none;
+  text-decoration: none;
+  border: none;
+  font-size: 1.2em;
+  cursor: pointer;
+  text-align: center;
+}
+.main-button:hover {
+  color: #ffeded;
+  background: #da6258;
+}
+
+/*白背景の赤枠ボタンにするときはmain-buttonのclassをつけた上で white-buttonのclassを追加*/
+.white-button {
+  background: #fff;
+  border:2px solid #c52f24;
+  color: #c52f24;
+}
+
+@media screen and (min-width: 921px) {
+  .top-mainbutton {
+    display: flex;
+    .main-button {
+      margin-right: 10px;
+    }
+  }
+}
 
 /* Structure and Layout
 --------------------------------------- */
