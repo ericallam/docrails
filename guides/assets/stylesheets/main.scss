@@ -183,10 +183,10 @@ img {
   font-size: 1.2em;
   cursor: pointer;
   text-align: center;
-}
-.main-button:hover {
-  color: #ffeded;
-  background: #da6258;
+  &:hover {
+    color: #ffeded;
+    background: #da6258;
+  }
 }
 
 /*白背景の赤枠ボタンにするときはmain-buttonのclassをつけた上で white-buttonのclassを追加*/
