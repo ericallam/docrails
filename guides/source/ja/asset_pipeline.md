@@ -26,15 +26,13 @@
 rails new appname --skip-sprockets
 ```
 
-Railsでは`sass-rails`、`coffee-rails`、`uglifier` gemが自動的にGemfileに追加されます。Sprocketsはアセット圧縮の際にこれらのgemを使用します。
+Railsでは`sass-rails` gemが自動的にGemfileに追加されます。Sprocketsはアセット圧縮の際にこのgemを使用します。
 
 ```ruby
 gem 'sass-rails'
-gem 'uglifier'
-gem 'coffee-rails'
 ```
 
-`--skip-sprockets`オプションを使用すると、Railsで`sass-rails`と`uglifier`がGemfileに追加されなくなります。アセットパイプラインを後から有効にしたい場合は、これらのgemもGemfileに追加する必要があります。同様に、アプリケーション新規作成時に`--skip-sprockets`オプションを指定すると`config/application.rb`ファイルの記述内容がデフォルトから若干異なります。具体的にはsprocket railtieで必要となる記述がコメントアウトされます。アセットパイプラインを手動で有効にする場合は、これらのコメントアウトも解除する必要があります。
+`--skip-sprockets`オプションを使用すると、Railsで`sass-rails`がGemfileに追加されなくなります。アセットパイプラインを後から有効にしたい場合は、このgemもGemfileに追加する必要があります。同様に、アプリケーション新規作成時に`--skip-sprockets`オプションを指定すると`config/application.rb`ファイルの記述内容がデフォルトから若干異なります。具体的にはsprocket railtieで必要となる記述がコメントアウトされます。アセットパイプラインを手動で有効にする場合は、これらのコメントアウトも解除する必要があります。
 
 ```ruby
 # require "sprockets/railtie"
