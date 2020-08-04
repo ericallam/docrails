@@ -355,6 +355,7 @@ body {
   overflow: hidden;
   color: $gray-dark;
   padding: 0.5em 0 1.0em 0;
+  clear: both;
 }
 
 #mainCol {
@@ -440,7 +441,7 @@ aside#toppage {
 #feature .wrapper {max-width: 640px; padding-right: 23em; position: relative; z-index: 0;}
 
 @media screen and (max-width: 920px) {
-  #feature .wrapper { padding-right: 0; }
+  #feature .wrapper { padding-right: 1em; }
 }
 
 /* Links
@@ -875,7 +876,6 @@ h6 {
 
 .top #subCol {
   top: -7px;
-  height: 330px;
   padding: 0;
   border-radius: 1em 1em;
   -webkit-border-radius: 1em;
@@ -884,7 +884,6 @@ h6 {
 
 @media screen and (max-width: 920px) {
   .top #subCol {
-    min-height: 491px;
     margin-right: 6px;
     border-radius: 1em;
     -webkit-border-radius: 1em;
@@ -895,13 +894,15 @@ h6 {
 
 @media screen and (max-width: 480px) {
   .top #subCol {
-    min-height: 722px;
     padding: 0;
-    margin-right: 10px;
+    margin: 0;
   }
 }
 
 @media screen and (max-width: 920px) {
+  .top #subCol {
+    margin: 0;
+  }
   .top #subCol dd.work-in-progress, #subCol dd.kindle {
     margin-left: 215px;
   }
@@ -935,17 +936,15 @@ h6 {
   @media screen and (max-width: 920px) {
     width: 100%;
     margin: 0px;
-    float: left;
-    position: absolute;
+    position: relative;
   }
   @media screen and (max-width: 480px) {
     border: none;
     border-radius: 0;
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
-    margin: 0 auto;
-    width: 100%;
-    float: none;
+    margin: 24px auto;
+    width: 80%;
     background-color: transparent;
   }
   img{
@@ -1017,19 +1016,12 @@ h6 {
 }
 
 #subCol .ebook-button {
-  padding: 10px 10px 10px 0;
   position: relative;
   top: 15px;
   border-radius: 0 0 1em 1em;
   -webkit-border-radius: 0 0 1em 1em;
   -moz-border-radius: 0 0 1em 1em;
   text-align: center;
-  background: #751913;
-  background: -webkit-gradient(linear, left top, left bottom, from(#c52f24), to(#751913));
-  background: -webkit-linear-gradient(top, #c52f24, #751913);
-  background: -moz-linear-gradient(top, #c52f24, #751913);
-  background: -ms-linear-gradient(top, #c52f24, #751913);
-  background: -o-linear-gradient(top, #c52f24, #751913);
   color: #fff;
   clear: both;
   &:hover {
@@ -1046,17 +1038,8 @@ h6 {
       }
   }
   @media screen and (max-width: 480px) {
-    border-radius: 7px;
-    -webkit-border-radius: 7px;
-    -moz-border-radius: 7px;
-    margin: 13px 4px;
+    border-radius: 5px;
     font-size: 18px;
-    background: #751913;
-    background: -webkit-gradient(linear, left top, left bottom, from(#c52f24), to(#751913));
-    background: -webkit-linear-gradient(top, #c52f24, #751913);
-    background: -moz-linear-gradient(top, #c52f24, #751913);
-    background: -ms-linear-gradient(top, #c52f24, #751913);
-    background: -o-linear-gradient(top, #c52f24, #751913);
   }
 }
 
