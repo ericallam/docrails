@@ -73,6 +73,6 @@ end
 
 ## スタイルのカスタマイズ
 
-Action Textエディタとコンテンツのスタイルには、デフォルトではTeixのデフォルトが使われます。これらのデフォルトを変更したい場合は、`app/assets/stylesheets/actiontext.css`リンカーを削除して、[trix.css](https://raw.githubusercontent.com/basecamp/trix/master/dist/trix.css)を元にスタイルを付けます。
+Action Textエディタとコンテンツのスタイルには、デフォルトではTrixのデフォルトが使われます。これらのデフォルトを変更したい場合は、`app/assets/stylesheets/actiontext.css`リンカーを削除して、[trix.css](https://raw.githubusercontent.com/basecamp/trix/master/dist/trix.css)を元にスタイルを付けます。
 
 埋め込み画像やその他の添付ファイル（いわゆるblob）で使われるHTMLにスタイルを付けることもできます。Action Textをインストールすると、パーシャルが`app/views/active_storage/blobs/_blob.html.erb`にコピーされるので、これをカスタマイズできます。
