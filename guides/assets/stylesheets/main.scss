@@ -1214,3 +1214,13 @@ code {
   border-radius: 5px;
   border: solid $gray-lighter 2px;
 }
+
+/* Lazyload with fade animation */
+.lazyload,
+.lazyloading {
+	opacity: 0;
+}
+.lazyloaded {
+	opacity: 1;
+	transition: opacity 300ms;
+}
