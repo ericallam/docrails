@@ -1,3 +1,5 @@
+**DO NOT READ THIS FILE ON GITHUB, GUIDES ARE PUBLISHED ON http://guides.rubyonrails.org.**
+
 Active Record の基礎
 ====================
 
@@ -12,7 +14,6 @@ Active Record の基礎
 * データベースのマイグレーション、バリデーション(検証)、コールバック
 
 --------------------------------------------------------------------------------
-
 
 Active Recordについて
 ----------------------
@@ -53,7 +54,7 @@ Active Recordには、モデルとデータベースのテーブルとのマッ�
 
 | モデル / クラス | テーブル / スキーマ |
 | ------------- | -------------- |
-| `Post`        | `posts`        |
+| `Article`     | `articles`     |
 | `LineItem`    | `line_items`   |
 | `Deer`        | `deers`        |
 | `Mouse`       | `mice`         |
