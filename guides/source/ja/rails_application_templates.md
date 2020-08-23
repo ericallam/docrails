@@ -87,7 +87,7 @@ end
 add_source "http://code.whytheluckystiff.net"
 ```
 
-ブロックを1つ渡すと、ブロック内のgemエントリがそのソースのグロープにラップされます。
+ブロックを1つ渡すと、ブロック内のgemエントリがそのソースのグループにラップされます。
 
 ```ruby
 add_source "http://gems.github.com/" do
