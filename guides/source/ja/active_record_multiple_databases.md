@@ -145,7 +145,7 @@ $ rails g migration CreateDogs name:string --database animals
 
 自動切り替え機能によって、アプリケーションはHTTP verbや直近の書き込みの有無に応じてprimaryからreplica、またはreplicaからprimaryへと切り替えます。
 
-アプリケーションがPOST、PUT、DELETE、PATCHのいずれかのリクエストを受け取ると、自動的にprimaryに書き込みます。書き込み後に指定の時間が経過すると、アプリケーションはprimaryから読み出します。アプリケーションがGETリクエストやHEADリクエストを受け取ると、直近の書き込みがなければreplicaから読み出します。
+アプリケーションがPOST、PUT、DELETE、PATCHのいずれかのリクエストを受け取ると、自動的にprimaryに書き込みます。書き込み後に指定の時間が経過するまでは、アプリケーションはprimaryから読み出します。アプリケーションがGETリクエストやHEADリクエストを受け取ると、直近の書き込みがなければreplicaから読み出します。
 
 コネクション自動切り替えのミドルウェアを有効にするには、アプリケーション設定に以下の行を追加するか、コメントを解除します。
 
