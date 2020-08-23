@@ -335,8 +335,8 @@ CookieStoreには約4KBのデータを保存できます。他のセッション
 別のセッションメカニズムが必要な場合は、イニシャライザを変更することで切り替えられます。
 
 ```ruby
-# デフォルトのcookieベースのセッションに代えてデータベースセッションを
-# 使う場合は、機密情報を保存しないこと。
+# Cookie ベースのデフォルトは特に機密性の高い情報を保存する目的で使うべきではありません。
+# 代わりにデータベースをセッションに使います。
 # (セッションテーブルの作成は"rails g active_record:session_migration"で行なう)
 # Rails.application.config.session_store :active_record_store
 ```
