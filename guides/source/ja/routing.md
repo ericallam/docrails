@@ -600,7 +600,7 @@ get 'photos/:id/with_user/:user_id', to: 'photos#show'
 クエリ文字列 (訳注: `?パラメータ名=値`の形式でURLの末尾に置かれるパラメータ) で指定されているパラメータもすべて`params`に含まれます。以下のルーティングを例にとってみましょう。
 
 ```ruby
-photos/:id', to: 'photos#show'
+get 'photos/:id', to: 'photos#show'
 ```
 
 ブラウザからのリクエストで`/photos/1?user_id=2`というパスが渡されると、`Photos`コントローラの`show`アクションに割り当てられます。このときの`params`は`{ controller: 'photos', action: 'show', id: '1', user_id: '2' }`となります。
