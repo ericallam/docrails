@@ -769,7 +769,7 @@ text/javascript image/svg+xml application/postscript application/x-shockwave-fla
   config.active_job.queue = :low_priority
   ```
 
-* `config.active_storage.queues.purge`: purgeジョブに用いるActive Jobキューをシンボルで指定します。このオプションが`nil`の場合、解析ジョブはデフォルトのActive Jobキューに送信されます（`config.active_job.default_queue_name`を参照）。
+* `config.active_storage.queues.purge`: purgeジョブに用いるActive Jobキューをシンボルで指定します。このオプションが`nil`の場合、purgeジョブはデフォルトのActive Jobキューに送信されます（`config.active_job.default_queue_name`を参照）。
 
   ```ruby
   config.active_storage.queues.purge = :low_priority
