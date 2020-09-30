@@ -191,17 +191,6 @@ end
 
 `connected_to`呼び出しの「ロール」では、そのコネクションハンドラ（またはロール）で接続されたコネクションを探索します。`reading`コネクションハンドラは、`reading`というロール名を持つ`connects_to`を介して接続されたすべてのコネクションを維持します。
 
-他のケースとして、アプリケーションの起動時には必ずしも接続しないが、スロークエリ時や分析時に用いたいデータベースがある場合も考えられます。database.ymlでデータベースを定義した後、`connected_to`にデータベース引数を渡すことで接続できます。
-
-
-```ruby
-ActiveRecord::Base.connected_to(database: { reading_slow: :animals_slow_replica }) do
-  # 遅いreplicaへの接続時に行う処理をここに書く
-end
-```
-
-`connected_to`の`database`引数には、シンボルまたは設定ハッシュを1つ渡します。
-
 ここで注意したいのは、ロールを設定した`connected_to`では、既存のコネクションの探索や切り替えにそのコネクションのspecification名が用いられることです。つまり、`connected_to(role: :nonexistent)`のように不明なロールを渡すと、`ActiveRecord::ConnectionNotEstablished (No connection pool with 'AnimalsBase' found
 for the 'nonexistent' role.)`エラーが発生します。
 
