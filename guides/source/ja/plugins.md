@@ -380,7 +380,7 @@ class ActsAsYaffleTest < ActiveSupport::TestCase
 end
 ```
 
-テストを実行して、最後に追加した2つのテストが失敗することを確認します。失敗のメッセージには"NoMethodError: undefined method 'squawk'"が含まれているので、`acts_as_yaffle.rb`を以下のように更新します。
+テストを実行して、最後に追加した2つのテストが失敗することを確認します。失敗のメッセージには"NoMethodError: undefined method \`squawk'"が含まれているので、`acts_as_yaffle.rb`を以下のように更新します。
 
 ```ruby
 # yaffle/lib/yaffle/acts_as_yaffle.rb
