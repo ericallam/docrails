@@ -1139,4 +1139,4 @@ WARNING: マスターキーは安全な場所に保管してください。マ�
 * Railsセキュリティ [メーリングリスト](https://groups.google.com/forum/#!forum/rubyonrails-security))を購読しましょう。
 * [Brakeman - Rails Security Scanner](https://brakemanscanner.org/) -- Railsアプリケーションの静的セキュリティ解析を行うgemです。
 * [アプリケーションのその他の層についても最新に保ってください](http://secunia.com/) (週刊のニュースレターも発行しています)。
-* ある[優れたセキュリティブログ](https://www.owasp.org)には[クロスサイトスクリプティングのチートシート](https://www.owasp.org/index.php/DOM_based_XSS_Prevention_Cheat_Sheet)が掲載されています。
+* ある[優れたセキュリティブログ](https://www.owasp.org)には[クロスサイトスクリプティングのチートシート](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.md)が掲載されています。
