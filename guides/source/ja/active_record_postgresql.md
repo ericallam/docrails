@@ -217,11 +217,11 @@ contact.address = "(Paris,Rue Basse)"
 contact.save!
 ```
 
-### 列挙型（enumrated type）
+### 列挙型（enumerated type）
 
 * [型の定義](https://www.postgresql.jp/document/current/html/datatype-enum.html)
 
-現時点では列挙型に特化したサポートはありません。複合型は、通常のテキストカラムにマッピングされます。
+現時点では列挙型に特化したサポートはありません。列挙型は、通常のテキストカラムにマッピングされます。
 
 ```ruby
 # db/migrate/20131220144913_create_articles.rb
