@@ -246,7 +246,7 @@ Railsは、デフォルトですべてのビューテンプレートをコンパ
 <%= render partial: "product" %>
 ```
 
-上のコードでは、ローカル変数である`_product`の中に`@product`が置かれます。これは以下のコードと同等の結果になります。
+上のコードでは、`_product`パーシャルはローカル変数`product`から`@product`を取得できます。これは以下のコードと同等の結果になります。
 
 ```erb
 <%= render partial: "product", locals: { product: product } %>
