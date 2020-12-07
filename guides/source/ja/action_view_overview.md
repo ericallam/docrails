@@ -1469,7 +1469,7 @@ strip_links('メール送信先: <a href="mailto:me@email.com">me@email.com</a>.
 
 ```ruby
 strip_links('ブログ: <a href="http://myblog.com/">開く</a>')
-# => Blog: 開く
+# => ブログ: 開く
 ```
 
 #### strip_tags(html)
