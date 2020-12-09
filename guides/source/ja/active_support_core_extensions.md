@@ -3348,7 +3348,7 @@ t.advance(seconds: 1)
 
 Active Supportでは、`Time.current`を定義して現在のタイムゾーンにおける「今日」を定めています。このメソッドは`Time.now`と似ていますが、ユーザー定義のタイムゾーンがある場合にそれを考慮する点が異なります。Active Supportでは`past?`、`today?`、`future?`を示すインスタンス述語も定義されており、これらはすべてこの`Time.current`を起点にしています。
 
-ユーザー定義のタイムゾーンを考慮するメソッドを用いて日付を比較したい場合、`Time.now`ではなく必ず`Time.current`を使ってください。将来、ユーザー定義のタイムゾーンがシステムのタイムゾーンと比較されることがありえます。システムのタイムゾーンではデフォルトで`Time#now`が使われます。つまり、`Time.now`が`Time.currentyesterday`と等しくなることがありえるということです。
+ユーザー定義のタイムゾーンを考慮するメソッドを用いて日付を比較したい場合、`Time.now`ではなく必ず`Time.current`を使ってください。将来、ユーザー定義のタイムゾーンがシステムのタイムゾーンと比較されることがありえます。システムのタイムゾーンではデフォルトで`Time#now`が使われます。つまり、`Time.now`が`Time.current.yesterday`と等しくなることがありえるということです。
 
 NOTE: 定義は`active_support/core_ext/time/calculations.rb`にあります。
 
