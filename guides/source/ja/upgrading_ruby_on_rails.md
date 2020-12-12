@@ -82,23 +82,31 @@ Webpackerを使いたい場合は、以下をGemfileに追記し、`rails webpac
 gem "webpacker"
 ```
 
-```sh
-rails webpacker:install
+```bash
+$ bin/rails webpacker:install
 ```
 
 ### Force SSL
 
 コントローラの`force_ssl`メソッドは非推奨化され、Rails 6.1で削除される予定です。`config.force_ssl`を有効にしてアプリ全体でHTTPS接続を強制することをおすすめします。特定のエンドポイントのみをリダイレクトしないようにする必要がある場合は、`config.ssl_options`で振る舞いを変更できます。
 
-### 署名済みまたは暗号化済みcookieのpurpose情報がcookie内部に埋め込まれるようになった
-
-Railsではセキュリティ向上のため、または署名済み暗号化済みcookie値のpurpose情報を埋め込みます。
+### セキュリティ向上のためpurposeとexpiryメタデータが署名済みおよび暗号化済みcookieに埋め込まれるようになった
 
 これにより、Railsはcookieの署名済み/暗号化済みの値をコピーして別のcookieで流用することを阻止できるようになります。
 
 新たに埋め込まれるこのpurpose情報によって、Rails 6.0のcookieはそれより前のバージョンのcookieとの互換性が失われます。
 
 cookieを引き続きRails 5.2以前でも読み取れるようにする必要がある場合や、6.0のデプロイを検証中で前のバージョンに戻せるようにしたい場合は、`Rails.application.config.action_dispatch.use_cookies_with_metadata`に`false`を設定してください。
+
+### npmの全パッケージが`@rails`スコープに移動
+
+これまで「`actioncable`」「`activestorage`」「`rails-ujs`」パッケージのいずれかをnpmまたはyarn経由で読み込んでいた場合は、これらを`6.0.0`にアップグレードする前にそれらの依存関係の名前を以下のように更新しなければなりません。
+
+```
+actioncable   → @rails/actioncable
+activestorage → @rails/activestorage
+rails-ujs     → @rails/ujs
+```
 
 ### Action Cable JavaScript APIの変更
 
@@ -112,7 +120,7 @@ Action Cable JavaScriptパッケージがCoffeeScriptからES2015に置き換え
   -    ActionCable.WebSocket = MyWebSocket
   +    ActionCable.adapters.WebSocket = MyWebSocket
   ```
-  
+
   ```diff
   -    ActionCable.logger = myLogger
   +    ActionCable.adapters.logger = myLogger
@@ -129,7 +137,7 @@ Action Cable JavaScriptパッケージがCoffeeScriptからES2015に置き換え
   -    ActionCable.stopDebugging()
   +    ActionCable.logger.enabled = false
   ```
-  
+
 ### `ActionDispatch::Response#content_type`がContent-Typeヘッダーを変更せずに返すようになった
 
 従来は、`ActionDispatch::Response#content_type`の戻り値にcharsetパートが**含まれていませんでした**。
@@ -184,8 +192,10 @@ Rails.autoloaders.main
 
 互換性については、以下のように`zeitwerk:check`タスクでチェックできます。
 
-```
-bin/rails zeitwerk:check
+```bash
+$ bin/rails zeitwerk:check
+Hold on, I am eager loading the application.
+All is good!
 ```
 
 #### `require_dependency`について
@@ -351,7 +361,7 @@ config.add_autoload_paths_to_load_path
 
 #### スレッド安全性について
 
-`classic`モードの定数オートロードはスレッド安全ではありません。Railsには、オートロードが有効な状態でWebのリクエストをスレッド安全にする（これは`development`モードでよくあることです）などのためのインプレースのロックがあるにもかかわらずです。
+`classic`モードの定数オートロードはスレッド安全ではありません。Railsには、オートロードが有効な状態でWebのリクエストをスレッド安全にする（これはdevelopment環境でよくあることです）などのためのインプレースのロックがあるにもかかわらずです。
 
 `zeitwerk`モードの定数オートロードは、スレッド安全です。たとえば、`runner`コマンドで実行されるマルチスレッドでもオートロードが可能です。
 
@@ -384,7 +394,7 @@ config.autoload_paths << "#{config.root}/lib"
 ```ruby
 # config/application.rb
 
-config.load_defaults "6.0"
+config.load_defaults 6.0
 config.autoloader = :classic
 ```
 
@@ -392,16 +402,19 @@ Rails 6アプリケーションでclassicオートローダーを使う場合は
 
 ### Active Storageの代入の振る舞いの変更
 
-Rails 5.2では、`has_many_attached`で宣言された添付ファイル（attachment）のコレクションへの代入は、新しいファイルの追加（append）操作になります。
+Rails 5.2のデフォルト設定に関して、`has_many_attached`で宣言された添付ファイル（attachment）のコレクションへの代入は、新しいファイルの追加（append）操作になります。
 
 ```ruby
 class User < ApplicationRecord
   has_many_attached :highlights
 end
+
 user.highlights.attach(filename: "funky.jpg", ...)
-user.higlights.count # => 1
+user.highlights.count # => 1
+
 blob = ActiveStorage::Blob.create_after_upload!(filename: "town.jpg", ...)
 user.update!(highlights: [ blob ])
+
 user.highlights.count # => 2
 user.highlights.first.filename # => "funky.jpg"
 user.highlights.second.filename # => "town.jpg"
@@ -428,7 +441,7 @@ user.highlights.first.filename # => "funky.jpg"
 user.highlights.second.filename # => "town.jpg"
 ```
 
-設定で`config.active_storage.replace_on_assign_to_many`を`true`にすることで、新しいデフォルトの振る舞いを選択できます。従来の振る舞いはRails 6.1で非推奨化され、その後のリリースで削除される予定です。
+この新しい振る舞いは、設定で`config.active_storage.replace_on_assign_to_many`を`true`にすることで選択できます。従来の振る舞いはRails 6.1で非推奨化され、その後のリリースで削除される予定です。
 
 Rails 5.1からRails 5.2へのアップグレード
 -------------------------------------
@@ -476,7 +489,7 @@ Rails.application.secrets[:smtp_settings]["address"]
 Rails.application.secrets[:smtp_settings][:address]
 ```
 
-### 非推奨化された`render :text`と`render :nothing`サポートの削除
+### 非推奨化された`render :text`と`render :nothing`サポートが削除された
 
 ビューの`render :text`は今後利用できません。MIME typeを「`text/plain`」にしてテキストをレンダリングする新しい方法は`render :plain`を使うことです。
 
@@ -502,10 +515,10 @@ Rails 4.2のActive Recordモデルは`ActiveRecord::Base`を継承していま�
 
 Rails 4.2をRails 5.0にアップグレードする場合、`app/models/`ディレクトリに`application_record.rb`ファイルを追加し、このファイルに以下の設定を追加する必要があります。
 
-```
+```ruby
 class ApplicationRecord < ActiveRecord::Base
   self.abstract_class = true
-end 
+end
 ```
 
 最後に、すべてのモデルが`ApplicationRecord`を継承するように変更し、動作を確認してください。
@@ -532,9 +545,9 @@ Rails 4.2のActive Jobは`ActiveJob::Base`を継承しますが、Rails 5.0で�
 
 Rails 4.2をRails 5.0にアップグレードする場合、`app/jobs/`ディレクトリに`application_job.rb`ファイルを追加し、このファイルに以下の設定を追加する必要があります。
 
-```
+```ruby
 class ApplicationJob < ActiveJob::Base
-end 
+end
 ```
 
 これにより、すべてのjobクラスがActiveJob::Baseを継承するようになります。
@@ -547,7 +560,7 @@ end
 
 `assigns`メソッドと`assert_template`メソッドは`rails-controller-testing` gemに移転しました。これらのメソッドを引き続きコントローラのテストで使いたい場合は、`Gemfile`に`gem 'rails-controller-testing'`を追加してください。
 
-テストでRspecを使っている場合は、このgemのドキュメントで必須となっている追加の設定方法もご確認ください。
+テストでRSpecを使っている場合は、このgemのドキュメントで必須となっている追加の設定方法もご確認ください。
 
 #### ファイルアップロード時の新しい振る舞い
 
@@ -563,7 +576,7 @@ end
 
 トップレベルより下で、実行時にのみ有効にする定数（通常のメソッド本体など）を定義した場合も、起動時に一括読み込みされるので問題なく利用できます。
 
-ほとんどのアプリケーションでは、この変更に関して特別な対応は不要です。めったにないと思われますが、productionモードで動作するアプリケーションで自動読み込みが必要な場合は、`Rails.application.config.enable_dependency_loading`をtrueに設定してください。
+ほとんどのアプリケーションでは、この変更に関して特別な対応は不要です。めったにないと思われますが、production環境のアプリケーションで自動読み込みが必要な場合は、`Rails.application.config.enable_dependency_loading`をtrueに設定してください。
 
 ### XMLシリアライズのgem化
 
@@ -577,15 +590,15 @@ Rails 5で古い`mysql`データベース アダプタのサポートが終了�
 
 Rails 5が必要とするRuby 2.2では、`debugger`はサポートされていません。代わりに、今後は`byebug`をお使いください。
 
-### タスクやテストの実行には`rails`を使うこと
+### タスクやテストの実行には`bin/rails`を使うこと
 
 Rails 5では、rakeに代わって`bin/rails`でタスクやテストを実行できるようになりました。原則として、多くのタスクやテストはrakeでも引き続き実行できますが、一部のタスクやテストは完全に`bin/rails`に移行しました。
 
-今後テストの実行には`rails test`をお使いください。
+今後テストの実行には`bin/rails test`をお使いください。
 
-`rake dev:cache`は`rails dev:cache`に変更されました。
+`rake dev:cache`は`bin/rails dev:cache`に変更されました。
 
-アプリケーションディレクトリの下で`rails`を実行すると、利用可能なコマンドリストを表示できます。
+アプリケーションのルートディレクトリの下で`bin/rails`を実行すると、利用可能なコマンドリストを表示できます。
 
 ### `ActionController::Parameters`は今後`HashWithIndifferentAccess`を継承しない
 
@@ -645,14 +658,14 @@ gem 'record_tag_helper', '~> 1.0'
 # config/environments/test.rb
 Rails.application.configure do
   config.active_support.test_order = :sorted
-end 
+end
 ```
 
 ### `ActionController::Live` は`Concern`に変更された
 
 コントローラにincludeされている別のモジュールに`ActionController::Live`がincludeされている場合、`ActiveSupport::Concern`をextendするコードの追加も必要です。または、`StreamingSupport`がincludeされてから、`self.included`フックを使って`ActionController::Live`をコントローラに直接includeすることもできます。
 
-理由: アプリケーションで独自のストリーミングモジュールを使っている場合、以下のコードはproductionモードで正常に動作しなくなる可能性があります。
+理由: アプリケーションで独自のストリーミングモジュールを使っている場合、以下のコードはproduction環境で正常に動作しなくなる可能性があります。
 
 ```ruby
 # Warden/Devise で認証するストリーミングコントローラでの回避方法を示すコード
@@ -685,6 +698,24 @@ end
 新しいアプリケーションでは、このデフォルト設定が自動で有効になります。この設定を既存のアプリケーションに追加するには、イニシャライザでこの機能をオンにする必要があります
 
     config.active_record.belongs_to_required_by_default = true
+
+これはデフォルトですべてのモデルに対してグローバルに設定されますが、モデルごとに設定をオーバーライドすることもできます。これは、モデルを移行してデフォルトで必要な関連付けをすべてのモデルに持たせるのに便利です。
+
+```ruby
+class Book < ApplicationRecord
+  # モデルがデフォルトで必要な関連付けを持つ準備ができていない場合の設定
+
+  self.belongs_to_required_by_default = false
+  belongs_to(:author)
+end
+
+class Car < ApplicationRecord
+  # モデルがデフォルトで必要な関連付けを持つ準備ができた後の設定
+
+  self.belongs_to_required_by_default = true
+  belongs_to(:pilot)
+end
+```
 
 #### フォームごとのCSRFトークン
 
@@ -939,7 +970,7 @@ NOTE: 自サイトの`<script>`はクロス参照の出発点として扱われ�
 
 1. `gem 'spring', group: :development` を `Gemfile`に追加する
 2. `bundle install`を実行してSpringをインストールする
-3. `bundle exec spring binstub --all`を実行してbinstubをSpring化する
+3. `bundle exec spring binstub`を実行してbinstubをSpring化する
 
 NOTE: ユーザーが定義したRakeタスクはデフォルトでdevelopment環境で動作するようになります。これらのRakeタスクを他の環境でも実行したい場合は[Spring README](https://github.com/rails/spring#rake)を参考にしてください。
 
@@ -960,7 +991,7 @@ NOTE: ユーザーが定義したRakeタスクはデフォルトでdevelopment�
       secret_key_base: <%= ENV["SECRET_KEY_BASE"] %>
     ```
 
-2. `secret_token.rb`イニシャライザに記載されている既存の `secret_key_base`の秘密キーを取り出して`SECRET_KEY_BASE`環境変数に設定し、Railsアプリケーションをproductionモードで実行するすべてのユーザーが秘密キーの恩恵を受けられるようにします。あるいは、既存の`secret_key_base`を`secret_token.rb`イニシャライザから`secrets.yml`のproductionセクションにコピーし、'<%= ENV["SECRET_KEY_BASE"] %>'を置き換えることもできます。
+2. `secret_token.rb`イニシャライザに記載されている既存の `secret_key_base`の秘密キーを取り出して`SECRET_KEY_BASE`環境変数に設定し、Railsアプリケーションをproductionで実行するすべてのユーザーが秘密キーの恩恵を受けられるようにします。あるいは、既存の`secret_key_base`を`secret_token.rb`イニシャライザから`secrets.yml`のproductionセクションにコピーし、'<%= ENV["SECRET_KEY_BASE"] %>'を置き換えることもできます。
 
 3. `secret_token.rb`イニシャライザを削除します
 
@@ -970,7 +1001,7 @@ NOTE: ユーザーが定義したRakeタスクはデフォルトでdevelopment�
 
 ### テストヘルパーの変更
 
-テストヘルパーに含まれている`ActiveRecord::Migration.check_pending!`呼び出しは削除できます。このチェックは`require 'rails/test_help'`の際に自動的に行われるようになりました。この呼び出しを削除しなくても悪影響が生じることはありません。
+テストヘルパーに含まれている`ActiveRecord::Migration.check_pending!`呼び出しは削除できます。このチェックは`require "rails/test_help"`の際に自動的に行われるようになりました。この呼び出しを削除しなくても悪影響が生じることはありません。
 
 ### Cookiesシリアライザ
 
@@ -1032,7 +1063,7 @@ MultiJSONはその役目を終えて [end-of-life](https://github.com/rails/rail
 
 2. `obj.to_json`と`JSON.parse(str)`を用いてMultiJSONから乗り換える。
 
-WARNING: `MultiJson.dump` と `MultiJson.load`をそれぞれ`JSON.dump`と`JSON.load`に単純に置き換えては「いけません」。これらのJSON gem APIは任意のRubyオブジェクトをシリアライズおよびデシリアライズするためのものであり、一般に[安全ではありません](http://www.ruby-doc.org/stdlib-2.2.2/libdoc/json/rdoc/JSON.html#method-i-load)。
+WARNING: `MultiJson.dump` と `MultiJson.load`をそれぞれ`JSON.dump`と`JSON.load`に単純に置き換えては「いけません」。これらのJSON gem APIは任意のRubyオブジェクトをシリアライズおよびデシリアライズするためのものであり、一般に[安全ではありません](https://www.ruby-doc.org/stdlib-2.2.2/libdoc/json/rdoc/JSON.html#method-i-load)。
 
 #### JSON gemの互換性
 
@@ -1046,9 +1077,13 @@ class FooBar
     { foo: 'bar' }
   end
 end
+```
 
->> FooBar.new.to_json # => "{\"foo\":\"bar\"}"
->> JSON.generate(FooBar.new, quirks_mode: true) # => "\"#<FooBar:0x007fa80a481610>\""
+```irb
+irb> FooBar.new.to_json
+=> "{\"foo\":\"bar\"}"
+irb> JSON.generate(FooBar.new, quirks_mode: true)
+=> "\"#<FooBar:0x007fa80a481610>\""
 ```
 
 #### 新しいJSONエンコーダ
@@ -1065,7 +1100,7 @@ Rails 4.1のJSONエンコーダは、JSON gemを使うように書き直され�
 
 日時に関連するコンポーネント(`Time`、`DateTime`、`ActiveSupport::TimeWithZone`)を持つオブジェクトに対して`#as_json`を実行すると、デフォルトでミリ秒単位の精度で値が返されるようになりました。ミリ秒より精度の低い従来方式にしておきたい場合は、イニシャライザに以下を設定してください。
 
-```
+```ruby
 ActiveSupport::JSON::Encoding.time_precision = 0
 ```
 
@@ -1117,7 +1152,7 @@ module FixtureFileHelpers
   def file_sha(path)
     Digest::SHA2.hexdigest(File.read(Rails.root.join('test/fixtures', path)))
   end
-end 
+end
 ActiveRecord::FixtureSet.context_class.include FixtureFileHelpers
 ```
 
@@ -1269,7 +1304,7 @@ end
 ただし、`form_for`を用いてリソースを更新しており、`PUT` HTTPメソッドを使うカスタムルーティングと連動しているのであれば、変更が必要です。
 
 ```ruby
-resources :users, do
+resources :users do
   put :update_name, on: :member
 end
 ```
@@ -1288,13 +1323,13 @@ end
 
 このアクションがパブリックなAPIで使われておらず、HTTPメソッドを自由に変更できるのであれば、ルーティングを更新して`patch`を`put`の代りに利用できます。
 
-Rails 4で`PUT`リクエストを`/users/:id`に送信すると、従来と同様`update`にルーティングされます。このため、実際のPUTリクエストを受け取るAPIは今後も利用できます。この場合、`PATCH`リクエストも`/users/:id`経由で`update`アクションにルーティングされます。
-
 ```ruby
 resources :users do
   patch :update_name, on: :member
 end
 ```
+
+Rails 4で`PUT`リクエストを`/users/:id`に送信すると、従来と同様`update`にルーティングされます。このため、実際のPUTリクエストを受け取るAPIは今後も利用できます。この場合、`PATCH`リクエストも`/users/:id`経由で`update`アクションにルーティングされます。
 
 このアクションがパブリックなAPIで使われており、HTTPメソッドを自由に変更できないのであれば、フォームを更新して`PUT`を代りに使えます。
 
@@ -1308,7 +1343,7 @@ PATCHおよびこの変更が行われた理由についてはRailsブログの 
 
 `PATCH` verbに関する追加情報 [`PATCH`では異なるメディアタイプを使う必要がある](http://www.rfc-editor.org/errata_search.php?rfc=5789)。[JSON Patch](https://tools.ietf.org/html/rfc6902) などが該当します。RailsはJSON Patchをネイティブではサポートしませんが、サポートは簡単に追加できます。
 
-```
+```ruby
 # コントローラに以下を書く
 def update
   respond_to do |format|
@@ -1393,11 +1428,11 @@ Rails 4.0 では `vendor/plugins` 読み込みのサポートは完全に終了�
 ```ruby
 CatalogCategory < ActiveRecord::Base
   has_and_belongs_to_many :catalog_products, join_table: 'catalog_categories_catalog_products'
-end 
+end
 
 CatalogProduct < ActiveRecord::Base
   has_and_belongs_to_many :catalog_categories, join_table: 'catalog_categories_catalog_products'
-end 
+end
 ```
 
 * プレフィックスではスコープも同様に考慮されるので、`Catalog::Category`と`Catalog::Product`間のリレーションや、`Catalog::Category`と`CatalogProduct`間のリレーションも同様に更新する必要があります。
@@ -1415,7 +1450,7 @@ Rails 4.0ではActive Resourceがgem化されました。この機能が必要�
 ```ruby
 # Disable root element in JSON by default.
 # ActiveSupport.on_load(:active_record) do
-#   self.include_root_in_json = false 
+#   self.include_root_in_json = false
 # end
 ```
 
@@ -1464,7 +1499,7 @@ Rails 4.0では、シンボルやprocがnilを返す場合の、デフォルト�
 
 ```ruby
   resources :examples
-  get 'clashing/:id' => 'test#example', as: :example 
+  get 'clashing/:id' => 'test#example', as: :example
 ```
 
 最初の例では、複数のルーティングで同じ名前を使わないようにすれば回避できます。次の例では、`only`または`except`オプションを`resources`メソッド内で使うことで、作成されるルーティングを制限できます。詳細は[Railsのルーティング](routing.html#%E3%83%AB%E3%83%BC%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0%E3%81%AE%E4%BD%9C%E6%88%90%E3%82%92%E5%88%B6%E9%99%90%E3%81%99%E3%82%8B)を参照。
@@ -1473,7 +1508,7 @@ Rails 4.0では、シンボルやprocがnilを返す場合の、デフォルト�
 
 ```ruby
 get Rack::Utils.escape('こんにちは'), controller: 'welcome', action: 'index'
-``` 
+```
 
 上のコードは以下のように変更する必要があります。
 
@@ -1626,7 +1661,7 @@ Railsアプリケーションのバージョンが3.0より前の場合、まず
 
 ```ruby
 gem 'rails', '3.1.12'
-gem 'mysql2' 
+gem 'mysql2'
 
 # 新しいアセットパイプラインで必要
 group :assets do
