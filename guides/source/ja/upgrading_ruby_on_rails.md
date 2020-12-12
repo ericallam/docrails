@@ -68,10 +68,133 @@ Overwrite /myapp/config/application.rb? (enter "h" for help) [Ynaqdh]
 
 updateタスクでは、アプリケーションを新しいデフォルト設定に1つずつアップグレードできるように、`config/initializers/new_framework_defaults.rb`ファイルが作成されます。アプリケーションを新しいデフォルト設定で動かせる準備が整ったら、このファイルを削除して`config.load_defaults`の値を反転できます。
 
+Rails 6.0からRails 6.1へのアップグレード
+-------------------------------------
+
+Rails 6.0の変更点について詳しくは[リリースノート](6_1_release_notes.html)を参照してください。
+
+### `Rails.application.config_for`の戻り値をStringキーでアクセスするサポートが終了した
+
+以下のような設定ファイルがあるとします。
+
+```yaml
+# config/example.yml
+development:
+  options:
+    key: value
+```
+
+```ruby
+Rails.application.config_for(:example).options
+```
+
+従来は、Stringキーで値にアクセス可能なハッシュをひとつ返しました。これは6.0で非推奨化され、6.1からは使えなくなりました。
+
+従来どおりStringキーを用いて値にアクセスしたい場合は、`config_for`の戻り値で`with_indifferent_access`を呼び出せます。
+
+```ruby
+Rails.application.config_for(:example).with_indifferent_access.dig('options', 'key')
+```
+
+
+### `respond_to#any`を使う場合のレスポンスのContent-Typeヘッダーについて
+
+レスポンスで返されるContent-Typeヘッダーは、Rails 6.0で返されるものと異なる可能性があります。特にアプリケーションで`respond_to { |format| format.any }`を使っている場合、Content-Typeヘッダーはリクエストのフォーマットではなく、渡されたブロックを元にするようになりました。
+
+以下の例をご覧ください。
+
+```ruby
+  def my_action
+    respond_to do |format|
+      format.any { render(json: { foo: 'bar' }) }
+    end
+  end
+
+  get('my_action.csv')
+```
+
+従来の振る舞いではレスポンスのContent-Typeで`text/csv`を返していましたが、実際にはJSONレスポンスをレンダリングしているので正しくありません。現在の振る舞いではレスポンスのContent-Typeで`application/json`を正しく返すようになりました。
+
+アプリケーションが従来の正しくない振る舞いに依存している場合は、以下のようにアクションで受け取るフォーマットを明示的に指定するようにしてください。
+
+```ruby
+  format.any(:xml, :json) { render request.format.to_sym => @people }
+```
+
+### `ActiveSupport::Callbacks#halted_callback_hook`に第2引数を渡せるようになった
+
+Active Supportは、コールバックのチェーンがhalt（停止）したときの`halted_callback_hook`をオーバーライドできます。このメソッドに、halt中のコールバック名を第2引数として渡せるようになりました。このメソッドをオーバーライドするクラスがある場合は、必ず引数を2つ受け取れるようにしてください。なお、この破壊的変更は、パフォーマンス上の理由のため非推奨化を経ていません。
+
+以下の例をご覧ください。
+
+```ruby
+  class Book < ApplicationRecord
+    before_save { throw(:abort) }
+    before_create { throw(:abort) }
+
+    def halted_callback_hook(filter, callback_name) # => このメソッドが1個ではなく2個の引数を取れるようになった
+      Rails.logger.info("Book couldn't be #{callback_name}d")
+    end
+  end
+```
+
+### コントローラ内で`helper`のクラスメソッドが`String#constantize`を使うようになった
+
+概念について説明します。
+
+```ruby
+helper "foo/bar"
+```
+
+Rails 6.1より前は、上のコードから以下の結果が得られました。
+
+```ruby
+require_dependency "foo/bar_helper"
+module_name = "foo/bar_helper".camelize
+module_name.constantize
+```
+
+Rail 6.1では以下のような結果になります。
+
+```ruby
+prefix = "foo/bar".camelize
+"#{prefix}Helper".constantize
+```
+
+この変更は、多くのアプリケーションで後方互換性を維持しており、これに該当する場合は対応不要です。
+
+ただし技術的には、autoloadパス上にない`$LOAD_PATH`内のディレクトリを指すようコントローラが`helpers_path`を設定することも可能でしたが、このようなユースケースは今後手軽にはサポートされなくなりました。ヘルパーモジュールがautoload可能でない場合は、`helper`を呼び出す前にアプリケーションが明示的に読み込んでおく責任があります。
+
+訳注: これについて詳しくは[Remove \`require\_dependency\` usage in \`helper\` \[Closes \#37632\] · rails/rails@5b28a0e](https://github.com/rails/rails/commit/5b28a0e972da31da570ed24be505ef7958ab4b5e)もどうぞ。`helper`での読み込みに`require_dependency`が使われなくなったことによる変更です。
+
+###a HTTPからHTTPSへのリダイレクトでHTTP 308ステータスコードが使われるようになった
+
+`ActionDispatch::SSL`でGETやHEAD以外のリクエストをHTTPからHTTPSにリダイレクトする場合のデフォルトHTTPステータスコードが、[RFC7538](https://tools.ietf.org/html/rfc7538)の定義に従って`308`に変更されました。
+
+### Active Storageでimage_processing gemが必須になった
+
+Active Storageでvariantを処理する場合、従来のように`mini_magick`を直接利用するのではなく、[image_processing](https://github.com/janko-m/image_processing) gemのバンドルが必須になりました。image_processingの背後ではデフォルトで`mini_magick`が使われるので、不要になった明示的な`combine_options`を必ず削除してください。
+
+できれば、`image_processing`の`resize`マクロの直接呼び出しも変更しておくことをおすすめします（変更することでリサイズ後のサムネイルもシャープになります）。
+
+```ruby
+video.preview(resize: "100x100")
+video.preview(resize: "100x100>")
+video.preview(resize: "100x100^")
+```
+
+たとえば、上のコードをそれぞれ以下のように変更します。
+
+```ruby
+video.preview(resize_to_fit: [100, 100])
+video.preview(resize_to_limit: [100, 100])
+video.preview(resize_to_fill: [100, 100])
+```
+
 Rails 5.2からRails 6.0へのアップグレード
 -------------------------------------
 
-Rails 6.0の変更点の詳細は[リリースノート](6_0_release_notes.html)を参照してください。
+Rails 6.0の変更点について詳しくは[リリースノート](6_0_release_notes.html)を参照してください。
 
 ### Webpackerの利用について
 
@@ -446,7 +569,7 @@ user.highlights.second.filename # => "town.jpg"
 Rails 5.1からRails 5.2へのアップグレード
 -------------------------------------
 
-Rails 5.2 の変更点の詳細は[リリースノート](5_2_release_notes.html)を参照してください。
+Rails 5.2 の変更点について詳しくは[リリースノート](5_2_release_notes.html)を参照してください。
 
 ### Bootsnap
 
@@ -463,7 +586,7 @@ Rails 5.1 以前で新しいcookieを読み込みたい場合、もしくは Rai
 Rails 5.0からRails 5.1へのアップグレード
 -------------------------------------
 
-Rails 5.1 の変更点の詳細は[リリースノート](5_1_release_notes.html)を参照してください。
+Rails 5.1 の変更点について詳しくは[リリースノート](5_1_release_notes.html)を参照してください。
 
 ### トップレベルの`HashWithIndifferentAccess`が弱く非推奨化された
 
@@ -500,7 +623,7 @@ Rails.application.secrets[:smtp_settings][:address]
 Rails 4.2からRails 5.0へのアップグレード
 -------------------------------------
 
-Rails 5.0 の変更点の詳細は[リリースノート](5_0_release_notes.html)を参照してください。
+Rails 5.0 の変更点について詳しくは[リリースノート](5_0_release_notes.html)を参照してください。
 
 ### Ruby 2.2.2以上が必須
 
