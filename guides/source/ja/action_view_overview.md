@@ -249,13 +249,7 @@ Railsは、デフォルトですべてのビューテンプレートをコンパ
 上のコードでは、`_product`パーシャルはローカル変数`product`から`@product`を取得できます。これは以下のコードと同等の結果になります。
 
 ```erb
-<%= render partial: "product", locals: { product: product } %>
-```
-
-`as`オプションは、ローカル変数の名前を変更したい場合に使用します。たとえば、ローカル変数名を`product`ではなく`item`にしたいのであれば、以下のようにします。
-
-```erb
-<%= render partial: "product", as: "item" %>
+<%= render partial: "product", locals: { product: @product } %>
 ```
 
 `object`オプションは、パーシャルで出力するオブジェクトを直接指定したい場合に使用します。これは、テンプレートのオブジェクトが他の場所 (別のインスタンス変数や別のローカル変数) にある場合に便利です。
@@ -263,7 +257,7 @@ Railsは、デフォルトですべてのビューテンプレートをコンパ
 たとえば、以下のコードがあるとします。
 
 ```erb
-<%= render partial: "product", locals: { product: @product } %>
+<%= render partial: "product", locals: { product: @item } %>
 ```
 
 上のコードは以下のようになります。
