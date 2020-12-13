@@ -88,7 +88,7 @@ development:
 Rails.application.config_for(:example).options
 ```
 
-従来は、Stringキーで値にアクセス可能なハッシュをひとつ返しました。これは6.0で非推奨化され、6.1からは使えなくなりました。
+従来は、Stringキーで値にアクセス可能なハッシュをひとつ返しました。この機能は6.0で非推奨化され、6.1で削除されました。
 
 従来どおりStringキーを用いて値にアクセスしたい場合は、`config_for`の戻り値で`with_indifferent_access`を呼び出せます。
 
@@ -123,7 +123,7 @@ Rails.application.config_for(:example).with_indifferent_access.dig('options', 'k
 
 ### `ActiveSupport::Callbacks#halted_callback_hook`に第2引数を渡せるようになった
 
-Active Supportは、コールバックのチェーンがhalt（停止）したときの`halted_callback_hook`をオーバーライドできます。このメソッドに、halt中のコールバック名を第2引数として渡せるようになりました。このメソッドをオーバーライドするクラスがある場合は、必ず引数を2つ受け取れるようにしてください。なお、この破壊的変更は、パフォーマンス上の理由のため非推奨化を経ていません。
+Active Supportは、コールバックのチェーンがhalt（停止）したときの`halted_callback_hook`をオーバーライドできます。このメソッドに、halt中のコールバック名を第2引数として渡せるようになりました。このメソッドをオーバーライドするクラスがある場合は、引数を2つ受け取れるようにしてください。なおパフォーマンス上の理由のため、この破壊的変更は非推奨化を経ていません。
 
 以下の例をご覧ください。
 
@@ -163,7 +163,7 @@ prefix = "foo/bar".camelize
 
 この変更は、多くのアプリケーションで後方互換性を維持しており、これに該当する場合は対応不要です。
 
-ただし技術的には、autoloadパス上にない`$LOAD_PATH`内のディレクトリを指すようコントローラが`helpers_path`を設定することも可能でしたが、このようなユースケースは今後手軽にはサポートされなくなりました。ヘルパーモジュールがautoload可能でない場合は、`helper`を呼び出す前にアプリケーションが明示的に読み込んでおく責任があります。
+ただし技術的には、autoloadパス上にない`$LOAD_PATH`内のディレクトリを指すようコントローラが`helpers_path`を設定することも可能でしたが、今後このようなユースケースはすぐ使える形ではサポートされません。ヘルパーモジュールがオートロード可能でない場合は、`helper`を呼び出す前にアプリケーションが明示的に読み込んでおく責任があります。
 
 訳注: これについて詳しくは[Remove \`require\_dependency\` usage in \`helper\` \[Closes \#37632\] · rails/rails@5b28a0e](https://github.com/rails/rails/commit/5b28a0e972da31da570ed24be505ef7958ab4b5e)もどうぞ。`helper`での読み込みに`require_dependency`が使われなくなったことによる変更です。
 
@@ -183,7 +183,7 @@ video.preview(resize: "100x100>")
 video.preview(resize: "100x100^")
 ```
 
-たとえば、上のコードをそれぞれ以下のように変更します。
+たとえば、上のコードはそれぞれ以下のように変更できます。
 
 ```ruby
 video.preview(resize_to_fit: [100, 100])
@@ -1464,7 +1464,7 @@ PATCHおよびこの変更が行われた理由についてはRailsブログの 
 
 #### メディアタイプに関するメモ
 
-`PATCH` verbに関する追加情報 [`PATCH`では異なるメディアタイプを使う必要がある](http://www.rfc-editor.org/errata_search.php?rfc=5789)。[JSON Patch](https://tools.ietf.org/html/rfc6902) などが該当します。RailsはJSON Patchをネイティブではサポートしませんが、サポートは簡単に追加できます。
+`PATCH` verbに関する追加情報 [`PATCH`では異なるメディアタイプを使う必要がある](https://www.rfc-editor.org/errata_search.php?rfc=5789)。[JSON Patch](https://tools.ietf.org/html/rfc6902) などが該当します。RailsはJSON Patchをネイティブではサポートしませんが、サポートは簡単に追加できます。
 
 ```ruby
 # コントローラに以下を書く
