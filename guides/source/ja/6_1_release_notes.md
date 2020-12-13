@@ -25,11 +25,11 @@ Rails 6.1へのアップグレード
 
 ### データベース単位のコネクション切り替え
 
-Rails 6.1でデータベース単位のコネクション切り替え機能が使えるようになりました（[#40370](https://github.com/rails/rails/pull/40370)。6.0の場合は、ロールを`reading`に切り替えるとすべてのデータベースコネクションもreadingロールに切り替わりました。6.1からは、Railsの設定で`legacy_connection_handling`を`false`に指定しておけば、対応する抽象クラスで`connected_to`を呼び出すことでひとつのデータベースでコネクションを切り替えられます。
+Rails 6.1でデータベース単位のコネクション切り替え機能が使えるようになりました（[#40370](https://github.com/rails/rails/pull/40370)。6.0の場合は、ロールを`reading`に切り替えるとすべてのデータベースコネクションもreadingロールに切り替わりました。6.1からは、Railsの設定で`legacy_connection_handling`を`false`に指定しておけば、対応する抽象クラスで`connected_to`を呼び出すことでデータベースへのコネクションを切り替えられます。
 
 ### 水平シャーディング
 
-Rails 6.0では、データベースの機能的パーティショニング（スキーマの異なる複数パーティション）が提供されていましたが、Active Recordのモデルがクラス単位およびロール単位で1つのコネクションしか持てなかったため、水平シャーディング（スキーマの同じ複数のパーティション）がサポートされていませんでした。Rails 6.1ではこの点が修正されて水平シャーディングを利用できるようになりました（[#38531](https://github.com/rails/rails/pull/38531)）
+Rails 6.0では、データベースの機能的パーティショニング（スキーマの異なる複数パーティション）が提供されていましたが、Active Recordのモデルがクラス単位およびロール単位で1つのコネクションしか持てなかったため、水平シャーディング（スキーマの同じ複数のパーティション）がサポートされていませんでした。Rails 6.1ではこの点が修正され、水平シャーディングを利用できるようになりました（[#38531](https://github.com/rails/rails/pull/38531)）
 
 ### 関連付けのstrict loading
 
@@ -376,17 +376,11 @@ Action Text
 
 ### 主な変更
 
-*   Add method to confirm rich text content existence by adding `?` after
-    name of the rich text attribute.
-    ([Pull Request](https://github.com/rails/rails/pull/37951))
+*   リッチテキストコンテンツの存在を確認するメソッド（リッチテキスト属性名の後ろに`?`を追加する）を追加（[#37951](https://github.com/rails/rails/pull/37951)）
 
-*   Add `fill_in_rich_text_area` system test case helper to find a trix
-    editor and fill it with given HTML content.
-    ([Pull Request](https://github.com/rails/rails/pull/35885))
+*   システムテストケースヘルパー`fill_in_rich_text_area`を追加: Trixエディタを探索して、指定のHTMLコンテンツを入力する（[#35885](https://github.com/rails/rails/pull/35885)）
 
-*   Add `ActionText::FixtureSet.attachment` to generate
-    `<action-text-attachment>` elements in database fixtures.
-    ([Pull Request](https://github.com/rails/rails/pull/40289))
+*   `ActionText::FixtureSet.attachment`を追加: データベースfixtureで`<action-text-attachment>`要素を生成する（[#40289](https://github.com/rails/rails/pull/40289)）
 
 Action Mailbox
 ----------
