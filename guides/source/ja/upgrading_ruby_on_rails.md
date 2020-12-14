@@ -165,7 +165,7 @@ prefix = "foo/bar".camelize
 
 ただし技術的には、autoloadパス上にない`$LOAD_PATH`内のディレクトリを指すようコントローラが`helpers_path`を設定することも可能でしたが、今後このようなユースケースはすぐ使える形ではサポートされません。ヘルパーモジュールがオートロード可能でない場合は、`helper`を呼び出す前にアプリケーションが明示的に読み込んでおく責任があります。
 
-訳注: これについて詳しくは[Remove \`require\_dependency\` usage in \`helper\` \[Closes \#37632\] · rails/rails@5b28a0e](https://github.com/rails/rails/commit/5b28a0e972da31da570ed24be505ef7958ab4b5e)もどうぞ。`helper`での読み込みに`require_dependency`が使われなくなったことによる変更です。
+TIP: (訳注) 詳しくは[Remove \`require\_dependency\` usage in \`helper\` \[Closes \#37632\] · rails/rails@5b28a0e](https://github.com/rails/rails/commit/5b28a0e972da31da570ed24be505ef7958ab4b5e)もどうぞ。`helper`での読み込みに`require_dependency`が使われなくなったことによる変更です。
 
 ###a HTTPからHTTPSへのリダイレクトでHTTP 308ステータスコードが使われるようになった
 
