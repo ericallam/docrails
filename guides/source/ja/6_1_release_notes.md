@@ -370,6 +370,8 @@ Active Support
 
 ### 主な変更
 
+(準備中...)
+
 Active Job
 ----------
 
@@ -449,4 +451,4 @@ Railsを頑丈かつ安定したフレームワークにするために多大な
 [active-job]:     https://github.com/rails/rails/blob/master/activejob/CHANGELOG.md
 [action-text]:    https://github.com/rails/rails/blob/master/actiontext/CHANGELOG.md
 [action-mailbox]: https://github.com/rails/rails/blob/master/actionmailbox/CHANGELOG.md
-[ガイド]:          https://github.com/rails/rails/blob/master/guides/CHANGELOG.md
+[guides]:         https://github.com/rails/rails/blob/master/guides/CHANGELOG.md
