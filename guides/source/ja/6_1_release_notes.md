@@ -248,43 +248,57 @@ Active Record
 
     変更前:
 
-        User.where(name: "John").create do |john|
-          User.find_by(name: "David") # => nil
-        end
+    ```ruby
+    User.where(name: "John").create do |john|
+      User.find_by(name: "David") # => nil
+    end
+    ```
 
     変更後:
 
-        User.where(name: "John").create do |john|
-          User.find_by(name: "David") # => #<User name: "David", ...>
-        end
+    ```ruby
+    User.where(name: "John").create do |john|
+      User.find_by(name: "David") # => #<User name: "David", ...>
+    end
+    ```
 
 *   名前付きスコープをチェインしたときのスコープが、クラスレベルのクエリメソッドにリークしないようになった
 
-        class User < ActiveRecord::Base
-          scope :david, -> { User.where(name: "David") }
-        end
+    ```ruby
+    class User < ActiveRecord::Base
+      scope :david, -> { User.where(name: "David") }
+    end
+    ```
 
     変更前:
 
-        User.where(name: "John").david
-        # SELECT * FROM users WHERE name = 'John' AND name = 'David'
+    ```ruby
+    User.where(name: "John").david
+    # SELECT * FROM users WHERE name = 'John' AND name = 'David'
+    ```
 
     変更後:
 
-        User.where(name: "John").david
-        # SELECT * FROM users WHERE name = 'David'
+    ```ruby
+    User.where(name: "John").david
+    # SELECT * FROM users WHERE name = 'David'
+    ```
 
 *   `where.not`がNORではなくNANDを述部で生成するようになった
 
      変更前:
 
-         User.where.not(name: "Jon", role: "admin")
-         # SELECT * FROM users WHERE name != 'Jon' AND role != 'admin'
+     ```ruby
+     User.where.not(name: "Jon", role: "admin")
+     # SELECT * FROM users WHERE name != 'Jon' AND role != 'admin'
+     ```
 
      変更後:
 
-         User.where.not(name: "Jon", role: "admin")
-         # SELECT * FROM users WHERE NOT (name == 'Jon' AND role == 'admin')
+     ```ruby
+     User.where.not(name: "Jon", role: "admin")
+     # SELECT * FROM users WHERE NOT (name == 'Jon' AND role == 'admin')
+     ```
 
 Active Storage
 --------------
