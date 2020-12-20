@@ -159,17 +159,6 @@
           <%= yield.html_safe %>
           <%= yield :references %>
 
-          <h3 id="pr" class="section" style="padding-top: 30px;"><a href="#pr">[PR] Railsガイドを、もっと便利に。</a></h3>
-          <p>Railsガイドをもっと便利に使えるサービスをリリースしました! 本サービスで得られた売上はRailsガイドを継続的に更新・運営するために活用させていただきます。よければぜひご検討ください ;)</p>
-          <div class="bnr-pro-team">
-            <div class="bnr-item">
-              <a href="https://railsguides.jp/pro"><img src="/images/spinner.svg" alt="Proプラン" data-src="/images/bnr_pro.jpg" loading="lazy" class="lazyload"/></a>
-            </div>
-            <div class="bnr-item">
-              <a href="https://railsguides.jp/team"><img alt="Teamプラン" src="/images/spinner.svg" data-src="/images/bnr_team.jpg" loading="lazy" class="lazyload" /></a>
-            </div>
-          </div>
-
           <% unless yield(:hide_feedback).present? %>
 	    <h3 id="feedback" class="section" style="padding-top: 30px;"><a href="#feedback">フィードバックについて</a></h3>
 	    <p>
