@@ -1200,13 +1200,9 @@ class FooBar
     { foo: 'bar' }
   end
 end
-```
 
-```irb
-irb> FooBar.new.to_json
-=> "{\"foo\":\"bar\"}"
-irb> JSON.generate(FooBar.new, quirks_mode: true)
-=> "\"#<FooBar:0x007fa80a481610>\""
+FooBar.new.to_json # => "{\"foo\":\"bar\"}"
+JSON.generate(FooBar.new, quirks_mode: true) # => "\"#<FooBar:0x007fa80a481610>\""
 ```
 
 #### 新しいJSONエンコーダ
