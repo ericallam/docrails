@@ -229,13 +229,13 @@ end
 既存のuserにavatarを添付するには`avatar.attach`を呼び出します。
 
 ```ruby
-Current.user.avatar.attach(params[:avatar])
+user.avatar.attach(params[:avatar])
 ```
 
 `avatar.attached?`で特定のuserがavatarを持っているかどうかを調べられます。
 
 ```ruby
-Current.user.avatar.attached?
+user.avatar.attached?
 ```
 
 ### `has_many_attached`
