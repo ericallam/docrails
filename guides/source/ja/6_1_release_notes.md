@@ -177,6 +177,8 @@ Action View
 
 *   `ActionView::Template#initialize`で`locals`引数が必須化された
 
+*   アセットヘルパーの`javascript_include_tag`と`stylesheet_link_tag`がアセットのプリロードに関するヒントを提供する`Link`ヘッダを生成するようになった。これは`config.action_view.preload_links_header`を`false`に設定することで無効にできる
+
 Action Mailer
 -------------
 
@@ -238,7 +240,11 @@ Active Record
 
 ### 非推奨化
 
-*   非推奨の`ActiveRecord::Base.allow_unsafe_raw_sql`を削除
+*   `ActiveRecord::Base.allow_unsafe_raw_sql`を非推奨化
+
+*   `connected_to`のキーワード引数`database`を非推奨化
+
+*   `legacy_connection_handling`に`true`を設定している場合の`connection_handlers`を非推奨化
 
 ### 主な変更
 
@@ -323,6 +329,8 @@ Active Storage
 ### 主な変更
 
 *   `Blob.create_and_upload`を追加: blobを新規作成し、指定の`io`をサービスにアップロードする（[#34827](https://github.com/rails/rails/pull/34827)）
+
+*   `ActiveStorage::Blob#service_name`カラムを追加: アップグレード後にマイグレーションを実行する必要がある。マイグレーションを生成するためには`bin/rails app:update`を実行する
 
 Active Model
 ------------
