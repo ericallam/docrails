@@ -1238,7 +1238,7 @@ Article.includes(:comments).where(comments: { visible: true })
 
 `where`条件がない場合は、通常のクエリが2セット生成されます。
 
-NOTE: `where`がこのように動作するのは、ハッシュを渡した場合だけです。SQL断片化 (fragmentation) を避けるためには、`references` を指定して強制的にテーブルをjoinする必要があります。
+NOTE: `where`がこのように動作するのは、ハッシュを渡した場合だけです。SQLフラグメント文字列を渡す場合には、強制的に結合テーブルとして扱うために `references` を使用する必要があります。
 
 ```ruby
 Article.includes(:comments).where("comments.visible = true").references(:comments)
