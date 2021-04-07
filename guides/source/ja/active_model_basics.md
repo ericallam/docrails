@@ -382,26 +382,24 @@ Person.human_attribute_name('name') # => "Nome"
 `ActiveModel::Lint::Tests`を用いて、オブジェクトがActive Model APIに準拠しているかどうかをテストできます。
 
 * `app/models/person.rb`
-
-```ruby
-class Person
-  include ActiveModel::Model
-end
-```
+  ```ruby
+  class Person
+    include ActiveModel::Model
+  end
+  ```
 
 * `test/models/person_test.rb`
+  ```ruby
+  require 'test_helper'
 
-```ruby
-require 'test_helper'
+  class PersonTest < ActiveSupport::TestCase
+    include ActiveModel::Lint::Tests
 
-class PersonTest < ActiveSupport::TestCase
-  include ActiveModel::Lint::Tests
-
-  setup do
-    @model = Person.new
+    setup do
+      @model = Person.new
+    end
   end
-end
-```
+  ```
 
 ```bash
 $ rails test
