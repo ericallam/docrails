@@ -393,7 +393,7 @@ end
 
 ```ruby
 require 'test_helper'
-  class PersonTest < ActiveSupport::TestCase
+class PersonTest < ActiveSupport::TestCase
   include ActiveModel::Lint::Tests
 
   setup do
