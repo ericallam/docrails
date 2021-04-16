@@ -1,4 +1,4 @@
-﻿
+
 -
   name: はじめに
   documents:
@@ -150,8 +150,12 @@
       url: initialization.html
       description: Rails 内部の初期化プロセスについて解説します。
     -
-      name: 定数の自動読み込みと再読み込み
+      name: 定数の自動読み込みと再読み込み（Zeitverk）
       url: autoloading_and_reloading_constants.html
+      description: 定数の自動読み込みや再読み込みの動作について解説します。
+
+      name: 定数の自動読み込みと再読み込み（classic）
+      url: autoloading_and_reloading_constants_classic_mode.html
       description: 定数の自動読み込みや再読み込みの動作について解説します。
     -
       name: Rails のキャッシュ機構
