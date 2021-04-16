@@ -520,4 +520,4 @@ request forgery protection parameter and token, respectively.
 ```
 
 NOTE: Regular forms generate hidden fields so they do not use these tags. More
-details can be found in the [Rails Security Guide](security.html#cross-site-request-forgery-csrf).
+details can be found in the [Rails Security Guide](security.html#クロスサイトリクエストフォージェリ-csrf).
