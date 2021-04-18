@@ -1,101 +1,100 @@
 Webpacker
 =========
 
-This guide will show you how to install and use Webpacker to package JavaScript, CSS, and other assets for the client-side of your Rails application.
+本ガイドは、Webpackerのインストール方法と、Railsアプリケーションのクライアント側で用いるJavaScriptやCSSなどのアセットをWebpackerで利用する方法について解説します（注: 現在の翻訳はedgeguidesベースです）。
 
-After reading this guide, you will know:
+このガイドの内容:
 
-* What Webpacker does and why it is different from Sprockets.
-* How to install Webpacker and integrate it with your framework of choice.
-* How to use Webpacker for JavaScript assets.
-* How to use Webpacker for CSS assets.
-* How to use Webpacker for static assets.
-* How to deploy a site that uses Webpacker.
-* How to use Webpacker in alternate Rails contexts, such as engines or Docker containers.
+* Webpackerとは何か、およびSprocketと異なっている理由
+* Webpackerのインストール方法、および選択したフレームワークとの統合方法
+* JavaScriptアセットをWebpackerで管理する方法
+* CSSアセットをWebpackerで管理する方法
+* 静的アセットをWebpackerで管理する方法
+* Webpackerを利用しているサイトのデプロイ方法
+* WebpackerをRailsエンジンやDockerコンテナなどの異なるコンテキストで利用する方法
 
 --------------------------------------------------------------
 
-What Is Webpacker?
+Webpackerとは
 ------------------
 
-Webpacker is a Rails wrapper around the [webpack](https://webpack.js.org) build system that provides a standard webpack configuration and reasonable defaults.
+Webpackerは、汎用的な[webpack](https://webpack.js.org)ビルドシステムのRailsラッパーであり、標準的なwebpackの設定と合理的なデフォルト設定を提供します。
 
-### What is webpack?
+### webpackとは
 
-The goal of webpack, or any front-end build system, is to allow you to write your front-end code in a way that is convenient for developers and then package that code in a way that is convenient for browsers. With webpack, you can manage JavaScript, CSS, and static assets like images or fonts. Webpack will allow you to write your code, reference other code in your application, transform your code, and combine your code into easily downloadable packs.
+webpackなどのフロントエンドビルドシステムの目的は、開発者にとって使いやすい方法でフロントエンドのコードを書き、そのコードをブラウザで利用しやすい方法でパッケージ化することです。webpackは「JavaScript」「CSS」「画像やフォント」といった静的アセットを管理できます。Webpackを使うことで、「JavaScriptコードを書いたりアプリケーション内の他のコードを参照したりするほかにも、コードの変換や、コードをダウンロードしやすいpackにまとめることもできます。
 
-See the [webpack documentation](https://webpack.js.org) for information.
+詳しくは[webpackのドキュメント](https://webpack.js.org)を参照してください。
 
-### How is Webpacker Different from Sprockets?
+### WebpackerがSprocketsと異なる理由
 
-Rails also ships with Sprockets, an asset-packaging tool whose features overlap with Webpacker. Both tools will compile your JavaScript into browser-friendly files, and minify and fingerprint them in production. Both tools allow you to incrementally change files in development.
+RailsにはSprocketsも同梱されています。SprocketsもWebpackerと同様のアセットパッケージングツールで、Webpackerと機能が重複しています。どちらのツールも、JavaScriptをブラウザに適したファイルにコンパイルし、production環境でminifyしたりフィンガープリントを追加したりできますし、development環境でファイルをインクリメンタルに変更できる点も同じです。
 
-Sprockets, which was designed to be used with Rails, is somewhat simpler to integrate. In particular, code can be added to Sprockets via a Ruby gem. However, webpack is better at integrating with more current JavaScript tools and NPM packages, and allows for a wider range of integration. New Rails apps are configured to use webpack for JavaScript and Sprockets for CSS, although you can do CSS in webpack.
+SprocketsはRailsで使われる前提で設計されているため、統合方法はWebpackerよりもシンプルです。特に、Ruby gemを用いてSprocketsにコードを追加できます。しかしwebpackは、より新しいJavaScriptツールやNPMパッケージとの統合に優れており、より多くのものを統合できます。新しいRailsアプリは「JavaScriptはwebpackで管理する」「CSSはSprocketsで管理する」設定になっていますが、webpackでCSSを管理することもできます。
 
-You should choose webpacker over Sprockets on a new project if you want to use NPM packages, and if you want access to the most current JavaScript features and tools. You should choose Sprockets over Webpacker for legacy applications where migration might be costly, if you want to integrate using Gems, or if you have a very small amount of code to package.
+新しいプロジェクトで「NPMパッケージを使いたい場合」「最新のJavaScript機能やツールにアクセスしたい場合」は、Sprocketsではなくwebpackerを選択すべきでしょう。「移行にコストがかかるレガシーアプリケーション」「gemで統合したい場合」「パッケージ化するコードの量が非常に少ない場合」は、WebpackerではなくSprocketsを選ぶべきでしょう。
 
-If you are familiar with Sprockets, the following guide might give you some idea of how to translate. Please note that each tool has a slightly different structure, and the concepts don't directly map onto each other.
+Sprocketsに慣れ親しんでいる方は、以下の表を参考に両者の対応関係を理解するとよいでしょう。なお、ツールごとに構造が微妙に異なっているため、必ずしも概念が直接対応しているとは限らない点にご注意ください。
 
-|Task              | Sprockets            | Webpacker         |
+|タスク             | Sprockets            | Webpacker         |
 |------------------|----------------------|-------------------|
-|Attach JavaScript |javascript_include_tag|javascript_pack_tag|
-|Attach CSS        |stylesheet_link_tag   |stylesheet_pack_tag|
-|Link to an image  |image_url             |image_pack_tag     |
-|Link to an asset  |asset_url             |asset_pack_tag     |
-|Require a script  |//= require           |import or require  |
+|JavaScriptをアタッチする |javascript_include_tag|javascript_pack_tag|
+|CSSをアタッチする        |stylesheet_link_tag   |stylesheet_pack_tag|
+|画像にリンクする         |image_url             |image_pack_tag     |
+|アセットにリンクする      |asset_url             |asset_pack_tag     |
+|スクリプトをrequireする  |`//= require`         |`import`または`require`  |
 
-Installing Webpacker
+Webpackerをインストールする
 --------------------
 
-To use Webpacker, you must install the Yarn package manager, version 1.x or up, and you must have Node.js installed, version 10.13.0 and up.
+Webpackerを使うには、Yarnパッケージマネージャー（1.x以上）とNode.js（10.13.0以上）のインストールが必要です。
 
-NOTE: Webpacker depends on NPM and Yarn. NPM, the Node package manager registry, is the primary repository for publishing and downloading open-source JavaScript projects, both for Node.js and browser runtimes. It is analogous to rubygems.org for Ruby gems. Yarn is a command-line utility that enables installation and management of JavaScript dependencies, much like Bundler does for Ruby.
+NOTE: WebpackerはNPMとYarnに依存しています。NPM（Node package manager）レジストリは、Node.jsとブラウザランタイムの両方でオープンソースのJavaScriptプロジェクトの公開やダウンロードで主に用いられるリポジトリです。NPMの位置づけは、Rubyのgemを扱うrubygems.orgに似ています。Yarnコマンドラインユーティリティは、RubyのBundlerと位置づけが似ています。BundlerがRubyの依存関係のインストールや管理を行うのと同様に、YarnはJavaScriptの依存関係をインストールおよび管理できます。
 
-Webpacker is installed by default in Rails 6.0 and up. In some older versions, you can install it with a new project by adding `--webpack` to the `rails new` command. In an existing project, webpacker can be added by running `bin/rails webpacker:install`. This installation command creates following local files:
+WebpackerはRails 6.0以降デフォルトでインストールされます。いくつかの古いRailsバージョンでは、`rails new`コマンドに`--webpack`を追加することでWebpackerを新規プロジェクトにインストールできるものもあります。既存のプロジェクトでは、`bin/rails webpacker:install`を実行することでWebpackerを追加できます。このインストールコマンドを実行すると、以下のローカルファイルが作成されます。
 
-|File                    |Location                |Explanation                                                                                         |
-|------------------------|------------------------|----------------------------------------------------------------------------------------------------|
-|Javascript Folder       | `app/javascript`       |A place for your front-end source                                                                   |
-|Webpacker Configuration | `config/webpacker.yml` |Configure the Webpacker gem                                                                         |
-|Babel Configuration     | `babel.config.js`      |Configuration for the [Babel](https://babeljs.io) JavaScript Compiler                               |
-|PostCSS Configuration   | `postcss.config.js`    |Configuration for the [PostCSS](https://postcss.org) CSS Post-Processor                             |
-|Browserlist             | `.browserslistrc`      |[Browserlist](https://github.com/browserslist/browserslist) manages target browsers configuration   |
+|ファイルとフォルダ        |場所                     |説明                     |
+|------------------------|------------------------|------------------------|
+|Javascriptフォルダ       | `app/javascript`       |フロントエンド向けJavaScriptソースコードの置き場所 |
+|Webpacker設定ファイル     | `config/webpacker.yml` |Webpacker gemを設定する |
+|Babel設定ファイル         | `babel.config.js`      |[Babel](https://babeljs.io)（JavaScriptコンパイラ）の設定 |
+|PostCSS設定ファイル       | `postcss.config.js`    |[PostCSS](https://postcss.org)（CSSポストプロセッサ）の設定|
+|Browserlistファイル      | `.browserslistrc`      |[Browserlist](https://github.com/browserslist/browserslist)（対象ブラウザを管理する）設定 |
 
+また、インストールコマンドは`yarn`パッケージマネージャを呼び出して`package.json`というファイルを作成し、基本的なパッケージセットのリストをこのファイルに含めます。これらの依存関係はYarnでインストールされます。
 
-The installation also calls the `yarn` package manager, creates a `package.json` file with a basic set of packages listed, and uses Yarn to install these dependencies.
+### Webpackerでさまざまなフレームワークを統合する
 
-### Integrating Frameworks with Webpacker
+Webpackerには、有名なJavaScriptフレームワークやツールのサポートも多数含まれています。これらのフレームワークやツールは、Railsアプリケーションを新規作成するときに`rails new myapp --webpack=<フレームワーク名>`のような方法で作成するか、`rails webpacker:install:<framework_name>`のように個別のコマンドラインタスクで作成するのが普通です。
 
-Webpacker also contains support for many popular JavaScript frameworks and tools. Typically, these are installed either when the application is created with something like `rails new myapp --webpack=<framework_name>` or with a separate command line task, like `rails webpacker:install:<framework_name>`.
+通常、これらの統合では、「フレームワークやツールを使うのに必要なNPMパッケージのセット」「動作確認用のhello worldページ」「ツールのコンパイルに必要なその他のwebpackローダーや変換ツール」もインストールされます。サポートされているフレームワークやツールは以下の通りです。
 
-These integrations typically install the set of NPM packages needed to get started with the framework or tool, a "hello world" page to show that it works, and any other webpack loaders or transformations needed to compile the tool. The supported frameworks and tools are:
+INFO: 以下の表にないフレームワークもインストール可能です。以下はよく用いられる基本的な統合の例です。
 
-INFO. It's possible to install frameworks not included in this list. These are basic integrations of popular choices.
-
-|Framework         |Install command                         |Description                                       |
+|フレームワーク       |インストールコマンド                       |説明                                              |
 |------------------|----------------------------------------|--------------------------------------------------|
-|Angular           |`bin/rails webpacker:install:angular`   |Sets up Angular and Typescript                    |
-|CoffeeScript      |`bin/rails webpacker:install:coffee`    |Sets up CoffeeScript                              |
-|Elm               |`bin/rails webpacker:install:elm`       |Sets up Elm                                       |
-|ERB               |`bin/rails webpacker:install:erb`       |Sets up ERB support on your Javascript files      |
-|React             |`bin/rails webpacker:install:react`     |Sets up ReactJS                                   |
-|Stimulus          |`bin/rails webpacker:install:stimulus`  |Sets up StimulusJS                                |
-|Svelte            |`bin/rails webpacker:install:svelte`    |Sets up Svelte JS                                 |
-|TypeScript        |`bin/rails webpacker:install:typescript`|Sets up Typescript for your project using Babel's TypeScript support|
-|Vue               |`bin/rails webpacker:install:vue`       |Sets up VueJS                                     |
+|Angular           |`bin/rails webpacker:install:angular`   |AngularとTypescriptのセットアップ                    |
+|CoffeeScript      |`bin/rails webpacker:install:coffee`    |CoffeeScriptのセットアップ                          |
+|Elm               |`bin/rails webpacker:install:elm`       |Elmのセットアップ                                    |
+|ERB               |`bin/rails webpacker:install:erb`       |JavaScriptファイル内でのERBサポートのセットアップ       |
+|React             |`bin/rails webpacker:install:react`     |ReactJSのセットアップ                                |
+|Stimulus          |`bin/rails webpacker:install:stimulus`  |StimulusJSのセットアップ                             |
+|Svelte            |`bin/rails webpacker:install:svelte`    |Svelte JSのセットアップ                              |
+|TypeScript        |`bin/rails webpacker:install:typescript`|プロジェクトで用いるTypescriptのセットアップ（BabelのTypeScriptサポートを使用）|
+|Vue               |`bin/rails webpacker:install:vue`       |VueJSのセットアップ                                  |
 
-For more information about the existing integrations, see https://github.com/rails/webpacker#integrations
+その他の既存の統合について詳しくは https://github.com/rails/webpacker#integrations を参照してください。
 
-Usage
+使い方
 -----
 
-### Using Webpacker for JavaScript
+### JavaScriptをWebpacker経由で利用する
 
-With Webpacker installed, by default any JavaScript file in the `app/javascripts/packs` directory will get compiled to its own pack file.
+Webpackerをインストールすると、デフォルトでは`app/javascripts/packs`ディレクトリ以下のJavaScriptファイルがコンパイルされて独自のpackファイルにまとめられます。
 
-So if you have a file called `app/javascript/packs/application.js`, Webpacker will create a pack called `application`, and you can add it to your Rails application with the code `<%= javascript_pack_tag "application" %>`. With that in place, in development, Rails will re-compile the `application.js` file every time it changes, and you load a page that uses that pack. Typically, the file in the actual `packs` directory will be a manifest that mostly loads other files, but it can also have arbitrary JavaScript code.
+たとえば、`app/javascript/packs/application.js`というファイルが存在すると、Webpackerは`application`という名前のpackを作成します。このpackは、`<%= javascript_pack_tag "application" %>`というERBコードが使われているRailsアプリケーションで追加されます。これによって、development環境では`application.js`が変更されるたびに再コンパイルされ、ページを読み込むとコンパイル後のpackが使われます。実際の`pack`ディレクトリに置かれるのは、主に他のファイルを読み込むマニフェストファイルですが、任意のJavaScriptコードも置けます。
 
-The default pack created for you by Webpacker will link to Rails default JavaScript packages if they have been included in the project:
+RailsのデフォルトJavaScriptパッケージがプロジェクトに含まれていれば、Webpackerで作成されたデフォルトのpackはそのデフォルトJavaScriptパッケージにリンクします。
 
 ```
 import Rails from "@rails/ujs"
@@ -108,14 +107,14 @@ Turbolinks.start()
 ActiveStorage.start()
 ```
 
-You'll need to include a pack that requires these packages to use them in your Rails application.
+これらのパッケージをRailsアプリケーションで使うには、これらのパッケージを`require`するパックをインクルードする必要があります。
 
-It is important to note that only webpack entry files should be placed in the `app/javascript/packs` directory; webpack will create a separate dependency graph for each entry point so a large number of packs will increase compilation overhead. The rest of your asset source code should live outside this directory though Webpacker does not place any restrictions or make any suggestions on how to structure your source code. Here is an example:
+`app/javascript/packs`ディレクトリにはwebpackのエントリーファイルだけを置き、それ以外のものを置かないことが重要です。webpackはエントリーポイントごとに個別の依存関係グラフを作成するので、packを多数作成するとコンパイルのオーバーヘッドが大きくなります（アセットのその他のソースコードはこのディレクトリの外に置くべきです: Webpacker自身はソースコードの構造に制約をかけませんが、適切なソースコード構造を提案することもありません）。以下はソースコード構造の例です。
 
 ```sh
 app/javascript:
   ├── packs:
-  │   # only webpack entry files here
+  │   # ここにはwebpackエントリーファイルだけを置くこと
   │   └── application.js
   │   └── application.css
   └── src:
@@ -126,27 +125,25 @@ app/javascript:
       └── logo.svg
 ```
 
-Typically, the pack file itself is largely a manifest that uses `import` or `require` to load the necessary files and may also do some initialization.
+通常、packファイル自体は`import`や`require`で必要なファイルを読み込むマニフェストですが、いくつかの初期化を行うこともあります。
 
-If you want to change these directories, you can adjust the `source_path` (default `app/javascript`) and `source_entry_path` (default `packs`) in the `configuration/webpacker.yml` file.
+これらのディレクトリを変更したい場合は、`configuration/webpacker.yml`ファイルの`source_path`（デフォルトは`app/javascript`ディレクトリ）と`source_entry_path`（デフォルトは`packs`ディレクトリ）も変更してください。
 
-Within source files, `import` statements are resolved relative to the file doing the import, so `import Bar from "./foo"` finds a `foo.js` file in the same directory as the current file, while `import Bar from "../src/foo"` finds a file in a sibling directory named `src`.
+JavaScriptソースファイル内の`import`ステートメントは、インポートするファイルの位置を「相対的に」解決します。つまり、`import Bar from "./foo"`と書くと、カレントファイルと同じディレクトリにある`foo.js`ファイルを探索しますが、`import Bar from ".../src/foo"`と書くと`src` という名前の兄弟ディレクトリにあるファイルを探索します。
 
-### Using Webpacker for CSS
+### CSSをWebpacker経由で利用する
 
-Out of the box, Webpacker supports CSS and SCSS using the PostCSS processor.
+Webpackerでは、PostCSSプロセッサを用いてCSSやSCSSのサポートを即座に利用できます。
 
-To include CSS code in your packs, first include your CSS files in your top-level pack file as though it was a JavaScript file. So if your CSS top-level manifest is in `app/javascript/styles/styles.scss`, you can import it with `import styles/styles`. This tells webpack to include your CSS file in the download. To actually load it in the page, include `<%= stylesheet_pack_tag "application" %>` in the view, where the `application` is the same pack name that you were using.
+CSSコードをpackにインクルードするには、まずCSSファイルをトップレベルのpackファイルにインクルードします（JavaScriptファイルをインクルードするときと同じ要領です）。つまり、CSSのトップレベルマニフェストが`app/javascript/styles/styles.scss`にある場合は、`import styles/styles` でインポートします。これにより、webpackがCSSファイルをダウンロードに含められるようになります。実際にWebページで読み込むには、ビューのコードに`<%= stylesheet_pack_tag "application" %>`を追加します。
 
-If you are using a CSS framework, you can add it to Webpacker by following the instructions to load the framework as an NPM module using `yarn`, typically `yarn add <framework>`. The framework should have instructions on importing it into a CSS or SCSS file.
+CSSフレームワークを用いる場合は、フレームワークを`yarn`でNPMモジュールとして読み込むインストール手順（`yarn add <フレームワーク名>`が典型）に従えば、Webpackerにフレームワークを追加できます。たいていのフレームワークには、CSSやSCSSファイルにインポートする手順があるはずです。
 
+### 静的アセットをWebpacker経由で利用する
 
-### Using Webpacker for Static Assets
+Webpackerのデフォルト[設定](https://github.com/rails/webpacker/blob/master/lib/install/config/webpacker.yml#L21)では、画像やフォントなどの静的アセットもすぐに使えるようになっています。この設定には画像ファイルやフォントファイルのフォーマットに対応する拡張子が多数含まれており、webpackはそれらの拡張子も生成された`manifest.json`ファイルに追加します。
 
-The default Webpacker [configuration](https://github.com/rails/webpacker/blob/master/lib/install/config/webpacker.yml#L21) should work out of the box for static assets.
-The configuration includes several image and font file format extensions, allowing webpack to include them in the generated `manifest.json` file.
-
-With webpack, static assets can be imported directly in JavaScript files. The imported value represents the URL to the asset. For example:
+webpackのおかげで、以下のコード例のように静的アセットをJavaScriptファイル内で直接インポートできます。インポートされた値は、そのアセットへのURLを表します。
 
 ```javascript
 import myImageUrl from '../images/my-image.jpg'
@@ -158,66 +155,67 @@ myImage.alt = "I'm a Webpacker-bundled image";
 document.body.appendChild(myImage);
 ```
 
-To reference Webpacker static assets from a Rails view, the assets need to be explicitly required from Webpacker-bundled JavaScript files. Unlike Sprockets, Webpacker does not import your static assets by default. The default `app/javascript/packs/application.js` file has a template for importing files from a given directory, which you can uncomment for every directory you want to have static files in. The directories are relative to `app/javascript`. The template uses the directory `images`, but you can use anything in `app/javascript`:
+Webpackerの静的アセットをRailsのビューで参照するには、WebpackerにバンドルされるJavaScriptファイルで明示的に`require`する必要があります。Sprockets とは異なり、Webpackerはデフォルトでは静的アセットをインポートしない点にご注意ください。デフォルトの`app/javascript/packs/application.js`ファイルには、指定のディレクトリからファイルをインポートするテンプレートがコメントの形で用意されているので、静的ファイルを置きたいディレクトリごとにコメント解除して利用できます。ディレクトリは`app/javascript`を起点とする相対パスです。テンプレートでは`images`というディレクトリ名になっていますが、`app/javascript`の中であれば任意のディレクトリ名に変更できます。
 
 ```
 const images = require.context("../images", true)
 const imagePath = name => images(name, true)
 ```
 
-Static assets will be output into a directory under `public/packs/media`. For example, an image located and imported at `app/javascript/images/my-image.jpg` will be output at `public/packs/media/images/my-image-abcd1234.jpg`. To render an image tag for this image in a Rails view, use `image_pack_tag 'media/images/my-image.jpg`.
+静的アセットは、`public/packs/media`ディレクトリ以下に出力されます。たとえば、`app/javascript/images/my-image.jpg`にある画像をインポートすると、`public/packs/media/images/my-image-abcd1234.jpg`に出力されます。この画像の`image`タグをRailsのビューでレンダリングするには、`image_pack_tag 'media/images/my-image.jpg`を使います。
 
-The Webpacker ActionView helpers for static assets correspond to asset pipeline helpers according to the following table:
+Webpackerで静的アセットを扱う場合のAction Viewヘルパーについては、以下の表でアセットパイプラインのヘルパーとの対応を確認できます。
 
-|ActionView helper | Webpacker helper |
+|ActionViewヘルパー | Webpackerヘルパー |
 |------------------|------------------|
-|favicon_link_tag  |favicon_pack_tag  |
-|image_tag         |image_pack_tag    |
+|`favicon_link_tag`  |`favicon_pack_tag`  |
+|`image_tag`         |`image_pack_tag`    |
 
-Also, the generic helper `asset_pack_path` takes the local location of a file and returns its webpacker location for use in Rails views.
 
-You can also access the image by directly referencing the file from a CSS file in `app/javascript`.
+`asset_pack_path`というジェネリックなヘルパーも利用できます。このヘルパーにローカルファイルのパスを渡すと、Railsのビューで使えるWebpackerパスを返します。
 
-### Webpacker in Rails Engines
+また、`app/javascript`のCSSファイルから直接ファイルを参照して画像にアクセスすることもできます。
 
-As of Webpacker version 5, Webpacker is not "engine-aware," which means Webpacker does not have feature-parity with Sprockets when it comes to using within Rails engines. The [Webpacker engine guides](https://github.com/rails/webpacker/blob/master/docs/engines.md) provide some detailed workarounds to add Webpacker-support and developing locally against an engine with Webpacker.
+### RailsエンジンでのWebpacker利用について
 
-Gem authors of Rails engines who wish to support consumers using Webpacker are encouraged to distribute frontend assets as an NPM package in addition to the gem itself and provide instructions (or an installer) to demonstrate how host apps should integrate. A good example of this approach is [Alchemy CMS](https://github.com/AlchemyCMS/alchemy_cms).
+バージョン5の時点のWebpackerは「Railsエンジン対応」では**ありません**。つまりWebpackerは、Railsエンジンで利用できるSprocketsと機能的な互換性がありません。[Webpackerエンジンガイド](https://github.com/rails/webpacker/blob/master/docs/engines.md)には、RailsエンジンにWebpackerサポートを追加する場合やエンジン開発でWebpackerを用いる場合の詳細な回避方法がいくつか紹介されています。
 
-### Hot Module Replacement (HMR)
+Railsエンジンgemの作者がWebpackerの利用をサポートする場合は、フロントエンドアセットをgem本体に追加してNPMパッケージとして配布し、ホストアプリケーションとの統合方法を説明する指示書（またはインストーラ）を提供することが推奨されます。[Alchemy CMS](https://github.com/AlchemyCMS/alchemy_cms)は、このアプローチの良い例です。
 
-Webpacker out-of-the-box supports HMR with webpack-dev-server, and you can toggle it by setting dev_server/hmr option inside webpacker.yml.
+### webpackのHot Module Replacement（HMR）について
 
-Check out [webpack's documentation on DevServer](https://webpack.js.org/configuration/dev-server/#devserver-hot) for more information.
+Webpackerは、webpack-dev-serverでのHMR（Hot Module Replacement）をすぐ利用できるようになっており、webpacker.ymlファイルで`dev_server/hmr`オプションを設定することで切り替えられます。
 
-To support HMR with React you would need to add react-hot-loader. Check out [React Hot Loader's _Getting Started_ guide](https://gaearon.github.io/react-hot-loader/getstarted/).
+詳しくはwebpackの[DevServerドキュメント](https://webpack.js.org/configuration/dev-server/#devserver-hot)を参照してください。
 
-Don't forget to disable HMR if you are not running webpack-dev-server otherwise you will get "not found error" for stylesheets.
+ReactでHMRをサポートするには、react-hot-loaderの追加が必要です。詳しくはReact Hot Loaderの[Getting Startedガイド](https://gaearon.github.io/react-hot-loader/getstarted/)を参照してください。
 
-Webpacker in Different Environments
+webpack-dev-serverを実行していない場合は、HMRを**必ず**無効にしてください。そうしないと、CSSで"not found error"エラーが発生します。
+
+環境ごとのWebpacker設定について
 -----------------------------------
 
-Webpacker has three environments by default `development`, `test`, and `production`. You can add additional environment configurations in the `webpacker.yml` file and set different defaults for each environment, Webpacker will also load the file `config/webpack/<environment>.js` for additional environment setup.
+Webpackerにはデフォルトで`development`、`test`、`production`の3つの環境があります。`webpacker.yml` ファイルに環境設定を追加することで、環境ごとに異なるデフォルトを設定できます。また、Webpackerは環境設定を追加するために`config/webpack/<environment>.js` ファイルを読み込みます。
 
-## Running Webpacker in Development
+## development環境でWebpackerを実行する
 
-Webpacker ships with two binstub files to run in development: `./bin/webpack` and `./bin/webpack-dev-server`. Both are thin wrappers around the standard `webpack.js` and `webpack-dev-server.js` executables and ensure that the right configuration files and environmental variables are loaded based on your environment.
+Webpackerには、development環境で実行する`./bin/webpack`と`./bin/webpack-dev-server`という2つのbinstubファイルが同梱されます。これらのbinstubファイルは、標準の実行ファイルである`webpack.js`と`webpack-dev-server.js`の薄いラッパーになっており、環境に応じて適切な設定ファイルや環境変数が読み込まれるようになっています。
 
-By default, Webpacker compiles automatically on demand in development when a Rails page loads. This means that you don't have to run any separate processes, and compilation errors will be logged to the standard Rails log. You can change this by changing to `compile: false` in the `config/webpacker.yml` file. Running `bin/webpack` will force compilation of your packs.
+development環境のWebpackerは、デフォルトでRailsページが読み込まれると必要に応じて自動的にコンパイルを行います。つまり別のプロセスの実行は不要であり、コンパイルエラーは標準のRailsログに出力されます。これを変更するには、`config/webpacker.yml`ファイルを`compile: false`に変更します。`bin/webpack`を実行すると、packを強制的にコンパイルします。
 
-If you want to use live code reloading, or you have enough JavaScript that on-demand compilation is too slow, you'll need to run `./bin/webpack-dev-server` or `ruby ./bin/webpack-dev-server`. This process will watch for changes in the `app/javascript/packs/*.js` files and automatically recompile and reload the browser to match.
+コードのライブリロード機能を使いたい場合や、JavaScriptコードが多くてオンデマンドのコンパイルが遅くなる場合は、`./bin/webpack-dev-server`または`ruby ./bin/webpack-dev-server` を実行する必要があります。webpack-dev-serverのプロセスは、`app/javascript/packs/*.js`ファイルの変更を監視して変更時に自動的に再コンパイルし、ブラウザを再読み込みします。
 
-Windows users will need to run these commands in a terminal separate from `bundle exec rails server`.
+Windowsユーザーは、これらのコマンドを`bundle exec rails server`とは別のターミナルで実行する必要があります。
 
-Once you start this development server, Webpacker will automatically start proxying all webpack asset requests to this server. When you stop the server, it'll revert to on-demand compilation.
+このdevelopmentサーバーを起動すると、Webpackerが自動的にすべてのwebpackアセットリクエストをこのサーバーにプロキシします。サーバーを停止すると、オンデマンドのコンパイルに戻ります。
 
-The [Webpacker Documentation](https://github.com/rails/webpacker) gives information on environment variables you can use to control `webpack-dev-server`. See additional notes in the [rails/webpacker docs on the webpack-dev-server usage](https://github.com/rails/webpacker#development).
+[Webpackerドキュメント](https://github.com/rails/webpacker)には、`webpack-dev-server`を制御する環境変数の情報が記載されています。また、rails/webpackerの[webpack-dev-server利用法](https://github.com/rails/webpacker#development)ドキュメントにある追加の注意事項も参照してください。
 
-### Deploying Webpacker
+### Webpackerをデプロイする
 
-Webpacker adds a `webpacker:compile` task to the `assets:precompile` rake task, so any existing deploy pipeline that was using `assets:precompile` should work. The compile task will compile the packs and place them in `public/packs`.
+Webpackerは`assets:precompile`のrakeタスクに`webpacker:compile`タスクを追加するので、`assets:precompile`を使う既存のデプロイパイプラインはすべて動作します。`webpacker:compile`タスクはpackをコンパイルして`public/packs`に配置します。
 
-Additional Documentation
+追加のドキュメント
 ------------------------
 
-For more information on advanced topics, such as using Webpacker with popular frameworks, consult the [Webpacker Documentation](https://github.com/rails/webpacker).
+Webpackerでメジャーなフレームワークを利用する方法などの高度な話題については、[Webpackerドキュメント](https://github.com/rails/webpacker)を参照してください。

@@ -108,6 +108,11 @@
       name: Action Cable の概要
       url: action_cable_overview.html
       description: リアルタイム機能を実現するAction Cableの動作と、WebSocketsの利用法について解説します。
+    -
+      name: Webpacker
+      url: Webpacker.html
+      description: webpackビルドシステムのRailsラッパーであるWebpackerについて解説します。
+      work_in_progress: true
 
 -
   name: 高度なトピック
