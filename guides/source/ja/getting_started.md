@@ -1411,20 +1411,20 @@ end
 
 `@article`オブジェクトはインスタンス変数なので、ビューで出力されるどのパーシャルからもアクセスできます。
 
-### Using Concerns
+### concernを使う
 
-Concerns are a way to make large controllers or models easier to understand and manage. This also has the advantage of reusability when multiple models (or controllers) share the same concerns. Concerns are implemented using modules that contain methods representing a well-defined slice of the functionality that a model or controller is responsible for. In other languages, modules are often known as mixins.
+Railsの「concern（関心事）」とは、大規模なコントローラやモデルの理解や管理を容易にする手法のひとつです。複数のモデル（またはコントローラ）が同じ関心を共有していれば、concernを介して再利用できるというメリットもあります。concernはRubyの「モジュール」で実装され、モデルやコントローラが担当する機能のうち明確に定義された部分を表すメソッドをそのモジュールに含めます。なおモジュールは他の言語では「ミックスイン」と呼ばれることもよくあります。
 
-You can use concerns in your controller or model the same way you would use any module. When you first created your app with `rails new blog`, two folders were created within `app/` along with the rest:
+concernは、コントローラやモデルで普通のモジュールと同じように使えます。`rails new blog` でアプリを作成すると、`app/`内に以下の2つのconcernsフォルダも作成されます。
 
 ```
 app/controllers/concerns
 app/models/concerns
 ```
 
-A given blog article might have various statuses - for instance, it might be visible to everyone (i.e. `public`), or only visible to the author (i.e. `private`). It may also be hidden to all but still retrievable (i.e. `archived`). Comments may similarly be hidden or visible. This could be represented using a `status` column in each model.
+1件のブログ記事はさまざまなステータスを持つ可能性があります。たとえば記事の可視性について「誰でも見てよい（`public`）」「著者だけに見せる（`private`）」というステータスを持つかもしれませんし、「復旧可能な形で記事を非表示にする（`archived`）」ことも考えられます。コメントについても同様に可視性やアーカイブを設定することもあるでしょう。こうしたステータスを表す方法のひとつとして、モデルごとに`status`カラムを持たせるとしましょう。
 
-Within the `article` model, after running a migration to add a `status` column, you might add:
+マイグレーションを実行して`status`カラムを追加した後で、`Article`モデルに以下を追加します。
 
 ```ruby
 class Article < ApplicationRecord
@@ -1443,7 +1443,7 @@ class Article < ApplicationRecord
 end
 ```
 
-and in the `Comment` model:
+`Comment`モデルにも以下を追加します。
 
 ```ruby
 class Comment < ApplicationRecord
@@ -1459,7 +1459,7 @@ class Comment < ApplicationRecord
 end
 ```
 
-Then, in our `index` action template (`app/views/articles/index.html.erb`) we would use the `archived?` method to avoid displaying any article that is archived:
+次に`index`アクションに対応する`app/views/articles/index.html.erb`テンプレートで以下のように`archived?`メソッドを追加し、アーカイブ済みの記事を表示しないようにします。
 
 ```html+erb
 <h1>Articles</h1>
@@ -1477,9 +1477,9 @@ Then, in our `index` action template (`app/views/articles/index.html.erb`) we wo
 <%= link_to "New Article", new_article_path %>
 ```
 
-However, if you look again at our models now, you can see that the logic is duplicated. If in the future we increase the functionality of our blog - to include private messages, for instance -  we might find ourselves duplicating the logic yet again. This is where concerns come in handy.
+しかし、2つのモデルのコードを見返してみると、ロジックが重複していることがわかります。このままでは、今後ブログにプライベートメッセージ機能などを追加するとロジックがまたしても重複してしまうでしょう。concernは、このような重複を避けるのに便利です。
 
-A concern is only responsible for a focused subset of the model's responsibility; the methods in our concern will all be related to the visibility of a model. Let's call our new concern (module) `Visible`. We can create a new file inside `app/models/concerns` called `visible.rb` , and store all of the status methods that were duplicated in the models.
+1つのconcernは、モデルの責務の「一部」についてのみ責任を負います。この例の場合、「関心」の対象となるメソッドはすべてモデルの可視性に関連しているので。新しいconcern（すなわちモジュール）を`Visible`と呼ぶことにしましょう。`app/models/concerns`ディレクトリの下に`visible.rb`という新しいファイルを作成し、複数のモデルで重複していたステータス関連のすべてのメソッドをそこに移動させます。
 
 `app/models/concerns/visible.rb`
 
@@ -1491,7 +1491,7 @@ module Visible
 end
 ```
 
-We can add our status validation to the concern, but this is slightly more complex as validations are methods called at the class level. The `ActiveSupport::Concern` ([API Guide](https://api.rubyonrails.org/classes/ActiveSupport/Concern.html)) gives us a simpler way to include them:
+ステータスをバリデーションするメソッドもconcernにまとめられますが、バリデーションメソッドはクラスレベルで呼び出されるので少々複雑になります。APIドキュメントの[`ActiveSupport::Concern`](https://api.rubyonrails.org/classes/ActiveSupport/Concern.html)には、以下のようにバリデーションをシンプルに`include`する方法が紹介されています。
 
 ```ruby
 module Visible
@@ -1509,10 +1509,10 @@ module Visible
 end
 ```
 
-Now, we can remove the duplicated logic from each model and instead include our new `Visible` module:
+これで各モデルで重複しているロジックを取り除けるようになったので、新たに`Visible`モジュールを`include`しましょう。
 
 
-In `app/models/article.rb`:
+`app/models/article.rb`を以下のように変更します。
 
 ```ruby
 class Article < ApplicationRecord
@@ -1524,7 +1524,7 @@ class Article < ApplicationRecord
 end
 ```
 
-and in `app/models/comment.rb`:
+`app/models/comment.rb`も以下のように変更します。
 
 ```ruby
 class Comment < ApplicationRecord
@@ -1533,7 +1533,7 @@ class Comment < ApplicationRecord
 end
 ```
 
-Class methods can also be added to concerns. If we want a count of public articles or comments to display on our main page, we might add a class method to Visible as follows:
+concernにはクラスメソッドも追加できます。たとえば、ステータスがpublicの記事（またはコメント）の件数をメインページに表示したい場合は、`Visible`モジュールに以下の要領でクラスメソッドを追加します。
 
 ```ruby
 module Visible
@@ -1557,7 +1557,7 @@ module Visible
 end
 ```
 
-Then in the view, you can call it like any class method:
+これで、以下のようにビューで任意のクラスメソッドを呼べるようになります。
 
 ```html+erb
 <h1>Articles</h1>
@@ -1575,17 +1575,17 @@ Our blog has <%= Article.public_count %> articles and counting!
 <%= link_to "New Article", new_article_path %>
 ```
 
-There are a few more steps to be carried out before our application works with the addition of `status` column. First, let's run the following migrations to add `status` to `Articles` and `Comments`:
+アプリケーションに追加した`status`カラムを使うには、もう少し手を加える必要があります。最初に、以下のマイグレーションを実行して`Articles`モデルと`Comments`モデルに`status`カラムを追加します。
 
 ```bash
 $ bin/rails generate migration AddStatusToArticles status:string
 $ bin/rails generate migration AddStatusToComments status:string
 ```
 
-TIP: To learn more about migrations, see [Active Record Migrations](
-active_record_migrations.html).
+TIP: マイグレーションについて詳しくは、[Active Record マイグレーション](
+active_record_migrations.html)を参照してください。
 
-We also have to permit the `:status` key as part of the strong parameter, in `app/controllers/articles_controller.rb`:
+次に、Strong Parametersで`:status`キーの許可も追加しておく必要もあります。`app/controllers/articles_controller.rb`を以下のように変更します。
 
 ```ruby
 private
@@ -1594,7 +1594,7 @@ private
     end
 ```
 
-and in `app/controllers/comments_controller.rb`:
+`app/controllers/comments_controller.rb`も以下のように変更します。
 
 ```ruby
 private
@@ -1603,7 +1603,7 @@ private
     end
 ```
 
-To finish up, we will add a select box to the forms, and let the user select the status when they create a new article or post a new comment. We can also specify the default status as `public`. In `app/views/articles/_form.html.erb`, we can add:
+最後に、フォームにセレクトボックスを追加して、ユーザーが記事を作成したりコメントを投稿したりするときにステータスを選択できるようにします。デフォルトのステータスを`public`と指定することもできます。`app/views/articles/_form.html.erb`に以下を追加します。
 
 ```html+erb
 <div>
@@ -1612,7 +1612,7 @@ To finish up, we will add a select box to the forms, and let the user select the
 </div>
 ```
 
-and in `app/views/comments/_form.html.erb`:
+`app/views/comments/_form.html.erb`にも以下を追加します。
 
 ```html+erb
 <p>
