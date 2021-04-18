@@ -7,6 +7,7 @@ install:
 script:
   - bundle exec rake assets:precompile
   - bundle exec rake test SKIP_BUILD=1
+  - cat guides/source/ja/documents.yaml | ruby -r yaml -e 'YAML.load STDIN'
 branches:
   only: 
     - master
