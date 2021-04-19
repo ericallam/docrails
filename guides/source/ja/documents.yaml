@@ -110,7 +110,7 @@
       description: リアルタイム機能を実現するAction Cableの動作と、WebSocketsの利用法について解説します。
     -
       name: Webpacker
-      url: Webpacker.html
+      url: webpacker.html
       description: webpackビルドシステムのRailsラッパーであるWebpackerについて解説します。
       work_in_progress: true
 
