@@ -1,7 +1,7 @@
 Webpacker の概要
 =========
 
-本ガイドは、Webpackerのインストール方法と、Railsアプリケーションのクライアント側で用いるJavaScriptやCSSなどのアセットをWebpackerで利用する方法について解説します（注: 現在の翻訳はedgeguidesベースです）。
+本ガイドではWebpackerのインストール方法と、Railsアプリケーションのクライアント側で用いるJavaScriptやCSSなどのアセットをWebpackerで利用する方法について解説します。
 
 このガイドの内容:
 
