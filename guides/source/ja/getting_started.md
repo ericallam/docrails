@@ -2,13 +2,13 @@
 
 # Rails をはじめよう
 
-このガイドでは、Ruby on Rails (以下 Rails) を初めて設定して実行するまでを解説します。
+このガイドでは、Ruby on Rails（以下 Rails）を初めて設定して実行するまでを解説します。
 
 このガイドの内容:
 
 - Railsのインストール方法、新しいRailsアプリケーションの作成方法、アプリケーションからデータベースへの接続方法
 - Railsアプリケーションの一般的なレイアウト
-- MVC (モデル・ビュー・コントローラ) およびRESTfulデザインの基礎
+- MVC（モデル・ビュー・コントローラ）およびRESTfulデザインの基礎
 - Railsアプリケーションの原型を素早く立ち上げる方法
 
 --------------------------------------------------------------------------------
@@ -21,8 +21,8 @@ Railsとは、Rubyプログラミング言語の上で動作するWebアプリ�
 Rubyの経験がまったくない場合、Railsを学ぶのはかなり大変な作業になるでしょう。Rubyを学ぶための精選されたオンラインリソース一覧はたくさんありますので、その中から以下をご紹介します。
 
 - [Rubyプログラミング言語公式Webサイトの情報](https://www.ruby-lang.org/ja/documentation/)
-- [無料のプログラミング学習用書籍一覧 (英語)](https://github.com/EbookFoundation/free-programming-books/blob/master/books/free-programming-books.md#ruby)
-- [無料のプログラミング学習用書籍一覧 (日本語)](https://github.com/EbookFoundation/free-programming-books/blob/master/books/free-programming-books-ja.md#ruby)
+- [無料のプログラミング学習用書籍一覧（英語）](https://github.com/EbookFoundation/free-programming-books/blob/master/books/free-programming-books.md#ruby)
+- [無料のプログラミング学習用書籍一覧（日本語）](https://github.com/EbookFoundation/free-programming-books/blob/master/books/free-programming-books-ja.md#ruby)
 
 これらはいずれもよくできていますが、中にはRubyのバージョンが1.6など古いものもありますのでご注意ください。また、バージョン1.8を対象にしているものが多く、Railsでの日常的な開発に使う新しい文法が含まれていないこともあります。
 
@@ -36,8 +36,8 @@ Railsは、最善の開発方法というものを1つに定めるという、�
 
 Railsの哲学には、以下の2つの主要な基本理念があります。
 
-- **同じことを繰り返すな (Don't Repeat Yourself: DRY):** DRYはソフトウェア開発上の原則であり、「システムを構成する知識のあらゆる部品は、常に単一であり、明確であり、信頼できる形で表現されていなければならない」というものです。同じコードを繰り返し書くことを徹底的に避けることで、コードが保守しやすくなり、容易に拡張できるようになり、そして何よりバグを減らすことができます。
-- **設定より規約が優先される (Convention Over Configuration):** Railsでは、Webアプリケーションで行われるさまざまなことを実現するための最善の方法を明確に思い描いており、Webアプリケーションの各種設定についても従来の経験や慣習を元に、それらのデフォルト値を定めています。このようにある種独断でデフォルト値が決まっているおかげで、開発者の意見をすべて取り入れようとした自由過ぎるWebアプリケーションのように、開発者が延々と設定ファイルを設定して回らずに済みます。
+- **同じことを繰り返すな（Don't Repeat Yourself: DRY）:** DRYはソフトウェア開発上の原則であり、「システムを構成する知識のあらゆる部品は、常に単一であり、明確であり、信頼できる形で表現されていなければならない」というものです。同じコードを繰り返し書くことを徹底的に避けることで、コードが保守しやすくなり、容易に拡張できるようになり、そして何よりバグを減らすことができます。
+- **設定より規約が優先される（Convention Over Configuration）:** Railsでは、Webアプリケーションで行われるさまざまなことを実現するための最善の方法を明確に思い描いており、Webアプリケーションの各種設定についても従来の経験や慣習を元に、それらのデフォルト値を定めています。このようにある種独断でデフォルト値が決まっているおかげで、開発者の意見をすべて取り入れようとした自由過ぎるWebアプリケーションのように、開発者が延々と設定ファイルを設定して回らずに済みます。
 
 ## Railsプロジェクトを新規作成する
 
@@ -58,7 +58,7 @@ Railsをインストールする前に、必要な要件が自分のシステム
 
 #### Rubyをインストールする
 
-ターミナル (コマンドプロンプトとも言います) ウィンドウを開いてください。macOSの場合、ターミナル (Terminal.app) という名前のアプリケーションを実行します。Windowsの場合は[スタート] メニューから [ファイル名を指定して実行] をクリックして'cmd.exe'と入力します。`$`で始まる記述はコマンド行なので、これらはコマンドラインに入力して実行してください。続いて現在インストールされているRubyのバージョンが最新のものであることを確認してください。
+ターミナル（コマンドプロンプトとも言います）ウィンドウを開いてください。macOSの場合、ターミナル（Terminal.app）という名前のアプリケーションを実行します。Windowsの場合は[スタート] メニューから [ファイル名を指定して実行] をクリックして'cmd.exe'と入力します。`$`で始まる記述はコマンド行なので、これらはコマンドラインに入力して実行してください。続いて現在インストールされているRubyのバージョンが最新のものであることを確認してください。
 
 ```bash
 $ ruby -v
@@ -150,14 +150,14 @@ $ cd blog
 --- | ---
 app/ | ここにはアプリケーションのコントローラ、モデル、ビュー、ヘルパー、メイラー、チャンネル、ジョブズ、そしてアセットが置かれます。以後、本ガイドでは基本的にこのディレクトリを中心に説明を行います。
 bin/ | ここにはアプリケーションを起動/アップデート/デプロイするためのRailsスクリプトなどのスクリプトファイルが置かれます。
-config/ | アプリケーションの設定ファイル (ルーティング、データベースなど) がここに置かれます。詳しくは[Rails アプリケーションを設定する](configuring.html) を参照してください。
+config/ | アプリケーションの設定ファイル（ルーティング、データベースなど）がここに置かれます。詳しくは[Rails アプリケーションを設定する](configuring.html) を参照してください。
 config.ru | アプリケーションの起動に必要となる、Rackベースのサーバー用のRack設定ファイルです。Rackについて詳しくは、[RackのWebサイト](https://rack.github.io/)を参照してください。
 db/ | 現時点のデータベーススキーマと、データベースマイグレーションファイルが置かれます。
 Gemfile<br>Gemfile.lock | これらのファイルは、Railsアプリケーションで必要となるgemの依存関係を記述します。この2つのファイルはBundler gemで使われます。Bundlerについて詳しくは[BundlerのWebサイト](https://bundler.io/)を参照してください。
 lib/ | アプリケーションで使う拡張モジュールが置かれます。
 log/ | アプリケーションのログファイルが置かれます。
 package.json | Railsアプリケーションで必要なnpm依存関係をこのファイルで指定できます。このファイルはYarnで使われます。Yarnについて詳しくは、[YarnのWebサイト](https://yarnpkg.com/lang/en/)を参照してください。
-public/ | このフォルダの下にあるファイルは外部 (インターネット) からそのまま参照できます。静的なファイルやコンパイル済みアセットはここに置きます。
+public/ | このフォルダの下にあるファイルは外部（インターネット）からそのまま参照できます。静的なファイルやコンパイル済みアセットはここに置きます。
 Rakefile | このファイルには、コマンドラインから実行できるタスクを記述します。ここでのタスク定義は、Rails全体のコンポーネントに対して定義されます。独自のRakeタスクを定義したい場合は、`Rakefile`に直接書くと権限が強すぎるので、なるべく`lib/tasks`フォルダの下にRake用のファイルを追加するようにしてください。
 README.md | アプリケーションの概要を説明するマニュアルをここに記入します。このファイルにはアプリケーションの設定方法などを記入し、これさえ読めば誰でもアプリケーションを構築できるようにしておく必要があります。
 storage/ | Diskサービスで用いるActive Storageファイルが置かれます。詳しくは[Active Storageの概要](active_storage_overview.html)を参照してください。
@@ -195,8 +195,7 @@ Railsの初期画面である「Welcome aboard」ページは、新しいRails�
 
 Railsで「Hello」と表示するには、最低でも**コントローラ**と**ビュー**が必要です。コントローラは、アプリケーションに対する特定のリクエストを受け取って処理するのが役割です。*ルーティング* は、リクエストをどのコントローラに割り振るかを決定します。コントローラの *アクション* は、リクエストを扱うのに必要な処理を実行します。ビューは、データを好みの書式で表示します。
 
-実装の面から見れば、ルーティングはRubyの[DSL
-(Domain-Specific Language)](https://en.wikipedia.org/wiki/Domain-specific_language) で書かれたルールです。コントローラはRubyのクラスで、そのクラスのpublicメソッドがアクションです。ビュー
+実装の面から見れば、ルーティングはRubyの[DSL（Domain-Specific Language）](https://en.wikipedia.org/wiki/Domain-specific_language) で書かれたルールです。コントローラはRubyのクラスで、そのクラスのpublicメソッドがアクションです。ビュー
 はテンプレートで、多くの場合HTMLの中にRubyコードが含まれます。
 
 それではルーティングを1個追加してみましょう。 `config/routes.rb`を開き、`Rails.application.routes.draw`ブロックの冒頭に以下を書きます。
@@ -303,7 +302,7 @@ create      test/models/article_test.rb
 create      test/fixtures/articles.yml
 ```
 
-生成されたファイルのうち、マイグレーションファイル（`db/migrate/<timestamp>_create_articles.rb`）とモデルファイル（`app/models/article.rb`）の2つについて解説します。
+生成されたファイルのうち、マイグレーションファイル（`db/migrate/<タイムスタンプ>_create_articles.rb`）とモデルファイル（`app/models/article.rb`）の2つを中心に解説します。
 
 ### データベースマイグレーション
 
@@ -381,8 +380,7 @@ Article Create (0.4ms)  INSERT INTO "articles" ("title", "body", "created_at", "
 => true
 ```
 
-上の出力には、`INSERT INTO "Article" ...`というデータベースクエリも表示されています。これは
-は、その記事がテーブルにINSERT（挿入）されたことを示しています。そして、`article`オブジェクトをもう一度表示すると、先ほどと何かが違っていることがわかります。
+上の出力には、`INSERT INTO "Article" ...`というデータベースクエリも表示されています。これは、その記事がテーブルにINSERT（挿入）されたことを示しています。そして、`article`オブジェクトをもう一度表示すると、先ほどと何かが違っていることがわかります。
 
 
 ```irb
@@ -400,9 +398,7 @@ irb> Article.find(1)
 => #<Article id: 1, title: "Hello Rails", body: "I am on Rails!", created_at: "2020-01-18 23:47:30", updated_at: "2020-01-18 23:47:30">
 ```
 
-データベースに保存されている記事をすべて取り出したいのであれば、そのモデルで
-And when we want to fetch all articles from the database, we can call [`all`](
-https://api.rubyonrails.org/classes/ActiveRecord/Scoping/Named/ClassMethods.html#method-i-all)メソッドを呼び出せます。
+データベースに保存されている記事をすべて取り出したいのであれば、そのモデルで[`all`]( https://api.rubyonrails.org/classes/ActiveRecord/Scoping/Named/ClassMethods.html#method-i-all)メソッドを呼び出せます。
 
 ```irb
 irb> Article.all
@@ -447,7 +443,7 @@ end
 ここでは、`<% %>`と`<%= %>`という2種類のERBタグが使われています。`<% %>`タグは「この中のRubyコードを評価する」という意味です。`<%= %>`タグは「この中のRubyコードを評価し、返された値を出力する」という意味です。
 これらのERBタグの中には、通常のRubyプログラムで書けるコードなら何でも書けますが、読みやすさのため、ERBタグに書くコードは短くする方がよいでしょう。
 
-上のコードでは、`@articles.each`が返す値は出力したくないので`<% %>` で囲んでいますが、(各記事の)`article.title` が返す値は出力したいので`<%= %>` で囲んでいます。
+上のコードでは、`@articles.each`が返す値は出力したくないので`<% %>` で囲んでいますが、（各記事の）`article.title` が返す値は出力したいので`<%= %>` で囲んでいます。
 
 
 ブラウザで <http://localhost:3000> を開くと最終的な結果を見られます（`bin/rails server`を実行しておくことをお忘れなく）。このときの動作は以下のようになります。
@@ -595,7 +591,7 @@ https://api.rubyonrails.org/classes/ActionView/Helpers/UrlHelper.html#method-i-l
 TIP: ルーティングについて詳しくは[Railsのルーティング](
 routing.html)を参照してください。
 
-### 1件の記事を作成する
+### 記事を1件作成する
 
 次はCRUDのC（Create）です。典型的なWebアプリケーションでは、リソースを1個作成するのに複数のステップを要します。最初にユーザーがフォーム画面をリクエストします。次にユーザーがそのフォームに入力して送信します。エラーが発生しなかった場合はリソースが作成され、リソース作成に成功したことを何らかの形で表示します。エラーが発生した場合はフォーム画面をエラーメッセージ付きで再表示し、フォーム送信の手順を繰り返すことになります。
 
@@ -1045,7 +1041,7 @@ $ bin/rails generate model Comment commenter:string body:text article:references
 
 | ファイル                                         | 目的                                                                                                |
 | -------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| db/migrate/20140120201010_create_comments.rb | データベースにコメント用のテーブルを作成するためのマイグレーションファイル (ファイル名のタイムスタンプはこれとは異なります) |
+| db/migrate/20140120201010_create_comments.rb | データベースにコメント用のテーブルを作成するためのマイグレーションファイル（ファイル名のタイムスタンプはこれとは異なります）|
 | app/models/comment.rb                        | Commentモデル                                                                                      |
 | test/models/comment_test.rb                  | Commentモデルをテストするためのハーネス                                                                 |
 | test/fixtures/comments.yml                   |  テストで使うサンプルコメント                                                                     |
@@ -1097,10 +1093,10 @@ Railsは、これまで実行されていないマイグレーションだけを
 
 Active Recordの関連付け機能により、2つのモデルの間にリレーションシップを簡単に宣言することができます。今回の記事とコメントというモデルの場合、以下のいずれかの方法で関連付けを設定できます。
 
-* 1件のコメントは1件の記事に属する (Each comment belongs to one article)。
-* 1件の記事は複数のコメントを持てる (One article can have many comments)。
+* 1件のコメントは1件の記事に属する（Each comment **belongs to** one article）。
+* 1件の記事は複数のコメントを持てる（One article can **have many** comments）。
 
-そして上の方法(における英語の記述)は、Railsで関連付けを宣言するときの文法と非常に似ています。`Comment`モデル (app/models/comment.rb) 内のコードに既に書かれていたように、各コメントは1つの記事に属しています。
+そして上の方法（における英語の記述）は、Railsで関連付けを宣言するときの文法と非常に似ています。`Comment`モデル（app/models/comment.rb）内のコードに既に書かれていたように、各コメントは1つの記事に属しています。
 
 ```ruby
 class Comment < ApplicationRecord
@@ -1157,11 +1153,11 @@ app/controllers/comments_controller.rb | コメント用コントローラ
 app/views/comments/ | コントローラのビューはここに置かれる
 test/controllers/comments_controller_test.rb | コントローラのテスト用ファイル
 app/helpers/comments_helper.rb | ビューヘルパー
-app/assets/stylesheets/comment.scss | コントローラ用のCSS (カスケーディングスタイルシート) ファイル
+app/assets/stylesheets/comment.scss | コントローラ用のCSS（カスケーディングスタイルシート）ファイル
 
 一般的なブログと同様、このブログの記事を読んだ人はそこに直接コメントを追加したくなるでしょう。そしてコメントを追加後に元の記事表示ページに戻り、コメントがそこに反映されていることを確認したいはずです。そこで、`CommentsController`を用いてコメントを作成したり、スパムコメントが書き込まれたら削除できるようにしたいと思います。
 
-そこで最初に、Articleのshowテンプレート (`app/views/articles/show.html.erb`) を改造して新規コメントを作成できるようにしましょう。
+そこで最初に、Articleのshowテンプレート（`app/views/articles/show.html.erb`）を改造して新規コメントを作成できるようにしましょう。
 
 ```html+erb
 <h1><%= @article.title %></h1>
@@ -1191,7 +1187,7 @@ app/assets/stylesheets/comment.scss | コントローラ用のCSS (カスケー�
 <% end %>
 ```
 
-上のコードでは、`Article`のshowページにフォームが1つ追加されています。このフォームは`CommentsController`の`create`アクションを呼び出すことでコメントを新規作成します。`form_with`呼び出しでは配列を1つ渡しています。これは`/articles/1/comments`のような「ネストしたルーティング (nested route)」を生成します。
+上のコードでは、`Article`のshowページにフォームが1つ追加されています。このフォームは`CommentsController`の`create`アクションを呼び出すことでコメントを新規作成します。`form_with`呼び出しでは配列を1つ渡しています。これは`/articles/1/comments`のような「ネストしたルーティング（nested route）」を生成します。
 
 今度は`app/controllers/comments_controller.rb`の`create`アクションを改造しましょう。
 
@@ -1210,9 +1206,9 @@ class CommentsController < ApplicationController
 end
 ```
 
-上のコードは、Articleコントローラのコードを書いていたときよりも少々複雑に見えます。これはネストを使ったことによって複雑さが増したのです。コメント関連のリクエストでは、コメントが追加される先の記事がどれであったかを追えるようにしておく必要があります。そこで、`Article`モデルの`find`メソッドを最初に呼び出し、リクエストで言及されている記事(のオブジェクト)を取得して@articleに保存しています。
+上のコードは、Articleコントローラのコードを書いていたときよりも少々複雑に見えます。これはネストを使ったことによって複雑さが増したのです。コメント関連のリクエストでは、コメントが追加される先の記事がどれであったかを追えるようにしておく必要があります。そこで、`Article`モデルの`find`メソッドを最初に呼び出し、リクエストで言及されている記事（のオブジェクト）を取得して`@article`に保存しています。
 
-さらにこのコードでは、関連付けによって使えるようになったメソッドをいくつも利用しています。`@article.comments`に対して`create`メソッドを実行することで、コメントの作成と保存を同時に行っています(訳注: `build`メソッドにすれば作成のみで保存は行いません)。この方法でコメントを作成すると、コメントと記事が自動的にリンクされ、指定された記事に対してコメントが従属するようになります。
+さらにこのコードでは、関連付けによって使えるようになったメソッドをいくつも利用しています。`@article.comments`に対して`create`メソッドを実行することで、コメントの作成と保存を同時に行っています（訳注: `build`メソッドにすれば作成のみで保存は行いません）。この方法でコメントを作成すると、コメントと記事が自動的にリンクされ、指定された記事に対してコメントが従属するようになります。
 
 新しいコメントの作成が完了したら、`article_path(@article)`ヘルパーを用いて元の記事の画面に戻ります。既に説明したように、このヘルパーを呼び出すと`ArticlesController`の`show`アクションが呼び出され、`show.html.erb`テンプレートがレンダリングされます。この画面にコメントを表示できるようにしたいので、`app/views/articles/show.html.erb`に以下のコードを追加しましょう。
 
@@ -1590,7 +1586,7 @@ private
 </p>
 ```
 
-この新しい「Destroy Comment」リンクをクリックすると、`DELETE /articles/:article_id/comments/:id`というリクエストが`CommentsController`に送信されます。コントローラはそれを受け取って、どのコメントを削除すべきかを検索することになります。それではコントローラ (`app/controllers/comments_controller.rb`) に`destroy`アクションを追加しましょう。
+この新しい「Destroy Comment」リンクをクリックすると、`DELETE /articles/:article_id/comments/:id`というリクエストが`CommentsController`に送信されます。コントローラはそれを受け取って、どのコメントを削除すべきかを検索することになります。それではコントローラ（`app/controllers/comments_controller.rb`）に`destroy`アクションを追加しましょう。
 
 ```ruby
 class CommentsController < ApplicationController
@@ -1652,10 +1648,10 @@ class ArticlesController < ApplicationController
     @articles = Article.all
   end
 
-  # (以下省略)
+  #（以下省略）
 ```
 
-コメントの削除も認証済みユーザーにだけ許可したいので、`CommentsController` (`app/controllers/comments_controller.rb`) に以下のように追記しましょう。
+コメントの削除も認証済みユーザーにだけ許可したいので、`CommentsController`（`app/controllers/comments_controller.rb`）に以下のように追記しましょう。
 
 ```ruby
 class CommentsController < ApplicationController
@@ -1667,7 +1663,7 @@ class CommentsController < ApplicationController
     # ...
   end
 
-  # (以下省略)
+  #（以下省略）
 ```
 
 ここで記事を新規作成しようとすると、以下のようなBASIC http認証ダイアログが表示されます。
@@ -1699,5 +1695,5 @@ Railsでの無用なトラブルを避けるための最も初歩的なコツは
 
 UTF-8でないデータの主な原因は以下の2つです。
 
-- テキストエディタ: TextMateを含む多くのテキストエディタは、デフォルトでUTF-8エンコードでテキストを保存します。使っているテキストエディタがこのようになっていない場合、テンプレートを表示する時にéなどの特殊文字が◆?のような感じでブラウザで表示されることがあります。これはi18n(国際化)用の翻訳ファイルで発生することもあります。一部のDreamweaverのようにUTF-8保存がデフォルトでないエディタであっても、デフォルトをUTF-8に変更する方法は用意されているはずです。エンコードはUTF-8に変えてください。
+- テキストエディタ: TextMateを含む多くのテキストエディタは、デフォルトでUTF-8エンコードでテキストを保存します。使っているテキストエディタがこのようになっていない場合、テンプレートを表示する時にéなどの特殊文字が◆?のような感じでブラウザで表示されることがあります。これはi18n（国際化）用の翻訳ファイルで発生することもあります。一部のDreamweaverのようにUTF-8保存がデフォルトでないエディタであっても、デフォルトをUTF-8に変更する方法は用意されているはずです。エンコードはUTF-8に変えてください。
 - データベース: Railsはデータベースから読みだしたデータを境界上でUTF-8に変換します。しかし、使っているデータベースの内部エンコード設定がUTF-8になっていない場合、UTF-8の文字の一部をデータベースにそのまま保存できないことがあります。たとえばデータベースの内部エンコードがLatin-1になっていると、ロシア語・ヘブライ語・日本語などの文字をデータベースに保存したときにこれらの情報は永久に失われてしまいます。できるかぎり、データベースの内部エンコードはUTF-8にしておいてください。
