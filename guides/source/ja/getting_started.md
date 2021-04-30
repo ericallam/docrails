@@ -1682,10 +1682,9 @@ class CommentsController < ApplicationController
 
 もちろん、何の助けもなしにWebアプリケーションを作らなければならないなどということはないということを忘れてはなりません。RailsでWebアプリを立ち上げたり実行したりするうえで助けが必要になったら、以下のサポート用リソースを自由に参照できます。
 
-- [Ruby on Railsガイド](index.html) -- 本書です
-- [Ruby on Railsチュートリアル](https://railstutorial.jp) -- 日本語版
-- Ruby on Railsメーリングリスト
-- irc.freenode.net上の[#rubyonrails](irc://irc.freenode.net/#rubyonrails)チャンネル
+- [Ruby on Railsガイド](/) (本サイトです)
+- [Ruby on Railsメーリングリスト](https://discuss.rubyonrails.org/c/rubyonrails-talk) (英語)
+- [freenode](https://freenode.net/)上にある[#rubyonrails](irc://irc.freenode.net/#rubyonrails)チャンネル (英語)
 
 ## 設定の落とし穴
 
