@@ -1334,8 +1334,8 @@ end
 </p>
 
 <p>
-  <strong>Text:</strong>
-  <%= @article.text %>
+  <strong>Body:</strong>
+  <%= @article.body %>
 </p>
 
 <h2>Comments</h2>
