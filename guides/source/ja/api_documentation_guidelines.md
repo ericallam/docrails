@@ -17,7 +17,7 @@ RDoc
 [Rails API ドキュメント](http://api.rubyonrails.org)は[RDoc](https://ruby.github.io/rdoc/)で生成されます。生成するには、Railsのルートディレクトリで`bundle install`を実行してから、以下を実行します。
 
 ```bash
-  bundle exec rake rdoc
+$ bundle exec rake rdoc
 ```
 
 生成されたHTMLファイルは./doc/rdocディレクトリに置かれます。
