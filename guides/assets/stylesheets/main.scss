@@ -150,6 +150,8 @@ table {
   border: 2px solid #CCC;
   background: #FFF;
   border-collapse: collapse;
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
   th, td {
     padding: 0.25em 1em;
     border: 1px solid #CCC;
