@@ -153,7 +153,7 @@ bin/ | ここにはアプリケーションを起動/アップデート/デプ�
 config/ | アプリケーションの設定ファイル（ルーティング、データベースなど）がここに置かれます。詳しくは[Rails アプリケーションを設定する](configuring.html) を参照してください。
 config.ru | アプリケーションの起動に必要となる、Rackベースのサーバー用のRack設定ファイルです。Rackについて詳しくは、[RackのWebサイト](https://rack.github.io/)を参照してください。
 db/ | 現時点のデータベーススキーマと、データベースマイグレーションファイルが置かれます。
-Gemfile<br>Gemfile.lock | これらのファイルは、Railsアプリケーションで必要となるgemの依存関係を記述します。この2つのファイルはBundler gemで使われます。Bundlerについて詳しくは[BundlerのWebサイト](https://bundler.io/)を参照してください。
+Gemfile<br>Gemfile.lock | これらのファイルは、Railsアプリケーションで必要となるgemの依存関係を記述します。<br>この2つのファイルはBundler gemで使われます。Bundlerについて詳しくは[BundlerのWebサイト](https://bundler.io/)を参照してください。
 lib/ | アプリケーションで使う拡張モジュールが置かれます。
 log/ | アプリケーションのログファイルが置かれます。
 package.json | Railsアプリケーションで必要なnpm依存関係をこのファイルで指定できます。このファイルはYarnで使われます。Yarnについて詳しくは、[YarnのWebサイト](https://yarnpkg.com/lang/en/)を参照してください。
