@@ -1266,18 +1266,17 @@ end
 最初に、特定記事のコメントをすべて表示する部分を切り出してコメントパーシャルを作成しましょう。`app/views/comments/_comment.html.erb`というファイルを作成し、以下のコードを入力します。
 
 ```html+erb
-<%= form_with model: [ @article, @article.comments.build ] do |form| %>
+<% @article.comments.each do |comment| %>
   <p>
-    <%= form.label :commenter %><br>
-    <%= form.text_field :commenter %>
+    <strong>Commenter:</strong>
+    <%= comment.commenter %>
   </p>
+
   <p>
-    <%= form.label :body %><br>
-    <%= form.text_area :body %>
+    <strong>Comment:</strong>
+    <%= comment.body %>
   </p>
-  <p>
-    <%= form.submit %>
-  </p>
+
 <% end %>
 ```
 
