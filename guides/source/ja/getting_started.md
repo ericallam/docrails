@@ -1266,18 +1266,15 @@ end
 最初に、特定記事のコメントをすべて表示する部分を切り出してコメントパーシャルを作成しましょう。`app/views/comments/_comment.html.erb`というファイルを作成し、以下のコードを入力します。
 
 ```html+erb
-<% @article.comments.each do |comment| %>
-  <p>
-    <strong>Commenter:</strong>
-    <%= comment.commenter %>
-  </p>
+<p>
+  <strong>Commenter:</strong>
+  <%= comment.commenter %>
+</p>
 
-  <p>
-    <strong>Comment:</strong>
-    <%= comment.body %>
-  </p>
-
-<% end %>
+<p>
+  <strong>Comment:</strong>
+  <%= comment.body %>
+</p>
 ```
 
 続いて、`app/views/articles/show.html.erb`の内容を以下のように変更しましょう。
