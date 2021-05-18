@@ -357,21 +357,21 @@ $ bin/rails console
 
 以下のような`irb`プロンプトが表示されるはずです。
 
-```irb
+```ruby
 Loading development environment (Rails 6.0.2.1)
 irb(main):001:0>
 ```
 
 このプロンプトで、先ほど作成した`Artivle`オブジェクトを以下のように初期化できます。
 
-```irb
+```ruby
 irb> article = Article.new(title: "Hello Rails", body: "I am on Rails!")
 ```
 
 ここが重要です。このオブジェクトは単に*初期化された*だけの状態であり、まだデータベースに保存されていないことにご注目ください。つまりこのオブジェクトはこのコンソールでしか利用できません（コンソールを終了すると消えてしまいます）。オブジェクトをデータベースに保存するには、[`save`](
 https://api.rubyonrails.org/classes/ActiveRecord/Persistence.html#method-i-save)メソッドを呼び出さなくてはなりません。
 
-```irb
+```ruby
 irb> article.save
 (0.1ms)  begin transaction
 Article Create (0.4ms)  INSERT INTO "articles" ("title", "body", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["title", "Hello Rails"], ["body", "I am on Rails!"], ["created_at", "2020-01-18 23:47:30.734416"], ["updated_at", "2020-01-18 23:47:30.734416"]]
@@ -382,7 +382,7 @@ Article Create (0.4ms)  INSERT INTO "articles" ("title", "body", "created_at", "
 上の出力には、`INSERT INTO "Article" ...`というデータベースクエリも表示されています。これは、その記事がテーブルにINSERT（挿入）されたことを示しています。そして、`article`オブジェクトをもう一度表示すると、先ほどと何かが違っていることがわかります。
 
 
-```irb
+```ruby
 irb> article
 => #<Article id: 1, title: "Hello Rails", body: "I am on Rails!", created_at: "2020-01-18 23:47:30", updated_at: "2020-01-18 23:47:30">
 ```
@@ -392,14 +392,14 @@ irb> article
 この記事をデータベースから取り出したいのであれば、そのモデルで[`find`](
 https://api.rubyonrails.org/classes/ActiveRecord/FinderMethods.html#method-i-find)メソッドを呼び出し、その記事の`id`を引数として渡します。
 
-```irb
+```ruby
 irb> Article.find(1)
 => #<Article id: 1, title: "Hello Rails", body: "I am on Rails!", created_at: "2020-01-18 23:47:30", updated_at: "2020-01-18 23:47:30">
 ```
 
 データベースに保存されている記事をすべて取り出したいのであれば、そのモデルで[`all`]( https://api.rubyonrails.org/classes/ActiveRecord/Scoping/Named/ClassMethods.html#method-i-all)メソッドを呼び出せます。
 
-```irb
+```ruby
 irb> Article.all
 => #<ActiveRecord::Relation [#<Article id: 1, title: "Hello Rails", body: "I am on Rails!", created_at: "2020-01-18 23:47:30", updated_at: "2020-01-18 23:47:30">]>
 ```
