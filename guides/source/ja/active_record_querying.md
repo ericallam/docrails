@@ -1319,7 +1319,7 @@ class Article < ApplicationRecord
 end
 ```
 
-クラスメソッドにした場合でも、関連オブジェクトからアクセス可能です。
+スコープとして定義したメソッドは、関連オブジェクトからアクセス可能です。
 
 ```ruby
 category.articles.created_before(time)
