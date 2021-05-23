@@ -1319,7 +1319,7 @@ class Article < ApplicationRecord
 end
 ```
 
-したがって、スコープで引数を使用するのであれば、クラスメソッドとして定義する方が推奨されます。クラスメソッドにした場合でも、関連オブジェクトからアクセス可能です。
+クラスメソッドにした場合でも、関連オブジェクトからアクセス可能です。
 
 ```ruby
 category.articles.created_before(time)
