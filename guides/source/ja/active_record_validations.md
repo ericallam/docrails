@@ -405,12 +405,12 @@ class Person < ApplicationRecord
 end
 ```
 
-関連付けが存在することを確認したい場合、関連をマッピングするために使用される外部キーではなく、関連するオブジェクト自体が存在するかどうかを検証する必要があります。
+関連付けが存在することを確認したい場合、関連をマッピングするために使用される外部キーではなく、関連するオブジェクト自体が存在するかどうかを検証する必要があります。以下の例では、外部キーが空ではないことと、関連付けられたオブジェクトが存在することをチェックしています。
 
 ```ruby
-class LineItem < ApplicationRecord
-  belongs_to :order
-  validates :order, presence: true
+class Supplier < ApplicationRecord
+  has_one :account
+  validates :account, presence: true
 end
 ```
 
