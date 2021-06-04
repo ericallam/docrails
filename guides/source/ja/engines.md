@@ -757,32 +757,45 @@ end
 
 ### モデルやコントローラをオーバーライドする
 
-エンジンのモデルクラスやコントローラクラスは、メインのRailsアプリケーション側でそれらのクラスを再オープン（再定義）することで拡張できます。Railsのモデルクラスとコントローラクラスは、Rails特有の機能を継承しているほかは通常のRubyクラスと変わりありません。オープンクラスの手法を使えば、エンジンのクラスをメインのアプリケーションで使えるように再定義されます。これは、デザインパターンで言うDecoratorパターンとして実装するのが普通です（訳注: 本セクションでのDecoratorパターンへの言及は適切ではないということで[Rails 6のガイド](https://github.com/rails/rails/pull/34946)ではDecoratorパターンに関連する記述が削除されます）。
+エンジンのモデルやコントローラは、メインのRailsアプリケーション側でそれらのクラスを再オープン（再定義）することで拡張できます。
 
-クラスの変更がシンプルであれば、`Class#class_eval`を使います。クラスの変更が複雑な場合は、`ActiveSupport::Concern`の利用を検討しましょう。
+拡張用のファイルは、専用のディレクトリ`app/overrides`にまとめられ`to_prepare`を使い組み込むことができます。
 
-#### デコレータとコードの読み込みに関するメモ
+`zeitwerk`モードではこのようにします。
 
-Railsアプリケーション自身はこれらのデコレータを参照しないので、Railsの自動読み込み機能ではこれらのデコレータを読み込むことも起動することもできません。つまり、デコレータは手動でrequireする必要があります。
+``` ruby
+# config/application.rb
+module MyApp
+  class Application < Rails::Application
+    # ...
 
-これを行なうためのサンプルコードをいくつか掲載します。
-
-```ruby
-# lib/blorgh/engine.rb
-module Blorgh
-  class Engine < ::Rails::Engine
-    isolate_namespace Blorgh
-
+    overrides = "#{Rails.root}/app/overrides"
+    Rails.autoloaders.main.ignore(overrides)
     config.to_prepare do
-      Dir.glob(Rails.root + "app/decorators/**/*_decorator*.rb").each do |c|
-        require_dependency(c)
+      Dir.glob("#{overrides}/**/*_override.rb").each do |override|
+        load override
       end
     end
   end
 end
 ```
 
-上のコードは、デコレータだけではなく、メインのアプリケーションから参照されないすべてのエンジンのコードを読み込みます。
+`classic`モードではこのようにします。
+
+``` ruby
+# config/application.rb
+module MyApp
+  class Application < Rails::Application
+    # ...
+
+    config.to_prepare do
+      Dir.glob("#{Rails.root}/app/overrides/**/*_override.rb").each do |override|
+        require_dependency override
+      end
+    end
+  end
+end
+```
 
 #### `Class#class_eval`を利用してDecoratorパターンを実装する
 
