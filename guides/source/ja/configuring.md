@@ -695,7 +695,7 @@ Active Supportにもいくつかの設定オプションがあります。
 
 * `config.active_job.queue_name_prefix`: すべてのジョブ名の前に付けられるプレフィックスを設定します（スペースは含めません）。デフォルトは空欄なので何も追加されません。
 
-以下の設定では、production実行時に指定のジョブが`production_high_priority`キューに送信されます。
+    以下の設定では、production実行時に指定のジョブが`production_high_priority`キューに送信されます。
 
     ```ruby
     config.active_job.queue_name_prefix = Rails.env
@@ -710,7 +710,7 @@ Active Supportにもいくつかの設定オプションがあります。
 
 * `config.active_job.queue_name_delimiter`: デフォルト値は`'_'`です。`queue_name_prefix`が設定されている場合は、キュー名とプレフィックスの結合に`queue_name_delimiter`が使われます。
 
-以下の設定では、指定のジョブが`video_server.low_priority`キューに送信されます。
+    以下の設定では、指定のジョブが`video_server.low_priority`キューに送信されます。
 
     ```ruby
     # この区切り文字を使うにはprefixを設定しなければならない
