@@ -129,7 +129,7 @@ app/javascript:
 
 これらのディレクトリを変更したい場合は、`configuration/webpacker.yml`ファイルの`source_path`（デフォルトは`app/javascript`ディレクトリ）と`source_entry_path`（デフォルトは`packs`ディレクトリ）も変更してください。
 
-JavaScriptソースファイル内の`import`ステートメントは、インポートするファイルの位置を「相対的に」解決します。つまり、`import Bar from "./foo"`と書くと、カレントファイルと同じディレクトリにある`foo.js`ファイルを探索しますが、`import Bar from ".../src/foo"`と書くと`src` という名前の兄弟ディレクトリにあるファイルを探索します。
+JavaScriptソースファイル内の`import`ステートメントは、インポートするファイルの位置を「相対的に」解決します。つまり、`import Bar from "./foo"`と書くと、カレントファイルと同じディレクトリにある`foo.js`ファイルを探索しますが、`import Bar from "../src/foo"`と書くと`src` という名前の兄弟ディレクトリにあるファイルを探索します。
 
 ### CSSをWebpacker経由で利用する
 
