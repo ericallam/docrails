@@ -7,6 +7,8 @@ module RailsGuides
     def finished_documents(documents)
       # Enable this line when not like to display WIP documents
       #documents.reject { |document| document['work_in_progress'] }
+      documents.map{|document| document['url'].insert(0, '/')}
+
       documents
     end
 
