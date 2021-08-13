@@ -1,8 +1,9 @@
 require 'test/unit'
+require 'psych'
 
-class TestYaml < MiniTest::Unit::TestCase
+class TestYaml < Test::Unit::TestCase
   def test_exists_documents_yaml
-    assert(File.exists?('./guides/source/ja/documents.yaml', true))
+    assert_equal(File.exists?('./guides/source/ja/documents.yaml'), true)
   end
 
   def test_load_yaml
