@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/yasslab/railsguides.jp.svg?branch=master)](https://travis-ci.org/yasslab/railsguides.jp)
+[![Build Status](https://github.com/yasslab/railsguides.jp/actions/workflows/test.yml/badge.svg)](https://github.com/yasslab/railsguides.jp/actions)
 
 [![Ruby on Rails ガイド - 体系的に Rails を学ぼう](/guides/assets/images/header-railsguides.png)](https://railsguides.jp/)
 
@@ -59,7 +59,7 @@ Pull Request を送る前に生成結果を確認したい場合は下記をご�
 
 ### 3. Pull Request (PR) と Continuous Integration (CI)
 
-- PR が送られると、[railsguides.jp の Travis CI](https://travis-ci.org/yasslab/railsguides.jp) が走ります。
+- PR が送られると、[railsguides.jp の GitHub Actions](https://github.com/yasslab/railsguides.jp/actions) が走ります。
 - CI が通らなかった場合は、該当箇所を修正してください。（`bundle exec rake test`でローカル環境でも確認できます）
 - マージされない限り本番環境には反映されないので、PR は気軽に送っていただければ ;)
 
