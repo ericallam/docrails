@@ -35,23 +35,5 @@ group :development, :test do
 end
 
 group :test do
-
-  # Required to exec: `bundle exec rspec spec/features/`
-  gem "rspec"
-  gem "capybara"
-  gem "turnip"
-end
-
-group :production do
-  # Enable HTTP caching for Rack-based applications
-  gem "rack-cache" #, "~> 1.2"
-
-  # Monitoring tools
-  gem "newrelic_rpm"
-
-  # SSL in Production
-  gem "puma"
-  gem "acme_challenge"
-  gem "rack-rewrite" #, "~> 1.5.0"
-  gem "rack-contrib"
+  gem 'test-unit'
 end
