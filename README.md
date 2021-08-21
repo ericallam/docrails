@@ -154,7 +154,7 @@ YassLab 社以外にも、次の方々が協力してくれました! 🤝✨
 
 Railsガイドのコンテンツ部分の著作権は[クリエイティブ・コモンズ 表示-継承 4.0 国際](https://creativecommons.org/licenses/by-sa/4.0/deed.ja) (CC BY-SA 4.0) ライセンスに基づいて公開されています。
 
-ただし『Rails』や『Ruby on Rails』という名称、ならびに Rails のロゴ画像は [David Heinemeier Hansson の登録商標](https://rubyonrails.org/trademarks/)であり、本ライセンスの[対象ではありません](https://creativecommons.org/licenses/by-sa/4.0/legalcode#s2b)。また、railsguides.jp のロゴ画像は [YassLab 社の制作物](https://yasslab.jp/ja/news/japanese-railsguides-logo)です。
+ただし『Rails』や『Ruby on Rails』という名称、ならびに Rails のロゴ画像は [David Heinemeier Hansson の登録商標](https://rubyonrails.org/trademarks/)であり、本ライセンスの[対象ではありません](https://creativecommons.org/licenses/by-sa/4.0/legalcode#s2b)。また、本サイトのロゴ画像などの一部は [YassLab 社の著作物](https://yasslab.jp/ja/news/japanese-railsguides-logo)です。
 
 [Ruby on Rails のソースコード](https://github.com/rails/rails)は [MIT ライセンス](http://www.opensource.org/licenses/MIT)に基づいて公開されています。
 
