@@ -338,7 +338,7 @@ class TrashableCleanupJob  < ApplicationJob
 end
 ```
 
-上のコードは、`ActiveModel::GlobalIdentification`をミックスインするすべてのクラスで動作します。このモジュールはActive Recordクラスにデフォルトでミックスインされます。
+上のコードは、`GlobalID::Identification`をミックスインするすべてのクラスで動作します。このモジュールはActive Recordクラスにデフォルトでミックスインされます。
 
 ### シリアライザ
 
