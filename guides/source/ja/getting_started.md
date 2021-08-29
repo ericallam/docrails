@@ -296,7 +296,7 @@ end
 
 `index`アクションは空です。あるアクションがビューを明示的にレンダリングしない場合（あるいはHTTPレスポンスをトリガーしない場合）、Railsはその「コントローラ名」と「アクション名」にマッチするビューを自動的にレンダリングします。これは「設定より規約」の例です。ビューは`app/views`の下に配置されるので、`index`アクションはデフォルトで`app/views/articles/index.html.erb`をレンダリングします。
 
-それでは`app/views/welcome/index.html.erb`を開き、中身を以下に置き換えましょう。
+それでは`app/views/articles/index.html.erb`を開き、中身を以下に置き換えましょう。
 
 ```html
 <h1>Hello, Rails!</h1>
@@ -1171,7 +1171,7 @@ TIP: Active Recordの関連付けについて詳しくは、[Active Recordの関
 
 ### コメントへのルーティングを追加する
 
-welcomeコントローラで行ったときと同様、`comments`を参照するためにRailsが認識すべきルーティングを追加する必要があります。再び`config/routes.rb`ファイルを開き、以下のように変更してください。
+articlesコントローラで行ったときと同様、`comments`を参照するためにRailsが認識すべきルーティングを追加する必要があります。再び`config/routes.rb`ファイルを開き、以下のように変更してください。
 
 ```ruby
 Rails.application.routes.draw do
@@ -1183,7 +1183,7 @@ Rails.application.routes.draw do
 end
 ```
 
-この設定により、`article`の内側に*ネストされたリソース*（nested resouce）として`comments`が作成されます。これは、モデルの記述とは別の視点から、記事とコメントの間のリレーションシップを階層的に捉えたものです。
+この設定により、`articles`の内側に*ネストされたリソース*（nested resouce）として`comments`が作成されます。これは、モデルの記述とは別の視点から、記事とコメントの間のリレーションシップを階層的に捉えたものです。
 
 TIP: ルーティングについて詳しくは[Railsのルーティング](routing.html)ガイドを参照してください。
 
@@ -1200,10 +1200,10 @@ $ rails generate controller Comments
 ファイル/ディレクトリ | 目的
 --- | ---
 app/controllers/comments_controller.rb | コメント用コントローラ
-app/views/comments/ | コントローラのビューはここに置かれる
-test/controllers/comments_controller_test.rb | コントローラのテスト用ファイル
+app/views/comments/ | このコントローラのビューはここに置かれる
+test/controllers/comments_controller_test.rb | このコントローラのテスト用ファイル
 app/helpers/comments_helper.rb | ビューヘルパー
-app/assets/stylesheets/comment.scss | コントローラ用のCSS（カスケーディングスタイルシート）ファイル
+app/assets/stylesheets/comment.scss | このコントローラ用のCSS（カスケーディングスタイルシート）ファイル
 
 一般的なブログと同様、このブログの記事を読んだ人はそこに直接コメントを追加したくなるでしょう。そしてコメントを追加後に元の記事表示ページに戻り、コメントがそこに反映されていることを確認したいはずです。そこで、`CommentsController`を用いてコメントを作成したり、スパムコメントが書き込まれたら削除できるようにしたいと思います。
 
