@@ -7,6 +7,7 @@ Active Record で複数のデータベース利用
 
 * アプリケーションで複数のデータベースをセットアップする方法
 * コネクションの自動切り替えの仕組み
+* 複数のデータベースでの水平シャーディングの利用方法
 * サポートされている機能と現在進行中の機能
 
 --------------------------------------------------------------------------------
@@ -16,14 +17,14 @@ Active Record で複数のデータベース利用
 
 現時点でサポートされている機能は以下のとおりです。
 
-* 複数の「primary」データベースと、それぞれに対応する1つの「replica」
+* 複数の「writer」データベースと、それぞれに対応する1つの「replica」
 * モデルでのコネクション自動切り替え
-* HTTP verbや直近の書き込みに応じたprimaryとreplicaの自動スワップ
+* HTTP verbや直近の書き込みに応じたwriterとreplicaの自動スワップ
 * マルチプルデータベースの作成、削除、マイグレーション、やりとりを行うRailsタスク
 
 以下の機能は現時点では（まだ）サポートされていません。
 
-* シャーディング（sharding）
+* 水平シャーディングのための自動スワップ
 * クラスタを越えるJOIN
 * replicaのロードバランシング
 * マルチプルデータベースのスキーマキャッシュのダンプ
@@ -32,15 +33,16 @@ Active Record で複数のデータベース利用
 
 アプリケーションでマルチプルデータベースを利用する場合、大半の機能についてはRailsが代わりに行いますが、一部手動で行う手順があります。
 
-たとえば、primaryデータベースがひとつあるアプリケーションに、新しいテーブルがいくつかあるデータベースを1つ追加するとします。新しいデータベースの名前は「animal」とします。
+たとえば、writerデータベースがひとつあるアプリケーションに、新しいテーブルがいくつかあるデータベースを1つ追加するとします。新しいデータベースの名前は「animal」とします。
 
 この場合のdatabase.ymlは以下のような感じになります。
 
 ```yaml
 production:
   database: my_primary_database
-  user: root
-  adapter: mysql
+  username: root
+  password: <%= ENV['ROOT_PASSWORD'] %>
+  adapter: mysql2
 ```
 
 このprimaryで使うreplicaを1つ追加してみましょう。animalという新しいライター（writer）を1つと、それに対応するreplicaも1つ追加します。これを行うには、database.ymlを以下のように2-tierから3-tier設定に変更する必要があります。
@@ -49,37 +51,44 @@ production:
 production:
   primary:
     database: my_primary_database
-    user: root
-    adapter: mysql
+    username: root
+    password: <%= ENV['ROOT_PASSWORD'] %>
+    adapter: mysql2
   primary_replica:
     database: my_primary_database
-    user: root_readonly
-    adapter: mysql
+    username: root_readonly
+    password: <%= ENV['ROOT_READONLY_PASSWORD'] %>
+    adapter: mysql2
     replica: true
   animals:
     database: my_animals_database
-    user: animals_root
-    adapter: mysql
+    username: animals_root
+    password: <%= ENV['ANIMALS_ROOT_PASSWORD'] %>
+    adapter: mysql2
     migrations_paths: db/animals_migrate
   animals_replica:
     database: my_animals_database
-    user: animals_readonly
-    adapter: mysql
+    username: animals_readonly
+    password: <%= ENV['ANIMALS_READONLY_PASSWORD'] %>
+    adapter: mysql2
     replica: true
 ```
 
 マルチプルデータベースを用いる場合に重要な設定がいくつかあります。
 
-第1に、primaryとreplicaのデータベース名は同じにすべきです。理由は、primaryとreplicaが同じデータを持つからです。第2に、primaryとreplicaでは異なるユーザー名を使い、かつreplicaのパーミッションは（writeではなく）readにすべきです。
+第1に、`primary`と`primary_replica`のデータベース名は同じにすべきです。理由は、primaryとreplicaが同じデータを持つからです。
+`animals`と`animals_replica`についても同様です。
 
-replicaデータベースを使う場合、`database.yml`のreplicaには`replica: true`というエントリを1つ追加する必要があります。このエントリがないと、どちらがreplicaでどちらがprimaryかをRailsが区別できなくなるためです。
+第2に、writerとreplicaでは異なるユーザー名を使い、かつreplicaのパーミッションは（writeではなく）readにすべきです。
 
-最後に、新しいprimaryデータベースで利用するために、そのデータベースのマイグレーションを置くディレクトリを`migrations_paths`に設定する必要があります。`migrations_paths`については本ガイドで後述します。
+replicaデータベースを使う場合、`database.yml`のreplicaには`replica: true`というエントリを1つ追加する必要があります。このエントリがないと、どちらがreplicaでどちらがwriterかをRailsが区別できなくなるためです。
 
-新しいデータベースができたら、モデルをセットアップしましょう。新しいデータベースを使うには、抽象クラスを1つ作成してanimalsデータベースに接続する必要があります。
+最後に、新しいwriterデータベースで利用するために、そのデータベースのマイグレーションを置くディレクトリを`migrations_paths`に設定する必要があります。`migrations_paths`については本ガイドで後述します。
+
+新しいデータベースができたら、接続されたモデルをセットアップしましょう。新しいデータベースを使うには、抽象クラスを1つ作成してanimalsデータベースに接続する必要があります。
 
 ```ruby
-class AnimalsBase < ApplicationRecord
+class AnimalsRecord < ApplicationRecord
   self.abstract_class = true
 
   connects_to database: { writing: :animals, reading: :animals_replica }
@@ -93,6 +102,13 @@ class ApplicationRecord < ActiveRecord::Base
   self.abstract_class = true
 
   connects_to database: { writing: :primary, reading: :primary_replica }
+end
+```
+
+primary/primary_replicaと接続しているクラスは、通常のRailsアプリケーションと同様に`ApplicationRecord`を継承できます。
+
+```ruby
+class Person < ApplicationRecord
 end
 ```
 
