@@ -181,7 +181,7 @@ Railsは新しいクラスを一度だけ生成します。新しいscaffoldsに
 $ bin/rails generate scaffold Dog name:string --database animals --parent Animals::Record
 ```
 
-別の親クラスを利用することを指定しているため、`AnimalsRecord`の生成をスキップします。
+このような場合、別の親クラスを利用することを指定しているため、`AnimalsRecord`の生成をスキップします。
 
 ## コネクションの自動切り替えを有効にする
 
