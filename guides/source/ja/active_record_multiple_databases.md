@@ -45,7 +45,13 @@ production:
   adapter: mysql2
 ```
 
-このprimaryで使うreplicaを1つ追加してみましょう。animalという新しいライター（writer）を1つと、それに対応するreplicaも1つ追加します。これを行うには、database.ymlを以下のように2-tierから3-tier設定に変更する必要があります。
+最初の設定に対するreplicaを追加し、さらにanimalという2つ目のデータベースとそれのreplicaも追加してみましょう。
+これを行うには、database.ymlを以下のように2-tierから3-tier設定に変更する必要があります。
+
+もしプライマリ設定が指定されている場合、これが「デフォルト」の設定として使用されます。
+「primary」と名付けられた設定がない場合、Railsは環境での最初の設定を使用します。
+デフォルトの設定ではデフォルトのRailsのファイル名が使用されます。
+例えば、プライマリ設定では、スキーマファイルに`schema.rb`が使用される一方で、その他のエントリではファイル名に`[CONFIGURATION_NAMESPACE]_schema.rb`が使用されます。
 
 ```yaml
 production:
@@ -85,7 +91,7 @@ replicaデータベースを使う場合、`database.yml`のreplicaには`replic
 
 最後に、新しいwriterデータベースで利用するために、そのデータベースのマイグレーションを置くディレクトリを`migrations_paths`に設定する必要があります。`migrations_paths`については本ガイドで後述します。
 
-新しいデータベースができたら、接続されたモデルをセットアップしましょう。新しいデータベースを使うには、抽象クラスを1つ作成してanimalsデータベースに接続する必要があります。
+新しいデータベースができたら、コネクションモデルをセットアップしましょう。新しいデータベースを使うには、抽象クラスを1つ作成してanimalsデータベースに接続する必要があります。
 
 ```ruby
 class AnimalsRecord < ApplicationRecord
