@@ -622,7 +622,7 @@ edit_article GET    /articles/:id/edit(.:format) articles#edit
 ```
 
 しかし、[`link_to`](
-https://api.rubyonrails.org/classes/ActionView/Helpers/UrlHelper.html#method-i-link_to)ヘルパーを用いるとさらに便利になります。`link_to`ヘルパーの第1引数はリンクテキスト、第2引数はリンク先です。第2引数にモデルオブジェクトを渡すと、`link_to`が適切はパスヘルパーを呼び出してオブジェクトをパスに変換します。たとえば、`link_to`にarticleを渡すと`article_path`というパスヘルパーが呼び出されます。これを用いると、 `app/views/articles/index.html.erb`は以下のように書き換えられます。
+https://api.rubyonrails.org/classes/ActionView/Helpers/UrlHelper.html#method-i-link_to)ヘルパーを用いるとさらに便利になります。`link_to`ヘルパーの第1引数はリンクテキスト、第2引数はリンク先です。第2引数にモデルオブジェクトを渡すと、`link_to`が適切なパスヘルパーを呼び出してオブジェクトをパスに変換します。たとえば、`link_to`にarticleを渡すと`article_path`というパスヘルパーが呼び出されます。これを用いると、 `app/views/articles/index.html.erb`は以下のように書き換えられます。
 
 ```html+erb
 <h1>Articles</h1>
