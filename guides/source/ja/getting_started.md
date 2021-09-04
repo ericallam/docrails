@@ -413,7 +413,7 @@ Loading development environment (Rails 6.0.2.1)
 irb(main):001:0>
 ```
 
-このプロンプトで、先ほど作成した`Artivle`オブジェクトを以下のように初期化できます。
+このプロンプトで、先ほど作成した`Article`オブジェクトを以下のように初期化できます。
 
 ```
 irb> article = Article.new(title: "Hello Rails", body: "I am on Rails!")
