@@ -227,7 +227,7 @@ $ cd blog
 先ほど作成したRailsアプリケーションは、既に実行可能な状態になっています。Webアプリケーションを開発用のPCで実際に動かしてこのことを確かめてみましょう。`blog`ディレクトリに移動し、以下のコマンドを実行します。
 
 ```bash
-$ rails server
+$ bin/rails server
 ```
 
 TIP: Windowsをお使いの場合は、`bin`フォルダの下にあるスクリプトをRubyインタープリタに直接渡さなければなりません（例: `ruby bin\rails server`）
@@ -1192,7 +1192,7 @@ TIP: ルーティングについて詳しくは[Railsのルーティング](rout
 モデルを手作りしたのですから、それに合ったコントローラも作ってみたくなります。それでは、再びこれまでと同様にジェネレータを使ってみましょう。
 
 ```bash
-$ rails generate controller Comments
+$ bin/rails generate controller Comments
 ```
 
 上のコマンドを実行すると、4つのファイルと1つの空ディレクトリが作成されます。
