@@ -243,7 +243,7 @@ config.active_record.database_resolver_context = MyCookieResolver
 
 ## コネクションを手動で切り替える
 
-アプリケーションでprimaryやreplicaに接続するときに、コネクションの自動切り替えが適切ではないことがあります。たとえば、特定のリクエストについては、たとえPOSTリクエストパスにいる場合であっても常にreplicaに送信したいとします。
+アプリケーションでwriterやreplicaに接続するときに、コネクションの自動切り替えが適切ではないことがあります。たとえば、特定のリクエストについては、たとえPOSTリクエストパスにいる場合であっても常にreplicaに送信したいとします。
 
 Railsはこのような場合のために、必要なコネクションに切り替える`connected_to`メソッドを提供しています。
 
@@ -257,9 +257,35 @@ end
 
 `connected_to`呼び出しの「ロール」では、そのコネクションハンドラ（またはロール）で接続されたコネクションを探索します。`reading`コネクションハンドラは、`reading`というロール名を持つ`connects_to`を介して接続されたすべてのコネクションを維持します。
 
-ここで注意したいのは、ロールを設定した`connected_to`では、既存のコネクションの探索や切り替えにそのコネクションのspecification名が用いられることです。つまり、`connected_to(role: :nonexistent)`のように不明なロールを渡すと、`ActiveRecord::ConnectionNotEstablished (No connection pool with 'AnimalsBase' found
-for the 'nonexistent' role.)`エラーが発生します。
+ここで注意したいのは、ロールを設定した`connected_to`では、既存のコネクションの探索や切り替えにそのコネクションのspecification名が用いられることです。つまり、`connected_to(role: :nonexistent)`のように不明なロールを渡すと、`ActiveRecord::ConnectionNotEstablished (No connection pool with 'ActiveRecord::Base' found for the 'nonexistent' role.)`エラーが発生します。
 
+## 水平シャーディング
+
+水平シャーディングとは、データベースを分割して各データベースサーバーの行数を減らしながら、「シャード」全体で同じスキーマを維持することです。これは一般に「マルチテナント」シャーディングと呼ばれます。
+
+Railsで水平シャーディングをサポートするためのAPIは、Rails6.0以降の複数データベース/垂直シャーディングAPIに似ています。
+
+シャードは、次のように3層構成で宣言されます:
+
+```yaml
+production:
+  primary:
+    database: my_primary_database
+    adapter: mysql2
+  primary_replica:
+    database: my_primary_database
+    adapter: mysql2
+    replica: true
+  primary_shard_one:
+    database: my_primary_shard_one
+    adapter: mysql2
+  primary_shard_one_replica:
+    database: my_primary_shard_one
+    adapter: mysql2
+    replica: true
+```
+
+次に、モデルは `shards`キーを介して`connects_to`APIに接続されます:
 
 ## 注意点
 
