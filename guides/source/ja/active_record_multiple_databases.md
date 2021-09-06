@@ -325,11 +325,41 @@ Rails 6.1では、すべてのデータベースに対してグローバルに�
 
 `legacy_connection_handling`をfalseに設定すると、抽象的な接続クラスでも他のコネクションに影響を与えずにコネクションを切り替えることができます。これは、`ApplicationRecord`のクエリがプライマリに送られることを保証しつつ、`AnimalsRecord`のクエリをレプリカから読み込むように切り替えるときに便利です。
 
+```ruby
+AnimalsRecord.connected_to(role: :reading) do
+  Dog.first # Reads from animals_replica
+  Person.first  # Reads from primary
+end
+```
+
+また、シャードに対して細かく接続をスワップできます。
+
+```ruby
+AnimalsRecord.connected_to(role: :reading, shard: :shard_one) do
+  Dog.first # Will read from shard_one_replica. If no connection exists for shard_one_replica,
+  # a ConnectionNotEstablished error will be raised
+  Person.first # Will read from primary writer
+end
+```
+
+primaryデータベースクラスタのみを切り替えたい場合は`ApplicationRecord`を使用してください:
+
+```ruby
+ApplicationRecord.connected_to(role: :reading, shard: :shard_one) do
+  Person.first # Reads from primary_shard_one_replica
+  Dog.first # Reads from animals_primary
+end
+```
+
+`ActiveRecord::Base.connected_to`はグローバルに接続を切り替える機能を管理します。
+
 ## 注意点
 
-### シャーディング
+### 水平シャーディングのための自動スワップ
 
-最初に申し上げておきたいのは、現時点のRailsではシャーディング（sharding）はまだサポートされていないという点です。私たちはRails 6.0でマルチプルデータベースをサポートするために膨大な作業をこなさなければなりませんでした。シャーディングのサポートを忘れていたわけではありませんが、そのために必要な追加作業は6.0では間に合いませんでした。さしあたってシャーディングが必要なのであれば、シャーディングをサポートするさまざまなgemのどれかを引き続き利用するのがおすすめと言えるかもしれません。
+現在Railsはシャードへの接続や、シャードの接続をスワップするAPIをサポートしていますが、
+自動スワップ戦略はまだサポートしていません。
+ミドルウェアか`around_action`を介して、アプリケーション内で手動でシャードスワップを行う必要があります。
 
 ### replicaのロードバランシング
 
@@ -337,7 +367,9 @@ replicaのロードバランシングはインフラストラクチャに強く�
 
 ### データベースをまたがるJOIN
 
-アプリケーションは複数のデータベースにまたがるJOINを行えません。Rails 6.1では、JOINの代わりに`has_many`リレーションシップを用いて2つのクエリを作成することをサポートする予定ですが、Rails 6.0ではJOINを手動で2つのSELECT文に分ける必要があります。
+アプリケーションは複数のデータベースにまたがるJOINを行えません。
+現時点では、ユーザ自身が手動で2つのSELECT文を書き、JOINを分割する必要があります。
+将来のバージョンでは、RailsがJOINを分割してくれるようになる予定です。
 
 ### スキーマキャッシュ
 
