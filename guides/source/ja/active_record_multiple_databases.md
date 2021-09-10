@@ -7,7 +7,7 @@ Active Record で複数のデータベース利用
 
 * アプリケーションで複数のデータベースをセットアップする方法
 * コネクションの自動切り替えの仕組み
-* 複数のデータベースでの水平シャーディングの利用方法
+* 複数データベースにおける水平シャーディングの利用方法
 * サポートされている機能と現在進行中の機能
 
 --------------------------------------------------------------------------------
@@ -33,7 +33,7 @@ Active Record で複数のデータベース利用
 
 アプリケーションでマルチプルデータベースを利用する場合、大半の機能についてはRailsが代わりに行いますが、一部手動で行う手順があります。
 
-たとえば、writerデータベースがひとつあるアプリケーションに、新しいテーブルがいくつかあるデータベースを1つ追加するとします。新しいデータベースの名前は「animal」とします。
+たとえばwriterデータベースがひとつあるアプリケーションに、新しいテーブルがいくつかあるデータベースを1つ追加するとします。新しいデータベースの名前は「animal」とします。
 
 この場合のdatabase.ymlは以下のような感じになります。
 
@@ -45,13 +45,9 @@ production:
   adapter: mysql2
 ```
 
-最初の設定に対するreplicaを追加し、さらにanimalという2つ目のデータベースとそれのreplicaも追加してみましょう。
-これを行うには、database.ymlを以下のように2-tierから3-tier設定に変更する必要があります。
+最初の設定に対するreplicaを追加し、さらにanimalという2つ目のデータベースとそれのreplicaも追加してみましょう。これを行うには、database.ymlを以下のように2層（2-tier）設定から3層（3-tier）設定に変更する必要があります。
 
-もしプライマリ設定が指定されている場合、これが「デフォルト」の設定として使用されます。
-「primary」と名付けられた設定がない場合、Railsは環境での最初の設定を使用します。
-デフォルトの設定ではデフォルトのRailsのファイル名が使用されます。
-例えば、プライマリ設定では、スキーマファイルに`schema.rb`が使用される一方で、その他のエントリではファイル名に`[CONFIGURATION_NAMESPACE]_schema.rb`が使用されます。
+プライマリ設定が指定されている場合、これが「デフォルト」の設定として使われます。「primary」と名付けられた設定がない場合、Railsは環境での最初の設定を使います。デフォルトの設定ではデフォルトのRailsのファイル名が使われます。たとえば、プライマリ設定では、スキーマファイル名に`schema.rb`が使われる一方で、その他のエントリではファイル名に`設定の名前空間_schema.rb`が使われます。
 
 ```yaml
 production:
@@ -82,10 +78,9 @@ production:
 
 マルチプルデータベースを用いる場合に重要な設定がいくつかあります。
 
-第1に、`primary`と`primary_replica`のデータベース名は同じにすべきです。理由は、primaryとreplicaが同じデータを持つからです。
-`animals`と`animals_replica`についても同様です。
+第1に、`primary`と`primary_replica`のデータベース名は同じにすべきです。理由は、primaryとreplicaが同じデータを持つからです。`animals`と`animals_replica`についても同様です。
 
-第2に、writerとreplicaでは異なるユーザー名を使い、かつreplicaのパーミッションは（writeではなく）readにすべきです。
+第2に、writerとreplicaでは異なるユーザー名を使い、かつreplicaのパーミッションは（writeではなく）readのみにすべきです。
 
 replicaデータベースを使う場合、`database.yml`のreplicaには`replica: true`というエントリを1つ追加する必要があります。このエントリがないと、どちらがreplicaでどちらがwriterかをRailsが区別できなくなるためです。
 
@@ -170,14 +165,13 @@ rails db:schema:load:primary             # Loads a database schema file (either 
 $ bin/rails generate migration CreateDogs name:string --database animals
 ```
 
-もし、ジェネレータを使っている場合は、scaffoldとモデルジェネレータが抽象クラスを作成しますので、コマンドラインにデータベースのキーを渡してください。
+ジェネレータを使う場合はscaffoldとモデルジェネレータが抽象クラスを作成します。以下のようにコマンドラインにデータベースのキーを渡すだけでできます。
 
 ```bash
 $ bin/rails generate scaffold Dog name:string --database animals
 ```
 
-データベース名のクラスと`Record`が作成されます。
-この例では、データベースが`Animals`なので、`AnimalsRecord`が作成されます。
+データベース名の後ろに`Record`を加えたクラスが作成されます。この例ではデータベースが`Animals`なので、`AnimalsRecord`が作成されます。
 
 ```ruby
 class AnimalsRecord < ApplicationRecord
@@ -193,17 +187,17 @@ class Dog < AnimalsRecord
 end
 ```
 
-メモ：Railsはどのデータベースがレプリカなのか知らないので、完了したらこれを抽象クラスに追加する必要があります。
+Note: Railsはどのデータベースがレプリカなのか知らないので、完了したらこれを抽象クラスに追加する必要があります。
 
-Railsは新しいクラスを一度だけ生成します。新しいscaffoldsによって上書きされることはなく、scaffoldが削除されたときには削除されます。
+Railsは新しいクラスを一度だけ生成します。新しいscaffoldによって上書きされることはなく、scaffoldが削除されると削除されます。
 
-`AnimalsRecord`と異なる既存の抽象クラスがある場合、`--parent`オプションを利用して別の抽象クラスを指定することができます。
+`AnimalsRecord`と異なる既存の抽象クラスがある場合、`--parent`オプションで別の抽象クラスを指定できます。
 
 ```bash
 $ bin/rails generate scaffold Dog name:string --database animals --parent Animals::Record
 ```
 
-このような場合、別の親クラスを利用することを指定しているため、`AnimalsRecord`の生成をスキップします。
+上では別の親クラスの利用を指定しているため、`AnimalsRecord`の生成をスキップします。
 
 ## コネクションの自動切り替えを有効にする
 
@@ -247,13 +241,11 @@ config.active_record.database_resolver_context = MyCookieResolver
 
 Railsはこのような場合のために、必要なコネクションに切り替える`connected_to`メソッドを提供しています。
 
-
 ```ruby
 ActiveRecord::Base.connected_to(role: :reading) do
   # このブロック内のコードはすべてreadingロールで接続される
 end
 ```
-
 
 `connected_to`呼び出しの「ロール」では、そのコネクションハンドラ（またはロール）で接続されたコネクションを探索します。`reading`コネクションハンドラは、`reading`というロール名を持つ`connects_to`を介して接続されたすべてのコネクションを維持します。
 
@@ -261,11 +253,11 @@ end
 
 ## 水平シャーディング
 
-水平シャーディングとは、データベースを分割して各データベースサーバーの行数を減らしながら、「シャード」全体で同じスキーマを維持することです。これは一般に「マルチテナント」シャーディングと呼ばれます。
+水平シャーディングとは、データベースを分割して各データベースサーバーの行数を減らしながら「シャード」全体で同じスキーマを維持することです。これは一般に「マルチテナント」シャーディングと呼ばれます。
 
-Railsで水平シャーディングをサポートするためのAPIは、Rails6.0以降の複数データベース/垂直シャーディングAPIに似ています。
+Railsで水平シャーディングをサポートするAPIは、Rails6.0以降の複数データベースや垂直シャーディングAPIに似ています。
 
-シャードは、次のように3層構成で宣言されます:
+シャードは次のように3層（3-tier）構成で宣言されます。
 
 ```yaml
 production:
@@ -285,7 +277,7 @@ production:
     replica: true
 ```
 
-次に、モデルは `shards`キーを介して`connects_to`APIに接続されます:
+次に、モデルは `shards`キーを介して`connects_to`APIに接続されます。
 
 ```ruby
 class ApplicationRecord < ActiveRecord::Base
@@ -298,7 +290,7 @@ class ApplicationRecord < ActiveRecord::Base
 end
 ```
 
-その後、モデルは`connected_to`APIを使って手動でコネクションを切り替えることができます。 シャーディングを使用する場合は、`role`と`shard`の両方を渡す必要があります。
+これで、モデルは`connected_to`APIを用いて手動でコネクションを切り替えられるようになります。シャーディングを使う場合は、`role`と`shard`の両方を渡す必要があります。
 
 ```ruby
 ActiveRecord::Base.connected_to(role: :writing, shard: :default) do
@@ -311,7 +303,7 @@ ActiveRecord::Base.connected_to(role: :writing, shard: :shard_one) do
 end
 ```
 
-水平シャーディングAPIはリードレプリカもサポートしています。`connected_to`APIでロールとシャードを入れ替えることができます。
+水平シャーディングAPIはリードレプリカ（read replica）もサポートしています。以下のように`connected_to`APIでロールとシャードを切り替えられます。
 
 ```ruby
 ActiveRecord::Base.connected_to(role: :reading, shard: :shard_one) do
@@ -319,11 +311,11 @@ ActiveRecord::Base.connected_to(role: :reading, shard: :shard_one) do
 end
 ```
 
-## 細かなデータベース接続切り替え
+## 粒度の細かなデータベース接続切り替え
 
-Rails 6.1では、すべてのデータベースに対してグローバルにコネクションを切り替えるのではなく、1つのデータベースに対してコネクションを切り替えることができます。この機能を使うには、まずアプリケーションの設定で`config.active_record.legacy_connection_handling`を`false`に設定する必要があります。パプリックAPIは同じ動作をするので、ほとんどのアプリケーションは他に変更を加える必要はありません。
+Rails 6.1では、すべてのデータベースに対してグローバルにコネクションを切り替えるのではなく、1つのデータベースでコネクションを切り替えることが可能です。この機能を使うには、まずアプリケーションの設定で`config.active_record.legacy_connection_handling`を`false`に設定する必要があります。パブリックAPIの振る舞いは変わらないため、ほとんどのアプリケーションではそれ以外の変更は不要です。
 
-`legacy_connection_handling`をfalseに設定すると、抽象的な接続クラスでも他のコネクションに影響を与えずにコネクションを切り替えることができます。これは、`ApplicationRecord`のクエリがプライマリに送られることを保証しつつ、`AnimalsRecord`のクエリをレプリカから読み込むように切り替えるときに便利です。
+`legacy_connection_handling`をfalseに設定すると、任意の抽象コネクションクラスで、他のコネクションに影響を与えずにコネクションを切り替えられます。これは`ApplicationRecord`のクエリがプライマリに送信されることを保証しつつ、`AnimalsRecord`のクエリをレプリカから読み込むように切り替えるときに便利です。
 
 ```ruby
 AnimalsRecord.connected_to(role: :reading) do
@@ -332,7 +324,7 @@ AnimalsRecord.connected_to(role: :reading) do
 end
 ```
 
-また、シャードに対して細かく接続をスワップできます。
+以下のようにシャードに対して接続を細かな粒度で切り替えることも可能です。
 
 ```ruby
 AnimalsRecord.connected_to(role: :reading, shard: :shard_one) do
@@ -342,7 +334,7 @@ AnimalsRecord.connected_to(role: :reading, shard: :shard_one) do
 end
 ```
 
-primaryデータベースクラスタのみを切り替えたい場合は`ApplicationRecord`を使用してください:
+primaryデータベースクラスタのみを切り替えたい場合は、以下のように`ApplicationRecord`を使います。
 
 ```ruby
 ApplicationRecord.connected_to(role: :reading, shard: :shard_one) do
@@ -357,19 +349,15 @@ end
 
 ### 水平シャーディングのための自動スワップ
 
-現在Railsはシャードへの接続や、シャードの接続をスワップするAPIをサポートしていますが、
-自動スワップ戦略はまだサポートしていません。
-ミドルウェアか`around_action`を介して、アプリケーション内で手動でシャードスワップを行う必要があります。
+現在Railsはシャードへの接続や、シャードの接続をスワップするAPIをサポートしていますが、自動スワップ戦略はまだサポートしていません。ミドルウェアか`around_action`を介して、アプリケーション内で手動でシャードスワップを行う必要があります。
 
 ### replicaのロードバランシング
 
 replicaのロードバランシングはインフラストラクチャに強く依存するため、これもRailsではサポート対象外です。今後、基本的かつ原始的なreplicaロードバランシング機能が実装されるかもしれませんが、アプリケーションをスケールさせるためにもRailsの外部でアプリケーションを扱えるものにすべきです。
 
-### データベースをまたがるJOIN
+### データベースを跨がるJOIN
 
-アプリケーションは複数のデータベースにまたがるJOINを行えません。
-現時点では、ユーザ自身が手動で2つのSELECT文を書き、JOINを分割する必要があります。
-将来のバージョンでは、RailsがJOINを分割してくれるようになる予定です。
+アプリケーションは複数のデータベースに跨がるJOINを行えません。現時点では、ユーザ自身が手動で2つのSELECT文を書き、JOINを分割する必要があります。将来のバージョンでは、RailsがJOINを分割してくれるようになる予定です。
 
 ### スキーマキャッシュ
 
