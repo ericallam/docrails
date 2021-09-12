@@ -21,8 +21,8 @@ Active Storage の概要
 Active Storageについて
 -----------------------
 
-Active StorageとはAmazon S3、Google Cloud Storage、Microsoft Azure Storageなどの
-クラウドストレージサービスへのファイルのアップロードや、ファイルをActive Recordオブジェクトにアタッチする機能を提供します。development環境とtest環境向けのローカルディスクベースのサービスを利用できるようになっており、ファイルを下位のサービスにミラーリングしてバックアップや移行に用いることもできます。
+Active Storageは、Amazon S3、Google Cloud Storage、Microsoft Azure Storageなどのクラウドストレージサービスへのファイルのアップロードや、ファイルをActive Recordオブジェクトにアタッチする機能を提供します。
+development環境とtest環境向けのローカルディスクベースのサービスを利用できるようになっており、ファイルを下位のサービスにミラーリングしてバックアップや移行に用いることもできます。
 
 アプリケーションでActive Storageを用いることで、[ImageMagick](https://www.imagemagick.org)で画像のアップロードを変換したり、
 PDFやビデオなどの非画像アップロードの画像表現を生成したり、任意のファイルからメタデータを抽出したりできます。
