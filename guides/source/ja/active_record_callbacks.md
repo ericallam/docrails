@@ -173,7 +173,7 @@ end
 class Employee < ApplicationRecord
   belongs_to :company, touch: true
   after_touch do
-    puts 'Employeeモデルにtouchされました'
+    puts 'Employeeがtouchされました'
   end
 end
 
@@ -192,8 +192,8 @@ end
 
 # @employee.company.touchをトリガーする
 >> @employee.touch
-Employee/Companyがtouchされました
 Employeeがtouchされました
+Employee/Companyがtouchされました
 => true
 ```
 
