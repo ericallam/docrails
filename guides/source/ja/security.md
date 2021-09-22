@@ -63,7 +63,7 @@ WARNING: **ユーザーのセッションIDが盗まれると、攻撃者がそ�
 
 * 攻撃者が自分の知らないcookieをわざわざ盗み取る代りに、自分が知っているcookieのセッションidを固定してしまうという攻撃方法もあります。詳細については後述のセッション固定に関する記述を参照してください。
 
-たいていの場合、攻撃者の目的は金儲けです。[Symantec Global Internet Security Threat Report](http://eval.symantec.com/mktginfo/enterprise/white_papers/b-whitepaper_internet_security_threat_report_xiii_04-2008.en-us.pdf)によると、盗まれた銀行口座アカウントの闇価格は、利用可能な資金にもよりますがだいたい10ドルから1000ドルぐらい、クレジットカード番号が0.40ドルから20ドルぐらい、オンラインオークションサイトのアカウントが1ドルから8ドルぐらい、電子メールのパスワードが4ドルから30ドルくらいで売買されているそうです。
+たいていの場合、攻撃者の目的は金儲けです。[Symantec Global Internet Security Threat Report(2017)](https://www.symantec.com/content/dam/symantec/docs/reports/istr-22-2017-en.pdf)によると、盗まれた銀行口座アカウントの闇価格は、口座残高の0.5~10%、クレジットカード番号は0.5ドルから30ドル(詳細情報を含むと20ドルから60ドル)、ID(名前、SSN、DOB)は0.1ドルから1.5ドル、小売店のアカウントは20ドルから50ドル、クラウドサービスプロバイダーのアカウントは6ドルから10ドルとなっています。
 
 ### セッションストレージ
 
