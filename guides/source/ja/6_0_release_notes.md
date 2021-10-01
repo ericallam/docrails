@@ -8,7 +8,7 @@ Rails 6.0の注目ポイント:
 * 並列テスト
 * Action Cableのテスト支援
 
-本リリースノートでは、主要な変更についてのみ説明します。多数のバグ修正および変更点については、GithubのRailsリポジトリにある[各コミットのchangelog](https://github.com/rails/rails/commits/6-0-stable)を参照してください。
+本リリースノートでは、主要な変更についてのみ説明します。多数のバグ修正および変更点については、GitHubのRailsリポジトリにある[各コミットのchangelog](https://github.com/rails/rails/commits/6-0-stable)を参照してください。
 
 --------------------------------------------------------------------------------
 

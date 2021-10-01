@@ -431,7 +431,7 @@ gemにジェネレータを含めるには、単にジェネレータを作成�
 gemを公開する
 -------------------
 
-開発中のgemであってもGitリポジトリで簡単に共有できます。今回のYaffle gemを他の開発者と共有するには、コードをGithubなどのGitリポジトリにコミットしておき、gemを使用したいアプリケーションの`Gemfile`に一行書くだけで済みます。
+開発中のgemであってもGitリポジトリで簡単に共有できます。今回のYaffle gemを他の開発者と共有するには、コードをGitHubなどのGitリポジトリにコミットしておき、gemを使用したいアプリケーションの`Gemfile`に一行書くだけで済みます。
 
 ```ruby
 gem "yaffle", git: "https://github.com/rails/yaffle.git"

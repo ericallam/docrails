@@ -21,13 +21,13 @@ Ruby on Railsは、「どこかで誰かがうまくやってくれているフ�
 issueのレポート
 ------------------
 
-Ruby on Railsでは[GitHubのIssueトラッキング](https://github.com/rails/rails/issues)機能でissueをトラッキングしています。主にバグや、新しいコードの貢献に使用されます。Ruby on Railsでバグを見つけたら、そこから貢献を開始できます。Githubへのissue送信、コメント、プルリクエストの作成を行うには、まずGitHubアカウント (無料) を作成する必要があります。
+Ruby on Railsでは[GitHubのIssueトラッキング](https://github.com/rails/rails/issues)機能でissueをトラッキングしています。主にバグや、新しいコードの貢献に使用されます。Ruby on Railsでバグを見つけたら、そこから貢献を開始できます。GitHubへのissue送信、コメント、プルリクエストの作成を行うには、まずGitHubアカウント (無料) を作成する必要があります。
 
 NOTE: Ruby on Railsの最新リリースで見つけたバグは最も注目を集める可能性があります。また、Railsコアチームは、_edge Rails_ (その時点での開発版Railsのコード) でのテストに時間を割いてくれる方からのフィードバックを常に歓迎しています。テスティング用にedge Railsを入手する方法については後述します。
 
 ### バグレポートを作成する
 
-Ruby on Railsで何らかの問題を発見し、それがセキュリティ上の問題でなければ、まずGithubの[issue](https://github.com/rails/rails/issues)を検索して、既にレポートがあがっているかどうかを確認してみましょう。該当する問題がissuesにまだ挙がっていない場合は、[新しいissueを作成](https://github.com/rails/rails/issues/new)します。セキュリティ上のissueをレポートする方法については次のセクションで説明します。
+Ruby on Railsで何らかの問題を発見し、それがセキュリティ上の問題でなければ、まずGitHubの[issue](https://github.com/rails/rails/issues)を検索して、既にレポートがあがっているかどうかを確認してみましょう。該当する問題がissuesにまだ挙がっていない場合は、[新しいissueを作成](https://github.com/rails/rails/issues/new)します。セキュリティ上のissueをレポートする方法については次のセクションで説明します。
 
 issueレポートには、最低でもタイトルとissueの明快な説明が必要です。できるだけ多くの関連情報を含めるようにしてください。また、少なくとも問題を再現できるコードサンプルも合わせて投稿してください。期待される動作が行われていないことを示す単体テストも含めてもらえるとさらに助かります。バグの再現と修正点の把握を、他の人達にとっても自分自身にとってもやりやすくすることを目指してください。
 
@@ -45,11 +45,11 @@ issueレポートには、最低でもタイトルとissueの明快な説明が�
 
 該当するテンプレートの内容をコピーして`.rb`ファイルに貼り付けて適宜変更を行い、issueを再現できるようにします。このコードを実行するには、ターミナルで`ruby the_file.rb`を実行します。テストコードが正しく作成されていれば、このテストケースはバグがあることによって失敗する (failと表示される) はずです。
 
-続いて、この実行可能テストケースをGithubの[gist](https://gist.github.com)で共有するか、issueの説明に貼り付けます。
+続いて、この実行可能テストケースをGitHubの[gist](https://gist.github.com)で共有するか、issueの説明に貼り付けます。
 
 ### セキュリティissueの特殊な取り扱い方法について
 
-WARNING: セキュリティ脆弱性に関する問題は、一般公開されているGithubのissueレポート機能には「絶対に掲載しないでください」。セキュリティ関連のissueを扱う方法の詳細については、[Railsセキュリティポリシーページ](https://rubyonrails.org/security) (英語) を参照してください。
+WARNING: セキュリティ脆弱性に関する問題は、一般公開されているGitHubのissueレポート機能には「絶対に掲載しないでください」。セキュリティ関連のissueを扱う方法の詳細については、[Railsセキュリティポリシーページ](https://rubyonrails.org/security) (英語) を参照してください。
 
 ### 機能リクエストについて
 
@@ -65,7 +65,7 @@ GitHubのIssueには「機能リクエスト」を記入しないでください
 
 issueのレポートの次の段階となる貢献方法として、既存のissueにフィードバックすることでコアチームによるissue解決を手伝うこともできます。Railsのコア開発経験がない方にとってはまたとない初期の貢献となるでしょうし、Railsのコードベースや問題解決の手順に親しむチャンスにもなります。
 
-Githubのissueにあがっている[issueのリスト] (https://github.com/rails/rails/issues)を見てみると、注目を集めているissueがたくさん見つかります。自分も何かissueに貢献できる方法はあるでしょうか。もちろんあります。それもいろんな方法があります。
+GitHubのissueにあがっている[issueのリスト] (https://github.com/rails/rails/issues)を見てみると、注目を集めているissueがたくさん見つかります。自分も何かissueに貢献できる方法はあるでしょうか。もちろんあります。それもいろんな方法があります。
 
 ### バグレポートの確認
 
