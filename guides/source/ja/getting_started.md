@@ -20,10 +20,9 @@
 Railsとは、プログラミング言語「Ruby」の上で動作するWebアプリケーションフレームワークです。Rubyの経験がまったくない場合、Railsを学ぶのはかなり大変な作業になるでしょう。Rubyを学ぶための精選されたオンラインリソース一覧はたくさんあるので、その中から以下をご紹介します。
 
 - [プログラミング言語Ruby公式Webサイト](https://www.ruby-lang.org/ja/documentation/)
-- [プログラミング学習用書籍まとめ（日本語）](https://github.com/EbookFoundation/free-programming-books/blob/master/books/free-programming-books-ja.md#ruby)
-- [プログラミング学習用書籍まとめ（英語）](https://github.com/EbookFoundation/free-programming-books/blob/master/books/free-programming-books.md#ruby)
+- [プログラミング学習コンテンツまとめ](https://github.com/EbookFoundation/free-programming-books/blob/master/books/free-programming-books-ja.md#ruby)
 
-いずれもよくできていますが、中には古いものもありますのでご注意ください。Railsを使った開発で日常的に使う新しい文法が含まれていないこともあります。
+いずれもよくできていますが中には古いものもあり、例えばRailsの最新の文法が含まれていない場合もあります。
 
 ## Railsとは何か
 
