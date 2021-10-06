@@ -277,7 +277,7 @@ APIアプリケーション（`ActionController::API`を利用）には、デフ
 - `ActionController::Renderers::All`: `render :json`などのサポート
 - `ActionController::ConditionalGet`: `stale?`のサポート
 - `ActionController::BasicImplicitRender`: 指定がない限り、空のレスポンスを返す
-- `ActionController::StrongParameters`: パラメータのホワイトリストをサポート（Active Modelのマスアサインメントと連携）
+- `ActionController::StrongParameters`: パラメータの許可リストをサポート（Active Modelのマスアサインメントと連携）
 - `ActionController::ForceSSL`: `force_ssl`のサポート
 - `ActionController::DataStreaming`: `send_file`や`send_data`のサポート
 - `AbstractController::Callbacks`: `before_action`などのヘルパーをサポート

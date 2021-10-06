@@ -233,7 +233,7 @@ end
 params.permit(:id)
 ```
 
-`:id`キーが`params`にあり、それに対応する許可済みスカラー値に`:id`キーがあれば、ホワイトリストチェックをパスします。この条件を満たさない場合は、`:id`キーはフィルタで除外されます。これにより、外部からハッシュなどのオブジェクトを不正に注入できなくなります。
+`:id`キーが`params`にあり、それに対応する許可済みスカラー値に`:id`キーがあれば、許可リストチェックをパスします。この条件を満たさない場合は、`:id`キーはフィルタで除外されます。これにより、外部からハッシュなどのオブジェクトを不正に注入できなくなります。
 
 スカラーで許可される型は、`String`、`Symbol`、`NilClass`、`Numeric`、`TrueClass`、`FalseClass`、`Date`、`Time`、`DateTime`、`StringIO`、`IO`、`ActionDispatch::Http::UploadedFile`、`Rack::Test::UploadedFile`です。
 

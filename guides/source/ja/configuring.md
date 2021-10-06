@@ -280,7 +280,7 @@ config.middleware.delete Rack::MethodOverride
 
 以下のオプションはすべて`i18n`(internationalization: 国際化)ライブラリ用のオプションです。
 
-* `config.i18n.available_locales`: アプリケーションで利用できるロケールをホワイトリスト化します。デフォルトでは、ロケールファイルにあるロケールキーはすべて有効になりますが、新しいアプリケーションの場合、通常は`:en`だけです。
+* `config.i18n.available_locales`: アプリケーションで利用できるロケールを許可リスト化します。デフォルトでは、ロケールファイルにあるロケールキーはすべて有効になりますが、新しいアプリケーションの場合、通常は`:en`だけです。
 
 * `config.i18n.default_locale`: アプリケーションのi18nで使われるデフォルトのロケールを設定します。デフォルトは`:en`です。
 
@@ -413,7 +413,7 @@ PostgreSQLアダプターを使うと、以下の設定オプションが1つ追
 
 * `config.action_controller.action_on_unpermitted_parameters`: 明示的に許可されていないパラメータが見つかった場合にログ出力または例外発生を行なうかどうかを指定します。このオプションは、`:log`または`:raise`を指定すると有効になります。test環境とdevelopment環境でのデフォルトは`:log`であり、それ以外の環境では`false`が設定されます。
 
-* `config.action_controller.always_permitted_parameters`: デフォルトで許可されるホワイトリストパラメータのリストを設定します。デフォルト値は `['controller', 'action']`です。
+* `config.action_controller.always_permitted_parameters`: デフォルトで許可される許可リストパラメータのリストを設定します。デフォルト値は `['controller', 'action']`です。
 
 * `config.action_controller.enable_fragment_cache_logging`: フラグメントキャッシュの読み書きのログを次のようにverbose形式で出力するかどうかを指定します。
 
