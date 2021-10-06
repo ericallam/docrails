@@ -66,7 +66,7 @@ $ ruby /path/to/rails/railties/bin/rails new myapp --dev
 
 ### ActionPack
 
-* **Strong Parameters** ([コミット](https://github.com/rails/rails/commit/a8f6d5c6450a7fe058348a7f10a908352bb6c7fc)) - ホワイトリストで明示的に許可されたパラメータ (`params.permit(:title, :text)`) を使わないとモデルオブジェクトを更新できないようにする。
+* **Strong Parameters** ([コミット](https://github.com/rails/rails/commit/a8f6d5c6450a7fe058348a7f10a908352bb6c7fc)) - 許可リストで明示的に許可されたパラメータ (`params.permit(:title, :text)`) を使わないとモデルオブジェクトを更新できないようにする。
 * **ルーティングの「concern」機能** ([コミット](https://github.com/rails/rails/commit/0dd24728a088fcb4ae616bb5d62734aca5276b1b)) - ルーティング用のDSLで、共通となるサブルーティング (subroutes) を除外する (`/posts/1/comments`と`/videos/1/comments`における`comments`など)。
 * **ActionController::Live** ([コミット](https://github.com/rails/rails/commit/af0a9f9eefaee3a8120cfd8d05cbc431af376da3)) - JSONを`response.stream`でストリーミングする。
 * **「宣言的 (declarative)」ETag** ([コミット](https://github.com/rails/rails/commit/ed5c938fa36995f06d4917d9543ba78ed506bb8d)) - コントローラレベルのetagを追加する。これはアクションでのetag算出にも使われる。

@@ -2688,7 +2688,7 @@ NOTE: 定義は`active_support/core_ext/hash/keys.rb`にあります。
 
 #### `assert_valid_keys`
 
-`assert_valid_keys`メソッドは任意の数の引数を取ることができ、ホワイトリストに含まれていないキーがレシーバにあるかどうかをチェックします。そのようなキーが見つかった場合、`ArgumentError`が発生します。
+`assert_valid_keys`メソッドは任意の数の引数を取ることができ、許可リストに含まれていないキーがレシーバにあるかどうかをチェックします。そのようなキーが見つかった場合、`ArgumentError`が発生します。
 
 ```ruby
 {a: 1}.assert_valid_keys(:a)  # パスする
