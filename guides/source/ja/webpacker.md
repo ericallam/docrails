@@ -5,7 +5,7 @@ Webpacker の概要
 
 このガイドの内容:
 
-* Webpackerとは何か、およびSprocketと異なっている理由
+* Webpackerとは何か、およびSprocketsと異なっている理由
 * Webpackerのインストール方法、および選択したフレームワークとの統合方法
 * JavaScriptアセットをWebpackerで管理する方法
 * CSSアセットをWebpackerで管理する方法
