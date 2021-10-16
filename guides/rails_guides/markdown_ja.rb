@@ -71,7 +71,7 @@ module RailsGuides
               </div>
               <ol class="snsb" style="margin-left: 0; margin-right: 0;">
                 <li><a class="twitter-share-button" href="https://twitter.com/intent/tweet" data-hashtags="Railsガイド" data-via="RailsGuidesJP" data-related="RailsGuidesJP,YassLab" data-size="large" lang="ja"></a></li>
-                <li style="margin-left: 6px;"><a class="github-button" href="https://github.com/yasslab/railsguides.jp" data-size="large" data-show-count="true" aria-label="Star yasslab/railsguides.jp on GitHub">Star</a></li>
+                <li style="margin-left: 6px; margin-right: 0;"><a class="github-button" href="https://github.com/yasslab/railsguides.jp" data-size="large" data-show-count="true" aria-label="Star yasslab/railsguides.jp on GitHub">Star</a></li>
               </ol>
             </aside>
           </div>
