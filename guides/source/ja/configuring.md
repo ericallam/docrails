@@ -671,9 +671,15 @@ Active Supportにもいくつかの設定オプションがあります。
 
 * `ActiveSupport::Deprecation.behavior`: `config.active_support.deprecation`に対するもう一つのセッターであり、Railsの非推奨警告メッセージの表示方法を設定します。
 
+* `ActiveSupport::Deprecation.disallowed_behavior`: `config.active_support.disallowed_deprecation`に対するもう一つのセッターであり、Railsの許可しない非推奨警告メッセージの表示方法を設定します。
+
+* `ActiveSupport::Deprecation.disallowed_warnings`: `config.active_support.disallowed_deprecation_warnings`に対するもう一つのセッターであり、アプリケーションで許可しない非推奨の警告を設定するものです。例えば特定の非推奨の警告を例外として扱うことが出来ます。
+
 * `ActiveSupport::Deprecation.silence`: ブロックを1つ引数に取り、すべての非推奨警告メッセージを抑制します。
 
 * `ActiveSupport::Deprecation.silenced`: 非推奨警告メッセージを表示するかどうかを指定します。デフォルトは`false`です。
+
+* `ActiveSupport.utc_to_local_returns_utc_offset_times`: `ActiveSupport::TimeZone.utc_to_local`で、UTCオフセットを考慮したUTC時間ではなく、UTCオフセットを考慮したローカル時間を返すように設定します。
 
 ### Active Jobを設定する
 
