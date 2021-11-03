@@ -235,7 +235,7 @@ Active Jobが提供するフックを用いて、ジョブのライフサイク�
 
 ```ruby
 class GuestsCleanupJob < ApplicationJob
-  queue_as :default
+  queue_as :default
 
   around_perform :around_cleanup
   
