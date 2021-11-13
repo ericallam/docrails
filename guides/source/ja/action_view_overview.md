@@ -1487,7 +1487,7 @@ NB: この出力にはエスケープされていない'<'、'>'、'&'文字が�
 
 `csrf-param` metaタグと`csrf-token` metaタグを返します。これらの名称はそれぞれ、クロスサイトリクエストフォージェリ（CSRF: cross-site request foregery）のパラメータとトークンが元になっています。
 
-```html
+```erb
 <%= csrf_meta_tags %>
 ```
 
