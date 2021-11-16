@@ -205,7 +205,7 @@ render inline: "<% products.each do |p| %><p><%= p.name %></p><% end %>"
 
 WARNING: このオプションを実際に使用する意味はほぼないと思われます。コントローラのコードにERBを混在させると、RailsのMVC指向が崩されるだけでなく、開発者がプロジェクトのロジックを追いかけることが困難になってしまいます。通常のERBビューを使用してください。
 
-インラインでは、デフォルトでERBを使用して出力を行います。`:type`オプションで:builderを指定すると、ERBに代えてBuilderが使用されます。
+インラインでは、デフォルトでERBを使用して出力を行います。`:type`オプションで`:builder`を指定すると、ERBに代えてBuilderが使用されます。
 
 ```ruby
 render inline: "xml.p {'Horrid coding practice!'}", type: :builder
