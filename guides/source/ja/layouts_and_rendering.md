@@ -96,7 +96,7 @@ end
 <%= link_to "New book", new_book_path %>
 ```
 
-NOTE: 実際のレンダリングは、`ActionView::TemplateHandlers`のサブクラスで行われます。本ガイドではレンダリングの詳細については触れませんが、テンプレートハンドラの選択がビューテンプレートファイルの拡張子によって制御されているという重要な点は理解しておいてください。Rails 2以降におけるビューテンプレートの標準拡張子は、ERB (HTML + Embedded RuBy) でレンダリングする場合は`.erb`、Builder (XMLジェネレータ) でレンダリングする場合は`.builder`です。
+NOTE: 実際のレンダリングは、[`ActionView::Template::Handlers`](http://api.rubyonrails.org/classes/ActionView/Template/Handlers.html)の名前空間の中でネストされたクラスで行われます。本ガイドではレンダリングの詳細については触れませんが、テンプレートハンドラの選択がビューテンプレートファイルの拡張子によって制御されているという重要な点は理解しておいてください。
 
 ### `render`を使用する
 
