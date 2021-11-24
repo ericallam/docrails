@@ -161,7 +161,7 @@
     -
       name: Classic から Zeitwerk への移行
       url: classic_to_zeitwerk_howto.html
-      description: Railsアプリケーションを Classic モードから Zeitwerk モードに移行する手順を解説します。
+      description: Rails アプリケーションを Classic モードから Zeitwerk モードに移行する手順を解説します。
     -
       name: 定数の自動読み込みと再読み込み (Classic)
       url: autoloading_and_reloading_constants_classic_mode.html

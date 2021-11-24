@@ -1,6 +1,6 @@
 **DO NOT READ THIS FILE ON GITHUB, GUIDES ARE PUBLISHED ON https://guides.rubyonrails.org.**
 
-クラシックオートローダーからZeitwerkへの移行
+Classic から Zeitwerk への移行
 =========================
 
 本ガイドでは、Railsアプリケーションを`classic`モードから`zeitwerk`モードに移行する方法について解説します。
