@@ -96,7 +96,7 @@ end
 <%= link_to "New book", new_book_path %>
 ```
 
-NOTE: 実際のレンダリングは、`ActionView::TemplateHandlers`のサブクラスで行われます。本ガイドではレンダリングの詳細については触れませんが、テンプレートハンドラの選択がビューテンプレートファイルの拡張子によって制御されているという重要な点は理解しておいてください。Rails 2以降におけるビューテンプレートの標準拡張子は、ERB (HTML + Embedded RuBy) でレンダリングする場合は`.erb`、Builder (XMLジェネレータ) でレンダリングする場合は`.builder`です。
+NOTE: 実際のレンダリングは、[`ActionView::Template::Handlers`](http://api.rubyonrails.org/classes/ActionView/Template/Handlers.html)の名前空間の中でネストされたクラスで行われます。本ガイドではレンダリングの詳細については触れませんが、テンプレートハンドラの選択がビューテンプレートファイルの拡張子によって制御されているという重要な点は理解しておいてください。
 
 ### `render`を使用する
 
@@ -205,7 +205,7 @@ render inline: "<% products.each do |p| %><p><%= p.name %></p><% end %>"
 
 WARNING: このオプションを実際に使用する意味はほぼないと思われます。コントローラのコードにERBを混在させると、RailsのMVC指向が崩されるだけでなく、開発者がプロジェクトのロジックを追いかけることが困難になってしまいます。通常のERBビューを使用してください。
 
-インラインでは、デフォルトでERBを使用して出力を行います。`:type`オプションで:builderを指定すると、ERBに代えてBuilderが使用されます。
+インラインでは、デフォルトでERBを使用して出力を行います。`:type`オプションで`:builder`を指定すると、ERBに代えてBuilderが使用されます。
 
 ```ruby
 render inline: "xml.p {'Horrid coding practice!'}", type: :builder
