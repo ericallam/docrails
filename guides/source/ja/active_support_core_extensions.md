@@ -1188,7 +1188,7 @@ NOTE: 定義は`active_support/core_ext/string/filters.rb`にあります。
 "active".inquiry.inactive?       # => false
 ```
 
-NOTE: 定義は`active_support/core_ext/string/inquiry.rb`にあります。****
+NOTE: 定義は`active_support/core_ext/string/inquiry.rb`にあります。
 
 ### `starts_with?`と`ends_with?`
 
