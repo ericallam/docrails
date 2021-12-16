@@ -1050,9 +1050,9 @@ create    test/controllers/articles_controller_test.rb
 ```ruby
 # articles_controller_test.rb
 class ArticlesControllerTest < ActionDispatch::IntegrationTest
-   test "should get index" do
-     get articles_url
-     assert_response :success
+  test "should get index" do
+    get articles_url
+    assert_response :success
   end
 end
 ```
