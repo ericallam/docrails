@@ -46,7 +46,7 @@ Railsのバージョン間を移動するには以下のようにします。
 
 1. `Gemfile`ファイル内のRailsバージョン番号を変更し、`bundle update`を実行する。
 2. `package.json`ファイル内のRails JavaScriptパッケージのバージョンを変更する。Webpackerで動かす場合は`yarn install`を実行する。
-3. [#アップデートタスク](##アップデートタスク)を実行する。
+3. [#アップデートタスク](#アップデートタスク)を実行する。
 4. テストを実行する。
 
 リリースされたすべてのRails gemリストについては[こちら](https://rubygems.org/gems/rails/versions)を参照してください。
