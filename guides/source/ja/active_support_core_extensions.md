@@ -2682,7 +2682,7 @@ NOTE: 定義は`active_support/core_ext/hash/keys.rb`にあります。
 
 #### `to_options`と`to_options!`
 
-`to_options`メソッドと`to_options!`メソッドは、それそれ`symbolize_keys`メソッドと`symbolize_keys!`メソッドの別名です。
+`to_options`メソッドと`to_options!`メソッドは、それぞれ`symbolize_keys`メソッドと`symbolize_keys!`メソッドの別名です。
 
 NOTE: 定義は`active_support/core_ext/hash/keys.rb`にあります。
 
