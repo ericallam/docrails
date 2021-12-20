@@ -367,7 +367,7 @@ class Comment < ApplicationRecord
 end
 ```
 
-UUIDを主キーとして利用する方法について詳しくは[後述](#UUID主キー)します。
+UUIDを主キーとして利用する方法について詳しくは[後述](#uuid主キー)します。
 
 ### ビット列データ型（bit string type）
 
