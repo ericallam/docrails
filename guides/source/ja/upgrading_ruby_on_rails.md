@@ -15,6 +15,16 @@ Rails アップグレードガイド
 
 アップグレード後にアプリケーションが正常に動作していることを確認する方法としては、良いテストカバレッジをアップグレード前に準備しておくのが最善です。アプリケーションを一気に検査する自動テストがないと、変更点をすべて手動で確認しなければならず膨大な時間がかかってしまいます。Railsのようなアプリケーションの場合、これはアプリケーションのあらゆる機能を一つ残らず確認しなければならないということです。アップグレードの実施は、テストカバレッジをきちんと準備してから行なうよう、くれぐれもお願いします。
 
+### Rubyバージョン
+
+Railsでは、一般にRubyの最新版がリリースされると最新版のRubyに合わせます。
+
+* Rails 7: Ruby 2.7.0以降が必須
+* Rails 6: Ruby 2.5.0以降が必須
+* Rails 5: Ruby 2.2.2以降が必須
+
+RubyのアップグレードとRailsのアップグレードは分けるのがよい考えです。最初にRubyを可能な限り最新版にアップグレードし、それからRailsをアップグレードします。
+
 ### アップグレード手順
 
 Railsのバージョンを変更する場合、マイナーバージョンを1つずつゆっくりと変更して、非推奨機能の警告をすべて確認・利用するのが最善の方法であると言えます。言い換えると、アップグレードを急ぐあまりバージョンをスキップするべきではありません。Railsのバージョン番号は「メジャー番号.マイナー番号.パッチ番号」の形式を取ります。メジャーバージョンやマイナーバージョンが変更される場合、公開APIの変更によるエラーがアプリケーションで発生する可能性があります。パッチバージョンはバグ修正のみが含まれ、公開API変更は含まれません。
@@ -26,37 +36,32 @@ Railsのバージョンを変更する場合、マイナーバージョンを1�
 3. テストを修正し、非推奨の機能を修正する。
 4. 次のマイナーバージョンの最新パッチに移行する。
 
-上の手順を繰り返して、最終的にRailsを目的のバージョンにアップグレードします。バージョンを移行するたびに、`Gemfile`内のRailsバージョン番号を変更（これに伴い、他のgemのバージョン変更が必要になることもあります）し、`bundle update` を実行する必要があります。続いて、以下のアップデートタスクを実行して設定ファイルをアップデートし、テストを実行します。
+上の手順を繰り返して、最終的にRailsを目的のバージョンにアップグレードします。
 
 リリース済みのRailsバージョンのリストは[ここ](https://rubygems.org/gems/rails/versions)で確認できます。
 
-### Rubyのバージョン
+#### Railsバージョン間を移動する
 
-Railsは、そのバージョンがリリースされた時点で最新のバージョンのRubyに依存しています。
+Railsのバージョン間を移動するには以下のようにします。
 
-* Rails 6: Ruby 2.5.0以降が必須です。
-* Rails 5: Ruby 2.2.2以降が必須です。
-* Rails 4: Ruby 2.0が推奨されます。Ruby 1.9.3以上が必須です。
-* Rails 3.2.x: Ruby 1.8.7の最終ブランチです。
-* Rails 3以降: Ruby 1.8.7以降が必須です。これより古いRubyのサポートは公式に停止しています。できるだけ早くアップグレードをお願いします。
+1. `Gemfile`ファイル内のRailsバージョン番号を変更し、`bundle update`を実行する。
+2. `package.json`ファイル内のRails JavaScriptパッケージのバージョンを変更する。Webpackerで動かす場合は`yarn install`を実行する。
+3. [#アップデートタスク](#アップデートタスク)を実行する。
+4. テストを実行する。
 
-TIP: Ruby 1.8.7 p248およびp249にはRailsをクラッシュさせるマーシャリングバグがあります。Ruby Enterprise Editionでは1.8.7-2010.02以降このバグは修正されています。Ruby 1.9系を使う場合、Ruby 1.9.1はあからさまなセグメンテーション違反が発生するため利用できません。1.9.3をお使いください。
+リリースされたすべてのRails gemリストについては[こちら](https://rubygems.org/gems/rails/versions)を参照してください。
 
 ### アップデートタスク
 
-Rails では`app:update`というコマンドが提供されています (Rails 4.2以前では `rails:update` という名前でした)。`Gemfile`に記載されているRailsのバージョンを更新後、このコマンドを実行することで、新しいバージョンでのファイル作成や既存ファイルの変更を対話形式で行うことができます。
+Rails では`app:update`というコマンドが提供されています。`Gemfile`に記載されているRailsのバージョンを更新後、このコマンドを実行することで、新しいバージョンでのファイル作成や既存ファイルの変更を対話形式で行うことができます。
 
 ```bash
-$ rails app:update
-   identical  config/boot.rb
+$ bin/rails app:update
        exist  config
-    conflict  config/routes.rb
-Overwrite /myapp/config/routes.rb? (enter "h" for help) [Ynaqdh]
-       force  config/routes.rb
     conflict  config/application.rb
 Overwrite /myapp/config/application.rb? (enter "h" for help) [Ynaqdh]
        force  config/application.rb
-    conflict  config/environment.rb
+      create  config/initializers/new_framework_defaults_7_0.rb
 ...
 ```
 
@@ -66,7 +71,300 @@ Overwrite /myapp/config/application.rb? (enter "h" for help) [Ynaqdh]
 
 新しいバージョンのRailsでは前のバージョンとデフォルトの設定が異なることがあります。しかし上述の手順に従うことで、アプリケーションを引き続き**従来**バージョンのRailsのデフォルト設定で動かせることもあります（`config/application.rb`の`config.load_defaults`の値が変更されていないため）。
 
-updateタスクでは、アプリケーションを新しいデフォルト設定に1つずつアップグレードできるように、`config/initializers/new_framework_defaults.rb`ファイルが作成されます。アプリケーションを新しいデフォルト設定で動かせる準備が整ったら、このファイルを削除して`config.load_defaults`の値を反転できます。
+updateタスクでは、アプリケーションを新しいデフォルト設定に1つずつアップグレードできるように、`config/initializers/new_framework_defaults_X.Y.rb`ファイルが作成されます（ファイル名にはRailsのバージョンが含まれます）。このファイル内のコメントを解除して、新しいデフォルト設定を有効にする必要があります。この作業は、数回のデプロイに分けて段階的に進められます。アプリケーションを新しいデフォルト設定で動かせる準備が整ったら、このファイルを削除して`config.load_defaults`の値を反転できます。
+
+Rails 6.1からRails 7.0へのアップグレード
+-------------------------------------
+
+### `ActionView::Helpers::UrlHelper#button_to`の振る舞いが変更された
+
+Rails 7.0以降の`button_to`は、ボタンURLをビルドするのに使われるActive Recordオブジェクトが永続化されている場合は、`patch` HTTP verbを用いる`form`タグをレンダリングします。現在の振る舞いを維持するには、以下のように明示的に`method:`オプションを渡します。
+
+```diff
+-button_to("Do a POST", [:my_custom_post_action_on_workshop, Workshop.find(1)])
++button_to("Do a POST", [:my_custom_post_action_on_workshop, Workshop.find(1)], method: :post)
+```
+
+または、以下のようにURLをビルドするヘルパーを使います。
+
+```diff
+-button_to("Do a POST", [:my_custom_post_action_on_workshop, Workshop.find(1)])
++button_to("Do a POST", my_custom_post_action_on_workshop_workshop_path(Workshop.find(1)))
+```
+### spring gem
+
+アプリケーションでspring gemを使っている場合は、spring gemのバージョンを3.0.0以上にアップグレードする必要があります。そうしないと以下のエラーが発生します。
+
+```
+undefined method `mechanism=' for ActiveSupport::Dependencies:Module
+```
+
+また、`config/environments/test.rb`で`config.cache_classes`設定を必ず`false`にしてください。
+
+### Sprocketsへの依存がオプショナルになった
+
+`rails` gemは`sprockets-rails`に依存しなくなりました。アプリケーションで引き続きSprocketsを使う必要がある場合は、Gemfileに`sprockets-rails`を追加してください。
+
+```
+gem "sprockets-rails"
+```
+### アプリケーションは`zeitwerkモードでの実行が必須
+
+`classic`モードで動作しているアプリケーションは、`zeitwerk`モードに切り替えなければなりません。詳しくは[クラシックオートローダーからZeitwerkへの移行](classic_to_zeitwerk_howto.html)ガイドを参照してください。
+
+### `config.autoloader=`セッターが削除された
+
+Rails 7では、オートロードのモードを指定する`config.autoloader=`設定そのものがなくなりました。何らかの理由で`:zeitwerk`に設定していた場合は、その設定行を削除してください。
+
+### `ActiveSupport::Dependencies`のprivate APIが削除された
+
+`ActiveSupport::Dependencies`のprivate APIが削除されました。`hook!`、`unhook!`、`depend_on`、`require_or_load`、`mechanism`など多数のメソッドが削除されています。
+
+注意点をいくつか示します。
+
+* `ActiveSupport::Dependencies.constantize`または`ActiveSupport::Dependencies.safe_constantize`を使っている場合は、`String#constantize`または`String#safe_constantize`に変更してください。
+
+  ```ruby
+  ActiveSupport::Dependencies.constantize("User") # 今後は利用不可
+  "User".constantize # 👍
+  ```
+
+* `ActiveSupport::Dependencies.mechanism`やそのリーダーやライターを使っている場合は、`config.cache_classes`のアクセスで置き換える必要があります。
+
+* オートローダーの動作をトレースしたい場合、ActiveSupport::Dependencies.verbose=`は利用できなくなりました。`config/application.rb`で`Rails.autoloaders.log!`をスローしてください。
+
+`ActiveSupport::Dependencies::Reference`や`ActiveSupport::Dependencies::Blamable`などの補助的なクラスやモジュールも削除されました。
+
+### 初期化中のオートロード
+
+Rails 6.0以降では、アプリケーションの初期化中に、再読み込み可能な定数を`to_prepare`ブロックの外でオートロードすると、それらの定数がアンロードされて以下のwarningが出力されます。
+
+```
+DEPRECATION WARNING: Initialization autoloaded the constant ....
+
+Being able to do this is deprecated. Autoloading during initialization is going
+to be an error condition in future versions of Rails.
+
+...
+```
+
+このwarningが引き続きログに出力される場合は、[アプリケーション起動時の自動読み込み](https://railsguides.jp/autoloading_and_reloading_constants.html#アプリケーション起動時の自動読み込み)でアプリケーション起動時のオートロードについての記述を参照してください。これに対応しないと、Rails 7で`NameError`が出力されます。
+
+### `config.autoload_once_paths`を設定可能になった
+
+`config.autoload_once_paths`は、`config/application.rb`で定義されるApplicationクラスの本体、または`config/environments/*`の環境向け設定で設定可能です。
+
+エンジンも同様に、エンジンクラスのクラス本体内にあるコレクションや、環境向けの設定内にあるコレクションを設定可能です。
+
+コレクションは以後frozenになり、これらのパスからオートロードできるようになります。特に、これらのパスから初期化中にオートロードできるようになります。これらのパスは、`Rails.autoloaders.once`オートローダーで管理されます。このオートローダーはリロードを行わず、オートロードやeager loadingのみを行います。
+
+環境設定が完了した後でこの設定を行ったときに`FrozenError`が発生しする場合は、コードの置き場所を移動してください。
+
+### `ActionDispatch::Request#content_type`が Content-Typeヘッダーをそのまま返すようになった
+
+従来は、`ActionDispatch::Request#content_type`が返す値にcharsetパートが含まれて「いませんでした」。
+この振る舞いが変更され、charsetパートを含むContent-Typeヘッダーをそのまま帰すようになりました。
+
+MIMEタイプだけが欲しい場合は、代わりに`ActionDispatch::Request#media_type`をお使いください。
+
+変更前:
+
+```ruby
+request = ActionDispatch::Request.new("CONTENT_TYPE" => "text/csv; header=present; charset=utf-16", "REQUEST_METHOD" => "GET")
+request.content_type #=> "text/csv"
+```
+
+変更後:
+
+```ruby
+request = ActionDispatch::Request.new("Content-Type" => "text/csv; header=present; charset=utf-16", "REQUEST_METHOD" => "GET")
+request.content_type #=> "text/csv; header=present; charset=utf-16"
+request.media_type   #=> "text/csv"
+```
+
+### キージェネレータのメッセージダイジェストクラスがSHA256に変更
+
+キージェネレータで用いられるデフォルトのダイジェストクラスが、SHA1からSHA256に変更されました。
+その結果、Railsで生成されるあらゆる暗号化メッセージがこの影響を受けるようになり、暗号化cookieも同様に影響を受けます。
+
+古いダイジェストクラスを用いてメッセージを読めるようにするには、ローテータの登録が必要です。
+
+以下は、暗号化cookie向けのローテータの設定例です。
+
+```ruby
+Rails.application.config.action_dispatch.cookies_rotations.tap do |cookies|
+  salt = Rails.application.config.action_dispatch.authenticated_encrypted_cookie_salt
+  secret_key_base = Rails.application.secrets.secret_key_base
+
+  key_generator = ActiveSupport::KeyGenerator.new(
+    secret_key_base, iterations: 1000, hash_digest_class: OpenSSL::Digest::SHA1
+  )
+  key_len = ActiveSupport::MessageEncryptor.key_len
+  secret = key_generator.generate_key(salt, key_len)
+
+  cookies.rotate :encrypted, secret
+end
+```
+
+### `ActiveSupport::Digest`で用いられるメッセージダイジェストクラスがSHA256に変更
+
+`ActiveSupport::Digest`で用いられるデフォルトのダイジェストクラスがSHA1からSHA256に変更されます。
+その結果、Etagなどの変更やキャッシュキーにも影響します。
+これらのキーを変更すると、キャッシュのヒット率が低下する可能性があるので、新しいハッシュにアップグレードする際は慎重に進めるようご注意ください。
+
+### `ActiveSupport::Cache`の新しいシリアライズフォーマット
+
+より高速かつコンパクトな新しいシリアライズフォーマットが導入されました。
+
+これを有効にするには、以下のように`config.active_support.cache_format_version = 7.0`を設定する必要があります。
+
+```ruby
+# config/application.rb
+
+config.load_defaults 6.1
+config.active_support.cache_format_version = 7.0
+```
+
+または以下のようにシンプルに設定します。
+
+```ruby
+# config/application.rb
+
+config.load_defaults 7.0
+```
+
+ただし、Rails 6.1アプリケーションはこの新しいシリアライズフォーマットを読み取れないので、シームレスにアップグレードするには、まずRails 7.0へのアップグレードを`config.active_support.cache_format_version = 6.1`でデプロイし、Railsプロセスがすべて更新されたことを確かめてから`config.active_support.cache_format_version = 7.0`を設定する必要があります。
+
+Rails 7.0は新旧両方のフォーマットを読み取れるので、アップグレード中にキャッシュが無効になることはありません。
+
+### ActiveStorageの動画プレビュー画像生成
+
+動画のプレビュー画像生成で、FFmpegの場面転換検出機能を用いて従来よりも意味のあるプレビュー画像を生成するようになりました。従来は動画の冒頭フレームが使われたため、黒画面からフェードインして開始される動画で問題が生じました。この変更にはFFmpeg v3.4以降が必要です。
+
+### Active Storageのデフォルトのバリアントプロセッサが `:vips`に変更
+
+新規アプリの画像変換では、従来のImageMagickに代えてlibvipsが使われるようになります。これにより、バリアント（サムネイルなどで用いられるサイズ違いの画像）の生成時間が短縮されるとともにCPUやメモリの使用量も削減され、Active Storageで画像を配信するアプリのレスポンスが向上します。
+
+`:mini_magick`オプションは非推奨化されていませんので、引き続き問題なく利用できます。
+
+既存のアプリをlibvipsに移行するには、以下を設定します。
+
+```ruby
+Rails.application.config.active_storage.variant_processor = :vips
+```
+
+続いて、既存の画像変換コードを`image_processing`マクロに変更し、さらにImageMagickのオプションをlibvipsのオプションに置き換える必要があります。
+
+#### `resize`を`resize_to_limit`に置き換える
+
+```diff
+- variant(resize: "100x")
++ variant(resize_to_limit: [100, nil])
+```
+
+上の置き換えを行わないと、vipsに切り替えたときに`no implicit conversion to float from string`エラーが表示されます。
+
+#### `crop`で配列を使うよう変更する
+
+```diff
+- variant(crop: "1920x1080+0+0")
++ variant(crop: [0, 0, 1920, 1080])
+```
+
+上の置き換えを行わないと、vipsに移行したときに`unable to call crop: you supplied 2 arguments, but operation needs 5`エラーが表示されます。
+
+#### `crop`の値を固定する
+
+vipsの`crop`は、ImageMagickよりも厳密です。
+
+1. `x`や`y`が負の値の場合は`crop`されない。例: `[-10, -10, 100, 100]`
+
+2. 位置（`x`または`y`）と`crop`のサイズ（`width`、height`）が画像サイズを上回る場合は`crop`されない。例: 125x125の画像に対して`[50, 50, 100, 100]`で`crop`する。
+
+上を守らない場合、vipsに移行したときに`extract_area: bad extract area`エラーが表示されます。
+
+#### Adjust the background color used for `resize_and_pad`
+
+vipsの`resize_and_pad`では、デフォルトバックグラウンド色にImageMagickの白ではなく黒が使われます。これは以下のように`background:`オプションで修正できます。
+
+```diff
+- variant(resize_and_pad: [300, 300])
++ variant(resize_and_pad: [300, 300, background: [255]])
+```
+
+#### EXIFベースの画像回転を止めるには
+
+vipsでは、バリアントを処理中にEXIF値を用いて画像を自動回転します。ユーザーがアップロードした写真の回転値を保存してImageMagickで回転するのであれば、以下のようにこの機能を止める必要があります。
+
+```diff
+- variant(format: :jpg, rotate: rotation_value)
++ variant(format: :jpg)
+```
+
+#### `monochrome`を`colourspace`に置き換える。
+
+vipsでは、モノクロ画像を作成するオプションを以下のように変更する必要があります。
+
+```diff
+- variant(monochrome: true)
++ variant(colourspace: "b-w")
+```
+
+#### libvipsの画像圧縮オプションに変更する
+
+JPEGの場合。
+
+```diff
+- variant(strip: true, quality: 80, interlace: "JPEG", sampling_factor: "4:2:0", colorspace: "sRGB")
++ variant(saver: { strip: true, quality: 80, interlace: true })
+```
+
+PNGの場合。
+
+```diff
+- variant(strip: true, quality: 75)
++ variant(saver: { strip: true, compression: 9 })
+```
+
+WEBPの場合。
+
+```diff
+- variant(strip: true, quality: 75, define: { webp: { lossless: false, alpha_quality: 85, thread_level: 1 } })
++ variant(saver: { strip: true, quality: 75, lossless: false, alpha_q: 85, reduction_effort: 6, smart_subsample: true })
+```
+
+GIFの場合。
+
+```diff
+- variant(layers: "Optimize")
++ variant(saver: { optimize_gif_frames: true, optimize_gif_transparency: true })
+```
+
+#### production環境へのデプロイ
+
+Active Storageは、実行されなければならない変換のリストを画像URLにエンコードします。
+アプリケーションがこれらの画像URLをキャッシュしていると、新しいコードをproduction環境にデプロイした後で画像が破損します。
+このため、影響を受けるキャッシュキーを手動で無効にしなければなりません。
+
+たとえば、以下のようなビューがあるとします。
+
+```erb
+<% @products.each do |product| %>
+  <% cache product do %>
+    <%= image_tag product.cover_photo.variant(resize: "200x") %>
+  <% end %>
+<% end %>
+```
+
+このキャッシュを無効にするには、`product`を以下のように変更するか、キャッシュキーを変更します。
+
+```erb
+<% @products.each do |product| %>
+  <% cache ["v2", product] do %>
+    <%= image_tag product.cover_photo.variant(resize_to_limit: [200, nil]) %>
+  <% end %>
+<% end %>
+```
 
 Rails 6.0からRails 6.1へのアップグレード
 -------------------------------------
@@ -295,6 +593,14 @@ config.load_defaults "6.0"
 
 オートローディングモードでは、オートロード、再読み込み、eager loadingを[Zeitwerk](https://github.com/fxn/zeitwerk)で管理します。
 
+以前のバージョンのRailsのデフォルトを使っている場合は、以下の方法でzeitwerkを有効にできます。
+
+```ruby
+# config/application.rb
+
+config.autoloader = :zeitwerk
+```
+
 #### Public APIについて
 
 一般に、アプリケーションでZeitwerk APIの利用が直接必要になることはありません。Railsは、`config.autoload_paths`や`config.cache_classes`といった既存の約束事に沿ってセットアップを行います。
@@ -435,7 +741,7 @@ end
 
 上で`Foo`をオートロードすると、`Bar`をオートロードできなかった場合にも`Bar`をオートロード済みとマーキングすることがありました。このようなコードは`zeitwerk`では対象外です。`Bar`はそれ専用の`bar.rb`というファイルに移すべきです。「1つのファイルには1つの定数だけ」となります。
 
-この影響を受けるのは、上の例のように「同じトップレベルにある」複数の定数だけです。ネストの内側にあるクラスやモジュールは影響を受けません。以下の例をご覧ください。
+これは、上の例のように「同じトップレベルにある」定数にのみ適用されます。ネストの内側にあるクラスやモジュールは影響を受けません。以下の例をご覧ください。
 
 ```ruby
 # app/models/foo.rb
@@ -564,7 +870,7 @@ user.highlights.first.filename # => "funky.jpg"
 user.highlights.second.filename # => "town.jpg"
 ```
 
-この新しい振る舞いは、設定で`config.active_storage.replace_on_assign_to_many`を`true`にすることで選択できます。従来の振る舞いはRails 6.1で非推奨化され、その後のリリースで削除される予定です。
+この新しい振る舞いは、設定で`config.active_storage.replace_on_assign_to_many`を`true`にすることで選択できます。従来の振る舞いはRails 7.1で非推奨化され、Rails 7.1で削除される予定です。
 
 Rails 5.1からRails 5.2へのアップグレード
 -------------------------------------
@@ -579,7 +885,7 @@ Rails 5.2 では[新規作成したアプリケーションのGemfile](https://g
 
 セキュリティ向上のため、Railsでは暗号化または署名付きcookieに有効期限情報を埋め込むようになりました。
 
-有効期限情報が付与されたcookieは、Rails 5.1 以前のバージョンとの互換性はありません。
+有効期限情報が埋め込まれたcookieは、Rails 5.1 以前のバージョンとの互換性はありません。
 
 Rails 5.1 以前で新しいcookieを読み込みたい場合、もしくは Rails 5.2 でうまくデプロイできるか確認したい場合は (必要に応じてロールバックできるようにしたい場合は) `Rails.application.config` の `action_dispatch.use_authenticated_cookie_encryption` を `false` に設定してください。
 
@@ -619,6 +925,15 @@ Rails.application.secrets[:smtp_settings][:address]
 `render :nothing`も同様に削除されますので、今後ヘッダーのみのレスポンスを返すには`head`メソッドをお使いください。
 例: `head :ok`は、bodyをレンダリングせずにresponse 200を返します。
 
+### 非推奨化された`redirect_to :back`サポートが削除された
+
+`redirect_to :back`はRails 5.0で非推奨化され、Rails 5.1で完全に削除されました。
+
+今後は代わりに`redirect_back`をお使いください。`redirect_back`は、`HTTP_REFERER`が見つからない場合に使われる`fallback_location`オプションも受け取れる点にご注意ください。
+
+```ruby
+redirect_back(fallback_location: root_path)
+```
 
 Rails 4.2からRails 5.0へのアップグレード
 -------------------------------------
@@ -1087,7 +1402,7 @@ xhr :get, :index, format: :js
 
 NOTE: 自サイトの`<script>`はクロス参照の出発点として扱われるため、同様にブロックされます。JavaScriptを実際に`<script>`タグから読み込む場合は、そのアクションでCSRF保護を明示的にスキップしてください。
 
-### Spring gem
+### Spring
 
 アプリケーションのプリローダーとしてSpringを使う場合は、以下を行う必要があります。
 
@@ -1269,9 +1584,10 @@ Rails 4.1では、各フィクスチャのERBは独立したコンテキスト�
 ```ruby
 module FixtureFileHelpers
   def file_sha(path)
-    Digest::SHA2.hexdigest(File.read(Rails.root.join('test/fixtures', path)))
+    OpenSSL::Digest::SHA256.hexdigest(File.read(Rails.root.join('test/fixtures', path)))
   end
 end
+
 ActiveRecord::FixtureSet.context_class.include FixtureFileHelpers
 ```
 
