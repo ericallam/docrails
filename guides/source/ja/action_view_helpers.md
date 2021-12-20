@@ -1,29 +1,29 @@
 **DO NOT READ THIS FILE ON GITHUB, GUIDES ARE PUBLISHED ON https://guides.rubyonrails.org.**
 
-Action View Helpers
+Action Viewヘルパー
 ====================
 
-After reading this guide, you will know:
+このガイドの内容:
 
-* How to format dates, strings and numbers
-* How to link to images, videos, stylesheets, etc...
-* How to sanitize content
-* How to localize content
+* 日付、文字列、数値のフォーマット方法
+* 画像、動画、スタイルシートなどへのリンク方法
+* コンテンツのサニタイズ方法
+* コンテンツのローカライズ方法
 
 --------------------------------------------------------------------------------
 
-Overview of helpers provided by Action View
+Action Viewで提供されるヘルパーの概要
 -------------------------------------------
 
-WIP: Not all the helpers are listed here. For a full list see the [API documentation](https://api.rubyonrails.org/classes/ActionView/Helpers.html)
+WIP: ここに記載されているのはヘルパーの一部です。完全なリストについては[APIドキュメント](https://api.rubyonrails.org/classes/ActionView/Helpers.html)を参照してください。
 
-The following is only a brief overview summary of the helpers available in Action View. It's recommended that you review the [API Documentation](https://api.rubyonrails.org/classes/ActionView/Helpers.html), which covers all of the helpers in more detail, but this should serve as a good starting point.
+以下は、Action Viewで利用できるヘルパーの簡単な概要のまとめに過ぎません。すべてのヘルパーについて詳しくは[APIドキュメント](https://api.rubyonrails.org/classes/ActionView/Helpers.html)を参照することをおすすめしますが、本ガイドを最初に読んでおくとよいでしょう。
 
-### AssetTagHelper
+### AssetTagHelperモジュール
 
-This module provides methods for generating HTML that links views to assets such as images, JavaScript files, stylesheets, and feeds.
+このモジュールは、ビューを「画像」「JavaScriptファイル」「スタイルシート（CSS）」「フィード」などのアセットにリンクするHTMLを生成するメソッド（ヘルパーメソッド）を提供します。
 
-By default, Rails links to these assets on the current host in the public folder, but you can direct Rails to link to assets from a dedicated assets server by setting `config.asset_host` in the application configuration, typically in `config/environments/production.rb`. For example, let's say your asset host is `assets.example.com`:
+デフォルトでは、現在のホストの`public/`フォルダにあるこれらのアセットにリンクされますが、アプリケーション設定の`config.asset_host`を設定すれば、アセット専用サーバー上にあるアセットに直接リンクできます。たとえば、アセットホストが`assets.example.com`の場合は以下のように設定します。
 
 ```ruby
 config.asset_host = "assets.example.com"
@@ -31,103 +31,103 @@ image_tag("rails.png")
 # => <img src="http://assets.example.com/images/rails.png" />
 ```
 
-#### auto_discovery_link_tag
+#### `auto_discovery_link_tag`
 
-Returns a link tag that browsers and feed readers can use to auto-detect an RSS, Atom, or JSON feed.
+ブラウザやRSSフィードリーダーが「RSS」「Atom」または「JSON」フィードを自動検出するときに利用可能なリンクタグを返します。
 
 ```ruby
 auto_discovery_link_tag(:rss, "http://www.example.com/feed.rss", { title: "RSS Feed" })
 # => <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="http://www.example.com/feed.rss" />
 ```
 
-#### image_path
+#### `image_path`
 
-Computes the path to an image asset in the `app/assets/images` directory. Full paths from the document root will be passed through. Used internally by `image_tag` to build the image path.
+`app/assets/images`ディレクトリの下に置かれている画像アセットへのパスを算出します。ドキュメントルートを基点とする完全なパスはそのままパススルーされます。内部では`image_tag`を用いて画像パスをビルドします。
 
 ```ruby
 image_path("edit.png") # => /assets/edit.png
 ```
 
-Fingerprint will be added to the filename if config.assets.digest is set to true.
+`config.assets.digest `をtrueに設定すると、以下のようにフィンガープリントがファイル名に追加されます。
 
 ```ruby
 image_path("edit.png")
 # => /assets/edit-2d1a2db63fc738690021fedb5a65b68e.png
 ```
 
-#### image_url
+#### `image_url`
 
-Computes the URL to an image asset in the `app/assets/images` directory. This will call `image_path` internally and merge with your current host or your asset host.
+`app/assets/images`ディレクトリの下に置かれている画像アセットへのURLを算出します。このヘルパーの内部では`image_path`を呼び出し、現在のホストやアセットホストをマージします。
 
 ```ruby
 image_url("edit.png") # => http://www.example.com/assets/edit.png
 ```
 
-#### image_tag
+#### `image_tag`
 
-Returns an HTML image tag for the source. The source can be a full path or a file that exists in your `app/assets/images` directory.
+指定されたソースに対応するHTMLの`img`タグを返します。ソースには、完全なパスか、アプリの`app/assets/images`ディレクトリの下に存在するファイルを指定できます。
 
 ```ruby
 image_tag("icon.png") # => <img src="/assets/icon.png" />
 ```
 
-#### javascript_include_tag
+#### `javascript_include_tag`
 
-Returns an HTML script tag for each of the sources provided. You can pass in the filename (`.js` extension is optional) of JavaScript files that exist in your `app/assets/javascripts` directory for inclusion into the current page or you can pass the full path relative to your document root.
+指定されたソースごとにHTMLの`script`タグを返します。`app/assets/javascripts`ディレクトリの下に存在するJavaScriptファイル名（拡張子`.js`はオプションなので、あってもなくてもよい）を渡すことも、ドキュメントルートからの相対的な完全パスを渡すこともできます。
 
 ```ruby
 javascript_include_tag "common"
 # => <script src="/assets/common.js"></script>
 ```
 
-#### javascript_path
+#### `javascript_path`
 
-Computes the path to a JavaScript asset in the `app/assets/javascripts` directory. If the source filename has no extension, `.js` will be appended. Full paths from the document root will be passed through. Used internally by `javascript_include_tag` to build the script path.
+`app/assets/javascripts`ディレクトリの下に置かれているJavaScriptアセットへのパスを算出します。ソースファイル名に拡張子がない場合は`.js`が追加されます。ドキュメントルートを基点とする完全なパスはそのままパススルーされます。このヘルパーの内部では`javascript_include_tag`を用いてスクリプトパスをビルドします。
 
 ```ruby
 javascript_path "common" # => /assets/common.js
 ```
 
-#### javascript_url
+#### `javascript_url`
 
-Computes the URL to a JavaScript asset in the `app/assets/javascripts` directory. This will call `javascript_path` internally and merge with your current host or your asset host.
+`app/assets/javascripts`ディレクトリの下にあるJavaScriptアセットへのURLを算出します。このヘルパーの内部では`javascript_path`を呼び出し、現在のホストやアセットホストをマージします。
 
 ```ruby
 javascript_url "common"
 # => http://www.example.com/assets/common.js
 ```
 
-#### stylesheet_link_tag
+#### `stylesheet_link_tag`
 
-Returns a stylesheet link tag for the sources specified as arguments. If you don't specify an extension, `.css` will be appended automatically.
+引数で指定されたソースに対応するスタイルシートリンクタグを返します。拡張子が指定されていない場合は、自動的に`.css`が追加されます。
 
 ```ruby
 stylesheet_link_tag "application"
-# => <link href="/assets/application.css" media="screen" rel="stylesheet" />
+# => <link href="/assets/application.css" rel="stylesheet" />
 ```
 
-#### stylesheet_path
+#### `stylesheet_path`
 
-Computes the path to a stylesheet asset in the `app/assets/stylesheets` directory. If the source filename has no extension, `.css` will be appended. Full paths from the document root will be passed through. Used internally by `stylesheet_link_tag` to build the stylesheet path.
+`app/assets/stylesheets`ディレクトリの下にあるスタイルシートアセットへのパスを算出します。ファイル名に拡張子がない場合は`.css`が追加されます。ドキュメントルートを基点とする完全なパスはそのままパススルーされます。このヘルパーの内部では`stylesheet_link_tag`を用いてスタイルシートパスをビルドします。
 
 ```ruby
 stylesheet_path "application" # => /assets/application.css
 ```
 
-#### stylesheet_url
+#### `stylesheet_url`
 
-Computes the URL to a stylesheet asset in the `app/assets/stylesheets` directory. This will call `stylesheet_path` internally and merge with your current host or your asset host.
+`app/assets/stylesheets`ディレクトリの下にあるスタイルシートアセットへのURLを算出します。このヘルパーの内部では`stylesheet_path`を用いてスタイルシートパスをビルドします。
 
 ```ruby
 stylesheet_url "application"
 # => http://www.example.com/assets/application.css
 ```
 
-### AtomFeedHelper
+### AtomFeedHelperモジュール
 
-#### atom_feed
+#### `atom_feed`
 
-This helper makes building an Atom feed easy. Here's a full usage example:
+このヘルパーは、Atomフィードを簡単にビルドできるようにします。以下は完全な利用例です。
 
 **config/routes.rb**
 
@@ -168,25 +168,25 @@ atom_feed do |feed|
 end
 ```
 
-### BenchmarkHelper
+### BenchmarkHelperモジュール
 
-#### benchmark
+#### `benchmark`
 
-Allows you to measure the execution time of a block in a template and records the result to the log. Wrap this block around expensive operations or possible bottlenecks to get a time reading for the operation.
+ビューテンプレート内にあるブロックの実行時間を測定して、結果をログに出力できます。コストの高い操作やボトルネックになっている可能性のある部分をブロックで囲むことで、その中での処理時間を読み取れます。
 
 ```html+erb
-<% benchmark "Process data files" do %>
+<% benchmark "データファイルの処理" do %>
   <%= expensive_files_operation %>
 <% end %>
 ```
 
-This would add something like "Process data files (0.34523)" to the log, which you can then use to compare timings when optimizing your code.
+上のようにすることで、"Process data files (0.34523)" のような情報がログに追加され、コード最適化作業でタイミングを比較できるようになります。
 
-### CacheHelper
+### CacheHelperモジュール
 
-#### cache
+#### `cache`
 
-A method for caching fragments of a view rather than an entire action or page. This technique is useful for caching pieces like menus, lists of news topics, static HTML fragments, and so on. This method takes a block that contains the content you wish to cache. See `AbstractController::Caching::Fragments` for more information.
+アクション全体やページ全体ではなく、ビューのフラグメントをキャッシュするメソッドです。この手法は、メニューやニューストピックのリスト、静的なHTMLフラグメントなどをキャッシュする場合に便利です。このメソッドは、キャッシュしたいコンテンツを含むブロックを1個受け取ります。詳しくは`AbstractController::Caching::Fragments`を参照してください。
 
 ```erb
 <% cache do %>
@@ -194,24 +194,24 @@ A method for caching fragments of a view rather than an entire action or page. T
 <% end %>
 ```
 
-### CaptureHelper
+### CaptureHelperモジュール
 
-#### capture
+#### `capture`
 
-The `capture` method allows you to extract part of a template into a variable. You can then use this variable anywhere in your templates or layout.
+`capture`は、テンプレートの一部を変数に切り出すのに使えます。切り出したこの変数は、そのテンプレートやレイアウト内のどこでも利用できます。
 
 ```html+erb
 <% @greeting = capture do %>
-  <p>Welcome! The date and time is <%= Time.now %></p>
+  <p>ようこそ！現在の日時: <%= Time.now %></p>
 <% end %>
 ```
 
-The captured variable can then be used anywhere else.
+上のように書くことで、キャプチャされた変数を以下のように他のどこでも利用できるようになります。
 
 ```html+erb
 <html>
   <head>
-    <title>Welcome!</title>
+    <title>ようこそ！</title>
   </head>
   <body>
     <%= @greeting %>
@@ -219,22 +219,22 @@ The captured variable can then be used anywhere else.
 </html>
 ```
 
-#### content_for
+#### `content_for`
 
-Calling `content_for` stores a block of markup in an identifier for later use. You can make subsequent calls to the stored content in other templates or the layout by passing the identifier as an argument to `yield`.
+`content_for`を呼び出すと、マークアップのブロックを識別子に保存して、後で利用できるようにします。その識別子を`yield`の引数に渡すことで、以後他のテンプレートやレイアウト内に保存されたコンテンツを呼び出せるようになります。
 
-For example, let's say we have a standard application layout, but also a special page that requires certain JavaScript that the rest of the site doesn't need. We can use `content_for` to include this JavaScript on our special page without fattening up the rest of the site.
+たとえば、標準的なアプリケーションレイアウトがあり、特定のページでのみ、他のサイトでは必要とされないJavaScriptが必要になるとします。このような場合は、以下のように`content_for`を使うことで、他のサイトのコード量を増やさずに特定のページでのみこのJavaScriptコードをインクルードできます。
 
 **app/views/layouts/application.html.erb**
 
 ```html+erb
 <html>
   <head>
-    <title>Welcome!</title>
+    <title>ようこそ！</title>
     <%= yield :special_script %>
   </head>
   <body>
-    <p>Welcome! The date and time is <%= Time.now %></p>
+    <p>ようこそ！現在の日時:  <%= Time.now %></p>
   </body>
 </html>
 ```
@@ -242,18 +242,18 @@ For example, let's say we have a standard application layout, but also a special
 **app/views/articles/special.html.erb**
 
 ```html+erb
-<p>This is a special page.</p>
+<p>ここは特別なページ</p>
 
 <% content_for :special_script do %>
-  <script>alert('Hello!')</script>
+  <script>alert('こんにちは！')</script>
 <% end %>
 ```
 
-### DateHelper
+### DateHelperモジュール
 
-#### distance_of_time_in_words
+#### `distance_of_time_in_words`
 
-Reports the approximate distance in time between two Time or Date objects or integers as seconds. Set `include_seconds` to true if you want more detailed approximations.
+2つの「`Time`オブジェクト」「`Date`オブジェクト」「整数（秒）」同士のおおよそのインターバル（時刻と時刻の間隔）を英文で出力します。単位を詳細にしたい場合は`include_seconds`をtrueに設定します。
 
 ```ruby
 distance_of_time_in_words(Time.now, Time.now + 15.seconds)
@@ -262,17 +262,17 @@ distance_of_time_in_words(Time.now, Time.now + 15.seconds, include_seconds: true
 # => less than 20 seconds
 ```
 
-#### time_ago_in_words
+#### `time_ago_in_words`
 
-Like `distance_of_time_in_words`, but where `to_time` is fixed to `Time.now`.
+distance_of_time_in_words`と同様ですが、`to_time`（終端時刻）が`Time.now`に固定されている点が異なります。
 
 ```ruby
 time_ago_in_words(3.minutes.from_now) # => 3 minutes
 ```
 
-### DebugHelper
+### DebugHelperモジュール
 
-Returns a `pre` tag that has object dumped by YAML. This creates a very readable way to inspect an object.
+オブジェクトをYAML形式でダンプした`pre`タグを返します。これにより、オブジェクトを見やすい形で取り出せます。
 
 ```ruby
 my_hash = { 'first' => 1, 'second' => 'two', 'third' => [1,2,3] }
@@ -290,24 +290,23 @@ third:
 </pre>
 ```
 
-### FormHelper
+### FormHelperモジュール
 
-Form helpers are designed to make working with models much easier compared to using just standard HTML elements by providing a set of methods for creating forms based on your models. This helper generates the HTML for forms, providing a method for each sort of input (e.g., text, password, select, and so on). When the form is submitted (i.e., when the user hits the submit button or form.submit is called via JavaScript), the form inputs will be bundled into the params object and passed back to the controller.
+フォームヘルパーは、モデルに基づいてフォームを作成する一連のメソッドを提供します。これらを用いることで、標準のHTML要素を用いるよりもモデルでの作業の負担を大きく軽減できるよう設計されています。フォームペルパーは、フォーム用のHTMLを生成し、ユーザー入力の種類（テキストフィールド、パスワードフィールド、ドロップダウンボックスなど）に応じたメソッドを提供します。フォームが（ユーザーが送信ボタンを押す、JavaScriptで`form.submit`を呼び出すなどの方法で）送信されると、フォームへの入力が`params`オブジェクトにまとめられてコントローラに返されます。
 
-You can learn more about form helpers in the [Action View Form Helpers
-Guide](form_helpers.html).
+フォームヘルパーについて詳しくは、ガイドの[Action View フォームヘルパー](form_helpers.html)を参照してください。
 
-### JavaScriptHelper
+### JavaScriptHelperモジュール
 
-Provides functionality for working with JavaScript in your views.
+ビューでJavaScriptを操作するための機能を提供します。
 
-#### escape_javascript
+#### `escape_javascript`
 
-Escape carrier returns and single and double quotes for JavaScript segments.
+JavaScriptセグメントでキャリッジリターンや一重引用符や二重引用符をエスケープします。
 
-#### javascript_tag
+#### `javascript_tag`
 
-Returns a JavaScript tag wrapping the provided code.
+渡されたコードをJavaScriptタグでラップして返します。
 
 ```ruby
 javascript_tag "alert('All is good')"
@@ -321,79 +320,88 @@ alert('All is good')
 </script>
 ```
 
-### NumberHelper
+### NumberHelperモジュール
 
-Provides methods for converting numbers into formatted strings. Methods are provided for phone numbers, currency, percentage, precision, positional notation, and file size.
+数値を書式付き文字列に変換するメソッドを提供します。「電話番号」「通貨」「パーセント」「精度」「桁区切り記号の位置」「ファイルサイズ」用のメソッドが提供されます。
 
-#### number_to_currency
+#### `number_to_currency`
 
-Formats a number into a currency string (e.g., $13.65).
+数値を通貨表示の文字列にフォーマットします（$13.65など）。
 
 ```ruby
 number_to_currency(1234567890.50) # => $1,234,567,890.50
 ```
 
-#### number_to_human_size
+#### `number_to_human`
 
-Formats the bytes in size into a more understandable representation; useful for reporting file sizes to users.
+数値を、人間が読みやすい形式（数詞を追加）で近似表示します。数値が非常に大きくなる可能性がある場合に便利です。
 
 ```ruby
-number_to_human_size(1234)    # => 1.2 KB
-number_to_human_size(1234567) # => 1.2 MB
+number_to_human(1234)    # => 1.23 Thousand
+number_to_human(1234567) # => 1.23 Million
 ```
 
-#### number_to_percentage
+#### `number_to_human_size`
 
-Formats a number as a percentage string.
+バイト単位の数値を、KBやMBなどのわかりやすい単位でフォーマットします。ファイルサイズを表示する場合に便利です。
+
+```ruby
+number_to_human_size(1234)    # => 1.21 KB
+number_to_human_size(1234567) # => 1.18 MB
+```
+
+#### `number_to_percentage`
+
+数値をパーセント形式の文字列にフォーマットします。
 
 ```ruby
 number_to_percentage(100, precision: 0) # => 100%
 ```
 
-#### number_to_phone
+#### `number_to_phone`
 
-Formats a number into a phone number (US by default).
+数値を電話番号形式にフォーマットします（デフォルトは米国の電話番号形式）。
 
 ```ruby
 number_to_phone(1235551234) # => 123-555-1234
 ```
 
-#### number_with_delimiter
+#### `number_with_delimiter`
 
-Formats a number with grouped thousands using a delimiter.
+数値を区切り文字で3桁ずつグループ化します。
 
 ```ruby
 number_with_delimiter(12345678) # => 12,345,678
 ```
 
-#### number_with_precision
+#### `number_with_precision`
 
-Formats a number with the specified level of `precision`, which defaults to 3.
+数値の小数点以下の精度（表示を丸める位置）を`precision`で指定できます（デフォルトは3）。
 
 ```ruby
 number_with_precision(111.2345)               # => 111.235
 number_with_precision(111.2345, precision: 2) # => 111.23
 ```
 
-### SanitizeHelper
+### SanitizeHelperモジュール
 
-The SanitizeHelper module provides a set of methods for scrubbing text of undesired HTML elements.
+SanitizeHelperモジュールは、望ましくないHTML要素のテキストをスクラブ（除去）する一連のメソッドを提供します。
 
-#### sanitize
+#### `sanitize`
 
-This sanitize helper will HTML encode all tags and strip all attributes that aren't specifically allowed.
+この`sanitize`ヘルパーは、すべてのタグをHTMLエンコードし、許可されていない属性をすべて削除します。
 
 ```ruby
 sanitize @article.body
 ```
 
-If either the `:attributes` or `:tags` options are passed, only the mentioned attributes and tags are allowed and nothing else.
+`:attributes`オプションと`:tags`オプションのいずれかを渡すと、オプションで指定した属性またはタグだけが許可されます（つまり除去されません）。それ以外の属性やタグは許可されません（つまり除去されます）。
 
 ```ruby
 sanitize @article.body, tags: %w(table tr td), attributes: %w(id class style)
 ```
 
-To change defaults for multiple uses, for example adding table tags to the default:
+よく使うオプションをデフォルト化するには、以下のようにアプリケーション設定でオプションをデフォルトに追加します。以下はtable関連のタグを追加した場合の例です。
 
 ```ruby
 class Application < Rails::Application
@@ -401,12 +409,13 @@ class Application < Rails::Application
 end
 ```
 
-#### sanitize_css(style)
+#### `sanitize_css(style)`
 
-Sanitizes a block of CSS code.
+CSSコードのブロックをサニタイズします。
 
-#### strip_links(html)
-Strips all link tags from text leaving just the link text.
+#### `strip_links(html)`
+
+テキスト内のリンクタグを削除し、リンクテキストだけを残します。
 
 ```ruby
 strip_links('<a href="https://rubyonrails.org">Ruby on Rails</a>')
@@ -423,10 +432,10 @@ strip_links('Blog: <a href="http://myblog.com/">Visit</a>.')
 # => Blog: Visit.
 ```
 
-#### strip_tags(html)
+#### `strip_tags(html)`
 
-Strips all HTML tags from the html, including comments.
-This functionality is powered by the rails-html-sanitizer gem.
+HTMLからすべてのHTMLタグをストリップします（コメントもストリップされます）。
+この機能は[rails-html-sanitizer](https://github.com/rails/rails-html-sanitizer) gemによるものです。
 
 ```ruby
 strip_tags("Strip <i>these</i> tags!")
@@ -438,17 +447,17 @@ strip_tags("<b>Bold</b> no more!  <a href='more.html'>See more</a>")
 # => Bold no more!  See more
 ```
 
-NB: The output may still contain unescaped '<', '>', '&' characters and confuse browsers.
+NB: 【この出力にはエスケープされていない'<'、'>'、'&'文字が含まれていてブラウザが混乱する。】
 
 ### UrlHelper
 
-Provides methods to make links and get URLs that depend on the routing subsystem.
+リンクを作成するメソッドや、ルーティングサブシステムに応じたURLを取得するメソッドを提供します。
 
-#### url_for
+#### `url_for`
 
-Returns the URL for the set of `options` provided.
+`options`で渡されたセットに対応するURLを返します。
 
-##### Examples
+##### 例
 
 ```ruby
 url_for @profile
@@ -458,20 +467,18 @@ url_for [ @hotel, @booking, page: 2, line: 3 ]
 # => /hotels/1/bookings/1?line=3&page=2
 ```
 
-#### link_to
+#### `link_to`
 
-Links to a URL derived from `url_for` under the hood. Primarily used to
-create RESTful resource links, which for this example, boils down to
-when passing models to `link_to`.
+背後の`url_for`で得られたURLへのリンクを生成します。主な用途は、RESTfulなリソースリンクの作成です。たとえば`link_to`にモデルを渡すと以下のようにリンクが生成されます。
 
-**Examples**
+##### 例
 
 ```ruby
 link_to "Profile", @profile
 # => <a href="/profiles/1">Profile</a>
 ```
 
-You can use a block as well if your link target can't fit in the name parameter. ERB example:
+以下のERBのようにブロックを渡すことで、リンク文字列を`name`パラメータに応じて変えることもできます。
 
 ```html+erb
 <%= link_to @profile do %>
@@ -479,7 +486,7 @@ You can use a block as well if your link target can't fit in the name parameter.
 <% end %>
 ```
 
-would output:
+上は以下のリンクを生成します。
 
 ```html
 <a href="/profiles/1">
@@ -487,20 +494,19 @@ would output:
 </a>
 ```
 
-See [the API Documentation for more information](https://api.rubyonrails.org/classes/ActionView/Helpers/UrlHelper.html#method-i-link_to)
+詳しくは[APIドキュメント](https://api.rubyonrails.org/classes/ActionView/Helpers/UrlHelper.html#method-i-link_to)を参照してください。
 
-#### button_to
+#### `button_to`
 
-Generates a form that submits to the passed URL. The form has a submit button
-with the value of the `name`.
+渡されたURLに送信するフォームを生成します。このフォームには、`name`の値がボタン名となる送信ボタンが表示されます。
 
-##### Examples
+##### 例
 
 ```html+erb
 <%= button_to "Sign in", sign_in_path %>
 ```
 
-would roughly output something like:
+上は以下のようなフォームを生成します。
 
 ```html
 <form method="post" action="/sessions" class="button_to">
@@ -508,16 +514,14 @@ would roughly output something like:
 </form>
 ```
 
-See [the API Documentation for more information](https://api.rubyonrails.org/classes/ActionView/Helpers/UrlHelper.html#method-i-button_to)
+詳しくは[APIドキュメント](https://api.rubyonrails.org/classes/ActionView/Helpers/UrlHelper.html#method-i-button_to)を参照してください。
 
 ### CsrfHelper
 
-Returns meta tags "csrf-param" and "csrf-token" with the name of the cross-site
-request forgery protection parameter and token, respectively.
+"csrf-param"メタタグと"csrf-token"メタタグに、CSRF保護用のパラメータとトークンを入れて返します。
 
 ```html
 <%= csrf_meta_tags %>
 ```
 
-NOTE: Regular forms generate hidden fields so they do not use these tags. More
-details can be found in the [Rails Security Guide](security.html#クロスサイトリクエストフォージェリ-csrf).
+NOTE: 通常のフォームではhiddenフィールドが生成されるので、これらのタグは使われません。詳しくは[Railsセキュリティガイド](/security.html#クロスサイトリクエストフォージェリ-csrf)を参照してください。
