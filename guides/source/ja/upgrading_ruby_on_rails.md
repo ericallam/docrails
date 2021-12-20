@@ -108,7 +108,7 @@ undefined method `mechanism=' for ActiveSupport::Dependencies:Module
 ```
 gem "sprockets-rails"
 ```
-### アプリケーションは`zeitwerkモードでの実行が必須
+### アプリケーションは`zeitwerk`モードでの実行が必須
 
 `classic`モードで動作しているアプリケーションは、`zeitwerk`モードに切り替えなければなりません。詳しくは[クラシックオートローダーからZeitwerkへの移行](classic_to_zeitwerk_howto.html)ガイドを参照してください。
 
