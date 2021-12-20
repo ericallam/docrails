@@ -321,7 +321,7 @@ TIP: ルーティングについて詳しくは[Railsのルーティング](rout
 
 Railsアプリケーションでは、アプリケーションコードを読み込むのに`require`を書く必要は**ありません**。
 
-おそらくお気づきかもしれませんが、`ArticlesController`が`ApplicationController`を継承しているにもかかわらず、`app/controllers/articles_controller.rb`には以下のような記述がどこにもありません
+おそらくお気づきかもしれませんが、`ArticlesController`が`ApplicationController`を継承しているにもかかわらず、`app/controllers/articles_controller.rb`には以下のような記述がどこにもありません。
 
 ```ruby
 require "application_controller" # 実際には書いてはいけません
