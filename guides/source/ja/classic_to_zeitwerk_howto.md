@@ -342,8 +342,8 @@ Zeitwerkで利用できる新機能
 
 Zeitwerkによって、`require_dependency`の既知のユースケースはすべて削除されました。プロジェクトをgrepして`require_dependency`をすべて削除してください。
 
-アプリケーションでSTIを利用している場合は、『定数の自動読み込みと再読み込み (Zeitwerk)ガイド』の『[STI(単一テーブル継承)』を参照してください。
-](/autoloading_and_reloading_constants.html#sti-単一テーブル継承)
+アプリケーションでSTIを利用している場合は、『定数の自動読み込みと再読み込み (Zeitwerk)ガイド』の『[STI（単一テーブル継承）』を参照してください。
+](/autoloading_and_reloading_constants.html#sti（単一テーブル継承）)
 
 ### クラスやモジュールの定義内で定数名を修飾可能になった
 
