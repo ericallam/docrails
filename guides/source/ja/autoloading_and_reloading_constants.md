@@ -257,7 +257,7 @@ end
 
 ## アプリケーション起動時の自動読み込み
 
-起動中のアプリケーションは、`once`オートローダが管理する`autoload_once_paths`からの自動読み込みが可能です（詳しくは前述の[`config.autoload_once_paths`](#config.autoload_once_paths)を参照）。
+起動中のアプリケーションは、`once`オートローダが管理する`autoload_once_paths`からの自動読み込みが可能です（詳しくは前述の[`config.autoload_once_paths`](#config-autoload_once_paths)を参照）。
 
 ただし、`main`オートローダが管理している自動読み込みパスからの自動読み込みはできません。これは、`config/initializers`にあるコードや、アプリケーションやエンジンのイニシャライズについても同様です。
 
