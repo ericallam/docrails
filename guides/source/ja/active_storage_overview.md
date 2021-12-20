@@ -301,12 +301,9 @@ production:
     - s3_west_coast
 ```
 
-Although all secondary services receive uploads, downloads are always handled
-by the primary service.
+すべてのセカンダリサービスがアップロードを受信しますが、ダウンロードは常にプライマリサービスで行われます。
 
-Mirror services are compatible with direct uploads. New files are directly
-uploaded to the primary service. When a directly-uploaded file is attached to a
-record, a background job is enqueued to copy it to the secondary services.
+ミラーサービスはダイレクトアップロードと互換性があります。新しいファイルはプライマリサービスに直接アップロードされます。ダイレクトアップロードされたファイルをレコードにアタッチすると、バックグラウンドジョブがキューに入れられてセカンダリサービスにコピーされます。
 
 ### パブリックアクセス
 
