@@ -1,53 +1,56 @@
-Active Record と PostgreSQL
+**DO NOT READ THIS FILE ON GITHUB, GUIDES ARE PUBLISHED ON https://guides.rubyonrails.org.**
+
+Active RecordとPostgreSQL
 ============================
 
-このガイドでは、PostgreSQLに特化したActive Recordの利用法について説明します。
+本ガイドでは、PostgreSQL特有のActive Record利用法について解説します。
 
 このガイドの内容:
 
-* PostgreSQLのデータ型の使い方
-* UUID主キーの使い方
+* PostgreSQLのデータ型の利用法
+* UUID主キーの利用法
 * PostgreSQLで全文検索を実装する方法
-* Active Recordモデルで「データベースビュー」をサポートする方法
-
-> **訳注: 本ガイドにおける「ビュー」は、PostgreSQLの「データベースビュー」を指します。**
+* Active Recordモデルでデータベースビューを使う方法
 
 --------------------------------------------------------------------------------
 
+PostgreSQLアダプタを利用するには、PostgreSQL 9.3以上がインストールされている必要があります。これより古いバージョンはサポートされません。
 
-PostgreSQLアダプタを利用する場合、PostgreSQLバージョン9.1以上が必要です。これより古いバージョンはサポートされません。
-
-PostgreSQLを使う方は、[Rails アプリケーションを設定する](configuring.html#postgresqlデータベースを設定する)ガイドをご覧ください。Active RecordをPostgreSQL向けに正しく設定する方法が記載されています。
+PostgreSQLを使う場合は、『[Rails アプリケーションを設定する](https://railsguides.jp/configuring.html)』ガイドをお読みください。Active RecordをPostgreSQL向けに正しくセットアップする方法が記載されています。
 
 データ型
 ---------
 
-PostgreSQLには固有のデータ型（datatype）が多数提供されています。PostgreSQLアダプタでサポートされるデータ型を以下にリストアップします。
+PostgreSQLにはさまざまな種類の[データ型（datatype）](https://www.postgresql.jp/document/13/html/datatype.html)があります。以下はPostgreSQLアダプタでサポートされているデータ型のリストです。
 
-### bytea（バイナリ列）
+### `bytea`（バイナリデータ）
 
-* [型の定義](https://www.postgresql.jp/document/current/html/datatype-binary.html)
-* [関数と演算子](https://www.postgresql.jp/document/current/html/functions-binarystring.html)
+* [データ型の定義](https://www.postgresql.jp/document/13/html/datatype-binary.html)
+* [関数と演算子](https://www.postgresql.jp/document/13/html/functions-binarystring.html)
 
 ```ruby
 # db/migrate/20140207133952_create_documents.rb
 create_table :documents do |t|
   t.binary 'payload'
 end
+```
 
+```ruby
 # app/models/document.rb
 class Document < ApplicationRecord
 end
+```
 
-# Usage
+```ruby
+# 利用法
 data = File.read(Rails.root + "tmp/output.pdf")
 Document.create payload: data
 ```
 
 ### 配列
 
-* [型の定義](https://www.postgresql.jp/document/current/html/arrays.html)
-* [関数と演算子](https://www.postgresql.jp/document/current/html/functions-array.html)
+* [データ型の定義](https://www.postgresql.jp/document/13/html/arrays.html)
+* [関数と演算子](https://www.postgresql.jp/document/13/html/functions-array.html)
 
 ```ruby
 # db/migrate/20140207133952_create_books.rb
@@ -58,32 +61,36 @@ create_table :books do |t|
 end
 add_index :books, :tags, using: 'gin'
 add_index :books, :ratings, using: 'gin'
+```
 
+```ruby
 # app/models/book.rb
 class Book < ApplicationRecord
 end
+```
 
-# Usage
+```ruby
+# 利用法
 Book.create title: "Brave New World",
             tags: ["fantasy", "fiction"],
             ratings: [4, 5]
 
-## 1つのタグに対応する本
+## 1個のタグに対応するBooks
 Book.where("'fantasy' = ANY (tags)")
 
-## 複数タグに対応する本
+## 複数のタグに対応するBooks
 Book.where("tags @> ARRAY[?]::varchar[]", ["fantasy", "fiction"])
 
-## ratingが3以上の本
+## ratingが3以上のBooks
 Book.where("array_length(ratings, 1) >= 3")
 ```
 
-### hstore
+### `hstore`（キーバリューに相当）
 
-* [型の定義](https://www.postgresql.jp/document/current/html/hstore.html)
-* [関数と演算子](https://www.postgresql.jp/document/current/html/hstore.html#AEN179902)
+* [データ型の定義](https://www.postgresql.jp/document/13/html/hstore.html)
+* [関数と演算子](https://www.postgresql.jp/document/13/html/hstore.html#id-1.11.7.26.5)
 
-NOTE: hstoreを使うには、`hstore`拡張をオンにする必要があります。
+NOTE: hstoreを使うには`hstore`拡張を有効にする必要があります。
 
 ```ruby
 # db/migrate/20131009135255_create_profiles.rb
@@ -93,96 +100,108 @@ ActiveRecord::Schema.define do
     t.hstore 'settings'
   end
 end
+```
 
+```ruby
 # app/models/profile.rb
 class Profile < ApplicationRecord
 end
+```
 
-# Usage
-Profile.create(settings: { "color" => "blue", "resolution" => "800x600" })
+```irb
+irb> Profile.create(settings: { "color" => "blue", "resolution" => "800x600" })
 
-profile = Profile.first
-profile.settings # => {"color"=>"blue", "resolution"=>"800x600"}
+irb> profile = Profile.first
+irb> profile.settings
+=> {"color"=>"blue", "resolution"=>"800x600"}
 
-profile.settings = {"color" => "yellow", "resolution" => "1280x1024"}
-profile.save!
+irb> profile.settings = {"color" => "yellow", "resolution" => "1280x1024"}
+irb> profile.save!
 
-Profile.where("settings->'color' = ?", "yellow")
-# => #<ActiveRecord::Relation [#<Profile id: 1, settings: {"color"=>"yellow", "resolution"=>"1280x1024"}>]>
+irb> Profile.where("settings->'color' = ?", "yellow")
+=> #<ActiveRecord::Relation [#<Profile id: 1, settings: {"color"=>"yellow", "resolution"=>"1280x1024"}>]>
 ```
 
 ### JSONとJSONB
 
-* [型の定義](https://www.postgresql.jp/document/current/html/datatype-json.html)
-* [関数と演算子](https://www.postgresql.jp/document/current/html/functions-json.html)
+* [データ型の定義](https://www.postgresql.jp/document/13/html/datatype-json.html)
+* [関数と演算子](https://www.postgresql.jp/document/13/html/functions-json.html)
 
 ```ruby
 # db/migrate/20131220144913_create_events.rb
-# ... for json datatype:
+# ... jsonデータ型の場合:
 create_table :events do |t|
   t.json 'payload'
 end
-# ... or for jsonb datatype:
+# ... jsonbデータ型の場合:
 create_table :events do |t|
   t.jsonb 'payload'
 end
+```
 
+```ruby
 # app/models/event.rb
 class Event < ApplicationRecord
 end
-
-# Usage
-Event.create(payload: { kind: "user_renamed", change: ["jack", "john"]})
-
-event = Event.first
-event.payload # => {"kind"=>"user_renamed", "change"=>["jack", "john"]}
-
-## JSONドキュメントベースのクエリ
-# ->演算子は元のJSON型を返す（オブジェクトの可能性がある）
-# ->>ならテキストを返す
-Event.where("payload->>'kind' = ?", "user_renamed")
 ```
 
-### 範囲型
+```irb
+irb> Event.create(payload: { kind: "user_renamed", change: ["jack", "john"]})
 
-* [型の定義](https://www.postgresql.jp/document/current/html/rangetypes.html)
-* [関数と演算子](https://www.postgresql.jp/document/current/html/functions-range.html)
+irb> event = Event.first
+irb> event.payload
+=> {"kind"=>"user_renamed", "change"=>["jack", "john"]}
 
-この型は、Rubyの[`Range`](https://docs.ruby-lang.org/ja/latest/class/Range.html)オブジェクトにマッピングされます。
+## JSONドキュメントに基づくクエリ
+# ->演算子は元のJSONデータ型を返す（オブジェクトの可能性がある）が、
+# ->>はテキストを返す
+irb> Event.where("payload->>'kind' = ?", "user_renamed")
+```
+
+### 範囲型（range）
+
+* [データ型の定義](https://www.postgresql.jp/document/13/html/rangetypes.html)
+* [関数と演算子](https://www.postgresql.jp/document/13/html/functions-range.html)
+
+このデータ型はRubyの[`Range`](https://docs.ruby-lang.org/ja/latest/class/Range.html)オブジェクトに対応付けられます。
 
 ```ruby
 # db/migrate/20130923065404_create_events.rb
 create_table :events do |t|
   t.daterange 'duration'
 end
+```
 
+```ruby
 # app/models/event.rb
 class Event < ApplicationRecord
 end
+```
 
-# 使い方
-Event.create(duration: Date.new(2014, 2, 11)..Date.new(2014, 2, 12))
+```irb
+irb> Event.create(duration: Date.new(2014, 2, 11)..Date.new(2014, 2, 12))
 
-event = Event.first
-event.duration # => Tue, 11 Feb 2014...Thu, 13 Feb 2014
+irb> event = Event.first
+irb> event.duration
+=> Tue, 11 Feb 2014...Thu, 13 Feb 2014
 
-## 指定の日のすべての行事
-Event.where("duration @> ?::date", Date.new(2014, 2, 12))
+## 指定の日付の全イベント
+irb> Event.where("duration @> ?::date", Date.new(2014, 2, 12))
 
-## 範囲を絞った操作
-event = Event.
-  select("lower(duration) AS starts_at").
-  select("upper(duration) AS ends_at").first
+## 範囲の境界を指定
+irb> event = Event.select("lower(duration) AS starts_at").select("upper(duration) AS ends_at").first
 
-event.starts_at # => Tue, 11 Feb 2014
-event.ends_at # => Thu, 13 Feb 2014
+irb> event.starts_at
+=> Tue, 11 Feb 2014
+irb> event.ends_at
+=> Thu, 13 Feb 2014
 ```
 
 ### 複合型（composite type）
 
-* [型の定義](https://www.postgresql.jp/document/current/html/rowtypes.html)
+* [データ型の定義](https://www.postgresql.jp/document/13/html/rowtypes.html)
 
-現時点では複合型に特化したサポートはありません。複合型は、通常のテキストカラムにマッピングされます。
+現在は複合型について特別なサポートはありません。これらは通常のtextカラムに対応付けられます。
 
 ```sql
 CREATE TYPE full_address AS
@@ -195,33 +214,37 @@ CREATE TYPE full_address AS
 ```ruby
 # db/migrate/20140207133952_create_contacts.rb
 execute <<-SQL
- CREATE TYPE full_address AS
- (
-   city VARCHAR(90),
-   street VARCHAR(90)
- );
+  CREATE TYPE full_address AS
+  (
+    city VARCHAR(90),
+    street VARCHAR(90)
+  );
 SQL
 create_table :contacts do |t|
   t.column :address, :full_address
 end
+```
 
+```ruby
 # app/models/contact.rb
 class Contact < ApplicationRecord
 end
+```
 
-# 使い方
-Contact.create address: "(Paris,Champs-Élysées)"
-contact = Contact.first
-contact.address # => "(Paris,Champs-Élysées)"
-contact.address = "(Paris,Rue Basse)"
-contact.save!
+```irb
+irb> Contact.create address: "(Paris,Champs-Élysées)"
+irb> contact = Contact.first
+irb> contact.address
+=> "(Paris,Champs-Élysées)"
+irb> contact.address = "(Paris,Rue Basse)"
+irb> contact.save!
 ```
 
 ### 列挙型（enumerated type）
 
-* [型の定義](https://www.postgresql.jp/document/current/html/datatype-enum.html)
+* [データ型の定義](https://www.postgresql.jp/document/13/html/datatype-enum.html)
 
-現時点では列挙型に特化したサポートはありません。列挙型は、通常のテキストカラムにマッピングされます。
+現在は列挙型について特別なサポートはありません。これらは通常のtextカラムに対応付けられます。
 
 ```ruby
 # db/migrate/20131220144913_create_articles.rb
@@ -234,7 +257,7 @@ def up
   end
 end
 
-# メモ: enumをドロップする前にテーブルをドロップすることが重要
+# メモ: enumを削除する前にテーブルを削除することが重要
 def down
   drop_table :articles
 
@@ -242,27 +265,30 @@ def down
     DROP TYPE article_status;
   SQL
 end
+```
 
+```ruby
 # app/models/article.rb
 class Article < ApplicationRecord
 end
-
-# 使い方
-Article.create status: "draft"
-article = Article.first
-article.status # => "draft"
-
-article.status = "published"
-article.save!
 ```
 
-既存の値の直前または直後に新しい値を追加する場合は、[ALTER TYPE](https://www.postgresql.jp/document/current/html/sql-altertype.html)を使うべきです。
+```irb
+irb> Article.create status: "draft"
+irb> article = Article.first
+irb> article.status
+=> "draft"
 
+irb> article.status = "published"
+irb> article.save!
+```
+
+既存の値の前または後に新しい値を追加する場合は、[`ALTER TYPE`](https://www.postgresql.jp/document/13/html/sql-altertype.html)を使うこと。
 
 ```ruby
 # db/migrate/20150720144913_add_new_state_to_articles.rb
-# メモ: ALTER TYPE 〜 ADD VALUEはトランザクションブロック内では
-# 実行できませんので、disable_ddl_transaction!を使っています
+# メモ: ALTER TYPE ... ADD VALUEはトランザクションブロック内では実行できないので、
+# ここではdisable_ddl_transaction!を利用
 disable_ddl_transaction!
 
 def up
@@ -272,9 +298,9 @@ def up
 end
 ```
 
-NOTE: ENUM値は現在ドロップできません。理由については[こちら](https://www.postgresql.org/message-id/29F36C7C98AB09499B1A209D48EAA615B7653DBC8A@mail2a.alliedtesting.com)をご覧ください。
+NOTE: 現在は`ENUM`の値を`DROP`できません。理由については[この記事](https://www.postgresql.org/message-id/29F36C7C98AB09499B1A209D48EAA615B7653DBC8A@mail2a.alliedtesting.com)を参照してください。
 
-HINT: 現在あるすべてのenumについてすべての値を表示するには、`bin/rails db`または`psql`で以下のクエリを呼ぶべきです。
+Hint: 現在のenumにある値をすべて表示するには、クエリを`bin/rails db`または`psql`で実行してください。
 
 ```sql
 SELECT n.nspname AS enum_schema,
@@ -287,85 +313,96 @@ SELECT n.nspname AS enum_schema,
 
 ### UUID
 
-* [型の定義](https://www.postgresql.jp/document/current/html/datatype-uuid.html)
-* [pgcrypto生成関数](https://www.postgresql.jp/document/current/html/pgcrypto.html#AEN182570)
-* [uuid-ossp生成関数](https://www.postgresql.jp/document/current/html/uuid-ossp.html)
+* [データ型の定義](https://www.postgresql.jp/document/13/html/datatype-uuid.html)
+* [pgcryptoのジェネレータ関数](https://www.postgresql.jp/document/13/html/pgcrypto.html)
+* [uuid-osspのジェネレータ関数]](https://www.postgresql.jp/document/13/html/uuid-ossp.html)
 
-NOTE: UUIDを使うには、`pgcrypto`拡張（PostgreSQL 9.4以上）または`uuid=ossp`拡張を有効にする必要があります。
+NOTE: `uuid`を使うには、`pgcrypto`拡張（PostgreSQL9.4以降）または`uuid-ossp`拡張を有効にする必要があります。
 
 ```ruby
 # db/migrate/20131220144913_create_revisions.rb
 create_table :revisions do |t|
   t.uuid :identifier
 end
+```
 
+```ruby
 # app/models/revision.rb
 class Revision < ApplicationRecord
 end
-
-# 使い方
-Revision.create identifier: "A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A11"
-
-revision = Revision.first
-revision.identifier # => "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
 ```
 
-`uuid`型は、マイグレーション内で参照の定義に使えます。
+```irb
+irb> Revision.create identifier: "A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A11"
+
+irb> revision = Revision.first
+irb> revision.identifier
+=> "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+```
+
+`uuid`型を用いて、マイグレーションファイル内で以下のように参照を定義できます。
 
 ```ruby
 # db/migrate/20150418012400_create_blog.rb
 enable_extension 'pgcrypto' unless extension_enabled?('pgcrypto')
-create_table :posts, id: :uuid, default: 'gen_random_uuid()'
+create_table :posts, id: :uuid
 
-create_table :comments, id: :uuid, default: 'gen_random_uuid()' do |t|
+create_table :comments, id: :uuid do |t|
   # t.belongs_to :post, type: :uuid
   t.references :post, type: :uuid
 end
+```
 
+```ruby
 # app/models/post.rb
 class Post < ApplicationRecord
   has_many :comments
 end
+```
 
+```ruby
 # app/models/comment.rb
 class Comment < ApplicationRecord
   belongs_to :post
 end
 ```
 
-UUIDについて詳しくは、[UUID主キー](#uuid主キー)のセクションを参照してください。
+UUIDを主キーとして利用する方法について詳しくは[後述](#uuid主キー)します。
 
-### ビット列（bit string）データ型
+### ビット列データ型（bit string type）
 
-* [型の定義](https://www.postgresql.jp/document/current/html/datatype-bit.html)
-* [関数と演算子](https://www.postgresql.jp/document/current/html/functions-bitstring.html)
-
-> 訳注: bit stringはビット列またはビット文字列と訳されているようです。
+* [データ型の定義](https://www.postgresql.jp/document/13/html/datatype-bit.html)
+* [関数と演算子](https://www.postgresql.jp/document/13/html/functions-bitstring.html)
 
 ```ruby
 # db/migrate/20131220144913_create_users.rb
 create_table :users, force: true do |t|
   t.column :settings, "bit(8)"
 end
+```
 
-# app/models/device.rb
+```ruby
+# app/models/user.rb
 class User < ApplicationRecord
 end
+```
 
-# 使い方
-User.create settings: "01010011"
-user = User.first
-user.settings # => "01010011"
-user.settings = "0xAF"
-user.settings # => 10101111
-user.save!
+```irb
+irb> User.create settings: "01010011"
+irb> user = User.first
+irb> user.settings
+=> "01010011"
+irb> user.settings = "0xAF"
+irb> user.settings
+=> 10101111
+irb> user.save!
 ```
 
 ### ネットワークアドレス型
 
-* [型の定義](https://www.postgresql.jp/document/current/html/datatype-net-types.html)
+* [データ型の定義](https://www.postgresql.jp/document/13/html/datatype-net-types.html)
 
-この型である`inet`や`cidr`は、[`IPAddr`](https://docs.ruby-lang.org/ja/latest/class/IPAddr.html)オブジェクトにマッピングされます。`macaddr`型は通常のテキストにマッピングされます。
+`inet`型および`cidr`型は、Rubyの[`IPAddr`](https://docs.ruby-lang.org/ja/latest/class/IPAddr.html)オブジェクトに対応付けられます。`macaddr`型は通常のtextに対応付けられます。
 
 ```ruby
 # db/migrate/20140508144913_create_devices.rb
@@ -374,55 +411,109 @@ create_table(:devices, force: true) do |t|
   t.cidr 'network'
   t.macaddr 'address'
 end
+```
 
+```ruby
 # app/models/device.rb
 class Device < ApplicationRecord
 end
-
-# 使い方
-macbook = Device.create(ip: "192.168.1.12",
-                        network: "192.168.2.0/24",
-                        address: "32:01:16:6d:05:ef")
-
-macbook.ip
-# => #<IPAddr: IPv4:192.168.1.12/255.255.255.255>
-
-macbook.network
-# => #<IPAddr: IPv4:192.168.2.0/255.255.255.0>
-
-macbook.address
-# => "32:01:16:6d:05:ef"
 ```
 
-### 幾何（geometric）データ型
+```irb
+irb> macbook = Device.create(ip: "192.168.1.12", network: "192.168.2.0/24", address: "32:01:16:6d:05:ef")
 
-* [型の定義](https://www.postgresql.jp/document/current/html/datatype-geometric.html)
+irb> macbook.ip
+=> #<IPAddr: IPv4:192.168.1.12/255.255.255.255>
 
-`points`の例外を持つすべての幾何データ型は、通常のテキストにマッピングされます。
-1つの点は、`x`座標と`y`座標を含む1つの配列にキャストされます。
+irb> macbook.network
+=> #<IPAddr: IPv4:192.168.2.0/255.255.255.0>
+
+irb> macbook.address
+=> "32:01:16:6d:05:ef"
+```
+
+### 幾何データ型（geometric type）
+
+* [データ型の定義](https://www.postgresql.jp/document/13/html/datatype-geometric.html)
+
+`point`を除くすべての幾何データ型は、通常のtextに対応付けられます。`point`は、`x`座標と`y`座標を含む配列にキャストされます。
+
+### 期間（interval）
+
+* [データ型の定義](https://www.postgresql.jp/document/13/html/datatype-datetime.html#DATATYPE-INTERVAL-INPUT)
+* [関数と演算子](https://www.postgresql.jp/document/13/html/functions-datetime.html)
+
+このデータ型は[`ActiveSupport::Duration`](https://api.rubyonrails.org/classes/ActiveSupport/Duration.html)オブジェクトに対応付けられます。
+
+```ruby
+# db/migrate/20200120000000_create_events.rb
+create_table :events do |t|
+  t.interval 'duration'
+end
+```
+
+```ruby
+# app/models/event.rb
+class Event < ApplicationRecord
+end
+```
+
+```irb
+irb> Event.create(duration: 2.days)
+
+irb> event = Event.first
+irb> event.duration
+=> 2 days
+```
 
 UUID主キー
 -----------------
 
-NOTE: ランダムなUUIDを生成するには、`pgcrypto`拡張（PostgreSQL 9.4以上）または`uuid=ossp`拡張を有効にする必要があります。
+NOTE: ランダムなUUIDを生成するには、`pgcrypto`拡張（PostgreSQL9.4以降）または`uuid-ossp`拡張を有効にする必要があります。
 
 ```ruby
 # db/migrate/20131220144913_create_devices.rb
 enable_extension 'pgcrypto' unless extension_enabled?('pgcrypto')
-create_table :devices, id: :uuid, default: 'gen_random_uuid()' do |t|
+create_table :devices, id: :uuid do |t|
   t.string :kind
 end
+```
 
+```ruby
 # app/models/device.rb
 class Device < ApplicationRecord
 end
-
-# 使い方
-device = Device.create
-device.id # => "814865cd-5a1d-4771-9306-4268f188fe9e"
 ```
 
-NOTE: `pgcrypto`の`gen_random_uuid()`は、`create_table`に`:default`オプションが何も渡されていないことを前提としています。
+```ruby
+irb> device = Device.create
+irb> device.id
+=> "814865cd-5a1d-4771-9306-4268f188fe9e"
+```
+
+NOTE: `pgcrypto`の`gen_random_uuid()`関数は、`create_table`に`:default`オプションが渡されていないことを前提としています。
+
+生成列（generated column）
+-----------------
+
+NOTE: [生成列](https://www.postgresql.jp/document/13/html/ddl-generated-columns.html)はPostgreSQL 12.0以降でサポートされます。
+
+```ruby
+# db/migrate/20131220144913_create_users.rb
+create_table :users do |t|
+  t.string :name
+  t.virtual :name_upcased, type: :string, as: 'upper(name)', stored: true
+end
+
+# app/models/user.rb
+class User < ApplicationRecord
+end
+
+# 利用法
+user = User.create(name: 'John')
+User.last.name_upcased # => "JOHN"
+```
+
 
 全文検索
 ----------------
@@ -430,17 +521,21 @@ NOTE: `pgcrypto`の`gen_random_uuid()`は、`create_table`に`:default`オプシ
 ```ruby
 # db/migrate/20131220144913_create_documents.rb
 create_table :documents do |t|
-  t.string 'title'
-  t.string 'body'
+  t.string :title
+  t.string :body
 end
 
 add_index :documents, "to_tsvector('english', title || ' ' || body)", using: :gin, name: 'documents_idx'
+```
 
+```ruby
 # app/models/document.rb
 class Document < ApplicationRecord
 end
+```
 
-# 使い方
+```ruby
+# Usage
 Document.create(title: "Cats and Dogs", body: "are nice!")
 
 ## 'cat & dog'にマッチするすべてのドキュメント
@@ -448,12 +543,33 @@ Document.where("to_tsvector('english', title || ' ' || body) @@ to_tsquery(?)",
                  "cat & dog")
 ```
 
-データベースビュー
+オプションで、このベクタを自動生成カラムとして保存することもできます（PostgreSQL 12.0以降）。
+
+```ruby
+# db/migrate/20131220144913_create_documents.rb
+create_table :documents do |t|
+  t.string :title
+  t.string :body
+
+  t.virtual :textsearchable_index_col,
+            type: :tsvector, as: "to_tsvector('english', title || ' ' || body)", stored: true
+end
+
+add_index :documents, :textsearchable_index_col, using: :gin, name: 'documents_idx'
+
+# 利用法
+Document.create(title: "Cats and Dogs", body: "are nice!")
+
+## 'cat & dog'にマッチするすべてのドキュメント
+Document.where("textsearchable_index_col @@ to_tsquery(?)", "cat & dog")
+```
+
+データベースビュー（database view）
 --------------
 
-* [CREATE VIEW](https://www.postgresql.jp/document/current/html/sql-createview.html)
+* [`CREATE VIEW`](https://www.postgresql.jp/document/13/html/sql-createview.html)
 
-以下のテーブルを含むレガシーなデータベースを使う必要が生じたとします。
+以下のテーブルを含むレガシーデータベースを扱う必要があるとします。
 
 ```
 rails_pg_guide=# \d "TBL_ART"
@@ -469,7 +585,8 @@ Indexes:
     "TBL_ART_pkey" PRIMARY KEY, btree ("INT_ID")
 ```
 
-このテーブルはRailsの慣習にまったく従っていません。PostgreSQLの単純なビューはデフォルトではアップデート不可なので、次のようにラップできます。
+このテーブルはRailsの規約にまったく従っていません。
+PostgreSQLのシンプルなビュー（view）はデフォルトで更新可能なので、以下のようにラップできます。
 
 ```ruby
 # db/migrate/20131220144913_create_articles_view.rb
@@ -483,7 +600,9 @@ CREATE VIEW articles AS
   FROM "TBL_ART"
   WHERE "BL_ARCH" = 'f'
   SQL
+```
 
+```ruby
 # app/models/article.rb
 class Article < ApplicationRecord
   self.primary_key = "id"
@@ -491,18 +610,18 @@ class Article < ApplicationRecord
     update_attribute :archived, true
   end
 end
-
-# 使い方
-first = Article.create! title: "Winter is coming",
-                        status: "published",
-                        published_at: 1.year.ago
-second = Article.create! title: "Brace yourself",
-                         status: "draft",
-                         published_at: 1.month.ago
-
-Article.count # => 2
-first.archive!
-Article.count # => 1
 ```
 
-NOTE: このアプリケーションでは、アーカイブされてない`Articles`のみを扱います。データベースビューでは、アーカイブされた`Articles`ディレクトリを除外する条件も使えます。
+```irb
+irb> first = Article.create! title: "Winter is coming", status: "published", published_at: 1.year.ago
+irb> second = Article.create! title: "Brace yourself", status: "draft", published_at: 1.month.ago
+
+irb> Article.count
+=> 2
+irb> first.archive!
+irb> Article.count
+=> 1
+```
+
+NOTE: このアプリケーションは、`archive`されていない`Articles`のみを扱う前提です。ビューには条件を設定可能なので、`archive`された`Articles`を直接除外できます。
+
