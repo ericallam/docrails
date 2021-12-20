@@ -322,7 +322,7 @@ end
 
 そのようなクラスやモジュールを起動時に参照する最も手軽な方法は、自動読み込みパスに属さないディレクトリでそれらを定義することです。たとえば`lib/`に置くのが妥当でしょう。`lib/`はデフォルトでは自動読み込みパスに属しませんが、`$LOAD_PATH`には属しているので、`require`するだけで読み込めます。
 
-別の方法は、上述のように、それらを`autoload_once_paths`ディレクトリで定義して自動読み込みすることです（詳しくは前述の[`config.autoload_once_paths`](#config.autoload_once_paths)を参照）。
+別の方法は、上述のように、それらを`autoload_once_paths`ディレクトリで定義して自動読み込みすることです（詳しくは前述の[`config.autoload_once_paths`](#config-autoload_once_paths)を参照）。
 
 eager loading
 -------------
