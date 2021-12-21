@@ -1270,7 +1270,7 @@ end
 アタッチされなかったアップロードを破棄する
 --------------------------
 
-アップロードされたファイルがレコードにまったくアタッチされないことがあります。これは[ダイレクトアップロード](#ダイレクトアップロード)を使っている場合に発生する可能性があります。[`scope :unattached`](https://github.com/rails/rails/blob/8ef5bd9ced351162b673904a0b77c7034ca2bc20/activestorage/app/models/active_storage/blob.rb#L49)を使うことでアタッチされなかったレコードをクエリで調べられます。以下は[カスタムrakeタスク](#command_line.html#カスタムrakeタスク)を使った例です。
+アップロードされたファイルがレコードにまったくアタッチされないことがあります。これは[ダイレクトアップロード](#ダイレクトアップロード)を使っている場合に発生する可能性があります。[`scope :unattached`](https://github.com/rails/rails/blob/8ef5bd9ced351162b673904a0b77c7034ca2bc20/activestorage/app/models/active_storage/blob.rb#L49)を使うことでアタッチされなかったレコードをクエリで調べられます。以下は[カスタムrakeタスク](command_line.html#カスタムrakeタスク)を使った例です。
 
 ```ruby
 namespace :active_storage do
