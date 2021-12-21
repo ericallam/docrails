@@ -693,7 +693,7 @@ Active Storageは、ファイルのさまざまな表示方法をサポートし
 
 [`representable?`]を呼び出せば、`representation`を呼び出す前に添付ファイルが表示可能かどうかをチェックできます。
 
-ファイルフォーマットによってはActive Storageですぐにプレビューを表示できないものもあるので（Wordドキュメントなど）、`representable?`が`false`を返す場合は、ファイルを[リンク形式でダウンロード](#serving-files)させるとよいでしょう。
+ファイルフォーマットによってはActive Storageですぐにプレビューを表示できないものもあるので（Wordドキュメントなど）、`representable?`が`false`を返す場合は、ファイルを[リンク形式でダウンロード](#ファイルを配信する)させるとよいでしょう。
 
 ```erb
 <ul>
