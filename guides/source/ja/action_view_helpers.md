@@ -520,7 +520,7 @@ link_to "Profile", @profile
 
 "csrf-param"メタタグと"csrf-token"メタタグに、CSRF保護用のパラメータとトークンを入れて返します。
 
-```html
+```html+erb
 <%= csrf_meta_tags %>
 ```
 
