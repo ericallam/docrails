@@ -161,7 +161,7 @@ All is good!
 
 ### concernsについて
 
-以下のように、`concerns`サブディレクトリを持つ標準的な構造からのオートロードやeager loadingを行えます【チェック】。
+以下のように、`concerns`サブディレクトリを持つ標準的な構造からのオートロードやeager loadingを行えます。
 
 ```
 app/models
