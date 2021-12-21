@@ -1,3 +1,5 @@
+**DO NOT READ THIS FILE ON GITHUB, GUIDES ARE PUBLISHED ON https://guides.rubyonrails.org.**
+
 Rails テスティングガイド
 =====================================
 
@@ -12,7 +14,7 @@ Rails テスティングガイド
 --------------------------------------------------------------------------------
 
 
-Railsアプリケーションでテストを作成しなければならない理由
+Railsアプリケーションでテストを作成する理由
 --------------------------------------------
 
 Railsでは、テストをきわめて簡単に作成できます。テストの作成は、モデルやコントローラを作成する時点でテストコードのスケルトンを作成することから始まります。
@@ -32,11 +34,11 @@ Railsのテストはブラウザのリクエストをシミュレートできる
 
 ```bash
 $ ls -F test
-controllers/           helpers/               mailers/               system/                test_helper.rb
-fixtures/              integration/           models/                application_system_test_case.rb
+application_system_test_case.rb  controllers/                     helpers/                         mailers/                         system/
+channels/                        fixtures/                        integration/                     models/                          test_helper.rb
 ```
 
-`helpers`ディレクトリにはビューヘルパーのテスト、`mailers`ディレクトリにはメイラーのテスト、`models`ディレクトリにはモデル用のテストをそれぞれ保存します。`controllers`ディレクトリはコントローラ/ルーティング/ビューをまとめたテストの置き場所です。`integration`ディレクトリはコントローラ同士のやりとりのテストを置く場所です。
+`helpers`ディレクトリにはビューヘルパーのテスト、`mailers`ディレクトリにはメイラーのテスト、`models`ディレクトリにはモデル用のテストをそれぞれ保存します。`channels `ディレクトリはAction Cableのコネクションやチャネルのテストを置きます。`controllers`ディレクトリはコントローラ/ルーティング/ビューをまとめたテストの置き場所です。`integration`ディレクトリはコントローラ同士のやりとりのテストを置く場所です。
 
 システムテストのディレクトリ（`system`）にはシステムテストを保存します。システムテストは、ユーザーエクスペリエンスに沿ったアプリケーションのテストを行うためのもので、JavaScriptのテストにも有用です。
 システムテストはCapybaraから継承した機能で、アプリケーションのブラウザテストを実行します。
@@ -73,7 +75,7 @@ create  test/fixtures/articles.yml
 `test/models/article_test.rb`に含まれるデフォルトのテストスタブの内容は以下のような感じになります。
 
 ```ruby
-require 'test_helper'
+require "test_helper"
 
 class ArticleTest < ActiveSupport::TestCase
   # test "the truth" do
@@ -82,10 +84,10 @@ class ArticleTest < ActiveSupport::TestCase
 end
 ```
 
-Railsにおけるテスティングコードと用語に親しんでいただくために、このファイルに含まれている内容を順にご紹介します。
+Railsにおけるテスティングコードと用語に親しんでいただくために、このファイルに含まれている内容を上から順にご紹介します。
 
 ```ruby
-require 'test_helper'
+require "test_helper"
 ```
 
 このファイルを`require`すると、テストで使うデフォルト設定として`test_helper.rb`が読み込まれます。今後書くすべてのテストにもこれを記述しますので、このファイルに追加したメソッドはテスト全体で使えるようになります。
@@ -94,7 +96,7 @@ require 'test_helper'
 class ArticleTest < ActiveSupport::TestCase
 ```
 
-`ArticleTest`クラスは`ActiveSupport::TestCase`を継承することによって、**テストケース**をひとつ定義しています。これにより、`ActiveSupport::TestCase`のすべてのメソッドを`ArticleTest`で利用できます。これらのメソッドのいくつかについては後述します。
+`ArticleTest`クラスは`ActiveSupport::TestCase`を継承することによって、**テストケース**（test case）をひとつ定義しています。これにより、`ActiveSupport::TestCase`のすべてのメソッドを`ArticleTest`で利用できます。これらのメソッドのいくつかについては後述します。
 
 `ActiveSupport::TestCase`のスーパークラスは`Minitest::Test`です。この`Minitest::Test`を継承したクラスで定義される、`test_`で始まるすべてのメソッドは単に「テスト」と呼ばれます。この`test_`は小文字でなければなりません。従って、`test_password`および`test_valid_password`と定義されたメソッド名は正式なテスト名となり、テストケースの実行時に自動的に実行されます。
 
@@ -124,7 +126,7 @@ NOTE: テスト名からのメソッド名生成は、スペースをアンダ�
 assert true
 ```
 
-アサーション（assertion）とは、オブジェクトまたは式を評価して、期待された結果が得られるかどうかをチェックするコードです。アサーションでは以下のようなチェックを行なうことができます。
+アサーション（assertion: 主張）とは、オブジェクトまたは式を評価して、期待された結果が得られるかどうかをチェックするコードです。アサーションでは以下のようなチェックを行なうことができます。
 
 * ある値が別の値と等しいかどうか
 * このオブジェクトはnilかどうか
@@ -159,14 +161,13 @@ ArticleTest#test_should_not_save_article_without_title [/path/to/blog/test/model
 Expected true to be nil or false
 
 
-bin/rails test test/models/article_test.rb:6
+rails test test/models/article_test.rb:6
 
 
 
 Finished in 0.023918s, 41.8090 runs/s, 41.8090 assertions/s.
 
 1 runs, 1 assertions, 1 failures, 0 errors, 0 skips
-
 ```
 
 出力に含まれている単独の文字`F`は失敗を表します。`Failure`の後にこの失敗に対応するトレースが、失敗したテスト名とともに表示されています。次の数行はスタックトレースで、アサーションの実際の値と期待されていた値がその後に表示されています。デフォルトのアサーションメッセージには、エラー箇所を特定するのに十分な情報が含まれています。すべてのアサーションは失敗時のメッセージをさらに読みやすくするために、以下のようにメッセージをオプションパラメータとして渡せます。
@@ -202,14 +203,14 @@ Run options: --seed 31252
 
 # Running:
 
- .
+.
 
 Finished in 0.027476s, 36.3952 runs/s, 36.3952 assertions/s.
 
 1 runs, 1 assertions, 0 failures, 0 errors, 0 skips
 ```
 
-お気付きになった方もいるかと思いますが、私たちは欲しい機能が未実装であるために失敗するテストをあえて最初に作成していることにご注目ください。続いてその機能を実装し、それからもう一度実行してテストがパスすることを確認しました。ソフトウェア開発の世界ではこのようなアプローチをテスト駆動開発 ( [Test-Driven Development (TDD)](http://c2.com/cgi/wiki?TestDrivenDevelopment) : TDD) と呼んでいます。
+お気付きになった方もいるかと思いますが、私たちは欲しい機能が未実装であるために、あえて失敗するテストを最初に作成していることにご注目ください。続いてその機能を実装し、それからもう一度実行してテストがパスすることを確認しました。ソフトウェア開発の世界ではこのようなアプローチをテスト駆動開発 ( [Test-Driven Development (TDD)](http://c2.com/cgi/wiki?TestDrivenDevelopment) : TDD) と呼んでいます。
 
 ### エラーの表示内容
 
@@ -217,7 +218,7 @@ Finished in 0.027476s, 36.3952 runs/s, 36.3952 assertions/s.
 
 ```ruby
 test "should report error" do
-  # some_undefined_variableはテストケースのどこにも定義されていない
+  # some_undefined_variable is not defined elsewhere in the test case
   some_undefined_variable
   assert true
 end
@@ -239,7 +240,8 @@ NameError: undefined local variable or method 'some_undefined_variable' for #<Ar
     test/models/article_test.rb:11:in 'block in <class:ArticleTest>'
 
 
-bin/rails test test/models/article_test.rb:9
+rails test test/models/article_test.rb:9
+
 
 
 Finished in 0.040609s, 49.2500 runs/s, 24.6250 assertions/s.
@@ -275,131 +277,41 @@ end
 ここまでにいくつかのアサーションをご紹介しましたが、これらはごく一部に過ぎません。アサーションこそは、テストの中心を担う重要な存在です。システムが計画通りに動作していることを実際に確認しているのはアサーションです。
 
 アサーションは非常に多くの種類が使えるようになっています。
-以下で紹介するのは、[`Minitest`](https://github.com/seattlerb/minitest)で使えるアサーションからの抜粋です。MinitestはRailsにデフォルトで組み込まれているテスティングライブラリです。`[msg]`パラメータは1つのオプション文字列メッセージであり、テストが失敗したときのメッセージをわかりやすくするにはここで指定します。これは必須ではありません。
+以下で紹介するのは、[`Minitest`](https://github.com/seattlerb/minitest)で使えるアサーションからの抜粋です。MinitestはRailsにデフォルトで組み込まれているテスティングライブラリです。`[msg]`パラメータは1個のオプション文字列メッセージであり、テストが失敗したときのメッセージをわかりやすくするにはここで指定します（必須ではありません）。
 
-**`assert( test, [msg] )`**
-
-* `test`はtrueであると主張する。
-
-**`assert_not( test, [msg] )`**
-
-* `test`はfalseであると主張する。
-
-**`assert_equal( expected, actual, [msg] )`**
-
-* `expected == actual`はtrueであると主張する。
-
-**`assert_not_equal( expected, actual, [msg] )`**
-
-* `expected != actual`はtrueであると主張する。
-
-**`assert_same( expected, actual, [msg] )`**
-
-* `expected.equal?(actual)`はtrueであると主張する。
-
-**`assert_not_same( expected, actual, [msg] )`**
-
-* `expected.equal?(actual)`はfalseであると主張する。
-
-**`assert_nil( obj, [msg] )`**
-
-* `obj.nil?`はtrueであると主張する。
-
-**`assert_not_nil( obj, [msg] )`**
-
-* `obj.nil?`はfalseであると主張する。
-
-**`assert_empty( obj, [msg] )`**
-
-* `obj`は`empty?`であると主張する。
-
-**`assert_not_empty( obj, [msg] )`**
-
-* `obj`は`empty?`ではないと主張する。
-
-**`assert_match( regexp, string, [msg] )`**
-
-* stringは正規表現 (regexp) にマッチすると主張する。
-
-**`assert_no_match( regexp, string, [msg] )`**
-
-* stringは正規表現 (regexp) にマッチしないと主張する。
-
-**`assert_includes( collection, obj, [msg] )`**
-
-* `obj`は`collection`に含まれると主張する。
-
-**`assert_not_includes( collection, obj, [msg] )`**
-
-* `obj`は`collection`に含まれないと主張する。
-
-**`assert_in_delta( expected, actual, [delta], [msg] )`**
-
-* `expected`と`actual`の個数の差は`delta`以内であると主張する。
-
-**`assert_in_epsilon ( expected, actual, [epsilon], [msg] )`**
-
-* `expected`と`actual`の数値の相対誤差が`epsilon`より小さいと主張する。
-
-**`assert_not_in_delta( expected, actual, [delta], [msg] )`**
-
-* `expected`と`actual`の個数の差は`delta`以内にはないと主張する。
-
-**`assert_not_in_epsilon ( expected, actual, [epsilon], [msg] )`**
-
-* `expected`と`actual`の数値には`epsilon`より小さい相対誤差がないと主張する。
-
-**`assert_throws( symbol, [msg] ) { block }`**
-
-* 与えられたブロックはシンボルをスローすると主張する。
-
-**`assert_raises( exception1, exception2, ... ) { block }`**
-
-* 渡されたブロックから、渡された例外のいずれかが発生すると主張する。
-
-**`assert_instance_of( class, obj, [msg] )`**
-
-* `obj`は`class`のインスタンスであると主張する。
-
-**`assert_not_instance_of( class, obj, [msg] )`**
-
-* `obj`は`class`のインスタンスではないと主張する。
-
-**`assert_kind_of( class, obj, [msg] )`**
-
-* `obj`は`class`またはそのサブクラスのインスタンスであると主張する。
-
-**`assert_not_kind_of( class, obj, [msg] )`**
-
-* `obj`は`class`またはそのサブクラスのインスタンスではないと主張する。
-
-**`assert_respond_to( obj, symbol, [msg] )`**
-
-* `obj`は`symbol`に応答すると主張する。
-
-**`assert_not_respond_to( obj, symbol, [msg] )`**
-
-* `obj`は`symbol`に応答しないと主張する。
-
-**`assert_operator( obj1, operator, [obj2], [msg] )`**
-
-* `obj1.operator(obj2)`はtrueであると主張する。
-
-**`assert_not_operator( obj1, operator, [obj2], [msg] )`**
-
-* `obj1.operator(obj2)`はfalseであると主張する。
-
-**`assert_predicate ( obj, predicate, [msg] )`**
-
-* `obj.predicate`はtrueであると主張する (例:`assert_predicate str, :empty?`)。
-
-**`assert_not_predicate ( obj, predicate, [msg] )`**
-
-* `obj.predicate`はfalseであると主張する (例:`assert_not_predicate str, :empty?`)。
-
-**`flunk( [msg] )`**
-
-* 必ず失敗すると主張する。これはテストが未完成であることを示すのに便利。
+| Assertion                                                        | Purpose |
+| ---------------------------------------------------------------- | ------- |
+| `assert( test, [msg] )`                                          | `test`はtrueであると主張する。|
+| `assert_not( test, [msg] )`                                      | `test`はfalseであると主張する。|
+| `assert_equal( expected, actual, [msg] )`                        | `expected == actual`はtrueであると主張する。|
+| `assert_not_equal( expected, actual, [msg] )`                    | `expected != actual`はtrueであると主張する。|
+| `assert_same( expected, actual, [msg] )`                         | `expected.equal?(actual)`はtrueであると主張する。|
+| `assert_not_same( expected, actual, [msg] )`                     | `expected.equal?(actual)`はfalseであると主張する。|
+| `assert_nil( obj, [msg] )`                                       | `obj.nil?`はtrueであると主張する。|
+| `assert_not_nil( obj, [msg] )`                                   | obj.nil?`はfalseであると主張する。|
+| `assert_empty( obj, [msg] )`                                     | `obj`は`empty?`であると主張する。|
+| `assert_not_empty( obj, [msg] )`                                 | `obj`は`empty?`ではないと主張する。|
+| `assert_match( regexp, string, [msg] )`                          | stringは正規表現 (regexp) にマッチすると主張する。|
+| `assert_no_match( regexp, string, [msg] )`                       | stringは正規表現 (regexp) にマッチしないと主張する。|
+| `assert_includes( collection, obj, [msg] )`                      | `obj`は`collection`に含まれると主張する。|
+| `assert_not_includes( collection, obj, [msg] )`                  | `obj`は`collection`に含まれないと主張する。|
+| `assert_in_delta( expected, actual, [delta], [msg] )`            | `expected`と`actual`の数値の相対誤差が`epsilon`より小さいと主張する。|
+| `assert_not_in_delta( expected, actual, [delta], [msg] )`        | `expected`と`actual`の数値の相対誤差が`epsilon`より小さいと主張する。|
+| `assert_in_epsilon ( expected, actual, [epsilon], [msg] )`       | `expected`と`actual`の個数の差は`delta`以内にはないと主張する。|
+| `assert_not_in_epsilon ( expected, actual, [epsilon], [msg] )`   | `expected`と`actual`の数値には`epsilon`より小さい相対誤差がないと主張する。|
+| `assert_throws( symbol, [msg] ) { block }`                       | 与えられたブロックはシンボルをスローすると主張する。|
+| `assert_raises( exception1, exception2, ... ) { block }`         | 渡されたブロックから、渡された例外のいずれかが発生すると主張する。|
+| `assert_instance_of( class, obj, [msg] )`                        | `obj`は`class`のインスタンスであると主張する。|
+| `assert_not_instance_of( class, obj, [msg] )`                    | `obj`は`class`のインスタンスではないと主張する。|
+| `assert_kind_of( class, obj, [msg] )`                            | `obj`は`class`またはそのサブクラスのインスタンスであると主張する。|
+| `assert_not_kind_of( class, obj, [msg] )`                        | `obj`は`class`またはそのサブクラスのインスタンスではないと主張する。|
+| `assert_respond_to( obj, symbol, [msg] )`                        | `obj`は`symbol`に応答すると主張する。|
+| `assert_not_respond_to( obj, symbol, [msg] )`                    | `obj`は`symbol`に応答しないと主張する。|
+| `assert_operator( obj1, operator, [obj2], [msg] )`               | `obj1.operator(obj2)`はtrueであると主張する。|
+| `assert_not_operator( obj1, operator, [obj2], [msg] )`           | `obj1.operator(obj2)`はfalseであると主張する。|
+| `assert_predicate ( obj, predicate, [msg] )`                     | `obj.predicate`はtrueであると主張する (例:`assert_predicate str, :empty?`)。|
+| `assert_not_predicate ( obj, predicate, [msg] )`                 | `obj.predicate`はfalseであると主張する (例:`assert_not_predicate str, :empty?`)。|
+| `flunk( [msg] )`                                                 | 必ず失敗すると主張する。テストが未完成であることを示すのに便利。|
 
 これらはMinitestがサポートするアサーションの一部に過ぎません。最新の完全なアサーションのリストについては[Minitest APIドキュメント](http://docs.seattlerb.org/minitest/)、特に[`Minitest::Assertions`](http://docs.seattlerb.org/minitest/Minitest/Assertions.html)を参照してください。
 
@@ -411,41 +323,17 @@ NOTE: アサーションの自作は高度なトピックなので、このチ�
 
 Railsは`minitest`フレームワークに以下のような独自のカスタムアサーションを追加しています。
 
-**[`assert_difference(expressions, difference = 1, message = nil) {...}`](http://api.rubyonrails.org/classes/ActiveSupport/Testing/Assertions.html#method-i-assert_difference)**
-
-* yieldされたブロックで評価された結果である式の戻り値における数値の違いをテストする。
-
-**[`assert_no_difference(expressions, message = nil, &block)`](http://api.rubyonrails.org/classes/ActiveSupport/Testing/Assertions.html#method-i-assert_no_difference)**
-
-* 式を評価した結果の数値は、ブロックで渡されたものを呼び出す前と呼び出した後で違いがないと主張する。
-
-**[`assert_changes(expressions, message = nil, from:, to:, &block)`](http://api.rubyonrails.org/classes/ActiveSupport/Testing/Assertions.html#method-i-assert_changes)**
-
-* 式を評価した結果は、ブロックで渡されたものを呼び出す前と呼び出した後で違いがあると主張する。
-
-**[`assert_no_changes(expressions, message = nil, &block)`](http://api.rubyonrails.org/classes/ActiveSupport/Testing/Assertions.html#method-i-assert_no_changes)**
-
-* 式を評価した結果は、ブロックで渡されたものを呼び出す前と呼び出した後で違いがないと主張する。
-
-**[`assert_nothing_raised { block }`](http://api.rubyonrails.org/classes/ActiveSupport/Testing/Assertions.html#method-i-assert_nothing_raised)**
-
-* 渡されたブロックで例外が発生しないことを確認する。
-
-**[`assert_recognizes(expected_options, path, extras={}, message=nil)`](http://api.rubyonrails.org/classes/ActionDispatch/Assertions/RoutingAssertions.html#method-i-assert_recognizes)**
-
-* 渡されたパスのルーティングが正しく扱われ、(expected_optionsハッシュで渡された) 解析オプションがパスと一致したことを主張する。基本的にこのアサーションでは、Railsはexpected_optionsで渡されたルーティングを認識すると主張する。
-
-**[`assert_generates(expected_path, options, defaults={}, extras = {}, message=nil)`](http://api.rubyonrails.org/classes/ActionDispatch/Assertions/RoutingAssertions.html#method-i-assert_generates)**
-
-* 渡されたオプションは、渡されたパスの生成に使えるものであると主張する。assert_recognizesと逆の動作。extrasパラメータは、クエリ文字列に追加リクエストがある場合にそのパラメータの名前と値をリクエストに渡すのに使われる。messageパラメータはアサーションが失敗した場合のカスタムエラーメッセージを渡すことができる。
-
-**[`assert_response(type, message = nil)`](http://api.rubyonrails.org/classes/ActionDispatch/Assertions/ResponseAssertions.html#method-i-assert_response)**
-
-* レスポンスが特定のステータスコードを持っていることを主張する。`:success`を指定するとステータスコード200-299を指定したことになり、同様に`:redirect`は300-399、`:missing`は404、`:error`は500-599にそれぞれマッチする。ステータスコードの数字や同等のシンボルを直接渡すこともできる。詳細については[ステータスコードの完全なリスト](http://rubydoc.info/github/rack/rack/master/Rack/Utils#HTTP_STATUS_CODES-constant)および[シンボルとステータスコードの対応リスト](http://rubydoc.info/github/rack/rack/master/Rack/Utils#SYMBOL_TO_STATUS_CODE-constant)を参照のこと。
-
-**[`assert_redirected_to(options = {}, message=nil)`](http://api.rubyonrails.org/classes/ActionDispatch/Assertions/ResponseAssertions.html#method-i-assert_redirected_to)**
-
-* 渡されたリダイレクトオプションが、最後に実行されたアクションで呼び出されたリダイレクトのオプションと一致することを主張する。このアサーションは部分マッチ可能。たとえば`assert_redirected_to(controller: "weblog")`は`redirect_to(controller: "weblog", action: "show")`というリダイレクトなどにもマッチする。`assert_redirected_to root_path`などの名前付きルートを渡したり、`assert_redirected_to @article`などのActive Recordオブジェクトを渡すこともできる。
+| Assertion                                                                         | Purpose |
+| --------------------------------------------------------------------------------- | ------- |
+| [`assert_difference(expressions, difference = 1, message = nil) {...}`](https://api.rubyonrails.org/classes/ActiveSupport/Testing/Assertions.html#method-i-assert_difference) | `yield`されたブロックで評価された結果である式の戻り値における数値の違いをテストする。|
+| [`assert_no_difference(expressions, message = nil, &block)`](https://api.rubyonrails.org/classes/ActiveSupport/Testing/Assertions.html#method-i-assert_no_difference) | 式を評価した結果の数値は、ブロックで渡されたものを呼び出す前と呼び出した後で違いがないと主張する。|
+| [`assert_changes(expressions, message = nil, from:, to:, &block)`](https://api.rubyonrails.org/classes/ActiveSupport/Testing/Assertions.html#method-i-assert_changes) | 式を評価した結果は、ブロックで渡されたものを呼び出す前と呼び出した後で違いがあると主張する。|
+| [`assert_no_changes(expressions, message = nil, &block)`](https://api.rubyonrails.org/classes/ActiveSupport/Testing/Assertions.html#method-i-assert_no_changes) | 式を評価した結果は、ブロックで渡されたものを呼び出す前と呼び出した後で違いがないと主張する。|
+| [`assert_nothing_raised { block }`](https://api.rubyonrails.org/classes/ActiveSupport/Testing/Assertions.html#method-i-assert_nothing_raised) | 渡されたブロックで例外が発生しないことを確認する。|
+| [`assert_recognizes(expected_options, path, extras={}, message=nil)`](https://api.rubyonrails.org/classes/ActionDispatch/Assertions/RoutingAssertions.html#method-i-assert_recognizes) | 渡されたパスのルーティングが正しく扱われ、(`expected_options`ハッシュで渡された) 解析オプションがパスと一致したことを主張する。基本的にこのアサーションでは、Railsは`expected_options`で渡されたルーティングを認識すると主張する。|
+| [`assert_generates(expected_path, options, defaults={}, extras = {}, message=nil)`](https://api.rubyonrails.org/classes/ActionDispatch/Assertions/RoutingAssertions.html#method-i-assert_generates) | 渡されたオプションは、渡されたパスの生成に使えるものであると主張する（`assert_recognizes`と逆の動作）。`extras`パラメータは、クエリ文字列に追加リクエストがある場合にそのパラメータの名前と値をリクエストに渡すのに使われる。`message`パラメータにはアサーションが失敗した場合のカスタムエラーメッセージを渡せる。|
+| [`assert_response(type, message = nil)`](https://api.rubyonrails.org/classes/ActionDispatch/Assertions/ResponseAssertions.html#method-i-assert_response) | レスポンスが特定のステータスコードを持っていることを主張する。`:success`を指定するとステータスコード200-299を指定したことになり、同様に`:redirect`は300-399、`:missing`は404、`:error`は500-599にそれぞれマッチする。ステータスコードの数字や同等のシンボルを直接渡すこともできる。詳細については[ステータスコードの完全なリスト](https://rubydoc.info/github/rack/rack/master/Rack/Utils#HTTP_STATUS_CODES-constant)および[シンボルとステータスコードの対応リスト](https://rubydoc.info/github/rack/rack/master/Rack/Utils#SYMBOL_TO_STATUS_CODE-constant)を参照。|
+| [`assert_redirected_to(options = {}, message=nil)`](https://api.rubyonrails.org/classes/ActionDispatch/Assertions/ResponseAssertions.html#method-i-assert_redirected_to) | 渡されたリダイレクトオプションが、最後に実行されたアクションで呼び出されたリダイレクトのオプションと一致することを主張する。このアサーションは部分マッチ可能。たとえば`assert_redirected_to(controller: "weblog")`は`redirect_to(controller: "weblog", action: "show")`というリダイレクトなどにもマッチする。`assert_redirected_to root_path`などの名前付きルートを渡すことも、`assert_redirected_to @article`などのActive Recordオブジェクトを渡すことも可能。|
 
 これらのアサーションのいくつかについては次の章でご説明します。
 
@@ -505,28 +393,28 @@ Finished tests in 0.009064s, 110.3266 tests/s, 110.3266 assertions/s.
 
 
 ```bash
-$ bin/rails test test/models/article_test.rb:6 # run specific test and line
+$ bin/rails test test/models/article_test.rb:6 # 特定のテストの特定行のみをテスト
 ```
 
 ディレクトリを指定すると、そのディレクトリ内のすべてのテストを実行できます。
 
 ```bash
-$ bin/rails test test/controllers # run all tests from specific directory
+$ bin/rails test test/controllers # 指定ディレクトリのテストをすべて実行
 ```
 
 テストランナーではこの他にも、「failing fast」やテスト終了時に必ずテストを出力するといったさまざまな機能が使えます。次を実行してテストランナーのドキュメントをチェックしてみましょう。
 
 ```bash
-$ rails test -h
+$ bin/rails test -h
 Usage: rails test [options] [files or directories]
 
 You can run a single test by appending a line number to a filename:
 
-    rails test test/models/user_test.rb:27
+    bin/rails test test/models/user_test.rb:27
 
 You can run multiple files and directories at the same time:
 
-    rails test test/controllers test/integration/login_test.rb
+    bin/rails test test/controllers test/integration/login_test.rb
 
 By default test failures and errors are reported inline during a run.
 
@@ -548,16 +436,16 @@ Known extensions: rails, pride
     -p, --pride                      Pride. Show your testing pride!
 ```
 
-並列テスト
+パラレルテスト
 ----------------
 
-並列テストを用いてテストスイートを並列に実行できます。デフォルトの手法はプロセスのforkですが、スレッディングもサポートされています。テストを並列に実行することで、テストスイート全体の実行に要する時間を削減できます。
+パラレルテストを用いてテストスイートを並列実行できます。デフォルトの手法はプロセスのforkですが、スレッディングもサポートされています。テストをパラレルに実行することで、テストスイート全体の実行に要する時間を削減できます。
 
-### プロセスを用いた並列テスト
+### プロセスを用いたパラレルテスト
 
-デフォルトの並列化手法は、RubyのDRbシステムを用いるプロセスのforkです。プロセスは、提供されるワーカー数に基づいてforkされます。デフォルトの数値は、実行されるマシンの実際のコア数ですが、`parallelize`メソッドに数値を渡すことで変更できます。
+デフォルトのパラレル化手法は、RubyのDRbシステムを用いるプロセスのforkです。プロセスは、提供されるワーカー数に基づいてforkされます。デフォルトの数値は、実行されるマシンの実際のコア数ですが、`parallelize`メソッドに数値を渡すことで変更できます。
 
-並列化を有効にするには、`test_helper.rb`に以下を記述します。
+パラレル化を有効にするには、`test_helper.rb`に以下を記述します。
 
 ```ruby
 class ActiveSupport::TestCase
@@ -565,15 +453,15 @@ class ActiveSupport::TestCase
 end
 ```
 
-渡されたワーカー数は、プロセスがforkされる回数です。ローカルテストスイートをCIとは別の方法で並列化したい場合は、以下の環境変数を用いてテスト実行時に使うべきワーカー数を簡単に変更できます。
+渡されたワーカー数は、プロセスが`fork`される回数です。ローカルテストスイートをCIとは別の方法でパラレル化したい場合は、以下の環境変数を用いてテスト実行時に使うべきワーカー数を簡単に変更できます。
 
 ```bash
 PARALLEL_WORKERS=15 rails test
 ```
 
-テストを並列化すると、Active Recordはデータベースの作成やスキーマのデータベースへの読み込みを自動的にプロセスごとに扱います。データベース名の後ろには、ワーカー数に応じた数値が追加されます。たとえば、ワーカーが2つの場合は`test-database-0`と`test-database-1`がそれぞれ作成されます。
+テストをパラレル化すると、Active Recordはデータベースの作成やスキーマのデータベースへの読み込みを自動的にプロセスごとに扱います。データベース名の後ろには、ワーカー数に応じた数値が追加されます。たとえば、ワーカーが2つの場合は`test-database-0`と`test-database-1`がそれぞれ作成されます。
 
-渡されたワーカー数が1以下の場合はプロセスはforkされず、テストは並列化しません。テストのデータベースもオリジナルの`test-database`が使われます。
+渡されたワーカー数が1以下の場合はプロセスはforkされず、テストはパラレル化しません。テストのデータベースもオリジナルの`test-database`が使われます。
 
 2つのフックが提供されます。1つはプロセスがforkされるときに実行され、1つはforkしたプロセスがcloseする直前に実行されます。これらのフックは、データベースを複数使っている場合や、ワーカー数に応じた他のタスクを実行する場合に便利です。
 
@@ -593,13 +481,13 @@ class ActiveSupport::TestCase
 end
 ```
 
-これらのメソッドは、スレッドを用いる並列テストでは不要であり、利用できません。
+これらのメソッドは、スレッドを用いるパラレルテストでは不要であり、利用できません。
 
-### スレッドを用いた並列テスト
+### スレッドを用いるパラレルテスト
 
-スレッドを使いたい場合やJRubyを利用する場合のために、スレッドによる並列化オプションも提供されています。スレッドによる並列化は、Minitestの`Parallel::Executor`によって支えられています。
+スレッドを使いたい場合やJRubyを利用する場合のために、スレッドによるパラレル化オプションも提供されています。スレッドによるパラレル化は、Minitestの`Parallel::Executor`によって支えられています。
 
-並列化手法をforkからスレッドに変更するには、`test_helper.rb`に以下を記述します。
+パラレル化手法をforkからスレッドに変更するには、`test_helper.rb`に以下を記述します。
 
 ```ruby
 class ActiveSupport::TestCase
@@ -609,11 +497,50 @@ end
 
 JRubyで生成されたRailsアプリケーションには、自動的に`with: :threads`オプションが含まれます。
 
-`parallelize`に渡されたワーカー数は、テストで使うスレッド数を決定します。ローカルテストスイートをCIとは別の方法で並列化したい場合は、以下の環境変数を用いてテスト実行時に使うべきワーカー数を簡単に変更できます。
+`parallelize`に渡されたワーカー数は、テストで使うスレッド数を決定します。ローカルテストスイートをCIとは別の方法でパラレル化したい場合は、以下の環境変数を用いてテスト実行時に使うべきワーカー数を簡単に変更できます。
 
 ```bash
 PARALLEL_WORKERS=15 rails test
 ```
+
+### パラレルトランザクションをテストする
+
+Railsは、テストケースを自動的にデータベーストランザクションでラップします。テストが完了すると、トランザクションは自動でロールバックします。これにより、テストケースが互いに独立するようになり、データベース内の変更は単一のテスト内に留まります。
+
+パラレルトランザクションをスレッドで実行するコードをテストしたい場合、テスト用トランザクションの下にすでにネストされているため、トランザクションが互いにブロックしてしまう可能性があります。
+
+`self.use_transactional_tests = false`を設定すると、テストケースのクラスでトランザクションを無効にできます。
+
+```ruby
+class WorkerTest < ActiveSupport::TestCase
+  self.use_transactional_tests = false
+
+  test "parallel transactions" do
+    # トランザクションを作成するスレッドがいくつか起動される
+  end
+end
+```
+
+NOTE: トランザクションを無効にしたテストでは、テストが完了しても変更が自動でロールバックされなくなります。そのため、テストで作成されたデータをすべてクリーンアップする必要があります。
+
+### テストをパラレル化するスレッショルドの指定
+
+テストをパラレル実行すると、データベースのセットアップやフィクスチャの読み込みなどでオーバーヘッドが発生します。そのため、Railsはテスト数が50未満の場合はパラレル化を行いません。
+
+このスレッショルド（閾値）は`test.rb`で以下のように設定できます。
+
+```ruby
+config.active_support.test_parallelization_threshold = 100
+```
+
+以下のようにテストケースレベルでもパラレル化のスレッショルドを設定可能です。
+
+```ruby
+class ActiveSupport::TestCase
+  parallelize threshold: 100
+end
+```
+
 
 テスト用データベース
 -----------------------
@@ -638,7 +565,7 @@ Railsでは、テストデータの定義とカスタマイズはフィクスチ
 
 #### フィクスチャとは何か
 
-**フィクスチャ (fixture)**とは、いわゆるサンプルデータを言い換えたものです。フィクスチャを使うことで、事前に定義したデータをテスト実行直前にtestデータベースに導入することができます。フィクスチャはYAMLで記述され、特定のデータベースに依存しません。1つのモデルにつき1つのフィクスチャファイルが作成されます。
+**フィクスチャ（fixture）**とは、いわゆるサンプルデータを言い換えたものです。フィクスチャを使うことで、事前に定義したデータをテスト実行直前にtestデータベースに導入することができます。フィクスチャはYAMLで記述され、特定のデータベースに依存しません。1つのモデルにつき1つのフィクスチャファイルが作成されます。
 
 NOTE: フィクスチャは、テストで必要なありとあらゆるオブジェクトを作成できる設計ではありません。フィクスチャを最適に管理するには、よくあるテストケースに適用可能なデフォルトデータのみを用いることです。
 
@@ -663,15 +590,17 @@ steve:
   profession: guy with keyboard
 ```
 
-各フィクスチャは名前とコロンで始まり、その後にコロンで区切られたキー/値ペアのリストがインデント付きで置かれます。通常、レコード間は空行で区切られます。行の先頭に#文字を置くことで、フィクスチャファイルにコメントを追加できます。'yes'や'no'などのYAMLキーワードに似たキーについては、引用符で囲むことでYAMLパーサーが正常に動作できます。
+各フィクスチャはフィクスチャ名とコロンで始まり、その後にコロンで区切られたキー/値ペアのリストがインデント付きで置かれます。通常、レコード間は空行で区切られます。行の先頭に`#`文字を置くことで、フィクスチャファイルにコメントを追加できます。'yes'や'no'などのYAMLキーワードに似たキーについては、引用符で囲むことでYAMLパーサーが正常に動作できます。
 
-[関連付け](/association_basics.html)を使っている場合は、2つの異なるフィクスチャの間に参照ノードを1つ定義すれば済みます。belongs_to/has_many関連付けの例を以下に示します。
+[関連付け](/association_basics.html)を使っている場合は、2つの異なるフィクスチャの間に参照ノードを1つ定義すれば済みます。`belongs_to`/`has_many`関連付けの例を以下に示します。
 
 ```yaml
 # fixtures/categories.ymlの内容:
 about:
   name: About
+```
 
+```yaml
 # fixtures/articles.ymlの内容
 first:
   title: Welcome to Rails!
@@ -679,9 +608,52 @@ first:
   category: about
 ```
 
-`fixtures/articles.yml`ファイル内の`first`の記事にある`category`キーの値が`about`になっていることにご注目ください。これは`fixtures/categories.yml`内の`about`カテゴリを読み込むようRailsに指示するためのものです。
+```yaml
+# test/fixtures/action_text/rich_texts.yml
+first_content:
+  record: first (Article)
+  name: content
+  body: <div>Hello, from <strong>a fixture</strong></div>
+```
+
+`fixtures/action_text/rich_texts.yml` にある`first_content`エントリの`record`キーの値が `first (Article)`になっている点にもご注目ください。これは、前者についてはActive Recordが `fixtures/categories.yml` にあるカテゴリ`about`を読み込むように、後者についてはAction Textが `fixtures/articles.yml`にある記事 `first`を読み込むようにヒントを与えています。
 
 NOTE: 関連付けが名前で互いを参照している場合、関連付けられたフィクスチャにある`id:`属性を指定する代わりに、フィクスチャ名を使えます。Railsはテストの実行中に、自動的に主キーを割り当てて一貫性を保ちます。関連付けの詳しい動作については、[フィクスチャAPIドキュメント](http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html)を参照してください。
+
+#### ファイル添付のフィクスチャ
+
+Active Recordの他のモデルと同様、Active Storageの添付ファイルレコードは`ActiveRecord::Base`インスタンスを継承しているのでフィクスチャに入れられます。
+
+`thumbnail`添付画像に関連付けられている`Article`モデルのフィクスチャデータYAMLを考えてみましょう。
+
+```ruby
+class Article
+  has_one_attached :thumbnail
+end
+```
+
+```yaml
+# test/fixtures/articles.yml
+first:
+  title: An Article
+```
+
+`image/png`エンコードされたファイルが`test/fixtures/files/first.png`にあると仮定します。このとき以下のYAMLフィクスチャエントリは、関連する`ActiveStorage::Blob`と`ActiveStorage::Attachment`レコードを生成します。
+
+```yaml
+# test/fixtures/active_storage/blobs.yml
+first_thumbnail_blob: <%= ActiveStorage::FixtureSet.blob filename: "first.png" %>
+```
+
+```yaml
+# test/fixtures/active_storage/attachments.yml
+first_thumbnail_attachment:
+  name: thumbnail
+  record: first (Article)
+  blob: first_thumbnail_blob
+```
+
+[image/png]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types#image_types
 
 #### ERB
 
@@ -707,7 +679,7 @@ TIP: Railsでは、データベースから既存のデータベースを削除�
 
 #### フィクスチャはActive Recordオブジェクト
 
-フィクスチャは、実はActive Recordのインスタンスです。前述の3番目の手順にもあるように、フィクスチャはスコープがテストケースのローカルになっているメソッドを自動的に利用可能にしてくれるので、フィクスチャのオブジェクトに直接アクセスできます。以下に例を示します。
+フィクスチャは、実はActive Recordのインスタンスです。前述の手順3にもあるように、フィクスチャはスコープがテストケースのローカルになっているメソッドを自動的に利用可能にしてくれるので、フィクスチャのオブジェクトに直接アクセスできます。以下に例を示します。
 
 ```ruby
 # davidという名前のフィクスチャに対応するUserオブジェクトを返す
@@ -778,15 +750,14 @@ Railsのシステムテストのデフォルト設定変更方法は非常にシ
 
 新しいアプリケーションやscaffoldを生成すると、そのテストのディレクトリに`application_system_test_case.rb`ファイルが作成されます。システムテストの設定はすべてここで行います。
 
-デフォルト設定を変更したい場合は、システムテストの`driven_by`項目を変更できます。たとえばドライバをSeleniumからPoltergeistに変更する場合は、まず`poltergeist` gemをGemfileに追加し、続いて`application_system_test_case.rb`を以下のように変更します。
-
+デフォルト設定を変更したい場合は、システムテストの`driven_by`項目を変更できます。たとえばドライバをSeleniumからCupriteに変更する場合は、まず`cuprite` gemをGemfileに追加し、続いて`application_system_test_case.rb`を以下のように変更します。
 
 ```ruby
 require "test_helper"
-require "capybara/poltergeist"
+require "capybara/cuprite"
 
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
-  driven_by :poltergeist
+  driven_by :cuprite
 end
 ```
 
@@ -800,7 +771,7 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
 end
 ```
 
-ヘッドレスブラウザを使いたい場合は、`:using`引数に`headless_chrome`を追加します。
+ヘッドレスブラウザを使いたい場合は、`:using`引数に`headless_chrome`または`headless_firefox`を追加してヘッドレスChromeやヘッドレスFirefoxを利用できます。
 
 ```ruby
 require "test_helper"
@@ -867,7 +838,7 @@ NOTE: デフォルトでは`bin/rails test`を実行してもシステムテス�
 それではブログで新しい記事を作成するフローをテストしましょう。
 
 ```ruby
-test "creating an article" do
+test "should create Article" do
   visit articles_path
 
   click_on "New Article"
@@ -888,6 +859,33 @@ end
 次に記事のタイトルと本文に指定のテキストを入力しています。フィールドへの入力が終わったら「Create Article」をクリックして、データベースに新しい記事を作成するPOSTリクエストを送信しています。
 
 そして記事の元のindexページにリダイレクトされ、新しい記事のタイトルがその記事のindexページに表示されます。
+
+#### さまざまな画面サイズでテストする
+
+デスクトップ用のテストに加えてモバイル用のサイズのテストも行いたい場合は、`SystemTestCase`を継承した別のクラスを作成してテストスイートで利用します。この例では、`/test`ディレクトリに`mobile_system_test_case.rb`というファイルを作成し、以下のように設定しています。
+
+```ruby
+require "test_helper"
+
+class MobileSystemTestCase < ActionDispatch::SystemTestCase
+  driven_by :selenium, using: :chrome, screen_size: [375, 667]
+end
+```
+
+この設定を使うには、`test/system`ディレクトリの下に`MobileSystemTestCase`を継承したテストを作成します。
+これで、さまざまな構成を使ってアプリをテストできるようになります。
+
+```ruby
+require "mobile_system_test_case"
+
+class PostsTest < MobileSystemTestCase
+
+  test "visiting the index" do
+    visit posts_url
+    assert_selector "h1", text: "Posts"
+  end
+end
+```
 
 #### システムテストの利用法
 
@@ -1050,9 +1048,9 @@ create    test/controllers/articles_controller_test.rb
 ```ruby
 # articles_controller_test.rb
 class ArticlesControllerTest < ActionDispatch::IntegrationTest
-  test "should get index" do
-    get articles_url
-    assert_response :success
+   test "should get index" do
+     get articles_url
+     assert_response :success
   end
 end
 ```
@@ -1306,7 +1304,7 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
   # 各テストの実行前に呼ばれる
   setup do
     @article = articles(:one)
-  end  
+  end
 
   # 各テストの実行後に呼ばれる
   teardown do
@@ -1369,7 +1367,7 @@ class ProfileControllerTest < ActionDispatch::IntegrationTest
     get profile_url
     assert_response :success
   end
-end		
+end
 ```
 
 ルーティングをテストする
@@ -1426,7 +1424,7 @@ end
 
 `assert_select`はきわめて強力なアサーションです。このアサーションの高度な利用法については[ドキュメント](https://github.com/rails/rails-dom-testing/blob/master/lib/rails/dom/testing/assertions/selector_assertions.rb)を参照してください。
 
-#### その他のビューベースのアサーション
+### その他のビューベースのアサーション
 
 主にビューをテストするためのアサーションは他にもあります。
 
@@ -1755,6 +1753,54 @@ class ChatRelayJobTest < ActiveJob::TestCase
     assert_broadcast_on(ChatChannel.broadcasting_for(room), text: "Hi!") do
       ChatRelayJob.perform_now(room, "Hi!")
     end
+  end
+end
+```
+
+eager loadingをテストする
+---------------------
+
+通常、アプリケーションは`development`環境や`test`環境で高速化のためにeager loadingを行うことはありません。eager loadingは`production`環境で行われます。
+
+プロジェクトのファイルの一部が何らかの理由で読み込めない場合、`production`環境にデプロイする前にそのことを検出する方がよいものです。
+
+### CI（継続的インテグレーション）
+
+プロジェクトでCIを利用している場合、アプリケーションでeager loadingを確実に行う手軽な方法のひとつは、CIでeager loadingすることです。
+
+CIは、テストスイートがそこで実行されていることを示すために、以下のように何らかの環境変数（`CI`など）を設定するのが普通です。
+
+```ruby
+# config/environments/test.rb
+config.eager_load = ENV["CI"].present?
+```
+
+Rails 7からは、新規生成されたアプリケーションでこの設定がデフォルトで行われます。
+
+### Bare Test Suites
+
+プロジェクトでCIを利用していない場合は、以下のように`Rails.application.eager_load!`を呼び出すことでテストスイートをeager loading可能です。
+
+#### minitest
+
+```ruby
+require "test_helper"
+
+class ZeitwerkComplianceTest < ActiveSupport::TestCase
+  test "eager loads all files without errors" do
+    assert_nothing_raised { Rails.application.eager_load! }
+  end
+end
+```
+
+#### RSpec
+
+```ruby
+require "rails_helper"
+
+RSpec.describe "Zeitwerk compliance" do
+  it "eager loads all files without errors" do
+    expect { Rails.application.eager_load! }.not_to raise_error
   end
 end
 ```
