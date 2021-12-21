@@ -233,7 +233,7 @@ irb> joe.class == alice.class
 > reload!
 ```
 
-```irb
+```
 irb> joe = User.new
 irb> reload!
 irb> alice = User.new
