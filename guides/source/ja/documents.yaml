@@ -39,6 +39,10 @@
       description: PostgreSQLに特化したActive Recordの利用法について解説します。
       work_in_progress: true
     -
+      name: Active Record 暗号化
+      url: active_record_encryption.html
+      description: Active Recordを用いてデータベースの情報を暗号化する方法について解説します。
+    -
       name: Active Record で複数のデータベース利用
       url: active_record_multiple_databases.html
       description: Active Recordでデータベースを複数利用する方法について解説します。
