@@ -819,7 +819,7 @@ Active Storageは、付属のJavaScriptライブラリを用いて、クライ�
     ActiveStorage.start()
     ```
 
-2. [`file_field`](form_helpers.html#uploading-files)に`direct_upload: true`を追加します。
+2. [`file_field`](form_helpers.html#ファイルのアップロード)に`direct_upload: true`を追加します。
 
     ```erb
     <%= form.file_field :attachments, multiple: true, direct_upload: true %>
