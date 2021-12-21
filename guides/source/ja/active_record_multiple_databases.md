@@ -1,13 +1,15 @@
-Active Record で複数のデータベース利用
+**DO NOT READ THIS FILE ON GITHUB, GUIDES ARE PUBLISHED ON https://guides.rubyonrails.org.**
+
+Active Record でマルチプルデータベースを利用する
 =====================================
 
 このガイドでは、Active Recordでデータベースを複数利用する方法について説明します。
 
 このガイドの内容:
 
-* アプリケーションで複数のデータベースをセットアップする方法
+* アプリケーションでマルチプルデータベースをセットアップする方法
 * コネクションの自動切り替えの仕組み
-* 複数データベースにおける水平シャーディングの利用方法
+* マルチプルデータベースにおける水平シャーディングの利用方法
 * サポートされている機能と現在進行中の機能
 
 --------------------------------------------------------------------------------
@@ -24,10 +26,7 @@ Active Record で複数のデータベース利用
 
 以下の機能は現時点では（まだ）サポートされていません。
 
-* 水平シャーディングのための自動スワップ
-* クラスタを越えるJOIN
 * replicaのロードバランシング
-* マルチプルデータベースのスキーマキャッシュのダンプ
 
 ## アプリケーションのセットアップ
 
@@ -40,9 +39,9 @@ Active Record で複数のデータベース利用
 ```yaml
 production:
   database: my_primary_database
+  adapter: mysql2
   username: root
   password: <%= ENV['ROOT_PASSWORD'] %>
-  adapter: mysql2
 ```
 
 最初の設定に対するreplicaを追加し、さらにanimalという2つ目のデータベースとそれのreplicaも追加してみましょう。これを行うには、database.ymlを以下のように2層（2-tier）設定から3層（3-tier）設定に変更する必要があります。
@@ -80,9 +79,9 @@ production:
 
 第1に、`primary`と`primary_replica`のデータベース名は同じにすべきです。理由は、primaryとreplicaが同じデータを持つからです。`animals`と`animals_replica`についても同様です。
 
-第2に、writerとreplicaでは異なるユーザー名を使い、かつreplicaのパーミッションは（writeではなく）readのみにすべきです。
+第2に、writerとreplicaでは異なるデータベースユーザー名を使い、かつreplicaのパーミッションは（writeではなく）readのみにすべきです。
 
-replicaデータベースを使う場合、`database.yml`のreplicaには`replica: true`というエントリを1つ追加する必要があります。このエントリがないと、どちらがreplicaでどちらがwriterかをRailsが区別できなくなるためです。
+replicaデータベースを使う場合、`database.yml`のreplicaには`replica: true`というエントリを1つ追加する必要があります。このエントリがないと、どちらがreplicaでどちらがwriterかをRailsが区別できなくなるためです。Railsは、マイグレーションなどの特定のタスクについてはreplicaに対して実行しません。
 
 最後に、新しいwriterデータベースで利用するために、そのデータベースのマイグレーションを置くディレクトリを`migrations_paths`に設定する必要があります。`migrations_paths`については本ガイドで後述します。
 
@@ -103,6 +102,14 @@ class ApplicationRecord < ActiveRecord::Base
   self.abstract_class = true
 
   connects_to database: { writing: :primary, reading: :primary_replica }
+end
+```
+
+`ApplicationRecord`を異なるクラス名に変えている場合は、`primary_abstract_class`を設定する必要があります。これにより、Railsはどのクラスの`ActiveRecord::Base`と接続を共有すべきかを認識できるようになります。
+
+```ruby
+class PrimaryApplicationRecord < ActiveRecord::Base
+  self.primary_abstract_class
 end
 ```
 
@@ -140,6 +147,9 @@ rails db:migrate:primary                 # Migrate primary database for current 
 rails db:migrate:status                  # Display status of migrations
 rails db:migrate:status:animals          # Display status of migrations for animals database
 rails db:migrate:status:primary          # Display status of migrations for primary database
+rails db:reset                           # Drops and recreates all databases from their schema for the current environment and loads the seeds
+rails db:reset:animals                   # Drops and recreates the animals database from its schema for the current environment and loads the seeds
+rails db:reset:primary                   # Drops and recreates the primary database from its schema for the current environment and loads the seeds
 rails db:rollback                        # Rolls the schema back to the previous version (specify steps w/ STEP=n)
 rails db:rollback:animals                # Rollback animals database for current environment (specify steps w/ STEP=n)
 rails db:rollback:primary                # Rollback primary database for current environment (specify steps w/ STEP=n)
@@ -149,9 +159,27 @@ rails db:schema:dump:primary             # Creates a db/schema.rb file that is p
 rails db:schema:load                     # Loads a database schema file (either db/schema.rb or db/structure.sql  ...
 rails db:schema:load:animals             # Loads a database schema file (either db/schema.rb or db/structure.sql  ...
 rails db:schema:load:primary             # Loads a database schema file (either db/schema.rb or db/structure.sql  ...
+rails db:setup                           # Creates all databases, loads all schemas, and initializes with the seed data (use db:reset to also drop all databases first)
+rails db:setup:animals                   # Creates the animals database, loads the schema, and initializes with the seed data (use db:reset:animals to also drop the database first)
+rails db:setup:primary                   # Creates the primary database, loads the schema, and initializes with the seed data (use db:reset:primary to also drop the database first)
 ```
 
 `bin/rails db:create`などのコマンドを実行すると、primaryとanimalsデータベースの両方が作成されます。ただし（データベースの）ユーザーを作成するコマンドはないので、replicaでreadonlyをサポートするには手動で行う必要があります。animalデータベースだけを作成するには、`bin/rails db:create:animals`を実行します。
+
+## スキーマやマイグレーションを管理せずにデータベースに接続する
+
+スキーマ管理、マイグレーション、シードなどのデータベース管理作業を一切行わずに外部のデータベースに接続したい場合は、データベースごとに設定オプション`database_tasks: false`を設定できます。これはデフォルトでは`true`に設定されます。
+
+```yaml
+production:
+  primary:
+    database: my_database
+    adapter: mysql2
+  animals:
+    database: my_animals_database
+    adapter: mysql2
+    database_tasks: false
+```
 
 ## ジェネレータとマイグレーション
 
@@ -176,10 +204,10 @@ $ bin/rails generate scaffold Dog name:string --database animals
 ```ruby
 class AnimalsRecord < ApplicationRecord
   self.abstract_class = true
+
   connects_to database: { writing: :animals }
 end
 ```
-
 生成されたモデルは自動で`AnimalsRecord`クラスを継承します。
 
 ```ruby
@@ -199,20 +227,28 @@ $ bin/rails generate scaffold Dog name:string --database animals --parent Animal
 
 上では別の親クラスの利用を指定しているため、`AnimalsRecord`の生成をスキップします。
 
-## コネクションの自動切り替えを有効にする
+## ロールの自動切り替えを有効にする
 
 最後に、アプリケーションでread-onlyのレプリカを利用するために、自動切り替え用のミドルウェアを有効にする必要があります。
 
-自動切り替え機能によって、アプリケーションはHTTP verbや直近の書き込みの有無に応じてwriterからreplica、またはreplicaからwriterへと切り替えます。
+自動切り替え機能によって、アプリケーションはHTTP verbや、リクエストしたユーザーによる直近の書き込みの有無に応じてwriterからreplica、またはreplicaからwriterへと切り替えます。
 
 アプリケーションがPOST、PUT、DELETE、PATCHのいずれかのリクエストを受け取ると、自動的にwriterデータベースに書き込みます。書き込み後に指定の時間が経過するまでは、アプリケーションはwriterから読み出します。アプリケーションがGETリクエストやHEADリクエストを受け取ると、直近の書き込みがなければreplicaから読み出します。
 
-コネクション自動切り替えのミドルウェアを有効にするには、アプリケーション設定に以下の行を追加するか、コメントを解除します。
+コネクション自動切り替えのミドルウェアを有効にするには、以下のように自動スワップジェネレータを実行します。
+
+```bash
+$ bin/rails g active_record:multi_db
+```
+
+続いて以下の行のコメントを解除して有効にします。
 
 ```ruby
-config.active_record.database_selector = { delay: 2.seconds }
-config.active_record.database_resolver = ActiveRecord::Middleware::DatabaseSelector::Resolver
-config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
+Rails.application.configure do
+  config.active_record.database_selector = { delay: 2.seconds }
+  config.active_record.database_resolver = ActiveRecord::Middleware::DatabaseSelector::Resolver
+  config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
+end
 ```
 
 Railsは「自分が書き込んだものを読み取る」ことを保証するので、`delay`ウィンドウの期間内であればGETリクエストやHEADリクエストをwriterに送信します。この`delay`は、デフォルトで2秒に設定されます。この値の変更は、利用するデータベースのインフラストラクチャに基づいて行うべきです。Railsは、`delay`ウィンドウの期間内で他のユーザーが「最近書き込んだものを読み取る」ことについては保証しないので、最近書き込まれたものでなければGETリクエストやHEADリクエストをreplicaに送信します。
@@ -251,11 +287,21 @@ end
 
 ここで注意したいのは、ロールを設定した`connected_to`では、既存のコネクションの探索や切り替えにそのコネクションのspecification名が用いられることです。つまり、`connected_to(role: :nonexistent)`のように不明なロールを渡すと、`ActiveRecord::ConnectionNotEstablished (No connection pool with 'ActiveRecord::Base' found for the 'nonexistent' role.)`エラーが発生します。
 
+Railsが実行するクエリを確実に読み取り専用にするには、`prevent_writes: true`を渡します。
+これは単に、書き込みに見えるクエリがデータベースに送信されるのを防ぐだけです。
+また、replicaデータベースも読み取り専用モードで実行されるよう設定する必要があります。
+
+```ruby
+ActiveRecord::Base.connected_to(role: :reading, prevent_writes: true) do
+  # Railsは読み取りクエリであることをクエリごとに確認する
+end
+```
+
 ## 水平シャーディング
 
 水平シャーディングとは、データベースを分割して各データベースサーバーの行数を減らしながら「シャード」全体で同じスキーマを維持することです。これは一般に「マルチテナント」シャーディングと呼ばれます。
 
-Railsで水平シャーディングをサポートするAPIは、Rails6.0以降の複数データベースや垂直シャーディングAPIに似ています。
+Railsで水平シャーディングをサポートするAPIは、Rails6.0以降のマルチプルデータベースや垂直シャーディングAPIに似ています。
 
 シャードは次のように3層（3-tier）構成で宣言されます。
 
@@ -311,16 +357,63 @@ ActiveRecord::Base.connected_to(role: :reading, shard: :shard_one) do
 end
 ```
 
-## 粒度の細かなデータベース接続切り替え
+## 自動シャード切り替えを有効にする
 
-Rails 6.1では、すべてのデータベースに対してグローバルにコネクションを切り替えるのではなく、1つのデータベースでコネクションを切り替えることが可能です。この機能を使うには、まずアプリケーションの設定で`config.active_record.legacy_connection_handling`を`false`に設定する必要があります。パブリックAPIの振る舞いは変わらないため、ほとんどのアプリケーションではそれ以外の変更は不要です。
+アプリケーションで提供されているミドルウェアを使うと、リクエスト単位でシャードを自動切り替えできるようになります。
 
-`legacy_connection_handling`をfalseに設定すると、任意の抽象コネクションクラスで、他のコネクションに影響を与えずにコネクションを切り替えられます。これは`ApplicationRecord`のクエリがプライマリに送信されることを保証しつつ、`AnimalsRecord`のクエリをレプリカから読み込むように切り替えるときに便利です。
+ShardSelectorミドルウェアは、シャードを自動スワップするフレームワークを提供します。Railsは、どのシャードに切り替えるかを判断する基本的なフレームワークを提供し、必要に応じてアプリケーションでスワップのカスタム戦略を記述できます。
+
+ShardSelectorは、ミドルウェアの動作を変更できるオプションのセットを受け取ります（現在は`lock`のみをサポート）。`lock`はデフォルトでは`true`で、ブロック内でのシャード切り替えを禁止します。`lock`が`false`の場合はシャードのスワップが許可されます。
+テナントベースのシャーディングでは、アプリケーションコードが誤ってテナントを切り替えることのないよう、`lock`は常に`true`にする必要があります。
+
+以下のようにデータベースセレクタと同じジェネレータを用いて、シャードの自動スワップ用ファイルを生成できます。
+
+```bash
+$ bin/rails g active_record:multi_db
+```
+
+次に、ファイルの以下の行をコメント解除して有効にします。
+
+```ruby
+Rails.application.configure do
+  config.active_record.shard_selector = { lock: true }
+  config.active_record.shard_resolver = ->(request) { Tenant.find_by!(host: request.host).shard }
+end
+```
+
+アプリケーションは、リゾルバにコードを提供しなければなりません（リゾルバはアプリケーション固有のモデルに依存するため）。以下はリゾルバの例です。
+
+```ruby
+config.active_record.shard_resolver = ->(request) {
+  subdomain = request.subdomain
+  tenant = Tenant.find_by_subdomain!(subdomain)
+  tenant.shard
+}
+```
+
+## 新しいコネクションハンドリングに移行する
+
+Rails 6.1以降のActive Recordでは、コネクション管理用の新しい内部APIが提供されています。
+ほとんどの場合、アプリケーションで`config.active_record.legacy_connection_handling = false`を設定して新しい振る舞いを有効にするだけでよく、それ以外の変更は不要です（Rails 6.0以前からアップグレードする場合）。データベースがひとつしかないアプリケーションの場合は、この他の変更は不要です。マルチプルデータベースを利用しているアプリケーションで以下のメソッドを利用している場合は、以下の変更が必要です。
+
+* `connection_handlers`および`connection_handlers=`は新しいコネクションハンドリングでは動作しなくなります。いずれかのコネクションハンドラでメソッドを呼び出している場合（`connection_handlers[:reading].retrieve_connection_pool("ActiveRecord::Base")`など）は、そのメソッド呼び出しを`connection_handlers.retrieve_connection_pool("ActiveRecord::Base", role: :reading)`のように更新する必要があります。
+
+* `ActiveRecord::Base.connection_handler.prevent_writes`への呼び出しは、`ActiveRecord::Base.connection.preventing_writes?`に更新する必要があります。
+
+* 書き込みと読み出しを含むすべてのプールが必要な場合は、ハンドラで新しいメソッドが提供されます。これを使うには`connection_handler.all_connection_pools`を呼び出します。しかしほとんどの場合、`connection_handler.connection_pool_list(:writing)`または`connection_handler.connection_pool_list(:reading)`を用いるプールへの書き込みや読み出しが必要になるでしょう。
+
+* アプリケーションで`legacy_connection_handling`をオフにすると、サポートされていないメソッド（ `connection_handlers=`など）でエラーが生じます。
+
+## 粒度の細かいデータベース接続切り替え
+
+Rails 6.1では、すべてのデータベースに対してグローバルにコネクションを切り替えるのではなく、1つのデータベースでコネクションを切り替えることが可能です。この機能を使うには、まずアプリケーションの設定で`config.active_record.legacy_connection_handling`を`false`に設定する必要があります。パブリックAPIの振る舞いは変わらないため、ほとんどのアプリケーションではそれ以外の変更は不要です。`legacy_connection_handling`を有効にして移行する方法については上のセクションを参照してください。
+
+`legacy_connection_handling`を`false`に設定すると、任意の抽象コネクションクラスで、他のコネクションに影響を与えずにコネクションを切り替えられます。これは`ApplicationRecord`のクエリがプライマリに送信されることを保証しつつ、`AnimalsRecord`のクエリをレプリカから読み込むように切り替えるときに便利です。
 
 ```ruby
 AnimalsRecord.connected_to(role: :reading) do
-  Dog.first # Reads from animals_replica
-  Person.first  # Reads from primary
+  Dog.first # animals_replicaから読み出す
+  Person.first  # プライマリから読み出す
 end
 ```
 
@@ -328,9 +421,10 @@ end
 
 ```ruby
 AnimalsRecord.connected_to(role: :reading, shard: :shard_one) do
-  Dog.first # Will read from shard_one_replica. If no connection exists for shard_one_replica,
-  # a ConnectionNotEstablished error will be raised
-  Person.first # Will read from primary writer
+  Dog.first # shard_one_replicaから読み出す。
+            # shard_one_replicaのコネクションが存在しない場合は
+            # ConnectionNotEstablishedエラーが発生する
+  Person.first # プライマリライターから読み出す
 end
 ```
 
@@ -345,20 +439,58 @@ end
 
 `ActiveRecord::Base.connected_to`はグローバルに接続を切り替える機能を管理します。
 
+### データベース間でJOINする関連付けを扱う
+
+Rails 7.0以降のActive Recordには、複数のデータベースにまたがってJOINを実行する関連付けを扱うオプションが提供されています。has many through関連付けやhas one through関連付けでJOINを無効にして複数のクエリを実行したい場合は、以下のように`disable_joins: true`オプションを渡します。
+
+```ruby
+class Dog < AnimalsRecord
+  has_many :treats, through: :humans, disable_joins: true
+  has_many :humans
+
+  has_one :home
+  has_one :yard, through: :home, disable_joins: true
+end
+
+class Home
+  belongs_to :dog
+  has_one :yard
+end
+
+class Yard
+  belongs_to :home
+end
+```
+
+従来は、`disable_joins`を指定しない`@dog.treats`や、`disable_joins`を指定しない`@dog.yard`を呼び出すと、データベースがクラスタ間のJOINを処理できないためエラーが発生しました。`disable_joins`オプションを指定することで、複数のSELECTクエリを生成してクラスタ間のJOIN回避を試みるようになります。上述の関連付けの場合、`@dog.treats`は以下のSQLを生成します。
+
+```sql
+SELECT "humans"."id" FROM "humans" WHERE "humans"."dog_id" = ?  [["dog_id", 1]]
+SELECT "treats".* FROM "treats" WHERE "treats"."human_id" IN (?, ?, ?)  [["human_id", 1], ["human_id", 2], ["human_id", 3]]
+```
+
+`@dog.yard`は以下のSQLを生成します。
+
+```sql
+SELECT "home"."id" FROM "homes" WHERE "homes"."dog_id" = ? [["dog_id", 1]]
+SELECT "yards".* FROM "yards" WHERE "yards"."home_id" = ? [["home_id", 1]]
+```
+
+このオプションには以下の注意点があります。
+
+1) JOINの代わりに2つ以上のクエリが実行されるので、関連付けによってはパフォーマンスに影響が生じる可能性があります。`fumans`をSELECTしたときに多数のIDが返されると、`treats`のSELECTによって多数のIDが送信される可能性があります。
+
+2) JOINが実行されなくなるので、クエリのORDERやLIMITはメモリ上でソートされます（あるテーブルのORDERを別のテーブルに適用できないため）。
+
+3) この設定は、JOINを無効にしたいすべての関連付けに追加しなければなりません。
+Railsはこれを自動で推測できません（関連付けはlazyに読み込まれるので、`@dog.treats`で`treats`を読み込むには、どんなSQLを生成すべきかをRailsが事前に認識する必要があります）。
+
+### スキーマのキャッシュ
+
+データベースごとにスキーマキャッシュを読み込みたい場合は、データベースごとに`schema_cache_path`を設定し、かつアプリケーション設定で`config.active_record.lazily_load_schema_cache = true`を設定しなければなりません。この場合、データベース接続が確立されたときにキャッシュがlazyに読み込まれる点にご注意ください。
+
 ## 注意点
-
-### 水平シャーディングのための自動スワップ
-
-現在Railsはシャードへの接続や、シャードの接続をスワップするAPIをサポートしていますが、自動スワップ戦略はまだサポートしていません。ミドルウェアか`around_action`を介して、アプリケーション内で手動でシャードスワップを行う必要があります。
 
 ### replicaのロードバランシング
 
 replicaのロードバランシングはインフラストラクチャに強く依存するため、これもRailsではサポート対象外です。今後、基本的かつ原始的なreplicaロードバランシング機能が実装されるかもしれませんが、アプリケーションをスケールさせるためにもRailsの外部でアプリケーションを扱えるものにすべきです。
-
-### データベースを跨がるJOIN
-
-アプリケーションは複数のデータベースに跨がるJOINを行えません。現時点では、ユーザ自身が手動で2つのSELECT文を書き、JOINを分割する必要があります。将来のバージョンでは、RailsがJOINを分割してくれるようになる予定です。
-
-### スキーマキャッシュ
-
-スキーマキャッシュとマルチプルデータベースを利用する場合、アプリのスキーマキャッシュを読み込むためのイニシャライザを自分で書く必要があります。Rails 6.0には間に合いませんでしたが、いずれ今後のバージョンで解決できればと思います。
