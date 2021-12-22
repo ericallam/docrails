@@ -120,15 +120,15 @@ end
     <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
   </head>
   <body>
-    <h1>Welcome to example.com, <%= @user.name %></h1>
+    <h1><%= @user.name %>様、example.comへようこそ。</h1>
     <p>
-      You have successfully signed up to example.com,
-      your username is: <%= @user.login %>.<br>
+      example.comへのサインアップが成功しました。
+      ユーザー名は「<%= @user.login %>」です。<br>
     </p>
     <p>
-      To login to the site, just follow this link: <%= @url %>.
+      このサイトにログインするには、<%= @url %>をクリックしてください。
     </p>
-    <p>Thanks for joining and have a great day!</p>
+    <p>本サイトにユーザー登録いただきありがとうございます。</p>
   </body>
 </html>
 ```
