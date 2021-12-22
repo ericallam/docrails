@@ -364,10 +364,12 @@ body {
   float:left;
   width: 630px;
   /*margin-left: 2em;*/
+  h3 { padding-top: 20px; }
+  h4,h5 { padding-top: 10px; }
 }
 @media screen and (max-width: 920px) {
   #mainCol {
-    clear:both;
+    clear: both;
     width: 100%;
   }
 }
