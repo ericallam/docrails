@@ -279,39 +279,131 @@ end
 アサーションは非常に多くの種類が使えるようになっています。
 以下で紹介するのは、[`Minitest`](https://github.com/seattlerb/minitest)で使えるアサーションからの抜粋です。MinitestはRailsにデフォルトで組み込まれているテスティングライブラリです。`[msg]`パラメータは1個のオプション文字列メッセージであり、テストが失敗したときのメッセージをわかりやすくするにはここで指定します（必須ではありません）。
 
-| Assertion                                                        | Purpose |
-| ---------------------------------------------------------------- | ------- |
-| `assert( test, [msg] )`                                          | `test`はtrueであると主張する。|
-| `assert_not( test, [msg] )`                                      | `test`はfalseであると主張する。|
-| `assert_equal( expected, actual, [msg] )`                        | `expected == actual`はtrueであると主張する。|
-| `assert_not_equal( expected, actual, [msg] )`                    | `expected != actual`はtrueであると主張する。|
-| `assert_same( expected, actual, [msg] )`                         | `expected.equal?(actual)`はtrueであると主張する。|
-| `assert_not_same( expected, actual, [msg] )`                     | `expected.equal?(actual)`はfalseであると主張する。|
-| `assert_nil( obj, [msg] )`                                       | `obj.nil?`はtrueであると主張する。|
-| `assert_not_nil( obj, [msg] )`                                   | obj.nil?`はfalseであると主張する。|
-| `assert_empty( obj, [msg] )`                                     | `obj`は`empty?`であると主張する。|
-| `assert_not_empty( obj, [msg] )`                                 | `obj`は`empty?`ではないと主張する。|
-| `assert_match( regexp, string, [msg] )`                          | stringは正規表現 (regexp) にマッチすると主張する。|
-| `assert_no_match( regexp, string, [msg] )`                       | stringは正規表現 (regexp) にマッチしないと主張する。|
-| `assert_includes( collection, obj, [msg] )`                      | `obj`は`collection`に含まれると主張する。|
-| `assert_not_includes( collection, obj, [msg] )`                  | `obj`は`collection`に含まれないと主張する。|
-| `assert_in_delta( expected, actual, [delta], [msg] )`            | `expected`と`actual`の数値の相対誤差が`epsilon`より小さいと主張する。|
-| `assert_not_in_delta( expected, actual, [delta], [msg] )`        | `expected`と`actual`の数値の相対誤差が`epsilon`より小さいと主張する。|
-| `assert_in_epsilon ( expected, actual, [epsilon], [msg] )`       | `expected`と`actual`の個数の差は`delta`以内にはないと主張する。|
-| `assert_not_in_epsilon ( expected, actual, [epsilon], [msg] )`   | `expected`と`actual`の数値には`epsilon`より小さい相対誤差がないと主張する。|
-| `assert_throws( symbol, [msg] ) { block }`                       | 与えられたブロックはシンボルをスローすると主張する。|
-| `assert_raises( exception1, exception2, ... ) { block }`         | 渡されたブロックから、渡された例外のいずれかが発生すると主張する。|
-| `assert_instance_of( class, obj, [msg] )`                        | `obj`は`class`のインスタンスであると主張する。|
-| `assert_not_instance_of( class, obj, [msg] )`                    | `obj`は`class`のインスタンスではないと主張する。|
-| `assert_kind_of( class, obj, [msg] )`                            | `obj`は`class`またはそのサブクラスのインスタンスであると主張する。|
-| `assert_not_kind_of( class, obj, [msg] )`                        | `obj`は`class`またはそのサブクラスのインスタンスではないと主張する。|
-| `assert_respond_to( obj, symbol, [msg] )`                        | `obj`は`symbol`に応答すると主張する。|
-| `assert_not_respond_to( obj, symbol, [msg] )`                    | `obj`は`symbol`に応答しないと主張する。|
-| `assert_operator( obj1, operator, [obj2], [msg] )`               | `obj1.operator(obj2)`はtrueであると主張する。|
-| `assert_not_operator( obj1, operator, [obj2], [msg] )`           | `obj1.operator(obj2)`はfalseであると主張する。|
-| `assert_predicate ( obj, predicate, [msg] )`                     | `obj.predicate`はtrueであると主張する (例:`assert_predicate str, :empty?`)。|
-| `assert_not_predicate ( obj, predicate, [msg] )`                 | `obj.predicate`はfalseであると主張する (例:`assert_not_predicate str, :empty?`)。|
-| `flunk( [msg] )`                                                 | 必ず失敗すると主張する。テストが未完成であることを示すのに便利。|
+以下で紹介するのは、[`Minitest`](https://github.com/seattlerb/minitest)で使えるアサーションからの抜粋です。MinitestはRailsにデフォルトで組み込まれているテスティングライブラリです。`[msg]`パラメータは1つのオプション文字列メッセージであり、テストが失敗したときのメッセージをわかりやすくするにはここで指定します。これは必須ではありません。
+
+**`assert( test, [msg] )`**
+
+* `test`はtrueであると主張する。
+
+**`assert_not( test, [msg] )`**
+
+* `test`はfalseであると主張する。
+
+**`assert_equal( expected, actual, [msg] )`**
+
+* `expected == actual`はtrueであると主張する。
+
+**`assert_not_equal( expected, actual, [msg] )`**
+
+* `expected != actual`はtrueであると主張する。
+
+**`assert_same( expected, actual, [msg] )`**
+
+* `expected.equal?(actual)`はtrueであると主張する。
+
+**`assert_not_same( expected, actual, [msg] )`**
+
+* `expected.equal?(actual)`はfalseであると主張する。
+
+**`assert_nil( obj, [msg] )`**
+
+* `obj.nil?`はtrueであると主張する。
+
+**`assert_not_nil( obj, [msg] )`**
+
+* `obj.nil?`はfalseであると主張する。
+
+**`assert_empty( obj, [msg] )`**
+
+* `obj`は`empty?`であると主張する。
+
+**`assert_not_empty( obj, [msg] )`**
+
+* `obj`は`empty?`ではないと主張する。
+
+**`assert_match( regexp, string, [msg] )`**
+
+* stringは正規表現 (regexp) にマッチすると主張する。
+
+**`assert_no_match( regexp, string, [msg] )`**
+
+* stringは正規表現 (regexp) にマッチしないと主張する。
+
+**`assert_includes( collection, obj, [msg] )`**
+
+* `obj`は`collection`に含まれると主張する。
+
+**`assert_not_includes( collection, obj, [msg] )`**
+
+* `obj`は`collection`に含まれないと主張する。
+
+**`assert_in_delta( expected, actual, [delta], [msg] )`**
+
+* `expected`と`actual`の個数の差は`delta`以内であると主張する。
+
+**`assert_not_in_delta( expected, actual, [delta], [msg] )`**
+
+* `expected`と`actual`の個数の差は`delta`以内にはないと主張する。
+
+**`assert_in_epsilon ( expected, actual, [epsilon], [msg] )`**
+
+* `expected`と`actual`の個数の差が`epsilon`より小さいと主張する。
+
+**`assert_not_in_epsilon ( expected, actual, [epsilon], [msg] )`**
+
+* `expected`と`actual`の数値には`epsilon`より小さい相対誤差がないと主張する。
+
+**`assert_throws( symbol, [msg] ) { block }`**
+
+* 与えられたブロックはシンボルをスローすると主張する。
+
+**`assert_raises( exception1, exception2, ... ) { block }`**
+
+* 渡されたブロックから、渡された例外のいずれかが発生すると主張する。
+
+**`assert_instance_of( class, obj, [msg] )`**
+
+* `obj`は`class`のインスタンスであると主張する。
+
+**`assert_not_instance_of( class, obj, [msg] )`**
+
+* `obj`は`class`のインスタンスではないと主張する。
+
+**`assert_kind_of( class, obj, [msg] )`**
+
+* `obj`は`class`またはそのサブクラスのインスタンスであると主張する。
+
+**`assert_not_kind_of( class, obj, [msg] )`**
+
+* `obj`は`class`またはそのサブクラスのインスタンスではないと主張する。
+
+**`assert_respond_to( obj, symbol, [msg] )`**
+
+* `obj`は`symbol`に応答すると主張する。
+
+**`assert_not_respond_to( obj, symbol, [msg] )`**
+
+* `obj`は`symbol`に応答しないと主張する。
+
+**`assert_operator( obj1, operator, [obj2], [msg] )`**
+
+* `obj1.operator(obj2)`はtrueであると主張する。
+
+**`assert_not_operator( obj1, operator, [obj2], [msg] )`**
+
+* `obj1.operator(obj2)`はfalseであると主張する。
+
+**`assert_predicate ( obj, predicate, [msg] )`**
+
+* `obj.predicate`はtrueであると主張する (例:`assert_predicate str, :empty?`)。
+
+**`assert_not_predicate ( obj, predicate, [msg] )`**
+
+* `obj.predicate`はfalseであると主張する (例:`assert_not_predicate str, :empty?`)。
+
+**`flunk( [msg] )`**
+
+* 必ず失敗すると主張する。これはテストが未完成であることを示すのに便利。
 
 これらはMinitestがサポートするアサーションの一部に過ぎません。最新の完全なアサーションのリストについては[Minitest APIドキュメント](http://docs.seattlerb.org/minitest/)、特に[`Minitest::Assertions`](http://docs.seattlerb.org/minitest/Minitest/Assertions.html)を参照してください。
 
@@ -323,17 +415,41 @@ NOTE: アサーションの自作は高度なトピックなので、このチ�
 
 Railsは`minitest`フレームワークに以下のような独自のカスタムアサーションを追加しています。
 
-| Assertion                                                                         | Purpose |
-| --------------------------------------------------------------------------------- | ------- |
-| [`assert_difference(expressions, difference = 1, message = nil) {...}`](https://api.rubyonrails.org/classes/ActiveSupport/Testing/Assertions.html#method-i-assert_difference) | `yield`されたブロックで評価された結果である式の戻り値における数値の違いをテストする。|
-| [`assert_no_difference(expressions, message = nil, &block)`](https://api.rubyonrails.org/classes/ActiveSupport/Testing/Assertions.html#method-i-assert_no_difference) | 式を評価した結果の数値は、ブロックで渡されたものを呼び出す前と呼び出した後で違いがないと主張する。|
-| [`assert_changes(expressions, message = nil, from:, to:, &block)`](https://api.rubyonrails.org/classes/ActiveSupport/Testing/Assertions.html#method-i-assert_changes) | 式を評価した結果は、ブロックで渡されたものを呼び出す前と呼び出した後で違いがあると主張する。|
-| [`assert_no_changes(expressions, message = nil, &block)`](https://api.rubyonrails.org/classes/ActiveSupport/Testing/Assertions.html#method-i-assert_no_changes) | 式を評価した結果は、ブロックで渡されたものを呼び出す前と呼び出した後で違いがないと主張する。|
-| [`assert_nothing_raised { block }`](https://api.rubyonrails.org/classes/ActiveSupport/Testing/Assertions.html#method-i-assert_nothing_raised) | 渡されたブロックで例外が発生しないことを確認する。|
-| [`assert_recognizes(expected_options, path, extras={}, message=nil)`](https://api.rubyonrails.org/classes/ActionDispatch/Assertions/RoutingAssertions.html#method-i-assert_recognizes) | 渡されたパスのルーティングが正しく扱われ、(`expected_options`ハッシュで渡された) 解析オプションがパスと一致したことを主張する。基本的にこのアサーションでは、Railsは`expected_options`で渡されたルーティングを認識すると主張する。|
-| [`assert_generates(expected_path, options, defaults={}, extras = {}, message=nil)`](https://api.rubyonrails.org/classes/ActionDispatch/Assertions/RoutingAssertions.html#method-i-assert_generates) | 渡されたオプションは、渡されたパスの生成に使えるものであると主張する（`assert_recognizes`と逆の動作）。`extras`パラメータは、クエリ文字列に追加リクエストがある場合にそのパラメータの名前と値をリクエストに渡すのに使われる。`message`パラメータにはアサーションが失敗した場合のカスタムエラーメッセージを渡せる。|
-| [`assert_response(type, message = nil)`](https://api.rubyonrails.org/classes/ActionDispatch/Assertions/ResponseAssertions.html#method-i-assert_response) | レスポンスが特定のステータスコードを持っていることを主張する。`:success`を指定するとステータスコード200-299を指定したことになり、同様に`:redirect`は300-399、`:missing`は404、`:error`は500-599にそれぞれマッチする。ステータスコードの数字や同等のシンボルを直接渡すこともできる。詳細については[ステータスコードの完全なリスト](https://rubydoc.info/github/rack/rack/master/Rack/Utils#HTTP_STATUS_CODES-constant)および[シンボルとステータスコードの対応リスト](https://rubydoc.info/github/rack/rack/master/Rack/Utils#SYMBOL_TO_STATUS_CODE-constant)を参照。|
-| [`assert_redirected_to(options = {}, message=nil)`](https://api.rubyonrails.org/classes/ActionDispatch/Assertions/ResponseAssertions.html#method-i-assert_redirected_to) | 渡されたリダイレクトオプションが、最後に実行されたアクションで呼び出されたリダイレクトのオプションと一致することを主張する。このアサーションは部分マッチ可能。たとえば`assert_redirected_to(controller: "weblog")`は`redirect_to(controller: "weblog", action: "show")`というリダイレクトなどにもマッチする。`assert_redirected_to root_path`などの名前付きルートを渡すことも、`assert_redirected_to @article`などのActive Recordオブジェクトを渡すことも可能。|
+**[`assert_difference(expressions, difference = 1, message = nil) {...}`](http://api.rubyonrails.org/classes/ActiveSupport/Testing/Assertions.html#method-i-assert_difference)**
+
+* `yield`されたブロックで評価された結果である式の戻り値における数値の違いをテストする。
+
+**[`assert_no_difference(expressions, message = nil, &block)`](http://api.rubyonrails.org/classes/ActiveSupport/Testing/Assertions.html#method-i-assert_no_difference)**
+
+* 式を評価した結果の数値は、ブロックで渡されたものを呼び出す前と呼び出した後で違いがないと主張する。
+
+**[`assert_changes(expressions, message = nil, from:, to:, &block)`](http://api.rubyonrails.org/classes/ActiveSupport/Testing/Assertions.html#method-i-assert_changes)**
+
+* 式を評価した結果は、ブロックで渡されたものを呼び出す前と呼び出した後で違いがあると主張する。
+
+**[`assert_no_changes(expressions, message = nil, &block)`](http://api.rubyonrails.org/classes/ActiveSupport/Testing/Assertions.html#method-i-assert_no_changes)**
+
+* 式を評価した結果は、ブロックで渡されたものを呼び出す前と呼び出した後で違いがないと主張する。
+
+**[`assert_nothing_raised { block }`](http://api.rubyonrails.org/classes/ActiveSupport/Testing/Assertions.html#method-i-assert_nothing_raised)**
+
+* 渡されたブロックで例外が発生しないことを確認する。
+
+**[`assert_recognizes(expected_options, path, extras={}, message=nil)`](http://api.rubyonrails.org/classes/ActionDispatch/Assertions/RoutingAssertions.html#method-i-assert_recognizes)**
+
+* 渡されたパスのルーティングが正しく扱われ、(`expected_options`ハッシュで渡された) 解析オプションがパスと一致したことを主張する。基本的にこのアサーションでは、Railsは`expected_options`で渡されたルーティングを認識すると主張する。
+
+**[`assert_generates(expected_path, options, defaults={}, extras = {}, message=nil)`](http://api.rubyonrails.org/classes/ActionDispatch/Assertions/RoutingAssertions.html#method-i-assert_generates)**
+
+* 渡されたオプションは、渡されたパスの生成に使えるものであると主張する（`assert_recognizes`と逆の動作）。`extras`パラメータは、クエリ文字列に追加リクエストがある場合にそのパラメータの名前と値をリクエストに渡すのに使われる。`message`パラメータにはアサーションが失敗した場合のカスタムエラーメッセージを渡せる。
+
+**[`assert_response(type, message = nil)`](http://api.rubyonrails.org/classes/ActionDispatch/Assertions/ResponseAssertions.html#method-i-assert_response)**
+
+* レスポンスが特定のステータスコードを持っていることを主張する。`:success`を指定するとステータスコード200-299を指定したことになり、同様に`:redirect`は300-399、`:missing`は404、`:error`は500-599にそれぞれマッチする。ステータスコードの数字や同等のシンボルを直接渡すこともできる。詳細については[ステータスコードの完全なリスト](https://rubydoc.info/github/rack/rack/master/Rack/Utils#HTTP_STATUS_CODES-constant)および[シンボルとステータスコードの対応リスト](https://rubydoc.info/github/rack/rack/master/Rack/Utils#SYMBOL_TO_STATUS_CODE-constant)を参照。
+
+**[`assert_redirected_to(options = {}, message=nil)`](http://api.rubyonrails.org/classes/ActionDispatch/Assertions/ResponseAssertions.html#method-i-assert_redirected_to)**
+
+* 渡されたリダイレクトオプションが、最後に実行されたアクションで呼び出されたリダイレクトのオプションと一致することを主張する。このアサーションは部分マッチ可能。たとえば`assert_redirected_to(controller: "weblog")`は`redirect_to(controller: "weblog", action: "show")`というリダイレクトなどにもマッチする。`assert_redirected_to root_path`などの名前付きルートを渡すことも、`assert_redirected_to @article`などのActive Recordオブジェクトを渡すことも可能。
 
 これらのアサーションのいくつかについては次の章でご説明します。
 
