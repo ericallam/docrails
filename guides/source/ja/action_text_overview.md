@@ -177,6 +177,7 @@ end
 ```
 
 Action Textの`<action-text-attachment>`要素レンダリングと統合するには、クラスが以下の条件を満たさなければなりません。
+
 * `ActionText::Attachable`モジュールを`include`する
 * `#to_sgid(**options)`を実装する（[`GlobalID::Identification` concern][global-id])経由で利用可能）
 * （オプション）`#to_attachable_partial_path`を宣言する
