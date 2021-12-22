@@ -1,6 +1,6 @@
 **DO NOT READ THIS FILE ON GITHUB, GUIDES ARE PUBLISHED ON https://guides.rubyonrails.org.**
 
-Active Record でマルチプルデータベースを利用する
+Active Record で複数のデータベース利用
 =====================================
 
 このガイドでは、Active Recordでデータベースを複数利用する方法について説明します。
