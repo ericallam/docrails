@@ -1,6 +1,6 @@
 **DO NOT READ THIS FILE ON GITHUB, GUIDES ARE PUBLISHED ON https://guides.rubyonrails.org.**
 
-Active Record暗号化
+Active Record と暗号化
 ========================
 
 このガイドでは、Active Recordを用いてデータベースの情報を暗号化する方法について説明します。
