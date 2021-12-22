@@ -163,7 +163,7 @@ to be an error condition in future versions of Rails.
 ### `ActionDispatch::Request#content_type`が Content-Typeヘッダーをそのまま返すようになった
 
 従来は、`ActionDispatch::Request#content_type`が返す値にcharsetパートが含まれて「いませんでした」。
-この振る舞いが変更され、charsetパートを含むContent-Typeヘッダーをそのまま帰すようになりました。
+この振る舞いが変更され、charsetパートを含むContent-Typeヘッダーをそのまま返すようになりました。
 
 MIMEタイプだけが欲しい場合は、代わりに`ActionDispatch::Request#media_type`をお使いください。
 
