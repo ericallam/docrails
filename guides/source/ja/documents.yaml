@@ -65,7 +65,7 @@
       url: layouts_and_rendering.html
       description: Action ControllerとAction Viewが提供する基本的なレイアウト機能について解説します。画面出力 (レンダリング) とリダイレクト、content_forブロックとパーシャル (部分テンプレート) の使用方法についても解説します。
     -
-      name: Action Viewヘルパー
+      name: Action View ヘルパー
       url: action_view_helpers.html
       description: Action Viewで提供されるヘルパーの概要について解説します。
     -
