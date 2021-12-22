@@ -601,6 +601,10 @@ h3 a, h4 a, h5 a, h6 a {
     margin: 0;
     padding: 0;
   }
+  dd {
+    line-height: 1.4;
+    margin-bottom: 0.5em;
+  }
   dt {padding:0; margin: 0.5em 0 0;}
 
   .L, .R {float: left; width: 50%; margin: 0; padding: 0;}
