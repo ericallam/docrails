@@ -772,7 +772,7 @@ config.active_storage.variant_processor = :vips
 
 MiniMagickとVipsの互換性は完全ではないため、MiniMagickを利用している既存のアプリケーションをVipsに移行すると、フォーマット固有のオプションを使っている場合は以下のように若干の変更が必要になります。
 
-```rhtml
+```erb
 <!-- MiniMagick -->
 <%= image_tag user.avatar.variant(resize_to_limit: [100, 100], format: :jpeg, sampling_factor: "4:2:0", strip: true, interlace: "JPEG", colorspace: "sRGB", quality: 80) %>
 
