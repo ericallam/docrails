@@ -685,7 +685,7 @@ Active Recordで楽観的ロック(optimistic locking)を使うかどうかを�
 
 #### `config.active_record.has_many_inversing`
 
-`belongs_to`関連付けを`has_many`関連付けにトラバースするときに、逆のレコード（inverse record）も設定されるようにします。
+`belongs_to`関連付けを`has_many`関連付けにトラバースするときに`inverse_of`のレコードも設定されるようにします。
 
 #### `config.active_record.automatic_scope_inversing`
 
