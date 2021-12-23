@@ -665,7 +665,7 @@ Active Recordで楽観的ロック(optimistic locking)を使うかどうかを�
 
 #### `config.active_record.warn_on_records_fetched_greater_than`
 
-クエリ結果のサイズに応じて警告を出す場合のスレッショルドを設定します。あるクエリから返されるレコード数がこのスレッショルドを超えると、警告がログに出力されます。これは、メモリ肥大化の原因となっている可能性のあるクエリを特定するのに利用できます。
+クエリ結果のサイズに応じて警告を出す場合の閾値（Threshold）を設定します。あるクエリから返されるレコード数がこの閾値を超えると、警告がログに出力されます。これは、メモリ肥大化の原因となっている可能性のあるクエリを特定するのに利用できます。
 
 #### `config.active_record.index_nested_attribute_errors`
 
@@ -1632,7 +1632,7 @@ ffmpegの動画プレビュー画像生成方法を変更できます。デフ�
 config.active_storage.video_preview_arguments = "-vf 'select=eq(n\\,0)+eq(key\\,1)+gt(scene\\,0.015),loop=loop=-1:size=2,trim=start_frame=1' -frames:v 1 -f image2"
 ```
 
-1. `select=eq(n\,0)+eq(key\,1)+gt(scene\,0.015)`: 冒頭の動画フレームとキーフレーム、スレッショルドに合う場面変更のフレーム
+1. `select=eq(n\,0)+eq(key\,1)+gt(scene\,0.015)`: 冒頭の動画フレームとキーフレーム、閾値に合う場面変更のフレーム
 2. `loop=loop=-1:size=2,trim=start_frame=1`: 他のフレームが条件を満たさない場合に冒頭の動画フレームにフォールバックするために、選択したフレームの冒頭の1つまたは2つをループさせてから、そのループフレームを削除する
 
 #### `config.active_storage.multiple_file_field_include_hidden`
