@@ -247,7 +247,7 @@
   name: メンテナンスポリシー
   documents:
     -
-      name: メンテナンスポリシー
+      name: Rails のメンテナンスポリシー
       url: maintenance_policy.html
       description: 現在サポートされているRuby on Railsのバージョンと、次期バージョンのリリース見込み時期について記載されています。
 -
