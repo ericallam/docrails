@@ -1,6 +1,6 @@
 **DO NOT READ THIS FILE ON GITHUB, GUIDES ARE PUBLISHED ON https://guides.rubyonrails.org.**
 
-Active RecordとPostgreSQL
+Active Record と PostgreSQL
 ============================
 
 本ガイドでは、PostgreSQL特有のActive Record利用法について解説します。
