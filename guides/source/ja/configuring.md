@@ -1663,7 +1663,8 @@ Rails 7.1以降、 Active Storageの`has_many_attached`リレーションシッ�
 - `config.active_support.disable_to_s_conversion`: `true`
 - `config.action_dispatch.return_only_request_media_type_on_content_type`: `false`
 - `config.action_mailer.smtp_timeout`: `5`
-- `config.active_storage.video_preview_arguments`: `"-vf 'select=eq(n\\,0)+eq(key\\,1)+gt(scene\\,0.015),loop=loop=-1:size=2,trim=start_frame=1' -frames:v 1 -f image2"`
+- `config.active_storage.video_preview_arguments`:
+  `"-vf 'select=eq(n\\,0)+eq(key\\,1)+gt(scene\\,0.015),loop=loop=-1:size=2, trim=start_frame=1' -frames:v 1 -f image2"`
 - `config.active_storage.multiple_file_field_include_hidden`: `true`
 - `config.active_record.automatic_scope_inversing`: `true`
 - `config.active_record.verify_foreign_keys_for_fixtures`: `true`
