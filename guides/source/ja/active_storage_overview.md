@@ -1141,7 +1141,7 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
 end
 ```
 
-[パラレルテスト][]と`DiskService`を利用している場合は、Active Storage用の独自のフォルダをプロセスごとに設定する必要があります。これにより、`teardown`コールバックが呼ばれたときに、関連するプロセスのファイルだけが削除されるようになります。
+[並列テスト][]と`DiskService`を利用している場合は、Active Storage用の独自のフォルダをプロセスごとに設定する必要があります。これにより、`teardown`コールバックが呼ばれたときに、関連するプロセスのファイルだけが削除されるようになります。
 
 ```ruby
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
@@ -1160,7 +1160,7 @@ end
 config.active_job.queue_adapter = :inline
 ```
 
-[パラレルテスト]: https://railsguides.jp/testing.html#%E3%83%91%E3%83%A9%E3%83%AC%E3%83%AB%E3%83%86%E3%82%B9%E3%83%88
+[並列テスト]: https://railsguides.jp/testing.html#%E4%B8%A6%E5%88%97%E3%83%86%E3%82%B9%E3%83%88
 
 #### 結合テスト
 
@@ -1175,7 +1175,7 @@ class ActionDispatch::IntegrationTest
 end
 ```
 
-[パラレルテスト][]と`DiskService`を利用している場合は、Active Storage用の独自のフォルダをプロセスごとに設定する必要があります。これにより、`teardown`コールバックが呼ばれたときに、関連するプロセスのファイルだけが削除されるようになります。
+[並列テスト][]と`DiskService`を利用している場合は、Active Storage用の独自のフォルダをプロセスごとに設定する必要があります。これにより、`teardown`コールバックが呼ばれたときに、関連するプロセスのファイルだけが削除されるようになります。
 
 ```ruby
 class ActionDispatch::IntegrationTest
@@ -1185,7 +1185,7 @@ class ActionDispatch::IntegrationTest
 end
 ```
 
-[パラレルテスト]: https://railsguides.jp/testing.html#%E3%83%91%E3%83%A9%E3%83%AC%E3%83%AB%E3%83%86%E3%82%B9%E3%83%88
+[並列テスト]: https://railsguides.jp/testing.html#%E3%83%91%E3%83%A9%E3%83%AC%E3%83%AB%E3%83%86%E3%82%B9%E3%83%88
 
 ### フィクスチャに添付ファイルを追加する
 
@@ -1236,7 +1236,7 @@ end
 
 テストでアップロードされたファイルは[各テストが終わるたびに](#テスト中に作成したファイルを破棄する)クリーンアップされますが、フィクスチャファイルのクリーンアップはテスト完了時に1度だけ行えば十分です。
 
-パラレルテストを使っている場合は、`parallelize_teardown`を呼び出します。
+並列テストを使っている場合は、`parallelize_teardown`を呼び出します。
 
 ```ruby
 class ActiveSupport::TestCase
@@ -1248,7 +1248,7 @@ class ActiveSupport::TestCase
 end
 ```
 
-パラレルテストを実行していない場合は、`Minitest.after_run`を使うか、利用しているテストフレームワークの同等なメソッド（RSpecの`after(:suite)`など）を使います。
+並列テストを実行していない場合は、`Minitest.after_run`を使うか、利用しているテストフレームワークの同等なメソッド（RSpecの`after(:suite)`など）を使います。
 
 ```ruby
 # test_helper.rb

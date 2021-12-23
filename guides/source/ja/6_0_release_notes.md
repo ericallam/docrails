@@ -36,11 +36,11 @@ Rails 6.0へのアップグレード
 
 Action Textについて詳しくはガイドの[Action Text の概要](action_text_overview.html)を参照してください。
 
-### パラレルテスト
+### 並列テスト
 
 [Pull Request](https://github.com/rails/rails/pull/31900)
 
-[パラレルテスト](testing.html#パラレルテスト)（parallel testing）機能によってテストスイートを並列化できます。デフォルトではプロセスをforkしますが、スレッド（threading）もサポートされます。テストを並列実行することで、テストスイート全体の実行時間を削減できます。
+[並列テスト](testing.html#並列テスト)（parallel testing）機能によってテストスイートを並列化できます。デフォルトではプロセスをforkしますが、スレッド（threading）もサポートされます。テストを並列実行することで、テストスイート全体の実行時間を削減できます。
 
 ### Action Cableのテスト支援
 
@@ -701,7 +701,7 @@ Active Support
 
 ### 主な変更
 
-*   パラレルテストのサポートを追加
+*   並列テストのサポートを追加
     ([Pull Request](https://github.com/rails/rails/pull/31900))
 
 *   `String#strip_heredoc`で文字列のfrozen状態が保護されるようになった
