@@ -1755,7 +1755,7 @@ class Order < ApplicationRecord
 end
 ```
 
-このとき`status` enumの[スコープ](#scopes)が自動的に作成され、以下のように`status`の特定の値を持つ（または持たない）すべてのオブジェクトを検索できるようになります。
+このとき`status` enumの[スコープ](#スコープ)が自動的に作成され、以下のように`status`の特定の値を持つ（または持たない）すべてのオブジェクトを検索できるようになります。
 
 ```irb
 irb> Order.shipped
