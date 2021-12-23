@@ -637,7 +637,7 @@ Active Recordで楽観的ロック(optimistic locking)を使うかどうかを�
 
 #### `config.active_record.partial_updates`
 
-既存レコードの更新で部分書き込みを行なうかどうか（「dirty」とマークされた属性だけを更新するか）を指定するboolian値です。データベースで部分書き込みを使う場合は、`config.active_record.lock_optimistically`で楽観的ロックも使う必要がある点にご注意ください。これは、更新がコンカレントに行われた場合に、読み出しの状態が古い情報に基づいて属性に書き込まれる可能性があるためです。デフォルト値は`true`です。
+既存レコードの更新で部分書き込みを行なうかどうか（「dirty」とマークされた属性だけを更新するか）を指定するboolian値です。データベースで部分書き込みを使う場合は、`config.active_record.lock_optimistically`で楽観的ロックも使う必要がある点にご注意ください。これは、更新が並行に実行された場合に、読み出しの状態が古い情報に基づいて属性に書き込まれる可能性があるためです。デフォルト値は`true`です。
 
 #### `config.active_record.maintain_test_schema`
 
@@ -1637,7 +1637,7 @@ config.active_storage.video_preview_arguments = "-vf 'select=eq(n\\,0)+eq(key\\,
 
 #### `config.active_storage.multiple_file_field_include_hidden`
 
-Rails 7.1以降、 Active Storageの`has_many_attached`リレーションシップは、デフォルトでカレントのコレクションに**追加されるのではなく**、デフォルトでカレントのコレクションを**置き換える**ようになります。「**空の**」コレクションの送信をサポートするには、Action View Form Builderでチェックボックス要素をレンダリングするのと同じ要領で、補助的な隠しフィールドをレンダリングしてください。
+Rails 7.1以降、 Active Storageの`has_many_attached`リレーションシップは、デフォルトで現在のコレクションに**追加されるのではなく**、デフォルトで現在のコレクションを**置き換える**ようになります。「**空の**」コレクションの送信をサポートするには、Action View Form Builderでチェックボックス要素をレンダリングするのと同じ要領で、補助的な隠しフィールドをレンダリングしてください。
 
 ### Action Textを設定する
 

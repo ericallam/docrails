@@ -44,7 +44,7 @@ require "rails/cli"
 
 ### `railties/lib/rails/app_loader.rb`
 
-`exec_app`の主な目的は、Railsアプリケーションにある`bin/rails`を実行することです。カレントディレクトリに`bin/rails`がない場合、`bin/rails`が見つかるまでディレクトリを上に向って探索します。これにより、Railsアプリケーション内のどのディレクトリからでも`rails`コマンドを実行できるようになります。
+`exec_app`の主な目的は、Railsアプリケーションにある`bin/rails`を実行することです。現在いるディレクトリに`bin/rails`がない場合、`bin/rails`が見つかるまでディレクトリを上に向って探索します。これにより、Railsアプリケーション内のどのディレクトリからでも`rails`コマンドを実行できるようになります。
 
 `rails server`については、以下の同等のコマンドが実行されます。
 
