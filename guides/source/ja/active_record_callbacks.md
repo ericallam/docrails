@@ -504,7 +504,7 @@ class User < ApplicationRecord
 end
 ```
 
-```irb
+```
 irb> @user = User.create # 何も出力しない
 
 irb> @user.save # updating @user
