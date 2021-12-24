@@ -979,10 +979,10 @@ end
 あるオブジェクトの属性のハッシュに、キーが`_destroy`で、値が`true`と評価可能（1、`1`、true、`true`など）な組み合わせがあると、そのオブジェクトは削除されます。以下のフォームではユーザーが住所を削除可能です。
 
 ```erb
-<%= form_for @person do |f| %>
+<%= form_with model: @person do |form| %>
   Addresses:
   <ul>
-    <%= f.fields_for :addresses do |addresses_form| %>
+    <%= form.fields_for :addresses do |addresses_form| %>
       <li>
         <%= addresses_form.check_box :_destroy %>
         <%= addresses_form.label :kind %>
