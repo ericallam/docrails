@@ -1,8 +1,9 @@
+**DO NOT READ THIS FILE ON GITHUB, GUIDES ARE PUBLISHED ON https://guides.rubyonrails.org.**
 
 Active Model の基礎
 ===================
 
-このガイドでは、モデルクラスを使用して作業を開始するのに必要なことをすべて解説します。Action Packヘルパーは、Active Modelのおかげで非Active Recordモデルとやりとりすることができます。Active Modelを使用することで、カスタムのORM (オブジェクトリレーショナルマッピング) を作成してRailsフレームワークの外で使用することもできます。
+このガイドでは、モデルクラスを使って作業を開始するのに必要なことをすべて解説します。Action Packヘルパーは、Active Modelのおかげで非Active Recordモデルとやりとりすることができます。Active Modelを使用することで、カスタムのORM (オブジェクトリレーショナルマッピング) を作成してRailsフレームワークの外で使用することもできます。
 
 このガイドの内容:
 
@@ -33,7 +34,7 @@ class Person
 
   attr_accessor :age
 
-    private
+  private
     def reset_attribute(attribute)
       send("#{attribute}=", 0)
     end
@@ -42,12 +43,17 @@ class Person
       send(attribute) > 100
     end
 end
+```
 
-person = Person.new
-person.age = 110
-person.age_highest?  # true
-person.reset_age     # 0
-person.age_highest?  # false
+```
+irb> person = Person.new
+irb> person.age = 110
+irb> person.age_highest?
+=> true
+irb> person.reset_age
+=> 0
+irb> person.age_highest?
+=> false
 ```
 
 ### Callbacksモジュール
@@ -90,20 +96,23 @@ class Person
     nil
   end
 end
+```
 
-person = Person.new
-person.to_model == person  # => true
-person.to_key              # => nil
-person.to_param            # => nil
+```
+irb> person = Person.new
+irb> person.to_model == person
+=> true
+irb> person.to_key
+=> nil
+irb> person.to_param
+=> nil
 ```
 
 ### Dirtyモジュール
 
-あるオブジェクトが数度にわたって変更され、保存されていない状態は、「汚れた (dirty)」状態です。`ActiveModel::Dirty`モジュールを使うと、オブジェクトで変更が生じたかどうかを検出できます。属性名に基づいたアクセサメソッドも使えます。`first_name`属性と`last_name`を持つPersonというクラスを例に考えてみましょう。
+あるオブジェクトが数度にわたって変更され、保存されていない状態は、「汚れた（dirty）」状態です。`ActiveModel::Dirty`モジュールを使うと、オブジェクトで変更が生じたかどうかを検出できます。属性名に基づいたアクセサメソッドも使えます。`first_name`属性と`last_name`を持つPersonというクラスを例に考えてみましょう。
 
 ```ruby
-require 'active_model'
-
 class Person
   include ActiveModel::Dirty
   define_attribute_methods :first_name, :last_name
@@ -135,49 +144,61 @@ end
 
 #### 変更されたすべての属性のリストをオブジェクトから直接取得する
 
-```ruby
-person = Person.new
-person.changed? # => false 
+```
+irb> person = Person.new
+irb> person.changed?
+=> false
 
-person.first_name = "First Name"
-person.first_name # => "First Name"
+irb> person.first_name = "First Name"
+irb> person.first_name
+=> "First Name"
 
 # 属性が1つ以上変更されている場合にtrueを返す
-person.changed? # => true
+irb> person.changed?
+=> true
 
 # 保存前に変更された属性のリストを返す
-person.changed # => ["first_name"]
+irb> person.changed
+=> ["first_name"]
 
 # 元の値から変更された属性のハッシュを返す
-person.changed_attributes # => {"first_name"=>nil}
+irb> person.changed_attributes
+=> {"first_name"=>nil}
 
-# 変更のハッシュを返す (ハッシュのキーは属性名、ハッシュの値はフィールドの新旧の値の配列
-person.changes # => {"first_name"=>[nil, "First Name"]}
+# 変更のハッシュを返す （ハッシュのキーは属性名、ハッシュの値はフィールドの新旧の値の配列）
+irb> person.changes
+=> {"first_name"=>[nil, "First Name"]}
 ```
 
 #### 属性名に基づいたアクセサメソッド
 
 特定の属性が変更されたかどうかを検出します。
 
-```ruby
+```
+irb> person.first_name
+=> "First Name"
+
 # attr_name_changed?
-person.first_name # => "First Name"
-person.first_name_changed? # => true
+irb> person.first_name_changed?
+=> true
 ```
 
-その属性の直前の値を返します。
+属性の直前の値を返します。
 
-```ruby
+```
 # attr_name_was accessor
-person.first_name_was # => nil
+irb> person.first_name_was
+=> nil
 ```
 
 変更された属性の、直前の値と現在の値を両方返します。変更があった場合は配列を返し、変更がなかった場合はnilを返します。
 
-```ruby
+```
 # attr_name_change
-person.first_name_change # => [nil, "First Name"]
-person.last_name_change # => nil
+irb> person.first_name_change
+=> [nil, "First Name"]
+irb> person.last_name_change
+=> nil
 ```
 
 ### `Validations`モジュール
@@ -194,16 +215,23 @@ class Person
   validates_format_of :email, with: /\A([^\s]+)((?:[-a-z0-9]\.)[a-z]{2,})\z/i
   validates! :token, presence: true
 end
+```
 
-person = Person.new(token: "2b1f325")
-person.valid? # => false 
-person.name = 'vishnu'
-person.email = 'me'
-person.valid? # => false 
-person.email = 'me@vishnuatrai.com'
-person.valid? # => true
-person.token = nil
-person.valid? # => ActiveModel::StrictValidationFailedが発生する
+```
+irb> person = Person.new
+irb> person.token = "2b1f325"
+irb> person.valid?
+=> false
+irb> person.name = 'vishnu'
+irb> person.email = 'me'
+irb> person.valid?
+=> false
+irb> person.email = 'me@vishnuatrai.com'
+irb> person.valid?
+=> true
+irb> person.token = nil
+irb> person.valid?
+ActiveModel::StrictValidationFailed
 ```
 
 ### `Naming`モジュール
@@ -240,33 +268,13 @@ class EmailContact
 
   def deliver
     if valid?
-      # deliver email
+      # メールを配信
     end
   end
 end
 ```
 
-`ActiveModel::Model`を`include`すると、以下のような機能を使えるようになります。
-
-- モデル名の調査
-- 変換
-- 翻訳
-- バリデーション
-
-Active Recordの場合と同じような方法で、オブジェクトを属性のハッシュで初期化することもできるようになります。
-
-
-```ruby
-email_contact = EmailContact.new(name: 'David',
-                                 email: 'david@example.com',
-                                 message: 'Hello World')
-email_contact.name       # => 'David'
-email_contact.email      # => 'david@example.com'
-email_contact.valid?     # => true
-email_contact.persisted? # => false
-```
-
-`ActiveModel::Model`を`include`するクラスでは、Active Recordの場合と同様に`form_for`や`render`などのAction Viewヘルパーメソッドを使えるようになります。
+`ActiveModel::Model`を`include`すると、`ActiveModel::API`のすべての機能を利用できるようになります。
 
 ### シリアライズ
 
@@ -286,11 +294,13 @@ end
 
 上のようにすることで、`serializable_hash`を使ってオブジェクトのシリアライズ化ハッシュにアクセスできるようになります。
 
-```ruby
-person = Person.new
-person.serializable_hash   # => {"name"=>nil}
-person.name = "Bob"
-person.serializable_hash   # => {"name"=>"Bob"}
+```
+irb> person = Person.new
+irb> person.serializable_hash
+=> {"name"=>nil}
+irb> person.name = "Bob"
+irb> person.serializable_hash
+=> {"name"=>"Bob"}
 ```
 
 #### `ActiveModel::Serializers`モジュール
@@ -315,11 +325,13 @@ end
 
 `serializable_hash`と似ている`as_json`メソッドは、モデルを表現するハッシュ形式を提供します。
 
-```ruby
-person = Person.new
-person.as_json # => {"name"=>nil}
-person.name = "Bob"
-person.as_json # => {"name"=>"Bob"}
+```
+irb> person = Person.new
+irb> person.as_json
+=> {"name"=>nil}
+irb> person.name = "Bob"
+irb> person.as_json
+=> {"name"=>"Bob"}
 ```
 
 JSON文字列を元にモデルの属性を定義することもできます。ただし、そのクラスに`attributes=`メソッドを定義しておく必要があります。
@@ -344,11 +356,13 @@ end
 
 上のようにすることで、`Person`のインスタンスを作成して`from_json`で属性を設定できるようになります。
 
-```ruby
-json = { name: 'Bob' }.to_json
-person = Person.new
-person.from_json(json) # => #<Person:0x00000100c773f0 @name="Bob">
-person.name            # => "Bob"
+```
+irb> json = { name: 'Bob' }.to_json
+irb> person = Person.new
+irb> person.from_json(json)
+=> #<Person:0x00000100c773f0 @name="Bob">
+irb> person.name
+=> "Bob"
 ```
 
 ### `Translation`モジュール
@@ -383,25 +397,25 @@ Person.human_attribute_name('name') # => "Nome"
 
 * `app/models/person.rb`
 
-  ```ruby
-  class Person
-    include ActiveModel::Model
-  end
-  ```
+    ```ruby
+    class Person
+      include ActiveModel::Model
+    end
+    ```
 
 * `test/models/person_test.rb`
 
-  ```ruby
-  require 'test_helper'
+    ```ruby
+    require "test_helper"
 
-  class PersonTest < ActiveSupport::TestCase
-    include ActiveModel::Lint::Tests
+    class PersonTest < ActiveSupport::TestCase
+      include ActiveModel::Lint::Tests
 
-    setup do
-      @model = Person.new
+      setup do
+        @model = Person.new
+      end
     end
-  end
-  ```
+    ```
 
 ```bash
 $ rails test
@@ -438,41 +452,57 @@ class Person
   include ActiveModel::SecurePassword
   has_secure_password
   has_secure_password :recovery_password, validations: false
+
   attr_accessor :password_digest, :recovery_password_digest
 end
+```
 
-person = Person.new
+```
+irb> person = Person.new
 
 # パスワードが空の場合
-person.valid? # => false
+irb> person.valid?
+=> false
 
 # パスワード確認入力がパスワードと一致しない場合
-person.password = 'aditya'
-person.password_confirmation = 'nomatch'
-person.valid? # => false
+irb> person.password = 'aditya'
+irb> person.password_confirmation = 'nomatch'
+irb> person.valid?
+=> false
 
 # パスワードが72文字を超えた場合
-person.password = person.password_confirmation = 'a' * 100
-person.valid? # => false
+irb> person.password = person.password_confirmation = 'a' * 100
+irb> person.valid?
+=> false
 
 # パスワードだけがありパスワード確認入力がない場合
-person.password = 'aditya'
-person.valid? # => true
+irb> person.password = 'aditya'
+irb> person.valid?
+=> true
 
 # すべてのバリデーションをパスした場合
-person.password = person.password_confirmation = 'aditya'
-person.valid? # => true
+irb> person.password = person.password_confirmation = 'aditya'
+irb> person.valid?
+=> true
 
-person.recovery_password = "42password"
+irb> person.recovery_password = "42password"
 
-person.authenticate('aditya') # => person
-person.authenticate('notright') # => false
-person.authenticate_password('aditya') # => person
-person.authenticate_password('notright') # => false
+irb> person.authenticate('aditya')
+=> #<Person> # == person
+irb> person.authenticate('notright')
+=> false
+irb> person.authenticate_password('aditya')
+=> #<Person> # == person
+irb> person.authenticate_password('notright')
+=> false
 
-person.authenticate_recovery_password('42password') # => person
-person.authenticate_recovery_password('notright') # => false
+irb> person.authenticate_recovery_password('42password')
+=> #<Person> # == person
+irb> person.authenticate_recovery_password('notright')
+=> false
 
-person.password_digest # => "$2a$04$gF8RfZdoXHvyTjHhiU4ZsO.kQqV9oonYZu31PRE4hLQn3xM2qkpIy"
-person.recovery_password_digest # => "$2a$04$iOfhwahFymCs5weB3BNH/uXkTG65HR.qpW.bNhEjFP3ftli3o5DQC"
+irb> person.password_digest
+=> "$2a$04$gF8RfZdoXHvyTjHhiU4ZsO.kQqV9oonYZu31PRE4hLQn3xM2qkpIy"
+irb> person.recovery_password_digest
+=> "$2a$04$iOfhwahFymCs5weB3BNH/uXkTG65HR.qpW.bNhEjFP3ftli3o5DQC"
 ```
