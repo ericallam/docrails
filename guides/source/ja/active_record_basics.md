@@ -18,15 +18,15 @@ Active Record の基礎
 Active Recordについて
 ----------------------
 
-Active Recordとは、[MVC](https://ja.wikipedia.org/wiki/Model_View_Controller)で言うところのM、つまりモデルに相当するものであり、ビジネスデータとビジネスロジックを表すシステムの階層です。Active Recordは、データベースに恒久的に保存される必要のあるビジネスオブジェクトの作成と利用を円滑に行なえるようにします。Active Recordは、ORM (オブジェクト/リレーショナルマッピング) システムに記述されている「Active Recordパターン」を実装したものであり、このパターンと同じ名前が付けられています。
+Active Recordとは、[MVC](https://ja.wikipedia.org/wiki/Model_View_Controller)で言うところのM、つまりモデルに相当するものであり、ビジネスデータとビジネスロジックを表すシステムの階層です。Active Recordは、データベースに恒久的に保存される必要のあるビジネスオブジェクトの作成と利用を円滑に行なえるようにします。Active Recordは、ORM（オブジェクト/リレーショナルマッピング）システムに記述されている「Active Recordパターン」を実装したものであり、このパターンと同じ名前が付けられています。
 
 ### Active Recordパターン
 
-パターン名としての[Active Record](https://www.martinfowler.com/eaaCatalog/activeRecord.html)はMartin Fowler『Patterns of Enterprise Application Architecture』という書籍で記述されました。Active Recordパターンにおいて、オブジェクトとは永続的なデータであり、そのデータに対する振る舞いでもあります。Active Recordパターンは、データアクセスのロジックを常にオブジェクトに含めておくことで、そのオブジェクトの利用者にデータベースへの読み書き方法を指示できる、という立場に立っています。
+パターン名としての[Active Record](https://www.martinfowler.com/eaaCatalog/activeRecord.html)はMartin Fowler『Patterns of Enterprise Application Architecture』という書籍に記述されています。Active Recordパターンにおいて、オブジェクトとは永続的なデータであり、そのデータに対する振る舞いでもあります。Active Recordパターンは、データアクセスのロジックを常にオブジェクトに含めておくことで、そのオブジェクトの利用者にデータベースへの読み書き方法を指示できる、という立場に立っています。
 
 ### O/Rマッピング
 
-[オブジェクト/リレーショナルマッピング](https://ja.wikipedia.org/wiki/%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E9%96%A2%E4%BF%82%E3%83%9E%E3%83%83%E3%83%94%E3%83%B3%E3%82%B0)(O/RマッピングやORMと略されることもあります)とは、アプリケーションが持つリッチなオブジェクトをリレーショナルデータベース(RDBMS)のテーブルに接続することです。ORMを用いると、SQL文を直接書く代りにわずかなアクセスコードを書くだけで、アプリケーションにおけるオブジェクトの属性やリレーションシップをデータベースに保存することもデータベースから読み出すこともできるようになります。
+[オブジェクト/リレーショナルマッピング](https://ja.wikipedia.org/wiki/%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E9%96%A2%E4%BF%82%E3%83%9E%E3%83%83%E3%83%94%E3%83%B3%E3%82%B0)（O/RマッピングやORMと略されることもあります）とは、アプリケーションが持つリッチなオブジェクトをリレーショナルデータベース（RDBMS）のテーブルに接続することです。ORMを用いると、SQL文を直接書く代りにわずかなアクセスコードを書くだけで、アプリケーションにおけるオブジェクトの属性やリレーションシップをデータベースに保存することもデータベースから読み出すこともできるようになります。
 
 NOTE: Active Recordを完全に理解するには、リレーショナルデータベース管理システム（RDBMS）やSQL（構造化クエリ言語）についての知識が役に立ちます。これらについてもっと深く学びたい場合は、[このチュートリアル](https://www.w3schools.com/sql/default.asp)（[このチュートリアル](http://www.sqlcourse.com/)も可）を参照するか、他の方法で学習しましょう。
 
@@ -40,17 +40,17 @@ Active Recordにはさまざまな機能が搭載されており、その中で�
 * データをデータベースで永続化する前にバリデーション(検証)を行なう
 * データベースをオブジェクト指向スタイルで操作する
 
-Active RecordにおけるCoC(Convention over Configuration)
+Active RecordにおけるCoC（Convention over Configuration）
 ----------------------------------------------
 
-他のプログラミング言語やフレームワークでアプリケーションを作成すると、設定のためのコードを大量に書く必要が生じがちです。一般的なORMアプリケーションでは特にこの傾向があります。しかし、Railsで採用されているルール（慣習）に従っていれば、Active Recordモデルの作成時に書かなければならない設定用コードは最小限で済みますし、設定用コードが完全に不要になることすらあります。これは「設定がほとんどの場合で共通ならば、その設定をアプリケーションのデフォルトにすべきである」という考えに基づいています。つまり、ユーザーによる明示的な設定が必要となるのは、標準のルールでは足りない場合だけです。
+他のプログラミング言語やフレームワークでアプリケーションを作成すると、設定のためのコードを大量に書く必要が生じがちです。一般的なORMアプリケーションでは特にこの傾向があります。しかし、Railsで採用されているルール（規約）に従っていれば、Active Recordモデルの作成時に書かなければならない設定用コードは最小限で済みますし、設定用コードが完全に不要になることすらあります。これは「設定がほとんどの場合で共通ならば、その設定をアプリケーションのデフォルトにすべきである」という考えに基づいています。つまり、ユーザーによる明示的な設定が必要となるのは、標準のルールでは足りない場合だけです。
 
 ### 命名ルール
 
-Active Recordには、モデルとデータベースのテーブルとのマッピング作成時に従うべきルールがいくつかあります。Railsでは、データベースのテーブル名を探索するときに、モデルのクラス名を複数形にした名前で探索します。つまり、`Book`というモデルクラスがある場合、これに対応するデータベースのテーブルは複数形の「**books**」になります。Railsの複数形化メカニズムは非常に強力で、不規則な語でも複数形/単数形に変換できます(person <-> peopleなど)。モデルのクラス名が2語以上の複合語である場合、Rubyの慣習であるキャメルケース(CamelCaseのように語頭を大文字にしてスペースなしでつなぐ)に従ってください。一方、テーブル名は(camel_caseなどのように)小文字かつアンダースコアで区切られなければなりません。以下の例を参照ください。
+Active Recordには、モデルとデータベースのテーブルとのマッピング作成時に従うべきルールがいくつかあります。Railsでは、データベースのテーブル名を探索するときに、モデルのクラス名を複数形にした名前で探索します。つまり、`Book`というモデルクラスがある場合、これに対応するデータベースのテーブルは複数形の「**books**」になります。Railsの複数形化メカニズムは非常に強力で、不規則な語でも複数形/単数形に変換できます(person <-> peopleなど)。モデルのクラス名が2語以上の複合語である場合、Rubyの慣習であるキャメルケース（CamelCaseのように語頭を大文字にしてスペースなしでつなぐ）に従ってください。一方、テーブル名はスネークケース（snake_caseなど、小文字とアンダースコアで構成する）にしなければなりません。以下の例を参照ください。
 
-* モデルのクラス - 単数形、語頭を大文字にする (例: `BookClub`)
-* データベースのテーブル - 複数形、語はアンダースコアで区切られる (例: `book_clubs`)
+* モデルのクラス - 単数形、語頭を大文字にする（例: `BookClub`）
+* データベースのテーブル - 複数形、語はアンダースコアで区切る（例: `book_clubs`）
 
 | モデル / クラス | テーブル / スキーマ |
 | ------------- | -------------- |
@@ -65,9 +65,9 @@ Active Recordには、モデルとデータベースのテーブルとのマッ�
 
 Active Recordでは、データベースのテーブルで使うカラム名についても利用目的に応じたルールがあります。
 
-* **外部キー** - このカラムは`テーブル名の単数形_id`にする必要があります（例: `item_id`、`order_id`）。これらのカラムは、Active Recordがモデル間の関連付けを作成するときに参照されます。
+* **外部キー**: このカラムは`テーブル名の単数形_id`にする必要があります（例: `item_id`、`order_id`）。これらのカラムは、Active Recordがモデル間の関連付けを作成するときに参照されます。
 
-* **主キー** - デフォルトでは `id` という名前の`integer`カラムがテーブルの主キーに使われます（PostgreSQLやMySQLでは`bigint`、SQLiteでは`integer`）。[Active Recordマイグレーション](active_record_migrations.html)でテーブルを作成すると、これらのカラムが自動的に作成されます。
+* **主キー**: デフォルトでは `id` という名前の`integer`カラムがテーブルの主キーに使われます（PostgreSQLやMySQLでは`bigint`、SQLiteでは`integer`）。[Active Recordマイグレーション](active_record_migrations.html)でテーブルを作成すると、これらのカラムが自動的に作成されます。
 
 他にも、Active Recordインスタンスに機能を追加するカラム名がいくつかあります。
 
@@ -76,7 +76,6 @@ Active Recordでは、データベースのテーブルで使うカラム名に�
 * `lock_version`: モデルに[optimistic locking](https://api.rubyonrails.org/classes/ActiveRecord/Locking.html)を追加します
 * `type`: モデルで[Single Table Inheritance](https://api.rubyonrails.org/classes/ActiveRecord/Base.html#class-ActiveRecord::Base-label-Single+table+inheritance)を使う場合に指定します
 * `関連付け名_type`: [ポリモーフィック関連付け](association_basics.html#ポリモーフィック関連付け)の種類を保存します
-
 * `テーブル名_count`: 関連付けにおいて、所属しているオブジェクトの数をキャッシュするのに使われます。たとえば、`Article`クラスに`comments_count`というカラムがあり、そこに`Comment`のインスタンスが多数あると、ポストごとのコメント数がここにキャッシュされます。
 
 NOTE: これらのカラム名は必須ではありませんが、Active Recordで予約されています。特別な理由のない限り、これらの予約済みカラム名の利用は避けてください。たとえば、`type`という語はテーブルでSTI（Single Table Inheritance）を指定するために予約されています。STIを使わない場合であっても、予約語より先にまず「context」などのようなモデルのデータを適切に表す語を検討してください。
@@ -95,9 +94,9 @@ end
 
 ```sql
 CREATE TABLE products (
-   id int(11) NOT NULL auto_increment,
-   name varchar(255),
-   PRIMARY KEY  (id)
+  id int(11) NOT NULL auto_increment,
+  name varchar(255),
+  PRIMARY KEY  (id)
 );
 ```
 
@@ -118,7 +117,7 @@ Railsアプリケーションで別の命名ルールを使わなければなら
 
 ```ruby
 class Product < ApplicationRecord
-  self.table_name = "PRODUCT"
+  self.table_name = "my_products"
 end
 ```
 
@@ -128,7 +127,7 @@ end
 class ProductTest < ActiveSupport::TestCase
   set_fixture_class my_products: Product
   fixtures :my_products
-  ...
+  # ...
 end
 ```
 
@@ -255,10 +254,14 @@ Active Recordを使って、モデルがデータベースに書き込まれる�
 class User < ApplicationRecord
   validates :name, presence: true
 end
+```
 
-user = User.new
-user.save  # => false
-user.save! # => ActiveRecord::RecordInvalid: Validation failed: Name can't be blank
+```
+irb> user = User.new
+irb> user.save
+=> false
+irb> user.save!
+ActiveRecord::RecordInvalid: Validation failed: Name can't be blank
 ```
 
 バリデーションについて詳しくは、[Active Record バリデーションガイド](active_record_validations.html)を参照してください。
@@ -274,7 +277,7 @@ Active Recordコールバックを使うと、モデルのライフサイクル�
 Railsにはデータベーススキーマを管理するためのDSL（ドメイン固有言語: Domain Specific Language）があり、マイグレーション(migration)と呼ばれています。マイグレーションをファイルに保存して`bin/rails`を実行すると、Active Recordがサポートするデータベースに対してマイグレーションが実行されます。以下はテーブルを作成するマイグレーションです。
 
 ```ruby
-class CreatePublications < ActiveRecord::Migration[5.0]
+class CreatePublications < ActiveRecord::Migration[7.0]
   def change
     create_table :publications do |t|
       t.string :title
