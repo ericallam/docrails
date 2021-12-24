@@ -1640,6 +1640,7 @@ end
 irb> Book.new
 => #<Book id: nil, out_of_print: nil>
 ```
+[`default_scope`]: https://edgeapi.rubyonrails.org/classes/ActiveRecord/Scoping/Default/ClassMethods.html#method-i-default_scope
 
 ### スコープのマージ
 
@@ -1944,6 +1945,8 @@ irb> Customer.find_by_sql("SELECT * FROM customers INNER JOIN orders ON customer
 ```
 
 `find_by_sql`は、カスタマイズしたデータベース呼び出しを簡単な方法で提供し、インスタンス化されたオブジェクトを返します。
+
+[`find_by_sql`]: https://edgeapi.rubyonrails.org/classes/ActiveRecord/Querying.html#method-i-find_by_sql
 
 ### `select_all`
 
