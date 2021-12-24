@@ -1,6 +1,5 @@
-**DO NOT READ THIS FILE ON GITHUB, GUIDES ARE PUBLISHED ON http://guides.rubyonrails.org.**
-
-# Rails をはじめよう
+Rails をはじめよう
+============
 
 このガイドでは、Ruby on Rails（以下 Rails）を初めて設定して実行するまでを解説します。
 
