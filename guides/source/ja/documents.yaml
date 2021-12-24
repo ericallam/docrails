@@ -120,7 +120,6 @@
       name: Webpacker の概要
       url: webpacker.html
       description: Railsがラップするwebpackビルドシステム「Webpacker」について解説します。
-      work_in_progress: true
 
 -
   name: 高度なトピック
