@@ -1,4 +1,3 @@
-
 Rails ジェネレータとテンプレート入門
 =====================================================
 
@@ -29,16 +28,18 @@ $ cd myapp
 $ bin/rails generate
 ```
 
-Railsで利用可能なすべてのジェネレータのリストが表示されます。たとえばヘルパージェネレータの詳細な説明が知りたい場合は以下のように入力します。
+NOTE: Railsアプリケーションを新しく作成するときは、`gem install rails`でインストールしたrails gemのグローバルな`rails`コマンドを使いますが、作成したアプリケーションのディレクトリ内では、そのアプリケーション内にバンドルされている`bin/rails`コマンドを使う点が異なります。
+
+Railsで利用可能なすべてのジェネレータのリストを表示できます。たとえばヘルパージェネレータの詳細な説明を表示するには以下のように入力します。
 
 ```bash
 $ bin/rails generate helper --help
 ```
 
-初めてジェネレータを作成する
+最初のジェネレータを作成する
 -----------------------------
 
-Rails 3.0以降のジェネレータは[Thor](https://github.com/erikhuda/thor)の上に構築されています。Thorは強力な解析オプションと優れたファイル操作APIを提供しています。具体例として、`config/initializers`ディレクトリの下に`initializer.rb`という名前のイニシャライザファイルを1つ作成するジェネレータを構成してみましょう。
+Rails 3.0以降のジェネレータは[Thor](https://github.com/erikhuda/thor) gemの上に構築されています。Thorは強力な解析オプションと優れたファイル操作APIを提供しています。具体例として、`config/initializers`ディレクトリの下に`initializer.rb`という名前のイニシャライザファイルを1つ作成するジェネレータを構成してみましょう。
 
 最初の手順として、以下の内容の`lib/generators/initializer_generator.rb`というファイルを1つ作成します。
 
@@ -50,11 +51,11 @@ class InitializerGenerator < Rails::Generators::Base
 end
 ```
 
-NOTE: `create_file`メソッドは`Thor::Actions`によって提供されています。`create_file`およびその他のThorのメソッドのドキュメントについては[Thorドキュメント](http://rdoc.info/github/erikhuda/thor/master/Thor/Actions.html)を参照してください。
+NOTE: `create_file`メソッドは`Thor::Actions`によって提供されています。`create_file`およびその他のThorのメソッドのドキュメントについては[Thorのドキュメント](http://rdoc.info/github/erikhuda/thor/master/Thor/Actions.html)を参照してください。
 
-今作成した新しいジェネレータはきわめてシンプルです。`Rails::Generators::Base`を継承しており、メソッド定義はひとつだけです。ジェネレータが起動されると、ジェネレータ内で定義されているパブリックメソッドが定義順に実行されます。最終的に`create_file`メソッドが呼び出され、指定の内容を持つファイルが指定のディレクトリに1つ作成されます。RailsのアプリケーションテンプレートAPIを使い慣れている開発者であれば、すぐにも新しいジェネレータAPIに熟達できることでしょう。
+新しいジェネレータはきわめてシンプルです。`Rails::Generators::Base`を継承しており、メソッド定義はひとつだけです。ジェネレータが起動されると、ジェネレータ内で定義されているパブリックメソッドが定義順に実行されます。最終的に`create_file`メソッドが呼び出され、指定の内容を持つファイルが指定のディレクトリに1つ作成されます。RailsのアプリケーションテンプレートAPIを使い慣れている開発者であれば、すぐにも新しいジェネレータAPIに熟達できることでしょう。
 
-以下を実行するだけで、この新しいジェネレータを呼び出すことができます。
+以下を実行するだけで、新しいジェネレータを呼び出せます。
 
 ```bash
 $ bin/rails generate initializer
@@ -66,13 +67,13 @@ $ bin/rails generate initializer
 $ bin/rails generate initializer --help
 ```
 
-Railsでは、ジェネレータが`ActiveRecord::Generators::ModelGenerator`のように名前空間化されていれば実用的な説明文を生成できますが、この場合は残念ながらそのようになっていません。この問題は2とおりの方法で解決できます。1つ目の方法は、ジェネレータ内で`desc`メソッドを呼び出すというものです。
+Railsでは、ジェネレータが`ActiveRecord::Generators::ModelGenerator`のように名前空間化されていれば実用的な説明文を生成できますが、今作成したジェネレータはそうなっていません。この問題は2とおりの方法で解決できます。1つ目の方法は、ジェネレータ内で`desc`メソッドを呼び出すことです。
 
 ```ruby
 class InitializerGenerator < Rails::Generators::Base
   desc "このジェネレータはconfig/initializersにイニシャライザファイルを作成する"
   def create_initializer_file
-    create_file "config/initializers/initializer.rb", "# イニシャライザの内容をここに記述"
+    create_file "config/initializers/initializer.rb", "# イニシャライザの内容をここに記述する"
   end
 end
 ```
@@ -102,14 +103,14 @@ class InitializerGenerator < Rails::Generators::NamedBase
 end
 ```
 
-上のジェネレータを見て最初に気付く点は、`Rails::Generators::Base`ではなく`Rails::Generators::NamedBase`を継承していることでしょう。これは、このジェネレータを生成するためには少なくとも1つの引数が必要であることを意味します。この引数はイニシャライザの名前であり、コードではこのイニシャライザ名を`name`という変数で参照できます。
+上のジェネレータを見て最初に気付く点は、`Rails::Generators::Base`ではなく`Rails::Generators::NamedBase`を継承していることです。これは、このジェネレータを生成するには少なくとも1つの引数が必要であることを意味します。この引数はイニシャライザ名で、コードはこのイニシャライザ名を`name`という変数で参照できます。
 
-新しいジェネレータを呼び出せば説明文が表示されます。なお、古いジェネレータファイルは必ず削除しておいてください。
+新しいジェネレータを呼び出せば説明文が表示されます（古いジェネレータファイルを削除しておくのをお忘れなく）。
 
 ```bash
 $ bin/rails generate initializer --help
 Usage:
-  rails generate initializer NAME [options]
+  bin/rails generate initializer NAME [options]
 ```
 
 新しいジェネレータには`source_root`という名前のクラスメソッドも含まれています。このメソッドは、ジェネレータのテンプレートの置き場所を指定する場合に使います。デフォルトでは、作成された`lib/generators/initializer/templates`ディレクトリを指します。
@@ -145,9 +146,9 @@ $ bin/rails generate initializer core_extensions
 ジェネレータが参照するファイル
 -----------------
 
-`rails generate initializer core_extensions`を実行するとき、Railsは以下のファイルを上から順に見つかるまでrequireします。
+`rails generate initializer core_extensions`を実行すると、Railsは以下のファイルを上から順に見つかるまでrequireします。
 
-```bash
+```
 rails/generators/initializer/initializer_generator.rb
 generators/initializer/initializer_generator.rb
 rails/generators/initializer_generator.rb
@@ -156,16 +157,16 @@ generators/initializer_generator.rb
 
 どのファイルも見つからない場合はエラーメッセージが表示されます。
 
-INFO: 上の例ではアプリケーションの`lib`ディレクトリの下にファイルを置いていますが、これらのディレクトリは`$LOAD_PATH`に属していることがその理由です。
+INFO: 上の例でアプリケーションの`lib`ディレクトリの下にファイルを置いているのは、このディレクトリが`$LOAD_PATH`に属しているからです。
 
 ワークフローをカスタマイズする
 -------------------------
 
-Rails自身が持つジェネレータはscaffoldを柔軟にカスタマイズできます。設定は`config/application.rb`で行います。デフォルトのコードを以下にいくつか示します。
+Rails自身が持つジェネレータのscaffoldは、柔軟にカスタマイズできます。設定は`config/application.rb`で行います。デフォルトのコードを以下にいくつか示します。
 
 ```ruby
 config.generators do |g|
-  g.orm :active_record
+  g.orm             :active_record
   g.template_engine :erb
   g.test_framework  :test_unit, fixture: true
 end
@@ -178,21 +179,21 @@ $ bin/rails generate scaffold User name:string
       invoke  active_record
       create    db/migrate/20130924151154_create_users.rb
       create    app/models/user.rb
-      invoke  test_unit
+      invoke    test_unit
       create      test/models/user_test.rb
       create      test/fixtures/users.yml
       invoke  resource_route
        route    resources :users
       invoke  scaffold_controller
       create    app/controllers/users_controller.rb
-      invoke    erb 
+      invoke    erb
       create      app/views/users
       create      app/views/users/index.html.erb
       create      app/views/users/edit.html.erb
       create      app/views/users/show.html.erb
       create      app/views/users/new.html.erb
       create      app/views/users/_form.html.erb
-      invoke  test_unit
+      invoke    test_unit
       create      test/controllers/users_controller_test.rb
       invoke    helper
       create      app/helpers/users_helper.rb
@@ -202,38 +203,21 @@ $ bin/rails generate scaffold User name:string
       invoke  test_unit
       create    test/application_system_test_case.rb
       create    test/system/users_test.rb
-      invoke  assets
-      invoke    coffee
-      create      app/assets/javascripts/users.coffee
-      invoke    scss
-      create      app/assets/stylesheets/users.scss
-      invoke  scss
-      create    app/assets/stylesheets/scaffolds.scss
 ```
 
-この出力結果から、Rails 3.0以降のジェネレータの動作を容易に理解できます。実はscaffoldジェネレータ自身は何も生成していません。生成に必要なメソッドを順に呼び出しているだけです。このような仕組みになっているので、呼び出しを自由に追加/置換/削除できます。たとえば、scaffoldジェネレータはscaffold_controllerというジェネレータを呼び出しています。これはerbのジェネレータ、test_unitのジェネレータ、そしてヘルパーのジェネレータを呼び出します。ジェネレータごとに役割がひとつずつ割り当てられているので、コードを再利用しやすく、コードの重複も防げます。
+この出力結果から、Rails 3.0以降のジェネレータの動作を容易に理解できます。実はscaffoldジェネレータ自身は何も生成していません。生成に必要なメソッドを順に呼び出しているだけです。このような仕組みになっているので、呼び出しを自由に追加・置換・削除できます。たとえば、scaffoldジェネレータは`scaffold_controller`というジェネレータを呼び出しています。これはerbのジェネレータ、test_unitのジェネレータ、そしてヘルパーのジェネレータを呼び出します。ジェネレータごとに役割がひとつずつ割り当てられているので、コードを再利用しやすく、コードの重複も防げます。
 
-scaffoldでのリソース生成時にデフォルトの`app/assets/stylesheets/scaffolds.scss`ファイルの生成を回避したい場合は、`scaffold_stylesheet`で無効にできます。
-
-```ruby
-  config.generators do |g|
-    g.scaffold_stylesheet false
-  end
-```
-
-これでワークフローの次回のカスタマイズでスタイルシートの生成が行われなくなります。JavaScriptファイルやテストのfixtureファイルのscaffoldについても同様で、設定ファイルを以下のように変更することで無効にできます。
+次に、scaffoldをカスタマイズしてテストのfixtureファイルの生成を止めてみましょう。設定ファイルを以下のように変更することで無効にできます。
 
 ```ruby
 config.generators do |g|
-  g.orm :active_record
+  g.orm             :active_record
   g.template_engine :erb
   g.test_framework  :test_unit, fixture: false
-  g.stylesheets     false
-  g.javascripts     false
 end
 ```
 
-scaffoldジェネレータでふたたびリソースを生成してみると、今度はスタイルシートとJavaScriptファイルとフィクスチャが生成されなくなります。ジェネレータをさらにカスタマイズしたい場合（Active RecordとTestUnitをそれぞれDataMapperとRSpecに置き換えるなど）は、必要なgemをアプリケーションに追加してジェネレータを設定するだけでできます。
+scaffoldジェネレータでもうひとつリソースを生成してみると、今度はフィクスチャが生成されなくなります。ジェネレータをさらにカスタマイズしたい場合（Active RecordとTestUnitをそれぞれDataMapperとRSpecに置き換えるなど）は、必要なgemをアプリケーションに追加してジェネレータを設定するだけでできます。
 
 ジェネレータのカスタマイズ例を説明するために、ここで新しくヘルパージェネレータをひとつ作成してみましょう。このジェネレータはインスタンス変数を読み出すメソッドをいくつか追加するだけのシンプルなものです。最初に、Railsの名前空間の内側でジェネレータをひとつ作成します。名前空間の内側にする理由は、Railsはフックとして使われるジェネレータを名前空間内で探索するからです。
 
@@ -281,11 +265,10 @@ end
 
 ```ruby
 config.generators do |g|
-  g.orm :active_record
+  g.orm             :active_record
   g.template_engine :erb
   g.test_framework  :test_unit, fixture: false
   g.stylesheets     false
-  g.javascripts     false
   g.helper          :my_helper
 end
 ```
@@ -346,11 +329,9 @@ end
 
 ```ruby
 config.generators do |g|
-  g.orm :active_record
+  g.orm             :active_record
   g.template_engine :erb
   g.test_framework  :test_unit, fixture: false
-  g.stylesheets     false
-  g.javascripts     false
 end
 ```
 
@@ -361,13 +342,13 @@ RailsのscaffoldテンプレートではERBタグが多用されますが、こ�
 たとえば、テンプレートで以下のようなエスケープ済みERBタグが必要になることがあります (`%`文字が1つ多い点にご注目ください)。
 
 ```ruby
-<%%= stylesheet_include_tag :application %>
+<%%= stylesheet_link_tag :application %>
 ```
 
 上のコードから以下の出力が生成されます。
 
 ```ruby
-<%= stylesheet_include_tag :application %>
+<%= stylesheet_link_tag :application %>
 ```
 
 ジェネレータにフォールバックを追加する
@@ -382,8 +363,6 @@ config.generators do |g|
   g.orm             :active_record
   g.template_engine :erb
   g.test_framework  :shoulda, fixture: false
-  g.stylesheets     false
-  g.javascripts     false
 
   # フォールバックを追加する
   g.fallbacks[:shoulda] = :test_unit
@@ -421,10 +400,6 @@ $ bin/rails generate scaffold Comment body:text
       invoke  test_unit
       create    test/application_system_test_case.rb
       create    test/system/comments_test.rb
-      invoke  assets
-      invoke    coffee
-      create      app/assets/javascripts/comments.coffee
-      invoke    scss
 ```
 
 フォールバックを利用するとジェネレータの役割がひとつで済み、コードの重複を防いで再利用性を高めることができます。
@@ -469,14 +444,14 @@ $ rails new thud -m https://gist.github.com/radar/722911/raw/
 -----------------------------
 Railsのジェネレータは、カスタムのコマンドライン引数を与えることで簡単に挙動を変更できます。この機能は[Thor](http://www.rubydoc.info/github/erikhuda/thor/master/Thor/Base/ClassMethods#class_option-instance_method)を利用しています。
 
-```
+```ruby
 class_option :scope, type: :string, default: 'read_products'
 ```
 
 これで、ジェネレータを以下のように呼び出せます。
 
 ```bash
-rails generate initializer --scope write_products
+$ bin/rails generate initializer --scope write_products
 ```
 
 このコマンドライン引数は、ジェネレータクラス内では`options`メソッドでアクセスできます。
@@ -503,9 +478,9 @@ gem "devise", "1.1.5"
 
 以下のオプションを利用できます。
 
-* `:group` - gemを追加する`Gemfile`内のグループを指定します。
-* `:version` - 使うgemのバージョンを指定します。`version`オプションを明記せずに、メソッドの第2引数としてバージョンを指定することもできます。
-* `:git` - gemが置かれているgitリポジトリを指すURLを指定します。
+* `:group`: gemを追加する`Gemfile`内のグループを指定します。
+* `:version`: 使うgemのバージョンを指定します。`version`オプションを明記せずに、メソッドの第2引数としてバージョンを指定することもできます。
+* `:git`: gemが置かれているgitリポジトリを指すURLを指定します。
 
 メソッドでこれら以外のオプションも使う場合は、以下のように行の最後に記述します。
 
@@ -574,7 +549,7 @@ gsub_file 'name_of_file.rb', 'method.to_be_replaced', 'method.the_replacing_code
 application "config.asset_host = 'http://example.com'"
 ```
 
-このメソッドにはブロックを渡すこともできます。
+このメソッドにはブロックも渡せます。
 
 ```ruby
 application do
@@ -629,7 +604,7 @@ end
 lib "special.rb", "p Rails.root"
 ```
 
-このメソッドにはブロックをひとつ渡すこともできます。
+このメソッドにはブロックも渡せます。
 
 ```ruby
 lib "super_special.rb" do
@@ -645,7 +620,7 @@ Railsの`lib/tasks`ディレクトリにRakeファイルをひとつ作成しま
 rakefile "test.rake", 'task(:hello) { puts "Hello, there" }'
 ```
 
-このメソッドにはブロックをひとつ渡すこともできます。
+このメソッドにはブロックも渡せます。
 
 ```ruby
 rakefile "test.rake" do
@@ -692,8 +667,8 @@ rake "db:migrate"
 
 以下のオプションを利用できます。
 
-* `:env` - rakeタスクを実行するときの環境を指定します。
-* `:sudo` - rakeタスクで`sudo`を使うかどうかを指定します。デフォルトは`false`です。
+* `:env`: rakeタスクを実行するときの環境を指定します。
+* `:sudo`: rakeタスクで`sudo`を使うかどうかを指定します。デフォルトは`false`です。
 
 ### `route`
 
