@@ -1,4 +1,3 @@
-
 Active Job の基礎
 =================
 
@@ -38,16 +37,16 @@ NOTE: デフォルトのRailsは非同期キューを実装します。これは
 Active Jobは、ジョブ作成用のRailsジェネレータを提供しています。以下を実行すると、`app/jobs`にジョブが1つ作成されます。
 
 ```bash
-$ rails generate job guests_cleanup
+$ bin/rails generate job guests_cleanup
 invoke  test_unit
 create    test/jobs/guests_cleanup_job_test.rb
 create  app/jobs/guests_cleanup_job.rb
 ```
 
-以下のようにすると、特定のキューに対してジョブを1つ作成できます。
+以下のようにすると、特定のキューに対してジョブを1件作成できます。
 
 ```bash
-$ rails generate job guests_cleanup --queue urgent
+$ bin/rails generate job guests_cleanup --queue urgent
 ```
 
 ジェネレータを使いたくない場合は、`app/jobs`の下に自分でジョブファイルを作成することもできます。ジョブファイルでは必ず`ApplicationJob`を継承してください。
@@ -56,17 +55,17 @@ $ rails generate job guests_cleanup --queue urgent
 
 ```ruby
 class GuestsCleanupJob < ApplicationJob
-  queue_as :default
+  queue_as :default
 
-  def perform(*args)
-    # 後で実行したい作業をここに書く
+  def perform(*guests)
+    # 後で実行するタスクをここに置く
   end
 end
 ```
 
 ### ジョブをキューに登録する
 
-キューへのジョブ登録は以下のように行います。
+キューへのジョブ登録は[`perform_later`][]で以下のように行います。オプションで[`set`][]も指定できます。
 
 ```ruby
 # 「キューイングシステムが空いたらジョブを実行する」とキューに登録する
@@ -75,7 +74,7 @@ GuestsCleanupJob.perform_later guest
 
 ```ruby
 # 明日正午に実行したいジョブをキューに登録する
-GuestsCleanupJob.set(wait_until: Date.tomorrow.noon).perform_later(guest) 
+GuestsCleanupJob.set(wait_until: Date.tomorrow.noon).perform_later(guest)
 ```
 
 ```ruby
@@ -91,6 +90,8 @@ GuestsCleanupJob.perform_later(guest1, guest2, filter: 'some_filter')
 
 以上でジョブ登録は完了です。
 
+[`perform_later`]: https://api.rubyonrails.org/classes/ActiveJob/Enqueuing/ClassMethods.html#method-i-perform_later
+[`set`]: https://api.rubyonrails.org/classes/ActiveJob/Core/ClassMethods.html#method-i-set
 
 ジョブを実行する
 -------------
@@ -101,7 +102,9 @@ Rails自身が提供するのは、ジョブをメモリに保持するインプ
 
 ### バックエンド
 
-Active Jobには、Sidekiq、Resque、Delayed Jobなどさまざまなキューイングバックエンドに接続できるアダプタがビルトインで用意されています。利用可能な最新のアダプタのリストについては、APIドキュメントの[ActiveJob::QueueAdapters](https://api.rubyonrails.org/classes/ActiveJob/QueueAdapters.html) を参照してください。
+Active Jobには、Sidekiq、Resque、Delayed Jobなどさまざまなキューイングバックエンドに接続できるアダプタがビルトインで用意されています。利用可能な最新のアダプタのリストについては、APIドキュメントの[`ActiveJob::QueueAdapters`][]を参照してください。
+
+[`ActiveJob::QueueAdapters`]: https://api.rubyonrails.org/classes/ActiveJob/QueueAdapters.html
 
 ### バックエンドを設定する
 
@@ -124,7 +127,7 @@ end
 ```ruby
 class GuestsCleanupJob < ApplicationJob
   self.queue_adapter = :resque
-  #....
+  # ...
 end
 
 # これでジョブが`resque`を使うようになります
@@ -143,20 +146,21 @@ end
 - [Sneakers](https://github.com/jondot/sneakers/wiki/How-To:-Rails-Background-Jobs-with-ActiveJob)
 - [Sucker Punch](https://github.com/brandonhilkert/sucker_punch#active-job)
 - [Queue Classic](https://github.com/QueueClassic/queue_classic#active-job)
+- [Good Job](https://github.com/bensheldon/good_job#readme)
 
 キュー
 ------
 
-多くのアダプタでは複数のキューを扱えます。Active Jobを使って、特定のキューに入っているジョブをスケジューリングできます。
+多くのアダプタでは複数のキューを扱えます。Active Jobの[`queue_as`][]を使って、特定のキューに入っているジョブをスケジューリングできます。
 
 ```ruby
 class GuestsCleanupJob < ApplicationJob
   queue_as :low_priority
-  #....
+  # ...
 end
 ```
 
-`application.rb`で以下のように`config.active_job.queue_name_prefix`を使用することで、すべてのジョブでキュー名の前に特定の文字列を追加することができます。
+`application.rb`で以下のように`config.active_job.queue_name_prefix`を使うことで、すべてのジョブでキュー名の前に特定の文字列を追加することができます。
 
 ```ruby
 # config/application.rb
@@ -165,19 +169,35 @@ module YourApp
     config.active_job.queue_name_prefix = Rails.env
   end
 end
+```
 
+```ruby
 # app/jobs/guests_cleanup_job.rb
 class GuestsCleanupJob < ApplicationJob
   queue_as :low_priority
-  #....
+  # ...
 end
 
 # 以上で、production環境ではproduction_low_priorityというキューでジョブが
-# 実行されるようになり、staging環境ではstaging_low_priorityというキューでジョブが実行されるようになります
+# 実行されるようになり、staging環境ではstaging_low_priorityというキューで
+# ジョブが実行されるようになります
+```
+
+以下のようにジョブごとにプレフィックスを設定することもできます。
+
+```ruby
+class GuestsCleanupJob < ApplicationJob
+  queue_as :low_priority
+  self.queue_name_prefix = nil
+  # ...
+end
+
+# これで自分のジョブキューにプレフィックスが設定されなくなり
+# `config.active_job.queue_name_prefix`の設定が上書きされます
 ```
 
 キュー名のプレフィックスのデフォルト区切り文字は'\_'です。`application.rb`の`config.active_job.queue_name_delimiter`を設定することでこの区切り文字を変更できます。
- 
+
 ```ruby
 # config/application.rb
 module YourApp
@@ -186,11 +206,13 @@ module YourApp
     config.active_job.queue_name_delimiter = '.'
   end
 end
+```
 
+```ruby
 # app/jobs/guests_cleanup_job.rb
 class GuestsCleanupJob < ApplicationJob
   queue_as :low_priority
-  #....
+  # ...
 end
 
 # 以上で、production環境ではproduction.low_priorityというキューでジョブが
@@ -220,13 +242,15 @@ class ProcessVideoJob < ApplicationJob
     # 動画を処理する
   end
 end
+```
 
+```ruby
 ProcessVideoJob.perform_later(Video.last)
 ```
 
-
 NOTE: 設定したキュー名をキューイングバックエンドが「リッスンする」ようにしてください。一部のバックエンドでは、リッスンするキューを指定する必要があるものがあります。
 
+[`queue_as`]: https://api.rubyonrails.org/classes/ActiveJob/QueueName/ClassMethods.html#method-i-queue_as
 
 コールバック
 ---------
@@ -238,7 +262,7 @@ class GuestsCleanupJob < ApplicationJob
   queue_as :default
 
   around_perform :around_cleanup
-  
+
   def perform
     # 後で行なう
   end
@@ -264,12 +288,19 @@ end
 
 ### 利用できるコールバック
 
-* `before_enqueue`
-* `around_enqueue`
-* `after_enqueue`
-* `before_perform`
-* `around_perform`
-* `after_perform`
+* [`before_enqueue`][]
+* [`around_enqueue`][]
+* [`after_enqueue`][]
+* [`before_perform`][]
+* [`around_perform`][]
+* [`after_perform`][]
+
+[`before_enqueue`]: https://api.rubyonrails.org/classes/ActiveJob/Callbacks/ClassMethods.html#method-i-before_enqueue
+[`around_enqueue`]: https://api.rubyonrails.org/classes/ActiveJob/Callbacks/ClassMethods.html#method-i-around_enqueue
+[`after_enqueue`]: https://api.rubyonrails.org/classes/ActiveJob/Callbacks/ClassMethods.html#method-i-after_enqueue
+[`before_perform`]: https://api.rubyonrails.org/classes/ActiveJob/Callbacks/ClassMethods.html#method-i-before_perform
+[`around_perform`]: https://api.rubyonrails.org/classes/ActiveJob/Callbacks/ClassMethods.html#method-i-around_perform
+[`after_perform`]: https://api.rubyonrails.org/classes/ActiveJob/Callbacks/ClassMethods.html#method-i-after_perform
 
 Action Mailer
 ------------
@@ -277,10 +308,10 @@ Action Mailer
 最近のWebアプリケーションでよく実行されるジョブといえば、リクエスト-レスポンスのサイクルの外でメールを送信することでしょう。これにより、ユーザーが送信を待つ必要がなくなります。Active JobはAction Mailerと統合されているので、非同期メール送信を簡単に行えます。
 
 ```ruby
-# すぐにメール送信したい場合は#deliver_nowを使用
+# すぐにメール送信するなら#deliver_now
 UserMailer.welcome(@user).deliver_now
 
-# Active Jobを使用して後でメール送信したい場合は#deliver_laterを使用
+# Active Jobで後でメール送信するなら#deliver_later
 UserMailer.welcome(@user).deliver_later
 ```
 
@@ -291,10 +322,10 @@ NOTE: 一般に、非同期キュー（`.deliver_later`でメールを送信す�
 
 各ジョブでは、ジョブ作成時に設定された`I18n.locale`を使います。これはメールを非同期的に送信する場合に便利です。
 
- 
+
 ```ruby
 I18n.locale = :eo
- 
+
 UserMailer.welcome(@user).deliver_later # メールがエスペラント語にローカライズされる
 ```
 
@@ -313,11 +344,14 @@ Active Jobの引数では、デフォルトで以下の型をサポートしま�
   - `Hash`（キーの型は`String`か`Symbol`にすべき）
   - `ActiveSupport::HashWithIndifferentAccess`
   - `Array`
-
+  - `Range`
+  - `Module`
+  - `Class`
 
 GlobalID
 --------
-Active JobではGlobalIDがパラメータとしてサポートされています。GlobalIDを使用すると、動作中のActive Recordオブジェクトをジョブに渡す際にクラスとidを指定する必要がありません。クラスとidを指定する従来の方法では、後で明示的にデシリアライズ (deserialize) する必要がありました。従来のジョブが以下のようなものだったとします。
+
+Active JobではGlobalIDがパラメータとしてサポートされています。GlobalIDを使えば、動作中のActive Recordオブジェクトをジョブに渡す際にクラスとidを指定する必要がありません。クラスとidを指定する従来の方法では、後で明示的にデシリアライズ (deserialize) する必要がありました。従来のジョブが以下のようなものだったとします。
 
 ```ruby
 class TrashableCleanupJob < ApplicationJob
@@ -328,23 +362,24 @@ class TrashableCleanupJob < ApplicationJob
 end
 ```
 
-現在は以下のように簡潔に書くことができます。
+上は以下のように簡潔に書けます。
 
 ```ruby
-class TrashableCleanupJob  < ApplicationJob
+class TrashableCleanupJob < ApplicationJob
   def perform(trashable, depth)
     trashable.cleanup(depth)
   end
 end
 ```
 
-上のコードは、`GlobalID::Identification`をミックスインするすべてのクラスで動作します。このモジュールはActive Recordクラスにデフォルトでミックスインされます。
+このコードは、`GlobalID::Identification`をミックスインするすべてのクラスで動作します。このモジュールはActive Recordクラスにデフォルトでミックスインされます。
 
 ### シリアライザ
 
 サポートされる引数の型は、以下のような独自のシリアライザを定義するだけで拡張できます。
 
 ```ruby
+# app/serializers/money_serializer.rb
 class MoneySerializer < ActiveJob::Serializers::ObjectSerializer
   # ある引数がこのシリアライザでシリアライズされるべきかどうかをチェックする
   def serialize?(argument)
@@ -369,13 +404,25 @@ end
 続いてこのシリアライザをリストに追加します。
 
 ```ruby
+# config/initializers/custom_serializers.rb
 Rails.application.config.active_job.custom_serializers << MoneySerializer
+```
+
+初期化中は、再読み込み可能なコードのオートロードがサポートされていない点にご注意ください。そのため、たとえば以下のように`config/application.rb`を修正するなどして、シリアライザが1度だけ読み込まれるように設定することをおすすめします。
+
+```ruby
+# config/application.rb
+module YourApp
+  class Application < Rails::Application
+    config.autoload_once_paths << Rails.root.join('app', 'serializers')
+  end
+end
 ```
 
 例外処理
 ----------
 
-Active Jobでは、ジョブ実行時に発生する例外をキャッチする方法が1つ提供されています。
+Active Jobでは、ジョブ実行時に発生する例外を[`rescue_from`][]でキャッチする方法が提供されています。
 
 ```ruby
 class GuestsCleanupJob < ApplicationJob
@@ -391,9 +438,11 @@ class GuestsCleanupJob < ApplicationJob
 end
 ```
 
+[`rescue_from`]: https://api.rubyonrails.org/classes/ActiveSupport/Rescuable/ClassMethods.html#method-i-rescue_from
+
 ### 失敗したジョブをリトライまたは廃棄する
 
-実行中に例外が発生したジョブのリトライや廃棄も行えます。次の例をご覧ください。
+実行中に例外が発生したジョブは、以下のように[`retry_on`]でリトライすることも、[`discard_on`]で廃棄することもできます。
 
 ```ruby
 class RemoteServiceJob < ApplicationJob
@@ -409,12 +458,16 @@ end
 
 詳しくは、[ActiveJob::Exceptions](https://api.rubyonrails.org/classes/ActiveJob/Exceptions/ClassMethods.html) APIドキュメントを参照してください。
 
+[`discard_on`]: https://api.rubyonrails.org/classes/ActiveJob/Exceptions/ClassMethods.html#method-i-discard_on
+[`retry_on`]: https://api.rubyonrails.org/classes/ActiveJob/Exceptions/ClassMethods.html#method-i-retry_on
+
 ### デシリアライズ
 
 GlobalIDの`#perform`に完全なActive Recordオブジェクトを渡してシリアライズできます。
 
-ジョブがキューに登録された後で、渡したレコードが1件削除され、かつ`#perform`メソッドをまだ呼び出していない場合は、Active Jobによって`ActiveJob::DeserializationError`エラーがraiseされます。
+ジョブがキューに登録された後で、渡したレコードが1件削除され、かつ`#perform`メソッドをまだ呼び出していない場合は、Active Jobによって[`ActiveJob::DeserializationError`][]エラーがraiseされます。
 
+[`ActiveJob::DeserializationError`]: https://api.rubyonrails.org/classes/ActiveJob/DeserializationError.html
 
 ジョブをテストする
 --------------
