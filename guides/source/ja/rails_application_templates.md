@@ -129,7 +129,7 @@ CODE
 
 同様に、`lib()`メソッドは`lib/`ディレクトリにファイルを作成し、`vendor()`メソッドは`vendor/`ディレクトリにファイルを作成します。
 
-`file()`メソッドを使えば、`Rails.root`からの相対パスを渡してディレクトリやファイルを自在に作成することもできます。
+`file()`メソッドを使えば、`Rails.root`からの相対パスを渡してディレクトリやファイルを自由に作成することもできます。
 
 ```ruby
 file 'app/components/foo.rb', <<-CODE
@@ -232,7 +232,7 @@ CODE
 
 ```ruby
 rails_command("db:migrate") if yes?("データベースマイグレーションを実行しますか？")
-# no?(question) acts just the opposite.
+# no?(question)はyes?と逆の動作
 ```
 
 ### `git(:command)`
