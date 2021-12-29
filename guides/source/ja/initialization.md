@@ -533,7 +533,7 @@ def initialize!(group = :default) # :nodoc:
 end
 ```
 
-アプリケーションは一度だけ初期化できます。`railties/lib/rails/initializable.rb`で定義されている`run_initializers`メソッドによって、Railtieのさまざまな[イニシャライザ](configuring.html#initializers)が実行されます。
+アプリケーションは一度だけ初期化できます。`railties/lib/rails/initializable.rb`で定義されている`run_initializers`メソッドによって、Railtieのさまざまな[イニシャライザ](configuring.html#イニシャライザ)が実行されます。
 
 ```ruby
 def run_initializers(group = :default, *args)
