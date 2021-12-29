@@ -229,5 +229,5 @@ $ bundle install --without db
 
 ### Railsに貢献する
 
-設定がすべて完了したら、ガイドの[Ruby on Rails に貢献する](contributing_to_ruby_on_rails.html#running-an-application-against-your-local-branch)をお読みください。
+設定がすべて完了したら、ガイドの[Ruby on Rails に貢献する](contributing_to_ruby_on_rails.html#ローカルブランチでアプリケーションを実行する)をお読みください。
 
