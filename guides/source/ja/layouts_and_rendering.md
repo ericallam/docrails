@@ -390,7 +390,7 @@ render status: :forbidden
 |                     | 510              | :not_extended                    |
 |                     | 511              | :network_authentication_required |
 
-NOTE: 「non-content」ステータスコード （100〜199、204、205、 304のいずれか）を指定してレンダリングするとレスポンスから削除されます。
+NOTE: 「non-content」ステータスコード （100〜199、204、205、304のいずれか）を指定してレンダリングするとレスポンスから削除されます。
 
 ##### `:formats`オプション
 
@@ -942,7 +942,7 @@ HTMLオプションをハッシュ形式で追加することもできます。
 
 #### `video_tag`で動画ファイルにリンクする
 
-[`video_tag`][]ヘルパーは、指定の動画ファイルにリンクするHTML 5 `<video>`タグを生成します。デフォルトでは、`public/videos`ディレクトリからファイルを読み込みます。
+[`video_tag`][]ヘルパーは、指定の動画ファイルにリンクするHTML5 `<video>`タグを生成します。デフォルトでは、`public/videos`ディレクトリからファイルを読み込みます。
 
 ```erb
 <%= video_tag "movie.ogg" %>
@@ -981,7 +981,7 @@ HTMLオプションをハッシュ形式で追加することもできます。
 
 #### `audio_tag`で音声ファイルにリンクする
 
-`audio_tag`は、指定の音声ファイルにリンクするHTML 5 `<audio>`タグを生成します。デフォルトでは、`public/audios`ディレクトリからファイルを読み込みます。
+`audio_tag`は、指定の音声ファイルにリンクするHTML5 `<audio>`タグを生成します。デフォルトでは、`public/audios`ディレクトリからファイルを読み込みます。
 
 ```erb
 <%= audio_tag "music.mp3" %>
