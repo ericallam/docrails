@@ -1067,8 +1067,6 @@ end
 
 rootパスにリダイレクトすることに決めたのは、そこが記事へのメインのアクセスポイントだからです。しかし状況によっては、たとえば`articles_path`にリダイレクトすることもあります。
 
-【ここは更新されるはず: https://github.com/rails/rails/pull/43430/files】
-
 それでは、`app/views/articles/show.html.erb` の下部に削除用ボタンを追加して、ページの記事を削除できるようにしましょう。
 
 ```html+erb
