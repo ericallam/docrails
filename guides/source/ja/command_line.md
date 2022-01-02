@@ -132,7 +132,7 @@ Use Ctrl-C to stop
 
 INFO: サーバーを起動する際には`bin/rails s`のように"s"というエイリアスが使えます。
 
-リッスンするポートは`-p` オプションで指定できます。 `-e` オプションでサーバーの環境を変更できます。デフォルトではdevelopment（開発）環境で実行されます。
+リッスンするポートは`-p` オプションで指定できます。`-e` オプションでサーバーの環境を変更できます。デフォルトではdevelopment（開発）環境で実行されます。
 
 ```bash
 $ bin/rails server -e production -p 4000
@@ -212,7 +212,7 @@ $ bin/rails generate controller Greetings hello
      invoke    test_unit
 ```
 
-どんなファイルが生成されたのでしょうか？アプリケーションの中にさまざまなディレクトリが作成され、コントローラファイル、ビューファイル、機能テストのファイル、ビューヘルパー、JavaScriptファイル、スタイルシートファイルが作成されした。
+どんなファイルが生成されたのでしょうか？アプリケーションの中にさまざまなディレクトリが作成され、コントローラファイル、ビューファイル、機能テストのファイル、ビューヘルパー、JavaScriptファイル、スタイルシートファイルが作成されました。
 
 生成されたコントローラ（`app/controllers/greetings_controller.rb`）をエディタで開いて以下のように変更してみましょう。
 
@@ -359,7 +359,7 @@ Started GET "/" for 127.0.0.1 at 2014-06-19 10:41:57 -0300
 ...
 ```
 
-`helper`メソッドを使うと、Railsのアプリケーションヘルパーと自分が実装したヘルパーにアクセスすることができます。
+`helper`メソッドを使うと、Railsのアプリケーションヘルパーと自分が実装したヘルパーにアクセスできます。
 
 ```
 irb> helper.time_ago_in_words 30.days.ago
@@ -629,7 +629,7 @@ end
 ```bash
 $ bin/rails task_name
 $ bin/rails "task_name[value 1]" # 引数の文字列全体を引用符で囲むこと
-$ bin/rails "task_name[value 1,value2,value3]" # 複数の引数はカンマで区切る
+$ bin/rails "task_name[value 1, value2, value3]" # 複数の引数はカンマで区切る
 $ bin/rails db:nothing
 ```
 
