@@ -503,7 +503,7 @@ All is good!
 
 プロジェクトが正しくeager loadingされているかどうかをテストスイートで検証するのはよい方法です。
 
-Zeitwerkの命名規則やその他に発生しうるエラー条件をカバーできます。詳しくは[Railsテスティングガイド](testing.html)の[eager loadingをテストする](#)【要リンク更新】を参照してください。
+Zeitwerkの命名規則やその他に発生しうるエラー条件をカバーできます。詳しくは[Railsテスティングガイド](testing.html)の[eager loadingをテストする](testing.html#eager-loadingをテストする)を参照してください。
 
 トラブルシューティング
 ---------------
