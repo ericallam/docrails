@@ -571,7 +571,7 @@ NOTE: 上のようにコマンドオプションでマイグレーション名�
 $ bin/rails blorgh:install:migrations
 ```
 
-上のコマンドでコピーされるマイグレーションは 「1つ」だけである点にご注意ください。これは、最初の2つのマイグレーションはこのコマンドが初めて実行されたときにコピー済みであるためです。
+上のコマンドでコピーされるマイグレーションは「1つ」だけである点にご注意ください。これは、最初の2つのマイグレーションはこのコマンドが初めて実行されたときにコピー済みであるためです。
 
 ```
 NOTE Migration [timestamp]_create_blorgh_articles.blorgh.rb from blorgh has been skipped. Migration with the same name already exists.
@@ -1132,10 +1132,10 @@ end
 
 | フック                   | ユースケース                                                                              |
 | ---------------------- | ------------------------------------------------------------------------------------- |
-| `before_configuration` | 最初に実行される設定フックです。あらゆる初期化より先に呼びされます。              |
-| `before_initialize`    | 次に実行される設定フックです。フレームワークの初期化の直前で呼び出されます。                |
-| `before_eager_load`    | 初期化後に実行される設定フックです。`config.eager_load`がfalseの場合は実行されません。 |
-| `after_initialize`     | 最後に実行される設定フックです。 フレームワークの初期化後に呼び出しされます。                   |
+| `before_configuration` | 最初に実行される設定フックです。あらゆる初期化より先に呼びされます。|
+| `before_initialize` | 次に実行される設定フックです。フレームワークの初期化の直前で呼び出されます。|
+| `before_eager_load` | 初期化後に実行される設定フックです。`config.eager_load`がfalseの場合は実行されません。|
+| `after_initialize` | 最後に実行される設定フックです。フレームワークの初期化後に呼び出しされます。|
 
 設定フックは、Engineクラス内で呼び出されます。
 
