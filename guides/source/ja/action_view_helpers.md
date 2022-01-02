@@ -445,8 +445,6 @@ strip_tags("<b>Bold</b> no more!  <a href='more.html'>See more</a>")
 # => Bold no more!  See more
 ```
 
-NB: 【この出力にはエスケープされていない'<'、'>'、'&'文字が含まれていてブラウザが混乱する。】
-
 ### UrlHelper
 
 リンクを作成するメソッドや、ルーティングサブシステムに応じたURLを取得するメソッドを提供します。
