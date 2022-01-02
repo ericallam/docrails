@@ -15,8 +15,7 @@ Action Cable の概要
 はじめに
 ------------
 
-Action Cableは、
-[WebSocket](https://ja.wikipedia.org/wiki/WebSocket)とRailsのその他の部分をシームレスに統合します。Action Cableを導入すると、Rails アプリケーションのパフォーマンスとスケーラビリティを損なわずに、通常のRailsアプリケーションと同じスタイル・方法でリアルタイム機能をRubyで記述できるようになります。Action Cableはフルスタックのフレームワークであり、クライアント側のJavaScriptフレームワークとサーバー側のRubyフレームワークの両方提供します。Active RecordなどのORMで書かれたすべてのドメインモデルにアクセスできます。
+Action Cableは、[WebSocket](https://ja.wikipedia.org/wiki/WebSocket)とRailsのその他の部分をシームレスに統合します。Action Cableを導入すると、Rails アプリケーションのパフォーマンスとスケーラビリティを損なわずに、通常のRailsアプリケーションと同じスタイル・方法でリアルタイム機能をRubyで記述できるようになります。Action Cableはフルスタックのフレームワークであり、クライアント側のJavaScriptフレームワークとサーバー側のRubyフレームワークの両方を提供します。Active RecordなどのORMで書かれたすべてのドメインモデルにアクセスできます。
 
 用語について
 -----------
@@ -716,7 +715,7 @@ Rails.application.eager_load!
 run ActionCable.server
 ```
 
-続いて、 `bin/cable`のbinstubを使ってサーバーを起動します。
+続いて、`bin/cable`のbinstubを使ってサーバーを起動します。
 
 ```
 #!/bin/bash
