@@ -428,7 +428,7 @@ $ bundle exec rake TEST=test/cases/associations/has_many_associations_test.rb
 
 ### ドキュメントの更新
 
-[Railsガイド](https://railsguides.jp/)はRailsの機能を大まかに解説するドキュメントであり、[APIドキュメント]((https://api.rubyonrails.org/))は機能を具体的に解説するドキュメントです。
+[Railsガイド](https://railsguides.jp/)はRailsの機能を大まかに解説するドキュメントであり、[APIドキュメント](https://api.rubyonrails.org/)は機能を具体的に解説するドキュメントです。
 
 プルリクで新機能を追加する場合や、既存機能の振る舞いを変更する場合は、関連するドキュメントもチェックして適宜追加または更新してください。
 
