@@ -469,6 +469,8 @@ end
 
 この宣言によって、アプリケーションのすべてのビューで`app/views/layouts/main.html.erb`レイアウトが使われるようになります。
 
+[`layout`]: https://edgeapi.rubyonrails.org/classes/ActionView/Layouts/ClassMethods.html#method-i-layout
+
 ##### 実行時にレイアウトを指定する
 
 以下のようにレイアウトをシンボルで指定すると、リクエストが実際に処理されるまでレイアウトの選択を先延ばしできます。
