@@ -17,7 +17,7 @@ WARNING: このガイドはRackのミドルウェア、urlマップ、`Rack::Bui
 Rack入門
 --------------------
 
-Rackは、RubyのWebアプリケーションに対して、モジュール化された最小限のインターフェイスを提供して、インターフェイスを広範囲に使えるようにします。RackはHTTPリクエストとレスポンスを可能なかぎり簡単な方法でラッピングすることで、Webサーバー、Webフレームワーク、その間に位置するソフトウェア (ミドルウェアと呼ばれています) のAPIを1つのメソッド呼び出しの形にまとめます。
+Rackは、RubyのWebアプリケーションに対して、モジュール化された最小限のインターフェイスを提供して、インターフェイスを広範囲に使えるようにします。RackはHTTPリクエストとレスポンスを可能なかぎり簡単な方法でラッピングすることで、Webサーバー、Webフレームワーク、その間に位置するソフトウェア（ミドルウェアと呼ばれています）のAPIを1つのメソッド呼び出しの形にまとめます。
 
 Rackに関する解説はこのガイドの範疇を超えてしまいます。Rackに関する基本的な知識が不足している場合は、下記の[リソース](#参考資料) を参照してください。
 
@@ -28,11 +28,11 @@ RailsとRack
 
 `Rails.application`は、Railsアプリケーションにおける主要なRackアプリケーションです。Rackに準拠したWebサーバーで、Railsアプリケーションを提供するには、`Rails.application`オブジェクトを使う必要があります。
 
-### `rails server`コマンド
+### `bin/rails server`コマンド
 
-`rails server`コマンドは、`Rack::Server`のオブジェクトを作成し、Webサーバーを起動します。
+`bin/rails server`コマンドは、`Rack::Server`のオブジェクトを作成し、Webサーバーを起動します。
 
-`rails server`コマンドは、以下のように`Rack::Server`のオブジェクトを作成します。
+`bin/rails server`コマンドは、以下のように`Rack::Server`のオブジェクトを作成します。
 
 ```ruby
 Rails::Server.new.tap do |server|
@@ -47,7 +47,7 @@ end
 ```ruby
 class Server < ::Rack::Server
   def start
-    ...
+    # ...
     super
   end
 end
@@ -55,7 +55,7 @@ end
 
 ### `rackup`コマンド
 
-Railsの`rails server`コマンドの代わりに`rackup`コマンドを使うときは、以下の内容を`config.ru`に記述して、Railsアプリケーションのルートディレクトリに保存します。
+Railsの`bin/rails server`コマンドの代わりに`rackup`コマンドを使うときは、以下の内容を`config.ru`に記述して、Railsアプリケーションのルートディレクトリに保存します。
 
 ```ruby
 # Rails.root/config.ru
@@ -96,7 +96,7 @@ $ bin/rails middleware
 
 作成直後のRailsアプリケーションでは、以下のように出力されるはずです。
 
-  ```ruby
+```ruby
 use Rack::Sendfile
 use ActionDispatch::Static
 use ActionDispatch::Executor
@@ -110,6 +110,7 @@ use Rails::Rack::Logger
 use ActionDispatch::ShowExceptions
 use WebConsole::Middleware
 use ActionDispatch::DebugExceptions
+use ActionDispatch::ActionableExceptions
 use ActionDispatch::Reloader
 use ActionDispatch::Callbacks
 use ActiveRecord::Migration::CheckPending
@@ -136,9 +137,9 @@ Railsが提供するシンプルな`config.middleware`を用いることで、�
 
 * `config.middleware.use(new_middleware, args)`: ミドルウェアスタックの末尾に新しいミドルウェアを追加します。
 
-* `config.middleware.insert_before(existing_middleware, new_middleware, args)`: 新しいミドルウェアを、(第1引数で)指定された既存のミドルウェアの直前に追加します。
+* `config.middleware.insert_before(existing_middleware, new_middleware, args)`: 新しいミドルウェアを、（第1引数で）指定された既存のミドルウェアの直前に追加します。
 
-* `config.middleware.insert_after(existing_middleware, new_middleware, args)`: 新しいミドルウェアを、(第1引数で)指定された既存のミドルウェアの直後に追加します。
+* `config.middleware.insert_after(existing_middleware, new_middleware, args)`: 新しいミドルウェアを、（第1引数で）指定された既存のミドルウェアの直後に追加します。
 
 ```ruby
 # config/application.rb
@@ -164,7 +165,7 @@ config.middleware.swap ActionDispatch::ShowExceptions, Lifo::ShowExceptions
 
 #### ミドルウェアを削除する
 
-アプリケーションの設定に下記のコードを追加します。
+アプリケーションの設定に以下のコードを追加します。
 
 ```ruby
 # config/application.rb
@@ -198,6 +199,13 @@ config.middleware.delete ActionDispatch::Flash
 config.middleware.delete Rack::MethodOverride
 ```
 
+存在しないミドルウェアを削除しようとするとエラーが発生するようにするには、`delete!`を代わりに使います。
+
+```ruby
+# config/application.rb
+config.middleware.delete! ActionDispatch::Executor
+```
+
 ### ミドルウェアスタックの内部
 
 Action Controllerの機能の多くはミドルウェアとして実装されています。それぞれの役割について以下のリストで説明します。
@@ -224,7 +232,7 @@ Action Controllerの機能の多くはミドルウェアとして実装されて
 
 **`Rack::Runtime`**
 
-* X-Runtimeヘッダーを生成します。このヘッダーにはリクエストの処理にかかった時間が秒単位で表示されます。
+* X-Runtimeヘッダーを設定します。このヘッダーには、リクエストの処理にかかった時間が秒単位で表示されます。
 
 **`Rack::MethodOverride`**
 
@@ -276,7 +284,7 @@ Action Controllerの機能の多くはミドルウェアとして実装されて
 
 **`ActionDispatch::Flash`**
 
-* flashのキーをセットアップします(訳注: flashは連続するリクエスト間でメッセージを共有表示する機能です)。これは、`config.action_controller.session_store`に値が設定されている場合にのみ有効です。
+* flashのキーをセットアップします（訳注: flashは連続するリクエスト間でメッセージを共有表示する機能です）。これは、`config.action_controller.session_store`に値が設定されている場合にのみ有効です。
 
 **`ActionDispatch::ContentSecurityPolicy::Middleware`**
 
@@ -284,7 +292,7 @@ Action Controllerの機能の多くはミドルウェアとして実装されて
 
 **`Rack::Head`**
 
-* `HEAD`リクエストを`GET`に変換し、`GET`として処理します。
+* `HEAD`リクエストを`GET`に変換し、`GET`として配信します。
 
 **`Rack::ConditionalGet`**
 
@@ -298,7 +306,7 @@ Action Controllerの機能の多くはミドルウェアとして実装されて
 
 * マルチパートリクエストをバッファするのに使われる一時ファイルをクリーンアップします。
 
-TIP: これらのミドルウェアはいずれも、独自のRackスタックに利用することもできます。
+TIP: これらのミドルウェアはいずれも、独自のRackスタックで利用することも可能です。
 
 参考資料
 ---------
