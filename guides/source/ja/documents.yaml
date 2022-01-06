@@ -231,7 +231,7 @@
       url: contributing_to_ruby_on_rails.html
       description: Railsは「どこかで誰かがうまくやってくれているフレームワーク」ではありません。現在も継続しているRailsフレームワーク開発に貢献するさまざまな方法について解説します。
     -
-      name: Rails コア開発環境の構築方法
+      name: Rails コア開発環境の構築
       url: development_dependencies_install.html
       description: Ruby on Rails自体の開発環境を構築する方法について解説します。
     -
