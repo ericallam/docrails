@@ -269,6 +269,7 @@ class CreateAppointments < ActiveRecord::Migration[7.0]
     end
   end
 end
+```
 
 joinモデルのコレクションは、[`has_many`関連付けメソッド](#has-many関連付け)経由で管理できます。たとえば、以下のような割り当てを実行したとします。
 
