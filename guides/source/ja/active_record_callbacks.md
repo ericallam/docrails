@@ -131,7 +131,7 @@ Active Recordで利用可能なコールバックの一覧を以下に示しま�
 [`around_destroy`]: https://api.rubyonrails.org/classes/ActiveRecord/Callbacks/ClassMethods.html#method-i-around_destroy
 [`before_destroy`]: https://api.rubyonrails.org/classes/ActiveRecord/Callbacks/ClassMethods.html#method-i-before_destroy
 
-WARNING: `after_save`コールバックは作成と更新の両方で呼び出されますが、コールバックマクロの呼び出し順序にかかわらず、常に、より具体的なな`after_create`コールバックや`after_update`コールバックより**後に**呼び出されます。
+WARNING: `after_save`コールバックは作成と更新の両方で呼び出されますが、コールバックマクロの呼び出し順序にかかわらず、常に、より具体的な`after_create`コールバックや`after_update`コールバックより**後に**呼び出されます。
 
 WARNING. コールバック内では属性の更新や保存は行わないようにしてください。たとえば、コールバック内で`update(attribute: "value")`を呼び出してはいけません。このような操作はモデルのステートを変化させて、コミット時に思わぬ副作用が生じる可能性があります。`before_create`、`before_update`、およびそれより前に発火するコールバックで値を（`self.attribute = "value"`のように）直接代入するのは安全です。
 
