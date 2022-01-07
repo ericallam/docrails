@@ -1,5 +1,3 @@
-**DO NOT READ THIS FILE ON GITHUB, GUIDES ARE PUBLISHED ON https://guides.rubyonrails.org.**
-
 Rails テスティングガイド
 =====================================
 
@@ -405,7 +403,7 @@ $ bin/rails test test/controllers # 指定ディレクトリのテストをす�
 テストランナーではこの他にも、「failing fast」やテスト終了時に必ずテストを出力するといったさまざまな機能が使えます。次を実行してテストランナーのドキュメントをチェックしてみましょう。
 
 ```bash
- bin/rails test -h
+$ bin/rails test -h
 Usage: rails test [options] [files or directories]
 
 You can run a single test by appending a line number to a filename:
