@@ -637,7 +637,7 @@ Is a boolean value which controls whether or not timestamping of `create` and `u
 
 #### `config.active_record.partial_inserts`
 
-Is a boolean value and controls whether or not partial writes are used when creating new records (i.e. whether inserts only set attributes that are different from the default). The default value is `true`.
+Is a boolean value and controls whether or not partial writes are used when creating new records (i.e. whether inserts only set attributes that are different from the default).
 
 #### `config.active_record.partial_updates`
 
@@ -763,6 +763,29 @@ regular expressions.
 #### `config.active_record.verbose_query_logs`
 
 Specifies if source locations of methods that call database queries should be logged below relevant queries. By default, the flag is `true` in development and `false` in all other environments.
+
+#### `config.active_record.async_query_executor`
+
+Specifies how asynchronous queries are pooled.
+
+It defaults to `nil`, which means `load_async` is disabled and instead directly executes queries in the foreground.
+For queries to actually be performed asynchronously, it must be set to either `:global_thread_pool` or `:multi_thread_pool`.
+
+`:global_thread_pool` will use a single pool for all databases the application connects to. This is the preferred configuration
+for applications with only a single database, or applications which only ever query one database shard at a time.
+
+`:multi_thread_pool` will use one pool per database, and each pool size can be configured individually in `database.yml` through the
+`max_threads` and `min_thread` properties. This can be useful to applications regularly querying multiple databases at a time, and that need to more precisely define the max concurrency.
+
+#### `config.active_record.global_executor_concurrency`
+
+Used in conjunction with `config.active_record.async_query_executor = :global_thread_pool`, defines how many asynchronous
+queries can be executed concurrently.
+
+Defaults to `4`.
+
+This number must be considered in accordance with the database pool size configured in `database.yml`. The connection pool
+should be large enough to accommodate both the foreground threads (.e.g web server or job worker threads) and background threads.
 
 #### `ActiveRecord::ConnectionAdapters::Mysql2Adapter.emulate_booleans`
 
@@ -1229,6 +1252,7 @@ Allows detailed configuration for the `:smtp` delivery method. It accepts a hash
 * `:user_name` - If your mail server requires authentication, set the username in this setting.
 * `:password` - If your mail server requires authentication, set the password in this setting.
 * `:authentication` - If your mail server requires authentication, you need to specify the authentication type here. This is a symbol and one of `:plain`, `:login`, `:cram_md5`.
+* `:enable_starttls` - Use STARTTLS when connecting to your SMTP server and fail if unsupported. It defaults to `false`.
 * `:enable_starttls_auto` - Detects if STARTTLS is enabled in your SMTP server and starts to use it. It defaults to `true`.
 * `:openssl_verify_mode` - When using TLS, you can set how OpenSSL checks the certificate. This is useful if you need to validate a self-signed and/or a wildcard certificate. This can be one of the OpenSSL verify constants, `:none` or `:peer` -- or the constant directly `OpenSSL::SSL::VERIFY_NONE` or `OpenSSL::SSL::VERIFY_PEER`, respectively.
 * `:ssl/:tls` - Enables the SMTP connection to use SMTP/TLS (SMTPS: SMTP over direct TLS connection).
@@ -1710,14 +1734,16 @@ The default is `:rails_storage_redirect`.
 
 Can be used to alter the way ffmpeg generates video preview images.
 
-By default, this is defined as:
+With `config.load_defaults 7.0`, the default is:
 
 ```ruby
 config.active_storage.video_preview_arguments = "-vf 'select=eq(n\\,0)+eq(key\\,1)+gt(scene\\,0.015),loop=loop=-1:size=2,trim=start_frame=1' -frames:v 1 -f image2"
 ```
 
+Which has the following behavior:
+
 1. `select=eq(n\,0)+eq(key\,1)+gt(scene\,0.015)`: Select the first video frame, plus keyframes, plus frames that meet the scene change threshold.
-2. `loop=loop=-1:size=2,trim=start_frame=1`: To use the first video frame as a fallback when no other frames meet the criteria, loop the first (one or) two selected frames, then drop the first looped frame.
+2. `loop=loop=-1:size=2,trim=start_frame=1`: Use the first video frame as a fallback when no other frames meet the criteria by looping the first (one or) two selected frames, then dropping the first looped frame.
 
 #### `config.active_storage.multiple_file_field_include_hidden`
 
@@ -1749,6 +1775,7 @@ Accepts a string for the HTML tag used to wrap attachments. Defaults to `"action
 - `config.active_support.use_rfc4122_namespaced_uuids`: `true`
 - `config.active_support.disable_to_s_conversion`: `true`
 - `config.action_dispatch.return_only_request_media_type_on_content_type`: `false`
+- `config.action_dispatch.cookies_serializer`: `:json`
 - `config.action_mailer.smtp_timeout`: `5`
 - `config.active_storage.video_preview_arguments`: `"-vf 'select=eq(n\\,0)+eq(key\\,1)+gt(scene\\,0.015),loop=loop=-1:size=2,trim=start_frame=1' -frames:v 1 -f image2"`
 - `config.active_storage.multiple_file_field_include_hidden`: `true`
@@ -1838,6 +1865,7 @@ Accepts a string for the HTML tag used to wrap attachments. Defaults to `"action
 - `config.active_record.cache_versioning`: `false`
 - `config.active_record.has_many_inversing`: `false`
 - `config.active_record.legacy_connection_handling`: `true`
+- `config.active_record.partial_inserts`: `true`
 - `config.active_support.use_authenticated_message_encryption`: `false`
 - `config.active_support.hash_digest_class`: `OpenSSL::Digest::MD5`
 - `config.active_support.key_generator_hash_digest_class`: `OpenSSL::Digest::SHA1`
