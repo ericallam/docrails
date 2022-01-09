@@ -41,7 +41,7 @@ APIアプリケーションの開発にすぐ役立つRailsの機能をいくつ
 - developmentモード: Railsアプリケーションのdevelopmentモードには開発に最適なデフォルト値が設定されているので、productionモードのパフォーマンスを損なわずに快適な開発環境を利用できます。
 - test モード: developmentモードと同様です。
 - ログ出力: Railsアプリケーションはすべてのリクエストをログに出力します。また、現在のモードに応じてログの詳細レベルが調整されます。developmentモードのログには、リクエスト環境、データベースクエリ、基本的なパフォーマンス情報などが出力されます。
-- セキュリティ: [IPスプーフィング攻撃](https://ja.wikipedia.org/wiki/IP%E3%82%B9%E3%83%97%E3%83%BC%E3%83%95%E3%82%A3%E3%83%B3%E3%82%B0) を検出・防御します。また、[タイミング攻撃](https://en.wikipedia.org/wiki/Timing_attack) に対応できる暗号化署名を扱います。皆さんはIPスプーフィング攻撃やタイミング攻撃がどんなものかご存知ですか？
+- セキュリティ: [IPスプーフィング攻撃](https://ja.wikipedia.org/wiki/IP%E3%82%B9%E3%83%97%E3%83%BC%E3%83%95%E3%82%A3%E3%83%B3%E3%82%B0) を検出・防御します。また、[タイミング攻撃](https://ja.wikipedia.org/wiki/%E3%82%BF%E3%82%A4%E3%83%9F%E3%83%B3%E3%82%B0%E6%94%BB%E6%92%83) に対応できる暗号化署名を扱います。皆さんはIPスプーフィング攻撃やタイミング攻撃がどんなものかご存知ですか？
 - パラメータ解析: URLエンコード文字列の代わりにJSONでパラメータを指定できます。JSONはRailsでデコードされ、`params`でアクセスできます。もちろん、ネストしたURLエンコードパラメータも扱えます。
 - 条件付きGET: Railsでは、`ETag`や`Last-Modified`を使った条件付き`GET`を扱えます。条件付き`GET`はリクエストヘッダを処理し、正しいレスポンスヘッダとステータスコードを返します。コントローラに
   [`stale?`](https://api.rubyonrails.org/classes/ActionController/ConditionalGet.html#method-i-stale-3F) チェックを追加するだけで、HTTPの細かなやりとりはRailsが代行してくれます。
