@@ -201,7 +201,7 @@
   name: Rails を拡張する
   documents:
     -
-      name: プラグインを作成する
+      name: Rails プラグイン作成入門
       work_in_progress: true
       url: plugins.html
       description: プラグインを作成してRailsの機能を拡張する方法について解説します。
@@ -231,7 +231,7 @@
       url: contributing_to_ruby_on_rails.html
       description: Railsは「どこかで誰かがうまくやってくれているフレームワーク」ではありません。現在も継続しているRailsフレームワーク開発に貢献するさまざまな方法について解説します。
     -
-      name: Rails コア開発環境の構築
+      name: Rails コア開発環境の構築方法
       url: development_dependencies_install.html
       description: Ruby on Rails自体の開発環境を構築する方法について解説します。
     -
