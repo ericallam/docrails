@@ -69,7 +69,7 @@ NOTE: WebpackerはNPMとYarnに依存しています。NPM（Node package manage
 
 ### JavaScriptをWebpacker経由で利用する
 
-Webpackerをインストールすると、`app/javascripts/packs`ディレクトリ以下のJavaScriptファイルがコンパイルされて独自のpackファイルにまとめられます。
+Webpackerをインストールすると、`app/javascript/packs`ディレクトリ以下のJavaScriptファイルがコンパイルされて独自のpackファイルにまとめられます。
 
 たとえば、`app/javascript/packs/application.js`というファイルが存在すると、Webpackerは`application`という名前のpackを作成します。このpackは、`<%= javascript_pack_tag "application" %>`というERBコードが使われているRailsアプリケーションで追加されます。これによって、development環境では`application.js`が変更されるたびに再コンパイルされ、ページを読み込むとコンパイル後のpackが使われます。実際の`pack`ディレクトリに置かれるのは、主に他のファイルを読み込むマニフェストファイルですが、任意のJavaScriptコードも置けます。
 
