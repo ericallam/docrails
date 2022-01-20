@@ -22,17 +22,17 @@ Railsにおけるエンジンの役割
 
 すなわち、エンジンとアプリケーションは、細かな違いを除けばほぼ同じものであると考えていただいてよいでしょう。本ガイドでもこの点をたびたび確認します。エンジンとアプリケーションは、同じ構造を共有しています。
 
-エンジンはプラグインとも密接に関連します。エンジンやプラグインは、どちらも共通の`lib`ディレクトリ構造を共有し、どちらも`rails plugin new`ジェネレータを用いて生成されます。両者に違いがあるとすれば、Railsはエンジンを一種の「完全なプラグイン」とみなしている点です。これは、エンジンを生成する際にジェネレータコマンドで`--full`を与えることからもわかります。このガイドでは、実際には`--mountable`オプションを使います。これは`--full`のオプション以外にもいくつかの機能を追加します。以後本ガイドでは「完全なプラグイン (full plugin)」を単に「エンジン」と呼びます。エンジンはプラグインになることもでき、プラグインがエンジンになることもできます。
+エンジンはプラグインとも密接に関連します。エンジンやプラグインは、どちらも共通の`lib`ディレクトリ構造を共有し、どちらも`rails plugin new`ジェネレータを用いて生成されます。両者の違いは、Railsはエンジンを一種の「完全なプラグイン」とみなしている点です。これは、エンジンを生成する際にジェネレータコマンドで`--full`を与えることからもわかります。このガイドでは、実際には`--mountable`オプションを使います。このオプションは、`--full`のオプション以外にもいくつかの機能を追加します。以後本ガイドでは「完全なプラグイン (full plugin)」を単に「エンジン」と呼びます。エンジンはプラグインになることもでき、プラグインがエンジンになることもできます。
 
 本ガイドでの説明用に作成するエンジンには「blorgh」(blogのもじり) という名前を付けます。このエンジンはホストアプリケーションにブログ機能を追加し、記事とコメントを作成できます。本ガイドでは、最初にこのエンジンを単体で動作するようにし、次にこのエンジンをアプリケーションにフックします。
 
 エンジンはホストアプリケーションから分離しておくこともできます。「分離」とは、あるアプリケーションが`articles_path`のようなルーティングヘルパーによってパスを提供できるとすると、そのアプリケーションのエンジンも同じく`articles_path`というヘルパーによってパスを提供でき、しかも両者が衝突しないということです。エンジンを分離すると、コントローラ名、モデル名、テーブル名はすべて名前空間化されます。これについては本ガイドで後述します。
 
-ここが重要ですので理解しておいてください。アプリケーションは **いかなる場合も** エンジンよりも優先されます。ある環境において、最終的な決定権を持つのはアプリケーション自身です。エンジンはアプリケーションの動作を大幅に変更するものではなく、アプリケーションを単に拡張するものです。
+ここで、ぜひ理解しておくべき重要な点があります。アプリケーションは **いかなる場合も** エンジンよりも優先されます。ある環境において、最終的な決定権を持つのはアプリケーション自身です。エンジンはアプリケーションの動作を大幅に変更するものではなく、アプリケーションを単に拡張するものです。
 
 その他のエンジンに関するドキュメントについては、[Devise](https://github.com/plataformatec/devise) (親アプリケーションに認証機能を提供するエンジン) や [Thredded](https://github.com/thredded/thredded) (フォーラム機能を提供するエンジン) を参照してください。この他に、[Spree](https://github.com/spree/spree) (eコマースプラットフォーム) や[Refinery CMS](https://github.com/refinery/refinerycms) (CMSエンジン) などもあります。
 
-追伸。エンジン機能はJames Adam、Piotr Sarnacki、Railsコアチーム、そして多くの人々の助けなしでは実現できなかったでしょう。彼らに会うことがあったら、ぜひ感謝の気持ちをお伝えください。
+最後に、エンジン機能はJames Adam、Piotr Sarnacki、Railsコアチーム、そして多くの人々の助けなしでは実現できなかったでしょう。彼らに会うことがあったら、ぜひ感謝の気持ちをお伝えください。
 
 エンジンを生成する
 --------------------
@@ -70,7 +70,7 @@ $ bin/rails plugin --help
 
 `--mountable`オプションを使うと、`--full`オプションに以下も追加されます。
 
-  * アセットマニフェストファイル (`application.js`および`application.css`)
+  * アセットマニフェストファイル（`application.js`および`application.css`）
   * 名前空間化された`ApplicationController`スタブ
   * 名前空間化された`ApplicationHelper`スタブ
   * エンジンで使うレイアウトビューテンプレート
@@ -107,7 +107,7 @@ mount Blorgh::Engine => "/blorgh"
 gem 'blorgh', path: 'engines/blorgh'
 ```
 
-Gemfileを更新したら、いつものように`bundle install`を実行するのを忘れずに。エンジンを通常のgemと同様に`Gemfile`に記述すると、Bundlerはgemと同様にエンジンを読み込み、`blorgh.gemspec`ファイルを解析し、`lib`以下に置かれているファイル (この場合`lib/blorgh.rb`) をrequireします。このファイルは、(`lib/blorgh/engine.rb`に置かれている) `blorgh/engine.rb`ファイルをrequireし、`Blorgh`という基本モジュールを定義します。
+Gemfileを更新したら、いつものように`bundle install`を実行するのを忘れずに。エンジンを通常のgemと同様に`Gemfile`に記述すると、Bundlerはgemと同様にエンジンを読み込み、`blorgh.gemspec`ファイルを解析し、`lib`以下に置かれているファイル（この場合`lib/blorgh.rb`）をrequireします。このファイルは、(`lib/blorgh/engine.rb`に置かれている) `blorgh/engine.rb`ファイルをrequireし、`Blorgh`という基本モジュールを定義します。
 
 ```ruby
 require "blorgh/engine"
@@ -134,54 +134,50 @@ end
 
 NOTE: `Engine`クラスの定義に含まれる`isolate_namespace`の行を変更・削除しないことを**強く**推奨します。この行が変更されると、生成されたエンジン内のクラスがアプリケーションと衝突する**可能性があります**。
 
-名前空間を分離するということは、`bin/rails g model`の実行によって生成されたモデル (ここでは `bin/rails g model article`を実行したとします) は`Article`にならず、名前空間化されて`Blorgh::Article`になるということです。さらにモデルのテーブルも名前空間化され、単なる`articles`ではなく`blorgh_articles`になります。コントローラもモデルと同様に名前空間化されます。`ArticlesController`というコントローラは`Blorgh::ArticlesController`になり、このコントローラのビューは`app/views/articles`ではなく`app/views/blorgh/articles`に置かれます。メイラーも同様に名前空間化されます。
+名前空間を分離するということは、`bin/rails g model`の実行によって生成されたモデル（ここでは `bin/rails g model article`を実行したとします）は`Article`にならず、名前空間化されて`Blorgh::Article`になるということです。さらにモデルのテーブルも名前空間化され、単なる`articles`ではなく`blorgh_articles`になります。コントローラもモデルと同様に名前空間化されます。`ArticlesController`というコントローラは`Blorgh::ArticlesController`になり、このコントローラのビューは`app/views/articles`ではなく`app/views/blorgh/articles`に置かれます。メイラーも同様に名前空間化されます。
 
 最後に、ルーティングもエンジン内で分離されます。これは名前空間化の最も重要な部分のひとつであり、これについては本ガイドの[ルーティング](#ルーティング)セクションで後述します。
 
 #### `app`ディレクトリ
 
-エンジンの`app`ディレクトリの中には、通常のアプリケーションでおなじみの標準の`assets`、`controllers`、`helpers`、`mailers`、`models`、`views`ディレクトリが置かれます。このうち`helpers`、`mailers`、`models`ディレクトリにはデフォルトでは何も置かれないので、本セクションでは解説しません。モデルについては、エンジンの作成について解説するセクションで後述します。
+エンジンの`app`ディレクトリの中には、通常のアプリケーションでおなじみの標準的な`assets`、`controllers`、`helpers`、`mailers`、`models`、`views`ディレクトリが置かれます。モデルについては、エンジンの作成について解説するセクションで後述します。
 
 エンジンの`app/assets`ディレクトリの下にも、通常のアプリケーションと同様に`images`、`javascripts`、`stylesheets`ディレクトリがそれぞれあります。通常のアプリケーションと異なる点は、これらのディレクトリの下に、さらにエンジン名を持つサブディレクトリがあることです。これは、エンジンが名前空間化されるのと同様、エンジンのアセットも同様に名前空間化される必要があるからです。
 
 `app/controllers`ディレクトリの下には`blorgh`ディレクトリが置かれます。この中には`application_controller.rb`というファイルが1つ置かれます。このファイルはエンジンのコントローラ共通の機能を提供するためのものです。この`blorgh`ディレクトリには、エンジンで使うその他のコントローラを置きます。これらのファイルを名前空間化されたディレクトリに配置することで、他のエンジンやアプリケーションに同じ名前のコントローラがある場合に、名前の衝突を避けられます。
 
-NOTE: あるエンジンに含まれる`ApplicationController`というクラスの名前は、アプリケーションそのものが持つクラスと同じ名前です。その理由は、アプリケーションをエンジンに変換しやすくするためです。
+NOTE: あるエンジンに含まれる`ApplicationController`というクラス名は、アプリケーションそのものが持つクラスと同じ名前です。その理由は、アプリケーションをエンジンに変換しやすくするためです。
 
-NOTE: Rubyの定数探索方法が原因で、エンジンのコントローラがエンジンのアプリケーションコントローラではなくメインアプリケーションのコントローラを継承してしまう場合があります。Rubyが`ApplicationController`定数を解決できる状態になっていると、自動読み込みがトリガされなくなります。詳しくは、[定数がトリガーされない場合](constant_autoloading_and_reloading.html#定数がトリガーされない場合)や[定数の自動読み込みと再読み込み](autoloading_and_reloading_constants.html)をご覧ください。この問題を防止するには、`require_dependency`を用いてエンジンのアプリケーションコントローラを確実に読み込むのが最善の方法です。次の例をご覧ください。
+NOTE: 親アプリケーションが`classic`モードで動作していると、エンジンのコントローラがエンジンのアプリケーションコントローラではなくマインのアプリケーションを継承してしまう可能性が生じます。これを防ぐベストな方法は、親アプリケーションを`zeitwerk`モードに移行することです。そうでなければ、以下のように`require_dependency`を利用してエンジンのアプリケーションコントローラが確実に読み込まれるようにします。
 
-``` ruby
-# app/controllers/blorgh/articles_controller.rb:
+```ruby
+# `classic`モード以外では使わないこと
 require_dependency "blorgh/application_controller"
 
 module Blorgh
   class ArticlesController < ApplicationController
-    ...
+    # ...
   end
 end
 ```
 
-WARNING: `require`は使わないでください。開発環境でのクラス自動読み込みで誤作動の原因になります。`require_dependency`を用いることで、クラスの読み込みやunloadを正しい方法で行えるようになります。
+WARNING: `require`を使ってはいけません。開発環境でのクラス自動読み込みが機能しなくなります。`require_dependency`を用いることで、クラスの読み込みやアンロードを正しい方法で行えるようになります。
 
-`app/helpers`ディレクトリの下には`blorgh`というディレクトリがあり、その中に`application_helper.rb`というファイルがあります。このファイルは、エンジンのヘルパーで使うあらゆる共通機能を提供します。`blorgh`ディレクトリは、エンジンが使うその他のヘルパーの置き場所です。この名前空間化されたディレクトリの中に配置することで、他のエンジンに含まれる名前が完全に同一なルーティングヘルパーと衝突することも、アプリケーション内にあるヘルパーと衝突することも防止できます。
-
-`app/jobs `ディレクトリの下には`blorgh`というディレクトリがあり、その中に`application_job.rb`というファイルがあります。このファイルは、エンジンのジョブで使うあらゆる共通機能を提供します。`blorgh`ディレクトリは、エンジンが使うその他のジョブの置き場所です。この名前空間化されたディレクトリの中に配置することで、他のエンジンに含まれる名前が完全に同一なジョブと衝突することも、アプリケーション内にあるジョブと衝突することも防止できます。
-
-`app/mailers `ディレクトリの下には`blorgh`というディレクトリがあり、その中に`application_ mailer.rb`というファイルがあります。このファイルは、エンジンのメイラーで使うあらゆる共通機能を提供します。`blorgh`ディレクトリは、エンジンが使うその他のメイラーの置き場所です。この名前空間化されたディレクトリの中に配置することで、他のエンジンに含まれる名前が完全に同一なメイラーと衝突することも、アプリケーション内にあるメイラーと衝突することも防止できます。
+`app/helpers`、`app/jobs`、`app/mailers`、`app/models`ディレクトリの下にはそれぞれ`blorgh`というディレクトリがあり、その中に`application_helper.rb`というファイルがあります。このファイルは、エンジンのヘルパーで使うあらゆる共通機能を提供します。自分のファイルをこの名前空間化されたディレクトリの中に配置することで、他のエンジンに含まれる名前が完全に同一なルーティングヘルパーと衝突することも、アプリケーション内にあるヘルパーと衝突することも防止できます。
 
 最後に、`app/views`ディレクトリの下には`layouts`フォルダがあります。ここには`blorgh/application.html.erb`というファイルが置かれます。このファイルは、エンジンで使うレイアウトを指定するためのものです。エンジンが単体のエンジンとして使われていれば、このファイルでレイアウトをいくらでもカスタマイズできます。レイアウト変更のためにアプリケーション自身の`app/views/layouts/application.html.erb`ファイルを変更する必要はありません。
 
-エンジンのレイアウトをユーザーに強制したくない場合は、このファイルを削除し、エンジンのコントローラでは別のレイアウトを参照するように変更してください。
+エンジンのレイアウトをユーザーに強制したくない場合は、このファイルを削除することで、エンジンのコントローラでは別のレイアウトを参照するように変更できます。
 
 #### `bin`ディレクトリ
 
-このディレクトリには`bin/rails`というファイルが1つだけ置かれます。これはアプリケーション内で使っているのと似た`rails`サブコマンドであり、ジェネレータです。このような構成になっていることで、このエンジンで利用するための独自のコントローラやモデルを以下のように簡単に生成できます。
+このディレクトリには`bin/rails`というファイルが1つだけ置かれます。これはアプリケーション内で使っているのと似た`rails`サブコマンドであり、ジェネレータです。このような構成になっていることで、このエンジンで利用するための独自のコントローラやモデルを以下のようにコマンドで簡単に生成できます。
 
 ```bash
 $ bin/rails g model
 ```
 
-言うまでもなく、`Engine`クラスに`isolate_namespace`を持つエンジンでは、このbin/railsで生成したものがすべて名前空間化されることにご注意ください。
+`Engine`クラスに`isolate_namespace`を持つエンジンでは、このコマンドで生成したものがすべて名前空間化されることを理解しておきましょう。
 
 #### `test`ディレクトリ
 
@@ -216,11 +212,11 @@ $ bin/rails generate scaffold article title:string text:text
 invoke  active_record
 create    db/migrate/[timestamp]_create_blorgh_articles.rb
 create    app/models/blorgh/article.rb
-invoke  test_unit
+invoke    test_unit
 create      test/models/blorgh/article_test.rb
 create      test/fixtures/blorgh/articles.yml
 invoke  resource_route
-route    resources :articles
+ route    resources :articles
 invoke  scaffold_controller
 create    app/controllers/blorgh/articles_controller.rb
 invoke    erb
@@ -230,20 +226,12 @@ create      app/views/blorgh/articles/edit.html.erb
 create      app/views/blorgh/articles/show.html.erb
 create      app/views/blorgh/articles/new.html.erb
 create      app/views/blorgh/articles/_form.html.erb
-invoke  test_unit
+invoke    test_unit
 create      test/controllers/blorgh/articles_controller_test.rb
+create      test/system/blorgh/articles_test.rb
 invoke    helper
 create      app/helpers/blorgh/articles_helper.rb
-invoke  test_unit
-create    test/application_system_test_case.rb
-create    test/system/articles_test.rb
-invoke  assets
-invoke    js
-create      app/assets/javascripts/blorgh/articles.js
-invoke    css
-create      app/assets/stylesheets/blorgh/articles.css
-invoke  css
-create    app/assets/stylesheets/scaffold.css
+invoke      test_unit
 ```
 
 scaffoldジェネレータが最初に行なうのは、`active_record`ジェネレータの呼び出しです。これはマイグレーションの生成とそのリソースのモデルを生成します。ここでご注目いただきたいのは、マイグレーションは通常の`create_articles`ではなく`create_blorgh_articles`という名前で呼ばれるという点です。これは`Blorgh::Engine`クラスの定義で呼び出される`isolate_namespace`メソッドによるものです。このモデルも名前空間化されるので、`Engine`クラス内の`isolate_namespace`呼び出しによって、`app/models/article.rb`ではなく`app/models/blorgh/article.rb`に置かれます。
@@ -286,9 +274,6 @@ end
 
 これにより、たとえ他のエンジンやアプリケーションにarticleリソースがあっても衝突を回避できます。
 
-最後に、`app/assets/javascripts/blorgh/articles.js`と
-`app/assets/stylesheets/blorgh/articles.css`という2つのファイルがこのリソースのアセットとして生成されます。これらの利用法についてはこのすぐ後で解説します。
-
 エンジンのルートディレクトリで`bin/rails db:migrate`を実行すると、scaffoldジェネレータによって生成されたマイグレーションが実行されます。続いて`test/dummy`ディレクトリで`rails server`を実行してみましょう。`http://localhost:3000/blorgh/articles`をブラウザで表示すると、生成されたデフォルトのscaffoldが表示されます。表示されたものをいろいろクリックしてみてください。これで、最初の機能を備えたエンジンの生成に成功しました。
 
 コンソールで遊んでみたいのであれば、`rails console`でRailsアプリケーションをコンソールで動かせます。`Article`モデルは前述のとおり名前空間化されているので、このモデルを参照するには`Blorgh::Article`と指定する必要があります。
@@ -298,7 +283,7 @@ end
 => #<Blorgh::Article id: 1 ...>
 ```
 
-最後の作業です。このエンジンの`articles`リソースはエンジンのルート (root) パスに置くべきです。これは、エンジンのマウントされているルートパスをユーザーがブラウザで表示したときに、記事の一覧が表示されるべきだからです。これを行うには、エンジンの`config/routes.rb`ファイルに以下の記述を追加します。
+最後の作業です。このエンジンの`articles`リソースはエンジンのルート（root）パスに置くべきです。これは、エンジンのマウントされているルートパスをユーザーがブラウザで表示したときに、記事の一覧が表示されるべきだからです。これを行うには、エンジンの`config/routes.rb`ファイルに以下の記述を追加します。
 
 ```ruby
 root to: "articles#index"
@@ -356,7 +341,7 @@ module Blorgh
 end
 ```
 
-NOTE: この`has_many`は`Blorgh`モジュールの中にあるクラスの中で定義されています。これだけで、これらのオブジェクトに対して`Blorgh::Comment`モデルを使いたいという意図がRailsに自動的に認識されます。従って、ここで`:class_name`オプションを使用してクラス名を指定する必要はありません。
+NOTE: この`has_many`は`Blorgh`モジュールの中にあるクラスの中で定義されています。これだけで、これらのオブジェクトに対して`Blorgh::Comment`モデルを使いたいという意図がRailsに自動的に認識されます。つまり、ここでは`:class_name`オプションでクラス名を指定する必要はありません。
 
 続いて、記事を作成するためのフォームを作成する必要があります。フォームを追加するには、`app/views/blorgh/articles/show.html.erb`の`render @article.comments`呼び出しの直後に以下の行を追加します。
 
@@ -398,16 +383,12 @@ $ bin/rails g controller comments
 ```
 create  app/controllers/blorgh/comments_controller.rb
 invoke  erb
-exist    app/views/blorgh/comments
+ exist    app/views/blorgh/comments
 invoke  test_unit
 create    test/controllers/blorgh/comments_controller_test.rb
 invoke  helper
 create    app/helpers/blorgh/comments_helper.rb
-invoke  assets
-invoke    js
-create      app/assets/javascripts/blorgh/comments.js
-invoke    css
-create      app/assets/stylesheets/blorgh/comments.css
+invoke    test_unit
 ```
 
 このフォームは`POST`リクエストを`/articles/:article_id/comments`に送信します。これに対応するのは`Blorgh::CommentsController`の`create`アクションです。このアクションを作成する必要があります。`app/controllers/blorgh/comments_controller.rb`のクラス定義の中に以下の行を追加します。
@@ -429,7 +410,7 @@ private
 いよいよ、コメントフォームが動作するのに必要な最後の手順です。コメントはまだ正常に表示できません。この時点でコメントを作成しようとすると、以下のようなエラーが生じるでしょう。
 
 ```
-Missing partial blorgh/comments/comment with {:handlers=>[:erb, :builder],
+Missing partial blorgh/comments/_comment with {:handlers=>[:erb, :builder],
 :formats=>[:html], :locale=>[:en, :en]}. Searched in:   *
 "/Users/ryan/Sites/side_projects/blorgh/test/dummy/app/views"   *
 "/Users/ryan/Sites/side_projects/blorgh/app/views"
@@ -484,7 +465,7 @@ mount Blorgh::Engine, at: "/blog"
 
 この行を記述することで、エンジンがアプリケーションの`/blog`パスにマウントされます。`rails server`を実行してRailsを起動すると、`http://localhost:3000/blog`にアクセスできるようになります。
 
-NOTE: Deviseなどの他のエンジンでは、この点が若干異なり、ルーティングで (`devise_for`などの) カスタムヘルパーを指定するものがあります。これらのヘルパーの動作は完全に同じであり、事前に定義されたカスタマイズ可能なパスにエンジンの機能の一部をマウントします。
+NOTE: Deviseなどの他のエンジンでは、この点が若干異なり、ルーティングで（`devise_for`などの）カスタムヘルパーを指定するものがあります。これらのヘルパーの動作は完全に同じであり、事前に定義されたカスタマイズ可能なパスにエンジンの機能の一部をマウントします。
 
 ### エンジンの設定
 
@@ -560,7 +541,7 @@ end
 
 次に、`Blorgh::Article`モデルにも`author_name`フィールドを実際の`User`オブジェクトに変換し、`User`オブジェクトを記事の`author`と関連付けてから記事を保存するコードが必要です。このフィールド用の`attr_accessor`も設定する必要があります。これにより、このフィールド用のゲッターメソッドとセッターメソッドが定義されます。
 
-これらをすべて行なうには、`author_name`用の`attr_accessor`と、authorとの関連付け、および`before_validation`呼び出しを`app/models/blorgh/article.rb`に追加する必要があります。`author`関連付けは、この時点ではあえて`User`クラスとハードコードしておきます。
+これらをすべて行なうには、`author_name`用の`attr_accessor`、authorとの関連付け、および`before_validation`呼び出しを`app/models/blorgh/article.rb`に追加する必要があります。`author`関連付けは、この時点ではあえて`User`クラスとハードコードしておきます。
 
 ```ruby
 attr_accessor :author_name
@@ -579,7 +560,7 @@ private
 この新しいカラムを追加するには、エンジンのディレクトリで以下のコマンドを実行する必要があります。
 
 ```bash
-$ bin/rails g migration add_author_id_to_blorgh_articles author_id:integer
+$ bin/rails generate migration add_author_id_to_blorgh_articles author_id:integer
 ```
 
 NOTE: 上のようにコマンドオプションでマイグレーション名とカラムの仕様を指定することで、特定のテーブルに追加しようとしているカラムがRailsによって自動的に認識され、そのためのマイグレーションが作成されます。この他にオプションを指定する必要はありません。
@@ -590,7 +571,7 @@ NOTE: 上のようにコマンドオプションでマイグレーション名�
 $ bin/rails blorgh:install:migrations
 ```
 
-上のコマンドでコピーされるマイグレーションは _1つ_ だけである点にご注意ください。これは、最初の2つのマイグレーションはこのコマンドが初めて実行されたときにコピー済みであるためです。
+上のコマンドでコピーされるマイグレーションは「1つ」だけである点にご注意ください。これは、最初の2つのマイグレーションはこのコマンドが初めて実行されたときにコピー済みであるためです。
 
 ```
 NOTE Migration [timestamp]_create_blorgh_articles.blorgh.rb from blorgh has been skipped. Migration with the same name already exists.
@@ -676,7 +657,6 @@ self.author = Blorgh.author_class.find_or_create_by(name: author_name)
 
 `author_class`メソッドが`String`ではなく`Class`を返すように変更を加えたので、`Blorgh::Article`の`belongs_to`定義もそれに合わせて変更する必要があります。
 
-
 ```ruby
 belongs_to :author, class_name: Blorgh.author_class.to_s
 ```
@@ -689,17 +669,17 @@ belongs_to :author, class_name: Blorgh.author_class.to_s
 Blorgh.author_class = "User"
 ```
 
-WARNING: このとき、このクラス名を必ず`String`で (=引用符で囲んだ文字列リテラルとして) 記述することがきわめて重要です。決してクラスそのものを書いてはいけません。クラス自身を使うと、Railsはそのクラスを読み込んで関連するテーブルを参照しようとしますが、参照先のテーブルが存在しない場合に問題が発生する可能性があります。このため、クラス名は`String`で表し、後にエンジンが`constantize`でクラスに変換する必要があります。
+WARNING: この設定では、このクラス名をクラスそのものではなく`String`で（=引用符で囲んだ文字列リテラルとして）記述することがきわめて重要です。クラス自身を書くと、Railsはそのクラスを読み込んで関連するテーブルを参照しようとしますが、参照先のテーブルが存在しない場合に問題が発生する可能性があります。このため、クラス名は`String`で表し、後にエンジンが`constantize`でクラスに変換する必要があります。
 
 次は、新しい記事を1つ作成してみましょう。記事の作成はこれまでとまったく同様に行えます。1つだけ異なるのは、このクラスの動作を学ぶために`config/initializers/blorgh.rb`の設定をエンジンで使う点です。
 
-使うクラスがそのためのAPIさえ備えていれば、使うクラスへの厳密な依存は完全になくなります。エンジンで使うクラスで必須となるメソッドは`find_or_create_by`のみです。このメソッドはそのクラスのオブジェクトを1つ返します。もちろん、このオブジェクトは何らかの形で参照可能な識別子 (id) を持つ必要があります。
+ここでは、クラスで使うAPIがどうあるべきかについてのみ厳密な依存関係があります（クラスが何であるかは問題ではありません）。エンジンで使うクラスで必須となるメソッドは`find_or_create_by`のみです。このメソッドはそのクラスのオブジェクトを1つ返します。もちろん、このオブジェクトは何らかの形で参照可能な識別子 (id) を持つ必要があります。
 
 #### 一般的なエンジンの設定
 
-エンジンの中で、イニシャライザや国際化などの機能オプションも使いたくなることがあります。うれしいことに、Railsエンジンの機能の大半はRailsアプリケーションと共通しているので、これらは完全に実現可能です。実際、Railsアプリケーションの機能は、エンジンが持つ機能のスーパーセットです。
+エンジンの中で、イニシャライザや国際化などの機能オプションも使いたいことがあります。うれしいことに、Railsエンジンの機能の大半はRailsアプリケーションと共通しているので、これらは完全に実現可能です。実際、Railsアプリケーションの機能は、エンジンが持つ機能のスーパーセットです。
 
-たとえばイニシャライザ (エンジンが読み込まれる前に実行されるコード) を使いたい場合は、そのための場所である`config/initializers`フォルダに置きます。このディレクトリの機能について詳しくは『Rails アプリケーションを設定する』ガイドの[イニシャライザファイルを使う](configuring.html#イニシャライザ)を参照してください。エンジンのイニシャライザの動作は、アプリケーションの`config/initializers`ディレクトリに置かれているイニシャライザと完全に同じです。標準のイニシャライザを使いたい場合も同様です。
+たとえばイニシャライザ（エンジンが読み込まれる前に実行されるコード）を使いたい場合は、そのための場所である`config/initializers`フォルダに置きます。このディレクトリの機能について詳しくは『Rails アプリケーションを設定する』ガイドの[イニシャライザファイルを使う](configuring.html#イニシャライザ)を参照してください。エンジンのイニシャライザの動作は、アプリケーションの`config/initializers`ディレクトリに置かれているイニシャライザと完全に同じです。標準のイニシャライザを使いたい場合も同様です。
 
 ロケールファイルも、アプリケーションの場合と同様`config/locales`ディレクトリに置くだけで利用できます。
 
@@ -721,13 +701,13 @@ module Blorgh
 
     def test_index
       get foos_url
-      ...
+      # ...
     end
   end
 end
 ```
 
-しかしこれは正常に機能しないでしょう。アプリケーションは、このようなリクエストをエンジンにルーティングする**方法**を知らないので、明示的にエンジンにルーティングする必要があります。これを行なうには、設定コードの中で`@routes`インスタンス変数にエンジンのルーティングを割り当てる必要があります。
+しかしこれは正常に機能しないでしょう。アプリケーションは、このようなリクエストをエンジンにルーティングする**方法**を知らないので、明示的にエンジンにルーティングする必要があります。これを行なうには、設定コードの中で`@routes`インスタンス変数にエンジンのルーティングセットを設定する必要があります。
 
 ```ruby
 module Blorgh
@@ -740,13 +720,13 @@ module Blorgh
 
     def test_index
       get foos_url
-      ...
+      # ...
     end
   end
 end
 ```
 
-上のようにすることで、このコントローラの`index`アクションに対して`GET`リクエストを送信しようとしていることがアプリケーションによって認識され、かつアプリケーションのルーティングではなく、エンジンのルーティングが使われるようになります。
+これで、このコントローラの`index`アクションに対して`GET`リクエストを送信しようとしていることがアプリケーションによって認識され、かつアプリケーションのルーティングではなく、エンジンのルーティングが使われるようになります。
 
 これでエンジン用のURLヘルパーもテストで期待どおりに動作します。
 
@@ -759,11 +739,11 @@ end
 
 エンジンのモデルやコントローラは、メインのRailsアプリケーション側でそれらのクラスを再オープン（再定義）することで拡張できます。
 
-拡張用のファイルは、専用のディレクトリ`app/overrides`にまとめられ`to_prepare`を使い組み込むことができます。
+オーバーライドは、`to_prepare`でプリロードされる専用のディレクトリ`app/overrides`に配置できます。
 
-`zeitwerk`モードではこのようにします。
+`zeitwerk`モードでは以下のようにします。
 
-``` ruby
+```ruby
 # config/application.rb
 module MyApp
   class Application < Rails::Application
@@ -780,7 +760,7 @@ module MyApp
 end
 ```
 
-`classic`モードではこのようにします。
+`classic`モードでは以下のようにします。
 
 ``` ruby
 # config/application.rb
@@ -797,57 +777,45 @@ module MyApp
 end
 ```
 
-#### `Class#class_eval`を利用してDecoratorパターンを実装する
+#### 既存のクラスを`class_eval`で再オープンする
 
-`Article#time_since_created`を**追加する**場合:
+たとえば以下のエンジンモデルをオーバライドするとします。
 
 ```ruby
-# MyApp/app/decorators/models/blorgh/article_decorator.rb
+# Blorgh/app/models/blorgh/article.rb
+module Blorgh
+  class Article < ApplicationRecord
+    has_many :comments
 
-Blorgh::Article.class_eval do
-  def time_since_created
-    Time.current - created_at
+    def summary
+      "#{title}"
+    end
   end
 end
 ```
 
-```ruby
-# Blorgh/app/models/article.rb
-
-class Article < ApplicationRecord
-  has_many :comments
-end
-```
-
-
-`Article#summary`を**オーバーライド**する場合:
+これは、以下のようにクラスを「再オープン」するファイルを作成するだけでできます。
 
 ```ruby
-# MyApp/app/decorators/models/blorgh/article_decorator.rb
-
+# MyApp/app/overrides/models/blorgh/article_override.rb
 Blorgh::Article.class_eval do
+  def time_since_created
+    Time.current - created_at
+  end
+
   def summary
     "#{title} - #{truncate(text)}"
   end
 end
 ```
 
-```ruby
-# Blorgh/app/models/article.rb
+オーバーライドでは、そのクラスやモジュールを「再オープン」することがきわめて重要です。クラスやモジュールがメモリ上にない状態でそれらを`class`や`module`キーワードで定義すると、定義がエンジン内にあるので正しくなくなります。上のように`class_eval`を使うことで、確実に再オープンできるようになります。
 
-class Article < ApplicationRecord
-  has_many :comments
-  def summary
-    "#{title}"
-  end
-end
-```
+#### 既存のクラスを`ActiveSupport::Concern`で再オープンする
 
-#### `ActiveSupport::Concern`を利用してDecoratorパターンを実装する
+`Class#class_eval`は単純な調整には大変便利ですが、クラスの変更が複雑な場合は[`ActiveSupport::Concern`](https://api.rubyonrails.org/classes/ActiveSupport/Concern.html)を検討しましょう。`ActiveSupport::Concern`は、相互にリンクしている依存モジュールおよび依存クラスが実行時に読み込まれるときの順序を管理するので、コードのモジュール化を大きく促進できるようになります。
 
-`Class#class_eval`は単純な調整には大変便利ですが、クラスの変更が複雑な場合は[`ActiveSupport::Concern`] (http://edgeapi.rubyonrails.org/classes/ActiveSupport/Concern.html)を検討しましょう。`ActiveSupport::Concern`は、相互にリンクしている依存モジュールおよび依存クラスが実行時に読み込まれるときの順序を管理し、コードのモジュール化を著しく進めることができます。
-
-`Article#time_since_created`を**追加**して`Article#summary`を**オーバーライド**する場合:
+`Article#time_since_created`を**追加**して`Article#summary`を**オーバーライド**する場合
 
 ```ruby
 # MyApp/app/models/blorgh/article.rb
@@ -866,10 +834,11 @@ end
 ```
 
 ```ruby
-# Blorgh/app/models/article.rb
-
-class Article < ApplicationRecord
-  include Blorgh::Concerns::Models::Article
+# Blorgh/app/models/blorgh/article.rb
+module Blorgh
+  class Article < ApplicationRecord
+    include Blorgh::Concerns::Models::Article
+  end
 end
 ```
 
@@ -880,7 +849,7 @@ module Blorgh::Concerns::Models::Article
   extend ActiveSupport::Concern
 
   # 'included do'は、インクルードされたコードを
-  # それがインクルードされている (article.rb) コンテキストで評価する
+  # それがインクルードされている（article.rb）コンテキストで評価し、
   # そのモジュールが実行されるコンテキスト (blorgh/concerns/models/article) では評価しない
   included do
     attr_accessor :author_name
@@ -906,13 +875,17 @@ module Blorgh::Concerns::Models::Article
 end
 ```
 
+### オートローディングとエンジン
+
+オートローディングとエンジンについて詳しくは、「定数の自動読み込みと再読み込み」ガイドの[自動読み込みとRailsエンジン](autoloading_and_reloading_constants.html#自動読み込みとrailsエンジン)を参照してください。
+
 ### ビューをオーバーライドする
 
-Railsは出力すべきビューを探索する際に、アプリケーションの`app/views`ディレクトリを最初に探索します。探しているビューがそこにない場合、続いてそのディレクトリを持つすべてのエンジンで、`app/views`ディレクトリを探索します。
+Railsは、出力すべきビューを探索する際に、最初にアプリケーションの`app/views`ディレクトリを探索します。探しているビューがそこにない場合、続いてそのディレクトリを持つすべてのエンジンで、`app/views`ディレクトリを探索します。
 
-たとえば、アプリケーションが`Blorgh::ArticlesController`のindexアクションの結果を出力するためのビューを探索する際には、最初にアプリケーション自身の`app/views/blorgh/articles/index.html.erb`を探索します。そこに見つからない場合は、続いてエンジンの中を探索します。
+たとえば、アプリケーションが`Blorgh::ArticlesController`のindexアクションの結果を出力するためのビューを探索するときは、最初にアプリケーション自身の`app/views/blorgh/articles/index.html.erb`を探索し、ない場合は引き続きエンジンの中を探索します。
 
-`app/views/blorgh/articles/index.html.erb`というファイルを作成することで、上の動作をオーバーライドできます。これを用いれば、通常のビューでの出力結果を完全に変えることができます。
+`app/views/blorgh/articles/index.html.erb`というファイルを作成するだけで、このビューをオーバーライドできます。これを利用して、通常のビューでの出力結果を完全に変更できます。
 
 `app/views/blorgh/articles/index.html.erb`というファイルを作成して以下のコードを追加すれば、この動作をすぐにも試せます。
 
@@ -929,7 +902,7 @@ Railsは出力すべきビューを探索する際に、アプリケーション
 
 ### ルーティング
 
-デフォルトでは、エンジン内部のルーティングはアプリケーションのルーティングから分離されています。これは、`Engine`クラス内の`isolate_namespace`呼び出しによって実現されます。これは本質的に、アプリケーションとエンジンが完全に同一の名前のルーティングを持つことができ、しかも衝突しないということを意味します。
+デフォルトでは、エンジン内部のルーティングはアプリケーションのルーティングから分離されています。これは、`Engine`クラス内の`isolate_namespace`呼び出しによって実現されます。これは本質的に、アプリケーションとエンジンが完全に同一の名前のルーティングを持つことが可能で、しかも衝突しないということを意味します。
 
 エンジン内部のルーティングは、以下のように`config/routes.rb`の`Engine`クラスによって構成されます。
 
@@ -939,7 +912,7 @@ Blorgh::Engine.routes.draw do
 end
 ```
 
-エンジンとアプリケーションのルーティングがこのように分離されているので、アプリケーションの特定の部分をエンジンの特定の部分にリンクしたい場合は、エンジンのルーティングプロキシメソッドを使う必要があります。`articles_path`のような通常のルーティングメソッドの呼び出しは、アプリケーションとエンジンの両方でそのようなヘルパーが定義されている場合には期待と異なる場所にリンクされる可能性があります。
+このようにエンジンとアプリケーションのルーティングが分離されているので、アプリケーションの特定の部分をエンジンの特定の部分にリンクしたい場合は、エンジンのルーティングプロキシメソッドを使う必要があります。`articles_path`のような通常のルーティングメソッドの呼び出しは、アプリケーションとエンジンの両方でそのようなヘルパーが定義されている場合には期待と異なる場所にリンクされる可能性があります。
 
 たとえば以下のコード例では、そのテンプレートがアプリケーションでレンダリングされる場合の行き先はアプリケーションの`articles_path`になり、エンジンでレンダリングされる場合の行き先はエンジンの`articles_path`になります。
 
@@ -952,7 +925,6 @@ end
 ```erb
 <%= link_to "Blog articles", blorgh.articles_path %>
 ```
-
 逆にエンジン内部からアプリケーションを参照する場合は、同じ要領で`main_app`を使います。
 
 ```erb
@@ -975,12 +947,12 @@ end
 <%= stylesheet_link_tag "blorgh/style.css" %>
 ```
 
-処理されるファイルでアセットパイプラインのrequireステートメントを使えば、アセットが他のアセットに依存することも指定できます。
+処理されるファイルでアセットパイプラインの`*= require`ステートメントを使えば、アセットを他のアセットの依存関係として指定することも可能です。
 
-```
+```css
 /*
-*= require blorgh/style
-*/
+ *= require blorgh/style
+ */
 ```
 
 INFO: SassやCoffeeScriptなどの言語を使う場合は、必要なライブラリを`.gemspec`に追加する必要があります。
@@ -1015,13 +987,13 @@ s.add_dependency "moo"
 s.add_development_dependency "moo"
 ```
 
-どちらの依存gemも、アプリケーションで`bundle install`を実行するときにインストールされます。開発時にのみ必要なgemは、エンジンのテスト実行中にのみ利用されます。
+どちらの依存gemも、アプリケーションで`bundle install`を実行するときにインストールされます。gemの開発用依存関係は、エンジンをdevelopment環境またはtest環境で実行する場合にのみ使われます。
 
-エンジンがrequireされたタイミングで依存gemもすぐにrequireしたい場合は、以下のようにエンジンが初期化されるより前にrequireする必要がありますので、ご注意ください。
+エンジンが`require`されたタイミングで依存gemもすぐに`require`したい場合は、以下のようにエンジンが初期化されるより前にrequireする必要があるので注意が必要です。
 
 ```ruby
-require 'other_engine/engine'
-require 'yet_another_engine/engine'
+require "other_engine/engine"
+require "yet_another_engine/engine"
 
 module MyEngine
   class Engine < ::Rails::Engine
@@ -1029,42 +1001,44 @@ module MyEngine
 end
 ```
 
-Active Supportの`on_load`フック
+フックの読み込みと設定
 ----------------------------
-
-Ruby on RailsのActive Supportは、Ruby言語の拡張やユーティリティといったシステム横断的なユーティリティを提供するコンポーネントです。
 
 Railsのコードは、アプリケーション読み込みの段階で頻繁に参照されます。Railsはこれらのフレームワークの読み込み順序について責任を持つため、途中で`ActiveRecord::Base`などのフレームワークを読み込んでしまうと、Railsがアプリケーションに期待する暗黙の規約に違反してしまう可能性があります。さらに、`ActiveRecord::Base`のコードをアプリケーション起動時に読み込んでしまうと、そうしたフレームワーク全体が再読み込みされるため、起動に時間がかかったり読み込み順序で競合が発生したりする可能性もあります。
 
-`on_load`フックは、Railsの読み込み規約に違反しない形で初期化プロセスにフックをかけるAPIです。起動が遅くなる問題の軽減や、競合問題の回避にも利用できます。
+読み込みフックと設定フックは、Railsの読み込み規約に違反せずにこの初期化プロセスにフックできるAPIです。また、起動パフォーマンス低下の緩和やコンフリクト回避も行います。
 
-## `on_load`フックについて
+### Railsフレームワークの読み込みを回避する
 
-Rubyは動的言語であるため、あるコードで別のコードが読み込まれることがあります。次のコードをご覧ください。
+Rubyは動的言語であるため、一部のコードで別のRailsフレームワークが読み込まれることがあります。次のコードをご覧ください
 
 ```ruby
 ActiveRecord::Base.include(MyActiveRecordHelper)
 ```
 
-上のスニペットの動作は次のようになります。このファイルを読み込んで、`ActiveRecord::Base`の行まで進むと、Rubyはこのタイミングで定数の定義を探索し、それから`require`します。このようにして、Active Recordフレームワーク全体が起動時に読み込まれます。
+上のスニペットの動作は次のようになります。Rubyがこのファイルを読み込んで`ActiveRecord::Base`まで進むと、それをきっかけに定数の定義を探索して`require`します。このようにして、Active Recordフレームワーク全体が起動時に読み込まれます。
 
 `ActiveSupport.on_load`は、あるコードの読み込みを、実際に必要になる時点まで遅延できるメカニズムです。上のスニペットは次のように書き換えられます。
 
 ```ruby
-ActiveSupport.on_load(:active_record) { include MyActiveRecordHelper }
+ActiveSupport.on_load(:active_record) do
+  include MyActiveRecordHelper
+end
 ```
 
 新しいスニペットは、`ActiveRecord::Base`の読み込み時に`MyActiveRecordHelper`だけを`include`するようになります。
 
-## しくみ
+### フックが呼び出されるタイミング
 
-Railsフレームワークにおけるこれらのフックは、特定のライブラリの読み込み時に呼び出されます。たとえば、`ActionController::Base`が読み込まれると`:action_controller_base`フックが呼び出されます。すなわち、`:action_controller_base`フックでまとめられたすべての`ActiveSupport.on_load`呼び出しは、`ActionController::Base`のコンテキストで呼び出される（ここでは`self`が`ActionController::Base`として評価される）ということです。
+Railsフレームワークにおけるこれらのフックは、特定のライブラリの読み込み時に呼び出されます。
 
-## `on_load`フックでコードを変更する
+たとえば、`ActionController::Base`が読み込まれると`:action_controller_base`フックが呼び出されます。これは、`:action_controller_base`フックでによるすべての`ActiveSupport.on_load`呼び出しが`ActionController::Base`のコンテキストで呼び出される（ここでは`self`が`ActionController::Base`として評価される）ということです。
 
-一般に、（フックによる）コードの変更方法は単純です。たとえば、`ActiveRecord::Base`を参照するコードを以下のように`on_load`フックで囲むことができます。
+### 読み込みフックでコードを変更する
 
-### 例1
+一般に、（フックによる）コードの変更方法は単純です。たとえば、`ActiveRecord::Base`などのRailsフレームワークを参照するコードは、読み込みフックでラップできます。
+
+**`include`呼び出しを変更する場合**
 
 ```ruby
 ActiveRecord::Base.include(MyActiveRecordHelper)
@@ -1073,11 +1047,14 @@ ActiveRecord::Base.include(MyActiveRecordHelper)
 上のコードは以下のように書けます。
 
 ```ruby
-ActiveSupport.on_load(:active_record) { include MyActiveRecordHelper } 
-# selfがActiveRecord::Baseを指すので`#include`呼び出しが簡潔になる
+ActiveSupport.on_load(:active_record) do
+  # selfがActiveRecord::Baseを指すので
+  # includeを呼び出せる
+  include MyActiveRecordHelper
+end
 ```
 
-### 例2
+**`prepend`呼び出しを変更する場合**
 
 ```ruby
 ActionController::Base.prepend(MyActionControllerHelper)
@@ -1086,11 +1063,14 @@ ActionController::Base.prepend(MyActionControllerHelper)
 上のコードは以下のように書けます。
 
 ```ruby
-ActiveSupport.on_load(:action_controller_base) { prepend MyActionControllerHelper }
-# selfがActionController::Baseを指すので`#prepend`呼び出しが簡潔になる
+ActiveSupport.on_load(:action_controller_base) do
+  # selfがActiveRecord::Baseを指すので
+  # includeを呼び出せる
+  prepend MyActionControllerHelper
+end
 ```
 
-### 例3
+**クラスメソッド呼び出しを変更する場合**
 
 ```ruby
 ActiveRecord::Base.include_root_in_json = true
@@ -1099,47 +1079,72 @@ ActiveRecord::Base.include_root_in_json = true
 上のコードは以下のように書けます。
 
 ```ruby
-ActiveSupport.on_load(:active_record) { self.include_root_in_json = true } 
-# selfはActiveRecord::Baseを指す
+ActiveSupport.on_load(:active_record) do
+  # ここではselfがActiveRecord::Baseを指す
+  self.include_root_in_json = true
+end
 ```
 
 ## 利用可能なフック
 
-利用可能なフックのリストは以下のとおりです。
-
-クラスの初期化プロセスをフックしたい場合は、以下のクラスに対応するフックを使います。
+これらの読み込みフックは、自分のコードで利用できます。以下のクラスの初期化プロセスにフックするには、利用可能なフックを使います。
 
 | クラス                             | 対応するフック                      |
 | --------------------------------- | ------------------------------------ |
-| `ActionCable`                     | `action_cable`                       |
-| `ActionController::API`           | `action_controller_api`              |
-| `ActionController::API`           | `action_controller`                  |
-| `ActionController::Base`          | `action_controller_base`             |
-| `ActionController::Base`          | `action_controller`                  |
-| `ActionController::TestCase`      | `action_controller_test_case`        |
-| `ActionDispatch::IntegrationTest` | `action_dispatch_integration_test`   |
-| `ActionDispatch::SystemTestCase`  | `action_dispatch_system_test_case`   |
-| `ActionMailer::Base`              | `action_mailer`                      |
-| `ActionMailer::TestCase`          | `action_mailer_test_case`            |
-| `ActionView::Base`                | `action_view`                        |
-| `ActionView::TestCase`            | `action_view_test_case`              |
-| `ActiveJob::Base`                 | `active_job`                         |
-| `ActiveJob::TestCase`             | `active_job_test_case`               |
-| `ActiveRecord::Base`              | `active_record`                      |
-| `ActiveSupport::TestCase`         | `active_support_test_case`           |
-| `i18n`                            | `i18n`                               |
+| `ActionCable`                        | `action_cable`                       |
+| `ActionCable::Channel::Base`         | `action_cable_channel`               |
+| `ActionCable::Connection::Base`      | `action_cable_connection`            |
+| `ActionCable::Connection::TestCase`  | `action_cable_connection_test_case`  |
+| `ActionController::API`              | `action_controller_api`              |
+| `ActionController::API`              | `action_controller`                  |
+| `ActionController::Base`             | `action_controller_base`             |
+| `ActionController::Base`             | `action_controller`                  |
+| `ActionController::TestCase`         | `action_controller_test_case`        |
+| `ActionDispatch::IntegrationTest`    | `action_dispatch_integration_test`   |
+| `ActionDispatch::Response`           | `action_dispatch_response`           |
+| `ActionDispatch::Request`            | `action_dispatch_request`            |
+| `ActionDispatch::SystemTestCase`     | `action_dispatch_system_test_case`   |
+| `ActionMailbox::Base`                | `action_mailbox`                     |
+| `ActionMailbox::InboundEmail`        | `action_mailbox_inbound_email`       |
+| `ActionMailbox::Record`              | `action_mailbox_record`              |
+| `ActionMailbox::TestCase`            | `action_mailbox_test_case`           |
+| `ActionMailer::Base`                 | `action_mailer`                      |
+| `ActionMailer::TestCase`             | `action_mailer_test_case`            |
+| `ActionText::Content`                | `action_text_content`                |
+| `ActionText::Record`                 | `action_text_record`                 |
+| `ActionText::RichText`               | `action_text_rich_text`              |
+| `ActionView::Base`                   | `action_view`                        |
+| `ActionView::TestCase`               | `action_view_test_case`              |
+| `ActiveJob::Base`                    | `active_job`                         |
+| `ActiveJob::TestCase`                | `active_job_test_case`               |
+| `ActiveRecord::Base`                 | `active_record`                      |
+| `ActiveStorage::Attachment`          | `active_storage_attachment`          |
+| `ActiveStorage::VariantRecord`       | `active_storage_variant_record`      |
+| `ActiveStorage::Blob`                | `active_storage_blob`                |
+| `ActiveStorage::Record`              | `active_storage_record`              |
+| `ActiveSupport::TestCase`            | `active_support_test_case`           |
+| `i18n`                               | `i18n`                               |
+
 
 ## 設定用フック
 
-設定用フックのリストは以下のとおりです。設定用フックは特定のフレームワークにはフックせず、アプリケーション全体のコンテキストで実行されます。
+設定用フックは特定のフレームワークにはフックせず、アプリケーション全体のコンテキストで実行されます。
 
 | フック                   | ユースケース                                                                              |
 | ---------------------- | ------------------------------------------------------------------------------------- |
-| `before_configuration` | 最初に実行される設定フックです。あらゆる初期化より先に呼びされます。              |
-| `before_initialize`    | 次に実行される設定フックです。フレームワークの初期化の直前で呼び出されます。                |
-| `before_eager_load`    | 初期化後に実行される設定フックです。`config.eager_load`がfalseの場合は実行されません。 |
-| `after_initialize`     | 最後に実行される設定フックです。 フレームワークの初期化後に呼び出しされます。                   |
+| `before_configuration` | 最初に実行される設定フックです。あらゆる初期化より先に呼びされます。|
+| `before_initialize` | 次に実行される設定フックです。フレームワークの初期化の直前で呼び出されます。|
+| `before_eager_load` | 初期化後に実行される設定フックです。`config.eager_load`がfalseの場合は実行されません。|
+| `after_initialize` | 最後に実行される設定フックです。フレームワークの初期化後に呼び出しされます。|
 
-### 例
+設定フックは、Engineクラス内で呼び出されます。
 
-`config.before_configuration { puts 'I am called before any initializers' }`
+```ruby
+module Blorgh
+  class Engine < ::Rails::Engine
+    config.before_configuration do
+      puts 'I am called before any initializers'
+    end
+  end
+end
+```
