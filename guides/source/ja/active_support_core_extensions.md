@@ -1,7 +1,7 @@
 Active Support コア拡張機能
 ==============================
 
-Active SupportはRuby on Railsのコンポーネントであり、Ruby言語の拡張、ユーティリティ、その他横断的な作業を担っています。
+Active SupportはRuby on Railsのコンポーネントであり、Ruby言語の拡張やユーティリティを提供します。
 
 Active Supportは言語レベルで基本部分を底上げして豊かなものにし、Railsアプリケーションの開発とRuby on Railsそれ自体の開発に役立てるべく作られています。
 
@@ -20,42 +20,44 @@ Active Supportは言語レベルで基本部分を底上げして豊かなもの
 
 ### 単体のActive Support
 
-フットプリントをほぼ残さないようにするため、Active Supportはデフォルトでは何も読み込みません。Active Supportは細かく分割され、必要な拡張機能だけが読み込まれるようになっています。また、関連する拡張機能(場合によってはすべての拡張機能)も同時に読み込むのに便利なエントリポイントもあります。
+フットプリントを最小限にするため、Active Supportはデフォルトでは最小限の依存関係を読み込みます。Active Supportは細かく分割され、必要な拡張機能だけが読み込まれるようになっています。また、関連する拡張機能（場合によってはすべての拡張機能）も同時に読み込むのに便利なエントリポイントもあります。
 
-したがって、以下のような`require`文を実行しただけでは、オブジェクトは`blank?`にすら応答してくれません。
+したがって、以下のような`require`文を実行すると、Active Supportによって`require`される拡張機能だけが読み込まれます。
 
 ```ruby
 require 'active_support'
 ```
 
-この定義がどのように読み込まれるかを見てみましょう。
-
 #### 必要な定義だけを選ぶ
 
-`blank?`メソッドを使えるようにする最も「軽量な」方法は、そのメソッドが定義されているファイルだけを指定して読み込むことです。
+この例では、[`Hash#with_indifferent_access`][Hash#with_indifferent_access]の読み込み方を説明します。この拡張機能は、`Hash`を[`ActiveSupport::HashWithIndifferentAccess`][ActiveSupport::HashWithIndifferentAccess]に変換して、以下のように文字列とシンボルのどちらをキーに指定してもアクセスできるようにします。
 
-本ガイドでは、コア拡張機能として定義されているすべてのメソッドについて、その定義ファイルの置き場所も示してあります。たとえば`blank?`の場合、以下のようなメモを追加してあります。
+```ruby
+{a: 1}.with_indifferent_access["a"] # => 1
+```
 
-NOTE: 定義は`active_support/core_ext/object/blank.rb`にあります。
+本ガイドでは、コア拡張機能として定義されているすべてのメソッドについて、その定義ファイルの置き場所も示してあります。たとえば`with_indifferent_access` の場合、以下のようなメモを追加してあります。
+
+NOTE: 定義は[`active_support/core_ext/hash/indifferent_access.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/hash_with_indifferent_access.rb)にあります。
 
 つまり、以下のようにピンポイントでrequireを実行できます。
 
 ```ruby
-require 'active_support'
-require 'active_support/core_ext/object/blank'
+require "active_support"
+require "active_support/core_ext/hash/indifferent_access"
 ```
 
-Active Supportの改訂は注意深く行われていますので、あるファイルを選んだ場合、本当に必要な依存ファイルだけが同時に読み込まれます(依存関係がある場合)。
+Active Supportの改訂は注意深く行われていますので、あるファイルを選んだ場合、本当に必要な依存ファイルだけが同時に読み込まれます（依存関係がある場合）。
 
 #### コア拡張機能をグループ化して読み込む
 
-次の段階として、`Object`に対するすべての拡張機能を単に読み込んでみましょう。経験則として、`SomeClass`というクラスがあれば、`active_support/core_ext/some_class`というパスを指定することで一度に読み込めます。
+次の段階として、`Hash`に対するすべての拡張機能を単に読み込んでみましょう。経験則として、`SomeClass`というクラスがあれば、`active_support/core_ext/some_class`というパスを指定することで一度に読み込めます。
 
-従って、(`blank?`を含む)`Object`に対するすべての拡張機能を読み込む場合には以下のようにします。
+従って、(`with_indifferent_access`を含む)`Hash`のすべての拡張機能を読み込む場合には以下のようにします。
 
 ```ruby
 require 'active_support'
-require 'active_support/core_ext/object'
+require "active_support/core_ext/hash"
 ```
 
 #### すべてのコア拡張機能を読み込む
@@ -75,7 +77,7 @@ require 'active_support/core_ext'
 require 'active_support/all'
 ```
 
-ただし、これを実行してもActive Support全体がメモリに読み込まれるわけではないことにご注意ください。一部は`autoload`として設定されており、実際に使うまで読み込まれません。
+ただし、これを実行してもActive Support全体がメモリに読み込まれるわけではないことにご注意ください。一部は`autoload`として設定されており、実際に使うときだけ読み込まれます。
 
 ### Ruby on RailsアプリケーションにおけるActive Support
 
@@ -86,21 +88,21 @@ Ruby on Railsアプリケーションでは、基本的にすべてのActive Sup
 
 ### `blank?`と`present?`
 
-Railsアプリケーションは以下の値を空白(blank)とみなします。
+Railsアプリケーションでは以下の値を空白（blank）とみなします。
 
 * `nil`と`false`
 
-* 空白文字 (whitespace) だけで構成された文字列 (以下の注釈を参照)
+* ホワイトスペース（whitespace）だけで構成された文字列（以下の注釈を参照）
 
-* 空欄の配列とハッシュ
+* 空配列と空ハッシュ
 
-* その他、`empty?`メソッドに応答するオブジェクトはすべて空白として扱われます。
+* その他、`empty?`メソッドに応答するオブジェクトはすべて空（empty）として扱われます。
 
-INFO: 文字列を判定する述語として、Unicode対応した文字クラスである`[:space:]`が使われています。そのため、たとえばU+2029 (段落区切り文字)は空白文字と判断されます。
+INFO: 文字列を判定する述語メソッドでは、Unicode対応した文字クラスである`[:space:]`が使われています。そのため、たとえばU+2029（段落区切り文字）はホワイトスペースと判断されます。
 
 WARNING: 数字については空白であるかどうかは判断されません。特に0および0.0は**空白ではありません**のでご注意ください。
 
-たとえば、`ActionController::HttpAuthentication::Token::ControllerMethods`にある以下のメソッドではトークンが存在しているかどうかを`blank?`でチェックしています。
+たとえば、`ActionController::HttpAuthentication::Token::ControllerMethods`にある以下のメソッドではトークンが存在しているかどうかを[`blank?`][Object#blank?]でチェックしています。
 
 ```ruby
 def authenticate(controller, &login_procedure)
@@ -111,7 +113,7 @@ def authenticate(controller, &login_procedure)
 end
 ```
 
-`present?`メソッドは`!blank?`メソッドと同等です。以下の例は`ActionDispatch::Http::Cache::Response`から引用しました。
+[`present?`][Object#present?]メソッドは`!blank?`メソッドと同等です。以下の例は`ActionDispatch::Http::Cache::Response`から引用しました。
 
 ```ruby
 def set_conditional_cache_control!
@@ -120,21 +122,26 @@ def set_conditional_cache_control!
 end
 ```
 
-NOTE: 定義は`active_support/core_ext/object/blank.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/object/blank.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/object/blank.rb)にあります。
+
+[Object#blank?]: https://api.rubyonrails.org/classes/Object.html#method-i-blank-3F
+[Object#present?]: https://api.rubyonrails.org/classes/Object.html#method-i-present-3F
 
 ### `presence`
 
-`presence`メソッドは、`present?`が`true`の場合は自身のレシーバを返し、falseの場合は`nil`を返します。このメソッドは以下のような便利な定番の用法があります。
+[`presence`][Object#presence]メソッドは、`present?`が`true`の場合は自身のレシーバを返し、falseの場合は`nil`を返します。このメソッドは以下のような便利な定番の用法があります。
 
 ```ruby
 host = config[:host].presence || 'localhost'
 ```
 
-NOTE: 定義は`active_support/core_ext/object/blank.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/object/blank.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/object/blank.rb)にあります。
+
+[Object#presence]: https://api.rubyonrails.org/classes/Object.html#method-i-presence
 
 ### `duplicable?`
 
-Ruby 2.5からは、ほとんどのオブジェクトを`dup`や`clone`で複製できます。
+Ruby 2.5以降は、ほとんどのオブジェクトを`dup`や`clone`で複製できます。
 
 ```ruby
 "foo".dup           # => "foo"
@@ -144,7 +151,7 @@ Complex(0).dup      # => (0+0i)
 1.method(:+).dup    # => TypeError (allocator undefined for Method)
 ```
 
-Active Supportでは、複製可能かどうかをオブジェクトに問い合わせる`duplicable?`が提供されています。
+Active Supportでは、複製可能かどうかをオブジェクトに問い合わせる[`duplicable?`][Object#duplicable?]が提供されています。
 
 ```ruby
 "foo".duplicable?           # => true
@@ -156,11 +163,13 @@ Complex(1).duplicable?      # => true
 
 WARNING: どんなクラスでも、`dup`メソッドと`clone`メソッドを除去することでこれらのメソッドを無効にできます。このとき、これらのメソッドが実行されると例外が発生します。このような状態では、どんなオブジェクトについてもそれが複製可能かどうかを確認するには`rescue`を使う以外に方法はありません。`duplicable?`メソッドは、上のハードコードされたリストに依存しますが、その代わり`rescue`よりずっと高速です。実際のユースケースでハードコードされたリストで十分であることがわかっている場合には、`duplicable?`をお使いください。
 
-NOTE: 定義は`active_support/core_ext/object/duplicable.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/object/duplicable.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/object/duplicable.rb)にあります。
+
+[Object#duplicable?]: https://api.rubyonrails.org/classes/Object.html#method-i-duplicable-3F
 
 ### `deep_dup`
 
-`deep_dup`メソッドは、与えられたオブジェクトの「ディープコピー」を返します。Rubyは通常の場合、他のオブジェクトを含むオブジェクトを`dup`しても、含まれている他のオブジェクトを複製しません。このようなコピーは「浅いコピー (shallow copy)」と呼ばれます。たとえば、以下のように文字列を含む配列があるとします。
+[`deep_dup`][Object#deep_dup]メソッドは、与えられたオブジェクトの「ディープコピー」を返します。Rubyは通常の場合、他のオブジェクトを含むオブジェクトを`dup`しても、含まれている他のオブジェクトを複製しません。このようなコピーは「浅いコピー（shallow copy）」と呼ばれます。たとえば、以下のように文字列を含む配列があるとします。
 
 ```ruby
 array     = ['string']
@@ -201,11 +210,13 @@ duplicate = number.deep_dup
 number.object_id == duplicate.object_id   # => true
 ```
 
-NOTE: 定義は`active_support/core_ext/object/deep_dup.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/object/deep_dup.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/object/deep_dup.rb)にあります。
+
+[Object#deep_dup]: https://api.rubyonrails.org/classes/Object.html#method-i-deep_dup
 
 ### `try`
 
-`nil`でない場合にのみオブジェクトのメソッドを呼び出したい場合、最も単純な方法は条件文を追加することですが、どこか冗長になってしまいます。そこで`try`メソッドを使うという手があります。`try`は`Object#send`と似ていますが、`nil`に送信された場合には`nil`を返す点が異なります。
+`nil`でない場合にのみオブジェクトのメソッドを呼び出したい場合、最も単純な方法は条件文を追加することですが、どこか冗長になってしまいます。そこで[`try`][Object#try]メソッドを使うという手があります。`try`は`Object#public_send`と似ていますが、`nil`に送信された場合には`nil`を返す点が異なります。
 
 例:
 
@@ -236,18 +247,21 @@ end
 @person.try { |p| "#{p.first_name} #{p.last_name}" }
 ```
 
-`try`メソッドは、`NoMethodError`を握りつぶして代わりに`nil`を返す点に注意が必要です。メソッド名の誤りを防ぎたい場合は`try!`を使います。
+`try`メソッドは、`NoMethodError`を握りつぶして代わりに`nil`を返す点に注意が必要です。メソッド名の誤りを防ぎたい場合は[`try!`][Object#try!]を使います。
 
 ```ruby
 @number.try(:nest)  # => nil
 @number.try!(:nest) # NoMethodError: undefined method `nest' for 1:Integer
 ```
 
-NOTE: 定義は`active_support/core_ext/object/try.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/object/try.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/object/try.rb)にあります。
+
+[Object#try]: https://api.rubyonrails.org/classes/Object.html#method-i-try
+[Object#try!]: https://api.rubyonrails.org/classes/Object.html#method-i-try-21
 
 ### `class_eval(*args, &block)`
 
-`class_eval`メソッドを使って、あらゆるオブジェクトのsingletonクラスのコンテキストでコードを評価できます。
+[`class_eval`][Kernel#class_eval]メソッドを使うと、任意のオブジェクトのsingletonクラスのコンテキストでコードを評価できます。
 
 ```ruby
 class Proc
@@ -264,11 +278,13 @@ class Proc
 end
 ```
 
-NOTE: 定義は`active_support/core_ext/kernel/singleton_class.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/kernel/singleton_class.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/kernel/singleton_class.rb)にあります。
+
+[Kernel#class_eval]: https://api.rubyonrails.org/classes/Kernel.html#method-i-class_eval
 
 ### `acts_like?(duck)`
 
-`acts_like?`メソッドは、一部のクラスがその他のクラスと同様に振る舞うかどうかを、ある慣例に沿ってチェックします。`String`クラスと同じインターフェイスを提供するクラスがあり、その中で以下のメソッドを定義しておくとします。
+[`acts_like?`][Object#acts_like?]メソッドは、一部のクラスがその他のクラスと同様に振る舞うかどうかを、シンプルな規約に沿ってチェックします。`String`クラスと同じインターフェイスを提供するクラスがあり、その中で以下のメソッドを定義しておくとします。
 
 ```ruby
 def acts_like_string?
@@ -283,11 +299,13 @@ some_klass.acts_like?(:string)
 
 Railsには`Date`クラスや`Time`クラスと同様に振る舞うクラスがいくつかあり、この手法を使えます。
 
-NOTE: 定義は`active_support/core_ext/object/acts_like.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/object/acts_like.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/object/acts_like.rb)にあります。
+
+[Object#acts_like?]: https://api.rubyonrails.org/classes/Object.html#method-i-acts_like-3F
 
 ### `to_param`
 
-Railsのあらゆるオブジェクトは`to_param`メソッドに応答します。これは、オブジェクトを値として表現するものを返すということです。返された値はクエリ文字列やURLの一部で利用できます。
+Railsのあらゆるオブジェクトは[`to_param`][Object#to_param]メソッドに応答します。これは、オブジェクトを値として表現するものを返すということです。返された値はクエリ文字列やURLの一部で利用できます。
 
 デフォルトでは、`to_param`メソッドは単に`to_s`メソッドを呼び出します。
 
@@ -295,7 +313,7 @@ Railsのあらゆるオブジェクトは`to_param`メソッドに応答しま�
 7.to_param # => "7"
 ```
 
-`to_param`によって返された値を **エスケープしてはいけません** 。
+`to_param`によって返された値を **エスケープしてはいけません**。
 
 ```ruby
 "Tom & Jerry".to_param # => "Tom & Jerry"
@@ -303,7 +321,7 @@ Railsのあらゆるオブジェクトは`to_param`メソッドに応答しま�
 
 このメソッドは、Railsの多くのクラスで上書きされています。
 
-たとえば、`nil`、`true`、`false`の場合は自分自身を返します。`Array#to_param`を実行すると、`to_param`が配列内の各要素に対して実行され、結果が「/」でjoinされます。
+たとえば、`nil`、`true`、`false`の場合は自分自身を返します。[`Array#to_param`][Array#to_param]を実行すると、`to_param`が配列内の各要素に対して実行され、結果が「/」でjoinされます。
 
 ```ruby
 [0, true, String].to_param # => "0/true/String"
@@ -327,11 +345,14 @@ user_path(@user) # => "/users/357-john-smith"
 
 WARNING: コントローラ側では、`to_param`メソッドがモデル側で再定義されている可能性があることに常に注意しておく必要があります。上のようなリクエストを受信した場合、`params[:id]`の値が「357-john-smith」になるからです。
 
-NOTE: 定義は`active_support/core_ext/object/to_param.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/object/to_param.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/object/to_param.rb)にあります。
+
+[Array#to_param]: https://api.rubyonrails.org/classes/Array.html#method-i-to_param
+[Object#to_param]: https://api.rubyonrails.org/classes/Object.html#method-i-to_param
 
 ### `to_query`
 
-このメソッドは、エスケープされていない`key`を受け取ると、そのキーを`to_param`が返す値に対応させるクエリ文字列の一部を生成します。ただしハッシュは例外です(後述)。以下のコード例があるとします。
+[`to_query`][Object#to_query]メソッドは、エスケープされていない`key`を受け取ると、そのキーを`to_param`が返す値に対応させるクエリ文字列の一部を生成します。以下のコード例があるとします。
 
 ```ruby
 class User
@@ -363,24 +384,27 @@ account.to_query('company[name]')
 # => "sample%5B%5D=3.4&sample%5B%5D=-45.6"
 ```
 
-ハッシュも`to_query`に応答しますが、使われるシグネチャが異なります。メソッドに引数が渡されない場合、このメソッド呼び出しは、一連のキー/値ペアをソート済みの形で生成し、それぞれの値に対して`to_query(key)`を呼び出し、結果を「&」で連結します。
+ハッシュも`to_query`に応答しますが、使われるシグネチャが異なります。メソッドに引数が渡されない場合、このメソッド呼び出しは、一連のキーバリューペアをソート済みの形で生成し、それぞれの値に対して`to_query(key)`を呼び出し、結果を「&」で連結します。
 
 ```ruby
 {c: 3, b: 2, a: 1}.to_query # => "a=1&b=2&c=3"
 ```
 
-`Hash#to_query`メソッドは、それらのキーに対して名前空間をオプションで与えることもできます。
+[`Hash#to_query`][Hash#to_query]メソッドは、それらのキーに対して名前空間をオプションで与えることもできます。
 
 ```ruby
 {id: 89, name: "John Smith"}.to_query('user')
 # => "user%5Bid%5D=89&user%5Bname%5D=John+Smith"
 ```
 
-NOTE: 定義は`active_support/core_ext/object/to_query.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/object/to_query.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/object/to_query.rb)にあります。
+
+[Hash#to_query]: https://api.rubyonrails.org/classes/Hash.html#method-i-to_query
+[Object#to_query]: https://api.rubyonrails.org/classes/Object.html#method-i-to_query
 
 ### `with_options`
 
-`with_options`メソッドは、連続した複数のメソッド呼び出しに対して共通して与えられるオプションを解釈するための手段を提供します。
+[`with_options`][Object#with_options]メソッドは、連続した複数のメソッド呼び出しに対して共通して与えられるオプションを解釈するための手段を提供します。
 
 デフォルトのオプションがハッシュで与えられると、`with_options`はブロックに対するプロキシオブジェクトを生成します。そのブロック内では、プロキシに対して呼び出されたメソッドにオプションを追加したうえで、そのメソッドをレシーバに転送します。たとえば、以下のように同じオプションを繰り返さないで済むようになります。
 
@@ -417,13 +441,15 @@ end
 
 TIP: `with_options`はメソッドをレシーバに転送しているので、呼び出しをネストすることもできます。各ネスティングレベルでは、自身の呼び出しに、継承したデフォルト呼び出しをマージします。
 
-NOTE: 定義は`active_support/core_ext/object/with_options.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/object/with_options.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/object/with_options.rb)にあります。
+
+[Object#with_options]: https://api.rubyonrails.org/classes/Object.html#method-i-with_options
 
 ### JSONのサポート
 
 Active Supportが提供する`to_json`メソッドの実装は、通常`json` gemがRubyオブジェクトに対して提供している`to_json`よりも優れています。その理由は、`Hash`や`OrderedHash`、`Process::Status`などのクラスでは、正しいJSON表現を提供するために特別な処理が必要になるためです。
 
-NOTE: 定義は`active_support/core_ext/object/json.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/object/json.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/object/json.rb)にあります。
 
 ### インスタンス変数
 
@@ -431,7 +457,7 @@ Active Supportは、インスタンス変数に簡単にアクセスするため
 
 #### `instance_values`
 
-`instance_values`メソッドはハッシュを返します。インスタンス変数名から「@」を除いたものがハッシュのキーに、インスタンス変数の値がハッシュの値にマップされます。キーは文字列です。
+[`instance_values`][Object#instance_values]メソッドはハッシュを返します。インスタンス変数名から「@」を除いたものがハッシュのキーに、インスタンス変数の値がハッシュの値にマップされます。キーは文字列です。
 
 ```ruby
 class C
@@ -443,11 +469,13 @@ end
 C.new(0, 1).instance_values # => {"x" => 0, "y" => 1}
 ```
 
-NOTE: 定義は`active_support/core_ext/object/instance_variables.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/object/instance_variables.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/object/instance_variables.rb)にあります。
+
+[Object#instance_values]: https://api.rubyonrails.org/classes/Object.html#method-i-instance_values
 
 #### `instance_variable_names`
 
-`instance_variable_names`メソッドは配列を返します。配列のインスタンス名には「@」記号が含まれます。
+[`instance_variable_names`][Object#instance_variable_names]メソッドは配列を返します。配列のインスタンス名には「@」記号が含まれます。
 
 ```ruby
 class C
@@ -459,17 +487,19 @@ end
 C.new(0, 1).instance_variable_names # => ["@x", "@y"]
 ```
 
-NOTE: 定義は`active_support/core_ext/object/instance_variables.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/object/instance_variables.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/object/instance_variables.rb)にあります。
+
+[Object#instance_variable_names]: https://api.rubyonrails.org/classes/Object.html#method-i-instance_variable_names
 
 ### 警告や例外の抑制
 
-`silence_warnings`メソッドと`enable_warnings`メソッドは、ブロックが継続する間`$VERBOSE`の値を変更し、その後リセットします。
+[`silence_warnings`][Kernel#silence_warnings]メソッドと[`enable_warnings`][Kernel#enable_warnings]メソッドは、ブロックが継続する間`$VERBOSE`の値を変更し、その後リセットします。
 
 ```ruby
 silence_warnings { Object.const_set "RAILS_DEFAULT_LOGGER", logger }
 ```
 
-`suppress`メソッドを使って例外の発生を止めることもできます。このメソッドは、例外クラスを表す任意の数値を受け取ります。`suppress`は、あるブロックの実行時に例外が発生し、その例外が(`kind_of?`による判定で)いずれかの引数に一致する場合、それをキャプチャして例外を発生せずに戻ります。一致しない場合、例外はキャプチャされません。
+[`suppress`][Kernel#suppress]メソッドを使って例外の発生を止めることもできます。このメソッドは、例外クラスを表す任意の数値を受け取ります。`suppress`は、あるブロックの実行時に例外が発生し、その例外が（`kind_of?`による判定で）いずれかの引数に一致する場合、それをキャプチャして例外を発生せずに戻ります。一致しない場合、例外はキャプチャされません。
 
 ```ruby
 # ユーザーがロックされていればインクリメントは失われるが、重要ではない
@@ -478,11 +508,15 @@ suppress(ActiveRecord::StaleObjectError) do
 end
 ```
 
-NOTE: 定義は`active_support/core_ext/kernel/reporting.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/kernel/reporting.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/kernel/reporting.rb)にあります。
+
+[Kernel#enable_warnings]: https://api.rubyonrails.org/classes/Kernel.html#method-i-enable_warnings
+[Kernel#silence_warnings]: https://api.rubyonrails.org/classes/Kernel.html#method-i-silence_warnings
+[Kernel#suppress]: https://api.rubyonrails.org/classes/Kernel.html#method-i-suppress
 
 ### `in?`
 
-述語`in?`は、あるオブジェクトが他のオブジェクトに含まれているかどうかをテストします。渡された引数が`include?`に応答しない場合は`ArgumentError`例外が発生します。
+述語[`in?`][Object#in?]は、あるオブジェクトが他のオブジェクトに含まれているかどうかをテストします。渡された引数が`include?`に応答しない場合は`ArgumentError`例外が発生します。
 
 `in?`の例を示します。
 
@@ -493,7 +527,9 @@ NOTE: 定義は`active_support/core_ext/kernel/reporting.rb`にあります。
 1.in?(1)            # => ArgumentError
 ```
 
-NOTE: 定義は`active_support/core_ext/object/inclusion.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/object/inclusion.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/object/inclusion.rb)にあります。
+
+[Object#in?]: https://api.rubyonrails.org/classes/Object.html#method-i-in-3F
 
 `Module`の拡張
 ----------------------
@@ -502,7 +538,7 @@ NOTE: 定義は`active_support/core_ext/object/inclusion.rb`にあります。
 
 #### `alias_attribute`
 
-モデルの属性には、リーダー (reader)、ライター (writer)、述語 (predicate) があります。これらに対応する3つのメソッドを持つ、モデルの属性の別名 (alias) を一度に作成できます。他の別名作成メソッドと同様、1つ目の引数には新しい名前、2つ目の引数には元の名前を指定します (変数に代入するときと同じ順序、と覚えておく手もあります)。
+モデルの属性には、リーダー (reader)、ライター (writer)、述語 (predicate) があります。[`alias_attribute`][Module#alias_attribute]を使うと、これらに対応する3つのメソッドを持つ、モデルの属性の別名 (alias) を一度に作成できます。他の別名作成メソッドと同様、1つ目の引数には新しい名前、2つ目の引数には元の名前を指定します (変数に代入するときと同じ順序、と覚えておく手もあります)。
 
 ```ruby
 class User < ApplicationRecord
@@ -512,15 +548,17 @@ class User < ApplicationRecord
 end
 ```
 
-NOTE: 定義は`active_support/core_ext/module/aliasing.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/module/aliasing.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/module/aliasing.rb)にあります。
+
+[Module#alias_attribute]: https://api.rubyonrails.org/classes/Module.html#method-i-alias_attribute
 
 #### 内部属性
 
 あるクラスで属性を定義すると、後でそのクラスのサブクラスが作成されるときに名前が衝突するリスクが生じます。これはライブラリにおいては特に重要な問題です。
 
-Active Supportでは、`attr_internal_reader`、`attr_internal_writer`、`attr_internal_accessor`というマクロが定義されています。これらのマクロは、Rubyにビルトインされている`attr_*`と同様に振る舞いますが、内部のインスタンス変数の名前が衝突しにくいように配慮される点が異なります。
+Active Supportでは、[`attr_internal_reader`][Module#attr_internal_reader]、[`attr_internal_writer`][Module#attr_internal_writer]、[`attr_internal_accessor`][Module#attr_internal_accessor]というマクロが定義されています。これらのマクロは、Rubyにビルトインされている`attr_*`と同様に振る舞いますが、内部のインスタンス変数名が衝突しにくいように配慮される点が異なります。
 
-`attr_internal`マクロは`attr_internal_accessor`と同義です。
+[`attr_internal`][Module#attr_internal]マクロは`attr_internal_accessor`と同義です。
 
 ```ruby
 # ライブラリ
@@ -550,7 +588,12 @@ module ActionView
 end
 ```
 
-NOTE: 定義は`active_support/core_ext/module/attr_internal.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/module/attr_internal.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/module/attr_internal.rb)にあります。
+
+[Module#attr_internal]: https://api.rubyonrails.org/classes/Module.html#method-i-attr_internal
+[Module#attr_internal_accessor]: https://api.rubyonrails.org/classes/Module.html#method-i-attr_internal_accessor
+[Module#attr_internal_reader]: https://api.rubyonrails.org/classes/Module.html#method-i-attr_internal_reader
+[Module#attr_internal_writer]: https://api.rubyonrails.org/classes/Module.html#method-i-attr_internal_writer
 
 #### モジュール属性
 
@@ -559,29 +602,22 @@ NOTE: 定義は`active_support/core_ext/module/attr_internal.rb`にあります�
 たとえば、これらのマクロは以下のDependenciesモジュールで使われています。
 
 ```ruby
-module ActiveSupport
-  module Dependencies
-    mattr_accessor :warnings_on_first_load
-    mattr_accessor :history
-    mattr_accessor :loaded
-    mattr_accessor :mechanism
-    mattr_accessor :load_paths
-    mattr_accessor :load_once_paths
-    mattr_accessor :autoloaded_constants
-    mattr_accessor :explicitly_unloadable_constants
-    mattr_accessor :constant_watch_stack
-    mattr_accessor :constant_watch_stack_mutex
-  end
+module ActiveStorage
+  mattr_accessor :logger
 end
 ```
 
-NOTE: 定義は`active_support/core_ext/module/attribute_accessors.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/module/attribute_accessors.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/module/attribute_accessors.rb)にあります。
+
+[Module#mattr_accessor]: https://api.rubyonrails.org/classes/Module.html#method-i-mattr_accessor
+[Module#mattr_reader]: https://api.rubyonrails.org/classes/Module.html#method-i-mattr_reader
+[Module#mattr_writer]: https://api.rubyonrails.org/classes/Module.html#method-i-mattr_writer
 
 ### 親
 
 #### `module_parent`
 
-`module_parent`メソッドは、名前がネストしたモジュールに対して実行でき、対応する定数を持つモジュールを返します。
+[`module_parent`][Module#module_parent]メソッドは、名前がネストしたモジュールに対して実行でき、対応する定数を持つモジュールを返します。
 
 ```ruby
 module X
@@ -598,13 +634,15 @@ M.module_parent       # => X::Y
 
 モジュールが無名またはトップレベルの場合、`module_parent`は`Object`を返します。
 
-WARNING: `parent_name`は上の場合でも`nil`を返します。
+WARNING: `module_parent_name`はこの場合に`nil`を返します。
 
-NOTE: 定義は`active_support/core_ext/module/introspection.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/module/introspection.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/module/introspection.rb)にあります。
+
+[Module#module_parent]: https://api.rubyonrails.org/classes/Module.html#method-i-module_parent
 
 #### `module_parent_name`
 
-名前がネストしたモジュールに対して`module_parent_name`メソッドを実行すると、対応する定数を持つモジュールを返します。
+名前がネストしたモジュールに対して[`module_parent_name`][Module#module_parent_name]メソッドを実行すると、対応する定数を持つモジュールを返します。
 
 ```ruby
 module X
@@ -623,11 +661,13 @@ M.module_parent_name       # => "X::Y"
 
 WARNING: `module_parent`はこの場合`Object`を返します。
 
-NOTE: 定義は`active_support/core_ext/module/introspection.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/module/introspection.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/module/introspection.rb)にあります。
+
+[Module#module_parent_name]: https://api.rubyonrails.org/classes/Module.html#method-i-module_parent_name
 
 #### `module_parents`
 
-`module_parents`メソッドは、レシーバに対して`module_parent`を呼び出し、`Object`に到着するまでパスをさかのぼります。連鎖したモジュールは、階層の下から上の順に配列として返されます。
+[`module_parents`][Module#module_parents]メソッドは、レシーバで`module_parent`を呼び出し、`Object`に到達するまでパスをさかのぼります。連鎖したモジュールは、階層の下から上の順に配列として返されます。
 
 ```ruby
 module X
@@ -642,7 +682,9 @@ X::Y::Z.module_parents # => [X::Y, X, Object]
 M.module_parents       # => [X::Y, X, Object]
 ```
 
-NOTE: 定義は`active_support/core_ext/module/introspection.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/module/introspection.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/module/introspection.rb)にあります。
+
+[Module#module_parents]: https://api.rubyonrails.org/classes/Module.html#method-i-module_parents
 
 ### 無名モジュール
 
@@ -659,7 +701,7 @@ N.name # => "N"
 Module.new.name # => nil
 ```
 
-モジュールに名前があるかどうかを述語メソッド`anonymous?`でチェックできます。
+モジュールに名前があるかどうかを述語メソッド[`anonymous?`][Module#anonymous?]でチェックできます。
 
 ```ruby
 module M
@@ -682,13 +724,15 @@ m.anonymous? # => false
 
 逆に無名モジュールは、定義上必ず到達不能になります。
 
-NOTE: 定義は`active_support/core_ext/module/anonymous.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/module/anonymous.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/module/anonymous.rb)にあります。
+
+[Module#anonymous?]: https://api.rubyonrails.org/classes/Module.html#method-i-anonymous-3F
 
 ### メソッドの委譲
 
 #### `delegate`
 
-`delegate`マクロを使って、メソッドを簡単に委譲できます。
+[`delegate`][Module#delegate]マクロを使って、メソッドを簡単に委譲できます。
 
 あるアプリケーションの`User`モデルにログイン情報があり、それに関連する名前などの情報は`Profile`モデルにあるとします。
 
@@ -698,7 +742,7 @@ class User < ApplicationRecord
 end
 ```
 
-この構成では、`user.profile.name`のようにプロファイル越しにユーザー名を取得することになります。これらの属性に直接アクセスできたらもっと便利になるでしょう。
+この構成では、`user.profile.name`のようにプロファイル越しにユーザー名を取得することになります。以下のようにこれらの属性に直接アクセスできたらもっと便利になるでしょう。
 
 ```ruby
 class User < ApplicationRecord
@@ -740,9 +784,9 @@ delegate :logger, to: :Rails
 delegate :table_name, to: :class
 ```
 
-WARNING: `:prefix`オプションが`true`の場合、一般性が低下します (後述)。
+WARNING: `:prefix`オプションが`true`の場合、一般性が低下します (以下を参照)。
 
-委譲時に`NoMethodError`が発生して対象が`nil`の場合、例外が発生します。`:allow_nil`オプションを使うと、例外の代りに`nil`を返すようにすることができます。
+委譲時に`NoMethodError`が発生して対象が`nil`の場合、`NoMethodError`が発生します。`:allow_nil`オプションを使うと、例外の代りに`nil`を返すようにすることができます。
 
 ```ruby
 delegate :name, to: :profile, allow_nil: true
@@ -750,7 +794,7 @@ delegate :name, to: :profile, allow_nil: true
 
 `:allow_nil`を指定すると、ユーザーのプロファイルがない場合に`user.name`呼び出しは`nil`を返します。
 
-`:prefix`オプションをtrueにすると、生成されたメソッドの名前にプレフィックスを追加します。これは、たとえばよりよい名前にしたい場合に便利です。
+`:prefix`オプションを`true`にすると、生成されたメソッドの名前にプレフィックスを追加します。これは、たとえばよりよい名前を取得したい場合に便利です。
 
 ```ruby
 delegate :street, to: :address, prefix: true
@@ -776,11 +820,13 @@ delegate :date_of_birth, to: :profile, private: true
 
 委譲されたメソッドはデフォルトでpublicになりますが、`private: true`を渡すことで変更できます。
 
-NOTE: 定義は`active_support/core_ext/module/delegation.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/module/delegation.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/module/delegation.rb)にあります。
+
+[Module#delegate]: https://api.rubyonrails.org/classes/Module.html#method-i-delegate
 
 #### `delegate_missing_to`
 
-`User`オブジェクトにないものを`Profile`にあるものにすべて委譲したいとしましょう。`delegate_missing_to`マクロを使えばこれを簡単に実装できます。
+`User`オブジェクトにないものを`Profile`にあるものにすべて委譲したいとしましょう。[`delegate_missing_to`][Module#delegate_missing_to]マクロを使えばこれを簡単に実装できます。
 
 ```ruby
 class User < ApplicationRecord
@@ -792,17 +838,22 @@ end
 
 オブジェクト内にある呼び出し可能なもの（インスタンス変数、メソッド、定数など）なら何でも対象にできます。対象のうち、publicなメソッドだけが委譲されます。
 
-NOTE: 定義は`active_support/core_ext/module/delegation.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/module/delegation.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/module/delegation.rb)にあります。
+
+[Module#delegate_missing_to]: https://api.rubyonrails.org/classes/Module.html#method-i-delegate_missing_to
 
 ### メソッドの再定義
 
-メソッドを`define_method`で再定義する必要があるが、その名前が既にあるかどうかがわからないとことがあります。有効な名前が既にあれば警告が表示されます。警告が表示されても大したことはありませんが、邪魔に思えることもあります。
+メソッドを`define_method`で再定義する必要があるが、その名前が既にあるかどうかがわからないことがあります。有効な名前が既にあれば警告が表示されます。警告が表示されても大したことはありませんが、邪魔に思えることもあります。
 
-`redefine_method`メソッドを使うと、必要に応じて既存のメソッドが削除されるので、このような警告表示を抑制できます。
+[`redefine_method`][Module#redefine_method]メソッドを使うと、必要に応じて既存のメソッドが削除されるので、このような警告表示を抑制できます。
 
-（`delegate`を使っているなどの理由で）メソッド自身の置き換えを定義する必要がある場合は、`silence_redefinition_of_method`を使うこともできます。
+（`delegate`を使っているなどの理由で）メソッド自身の置き換えを定義する必要がある場合は、[`silence_redefinition_of_method`][Module#silence_redefinition_of_method]を使うこともできます。
 
-NOTE: 定義は`active_support/core_ext/module/redefine_method.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/module/redefine_method.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/module/redefine_method.rb)にあります。
+
+[Module#redefine_method]: https://api.rubyonrails.org/classes/Module.html#method-i-redefine_method
+[Module#silence_redefinition_of_method]: https://api.rubyonrails.org/classes/Module.html#method-i-silence_redefinition_of_method
 
 `Class`の拡張
 ---------------------
@@ -811,7 +862,7 @@ NOTE: 定義は`active_support/core_ext/module/redefine_method.rb`にありま�
 
 #### `class_attribute`
 
-`class_attribute`メソッドは、1つ以上の継承可能なクラスの属性を宣言します。そのクラス属性は、その下のどの階層でも上書き可能です。
+[`class_attribute`][Class#class_attribute]メソッドは、1つ以上の継承可能なクラスの属性を宣言します。そのクラス属性は、その下のどの階層でも上書き可能です。
 
 ```ruby
 class A
@@ -889,11 +940,13 @@ A.new.x # NoMethodError
 
 インスタンス述語が不要な場合、`instance_predicate: false`を指定すれば定義されなくなります。
 
-NOTE: 定義は`active_support/core_ext/class/attribute.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/class/attribute.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/class/attribute.rb)にあります。
+
+[Class#class_attribute]: https://api.rubyonrails.org/classes/Class.html#method-i-class_attribute
 
 #### `cattr_reader`、`cattr_writer`、`cattr_accessor`
 
-`cattr_reader`、`cattr_writer`、`cattr_accessor`マクロは、`attr_*`と似ていますが、クラス用である点が異なります。これらのメソッドは、クラス変数を`nil`に設定し (クラス変数が既にある場合を除く)、対応するクラスメソッドを生成してアクセスできるようにします。
+[`cattr_reader`][Module#cattr_reader]、[`cattr_writer`][Module#cattr_writer]、[`cattr_accessor`][Module#cattr_accessor]マクロは、`attr_*`と似ていますが、クラス用である点が異なります。これらのメソッドは、クラス変数を`nil`に設定し (クラス変数が既にある場合を除く)、対応するクラスメソッドを生成してアクセスできるようにします。
 
 ```ruby
 class MysqlAdapter < AbstractAdapter
@@ -911,7 +964,7 @@ class MysqlAdapter < AbstractAdapter
 end
 ```
 
-利便性のため、このときインスタンスメソッドも生成されますが、これらは実際にはクラス属性の単なるプロキシです。このため、インスタンスからクラス属性を変更することはできますが、`class_attribute`で行われるように上書きすることはできません(上記参照)。たとえば以下の場合、
+利便性のため、このときインスタンスメソッドも生成されますが、これらは実際にはクラス属性の単なるプロキシです。このため、インスタンスがクラス属性を変更することは可能ですが、`class_attribute`が行なうのと同じように上書きすることはできません(上記参照)。たとえば以下の場合、
 
 ```ruby
 module ActionView
@@ -940,13 +993,17 @@ end
 
 `:instance_accessor`を`false`に設定すると、モデルの属性設定時にマスアサインメントを防止するのに便利です。
 
-NOTE: 定義は`active_support/core_ext/module/attribute_accessors.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/module/attribute_accessors.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/class/attribute_accessors.rb)にあります。
+
+[Module#cattr_accessor]: https://api.rubyonrails.org/classes/Module.html#method-i-cattr_accessor
+[Module#cattr_reader]: https://api.rubyonrails.org/classes/Module.html#method-i-cattr_reader
+[Module#cattr_writer]: https://api.rubyonrails.org/classes/Module.html#method-i-cattr_writer
 
 ### サブクラスと子孫
 
 #### `subclasses`
 
-`subclasses`メソッドはレシーバのサブクラスを返します。
+[`subclasses`][Class#subclasses]メソッドはレシーバのサブクラスを返します。
 
 ```ruby
 class C; end
@@ -964,11 +1021,13 @@ C.subclasses # => [B, D]
 
 返されるクラスの順序は一定ではありません。
 
-NOTE: 定義は`active_support/core_ext/class/subclasses.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/class/subclasses.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/class/subclasses.rb)にあります。
+
+[Class#subclasses]: https://api.rubyonrails.org/classes/Class.html#method-i-subclasses
 
 #### `descendants`
 
-`descendants`メソッドは、そのレシーバより下位にあるすべてのクラスを返します。
+[`descendants`][Class#descendants]メソッドは、そのレシーバより下位にあるすべてのクラスを返します。
 
 ```ruby
 class C; end
@@ -986,7 +1045,9 @@ C.descendants # => [B, A, D]
 
 返されるクラスの順序は一定ではありません。
 
-NOTE: 定義は`active_support/core_ext/class/subclasses.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/class/subclasses.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/class/subclasses.rb)にあります。
+
+[Class#descendants]: https://api.rubyonrails.org/classes/Class.html#method-i-descendants
 
 `String`の拡張
 ----------------------
@@ -995,19 +1056,19 @@ NOTE: 定義は`active_support/core_ext/class/subclasses.rb`にあります。
 
 #### 開発の動機
 
-HTMLテンプレートにデータを挿入する方法は、きわめて慎重に設計する必要があります。たとえば、`@review.title`を何の工夫もなくそのままHTMLに式展開するようなことは絶対にすべきではありません。もしこのレビューのタイトルが仮に「Flanagan & Matz rules!」だとしたら、出力はwell-formedになりません。well-formedにするには、"&amp;amp;"のようにエスケープしなければなりません。さらに、ユーザーがレビューのタイトルに細工をして、悪意のあるHTMLをタイトルに含めれば、巨大なセキュリティホールになることすらあります。このリスクの詳細については、[セキュリティガイド](security.html#クロスサイトスクリプティング-xss)のクロスサイトスクリプティングの節を参照してください。
+HTMLテンプレートにデータを挿入する方法は、きわめて慎重に設計する必要があります。たとえば、`@review.title`を何の工夫もなくそのままHTMLに式展開するようなことは絶対にすべきではありません。もしこのレビューのタイトルが仮に「Flanagan & Matz rules!」だとしたら、出力はwell-formedになりません。well-formedにするには、"&amp;amp;"のようにエスケープしなければなりません。さらに、ユーザーがレビューのタイトルに細工をして、悪意のあるHTMLをタイトルに含めれば、巨大なセキュリティホールになる可能性すらあります。このリスクの詳細については、[セキュリティガイド](security.html#クロスサイトスクリプティング-xss)のクロスサイトスクリプティングの節を参照してください。
 
 #### 安全な文字列
 
-Active Supportには「(html的に) 安全な文字列」という概念があります。安全な文字列とは、HTMLにそのまま挿入しても問題がないというマークが付けられている文字列です。マーキングさえされていれば、「実際にエスケープされているかどうかにかかわらず」その文字列は信頼されます。
+Active Supportには「**(html的に) 安全な文字列**」という概念があります。安全な文字列とは、HTMLにそのまま挿入しても問題がないというマークが付けられている文字列です。マーキングさえされていれば、「実際にエスケープされているかどうかにかかわらず」その文字列は信頼されます。
 
-文字列はデフォルトでは _unsafe_ とマークされます。
+文字列はデフォルトでは「unsafe」とマークされます。
 
 ```ruby
 "".html_safe? # => false
 ```
 
-与えられた文字列に`html_safe`メソッドを適用することで、安全な文字列を得ることができます。
+与えられた文字列に[`html_safe`][String#html_safe]メソッドを適用することで、安全な文字列を得られます。
 
 ```ruby
 s = "".html_safe
@@ -1042,7 +1103,7 @@ s            # => "<script>...</script>"
 <%= @review.title %> <%# 必要に応じてエスケープされるので問題なし %>
 ```
 
-何らかの理由で、エスケープされていない文字列を挿入したい場合は、`html_safe`を呼ぶのではなく、`raw`ヘルパーをお使いください。
+何らかの理由で、エスケープされていない文字列を挿入したい場合は、`html_safe`を呼ぶのではなく、[`raw`][]ヘルパーをお使いください。
 
 ```erb
 <%= raw @cms.current_template %> <%# @cms.current_templateをそのまま挿入 %>
@@ -1062,7 +1123,10 @@ def raw(stringish)
 end
 ```
 
-NOTE: 定義は`active_support/core_ext/string/output_safety.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/string/output_safety.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/output_safety.rb)にあります。
+
+[`raw`]: https://api.rubyonrails.org/classes/ActionView/Helpers/OutputSafetyHelper.html#method-i-raw
+[String#html_safe]: https://api.rubyonrails.org/classes/String.html#method-i-html_safe
 
 #### 各種変換
 
@@ -1074,7 +1138,7 @@ INFO: こうしたメソッドを実行すると、実際に変換が行われ�
 
 #### 変換と強制
 
-安全な文字列に対して`to_s`を実行した場合は、安全な文字列が返されます。しかし、`to_str`による強制的な変換を実行した場合には安全でない文字列が返されます。
+安全な文字列に対して`to_s`を実行した場合は、安全な文字列が返されます。しかし、`to_str`による強制変換を実行した場合には安全でない文字列が返されます。
 
 #### コピー
 
@@ -1082,7 +1146,7 @@ INFO: こうしたメソッドを実行すると、実際に変換が行われ�
 
 ### `remove`
 
-`remove`メソッドを実行すると、すべての該当パターンが削除されます。
+[`remove`][String#remove]メソッドを実行すると、すべての該当パターンが削除されます。
 
 ```ruby
 "Hello World".remove(/Hello /) # => "World"
@@ -1090,11 +1154,13 @@ INFO: こうしたメソッドを実行すると、実際に変換が行われ�
 
 このメソッドには破壊的なバージョンの`String#remove!`もあります。
 
-NOTE: 定義は`active_support/core_ext/string/filters.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/string/filters.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/filters.rb)にあります。
+
+[String#remove]: https://api.rubyonrails.org/classes/String.html#method-i-remove
 
 ### `squish`
 
-`squish`メソッドは、冒頭と末尾のホワイトスペースを除去し、連続したホワイトスペースを1つに減らします。
+[`squish`][String#squish]メソッドは、冒頭と末尾のホワイトスペースを除去し、連続したホワイトスペースを1つに減らします。
 
 ```ruby
 " \n  foo\n\r \t bar \n".squish # => "foo bar"
@@ -1104,11 +1170,13 @@ NOTE: 定義は`active_support/core_ext/string/filters.rb`にあります。
 
 このメソッドでは、ASCIIとUnicodeのホワイトスペースを扱えます。
 
-NOTE: 定義は`active_support/core_ext/string/filters.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/string/filters.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/filters.rb)にあります。
+
+[String#squish]: https://api.rubyonrails.org/classes/String.html#method-i-squish
 
 ### `truncate`
 
-`truncate`メソッドは、指定された`length`にまで長さを切り詰めたレシーバのコピーを返します。
+[`truncate`][String#truncate]メソッドは、指定された`length`にまで長さを切り詰めたレシーバのコピーを返します。
 
 ```ruby
 "Oh dear! Oh dear! I shall be late!".truncate(20)
@@ -1124,7 +1192,7 @@ NOTE: 定義は`active_support/core_ext/string/filters.rb`にあります。
 
 文字列の切り詰めでは、省略文字列の長さも加味されることに特にご注意ください。
 
-`:separator`を指定することで、自然な区切り位置で切り詰めることができます。
+`:separator`を指定することで、自然な区切り位置で切り詰めできます。
 
 ```ruby
 "Oh dear! Oh dear! I shall be late!".truncate(18)
@@ -1142,11 +1210,34 @@ NOTE: 定義は`active_support/core_ext/string/filters.rb`にあります。
 
 上の例では、"dear"という文字で切り落とされそうになるところを、`:separator`によって防いでいます。
 
-NOTE: 定義は`active_support/core_ext/string/filters.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/string/filters.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/filters.rb)にあります。
+
+[String#truncate]: https://api.rubyonrails.org/classes/String.html#method-i-truncate
+
+### `truncate_bytes`
+
+[`truncate_bytes`][String#truncate_bytes]メソッドは、最大で`bytesize`バイトに切り詰められたレシーバーのコピーを返します。
+
+
+```ruby
+"👍👍👍👍".truncate_bytes(15)
+# => "👍👍👍…"
+```
+
+`:omission`オプションを指定することで、省略文字 (...) をカスタマイズすることもできます。
+
+```ruby
+"👍👍👍👍".truncate_bytes(15, omission: "🖖")
+# => "👍👍🖖"
+```
+
+NOTE: 定義は[`active_support/core_ext/string/filters.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/filters.rb)にあります。
+
+[String#truncate_bytes]: https://api.rubyonrails.org/classes/String.html#method-i-truncate_bytes
 
 ### `truncate_words`
 
-`truncate_words`メソッドは、指定されたワード数から後ろを切り落としたレシーバのコピーを返します。
+[`truncate_words`][String#truncate_words]メソッドは、指定されたワード数から後ろを切り落としたレシーバのコピーを返します。
 
 ```ruby
 "Oh dear! Oh dear! I shall be late!".truncate_words(4)
@@ -1160,7 +1251,7 @@ NOTE: 定義は`active_support/core_ext/string/filters.rb`にあります。
 # => "Oh dear! Oh dear!&hellip;"
 ```
 
-`:separator`を指定することで、自然な区切り位置で切り詰めることができます。
+`:separator`を指定することで、自然な区切り位置で切り詰めできます。
 
 ```ruby
 "Oh dear! Oh dear! I shall be late!".truncate_words(3, separator: '!')
@@ -1174,33 +1265,37 @@ NOTE: 定義は`active_support/core_ext/string/filters.rb`にあります。
 # => "Oh dear! Oh dear!..."
 ```
 
-NOTE: 定義は`active_support/core_ext/string/filters.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/string/filters.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/filters.rb)にあります。
+
+[String#truncate_words]: https://api.rubyonrails.org/classes/String.html#method-i-truncate_word
 
 ### `inquiry`
 
-`inquiry`は、文字列を`StringInquirer`オブジェクトに変換します。このオブジェクトを使うと、等しいかどうかをよりスマートにチェックできます。
+[`inquiry`][String#inquiry]は、文字列を`StringInquirer`オブジェクトに変換します。このオブジェクトを使うと、等しいかどうかをよりスマートにチェックできます。
 
 ```ruby
 "production".inquiry.production? # => true
 "active".inquiry.inactive?       # => false
 ```
 
-NOTE: 定義は`active_support/core_ext/string/inquiry.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/string/inquiry.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/inquiry.rb)にあります。
+
+[String#inquiry]: https://api.rubyonrails.org/classes/String.html#method-i-inquiry
 
 ### `starts_with?`と`ends_with?`
 
-Active Supportでは、`String#start_with?`と`String#end_with?`を英語的に自然な三人称(starts、ends)にした別名も定義されています。
+Active Supportでは、`String#start_with?`と`String#end_with?`を英語的に自然な三人称（starts、ends）にした別名も定義されています。
 
 ```ruby
 "foo".starts_with?("f") # => true
 "foo".ends_with?("o")   # => true
 ```
 
-NOTE: 定義は`active_support/core_ext/string/starts_ends_with.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/string/starts_ends_with.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/starts_ends_with.rb)にあります。
 
 ### `strip_heredoc`
 
-`strip_heredoc`メソッドは、ヒアドキュメントのインデントを除去します。
+[`strip_heredoc`][String#strip_heredoc]メソッドは、ヒアドキュメントのインデントを除去します。
 
 以下に例を示します。
 
@@ -1220,11 +1315,13 @@ end
 
 技術的には、インデントが一番浅い行を探して、そのインデント分だけ行頭のホワイトスペースを全体から削除するという操作を行っています。
 
-NOTE: 定義は`active_support/core_ext/string/strip.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/string/strip.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/strip.rb)にあります。
+
+[String#strip_heredoc]: https://api.rubyonrails.org/classes/String.html#method-i-strip_heredoc
 
 ### `indent`
 
-このメソッドは、レシーバの行にインデントを与えます。
+[`indent`][String#indent]メソッドは、レシーバの行にインデントを与えます。
 
 ```ruby
 <<EOS.indent(2)
@@ -1255,15 +1352,18 @@ EOS
 "foo\n\nbar".indent(2, nil, true) # => "  foo\n  \n  bar"
 ```
 
-`indent!`メソッドはインデントをその場で (破壊的に) 行います。
+[`indent!`][String#indent!]メソッドはインデントをその場で (破壊的に) 行います。
 
-NOTE: 定義は`active_support/core_ext/string/indent.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/string/indent.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/indent.rb)にあります。
+
+[String#indent!]: https://api.rubyonrails.org/classes/String.html#method-i-indent-21
+[String#indent]: https://api.rubyonrails.org/classes/String.html#method-i-indent
 
 ### Access
 
 #### `at(position)`
 
-対象となる文字列のうち、`position`で指定された位置にある文字を返します。
+[`at`][String#at]メソッドは、対象となる文字列のうち、`position`で指定された位置にある文字を返します。
 
 ```ruby
 "hello".at(0)  # => "h"
@@ -1272,11 +1372,13 @@ NOTE: 定義は`active_support/core_ext/string/indent.rb`にあります。
 "hello".at(10) # => nil
 ```
 
-NOTE: 定義は`active_support/core_ext/string/access.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/string/access.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/access.rb)にあります。
+
+[String#at]: https://api.rubyonrails.org/classes/String.html#method-i-at
 
 #### `from(position)`
 
-文字列のうち、`position`で指定された位置から始まる部分文字列を返します。
+[`from`][String#from]メソッドは、文字列のうち、`position`で指定された位置から始まる部分文字列を返します。
 
 ```ruby
 "hello".from(0)  # => "hello"
@@ -1285,11 +1387,13 @@ NOTE: 定義は`active_support/core_ext/string/access.rb`にあります。
 "hello".from(10) # => nil
 ```
 
-NOTE: 定義は`active_support/core_ext/string/access.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/string/access.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/access.rb)にあります。
+
+[String#from]: https://api.rubyonrails.org/classes/String.html#method-i-from
 
 #### `to(position)`
 
-文字列のうち、`position`で指定された位置を終端とする部分文字列を返します。
+[`to`][String#to]メソッドは、文字列のうち、`position`で指定された位置を終端とする部分文字列を返します。
 
 ```ruby
 "hello".to(0)  # => "h"
@@ -1298,25 +1402,35 @@ NOTE: 定義は`active_support/core_ext/string/access.rb`にあります。
 "hello".to(10) # => "hello"
 ```
 
-NOTE: 定義は`active_support/core_ext/string/access.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/string/access.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/access.rb)にあります。
+
+[String#to]: https://api.rubyonrails.org/classes/String.html#method-i-to
 
 #### `first(limit = 1)`
 
+[`first`][String#first]メソッドは、文字列冒頭から`limit`文字分の部分文字列を返します。
+
 `str.first(n)`という呼び出しは、`n` > 0の場合は`str.to(n-1)`と等価です。`n` == 0の場合は空文字列を返します。
 
-NOTE: 定義は`active_support/core_ext/string/access.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/string/access.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/access.rb)にあります。
+
+[String#first]: https://api.rubyonrails.org/classes/String.html#method-i-first
 
 #### `last(limit = 1)`
 
+[`last`][String#last]メソッドは、文字列末尾から`limit`文字分の部分文字列を返します。
+
 `str.last(n)` という呼び出しは、`n` > 0の場合は`str.from(-n)`と等価です。`n` == 0の場合は空文字列を返します。
 
-NOTE: 定義は`active_support/core_ext/string/access.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/string/access.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/access.rb)にあります。
+
+[String#last]: https://api.rubyonrails.org/classes/String.html#method-i-last
 
 ### 活用形
 
 #### `pluralize`
 
-`pluralize`メソッドは、レシーバを「複数形」にしたものを返します。
+[`pluralize`][String#pluralize]メソッドは、レシーバを「複数形」にしたものを返します。
 
 ```ruby
 "table".pluralize     # => "tables"
@@ -1326,7 +1440,7 @@ NOTE: 定義は`active_support/core_ext/string/access.rb`にあります。
 
 上の例でも示したように、Active Supportは不規則な複数形や非可算名詞をある程度扱えます。`config/initializers/inflections.rb`にあるビルトインのルールは拡張可能です。このファイルは`rails new`コマンド実行時にデフォルトで生成され、ファイルのコメントに説明が示されています。
 
-`pluralize`メソッドではオプションで`count`パラメータを使えます。もし`count == 1`を指定すると単数形が返されます。`count`がそれ以外の値の場合は複数形を返します(訳注: 英語では個数がゼロや小数の場合は複数形で表されます)。
+`pluralize`メソッドではオプションで`count`パラメータを使えます。`count == 1`を指定すると単数形が返されます。`count`がそれ以外の値の場合は複数形を返します（訳注: 英語では個数がゼロや小数や負の数の場合は複数形で表されます）。
 
 ```ruby
 "dude".pluralize(0) # => "dudes"
@@ -1338,17 +1452,19 @@ Active Recordでは、モデル名に対応するデフォルトのテーブル�
 
 ```ruby
 # active_record/model_schema.rb
-def undecorated_table_name(class_name = base_class.name)
-  table_name = class_name.to_s.demodulize.underscore
+def undecorated_table_name(model_name)
+  table_name = model_name.to_s.demodulize.underscore
   pluralize_table_names ? table_name.pluralize : table_name
 end
 ```
 
-NOTE: 定義は`active_support/core_ext/string/inflections.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/string/inflections.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/inflections.rb)にあります。
+
+[String#pluralize]: https://api.rubyonrails.org/classes/String.html#method-i-pluralize
 
 #### `singularize`
 
-`pluralize`と逆の動作です。
+[`singularize`][String#singularize]メソッドの動作は、`pluralize`と逆です。
 
 ```ruby
 "tables".singularize    # => "table"
@@ -1367,11 +1483,13 @@ def derive_class_name
 end
 ```
 
-NOTE: 定義は`active_support/core_ext/string/inflections.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/string/inflections.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/inflections.rb)にあります。
+
+[String#singularize]: https://api.rubyonrails.org/classes/String.html#method-i-singularize
 
 #### `camelize`
 
-`camelize`メソッドは、レシーバをキャメルケース (冒頭を大文字にした単語をスペースなしで連結した語) にしたものを返します。
+[`camelize`][String#camelize]メソッドは、レシーバをキャメルケース (冒頭を大文字にした単語をスペースなしで連結した語) にしたものを返します。
 
 ```ruby
 "product".camelize    # => "Product"
@@ -1401,7 +1519,7 @@ end
 "visual_effect".camelize(:lower) # => "visualEffect"
 ```
 
-このメソッドは、そのような命名慣習に沿う言語（JavaScriptなど）で使う名前を求めるのに便利です。
+このメソッドは、そのような命名規約に沿う言語（JavaScriptなど）で使う名前を求めるのに便利です。
 
 INFO: `camerize`メソッドの動作は、`underscore`メソッドと逆の動作と考えるとわかりやすいでしょう。ただし完全に逆の動作ではありません。たとえば、`"SSLError".underscore.camelize`を実行した結果は`"SslError"`になり、元に戻りません。このような場合をサポートするために、Active Supportでは`config/initializers/inflections.rb`の頭字語（acronym）を次のように指定できます。
 
@@ -1413,13 +1531,16 @@ end
 "SSLError".underscore.camelize # => "SSLError"
 ```
 
-`camelize`は`camelcase`の別名です。
+[`camelcase`][String#camelcase]は`camelize`の別名です。
 
-NOTE: 定義は`active_support/core_ext/string/inflections.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/string/inflections.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/inflections.rb)にあります。
+
+[String#camelcase]: https://api.rubyonrails.org/classes/String.html#method-i-camelcase
+[String#camelize]: https://api.rubyonrails.org/classes/String.html#method-i-camelize
 
 #### `underscore`
 
-`underscore`メソッドは上と逆に、キャメルケースをパスに変換します。
+[`underscore`][String#underscore]メソッドは上と逆に、キャメルケースをパスに変換します。
 
 ```ruby
 "Product".underscore   # => "product"
@@ -1440,38 +1561,43 @@ NOTE: 定義は`active_support/core_ext/string/inflections.rb`にあります。
 
 ただし`underscore`は引数を取りません。
 
-Railsで自動的に読み込まれるクラスとモジュールは、ファイルの拡張子を`underscore`メソッドで除いた相対パスを推測し、指定された定数が失われている場合にそれを定義するのにこのメソッドを利用します。
+Railsでは、コントローラのクラス名を小文字化するのに`underscore`を使っています。
+
 
 ```ruby
-# active_support/dependencies.rb
-def load_missing_constant(from_mod, const_name)
-  ...
-  qualified_name = qualified_name_for from_mod, const_name
-  path_suffix = qualified_name.underscore
-  ...
+# actionpack/lib/abstract_controller/base.rb
+def controller_path
+  @controller_path ||= name.delete_suffix("Controller").underscore
 end
 ```
 
+たとえば、上の値は`params[:controller]`で取得できます。
+
 INFO: `underscore`メソッドの動作は、`camelize`メソッドと逆の動作と考えるとわかりやすいでしょう。ただし完全に逆の動作ではありません。たとえば、`"SSLError".underscore.camelize`を実行した結果は`"SslError"`になり、元に戻りません。
 
-NOTE: 定義は`active_support/core_ext/string/inflections.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/string/inflections.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/inflections.rb)にあります。
+
+[String#underscore]: https://api.rubyonrails.org/classes/String.html#method-i-underscore
 
 #### `titleize`
 
-`titleize`メソッドは、レシーバの語の1文字目を大文字にします。
+[`titleize`][String#titleize]メソッドは、レシーバの語の1文字目を大文字にします。
 
 ```ruby
 "alice in wonderland".titleize # => "Alice In Wonderland"
 "fermat's enigma".titleize     # => "Fermat's Enigma"
 ```
 
-`titleize`メソッドは`titlecase`の別名です。
+[`titlecase`][String#titlecase]メソッドは`titleize`の別名です。
 
-NOTE: 定義は`active_support/core_ext/string/inflections.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/string/inflections.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/inflections.rb)にあります。
+
+[String#titlecase]: https://api.rubyonrails.org/classes/String.html#method-i-titlecase
+[String#titleize]: https://api.rubyonrails.org/classes/String.html#method-i-titleize
 
 #### `dasherize`
 
-`dasherize`メソッドは、レシーバのアンダースコア文字をダッシュに置き換えます(訳注: ここで言うダッシュは実際には「ハイフンマイナス文字」(U+002D)です)。
+[`dasherize`][String#dasherize]メソッドは、レシーバのアンダースコア文字をダッシュに置き換えます（訳注: ここで言うダッシュは実際には「ハイフンマイナス文字」(U+002D)です）。
 
 ```ruby
 "name".dasherize         # => "name"
@@ -1488,11 +1614,13 @@ def reformat_name(name)
 end
 ```
 
-NOTE: 定義は`active_support/core_ext/string/inflections.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/string/inflections.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/inflections.rb)にあります。
+
+[String#dasherize]: https://api.rubyonrails.org/classes/String.html#method-i-dasherize
 
 #### `demodulize`
 
-`demodulize`メソッドは、フルパスの (qualified) 定数名を与えられると、パス部分を取り除いて右側の定数名だけにしたものを返します。
+[`demodulize`][String#demodulize]メソッドは、フルパスの (qualified) 定数名を与えられると、パス部分を取り除いて右側の定数名だけにしたものを返します。
 
 ```ruby
 "Product".demodulize                        # => "Product"
@@ -1516,11 +1644,13 @@ def counter_cache_column
 end
 ```
 
-NOTE: 定義は`active_support/core_ext/string/inflections.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/string/inflections.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/inflections.rb)にあります。
+
+[String#demodulize]: https://api.rubyonrails.org/classes/String.html#method-i-demodulize
 
 #### `deconstantize`
 
-`deconstantize`メソッドは、フルパスの定数を表す参照表現を与えられると、一番右の部分 (通常は定数名) を取り除きます。
+[`deconstantize`][String#deconstantize]メソッドは、フルパスの定数を表す参照表現を与えられると、一番右の部分 (通常は定数名) を取り除きます。
 
 ```ruby
 "Product".deconstantize                        # => ""
@@ -1528,11 +1658,13 @@ NOTE: 定義は`active_support/core_ext/string/inflections.rb`にあります。
 "Admin::Hotel::ReservationUtils".deconstantize # => "Admin::Hotel"
 ```
 
-NOTE: 定義は`active_support/core_ext/string/inflections.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/string/inflections.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/inflections.rb)にあります。
+
+[String#deconstantize]: https://api.rubyonrails.org/classes/String.html#method-i-deconstantize
 
 #### `parameterize`
 
-`parameterize`メソッドは、レシーバを正しいURLで利用可能な形式に正規化します。
+[`parameterize`][String#parameterize]メソッドは、レシーバをURLで利用可能な形式に正規化します。
 
 ```ruby
 "John Smith".parameterize # => "john-smith"
@@ -1555,11 +1687,13 @@ NOTE: 定義は`active_support/core_ext/string/inflections.rb`にあります。
 
 実際に得られる文字列は、`ActiveSupport::Multibyte::Chars`のインスタンスでラップされています。
 
-NOTE: 定義は`active_support/core_ext/string/inflections.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/string/inflections.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/inflections.rb)にあります。
+
+[String#parameterize]: https://api.rubyonrails.org/classes/String.html#method-i-parameterize
 
 #### `tableize`
 
-`tableize`メソッドは、`underscore`の次に`pluralize`を実行したものです。
+[`tableize`][String#tableize]メソッドは、`underscore`の次に`pluralize`を実行したものです。
 
 ```ruby
 "Person".tableize      # => "people"
@@ -1569,11 +1703,13 @@ NOTE: 定義は`active_support/core_ext/string/inflections.rb`にあります。
 
 単純な場合であれば、モデル名に`tableize`を使うとモデルのテーブル名を得られます。実際のActive Recordの実装は、単に`tableize`を実行する場合よりも複雑です。Active Recordではクラス名に対して`demodulize`も行っており、返される文字列に影響する可能性のあるオプションもいくつかチェックしています。
 
-NOTE: 定義は`active_support/core_ext/string/inflections.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/string/inflections.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/inflections.rb)にあります。
+
+[String#tableize]: https://api.rubyonrails.org/classes/String.html#method-i-tableize
 
 #### `classify`
 
-`classify`メソッドは`tableize`と逆の動作で、与えられたテーブル名に対応するクラス名を返します。
+[`classify`][String#classify]メソッドは`tableize`と逆の動作で、与えられたテーブル名に対応するクラス名を返します。
 
 ```ruby
 "people".classify        # => "Person"
@@ -1589,11 +1725,13 @@ NOTE: 定義は`active_support/core_ext/string/inflections.rb`にあります。
 
 `classify`が返すクラス名は文字列であることにご注意ください。得られた文字列に対して`constantize` (後述) を実行することで本当のクラスオブジェクトを得られます。
 
-NOTE: 定義は`active_support/core_ext/string/inflections.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/string/inflections.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/inflections.rb)にあります。
+
+[String#classify]: https://api.rubyonrails.org/classes/String.html#method-i-classify
 
 #### `constantize`
 
-`constantize`メソッドは、レシーバの定数参照表現を解決し、実際のオブジェクトを返します。
+[`constantize`][String#constantize]メソッドは、レシーバの定数参照表現を解決し、実際のオブジェクトを返します。
 
 ```ruby
 "Fixnum".constantize # => Fixnum
@@ -1632,22 +1770,24 @@ rescue NameError => e
 end
 ```
 
-NOTE: 定義は`active_support/core_ext/string/inflections.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/string/inflections.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/inflections.rb)にあります。
+
+[String#constantize]: https://api.rubyonrails.org/classes/String.html#method-i-constantize
 
 #### `humanize`
 
-`humanize`メソッドは、属性名を (英語的に) 読みやすい表記に変換します。
+[`humanize`][String#humanize]メソッドは、属性名を (英語的に) 読みやすい表記に変換します。
 
 具体的には以下の変換を行います。
 
-  * 引数に (英語の) 活用ルールを適用します(inflection)。
-  * 冒頭にアンダースコアがある場合は削除します。
-  * 末尾に「_id」がある場合は削除します。
-  * アンダースコアが他にもある場合はスペースに置き換えます。
-  * 略語を除いてすべての単語を小文字にします(downcase)。
-  * 最初の単語だけ冒頭の文字を大文字にします(capitalize)。
+  * 引数に (英語の) 活用ルールを適用する（inflection）。
+  * 冒頭にアンダースコアがある場合は削除する。
+  * 末尾に「_id」がある場合は削除する。
+  * アンダースコアが他にもある場合はスペースに置き換える。
+  * 略語を除いてすべての単語を小文字にする（downcase）。
+  * 最初の単語だけ冒頭の文字を大文字にする（capitalize）。
 
-`:capitalize`オプションをfalseにすると、冒頭の文字は大文字にされません(デフォルトは`true`)。
+`:capitalize`オプションをfalseにすると、冒頭の文字は大文字にされません（デフォルトは`true`）。
 
 ```ruby
 "name".humanize                         # => "Name"
@@ -1679,11 +1819,13 @@ def full_message
 end
 ```
 
-NOTE: 定義は`active_support/core_ext/string/inflections.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/string/inflections.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/inflections.rb)にあります。
+
+[String#humanize]: https://api.rubyonrails.org/classes/String.html#method-i-humanize
 
 #### `foreign_key`
 
-`foreign_key`メソッドは、クラス名から外部キーカラム名を求めるのに用いられます。具体的には、`demodulize`、`underscore`を実行し、末尾に「_id」を追加します。
+[`foreign_key`][String#foreign_key]メソッドは、クラス名から外部キーカラム名を求めるのに用いられます。具体的には、`demodulize`、`underscore`を実行し、末尾に「_id」を追加します。
 
 ```ruby
 "User".foreign_key           # => "user_id"
@@ -1697,20 +1839,22 @@ NOTE: 定義は`active_support/core_ext/string/inflections.rb`にあります。
 "User".foreign_key(false) # => "userid"
 ```
 
-関連付け (association) では、外部キーの名前を推測するときにこのメソッドを使います。たとえば`has_one`と`has_many`では以下を行っています。
+関連付け (association) では、外部キー名を推測するときにこのメソッドを使います。たとえば`has_one`と`has_many`では以下を行っています。
 
 ```ruby
 # active_record/associations.rb
 foreign_key = options[:foreign_key] || reflection.active_record.name.foreign_key
 ```
 
-NOTE: 定義は`active_support/core_ext/string/inflections.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/string/inflections.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/inflections.rb)にあります。
+
+[String#foreign_key]: https://api.rubyonrails.org/classes/String.html#method-i-foreign_key
 
 ### 各種変換
 
 #### `to_date`、`to_time`、`to_datetime`
 
-`to_date`、`to_time`、`to_datetime`メソッドは、`Date._parse`をラップして使いやすくします。
+[`to_date`][String#to_date]、[`to_time`][String#to_time]、[`to_datetime`][String#to_datetime]メソッドは、`Date._parse`をラップして使いやすくします。
 
 ```ruby
 "2010-07-27".to_date              # => Tue, 27 Jul 2010
@@ -1731,7 +1875,11 @@ NOTE: 定義は`active_support/core_ext/string/inflections.rb`にあります。
 
 INFO: 3つのメソッドはいずれも、レシーバが空の場合は`nil`を返します。
 
-NOTE: 定義は`active_support/core_ext/string/conversions.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/string/conversions.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/conversions.rb)にあります。
+
+[String#to_date]: https://api.rubyonrails.org/classes/String.html#method-i-to_date
+[String#to_datetime]: https://api.rubyonrails.org/classes/String.html#method-i-to_datetime
+[String#to_time]: https://api.rubyonrails.org/classes/String.html#method-i-to_time
 
 `Numeric`の拡張
 -----------------------
@@ -1740,15 +1888,13 @@ NOTE: 定義は`active_support/core_ext/string/conversions.rb`にあります。
 
 すべての数値は、以下のメソッドに応答します。
 
-```ruby
-bytes
-kilobytes
-megabytes
-gigabytes
-terabytes
-petabytes
-exabytes
-```
+* [`bytes`][Numeric#bytes]
+* [`kilobytes`][Numeric#kilobytes]
+* [`megabytes`][Numeric#megabytes]
+* [`gigabytes`][Numeric#gigabytes]
+* [`terabytes`][Numeric#terabytes]
+* [`petabytes`][Numeric#petabytes]
+* [`exabytes`][Numeric#exabytes]
 
 これらのメソッドは、対応するバイト数を返すときに1024の倍数を使います。
 
@@ -1765,13 +1911,31 @@ exabytes
 1.megabyte # => 1048576
 ```
 
-NOTE: 定義は`active_support/core_ext/numeric/bytes.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/numeric/bytes.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/numeric/bytes.rb)にあります。
+
+[Numeric#bytes]: https://api.rubyonrails.org/classes/Numeric.html#method-i-bytes
+[Numeric#exabytes]: https://api.rubyonrails.org/classes/Numeric.html#method-i-exabytes
+[Numeric#gigabytes]: https://api.rubyonrails.org/classes/Numeric.html#method-i-gigabytes
+[Numeric#kilobytes]: https://api.rubyonrails.org/classes/Numeric.html#method-i-kilobytes
+[Numeric#megabytes]: https://api.rubyonrails.org/classes/Numeric.html#method-i-megabytes
+[Numeric#petabytes]: https://api.rubyonrails.org/classes/Numeric.html#method-i-petabytes
+[Numeric#terabytes]: https://api.rubyonrails.org/classes/Numeric.html#method-i-terabytes
+
 
 ### Time
 
-たとえば`45.minutes + 2.hours + 4.weeks`のように時間の計算や宣言を行なえます。
+以下のメソッドがあります。
 
-これらのメソッドでは正確な日付計算のために`Time#advance`を利用しています。`Time#advance`は、`from_now`や`ago`などの他に、`Time`オブジェクトから得た結果の加減算でも使われています。以下に例を示します。
+* [`seconds`][Numeric#seconds]
+* [`minutes`][Numeric#minutes]
+* [`hours`][Numeric#hours]
+* [`days`][Numeric#days]
+* [`weeks`][Numeric#weeks]
+* [`fortnights`][Numeric#fortnights]
+
+たとえば`45.minutes + 2.hours + 4.weeks`のように時間の計算や宣言を行なえます。これらの戻り値は、Timeオブジェクトに加算することも、Timeオブジェクトから減算することもできます。
+
+これらのメソッドを[`from_now`][Duration#from_now]や[`ago`][Duration#ago]などと組み合わせることで、以下のように精密に日付を計算できます。
 
 ```ruby
 # Time.current.advance(months: 1) と等価
@@ -1786,7 +1950,17 @@ NOTE: 定義は`active_support/core_ext/numeric/bytes.rb`にあります。
 
 WARNING: 上記以外の期間については、`Integer`の`Time`拡張を参照してください。
 
-NOTE: 定義は`active_support/core_ext/numeric/time.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/numeric/time.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/numeric/time.rb)にあります。
+
+[Duration#ago]: https://api.rubyonrails.org/classes/ActiveSupport/Duration.html#method-i-ago
+[Duration#from_now]: https://api.rubyonrails.org/classes/ActiveSupport/Duration.html#method-i-from_now
+[Numeric#days]: https://api.rubyonrails.org/classes/Numeric.html#method-i-days
+[Numeric#fortnights]: https://api.rubyonrails.org/classes/Numeric.html#method-i-fortnights
+[Numeric#hours]: https://api.rubyonrails.org/classes/Numeric.html#method-i-hours
+[Numeric#minutes]: https://api.rubyonrails.org/classes/Numeric.html#method-i-minutes
+[Numeric#seconds]: https://api.rubyonrails.org/classes/Numeric.html#method-i-seconds
+[Numeric#weeks]: https://api.rubyonrails.org/classes/Numeric.html#method-i-weeks
+
 
 ### 書式設定
 
@@ -1795,105 +1969,107 @@ NOTE: 定義は`active_support/core_ext/numeric/time.rb`にあります。
 以下のように、数値を電話番号形式の文字列に変換できます。
 
 ```ruby
-5551234.to_s(:phone)
+5551234.to_formatted_s(:phone)
 # => 555-1234
-1235551234.to_s(:phone)
+1235551234.to_formatted_s(:phone)
 # => 123-555-1234
-1235551234.to_s(:phone, area_code: true)
+1235551234.to_formatted_s(:phone, area_code: true)
 # => (123) 555-1234
-1235551234.to_s(:phone, delimiter: " ")
+1235551234.to_formatted_s(:phone, delimiter: " ")
 # => 123 555 1234
-1235551234.to_s(:phone, area_code: true, extension: 555)
+1235551234.to_formatted_s(:phone, area_code: true, extension: 555)
 # => (123) 555-1234 x 555
-1235551234.to_s(:phone, country_code: 1)
+1235551234.to_formatted_s(:phone, country_code: 1)
 # => +1-123-555-1234
 ```
 
 以下のように、数値を通貨形式の文字列に変換できます。
 
 ```ruby
-1234567890.50.to_s(:currency)                 # => $1,234,567,890.50
-1234567890.506.to_s(:currency)                # => $1,234,567,890.51
-1234567890.506.to_s(:currency, precision: 3)  # => $1,234,567,890.506
+1234567890.50.to_formatted_s(:currency)                 # => $1,234,567,890.50
+1234567890.506.to_formatted_s(:currency)                # => $1,234,567,890.51
+1234567890.506.to_formatted_s(:currency, precision: 3)  # => $1,234,567,890.506
 ```
 
-以下のように、数値を百分率形式の文字列に変換できます。
+以下のように、数値をパーセント形式の文字列に変換できます。
 
 ```ruby
-100.to_s(:percentage)
+100.to_formatted_s(:percentage)
 # => 100.000%
-100.to_s(:percentage, precision: 0)
+100.to_formatted_s(:percentage, precision: 0)
 # => 100%
-1000.to_s(:percentage, delimiter: '.', separator: ',')
+1000.to_formatted_s(:percentage, delimiter: '.', separator: ',')
 # => 1.000,000%
-302.24398923423.to_s(:percentage, precision: 5)
+302.24398923423.to_formatted_s(:percentage, precision: 5)
 # => 302.24399%
 ```
 
 以下のように、数値の桁区切りを追加して文字列形式にできます。
 
 ```ruby
-12345678.to_s(:delimited)                     # => 12,345,678
-12345678.05.to_s(:delimited)                  # => 12,345,678.05
-12345678.to_s(:delimited, delimiter: ".")     # => 12.345.678
-12345678.to_s(:delimited, delimiter: ",")     # => 12,345,678
-12345678.05.to_s(:delimited, separator: " ")  # => 12,345,678 05
+12345678.to_formatted_s(:delimited)                     # => 12,345,678
+12345678.05.to_formatted_s(:delimited)                  # => 12,345,678.05
+12345678.to_formatted_s(:delimited, delimiter: ".")     # => 12.345.678
+12345678.to_formatted_s(:delimited, delimiter: ",")     # => 12,345,678
+12345678.05.to_formatted_s(:delimited, separator: " ")  # => 12,345,678 05
 ```
 
 以下のように、数字を特定の精度に丸めて文字列形式にできます。
 
 ```ruby
-111.2345.to_s(:rounded)                     # => 111.235
-111.2345.to_s(:rounded, precision: 2)       # => 111.23
-13.to_s(:rounded, precision: 5)             # => 13.00000
-389.32314.to_s(:rounded, precision: 0)      # => 389
-111.2345.to_s(:rounded, significant: true)  # => 111
+111.2345.to_formatted_s(:rounded)                     # => 111.235
+111.2345.to_formatted_s(:rounded, precision: 2)       # => 111.23
+13.to_formatted_s(:rounded, precision: 5)             # => 13.00000
+389.32314.to_formatted_s(:rounded, precision: 0)      # => 389
+111.2345.to_formatted_s(:rounded, significant: true)  # => 111
 ```
 
-以下のように、数値を人間にとって読みやすいバイト数形式の文字列に変換できます。
+以下のように、数値を人間が読みやすいバイト数形式の文字列に変換できます。
 
 ```ruby
-123.to_s(:human_size)                  # => 123 Bytes
-1234.to_s(:human_size)                 # => 1.21 KB
-12345.to_s(:human_size)                # => 12.1 KB
-1234567.to_s(:human_size)              # => 1.18 MB
-1234567890.to_s(:human_size)           # => 1.15 GB
-1234567890123.to_s(:human_size)        # => 1.12 TB
-1234567890123456.to_s(:human_size)     # => 1.1 PB
-1234567890123456789.to_s(:human_size)  # => 1.07 EB
+123.to_formatted_s(:human_size)                  # => 123 Bytes
+1234.to_formatted_s(:human_size)                 # => 1.21 KB
+12345.to_formatted_s(:human_size)                # => 12.1 KB
+1234567.to_formatted_s(:human_size)              # => 1.18 MB
+1234567890.to_formatted_s(:human_size)           # => 1.15 GB
+1234567890123.to_formatted_s(:human_size)        # => 1.12 TB
+1234567890123456.to_formatted_s(:human_size)     # => 1.1 PB
+1234567890123456789.to_formatted_s(:human_size)  # => 1.07 EB
 ```
 
-以下のように、数値を人間にとって読みやすいバイト数形式で単位が単語の文字列に変換できます。
+以下のように、数値を人間が読みやすいバイト数形式で数詞を単位とする文字列に変換できます。
 
 ```ruby
-123.to_s(:human)               # => "123"
-1234.to_s(:human)              # => "1.23 Thousand"
-12345.to_s(:human)             # => "12.3 Thousand"
-1234567.to_s(:human)           # => "1.23 Million"
-1234567890.to_s(:human)        # => "1.23 Billion"
-1234567890123.to_s(:human)     # => "1.23 Trillion"
-1234567890123456.to_s(:human)  # => "1.23 Quadrillion"
+123.to_formatted_s(:human)               # => "123"
+1234.to_formatted_s(:human)              # => "1.23 Thousand"
+12345.to_formatted_s(:human)             # => "12.3 Thousand"
+1234567.to_formatted_s(:human)           # => "1.23 Million"
+1234567890.to_formatted_s(:human)        # => "1.23 Billion"
+1234567890123.to_formatted_s(:human)     # => "1.23 Trillion"
+1234567890123456.to_formatted_s(:human)  # => "1.23 Quadrillion"
 ```
 
-NOTE: 定義は`active_support/core_ext/numeric/conversions.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/numeric/conversions.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/numeric/conversions.rb)にあります。
 
 `Integer`の拡張
 -----------------------
 
 ### `multiple_of?`
 
-`multiple_of?`メソッドは、レシーバの整数が引数の倍数であるかどうかをテストします。
+[`multiple_of?`][Integer#multiple_of?]メソッドは、レシーバの整数が引数の倍数であるかどうかをテストします。
 
 ```ruby
 2.multiple_of?(1) # => true
 1.multiple_of?(2) # => false
 ```
 
-NOTE: 定義は`active_support/core_ext/integer/multiple.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/integer/multiple.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/integer/multiple.rb)にあります。
+
+[Integer#multiple_of?]: https://api.rubyonrails.org/classes/Integer.html#method-i-multiple_of-3F
 
 ### `ordinal`
 
-`ordinal`メソッドは、レシーバの整数に対応する序数のサフィックス文字列を返します。
+[`ordinal`][Integer#ordinal]メソッドは、レシーバの整数に対応する序数のサフィックス文字列を返します。
 
 ```ruby
 1.ordinal    # => "st"
@@ -1904,11 +2080,13 @@ NOTE: 定義は`active_support/core_ext/integer/multiple.rb`にあります。
 -134.ordinal # => "th"
 ```
 
-NOTE: 定義は`active_support/core_ext/integer/inflections.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/integer/inflections.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/integer/inflections.rb)にあります。
+
+[Integer#ordinal]: https://api.rubyonrails.org/classes/Integer.html#method-i-ordinal
 
 ### `ordinalize`
 
-`ordinalize`メソッドは、レシーバの整数に、対応する序数文字列を追加したものをかえします。先に紹介した`ordinal`メソッドは、序数文字列**だけ**を返す点が異なることにご注意ください。
+`ordinalize`メソッドは、レシーバの整数に、対応する序数文字列を追加したものをかえします。上の`ordinal`メソッドは、序数文字列**だけ**を返す点が異なることにご注意ください。
 
 ```ruby
 1.ordinalize    # => "1st"
@@ -1919,13 +2097,20 @@ NOTE: 定義は`active_support/core_ext/integer/inflections.rb`にあります�
 -134.ordinalize # => "-134th"
 ```
 
-NOTE: 定義は`active_support/core_ext/integer/inflections.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/integer/inflections.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/integer/inflections.rb)にあります。
+
+[Integer#ordinalize]: https://api.rubyonrails.org/classes/Integer.html#method-i-ordinalize
 
 ### Time
 
+以下のメソッドがあります。
+
+* [`months`][Integer#months]
+* [`years`][Integer#years]
+
 `4.months + 5.years`のような形式での時間の計算や宣言を行えるようにします。
 
-これらのメソッドでは正確な日付計算のために`Time#advance`を利用しています。`Time#advance`は、`from_now`や`ago`などの他に、`Time`オブジェクトから得た結果の加減算でも使われています。以下に例を示します。
+これらのメソッドを[`from_now`][Duration#from_now]や[`ago`][Duration#ago]などと組み合わせることで、以下のように精密に日付を計算できます。
 
 ```ruby
 # Time.current.advance(months: 1)と同等
@@ -1940,22 +2125,20 @@ NOTE: 定義は`active_support/core_ext/integer/inflections.rb`にあります�
 
 WARNING: 上記以外の期間については、`Numeric`の`Time`拡張を参照してください。
 
-NOTE: 定義は `active_support/core_ext/integer/time.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/integer/time.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/integer/time.rb)にあります。
+
+[Integer#months]: https://api.rubyonrails.org/classes/Integer.html#method-i-months
+[Integer#years]: https://api.rubyonrails.org/classes/Integer.html#method-i-years
 
 `BigDecimal`の拡張
 --------------------------
+
 ### `to_s`
 
 `to_s`メソッドは「F」のデフォルトの記法を提供します。これは、`to_s`を単に呼び出すと、エンジニアリング記法ではなく浮動小数点を得られるということです。
 
 ```ruby
 BigDecimal(5.00, 6).to_s       # => "5.0"
-```
-
-また、シンボルによる指定もサポートされます。
-
-```ruby
-BigDecimal(5.00, 6).to_s(:db)  # => "5.0"
 ```
 
 エンジニアリング記法も従来通りサポートされます。
@@ -1969,7 +2152,7 @@ BigDecimal(5.00, 6).to_s("e")  # => "0.5E1"
 
 ### `sum`
 
-`sum`メソッドはenumerableの要素を合計します。
+[`sum`][Enumerable#sum]メソッドはenumerableの要素を合計します。
 
 ```ruby
 [1, 2, 3].sum # => 6
@@ -2004,11 +2187,13 @@ BigDecimal(5.00, 6).to_s("e")  # => "0.5E1"
 [].sum(1) {|n| n**3} # => 1
 ```
 
-NOTE: 定義は`active_support/core_ext/enumerable.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/enumerable.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/enumerable.rb)にあります。
+
+[Enumerable#sum]: https://api.rubyonrails.org/classes/Enumerable.html#method-i-sum
 
 ### `index_by`
 
-`index_by`メソッドは、何らかのキーによってインデックス化されたenumerableの要素を持つハッシュを生成します。
+[`index_by`][Enumerable#index_by]メソッドは、何らかのキーによってインデックス化されたenumerableの要素を持つハッシュを生成します。
 
 このメソッドはコレクションを列挙し、各要素をブロックに渡します。この要素は、ブロックから返された値によってインデックス化されます。
 
@@ -2019,25 +2204,32 @@ invoices.index_by(&:number)
 
 WARNING: キーは通常は一意でなければなりません。異なる要素から同じ値が返されると、そのキーのコレクションは作成されません。返された項目のうち、最後の項目だけが使われます。
 
-NOTE: 定義は`active_support/core_ext/enumerable.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/enumerable.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/enumerable.rb)にあります。
+
+[Enumerable#index_by]: https://api.rubyonrails.org/classes/Enumerable.html#method-i-index_by
 
 ### `index_with`
 
-`index_with`メソッドは、enumerableの要素をキーとして持つハッシュを生成します。値は渡されたデフォルト値か、ブロックで返されます。
+[`index_with`][Enumerable#index_with]メソッドは、enumerableの要素をキーとして持つハッシュを生成します。値は渡されたデフォルト値か、ブロックで返されます。
 
 ```ruby
-%i( title body created_at ).index_with { |attr_name| post.public_send(attr_name) }
-# => { title: "hey", body: "what's up?", … }
+post = Post.new(title: "hey there", body: "what's up?")
+
+%i( title body ).index_with { |attr_name| post.public_send(attr_name) }
+# => { title: "hey there", body: "what's up?" }
 
 WEEKDAYS.index_with(Interval.all_day)
 # => { monday: [ 0, 1440 ], … }
 ```
 
-NOTE: 定義は`active_support/core_ext/enumerable.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/enumerable.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/enumerable.rb)にあります。
+
+
+[Enumerable#index_with]: https://api.rubyonrails.org/classes/Enumerable.html#method-i-index_with
 
 ### `many?`
 
-`many?`メソッドは、`collection.size > 1`の短縮形です。
+[`many?`][Enumerable#many?]メソッドは、`collection.size > 1`の短縮形です。
 
 ```erb
 <% if pages.many? %>
@@ -2051,7 +2243,9 @@ NOTE: 定義は`active_support/core_ext/enumerable.rb`にあります。
 @see_more = videos.many? {|video| video.category == params[:category]}
 ```
 
-NOTE: 定義は`active_support/core_ext/enumerable.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/enumerable.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/enumerable.rb)にあります。
+
+[Enumerable#many?]: https://api.rubyonrails.org/classes/Enumerable.html#method-i-many-3F
 
 ### `exclude?`
 
@@ -2061,42 +2255,80 @@ NOTE: 定義は`active_support/core_ext/enumerable.rb`にあります。
 to_visit << node if visited.exclude?(node)
 ```
 
-NOTE: 定義は`active_support/core_ext/enumerable.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/enumerable.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/enumerable.rb)にあります。
 
-### `without`
+[Enumerable#exclude?]: https://api.rubyonrails.org/classes/Enumerable.html#method-i-exclude-3F
 
-`without`メソッドは、指定した要素を除外したenumerableのコピーを返します。
+### `including`
+
+[`including`][Enumerable#including]メソッドは、渡された要素を含む新しいenumerableを返します。
 
 
 ```ruby
-["David", "Rafael", "Aaron", "Todd"].without("Aaron", "Todd") # => ["David", "Rafael"]
+[ 1, 2, 3 ].including(4, 5)                    # => [ 1, 2, 3, 4, 5 ]
+["David", "Rafael"].including %w[ Aaron Todd ] # => ["David", "Rafael", "Aaron", "Todd"]
 ```
 
-NOTE: 定義は`active_support/core_ext/enumerable.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/enumerable.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/enumerable.rb)にあります。
+
+[Enumerable#including]: https://api.rubyonrails.org/classes/Enumerable.html#method-i-including
+
+### `excluding`
+
+[`excluding`][Enumerable#excluding]メソッドは、渡された要素を除いた新しいenumerableのコピーを返します。
+
+
+```ruby
+["David", "Rafael", "Aaron", "Todd"].excluding("Aaron", "Todd") # => ["David", "Rafael"]
+```
+
+[`without`][Enumerable#without]は`excluding`の別名です。
+
+NOTE: 定義は[`active_support/core_ext/enumerable.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/enumerable.rb)にあります。
+
+[Enumerable#excluding]: https://api.rubyonrails.org/classes/Enumerable.html#method-i-excluding
+[Enumerable#without]: https://api.rubyonrails.org/classes/Enumerable.html#method-i-without
 
 ### `pluck`
 
-`pluck`メソッドは、指定されたキーに基づく配列を返します。
+[`pluck`][Enumerable#pluck]メソッドは、指定されたキーに基づく配列を返します。
 
 ```ruby
 [{ name: "David" }, { name: "Rafael" }, { name: "Aaron" }].pluck(:name) # => ["David", "Rafael", "Aaron"]
 ```
 
-NOTE: 定義は`active_support/core_ext/enumerable.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/enumerable.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/enumerable.rb)にあります。
+
+[Enumerable#pluck]: https://api.rubyonrails.org/classes/Enumerable.html#method-i-pluck
+
+### `pick`
+
+[`pick`][Enumerable#pick]メソッドは、最初の要素から指定のキーを取り出します。
+
+The method [`pick`][Enumerable#pick] extracts the given key from the first element:
+
+```ruby
+[{ name: "David" }, { name: "Rafael" }, { name: "Aaron" }].pick(:name) # => "David"
+[{ id: 1, name: "David" }, { id: 2, name: "Rafael" }].pick(:id, :name) # => [1, "David"]
+```
+
+NOTE: 定義は[`active_support/core_ext/enumerable.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/enumerable.rb)にあります。
+
+[Enumerable#pick]: https://api.rubyonrails.org/classes/Enumerable.html#method-i-pick
 
 `Array`の拡張
 ---------------------
 
 ### 配列へのアクセス
 
-Active Supportには配列のAPIが多数追加されており、配列に容易にアクセスできるようになっています。たとえば`to`メソッドは、配列の冒頭から、渡されたインデックスが示す箇所までの範囲を返します。
+Active Supportには配列のAPIが多数追加されており、配列に容易にアクセスできるようになっています。たとえば[`to`][Array#to]メソッドは、配列の冒頭から、渡されたインデックスが示す箇所までの範囲を返します。
 
 ```ruby
 %w(a b c d).to(2) # => ["a", "b", "c"]
 [].to(7)          # => []
 ```
 
-同様に`from`メソッドは、配列のうち、インデックスが指す箇所から末尾までの要素を返します。インデックスが配列のサイズより大きい場合は、空の配列を返します。
+同様に[`from`][Array#from]メソッドは、配列のうち、インデックスが指す箇所から末尾までの要素を返します。インデックスが配列のサイズより大きい場合は、空の配列を返します。
 
 ```ruby
 %w(a b c d).from(2)  # => ["c", "d"]
@@ -2104,18 +2336,45 @@ Active Supportには配列のAPIが多数追加されており、配列に容易
 [].from(0)           # => []
 ```
 
-`second`、`third`、`fourth`、`fifth`は、`second_to_last`や`third_to_last`と同様に、対応する位置の要素を返します (`first`と`last`は元からビルトインされています)。社会の智慧と建設的な姿勢のおかげで、今では`forty_two`も使えます (訳注: [Rails 2.2 以降](https://github.com/rails/rails/commit/9d8cc60ec3845fa3e6f9292a65b119fe4f619f7e)で使えます。「42」については、Wikipediaの[生命、宇宙、そして万物についての究極の疑問の答え](http://ja.wikipedia.org/wiki/%E7%94%9F%E5%91%BD%E3%80%81%E5%AE%87%E5%AE%99%E3%80%81%E3%81%9D%E3%81%97%E3%81%A6%E4%B8%87%E7%89%A9%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6%E3%81%AE%E7%A9%B6%E6%A5%B5%E3%81%AE%E7%96%91%E5%95%8F%E3%81%AE%E7%AD%94%E3%81%88)を参照してください)。
+[`including`][Array#including]メソッドは、渡された要素を含む新しい配列を返します。
+
+```ruby
+[ 1, 2, 3 ].including(4, 5)          # => [ 1, 2, 3, 4, 5 ]
+[ [ 0, 1 ] ].including([ [ 1, 0 ] ]) # => [ [ 0, 1 ], [ 1, 0 ] ]
+```
+
+[`excluding`][Array#excluding]メソッドは、渡された要素を除外した新しい配列のコピーを返します。
+これは、パフォーマンス上の理由で`Array#reject`の代わりに`Array#-`を用いた`Enumerable#excluding`の最適化です。
+
+```ruby
+["David", "Rafael", "Aaron", "Todd"].excluding("Aaron", "Todd") # => ["David", "Rafael"]
+[ [ 0, 1 ], [ 1, 0 ] ].excluding([ [ 1, 0 ] ])                  # => [ [ 0, 1 ] ]
+```
+
+[`second`][Array#second]、[`third`][Array#third]、[`fourth`][Array#fourth]、[`fifth`][Array#fifth]は、[`second_to_last`][Array#second_to_last]や[`third_to_last`][Array#third_to_last]と同様に、対応する位置の要素を返します (`first`と`last`は元からビルトインされています)。社会の智慧と建設的な姿勢のおかげで、今では[`forty_two`][Array#forty_two]も使えます (訳注: [Rails 2.2 以降](https://github.com/rails/rails/commit/9d8cc60ec3845fa3e6f9292a65b119fe4f619f7e)で使えます。「42」については、Wikipediaの[生命、宇宙、そして万物についての究極の疑問の答え](http://ja.wikipedia.org/wiki/%E7%94%9F%E5%91%BD%E3%80%81%E5%AE%87%E5%AE%99%E3%80%81%E3%81%9D%E3%81%97%E3%81%A6%E4%B8%87%E7%89%A9%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6%E3%81%AE%E7%A9%B6%E6%A5%B5%E3%81%AE%E7%96%91%E5%95%8F%E3%81%AE%E7%AD%94%E3%81%88)を参照してください)。
 
 ```ruby
 %w(a b c d).third # => "c"
 %w(a b c d).fifth # => nil
 ```
 
-NOTE: 定義は`active_support/core_ext/array/access.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/array/access.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/array/access.rb)にあります。
+
+[Array#excluding]: https://api.rubyonrails.org/classes/Array.html#method-i-excluding
+[Array#fifth]: https://api.rubyonrails.org/classes/Array.html#method-i-fifth
+[Array#forty_two]: https://api.rubyonrails.org/classes/Array.html#method-i-forty_two
+[Array#fourth]: https://api.rubyonrails.org/classes/Array.html#method-i-fourth
+[Array#from]: https://api.rubyonrails.org/classes/Array.html#method-i-from
+[Array#including]: https://api.rubyonrails.org/classes/Array.html#method-i-including
+[Array#second]: https://api.rubyonrails.org/classes/Array.html#method-i-second
+[Array#second_to_last]: https://api.rubyonrails.org/classes/Array.html#method-i-second_to_last
+[Array#third]: https://api.rubyonrails.org/classes/Array.html#method-i-third
+[Array#third_to_last]: https://api.rubyonrails.org/classes/Array.html#method-i-third_to_last
+[Array#to]: https://api.rubyonrails.org/classes/Array.html#method-i-to
 
 ### 展開
 
-`extract!`メソッドは、ブロックの返す値がtrueになる要素を削除して返します。ブロックが渡されない場合はEnumeratorを返します。
+[`extract!`][Array#extract!]メソッドは、ブロックの返す値が`true`になる要素を削除して返します。ブロックが渡されない場合はEnumeratorを返します。
 
 ```ruby
 numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -2123,7 +2382,9 @@ odd_numbers = numbers.extract! { |number| number.odd? } # => [1, 3, 5, 7, 9]
 numbers # => [0, 2, 4, 6, 8]
 ```
 
-NOTE: 定義は`active_support/core_ext/array/extract.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/array/extract.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/array/extract.rb)にあります。
+
+[Array#extract!]: https://api.rubyonrails.org/classes/Array.html#method-i-extract-21
 
 ### オプションの展開
 
@@ -2133,11 +2394,11 @@ Rubyでは、メソッドに与えられた最後の引数がハッシュの場�
 User.exists?(email: params[:email])
 ```
 
-このようなシンタックスシュガーは、多数の引数が順序に依存することを避け、名前付きパラメータをエミュレートするインターフェイスを提供するためにRailsで多用されています。特に、末尾にオプションのハッシュを置くというのは定番中の定番です。
+このようなシンタックスシュガーは、多数の引数が順序に依存することを避け、名前付きパラメータをエミュレートするインターフェイスを提供するためにRailsで多用されています。特に、末尾にオプションのハッシュを置くのは定番中の定番です。
 
-しかし、あるメソッドが受け取る引数の数が固定されておらず、メソッド宣言で`*`が使われていると、そのような波かっこなしのオプションハッシュは引数の配列の末尾の要素になってしまい、ハッシュとして認識されなくなってしまいます。
+しかし、あるメソッドが受け取る引数の数が固定されておらず、メソッド宣言で`*`が使われていると、そのような波かっこなしのオプションハッシュは引数の配列の末尾要素になってしまい、ハッシュとして認識されなくなってしまいます。
 
-このような場合、`extract_options!`メソッドは、配列の最後の項目の型をチェックします。それがハッシュの場合、そのハッシュを取り出して返し、それ以外の場合は空のハッシュを返します。
+このような場合、[`extract_options!`][Array#extract_options!]メソッドを使うと、配列の末尾項目の型をチェックできます。それがハッシュの場合、そのハッシュを取り出して返し、それ以外の場合は空のハッシュを返します。
 
 `caches_action`コントローラマクロでの定義を例にとって見てみましょう。
 
@@ -2145,19 +2406,21 @@ User.exists?(email: params[:email])
 def caches_action(*actions)
   return unless cache_configured?
   options = actions.extract_options!
-  ...
+  # ...
 end
 ```
 
 このメソッドは、任意の数のアクション名を引数に取ることができ、引数の末尾項目でオプションハッシュを使えます。`extract_options!`メソッドを使うと、このオプションハッシュの取得と`actions`からの除去を簡単かつ明示的に行えます。
 
-NOTE: 定義は`active_support/core_ext/array/extract_options.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/array/extract_options.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/array/extract_options.rb)にあります。
+
+[Array#extract_options!]: https://api.rubyonrails.org/classes/Array.html#method-i-extract_options-21
 
 ### 各種変換
 
 #### `to_sentence`
 
-`to_sentence`メソッドは、配列を変換して、要素を列挙する英文にします。
+[`to_sentence`][Array#to_sentence]メソッドは、配列を変換して、要素を列挙する英文にします。
 
 ```ruby
 %w().to_sentence                # => ""
@@ -2168,19 +2431,21 @@ NOTE: 定義は`active_support/core_ext/array/extract_options.rb`にあります
 
 このメソッドは3つのオプションを受け付けます。
 
-* `:two_words_connector`: 項目数が2つの場合の接続詞を指定します。デフォルトはスペースを含む「 and 」です。
-* `:words_connector`: 3つ以上の要素を接続する場合、最後の2つの間以外で使われる接続詞を指定します。デフォルトはスペースを含む「, 」です。
-* `:last_word_connector`: 3つ以上の要素を接続する場合、最後の2つの要素で使われる接続詞を指定します。デフォルトはスペースを含む「, and 」です。
+* `:two_words_connector`: 項目数が2つの場合の接続詞を指定します。デフォルトはスペースを含む「`` and `」です。
+* `:words_connector`: 3つ以上の要素を接続する場合、最後の2つの間以外で使われる接続詞を指定します。デフォルトはスペースを含む「``, `」です。
+* `:last_word_connector`: 3つ以上の要素を接続する場合、最後の2つの要素で使われる接続詞を指定します。デフォルトはスペースを含む「``, and `」です。
 
 これらのオプションは標準の方法でローカライズできます。使えるキーは以下のとおりです。
 
-| オプション                 | I18n キー                            |
+| オプション             | I18n キー                           |
 | ---------------------- | ----------------------------------- |
 | `:two_words_connector` | `support.array.two_words_connector` |
 | `:words_connector`     | `support.array.words_connector`     |
 | `:last_word_connector` | `support.array.last_word_connector` |
 
-NOTE: 定義は`active_support/core_ext/array/conversions.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/array/conversions.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/array/conversions.rb)にあります。
+
+[Array#to_sentence]: https://api.rubyonrails.org/classes/Array.html#method-i-to_sentence
 
 #### `to_formatted_s`
 
@@ -2196,11 +2461,13 @@ invoice.lines.to_formatted_s(:db) # => "23,567,556,12"
 
 上の例の整数は、`id`への呼び出しによって取り出されたものとみなされます。
 
-NOTE: 定義は`active_support/core_ext/array/conversions.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/array/conversions.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/array/conversions.rb)にあります。
+
+[Array#to_formatted_s]: https://api.rubyonrails.org/classes/Array.html#method-i-to_formatted_s
 
 #### `to_xml`
 
-`to_xml`メソッドは、レシーバをXML表現に変換したものを含む文字列を返します。
+[`to_xml`][Array#to_xml]メソッドは、レシーバをXML表現に変換したものを含む文字列を返します。
 
 ```ruby
 Contributor.limit(2).order(:rank).to_xml
@@ -2297,11 +2564,13 @@ Contributor.limit(2).order(:rank).to_xml(skip_types: true)
 # </contributors>
 ```
 
-NOTE: 定義は`active_support/core_ext/array/conversions.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/array/conversions.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/array/conversions.rb)にあります。
+
+[Array#to_xml]: https://api.rubyonrails.org/classes/Array.html#method-i-to_xml
 
 ### ラッピング
 
-`Array.wrap`メソッドは、配列の中にある引数が配列 (または配列的なもの) になっていない場合に、それらを配列の中にラップします。
+[`Array.wrap`][Array.wrap]メソッドは、配列の中にある引数が配列 (または配列的なもの) になっていない場合に、それらを配列の中にラップします。
 
 特徴:
 
@@ -2328,17 +2597,19 @@ Array.wrap(foo: :bar) # => [{:foo=>:bar}]
 Array(foo: :bar)      # => [[:foo, :bar]]
 ```
 
-この動作は、スプラット演算子を用いる手法にも関連します。
+この動作は、スプラット演算子（`*`）を用いる手法にも関連します。
 
 ```ruby
 [*object]
 ```
 
-NOTE: 定義は`active_support/core_ext/array/wrap.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/array/wrap.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/array/wrap.rb)にあります。
+
+[Array.wrap]: https://api.rubyonrails.org/classes/Array.html#method-c-wrap
 
 ### 複製
 
-`Array#deep_dup`メソッドは、自分自身を複製すると同時に、その中のすべてのオブジェクトをActive Supportの`Object#deep_dup`メソッドによって再帰的に複製します。この動作は、`Array#map`を用いて`deep_dup`メソッドを内部の各オブジェクトに適用するのと似ています。
+[`Array#deep_dup`][Array#deep_dup]メソッドは、自分自身を複製すると同時に、その中のすべてのオブジェクトをActive Supportの`Object#deep_dup`メソッドによって再帰的に複製します。この動作は、`Array#map`を用いて`deep_dup`メソッドを内部の各オブジェクトに適用するのと似ています。
 
 ```ruby
 array = [1, [2, 3]]
@@ -2347,13 +2618,15 @@ dup[1][2] = 4
 array[1][2] == nil   # => true
 ```
 
-NOTE: 定義は`active_support/core_ext/object/deep_dup.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/object/deep_dup.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/object/deep_dup.rb)にあります。
+
+[Array#deep_dup]: https://api.rubyonrails.org/classes/Array.html#method-i-deep_dup
 
 ### グループ化
 
 #### `in_groups_of(number, fill_with = nil)`
 
-`in_groups_of`メソッドは、指定のサイズで配列を連続したグループに分割し、分割されたグループを含む配列を1つ返します。
+[`in_groups_of`][Array#in_groups_of]メソッドは、指定のサイズで配列を連続したグループに分割し、分割されたグループを含む配列を1つ返します。
 
 ```ruby
 [1, 2, 3].in_groups_of(2) # => [[1, 2], [3, nil]]
@@ -2385,11 +2658,13 @@ NOTE: 定義は`active_support/core_ext/object/deep_dup.rb`にあります。
 
 このため、`false`は空きを埋める値としては利用できません。
 
-NOTE: 定義は`active_support/core_ext/array/grouping.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/array/grouping.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/array/grouping.rb)にあります。
+
+[Array#in_groups_of]: https://api.rubyonrails.org/classes/Array.html#method-i-in_groups_of
 
 #### `in_groups(number, fill_with = nil)`
 
-`in_groups`は、配列を指定の個数のグループに分割し、分割されたグループを含む配列を1つ返します。
+[`in_groups`][Array#in_groups]は、配列を指定の個数のグループに分割し、分割されたグループを含む配列を1つ返します。
 
 ```ruby
 %w(1 2 3 4 5 6 7).in_groups(3)
@@ -2423,11 +2698,13 @@ NOTE: 定義は`active_support/core_ext/array/grouping.rb`にあります。
 
 このため、`false`は空きを埋める値としては利用できません。
 
-NOTE: 定義は`active_support/core_ext/array/grouping.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/array/grouping.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/array/grouping.rb)にあります。
+
+[Array#in_groups]: https://api.rubyonrails.org/classes/Array.html#method-i-in_groups
 
 #### `split(value = nil)`
 
-`split`メソッドは、指定のセパレータで配列を分割し、分割されたチャンクを返します。
+[`split`][Array#split]メソッドは、指定のセパレータで配列を分割し、分割されたチャンクを返します。
 
 ブロックを渡した場合、配列の要素のうち「ブロックが`true`を返す要素」がセパレータとして使われます。
 
@@ -2445,7 +2722,9 @@ NOTE: 定義は`active_support/core_ext/array/grouping.rb`にあります。
 
 TIP: 上の例からもわかるように、セパレータが連続すると空の配列になります。
 
-NOTE: 定義は`active_support/core_ext/array/grouping.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/array/grouping.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/array/grouping.rb)にあります。
+
+[Array#split]: https://api.rubyonrails.org/classes/Array.html#method-i-split
 
 `Hash`の拡張
 --------------------
@@ -2454,7 +2733,7 @@ NOTE: 定義は`active_support/core_ext/array/grouping.rb`にあります。
 
 #### `to_xml`
 
-`to_xml`メソッドは、レシーバをXML表現に変換したものを含む文字列を返します。
+[`to_xml`][Hash#to_xml]メソッドは、レシーバをXML表現に変換したものを含む文字列を返します。
 
 ```ruby
 {"foo" => 1, "bar" => 2}.to_xml
@@ -2468,7 +2747,7 @@ NOTE: 定義は`active_support/core_ext/array/grouping.rb`にあります。
 
 具体的には、このメソッドは与えられたペアから**値**に応じてノードを作成します。キーと値のペアが与えられたとき、以下のように動作します。
 
-* 値がハッシュのとき、キーを`:root`として再帰的な呼び出しを行います。
+* 値がハッシュの場合、キーを`:root`として再帰的な呼び出しを行います。
 
 * 値が配列の場合、キーを`:root`に、キーを単数形化（singularize）したものを`:children`に指定して再帰的な呼び出しを行います。
 
@@ -2481,8 +2760,7 @@ NOTE: 定義は`active_support/core_ext/array/grouping.rb`にあります。
 ```ruby
 XML_TYPE_NAMES = {
   "Symbol"     => "symbol",
-  "Fixnum"     => "integer",
-  "Bignum"     => "integer",
+  "Integer"    => "integer",
   "BigDecimal" => "decimal",
   "Float"      => "float",
   "TrueClass"  => "boolean",
@@ -2497,7 +2775,9 @@ XML_TYPE_NAMES = {
 
 デフォルトのXMLビルダは、`Builder::XmlMarkup`から直接生成されたインスタンスです。`:builder`オブションで独自のビルダを構成できます。このメソッドでは`:dasherize`とその同族と同様のオプションが利用でき、指定したオプションはビルダに転送されます。
 
-NOTE: 定義は`active_support/core_ext/hash/conversions.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/hash/conversions.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/hash/conversions.rb)にあります。
+
+[Hash#to_xml]: https://api.rubyonrails.org/classes/Hash.html#method-i-to_xml
 
 ### マージ
 
@@ -2518,13 +2798,13 @@ Active Supportでは、この他にも便利なハッシュのマージをいく
 options = {length: 30, omission: "..."}.merge(options)
 ```
 
-Active Supportでは、別の記法を使いたい場合のために`reverse_merge`も定義されています。
+Active Supportでは、別の記法を使いたい場合のために[`reverse_merge`][Hash#reverse_merge]も定義されています。
 
 ```ruby
 options = options.reverse_merge(length: 30, omission: "...")
 ```
 
-マージを対象内で行なう破壊的なバージョンの`reverse_merge!`もあります。
+マージを対象内で行なう破壊的なバージョンの[`reverse_merge!`][Hash#reverse_merge!]もあります。
 
 ```ruby
 options.reverse_merge!(length: 30, omission: "...")
@@ -2532,34 +2812,42 @@ options.reverse_merge!(length: 30, omission: "...")
 
 WARNING: `reverse_merge!`は呼び出し元のハッシュを変更する可能性があることにご注意ください。それが意図した副作用であるかそうでないかにかかわらず、注意が必要です。
 
-NOTE: 定義は`active_support/core_ext/hash/reverse_merge.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/hash/reverse_merge.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/hash/reverse_merge.rb)にあります。
+
+[Hash#reverse_merge!]: https://api.rubyonrails.org/classes/Hash.html#method-i-reverse_merge-21
+[Hash#reverse_merge]: https://api.rubyonrails.org/classes/Hash.html#method-i-reverse_merge
 
 #### `reverse_update`
 
-`reverse_update`メソッドは、上で説明した`reverse_merge!`の別名です。
+[`reverse_update`][Hash#reverse_update]メソッドは、上で説明した`reverse_merge!`の別名です。
 
 WARNING: `reverse_update`には!のついたバージョンはありません。
 
-NOTE: 定義は`active_support/core_ext/hash/reverse_merge.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/hash/reverse_merge.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/hash/reverse_merge.rb)にあります。
+
+[Hash#reverse_update]: https://api.rubyonrails.org/classes/Hash.html#method-i-reverse_update
 
 #### `deep_merge`と`deep_merge!`
 
 先の例で説明したとおり、キーがレシーバと引数で重複している場合、引数の側の値が優先されます。
 
-Active Supportでは`Hash#deep_merge`が定義されています。ディープマージでは、レシーバと引数の両方に同じキーが出現し、さらにどちらも値がハッシュである場合に、その下位のハッシュを**マージ**したものが、最終的なハッシュの値として使われます。
+Active Supportでは[`Hash#deep_merge`][Hash#deep_merge]が定義されています。ディープマージでは、レシーバと引数の両方に同じキーが出現し、さらにどちらも値がハッシュである場合に、その下位のハッシュを**マージ**したものが、最終的なハッシュの値として使われます。
 
 ```ruby
 {a: {b: 1}}.deep_merge(a: {c: 2})
 # => {:a=>{:b=>1, :c=>2}}
 ```
 
-`deep_merge!`メソッドはディープマージを破壊的に実行します。
+[`deep_merge!`][Hash#deep_merge!]メソッドはディープマージを破壊的に実行します。
 
-NOTE: 定義は`active_support/core_ext/hash/deep_merge.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/hash/deep_merge.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/hash/deep_merge.rb)にあります。
+
+[Hash#deep_merge!]: https://api.rubyonrails.org/classes/Hash.html#method-i-deep_merge-21
+[Hash#deep_merge]: https://api.rubyonrails.org/classes/Hash.html#method-i-deep_merge
 
 ### ディープ複製
 
-`Hash#deep_dup`メソッドは、自分自身の複製に加えて その中のすべてのキーと値を再帰的に複製します。複製にはActive Supportの`Object#deep_dup`メソッドが使われます。この動作は、`Enumerator#each_with_object`を用いて`deep_dup`を内部の各キーバリューペアに送信するのと似ています。
+[`Hash#deep_dup`][Hash#deep_dup]メソッドは、自分自身の複製に加えて、その中のすべてのキーと値を再帰的に複製します。複製にはActive Supportの`Object#deep_dup`メソッドが使われます。この動作は、`Enumerator#each_with_object`を用いて`deep_dup`を内部の各キーバリューペアに送信するのと似ています。
 
 ```ruby
 hash = { a: 1, b: { c: 2, d: [3, 4] } }
@@ -2572,13 +2860,15 @@ hash[:b][:e] == nil      # => true
 hash[:b][:d] == [3, 4]   # => true
 ```
 
-NOTE: 定義は`active_support/core_ext/object/deep_dup.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/object/deep_dup.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/object/deep_dup.rb)にあります。
+
+[Hash#deep_dup]: https://api.rubyonrails.org/classes/Hash.html#method-i-deep_dup
 
 ### ハッシュキーの操作
 
 #### `except`と`except!`
 
-`except`メソッドは、引数で指定されたキーがあればレシーバのハッシュから取り除きます。
+[`except`][Hash#except]メソッドは、引数で指定されたキーがあればレシーバのハッシュから取り除きます。
 
 ```ruby
 {a: 1, b: 2}.except(:a) # => {:b=>2}
@@ -2591,20 +2881,23 @@ NOTE: 定義は`active_support/core_ext/object/deep_dup.rb`にあります。
 {a: 1}.with_indifferent_access.except("a") # => {}
 ```
 
-レシーバーからキーを取り除く破壊的な`except!`もあります。
+レシーバーからキーを取り除く破壊的な[`except!`][Hash#except!]もあります。
 
-NOTE: 定義は`active_support/core_ext/hash/except.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/hash/except.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/hash/except.rb)にあります。
+
+[Hash#except!]: https://api.rubyonrails.org/classes/Hash.html#method-i-except-21
+[Hash#except]: https://api.rubyonrails.org/classes/Hash.html#method-i-except
 
 #### `stringify_keys`と`stringify_keys!`
 
-`stringify_keys`メソッドは、レシーバのハッシュキーを文字列に変換したハッシュを返します。具体的には、レシーバのハッシュキーに対して`to_s`を送信しています。
+[`stringify_keys`][Hash#stringify_keys]メソッドは、レシーバのハッシュキーを文字列に変換したハッシュを返します。具体的には、レシーバのハッシュキーに対して`to_s`を送信しています。
 
 ```ruby
 {nil => nil, 1 => 1, a: :a}.stringify_keys
 # => {"" => nil, "1" => 1, "a" => :a}
 ```
 
-キーが重複している場合、ハッシュに最も最近挿入された値が使われます。
+キーが重複している場合、ハッシュに最も新しく挿入された値が使われます。
 
 ```ruby
 {"a" => 1, a: 2}.stringify_keys
@@ -2624,20 +2917,25 @@ end
 
 `stringify_keys`メソッドのおかげで、2行目で「type」キーに安全にアクセスできます。`:type`のようなシンボルでも「"type"」のような文字列でも指定できます。
 
-レシーバーのキーを直接文字列化する破壊的な`stringify_keys!`もあります。
+レシーバーのキーを直接文字列化する破壊的な[`stringify_keys!`][Hash#stringify_keys!]もあります。
 
-また、`deep_stringify_keys`や`deep_stringify_keys!`を使うと、与えられたハッシュのすべてのキーを文字列化し、その中にネストされているすべてのハッシュのキーを文字列化することもできます。以下に例を示します。
+また、[`deep_stringify_keys`][Hash#deep_stringify_keys]や[`deep_stringify_keys!`][Hash#deep_stringify_keys!]を使うと、与えられたハッシュのすべてのキーを文字列化し、その中にネストされているすべてのハッシュのキーを文字列化することもできます。以下に例を示します。
 
 ```ruby
 {nil => nil, 1 => 1, nested: {a: 3, 5 => 5}}.deep_stringify_keys
 # => {""=>nil, "1"=>1, "nested"=>{"a"=>3, "5"=>5}}
 ```
 
-NOTE: 定義は`active_support/core_ext/hash/keys.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/hash/keys.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/hash/keys.rb)にあります。
+
+[Hash#deep_stringify_keys!]: https://api.rubyonrails.org/classes/Hash.html#method-i-deep_stringify_keys-21
+[Hash#deep_stringify_keys]: https://api.rubyonrails.org/classes/Hash.html#method-i-deep_stringify_keys
+[Hash#stringify_keys!]: https://api.rubyonrails.org/classes/Hash.html#method-i-stringify_keys-21
+[Hash#stringify_keys]: https://api.rubyonrails.org/classes/Hash.html#method-i-stringify_keys
 
 #### `symbolize_keys`と`symbolize_keys!`
 
-`symbolize_keys`メソッドは、レシーバのハッシュキーをシンボルに変換したハッシュを返します。具体的には、レシーバのハッシュキーに対して`to_sym`を送信しています。
+[`symbolize_keys`][Hash#symbolize_keys]メソッドは、レシーバのハッシュキーをシンボルに変換したハッシュを返します。具体的には、レシーバのハッシュキーに対して`to_sym`を送信しています。
 
 ```ruby
 {nil => nil, 1 => 1, "a" => "a"}.symbolize_keys
@@ -2646,7 +2944,7 @@ NOTE: 定義は`active_support/core_ext/hash/keys.rb`にあります。
 
 WARNING: 上の例では、3つのキーのうち最後の1つしかシンボルに変換されていないことにご注意ください。数字や`nil`はシンボルに変換されません。
 
-キーが重複している場合、ハッシュに最も最近挿入された値が使われます。
+キーが重複している場合、ハッシュに最も新しく挿入された値が使われます。
 
 ```ruby
 {"a" => 1, a: 2}.symbolize_keys
@@ -2654,38 +2952,47 @@ WARNING: 上の例では、3つのキーのうち最後の1つしかシンボル
 # => {:a=>2}
 ```
 
-このメソッドは、シンボルと文字列が両方含まれているハッシュをオプションとして受け取る場合に便利なことがあります。たとえば、`ActionController::UrlRewriter`では以下のように定義されています。
+このメソッドは、シンボルと文字列が両方含まれているハッシュをオプションとして受け取る場合に便利なことがあります。たとえば、`ActionText::TagHelper`では以下のように定義されています。
 
 ```ruby
-def rewrite_path(options)
+def rich_text_area_tag(name, value = nil, options = {})
   options = options.symbolize_keys
-  options.update(options[:params].symbolize_keys) if options[:params]
-  ...
+
+  options[:input] ||= "trix_input_#{ActionText::TagHelper.id += 1}"
+  # ...
 end
 ```
 
-`symbolize_keys`メソッドのおかげで、2行目で`:params`キーに安全にアクセスできています。`:params`のようなシンボルでも「"params"」のような文字列でも指定できます。
+`symbolize_keys`メソッドのおかげで、2行目で`:input`キーに安全にアクセスできています。`:input`のようなシンボルでも「"input"」のような文字列でも指定できます。
 
-レシーバーのキーを直接シンボルに変換する破壊的な`symbolize_keys!`もあります。
+レシーバーのキーを直接シンボルに変換する破壊的な[`symbolize_keys!`][Hash#symbolize_keys!]もあります。
 
-また、`deep_symbolize_keys`や`deep_symbolize_keys!`を使うと、与えられたハッシュのすべてのキーと、その中にネストされているすべてのハッシュのキーをシンボルに変換することもできます。以下に例を示します。
+また、[`deep_symbolize_keys`][Hash#deep_symbolize_keys]や[`deep_symbolize_keys!`][Hash#deep_symbolize_keys!]を使うと、与えられたハッシュのすべてのキーと、その中にネストされているすべてのハッシュのキーをシンボルに変換することもできます。以下に例を示します。
 
 ```ruby
 {nil => nil, 1 => 1, "nested" => {"a" => 3, 5 => 5}}.deep_symbolize_keys
 # => {nil=>nil, 1=>1, nested:{a:3, 5=>5}}
 ```
 
-NOTE: 定義は`active_support/core_ext/hash/keys.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/hash/keys.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/hash/keys.rb)にあります。
+
+[Hash#deep_symbolize_keys!]: https://api.rubyonrails.org/classes/Hash.html#method-i-deep_symbolize_keys-21
+[Hash#deep_symbolize_keys]: https://api.rubyonrails.org/classes/Hash.html#method-i-deep_symbolize_keys
+[Hash#symbolize_keys!]: https://api.rubyonrails.org/classes/Hash.html#method-i-symbolize_keys-21
+[Hash#symbolize_keys]: https://api.rubyonrails.org/classes/Hash.html#method-i-symbolize_keys
 
 #### `to_options`と`to_options!`
 
-`to_options`メソッドと`to_options!`メソッドは、それぞれ`symbolize_keys`メソッドと`symbolize_keys!`メソッドの別名です。
+[`to_options`][Hash#to_options]と[`to_options!`][Hash#to_options!]メソッドは、それぞれ`symbolize_keys`メソッドと`symbolize_keys!`メソッドの別名です。
 
-NOTE: 定義は`active_support/core_ext/hash/keys.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/hash/keys.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/hash/keys.rb)にあります。
+
+[Hash#to_options!]: https://api.rubyonrails.org/classes/Hash.html#method-i-to_options-21
+[Hash#to_options]: https://api.rubyonrails.org/classes/Hash.html#method-i-to_options
 
 #### `assert_valid_keys`
 
-`assert_valid_keys`メソッドは任意の数の引数を取ることができ、許可リストに含まれていないキーがレシーバにあるかどうかをチェックします。そのようなキーが見つかった場合、`ArgumentError`が発生します。
+[`assert_valid_keys`][Hash#assert_valid_keys]メソッドは任意の個数の引数を受け取ることが可能で、許可リストに含まれていないキーがレシーバにあるかどうかをチェックします。そのようなキーが見つかった場合、`ArgumentError`が発生します。
 
 ```ruby
 {a: 1}.assert_valid_keys(:a)  # パスする
@@ -2694,7 +3001,29 @@ NOTE: 定義は`active_support/core_ext/hash/keys.rb`にあります。
 
 たとえばActive Recordは、関連付けをビルドするときに未知のオプションを受け付けません。Active Recordは`assert_valid_keys`による制御を実装しています。
 
-NOTE: 定義は`active_support/core_ext/hash/keys.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/hash/keys.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/hash/keys.rb)にあります。
+
+[Hash#assert_valid_keys]: https://api.rubyonrails.org/classes/Hash.html#method-i-assert_valid_keys
+
+### 値を扱う
+
+#### `deep_transform_values` and `deep_transform_values!`
+
+[`deep_transform_values`][Hash#deep_transform_values]メソッドは、ブロック操作で変換されたすべての値を持つ新しいハッシュを返します。その中には、rootハッシュと、ネストしたハッシュや配列のすべての値も含まれます。
+
+```ruby
+hash = { person: { name: 'Rob', age: '28' } }
+
+hash.deep_transform_values{ |value| value.to_s.upcase }
+# => {person: {name: "ROB", age: "28"}}
+```
+
+ブロック操作を用いてすべての値を破壊的に変更する[`deep_transform_values!`][Hash#deep_transform_values!]もあります。
+
+NOTE: 定義は[`active_support/core_ext/hash/deep_transform_values.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/hash/deep_transform_values.rb)にあります。
+
+[Hash#deep_transform_values!]: https://api.rubyonrails.org/classes/Hash.html#method-i-deep_transform_values-21
+[Hash#deep_transform_values]: https://api.rubyonrails.org/classes/Hash.html#method-i-deep_transform_values
 
 ### スライス
 
@@ -2706,11 +3035,13 @@ rest = hash.slice!(:a) # => {:b=>2}
 hash                   # => {:a=>1}
 ```
 
-NOTE: 定義は`active_support/core_ext/hash/slice.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/hash/slice.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/hash/slice.rb)にあります。
+
+[Hash#slice!]: https://api.rubyonrails.org/classes/Hash.html#method-i-slice-21
 
 ### 抽出
 
-`extract!`メソッドは、与えられたキーにマッチするキー/値ペアを取り除き、取り除いたペアを返します。
+[`extract!`][Hash#extract!]メソッドは、与えられたキーにマッチするキーバリューペアを取り除き、取り除いたペアを返します。
 
 ```ruby
 hash = {a: 1, b: 2}
@@ -2726,24 +3057,29 @@ rest = hash.extract!(:a).class
 # => ActiveSupport::HashWithIndifferentAccess
 ```
 
-NOTE: 定義は`active_support/core_ext/hash/slice.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/hash/slice.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/hash/slice.rb)にあります。
 
-### ハッシュキーがシンボルでも文字列でも同様に扱う（indifferent access）
+[Hash#extract!]: https://api.rubyonrails.org/classes/Hash.html#method-i-extract-21
 
-`with_indifferent_access`メソッドは、レシーバに対して`ActiveSupport::HashWithIndifferentAccess`を実行した結果を返します。
+### ハッシュキーのシンボルと文字列を同様に扱う（indifferent access）
+
+[`with_indifferent_access`][Hash#with_indifferent_access]メソッドは、レシーバから得た[`ActiveSupport::HashWithIndifferentAccess`][ActiveSupport::HashWithIndifferentAccess]を返します。
 
 ```ruby
 {a: 1}.with_indifferent_access["a"] # => 1
 ```
 
-NOTE: 定義は`active_support/core_ext/hash/indifferent_access.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/hash/indifferent_access.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/hash/indifferent_access.rb)にあります。
+
+[ActiveSupport::HashWithIndifferentAccess]: https://api.rubyonrails.org/classes/ActiveSupport/HashWithIndifferentAccess.html
+[Hash#with_indifferent_access]: https://api.rubyonrails.org/classes/Hash.html#method-i-with_indifferent_access
 
 `Regexp`の拡張
 ----------------------
 
 ### `multiline?`
 
-`multiline?`メソッドは、正規表現に`/m`フラグが設定されているかどうかをチェックします。このフラグが設定されていると、ドット（`.`）が改行にマッチし、複数行を扱えるようになります。
+[`multiline?`][Regexp#multiline?]メソッドは、正規表現に`/m`フラグが設定されているかどうかをチェックします。このフラグが設定されていると、ドット（`.`）が改行にマッチし、複数行を扱えるようになります。
 
 ```ruby
 %r{.}.multiline?  # => false
@@ -2753,7 +3089,7 @@ Regexp.new('.').multiline?                    # => false
 Regexp.new('.', Regexp::MULTILINE).multiline? # => true
 ```
 
-Railsはこのメソッドをある一箇所、ルーティングコードで利用しています。ルーティングでは正規表現で複数行を扱うことを許していないので、このフラグで制限を加えています。
+Railsはこのメソッドをルーティングコードでも1箇所だけ利用しています。ルーティングでは正規表現で複数行を扱うことを許していないので、このフラグで制限を加えています。
 
 ```ruby
 def verify_regexp_requirements(requirements)
@@ -2765,7 +3101,9 @@ def verify_regexp_requirements(requirements)
 end
 ```
 
-NOTE: 定義は`active_support/core_ext/regexp.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/regexp.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/regexp.rb)にあります。
+
+[Regexp#multiline?]: https://api.rubyonrails.org/classes/Regexp.html#method-i-multiline-3F
 
 `Range`の拡張
 ---------------------
@@ -2784,11 +3122,11 @@ Active Supportは`Range#to_s`メソッドを拡張してフォーマット引数
 
 上の例でもわかるように、フォーマットに`:db`を指定するとSQLの`BETWEEN`句が生成されます。このフォーマットは、Active Recordで条件の値の範囲をサポートするときに使われます。
 
-NOTE: 定義は`active_support/core_ext/range/conversions.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/range/conversions.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/range/conversions.rb)にあります。
 
-### `===`、`include?`、`cover?`
+### `===`、`include?`
 
-`Range#===`メソッド、`Range#include?`メソッド、`Range#cover?`メソッドは、与えられたインスタンスの範囲内に値が収まっているかどうかをチェックします。
+`Range#===`メソッドと`Range#include?`メソッドは、与えられたインスタンスの範囲内に値が収まっているかどうかをチェックします。
 
 ```ruby
 (2..3).include?(Math::E) # => true
@@ -2806,14 +3144,9 @@ Active Supportではこれらのメソッドを拡張して、他の範囲指定
 (1..10).include?(0..7)  # => false
 (1..10).include?(3..11) # => false
 (1...9).include?(3..9)  # => false
-
-(1..10).cover?(3..7)  # => true
-(1..10).cover?(0..7)  # => false
-(1..10).cover?(3..11) # => false
-(1...9).cover?(3..9)  # => false
 ```
 
-NOTE: 定義は`active_support/core_ext/range/compare_range.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/range/compare_range.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/range/compare_range.rb)にあります。
 
 ### `overlaps?`
 
@@ -2825,28 +3158,38 @@ NOTE: 定義は`active_support/core_ext/range/compare_range.rb`にあります�
 (1..10).overlaps?(11..27) # => false
 ```
 
-NOTE: 定義は`active_support/core_ext/range/overlaps.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/range/overlaps.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/range/overlaps.rb)にあります。
+
+[Range#overlaps?]: https://api.rubyonrails.org/classes/Range.html#method-i-overlaps-3F
 
 `Date`の拡張
 --------------------
 
 ### 計算
 
-INFO: 以下の計算方法の一部では1582年10月をエッジケースとして用いています。この月にユリウス暦からグレゴリオ暦への切り替えが行われたため、10月5日から10月14日までが存在しません。本ガイドはこの「特殊な月」について長々と解説することはしませんが、メソッドがこの月でも期待どおりに動作することについては説明しておきたいと思います。具体的には、たとえば`Date.new(1582, 10, 4).tomorrow`を実行すると`Date.new(1582, 10, 15)`が返されます。期待どおりに動作することは、Active Supportの`test/core_ext/date_ext_test.rb`用のテストスイートで確認できます。
+INFO: 以下の計算方法の一部では1582年10月をエッジケースとして用いています。この月にユリウス暦からグレゴリオ暦への切り替えが行われたため、10月5日から10月14日までが存在しません。本ガイドはこの「特殊な月」について詳しく解説することはしませんが、メソッドがこの月でも期待どおりに動作することについては説明しておきたいと思います。具体的には、たとえば`Date.new(1582, 10, 4).tomorrow`を実行すると`Date.new(1582, 10, 15)`が返されます。期待どおりに動作することは、Active Supportの`test/core_ext/date_ext_test.rb`用のテストスイートで確認できます。
 
 #### `Date.current`
 
-Active Supportでは、`Date.current`を定義して現在のタイムゾーンにおける「今日」を定めています。このメソッドは`Date.today`と似ていますが、ユーザー定義のタイムゾーンがある場合にそれを考慮する点が異なります。Active Supportでは`Date.yesterday`メソッドと`Date.tomorrow`も定義しています。インスタンスでは`past?`、`today?`、`future?`、`on_weekday?`、`on_weekend?`を利用でき、これらはすべて`Date.current`を起点として導かれます。
+Active Supportでは、[`Date.current`][Date.current]を定義して現在のタイムゾーンにおける「今日」を定めています。このメソッドは`Date.today`と似ていますが、ユーザー定義のタイムゾーンがある場合にそれを考慮する点が異なります。Active Supportでは[`Date.yesterday`][Date.yesterday]メソッドと[`Date.tomorrow`][Date.tomorrow]も定義しています。インスタンスでは`past?`][DateAndTime::Calculations#past?]、[`today?`][DateAndTime::Calculations#today?]、[`tomorrow?`][DateAndTime::Calculations#tomorrow?]、[`next_day?`][DateAndTime::Calculations#next_day?]、[`yesterday?`][DateAndTime::Calculations#yesterday?]、[`prev_day?`][DateAndTime::Calculations#prev_day?]、[`future?`][DateAndTime::Calculations#future?]、[`on_weekday?`][DateAndTime::Calculations#on_weekday?]、[`on_weekend?`][DateAndTime::Calculations#on_weekend?]を利用でき、これらはすべて`Date.current`を起点として導かれます。
 
 ユーザー定義のタイムゾーンを考慮するメソッドを用いて日付を比較したい場合、`Date.today`ではなく必ず`Date.current`を使ってください。将来、ユーザー定義のタイムゾーンがシステムのタイムゾーンと比較されることがありえます。システムのタイムゾーンではデフォルトで`Date.today`が使われます。つまり、`Date.today`が`Date.yesterday`と等しくなることがありえるということです。
 
-NOTE: 定義は`active_support/core_ext/date/calculations.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/date/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/date/calculations.rb)にあります。
+
+[Date.current]: https://api.rubyonrails.org/classes/Date.html#method-c-current
+[Date.tomorrow]: https://api.rubyonrails.org/classes/Date.html#method-c-tomorrow
+[Date.yesterday]: https://api.rubyonrails.org/classes/Date.html#method-c-yesterday
+[DateAndTime::Calculations#future?]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-future-3F
+[DateAndTime::Calculations#on_weekday?]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-on_weekday-3F
+[DateAndTime::Calculations#on_weekend?]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-on_weekend-3F
+[DateAndTime::Calculations#past?]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-past-3F
 
 #### 名前付き日付
 
 ##### `beginning_of_week`、`end_of_week`
 
-`beginning_of_week`メソッドと`end_of_week`メソッドは、それぞれ週の最初の日付と週の最後の日付を返します。週の始まりはデフォルトでは月曜日ですが、引数を渡して変更できます。そのときにスレッドローカルの`Date.beginning_of_week`または`config.beginning_of_week`を設定します。
+[`beginning_of_week`][DateAndTime::Calculations#beginning_of_week]メソッドと[`end_of_week`][DateAndTime::Calculations#end_of_week]メソッドは、それぞれ週の最初の日付と週の最後の日付を返します。週の始まりはデフォルトでは月曜日ですが、引数を渡して変更できます。そのときにスレッドローカルの`Date.beginning_of_week`または`config.beginning_of_week`を設定します。
 
 ```ruby
 d = Date.new(2010, 5, 8)     # => Sat, 08 May 2010
@@ -2856,13 +3199,18 @@ d.end_of_week                # => Sun, 09 May 2010
 d.end_of_week(:sunday)       # => Sat, 08 May 2010
 ```
 
-`beginning_of_week`は`at_beginning_of_week`の別名、`end_of_week`は`at_end_of_week`の別名です。
+[`at_beginning_of_week`][DateAndTime::Calculations#at_beginning_of_week]は`beginning_of_week`の別名、[`at_end_of_week`][DateAndTime::Calculations#at_end_of_week]は`end_of_week`の別名です。
 
-NOTE: 定義は`active_support/core_ext/date_and_time/calculations.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
+
+[DateAndTime::Calculations#at_beginning_of_week]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-at_beginning_of_week
+[DateAndTime::Calculations#at_end_of_week]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-at_end_of_week
+[DateAndTime::Calculations#beginning_of_week]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-beginning_of_week
+[DateAndTime::Calculations#end_of_week]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-end_of_week
 
 ##### `monday`、`sunday`
 
-`monday`メソッドはその日の「前の月曜（の日付）」を、`sunday`メソッドはその日の「次の日曜（の日付）」をそれぞれ返します。
+[`monday`][DateAndTime::Calculations#monday]メソッドはその日から見た「前の月曜（の日付）」を、[`sunday`][DateAndTime::Calculations#sunday]メソッドはその日から見た「次の日曜（の日付）」をそれぞれ返します。
 
 ```ruby
 d = Date.new(2010, 5, 8)     # => Sat, 08 May 2010
@@ -2876,11 +3224,14 @@ d = Date.new(2012, 9, 16)    # => Sun, 16 Sep 2012
 d.sunday                     # => Sun, 16 Sep 2012
 ```
 
-NOTE: 定義は`active_support/core_ext/date_and_time/calculations.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
+
+[DateAndTime::Calculations#monday]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-monday
+[DateAndTime::Calculations#sunday]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-sunday
 
 ##### `prev_week`、`next_week`
 
-`next_week`メソッドは、英語表記 (デフォルトではスレッドローカルの`Date.beginning_of_week`または`config.beginning_of_week`または`:monday`) の日付名のシンボルを受け取り、それに対応する日付を返します。
+[`next_week`][DateAndTime::Calculations#next_week]メソッドは、英語表記 (デフォルトではスレッドローカルの[`Date.beginning_of_week`][Date.beginning_of_week]または`config.beginning_of_week`または`:monday`) の日付名のシンボルを受け取り、それに対応する日付を返します。
 
 ```ruby
 d = Date.new(2010, 5, 9) # => Sun, 09 May 2010
@@ -2888,7 +3239,7 @@ d.next_week              # => Mon, 10 May 2010
 d.next_week(:saturday)   # => Sat, 15 May 2010
 ```
 
-`prev_week`も同様です。
+[`prev_week`][DateAndTime::Calculations#prev_week]も同様です。
 
 ```ruby
 d.prev_week              # => Mon, 26 Apr 2010
@@ -2896,15 +3247,20 @@ d.prev_week(:saturday)   # => Sat, 01 May 2010
 d.prev_week(:friday)     # => Fri, 30 Apr 2010
 ```
 
-`prev_week`は`last_week`の別名です。
+[`last_week`][DateAndTime::Calculations#last_week]は`prev_week`の別名です。
 
 `Date.beginning_of_week`または`config.beginning_of_week`が設定されていれば、`next_week`と`prev_week`はどちらも正常に動作します。
 
-NOTE: 定義は`active_support/core_ext/date_and_time/calculations.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
+
+[Date.beginning_of_week]: https://api.rubyonrails.org/classes/Date.html#method-c-beginning_of_week
+[DateAndTime::Calculations#last_week]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-last_week
+[DateAndTime::Calculations#next_week]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-next_week
+[DateAndTime::Calculations#prev_week]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-prev_week
 
 ##### `beginning_of_month`、`end_of_month`
 
-`beginning_of_month`メソッドはその月の「最初の日」、`end_of_month`メソッドはその月の「最後の日」をそれぞれ返します。
+[`beginning_of_month`][DateAndTime::Calculations#beginning_of_month]メソッドはその月の「最初の日」、[`end_of_month`][DateAndTime::Calculations#end_of_month]メソッドはその月の「最後の日」をそれぞれ返します。
 
 ```ruby
 d = Date.new(2010, 5, 9) # => Sun, 09 May 2010
@@ -2912,13 +3268,18 @@ d.beginning_of_month     # => Sat, 01 May 2010
 d.end_of_month           # => Mon, 31 May 2010
 ```
 
-`beginning_of_month`は`at_beginning_of_month`の別名、`end_of_month`は`at_end_of_month`の別名です。
+[`at_beginning_of_month`][DateAndTime::Calculations#at_beginning_of_month]は`beginning_of_month`の別名、[`at_end_of_month`][DateAndTime::Calculations#at_end_of_month]は`end_of_month`の別名です。
 
-NOTE: 定義は`active_support/core_ext/date_and_time/calculations.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
+
+[DateAndTime::Calculations#at_beginning_of_month]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-at_beginning_of_month
+[DateAndTime::Calculations#at_end_of_month]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-at_end_of_month
+[DateAndTime::Calculations#beginning_of_month]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-beginning_of_month
+[DateAndTime::Calculations#end_of_month]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-end_of_month
 
 ##### `beginning_of_quarter`、`end_of_quarter`
 
-`beginning_of_quarter`メソッドと`end_of_quarter`メソッドは、レシーバのカレンダーの年における四半期の「最初の日」と「最後の日」をそれぞれ返します。
+[`beginning_of_quarter`][DateAndTime::Calculations#beginning_of_quarter]メソッドと[`end_of_quarter`][DateAndTime::Calculations#end_of_quarter]メソッドは、レシーバのカレンダーの年における四半期の「最初の日」と「最後の日」をそれぞれ返します。
 
 ```ruby
 d = Date.new(2010, 5, 9) # => Sun, 09 May 2010
@@ -2926,13 +3287,18 @@ d.beginning_of_quarter   # => Thu, 01 Apr 2010
 d.end_of_quarter         # => Wed, 30 Jun 2010
 ```
 
-`beginning_of_quarter`は`at_beginning_of_quarter`の別名、`end_of_quarter`は`at_end_of_quarter`の別名です。
+[`at_beginning_of_quarter`][DateAndTime::Calculations#at_beginning_of_quarter]は`beginning_of_quarter`の別名、[`at_end_of_quarter`][DateAndTime::Calculations#at_end_of_quarter]は`end_of_quarter`の別名です。
 
-NOTE: 定義は`active_support/core_ext/date_and_time/calculations.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
+
+[DateAndTime::Calculations#at_beginning_of_quarter]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-at_beginning_of_quarter
+[DateAndTime::Calculations#at_end_of_quarter]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-at_end_of_quarter
+[DateAndTime::Calculations#beginning_of_quarter]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-beginning_of_quarter
+[DateAndTime::Calculations#end_of_quarter]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-end_of_quarter
 
 ##### `beginning_of_year`、`end_of_year`
 
-`beginning_of_year`メソッドと`end_of_year`メソッドは、その年の「最初の日」と「最後の日」をそれぞれ返します。
+[`beginning_of_year`][DateAndTime::Calculations#beginning_of_year]メソッドと[`end_of_year`][DateAndTime::Calculations#end_of_year]メソッドは、その年の「最初の日」と「最後の日」をそれぞれ返します。
 
 ```ruby
 d = Date.new(2010, 5, 9) # => Sun, 09 May 2010
@@ -2940,22 +3306,27 @@ d.beginning_of_year      # => Fri, 01 Jan 2010
 d.end_of_year            # => Fri, 31 Dec 2010
 ```
 
-`beginning_of_year`は`at_beginning_of_year`の別名、`end_of_year`は`at_end_of_year`の別名です。
+[`at_beginning_of_year`][DateAndTime::Calculations#at_beginning_of_year]は`beginning_of_year`の別名、[`at_end_of_year`][DateAndTime::Calculations#at_end_of_year]は`end_of_year`の別名です。
 
-NOTE: 定義は`active_support/core_ext/date_and_time/calculations.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
+
+[DateAndTime::Calculations#at_beginning_of_year]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-at_beginning_of_year
+[DateAndTime::Calculations#at_end_of_year]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-at_end_of_year
+[DateAndTime::Calculations#beginning_of_year]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-beginning_of_year
+[DateAndTime::Calculations#end_of_year]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-end_of_year
 
 #### その他の日付計算メソッド
 
 ##### `years_ago`、`years_since`
 
-`years_ago`メソッドは、年数を受け取り、その年数前の同じ日付を返します。
+[`years_ago`][DateAndTime::Calculations#years_ago]メソッドは、年数を受け取り、その年数前の同じ日付を返します。
 
 ```ruby
 date = Date.new(2010, 6, 7)
 date.years_ago(10) # => Wed, 07 Jun 2000
 ```
 
-`years_since`も同じ要領で、その年数後の同じ日付を返します。
+[`years_since`][DateAndTime::Calculations#years_since]も同じ要領で、指定の年数後の同じ日付を返します。
 
 ```ruby
 date = Date.new(2010, 6, 7)
@@ -2969,13 +3340,17 @@ Date.new(2012, 2, 29).years_ago(3)     # => Sat, 28 Feb 2009
 Date.new(2012, 2, 29).years_since(3)   # => Sat, 28 Feb 2015
 ```
 
-`last_year`は`#years_ago(1)`のショートハンドです。
+[`last_year`][DateAndTime::Calculations#last_year]は`#years_ago(1)`のショートハンドです。
 
-NOTE: 定義は`active_support/core_ext/date_and_time/calculations.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
+
+[DateAndTime::Calculations#last_year]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-last_year
+[DateAndTime::Calculations#years_ago]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-years_ago
+[DateAndTime::Calculations#years_since]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-years_since
 
 ##### `months_ago`、`months_since`
 
-`months_ago`メソッドと`months_since`メソッドは、上と同じ要領で月に対して行います。
+[`months_ago`][DateAndTime::Calculations#months_ago]メソッドと[`months_since`][DateAndTime::Calculations#months_since]メソッドは、上と同じ要領で月に対して行います。
 
 ```ruby
 Date.new(2010, 4, 30).months_ago(2)   # => Sun, 28 Feb 2010
@@ -2989,24 +3364,30 @@ Date.new(2010, 4, 30).months_ago(2)    # => Sun, 28 Feb 2010
 Date.new(2009, 12, 31).months_since(2) # => Sun, 28 Feb 2010
 ```
 
-`last_month`は`#months_ago(1)`のショートハンドです。
+[`last_month`][DateAndTime::Calculations#last_month]は`#months_ago(1)`のショートハンドです。
 
-NOTE: 定義は`active_support/core_ext/date_and_time/calculations.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
+
+[DateAndTime::Calculations#last_month]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-last_month
+[DateAndTime::Calculations#months_ago]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-months_ago
+[DateAndTime::Calculations#months_since]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-months_since
 
 ##### `weeks_ago`
 
-`weeks_ago`メソッドは、同じ要領で週に対して行います。
+[`weeks_ago`][DateAndTime::Calculations#weeks_ago]メソッドは、同じ要領で週に対して行います。
 
 ```ruby
 Date.new(2010, 5, 24).weeks_ago(1)    # => Mon, 17 May 2010
 Date.new(2010, 5, 24).weeks_ago(2)    # => Mon, 10 May 2010
 ```
 
-NOTE: 定義は`active_support/core_ext/date_and_time/calculations.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
+
+[DateAndTime::Calculations#weeks_ago]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-weeks_ago
 
 ##### `advance`
 
-`advance`メソッドは、日付を移動する最も一般的な方法です。このメソッドは`:years`、`:months`、`:weeks`、`:days`をキーに持つハッシュを受け取り、日付をできるだけ詳細な形式で、現在のキーで示されるとおりに返します。
+[`advance`][Date#advance]メソッドは、日付を移動する最も一般的な方法です。このメソッドは`:years`、`:months`、`:weeks`、`:days`をキーに持つハッシュを受け取り、日付をできるだけ詳細な形式で、現在のキーで示されるとおりに返します。
 
 ```ruby
 date = Date.new(2010, 6, 6)
@@ -3032,11 +3413,13 @@ Date.new(2010, 2, 28).advance(days: 1).advance(months: 1)
 # => Thu, 01 Apr 2010
 ```
 
-NOTE: 定義は`active_support/core_ext/date/calculations.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/date/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/date/calculations.rb)にあります。
+
+[Date#advance]: https://api.rubyonrails.org/classes/Date.html#method-i-advance
 
 #### 要素の変更
 
-`change`メソッドは、与えられた年、月、日に応じてレシーバの日付を変更し、与えられなかった部分はそのままにしてその日付を返します。
+[`change`][Date#change]メソッドは、与えられた年、月、日に応じてレシーバの日付を変更し、与えられなかった部分はそのままにしてその日付を返します。
 
 ```ruby
 Date.new(2010, 12, 23).change(year: 2011, month: 11)
@@ -3050,11 +3433,13 @@ Date.new(2010, 1, 31).change(month: 2)
 # => ArgumentError: invalid date
 ```
 
-NOTE: 定義は`active_support/core_ext/date/calculations.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/date/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/date/calculations.rb)にあります。
+
+[Date#change]: https://api.rubyonrails.org/classes/Date.html#method-i-change
 
 #### 期間（duration）
 
-日付に対して期間を加減算できます。
+[`Duration`][ActiveSupport::Duration]オブジェクトは、日付に対して期間を加減算できます。
 
 ```ruby
 d = Date.current
@@ -3072,89 +3457,104 @@ Date.new(1582, 10, 4) + 1.day
 # => Fri, 15 Oct 1582
 ```
 
+[ActiveSupport::Duration]: https://api.rubyonrails.org/classes/ActiveSupport/Duration.html
+
 #### タイムスタンプ
 
 INFO: 以下のメソッドは可能であれば`Time`オブジェクトを返し、それ以外の場合は`DateTime`を返します。ユーザーのタイムゾーンが設定されていればそれも加味されます。
 
 ##### `beginning_of_day`、`end_of_day`
 
-`beginning_of_day`メソッドは、その日の開始時点 (00:00:00) のタイムスタンプを返します。
+[`beginning_of_day`][Date#beginning_of_day]メソッドは、その日の開始時点 (00:00:00) のタイムスタンプを返します。
 
 ```ruby
 date = Date.new(2010, 6, 7)
 date.beginning_of_day # => Mon Jun 07 00:00:00 +0200 2010
 ```
 
-`end_of_day`メソッドは、その日の最後の時点 (23:59:59) のタイムスタンプを返します。
+[`end_of_day`][Date#end_of_day]メソッドは、その日の最後の時点 (23:59:59) のタイムスタンプを返します。
 
 ```ruby
 date = Date.new(2010, 6, 7)
 date.end_of_day # => Mon Jun 07 23:59:59 +0200 2010
 ```
 
-`at_beginning_of_day`と`midnight`と`at_midnight`は、`beginning_of_day`の別名です。
+[`at_beginning_of_day`][Date#at_beginning_of_day]と[`midnight`][Date#midnight]と[`at_midnight`][Date#at_midnight]は、`beginning_of_day`の別名です。
 
-NOTE: 定義は`active_support/core_ext/date/calculations.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/date/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/date/calculations.rb)にあります。
+
+[Date#at_beginning_of_day]: https://api.rubyonrails.org/classes/Date.html#method-i-at_beginning_of_day
+[Date#at_midnight]: https://api.rubyonrails.org/classes/Date.html#method-i-at_midnight
+[Date#beginning_of_day]: https://api.rubyonrails.org/classes/Date.html#method-i-beginning_of_day
+[Date#end_of_day]: https://api.rubyonrails.org/classes/Date.html#method-i-end_of_day
+[Date#midnight]: https://api.rubyonrails.org/classes/Date.html#method-i-midnight
 
 ##### `beginning_of_hour`、`end_of_hour`
 
-`beginning_of_hour`メソッドは、その時の最初の時点 (hh:00:00) のタイムスタンプを返します。
+[`beginning_of_hour`][DateTime#beginning_of_hour]メソッドは、その時の最初の時点 (hh:00:00) のタイムスタンプを返します。
 
 ```ruby
 date = DateTime.new(2010, 6, 7, 19, 55, 25)
 date.beginning_of_hour # => Mon Jun 07 19:00:00 +0200 2010
 ```
 
-`end_of_hour`メソッドは、その時の最後の時点 (hh:59:59) のタイムスタンプを返します。
+[`end_of_hour`][DateTime#end_of_hour]メソッドは、その時の最後の時点 (hh:59:59) のタイムスタンプを返します。
 
 ```ruby
 date = DateTime.new(2010, 6, 7, 19, 55, 25)
 date.end_of_hour # => Mon Jun 07 19:59:59 +0200 2010
 ```
 
-`beginning_of_hour`は`at_beginning_of_hour`の別名です。
+[`at_beginning_of_hour`][DateTime#at_beginning_of_hour]は`beginning_of_hour`の別名です。
 
-NOTE: 定義は`active_support/core_ext/date_and_time/calculations.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
 
 ##### `beginning_of_minute`、`end_of_minute`
 
-`beginning_of_minute`は、その分の最初の時点 (hh:mm:00) のタイムスタンプを返します。
+[`beginning_of_minute`][DateTime#beginning_of_minute]は、その分の最初の時点 (hh:mm:00) のタイムスタンプを返します。
 
 ```ruby
 date = DateTime.new(2010, 6, 7, 19, 55, 25)
 date.beginning_of_minute # => Mon Jun 07 19:55:00 +0200 2010
 ```
 
-`end_of_minute`メソッドは、その分の最後の時点 (hh:mm:59) のタイムスタンプを返します。
+[`end_of_minute`][DateTime#end_of_minute]メソッドは、その分の最後の時点 (hh:mm:59) のタイムスタンプを返します。
 
 ```ruby
 date = DateTime.new(2010, 6, 7, 19, 55, 25)
 date.end_of_minute # => Mon Jun 07 19:55:59 +0200 2010
 ```
 
-`beginning_of_minute`は`at_beginning_of_minute`の別名です。
+[`at_beginning_of_minute`][DateTime#at_beginning_of_minute]は`beginning_of_minute`の別名です。
 
-INFO: `beginning_of_hour`、`end_of_hour`、`beginning_of_minute`、`end_of_minute`は`Time`および`DateTime`への実装ですが、`Date`への実装では **ありません** 。`Date`インスタンスに対して時間や分の最初や最後を問い合わせる意味はありません。
+INFO: `beginning_of_hour`、`end_of_hour`、`beginning_of_minute`、`end_of_minute`は`Time`および`DateTime`への実装ですが、`Date`への実装では **ありません**。`Date`インスタンスに対して時間や分の最初や最後を問い合わせる意味はありません。
 
-NOTE: 定義は`active_support/core_ext/date_and_time/calculations.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
+
+[DateTime#at_beginning_of_minute]: https://api.rubyonrails.org/classes/DateTime.html#method-i-at_beginning_of_minute
+[DateTime#beginning_of_minute]: https://api.rubyonrails.org/classes/DateTime.html#method-i-beginning_of_minute
+[DateTime#end_of_minute]: https://api.rubyonrails.org/classes/DateTime.html#method-i-end_of_minute
 
 ##### `ago`、`since`
 
-`ago`メソッドは秒数を引数として受け取り、真夜中の時点からその秒数だけさかのぼった時点のタイムスタンプを返します。
+[`ago`][Date#ago]メソッドは秒数を引数として受け取り、真夜中の時点からその秒数だけさかのぼった時点のタイムスタンプを返します。
 
 ```ruby
 date = Date.current # => Fri, 11 Jun 2010
 date.ago(1)         # => Thu, 10 Jun 2010 23:59:59 EDT -04:00
 ```
 
-`since`メソッドは、同様にその秒数だけ先に進みます。
+[`since`][Date#since]メソッドは、同様にその秒数だけ先に進みます。
 
 ```ruby
 date = Date.current # => Fri, 11 Jun 2010
 date.since(1)       # => Fri, 11 Jun 2010 00:00:01 EDT -04:00
 ```
 
-NOTE: 定義は`active_support/core_ext/date/calculations.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/date/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/date/calculations.rb)にあります。
+
+[Date#ago]: https://api.rubyonrails.org/classes/Date.html#method-i-ago
+[Date#since]: https://api.rubyonrails.org/classes/Date.html#method-i-since
 
 #### その他の時間計算
 
@@ -3163,65 +3563,82 @@ NOTE: 定義は`active_support/core_ext/date/calculations.rb`にあります。
 `DateTime`の拡張
 ------------------------
 
-WARNING: `DateTime`は夏時間 (DST) ルールについては関知しません。夏時間の変更が行われた場合、メソッドの一部がこのとおりに動作しないことがあります。たとえば、`seconds_since_midnight`メソッドが返す秒数が実際の総量と合わない可能性があります。
+WARNING: `DateTime`は夏時間 (DST) ルールについては関知しません。夏時間の変更が行われた場合、メソッドの一部がこのとおりに動作しないことがあります。たとえば、[`seconds_since_midnight`][DateTime#seconds_since_midnight]メソッドが返す秒数が実際の総量と合わない可能性があります。
 
 ### 計算
 
-`DateTime`クラスは`Date`のサブクラスであり、`active_support/core_ext/date/calculations.rb`を読み込むことでこれらのメソッドと別名を継承することができます。ただしこれらは常にdatetimesを返す点が異なります。
+`DateTime`クラスは`Date`のサブクラスであり、`active_support/core_ext/date/calculations.rb`を読み込むことでこれらのメソッドと別名を継承できます。ただしこれらは常にdatetimesを返す点が異なります。
 
-以下のメソッドはすべて再実装されるため、これらを用いるために`active_support/core_ext/date/calculations.rb`を読み込む必要は **ありません** 。
+以下のメソッドはすべて再実装されるため、これらを用いるために`active_support/core_ext/date/calculations.rb`を読み込む必要は **ありません**。
 
-```ruby
-beginning_of_day (midnight, at_midnight, at_beginning_of_day)
-end_of_day
-ago
-since (in)
-```
+* [`beginning_of_day`][DateTime#beginning_of_day] / [`midnight`][DateTime#midnight] / [`at_midnight`][DateTime#at_midnight] / [`at_beginning_of_day`][DateTime#at_beginning_of_day]
+* [`end_of_day`][DateTime#end_of_day]
+* [`ago`][DateTime#ago]
+* [`since`][DateTime#since] / [`in`][DateTime#in]
 
-他方、`advance`と`change`も定義されていて、さらに多くのオプションをサポートしています。これらについては後述します。
+
+他方、[`advance`][DateTime#advance]と[`change`][DateTime#change]定義されていて、さらに多くのオプションをサポートしています。これらについては後述します。
 
 以下のメソッドは`active_support/core_ext/date_time/calculations.rb`にのみ実装されています。これらは`DateTime`インスタンスに対して使わないと意味がないためです。
 
-```ruby
-beginning_of_hour (at_beginning_of_hour)
-end_of_hour
-```
+* [`beginning_of_hour`][DateTime#beginning_of_hour] / [`at_beginning_of_hour`][DateTime#at_beginning_of_hour]
+* [`end_of_hour`][DateTime#end_of_hour]
+
+[DateTime#ago]: https://api.rubyonrails.org/classes/DateTime.html#method-i-ago
+[DateTime#at_beginning_of_day]: https://api.rubyonrails.org/classes/DateTime.html#method-i-at_beginning_of_day
+[DateTime#at_beginning_of_hour]: https://api.rubyonrails.org/classes/DateTime.html#method-i-at_beginning_of_hour
+[DateTime#at_midnight]: https://api.rubyonrails.org/classes/DateTime.html#method-i-at_midnight
+[DateTime#beginning_of_day]: https://api.rubyonrails.org/classes/DateTime.html#method-i-beginning_of_day
+[DateTime#beginning_of_hour]: https://api.rubyonrails.org/classes/DateTime.html#method-i-beginning_of_hour
+[DateTime#end_of_day]: https://api.rubyonrails.org/classes/DateTime.html#method-i-end_of_day
+[DateTime#end_of_hour]: https://api.rubyonrails.org/classes/DateTime.html#method-i-end_of_hour
+[DateTime#in]: https://api.rubyonrails.org/classes/DateTime.html#method-i-in
+[DateTime#midnight]: https://api.rubyonrails.org/classes/DateTime.html#method-i-midnight
 
 #### 名前付き日付時刻
 
 ##### `DateTime.current`
 
-Active Supportでは、`DateTime.current`を`Time.now.to_datetime`と同様に定義しています。ただし、`DateTime.current`はユーザータイムゾーンが定義されている場合に対応する点が異なります。Active Supportでは`Date.yesterday`メソッドと`Date.tomorrow`も定義しています。インスタンスでは`past?`と`future?`を利用でき、これらは`Date.current`を起点として導かれます。
+Active Supportでは、[`DateTime.current`][DateTime.current]を`Time.now.to_datetime`と同様に定義しています。ただし、`DateTime.current`はユーザータイムゾーンが定義されている場合に対応する点が異なります。Active Supportでは`Date.yesterday`メソッドと`Date.tomorrow`も定義しています。インスタンスでは[`past?`][DateAndTime::Calculations#past?]および[`future?`][DateAndTime::Calculations#future?]という述語メソッドを利用でき、これらは`Date.current`を起点として導かれます。
 
-NOTE: 定義は`active_support/core_ext/date_time/calculations.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
+
+[DateTime.current]: https://api.rubyonrails.org/classes/DateTime.html#method-c-current
 
 #### その他の拡張
 
 ##### `seconds_since_midnight`
 
-`seconds_since_midnight`メソッドは、真夜中からの経過秒数を返します。
+[`seconds_since_midnight`][DateTime#seconds_since_midnight]メソッドは、真夜中からの経過秒数を返します。
 
 ```ruby
 now = DateTime.current     # => Mon, 07 Jun 2010 20:26:36 +0000
 now.seconds_since_midnight # => 73596
 ```
 
-NOTE: 定義は`active_support/core_ext/date_time/calculations.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
+
+[DateTime#seconds_since_midnight]: https://api.rubyonrails.org/classes/DateTime.html#method-i-seconds_since_midnight
 
 ##### `utc`
 
-`utc`メソッドは、レシーバの日付時刻をUTCで返します。
+[`utc`][DateTime#utc]メソッドは、レシーバの日付時刻をUTCで返します。
 
 ```ruby
 now = DateTime.current # => Mon, 07 Jun 2010 19:27:52 -0400
 now.utc                # => Mon, 07 Jun 2010 23:27:52 +0000
 ```
 
-`getutc`はこのメソッドの別名です。
+[`getutc`][DateTime#getutc]は`utc`の別名です。
+
+NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
+
+[DateTime#getutc]: https://api.rubyonrails.org/classes/DateTime.html#method-i-getutc
+[DateTime#utc]: https://api.rubyonrails.org/classes/DateTime.html#method-i-utc
 
 ##### `utc?`
 
-`utc?`述語メソッドは、レシーバがそのタイムゾーンに合ったUTC時刻を持っているかどうかをチェックします。
+[`utc?`][DateTime#utc?]述語メソッドは、レシーバがそのタイムゾーンに合ったUTC時刻を持っているかどうかをチェックします。
 
 ```ruby
 now = DateTime.now # => Mon, 07 Jun 2010 19:30:47 -0400
@@ -3229,11 +3646,13 @@ now.utc?          # => false
 now.utc.utc?      # => true
 ```
 
-NOTE: 定義は`active_support/core_ext/date_time/calculations.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
+
+[DateTime#utc?]: https://api.rubyonrails.org/classes/DateTime.html#method-i-utc-3F
 
 ##### `advance`
 
-`advance`メソッドは、日時を移動する最も一般的な方法です。このメソッドは`:years`、`:months`、`:weeks`、`:days`、`:hours`、`:minutes`および`:seconds`をキーに持つハッシュを受け取り、日時をできるだけ詳細な形式で、現在のキーで示されるとおりに返します。
+[`advance`][DateTime#advance]メソッドは、日時を移動する最も一般的な方法です。このメソッドは`:years`、`:months`、`:weeks`、`:days`、`:hours`、`:minutes`および`:seconds`をキーに持つハッシュを受け取り、日時をできるだけ詳細な形式で、現在のキーで示されるとおりに返します。
 
 ```ruby
 d = DateTime.current
@@ -3242,7 +3661,7 @@ d.advance(years: 1, months: 1, days: 1, hours: 1, minutes: 1, seconds: 1)
 # => Tue, 06 Sep 2011 12:34:32 +0000
 ```
 
-このメソッドはまず、上で説明されている`Date#advance`に対する経過年(`:years`)、経過月 (`:months`)、経過週 (`:weeks`)、経過日 (`:days`) を元に移動先の日付を算出します。続いて、算出された時点までの経過秒数を元に`since`メソッドを呼び出し、時間を補正します。この実行順序には意味があります。極端なケースでは、順序が変わると計算結果も異なる場合があります。これは上の`Date#advance`で示した例で適用されます。相対的な時間の計算においても計算の順序は同様に重要です。
+このメソッドはまず、上で説明されている`Date#advance`に対する経過年(`:years`)、経過月 (`:months`)、経過週 (`:weeks`)、経過日 (`:days`) を元に移動先の日付を算出します。続いて、算出された時点までの経過秒数を元に[`since`][DateTime#since]メソッドを呼び出し、時間を補正します。この実行順序には意味があります。極端なケースでは、順序が変わると計算結果も異なる場合があります。これは上の`Date#advance`で示した例で適用されます。相対的な時間の計算においても計算の順序は同様に重要です。
 
 もし仮に日付部分を先に進め (前述したとおり、相対的な計算順序があります)、続いて時間の部分も先に進めると、以下のような計算結果が得られます。
 
@@ -3253,7 +3672,7 @@ d.advance(months: 1, seconds: 1)
 # => Mon, 29 Mar 2010 00:00:00 +0000
 ```
 
-今度は順序を変えて計算すると、結果が異なります。
+しかし順序を変えて計算すると、結果が異なります。
 
 ```ruby
 d.advance(seconds: 1).advance(months: 1)
@@ -3262,11 +3681,14 @@ d.advance(seconds: 1).advance(months: 1)
 
 WARNING: `DateTime`は夏時間 (DST) を考慮しません。算出された時間が最終的に存在しない時間になっても警告やエラーは発生しません。
 
-NOTE: 定義は`active_support/core_ext/date_time/calculations.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
+
+[DateTime#advance]: https://api.rubyonrails.org/classes/DateTime.html#method-i-advance
+[DateTime#since]: https://api.rubyonrails.org/classes/DateTime.html#method-i-since
 
 #### 要素の変更
 
-`change`メソッドを使うと、レシーバの日時の一部の要素だけを更新した新しい日時を得られます。変更する要素として、`:year`、`:month`、`:day`、`:hour`、`:min`、`:sec`、`:offset`、`:start`などを指定できます。
+[`change`][DateTime#change]メソッドを使うと、レシーバの日時の一部の要素だけを更新した新しい日時を得られます。変更する要素として、`:year`、`:month`、`:day`、`:hour`、`:min`、`:sec`、`:offset`、`:start`などを指定できます。
 
 ```ruby
 now = DateTime.current
@@ -3296,11 +3718,13 @@ DateTime.current.change(month: 2, day: 30)
 # => ArgumentError: invalid date
 ```
 
-NOTE: 定義は`active_support/core_ext/date_time/calculations.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
+
+[DateTime#change]: https://api.rubyonrails.org/classes/DateTime.html#method-i-change
 
 #### 期間（duration）
 
-日時に対して期間を加減算できます。
+[`Duration`][ActiveSupport::Duration]オブジェクトは、日時に対して期間を加減算できます。
 
 ```ruby
 now = DateTime.current
@@ -3325,8 +3749,8 @@ DateTime.new(1582, 10, 4, 23) + 1.hour
 
 これらは同様に動作します。関連するドキュメントを参照し、以下の相違点についても把握しておいてください。
 
-* `change`メソッドは追加の`:usec`も受け付けます。
-* `Time`は夏時間 (DST) を理解します。以下のように夏時間を正しく算出できます。
+* [`change`][Time#change]メソッドは追加の`:usec`も受け付けます。
+* `Time`は夏時間 (DST) を理解するので、以下のように夏時間を正しく算出できます。
 
 ```ruby
 Time.zone_default
@@ -3339,19 +3763,30 @@ t.advance(seconds: 1)
 # => Sun Mar 28 03:00:00 +0200 2010
 ```
 
-* `since`や`ago`の移動先の時間が`Time`で表現できない場合、`DateTime`オブジェクトが代わりに返されます。
+* [`since`][Time#since]や[`ago`][Time#ago]の移動先の時間が`Time`で表現できない場合、`DateTime`オブジェクトが代わりに返されます。
+
+[Time#ago]: https://api.rubyonrails.org/classes/Time.html#method-i-ago
+[Time#change]: https://api.rubyonrails.org/classes/Time.html#method-i-change
+[Time#since]: https://api.rubyonrails.org/classes/Time.html#method-i-since
 
 #### `Time.current`
 
-Active Supportでは、`Time.current`を定義して現在のタイムゾーンにおける「今日」を定めています。このメソッドは`Time.now`と似ていますが、ユーザー定義のタイムゾーンがある場合にそれを考慮する点が異なります。Active Supportでは`past?`、`today?`、`future?`を示すインスタンス述語も定義されており、これらはすべてこの`Time.current`を起点にしています。
+Active Supportでは、[`Time.current`][Time.current]を定義して現在のタイムゾーンにおける「今日」を定めています。このメソッドは`Time.now`と似ていますが、ユーザー定義のタイムゾーンがある場合にそれを考慮する点が異なります。Active Supportでは[`past?`][DateAndTime::Calculations#past?]、[`today?`][DateAndTime::Calculations#today?]、[`tomorrow?`][DateAndTime::Calculations#tomorrow?]、[`next_day?`][DateAndTime::Calculations#next_day?]、[`yesterday?`][DateAndTime::Calculations#yesterday?]、[`prev_day?`][DateAndTime::Calculations#prev_day?]、[`future?`][DateAndTime::Calculations#future?]を調べるインスタンス述語メソッドも定義されており、これらはすべてこの`Time.current`を起点にしています。
 
 ユーザー定義のタイムゾーンを考慮するメソッドを用いて日付を比較したい場合、`Time.now`ではなく必ず`Time.current`を使ってください。将来、ユーザー定義のタイムゾーンがシステムのタイムゾーンと比較されることがありえます。システムのタイムゾーンではデフォルトで`Time#now`が使われます。つまり、`Time.now`が`Time.current.yesterday`と等しくなることがありえるということです。
 
-NOTE: 定義は`active_support/core_ext/time/calculations.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/time/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/time/calculations.rb)にあります。
+
+[DateAndTime::Calculations#next_day?]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-next_day-3F
+[DateAndTime::Calculations#prev_day?]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-prev_day-3F
+[DateAndTime::Calculations#today?]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-today-3F
+[DateAndTime::Calculations#tomorrow?]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-tomorrow-3F
+[DateAndTime::Calculations#yesterday?]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-yesterday-3F
+
 
 #### `all_day`、`all_week`、`all_month`、`all_quarter`、`all_year`
 
-`all_day`メソッドは、現在時刻を含む「その日一日」を表す範囲を返します。
+[`all_day`][DateAndTime::Calculations#all_day]メソッドは、現在時刻を含む「その日一日」を表す範囲を返します。
 
 ```ruby
 now = Time.current
@@ -3360,7 +3795,7 @@ now.all_day
 # => Mon, 09 Aug 2010 00:00:00 UTC +00:00..Mon, 09 Aug 2010 23:59:59 UTC +00:00
 ```
 
-同様に、`all_week`、`all_month`、`all_quarter`、`all_year`も時間の範囲を生成できます。
+同様に、[`all_week`][DateAndTime::Calculations#all_week]（その週の期間）、[`all_month`][DateAndTime::Calculations#all_month]（その月の期間）、[`all_quarter`][DateAndTime::Calculations#all_quarter]（その四半期の期間）、[`all_year`][DateAndTime::Calculations#all_year]（その年の期間）も時間の範囲を生成できます。
 
 ```ruby
 now = Time.current
@@ -3377,11 +3812,18 @@ now.all_year
 # => Fri, 01 Jan 2010 00:00:00 UTC +00:00..Fri, 31 Dec 2010 23:59:59 UTC +00:00
 ```
 
-NOTE: 定義は`active_support/core_ext/date_and_time/calculations.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
+
+[DateAndTime::Calculations#all_day]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-all_day
+[DateAndTime::Calculations#all_month]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-all_month
+[DateAndTime::Calculations#all_quarter]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-all_quarter
+[DateAndTime::Calculations#all_week]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-all_week
+[DateAndTime::Calculations#all_year]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-all_year
+[Time.current]: https://api.rubyonrails.org/classes/Time.html#method-c-current
 
 #### `prev_day`、`next_day`
 
-`prev_day`や`next_day`は、その日の「前日」または「翌日」の日時をそれぞれ返します。
+[`prev_day`][Time#prev_day]メソッドは指定の日の「前日」の日時を返し、[`next_day`][Time#next_day]は指定の日の「翌日」の日時を返します。
 
 ```ruby
 t = Time.new(2010, 5, 8) # => 2010-05-08 00:00:00 +0900
@@ -3389,11 +3831,14 @@ t.prev_day               # => 2010-05-07 00:00:00 +0900
 t.next_day               # => 2010-05-09 00:00:00 +0900
 ```
 
-NOTE: 定義は`active_support/core_ext/time/calculations.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/time/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/time/calculations.rb)にあります。
+
+[Time#next_day]: https://api.rubyonrails.org/classes/Time.html#method-i-next_day
+[Time#prev_day]: https://api.rubyonrails.org/classes/Time.html#method-i-prev_day
 
 #### `prev_month`、`next_month`
 
-`prev_month`や`next_month`は、「前月」または「翌月」の同じ日の日時をそれぞれ返します。
+[`prev_month`][Time#prev_month]メソッドは指定の日の「前月」の同じ日の日時を返し、[`next_month`][Time#next_month]メソッドは指定の日の「翌月」の同じ日の日時を返します。
 
 ```ruby
 t = Time.new(2010, 5, 8) # => 2010-05-08 00:00:00 +0900
@@ -3410,11 +3855,14 @@ Time.new(2000, 5, 31).next_month # => 2000-06-30 00:00:00 +0900
 Time.new(2000, 1, 31).next_month # => 2000-02-29 00:00:00 +0900
 ```
 
-NOTE: 定義は`active_support/core_ext/time/calculations.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/time/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/time/calculations.rb)にあります。
+
+[Time#next_month]: https://api.rubyonrails.org/classes/Time.html#method-i-next_month
+[Time#prev_month]: https://api.rubyonrails.org/classes/Time.html#method-i-prev_month
 
 #### `prev_year`、`next_year`
 
-`prev_year`や`next_year`は、「前年」または「翌年」の同じ月日の日時をそれぞれ返します。
+[`prev_year`][Time#prev_year]メソッドは指定の日の「前年」の同じ月日の日時を返し、[`next_year`][Time#next_year]メソッドは指定の日の「翌年」の同じ月日の日時を返します。
 
 ```ruby
 t = Time.new(2010, 5, 8) # => 2010-05-08 00:00:00 +0900
@@ -3430,11 +3878,14 @@ t.prev_year               # => 1999-02-28 00:00:00 +0900
 t.next_year               # => 2001-02-28 00:00:00 +0900
 ```
 
-NOTE: 定義は`active_support/core_ext/time/calculations.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/time/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/time/calculations.rb)にあります。
+
+[Time#next_year]: https://api.rubyonrails.org/classes/Time.html#method-i-next_year
+[Time#prev_year]: https://api.rubyonrails.org/classes/Time.html#method-i-prev_year
 
 #### `prev_quarter`、`next_quarter`
 
-`prev_quarter`や`next_quarter`は、「前四半期」または「翌四半期」の同じ日の日付をそれぞれ返します。
+[`prev_quarter`][DateAndTime::Calculations#prev_quarter]メソッドは指定の日付の「前の四半期」の同じ日の日時を返し、[`next_quarter`][DateAndTime::Calculations#next_quarter]メソッドは指定の日付の「次の四半期」の同じ日の日時を返します。
 
 ```ruby
 t = Time.local(2010, 5, 8) # => 2010-05-08 00:00:00 +0300
@@ -3451,13 +3902,17 @@ Time.local(2000, 10, 31).prev_quarter # => 2000-07-31 00:00:00 +0300
 Time.local(2000, 11, 31).next_quarter # => 2001-03-01 00:00:00 +0200
 ```
 
-`prev_quarter`は`last_quarter`のエイリアスです。
+[`last_quarter`][DateAndTime::Calculations#last_quarter]は`prev_quarter`の別名です。
 
-NOTE: 定義は`active_support/core_ext/date_and_time/calculations.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
+
+[DateAndTime::Calculations#last_quarter]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-last_quarter
+[DateAndTime::Calculations#next_quarter]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-next_quarter
+[DateAndTime::Calculations#prev_quarter]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-prev_quarter
 
 ### 時間コンストラクタ
 
-ユーザータイムゾーンが定義されている場合、Active Supportが定義する`Time.current`の値は`Time.zone.now`の値と同じになります。ユーザータイムゾーンが定義されていない場合は、`Time.now`と同じになります。
+ユーザータイムゾーンが定義されている場合、Active Supportが定義する[`Time.current`][Time.current]の値は`Time.zone.now`の値と同じになります。ユーザータイムゾーンが定義されていない場合は、`Time.now`と同じになります。
 
 ```ruby
 Time.zone_default
@@ -3466,13 +3921,13 @@ Time.current
 # => Fri, 06 Aug 2010 17:11:58 CEST +02:00
 ```
 
-`DateTime`と同様、述語`past?`と`future?`は`Time.current`を起点とします。
+`DateTime`と同様、述語メソッド[`past?`][DateAndTime::Calculations#past?]と[`future?`][DateAndTime::Calculations#future?]は`Time.current`を起点とします。
 
 構成される時間が、実行プラットフォームの`Time`でサポートされる範囲を超えている場合は、usecは破棄され、`DateTime`オブジェクトが代りに返されます。
 
 #### 期間（duration）
 
-Timeオブジェクトに対して期間を加減算できます。
+[`Duration`][ActiveSupport::Duration]オブジェクトは、Timeオブジェクトに対して期間を加減算できます。
 
 ```ruby
 now = Time.current
@@ -3495,7 +3950,7 @@ Time.utc(1582, 10, 3) + 5.days
 
 ### `atomic_write`
 
-`File.atomic_write`クラスメソッドを使うと、書きかけの文章を誰にも読まれないようにファイルを保存できます。
+[`File.atomic_write`][File.atomic_write]クラスメソッドを使うと、書きかけのコンテンツを誰にも読まれないようにファイルを保存できます。
 
 このメソッドにファイル名を引数として渡すと、書き込み用にオープンされたファイルハンドルを生成します。ブロックが完了すると、`atomic_write`はファイルハンドルをクローズして処理を完了します。
 
@@ -3507,43 +3962,26 @@ File.atomic_write(joined_asset_path) do |cache|
 end
 ```
 
-`atomic_write`は、処理を完了するために一時的なファイルを作成します。ブロック内のコードが実際に書き込むのはこのファイルです。この一時ファイルは完了時にリネームされます。リネームは、POSIXシステムのアトミック操作に基いて行われます。書き込み対象ファイルが既に存在する場合、`atomic_write`はそれを上書きしてオーナーとパーミッションを保持します。ただし、`atomic_write`メソッドがファイルのオーナーシップとパーミッションを変更できないケースがまれにあります。このエラーはキャッチされ、そのファイルがそれを必要とするプロセスからアクセスできるようにするために、ユーザーのファイルシステムへの信頼をスキップします。
+これを行うために、`atomic_write`は一時的なファイルを作成します。ブロック内のコードが実際に書き込むのはこのファイルです。この一時ファイルは完了時にリネームされます。リネームは、POSIXシステムのアトミック操作に基いて行われます。書き込み対象ファイルが既に存在する場合、`atomic_write`はそれを上書きしてオーナーとパーミッションを維持します。ただし、`atomic_write`メソッドがファイルのオーナーシップとパーミッションを変更できないケースがまれにあります。このエラーはキャッチされ、そのファイルがそれを必要とするプロセスからアクセスできるようにするために、ユーザーのファイルシステムへの信頼をスキップします。
 
 NOTE: `atomic_write`が行なうchmod操作が原因で、書き込み対象ファイルがACLセットを持っているときにそのACLが再計算/変更されます。
 
-WARNING: `atomic_write`で追記を行なうことはできません。
+WARNING: `atomic_write`は追記を行えません。
 
-この補助ファイルは標準の一時ファイル用ディレクトリに書き込まれますが、2番目の引数でディレクトリを直接指定することもできます。
+この補助ファイルは標準の一時ファイル用ディレクトリに書き込まれますが、第2引数でディレクトリを直接指定することもできます。
 
-NOTE: 定義は`active_support/core_ext/file/atomic.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/file/atomic.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/file/atomic.rb)にあります。
 
-`Marshal`の拡張
------------------------
-
-### `load`
-
-Active Supportは、`load`に一定の自動読み込みサポートを追加します。
-
-たとえば、ファイルキャッシュストアでは以下のようにデシリアライズ (deserialize) します。
-
-```ruby
-File.open(file_name) { |f| Marshal.load(f) }
-```
-
-キャッシュデータが不明な定数を参照している場合、自動読み込みがトリガされます。読み込みに成功した場合はシリアライズを透過的に再試行します。
-
-WARNING: 引数が`IO`の場合、再試行を可能にするために`rewind`に応答する必要があります。通常のファイルは`rewind`に応答します。
-
-NOTE: 定義は`active_support/core_ext/marshal.rb`にあります。
+[File.atomic_write]: https://api.rubyonrails.org/classes/File.html#method-c-atomic_write
 
 `NameError`の拡張
 -------------------------
 
-Active Supportは`NameError`に`missing_name?`メソッドを追加します。このメソッドは、引数として渡された名前が原因で例外が発生するかどうかをテストします。
+Active Supportは`NameError`に`missing_name?`][NameError#missing_name?]メソッドを追加します。このメソッドは、引数として渡された名前が原因で例外が発生するかどうかをテストします。
 
 渡される名前はシンボルまたは文字列です。シンボルを渡した場合は単なる定数名をテストし、文字列を渡した場合はフルパス (fully-qualified) の定数名をテストします。
 
-TIP: シンボルは、`:"ActiveRecord::Base"`で行なっているのと同じようにフルパスの定数として表せます。シンボルがそのように動作するのはそれが便利だからであり、技術的にそうしなければならないというものではありません。
+TIP: シンボルは、`:"ActiveRecord::Base"`で行なっているのと同じようにフルパスの定数として表せます。シンボルがそのように動作するのはそれが便利だからであり、技術的に必要だからではありません。
 
 たとえば、`ArticlesController`のアクションが呼び出されると、Railsはその名前からすぐに推測できる`ArticleHelper`を使おうとします。ここではこのヘルパーモジュールが存在していなくても問題はないので、この定数名で例外が発生しても例外として扱わずに黙殺する必要があります。しかし、実際に不明な定数が原因で`articles_helper.rb`が`NameError`エラーを発生するという場合が考えられます。そのような場合は、改めて例外を発生させなくてはなりません。`missing_name?`メソッドは、この2つの場合を区別するために使われます。
 
@@ -3559,7 +3997,9 @@ rescue NameError => e
 end
 ```
 
-NOTE: 定義は`active_support/core_ext/name_error.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/name_error.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/name_error.rb)にあります。
+
+[NameError#missing_name?]: https://api.rubyonrails.org/classes/NameError.html#method-i-missing_name-3F
 
 `LoadError`の拡張
 -------------------------
@@ -3582,4 +4022,21 @@ rescue NameError => e
 end
 ```
 
-NOTE: 定義は`active_support/core_ext/load_error.rb`にあります。
+NOTE: 定義は[`active_support/core_ext/load_error.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/load_error.rb)にあります。
+
+[LoadError#is_missing?]: https://api.rubyonrails.org/classes/LoadError.html#method-i-is_missing-3F
+
+`Pathname`の拡張
+-------------------------
+
+### `existence`
+
+[`existence`][Pathname#existence]メソッドは、名前付きファイルが存在する場合はレシーバーを返し、存在しない場合は`nil`を返します。これは、以下のような定番のファイル読み出しで便利です。
+
+```ruby
+content = Pathname.new("file").existence&.read
+```
+
+NOTE: 定義は[`active_support/core_ext/pathname/existence.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/pathname/existence.rb)にあります。
+
+[Pathname#existence]: https://api.rubyonrails.org/classes/Pathname.html#method-i-existence
