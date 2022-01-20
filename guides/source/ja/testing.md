@@ -208,7 +208,7 @@ Finished in 0.027476s, 36.3952 runs/s, 36.3952 assertions/s.
 1 runs, 1 assertions, 0 failures, 0 errors, 0 skips
 ```
 
-お気付きになった方もいるかと思いますが、私たちは欲しい機能が未実装であるために、あえて失敗するテストを最初に作成していることにご注目ください。続いてその機能を実装し、それからもう一度実行してテストがパスすることを確認しました。ソフトウェア開発の世界ではこのようなアプローチをテスト駆動開発 ( [Test-Driven Development (TDD)](http://wiki.c2.com/?TestDrivenDevelopment) : TDD) と呼んでいます。
+お気付きになった方もいるかと思いますが、私たちは欲しい機能が未実装であるために、あえて失敗するテストを最初に作成していることにご注目ください。続いてその機能を実装し、それからもう一度実行してテストがパスすることを確認しました。ソフトウェア開発の世界ではこのようなアプローチをテスト駆動開発（[Test-Driven Development](http://wiki.c2.com/?TestDrivenDevelopment) : TDD）と呼んでいます。
 
 ### エラーの表示内容
 
