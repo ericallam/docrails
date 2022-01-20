@@ -463,7 +463,7 @@ end
 
 ### デシリアライズ
 
-GlobalIDの`#perform`に完全なActive Recordオブジェクトを渡してシリアライズできます。
+GlobalIDによって`#perform`に渡された完全なActive Recordオブジェクトのシリアライズが可能になります。
 
 ジョブがキューに登録された後で、渡したレコードが1件削除され、かつ`#perform`メソッドをまだ呼び出していない場合は、Active Jobによって[`ActiveJob::DeserializationError`][]エラーがraiseされます。
 

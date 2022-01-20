@@ -125,7 +125,7 @@
   name: 高度なトピック
   documents:
     -
-      name: Rails 国際化 (i18n) API
+      name: Rails 国際化（i18n）API
       url: i18n.html
       description: Railsアプリケーションを国際化する方法について解説します。これによりアプリケーションを異なる言語に翻訳することができ、さらに単数形/複数形ルールを変更したり、その国に適した日付フォーマットを設定したりできます。
     -
