@@ -946,7 +946,7 @@ class Person < ApplicationRecord
 end
 ```
 
-```irb
+```
 irb> person = Person.new
 irb> person.valid?
 => false
