@@ -442,6 +442,287 @@ instance variables:
 class variables: @@raise_on_missing_translations  @@raise_on_open_redirects
 ```
 
+### ブレークポイント
+
+デバッガでは、さまざまな方法でブレークポイントを挿入・トリガーできます。`debugger`をコードに直接追加する以外に、以下のコマンドでもブレークポイントを挿入できます。
+
+- `break`（または`b`）
+  - `break`: すべてのブレークポイントを表示する
+  - `break <num>`: 現在のファイルの`num`行目にブレークポイントを設定する
+  - `break <file:num>`: `file`の`num`行目にブレークポイントを設定する
+  - `break <Class#method>`または`break <Class.method>`: `Class#method`や`Class.method`にブレークポイントを設定する
+  - `break <expr>.<method>`: `<expr>`の結果の`<method>`にブレークポイントを設定する
+- `catch <Exception>`: `Exception`が発生すると停止するブレークポイントを設定する
+- `watch <@ivar>`: 現在のオブジェクトの`@ivar`の結果が変更されると停止するブレークポイントを設定する（ただし低速）
+
+ブレークポイントを削除するには以下のコマンドが使えます。
+
+- `delete`（または`del`）
+  - `delete`: すべてのブレークポイントを削除する
+  - `delete <num>`:  id `num`のブレークポイントを削除する
+
+#### `break`コマンド
+
+**指定の行番号にブレークポイントを設定する（例: `b 28`）**
+
+```rb
+[20, 29] in ~/projects/rails-guide-example/app/controllers/posts_controller.rb
+    20|   end
+    21|
+    22|   # POST /posts or /posts.json
+    23|   def create
+    24|     @post = Post.new(post_params)
+=>  25|     debugger
+    26|
+    27|     respond_to do |format|
+    28|       if @post.save
+    29|         format.html { redirect_to @post, notice: "Post was successfully created." }
+=>#0    PostsController#create at ~/projects/rails-guide-example/app/controllers/posts_controller.rb:25
+  #1    ActionController::BasicImplicitRender#send_action(method="create", args=[]) at ~/.rbenv/versions/3.0.1/lib/ruby/gems/3.0.0/gems/actionpack-7.0.0.alpha2/lib/action_controller/metal/basic_implicit_render.rb:6
+  # and 72 frames (use `bt' command for all frames)
+(rdbg) b 28    # breakコマンド
+#0  BP - Line  /Users/st0012/projects/rails-guide-example/app/controllers/posts_controller.rb:28 (line)
+```
+
+```rb
+(rdbg) c    # 続行コマンド
+[23, 32] in ~/projects/rails-guide-example/app/controllers/posts_controller.rb
+    23|   def create
+    24|     @post = Post.new(post_params)
+    25|     debugger
+    26|
+    27|     respond_to do |format|
+=>  28|       if @post.save
+    29|         format.html { redirect_to @post, notice: "Post was successfully created." }
+    30|         format.json { render :show, status: :created, location: @post }
+    31|       else
+    32|         format.html { render :new, status: :unprocessable_entity }
+=>#0    block {|format=#<ActionController::MimeResponds::Collec...|} in create at ~/projects/rails-guide-example/app/controllers/posts_controller.rb:28
+  #1    ActionController::MimeResponds#respond_to(mimes=[]) at ~/.rbenv/versions/3.0.1/lib/ruby/gems/3.0.0/gems/actionpack-7.0.0.alpha2/lib/action_controller/metal/mime_responds.rb:205
+  # and 74 frames (use `bt' command for all frames)
+
+Stop by #0  BP - Line  /Users/st0012/projects/rails-guide-example/app/controllers/posts_controller.rb:28 (line)
+```
+
+**指定のメソッド呼び出しにブレークポイントを設定する（例: `b @post.save`）**
+
+```rb
+[20, 29] in ~/projects/rails-guide-example/app/controllers/posts_controller.rb
+    20|   end
+    21|
+    22|   # POST /posts or /posts.json
+    23|   def create
+    24|     @post = Post.new(post_params)
+=>  25|     debugger
+    26|
+    27|     respond_to do |format|
+    28|       if @post.save
+    29|         format.html { redirect_to @post, notice: "Post was successfully created." }
+=>#0    PostsController#create at ~/projects/rails-guide-example/app/controllers/posts_controller.rb:25
+  #1    ActionController::BasicImplicitRender#send_action(method="create", args=[]) at ~/.rbenv/versions/3.0.1/lib/ruby/gems/3.0.0/gems/actionpack-7.0.0.alpha2/lib/action_controller/metal/basic_implicit_render.rb:6
+  # and 72 frames (use `bt' command for all frames)
+(rdbg) b @post.save    # breakコマンド
+#0  BP - Method  @post.save at /Users/st0012/.rbenv/versions/3.0.1/lib/ruby/gems/3.0.0/gems/activerecord-7.0.0.alpha2/lib/active_record/suppressor.rb:43
+
+```
+
+```rb
+(rdbg) c    # 続行コマンド
+[39, 48] in ~/.rbenv/versions/3.0.1/lib/ruby/gems/3.0.0/gems/activerecord-7.0.0.alpha2/lib/active_record/suppressor.rb
+    39|         SuppressorRegistry.suppressed[name] = previous_state
+    40|       end
+    41|     end
+    42|
+    43|     def save(**) # :nodoc:
+=>  44|       SuppressorRegistry.suppressed[self.class.name] ? true : super
+    45|     end
+    46|
+    47|     def save!(**) # :nodoc:
+    48|       SuppressorRegistry.suppressed[self.class.name] ? true : super
+=>#0    ActiveRecord::Suppressor#save(#arg_rest=nil) at ~/.rbenv/versions/3.0.1/lib/ruby/gems/3.0.0/gems/activerecord-7.0.0.alpha2/lib/active_record/suppressor.rb:44
+  #1    block {|format=#<ActionController::MimeResponds::Collec...|} in create at ~/projects/rails-guide-example/app/controllers/posts_controller.rb:28
+  # and 75 frames (use `bt' command for all frames)
+
+Stop by #0  BP - Method  @post.save at /Users/st0012/.rbenv/versions/3.0.1/lib/ruby/gems/3.0.0/gems/activerecord-7.0.0.alpha2/lib/active_record/suppressor.rb:43
+```
+
+#### `catch`コマンド
+
+**例外発生時に停止する（例: `catch ActiveRecord::RecordInvalid`）**
+
+```rb
+[20, 29] in ~/projects/rails-guide-example/app/controllers/posts_controller.rb
+    20|   end
+    21|
+    22|   # POST /posts or /posts.json
+    23|   def create
+    24|     @post = Post.new(post_params)
+=>  25|     debugger
+    26|
+    27|     respond_to do |format|
+    28|       if @post.save!
+    29|         format.html { redirect_to @post, notice: "Post was successfully created." }
+=>#0    PostsController#create at ~/projects/rails-guide-example/app/controllers/posts_controller.rb:25
+  #1    ActionController::BasicImplicitRender#send_action(method="create", args=[]) at ~/.rbenv/versions/3.0.1/lib/ruby/gems/3.0.0/gems/actionpack-7.0.0.alpha2/lib/action_controller/metal/basic_implicit_render.rb:6
+  # and 72 frames (use `bt' command for all frames)
+(rdbg) catch ActiveRecord::RecordInvalid    # catchコマンド
+#1  BP - Catch  "ActiveRecord::RecordInvalid"
+```
+
+```rb
+(rdbg) c    # 続行コマンド
+[75, 84] in ~/.rbenv/versions/3.0.1/lib/ruby/gems/3.0.0/gems/activerecord-7.0.0.alpha2/lib/active_record/validations.rb
+    75|     def default_validation_context
+    76|       new_record? ? :create : :update
+    77|     end
+    78|
+    79|     def raise_validation_error
+=>  80|       raise(RecordInvalid.new(self))
+    81|     end
+    82|
+    83|     def perform_validations(options = {})
+    84|       options[:validate] == false || valid?(options[:context])
+=>#0    ActiveRecord::Validations#raise_validation_error at ~/.rbenv/versions/3.0.1/lib/ruby/gems/3.0.0/gems/activerecord-7.0.0.alpha2/lib/active_record/validations.rb:80
+  #1    ActiveRecord::Validations#save!(options={}) at ~/.rbenv/versions/3.0.1/lib/ruby/gems/3.0.0/gems/activerecord-7.0.0.alpha2/lib/active_record/validations.rb:53
+  # and 88 frames (use `bt' command for all frames)
+
+Stop by #1  BP - Catch  "ActiveRecord::RecordInvalid"
+```
+
+#### `watch`コマンド
+
+**インスタンス変数の変更時に停止する（例: `watch @_response_body`）**
+
+```rb
+[20, 29] in ~/projects/rails-guide-example/app/controllers/posts_controller.rb
+    20|   end
+    21|
+    22|   # POST /posts or /posts.json
+    23|   def create
+    24|     @post = Post.new(post_params)
+=>  25|     debugger
+    26|
+    27|     respond_to do |format|
+    28|       if @post.save!
+    29|         format.html { redirect_to @post, notice: "Post was successfully created." }
+=>#0    PostsController#create at ~/projects/rails-guide-example/app/controllers/posts_controller.rb:25
+  #1    ActionController::BasicImplicitRender#send_action(method="create", args=[]) at ~/.rbenv/versions/3.0.1/lib/ruby/gems/3.0.0/gems/actionpack-7.0.0.alpha2/lib/action_controller/metal/basic_implicit_render.rb:6
+  # and 72 frames (use `bt' command for all frames)
+(rdbg) watch @_response_body    # watchコマンド
+#0  BP - Watch  #<PostsController:0x00007fce69ca5320> @_response_body =
+```
+
+```rb
+(rdbg) c    # 続行コマンド
+[173, 182] in ~/.rbenv/versions/3.0.1/lib/ruby/gems/3.0.0/gems/actionpack-7.0.0.alpha2/lib/action_controller/metal.rb
+   173|       body = [body] unless body.nil? || body.respond_to?(:each)
+   174|       response.reset_body!
+   175|       return unless body
+   176|       response.body = body
+   177|       super
+=> 178|     end
+   179|
+   180|     # renderかredirectが既に実行されたかどうかをテストする
+   181|     def performed?
+   182|       response_body || response.committed?
+=>#0    ActionController::Metal#response_body=(body=["<html><body>You are being <a href=\"ht...) at ~/.rbenv/versions/3.0.1/lib/ruby/gems/3.0.0/gems/actionpack-7.0.0.alpha2/lib/action_controller/metal.rb:178 #=> ["<html><body>You are being <a href=\"ht...
+  #1    ActionController::Redirecting#redirect_to(options=#<Post id: 13, title: "qweqwe", content:..., response_options={:allow_other_host=>false}) at ~/.rbenv/versions/3.0.1/lib/ruby/gems/3.0.0/gems/actionpack-7.0.0.alpha2/lib/action_controller/metal/redirecting.rb:74
+  # and 82 frames (use `bt' command for all frames)
+
+Stop by #0  BP - Watch  #<PostsController:0x00007fce69ca5320> @_response_body =  -> ["<html><body>You are being <a href=\"http://localhost:3000/posts/13\">redirected</a>.</body></html>"]
+(rdbg)
+```
+
+#### ブレークポイントのオプション
+
+さまざまな種類のブレークポイントに加えて、より高度なデバッグフローを実現するオプションも指定できます。現在は以下の4種類のオプションがサポートされています。
+
+- `do: <cmdまたはexpr>`: ブレークポイントがトリガーされると、指定のコマンドや式を実行してプログラムを続行する
+  - `break Foo#bar do: bt`: `Foo#bar`が呼び出されたときにスタックフレームを出力する
+- `pre: <cmd or expr>`: ブレークポイントがトリガーされると、指定のコマンドや式を実行してから停止する
+  - `break Foo#bar pre: info`: `Foo#bar`が呼び出されると、周辺の変数を出力してから停止する
+- `if: <expr>`: `<expr`>の結果がtrueの場合にのみブレークポイントを停止する
+  - `break Post#save if: params[:debug]`: `params[:debug]`もtrueの場合に`Post#save`で停止する
+- `path: <path_regexp>`: トリガーとなるイベント（メソッド呼び出しなど）が指定のパスで発生した場合にのみブレークポイントを停止する
+  - `break Post#save if: app/services/a_service`: メソッド名がRuby正規表現`/app\/services\/a_service/`にマッチする位置でメソッドが呼び出されると`Post#save`で停止する
+
+最初の3つのオプション「`do:`」「`pre:`」「`if:`」については、以下のように前述の`debugger`ステートメントのオプションとしても利用できます。
+
+```rb
+[2, 11] in ~/projects/rails-guide-example/app/controllers/posts_controller.rb
+     2|   before_action :set_post, only: %i[ show edit update destroy ]
+     3|
+     4|   # GET /posts or /posts.json
+     5|   def index
+     6|     @posts = Post.all
+=>   7|     debugger(do: "info")
+     8|   end
+     9|
+    10|   # GET /posts/1 or /posts/1.json
+    11|   def show
+=>#0    PostsController#index at ~/projects/rails-guide-example/app/controllers/posts_controller.rb:7
+  #1    ActionController::BasicImplicitRender#send_action(method="index", args=[]) at ~/.rbenv/versions/3.0.1/lib/ruby/gems/3.0.0/gems/actionpack-7.0.0.alpha2/lib/action_controller/metal/basic_implicit_render.rb:6
+  # and 72 frames (use `bt' command for all frames)
+(rdbg:binding.break) info
+%self = #<PostsController:0x00000000017480>
+@_action_has_layout = true
+@_action_name = "index"
+@_config = {}
+@_lookup_context = #<ActionView::LookupContext:0x00007fce3ad336b8 @details_key=nil, @digest_cache=...
+@_request = #<ActionDispatch::Request GET "http://localhost:3000/posts" for 127.0.0.1>
+@_response = #<ActionDispatch::Response:0x00007fce3ad397e8 @mon_data=#<Monitor:0x00007fce3ad396a8>...
+@_response_body = nil
+@_routes = nil
+@marked_for_same_origin_verification = true
+@posts = #<ActiveRecord::Relation [#<Post id: 2, title: "qweqwe", content: "qweqwe", created_at: "...
+@rendered_format = nil
+```
+
+#### デバッグのワークフローをスクリプト化する
+
+上述のオプションを利用すると、以下のようにデバッグのワークフローをスクリプト化できます。
+
+```rb
+def create
+  debugger(do: "catch ActiveRecord::RecordInvalid do: bt 10")
+  # ...
+end
+```
+
+これで、スクリプト化されたコマンドをデバッガーが実行して`catch`ブレークポイントを挿入します。
+
+```rb
+(rdbg:binding.break) catch ActiveRecord::RecordInvalid do: bt 10
+#0  BP - Catch  "ActiveRecord::RecordInvalid"
+[75, 84] in ~/.rbenv/versions/3.0.1/lib/ruby/gems/3.0.0/gems/activerecord-7.0.0.alpha2/lib/active_record/validations.rb
+    75|     def default_validation_context
+    76|       new_record? ? :create : :update
+    77|     end
+    78|
+    79|     def raise_validation_error
+=>  80|       raise(RecordInvalid.new(self))
+    81|     end
+    82|
+    83|     def perform_validations(options = {})
+    84|       options[:validate] == false || valid?(options[:context])
+=>#0    ActiveRecord::Validations#raise_validation_error at ~/.rbenv/versions/3.0.1/lib/ruby/gems/3.0.0/gems/activerecord-7.0.0.alpha2/lib/active_record/validations.rb:80
+  #1    ActiveRecord::Validations#save!(options={}) at ~/.rbenv/versions/3.0.1/lib/ruby/gems/3.0.0/gems/activerecord-7.0.0.alpha2/lib/active_record/validations.rb:53
+  # and 88 frames (use `bt' command for all frames)
+```
+
+`catch`ブレークポイントがトリガーされると、スタックフレームが出力されます。
+
+```rb
+Stop by #0  BP - Catch  "ActiveRecord::RecordInvalid"
+
+(rdbg:catch) bt 10
+=>#0    ActiveRecord::Validations#raise_validation_error at ~/.rbenv/versions/3.0.1/lib/ruby/gems/3.0.0/gems/activerecord-7.0.0.alpha2/lib/active_record/validations.rb:80
+  #1    ActiveRecord::Validations#save!(options={}) at ~/.rbenv/versions/3.0.1/lib/ruby/gems/3.0.0/gems/activerecord-7.0.0.alpha2/lib/active_record/validations.rb:53
+  #2    block in save! at ~/.rbenv/versions/3.0.1/lib/ruby/gems/3.0.0/gems/activerecord-7.0.0.alpha2/lib/active_record/transactions.rb:302
+```
+
+この手法を活用することで、同じデバッグフローを繰り返し入力する手間を省いてスムーズにデバッグできるようになります。
+
 その他のコマンドや設定オプションについて詳しくは`debug` gemの[ドキュメント](https://github.com/ruby/debug)を参照してください。
 
 #### オートローディングの注意点
