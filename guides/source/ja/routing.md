@@ -1224,7 +1224,7 @@ video = Video.find_by(identifier: "Roman-Holiday")
 edit_video_path(video) # => "/videos/Roman-Holiday/edit"
 ```
 
-**巨大な**ルーティングファイルを分割する
+巨大なルーティングファイルを分割する
 -------------------------------------------------------
 
 ルーティングが数千にもおよび大規模アプリケーションでは、複雑な`config/routes.rb`ファイル1個だけでは読みづらくなります。

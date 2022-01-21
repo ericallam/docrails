@@ -129,7 +129,7 @@ end
 
 最後にメソッドを実際に使ってみましょう。`test/dummy`ディレクトリに移動して`bin/rails console`を実行し、ガーガー鳴いてみましょう（squawk）。
 
-```irb
+```
 irb> "Hello World".to_squawk
 => "squawk! Hello World"
 ```

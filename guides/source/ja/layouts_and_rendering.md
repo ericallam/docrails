@@ -744,7 +744,7 @@ head :bad_request
 
 上のコードによって以下のヘッダーが生成されます。
 
-```http
+```
 HTTP/1.1 400 Bad Request
 Connection: close
 Date: Sun, 24 Jan 2010 12:15:53 GMT
@@ -763,7 +763,7 @@ head :created, location: photo_path(@photo)
 
 上のコードの結果は以下のようになります。
 
-```http
+```
 HTTP/1.1 201 Created
 Connection: close
 Date: Sun, 24 Jan 2010 12:16:44 GMT
