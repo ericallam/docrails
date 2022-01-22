@@ -14,7 +14,7 @@ Active Record と PostgreSQL
 
 PostgreSQLアダプタを利用するには、PostgreSQL 9.3以上がインストールされている必要があります。これより古いバージョンはサポートされません。
 
-PostgreSQLを使う場合は、『[Rails アプリケーションを設定する](https://railsguides.jp/configuring.html)』ガイドをお読みください。Active RecordをPostgreSQL向けに正しくセットアップする方法が記載されています。
+PostgreSQLを使う場合は、『[Rails アプリケーションの設定項目](https://railsguides.jp/configuring.html)』ガイドをお読みください。Active RecordをPostgreSQL向けに正しくセットアップする方法が記載されています。
 
 データ型
 ---------
