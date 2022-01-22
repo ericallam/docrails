@@ -242,20 +242,20 @@ irb> contact.save!
 
 * [データ型の定義](https://www.postgresql.jp/document/13/html/datatype-enum.html)
 
-現在は列挙型について特別なサポートはありません。これらは通常のtextカラムに対応付けられます。
+この型は、通常のtextカラムまたは[`ActiveRecord::Enum`](https://api.rubyonrails.org/classes/ActiveRecord/Enum.html)に対応付けられます。
 
 ```ruby
 # db/migrate/20131220144913_create_articles.rb
 def up
-  execute <<-SQL
-    CREATE TYPE article_status AS ENUM ('draft', 'published');
-  SQL
+  create_enum :article_status, ["draft", "published"]
+
   create_table :articles do |t|
-    t.column :status, :article_status
+    t.enum :status, enum_type: :article_status, default: "draft", null: false
   end
 end
 
-# メモ: enumを削除する前にテーブルを削除することが重要
+# enumの削除機能はRailsに組み込まれていないが、手動での削除は可能
+# 依存するテーブルを最初にすべて削除しておくこと
 def down
   drop_table :articles
 
@@ -268,6 +268,9 @@ end
 ```ruby
 # app/models/article.rb
 class Article < ApplicationRecord
+  enum status: {
+    draft: "draft", published: "published"
+  }, _prefix: true
 end
 ```
 
@@ -296,9 +299,9 @@ def up
 end
 ```
 
-NOTE: 現在は`ENUM`の値を`DROP`できません。理由については[この記事](https://www.postgresql.org/message-id/29F36C7C98AB09499B1A209D48EAA615B7653DBC8A@mail2a.alliedtesting.com)を参照してください。
+NOTE: `ENUM`の値は`DROP`できません。理由については[この記事](https://www.postgresql.org/message-id/29F36C7C98AB09499B1A209D48EAA615B7653DBC8A@mail2a.alliedtesting.com)を参照してください。
 
-Hint: 現在のenumにある値をすべて表示するには、クエリを`bin/rails db`または`psql`で実行してください。
+Hint: 現在のenumにある値をすべて表示するには、クエリを`bin/rails db`または`psql`で実行できます。
 
 ```sql
 SELECT n.nspname AS enum_schema,
@@ -313,9 +316,9 @@ SELECT n.nspname AS enum_schema,
 
 * [データ型の定義](https://www.postgresql.jp/document/13/html/datatype-uuid.html)
 * [pgcryptoのジェネレータ関数](https://www.postgresql.jp/document/13/html/pgcrypto.html)
-* [uuid-osspのジェネレータ関数]](https://www.postgresql.jp/document/13/html/uuid-ossp.html)
+* [uuid-osspのジェネレータ関数](https://www.postgresql.jp/document/13/html/uuid-ossp.html)
 
-NOTE: `uuid`を使うには、`pgcrypto`拡張（PostgreSQL9.4以降）または`uuid-ossp`拡張を有効にする必要があります。
+NOTE: `uuid`を使うには、`pgcrypto`拡張（PostgreSQL 9.4以降のみ）または`uuid-ossp`拡張を有効にする必要があります。
 
 ```ruby
 # db/migrate/20131220144913_create_revisions.rb
@@ -392,7 +395,7 @@ irb> user.settings
 => "01010011"
 irb> user.settings = "0xAF"
 irb> user.settings
-=> 10101111
+=> "10101111"
 irb> user.save!
 ```
 
@@ -400,7 +403,7 @@ irb> user.save!
 
 * [データ型の定義](https://www.postgresql.jp/document/13/html/datatype-net-types.html)
 
-`inet`型および`cidr`型は、Rubyの[`IPAddr`](https://docs.ruby-lang.org/ja/latest/class/IPAddr.html)オブジェクトに対応付けられます。`macaddr`型は通常のtextに対応付けられます。
+`inet`型および`cidr`型は、Rubyの[`IPAddr`](https://docs.ruby-lang.org/ja/latest/class/IPAddr.html)オブジェクトに対応付けられます。`macaddr`型は通常のtextデータ型に対応付けられます。
 
 ```ruby
 # db/migrate/20140508144913_create_devices.rb
@@ -434,7 +437,7 @@ irb> macbook.address
 
 * [データ型の定義](https://www.postgresql.jp/document/13/html/datatype-geometric.html)
 
-`point`を除くすべての幾何データ型は、通常のtextに対応付けられます。`point`は、`x`座標と`y`座標を含む配列にキャストされます。
+`point`を除くすべての幾何データ型は、通常のtextデータ型に対応付けられます。`point`は、`x`座標と`y`座標を含む配列にキャストされます。
 
 ### 期間（interval）
 
@@ -541,7 +544,7 @@ Document.where("to_tsvector('english', title || ' ' || body) @@ to_tsquery(?)",
                  "cat & dog")
 ```
 
-オプションで、このベクタを自動生成カラムとして保存することもできます（PostgreSQL 12.0以降）。
+オプションで、このベクタを自動生成カラムとして保存することも可能です（PostgreSQL 12.0以降）。
 
 ```ruby
 # db/migrate/20131220144913_create_documents.rb
@@ -622,4 +625,3 @@ irb> Article.count
 ```
 
 NOTE: このアプリケーションは、`archive`されていない`Articles`のみを扱う前提です。ビューには条件を設定可能なので、`archive`された`Articles`を直接除外できます。
-
