@@ -822,7 +822,7 @@ CSRFトークンの正当性をそれらが生成されたメソッドやアク�
 
 #### `config.action_controller.relative_url_root`
 
-[サブディレクトリへのデプロイ](configuring.html#サブディレクトリにデプロイする（相対URL rootの利用）)を行っていることをRailsに指示するのに使えます。デフォルト値は`ENV['RAILS_RELATIVE_URL_ROOT']`です。
+[サブディレクトリへのデプロイ](configuring.html#サブディレクトリにデプロイする-相対URL rootの利用)を行っていることをRailsに指示するのに使えます。デフォルト値は`ENV['RAILS_RELATIVE_URL_ROOT']`です。
 
 #### `config.action_controller.permit_all_parameters`
 
@@ -2151,7 +2151,7 @@ Rails環境の設定
 
 * `ENV["RAILS_ENV"]`: Railsが実行される環境 (production、development、testなど) を定義します。
 
-* `ENV["RAILS_RELATIVE_URL_ROOT"]`: [アプリケーションをサブディレクトリにデプロイする](configuring.html#サブディレクトリにデプロイする（相対URL rootの利用）)ときにルーティングシステムがURLを認識するために使われます。
+* `ENV["RAILS_RELATIVE_URL_ROOT"]`: [アプリケーションをサブディレクトリにデプロイする](configuring.html#サブディレクトリにデプロイする-相対urlルートの利用)ときにルーティングシステムがURLを認識するために使われます。
 
 * `ENV["RAILS_CACHE_ID"]`と`ENV["RAILS_APP_VERSION"]`: Railsのキャッシュを扱うコードで拡張キャッシュを生成するために使われます。これにより、ひとつのアプリケーションの中で複数の独立したキャッシュを扱えるようになります。
 
