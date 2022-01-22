@@ -40,7 +40,7 @@ Sprocketsに慣れ親しんでいる方は、以下の表を参考に両者の�
 |------------------|----------------------|-------------------|
 |JavaScriptをアタッチする |`javascript_include_tag`|`javascript_pack_tag`|
 |CSSをアタッチする        |`stylesheet_link_tag`   |`stylesheet_pack_tag`|
-|画像にリンクする         |`image_url`             |image_pack_tag`     |
+|画像にリンクする         |`image_url`             |`image_pack_tag`     |
 |アセットにリンクする      |`asset_url`             |`asset_pack_tag`     |
 |スクリプトをrequireする  |`//= require`         |`import`または`require`  |
 
