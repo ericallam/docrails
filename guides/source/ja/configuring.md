@@ -822,7 +822,7 @@ CSRFトークンの正当性をそれらが生成されたメソッドやアク�
 
 #### `config.action_controller.relative_url_root`
 
-[サブディレクトリへのデプロイ](#サブディレクトリにデプロイする（相対URL rootの利用）)を行っていることをRailsに指示するのに使えます。デフォルト値は`ENV['RAILS_RELATIVE_URL_ROOT']`です。
+[サブディレクトリへのデプロイ](configuring.html#サブディレクトリにデプロイする-相対url%20rootの利用)を行っていることをRailsに指示するのに使えます。デフォルト値は`ENV['RAILS_RELATIVE_URL_ROOT']`です。
 
 #### `config.action_controller.permit_all_parameters`
 
@@ -2085,7 +2085,7 @@ Railsにデフォルトで備わっている環境は、"development"、"test"�
 
 このようにして追加された環境は、デフォルトの3つの環境と同じように利用できます。`rails server -e staging`を実行すればステージング環境でサーバーを起動でき、`rails console -e staging`や`Rails.env.staging?`なども動作するようになります。
 
-### サブディレクトリにデプロイする（相対URL rootの利用）
+### サブディレクトリにデプロイする (相対URL rootの利用)
 
 Railsアプリケーションの実行は、アプリケーションのrootディレクトリ (`/`など) で行なうことが前提となっています。この節では、アプリケーションをディレクトリの下で実行する方法について説明します。
 
@@ -2151,7 +2151,7 @@ Rails環境の設定
 
 * `ENV["RAILS_ENV"]`: Railsが実行される環境 (production、development、testなど) を定義します。
 
-* `ENV["RAILS_RELATIVE_URL_ROOT"]`: [アプリケーションをサブディレクトリにデプロイする](#サブディレクトリにデプロイする（相対URL rootの利用）)ときにルーティングシステムがURLを認識するために使われます。
+* `ENV["RAILS_RELATIVE_URL_ROOT"]`: [アプリケーションをサブディレクトリにデプロイする](configuring.html#サブディレクトリにデプロイする-相対url%20rootの利用)ときにルーティングシステムがURLを認識するために使われます。
 
 * `ENV["RAILS_CACHE_ID"]`と`ENV["RAILS_APP_VERSION"]`: Railsのキャッシュを扱うコードで拡張キャッシュを生成するために使われます。これにより、ひとつのアプリケーションの中で複数の独立したキャッシュを扱えるようになります。
 
