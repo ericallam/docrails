@@ -20,9 +20,9 @@ Instrumentationについて
 
 Active Supportが提供するInstrumentation APIを使ってフックを開発すると、他の開発者がそこにフックできるようになります。フックの多くは、[Railsフレームワーク](#railsフレームワーク用フック)向けです。このAPIをアプリケーションで実装すると、アプリケーション（またはRubyコード片）内部でイベントが発生したときに通知を受け取れるよう他の開発者が設定できます。
 
-たとえばActive Recordには、データベースへのSQLクエリが発行されるたびに呼び出されるフックが用意されていますこのフックを**サブスクライブ（購読）**すると、特定のアクションでのクエリ実行数を追跡できます。他に、コントローラのアクション実行中に呼び出されるフックもあります。このフックは、たとえば特定のアクション実行に要する時間の測定に利用できます。
+たとえばActive Recordには、データベースへのSQLクエリが発行されるたびに呼び出されるフックが用意されています。このフックを**サブスクライブ（購読）**すると、特定のアクションでのクエリ実行数を追跡できます。他に、コントローラのアクション実行中に呼び出されるフックもあります。このフックは、たとえば特定のアクション実行に要する時間の測定に利用できます。
 
-もちろん、アプリケーション内に独自のイベントを作成し、後で自分でサブスクライブして測定することもできます。
+アプリケーション内に独自のイベントを作成し、後で自分でサブスクライブして測定することも可能です。
 
 イベントのサブスクライブ
 -----------------------
@@ -32,7 +32,7 @@ Active Supportが提供するInstrumentation APIを使ってフックを開発�
 
 ブロックには以下の引数を渡せます。
 
-* イベントの名前
+* イベント名
 * イベントの開始時刻
 * イベントの終了時刻
 * イベントのユニークID
@@ -45,7 +45,7 @@ ActiveSupport::Notifications.subscribe "process_action.action_controller" do |na
 end
 ```
 
-経過時間を正確に算出するうえで`started`と`finished`の精度が気になる場合は、`ActiveSupport::Notifications.monotonic_subscribe`をお使いください。ここに渡すブロックで使える引数は上述と同じですが、`started`と`finished`の値には通常のクロック時刻（wall-clock time）ではなく単調増加する精密な時刻が使われるようになります。
+経過時間を正確に算出するうえで`started`と`finished`の精度が気になる場合は、`ActiveSupport::Notifications.monotonic_subscribe`をお使いください。ここに渡すブロックで使える引数は上述と同じですが、`started`と`finished`の値に通常のクロック時刻（wall-clock time）ではなく単調増加する精密な時刻が使われるようになります。
 
 ```ruby
 ActiveSupport::Notifications.monotonic_subscribe "process_action.action_controller" do |name, started, finished, unique_id, data|
@@ -81,7 +81,7 @@ ActiveSupport::Notifications.subscribe "process_action.action_controller" do |ev
 end
 ```
 
-ほとんどのデータはすぐに利用できます。次は単にデータを取り出したいときの例です。
+ほとんどの場合、興味の対象はデータそのものです。次は単にデータを取り出したいときの例です。
 
 ```ruby
 ActiveSupport::Notifications.subscribe "process_action.action_controller" do |*args|
@@ -90,7 +90,7 @@ ActiveSupport::Notifications.subscribe "process_action.action_controller" do |*a
 end
 ```
 
-正規表現に一致するイベントだけをサブスクライブすることもできます。これはさまざまなイベントを一括でサブスクライブしたい場合に便利です。次は、`ActionController`のイベントをすべて登録する場合の例です。
+正規表現に一致するイベントだけをサブスクライブすることも可能です。これはさまざまなイベントを一括でサブスクライブしたい場合に便利です。以下は、`ActionController`のイベントをすべて登録する場合の例です。
 
 ```ruby
 ActiveSupport::Notifications.subscribe /action_controller/ do |*args|
@@ -101,7 +101,7 @@ end
 Railsフレームワーク用フック
 ---------------------
 
-Ruby on Railsでは、フレームワーク内の主なイベント向けのフックが多数提供されています詳しくは次をご覧ください。
+Ruby on Railsでは、フレームワーク内の主なイベント向けのフックが多数提供されています。詳しくは以下をご覧ください。
 
 ### Action Controller
 
@@ -221,7 +221,7 @@ INFO. 呼び出し側でキーが追加される可能性があります。
 
 #### send_data.action_controller
 
-`ActionController`自身は、ペイロードに情報を持ちません。オプションは、すべてペイロード経由で渡されます。
+`ActionController`はペイロードに特定の情報を追加しません。オプションは、すべてペイロード経由で渡されます。
 
 #### redirect_to.action_controller
 
@@ -311,6 +311,19 @@ INFO. 呼び出し側でキーが追加される可能性があります。
 }
 ```
 
+#### render_layout.action_view
+
+| キー           | 値                                 |
+| ------------- | --------------------- |
+| `:identifier` | テンプレートへのフルパス |
+
+
+```ruby
+{
+  identifier: "/Users/adam/projects/notifications/app/views/layouts/application.html.erb"
+}
+```
+
 ### Active Record
 
 #### sql.active_record
@@ -377,7 +390,7 @@ INFO. アダプタも独自のデータを追加します。
   to: ["users@rails.com", "dhh@rails.com"],
   from: ["me@rails.com"],
   date: Sat, 10 Mar 2012 14:18:09 +0100,
-  mail: "...", # omitted for brevity
+  mail: "...", # （省略）
   perform_deliveries: true
 }
 ```
@@ -429,7 +442,7 @@ INFO. `#fetch`に渡されたオプションは、ストアへの書き込み時
 
 #### cache_fetch_hit.active_support
 
-このイベントは、`#fetch`をブロック付きで使用した場合にのみ使われます。
+このイベントは、`#fetch`をブロック付きで呼び出した場合にのみ使われます。
 
 | キー         | 値              |
 | ------ | --------------------- |
@@ -550,7 +563,7 @@ INFO. キャッシュストアが独自のキーを追加することがあり�
 
 | キー              | 値                       |
 | ---------------- | ------------------------- |
-| `:channel_class` | チャンネルのクラス名      |
+| `:channel_class` | チャネルのクラス名      |
 | `:action`        | アクション                |
 | `:data`          | 日付（ハッシュ）          |
 
@@ -558,7 +571,7 @@ INFO. キャッシュストアが独自のキーを追加することがあり�
 
 | キー              | 値                       |
 | ---------------- | ------------------------- |
-| `:channel_class` | チャンネルのクラス名      |
+| `:channel_class` | チャネルのクラス名      |
 | `:data`          | 日付（ハッシュ）          |
 | `:via`           | 経由先                    |
 
@@ -566,13 +579,13 @@ INFO. キャッシュストアが独自のキーを追加することがあり�
 
 | キー              | 値                       |
 | ---------------- | ------------------------- |
-| `:channel_class` | チャンネルのクラス名      |
+| `:channel_class` | チャネルのクラス名      |
 
 #### transmit_subscription_rejection.action_cable
 
 | キー              | 値                       |
 | ---------------- | ------------------------- |
-| `:channel_class` | チャンネルのクラス名      |
+| `:channel_class` | チャネルのクラス名      |
 
 #### broadcast.action_cable
 
@@ -634,7 +647,7 @@ INFO. キャッシュストアが独自のキーを追加することがあり�
 | ------------ | --------------------------- |
 | `:key`       | セキュアトークン             |
 | `:service`   | サービス名                   |
-| `:exist`     | ファイルかblobが存在するかどうか |
+| `:exist`     | ファイルまたはblobが存在するかどうか |
 
 #### service_url.active_storage
 
@@ -701,8 +714,7 @@ instrumentationの途中で例外が発生すると、ペイロードにその�
 
 独自のイベントを自由に追加できます。イベント追加は、`ActiveSupport::Notifications`で
 すべてまかなえます。`name`、`payload`、ブロックを指定して`instrument`を呼び出すだけで追加完了します。
-通知は、ブロックが戻ってから送信されます。`ActiveSupport`では、開始時刻、終了時刻、
-ユニークIDが生成されます。`instrument`呼び出しに渡されるすべてのデータがペイロードに含まれます。
+通知は、ブロックが戻ってから送信されます。`ActiveSupport`では、開始時刻、終了時刻、ユニークIDが生成されます。`instrument`呼び出しに渡されるすべてのデータがペイロードに含まれます。
 
 以下に例を示します。
 
@@ -720,5 +732,15 @@ ActiveSupport::Notifications.subscribe "my.custom.event" do |name, started, fini
 end
 ```
 
-独自のイベントを作成するときは、Railsの規約に従ってください。形式は「`event.library`」を使います
+以下のように、instrumentationにブロックを渡さずに呼び出すことも可能です。これにより、instrumentationインフラストラクチャを他のメッセージング用途に活用できます。
+
+```ruby
+ActiveSupport::Notifications.instrument "my.custom.event", this: :data
+
+ActiveSupport::Notifications.subscribe "my.custom.event" do |name, started, finished, unique_id, data|
+  puts data.inspect # {:this=>:data}
+end
+```
+
+独自のイベントを作成するときは、Railsの規約に従ってください。形式は「`event.library`」を使います。
 たとえば、アプリケーションがツイートを送信するのであれば、イベント名は`tweet.twitter`となります。
