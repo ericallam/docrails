@@ -3,15 +3,15 @@ Active Storage の概要
 
 このガイドはActive Recordモデルにファイルを添付する方法について説明します。
 
-このガイドを読むと下記の内容が理解できるでしょう。
+本ガイドの内容:
 
-* 1つまたは複数のファイルを1つのレコードに添付する方法。
-* 添付ファイルを消す方法
+* あるレコードに1個または複数のファイルを添付する方法
+* 添付ファイルを削除する方法
 * 添付ファイルへのリンク方法
 * バリアントを利用して画像を変形する方法
-* PDFや動画に代表されるような非画像ファイルの生成方法
-* あなたのアプリケーションサーバーを介して、ブラウザからストレージサービスに直接ファイルをアップロードする方法
-* テスト中に保存されたファイルをクリーンアップする方法
+* PDFや動画などの非画像ファイルの内容を代表するプレビュー画像の生成方法
+* ブラウザからストレージサービスに直接ファイルをアップロードする方法
+* テスト中に保存したファイルをクリーンアップする方法
 * 追加のストレージサービスをサポートするための実装方法
 
 --------------------------------------------------------------------------------
@@ -21,19 +21,19 @@ Active Storageについて
 -----------------------
 
 Active Storageは、Amazon S3、Google Cloud Storage、Microsoft Azure Storageなどのクラウドストレージサービスへのファイルのアップロードや、ファイルをActive Recordオブジェクトにアタッチする機能を提供します。
-development環境とtest環境向けのローカルディスクベースのサービスを利用できるようになっており、ファイルを下位のサービスにミラーリングしてバックアップや移行に用いることもできます。
+development環境とtest環境向けのローカルディスクベースのサービスを利用できるようになっており、ファイルを下位のサービスにミラーリングしてバックアップや移行に用いることも可能です。
 
-Active Storageを利用すると、アプリケーションにアップロードした画像の変形や、PDFや動画といった画像以外のアップロードファイルの画像表示の生成、任意のファイルからのメタデータ抽出が可能になります。
+Active Storageは、アプリケーションにアップロードした画像の変形や、PDFや動画などの画像以外のアップロードファイルの内容を代表する画像の生成、任意のファイルからのメタデータ抽出にも利用できます
 
 ### 要件
 
 Active Storageの多くの機能は、Railsによってインストールされないサードパーティソフトウェアに依存しているため、別途インストールが必要です。
 
-* [libvips](https://github.com/libvips/libvips) v8.6以降または[ImageMagick](https://imagemagick.org/index.php): 画像解析や画像変形用
+* [libvips](https://github.com/libvips/libvips) v8.6以降（または[ImageMagick](https://imagemagick.org/index.php)）: 画像解析や画像変形用
 * [ffmpeg](http://ffmpeg.org/) v3.4以降: 動画や音声の解析や動画プレビュー用
 * [poppler](https://poppler.freedesktop.org/)または[muPDF](https://mupdf.com/): PDFプレビュー用
 
-画像分析や画像変形のために`image_processing` gemも必要です。`Gemfile`の`image_processing` gemをコメント解除するか、必要に応じて追加します。
+画像分析や画像加工のために`image_processing` gemも必要です。`Gemfile`の`image_processing` gemをコメント解除するか、必要に応じて追加します。
 
 ```ruby
 gem "image_processing", ">= 1.2"
@@ -70,7 +70,7 @@ amazon:
   access_key_id: ""
   secret_access_key: ""
   bucket: ""
-  region: "" # e.g. 'us-east-1'
+  region: "" # 例: 'ap-northeast-1'
 ```
 
 利用するサービスをActive Storageに認識させるには、`Rails.application.config.active_storage.service`を設定します。
@@ -95,7 +95,7 @@ config.active_storage.service = :amazon
 config.active_storage.service = :test
 ```
 
-内蔵されているサービスアダプタ(`Disk`や`S3`など)およびそれらに必要な設定について、詳しくは後述します。
+組み込みのサービスアダプタ（`Disk`や`S3`など）およびそれらに必要な設定について、詳しくは後述します。
 
 NOTE: 環境固有の設定ファイルが優先されます。たとえばproduction環境では、`config/storage/production.yml`ファイルが存在すれば`config/storage.yml`ファイルよりも優先されます。
 
@@ -157,7 +157,7 @@ amazon:
     server_side_encryption: "" # 'aws:kms'または'AES256'
 ```
 
-TIP: HTTPタイムアウトやリトライ上限数はアプリケーションに適した値を設定しましょう。特定の障害シナリオでは、デフォルトのAWSクライアント設定によってコネクションが数分間保持されてしまい、リクエストの待ち行列が発生する可能性があります。
+TIP: HTTPタイムアウトやリトライ上限数には、アプリケーションに適した値を設定してください。特定の障害シナリオでは、デフォルトのAWSクライアント設定によってコネクションが数分間保持されてしまい、リクエストの待ち行列が発生する可能性があります。
 
 `Gemfile`に[`aws-sdk-s3`](https://github.com/aws/aws-sdk-ruby) gemを追加します。
 
@@ -180,7 +180,7 @@ digitalocean:
   # ...その他のオプション
 ```
 
-この他にもさまざまなオプションが利用できます。[AWS S3 Client](https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/S3/Client.html#initialize-instance_method)ドキュメントを参照してください。
+この他にもさまざまなオプションが利用できます。[AWS S3 Client](https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/S3/Client.html#initialize-instance_method) APIドキュメントを参照してください。
 
 
 ### Microsoft Azure Storageサービス
@@ -213,7 +213,7 @@ google:
   bucket: ""
 ```
 
-keyfileパスの代わりに、credentialのハッシュを渡すこともできます。
+keyfileパスの代わりにcredentialのハッシュも渡せます。
 
 ```yaml
 google:
@@ -233,7 +233,7 @@ google:
   bucket: ""
 ```
 
-アップロードされたアセットに設定するCache-Controlメタデータをオプションで提供できます。
+アップロードされたアセットに設定するCache-Controlメタデータをオプションで指定できます。
 
 ```yaml
 google:
@@ -251,7 +251,7 @@ google:
   iam: true
 ```
 
-オプションで、URLに署名するときに特定のGSAを使います。IAMを使う場合は、GSAのメールを受け取るために[メタデータサーバー](https://cloud.google.com/compute/docs/storing-retrieving-metadata)にアクセスしますが、このメタデータサーバーは常に存在するとは限らず（ローカルテスト時など）、デフォルト以外のGSAを使いたい場合もあります。
+オプションで、URLに署名するときに特定のGSAを使えます。IAMを使う場合は、GSAのメールを受け取るために[メタデータサーバー](https://cloud.google.com/compute/docs/storing-retrieving-metadata)にアクセスしますが、このメタデータサーバーは常に存在するとは限らず（ローカルテスト時など）、デフォルト以外のGSAを使いたい場合もあります。
 
 ```yaml
 google:
@@ -271,9 +271,9 @@ gem "google-cloud-storage", "~> 1.11", require: false
 
 ミラーサービスを定義すると、複数のサービスを同期できます。ミラーサービスは、複数の下位サービスにアップロードや削除をレプリケーションします。
 
-ミラーサービスは、production環境でサービス間の移行期で一時的に利用することを目的としています。新しいサービスへのミラーリングを開始し、既存のファイルを古いサービスから新しいサービスにコピーしてから、新しいサービスに全面的に移行できます。
+ミラーサービスは、production環境でサービス間の移行期で一時的に利用するための機能です。新しいサービスへのミラーリングを開始し、既存のファイルを古いサービスから新しいサービスにコピーしてから、新しいサービスに全面的に移行できます。
 
-NOTE: ミラーリングはアトミックではありません。プライマリサービスでアップロードに成功しても、サブサービスでは失敗する可能性があります。新しいサービスを開始する前に、すべてのファイルがコピー完了していることを確認してください。
+NOTE: ミラーリング機能はアトミックではありません。プライマリサービスでアップロードに成功しても、サブサービスでは失敗する可能性があります。新しいサービスを開始する前に、すべてのファイルがコピー完了していることを確認してください。
 
 上で説明したように、ミラーリングするサービスをそれぞれ定義します。ミラーサービスを定義するときは以下のように名前で参照します。
 
@@ -301,11 +301,11 @@ production:
 
 すべてのセカンダリサービスがアップロードを受信しますが、ダウンロードは常にプライマリサービスで行われます。
 
-ミラーサービスはダイレクトアップロードと互換性があります。新しいファイルはプライマリサービスに直接アップロードされます。ダイレクトアップロードされたファイルをレコードにアタッチすると、バックグラウンドジョブがキューに入れられてセカンダリサービスにコピーされます。
+ミラーサービスはダイレクトアップロードと互換性があります。新しいファイルはプライマリサービスに直接アップロードされます。ダイレクトアップロードされたファイルをレコードにアタッチすると、セカンダリサービスにコピーするバックグラウンドジョブがキューに登録されます。
 
 ### パブリックアクセス
 
-Active Storageは、デフォルトでサービスにプライベートアクセスすることを前提としています。つまり、blobでは単一用途の署名済みURLを生成するということです。blobを一般公開したい場合は、アプリの `config/storage.yml`で以下のように`public: true`を指定します。
+Active Storageは、デフォルトでサービスにプライベートアクセスすることを前提としています。つまり、blobを参照する単一用途の署名済みURLを生成するということです。blobを一般公開したい場合は、アプリの `config/storage.yml`で以下のように`public: true`を指定します。
 
 ```yaml
 gcs: &gcs
@@ -335,7 +335,7 @@ public_gcs:
 
 [`has_one_attached`][]マクロは、レコードとファイルの間に1対1のマッピングを設定します。レコード1件ごとに1個のファイルを添付できます。
 
-たとえば、アプリケーションに`User`モデルがあるとします。各userにavatarを持たせたい場合は、以下のように`User`モデルを定義します。
+たとえば、アプリケーションに`User`モデルがあるとします。各userにアバター画像を添付したい場合は、以下のように`User`モデルを定義します。
 
 ```ruby
 class User < ApplicationRecord
@@ -349,7 +349,7 @@ Rails 6.0以降を使う場合は、以下のようにモデルのジェネレ�
 bin/rails generate model User avatar:attachment
 ```
 
-以下のように書くことでavatar付きのuserを作成できます。
+以下のように書くことでアバター画像付きのuserを作成できます。
 
 ```erb
 <%= form.file_field :avatar %>
@@ -370,13 +370,13 @@ class SignupController < ApplicationController
 end
 ```
 
-既存のuserにavatarを添付するには[`avatar.attach`][Attached::One#attach]を呼び出します。
+既存のuserにアバター画像を添付するには[`avatar.attach`][Attached::One#attach]を呼び出します。
 
 ```ruby
 user.avatar.attach(params[:avatar])
 ```
 
-`avatar.attached?`で特定のuserがavatarを持っているかどうかを調べられます。
+`avatar.attached?`で特定のuserがアバター画像を持っているかどうかを調べられます。
 
 ```ruby
 user.avatar.attached?
@@ -390,17 +390,17 @@ class User < ApplicationRecord
 end
 ```
 
-生成される添付可能オブジェクトで`variant`メソッドを呼ぶと、添付ファイルごとに特定のバリアント（サイズ違いの画像）を設定できます。
+生成される添付可能オブジェクトで`variant`メソッドを呼ぶと、添付ファイルごとに特定のバリアント（サイズ違いの画像）を生成できます。
 
 ```ruby
 class User < ApplicationRecord
   has_one_attached :avatar do |attachable|
-    attachable.variant :thumb, resize: "100x100"
+    attachable.variant :thumb, resize_to_limit: [100, 100]
   end
 end
 ```
 
-アバターのサムネイルバリアントを取得するには`avatar.variant(:thumb)`を呼び出します。
+アバター画像のサムネイルバリアントを取得するには`avatar.variant(:thumb)`を呼び出します。
 
 ```erb
 <%= image_tag user.avatar.variant(:thumb) %>
@@ -444,13 +444,13 @@ end
 @message.images.attach(params[:images])
 ```
 
-あるメッセージに何らかの画像がアタッチされているかどうかを調べるには、[`images.attached?`][Attached::Many#attached?]を呼び出します。
+あるメッセージに何らかの画像が添付されているかどうかを調べるには、[`images.attached?`][Attached::Many#attached?]を呼び出します。
 
 ```ruby
 @message.images.attached?
 ```
 
-デフォルトサービスの上書きは、`has_one_attached`と同様に`service`オプションで行えます。
+`has_one_attached`と同様に、`service`オプションでデフォルトサービスを上書きできます。
 
 ```ruby
 class Message < ApplicationRecord
@@ -458,12 +458,12 @@ class Message < ApplicationRecord
 end
 ```
 
-特定のvariantの設定も、`has_one_attached`と同様に、生成される添付可能オブジェクトで`variant`メソッドを呼ぶことで行なえます。
+`has_one_attached`と同様に、生成される添付可能オブジェクトで`variant`メソッドを呼ぶことで、特定のバリアント画像を設定できます。
 
 ```ruby
 class Message < ApplicationRecord
   has_many_attached :images do |attachable|
-    attachable.variant :thumb, resize: "100x100"
+    attachable.variant :thumb, resize_to_limit: [100, 100]
   end
 end
 ```
@@ -474,19 +474,19 @@ end
 
 ### File/IO Objectsをアタッチする
 
-HTTPリクエスト経由では配信されないファイルをアタッチする必要が生じる場合があります。たとえば、ディスク上で生成したファイルやユーザーが送信したURLからダウンロードしたファイルをアタッチしたい場合や、モデルのテストでfixtureファイルをアタッチしたい場合などが考えられます。これを行うには、以下のようにオープンIOオブジェクトとファイル名を1つ以上含むハッシュを渡します。
+HTTPリクエスト経由では配信されないファイルをアタッチする必要が生じる場合があります。たとえば、ディスク上で生成したファイルやユーザーが送信したURLからダウンロードしたファイルをアタッチしたい場合や、モデルのテストでfixtureファイルをアタッチしたい場合などが考えられます。これを行うには、以下のように`open` IOオブジェクトとファイル名を1つ以上含むハッシュを渡します。
 
 ```ruby
 @message.images.attach(io: File.open('/path/to/file'), filename: 'file.pdf')
 ```
 
-可能であれば、`content_type:`も指定しておきましょう。Active Storageは、渡されたデータからファイルのcontent_typeの判定を試みますが、判定できない場合は指定のcontent_typeにフォールバックします。
+可能であれば、`content_type:`オプションも指定しておきましょう。Active Storageは、渡されたデータからファイルのContent-Typeの判定を試みますが、判定できない場合は指定のContent-Typeにフォールバックします。
 
 ```ruby
 @message.images.attach(io: File.open('/path/to/file'), filename: 'file.pdf', content_type: 'application/pdf')
 ```
 
-以下のように`content_type`に`identify: false`を渡すと、content_typeの推測をバイパスできます。
+以下のように`content_type`に`identify: false`を渡すと、Content-Typeの推測をバイパスできます。
 
 ```ruby
 @message.images.attach(
@@ -497,7 +497,7 @@ HTTPリクエスト経由では配信されないファイルをアタッチす�
 )
 ```
 
-`content_type:`を指定せず、Active Storageがファイルのcontent_typeを自動的に判別できない場合は、デフォルトで`application/octet-stream`が設定されます。
+`content_type:`を指定せず、Active StorageがファイルのContent-Typeを自動的に判別できない場合は、デフォルトで`application/octet-stream`が設定されます。
 
 ファイルを削除する
 -----------------------------
@@ -525,7 +525,7 @@ WARNING: Active Storageのすべてのコントローラは、デフォルトで
 
 ### リダイレクトモード
 
-[`url_for`][ActionView::RoutingUrlFor#url_for]ビューヘルパーにblobを渡すとblobのパーマネントURLを生成できます。生成されるURLでは、そのblogの[`RedirectController`][`ActiveStorage::Blobs::RedirectController`]にルーティングされる[`signed_id`][ActiveStorage::Blob#signed_id]が使われます。
+[`url_for`][ActionView::RoutingUrlFor#url_for]ビューヘルパーにblobを渡すと、永続的なblob URLを生成できます。生成されるURLでは、そのblogの[`RedirectController`][`ActiveStorage::Blobs::RedirectController`]にルーティングされる[`signed_id`][ActiveStorage::Blob#signed_id]が使われます。
 
 ```ruby
 url_for(user.avatar)
@@ -553,7 +553,7 @@ Rails.application.routes.url_helpers.rails_blob_path(user.avatar, only_path: tru
 
 ### プロキシモード
 
-ファイルをプロキシすることもオプションで可能です。これは、リクエストに応じてアプリケーションサーバーがファイルデータをストレージサービスからダウンロードするということです。プロキシモードは、CDN上のファイルを配信する場合に便利です。
+ファイルをプロキシすることもオプションで可能です。この場合、リクエストのレスポンスで、アプリケーションサーバーがファイルデータをストレージサービスからダウンロードします。プロキシモードは、CDN上のファイルを配信する場合に便利です。
 
 以下のように、Active Storageがデフォルトでプロキシを利用するように設定できます。
 
@@ -570,7 +570,7 @@ Rails.application.config.active_storage.resolve_model_to_route = :rails_storage_
 
 #### Active Storageの手前にCDNを配置する
 
-また、Active Storageの添付ファイルにCDNを使うには、URLをプロキシモードで生成してアプリで提供し、CDNで追加設定を行わずに添付ファイルがCDNでキャッシュされるようにする必要があります。Active Storageのデフォルトのプロキシコントローラは、レスポンスをキャッシュするようにCDNに指示するHTTPヘッダーを設定するので、すぐに利用できます。
+また、Active Storageの添付ファイルでCDNを使うには、URLをプロキシモードで生成してアプリで提供し、CDNで追加設定を行わずに添付ファイルがCDNでキャッシュされるようにする必要があります。Active Storageのデフォルトのプロキシコントローラは、レスポンスをキャッシュするようにCDNに指示するHTTPヘッダーを設定するので、すぐに利用できます。
 
 また、生成されるURLがアプリのホストではなくCDNのホストを使うようにする必要もあります。これを行う方法は複数ありますが、一般にはアプリの`config/routes.rb`ファイルを調整して、添付ファイルやそのバリエーションのURLが正しく生成されるようにします。たとえば以下を追加できます。
 
@@ -649,7 +649,7 @@ config.active_storage.draw_routes = false
 ファイルをダウンロードする
 -----------------
 
-アップロードしたblobに対して処理を行う（別フォーマットへの変換など）必要が生じることがあります。`ActiveStorage::Blob#download`を用いてblobのバイナリデータをメモリに読み込めます。
+アップロードしたblobに対して処理を行う必要がある場合（別フォーマットへの変換など）は、[`download`][Blob#download]を用いてblobのバイナリデータをメモリに読み込めます。
 
 ```ruby
 binary = user.avatar.download
@@ -709,14 +709,14 @@ Active Storageは、ファイルのさまざまな表示方法をサポートし
 </ul>
 ```
 
-`representation`の内部では、画像に対して`variant`メソッドを呼び出し、プレビュー可能なファイルであれば`preview`メソッドを呼び出します。これらのメソッドを直接呼ぶことも可能です。
+`representation`の内部では、画像に対して`variant`メソッドを呼び出し、プレビュー可能なファイルであれば`preview`メソッドを呼び出します。これらのメソッドは直接呼ぶことも可能です。
 
 [`representable?`]: https://api.rubyonrails.org/classes/ActiveStorage/Blob/Representable.html#method-i-representable-3F
 [`representation`]: https://api.rubyonrails.org/classes/ActiveStorage/Blob/Representable.html#method-i-representation
 
 ### 遅延読み込みとイミディエイト読み込み
 
-Active Storageは、デフォルトで表示処理を遅延します。
+Active Storageは、デフォルトで表示をlazyに処理します。
 
 ```ruby
 image_tag file.representation(resize_to_limit: [100, 100])
@@ -724,7 +724,7 @@ image_tag file.representation(resize_to_limit: [100, 100])
 
 上のコードで生成される`<img>`タグには、[`ActiveStorage::Representations::RedirectController`][]を指す`src`属性が追加されます。ブラウザがこのコントローラにリクエストを送信すると、リモートサービスへの`302`リダイレクトが返されます（[プロキシモード](#プロキシモード)の場合はファイルのコンテンツが返されます）。
 
-ファイルを遅延読み込みすることで、[単一用途URL](#パブリックアクセス)のような機能を使っても最初のページ読み込みが遅くならないようにできます。
+ファイルが遅延読み込みされることで、[単一用途URL](#パブリックアクセス)のような機能を使っても最初のページ読み込みが遅くならなくなります。
 
 遅延読み込みはほとんどのケースに適しています。
 
@@ -750,7 +750,7 @@ end
 画像を変形する
 ----------------
 
-画像を変形することで、画像を任意のサイズで表示できるようになります。
+画像を変形（transform）することで、画像を任意のサイズで表示できるようになります。
 
 サイズ違いの画像を作成するには、添付ファイルで[`variant`][]を呼び出します。このメソッドには、バリアントプロセッサでサポートされている任意の変形処理を渡せます。
 
@@ -758,7 +758,7 @@ end
 
 バリアントがリクエストされると、Active Storageは画像フォーマットに応じて自動的に変形処理を適用します。
 
-1. content typeが可変（`config.active_storage.variable_content_types`の設定に基づく）で、Web画像を考慮しない場合（`config.active_storage.web_image_content_types`の設定に基づく）は、PNGに変換される。
+1. Content-Typeが可変（`config.active_storage.variable_content_types`の設定に基づく）で、Web画像を考慮しない場合（`config.active_storage.web_image_content_types`の設定に基づく）は、PNGに変換される。
 
 2. `quality`が指定されていない場合は、その画像のデフォルトの画像品質がバリアントプロセッサで使われる。
 
@@ -784,7 +784,7 @@ MiniMagickとVipsの互換性は完全ではないため、MiniMagickを利用�
 ファイルのプレビュー
 -----------------------
 
-画像でないファイルの中にはプレビューできるものもあります（画像として表示されます）。たとえば、動画ファイルの最初のフレームを抽出してプレビューできます。Active Storageでは、動画とPDFドキュメントについてすぐ使えるプレビュー機能をサポートしています。遅延生成されるプレビューへのリンクを作成するには、以下のように添付ファイルの[`preview`][]メソッドを使います。
+画像でないファイルの中にはプレビュー可能なものもあります（画像として表示されます）。たとえば、動画ファイルの最初のフレームを抽出してプレビューできます。Active Storageでは、動画とPDFドキュメントについてすぐ使えるプレビュー機能をサポートしています。遅延生成されるプレビューへのリンクを作成するには、以下のように添付ファイルの[`preview`][]メソッドを使います。
 
 ```erb
 <%= image_tag message.video.preview(resize_to_limit: [100, 100]) %>
@@ -907,7 +907,7 @@ Diskサービスはアプリのオリジンを共有するので、CORS設定は
 </Cors>
 ```
 
-### ダイレクトアップロードのJavascriptイベント
+### ダイレクトアップロードのJavaScriptイベント
 
 | イベント名 | イベントの対象 | イベントデータ（`event.detail`） | 説明 |
 | --- | --- | --- | --- |
@@ -1017,7 +1017,7 @@ input[type=file][data-direct-upload-url][disabled] {
 
 ### ライブラリやフレームワークとの統合
 
-ダイレクトアップロード機能をJavaScriptフレームワークから利用したい場合や、ドラッグアンドドロップをカスタマイズしたい場合は、`DirectUpload`クラスを利用して行えます。選択したライブラリからファイルを1件受信したら、`DirectUpload`をインスタンス化してそのインスタンスの`create`メソッドを呼び出します。`create`には、アップロード完了時に呼び出すコールバックを1つ渡せます。
+ダイレクトアップロード機能をJavaScriptフレームワークから利用したい場合や、ドラッグアンドドロップをカスタマイズしたい場合は、`DirectUpload`クラスを利用できます。選択したライブラリからファイルを1件受信したら、`DirectUpload`をインスタンス化してそのインスタンスの`create`メソッドを呼び出します。`create`には、アップロード完了時に呼び出すコールバックを1つ渡せます。
 
 ```js
 import { DirectUpload } from "@rails/activestorage"
@@ -1065,7 +1065,7 @@ const uploadFile = (file) => {
 }
 ```
 
-ファイルアップロードの進行状況をトラッキングする必要がある場合は、`DirectUpload`コンストラクタに5番目のパラメータを渡せます。`DirectUpload`はアップロード中にオブジェクトの`directUploadWillStoreFileWithXHR`メソッドを呼び出すので、以後はXHRで独自のプログレスハンドラをバインドできるようになります。
+ファイルアップロードの進行状況をトラッキングする必要がある場合は、`DirectUpload`コンストラクタに第5パラメータを渡せます。`DirectUpload`はアップロード中にオブジェクトの`directUploadWillStoreFileWithXHR`メソッドを呼び出すので、以後はXHRで独自のプログレスハンドラをバインドできるようになります。
 
 ```js
 import { DirectUpload } from "@rails/activestorage"
