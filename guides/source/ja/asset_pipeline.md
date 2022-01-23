@@ -107,7 +107,7 @@ productionモードでは、Railsはプリコンパイルされたファイル�
 
 ### コントローラ固有のアセット
 
-Railsでscaffoldやコントローラを生成すると、そのコントローラ用のCSS（`sass-rails` gemが`Gemfile`で有効になっている場合はSCSS）も生成されます。scaffold生成時には、さらに`scaffolds.css` (`sass-rails` gemが`Gemfile`で有効になっている場合は`scaffolds.css.scss`) も生成されます。
+Railsでscaffoldやコントローラを生成すると、そのコントローラ用のCSS（`sass-rails` gemが`Gemfile`で有効になっている場合はSCSS）も生成されます。scaffold生成時には、さらに`scaffolds.css` (`sass-rails` gemが`Gemfile`で有効になっている場合は`scaffolds.scss`) も生成されます。
 
 たとえば`ProjectsController`を生成すると、`app/assets/stylesheets/projects.scss`ファイルが新しく作成されます。`require_tree`ディレクティブがあることで、これらのファイルを即座にアプリケーションから利用できます。`require_tree`について詳しくは[マニフェストファイルとディレクティブ](#マニフェストファイルとディレクティブ)を参照してください。
 
