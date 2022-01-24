@@ -22,7 +22,7 @@ Railsガイドを読んで、誤字・脱字・誤訳などを見かけました
 
 もし原著の間違いを見つけましたら、Railsガイドの『[Railsのドキュメントに貢献する](https://railsguides.jp/contributing_to_ruby_on_rails.html#rails%E3%81%AE%E3%83%89%E3%82%AD%E3%83%A5%E3%83%A1%E3%83%B3%E3%83%88%E3%81%AB%E8%B2%A2%E7%8C%AE%E3%81%99%E3%82%8B)』を参考にしてください。
 
-『[Railsガイド](https://railsguides.jp/)』および『[Rails Guides](https://guides.rubyonrails.org/)』の品質向上に向けて、皆さまのご協力が得られれば嬉しいです ;)
+『[Railsガイド](https://railsguides.jp/)』および『[Rails Guides](https://guides.rubyonrails.org/)』の品質向上に向けて、皆さまのご協力が得られれば嬉しいです :pray: :sparkles: 
 
 ### ブラウザでRailsガイドの修正を提案する (オススメ)
 
@@ -34,7 +34,7 @@ Railsガイドを読んで、誤字・脱字・誤訳などを見かけました
 4. 気になる箇所を修正し、修正内容にタイトルと説明文を付け、Propose file change をクリックする
 5. 修正内容を確認し、問題なければ Create pull request をクリックする
 
-以上で完了です。提案されたRailsガイドの修正はコミッターによって再確認され、問題なければ提案された内容が反映されます。もし問題があってもコミッター側で気付いて修正することができるので、まずはお気軽に提案してみてください ;)
+以上で完了です。提案されたRailsガイドの修正はコミッターによって再確認され、問題なければ提案された内容が反映されます。もし問題があってもコミッター側で気付いて修正することができるので、まずはお気軽に提案してみてください :wink:
 
 
 ## Railsガイドの生成方法
@@ -61,7 +61,7 @@ Pull Request を送る前に生成結果を確認したい場合は下記をご�
 
 - PR が送られると、[railsguides.jp の GitHub Actions](https://github.com/yasslab/railsguides.jp/actions) が走ります。
 - CI が通らなかった場合は、該当箇所を修正してください。（`bundle exec rake test`でローカル環境でも確認できます）
-- マージされない限り本番環境には反映されないので、PR は気軽に送っていただければ ;)
+- マージされない限り本番環境には反映されないので、PR は気軽に送ってください! 😆👌
 
 <!--
 ## 翻訳方法の変遷
