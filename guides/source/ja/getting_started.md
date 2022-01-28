@@ -57,7 +57,7 @@ Railsをインストールする前に、必要な要件が自分のシステム
 
 ```bash
 $ ruby -v
-ruby 2.7.0
+ruby 3.0.1
 ```
 
 RailsではRubyバージョン2.7.0以降が必須です。これより低いバージョン（2.3.7や1.8.7など）が表示された場合は、新たにRubyをインストールする必要があります。
@@ -113,7 +113,7 @@ $ gem install rails
 $ rails --version
 ```
 
-"Rails 7.0.0"などのバージョンが表示されたら、次に進みましょう。
+"Rails 7.0.1"などのバージョンが表示されたら、次に進みましょう。
 
 ### ブログアプリケーションを作成する
 
@@ -366,7 +366,7 @@ $ bin/rails console
 以下のような`irb`プロンプトが表示されるはずです。
 
 ```
-Loading development environment (Rails 7.0.0)
+Loading development environment (Rails 7.0.1)
 irb(main):001:0>
 ```
 
