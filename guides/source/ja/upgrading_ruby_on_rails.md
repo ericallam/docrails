@@ -158,7 +158,7 @@ to be an error condition in future versions of Rails.
 
 コレクションは以後frozenになり、これらのパスからオートロードできるようになります。特に、これらのパスから初期化中にオートロードできるようになります。これらのパスは、`Rails.autoloaders.once`オートローダーで管理されます。このオートローダーはリロードを行わず、オートロードやeager loadingのみを行います。
 
-環境設定が完了した後でこの設定を行ったときに`FrozenError`が発生しする場合は、コードの置き場所を移動してください。
+環境設定が完了した後でこの設定を行ったときに`FrozenError`が発生する場合は、コードの置き場所を移動してください。
 
 ### `ActionDispatch::Request#content_type`が Content-Typeヘッダーをそのまま返すようになった
 
