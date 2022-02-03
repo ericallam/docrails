@@ -304,7 +304,7 @@ end
 
 ```ruby
 class Promotion < ApplicationRecord
-  validates :start_date, comparison: { greater_than: :end_date }
+  validates :end_date, comparison: { greater_than: :start_date }
 end
 ```
 
