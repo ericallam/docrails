@@ -416,60 +416,19 @@ config.active_record.encryption.extend_queries = true
 
 利用可能な設定オプションは以下のとおりです。
 
-**`support_unencrypted_data`**
-
-* `true`: 非暗号化データを通常どおり読み出せる。
-* `false`（デフォルト）: 非暗号化データを読み出すとエラーになる。
-
-
-**`extend_queries`**
-
-* `true`: 決定論的に暗号化された属性を参照するクエリが、必要に応じて追加の値を含むように修正される。追加される値は非暗号化（`support_unencrypted_data`が`true`の場合）または以前の暗号化スキームで暗号化される（`previous:`で指定された場合）。デフォルトは`false`。|
-
-
-**`encrypt_fixtures`**
-
-* `true`: フィクスチャ内の暗号化可能な属性が読み込み時に自動的に暗号化される。デフォルトは`false`。
-
-
-**`store_key_references`**
-
-* `true`: 暗号化キーへの参照が暗号化済みメッセージのヘッダ内に保存され、キーが複数使われる場合の暗号化が高速になる。デフォルトは`false`。
-
-
-**`add_to_filter_parameters`**
-
-* `true`: 暗号化された属性名が自動的に[フィルタ対象paramsリスト](/configuring.html#rails全般の設定)に追加され、ログに出力されなくなる。デフォルトは`true`。
-
-
-**`excluded_from_filter_parameters`**
-
-* paramsのリストをフィルタしないよう設定する（`add_to_filter_parameters`が`true`の場合）。デフォルトは`[]`。
-
-
-**`validate_column_size`**
-
-* カラムのサイズに応じたバリデーションを追加する。圧縮が効きやすいはずのペイロードを用いる巨大な値を保存しないために推奨されている。デフォルトは`true`。
-
-
-**`primary_key`**
-
-* rootデータ暗号化キーの導出に用いるキーまたはキーのリスト。キーの利用法はキープロバイダの設定によって異なる。`active_record_encryption.primary_key` credentialで設定するのが望ましい。
-
-
-**`deterministic_key`**
-
-* 決定論的暗号化で用いるキーまたはキーのリスト。`active_record_encryption.deterministic_key` credentialで設定するのが望ましい。
-
-
-**`key_derivation_salt`**
-
-* キー導出時に用いるソルト（salt）。`active_record_encryption.key_derivation_salt` credentialで設定するのが望ましい。
-
-
-**`forced_encoding_for_deterministic_encryption`**
-
-* 決定論的に暗号化された属性のデフォルトエンコーディング。このオプションを`nil`にするとエンコードの強制を無効化できる。デフォルトは`Encoding::UTF_8`。
+| キー                                                          | 値                                                        |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| support_unencrypted_data                                   | `true`: 非暗号化データを通常どおり読み出せる。 `false`（デフォルト）: 非暗号化データを読み出すとエラーになる。 |
+| extend_queries | `true`: 決定論的に暗号化された属性を参照するクエリが、必要に応じて追加の値を含むように修正される。追加される値は非暗号化（`support_unencrypted_data`が`true`の場合）または以前の暗号化スキームで暗号化される（`previous:`で指定された場合）。デフォルトは`false`。|
+| encrypt_fixtures                                           | `true`: フィクスチャ内の暗号化可能な属性が読み込み時に自動的に暗号化される。デフォルトは`false`。|
+| store_key_references                                       | `true`: 暗号化キーへの参照が暗号化済みメッセージのヘッダ内に保存され、キーが複数使われる場合の暗号化が高速になる。デフォルトは`false`。|
+| add_to_filter_parameters                                   | `true`: 暗号化された属性名が自動的に[フィルタ対象paramsリスト](/configuring.html#rails全般の設定)に追加され、ログに出力されなくなる。デフォルトは`true`。|
+| excluded_from_filter_parameters                            | paramsのリストをフィルタしないよう設定する（`add_to_filter_parameters`が`true`の場合）。デフォルトは`[]`。|
+| validate_column_size                                        | カラムのサイズに応じたバリデーションを追加する。圧縮が効きやすいはずのペイロードを用いる巨大な値を保存しないために推奨されている。デフォルトは`true`。|
+| primary_key                                                 | rootデータ暗号化キーの導出に用いるキーまたはキーのリスト。キーの利用法はキープロバイダの設定によって異なる。`active_record_encryption.primary_key` credentialで設定するのが望ましい。|
+| deterministic_key                                          | 決定論的暗号化で用いるキーまたはキーのリスト。`active_record_encryption.deterministic_key` credentialで設定するのが望ましい。|
+| key_derivation_salt                                        | キー導出時に用いるソルト（salt）。`active_record_encryption.key_derivation_salt` credentialで設定するのが望ましい。|
+| forced_encoding_for_deterministic_encryption | 決定論的に暗号化された属性のデフォルトエンコーディング。このオプションを`nil`にするとエンコードの強制を無効化できる。デフォルトは`Encoding::UTF_8`。|
 
 NOTE: キーの保存場所には、Rails組み込みのcredentialサポートを用いることが推奨されます。設定プロパティを用いて手動で設定したい場合は、キーを誤ってコードと一緒にリポジトリにコミットしないようご注意ください（環境変数などを用いること）。
 

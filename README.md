@@ -15,6 +15,7 @@ https://railsguides.jp/
 Ruby on Rails チュートリアル：実例を使ってRailsを学ぼう   
 https://railstutorial.jp/
 
+<br>
 
 ## フィードバックについて
 
@@ -22,7 +23,7 @@ Railsガイドを読んで、誤字・脱字・誤訳などを見かけました
 
 もし原著の間違いを見つけましたら、Railsガイドの『[Railsのドキュメントに貢献する](https://railsguides.jp/contributing_to_ruby_on_rails.html#rails%E3%81%AE%E3%83%89%E3%82%AD%E3%83%A5%E3%83%A1%E3%83%B3%E3%83%88%E3%81%AB%E8%B2%A2%E7%8C%AE%E3%81%99%E3%82%8B)』を参考にしてください。
 
-『[Railsガイド](https://railsguides.jp/)』および『[Rails Guides](https://guides.rubyonrails.org/)』の品質向上に向けて、皆さまのご協力が得られれば嬉しいです ;)
+『[Railsガイド](https://railsguides.jp/)』および『[Rails Guides](https://guides.rubyonrails.org/)』の品質向上に向けて、皆さまのご協力が得られれば嬉しいです :pray: :sparkles: 
 
 ### ブラウザでRailsガイドの修正を提案する (オススメ)
 
@@ -34,8 +35,9 @@ Railsガイドを読んで、誤字・脱字・誤訳などを見かけました
 4. 気になる箇所を修正し、修正内容にタイトルと説明文を付け、Propose file change をクリックする
 5. 修正内容を確認し、問題なければ Create pull request をクリックする
 
-以上で完了です。提案されたRailsガイドの修正はコミッターによって再確認され、問題なければ提案された内容が反映されます。もし問題があってもコミッター側で気付いて修正することができるので、まずはお気軽に提案してみてください ;)
+以上で完了です。提案されたRailsガイドの修正はコミッターによって再確認され、問題なければ提案された内容が反映されます。もし問題があってもコミッター側で気付いて修正することができるので、まずはお気軽に提案してみてください :wink:
 
+<br>
 
 ## Railsガイドの生成方法
 
@@ -61,7 +63,7 @@ Pull Request を送る前に生成結果を確認したい場合は下記をご�
 
 - PR が送られると、[railsguides.jp の GitHub Actions](https://github.com/yasslab/railsguides.jp/actions) が走ります。
 - CI が通らなかった場合は、該当箇所を修正してください。（`bundle exec rake test`でローカル環境でも確認できます）
-- マージされない限り本番環境には反映されないので、PR は気軽に送っていただければ ;)
+- マージされない限り本番環境には反映されないので、PR は気軽に送ってください! 😆👌
 
 <!--
 ## 翻訳方法の変遷
@@ -117,21 +119,23 @@ Pull Request を送る前に生成結果を確認したい場合は下記をご�
 </details>
 -->
 
+<br>
+
 ## 運営チーム
 
 本リポジトリは『創る』『学ぶ』を支援する [YassLab 株式会社](https://yasslab.jp/ja/) によって制作・運用されております。
 
-📣 【PR】YassLab 社では法人向け研修支援サービスなどを提供しています。ぜひお気軽にご相談ください :pray: :sparkling_heart: 
+📣 【PR】YassLab 社では[研修支援](https://railstutorial.jp/business)や[教育支援](https://railstutorial.jp/partner)、[バナー掲載](https://railsguides.jp/contact)などにも対応しています。まずは無料の導入相談からぜひ! :pray: :sparkling_heart: 
 
 <div>
   <a href="https://yasslab.jp/ja/#for-team">
     <img width="100%" src="/guides/assets/images/yasslab_pr.png"
          alt="Services for Teams by YassLab Inc." />
   </a>
-  <p>【PR END】詳細：<a href="https://yasslab.jp/ja/#for-team">法人・チーム向けサービス - YassLab 株式会社</a></p>
+  <p>詳細：<a href="https://yasslab.jp/ja/#for-team">チーム向けサービス - YassLab 株式会社</a></p>
 </div>
 
-　
+<br>
 
 YassLab 社以外にも、次の方々が協力してくれました! 🤝✨    
 様々なご意見・フィードバックありがとうございます! (＞人＜ )✨
@@ -147,6 +151,7 @@ YassLab 社以外にも、次の方々が協力してくれました! 🤝✨
   - [@willnet](https://github.com/willnet)
 - 👏 他、[Issues](https://github.com/yasslab/railsguides.jp/issues) や [Pull Request](https://github.com/yasslab/railsguides.jp/graphs/contributors) を送ってくださった多くの方々。
 
+<br>
 
 ## ライセンス
 
