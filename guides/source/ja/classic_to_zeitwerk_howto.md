@@ -3,7 +3,7 @@ Classic から Zeitwerk への移行
 
 本ガイドでは、Railsアプリケーションを`classic`モードから`zeitwerk`モードに移行する方法について解説します。
 
-このガイドの内容
+このガイドの内容:
 
 * `classic`モードと`zeitwerk`モードについて
 * `classic`から`zeitwerk`に切り替える理由
@@ -19,9 +19,9 @@ Classic から Zeitwerk への移行
 `classic`モードと`zeitwerk`モードについて
 --------------------------------------------------------
 
-Railsは最初期からRails 5まで、Active Supportで実装されたオートローダーを用いていました。このオートローダーは`classic`と呼ばれ、Rails 6.xでは引き続き利用可能です。Rails 7では`classic`オートローダーが含まれなくなりました。
+Railsは最初期からRails 5まで、Active Supportで実装されたオートローダーを用いていました。このオートローダーは`classic`と呼ばれ、Rails 6.xでは引き続き利用可能です。`classic`オートローダーはRails 7で廃止されました。
 
-Rails 6から、より優れた新しいオートロード方法がRailsに搭載されました。これは[Zeitwerk](https://github.com/fxn/zeitwerk)というgemに一任されています。これが`zeitwerk`モードです。デフォルトでは、Railsフレームワーク6.0および6.1の読み込みはデフォルトで`zeitwerk`モードで実行され、Rails 7で利用できるのは`zeitwerk`モードのみとなります。
+Rails 6から、より優れた新しいオートロード方法がRailsに搭載されました。これは[Zeitwerk](https://github.com/fxn/zeitwerk)というgemに一任されています。これが`zeitwerk`モードです。デフォルトでは、Railsフレームワーク6.0および6.1の読み込みは`zeitwerk`モードで実行され、Rails 7で利用できるのは`zeitwerk`モードのみとなります。
 
 `classic`から`zeitwerk`に切り替える理由
 ----------------------------------------
@@ -41,14 +41,14 @@ Zeitwerkは従来のオートローダーとの互換性をできるだけ維持
 
 本ガイドを読めば、安心してオートローダーを切り替えられます。
 
-何らかの理由で解決方法が見当たらない状況に直面した場合は、 お気軽に[`rails/rails`リポジトリ](https://github.com/rails/rails/issues/new)のissueをオープンして、[`@fxn`](https://github.com/fxn)にメンションしてください。
+何らかの理由で解決方法が見当たらない状況に直面した場合は、お気軽に[`rails/rails`リポジトリ](https://github.com/rails/rails/issues/new)のissueをオープンして、[`@fxn`](https://github.com/fxn)にメンションしてください。
 
 `zeitwerk`モードを有効にする
 -------------------------------
 
 ### Rails 5.x以前のアプリケーションの場合
 
-Rails 6.0より前のバージョンを実行するアプリケーションでは`zeitwerk`モードを利用できません。最低でもRails 6.0にする必要があります。
+Rails 6.0より前のバージョンを実行するアプリケーションでは`zeitwerk`モードを利用できません。Rails 6.0以上が必要です。
 
 ### Rails 6.xアプリケーションの場合
 
@@ -74,17 +74,17 @@ config.autoloader = :zeitwerk
 
 ### Rails 7アプリケーションの場合
 
-Rails 7には`zeitwerk`モードしかないので、このモードを有効するために設定を変更する必要はありません。
+Rails 7には`zeitwerk`モードしかないので、このモードを有効にするために設定を変更する必要はありません。
 
-Rails 7では`config.autoloader=`設定そのものがなくなりました。`config/application.rb`にこの設定がある場合は、その行を削除してください。
+Rails 7では`config.autoloader=`セッターそのものがなくなりました。`config/application.rb`にこの記述がある場合は、その行を削除してください。
 
 アプリケーションが`zeitwerk`モードで動いていることを検証する
 ------------------------------------------------------
 
 アプリケーションが`zeitwerk`モードで動いていることを検証するには、以下を実行します。
 
-```
-bin/rails runner 'p Rails.autoloaders.zeitwerk_enabled?'
+```bash
+$ bin/rails runner 'p Rails.autoloaders.zeitwerk_enabled?'
 ```
 
 `true`が出力されれば、`zeitwek`モードが有効です。
@@ -95,14 +95,14 @@ bin/rails runner 'p Rails.autoloaders.zeitwerk_enabled?'
 
 `zeitwerk`モードを有効にしてから、以下を実行します。
 
-```
-bin/rails zeitwerk:check
+```bash
+$ bin/rails zeitwerk:check
 ```
 
 チェックが成功すると以下のように出力されます。
 
-```
-% bin/rails zeitwerk:check
+```bash
+$ bin/rails zeitwerk:check
 Hold on, I am eager loading the application.
 All is good!
 ```
@@ -115,21 +115,21 @@ Zeitwerkで期待される定数が定義されていないファイルがある
 
 たとえば以下のように出力されたとします。
 
-```
-% bin/rails zeitwerk:check
+```bash
+$ bin/rails zeitwerk:check
 Hold on, I am eager loading the application.
 expected file app/models/vat.rb to define constant Vat
 ```
 
-VATはヨーロッパの税制のことです。 `app/models/vat.rb`では`VAT`が定義済みですが、オートローダーは`Vat`を期待しています。どんな理由でこうなったのでしょうか。
+VATはヨーロッパの税制のことです。`app/models/vat.rb`では`VAT`が定義済みですが、オートローダーは`Vat`を期待しています。どんな理由でこうなったのでしょうか。
 
 ### 略語の扱い
 
 これはZeitwerkで最もありがちな問題で、略語が関係しています。このエラーメッセージが生じた理由を考えてみましょう。
 
-`classic`オートローダーは、すべて大文字の`VAT`をオートロードできます。その理由は、オートローダーの入力に`const_missing `の定数名が使われるからです。`VAT`という定数に対して`underscore`が呼び出されて`vat`が生成され、これを元に`vat.rb`というファイルを検索し、ファイルは正常に見つかります。
+`classic`オートローダーは、すべて大文字の`VAT`をオートロードできます。その理由は、オートローダーの入力に`const_missing `の定数名が使われるからです。`VAT`という定数に対して`underscore`が呼び出されて`vat`が生成され、これを元に`vat.rb`というファイルを検索することで、ファイルが正常に見つかります。
 
-新しいZeitwerkオートローダーの入力はファイルシステムになっています。`vat.rb`というファイルがあると、Zeitwerkは`vat`に対して`camelize`を呼び出し、冒頭のみが大文字の`Vat`が生成されます。これにより、`Vat`という定数名が定義されていることが期待されます。以上がエラーメッセージの内容です。
+新しいZeitwerkオートローダーの入力はファイルシステムです。`vat.rb`というファイルがあると、Zeitwerkは`vat`に対して`camelize`を呼び出し、冒頭のみが大文字の`Vat`が生成されます。これにより、`Vat`という定数名が定義されていることが期待されます。以上がエラーメッセージの内容です。
 
 これは、以下のように`ActiveSupport::Inflector`の語尾活用機能を用いて略語を指定するだけで簡単に修正できます。
 
@@ -151,8 +151,8 @@ end
 
 以上を反映すればチェックはパスします。
 
-```
-% bin/rails zeitwerk:check
+```bash
+$ bin/rails zeitwerk:check
 Hold on, I am eager loading the application.
 All is good!
 ```
@@ -166,7 +166,7 @@ app/models
 app/models/concerns
 ```
 
-`app/models/concerns`ディレクトリはデフォルトではオートロードのパスに属しているので、これがルートディレクトリと見なされます。そのため、デフォルトでは`app/models/concerns/foo.rb`ファイルで定義されるのは`Concerns::Foo`ではなく`Foo`になります。
+`app/models/concerns`ディレクトリはデフォルトではオートロードのパスに属しているので、これがrootディレクトリと見なされます。そのため、デフォルトでは`app/models/concerns/foo.rb`ファイルで定義されるのは`Concerns::Foo`ではなく`Foo`になります。
 
 アプリケーションで`Concerns`が名前空間として使われている場合は、以下の2つの方法があります。
 
@@ -184,7 +184,7 @@ app/models/concerns
 
 プロジェクトによっては、たとえば`API::Base`を定義する`app/api/base.rb`を置き、オートロードパスに`app`を追加することで利用したい場合もあります。
 
-Railsは自動的に`app`のすべてのサブディレクトリもオートロードパスに追加するので（アセットのディレクトリなどは除く）、`app/models/concerns`で起きたのと似たようなネステッドrootディレクトリの問題がここでも起きます。今後この設定はこのままでは機能しません。
+Railsは自動的に`app`のすべてのサブディレクトリ（アセットのディレクトリなどは除く）もオートロードパスに追加するので、`app/models/concerns`で起きたのと似たようなネステッドrootディレクトリの問題がここでも起きます。今後、この設定はこのままでは機能しません。
 
 ただし、以下のようにイニシャライザでオートロードパスから`app/api`を削除すれば現状の構造を維持できます。
 
@@ -194,6 +194,22 @@ ActiveSupport::Dependencies.
   autoload_paths.
   delete("#{Rails.root}/app/api")
 ```
+
+オートロードまたはeager loadingするファイルが存在しないサブディレクトリについては注意が必要です。たとえば、[ActiveAdmin](https://activeadmin.info/)で使うリソースを保存する`app/admin`ディレクトリがアプリケーションにある場合、以下のようにそれらのリソースを無視する必要があります。`assets`ディレクトリなどについても同様の注意が必要です。
+
+```ruby
+# config/initializers/zeitwerk.rb
+Rails.autoloaders.main.ignore(
+  "app/admin",
+  "app/assets",
+  "app/javascripts",
+  "app/views"
+)
+```
+
+上の設定がないと、アプリケーションがこれらのツリーをeager loadingします。読み込まれたファイルは定数を定義していないので、`app/admin`でエラーが発生し、さらに副作用として不要な`View`モジュールも生成されてしまいます。
+
+このように、オートロードのパスに`app`ディレクトリを含めることは一応可能ですが、ややトリッキーになります。
 
 ### オートロードした定数と明示的な名前空間
 
@@ -213,7 +229,7 @@ end
 
 上は問題ありません。
 
-ただし、以下は無効です。
+ただし、以下の2つは無効です。
 
 ```ruby
 Hotel = Class.new
@@ -229,7 +245,7 @@ Hotel = Struct.new
 
 これらの制約は、明示的な名前空間にのみ適用されます。名前空間を定義しないクラスやモジュールであれば上述の記法でも定義できます。
 
-### 1ファイルに1定数（同一トップレベルあたり）
+### 1ファイルにつきトップレベル定数は1個
 
 `classic`モードでは、以下のように同一トップレベルに複数の定数を定義して、それらすべてを再読み込みすることも技術的に可能でした。以下のコード例で考えます。
 
@@ -243,9 +259,9 @@ class Bar
 end
 ```
 
-上の`Bar`は本来オートロードできないにもかかわらず、`Foo`をオートロードすると`Bar`もオートロードされました。
+上の`Bar`は本来オートロードできないにもかかわらず、`Foo`をオートロードすると`Bar`もオートロード済みとマーキングされました。
 
-これは`zeitwerk`モードでは利用できません。`Bar`は専用の`bar.rb`ファイルに移動する必要があります。1ファイルにつきトップレベル定数1個という規則です。
+これは`zeitwerk`モードでは利用できません。`Bar`は専用の`bar.rb`ファイルに移動する必要があります。これが「1ファイルにつきトップレベル定数は1個」という規則です。
 
 これが影響するのは、上のコード例のように同一トップレベルに置かれた定数だけです。以下のようなネストしたクラスやモジュールには影響しません。
 
@@ -278,7 +294,7 @@ config.autoload_paths << "#{config.root}/extras"
 
 ### spring gemと`test`環境
 
-spring gemは、アプリケーションコードが変更されると再読み込みします。`test`環境でこの再読み込みを有効にするには、以下のようにする必要があります。
+spring gemは、アプリケーションコードが変更されると再読み込みします。`test`環境でこの再読み込みを有効にするには、以下の設定が必要です。
 
 ```ruby
 # config/environments/test.rb
@@ -291,37 +307,47 @@ config.cache_classes = false
 reloading is disabled because config.cache_classes is true
 ```
 
-この設定でパフォーマンスは落ちません。
+なお、この設定でパフォーマンスは低下しません。
 
 ### bootsnap gem
 
-少なくともbootsnap 1.4.4以上に依存するようにしてください。
-
+少なくともbootsnap 1.4.4以上に依存する必要があります。
 
 Zeitwerk準拠をテストスイートでチェックする
 -------------------------------------------
 
-Rakeタスク`zeitwerk:check`は、単にeager loadingを実行します。これによってZeitwerkの組み込みバリデーションがトリガされます。
+Zeitwerkに移行するときは、`zeitwerk:check`タスクを使うと便利です。プロジェクトがZeitwerkに準拠したら、このチェックを自動化することをおすすめします。これを行うには、アプリケーションをeager loadingするだけで十分です（実際`zeitwerk:check`が行うのはそれだけです）。
 
-これと同等のタスクをテストスイートに追加すれば、テストカバレッジに関係なくアプリケーションの読み込みが常に正しく行われるようになります。
+### CI環境の場合
 
-### minitestの場合
+プロジェクトに[CI（Continuous Integration: 継続的インテグレーション）](https://ja.wikipedia.org/wiki/%E7%B6%99%E7%B6%9A%E7%9A%84%E3%82%A4%E3%83%B3%E3%83%86%E3%82%B0%E3%83%AC%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3)環境がある場合は、テストスイートを実行するときにアプリケーションをeager loadingするとよいでしょう。アプリケーションが何らかの理由でeager loadingできなくなっていることにproduction環境で気づくより、CI環境で知りたいものですよね。
+
+CIでは、テストスイートが実行中であることを示すのに何らかの環境変数を設定することがよくあります。環境変数が`CI`の場合は、以下のように指定できます。
+
+```ruby
+# config/environments/test.rb
+config.eager_load = ENV["CI"].present?
+```
+
+Rails 7以降で新規生成したアプリケーションでは、デフォルトで上の設定が有効になります。
+
+### テストスイートを直接実行する場合
+
+プロジェクトにCI環境がない場合は、テストスイートで`Rails.application.eager_load!`を呼ぶことでeager loadingできます。
+
+#### minitestの場合
 
 ```ruby
 require "test_helper"
 
 class ZeitwerkComplianceTest < ActiveSupport::TestCase
   test "eager loads all files without errors" do
-    Rails.application.eager_load!
-  rescue => e
-    flunk(e.message)
-  else
-    pass
+    assert_nothing_raised { Rails.application.eager_load! }
   end
 end
 ```
 
-### RSpecの場合
+#### RSpecの場合
 
 ```ruby
 require "rails_helper"
@@ -333,6 +359,21 @@ RSpec.describe "Zeitwerk compliance" do
 end
 ```
 
+不要な`require`呼び出しはすべて削除すること
+--------------------------
+
+私の経験では、プロジェクトでの`require`呼び出しは一般に不要です。しかし`require`を呼び出しているプロジェクトをいくつか実際に見かけたことがあり、他にもそうした噂をいくつか耳にしています。
+
+Railsアプリケーションでは、`require`は「`lib`のコード」「gemなどのサードパーティ依存関係」「標準ライブラリ」の読み込みにしか使いません。**アプリケーションのオートロード可能なコードは決して`require`しないでください**。この方法がよくない理由については、[Classicモードの解説](https://railsguides.jp/autoloading_and_reloading_constants_classic_mode.html?version=6.1#%E8%87%AA%E5%8B%95%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF%E3%81%A8require)で説明しました。
+
+```ruby
+require "nokogiri" # よい
+require "net/http" # よい
+require "user"     # 絶対ダメ、削除せよ（app/models/user.rbがある場合）
+```
+
+そのような`require`呼び出しはすべて削除してください。
+
 Zeitwerkで利用できる新機能
 -----------------------------
 
@@ -340,7 +381,7 @@ Zeitwerkで利用できる新機能
 
 Zeitwerkによって、`require_dependency`の既知のユースケースはすべて削除されました。プロジェクトをgrepして`require_dependency`をすべて削除してください。
 
-アプリケーションでSTIを利用している場合は、『定数の自動読み込みと再読み込み (Zeitwerk)ガイド』の『[STI（単一テーブル継承）』を参照してください。
+アプリケーションでSTIを利用している場合は、『定数の自動読み込みと再読み込み（Zeitwerk）』ガイドの『[STI（単一テーブル継承）』を参照してください。
 ](/autoloading_and_reloading_constants.html#sti（単一テーブル継承）)
 
 ### クラスやモジュールの定義内で定数名を修飾可能になった
@@ -362,7 +403,7 @@ class Foo::Bar
 end
 ```
 
-この`Foo`はネストの中に存在しないので、上はRubyのセマンティクスと一致しません。そのため、これは`zeitwerk`モードではまったく動作しません。もしこうしたエッジケースに遭遇した場合は、以下のように`Foo::Wadus`という修飾名を利用できます。
+この`Foo`はネストの中に存在しないので、上はRubyのセマンティクスと一致しません。そのため、これは`zeitwerk`モードではまったく動作しません。このようなエッジケースに遭遇した場合は、以下のように`Foo::Wadus`という修飾名を利用できます。
 
 ```ruby
 class Foo::Bar
@@ -382,13 +423,12 @@ end
 
 ### あらゆる場所でスレッドセーフになる
 
-RailsにはWebリクエストをスレッドセーフにするロックが用意されているにもかかわらず、`classic`モードの定数自動読み込みはスレッドセーフではありません。
+RailsにはWebリクエストをスレッドセーフにするロックが用意されているにもかかわらず、`classic`モードの定数自動読み込みはスレッドセーフではありませんでした。
 
 `zeitwerk`モードの定数自動読み込みはスレッドセーフです。たとえば、`runner`コマンドで実行されるマルチスレッドのスクリプトをオートロードできるようになりました。
 
 ### eager loadingとオートロードが一貫するようになった
 
-`classic`モードでは、`app/models/foo.rb`ファイルで`Bar`が定義されていると、このファイルをオートロードできません。しかし`classic`モードはファイルの読み込みを盲目的に再帰するので、このファイルのeager loadingは可能です。テストを最初にeager loadingする形で実行すると、その後に行われるオートロードで実行が失敗する可能性があります。
+`classic`モードでは、`app/models/foo.rb`ファイルで`Bar`が定義されていると、このファイルをオートロードできません。しかし`classic`モードはファイルの読み込みを機械的に再帰するので、このファイルのeager loadingは可能です。テストを最初にeager loadingする形で実行すると、その後にオートロードが発生したときに実行が失敗する可能性があります。
 
 `zeitwerk`モードではどちらの読み込みモードも一貫しているので、テストの失敗やエラーは同じファイル内で発生します。
-
