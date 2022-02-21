@@ -693,7 +693,7 @@ Action Mailerを設定する
 |`deliver_later_queue_name`|`deliver_later`で使われるキュー名。|
 |`default_options`|`mail`メソッドオプション (`:from`、`:reply_to`など)のデフォルト値を設定します。|
 
-設定オプションの完全な説明については「Rails アプリケーションの設定項目」ガイドの[Action Mailerを設定する](configuring.html#action-mailerを設定する)を参照してください。
+設定オプションの完全な説明については「Rails アプリケーションを設定する」ガイドの[Action Mailerを設定する](configuring.html#action-mailerを設定する)を参照してください。
 
 ### Action Mailerの設定例
 
