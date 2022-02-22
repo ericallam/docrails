@@ -53,7 +53,7 @@ Spring is running:
 
 Springのすべての機能については[Spring README](https://github.com/rails/spring/blob/master/README.md)を参照してください。
 
-[Ruby on Railsアップグレードガイド](upgrading_ruby_on_rails.html#spring)には、この機能を既存のアプリケーションと統合する方法について記載されています。
+[Ruby on Railsアップグレードガイド](upgrading_ruby_on_rails.html#rails-6-1からrails-7-0へのアップグレード-spring-gem)には、この機能を既存のアプリケーションと統合する方法について記載されています。
 
 ### `config/secrets.yml`
 
@@ -275,7 +275,7 @@ Action Pack
 
 * セキュリティ脆弱性CVE-2013-0155に対応するため、パラメータのdeep_munge化を回避する`config.action_dispatch.perform_deep_munge`configオプションが新たに追加されました。([Pull Request](https://github.com/rails/rails/pull/13188))
 
-* 署名及び暗号化されたcookies jarのシリアライザを指定する`config.action_dispatch.cookies_serializer`configオプションが新たに追加されました。 (Pull Requests [1](https://github.com/rails/rails/pull/13692), [2](https://github.com/rails/rails/pull/13945) / [詳細](upgrading_ruby_on_rails.html#cookiesシリアライザ))
+* 署名及び暗号化されたcookies jarのシリアライザを指定する`config.action_dispatch.cookies_serializer`configオプションが新たに追加されました。 (Pull Requests [1](https://github.com/rails/rails/pull/13692), [2](https://github.com/rails/rails/pull/13945) / [詳細](upgrading_ruby_on_rails.html#cookieシリアライザ)
 
 * `render :plain`、`render :html`、`render :body`が追加されました。([Pull Request](https://github.com/rails/rails/pull/14062) / [詳細](upgrading_ruby_on_rails.html#文字列コンテンツのレンダリング))
 
