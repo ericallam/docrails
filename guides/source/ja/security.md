@@ -911,7 +911,7 @@ http://www.yourapplication.com/controller/action?referer=path/at/your/app%0d%0aL
 
 上のURLの`%0d%0a`は`\r\n`がURLエンコードされたものであり、RubyのCRLF文字です。2番目の例では2つ目の`Location`ヘッダーフィールドが1つ目のものを上書きするため、以下のようなHTTPヘッダーが生成されます。
 
-```http
+```
 HTTP/1.1 302 Moved Temporarily
 (...)
 Location: http://www.malicious.tld
