@@ -520,4 +520,4 @@ link_to "Profile", @profile
 <%= csrf_meta_tags %>
 ```
 
-NOTE: 通常のフォームではhiddenフィールドが生成されるので、これらのタグは使われません。詳しくは[Railsセキュリティガイド](/security.html#クロスサイトリクエストフォージェリ-csrf)を参照してください。
+NOTE: 通常のフォームではhiddenフィールドが生成されるので、これらのタグは使われません。詳しくは[Railsセキュリティガイド](/security.html#クロスサイトリクエストフォージェリ（csrf）)を参照してください。
