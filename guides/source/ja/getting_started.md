@@ -14,9 +14,9 @@ Rails をはじめよう
 
 ## 本ガイドの前提条件
 
-本ガイドは、ゼロからRailsアプリケーションを構築したいと考えているRails初心者を対象にしています。読者にRailsの経験があることを前提としていません。
+本ガイドは、Railsアプリケーションを構築したいと考えているRails初心者を対象にしています。読者にRailsの経験があることは前提としていません。
 
-Railsとは、プログラミング言語「Ruby」の上で動作するWebアプリケーションフレームワークです。ただしRubyの経験がまったくない人がいきなりRailsを学ぼうとすると、学習曲線が急勾配になるでしょう。Rubyを学ぶための精選されたオンラインリソースリストはたくさんあるので、その中から以下をご紹介します。
+Railsとは、プログラミング言語「Ruby」の上で動作する[Webアプリケーションフレームワーク](https://ja.wikipedia.org/wiki/Web%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%83%95%E3%83%AC%E3%83%BC%E3%83%A0%E3%83%AF%E3%83%BC%E3%82%AF)です。ただしプログラミング経験がまったくない人がいきなりRailsを学ぼうとすると、かなり大変な作業になるでしょう。オンラインで学べる洗練されたコンテンツはたくさんあるので、その中から以下をご紹介します。
 
 - [プログラミング言語Ruby公式Webサイト](https://www.ruby-lang.org/ja/documentation/)
 - [プログラミング学習コンテンツまとめ](https://github.com/EbookFoundation/free-programming-books/blob/master/books/free-programming-books-ja.md#ruby)
