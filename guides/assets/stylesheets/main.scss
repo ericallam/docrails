@@ -43,18 +43,21 @@
   }
 }
 .snsb {
-    overflow: hidden;
-    clear: left;
-    margin-left: 13px;
-    li {
-        float: left;
-        margin-right: 4px;
-        line-height:  0;
-        list-style-type: none;
+  overflow: hidden;
+  clear: left;
+  margin-left: 13px;
+  li {
+    float: left;
+    margin-right: 4px;
+    @media only screen and (max-width: 767px) {
+      margin-right: 0px;
     }
-    iframe {
-        margin: 0 !important;
-    }
+    line-height:  0;
+    list-style-type: none;
+  }
+  iframe {
+    margin: 0 !important;
+  }
 }
 
 .sitemap{
