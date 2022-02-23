@@ -45,14 +45,15 @@
 .snsb {
   overflow: hidden;
   clear: left;
-  margin-left: 13px;
+  margin-left:  0px;
+  margin-right: 0px;
   li {
     float: left;
     margin-right: 4px;
-    @media only screen and (max-width: 767px) {
+    &:last-child {
       margin-right: 0px;
     }
-    line-height:  0;
+    line-height: 0;
     list-style-type: none;
   }
   iframe {
