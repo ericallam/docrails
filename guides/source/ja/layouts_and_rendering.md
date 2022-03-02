@@ -563,10 +563,10 @@ end
 上のアプリケーションは以下のように動作します。
 
 * 原則としてビューのレンダリングには`main`レイアウトが使われる。
-* `PostsController#index`では`main`レイアウトが使われる。
-* `SpecialPostsController#index`では`special`レイアウトが使われる。
-* `OldPostsController#show`ではレイアウトが適用されない。
-* `OldPostsController#index`では`old`レイアウトが使われる。
+* `ArticlesController#index`では`main`レイアウトが使われる。
+* `SpecialArticlesController#index`では`special`レイアウトが使われる。
+* `OldArticlesController#show`ではレイアウトが適用されない。
+* `OldArticlesController#index`では`old`レイアウトが使われる。
 
 ##### テンプレートの継承
 
