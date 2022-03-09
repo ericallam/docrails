@@ -30,7 +30,7 @@ Action Cableは、通常のHTTPリクエスト・レスポンスプロトコル�
 ### コンシューマー
 
 WebSocketコネクションのクライアントは、**コンシューマー**（consumer）と呼ばれます。
-Action Aableのコンシューマーは、クライアント側のJavaScriptフレームワークによって作成されます。
+Action Cableのコンシューマーは、クライアント側のJavaScriptフレームワークによって作成されます。
 
 ### チャネル
 
