@@ -354,7 +354,7 @@ Customer.where(first_name: 'Lifo').take
 SELECT * FROM customers WHERE (customers.first_name = 'Lifo') LIMIT 1
 ```
 
-上のSQLに`ORDER BY`がない点にご注意ください。find_by`の条件が複数のレコードにマッチする場合は、レコードの順序を一貫させるために[並び順](#並び順)を指定すべきです。
+上のSQLに`ORDER BY`がない点にご注意ください。`find_by`の条件が複数のレコードにマッチする場合は、レコードの順序を一貫させるために[並び順](#並び順)を指定すべきです。
 
 [`find_by!`][] メソッドの動作は、マッチするレコードが見つからない場合に`ActiveRecord::RecordNotFound`例外が発生する点を除いて、`find_by`メソッドとまったく同じです。以下に例を示します。
 
