@@ -834,7 +834,7 @@ irb> a.first_name == b.writer.first_name
 
 * `association`
 * `association=(associate)`
-* `buildassociation(attributes = {})`
+* `build_association(attributes = {})`
 * `create_association(attributes = {})`
 * `create_association!(attributes = {})`
 * `reload_association`
