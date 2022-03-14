@@ -1407,7 +1407,7 @@ Customer.includes(:orders, :reviews)
 Customer.includes(orders: {books: [:supplier, :author]}).find(1)
 ```
 
-上のコードは、id=1のカテゴリを検索し、関連付けられたすべての記事とそのタグやコメント、およびすべてのコメントのゲスト関連付けを一括読み込みします。
+上のコードは、id=1の顧客を検索し、関連付けられたすべての注文、それぞれの本の仕入先と著者を読み込みます。
 
 ### 関連付けのeager loadingで条件を指定する
 
