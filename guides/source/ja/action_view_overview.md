@@ -150,7 +150,7 @@ end
 
 #### Jbuilder
 
-[Jbuilder](https://github.com/rails/jbuilder)はRailsチームによってメンテナンスされているgemのひとつで、RailsのGemfileにデフォルトで含まれています。
+[Jbuilder](https://github.com/rails/jbuilder)はRailsチームによってメンテナンスされているgemの１つで、RailsのGemfileにデフォルトで含まれています。
 
 JbuilderはBuilderと似ていますが、XMLではなくJSONを生成するのに使われます。
 

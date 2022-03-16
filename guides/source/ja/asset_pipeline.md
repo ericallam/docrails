@@ -273,7 +273,7 @@ document.getElementById('logo').src = "<%= asset_path('logo.png') %>"
 
 ### マニフェストファイルとディレクティブ
 
-Sprocketsでは、どのアセットをインクルードしてサポートするかを指定するのにマニフェストファイルを利用します。マニフェストファイルには**ディレクティブ **（directive: 命令、指示）を記述します。必要なファイルをディレクティブで指定し、それに基いて最終的に単一のCSSやJavaScriptファイルがビルドされます。Sprocketsはディレクティブで指定されたファイルを読み込み、必要に応じて処理を行い、連結して単一のファイルを生成し、圧縮します（`Rails.application.config.assets.compress`がtrueの場合）。ファイルを連結してひとつにすることにより、ブラウザからサーバーへのリクエスト数を削減でき、ページの読み込み時間が大きく短縮されます。圧縮によってファイルサイズも小さくなり、ブラウザへの読み込み時間が短縮されます。
+Sprocketsでは、どのアセットをインクルードしてサポートするかを指定するのにマニフェストファイルを利用します。マニフェストファイルには**ディレクティブ **（directive: 命令、指示）を記述します。必要なファイルをディレクティブで指定し、それに基いて最終的に単一のCSSやJavaScriptファイルがビルドされます。Sprocketsはディレクティブで指定されたファイルを読み込み、必要に応じて処理を行い、連結して単一のファイルを生成し、圧縮します（`Rails.application.config.assets.compress`がtrueの場合）。ファイルを連結して１つにすることにより、ブラウザからサーバーへのリクエスト数を削減でき、ページの読み込み時間が大きく短縮されます。圧縮によってファイルサイズも小さくなり、ブラウザへの読み込み時間が短縮されます。
 
 新規作成したRailsアプリケーションにはデフォルトで`app/assets/javascripts/application.js`ファイルに以下のような記述が含まれています。
 
@@ -611,7 +611,7 @@ CDNはコンテンツをキャッシュすることで動作します。CDNに�
 
 ##### CDNヘッダをデバッグする
 
-このヘッダが正しくキャッシュされているかどうかを確認するひとつの方法は、[curl]( http://explainshell.com/explain?cmd=curl+-I+http%3A%2F%2Fwww.example.com)を使う方法です。curlを使ってサーバーとCDNにそれぞれリクエストを送信し、ヘッダーが同じであるかどうかを以下のように確認できます。
+このヘッダが正しくキャッシュされているかどうかを確認する１つの方法は、[curl]( http://explainshell.com/explain?cmd=curl+-I+http%3A%2F%2Fwww.example.com)を使う方法です。curlを使ってサーバーとCDNにそれぞれリクエストを送信し、ヘッダーが同じであるかどうかを以下のように確認できます。
 
 ```bash
 $ curl -I http://www.example/assets/application-
@@ -686,7 +686,7 @@ http://mycdnsubdomain.fictional-cdn.com/assets/smile.png
 
 ### CSSを圧縮する
 
-YUIはCSS圧縮方法のひとつです。[YUI CSS compressor](https://yui.github.io/yuicompressor/css.html)は最小化機能を提供します（訳注: この項では、圧縮 (compress) という語は最小化 (minify) や難読化 (uglify) と同じ意味で使われており、圧縮後のファイルはzipのようなバイナリではありません）。
+YUIはCSS圧縮方法の１つです。[YUI CSS compressor](https://yui.github.io/yuicompressor/css.html)は最小化機能を提供します（訳注: この項では、圧縮 (compress) という語は最小化 (minify) や難読化 (uglify) と同じ意味で使われており、圧縮後のファイルはzipのようなバイナリではありません）。
 
 YUI圧縮は以下の記述で有効にできます。これには`yui-compressor` gemが必要です。
 

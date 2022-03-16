@@ -92,7 +92,7 @@ NOTE: 追加したgemも同様にスレッドセーフであるかどうかを�
 
 ### セキュリティ
 
-* **matchだけですべてをまかなわないこと** ([コミット](https://github.com/rails/rails/commit/90d2802b71a6e89aedfe40564a37bd35f777e541)) - ルーティング用のDSLで`match`を使う場合には HTTP動詞 (verb) を明示的にひとつまたは複数指定する必要があります。
+* **matchだけですべてをまかなわないこと** ([コミット](https://github.com/rails/rails/commit/90d2802b71a6e89aedfe40564a37bd35f777e541)) - ルーティング用のDSLで`match`を使う場合には HTTP動詞 (verb) を明示的に１つまたは複数指定する必要があります。
 * **htmlエンティティをデフォルトでエスケープ** ([コミット](https://github.com/rails/rails/commit/5f189f41258b83d49012ec5a0678d827327e7543)) - ERB内でレンダリングされる文字列は、`raw`や`html_safe`メソッドでラップしない限り常にエスケープされます。
 * **新しいセキュリティヘッダー** ([コメント](https://github.com/rails/rails/commit/6794e92b204572d75a07bd6413bdae6ae22d5a82)) - Railsから送信されるあらゆるHTTPリクエストに次のヘッダーが含まれるようになりました: `X-Frame-Options` (クリックジャック防止のため、フレーム内へのページ埋め込みを禁止するようブラウザに指示する)、`X-XSS-Protection` (スクリプト注入を停止するようブラウザに指示する)、`X-Content-Type-Options` (jpegファイルをexeとして開かないようブラウザに指示する)。
 

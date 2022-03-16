@@ -94,7 +94,7 @@ require "test_helper"
 class ArticleTest < ActiveSupport::TestCase
 ```
 
-`ArticleTest`クラスは`ActiveSupport::TestCase`を継承することによって、**テストケース**（test case）をひとつ定義しています。これにより、`ActiveSupport::TestCase`のすべてのメソッドを`ArticleTest`で利用できます。これらのメソッドのいくつかについては後述します。
+`ArticleTest`クラスは`ActiveSupport::TestCase`を継承することによって、**テストケース**（test case）を１つ定義しています。これにより、`ActiveSupport::TestCase`のすべてのメソッドを`ArticleTest`で利用できます。これらのメソッドのいくつかについては後述します。
 
 `ActiveSupport::TestCase`のスーパークラスは`Minitest::Test`です。この`Minitest::Test`を継承したクラスで定義される、`test_`で始まるすべてのメソッドは単に「テスト」と呼ばれます。この`test_`は小文字でなければなりません。従って、`test_password`および`test_valid_password`と定義されたメソッド名は正式なテスト名となり、テストケースの実行時に自動的に実行されます。
 
@@ -1938,7 +1938,7 @@ eager loadingをテストする
 
 ### CIの場合
 
-プロジェクトでCI（継続的インテグレーション）を利用している場合、アプリケーションでeager loadingを確実に行う手軽な方法のひとつは、CIでeager loadingすることです。
+プロジェクトでCI（継続的インテグレーション）を利用している場合、アプリケーションでeager loadingを確実に行う手軽な方法の１つは、CIでeager loadingすることです。
 
 CIは、テストスイートがそこで実行されていることを示すために、以下のように何らかの環境変数（`CI`など）を設定するのが普通です。
 

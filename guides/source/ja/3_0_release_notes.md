@@ -115,7 +115,7 @@ Railtiesが更新され、Railsフレームワーク全体で一貫したプラ�
 
 ### Railsのあらゆるコアコンポーネントが分離された
 
-MerbとRailsの主要なマージ作業のひとつが、Railsのコアコンポーネントの密結合を切り離すことでした。この作業が完了したことで、Railsのあらゆるコアコンポーネントが同一のAPIを使うようになりました。これらのAPIはプラグイン開発に利用できます。つまり、作成したプラグインやコアコンポーネントを置き換える（DataMapperやSequelなど）際に、Railsコアコンポーネントからアクセスできるあらゆる機能にアクセスして自由自在に拡張できるようになったということです。
+MerbとRailsの主要なマージ作業の１つが、Railsのコアコンポーネントの密結合を切り離すことでした。この作業が完了したことで、Railsのあらゆるコアコンポーネントが同一のAPIを使うようになりました。これらのAPIはプラグイン開発に利用できます。つまり、作成したプラグインやコアコンポーネントを置き換える（DataMapperやSequelなど）際に、Railsコアコンポーネントからアクセスできるあらゆる機能にアクセスして自由自在に拡張できるようになったということです。
 
 詳しくは「[The Great Decoupling](http://yehudakatz.com/2009/07/19/rails-3-the-great-decoupling/)」を参照してください。
 
@@ -345,7 +345,7 @@ Rails 3.0で新たにActive Modelが導入されました。Active Modelは任�
 
 ### ORM抽象化とAction Packインターフェイス
 
-コアコンポーネント分離作業のひとつは、Active Recordへの結合をAction Packからすべて切り出すことでした。この作業が完了したことで、新しいORMプラグインはすべて、Active Modelインターフェイスを実装するだけでAction Packとシームレスにやりとりできるようになりました。
+コアコンポーネント分離作業の１つは、Active Recordへの結合をAction Packからすべて切り出すことでした。この作業が完了したことで、新しいORMプラグインはすべて、Active Modelインターフェイスを実装するだけでAction Packとシームレスにやりとりできるようになりました。
 
 詳しくは[Make Any Ruby Object Feel Like ActiveRecord](http://yehudakatz.com/2010/01/10/activemodel-make-any-ruby-object-feel-like-activerecord/)を参照してください。
 

@@ -175,7 +175,7 @@ Railsアーキテクチャの変更点
 
 ### HTTPストリーミング
 
-HTTPストリーミングもRails 3.1の変更点のひとつです。これにより、サーバーがレスポンス生成の途中でもスタイルシートやJavaScriptファイルをブラウザからダウンロードできるようになります。利用にはRuby 1.9.2の他に、Webサーバーでのサポートも必要ですが、よく使われているNginxとUnicornの組み合わせで利用可能です。
+HTTPストリーミングもRails 3.1の変更点の１つです。これにより、サーバーがレスポンス生成の途中でもスタイルシートやJavaScriptファイルをブラウザからダウンロードできるようになります。利用にはRuby 1.9.2の他に、Webサーバーでのサポートも必要ですが、よく使われているNginxとUnicornの組み合わせで利用可能です。
 
 ### デフォルトのJSライブラリがjQueryになった
 
@@ -372,7 +372,7 @@ Active Record
 
 * CSVフィクスチャーが非推奨になりました。同サポートはRails 3.2.0で削除される予定です。
 
-* `ActiveRecord#new`、`ActiveRecord#create`、`ActiveRecord#update_attributes`がすべてオプションハッシュをもうひとつ取れるようになりました。この第2ハッシュを用いて、属性への代入時に考慮されるロールを指定できます。この機能は、Active Modelの新しいマスアサインメント機能の上に構築されます。
+* `ActiveRecord#new`、`ActiveRecord#create`、`ActiveRecord#update_attributes`がすべてオプションハッシュをもう１つ取れるようになりました。この第2ハッシュを用いて、属性への代入時に考慮されるロールを指定できます。この機能は、Active Modelの新しいマスアサインメント機能の上に構築されます。
 
     ```ruby
     class Post < ActiveRecord::Base

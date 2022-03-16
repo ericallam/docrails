@@ -736,7 +736,7 @@ image_tag file.representation(resize_to_limit: [100, 100]).processed.url
 
 Active Storageのバリアントトラッカーは、リクエストされた表示処理が以前行われていた場合にレコードをデータベースに保存することで、パフォーマンスを向上させます。つまり上のコードは、S3などのリモートサービスへのAPI呼び出しを1度だけ行い、バリアントが保存されると以後はそれを使います。バリアントトラッカーは自動的に実行されますが、`config.active_storage.track_variants`設定で無効にできます。
 
-上のコード例を用いてひとつのページ内で多数の画像をレンダリングすると、バリアントレコードの読み込みで「N+1クエリ問題」が発生する可能性があります。N+1クエリ問題を避けるには、以下のように[`ActiveStorage::Attachment`][]で名前付きスコープをお使いください。
+上のコード例を用いて１つのページ内で多数の画像をレンダリングすると、バリアントレコードの読み込みで「N+1クエリ問題」が発生する可能性があります。N+1クエリ問題を避けるには、以下のように[`ActiveStorage::Attachment`][]で名前付きスコープをお使いください。
 
 ```ruby
 message.images.with_all_variant_records.each do |file|

@@ -105,7 +105,7 @@ end
 environment 'config.action_mailer.default_url_options = {host: "http://yourwebsite.example.com"}', env: 'production'
 ```
 
-`data`引数の代わりにブロックをひとつ渡すこともできます。
+`data`引数の代わりにブロックを１つ渡すこともできます。
 
 ### `vendor/lib/file/initializer(filename, data = nil, &block)`
 

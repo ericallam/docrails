@@ -431,7 +431,7 @@ document.addEventListener("turbolinks:load", () => {
 AjaxのCSRF（Cross-Site Request Forgery）トークン
 ----
 
-Ajax呼び出しのために別のライブラリを使う場合、そのライブラリでのAjax呼び出しにセキュリティトークンをデフォルトヘッダーのひとつとして追加する必要があります。このトークンは以下のように取得します。
+Ajax呼び出しのために別のライブラリを使う場合、そのライブラリでのAjax呼び出しにセキュリティトークンをデフォルトヘッダーの１つとして追加する必要があります。このトークンは以下のように取得します。
 
 ```js
 const token = document.getElementsByName(

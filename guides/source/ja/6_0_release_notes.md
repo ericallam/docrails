@@ -221,7 +221,7 @@ Action Pack
 *   リクエストフォーマットでテンプレートが見つからない場合に使う明示的なエラーページを追加
     ([Pull Request](https://github.com/rails/rails/pull/29286))
 
-*   `ActionDispatch::DebugExceptions.register_interceptor`を導入した（レンダリング開始前にDebugExceptionsにフックして例外を処理する手段のひとつ）
+*   `ActionDispatch::DebugExceptions.register_interceptor`を導入した（レンダリング開始前にDebugExceptionsにフックして例外を処理する手段の１つ）
     ([Pull Request](https://github.com/rails/rails/pull/23868))
 
 *   1リクエストに付きContent-Security-Policy（CSP）nonceヘッダー値を1つしか出力しないようになった

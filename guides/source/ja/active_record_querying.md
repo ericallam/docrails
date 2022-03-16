@@ -839,7 +839,7 @@ GROUP BY created_at
 
 ### グループ化された項目の合計
 
-グループ化した項目の合計をひとつのクエリで得るには、`group`の次に[`count`][]を呼び出します。
+グループ化した項目の合計を１つのクエリで得るには、`group`の次に[`count`][]を呼び出します。
 
 ```
 irb> Order.group(:status).count
@@ -1791,7 +1791,7 @@ enumの完全なドキュメントについては[`ActiveRecord::Enum`](https://
 
 Active Record パターンには [メソッドチェイン (Method chaining - Wikipedia)](http://en.wikipedia.org/wiki/Method_chaining) が実装されています。これにより、複数のActive Recordメソッドをシンプルな方法で次々に適用できるようになります。
 
-文中でメソッドチェインを利用できるのは、その前のメソッドが`ActiveRecord::Relation` (`all`、`where`、`joins`など) をひとつ返す場合です。単一のオブジェクトを返すメソッド ([単一のオブジェクトを取り出す](#%E5%8D%98%E4%B8%80%E3%81%AE%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E5%8F%96%E3%82%8A%E5%87%BA%E3%81%99)を参照) は文の末尾に置かなければなりません。
+文中でメソッドチェインを利用できるのは、その前のメソッドが`ActiveRecord::Relation` (`all`、`where`、`joins`など) を１つ返す場合です。単一のオブジェクトを返すメソッド ([単一のオブジェクトを取り出す](#%E5%8D%98%E4%B8%80%E3%81%AE%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E5%8F%96%E3%82%8A%E5%87%BA%E3%81%99)を参照) は文の末尾に置かなければなりません。
 
 いくつか例をご紹介します。本ガイドでは一部の例のみをご紹介し、すべての例を網羅することはしません。Active Recordメソッドが呼び出されると、クエリはその時点ではすぐに生成されず、データベースに送信されます。クエリは、データが実際に必要になった時点で初めて生成されます。以下の例では、いずれも単一のクエリを生成します。
 
@@ -1834,7 +1834,7 @@ WHERE books.title = $1 [["title", "Abstraction and Specification in Program Deve
 LIMIT 1
 ```
 
-NOTE: ひとつのクエリが複数のレコードとマッチする場合、`find_by`は「最初」の結果だけを返し、他は返しません（上の`LIMIT 1` 文を参照）。
+NOTE: １つのクエリが複数のレコードとマッチする場合、`find_by`は「最初」の結果だけを返し、他は返しません（上の`LIMIT 1` 文を参照）。
 
 新しいオブジェクトを検索またはビルドする
 ---------------------------------
@@ -2035,7 +2035,7 @@ irb> assoc.pluck(:id)
 SELECT "customers"."id" FROM "customers" LEFT OUTER JOIN "reviews" ON "reviews"."id" = "customers"."review_id"
 ```
 
-これを回避する方法のひとつは、以下のようにincludesを`unscope`することです。
+これを回避する方法の１つは、以下のようにincludesを`unscope`することです。
 
 ```
 irb> assoc.unscope(:includes).pluck(:id)
