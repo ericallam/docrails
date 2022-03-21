@@ -102,7 +102,7 @@ $ rails new commandsapp
 | `--skip-action-cable`   | Action Cableのファイルをスキップする                                     |
 | `--skip-sprockets`      | Sprocketsのファイルをスキップする                                        |
 | `--skip-javascript`     | JavaScriptのファイルをスキップする                                       |
-| `--skip-turbolinks`     | turbolinks gemをスキッpする                                         |
+| `--skip-turbolinks`     | turbolinks gemをスキップする                                         |
 | `--skip-test`           | テストファイルをスキップする                                             |
 | `--skip-system-test`    | システムテストファイルをスキップする                                      |
 | `--skip-bootsnap`       | bootsnap gemをスキップする                                           |
