@@ -1,9 +1,11 @@
-Rails 2.2 - 2008/11 [未訳]
+**DO NOT READ THIS FILE ON GITHUB, GUIDES ARE PUBLISHED ON https://guides.rubyonrails.org.**
+
+Ruby on Rails 2.2 Release Notes
 ===============================
 
-Rails 2.2 delivers a number of new and improved features. This list covers the major upgrades, but doesn't include every little bug fix and change. If you want to see everything, check out the [list of commits](http://github.com/rails/rails/commits/master) in the main Rails repository on GitHub.
+Rails 2.2 delivers several new and improved features. This list covers the major upgrades but doesn't include every little bug fix and change. If you want to see everything, check out the [list of commits](https://github.com/rails/rails/commits/2-2-stable) in the main Rails repository on GitHub.
 
-Along with Rails, 2.2 marks the launch of the [Ruby on Rails Guides](http://guides.rubyonrails.org/), the first results of the ongoing [Rails Guides hackfest](http://hackfest.rubyonrails.org/guide). This site will deliver high-quality documentation of the major features of Rails.
+Along with Rails, 2.2 marks the launch of the [Ruby on Rails Guides](https://guides.rubyonrails.org/), the first results of the ongoing [Rails Guides hackfest](http://hackfest.rubyonrails.org/guide). This site will deliver high-quality documentation of the major features of Rails.
 
 --------------------------------------------------------------------------------
 
@@ -19,8 +21,8 @@ Rails 2.2 supplies an easy system for internationalization (or i18n, for those o
 * Lead Contributors: Rails i18 Team
 * More information :
     * [Official Rails i18 website](http://rails-i18n.org)
-    * [Finally. Ruby on Rails gets internationalized](http://www.artweb-design.de/2008/7/18/finally-ruby-on-rails-gets-internationalized)
-    * [Localizing Rails : Demo application](http://github.com/clemens/i18n_demo_app)
+    * [Finally. Ruby on Rails gets internationalized](https://web.archive.org/web/20140407075019/http://www.artweb-design.de/2008/7/18/finally-ruby-on-rails-gets-internationalized)
+    * [Localizing Rails : Demo application](https://github.com/clemens/i18n_demo_app)
 
 ### Compatibility with Ruby 1.9 and JRuby
 
@@ -29,7 +31,7 @@ Along with thread safety, a lot of work has been done to make Rails work well wi
 Documentation
 -------------
 
-The internal documentation of Rails, in the form of code comments, has been improved in numerous places. In addition, the [Ruby on Rails Guides](http://guides.rubyonrails.org/) project is the definitive source for information on major Rails components. In its first official release, the Guides page includes:
+The internal documentation of Rails, in the form of code comments, has been improved in numerous places. In addition, the [Ruby on Rails Guides](https://guides.rubyonrails.org/) project is the definitive source for information on major Rails components. In its first official release, the Guides page includes:
 
 * [Getting Started with Rails](getting_started.html)
 * [Rails Database Migrations](active_record_migrations.html)
@@ -43,28 +45,27 @@ The internal documentation of Rails, in the form of code comments, has been impr
 * [A Guide to Testing Rails Applications](testing.html)
 * [Securing Rails Applications](security.html)
 * [Debugging Rails Applications](debugging_rails_applications.html)
-* [Performance Testing Rails Applications](performance_testing.html)
 * [The Basics of Creating Rails Plugins](plugins.html)
 
 All told, the Guides provide tens of thousands of words of guidance for beginning and intermediate Rails developers.
 
 If you want to generate these guides locally, inside your application:
 
-```
-rake doc:guides
+```bash
+$ rake doc:guides
 ```
 
-This will put the guides inside `Rails.root/doc/guides` and you may start surfing straight away by opening `Rails.root/doc/guides/index.html` in your favourite browser.
+This will put the guides inside `Rails.root/doc/guides` and you may start surfing straight away by opening `Rails.root/doc/guides/index.html` in your favorite browser.
 
-* Major contributions from [Xavier Noria":http://advogato.org/person/fxn/diary.html and "Hongli Lai](http://izumi.plan99.net/blog/.)
+* Major contributions from [Xavier Noria](http://advogato.org/person/fxn/diary.html) and [Hongli Lai](http://izumi.plan99.net/blog/).
 * More information:
     * [Rails Guides hackfest](http://hackfest.rubyonrails.org/guide)
-    * [Help improve Rails documentation on Git branch](http://weblog.rubyonrails.org/2008/5/2/help-improve-rails-documentation-on-git-branch)
+    * [Help improve Rails documentation on Git branch](https://weblog.rubyonrails.org/2008/5/2/help-improve-rails-documentation-on-git-branch)
 
 Better integration with HTTP : Out of the box ETag support
 ----------------------------------------------------------
 
-Supporting the etag and last modified timestamp in HTTP headers means that Rails can now send back an empty response if it gets a request for a resource that hasn't been modified lately. This allows you to check whether a response needs to be sent at all.
+Supporting the ETag and last modified timestamp in HTTP headers means that Rails can now send back an empty response if it gets a request for a resource that hasn't been modified lately. This allows you to check whether a response needs to be sent at all.
 
 ```ruby
 class ArticlesController < ApplicationController
@@ -76,7 +77,7 @@ class ArticlesController < ApplicationController
     # to the stale? call is set on the response).
     #
     # If the request headers match, then the request is fresh and the respond_to block is
-    # not triggered. Instead the default render will occur, which will check the last-modified
+    # not triggered. Instead, the default render will occur, which will check the last-modified
     # and etag headers and conclude that it only needs to send a "304 Not Modified" instead
     # of rendering the template.
     if stale?(:last_modified => @article.published_at.utc, :etag => @article)
@@ -111,7 +112,7 @@ config.threadsafe!
 
 * More information :
     * [Thread safety for your Rails](http://m.onkey.org/2008/10/23/thread-safety-for-your-rails)
-    * [Thread safety project announcement](http://weblog.rubyonrails.org/2008/8/16/josh-peek-officially-joins-the-rails-core)
+    * [Thread safety project announcement](https://weblog.rubyonrails.org/2008/8/16/josh-peek-officially-joins-the-rails-core)
     * [Q/A: What Thread-safe Rails Means](http://blog.headius.com/2008/08/qa-what-thread-safe-rails-means.html)
 
 Active Record
@@ -123,7 +124,7 @@ There are two big additions to talk about here: transactional migrations and poo
 
 Historically, multiple-step Rails migrations have been a source of trouble. If something went wrong during a migration, everything before the error changed the database and everything after the error wasn't applied. Also, the migration version was stored as having been executed, which means that it couldn't be simply rerun by `rake db:migrate:redo` after you fix the problem. Transactional migrations change this by wrapping migration steps in a DDL transaction, so that if any of them fail, the entire migration is undone. In Rails 2.2, transactional migrations are supported on PostgreSQL out of the box. The code is extensible to other database types in the future - and IBM has already extended it to support the DB2 adapter.
 
-* Lead Contributor: [Adam Wiggins](http://adam.heroku.com/)
+* Lead Contributor: [Adam Wiggins](http://about.adamwiggins.com/)
 * More information:
     * [DDL Transactions](http://adam.heroku.com/past/2008/9/3/ddl_transactions/)
     * [A major milestone for DB2 on Rails](http://db2onrails.com/2008/11/08/a-major-milestone-for-db2-on-rails/)
@@ -143,7 +144,7 @@ development:
 
 * Lead Contributor: [Nick Sieger](http://blog.nicksieger.com/)
 * More information:
-    * [What's New in Edge Rails: Connection Pools](http://ryandaigle.com/articles/2008/9/7/what-s-new-in-edge-rails-connection-pools)
+    * [What's New in Edge Rails: Connection Pools](http://archives.ryandaigle.com/articles/2008/9/7/what-s-new-in-edge-rails-connection-pools)
 
 ### Hashes for Join Table Conditions
 
@@ -163,7 +164,7 @@ Product.all(:joins => :photos, :conditions => { :photos => { :copyright => false
 ```
 
 * More information:
-    * [What's New in Edge Rails: Easy Join Table Conditions](http://ryandaigle.com/articles/2008/7/7/what-s-new-in-edge-rails-easy-join-table-conditions)
+    * [What's New in Edge Rails: Easy Join Table Conditions](http://archives.ryandaigle.com/articles/2008/7/7/what-s-new-in-edge-rails-easy-join-table-conditions)
 
 ### New Dynamic Finders
 
@@ -236,7 +237,7 @@ This will enable recognition of (among others) these routes:
 * Lead Contributor: [S. Brent Faulkner](http://www.unwwwired.net/)
 * More information:
     * [Rails Routing from the Outside In](routing.html#nested-resources)
-    * [What's New in Edge Rails: Shallow Routes](http://ryandaigle.com/articles/2008/9/7/what-s-new-in-edge-rails-shallow-routes)
+    * [What's New in Edge Rails: Shallow Routes](http://archives.ryandaigle.com/articles/2008/9/7/what-s-new-in-edge-rails-shallow-routes)
 
 ### Method Arrays for Member or Collection Routes
 
@@ -284,7 +285,7 @@ Action Mailer
 Action Mailer now supports mailer layouts. You can make your HTML emails as pretty as your in-browser views by supplying an appropriately-named layout - for example, the `CustomerMailer` class expects to use `layouts/customer_mailer.html.erb`.
 
 * More information:
-    * [What's New in Edge Rails: Mailer Layouts](http://ryandaigle.com/articles/2008/9/7/what-s-new-in-edge-rails-mailer-layouts)
+    * [What's New in Edge Rails: Mailer Layouts](http://archives.ryandaigle.com/articles/2008/9/7/what-s-new-in-edge-rails-mailer-layouts)
 
 Action Mailer now offers built-in support for GMail's SMTP servers, by turning on STARTTLS automatically. This requires Ruby 1.8.7 to be installed.
 
@@ -318,7 +319,7 @@ Other features of memoization include `unmemoize`, `unmemoize_all`, and `memoize
 
 * Lead Contributor: [Josh Peek](http://joshpeek.com/)
 * More information:
-    * [What's New in Edge Rails: Easy Memoization](http://ryandaigle.com/articles/2008/7/16/what-s-new-in-edge-rails-memoization)
+    * [What's New in Edge Rails: Easy Memoization](http://archives.ryandaigle.com/articles/2008/7/16/what-s-new-in-edge-rails-memoization)
     * [Memo-what? A Guide to Memoization](http://www.railway.at/articles/2008/09/20/a-guide-to-memoization)
 
 ### each_with_object
@@ -386,10 +387,10 @@ To avoid deployment issues and make Rails applications more self-contained, it's
 
 You can unpack or install a single gem by specifying `GEM=_gem_name_` on the command line.
 
-* Lead Contributor: [Matt Jones](http://github.com/al2o3cr)
+* Lead Contributor: [Matt Jones](https://github.com/al2o3cr)
 * More information:
-    * [What's New in Edge Rails: Gem Dependencies](http://ryandaigle.com/articles/2008/4/1/what-s-new-in-edge-rails-gem-dependencies)
-    * [Rails 2.1.2 and 2.2RC1: Update Your RubyGems](http://afreshcup.com/2008/10/25/rails-212-and-22rc1-update-your-rubygems/)
+    * [What's New in Edge Rails: Gem Dependencies](http://archives.ryandaigle.com/articles/2008/4/1/what-s-new-in-edge-rails-gem-dependencies)
+    * [Rails 2.1.2 and 2.2RC1: Update Your RubyGems](https://afreshcup.com/home/2008/10/25/rails-212-and-22rc1-update-your-rubygems)
     * [Detailed discussion on Lighthouse](http://rails.lighthouseapp.com/projects/8994-ruby-on-rails/tickets/1128)
 
 ### Other Railties Changes
@@ -408,7 +409,7 @@ Deprecated
 A few pieces of older code are deprecated in this release:
 
 * `Rails::SecretKeyGenerator` has been replaced by `ActiveSupport::SecureRandom`
-* `render_component` is deprecated. There's a [render_components plugin](http://github.com/rails/render_component/tree/master) available if you need this functionality.
+* `render_component` is deprecated. There's a [render_components plugin](https://github.com/rails/render_component/tree/master) available if you need this functionality.
 * Implicit local assignments when rendering partials has been deprecated.
 
     ```ruby

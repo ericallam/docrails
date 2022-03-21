@@ -1,18 +1,20 @@
-Rails 2.3 - 2009/03 [未訳]
+**DO NOT READ THIS FILE ON GITHUB, GUIDES ARE PUBLISHED ON https://guides.rubyonrails.org.**
+
+Ruby on Rails 2.3 Release Notes
 ===============================
 
-Rails 2.3 delivers a variety of new and improved features, including pervasive Rack integration, refreshed support for Rails Engines, nested transactions for Active Record, dynamic and default scopes, unified rendering, more efficient routing, application templates, and quiet backtraces. This list covers the major upgrades, but doesn't include every little bug fix and change. If you want to see everything, check out the [list of commits](http://github.com/rails/rails/commits/master) in the main Rails repository on GitHub or review the `CHANGELOG` files for the individual Rails components.
+Rails 2.3 delivers a variety of new and improved features, including pervasive Rack integration, refreshed support for Rails Engines, nested transactions for Active Record, dynamic and default scopes, unified rendering, more efficient routing, application templates, and quiet backtraces. This list covers the major upgrades, but doesn't include every little bug fix and change. If you want to see everything, check out the [list of commits](https://github.com/rails/rails/commits/2-3-stable) in the main Rails repository on GitHub or review the `CHANGELOG` files for the individual Rails components.
 
 --------------------------------------------------------------------------------
 
 Application Architecture
 ------------------------
 
-There are two major changes in the architecture of Rails applications: complete integration of the [Rack](http://rack.rubyforge.org/) modular web server interface, and renewed support for Rails Engines.
+There are two major changes in the architecture of Rails applications: complete integration of the [Rack](https://rack.github.io/) modular web server interface, and renewed support for Rails Engines.
 
 ### Rack Integration
 
-Rails has now broken with its CGI past, and uses Rack everywhere. This required and resulted in a tremendous number of internal changes (but if you use CGI, don't worry; Rails now supports CGI through a proxy interface.) Still, this is a major change to Rails internals. After upgrading to 2.3, you should test on your local environment and your production environment. Some things to test:
+Rails has now broken with its CGI past, and uses Rack everywhere. This required and resulted in a tremendous number of internal changes (but if you use CGI, don't worry; Rails now supports CGI through a proxy interface). Still, this is a major change to Rails internals. After upgrading to 2.3, you should test on your local environment and your production environment. Some things to test:
 
 * Sessions
 * Cookies
@@ -50,9 +52,9 @@ After some versions without an upgrade, Rails 2.3 offers some new features for R
 Documentation
 -------------
 
-The [Ruby on Rails guides](http://guides.rubyonrails.org/) project has published several additional guides for Rails 2.3. In addition, a [separate site](http://edgeguides.rubyonrails.org/) maintains updated copies of the Guides for Edge Rails. Other documentation efforts include a relaunch of the [Rails wiki](http://newwiki.rubyonrails.org/) and early planning for a Rails Book.
+The [Ruby on Rails guides](https://guides.rubyonrails.org/) project has published several additional guides for Rails 2.3. In addition, a [separate site](https://edgeguides.rubyonrails.org/) maintains updated copies of the Guides for Edge Rails. Other documentation efforts include a relaunch of the [Rails wiki](http://newwiki.rubyonrails.org/) and early planning for a Rails Book.
 
-* More Information: [Rails Documentation Projects](http://weblog.rubyonrails.org/2009/1/15/rails-documentation-projects.)
+* More Information: [Rails Documentation Projects](https://weblog.rubyonrails.org/2009/1/15/rails-documentation-projects)
 
 Ruby 1.9.1 Support
 ------------------
@@ -87,7 +89,7 @@ accepts_nested_attributes_for :author,
 ```
 
 * Lead Contributor: [Eloy Duran](http://superalloy.nl/)
-* More Information: [Nested Model Forms](http://weblog.rubyonrails.org/2009/1/26/nested-model-forms)
+* More Information: [Nested Model Forms](https://weblog.rubyonrails.org/2009/1/26/nested-model-forms)
 
 ### Nested Transactions
 
@@ -123,14 +125,14 @@ Order.scoped_by_customer_id(12).scoped_by_status("open")
 There's nothing to define to use dynamic scopes: they just work.
 
 * Lead Contributor: [Yaroslav Markin](http://evilmartians.com/)
-* More Information: [What's New in Edge Rails: Dynamic Scope Methods](http://ryandaigle.com/articles/2008/12/29/what-s-new-in-edge-rails-dynamic-scope-methods.)
+* More Information: [What's New in Edge Rails: Dynamic Scope Methods](http://archives.ryandaigle.com/articles/2008/12/29/what-s-new-in-edge-rails-dynamic-scope-methods)
 
 ### Default Scopes
 
 Rails 2.3 will introduce the notion of _default scopes_ similar to named scopes, but applying to all named scopes or find methods within the model. For example, you can write `default_scope :order => 'name ASC'` and any time you retrieve records from that model they'll come out sorted by name (unless you override the option, of course).
 
 * Lead Contributor: Paweł Kondzior
-* More Information: [What's New in Edge Rails: Default Scoping](http://ryandaigle.com/articles/2008/11/18/what-s-new-in-edge-rails-default-scoping)
+* More Information: [What's New in Edge Rails: Default Scoping](http://archives.ryandaigle.com/articles/2008/11/18/what-s-new-in-edge-rails-default-scoping)
 
 ### Batch Processing
 
@@ -156,7 +158,7 @@ Note that you should only use this method for batch processing: for small number
 
 * More Information (at that point the convenience method was called just `each`):
     * [Rails 2.3: Batch Finding](http://afreshcup.com/2009/02/23/rails-23-batch-finding/)
-    * [What's New in Edge Rails: Batched Find](http://ryandaigle.com/articles/2009/2/23/what-s-new-in-edge-rails-batched-find)
+    * [What's New in Edge Rails: Batched Find](http://archives.ryandaigle.com/articles/2009/2/23/what-s-new-in-edge-rails-batched-find)
 
 ### Multiple Conditions for Callbacks
 
@@ -177,7 +179,7 @@ developers = Developer.find(:all, :group => "salary",
   :having => "sum(salary) > 10000", :select => "salary")
 ```
 
-* Lead Contributor: [Emilio Tagua](http://github.com/miloops)
+* Lead Contributor: [Emilio Tagua](https://github.com/miloops)
 
 ### Reconnecting MySQL Connections
 
@@ -185,7 +187,7 @@ MySQL supports a reconnect flag in its connections - if set to true, then the cl
 
 * Lead Contributor: [Dov Murik](http://twitter.com/dubek)
 * More information:
-    * [Controlling Automatic Reconnection Behavior](http://dev.mysql.com/doc/refman/5.0/en/auto-reconnect.html)
+    * [Controlling Automatic Reconnection Behavior](http://dev.mysql.com/doc/refman/5.6/en/auto-reconnect.html)
     * [MySQL auto-reconnect revisited](http://groups.google.com/group/rubyonrails-core/browse_thread/thread/49d2a7e9c96cb9f4)
 
 ### Other Active Record Changes
@@ -225,15 +227,16 @@ render 'other_controller/action'
 render 'show'
 render :show
 ```
+
 Rails chooses between file, template, and action depending on whether there is a leading slash, an embedded slash, or no slash at all in what's to be rendered. Note that you can also use a symbol instead of a string when rendering an action. Other rendering styles (`:inline`, `:text`, `:update`, `:nothing`, `:json`, `:xml`, `:js`) still require an explicit option.
 
 ### Application Controller Renamed
 
-If you're one of the people who has always been bothered by the special-case naming of `application.rb`, rejoice! It's been reworked to be application_controller.rb in Rails 2.3. In addition, there's a new rake task, `rake rails:update:application_controller` to do this automatically for you - and it will be run as part of the normal `rake rails:update` process.
+If you're one of the people who has always been bothered by the special-case naming of `application.rb`, rejoice! It's been reworked to be `application_controller.rb` in Rails 2.3. In addition, there's a new rake task, `rake rails:update:application_controller` to do this automatically for you - and it will be run as part of the normal `rake rails:update` process.
 
 * More Information:
-    * [The Death of Application.rb](http://afreshcup.com/2008/11/17/rails-2x-the-death-of-applicationrb/)
-    * [What's New in Edge Rails: Application.rb Duality is no More](http://ryandaigle.com/articles/2008/11/19/what-s-new-in-edge-rails-application-rb-duality-is-no-more)
+    * [The Death of Application.rb](https://afreshcup.com/home/2008/11/17/rails-2x-the-death-of-applicationrb)
+    * [What's New in Edge Rails: Application.rb Duality is no More](http://archives.ryandaigle.com/articles/2008/11/19/what-s-new-in-edge-rails-application-rb-duality-is-no-more)
 
 ### HTTP Digest Authentication Support
 
@@ -259,7 +262,7 @@ end
 ```
 
 * Lead Contributor: [Gregg Kellogg](http://www.kellogg-assoc.com/)
-* More Information: [What's New in Edge Rails: HTTP Digest Authentication](http://ryandaigle.com/articles/2009/1/30/what-s-new-in-edge-rails-http-digest-authentication)
+* More Information: [What's New in Edge Rails: HTTP Digest Authentication](http://archives.ryandaigle.com/articles/2009/1/30/what-s-new-in-edge-rails-http-digest-authentication)
 
 ### More Efficient Routing
 
@@ -302,7 +305,7 @@ Rails now keeps a per-request local cache of read from the remote cache stores, 
 
 Rails can now provide localized views, depending on the locale that you have set. For example, suppose you have a `Posts` controller with a `show` action. By default, this will render `app/views/posts/show.html.erb`. But if you set `I18n.locale = :da`, it will render `app/views/posts/show.da.html.erb`. If the localized template isn't present, the undecorated version will be used. Rails also includes `I18n#available_locales` and `I18n::SimpleBackend#available_locales`, which return an array of the translations that are available in the current Rails project.
 
-In addition, you can use the same scheme to localize the rescue files in the `public` directory: `public/500.da.html` or `public/404.en.html` work, for example.
+In addition, you can use the same scheme to localize the rescue files in the public directory: `public/500.da.html` or `public/404.en.html` work, for example.
 
 ### Partial Scoping for Translations
 
@@ -374,9 +377,9 @@ You can write this view in Rails 2.3:
 
 * Lead Contributor: [Eloy Duran](http://superalloy.nl/)
 * More Information:
-    * [Nested Model Forms](http://weblog.rubyonrails.org/2009/1/26/nested-model-forms)
-    * [complex-form-examples](http://github.com/alloy/complex-form-examples)
-    * [What's New in Edge Rails: Nested Object Forms](http://ryandaigle.com/articles/2009/2/1/what-s-new-in-edge-rails-nested-attributes)
+    * [Nested Model Forms](https://weblog.rubyonrails.org/2009/1/26/nested-model-forms)
+    * [complex-form-examples](https://github.com/alloy/complex-form-examples)
+    * [What's New in Edge Rails: Nested Object Forms](http://archives.ryandaigle.com/articles/2009/2/1/what-s-new-in-edge-rails-nested-attributes)
 
 ### Smart Rendering of Partials
 
@@ -392,7 +395,7 @@ render @article
 render @articles
 ```
 
-* More Information: [What's New in Edge Rails: render Stops Being High-Maintenance](http://ryandaigle.com/articles/2008/11/20/what-s-new-in-edge-rails-render-stops-being-high-maintenance)
+* More Information: [What's New in Edge Rails: render Stops Being High-Maintenance](http://archives.ryandaigle.com/articles/2008/11/20/what-s-new-in-edge-rails-render-stops-being-high-maintenance)
 
 ### Prompts for Date Select Helpers
 
@@ -413,13 +416,13 @@ select_datetime(DateTime.now, :prompt =>
 
 ### AssetTag Timestamp Caching
 
-You're likely familiar with Rails' practice of adding timestamps to static asset paths as a "cache buster." This helps ensure that stale copies of things like images and stylesheets don't get served out of the user's browser cache when you change them on the server. You can now modify this behavior with the `cache_asset_timestamps` configuration option for Action View. If you enable the cache, then Rails will calculate the timestamp once when it first serves an asset, and save that value. This means fewer (expensive) file system calls to serve static assets - but it also means that you can't modify any of the assets while the server is running and expect the changes to get picked up by clients.
+You're likely familiar with Rails' practice of adding timestamps to static asset paths as a "cache buster". This helps ensure that stale copies of things like images and stylesheets don't get served out of the user's browser cache when you change them on the server. You can now modify this behavior with the `cache_asset_timestamps` configuration option for Action View. If you enable the cache, then Rails will calculate the timestamp once when it first serves an asset, and save that value. This means fewer (expensive) file system calls to serve static assets - but it also means that you can't modify any of the assets while the server is running and expect the changes to get picked up by clients.
 
 ### Asset Hosts as Objects
 
 Asset hosts get more flexible in edge Rails with the ability to declare an asset host as a specific object that responds to a call. This allows you to implement any complex logic you need in your asset hosting.
 
-* More Information: [asset-hosting-with-minimum-ssl](http://github.com/dhh/asset-hosting-with-minimum-ssl/tree/master)
+* More Information: [asset-hosting-with-minimum-ssl](https://github.com/dhh/asset-hosting-with-minimum-ssl/tree/master)
 
 ### grouped_options_for_select Helper Method
 
@@ -432,7 +435,7 @@ grouped_options_for_select([["Hats", ["Baseball Cap","Cowboy Hat"]]],
 
 returns
 
-```ruby
+```html
 <option value="">Choose a product...</option>
 <optgroup label="Hats">
   <option value="Baseball Cap">Baseball Cap</option>
@@ -466,7 +469,7 @@ options_from_collection_for_select(@product.sizes, :name, :id, :disabled => lamb
 ```
 
 * Lead Contributor: [Tekin Suleyman](http://tekin.co.uk/)
-* More Information: [New in rails 2.3 - disabled option tags and lambdas for selecting and disabling options from collections](http://tekin.co.uk/2009/03/new-in-rails-23-disabled-option-tags-and-lambdas-for-selecting-and-disabling-options-from-collections/)
+* More Information: [New in rails 2.3 - disabled option tags and lambdas for selecting and disabling options from collections](https://tekin.co.uk/2009/03/new-in-rails-23-disabled-option-tags-and-lambdas-for-selecting-and-disabling-options-from-collections)
 
 ### A Note About Template Loading
 
@@ -496,7 +499,7 @@ Active Support has a few interesting changes, including the introduction of `Obj
 
 A lot of folks have adopted the notion of using try() to attempt operations on objects. It's especially helpful in views where you can avoid nil-checking by writing code like `<%= @person.try(:name) %>`. Well, now it's baked right into Rails. As implemented in Rails, it raises `NoMethodError` on private methods and always returns `nil` if the object is nil.
 
-* More Information: [try()](http://ozmm.org/posts/try.html.)
+* More Information: [try()](http://ozmm.org/posts/try.html)
 
 ### Object#tap Backport
 
@@ -518,8 +521,7 @@ XmlMini.backend = 'LibXML'
 The `Time` and `TimeWithZone` classes include an `xmlschema` method to return the time in an XML-friendly string. As of Rails 2.3, `TimeWithZone` supports the same argument for specifying the number of digits in the fractional second part of the returned string that `Time` does:
 
 ```ruby
->> Time.zone.now.xmlschema(6)
-=> "2009-01-16T13:00:06.13653Z"
+Time.zone.now.xmlschema(6) # => "2009-01-16T13:00:06.13653Z"
 ```
 
 * Lead Contributor: [Nicholas Dainty](http://www.workingwithrails.com/person/13536-nicholas-dainty)
@@ -531,7 +533,7 @@ If you look up the spec on the "json.org" site, you'll discover that all keys in
 ### Other Active Support Changes
 
 * You can use `Enumerable#none?` to check that none of the elements match the supplied block.
-* If you're using Active Support [delegates](http://afreshcup.com/2008/10/19/coming-in-rails-22-delegate-prefixes/,) the new `:allow_nil` option lets you return `nil` instead of raising an exception when the target object is nil.
+* If you're using Active Support [delegates](https://afreshcup.com/home/2008/10/19/coming-in-rails-22-delegate-prefixes) the new `:allow_nil` option lets you return `nil` instead of raising an exception when the target object is nil.
 * `ActiveSupport::OrderedHash`: now implements `each_key` and `each_value`.
 * `ActiveSupport::MessageEncryptor` provides a simple way to encrypt information for storage in an untrusted location (like cookies).
 * Active Support's `from_xml` no longer depends on XmlSimple. Instead, Rails now includes its own XmlMini implementation, with just the functionality that it requires. This lets Rails dispense with the bundled copy of XmlSimple that it's been carting around.
@@ -550,17 +552,17 @@ In addition to the Rack changes covered above, Railties (the core code of Rails 
 Rails Metal is a new mechanism that provides superfast endpoints inside of your Rails applications. Metal classes bypass routing and Action Controller to give you raw speed (at the cost of all the things in Action Controller, of course). This builds on all of the recent foundation work to make Rails a Rack application with an exposed middleware stack. Metal endpoints can be loaded from your application or from plugins.
 
 * More Information:
-    * [Introducing Rails Metal](http://weblog.rubyonrails.org/2008/12/17/introducing-rails-metal)
+    * [Introducing Rails Metal](https://weblog.rubyonrails.org/2008/12/17/introducing-rails-metal)
     * [Rails Metal: a micro-framework with the power of Rails](http://soylentfoo.jnewland.com/articles/2008/12/16/rails-metal-a-micro-framework-with-the-power-of-rails-m)
     * [Metal: Super-fast Endpoints within your Rails Apps](http://www.railsinside.com/deployment/180-metal-super-fast-endpoints-within-your-rails-apps.html)
-    * [What's New in Edge Rails: Rails Metal](http://ryandaigle.com/articles/2008/12/18/what-s-new-in-edge-rails-rails-metal)
+    * [What's New in Edge Rails: Rails Metal](http://archives.ryandaigle.com/articles/2008/12/18/what-s-new-in-edge-rails-rails-metal)
 
 ### Application Templates
 
-Rails 2.3 incorporates Jeremy McAnally's [rg](http://github.com/jeremymcanally/rg/tree/master) application generator. What this means is that we now have template-based application generation built right into Rails; if you have a set of plugins you include in every application (among many other use cases), you can just set up a template once and use it over and over again when you run the `rails` command. There's also a rake task to apply a template to an existing application:
+Rails 2.3 incorporates Jeremy McAnally's [rg](https://github.com/jm/rg) application generator. What this means is that we now have template-based application generation built right into Rails; if you have a set of plugins you include in every application (among many other use cases), you can just set up a template once and use it over and over again when you run the `rails` command. There's also a rake task to apply a template to an existing application:
 
-```
-rake rails:template LOCATION=~/template.rb
+```bash
+$ rake rails:template LOCATION=~/template.rb
 ```
 
 This will layer the changes from the template on top of whatever code the project already contains.
@@ -570,11 +572,11 @@ This will layer the changes from the template on top of whatever code the projec
 
 ### Quieter Backtraces
 
-Building on Thoughtbot's [Quiet Backtrace](https://github.com/thoughtbot/quietbacktrace) plugin, which allows you to selectively remove lines from `Test::Unit` backtraces, Rails 2.3 implements `ActiveSupport::BacktraceCleaner` and `Rails::BacktraceCleaner` in core. This supports both filters (to perform regex-based substitutions on backtrace lines) and silencers (to remove backtrace lines entirely). Rails automatically adds silencers to get rid of the most common noise in a new application, and builds a `config/backtrace_silencers.rb` file to hold your own additions. This feature also enables prettier printing from any gem in the backtrace.
+Building on thoughtbot's [Quiet Backtrace](https://github.com/thoughtbot/quietbacktrace) plugin, which allows you to selectively remove lines from `Test::Unit` backtraces, Rails 2.3 implements `ActiveSupport::BacktraceCleaner` and `Rails::BacktraceCleaner` in core. This supports both filters (to perform regex-based substitutions on backtrace lines) and silencers (to remove backtrace lines entirely). Rails automatically adds silencers to get rid of the most common noise in a new application, and builds a `config/backtrace_silencers.rb` file to hold your own additions. This feature also enables prettier printing from any gem in the backtrace.
 
 ### Faster Boot Time in Development Mode with Lazy Loading/Autoload
 
-Quite a bit of work was done to make sure that bits of Rails (and its dependencies) are only brought into memory when they're actually needed. The core frameworks - Active Support, Active Record, Action Controller, Action Mailer and Action View - are now using `autoload` to lazy-load their individual classes. This work should help keep the memory footprint down and improve overall Rails performance.
+Quite a bit of work was done to make sure that bits of Rails (and its dependencies) are only brought into memory when they're actually needed. The core frameworks - Active Support, Active Record, Action Controller, Action Mailer, and Action View - are now using `autoload` to lazy-load their individual classes. This work should help keep the memory footprint down and improve overall Rails performance.
 
 You can also specify (by using the new `preload_frameworks` option) whether the core libraries should be autoloaded at startup. This defaults to `false` so that Rails autoloads itself piece-by-piece, but there are some circumstances where you still need to bring in everything at once - Passenger and JRuby both want to see all of Rails loaded together.
 
@@ -590,11 +592,11 @@ The internals of the various <code>rake gem</code> tasks have been substantially
 * Internal Rails testing has been switched from `Test::Unit::TestCase` to `ActiveSupport::TestCase`, and the Rails core requires Mocha to test.
 * The default `environment.rb` file has been decluttered.
 * The dbconsole script now lets you use an all-numeric password without crashing.
-* `Rails.root` now returns a `Pathname` object, which means you can use it directly with the `join` method to [clean up existing code](http://afreshcup.com/2008/12/05/a-little-rails_root-tidiness/) that uses `File.join`.
+* `Rails.root` now returns a `Pathname` object, which means you can use it directly with the `join` method to [clean up existing code](https://afreshcup.wordpress.com/2008/12/05/a-little-rails_root-tidiness/) that uses `File.join`.
 * Various files in /public that deal with CGI and FCGI dispatching are no longer generated in every Rails application by default (you can still get them if you need them by adding `--with-dispatchers` when you run the `rails` command, or add them later with `rake rails:update:generate_dispatchers`).
 * Rails Guides have been converted from AsciiDoc to Textile markup.
 * Scaffolded views and controllers have been cleaned up a bit.
-* `script/server` now accepts a <tt>--path</tt> argument to mount a Rails application from a specific path.
+* `script/server` now accepts a `--path` argument to mount a Rails application from a specific path.
 * If any configured gems are missing, the gem rake tasks will skip loading much of the environment. This should solve many of the "chicken-and-egg" problems where rake gems:install couldn't run because gems were missing.
 * Gems are now unpacked exactly once. This fixes issues with gems (hoe, for instance) which are packed with read-only permissions on the files.
 
@@ -603,8 +605,8 @@ Deprecated
 
 A few pieces of older code are deprecated in this release:
 
-* If you're one of the (fairly rare) Rails developers who deploys in a fashion that depends on the inspector, reaper, and spawner scripts, you'll need to know that those scripts are no longer included in core Rails. If you need them, you'll be able to pick up copies via the [irs_process_scripts](http://github.com/rails/irs_process_scripts/tree) plugin.
-* `render_component` goes from "deprecated" to "nonexistent" in Rails 2.3. If you still need it, you can install the [render_component plugin](http://github.com/rails/render_component/tree/master).
+* If you're one of the (fairly rare) Rails developers who deploys in a fashion that depends on the inspector, reaper, and spawner scripts, you'll need to know that those scripts are no longer included in core Rails. If you need them, you'll be able to pick up copies via the [irs_process_scripts](https://github.com/rails/irs_process_scripts) plugin.
+* `render_component` goes from "deprecated" to "nonexistent" in Rails 2.3. If you still need it, you can install the [render_component plugin](https://github.com/rails/render_component/tree/master).
 * Support for Rails components has been removed.
 * If you were one of the people who got used to running `script/performance/request` to look at performance based on integration tests, you need to learn a new trick: that script has been removed from core Rails now. There's a new request_profiler plugin that you can install to get the exact same functionality back.
 * `ActionController::Base#session_enabled?` is deprecated because sessions are lazy-loaded now.
@@ -612,10 +614,10 @@ A few pieces of older code are deprecated in this release:
 * Some integration test helpers have been removed. `response.headers["Status"]` and `headers["Status"]` will no longer return anything. Rack does not allow "Status" in its return headers. However you can still use the `status` and `status_message` helpers. `response.headers["cookie"]` and `headers["cookie"]` will no longer return any CGI cookies. You can inspect `headers["Set-Cookie"]` to see the raw cookie header or use the `cookies` helper to get a hash of the cookies sent to the client.
 * `formatted_polymorphic_url` is deprecated. Use `polymorphic_url` with `:format` instead.
 * The `:http_only` option in `ActionController::Response#set_cookie` has been renamed to `:httponly`.
-* The `:connector` and `:skip_last_comma` options of `to_sentence` have been replaced by `:words_connnector`, `:two_words_connector`, and `:last_word_connector` options.
+* The `:connector` and `:skip_last_comma` options of `to_sentence` have been replaced by `:words_connector`, `:two_words_connector`, and `:last_word_connector` options.
 * Posting a multipart form with an empty `file_field` control used to submit an empty string to the controller. Now it submits a nil, due to differences between Rack's multipart parser and the old Rails one.
 
 Credits
 -------
 
-Release notes compiled by [Mike Gunderloy](http://afreshcup.com.) This version of the Rails 2.3 release notes was compiled based on RC2 of Rails 2.3.
+Release notes compiled by [Mike Gunderloy](http://afreshcup.com). This version of the Rails 2.3 release notes was compiled based on RC2 of Rails 2.3.
