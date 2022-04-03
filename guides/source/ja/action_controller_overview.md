@@ -216,7 +216,7 @@ strong parametersは、Action ControllerのパラメータをActive Modelの「�
 
 ```ruby
 class PeopleController < ActionController::Base
-  # 以下のコードはActiveModel::ForbiddenAttributesError例外を発生する
+  # 以下のコードはActiveModel::ForbiddenAttributesError例外を発生する
   # （明示的な許可を行なわずに、パラメータを一括で渡してしまう
   # 危険な「マスアサインメント」が行われているため）
   def create
