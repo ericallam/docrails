@@ -133,7 +133,7 @@ Rails 7では、オートロードのモードを指定する`config.autoloader=
 
 * `ActiveSupport::Dependencies.mechanism`やそのリーダーやライターを使っている場合は、`config.cache_classes`のアクセスで置き換える必要があります。
 
-* オートローダーの動作をトレースしたい場合、ActiveSupport::Dependencies.verbose=`は利用できなくなりました。`config/application.rb`で`Rails.autoloaders.log!`をスローしてください。
+* オートローダーの動作をトレースしたい場合、`ActiveSupport::Dependencies.verbose=`は利用できなくなりました。`config/application.rb`で`Rails.autoloaders.log!`をスローしてください。
 
 `ActiveSupport::Dependencies::Reference`や`ActiveSupport::Dependencies::Blamable`などの補助的なクラスやモジュールも削除されました。
 
