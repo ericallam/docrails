@@ -737,7 +737,7 @@ get 'photos/:id', to: 'photos#show', id: /[A-Z]\d{5}/
 `:constraints`では正規表現を使えますが、ここでは正規表現の「アンカー（`^`や`$`など）」は使えないという制限があることにご注意ください。たとえば、以下のルーティングは無効です。
 
 ```ruby
-get '/:id', to: 'articles#show', constraints: {id: /^\d/}
+get '/:id', to: 'articles#show', constraints: { id: /^\d/ }
 ```
 
 対象となるルーティングはすべて初めから冒頭と末尾がアンカーされているので、このようなアンカー表現を使う必要はないはずです。
@@ -756,7 +756,7 @@ get '/:username', to: 'users#show'
 リクエストに応じた制限は、セグメントを制限するときと同様の方法で指定できます。
 
 ```ruby
-get 'photos', constraints: {subdomain: 'admin'}
+get 'photos', constraints: { subdomain: 'admin' }
 ```
 
 ブロックフォームに対して制限を指定することもできます。
