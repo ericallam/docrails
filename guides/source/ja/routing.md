@@ -756,7 +756,7 @@ get '/:username', to: 'users#show'
 リクエストに応じた制限は、セグメントを制限するときと同様の方法で指定できます。
 
 ```ruby
-get 'photos', constraints: { subdomain: 'admin' }
+get 'photos', to: 'photos#index', constraints: { subdomain: 'admin' }
 ```
 
 ブロックフォームに対して制限を指定することもできます。
