@@ -288,7 +288,7 @@ SHA256ハッシュ生成に使われるオプション文字列です。この�
 
 #### `config.assets.compile`
 
-production環境での動的なSprocketsコンパイルをオンにするかどうかを指定するboolan値です。
+production環境での動的なSprocketsコンパイルをオンにするかどうかを指定するboolean値です。
 
 #### `config.assets.logger`
 
