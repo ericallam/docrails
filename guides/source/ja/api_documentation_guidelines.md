@@ -27,7 +27,7 @@ RDocの記法については[markup](https://ruby.github.io/rdoc/RDoc/Markup.htm
 リンクの表記
 -----
 
-Rails APIドキュメントはGitHub上での表示を念頭に置いていないので、カレントのAPIからの相対リンクにはRDocのRDoc [`link`](https://ruby.github.io/rdoc/RDoc/Markup.html#class-RDoc::Markup-label-Links)マークアップを使う必要があります。
+Rails APIドキュメントはGitHub上での表示を想定していません。例えばRails APIで相対リンクを書く場合はRDocの [`link`](https://ruby.github.io/rdoc/RDoc/Markup.html#class-RDoc::Markup-label-Links)を使う必要があります。
 
 これは、GitHub Markdownと、[api.rubyonrails.org](https://api.rubyonrails.org)や[edgeapi.rubyonrails.org](https://edgeapi.rubyonrails.org)で公開されているRDoc生成の違いによるものです。
 

@@ -635,7 +635,7 @@ Active Recordで楽観的ロック（optimistic locking）を使うかどうか�
 
 #### `config.active_record.partial_updates`
 
-既存レコードの更新で部分書き込みを行なうかどうか（「dirty」とマークされた属性だけを更新するか）を指定するboolian値です。データベースで部分書き込みを使う場合は、`config.active_record.lock_optimistically`で楽観的ロックも有効にする必要がある点にご注意ください。これは、更新がコンカレントに実行された場合に、読み出しの状態が古い情報に基づいて属性に書き込まれる可能性があるためです。デフォルト値は`true`です。
+既存レコードの更新で部分書き込みを行なうかどうか（「dirty」とマークされた属性だけを更新するか）を指定するboolian値です。データベースで部分書き込みを使う場合は、`config.active_record.lock_optimistically`で楽観的ロックも有効にする必要がある点にご注意ください。これは更新処理が並行して実行された場合に、読み込み中の古い情報に基づいて属性に書き込まれる可能性があるためです。デフォルト値は`true`です。
 
 #### `config.active_record.maintain_test_schema`
 
@@ -738,11 +738,11 @@ SQLコメントに挿入するキーバリュータグを指定する`Array`を�
 
 `:global_thread_pool`: アプリケーションが接続するすべてのデータベースで単一のプールを使います。この設定は、データベースが1つしかないアプリケーションや、データベースのシャードに1度に1件しかクエリを発行しないアプリケーションに適しています。
 
-`:multi_thread_pool`: データベースごとに1つのプールを使います。各プールのサイズは、`database.yml`ファイルの`max_threads`プロパティや`min_thread`プロパティで設定できます。この設定は、クエリを一度に複数のデータベースに発行することが多いアプリケーションで、最大コンカレント実行数をより正確に定義する必要がある場合に有用です。
+`:multi_thread_pool`: データベースごとに1つのプールを使います。各プールのサイズは、`database.yml`ファイルの`max_threads`プロパティや`min_thread`プロパティで設定できます。この設定は、クエリを複数のデータベースに対して発行することが多いアプリケーションで、並行処理の最大数をより正確に定義したい場面で有用です。
 
 #### `config.active_record.global_executor_concurrency`
 
-`config.active_record.async_query_executor = :global_thread_pool`設定で、コンカレントに実行可能な非同期クエリの個数を定義します。
+`config.active_record.async_query_executor = :global_thread_pool`設定で、並行に実行できる非同期クエリの個数を定義します。
 
 デフォルトは`4`です。
 
@@ -1989,7 +1989,7 @@ development:
 
 NOTE: MySQLのバージョンが5.5または5.6で、かつ`utf8mb4`文字セットをデフォルトで使いたい場合は、MySQLサーバーで`innodb_large_prefix`システム変数を有効にすることで、長いキープレフィックスがサポートされるよう設定してください。
 
-MySQLのAdvisory Locksはデフォルトで有効になります。これはデータベースマイグレーションをコンカレンシー安全にするために用いられます。`advisory_locks`を`false`にするとAdvisory Locksを無効にできます。
+MySQLのAdvisory Locksはデフォルトで有効になります。これはデータベースマイグレーションの並行処理を安全に実行するために用いられます。`advisory_locks`を`false`にするとAdvisory Locksを無効にできます。
 
 ```yaml
 production:
