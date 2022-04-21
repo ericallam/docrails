@@ -373,19 +373,19 @@ Rails.application.config.hosts << /.*\.product\.com/
 Rails.application.config.hosts << ".product.com"
 ```
 
-Host Authorizationチェックで特定のリクエストを除外するには`config.host_configuration.exclude`を設定します。
+Host Authorizationチェックで特定のリクエストを除外するには`config.host_authorization.exclude`を設定します。
 
 ```ruby
 # /healthcheck/パスへのリクエストをホストチェックから除外する
-Rails.application.config.host_configuration = {
+Rails.application.config.host_authorization = {
   exclude: ->(request) { request.path =~ /healthcheck/ }
 }
 ```
 
-許可されていないホストからのリクエストを受け取ると、デフォルトのRackアプリケーションが`403 Forbidden`レスポンスを返します。この動作は以下のように`config.host_configuration.response_app`を設定することでカスタマイズできます。
+許可されていないホストからのリクエストを受け取ると、デフォルトのRackアプリケーションが`403 Forbidden`レスポンスを返します。この動作は以下のように`config.host_authorization.response_app`を設定することでカスタマイズできます。
 
 ```ruby
-Rails.application.config.host_configuration = {
+Rails.application.config.host_authorization = {
   response_app: -> env do
     [400, { "Content-Type" => "text/plain" }, ["Bad Request"]]
   end
