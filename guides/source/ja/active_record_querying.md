@@ -532,7 +532,7 @@ end
 
 検索メソッドに条件を追加したい場合、たとえば`Book.where("title = 'Introduction to Algorithms'")`のように条件を単純に指定できます。この場合、`title`フィールドの値が'Introduction to Algorithms'であるすべてのクライアントが検索されます。
 
-WARNING: 条件を文字列だけで構成すると、SQLインジェクションの脆弱性が発生する可能性があります。たとえば、Book.where("title LIKE '%#{params[:title]}%'")`という書き方は危険です。次で説明するように、配列を使うのが望ましい方法です。
+WARNING: 条件を文字列だけで構成すると、SQLインジェクションの脆弱性が発生する可能性があります。たとえば、`Book.where("title LIKE '%#{params[:title]}%'")`という書き方は危険です。次で説明するように、配列を使うのが望ましい方法です。
 
 ### 条件を配列で表す
 
