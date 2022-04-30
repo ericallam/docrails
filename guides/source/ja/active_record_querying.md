@@ -578,6 +578,25 @@ Book.where("created_at >= :start_date AND created_at <= :end_date",
 
 このように書くことで、条件で多数の変数を使うコードが読みやすくなります。
 
+#### 条件で`LIKE`を使う
+
+引数はSQLインジェクションを防ぐために自動的にエスケープされますが、SQL `LIKE`ワイルドカード（つまり、`%`と`_`）はエスケープ**されません**。引数にサニタイズされていない値が使用されている場合、予期しない動作となることがあります。例えば:
+
+```ruby
+Book.where("title LIKE ?", params[:title] + "%")
+```
+
+上の例は、ユーザーが指定した文字列で始まるタイトルに一致することを意図しています。しかし、`params[:title]`に含まれる`%`または`_`はワイルドカードとして扱われるため、意外な結果をもたらします。状況によっては、データベースがインデックスを使用できなくなるため、クエリが大幅に遅くなる可能性があります。
+
+これらの問題を回避するには、[`sanitize_sql_like`][]を使用して関連する引数のワイルドカード文字をエスケープします。
+
+```ruby
+Book.where("title LIKE ?",
+  Book.sanitize_sql_like(params[:title]) + "%")
+```
+
+[`sanitize_sql_like`]: https://api.rubyonrails.org/classes/ActiveRecord/Sanitization/ClassMethods.html#method-i-sanitize_sql_like
+
 ### 条件でハッシュを使う
 
 Active Recordは条件をハッシュで渡すこともできます。この書式を使うことで条件構文が読みやすくなります。条件をハッシュで渡す場合、ハッシュのキーには条件付けしたいフィールドを、ハッシュの値にはそのフィールドをどのように条件づけするかを、それぞれ指定します。
