@@ -185,6 +185,18 @@ Active Record
 
 *   非推奨化されていた`ActiveRecord::DatabaseConfigurations::DatabaseConfig#spec_name`を削除。
 
+*   非推奨化されていた`ActiveRecord::Base.connection_config`を削除。
+
+*   非推奨化されていた`ActiveRecord::Base.arel_attribute`を削除。
+
+*   非推奨化されていた`ActiveRecord::Base.configurations.default_hash`を削除。
+
+*   非推奨化されていた`ActiveRecord::Base.configurations.to_h`を削除。
+
+*   非推奨化されていた`ActiveRecord::Result#map!`および`ActiveRecord::Result#collect!`を削除。
+
+*   非推奨化されていた`ActiveRecord::Base#remove_connection`を削除。
+
 ### 非推奨化
 
 *   `Tasks::DatabaseTasks.schema_file_type`を非推奨化。
@@ -304,18 +316,6 @@ Active Job
     previous callback was halted with `throw :abort`.
 
 *   非推奨化されていた`:return_false_on_aborted_enqueue`オプションを削除。
-
-*   非推奨化されていた`ActiveRecord::Base.connection_config`を削除。
-
-*   非推奨化されていた`ActiveRecord::Base.arel_attribute`を削除。
-
-*   非推奨化されていた`ActiveRecord::Base.configurations.default_hash`を削除。
-
-*   非推奨化されていた`ActiveRecord::Base.configurations.to_h`を削除。
-
-*   非推奨化されていた`ActiveRecord::Result#map!`および`ActiveRecord::Result#collect!`を削除。
-
-*   非推奨化されていた`ActiveRecord::Base#remove_connection`を削除。
 
 ### 非推奨化
 
