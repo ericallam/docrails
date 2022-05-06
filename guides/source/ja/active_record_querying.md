@@ -463,10 +463,10 @@ end
 
 #### `find_in_batches`
 
-[`find_in_batches`][]メソッドは、レコードをバッチで取り出すという点で`find_each`と似ています。違うのは、`find_in_batches`は**バッチ**を個別にではなくモデルの配列としてブロックにyieldするという点です。以下の例では、与えられたブロックに対して一度に最大1000までの納品書（invoice）の配列をyieldしています。最後のブロックには残りの納品書が含まれます。
+[`find_in_batches`][]メソッドは、レコードをバッチで取り出すという点で`find_each`と似ています。違うのは、`find_in_batches`は**バッチ**を個別にではなくモデルの配列としてブロックにyieldするという点です。以下の例では、与えられたブロックに対して一度に最大1000人までの顧客（customer）の配列をyieldしています。最後のブロックには残りの顧客が含まれます。
 
 ```ruby
-# 1回あたり納品書1000通の配列をadd_invoicesに渡す
+# 1回あたり1000人の顧客の配列をadd_customersに渡す
 Customer.find_in_batches do |customers|
   export.add_customers(customers)
 end
