@@ -198,7 +198,7 @@ azure:
 `Gemfile`に[`azure-storage-blob`](https://github.com/Azure/azure-storage-ruby) gemを追加します。
 
 ``` ruby
-gem "azure-storage-blob", require: false
+gem "azure-storage-blob", "~> 2.0", require: false
 ```
 
 ### Google Cloud Storageサービス
