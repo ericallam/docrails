@@ -1007,7 +1007,7 @@ config.action_dispatch.default_headers.clear
 
 よく使われるヘッダーのリストを以下に示します。
 
-* **`X-Frame-Options`**: Railsではデフォルトで`SAMEORIGIN`が指定されます。このヘッダーは、同一ドメインでのフレームを許可します。'DENY'を指定するとすべてのフレームが不許可になります。すべてのWebサイトについてフレームを許可するには'ALLOWALL'を指定します。
+* **`X-Frame-Options`**: Railsではデフォルトで`SAMEORIGIN`が指定されます。このヘッダーは、同一ドメインでのフレームを許可します。'DENY'を指定するとすべてのフレームが不許可になります。すべてのWebサイトについてフレームを許可するにはこのヘッダーを除去します。
 * **`X-XSS-Protection`**: Railsではデフォルトで`0`が指定されます。これは[非推奨化されたレガシーヘッダー](https://owasp.org/www-project-secure-headers/#x-xss-protection)であり、問題のあるレガシーXSS監査を無効にするために`0`に設定してください。
 * **`X-Content-Type-Options`**: Railsではデフォルトで`nosniff`が指定されます。このヘッダーは、ブラウザによるファイルのMIMEタイプ推測を停止します。
 * **`X-Content-Security-Policy`**: このヘッダーは、[特定Content-Typeの読み込み元サイトを制御するための強力なメカニズム](https://w3c.github.io/webappsec-csp/)です。
