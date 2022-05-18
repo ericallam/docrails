@@ -96,24 +96,13 @@ module MyApplication
 end
 ```
 
-また、Railsエンジンはエンジンクラスの本体に独自の`config/environments/*.rb`を追加することも可能です。
+Railsエンジンは、エンジンクラスの本文の中とエンジン自身の`config/environments/*.rb`の中から自動読み込みパスを追加することも可能です。
 
 WARNING: `ActiveSupport::Dependencies.autoload_paths`はくれぐれも改変しないでください。自動読み込みパスを変更するpublicなインターフェイスは`config.autoload_paths`の方です。
 
 WARNING: アプリケーションの起動中は、自動読み込みパス内のコードは自動で読み込まれません（特に`config/initializers/*.rb`の中）。正しい方法については、後述の[アプリケーション起動時の自動読み込み](#アプリケーション起動時の自動読み込み)を参照してください。
 
 自動読み込みパスは、`Rails.autoloaders.main`オートローダーによって管理されます。
-
-`$LOAD_PATH`
-----------
-
-自動読み込みパスはデフォルトで`$LOAD_PATH`に追加されます。ただし、Zeitwerkの内部では絶対ファイル名が使われますし、アプリケーションで自動読み込み可能なファイルを`require`すべきではありませんので、`$LOAD_PATH`に追加されたこれらのディレクトリは実際には不要です。この動作は以下のフラグで無効にできます。
-
-```ruby
-config.add_autoload_paths_to_load_path = false
-```
-
-こうすることで探索量が削減されて、正しい`require`呼び出しがわずかに高速化される可能性があります。また、アプリケーションで[Bootsnap](https://github.com/Shopify/bootsnap)を使っている場合も、ライブラリの不要なインデックス構築や、必要なメモリ量が節約されます。
 
 `config.autoload_once_paths`
 --------------------------
@@ -130,7 +119,7 @@ module MyApplication
 end
 ```
 
-また、Railsエンジンはエンジンクラスの本体に独自の`config/environments/*.rb`を追加することも可能です。
+Railsエンジンは、エンジンクラスの本文の中とエンジン自身の`config/environments/*.rb`の中から自動読み込みパスを追加することも可能です。
 
 INFO: `app/serializers`を`config.autoload_once_paths`に追加すると、`app/`の下のカスタムディレクトリであってもRailsはこれを自動読み込みパスとみなさなくなります。この設定を行うと、このルールが上書きされます。
 
@@ -314,8 +303,7 @@ eager loadingは`config.eager_load`フラグで制御します。これは`produ
 
 ファイルがeager loadingされる順序は未定義です。
 
-たとえば`Zeitwerk`という定数を定義すると、Railsはアプリケーションの自動読み込みモードにかかわらず`Zeitwerk::Loader.eager_load_all`を呼び出します。Zeitwerkが管理する依存はこのようにしてeager loadされます。
-
+eager loading中に、Railsは`Zeitwerk::Loader.eager_load_all`を呼び出します。これはすべてのZeitwerkが管理している依存gemもeager loadされていることを保証します。
 
 STI（単一テーブル継承）
 ------------------------
