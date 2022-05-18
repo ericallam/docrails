@@ -2185,7 +2185,7 @@ NOTE: このメソッドは`collection.concat`および`collection.push`のエ�
 
 [`collection.empty?`][]メソッドは、関連付けられたオブジェクトがコレクションに含まれていない場合に`true`を返します。
 
-```ruby
+```html+erb
 <% if @part.assemblies.empty? %>
   ※この部分はどのアセンブリでも使われません。
 <% end %>
