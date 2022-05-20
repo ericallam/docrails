@@ -341,13 +341,13 @@ RailsのscaffoldテンプレートではERBタグが多用されますが、こ�
 
 たとえば、テンプレートで以下のようなエスケープ済みERBタグが必要になることがあります (`%`文字が1つ多い点にご注目ください)。
 
-```ruby
+```erb
 <%%= stylesheet_link_tag :application %>
 ```
 
 上のコードから以下の出力が生成されます。
 
-```ruby
+```erb
 <%= stylesheet_link_tag :application %>
 ```
 
