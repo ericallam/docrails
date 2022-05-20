@@ -1032,7 +1032,7 @@ end
 
 Railsフレームワークにおけるこれらのフックは、特定のライブラリの読み込み時に呼び出されます。
 
-たとえば、`ActionController::Base`が読み込まれると`:action_controller_base`フックが呼び出されます。これは、`:action_controller_base`フックでによるすべての`ActiveSupport.on_load`呼び出しが`ActionController::Base`のコンテキストで呼び出される（ここでは`self`が`ActionController::Base`として評価される）ということです。
+たとえば、`ActionController::Base`が読み込まれると`:action_controller_base`フックが呼び出されます。これは、`:action_controller_base`フックによるすべての`ActiveSupport.on_load`呼び出しが`ActionController::Base`のコンテキストで呼び出される（ここでは`self`が`ActionController::Base`として評価される）ということです。
 
 ### 読み込みフックでコードを変更する
 
