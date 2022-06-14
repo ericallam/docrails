@@ -150,7 +150,15 @@ developmentモードで発生したエラーのレスポンスで用いられる
 
 #### `config.filter_parameters`
 
-パスワードやクレジットカード番号など、ログに出力したくないパラメータをフィルタで除外するのに用います。デフォルトのRailsでは`config/initializers/filter_parameter_logging.rb`に`Rails.application.config.filter_parameters += [:password]`を追加することでパスワードをフィルタで除外します。パラメータのフィルタは正規表現の**部分一致**によって行われます（訳注: 他のパラメータ名が誤って部分一致しないようご注意ください）。
+パスワードやクレジットカード番号など、ログに出力したくないパラメータをフィルタで除外するのに用います。また、Active Recordオブジェクトに対して`#inspect`を呼び出した際に、データベースの機密性の高い値をフィルタで除外します。デフォルトのRailsでは`config/initializers/filter_parameter_logging.rb`に以下の記述を追加することでパスワードをフィルタで除外しています。
+
+```ruby
+Rails.application.config.filter_parameters += [
+  :passw, :secret, :token, :_key, :crypt, :salt, :certificate, :otp, :ssn
+]
+```
+
+パラメータのフィルタは正規表現の**部分一致**によって行われます（訳注: 他のパラメータ名が誤って部分一致しないようご注意ください）。
 
 #### `config.force_ssl`
 
