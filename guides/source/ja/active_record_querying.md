@@ -2194,6 +2194,8 @@ Order.average("subtotal")
 
 オプションについては、1つ上の[計算](#計算)セクションを参照してください。
 
+[`average`]: https://api.rubyonrails.org/classes/ActiveRecord/Calculations.html#method-i-average
+
 ### 最小値
 
 テーブルに含まれるフィールドの最小値を得るには、そのテーブルを持つクラスで[`minimum`][]メソッドを呼び出します。このメソッド呼び出しは以下のようになります。
