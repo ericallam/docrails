@@ -867,7 +867,7 @@ Railsは、[formヘルパー](form_helpers.html)で生成されたあらゆる�
 
 #### `path_parameters`、`query_parameters`、`request_parameters`
 
-Railsは、リクエストに関連するすべてのパラメータを`params`ハッシュに集約します。これは、クエリ文字列の場合も、POSTのbodyで送信されたパラメータの場合も同様です。`request`オブジェクトには3つのアクセサメソッドがあり、パラメータの由来に応じたアクセスも可能です。[`request_parameters`][]ハッシュにはクエリ文字列として送信されたパラメータが含まれます。[`path_parameters`][]ハッシュにはPOSTのbodyの一部として送信されたパラメータが含まれます
+Railsは、リクエストに関連するすべてのパラメータを`params`ハッシュに集約します。これは、クエリ文字列の場合も、POSTのbodyで送信されたパラメータの場合も同様です。`request`オブジェクトには3つのアクセサメソッドがあり、パラメータの由来に応じたアクセスも可能です。[`query_parameters`][]ハッシュにはクエリ文字列として送信されたパラメータが含まれます。[`request_parameters`][]ハッシュにはPOSTのbodyの一部として送信されたパラメータが含まれます。
 [`path_parameters`][]には、ルーティング機構によって特定のコントローラとアクションへのパスの一部であると認識されたパラメータが含まれます。
 
 [`path_parameters`]: https://api.rubyonrails.org/classes/ActionDispatch/Http/Parameters.html#method-i-path_parameters
