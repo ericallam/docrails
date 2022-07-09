@@ -262,7 +262,7 @@ distance_of_time_in_words(Time.now, Time.now + 15.seconds, include_seconds: true
 
 #### `time_ago_in_words`
 
-distance_of_time_in_words`と同様ですが、`to_time`（終端時刻）が`Time.now`に固定されている点が異なります。
+`distance_of_time_in_words`と同様ですが、`to_time`（終端時刻）が`Time.now`に固定されている点が異なります。
 
 ```ruby
 time_ago_in_words(3.minutes.from_now) # => 3 minutes

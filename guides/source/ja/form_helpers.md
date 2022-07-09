@@ -24,7 +24,7 @@ NOTE: このガイドはフォームヘルパーとその引数について網�
 
 最も基本的なフォームヘルパーは[`form_with`](https://api.rubyonrails.org/classes/ActionView/Helpers/FormHelper.html#method-i-form_with)です。
 
-```
+```erb
 <%= form_with do |form| %>
   Form contents
 <% end %>
@@ -677,7 +677,7 @@ def upload
 end
 ```
 
-ファイルのアップロードが完了すると、ファイルの保存先の決定（DiskやAmazon S3など）、モデルとの関連付け、画像ファイルのりサイズ、サムネイルの生成など、さまざまなタスクが必要になる可能性があります。[Active Storage](active_storage_overview.html)は、こうしたタスクを支援するように設計されています。
+ファイルのアップロードが完了すると、ファイルの保存先の決定（DiskやAmazon S3など）、モデルとの関連付け、画像ファイルのリサイズ、サムネイルの生成など、さまざまなタスクが必要になる可能性があります。[Active Storage](active_storage_overview.html)は、こうしたタスクを支援するように設計されています。
 
 フォームビルダーをカスタマイズする
 -------------------------
