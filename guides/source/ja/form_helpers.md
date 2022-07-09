@@ -24,7 +24,7 @@ NOTE: このガイドはフォームヘルパーとその引数について網�
 
 最も基本的なフォームヘルパーは[`form_with`](https://api.rubyonrails.org/classes/ActionView/Helpers/FormHelper.html#method-i-form_with)です。
 
-```
+```erb
 <%= form_with do |form| %>
   Form contents
 <% end %>
