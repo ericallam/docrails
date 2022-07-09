@@ -613,7 +613,7 @@ class CommentsController < ApplicationController
 end
 ```
 
-セッションを削除する場合はキーに`nil`を指定すると削除されますが、cookieを削除するに、この方法ではなく`cookies.delete(:key)`を使う必要があります。
+セッションを削除する場合はキーに`nil`を指定すると削除されますが、cookieを削除するには、この方法ではなく`cookies.delete(:key)`を使う必要があります。
 
 Railsでは、機密データを保存するための署名済みcookie jarと暗号化cookie jarも提供しています。
 署名済みcookie jarは、暗号化済み署名をcookie値に追加することで、cookieの改竄を防ぎます。
