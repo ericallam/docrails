@@ -1969,7 +1969,7 @@ irb> Customer.find_by_sql("SELECT * FROM customers INNER JOIN orders ON customer
 
 ### `select_all`
 
-`find_by_sql`は[`connection.select_all`][]と深い関係があります。`select_all`は`find_by_sql`と同様、カスタムSQLを用いてデータベースからオブジェクトを取り出しますが、取り出したオブジェクトをインスタンス化しない点が異なります。このメソッドは`ActiveRecord::Result`クラスのインスタンスを1つ返します。このオブジェクトで`to_hash`を呼ぶと、各レコードに対応するハッシュを含む配列を1つ返します。
+`find_by_sql`は[`connection.select_all`][]と深い関係があります。`select_all`は`find_by_sql`と同様、カスタムSQLを用いてデータベースからオブジェクトを取り出しますが、取り出したオブジェクトをインスタンス化しない点が異なります。このメソッドは`ActiveRecord::Result`クラスのインスタンスを1つ返します。このオブジェクトで`to_a`を呼ぶと、各レコードに対応するハッシュを含む配列を1つ返します。
 
 ```
 irb> Customer.connection.select_all("SELECT first_name, created_at FROM customers WHERE id = '1'").to_a
