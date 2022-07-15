@@ -1521,7 +1521,7 @@ end
 
 このメソッドは、そのような命名規約に沿う言語（JavaScriptなど）で使う名前を求めるのに便利です。
 
-INFO: `camerize`メソッドの動作は、`underscore`メソッドと逆の動作と考えるとわかりやすいでしょう。ただし完全に逆の動作ではありません。たとえば、`"SSLError".underscore.camelize`を実行した結果は`"SslError"`になり、元に戻りません。このような場合をサポートするために、Active Supportでは`config/initializers/inflections.rb`の頭字語（acronym）を次のように指定できます。
+INFO: `camelize`メソッドの動作は、`underscore`メソッドと逆の動作と考えるとわかりやすいでしょう。ただし完全に逆の動作ではありません。たとえば、`"SSLError".underscore.camelize`を実行した結果は`"SslError"`になり、元に戻りません。このような場合をサポートするために、Active Supportでは`config/initializers/inflections.rb`の頭字語（acronym）を次のように指定できます。
 
 ```ruby
 ActiveSupport::Inflector.inflections do |inflect|
