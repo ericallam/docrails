@@ -701,7 +701,7 @@ Active Model
 *   `ActiveModel::Dirty#[attr_name]_previously_changed?`と`ActiveModel::Dirty#[attr_name]_previous_change`を追加。モデルの保存後に一時記録された変更に簡単にアクセスできる。
     ([Pull Request](https://github.com/rails/rails/pull/19847))
 
-*  `valid?`と`invalid?`でさまざまなコンテキストを一度にバリデーションする機能。
+*  `valid?`と`invalid?`でさまざまなコンテキストを一度に検証する機能。
     ([Pull Request](https://github.com/rails/rails/pull/21069))
 
 *  `validates_acceptance_of`のデフォルト値として`1`の他に`true`も指定できるようになった。

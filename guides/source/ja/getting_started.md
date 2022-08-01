@@ -1500,7 +1500,7 @@ module Visible
 end
 ```
 
-ステータスをバリデーションするメソッドもconcernにまとめられますが、バリデーションメソッドはクラスレベルで呼び出されるので、より複雑になります。APIドキュメントの[`ActiveSupport::Concern`](https://api.rubyonrails.org/classes/ActiveSupport/Concern.html)には、以下のようにバリデーションをシンプルに`include`する方法が紹介されています。
+ステータスを検証するメソッドもconcernにまとめられますが、バリデーションメソッドはクラスレベルで呼び出されるので、より複雑になります。APIドキュメントの[`ActiveSupport::Concern`](https://api.rubyonrails.org/classes/ActiveSupport/Concern.html)には、以下のようにバリデーションをシンプルに`include`する方法が紹介されています。
 
 ```ruby
 module Visible

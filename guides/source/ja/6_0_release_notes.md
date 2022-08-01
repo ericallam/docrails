@@ -651,7 +651,7 @@ Active Model
 *   数値バリデータを修正（Active Recordを除きbefore_type_castの値を引き続き使う）
     ([Pull Request](https://github.com/rails/rails/pull/33654))
 
-*   `BigDecimal`や`Float`数値の場合の数値の等しさのバリデーションを修正（バリデーションする双方を`BigDecimal`に変換）
+*   `BigDecimal`や`Float`数値の場合の数値の等しさのバリデーションを修正（検証する双方を`BigDecimal`に変換）
     ([Pull Request](https://github.com/rails/rails/pull/32852))
 
 *   マルチパラメータのtimeハッシュを変換するときの年の値を修正
