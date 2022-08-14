@@ -146,6 +146,8 @@ end
 - [Sneakers](https://github.com/jondot/sneakers/wiki/How-To:-Rails-Background-Jobs-with-ActiveJob)
 - [Sucker Punch](https://github.com/brandonhilkert/sucker_punch#active-job)
 - [Queue Classic](https://github.com/QueueClassic/queue_classic#active-job)
+- [Delayed Job](https://github.com/collectiveidea/delayed_job#active-job)
+- [Que](https://github.com/que-rb/que#additional-rails-specific-setup)
 - [Good Job](https://github.com/bensheldon/good_job#readme)
 
 キュー
