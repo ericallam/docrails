@@ -48,8 +48,6 @@ Railsをインストールする前に、必要な要件が自分のシステム
 
 * Ruby
 * SQLite3
-* Node.js
-* Yarn
 
 #### Rubyをインストールする
 
@@ -76,28 +74,6 @@ $ sqlite3 --version
 ```
 
 上を実行することでSQLite3のバージョンを確認できます。
-
-#### Node.jsとYarnをインストールする
-
-最後に、アプリケーションのJavaScriptを管理するNode.jsとYarnのインストールが必要です。
-
-[Node.jsのWebサイト](https://nodejs.org/ja/download/)のインストール方法に沿ってNode.jsをインストールします。次に以下のコマンドを実行して、正しくインストールできたかどうかを確認します。
-
-```bash
-$ node --version
-```
-
-Node.jsのバージョン番号が出力されるはずです。バージョンが8.16.0より大きいことを確認してください。
-
-Yarnをインストールするには、[YarnのWebサイト](https://classic.yarnpkg.com/en/docs/install)のインストール方法に沿って進めます。
-
-インストール後、以下のコマンドを実行するとYarnのバージョン番号が出力されるはずです。
-
-```bash
-$ yarn --version
-```
-
-"1.22.0"のようなバージョン番号が表示されれば、Yarnは正しくインストールされています。
 
 #### Railsをインストールする
 
