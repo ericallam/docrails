@@ -61,6 +61,8 @@ HTML
           case code_type
           when "ruby"
             "Ruby"
+          when "js"
+            "Javascript"
           when "sql"
             "SQL"
           when "erb", "html+erb"
