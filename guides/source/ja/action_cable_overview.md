@@ -157,7 +157,7 @@ end
 
 #### サブスクリプション
 
-コンシューマーはチャネルをサブスクライブして、**サブスクライバ**（Subscriber）の役割を果たします。それらのコンシューマーのコネクションは**サブスクリプション*（Subscription: 購読）と呼ばれます。生成されたメッセージは、Action Cableコンシューマーが送信するidに基いて、これらのチャネルサブスクライバ側にルーティングされます。
+コンシューマーはチャネルをサブスクライブして、**サブスクライバ**（Subscriber）の役割を果たします。それらのコンシューマーのコネクションは**サブスクリプション**（Subscription: 購読）と呼ばれます。生成されたメッセージは、Action Cableコンシューマーが送信するidに基いて、これらのチャネルサブスクライバ側にルーティングされます。
 
 ```ruby
 # app/channels/chat_channel.rb
@@ -273,7 +273,7 @@ end
 ActionCable.server.broadcast("chat_Best Room", { body: "このチャットルーム名はBest Roomです" })
 ```
 
-あるモデルに関連するストリームを作成すると、そのモデルとチャネルからブロードキャストが生成されます。以下の例は、`comments:Z2lkOi8vVGVzdEFwcC9Qb3N0LzE`のような形式のブロードキャストを[`stream_for`][]でサブスクライブします。
+あるモデルに関連するストリームを作成すると、そのモデルとチャネルからブロードキャストが生成されます。以下の例は、`comments:Z2lkOi8vVGVzdEFwcC9Qb3N0LzE`のような形式のブロードキャストを[`stream_for`][]でサブスクライブします（`Z2lkOi8vVGVzdEFwcC9Qb3N0LzE`はPostモデルのGlobalID）。
 
 ```ruby
 class CommentsChannel < ApplicationCable::Channel
@@ -299,7 +299,7 @@ CommentsChannel.broadcast_to(@post, @comment)
 
 **ブロードキャスト**（broadcasting）は、pub/subのリンクです。パブリッシャからの送信内容がすべてブロードキャストを経由し、その名前のブロードキャストをストリーミングするチャネルサブスクライバに直接ルーティングされます。各チャネルは、0個以上のブロードキャストをストリーミングできます。
 
-ブロードキャストは純粋なオンラインキューであり、時間に依存します。ストリーミング（指定のチャネルにサブスクライバされる）を行っていないコンシューマーは、後で接続してもブロードキャストを取得できません。
+ブロードキャストは純粋なオンラインキューであり、時間に依存します。ストリーミング（指定のチャネルにサブスクライブされること）を行っていないコンシューマーは、後で接続してもブロードキャストを取得できません。
 
 ### サブスクリプション
 
@@ -373,8 +373,7 @@ consumer.subscriptions.create({ channel: "ChatChannel", room: "Best Room" }, {
 ```
 
 ```ruby
-# このコードはアプリケーションのどこかで呼び出される
-# （おそらくNewCommentJob）
+# このコードはアプリケーションのどこか（NewCommentJobあたり）で呼び出される
 ActionCable.server.broadcast(
   "chat_#{room}",
   {
@@ -498,14 +497,14 @@ consumer.subscriptions.create("AppearanceChannel", {
   install() {
     window.addEventListener("focus", this.update)
     window.addEventListener("blur", this.update)
-    document.addEventListener("turbolinks:load", this.update)
+    document.addEventListener("turbo:load", this.update)
     document.addEventListener("visibilitychange", this.update)
   },
 
   uninstall() {
     window.removeEventListener("focus", this.update)
     window.removeEventListener("blur", this.update)
-    document.removeEventListener("turbolinks:load", this.update)
+    document.removeEventListener("turbo:load", this.update)
     document.removeEventListener("visibilitychange", this.update)
   },
 
@@ -568,7 +567,7 @@ consumer.subscriptions.create("WebNotificationsChannel", {
 以下のように、アプリケーションのどこからでもWeb通知チャネルのインスタンスにコンテンツをブロードキャストできます。
 
 ```ruby
-# このコードはアプリケーションのどこか（NewCommentJob あたり）で呼び出される
+# このコードはアプリケーションのどこか（NewCommentJobあたり）で呼び出される
 WebNotificationsChannel.broadcast_to(
   current_user,
   title: '新着情報！',
@@ -754,7 +753,7 @@ Ruby側は、[websocket-driver](https://github.com/faye/websocket-driver-ruby)�
 
 Action Cableは、WebSocketとスレッドの組み合わせによって支えられています。フレームワーク内部のフローや、ユーザー指定のチャネルの動作は、Rubyのネイティブスレッドによって処理されます。すなわち、スレッドセーフを損なわない限り、Railsの既存のモデルはすべて問題なく利用できます。
 
-Action CableサーバーはRackソケットのハイジャックAPIを実装しているので、アプリケーションサーバーがマルチスレッドであるかどうかにかかわらず、内部のコネクションをマルチスレッドパターンで管理できます。
+Action CableサーバーはRackのソケットハイジャックAPIを実装しているので、アプリケーションサーバーがマルチスレッドであるかどうかにかかわらず、内部のコネクションをマルチスレッドパターンで管理できます。
 
 これによって、Action Cableは、Unicorn、Puma、Passengerなどの有名なサーバーと問題なく対応できます。
 
