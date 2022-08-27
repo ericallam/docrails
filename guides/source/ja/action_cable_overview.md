@@ -48,6 +48,7 @@ Action Cableのコンシューマーは、クライアント側のJavaScriptフ�
 ### ブロードキャスト
 
 ブロードキャスト（broadcasting）とは、あるブロードキャスター（broadcaster）によって転送されるあらゆる情報をチャネルのサブスクライバ（サブスクライバはその名前を持つブロードキャストをストリーミングします）に直接送信するpub/subリンクを指します。
+各チャネルは、0個以上のブロードキャストをストリーミングできます。
 
 ## サーバー側のコンポーネント
 
@@ -56,8 +57,10 @@ Action Cableのコンシューマーは、クライアント側のJavaScriptフ�
 サーバーがWebSocketを1個受信するたびに、コネクションオブジェクトのインスタンスが生成されます。
 このオブジェクトは、以後作成されるすべての**チャネルサブスクリプション**の親オブジェクトとなり、
 認証（authentication）と認可（authorization）以後は、コネクション自身がアプリケーションロジックを扱うことはありません。WebSocketコネクションのクライアントは、コネクションの**コンシューマー**と呼ばれます。
-
 ある個人ユーザーが「ブラウザタブ」「ウィンドウ」「デバイス」を開いて接続するたびに、コンシューマコネクションが1個ずつ作成されます。
+
+コネクションは`ApplicationCable::Connection`のインスタンスで、[`ActionCable::Connection::Base`][]を継承しています。
+`ApplicationCable::Connection`では、ユーザーを識別できる場合に、コネクションを認証したのち接続の確立を続行します。
 
 #### コネクションの設定
 
@@ -89,12 +92,18 @@ end
 
 次に、新しいコネクションを試行すると、このcookieがコネクションのインスタンスに自動で送信され、`current_user`の設定に使われます。現在の同じユーザーによるコネクションが識別されれば、以後そのユーザーが開いているすべてのコネクションを取得することも、ユーザーが削除されたり認証できない場合に切断することも可能になります。
 
+認証にセッションを含む場合、セッションにcookieストアを使用し、セッションcookieの`_session`とユーザーIDのキーとなる`user_id`を使用するアプローチが使えます。
+
+```ruby
+verified_user = User.find_by(id: cookies.encrypted['_session']['user_id'])
+```
+
 [`ActionCable::Connection::Base`]: https://api.rubyonrails.org/classes/ActionCable/Connection/Base.html
 [`identified_by`]: https://api.rubyonrails.org/classes/ActionCable/Connection/Identification/ClassMethods.html#method-i-identified_by
 
 #### 例外ハンドリング
 
-デフォルトでは、"unhandled exception"がキャッチされてRailsのログに出力されます。これらの例外をグローバルにインターセプトして外部のバグトラッキングサービスに通知したい場合は、たとえば以下のように[`rescue_from`][]を使う方法があります。
+デフォルトでは、補足されていない例外は補足されてRailsのログに出力されます。これらの例外をグローバルにインターセプトして外部のバグトラッキングサービスに通知したい場合は、たとえば以下のように[`rescue_from`][]を使う方法があります。
 
 ```ruby
 # app/channels/application_cable/connection.rb
@@ -160,7 +169,7 @@ class ChatChannel < ApplicationCable::Channel
 end
 ```
 
-#### Exception Handling
+#### 例外ハンドリング
 
 `ApplicationCable::Connection`の場合と同様、[`rescue_from`][]を利用すると特定チャネルで発生する例外を扱えるようになります。
 
@@ -201,13 +210,16 @@ export default createConsumer()
 
 ```js
 // 異なる接続先URLを指定する
+createConsumer('wss://example.com/cable')
+// または、websockets over HTTPを使う場合
 createConsumer('https://ws.example.com/cable')
+
 // 動的にURLを生成する関数
 createConsumer(getWebSocketURL)
 
 function getWebSocketURL() {
   const token = localStorage.get('auth-token')
-  return `https://ws.example.com/cable?token=${token}`
+  return `wss://example.com/cable?token=${token}`
 }
 ```
 
@@ -244,7 +256,7 @@ consumer.subscriptions.create({ channel: "ChatChannel", room: "2nd Room" })
 ### ストリーム
 
 **ストリーム**（stream）は、パブリッシュされたコンテンツ（ブロードキャスト）をサブスクライバに配信するメカニズムです。
-たとえば以下のコードは、`room`パラメータの値が"Best Room"の場合に、[`broadcast`][]を用いて`chat_Best Room`という名前のブロードキャストをサブスクライブしています。
+たとえば以下のコードは、`room`パラメータの値が`"Best Room"`の場合に、[`broadcast`][]を用いて`chat_Best Room`という名前のブロードキャストをサブスクライブしています。
 
 ```ruby
 # app/channels/chat_channel.rb
@@ -510,7 +522,7 @@ consumer.subscriptions.create("AppearanceChannel", {
 
 ##### クライアント-サーバー間のやりとり
 
-1. **クライアント**は、**サーバー**に`App.cable = ActionCable.createConsumer("ws://cable.example.com")`経由で接続する（`cable.js`）。**サーバー**は、このコネクションを`current_user`で識別する。
+1. **クライアント**は、**サーバー**に`createConsumer()`経由で接続する（`consumer.js`）。**サーバー**は、このコネクションを`current_user`で識別する。
 
 2. **クライアント**は、アピアランスチャネルに`consumer.subscriptions.create({ channel: "AppearanceChannel" })`経由で接続する（`appearance_channel.js`）。
 
@@ -646,8 +658,9 @@ config.action_cable.disable_request_forgery_protection = true
 
 ### コンシューマーの設定
 
-URLを設定するには、HTMLレイアウトのHEADセクションに[`action_cable_meta_tag`][]呼び出しを追加します。通常、環境の設定ファイル`config.action_cable.url`で設定されたURLかパスを指定します。
+URLを設定するには、HTMLレイアウトのHEADセクションに[`action_cable_meta_tag`][]呼び出しを追加します。通常、環境の設定ファイル[`config.action_cable.url`][]で設定されたURLかパスを指定します。
 
+[`config.action_cable.url`]: configuring.html#config-action-cable-url
 [`action_cable_meta_tag`]: https://api.rubyonrails.org/classes/ActionCable/Helpers/ActionCableHelper.html#method-i-action_cable_meta_tag
 
 ### ワーカープールの設定
@@ -690,7 +703,7 @@ config.action_cable.log_tags = [
 
 ### アプリケーションで実行
 
-Action CableはRailsアプリケーションと一緒に実行できます。たとえば、`/websocket`でWebSocketリクエストをリッスンするには、以下のように`config.action_cable.mount_path`設定にパスを指定します。
+Action CableはRailsアプリケーションと一緒に実行できます。たとえば、`/websocket`でWebSocketリクエストをリッスンするには、以下のように[`config.action_cable.mount_path`][]設定にパスを指定します。
 
 ```ruby
 # config/application.rb
@@ -702,6 +715,8 @@ end
 レイアウトで`action_cable_meta_tag`が呼び出されると、`ActionCable.createConsumer()`でAction Cableサーバーに接続できるようになります。それ以外の場合は、パスが`createConsumer`の最初の引数として指定されます（例: `ActionCable.createConsumer("/websocket")`）。
 
 この場合、サーバーのインスタンスを作成するか、サーバーがワーカーを生成するたびに、Action Cableの新しいインスタンスも含まれます。RedisやPostgreSQLのアダプタは、コネクション間でメッセージを同期します。
+
+[`config.action_cable.mount_path`]: configuring.html#config-action-cable-mount-path
 
 ### スタンドアロン
 
@@ -740,6 +755,7 @@ Ruby側は、[websocket-driver](https://github.com/faye/websocket-driver-ruby)�
 Action Cableは、WebSocketとスレッドの組み合わせによって支えられています。フレームワーク内部のフローや、ユーザー指定のチャネルの動作は、Rubyのネイティブスレッドによって処理されます。すなわち、スレッドセーフを損なわない限り、Railsの既存のモデルはすべて問題なく利用できます。
 
 Action CableサーバーはRackソケットのハイジャックAPIを実装しているので、アプリケーションサーバーがマルチスレッドであるかどうかにかかわらず、内部のコネクションをマルチスレッドパターンで管理できます。
+
 これによって、Action Cableは、Unicorn、Puma、Passengerなどの有名なサーバーと問題なく対応できます。
 
 ## テスト
