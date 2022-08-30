@@ -285,7 +285,7 @@ Action View
 Action Mailer
 -------------
 
-Action Mailerがメイラーでレイアウトをサポートするようになりました。適切な名前のレイアウトを指定すると、HTMLメールをブラウザ上のビューのように整形できます。たとえば、`CustomerMailer`クラスは `layouts/customer_mailer.html.erb` を使うことを想定しています。
+Action Mailerがメーラーでレイアウトをサポートするようになりました。適切な名前のレイアウトを指定すると、HTMLメールをブラウザ上のビューのように整形できます。たとえば、`CustomerMailer`クラスは `layouts/customer_mailer.html.erb` を使うことを想定しています。
 
 * 詳細:
     * [What's New in Edge Rails: Mailer Layouts](http://archives.ryandaigle.com/articles/2008/9/7/what-s-new-in-edge-rails-mailer-layouts)

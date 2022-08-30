@@ -1183,7 +1183,7 @@ config.action_controller.forgery_protection_origin_check = true
 
 #### Action Mailerのキュー名がカスタマイズ可能に
 
-デフォルトのメイラー キュー名は`mailers`です。新しい設定オプションを使うと、以下のようにキュー名をグローバルに変更できます。
+デフォルトのメーラー キュー名は`mailers`です。新しい設定オプションを使うと、以下のようにキュー名をグローバルに変更できます。
 
 ```ruby
 config.action_mailer.deliver_later_queue_name = :new_queue_name
@@ -1366,7 +1366,7 @@ SSL攻撃を緩和するために、`form_authenticity_token`がマスクされ�
 
 ### Action Mailer
 
-従来は、メイラークラスでメイラーメソッドを呼び出すと、該当するインスタンスメソッドが直接実行されました。Active Jobと`#deliver_later`メソッドの導入に伴い、この動作が変更されました。Rails 4.2では、これらのインスタンスメソッド呼び出しは`deliver_now`や`deliver_later`が呼び出されるまで実行が延期されます。以下に例を示します。
+従来は、メーラークラスでメーラーメソッドを呼び出すと、該当するインスタンスメソッドが直接実行されました。Active Jobと`#deliver_later`メソッドの導入に伴い、この動作が変更されました。Rails 4.2では、これらのインスタンスメソッド呼び出しは`deliver_now`や`deliver_later`が呼び出されるまで実行が延期されます。以下に例を示します。
 
 ```ruby
 class Notifier < ActionMailer::Base
@@ -1382,7 +1382,7 @@ mail = Notifier.notify(user, ...) # Notifier#notifyはこの時点では呼び�
 mail = mail.deliver_now           # "Called"を出力する
 ```
 
-この変更によって実行結果が大きく変わるアプリケーションはそれほどないはずです。ただし、メイラー以外のメソッドを同期的に実行したい場合で、かつ従来の同期的なプロキシの振る舞いに依存している場合は、これらのメソッドをメイラークラスにクラスメソッドとして直接定義する必要があります。
+この変更によって実行結果が大きく変わるアプリケーションはそれほどないはずです。ただし、メーラー以外のメソッドを同期的に実行したい場合で、かつ従来の同期的なプロキシの振る舞いに依存している場合は、これらのメソッドをメーラークラスにクラスメソッドとして直接定義する必要があります。
 
 ```ruby
 class Notifier < ActionMailer::Base

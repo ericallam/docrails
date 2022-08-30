@@ -1171,7 +1171,7 @@ config.action_mailbox.incinerate_after = 14.days
 
 #### `config.action_mailer.asset_host`
 
-メイラーで用いるアセットのホストを指定します。アプリケーションサーバーではなくCDNにアセットをホスティングする場合に便利です。この設定はAction Controllerで異なるアセットホストを設定する場合にのみ使います。それ以外の場合は`config.asset_host`をお使いください。
+メーラーで用いるアセットのホストを指定します。アプリケーションサーバーではなくCDNにアセットをホスティングする場合に便利です。この設定はAction Controllerで異なるアセットホストを設定する場合にのみ使います。それ以外の場合は`config.asset_host`をお使いください。
 
 #### `config.action_mailer.logger`
 
@@ -1221,7 +1221,7 @@ Log4rのインターフェイスまたはデフォルトのRuby Loggerクラス�
 
 #### `config.action_mailer.default_options`
 
-Action Mailerのデフォルトを設定します。これは、メイラーごとに`from`や`reply_to`などを設定します。デフォルト値は以下のとおりです。
+Action Mailerのデフォルトを設定します。これは、メーラーごとに`from`や`reply_to`などを設定します。デフォルト値は以下のとおりです。
 
 ```ruby
 mime_version:  "1.0",
@@ -1264,7 +1264,7 @@ config.action_mailer.preview_interceptors = ["MyPreviewMailInterceptor"]
 
 #### `config.action_mailer.preview_path`
 
-メイラーのプレビュー場所を指定します
+メーラーのプレビュー場所を指定します
 
 ```ruby
 config.action_mailer.preview_path = "#{Rails.root}/lib/mailer_previews"
@@ -1272,7 +1272,7 @@ config.action_mailer.preview_path = "#{Rails.root}/lib/mailer_previews"
 
 #### `config.action_mailer.show_previews`
 
-メイラーのプレビューを有効または無効にします。デフォルトではdevelopment環境で`true`です。
+メーラーのプレビューを有効または無効にします。デフォルトではdevelopment環境で`true`です。
 
 ```ruby
 config.action_mailer.show_previews = false
@@ -1286,7 +1286,7 @@ config.action_mailer.show_previews = false
 
 #### `config.action_mailer.perform_caching`
 
-メイラーのテンプレートでフラグメントキャッシュを有効にするかどうかを指定します。指定のない場合のデフォルト値は`true`です。
+メーラーのテンプレートでフラグメントキャッシュを有効にするかどうかを指定します。指定のない場合のデフォルト値は`true`です。
 
 #### `config.action_mailer.delivery_job`
 
