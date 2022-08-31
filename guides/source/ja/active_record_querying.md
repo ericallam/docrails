@@ -1212,7 +1212,7 @@ end
 テーブルを結合する
 --------------
 
-Active Recordは `JOIN`句のSQLを具体的に指定する２つの検索メソッドを提供しています。１つは`joins`、もう１つは`left_outer_joins`です。`joins`メソッドは`INNER JOIN`やカスタムクエリに使われ、`left_outer_joins`は `LEFT OUTER JOIN`クエリの生成に使われます。
+Active Recordは `JOIN`句のSQLを具体的に指定する２つの検索メソッドを提供しています。１つは`joins`、もう１つは`left_outer_joins`です。`joins`メソッドは`INNER JOIN`やカスタムクエリに使われ、`left_outer_joins`は`LEFT OUTER JOIN`クエリの生成に使われます。
 
 ### `joins`
 
