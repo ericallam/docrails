@@ -551,7 +551,7 @@ end
 最後に実行される`finisher`イニシャライザは、ミドルウェアスタックのビルドなどを行います。
 `railtie`イニシャライザは`Rails::Application`自身で定義されており、`bootstrap`と`finishers`の間に実行されます。
 
-*Note:* Railtieイニシャライザ全体と、[load_config_initializers](configuring.html#using-initializer-files)イニシャライザのインスタンスやそれに関連する`config/initializers`以下のイニシャライザ設定ファイルを混同しないようにしましょう。
+*Note:* Railtieイニシャライザ全体と、[load_config_initializers](configuring.html#イニシャライザファイルを使う)イニシャライザのインスタンスやそれに関連する`config/initializers`以下のイニシャライザ設定ファイルを混同しないようにしましょう。
 
 以上の処理が完了すると、制御は`Rack::Server`に移ります。
 
