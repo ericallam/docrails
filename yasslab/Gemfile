@@ -17,6 +17,7 @@ end
 gem "jekyll"
 gem "rack-jekyll"
 gem "kramdown"
+gem "webrick"
 
 # Test HTML files by: `bundle exec rake test`
 # Required as well in production to check deployment

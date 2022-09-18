@@ -123,6 +123,7 @@ GEM
       json (>= 1.8)
       nokogiri (~> 1.6)
       rexml (~> 3.2)
+    webrick (1.7.0)
     yell (2.0.7)
 
 PLATFORMS
@@ -144,6 +145,7 @@ DEPENDENCIES
   sdoc
   test-unit
   w3c_validators
+  webrick
 
 RUBY VERSION
    ruby 3.1.2p20
