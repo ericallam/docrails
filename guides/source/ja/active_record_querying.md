@@ -1440,7 +1440,7 @@ Active Recordでは、`joins`のようにeager loadingされた関連付けに�
 Author.includes(:books).where(books: { out_of_print: true })
 ```
 
-このコードは、以下のように`LEFT OUTER JOIN`を含むクエリを1つ生成します。`joins`メソッドを使うと、代りに`INNER JOIN`を使うクエリが生成されます。
+このコードは、以下のように`LEFT OUTER JOIN`を含むクエリを1つ生成します。`joins`メソッドを使うと、代わりに`INNER JOIN`を使うクエリが生成されます。
 
 ```sql
   SELECT authors.id AS t0_r0, ... books.updated_at AS t1_r5 FROM authors LEFT OUTER JOIN "books" ON "books"."author_id" = "authors"."id" WHERE (books.out_of_print = 1)
@@ -1925,7 +1925,7 @@ ActiveRecord::RecordInvalid: Validation failed: Orders count can't be blank
 
 ### `find_or_initialize_by`
 
-[`find_or_initialize_by`][]メソッドは`find_or_create_by`と同様に動作しますが、`create`の代りに`new`を呼ぶ点が異なります。つまり、モデルの新しいインスタンスは作成されますが、その時点ではデータベースに保存されていません。`find_or_create_by`の例を少し変えて説明を続けます。今度は'Nina'という名前の顧客が必要だとします。
+[`find_or_initialize_by`][]メソッドは`find_or_create_by`と同様に動作しますが、`create`の代わりに`new`を呼ぶ点が異なります。つまり、モデルの新しいインスタンスは作成されますが、その時点ではデータベースに保存されていません。`find_or_create_by`の例を少し変えて説明を続けます。今度は'Nina'という名前の顧客が必要だとします。
 
 ```
 irb> nina = Customer.find_or_initialize_by(first_name: 'Nina')

@@ -415,7 +415,7 @@ Railsでは、Action Viewで利用できるヘルパーメソッドを多数提�
 
 Action Viewは、現在のロケールに応じてさまざまなテンプレートをレンダリングできます。
 
-たとえば、`ArticlesController`にshowアクションがあるとしましょう。このshowアクションを呼び出すと、デフォルトでは`app/views/articles/show.html.erb`が出力されます。ここで`I18n.locale = :de`を設定すると、代りに`app/views/articles/show.de.html.erb`がレンダリングされます。ローカライズ版のテンプレートが見当たらない場合は、装飾なしのバージョンが使われます。つまり、ローカライズ版ビューがなくても動作しますが、ローカライズ版ビューがあればそれが使われます。
+たとえば、`ArticlesController`にshowアクションがあるとしましょう。このshowアクションを呼び出すと、デフォルトでは`app/views/articles/show.html.erb`が出力されます。ここで`I18n.locale = :de`を設定すると、代わりに`app/views/articles/show.de.html.erb`がレンダリングされます。ローカライズ版のテンプレートが見当たらない場合は、装飾なしのバージョンが使われます。つまり、ローカライズ版ビューがなくても動作しますが、ローカライズ版ビューがあればそれが使われます。
 
 同じ要領で、publicディレクトリのレスキューファイル (いわゆるエラーページ) もローカライズできます。たとえば、`I18n.locale = :de`と設定し、`public/500.de.html`と`public/404.de.html`を作成することで、ローカライズ版のレスキューページを作成できます。
 

@@ -61,7 +61,7 @@ WARNING: **攻撃者がユーザーのセッションIDを盗むと、そのユ�
 
 * クロスサイトスクリプティング（XSS）攻撃は、多くの場合、ユーザーのcookieを手に入れるのが目的です。[XSSの詳細](security.html#クロスサイトスクリプティング（xss）)も参照してください。
 
-* 攻撃者が自分の知らないcookieをわざわざ盗み取る代りに、標的のcookieを攻撃者が知っているcookieのセッションIDに固定してしまうという攻撃方法もあります。詳しくは後述のセッション固定攻撃の記述を参照してください。
+* 攻撃者が自分の知らないcookieをわざわざ盗み取る代わりに、標的のcookieを攻撃者が知っているcookieのセッションIDに固定してしまうという攻撃方法もあります。詳しくは後述のセッション固定攻撃の記述を参照してください。
 
 攻撃の多くは営利目的です。[Symantec Global Internet Security Threat Report (2017)](https://docs.broadcom.com/docs/istr-22-2017-en)によると、盗まれた銀行口座アカウントの闇価格は口座残高の0.5~10%、クレジットカード番号は0.5〜30ドル（詳細情報が付くと20ドルから60ドル）、ID（名前、SSN、DOB）は0.1〜1.5ドル、小売業者のアカウントは20〜50ドル、クラウドサービスプロバイダーのアカウントは6〜10ドルとなっています。
 
@@ -145,7 +145,7 @@ TIP: **`CookieStore`を扱うのであれば、もう一つの攻撃方法であ
 
 ### セッション固定攻撃
 
-NOTE: **ユーザーのセッションIDを盗む代りに、ユーザーのセッションIDを攻撃者が知っているセッションIDに固定するという方法があります。この攻撃方法はセッション固定（session fixation）と呼ばれます。**
+NOTE: **ユーザーのセッションIDを盗む代わりに、ユーザーのセッションIDを攻撃者が知っているセッションIDに固定するという方法があります。この攻撃方法はセッション固定（session fixation）と呼ばれます。**
 
 ![Session fixation](images/session_fixation.png)
 
@@ -360,7 +360,7 @@ raise if basename !=
 send_file filename, disposition: 'inline'
 ```
 
-別の方法は、ファイル名をデータベースに保存しておき、データベースのidをサーバーのディスク上に置く実際のファイル名の代りに使うことです（これは上の方法と併用可能です）。この方法も、アップロードファイルが実行される可能性を回避する方法として優れています。`attachment_fu`プラグインでも同様の手法が採用されています。
+別の方法は、ファイル名をデータベースに保存しておき、データベースのidをサーバーのディスク上に置く実際のファイル名の代わりに使うことです（これは上の方法と併用可能です）。この方法も、アップロードファイルが実行される可能性を回避する方法として優れています。`attachment_fu`プラグインでも同様の手法が採用されています。
 
 イントラネットとAdminのセキュリティ
 ---------------------------
@@ -619,7 +619,7 @@ SELECT * FROM projects WHERE (name = '') UNION
 
 Ruby on Railsには、特殊なSQL文字をフィルタするしくみが組み込まれており、「`'`」「`"`」「NULL」「改行」をエスケープします。**`Model.find(id)`や`Model.find_by_*(引数)`といったクエリでは自動的にこの対策が適用されます**。ただし、SQLフラグメント、特に**条件フラグメント（`where("...")`）、`connection.execute()`または`Model.find_by_sql()`メソッド**については手動でエスケープする必要があります。
 
-条件オプションに文字列を直接渡す代りに、以下のように位置指定ハンドラを使うことで、汚染された文字列をサニタイズできます。
+条件オプションに文字列を直接渡す代わりに、以下のように位置指定ハンドラを使うことで、汚染された文字列をサニタイズできます。
 
 ```ruby
 Model.where("zip_code = ? AND quantity >= ?", entered_zip_code, entered_quantity).first
@@ -764,7 +764,7 @@ s = sanitize(user_input, tags: tags, attributes: %w(href title))
 
 webmailワームの他の概念実証的な事例としてNdujaを取り上げます。詳しくは[Rosario Valotta'の論文](http://www.xssed.com/news/37/Nduja_Connection_A_cross_webmail_worm_XWW/)を参照してください。どちらのwebmailワームも営利目的の犯罪的ハッカーによるメールアドレスの収集が狙いです。
 
-2006年12月、実在する34,000人のユーザー名とパスワードが[MySpaceへのフィッシング攻撃](https://news.netcraft.com/archives/2006/10/27/myspace_accounts_compromised_by_phishers.html)によって盗み出されました。この攻撃では「login_home_index_html」というURLのプロファイルページが捏造され、ユーザーからはいかにも普通のログインURLのように見えました。MySpaceの本物のWebページコンテンツは特殊なHTML/CSSによって隠され、代りに独自の偽ログインページを表示しました。
+2006年12月、実在する34,000人のユーザー名とパスワードが[MySpaceへのフィッシング攻撃](https://news.netcraft.com/archives/2006/10/27/myspace_accounts_compromised_by_phishers.html)によって盗み出されました。この攻撃では「login_home_index_html」というURLのプロファイルページが捏造され、ユーザーからはいかにも普通のログインURLのように見えました。MySpaceの本物のWebページコンテンツは特殊なHTML/CSSによって隠され、代わりに独自の偽ログインページを表示しました。
 
 ### CSSインジェクション
 
