@@ -502,7 +502,7 @@ resources :magazines do
 end
 ```
 
-`magazine_ad_path`を使うと、idを数字で渡す代りに`Magazine`と`Ad`のインスタンスを引数として渡せます。
+`magazine_ad_path`を使うと、idを数字で渡す代わりに`Magazine`と`Ad`のインスタンスを引数として渡せます。
 
 ```erb
 <%= link_to 'Ad details', magazine_ad_path(@magazine, @ad) %>
@@ -514,7 +514,7 @@ end
 <%= link_to 'Ad details', url_for([@magazine, @ad]) %>
 ```
 
-上の場合、Railsは`@magazine`が`Magazine`であり、`@ad`が`Ad`であることを認識し、それに基づいて`magazine_ad_path`ヘルパーを呼び出します。`link_to`などのヘルパーでも、完全な`url_for`呼び出しの代りに単にオブジェクトを渡せます。
+上の場合、Railsは`@magazine`が`Magazine`であり、`@ad`が`Ad`であることを認識し、それに基づいて`magazine_ad_path`ヘルパーを呼び出します。`link_to`などのヘルパーでも、完全な`url_for`呼び出しの代わりに単にオブジェクトを渡せます。
 
 ```erb
 <%= link_to 'Ad details', [@magazine, @ad] %>
@@ -876,7 +876,7 @@ get '/stories/:name', to: redirect('/articles/%{name}', status: 302)
 
 ### Rackアプリケーションにルーティングする
 
-`Post`コントローラの`index`アクションに対応する`'articles#index'`のような文字列の代りに、任意の[Rackアプリケーション](rails_on_rack.html)をマッチャーのエンドポイントとして指定できます。
+`Post`コントローラの`index`アクションに対応する`'articles#index'`のような文字列の代わりに、任意の[Rackアプリケーション](rails_on_rack.html)をマッチャーのエンドポイントとして指定できます。
 
 ```ruby
 match '/application.js', to: MyRackApp, via: :all

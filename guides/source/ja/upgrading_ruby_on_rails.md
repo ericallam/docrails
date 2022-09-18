@@ -1784,7 +1784,7 @@ class UsersController < ApplicationController
 end
 ```
 
-このアクションがパブリックAPIで使われておらず、HTTPメソッドを自由に変更できるのであれば、以下のようにルーティングを更新して`patch`を`put`の代りに利用できます。
+このアクションがパブリックAPIで使われておらず、HTTPメソッドを自由に変更できるのであれば、以下のようにルーティングを更新して`patch`を`put`の代わりに利用できます。
 
 ```ruby
 resources :users do
@@ -1794,7 +1794,7 @@ end
 
 Rails 4で`PUT`リクエストを`/users/:id`に送信すると、従来と同様`update`にルーティングされます。このため、実際のPUTリクエストを受け取るAPIは今後も利用できます。この場合、`PATCH`リクエストも`/users/:id`経由で`update`アクションにルーティングされます。
 
-このアクションがパブリックAPIで使われており、HTTPメソッドを自由に変更できないのであれば、フォームを更新して`PUT`を代りに使えます。
+このアクションがパブリックAPIで使われており、HTTPメソッドを自由に変更できないのであれば、フォームを更新して`PUT`を代わりに使えます。
 
 ```erb
 <%= form_for [ :update_name, @user ], method: :put do |f| %>
@@ -1953,7 +1953,7 @@ Rails 4.0ではActive Resourceがgem化されました。この機能が必要�
 
 * Rails 4.0では`link_to`ヘルパーの`:confirm`オプションが非推奨になりました。今後は`data`属性をお使いください（例： `data: { confirm: 'Are you sure?' }`）。`link_to_if`や`link_to_unless`などでも同様の対応が必要です。
 
-* Rails 4.0では`assert_generates`、`assert_recognizes`、`assert_routing`の動作が変更されました。これらのアサーションは`ActionController::RoutingError`の代りに`Assertion`をraiseします。
+* Rails 4.0では`assert_generates`、`assert_recognizes`、`assert_routing`の動作が変更されました。これらのアサーションは`ActionController::RoutingError`の代わりに`Assertion`をraiseします。
 
 * Rails 4.0では、名前付きルーティングの定義が重複している場合に`ArgumentError`が発生するようになりました。このエラーは、明示的に定義された名前付きルーティングや`resources`メソッドによってトリガーされます。名前付きルーティング`example_path`が衝突している例を2つ示します。
 
@@ -2020,7 +2020,7 @@ Rails 4.0ではActive Resourceがgem化されました。この機能が必要�
 
 * Rails 4.0では、リクエストされたフォーマットがアクションで扱えなかった場合に`ActionController::UnknownFormat`が発生するようになりました。デフォルトでは、この例外は406 Not Acceptableレスポンスとして扱われますが、この動作はオーバーライドできます。Rails 3では常に406 Not Acceptableが返され、オーバーライドはできません。
 
-* Rails 4.0では、`ParamsParser`がリクエストパラメータを解析できなかった場合に一般的な`ActionDispatch::ParamsParser::ParseError`例外が発生するようになりました。`MultiJson::DecodeError`のような低レベルの例外の代りにこの例外をrescueできます。
+* Rails 4.0では、`ParamsParser`がリクエストパラメータを解析できなかった場合に一般的な`ActionDispatch::ParamsParser::ParseError`例外が発生するようになりました。`MultiJson::DecodeError`のような低レベルの例外の代わりにこの例外をrescueできます。
 
 * Rails 4.0では、URLプレフィックスで指定されたアプリケーションにエンジンがマウントされている場合に`SCRIPT_NAME`が正しくネストするようになりました。今後はURLプレフィックスの上書きを回避するために`default_url_options[:script_name]`を設定する必要はありません。
 

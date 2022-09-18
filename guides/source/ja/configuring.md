@@ -782,7 +782,7 @@ PostgreSQLが作成するデータベースを「unlogged」にすべきかど�
 
 #### `config.action_controller.asset_host`
 
-アセットを置くホストを設定します。これは、アセットをホストする場所としてアプリケーションサーバーの代りにCDN(コンテンツ配信ネットワーク)を使いたい場合に便利です。この設定を使うのは、Action Mailerで別の設定を使う場合だけにとどめてください。それ以外の場合は`config.asset_host`をお使いください。
+アセットを置くホストを設定します。これは、アセットをホストする場所としてアプリケーションサーバーの代わりにCDN(コンテンツ配信ネットワーク)を使いたい場合に便利です。この設定を使うのは、Action Mailerで別の設定を使う場合だけにとどめてください。それ以外の場合は`config.asset_host`をお使いください。
 
 #### `config.action_controller.perform_caching`
 

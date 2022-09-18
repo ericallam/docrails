@@ -593,7 +593,7 @@ NOTE: 上の設定が有効になるためには、サーバーの`CDN_HOST`環�
 http://mycdnsubdomain.fictional-cdn.com/assets/smile.png
 ```
 
-`smile.png`のコピーがCDNにあれば、CDNが代りにこのファイルをブラウザに送信します。元のサーバーはリクエストがあったことすら気づきません。ファイルのコピーがCDNにない場合は、CDNが「origin」（この場合は`example.com/assets/smile.png`）を探して今後のために保存しておきます。
+`smile.png`のコピーがCDNにあれば、CDNが代わりにこのファイルをブラウザに送信します。元のサーバーはリクエストがあったことすら気づきません。ファイルのコピーがCDNにない場合は、CDNが「origin」（この場合は`example.com/assets/smile.png`）を探して今後のために保存しておきます。
 
 一部のアセットだけをCDNで配信したい場合は、アセットヘルパーのカスタム`:host`オプションで`config.action_controller.asset_host`の値セットを上書きすることも可能です。
 
@@ -757,7 +757,7 @@ config.assets.prefix = "/他のパス"
 
 ### X-Sendfileヘッダー
 
-`X-Sendfile`ヘッダーはWebサーバーに対するディレクティブであり、アプリケーションからのレスポンスをブラウザに送信せずに破棄し、代りに別のファイルをディスクから読みだしてブラウザに送信します。このオプションはデフォルトでは無効です。サーバーがこのヘッダーをサポートしていればオンにできます。このオプションをオンにすると、それらのファイル送信がWebサーバーに一任され、それによって高速化されます。この機能の利用方法については[`send_file`](http://api.rubyonrails.org/classes/ActionController/DataStreaming.html#method-i-send_file) APIドキュメントを参照してください。
+`X-Sendfile`ヘッダーはWebサーバーに対するディレクティブであり、アプリケーションからのレスポンスをブラウザに送信せずに破棄し、代わりに別のファイルをディスクから読みだしてブラウザに送信します。このオプションはデフォルトでは無効です。サーバーがこのヘッダーをサポートしていればオンにできます。このオプションをオンにすると、それらのファイル送信がWebサーバーに一任され、それによって高速化されます。この機能の利用方法については[`send_file`](http://api.rubyonrails.org/classes/ActionController/DataStreaming.html#method-i-send_file) APIドキュメントを参照してください。
 
 ApacheとNGINXではこのオプションがサポートされており、以下のように`config/environments/production.rb`で有効にできます。
 
