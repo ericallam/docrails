@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby "2.6.10"
+ruby "3.1.2"
 
 # Required gems to build Rails Guides (same as rails/rails)
 gem "rake"
@@ -17,6 +17,7 @@ end
 gem "jekyll"
 gem "rack-jekyll"
 gem "kramdown"
+gem "webrick"
 
 # Test HTML files by: `bundle exec rake test`
 # Required as well in production to check deployment
