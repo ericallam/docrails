@@ -66,7 +66,8 @@ module RailsGuides
             view:    view,
             layout:  layout,
             edge:    @edge,
-            version: @version
+            version: @version,
+            markdown_file_name: guide
           ).render(body)
 
           warn_about_broken_links(result) if @warnings
