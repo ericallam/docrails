@@ -185,7 +185,11 @@
   	      </div>
 	    </div>
           <% end %>
-
+     <% if yield(:markdown_path_on_github).present? %>
+      <p style="font-size: 1.1428em">
+        <%= link_to '🖋Githubで編集を提案', yield(:markdown_path_on_github) %>
+      </p>
+      <% end %>
 	  <ol class="snsb" style="padding-top: 50px;">
 	    <li style='padding-right: 8px;'><a class="github-button" href="https://github.com/yasslab/railsguides.jp" data-icon="octicon-star" data-show-count="true" aria-label="Star yasslab/railsguides.jp on GitHub">Star</a></li>
 	    <li style='padding-right: 8px;'><a href="https://b.hatena.ne.jp/entry/s/railsguides.jp" class="hatena-bookmark-button" data-hatena-bookmark-title="Ruby on Rails ガイド：体系的に Rails を学ぼう" data-hatena-bookmark-layout="simple-balloon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script></li>

@@ -3,6 +3,12 @@ require "rails_guides/markdown/renderer_ja"
 
 module RailsGuides
   class MarkdownJa < Markdown
+    def initialize(markdown_file_name:, **hash)
+      @markdown_file_name = markdown_file_name
+
+      super(**hash)
+    end
+
     def render(body)
       @raw_body = body
       extract_raw_header_and_body
@@ -87,7 +93,12 @@ module RailsGuides
         end
       end
 
+      def markdown_path_on_github
+        File.join('https://github.com/yasslab/railsguides.jp/tree/master/guides/source/ja', @markdown_file_name)
+      end
+
       def render_page
+        @view.content_for(:markdown_path_on_github) { markdown_path_on_github }
         @view.content_for(:references) { @references }
         super
       end
