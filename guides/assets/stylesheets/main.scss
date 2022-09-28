@@ -1188,7 +1188,7 @@ table td, table th { padding: 9px 10px; text-align: left; }
 }
 /* banner
 --------------------------------------- */
-.bnr-pro-team,.footer-bnr {
+.bnr-pro-team {
   display:flex;
   justify-content:space-between;
   .bnr-item {
@@ -1199,6 +1199,29 @@ table td, table th { padding: 9px 10px; text-align: left; }
     &:hover {
       opacity: 0.8;
     }
+  }
+}
+.footer-bnr {
+  .bnr-item{
+    display: flex;
+    align-items: center;
+    padding: 10px;
+  }
+  img {
+    max-width: 100%;
+    height: auto;
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+  .bnr-item-rigth {
+    padding-left: 20px;
+  }
+  h4{
+    margin: 0 0 0.5em;
+  }
+  p {
+    margin: 0;
   }
 }
 @media screen and (max-width: 630px) {
