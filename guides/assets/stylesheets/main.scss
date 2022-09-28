@@ -1188,22 +1188,32 @@ table td, table th { padding: 9px 10px; text-align: left; }
 }
 /* banner
 --------------------------------------- */
-.bnr-pro-team,.footer-bnr {
-  display:flex;
-  justify-content:space-between;
-  .bnr-item {
+.footer-bnr {
+  .bnr-item{
+    display: flex;
+    align-items: center;
     padding: 10px;
+    a {
+      color: #333;
+      display: flex;
+      align-items: center;
+      &:hover {
+         color: #C52F24;
+         opacity: 0.8;
+        }
+    }
   }
   img {
     max-width: 100%;
-    &:hover {
-      opacity: 0.8;
-    }
   }
-}
-@media screen and (max-width: 630px) {
-  .bnr-pro-team {
-    flex-direction:column;
+  .bnr-item-rigth {
+    padding-left: 20px;
+  }
+  h4{
+    margin: 0 0 0.5em;
+  }
+  p {
+    margin: 0;
   }
 }
 .footer-bnr img.border {
