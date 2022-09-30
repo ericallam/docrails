@@ -1193,18 +1193,12 @@ table td, table th { padding: 9px 10px; text-align: left; }
     display: flex;
     align-items: center;
     padding: 10px;
-    a {
-      color: #333;
-      display: flex;
-      align-items: center;
-      &:hover {
-         color: #C52F24;
-         opacity: 0.8;
-        }
-    }
   }
   img {
     max-width: 100%;
+    &:hover {
+      opacity: 0.8;
+      }
   }
   .bnr-item-rigth {
     padding-left: 20px;
