@@ -154,7 +154,7 @@
           <%= yield :references %>
 
 	  <% if yield(:markdown_path_on_github).present? %>
-	    <p style="font-size: 1.1428em; text-align: right;">
+	    <p id="mdEditLink" style="font-size: 1.1428em; text-align: right;">
               <%= link_to '🖋 GitHubで編集を提案する', yield(:markdown_path_on_github) %>
 	    </p>
 	  <% end %>
