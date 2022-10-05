@@ -59,7 +59,7 @@ HTML
 
         def brush_for(code_type)
           case code_type
-          when "ruby"
+          when "ruby", "rb"
             "Ruby"
           when "js"
             "Javascript"
