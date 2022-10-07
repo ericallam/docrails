@@ -192,6 +192,7 @@ img {
   &:hover {
     color: #ffeded;
     background: #da6258;
+    text-decoration: none;
   }
 }
 
@@ -455,10 +456,11 @@ aside#toppage {
 
 a, a code {
   color: $main-dark;
-  text-decoration: underline;
+  text-decoration: none;
 }
 a:hover {
   color: $main-light;
+  text-decoration: underline;
 }
 
 #mainCol .anchorlink, #mainCol .anchorlink code {color: $gray-dark;}
@@ -522,7 +524,7 @@ h3 a, h4 a, h5 a, h6 a {
 
 .guides-index:hover .guides-index-item, .guides-index .guides-index-item:hover {
   background-position: right -81px;
-  text-decoration: underline !important;
+  text-decoration: none !important;
 }
 
 @media screen and (min-width: 481px) {
