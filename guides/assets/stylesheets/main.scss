@@ -524,7 +524,7 @@ h3 a, h4 a, h5 a, h6 a {
 
 .guides-index:hover .guides-index-item, .guides-index .guides-index-item:hover {
   background-position: right -81px;
-  text-decoration: none !important;
+  text-decoration: none;
 }
 
 @media screen and (min-width: 481px) {
