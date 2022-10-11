@@ -33,7 +33,7 @@ task test: [:build] do
   options = {
     alt_ignore: [/.*\.(png|gif)/],  # TODO: Set empty, run tests, and fix errors
     allow_hash_href:  true,
-    checks: ['Links', 'Images', 'OpenGraph', 'Favicon'],
+    checks: ['Links', 'Images', 'Scripts', 'OpenGraph', 'Favicon'],
     disable_external: true,
     ignore_files: [
       /.*\.xml/,
@@ -43,6 +43,7 @@ task test: [:build] do
     ignore_status_codes: [0, 500, 999],
     ignore_urls: [
       %r{^http://localhost:3000},
+      %r{^//cdn.carbonads.com},
 
       # TODO: Fix these URLs later
       %r{^http://docs.ruby-lang.org},
