@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 ruby "3.1.2"
 
 # Required gems to build Rails Guides (same as rails/rails)
+gem 'activesupport' # Needed to run 'rake assets:precompile'
 gem "rake"
 gem 'rails-html-sanitizer'
 gem 'rack-test'
