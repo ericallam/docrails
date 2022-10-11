@@ -239,7 +239,7 @@ end
 
 * リードコントリビュータ: [S. Brent Faulkner](http://www.unwwwired.net/)
 * 詳細:
-    * [Rails Routing from the Outside In](routing.html#nested-resources)
+    * [Rails のルーティング](routing.html#ネストしたリソース)
     * [What's New in Edge Rails: Shallow Routes](http://archives.ryandaigle.com/articles/2008/9/7/what-s-new-in-edge-rails-shallow-routes)
 
 ### Method Arrays for Member or Collection Routes
