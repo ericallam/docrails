@@ -33,22 +33,20 @@ task test: [:build] do
   options = {
     alt_ignore: [/.*\.(png|gif)/],  # TODO: Set empty, run tests, and fix errors
     allow_hash_href:  true,
-    check_opengraph:  true,
-    check_favicon:    true,
-    check_html:       true,
+    checks: ['Links', 'Images', 'OpenGraph', 'Favicon'],
     disable_external: true,
-    file_ignore: [
+    ignore_files: [
       /.*\.xml/,
       /.*\.json/,
-      "./_site/2_2_release_notes.html", # TODO: Delete this line when translated
-      "./_site/5_2_release_notes.html", # TODO: Delete this line when #763 fixed
+      "_site/2_2_release_notes.html", # TODO: Delete this line when translated
+      "_site/5_2_release_notes.html", # TODO: Delete this line when #763 fixed
       # https://github.com/yasslab/railsguides.jp/issues/763
-      "./_site/humanx.txt"
+      "_site/humanx.txt"
     ],
-    url_ignore:  %w(),
-    http_status_ignore: [0, 500, 999]
+    ignore_urls:  %w(),
+    ignore_status_codes: [0, 500, 999]
   }
-  HTMLProofer.check_directory('./_site', options).run
+  HTMLProofer.check_directory('_site/', options).run
 end
 
 task build: [:clean] do
