@@ -129,7 +129,7 @@ Pull Request を送る前に生成結果を確認したい場合は下記をご�
 
 <div>
   <a href="https://yasslab.jp/ja/#for-team">
-    <img width="100%" src="/guides/assets/images/yasslab_pr.png"
+    <img width="100%" src="/guides/assets/images/yasslab_pr_v2.png"
          alt="Services for Teams by YassLab Inc." />
   </a>
   <p>詳細：<a href="https://yasslab.jp/ja/#for-team">チーム向けサービス - YassLab 株式会社</a></p>
@@ -150,6 +150,13 @@ YassLab 社以外にも、次の方々が協力してくれました! 🤝✨
   - [@riseshia](https://github.com/riseshia)
   - [@willnet](https://github.com/willnet)
 - 👏 他、[Issues](https://github.com/yasslab/railsguides.jp/issues) や [Pull Request](https://github.com/yasslab/railsguides.jp/graphs/contributors) を送ってくださった多くの方々。
+
+### 支援・協賛
+Railsガイドでは、ドキュメントを通してRuby/Railsコミュニティを一緒に支援してくださる企業を募集しております。詳細は「<a href='https://railsguides.jp/sponsors'>協賛プラン</a>」のページよりご確認ください。
+
+協賛プラン: [https://railsguides.jp/sponsors](https://railsguides.jp/sponsors)
+
+[![協賛プラン バナー画像](/guides/assets/images/logos/bnr-kyosan.gif)](https://railsguides.jp/sponsors)
 
 <br>
 
