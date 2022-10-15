@@ -352,7 +352,7 @@ developmentモードの場合、アセットは個別のファイルとして、
 
 ### アセットが見つからない場合にエラーをraiseする
 
-sprockets-rails 3.2.0移行を使っている場合は、アセットの探索時に何も見つからなかった場合の挙動を設定できます。以下のように`unknown_asset_fallback`を`false`にすると、アセットが見つからない場合にエラーをraiseします。
+sprockets-rails 3.2.0以降を使っている場合は、アセットの探索時に何も見つからなかった場合の挙動を設定できます。以下のように`unknown_asset_fallback`を`false`にすると、アセットが見つからない場合にエラーをraiseします。
 
 ```ruby
 config.assets.unknown_asset_fallback = false
