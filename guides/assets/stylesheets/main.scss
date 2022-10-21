@@ -61,25 +61,6 @@
   }
 }
 
-.sitemap{
-  margin-left: 13px;
-  .L, .C, .R {
-    float: left;
-    width: 33%;
-    margin: 0;
-    padding: 0;
-    @media screen and (max-width: 880px) {
-      width: 50%;
-    }
-    @media screen and (max-width: 480px) {
-      width: 100%;
-    }
-  }
-  dl dt {
-    margin-top: 10px;
-  }
-}
-
 .trademark {
     overflow: hidden;
     clear: left;
