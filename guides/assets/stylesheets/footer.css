@@ -2,7 +2,7 @@
   list-style: none;
   margin: 0;
 }
-footer {
+#footer {
   text-align: left;
   padding: 2rem;
   background: #eee;
@@ -25,13 +25,14 @@ footer {
 .footer-contents-links {
   margin-top: 0.5rem;
 }
-.footer-contents-links a {
+.footer-contents-links li a{
   color: #444;
   text-decoration: none;
-  &:hover {
-    text-decoration: underline;
-  }
 }
+.footer-contents-links li a:hover {
+  text-decoration: underline;
+}
+
 .footer-sns-list {
   list-style: none;
   display: flex;
@@ -47,7 +48,7 @@ footer {
   .footer-cover {
     grid-template-columns: 1fr;
   }
-  footer {
+  #footer {
     padding: 1em;
   }
 }
