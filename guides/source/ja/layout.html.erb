@@ -242,34 +242,39 @@
 
     <hr class="hide" />
 
-    <div id="footer">
-      <div class="wrapper">
-        <div class="sitemap">
-          <% %w(L C R).each do |position| %>
-            <dl class="<%= position %>">
-            <% docs_for_sitemap(position).each do |section| %>
-              <dt><%= section['name'] %></dt>
-              <% finished_documents(section['documents']).each do |document| %>
-                <dd><a href="<%= document['url'] %>"><%= document['name'] %></a></dd>
-              <% end %>
-            <% end %>
-            <% if position == 'R' %>
-              <dt>運営に関する情報</dt>
-              <dd><a href="https://yasslab.jp/ja/" target="_blank" rel="noopener">運営会社</a></dd>
-              <dd><a href="https://railsguides.jp/term-of-service">利用規約</a></dd>
-              <dd><a href="https://railsguides.jp/policy">特定商取引法に基づく表記</a></dd>
-              <dd><a href="https://yasslab.jp/ja/privacy" target="_blank" rel="noopener">プライバシーポリシー</a></dd>
-              <dd><a href="https://railsguides.jp/contact">お問い合わせ</a></dd>
-            <% end %>
-            </dl>
-          <% end %>
-        </div>
+    <footer>
+      <ul class="footer-cover">
+        <li class="footer-contents-li">
+          <a href="/"><img data-src="/images/railsguides.png" loading="lazy" class="lazyload" alt="Railsガイド" style="width: 50%;"></a>
+          <p style='font-size: 12px;'>Railsガイドの<a href="https://github.com/yasslab/railsguides.jp/tree/master/guides/source" target="_blank" rel="noopener">コンテンツ部分</a>は <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.ja" target="_blank" rel="noopener">CC BY-SA 4.0</a> に基づいて公開されています。『Rails』や『Ruby on Rails』という名称、ならびに Rails のロゴ画像は DHH の登録商標です。本サイトのロゴ画像などの一部は YassLab 社の著作物です。</p>
+          <ul class="footer-sns-list">
+            <li class="footer-sns-list__item"><a href="https://twitter.com/RailsGuidesJP" target=_blank" rel="noopener"><i class="fa fa-twitter-square fa-2x" aria-hidden="true" title="Twitter"></i></a></li>
+            <li class="footer-sns-list__item"><a href="https://www.facebook.com/yasslab.jp" target=_blank" rel="noopener"><i class="fa fa-facebook-square fa-2x" aria-hidden="true" title="Facebook"></i></a></li>
+            <li class="footer-sns-list__item"><a href="https://github.com/yasslab/railsguides.jp" target=_blank" rel="noopener"><i class="fa fa-github-square fa-2x" aria-hidden="true" title="GitHub"></i></a></li>
+            <li class="footer-sns-list__item"><a href="https://note.com/yasslab/m/ma5df1164c798" target=_blank" rel="noopener"><i class="fa fa-rss-square fa-2x" aria-hidden="true" title="note"></i></a></li>
+          </ul>
+        </li>
+        <li class="footer-contents-li">
+          <h4 class="footer-h4">サービス</h4>
+          <ul class="footer-contents-links">
+            <li><%= link_to '電子書籍',   '/ebook' %></li>
+            <li><%= link_to 'Proプラン',  '/pro' %></li>
+            <li><%= link_to '協賛プラン', '/sponsors' %></li>
+          </ul>
+        </li>
+        <li class="footer-contents-li">
+          <h4 class="footer-h4">運営に関する情報</h4>
+          <ul class="footer-contents-links">
+            <li><%= link_to '運営会社', 'https://yasslab.jp/ja/', target: '_blank', rel:'noopener' %></li>
+            <li><%= link_to '利用規約', '/term-of-service' %></li>
+            <li><%= link_to '特定商取引法に基づく表記', '/policy' %></li>
+            <li><%= link_to 'プライバシーポリシー', 'https://yasslab.jp/ja/privacy', target: '_blank', rel:'noopener' %></li>
+            <li><%= link_to 'お問い合わせ', '/contact' %></li>
+          </ul>
+        </li>
+      </ul>
+    </footer>
 
-        <ol class="trademark" style="padding-top: 20px">
-          <li>Railsガイドの<a href="https://github.com/yasslab/railsguides.jp/tree/master/guides/source" target="_blank" rel="noopener">コンテンツ部分</a>は <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.ja" target="_blank" rel="noopener">CC BY-SA 4.0</a> に基づいて公開されています。『Rails』や『Ruby on Rails』という名称、ならびに Rails のロゴ画像は DHH の登録商標です。本サイトのロゴ画像などの一部は YassLab 社の著作物です。</li>
-        </ol>
-      </div>
-    </div>
 
     <script type="text/javascript" src="javascripts/jquery.min.js"></script>
     <script type="text/javascript" src="javascripts/responsive-tables.js"></script>
