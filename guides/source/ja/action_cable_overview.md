@@ -39,7 +39,7 @@ Action Cableのコンシューマーは、クライアント側のJavaScriptフ�
 
 ### サブスクライバ
 
-コンシューマーがチャネルでサブスクライブされると、**サブスクライバ**（subscriber）として振る舞います。サブスクライバとチャネルの間のコネクションは、（驚くことに）サブスクリプションと呼ばれます。あるコンシューマーは、何度でも指定のチャンネルのサブスクライバとして振る舞えます。たとえば、あるコンシューマーが複数のチャットルームに同時にサブスクライブことも可能です（物理的なユーザーが複数のコンシューマーを持つことが可能で、コネクションはブラウザタブやデバイスごとにオープン可能であることを思い出しましょう）。
+コンシューマーがチャネルでサブスクライブされると、**サブスクライバ**（subscriber）として振る舞います。サブスクライバとチャネルの間のコネクションは、（驚くことに）サブスクリプションと呼ばれます。あるコンシューマーは、何度でも指定のチャネルのサブスクライバとして振る舞えます。たとえば、あるコンシューマーが複数のチャットルームに同時にサブスクライブことも可能です（物理的なユーザーが複数のコンシューマーを持つことが可能で、コネクションはブラウザタブやデバイスごとにオープン可能であることを思い出しましょう）。
 
 ### Pub/Sub
 
@@ -256,7 +256,7 @@ consumer.subscriptions.create({ channel: "ChatChannel", room: "2nd Room" })
 ### ストリーム
 
 **ストリーム**（stream）は、パブリッシュされたコンテンツ（ブロードキャスト）をサブスクライバに配信するメカニズムです。
-たとえば以下のコードは、`room`パラメータの値が`"Best Room"`の場合に、[`broadcast`][]を用いて`chat_Best Room`という名前のブロードキャストをサブスクライブしています。
+たとえば以下のコードは、`room`パラメータの値が`"Best Room"`の場合に、[`stream_from`][]を用いて`chat_Best Room`という名前のブロードキャストをサブスクライブしています。
 
 ```ruby
 # app/channels/chat_channel.rb
@@ -406,7 +406,7 @@ import consumer from "./consumer"
 
 const chatChannel = consumer.subscriptions.create({ channel: "ChatChannel", room: "Best Room" }, {
   received(data) {
-    // data => { sent_by: "Paul", body: "これはクールなチャットアプリですね" }
+    // data => { sent_by: "Paul", body: "This is a cool chat app." }
   }
 }
 
@@ -532,13 +532,13 @@ consumer.subscriptions.create("AppearanceChannel", {
 5. **サーバー**は、`current_user`で認識したコネクションのアピアランスチャネルで、`appear`アクションへのリクエストを受信する（`appearance_channel.rb`）。**サーバー**は`:appearing_on`キーを使ってデータをデータハッシュから取り出し、
 `current_user.appear`に渡される`:on`キーの値として設定する。
 
-### 例2: 新しいweb通知を受信する
+### 例2: 新しいWeb通知を受信する
 
 この例では、WebSocketコネクションを使って、クライアントの機能をサーバーからリモート実行するときのアピアランスを扱います。WebSocketでは双方向通信を利用できます。そこで、例としてサーバーからクライアントでアクションを起動してみましょう。
 
-このWeb通知チャネルは、関連するストリームにブロードキャストを行ったときに、クライアント側でweb通知を表示します。
+このWeb通知チャネルは、関連するストリームにブロードキャストを行ったときに、クライアント側でWeb通知を表示します。
 
-サーバー側のweb通知チャネルを作成します。
+サーバー側のWeb通知チャネルを作成します。
 
 ```ruby
 # app/channels/web_notifications_channel.rb
@@ -549,11 +549,11 @@ class WebNotificationsChannel < ApplicationCable::Channel
 end
 ```
 
-クライアント側のweb通知チャネルを作成します。
+クライアント側のWeb通知チャネルを作成します。
 
 ```js
 // app/javascript/channels/web_notifications_channel.js
-// クライアント側では、サーバーからweb通知の送信権を
+// クライアント側では、サーバーからWeb通知の送信権を
 // リクエスト済みであることが前提
 import consumer from "./consumer"
 
@@ -702,7 +702,7 @@ config.action_cable.log_tags = [
 
 ### アプリケーションで実行
 
-Action CableはRailsアプリケーションと一緒に実行できます。たとえば、`/websocket`でWebSocketリクエストをリッスンするには、以下のように[`config.action_cable.mount_path`][]設定にパスを指定します。
+Action CableはRailsアプリケーションと一緒に実行できます。たとえば、`/websocket`でWebSocketリクエストをリッスンするには、以下のように[`config.action_cable.mount_path`][]にパスを指定します。
 
 ```ruby
 # config/application.rb
