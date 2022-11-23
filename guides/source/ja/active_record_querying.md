@@ -1410,7 +1410,7 @@ SELECT `authors`.* FROM `authors`
   WHERE `authors`.`book_id` IN (1,2,3,4,5,6,7,8,9,10)
 ```
 
-### 複数の関連付けをeager loading
+#### 複数の関連付けをeager loading
 
 Active Recordは、1つの`Model.find`呼び出しで関連付けをいくつでもeager loadingできます。これを行なうには、`includes`メソッドを呼び出して「配列」「ハッシュ」または「配列やハッシュをネストしたハッシュ」を指定します。
 
@@ -1422,7 +1422,7 @@ Customer.includes(:orders, :reviews)
 
 上のコードは、すべての顧客を表示するとともに、顧客ごとに関連付けられている注文やレビューも表示します。
 
-#### ネストした関連付けハッシュ
+##### ネストした関連付けハッシュ
 
 ```ruby
 Customer.includes(orders: {books: [:supplier, :author]}).find(1)
@@ -1430,11 +1430,11 @@ Customer.includes(orders: {books: [:supplier, :author]}).find(1)
 
 上のコードは、id=1の顧客を検索し、関連付けられたすべての注文、それぞれの本の仕入先と著者を読み込みます。
 
-### 関連付けのeager loadingで条件を指定する
+#### 関連付けのeager loadingで条件を指定する
 
-Active Recordでは、`joins`のようにeager loadingされた関連付けに対して条件を指定可能ですが、[joins](#テーブルを結合する) 方法を使うことをおすすめします。
+Active Recordでは、eager loadingされた関連付けに対して、`joins`のように条件を指定可能ですが、このやり方よりも[joins](#テーブルを結合する)の使用を推奨します。
 
-しかし、そのような方法を使うしかない場合は、以下のように`where`を通常どおりに使うとよいでしょう。
+とはいえ、eager loadingされた関連付けに対して条件を指定せざるを得ない場合は、以下のように普通にwhereを使っても大丈夫です。
 
 ```ruby
 Author.includes(:books).where(books: { out_of_print: true })
@@ -1814,7 +1814,7 @@ Active Record パターンには [メソッドチェイン (Method chaining - Wi
 
 文中でメソッドチェインを利用できるのは、その前のメソッドが`ActiveRecord::Relation` (`all`、`where`、`joins`など) を１つ返す場合です。単一のオブジェクトを返すメソッド ([単一のオブジェクトを取り出す](#%E5%8D%98%E4%B8%80%E3%81%AE%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E5%8F%96%E3%82%8A%E5%87%BA%E3%81%99)を参照) は文の末尾に置かなければなりません。
 
-いくつか例をご紹介します。本ガイドでは一部の例のみをご紹介し、すべての例を網羅することはしません。Active Recordメソッドが呼び出されると、クエリはその時点ではすぐに生成されず、データベースに送信されます。クエリは、データが実際に必要になった時点で初めて生成されます。以下の例では、いずれも単一のクエリを生成します。
+いくつか例をご紹介します。本ガイドでは一部の例のみをご紹介し、すべての例を網羅することはしません。Active Recordメソッドが呼び出されると、クエリはその時点ではすぐには生成されず、データベースへの送信もされません。クエリは、データが実際に必要になった時点で初めて生成され送信されます。したがって、以下のそれぞれの例で生成されるクエリはそれぞれ1つのみです。
 
 ### 複数のテーブルからのデータをフィルタして取得する
 
@@ -2048,7 +2048,7 @@ irb> Customer.limit(1).pluck(:first_name)
 => ["David"]
 ```
 
-NOTE: `pluck`を使うと、クエリでeager loadingが不要な場合でも、リレーションオブジェクトにincludesの値が含まれていないと以下のようにeager loadingが発生することを知っておくべきです。
+NOTE: 知っておくと良い注意点は、リレーションオブジェクトにincludesがあると、eager loadingが不必要なクエリにおいてでも、`pluck`がeager loadingを引き起こすことです。以下に例を示します。
 
 ```
 irb> assoc = Customer.includes(:reviews)
@@ -2279,7 +2279,7 @@ EXPLAIN for: SELECT "customers".* FROM "customers" INNER JOIN "orders" ON "order
 (7 rows)
 ```
 
-eager loadingを使っている、内部で複数のクエリがトリガされることがあり、一部のクエリでは直前の結果が必要になることがあります。このため、`explain`はこのクエリを実際に実行し、それからクエリプランを要求します。以下に例を示します。
+eager loadingを使用している場合、内部的には複数のクエリがトリガされることがあり、このとき一部のクエリが先行するクエリの結果を必要とすることがあります。このためexplainは、このクエリを実際に実行した後で、クエリプランを要求します。以下に例を示します。
 
 ```ruby
 Customer.where(id: 1).includes(:orders).explain
