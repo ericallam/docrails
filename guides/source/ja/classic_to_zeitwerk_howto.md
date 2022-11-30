@@ -87,7 +87,7 @@ Rails 7では`config.autoloader=`セッターそのものがなくなりまし�
 $ bin/rails runner 'p Rails.autoloaders.zeitwerk_enabled?'
 ```
 
-`true`が出力されれば、`zeitwek`モードが有効です。
+`true`が出力されれば、`zeitwerk`モードが有効です。
 
 
 アプリケーションがZeitwerkに沿っているかを確かめる
