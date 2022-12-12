@@ -1189,7 +1189,7 @@ table td, table th { padding: 9px 10px; text-align: left; }
   }
 }
 
-.bnr-pro-team {
+.bnr-our-services {
   display:flex;
   justify-content:space-between;
   align-items: center;
@@ -1205,7 +1205,7 @@ table td, table th { padding: 9px 10px; text-align: left; }
 }
 
 @media screen and (max-width: 630px) {
-  .footer-bnr, .bnr-pro-team {
+  .footer-bnr, .bnr-our-services {
     flex-direction:column;
   }
   .footer-bnr {
