@@ -91,7 +91,7 @@ INFO: 本ガイドで後述する[credential管理方法](security.html#独自�
 
 暗号化済みcookieと署名済みcookieで使うsalt値を同じにしないことも重要です。複数のsalt設定に異なる値ではなく同じsalt値を使ってしまうと、別のセキュリティ機能で同じ鍵が導出されてしまい鍵の強度が落ちる可能性があります。
 
-test環境とdevelopment環境のアプリケーションでは、アプリケーション名から`secret_key_base`を導出します。それ以外の環境では、必ず`config/credentials.yml.enc`にあるランダムな鍵を使わなければなりません（以下は復号化された状態）。
+test環境とdevelopment環境のアプリケーションでは、アプリケーション名から`secret_key_base`を導出します。それ以外の環境では、必ず`config/credentials.yml.enc`にあるランダムな鍵を使わなければなりません（以下は復号された状態）。
 
 ```yaml
 secret_key_base: 492f...
