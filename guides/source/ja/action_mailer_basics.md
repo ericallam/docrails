@@ -567,7 +567,7 @@ class UserMailer < ApplicationMailer
     mail(to: params[:user].email,
          body: params[:email_body],
          content_type: "text/html",
-         subject: "レンダリング完了)
+         subject: "レンダリング完了")
   end
 end
 ```
