@@ -370,7 +370,7 @@ end
 
 [`change_table`]: https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-change_table
 
-### カラム名を変更する
+### カラムを変更する
 
 マイグレーションでは、`remove_column`や`add_column`に加えて[`change_column`][]メソッドも利用できます。
 
