@@ -5,69 +5,58 @@ Rails で JavaScript を利用する
 
 このガイドの内容:
 
-* How to use Rails without the need for a Node.js, Yarn, or a JavaScript bundler.
-* How to create a new Rails application using import maps, esbuild, rollup, or webpack to bundle
-your JavaScript.
-* What Turbo is, and how to use it.
-* How to use the Turbo HTML helpers provided by Rails.
+* Node.jsやYarnやJavaScriptのバンドラーを使わずにRailsを利用する方法
+* JavaScriptをimport maps・esbuild・rollup・webpackでバンドルする新規Railsアプリケーションを作成する方法
+* Turboの概要と利用法
+* Railsが提供するTurbo HTMLヘルパーの利用法
 
 --------------------------------------------------------------------------------
 
 Import Maps
 -----------
 
-[Import maps](https://github.com/rails/importmap-rails) let you import JavaScript modules using
-logical names that map to versioned files directly from the browser. Import maps are the default
-from Rails 7, allowing anyone to build modern JavaScript applications using most NPM packages
-without the need for transpiling or bundling.
+[import maps](https://github.com/rails/importmap-rails)は、バージョン付けされたファイルに対応する論理名を用いてJavaScriptモジュールをブラウザで直接importできます。import mapsはRails 7からデフォルトになっており、トランスパイルやバンドルの必要なしにほとんどのNPMパッケージを用いて誰でもモダンなJavaScriptアプリケーションを構築できるようになります。
 
-Applications using import maps do not need [Node.js](https://nodejs.org/en/) or
-[Yarn](https://yarnpkg.com/) to function. If you plan to use Rails with `importmap-rails` to
-manage your JavaScript dependencies, there is no need to install Node.js or Yarn.
+import mapsを利用するアプリケーションは、[Node.js](https://nodejs.org/en/)や[Yarn](https://yarnpkg.com/)なしで機能します。RailsのJavaScript依存関係を`importmap-rails`で管理する予定であれば、Node.jsやYarnをインストールする必要はありません。
 
-When using import maps, no separate build process is required, just start your server with
-`bin/rails server` and you are good to go.
+import mapsを利用する場合、別途ビルドプロセスを実行する必要はなく、`bin/rails server`コマンドでサーバーを起動するだけでOKです。
 
-### Installing importmap-rails
+### importmap-railsをインストールする
 
-Importmap for Rails is automatically included in Rails 7+ for new applications, but you can also install it manually in existing applications:
+Rails 7以降の新規アプリケーションでは、自動的にimportmap-railsが使われます。以下のように既存のアプリケーションに手動インストールすることも可能です。
 
 ```bash
 $ bin/bundle add importmap-rails
 ```
 
-Run the install task:
+以下のインストールタスクを実行します。
 
 ```bash
 $ bin/rails importmap:install
 ```
 
-### Adding NPM Packages with importmap-rails
+### NPMパッケージをimportmap-railsで追加する
 
-To add new packages to your import map-powered application, run the `bin/importmap pin` command
-from your terminal:
+import mapを利用するアプリケーションに新しいパッケージを追加するには、ターミナルで以下のように`bin/importmap pin`コマンドを実行します。
 
 ```bash
 $ bin/importmap pin react react-dom
 ```
 
-Then, import the package into `application.js` as usual:
+続いて、従来と同様に`application.js`ファイルでパッケージを`import`します。
+
 
 ```javascript
 import React from "react"
 import ReactDOM from "react-dom"
 ```
 
-Adding NPM Packages with JavaScript Bundlers
+NPMパッケージをJavaScriptバンドラーで追加する
 --------
 
-Import maps are the default for new Rails applications, but if you prefer traditional JavaScript
-bundling, you can create new Rails applications with your choice of
-[esbuild](https://esbuild.github.io/), [webpack](https://webpack.js.org/), or
-[rollup.js](https://rollupjs.org/guide/en/).
+import mapsは新規Railsアプリケーションのデフォルトですが、従来のJavaScriptバンドラーを使いたい場合は、新規Railsアプリケーション作成時に[esbuild](https://esbuild.github.io/)、[webpack](https://webpack.js.org/)、[rollup.js](https://rollupjs.org/guide/en/)のいずれかを選択できます。
 
-To use a bundler instead of import maps in a new Rails application, pass the `—javascript` or `-j`
-option to `rails new`:
+import mapsではなくJavaScriptバンドラーを新規Railsアプリケーションで利用するには、以下のように`rails new`コマンドに`—javascript`または`-j`オプションを渡します。
 
 ```bash
 $ rails new my_new_app --javascript=webpack
@@ -75,64 +64,45 @@ OR
 $ rails new my_new_app -j webpack
 ```
 
-These bundling options each come with a simple configuration and integration with the asset
-pipeline via the [jsbundling-rails](https://github.com/rails/jsbundling-rails) gem.
+どのバンドルオプションにも、シンプルな設定と、[jsbundling-rails](https://github.com/rails/jsbundling-rails) gemによるアセットパイプラインとの統合が用意されています。
 
-When using a bundling option, use `bin/dev` to start the Rails server and build JavaScript for
-development.
+バンドルオプションを利用する場合は、development環境でのRailsサーバー起動とJavaScriptのビルドに`bin/dev`コマンドをお使いください。
 
-### Installing Node.js and Yarn
+### Node.jsとYarnをインストールする
 
-If you are using a JavaScript bundler in your Rails application, Node.js and Yarn must be
-installed.
+RailsアプリケーションでJavaScriptバンドラーを使う場合は、Node.jsとYarnをインストールしなければなりません。
 
-Find the installation instructions at the [Node.js website](https://nodejs.org/en/download/) and
-verify it’s installed correctly with the following command:
+Node.jsのインストール方法については[Node.js Webサイト](https://nodejs.org/ja/download/)を参照してください。また、以下のコマンドで正しくインストールされたかどうかを確認してください。
 
 ```bash
 $ node --version
 ```
 
-The version of your Node.js runtime should be printed out. Make sure it’s greater than `8.16.0`.
+Node.jsランタイムのバージョンが出力されるはずです。必ず`8.16.0`より大きいバージョンをお使いください。
 
-To install Yarn, follow the installation instructions at the
-[Yarn website](https://classic.yarnpkg.com/en/docs/install). Running this command should print out
-the Yarn version:
+Yarnのインストール方法については[Yarn Webサイト](https://classic.yarnpkg.com/en/docs/install)の手順に沿ってください。インストール後、以下のコマンドを実行するとYarnのバージョンが出力されるはずです。
 
 ```bash
 $ yarn --version
 ```
 
-If it says something like `1.22.0`, Yarn has been installed correctly.
+`1.22.0`のように表示されれば、Yarnは正しくインストールされています。
 
-Choosing Between Import Maps and a JavaScript Bundler
+import mapsとJavaScriptバンドラーのどちらを選ぶか
 -----------------------------------------------------
 
-When you create a new Rails application, you will need to choose between import maps and a
-JavaScript bundling solution. Every application has different requirements, and you should
-consider your requirements carefully before choosing a JavaScript option, as migrating from one
-option to another may be time-consuming for large, complex applications.
+Railsアプリケーションを新規作成する場合、import mapsとJavaScriptバンドラーのどちらかのソリューションを選ぶ必要があります。アプリケーションごとに要件は異なるので、JavaScriptのオプションを決める際には十分注意してください。特に大規模で複雑なアプリケーションほど、後から別のオプションに乗り換えようとすると時間がかかる可能性があります。
 
-Import maps are the default option because the Rails team believes in import maps' potential for
-reducing complexity, improving developer experience, and delivering performance gains.
+Railsチームは、import mapsが複雑さを削減して開発者のエクスペリエンスやパフォーマンスを向上させる能力を持っていると信じているので、import mapsがデフォルトのオプションとして選ばれています。
 
-For many applications, especially those that rely primarily on the [Hotwire](https://hotwired.dev/)
-stack for their JavaScript needs, import maps will be the right option for the long term. You
-can read more about the reasoning behind making import maps the default in Rails 7
-[here](https://world.hey.com/dhh/rails-7-will-have-three-great-answers-to-javascript-in-2021-8d68191b).
+多くのアプリケーション、特にJavaScriptのニーズを[Hotwire](https://hotwired.dev/)スタックに依存しているアプリケーションにおいては、import mapが長期的に正しい選択肢となるでしょう。Rails 7でimport mapsがデフォルトのオプションになった背景については[こちら](https://world.hey.com/dhh/rails-7-will-have-three-great-answers-to-javascript-in-2021-8d68191b)の記事を参照してください。
 
-Other applications may still need a traditional JavaScript bundler. Requirements that indicate
-that you should choose a traditional bundler include:
+それ以外のアプリケーションでは、引き続き従来のJavaScriptバンドラーが必要になることもあるでしょう。従来のJavaScriptバンドラーを選択すべきであることを示唆する要件は以下のとおりです。
 
-* If your code requires a transpilation step, such as JSX or TypeScript.
-* If you need to use JavaScript libraries that include CSS or otherwise rely on
-[Webpack loaders](https://webpack.js.org/loaders/).
-* If you are absolutely sure that you need
-[tree-shaking](https://webpack.js.org/guides/tree-shaking/).
-* If you will install Bootstrap, Bulma, PostCSS, or Dart CSS through the
-[cssbundling-rails gem](https://github.com/rails/cssbundling-rails). All options provided by this
-gem except Tailwind will automatically install `esbuild` for you if you do not specify a different
-option in `rails new`.
+* コードでトランスパイルが必須である場合（JSXやTypeScriptなどを使う場合）
+* CSSをインクルードするJavaScriptライブラリや、[Webpack loaders](https://webpack.js.org/loaders/)に依存する必要がある場合
+* [tree-shaking](https://webpack.js.org/guides/tree-shaking/)がどうしても必要な場合
+* [cssbundling-rails gem](https://github.com/rails/cssbundling-rails)経由でBootstrap、Bulma、PostCSS、Dart CSSをインストールする場合。なお、`rails new`で特に別のオプションを指定しなかった場合は、cssbundling-rails gemが自動的に`esbuild`をインストールします（Tailwindを選んだ場合を除く）。
 
 Turbo
 -----
