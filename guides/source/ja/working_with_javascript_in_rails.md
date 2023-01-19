@@ -12,7 +12,7 @@ Rails で JavaScript を利用する
 
 --------------------------------------------------------------------------------
 
-Import Maps
+import maps
 -----------
 
 [import maps](https://github.com/rails/importmap-rails)は、バージョン付けされたファイルに対応する論理名を用いてJavaScriptモジュールをブラウザで直接importできます。import mapsはRails 7からデフォルトになっており、トランスパイルやバンドルの必要なしにほとんどのNPMパッケージを用いて誰でもモダンなJavaScriptアプリケーションを構築できるようになります。
@@ -102,14 +102,14 @@ Railsチームは、import mapsが複雑さを削減して開発者のエクス�
 * コードでトランスパイルが必須である場合（JSXやTypeScriptなどを使う場合）
 * CSSをインクルードするJavaScriptライブラリや、[Webpack loaders](https://webpack.js.org/loaders/)に依存する必要がある場合
 * [tree-shaking](https://webpack.js.org/guides/tree-shaking/)がどうしても必要な場合
-* [cssbundling-rails gem](https://github.com/rails/cssbundling-rails)経由でBootstrap、Bulma、PostCSS、Dart CSSをインストールする場合。なお、`rails new`で特に別のオプションを指定しなかった場合は、cssbundling-rails gemが自動的に`esbuild`をインストールします（Tailwindを選んだ場合を除く）。
+* [cssbundling-rails gem](https://github.com/rails/cssbundling-rails)経由でBootstrap、Bulma、PostCSS、Dart CSSをインストールする場合。なお、`rails new`で特に別のオプションを指定しなかった場合は、cssbundling-rails gemが自動的に`esbuild`をインストールします（Tailwindを選んだ場合はインストールされません）。
 
 Turbo
 -----
 
 [Turbo](https://turbo.hotwired.dev/)は、import mapsを選ぶか従来のJavaScriptバンドラーを選ぶかどうかにかかわらず、Railsアプリケーションに同梱されます。Turboは、書かなければならないJavaScriptコード量を劇的に減らしつつ、アプリケーションを高速化します。
 
-Turboは、Railsアプリケーションのサーバーサイドの役割をJSON API専用同然に縮小するさまざまなフロントエンドフレームワークに代わる選択肢として、サーバーから直接HTMLを配信できるようにします。
+Turboは、Railsアプリケーションのサーバーサイドの役割をJSON API専用同然に縮小するさまざまなフロントエンドフレームワークとは異なる手法を用いるもので、サーバーから直接HTMLを配信できるようにします。
 
 ### Turbo Drive
 
@@ -192,57 +192,45 @@ Rails/UJSの機能を置き換える
 
 Rails 6に同梱されていたUJSというツールは、開発者が`<a>`タグをオーバーライドすることでハイパーリンクのクリック後に非GETリクエストを実行し、アクション実行前に確認ダイアログを追加できるようにします。Rails 7より前はこの方法がデフォルトでしたが、現在はTurboの利用が推奨されています。
 
-### メソッド
+### HTTPメソッド
 
-Clicking links always results in an HTTP GET request. If your application is
-[RESTful](https://en.wikipedia.org/wiki/Representational_State_Transfer), some links are in fact
-actions that change data on the server, and should be performed with non-GET requests. This
-attribute allows marking up such links with an explicit method such as "post", "put", or "delete".
+リンクをクリックすると、常にHTTP GETリクエストが発生します。[RESTful](https://ja.wikipedia.org/wiki/Representational_State_Transfer)なアプリケーションでは、実際には一部のリンクがサーバーのデータを変更するアクションを起動しますが、これは非GETリクエストで実行されるべきです。この属性があることで、そうしたリンクをPOSTやPUTやDELETEなどのHTTPメソッドで明示的にマークアップできるようになります【原文の説明か推敲が不足している？】。
 
-Turbo will scan `<a>` tags in your application for the `turbo-method` data attribute and use the
-specified method when present, overriding the default GET action.
+Turboは、アプリケーション内の`<a>`タグをスキャンして`turbo-method`データ属性があるかどうかを調べ、HTTPメソッドが指定されている場合はそのHTTPメソッドを使う形で、デフォルトのGETアクションをオーバーライドします。
 
-For example:
+例:
 
 ```erb
 <%= link_to "Delete post", post_path(post), data: { turbo_method: "delete" } %>
 ```
 
-This generates:
+上のERBは以下のHTMLを生成します。
 
 ```html
 <a data-turbo-method="delete" href="...">Delete post</a>
 ```
 
-An alternative to changing the method of a link with `data-turbo-method` is to use Rails
-`button_to` helper. For accessibility reasons, actual buttons and forms are preferable for any
-non-GET action.
+HTTPメソッドの変更は、`data-turbo-method`属性をリンクに追加する方法の他に、Railsの`button_to`ヘルパーでもできます。なお、アクセシビリティの観点から、非GETアクションには（リンクではなく）実際のボタンとフォームを用いるのが望ましい方法です。
 
-### Confirmations
+### 確認ダイアログ
 
-You can ask for an extra confirmation from the user by adding a `data-turbo-confirm`
-attribute on links and forms. On link click or form submit, the user will be
-presented with a JavaScript `confirm()` dialog containing the attribute's text.
-If the user chooses to cancel, the action doesn't take place.
-
-For example, with the `link_to` helper:
+リンクやフォームに`data-turbo-confirm`属性を追加することで、ユーザーに確認ダイアログを表示して確認を求めることができます。リンクのクリックやフォームの送信では、JavaScriptの`confirm()`ダイアログに属性のテキストを含んだものが表示されます。ユーザーがキャンセルを選択するとアクションは行われません。
+たとえば`link_to`ヘルパーを用いると、
 
 ```erb
-<%= link_to "Delete post", post_path(post), data: { turbo_method: "delete", turbo_confirm: "Are you sure?" } %>
+<%= link_to "Delete post", post_path(post), data: { turbo_method: "delete", turbo_confirm: "削除してよろしいですか？" } %>
 ```
 
-Which generates:
+以下が生成されます。
 
 ```html
-<a href="..." data-turbo-confirm="Are you sure?" data-turbo-method="delete">Delete post</a>
+<a href="..." data-turbo-confirm="Are you sure?" data-turbo-method="delete">投稿を削除</a>
 ```
 
-When the user clicks on the "Delete post" link, they will be presented with an
-"Are you sure?" confirmation dialog.
+ユーザーがこの"投稿を削除"リンクをクリックすると、"削除してよろしいですか？"という確認ダイアログが表示されます。
 
-The attribute can also be used with the `button_to` helper, however it must be
-added to the form that the `button_to` helper renders internally:
+この属性は`button_to`ヘルパーでも利用できますが、`button_to`ヘルパーが内部でレンダリングするフォームに属性を追加する必要があります。
 
 ```erb
-<%= button_to "Delete post", post, method: :delete, form: { data: { turbo_confirm: "Are you sure?" } } %>
+<%= button_to "Delete post", post, method: :delete, form: { data: { turbo_confirm: "削除してよろしいですか？" } } %>
 ```
