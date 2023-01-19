@@ -107,32 +107,23 @@ Railsチームは、import mapsが複雑さを削減して開発者のエクス�
 Turbo
 -----
 
-Whether you choose import maps or a traditional bundler, Rails ships with
-[Turbo](https://turbo.hotwired.dev/) to speed up your application while dramatically reducing the
-amount of JavaScript that you will need to write.
+[Turbo](https://turbo.hotwired.dev/)は、import mapsを選ぶか従来のJavaScriptバンドラーを選ぶかどうかにかかわらず、Railsアプリケーションに同梱されます。Turboは、書かなければならないJavaScriptコード量を劇的に減らしつつ、アプリケーションを高速化します。
 
-Turbo lets your server deliver HTML directly as an alternative to the prevailing front-end
-frameworks that reduce the server-side of your Rails application to little more than a JSON API.
+Turboは、Railsアプリケーションのサーバーサイドの役割をJSON API専用同然に縮小するさまざまなフロントエンドフレームワークに代わる選択肢として、サーバーから直接HTMLを配信できるようにします。
 
 ### Turbo Drive
 
-[Turbo Drive](https://turbo.hotwired.dev/handbook/drive) speeds up page loads by avoiding full-page
-teardowns and rebuilds on every navigation request. Turbo Drive is an improvement on and
-replacement for Turbolinks.
+[Turbo Drive](https://turbo.hotwired.dev/handbook/drive)は、ページ遷移リクエストのたびにページ全体を取り壊して再構築する動作を回避する形でページの読み込みを高速化します。
 
 ### Turbo Frames
 
-[Turbo Frames](https://turbo.hotwired.dev/handbook/frames) allow predefined parts of a page to be
-updated on request, without impacting the rest of the page’s content.
+[Turbo Frames](https://turbo.hotwired.dev/handbook/frames)は、ページの他の部分に影響を及ぼさずに、ページで事前定義された部分をリクエストに応じて更新できるようにします。
 
-You can use Turbo Frames to build in-place editing without any custom JavaScript, lazy load
-content, and create server-rendered, tabbed interfaces with ease.
+Turbo Framesを使うと、カスタムJavaScriptをまったく書かずにインプレース編集機能を構築したり、コンテンツを遅延読み込みしたり、サーバーレンダリングされたタブインターフェイスを作成したりする作業が手軽に行なえます。
 
-Rails provides HTML helpers to simplify the use of Turbo Frames through the
-[turbo-rails](https://github.com/hotwired/turbo-rails) gem.
+Railsでは、[turbo-rails](https://github.com/hotwired/turbo-rails) gemを介してTurbo Framesを手軽に利用できるHTMLヘルパーを提供します。
 
-Using this gem, you can add a Turbo Frame to your application with the `turbo_frame_tag` helper
-like this:
+このgemを使うと、アプリケーションで以下のように`turbo_frame_tag`ヘルパーを用いてTurbo Framesを追加できるようになります。
 
 ```erb
 <%= turbo_frame_tag dom_id(post) do %>
@@ -144,15 +135,11 @@ like this:
 
 ### Turbo Streams
 
-[Turbo Streams](https://turbo.hotwired.dev/handbook/streams) deliver page changes as fragments of
-HTML wrapped in self-executing `<turbo-stream>` elements. Turbo Streams allow you to broadcast
-changes made by other users over WebSockets and update pieces of a page after a form submission
-without requiring a full page load.
+[Turbo Streams](https://turbo.hotwired.dev/handbook/streams)は、ページの変更を自己実行型の`<turbo-stream>`要素でラップされたHTMLフラグメントとして配信します。Turbo Streamsを用いることで、他のユーザーによる変更内容をWebSocket上でブロードキャストしたり、フォーム送信後にページ全体を更新する必要なしにページの一部のみを更新したりできるようになります。
 
-Rails provides HTML and server-side helpers to simplify the use of Turbo Streams through the
-[turbo-rails](https://github.com/hotwired/turbo-rails) gem.
+Railsでは、[turbo-rails](https://github.com/hotwired/turbo-rails) gemを介してTurbo Streamsを手軽に利用できるHTMLヘルパーを提供します。
 
-Using this gem, you can render Turbo Streams from a controller action:
+このgemを使うと、以下のようにコントローラのアクションでTurbo Streamsをレンダリングできます。
 
 ```ruby
 def create
@@ -167,9 +154,9 @@ def create
 end
 ```
 
-Rails will automatically look for a `.turbo_stream.erb` view file and render that view when found.
+Railsは自動的に`.turbo_stream.erb`ビューファイルを探索し、見つかったらそのビューをレンダリングします。
 
-Turbo Stream responses can also be rendered inline in the controller action:
+Turbo Streamsのレスポンスも、以下のようにコントローラのアクションでインラインレンダリングできます。
 
 ```ruby
 def create
@@ -184,11 +171,9 @@ def create
 end
 ```
 
-Finally, Turbo Streams can be initiated from a model or a background job using built-in helpers.
-These broadcasts can be used to update content via a WebSocket connection to all users, keeping
-page content fresh and bringing your application to life.
+最後に、Turbo Streamsは組み込みヘルパーを用いてモデルやバックグラウンドジョブから開始できます。これらのブロードキャストは、WebSocketコネクション経由で全ユーザーのコンテンツを更新するのにも利用可能で、ページの内容を常に最新に保って生き生きとしたアプリケーションにすることができます。
 
-To broadcast a Turbo Stream from a model combine a model callback like this:
+モデルでTurbo Streamsをブロードキャストするには、以下のようにモデルのコールバックと組み合わせます。
 
 ```ruby
 class Post < ApplicationRecord
@@ -196,21 +181,68 @@ class Post < ApplicationRecord
 end
 ```
 
-With a WebSocket connection set up on the page that should receive the updates like this:
+WebSocketによって、更新を受け取る以下のようなページとのコネクションが設定されます。
 
 ```erb
 <%= turbo_stream_from "posts" %>
 ```
 
-Replacements for Rails/UJS Functionality
+Rails/UJSの機能を置き換える
 ----------------------------------------
 
-Rails 6 shipped with a tool called UJS that allows developers to override the method of `<a>` tags
-to perform non-GET requests after a hyperlink click and to add confirmation dialogs before
-executing an action. This was the default before Rails 7, but it is now recommended to use Turbo
-instead.
+Rails 6に同梱されていたUJSというツールは、開発者が`<a>`タグをオーバーライドすることでハイパーリンクのクリック後に非GETリクエストを実行し、アクション実行前に確認ダイアログを追加できるようにします。Rails 7より前はこの方法がデフォルトでしたが、現在はTurboの利用が推奨されています。
 
-### Method
+### メソッド
 
 Clicking links always results in an HTTP GET request. If your application is
 [RESTful](https://en.wikipedia.org/wiki/Representational_State_Transfer), some links are in fact
+actions that change data on the server, and should be performed with non-GET requests. This
+attribute allows marking up such links with an explicit method such as "post", "put", or "delete".
+
+Turbo will scan `<a>` tags in your application for the `turbo-method` data attribute and use the
+specified method when present, overriding the default GET action.
+
+For example:
+
+```erb
+<%= link_to "Delete post", post_path(post), data: { turbo_method: "delete" } %>
+```
+
+This generates:
+
+```html
+<a data-turbo-method="delete" href="...">Delete post</a>
+```
+
+An alternative to changing the method of a link with `data-turbo-method` is to use Rails
+`button_to` helper. For accessibility reasons, actual buttons and forms are preferable for any
+non-GET action.
+
+### Confirmations
+
+You can ask for an extra confirmation from the user by adding a `data-turbo-confirm`
+attribute on links and forms. On link click or form submit, the user will be
+presented with a JavaScript `confirm()` dialog containing the attribute's text.
+If the user chooses to cancel, the action doesn't take place.
+
+For example, with the `link_to` helper:
+
+```erb
+<%= link_to "Delete post", post_path(post), data: { turbo_method: "delete", turbo_confirm: "Are you sure?" } %>
+```
+
+Which generates:
+
+```html
+<a href="..." data-turbo-confirm="Are you sure?" data-turbo-method="delete">Delete post</a>
+```
+
+When the user clicks on the "Delete post" link, they will be presented with an
+"Are you sure?" confirmation dialog.
+
+The attribute can also be used with the `button_to` helper, however it must be
+added to the form that the `button_to` helper renders internally:
+
+```erb
+<%= button_to "Delete post", post, method: :delete, form: { data: { turbo_confirm: "Are you sure?" } } %>
+```

@@ -248,3 +248,53 @@ instead.
 
 Clicking links always results in an HTTP GET request. If your application is
 [RESTful](https://en.wikipedia.org/wiki/Representational_State_Transfer), some links are in fact
+actions that change data on the server, and should be performed with non-GET requests. This
+attribute allows marking up such links with an explicit method such as "post", "put", or "delete".
+
+Turbo will scan `<a>` tags in your application for the `turbo-method` data attribute and use the
+specified method when present, overriding the default GET action.
+
+For example:
+
+```erb
+<%= link_to "Delete post", post_path(post), data: { turbo_method: "delete" } %>
+```
+
+This generates:
+
+```html
+<a data-turbo-method="delete" href="...">Delete post</a>
+```
+
+An alternative to changing the method of a link with `data-turbo-method` is to use Rails
+`button_to` helper. For accessibility reasons, actual buttons and forms are preferable for any
+non-GET action.
+
+### Confirmations
+
+You can ask for an extra confirmation from the user by adding a `data-turbo-confirm`
+attribute on links and forms. On link click or form submit, the user will be
+presented with a JavaScript `confirm()` dialog containing the attribute's text.
+If the user chooses to cancel, the action doesn't take place.
+
+For example, with the `link_to` helper:
+
+```erb
+<%= link_to "Delete post", post_path(post), data: { turbo_method: "delete", turbo_confirm: "Are you sure?" } %>
+```
+
+Which generates:
+
+```html
+<a href="..." data-turbo-confirm="Are you sure?" data-turbo-method="delete">Delete post</a>
+```
+
+When the user clicks on the "Delete post" link, they will be presented with an
+"Are you sure?" confirmation dialog.
+
+The attribute can also be used with the `button_to` helper, however it must be
+added to the form that the `button_to` helper renders internally:
+
+```erb
+<%= button_to "Delete post", post, method: :delete, form: { data: { turbo_confirm: "Are you sure?" } } %>
+```
