@@ -201,13 +201,13 @@ Turboは、アプリケーション内の`<a>`タグをスキャンして`turbo-
 例:
 
 ```erb
-<%= link_to "Delete post", post_path(post), data: { turbo_method: "delete" } %>
+<%= link_to "投稿を削除", post_path(post), data: { turbo_method: "delete" } %>
 ```
 
 上のERBは以下のHTMLを生成します。
 
 ```html
-<a data-turbo-method="delete" href="...">Delete post</a>
+<a data-turbo-method="delete" href="...">投稿を削除</a>
 ```
 
 HTTPメソッドの変更は、`data-turbo-method`属性をリンクに追加する方法の他に、Railsの`button_to`ヘルパーでもできます。なお実際には、アクセシビリティの観点から、非GETアクションには（リンクではなく）ボタンとフォームを用いるのが望ましい方法です。
@@ -218,7 +218,7 @@ HTTPメソッドの変更は、`data-turbo-method`属性をリンクに追加す
 たとえば`link_to`ヘルパーを用いると、
 
 ```erb
-<%= link_to "Delete post", post_path(post), data: { turbo_method: "delete", turbo_confirm: "削除してよろしいですか？" } %>
+<%= link_to "投稿を削除", post_path(post), data: { turbo_method: "delete", turbo_confirm: "削除してよろしいですか？" } %>
 ```
 
 以下が生成されます。
