@@ -224,7 +224,7 @@ HTTPメソッドの変更は、`data-turbo-method`属性をリンクに追加す
 以下が生成されます。
 
 ```html
-<a href="..." data-turbo-confirm="Are you sure?" data-turbo-method="delete">投稿を削除</a>
+<a href="..." data-turbo-confirm="削除してよろしいですか？" data-turbo-method="delete">投稿を削除</a>
 ```
 
 ユーザーがこの"投稿を削除"リンクをクリックすると、"削除してよろしいですか？"という確認ダイアログが表示されます。
