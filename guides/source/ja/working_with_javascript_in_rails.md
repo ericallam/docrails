@@ -194,7 +194,7 @@ Rails 6に同梱されていたUJSというツールは、開発者が`<a>`タ�
 
 ### HTTPメソッド
 
-リンクをクリックすると、常にHTTP GETリクエストが発生します。[RESTful](https://ja.wikipedia.org/wiki/Representational_State_Transfer)なアプリケーションでは、実際には一部のリンクがサーバーのデータを変更するアクションを起動しますが、これは非GETリクエストで実行されるべきです。この属性があることで、そうしたリンクをPOSTやPUTやDELETEなどのHTTPメソッドで明示的にマークアップできるようになります【原文の説明か推敲が不足している？】。
+リンクをクリックすると、常にHTTP GETリクエストが発生します。[RESTful](https://ja.wikipedia.org/wiki/Representational_State_Transfer)なアプリケーションでは、実際には一部のリンクがサーバーのデータを変更するアクションを起動しますが、これは非GETリクエストで実行されるべきです。属性を利用することで、そうしたリンクをPOSTやPUTやDELETEなどのHTTPメソッドで明示的にマークアップできるようになります。
 
 Turboは、アプリケーション内の`<a>`タグをスキャンして`turbo-method`データ属性があるかどうかを調べ、HTTPメソッドが指定されている場合はそのHTTPメソッドを使う形で、デフォルトのGETアクションをオーバーライドします。
 
