@@ -353,10 +353,6 @@ Railsでは、POSTメソッド上でこれらのメソッドをエミュレー�
 </form>
 ```
 
-<!-- 編集部注: Rails 7ではこの記事は無効です。原文にはまだ残っていますがいずれ削除または更新されるはずです。一時的な処置としてコメントアウトします。 
-IMPORTANT: Rails 6.0および5.2では、`form_with`を使うすべてのフォームはデフォルトで`remote: true`を実装します。これらのフォームではXHR（Ajax）リクエストを使ってデータを送信します。これを無効にするには、`local: true`を指定してください。詳しくは[Rails で JavaScript を利用する](working_with_javascript_in_rails.html#remote要素)ガイドを参照してください。
--->
-
 [`formmethod`]: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#attr-formmethod
 [button-name]: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#attr-name
 [button-value]: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#attr-value
