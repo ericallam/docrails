@@ -1,453 +1,236 @@
 Rails で JavaScript を利用する
 ================================
 
-本ガイドでは、RailsにビルトインされているAjax/JavaScript機能などについて解説します。これらを活用して、リッチな動的Ajaxアプリケーションをお手軽に作ることができます。
+本ガイドでは、JavaScript機能をRailsアプリケーションに統合する方法について解説します。外部のJavaScriptパッケージを利用する場合に使えるオプションや、RailsでTurboを使う方法についても解説します。
 
 このガイドの内容:
 
-* Ajaxの基礎
-* 「控えめなJavaScript」について
-* Railsのビルトインヘルパーの活用方法
-* サーバー側でAjaxを扱う方法
-* Turbolinks gem
-* CSRFトークンを独自にリクエストヘッダーに含める方法
+* Node.jsやYarnやJavaScriptのバンドラーを使わずにRailsを利用する方法
+* JavaScriptをimport maps・esbuild・rollup・webpackでバンドルする新規Railsアプリケーションを作成する方法
+* Turboの概要と利用法
+* Railsが提供するTurbo HTMLヘルパーの利用法
 
--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 
+import maps
+-----------
 
-はじめてのAjax
-------------------------
+[import maps](https://github.com/rails/importmap-rails)は、バージョン付けされたファイルに対応する論理名を用いてJavaScriptモジュールをブラウザで直接importできます。import mapsはRails 7からデフォルトになっており、トランスパイルやバンドルの必要なしにほとんどのNPMパッケージを用いて誰でもモダンなJavaScriptアプリケーションを構築できるようになります。
 
-Ajaxを理解するには、Webブラウザの基本的な動作について理解しておく必要があります。
+import mapsを利用するアプリケーションは、[Node.js](https://nodejs.org/en/)や[Yarn](https://yarnpkg.com/)なしで機能します。RailsのJavaScript依存関係を`importmap-rails`で管理する予定であれば、Node.jsやYarnをインストールする必要はありません。
 
-ブラウザのアドレスバーに`http://localhost:3000`と入力して'Go'を押すと、ブラウザ （つまりクライアント）はサーバーに対してリクエストを1つ送信します。ブラウザは、サーバーから受け取ったレスポンスを解析し、続いて必要なすべてのアセット（JavaScriptファイル、スタイルシート、画像）をサーバーから取得します。続いてブラウザはページを組み立てます。ブラウザに表示されているリンクをクリックすると、同じプロセスが実行されます。ブラウザはページを取得し、続いてアセットを取得し、それらをすべてまとめてから結果を表示します。これが、いわゆる「リクエスト-レスポンス」サイクルです。
+import mapsを利用する場合、別途ビルドプロセスを実行する必要はなく、`bin/rails server`コマンドでサーバーを起動するだけでOKです。
 
-JavaScriptも、上と同様にサーバーにリクエストを送信し、レスポンスを解析することができます。JavaScriptはページ上の情報を更新することもできます。JavaScriptの開発者は、ブラウザとJavaScriptという2つの力を1つに結集させることで、現在のWebページの一部だけを更新できます。必要なWebページをサーバーからすべて取得する必要はありません。この強力な技法が、Ajaxと呼ばれているものです。
+### importmap-railsをインストールする
 
-Railsには、JavaScriptをさらに使いやすくしたCoffeeScriptがデフォルトで組み込まれています。以後、本ガイドではすべての例をCoffeeScriptで記述します。もちろん、これらのレッスンはすべて通常のJavaScriptにも適用できます。
+Rails 7以降の新規アプリケーションでは、自動的にimportmap-railsが使われます。以下のように既存のアプリケーションに手動インストールすることも可能です。
 
-以下は、Ajaxリクエストを送信するJavaScriptコード例です。
-
-```js
-fetch("/test")
-  .then((data) => data.text())
-  .then((html) => {
-    const results = document.querySelector("#results");
-    results.insertAdjacentHTML("beforeend", html);
-  });
+```bash
+$ bin/bundle add importmap-rails
 ```
 
-上のコードは「/test」からデータを取得し、結果をWebページ上のidが`results`の要素に`append`します。
+以下のインストールタスクを実行します。
 
-Railsには、この手法でWebページを構築するためのサポートが多数組み込まれています。したがって、こうしたコードをすべて自分で作成する必要はほとんどありません。この後、このような手法でRails Webサイトを作成する方法をご紹介します。これらの手法は、いずれもシンプルな基本テクニックのうえに成り立っています。
-
-「控えめなJavaScript」
--------------------------------------
-
-Railsでは、JavaScriptをDOMに追加する際の手法を「UJS: Unobtrusive（控えめな）JavaScript」と呼んでいます。これは一般にフロントエンド開発者コミュニティでベストプラクティスであると見なされていますが、ここではもう少し違う角度から説明したいと思います。
-
-最もシンプルなJavaScriptを例にとって考えてみましょう。以下のような書き方は「インラインJavaScript」と呼ばれています。
-
-```html
-<a href="#" onclick="this.style.backgroundColor='#990000';event.preventDefault();">Paint it red</a>
+```bash
+$ bin/rails importmap:install
 ```
 
-このリンクをクリックすると、背景が赤くなります。しかし早くもここで問題が生じ始めます。クリックした時にJavaScriptでもっといろんなことをさせるとどうなるでしょうか。
+### NPMパッケージをimportmap-railsで追加する
 
-```html
-<a href="#" onclick="this.style.backgroundColor='#009900';this.style.color='#FFFFFF';event.preventDefault();">Paint it green</a>
+import mapを利用するアプリケーションに新しいパッケージを追加するには、ターミナルで以下のように`bin/importmap pin`コマンドを実行します。
+
+```bash
+$ bin/importmap pin react react-dom
 ```
 
-だいぶ乱雑になってきました。この関数定義はclickハンドラの外に移動して関数することが可能です。
+続いて、従来と同様に`application.js`ファイルでパッケージを`import`します。
 
-```js
-window.paintIt = function(event, backgroundColor, textColor) {
-  event.preventDefault();
-  event.target.style.backgroundColor = backgroundColor;
-  if (textColor) {
-    event.target.style.color = textColor;
-  }
-}
+
+```javascript
+import React from "react"
+import ReactDOM from "react-dom"
 ```
 
-ページの内容を以下に変更します。
+NPMパッケージをJavaScriptバンドラーで追加する
+--------
 
-```html
-<a href="#" onclick="paintIt(event, '#990000')">Paint it red</a>
+import mapsは新規Railsアプリケーションのデフォルトですが、従来のJavaScriptバンドラーを使いたい場合は、新規Railsアプリケーション作成時に[esbuild](https://esbuild.github.io/)、[webpack](https://webpack.js.org/)、[rollup.js](https://rollupjs.org/guide/en/)のいずれかを選択できます。
+
+import mapsではなくJavaScriptバンドラーを新規Railsアプリケーションで利用するには、以下のように`rails new`コマンドに`—javascript`または`-j`オプションを渡します。
+
+```bash
+$ rails new my_new_app --javascript=webpack
+OR
+$ rails new my_new_app -j webpack
 ```
 
-これでコードが少し改善されました。しかし、同じ効果を複数のリンクに与えるとどうなるでしょうか。
+どのバンドルオプションにも、シンプルな設定と、[jsbundling-rails](https://github.com/rails/jsbundling-rails) gemによるアセットパイプラインとの統合が用意されています。
 
-```html
-<a href="#" onclick="paintIt(event, '#990000')">Paint it red</a>
-<a href="#" onclick="paintIt(event, '#009900', '#FFFFFF')">Paint it green</a>
-<a href="#" onclick="paintIt(event, '#000099', '#FFFFFF')">Paint it blue</a>
+バンドルオプションを利用する場合は、development環境でのRailsサーバー起動とJavaScriptのビルドに`bin/dev`コマンドをお使いください。
+
+### Node.jsとYarnをインストールする
+
+RailsアプリケーションでJavaScriptバンドラーを使う場合は、Node.jsとYarnをインストールしなければなりません。
+
+Node.jsのインストール方法については[Node.js Webサイト](https://nodejs.org/ja/download/)を参照してください。また、以下のコマンドで正しくインストールされたかどうかを確認してください。
+
+```bash
+$ node --version
 ```
 
-これではDRYとは言えません。今度はイベントを活用して改良してみましょう。最初に`data-*`属性をリンクに追加しておきます。続いて、この属性を持つすべてのリンクで発生するクリックイベントにハンドラをバインドします。
+Node.jsランタイムのバージョンが出力されるはずです。必ず`8.16.0`より大きいバージョンをお使いください。
 
-```js
-function paintIt(element, backgroundColor, textColor) {
-  element.style.backgroundColor = backgroundColor;
-  if (textColor) {
-    element.style.color = textColor;
-  }
-}
+Yarnのインストール方法については[Yarn Webサイト](https://classic.yarnpkg.com/en/docs/install)の手順に沿ってください。インストール後、以下のコマンドを実行するとYarnのバージョンが出力されるはずです。
 
-window.addEventListener("load", () => {
-  const links = document.querySelectorAll(
-    "a[data-background-color]"
-  );
-  links.forEach((element) => {
-    element.addEventListener("click", (event) => {
-      event.preventDefault();
-
-      const {backgroundColor, textColor} = element.dataset;
-      paintIt(element, backgroundColor, textColor);
-    });
-  });
-});
+```bash
+$ yarn --version
 ```
 
-```html
-<a href="#" data-background-color="#990000">Paint it red</a>
-<a href="#" data-background-color="#009900" data-text-color="#FFFFFF">Paint it green</a>
-<a href="#" data-background-color="#000099" data-text-color="#FFFFFF">Paint it blue</a>
-```
+`1.22.0`のように表示されれば、Yarnは正しくインストールされています。
 
-私たちはこの手法を「UJS: Unobtrusive（控えめな）JavaScript」と呼んでいます。この名称は、HTMLの中にJavaScriptを混入させないという意図に由来しています。関心を正しく分離できたので、今後の変更が楽になります。以後は、この`data-*`属性をリンクタグに追加するだけでこの動作を簡単に追加できます。あらゆるJavaScriptは、最小化機能と結合機能を経て実行できます。作成したJavaScriptコード全体はRailsのあらゆるWebページで利用できます。つまり、ページが最初にブラウザに読み込まれるときにダウンロードされ、以後はブラウザでキャッシュされます。これにより多くのメリットが得られます。
+import mapsとJavaScriptバンドラーのどちらを選ぶか
+-----------------------------------------------------
 
-Railsチームは、本ガイドでご紹介した方法でCoffeeScriptやJavaScriptを用いることを強く推奨します。多くのJavaScriptライブラリもこの方法で利用できることが期待できます。
+Railsアプリケーションを新規作成する場合、import mapsとJavaScriptバンドラーのどちらかのソリューションを選ぶ必要があります。アプリケーションごとに要件は異なるので、JavaScriptのオプションを決める際には十分注意してください。特に大規模で複雑なアプリケーションほど、後から別のオプションに乗り換えようとすると時間がかかる可能性があります。
 
-組み込みヘルパー
-----------------------
+Railsチームは、import mapsが複雑さを削減して開発者のエクスペリエンスやパフォーマンスを向上させる能力を持っていると信じているので、import mapsがデフォルトのオプションとして選ばれています。
 
-### remote要素
+多くのアプリケーション、特にJavaScriptのニーズを[Hotwire](https://hotwired.dev/)スタックに依存しているアプリケーションにおいては、import mapが長期的に正しい選択肢となるでしょう。Rails 7でimport mapsがデフォルトのオプションになった背景については[こちら](https://world.hey.com/dhh/rails-7-will-have-three-great-answers-to-javascript-in-2021-8d68191b)の記事を参照してください。
 
-HTMLを簡単に生成できるようにするため、Rubyで記述されたさまざまなビューヘルパーメソッドが用意されています。それらのHTML要素にAjaxコードを若干追加したくなったときにも、Railsがサポートしてくれます。
+それ以外のアプリケーションでは、引き続き従来のJavaScriptバンドラーが必要になることもあるでしょう。従来のJavaScriptバンドラーを選択すべきであることを示唆する要件は以下のとおりです。
 
-RailsのAjaxヘルパーは、「控えめなJavaScript」原則に基いて、JavaScriptとRubyという2つの要素で構成されています。
+* コードでトランスパイルが必須である場合（JSXやTypeScriptなどを使う場合）
+* CSSをインクルードするJavaScriptライブラリや、[Webpack loaders](https://webpack.js.org/loaders/)に依存する必要がある場合
+* [tree-shaking](https://webpack.js.org/guides/tree-shaking/)がどうしても必要な場合
+* [cssbundling-rails gem](https://github.com/rails/cssbundling-rails)経由でBootstrap、Bulma、PostCSS、Dart CSSをインストールする場合。なお、`rails new`で特に別のオプションを指定しなかった場合は、cssbundling-rails gemが自動的に`esbuild`をインストールします（Tailwindを選んだ場合はインストールされません）。
 
-アセットパイプラインを無効にしない限り、[rails-ujs](https://github.com/rails/rails/tree/main/actionview/app/assets/javascripts)はJavaScriptの他に通常のRubyビューヘルパーも提供して、DOMに適切なタグを追加します。
+Turbo
+-----
 
-アプリケーション内の`remote`要素を扱うその他の発火イベントについては以下をご覧ください。
+[Turbo](https://turbo.hotwired.dev/)は、import mapsを選ぶか従来のJavaScriptバンドラーを選ぶかどうかにかかわらず、Railsアプリケーションに同梱されます。Turboは、書かなければならないJavaScriptコード量を劇的に減らしつつ、アプリケーションを高速化します。
 
-#### form_with
+Turboは、Railsアプリケーションのサーバーサイドの役割をJSON API専用同然に縮小するさまざまなフロントエンドフレームワークとは異なる手法を用いるもので、サーバーから直接HTMLを配信できるようにします。
 
-[`form_with`](https://api.rubyonrails.org/classes/ActionView/Helpers/FormHelper.html#method-i-form_with)はフォーム作成を支援するヘルパーです。`form_with`では、デフォルトでAjaxをフォームで使えることが前提になっています。`form_with`に`:local`オプションを渡すことでこの振る舞いを変更できます。
+### Turbo Drive
+
+[Turbo Drive](https://turbo.hotwired.dev/handbook/drive)は、ページ遷移リクエストのたびにページ全体を取り壊して再構築する動作を回避する形でページの読み込みを高速化します。
+
+### Turbo Frames
+
+[Turbo Frames](https://turbo.hotwired.dev/handbook/frames)は、ページの他の部分に影響を及ぼさずに、ページで事前定義された部分をリクエストに応じて更新できるようにします。
+
+Turbo Framesを使うと、カスタムJavaScriptをまったく書かずにインプレース編集機能を構築したり、コンテンツを遅延読み込みしたり、サーバーレンダリングされたタブインターフェイスを作成したりする作業が手軽に行なえます。
+
+Railsでは、[turbo-rails](https://github.com/hotwired/turbo-rails) gemを介してTurbo Framesを手軽に利用できるHTMLヘルパーを提供します。
+
+このgemを使うと、アプリケーションで以下のように`turbo_frame_tag`ヘルパーを用いてTurbo Framesを追加できるようになります。
 
 ```erb
-<%= form_with(model: @article, id: "new-article", local: false) do |form| %>
-  ...
+<%= turbo_frame_tag dom_id(post) do %>
+  <div>
+     <%= link_to post.title, post_path(path) %>
+  </div>
 <% end %>
 ```
 
-上のコードから以下のHTMLが生成されます。
+### Turbo Streams
 
-```html
-<form id="new-article" action="/articles" accept-charset="UTF-8" method="post" data-remote="true">
-  ...
-</form>
+[Turbo Streams](https://turbo.hotwired.dev/handbook/streams)は、ページの変更を自己実行型の`<turbo-stream>`要素でラップされたHTMLフラグメントとして配信します。Turbo Streamsを用いることで、他のユーザーによる変更内容をWebSocket上でブロードキャストしたり、フォーム送信後にページ全体を更新する必要なしにページの一部のみを更新したりできるようになります。
+
+Railsでは、[turbo-rails](https://github.com/hotwired/turbo-rails) gemを介してTurbo Streamsを手軽に利用できるHTMLヘルパーを提供します。
+
+このgemを使うと、以下のようにコントローラのアクションでTurbo Streamsをレンダリングできます。
+
+```ruby
+def create
+  @post = Post.new(post_params)
+  respond_to do |format|
+    if @post.save
+      format.turbo_stream
+    else
+      format.html { render :new, status: :unprocessable_entity }
+    end
+  end
+end
 ```
 
-formタグに`data-remote="true"`という属性が追加されていることにご注目ください。これにより、フォームの送信がブラウザによる通常の送信メカニズムではなくAjaxによって送信されるようになります。
+Railsは自動的に`.turbo_stream.erb`ビューファイルを探索し、見つかったらそのビューをレンダリングします。
 
-`<form>`タグの中身を埋めただけでおしまいだとは思わないでしょう。フォーム送信が成功した場合に何らかの表示を行いたいものです。これを行なうには、`ajax:success`イベントをバインドします。送信に失敗した場合は`ajax:error`を使います。実際に見てみましょう。
+Turbo Streamsのレスポンスも、以下のようにコントローラのアクションでインラインレンダリングできます。
 
-```js
-window.addEventListener("load", () => {
-  const element = document.querySelector("#new-article");
-  element.addEventListener("ajax:success", (event) => {
-    const [_data, _status, xhr] = event.detail;
-    element.insertAdjacentHTML("beforeend", xhr.responseText);
-  });
-  element.addEventListener("ajax:error", () => {
-    element.insertAdjacentHTML("beforeend", "<p>ERROR</p>");
-  });
-});
+```ruby
+def create
+  @post = Post.new(post_params)
+  respond_to do |format|
+    if @post.save
+      format.turbo_stream { render turbo_stream: turbo_stream.prepend('posts', partial: 'post') }
+    else
+      format.html { render :new, status: :unprocessable_entity }
+    end
+  end
+end
 ```
 
-もちろん実際にはもっと洗練された表示にしたいと思うことでしょう。上はあくまで出発点です。
+最後に、Turbo Streamsは組み込みヘルパーを用いてモデルやバックグラウンドジョブから開始できます。これらのブロードキャストは、WebSocketコネクション経由で全ユーザーのコンテンツを更新するのにも利用可能で、ページの内容を常に最新に保って生き生きとしたアプリケーションにすることができます。
 
-#### link_to
+モデルでTurbo Streamsをブロードキャストするには、以下のようにモデルのコールバックと組み合わせます。
 
-[`link_to`](https://api.rubyonrails.org/classes/ActionView/Helpers/UrlHelper.html#method-i-link_to)はリンクの生成を支援するヘルパーです。このメソッドには`:remote`オプションがあり、以下のように使えます。
+```ruby
+class Post < ApplicationRecord
+  after_create_commit { broadcast_append_to('posts') }
+end
+```
+
+WebSocketによって、更新を受け取る以下のようなページとのコネクションが設定されます。
 
 ```erb
-<%= link_to "記事", @article, remote: true %>
+<%= turbo_stream_from "posts" %>
 ```
 
-上のコードによって以下が生成されます。
+Rails/UJSの機能を置き換える
+----------------------------------------
 
-```html
-<a href="/articles/1" data-remote="true">記事</a>
-```
+Rails 6に同梱されていたUJSというツールは、開発者が`<a>`タグをオーバーライドすることでハイパーリンクのクリック後に非GETリクエストを実行し、アクション実行前に確認ダイアログを追加できるようにします。Rails 7より前はこの方法がデフォルトでしたが、現在はTurboの利用が推奨されています。
 
-`form_with`の場合と同様、同じAjaxイベントをバインドできます。例を以下に示します。1クリックで削除できる記事の一覧があるとします。このHTMLは以下のような感じになります。
+### HTTPメソッド
+
+リンクをクリックすると、常にHTTP GETリクエストが発生します。[RESTful](https://ja.wikipedia.org/wiki/Representational_State_Transfer)なアプリケーションでは、実際には一部のリンクがサーバーのデータを変更するアクションを起動しますが、これは非GETリクエストで実行されるべきです。属性を利用することで、そうしたリンクをPOSTやPUTやDELETEなどのHTTPメソッドで明示的にマークアップできるようになります。
+
+Turboは、アプリケーション内の`<a>`タグをスキャンして`turbo-method`データ属性があるかどうかを調べ、HTTPメソッドが指定されている場合はそのHTTPメソッドを使う形で、デフォルトのGETアクションをオーバーライドします。
+
+例:
 
 ```erb
-<%= link_to "記事を削除", @article, remote: true, method: :delete %>
+<%= link_to "投稿を削除", post_path(post), data: { turbo_method: "delete" } %>
 ```
 
-上の他に、以下のようなJavaScriptも作成します。
-
-```js
-window.addEventListener("load", () => {
-  const links = document.querySelectorAll("a[data-remote]");
-  links.forEach((element) => {
-    element.addEventListener("ajax:success", () => {
-      alert("この記事を削除しました");
-    });
-  });
-});
-```
-
-#### button_to
-
-[`button_to`](https://api.rubyonrails.org/classes/ActionView/Helpers/UrlHelper.html#method-i-button_to)はボタン作成を支援するヘルパーです。このメソッドには`:remote`オプションがあり、以下のように使えます。
-
-```erb
-<%= button_to "記事", @article, remote: true %>
-```
-
-上のコードによって以下が生成されます。
+上のERBは以下のHTMLを生成します。
 
 ```html
-<form action="/articles/1" class="button_to" data-remote="true" method="post">
-  <input type="submit" value="記事" />
-</form>
+<a data-turbo-method="delete" href="...">投稿を削除</a>
 ```
 
-作成されるのは通常の`<form>`なので、`form_with`に関する情報はすべて`button_to`にも適用されます。
-
-### `remote`要素をカスタマイズする
-
-`data-remote`属性を用いることで、JavaScriptを1行も書かずに要素の振る舞いをカスタマイズできます。他の`data-`属性を指定する方法も使えます。
-
-#### `data-method`
-
-ハイパーリンクをクリックすると、常にHTTP GETリクエストが発生します。しかし実際には、[RESTful](https://ja.wikipedia.org/wiki/Representational_State_Transfer)なアプリケーションのリンクの中には、クリックするとサーバーのデータを変更するものもあり、そうした操作はGET以外のリクエストで行わなければなりません。この`data-method`属性は、そうしたリンクのHTTPメソッドにPOSTやPUTやDELETEを明示的に指定できます。
-
-この仕組みは次のとおりです。リンクをクリックすると、ドキュメント内にリンクの`href`値に対応する「action」属性や`data-method`値に対応するHTTPメソッドを含む「隠しフォーム」を作成してから、そのフォームが送信されます。
-
-NOTE: GETやPOST以外のHTTPメソッドによるフォーム送信をサポートするブラウザは多くないため、実際にはそうした他のHTTPメソッドは`_method`パラメータで指定する形で`POST`メソッドとして送信されます。Railsはこうした点を自動検出してカバーします。
-
-#### `data-url`と`data-params`
-
-ページの特定の要素が実際にはどのURLを参照していなくても、これを用いてAjax呼び出しをトリガしたいことがあります。`data-remote`と`data-url`属性を指定すると、そこで指定されたURLを用いてAjax呼び出しをトリガできます。`data-params`属性を介してこの他にもパラメータを指定できます。
-
-たとえば、チェックボックスを操作したときに何らかの操作をトリガできると便利な場合があります。
-
-```html
-<input type="checkbox" data-remote="true"
-    data-url="/update" data-params="id=10" data-method="put">
-```
-
-#### `data-type`
-
-`data-type`属性を用いると、`data-remote`を用いるリクエストを実行する際にAjaxの`dataType`属性を明示的に定義することも可能です。
+HTTPメソッドの変更は、`data-turbo-method`属性をリンクに追加する方法の他に、Railsの`button_to`ヘルパーでもできます。なお実際には、アクセシビリティの観点から、非GETアクションには（リンクではなく）ボタンとフォームを用いるのが望ましい方法です。
 
 ### 確認ダイアログ
 
-リンクやフォームに`data-confirm`属性を追加することで、確認ダイアログをさらに表示できます。ユーザーに表示されるのはJavaScriptの`confirm()`ダイアログで、この属性のテキストがダイアログに表示されます。ユーザーがダイアログをキャンセルすると、その操作は実行されません。
-
-`data-confirm`属性をリンクに追加すると、クリック時にダイアログがトリガされます。フォームに追加すると、フォームの送信時にトリガされます。次の例をご覧ください。
+リンクやフォームに`data-turbo-confirm`属性を追加することで、ユーザーに確認ダイアログを表示して確認を求めることができます。リンクのクリックやフォームの送信では、JavaScriptの`confirm()`ダイアログに属性のテキストを含んだものが表示されます。ユーザーがキャンセルを選択するとアクションは行われません。
+たとえば`link_to`ヘルパーを用いると、
 
 ```erb
-<%= link_to "Dangerous zone", dangerous_zone_path,
-  data: { confirm: 'よろしいですか？' } %>
+<%= link_to "投稿を削除", post_path(post), data: { turbo_method: "delete", turbo_confirm: "削除してよろしいですか？" } %>
 ```
 
-上のコードから以下が生成されます。
+以下が生成されます。
 
 ```html
-<a href="..." data-confirm="よろしいですか？">Dangerous zone</a>
+<a href="..." data-turbo-confirm="削除してよろしいですか？" data-turbo-method="delete">投稿を削除</a>
 ```
 
-`data-confirm`属性はフォームの送信ボタンにも使えます。これを用いて、クリックしたボタンに応じた警告メッセージを変更できます。ただし、この場合はフォームそのものに`data-confirm`属性を**追加してはいけません**。
+ユーザーがこの"投稿を削除"リンクをクリックすると、"削除してよろしいですか？"という確認ダイアログが表示されます。
 
-### 入力を自動で無効にする
-
-`data-disable-with`属性を用いて、フォームを送信するときに入力フィールドを自動で無効にすることも可能です。これは、ユーザーがフォームの送信ボタンを誤ってダブルクリックするのを防ぐためのものです。送信ボタンがダブルクリックされるとHTTPリクエストの重複をバックエンド側で検出できなくなる可能性があります。`data-disable-with`属性の値は、無効状態になったボタンテキストの新しい値になります。
-
-`data-disable-with`属性は、`data-method`属性を持つリンクでも使えます。
-
-次の例をご覧ください。
+この属性は`button_to`ヘルパーでも利用できますが、`button_to`ヘルパーが内部でレンダリングするフォームに属性を追加する必要があります。
 
 ```erb
-<%= form_with(model: Article.new) do |form| %>
-  <%= form.submit data: { disable_with: "保存しています..." } %>
-<% end %>
+<%= button_to "Delete post", post, method: :delete, form: { data: { turbo_confirm: "削除してよろしいですか？" } } %>
 ```
-
-上のコードから以下のフォームが生成されます。
-
-```html
-<input data-disable-with="保存しています..." type="submit">
-```
-
-### rails-ujsのイベントハンドラ
-
-Rails 5.1ではrails-ujsが導入され、jQueryに依存しなくなりました。この結果、UJSドライバが書き直されてjQueryなしで使えるようになりました。rails-ujsが導入されたことで、リクエスト中に発火する`custom events`に若干変更が生じます。
-
-NOTE: UJSイベントハンドラ呼び出しのシグネチャが変更されました。jQueryの場合と異なり、あらゆるカスタムイベントは`event`パラメータだけを返します。このパラメータには`detail`という属性が追加されており、追加パラメータの配列がその中に1つ含まれています。Rails 5で従来使われていた`jquery-ujs`について詳しくは、[`jquery-ujs` wiki](https://github.com/rails/jquery-ujs/wiki/ajax)を参照してください。
-
-
-| イベント名          | 追加のパラメータ（`event.detail`） | 発火のタイミング                                                       |
-|---------------------|---------------------------------|-------------------------------------------------------------|
-| `ajax:before`       |                                 | Ajax全体が作動する前                             |
-| `ajax:beforeSend`   | [xhr, options]                  | リクエストが送信される前                                 |
-| `ajax:send`         | [xhr]                           | リクエストの送信時                                   |
-| `ajax:stopped`      |                                 | リクエストの停止時                                |
-| `ajax:success`      | [response, status, xhr]         | 完了後、レスポンス成功時            |
-| `ajax:error`        | [response, status, xhr]         | 完了後、レスポンスエラー時             |
-| `ajax:complete`     | [xhr, status]                   | リクエスト完了時（結果にかかわらず）|
-
-利用例は次のとおりです。
-
-```js
-document.body.addEventListener("ajax:success", (event) => {
-  const [data, status, xhr] = event.detail;
-});
-```
-
-### 停止可能なイベント
-
-`ajax:before`ハンドラメソッドや`ajax:beforeSend`ハンドラメソッドで`event.preventDefault()`を実行すると、以後のAjaxリクエストの実行を停止できます。`ajax:before`イベントはシリアライズ前のフォームのデータを操作可能で、独自のリクエストヘッダを追加するには`ajax:beforeSend`が便利です。
-
-`ajax:aborted:file`イベントを停止すると、ブラウザがフォームを通常の方法（Ajaxを用いない送信など）で送信するときのデフォルトの振る舞いがキャンセルされ、以後そのフォームは送信されなくなります。これは、ファイルアップロードを独自のAjaxで実装するときの回避方法として便利です。
-
-なお、`jquery-ujs`のイベントを抑制するには`return false`を、 `rails-ujs`のイベントを抑制するには`e.preventDefault()`を使うべきです。
-
-サーバー側で考慮すべき点
---------------------
-
-Ajaxはクライアント側だけでなく、サーバー側でのサポートもある程度必要です。Ajaxリクエストに対してレスポンスを返す際の形式は、HTMLよりもJSONを使うことが好まれています。ここではそのために必要なものについて解説します。
-
-### シンプルな例
-
-表示したいユーザーリストがあり、そのページに新規ユーザーを作成するフォームも置きたいとします。このコントローラのindexアクションは以下のようになります。
-
-```ruby
-class UsersController < ApplicationController
-  def index
-    @users = User.all
-    @user = User.new
-  end
-  # ...
-```
-
-indexビュー (`app/views/users/index.html.erb`) の内容は以下のようになります。
-
-```erb
-<b>Users</b>
-
-<ul id="users">
-<%= render @users %>
-</ul>
-
-<br>
-
-<%= form_with model: @user do |form| %>
-  <%= form.label :name %><br>
-  <%= form.text_field :name %>
-  <%= form.submit %>
-<% end %>
-```
-
-`app/views/users/_user.html.erb`パーシャルの内容は以下のようになります。
-
-```erb
-<li><%= user.name %></li>
-```
-
-indexページの上部にはユーザーの一覧が表示され、下部にはユーザー作成用のフォームが表示されます。
-
-下部のフォームは`UsersController`の`create`アクションを呼び出します。フォームの`remote`オプションがオンになっているので、リクエストはAjaxリクエストとして`UsersController`に渡され、JavaScriptコードを探索します。コントローラ内でリクエストに応答する`create`アクションは以下のようになります。
-
-```ruby
-  # app/controllers/users_controller.rb
-  # ......
-  def create
-    @user = User.new(params[:user])
-
-    respond_to do |format|
-      if @user.save
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
-        format.js
-        format.json { render json: @user, status: :created, location: @user }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-```
-
-`respond_to`ブロックの中にある`format.js`にご注目ください。これによって、コントローラがAjaxリクエストに応答できるようになります。続いて、対応する`app/views/users/create.js.erb`ビューファイルを作成します。実際のJavaScriptはこのビューで生成され、クライアントに送信されてそこで実行されます。
-
-```js
-var users = document.querySelector("#users");
-users.insertAdjacentHTML("beforeend", "<%= j render(@user) %>");
-```
-
-NOTE: JavaScriptのビューレンダリングではプリプロセスが行われないため、ここではES6構文を使うべきではありません。
-
-Turbolinks
-----------
-
-Railsには[Turbolinksライブラリ](https://github.com/turbolinks/turbolinks)が同梱されており、Ajaxを利用して多くのアプリケーションでページのレンダリングを高速化しています。
-
-### Turbolinksの動作原理
-
-Turbolinksは、ページにあるすべての`<a>`タグにクリックハンドラを1つずつ追加します。ブラウザで[PushState](https://developer.mozilla.org/ja/docs/Web/API/History_API#The_pushState%28%29_method)がサポートされている場合、Turbolinksはそのページ用のAjaxリクエストを生成し、サーバーからのレスポンスを解析して、そのページの`<body>`全体をレスポンスの`<body>`で置き換えます。続いて、TurbolinksはPushStateを使ってURLを正しいものに書き換えます。これによってリフレッシュのセマンティクスを維持しながらきれいなURLを得られます。
-
-Turbolinksを特定のリンクでのみ無効にしたい場合は、タグに`data-turbolinks="false"`属性を追加します。
-
-```html
-<a href="..." data-turbolinks="false">ここではTurbolinksをオフにする</a>。
-```
-
-### ページ変更イベント
-
-ページ読み込みに関連する処理を追加したくなることがよくあります。たとえばDOMを使って以下のように書いたとします。
-
-```js
-window.addEventListener("load", () => {
-  alert("page has loaded!");
-});
-```
-
-しかし、通常のページ読み込みプロセスはTurbolinksによって上書きされてしまうため、ページ読み込みに依存するイベントはトリガされません。このようなコードがある場合は、以下のように書き換えなければなりません。
-
-```js
-document.addEventListener("turbolinks:load", () => {
-  alert("page has loaded!");
-});
-```
-
-この他にバインド可能なイベントなどの詳細については、[Turbolinks README](https://github.com/turbolinks/turbolinks/blob/master/README.md)を参照してください。
-
-AjaxのCSRF（Cross-Site Request Forgery）トークン
-----
-
-Ajax呼び出しのために別のライブラリを使う場合、そのライブラリでのAjax呼び出しにセキュリティトークンをデフォルトヘッダーの１つとして追加する必要があります。このトークンは以下のように取得します。
-
-```js
-const token = document.getElementsByName(
-  "csrf-token"
-)[0].content;
-```
-
-続いてこのトークンをAjaxリクエストのヘッダーで`X-CSRF-Token`として送信します。GETリクエストにCSRFを追加する必要はありません。CSRFが必要なのはGET以外のリクエストです。
-
-CSRFについて詳しくは[セキュリティガイド](security.html#クロスサイトリクエストフォージェリ（csrf）)を参照してください。
-
-その他の情報源
----------------
-
-詳細な学習に役立つリンクをいくつか紹介します。
-
-* [rails-ujs wiki](https://github.com/rails/rails/tree/main/actionview/app/assets/javascripts)
-* [Railscasts: Unobtrusive JavaScript](http://railscasts.com/episodes/205-unobtrusive-javascript)
-* [Railscasts: Turbolinks](http://railscasts.com/episodes/390-turbolinks)
