@@ -364,7 +364,7 @@ end
 
 私の経験では、プロジェクトでの`require`呼び出しは一般に不要です。しかし`require`を呼び出しているプロジェクトをいくつか実際に見かけたことがあり、他にもそうした噂をいくつか耳にしています。
 
-Railsアプリケーションでは、`require`は「`lib`のコード」「gemなどのサードパーティ依存関係」「標準ライブラリ」の読み込みにしか使いません。**アプリケーションのオートロード可能なコードは決して`require`しないでください**。この方法がよくない理由については、[Classicモードの解説](https://railsguides.jp/autoloading_and_reloading_constants_classic_mode.html?version=6.1#%E8%87%AA%E5%8B%95%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF%E3%81%A8require)で説明しました。
+Railsアプリケーションでは、`require`は「`lib`のコード」「gemなどのサードパーティ依存関係」「標準ライブラリ」の読み込みにしか使いません。**アプリケーションのオートロード可能なコードは決して`require`しないでください**。この方法がよくない理由については、[Classicモードの解説](https://railsguides.jp/autoloading_and_reloading_constants_classic_mode.html#%E8%87%AA%E5%8B%95%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF%E3%81%A8require)で説明しました。
 
 ```ruby
 require "nokogiri" # よい
