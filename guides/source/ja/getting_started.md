@@ -1696,6 +1696,8 @@ class CommentsController < ApplicationController
 
 ![Basic HTTP Authentication Challenge](images/getting_started/challenge.png)
 
+正しいユーザー名とパスワードを入力すると、別のユーザー名とパスワードが要求されるか、ブラウザが閉じられるまで、認証された状態が続きます。
+
 もちろん、Railsでは他の認証方法も使えます。Railsにはさまざまな認証システムがありますが、その中で人気が高い認証システムは[Devise](https://github.com/plataformatec/devise)と[Authlogic](https://github.com/binarylogic/authlogic) gemの2つです。
 
 ### その他のセキュリティ対策
