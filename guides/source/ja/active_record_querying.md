@@ -1752,7 +1752,7 @@ SELECT books.* FROM books WHERE books.out_of_print
 
 Active Recordは、テーブルに定義されるすべてのフィールド（属性とも呼ばれます）に対して自動的に検索メソッドを提供します。たとえば、`Customer`モデルに`first_name`というフィールドがあると、`find_by_first_name`というメソッドがActive Recordによって自動的に作成されます。`Customer`モデルに`locked`というフィールドがあれば、`find_by_locked`というメソッドを利用できるようになります。
 
-この動的検索メソッドの末尾に`Customer.find_by_name!("Ryan")`のように感嘆符 (`!`) を追加すると、該当するレコードがない場合に`ActiveRecord::RecordNotFound`エラーが発生するようになります。
+この動的検索メソッドの末尾に`Customer.find_by_first_name!("Ryan")`のように感嘆符 (`!`) を追加すると、該当するレコードがない場合に`ActiveRecord::RecordNotFound`エラーが発生するようになります。
 
 `name`と`orders_count`を両方検索したい場合は、2つのフィールド名を`_and_`でつなぐだけでメソッドを利用できるようになります。たとえば、`Customer.find_by_first_name_and_orders_count("Ryan", 5)`といった書き方が可能です。
 
