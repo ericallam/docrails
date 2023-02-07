@@ -729,7 +729,7 @@ config.action_mailer.smtp_settings = {
   read_timeout:         5 }
 ```
 
-Note: Googleは2014年7月15日より[同社のセキュリティ対策を引き上げ](https://support.google.com/accounts/answer/6010255)、「安全性が低い」とみなされたアプリケーションからの試行をブロックするようになりました。
+NOTE: Googleは2014年7月15日より[同社のセキュリティ対策を引き上げ](https://support.google.com/accounts/answer/6010255)、「安全性が低い」とみなされたアプリケーションからの試行をブロックするようになりました。
 この試行を許可するには、[ここ](https://www.google.com/settings/security/lesssecureapps)でGmailの設定を変更できます。利用するGmailアカウントで2要素認証が有効になっている場合は、[アプリケーションのパスワード](https://myaccount.google.com/apppasswords)を設定して通常のパスワードの代わりに使う必要があります。
 
 メーラーのテスト
