@@ -130,6 +130,8 @@ $ cd blog
 |test/|このディレクトリには、単体テストやフィクスチャなどのテスト関連ファイルを置きます。テストについて詳しくは[Railsアプリケーションをテストする](testing.html)を参照してください。|
 |tmp/|このディレクトリには、キャッシュやpidなどの一時ファイルが置かれます。|
 |vendor/|サードパーティ製コードはすべてこのディレクトリに置きます。通常のRailsアプリケーションの場合、外部のgemファイルがここに置かれます。|
+|.gitattributes|
+このファイルは、gitリポジトリ内の特定のパスについてメタデータを定義します。このメタデータは、gitや他のツールで振る舞いを拡張できます。詳しくは[gitattributesドキュメント](https://git-scm.com/docs/gitattributes)を参照してください。|
 |.gitignore|Gitに登録しないファイル（またはパターン）をこのファイルで指定します。Gitにファイルを登録しない方法について詳しくは[GitHub - Ignoring files](https://help.github.com/articles/ignoring-files)を参照してください。|
 |.ruby-version|このファイルには、デフォルトのRubyバージョンが記述されています。|
 
@@ -1130,7 +1132,7 @@ TIP: ルーティングについて詳しくは[Railsのルーティング](rout
 $ bin/rails generate controller Comments
 ```
 
-上のコマンドを実行すると、4つのファイルと1つの空ディレクトリが作成されます。
+上のコマンドを実行すると、以下の3つのファイルと1つの空ディレクトリが作成されます。
 
 ファイル/ディレクトリ | 目的
 --- | ---
@@ -1138,7 +1140,6 @@ app/controllers/comments_controller.rb | コメント用コントローラ
 app/views/comments/ | このコントローラのビューはここに置かれる
 test/controllers/comments_controller_test.rb | このコントローラのテスト用ファイル
 app/helpers/comments_helper.rb | ビューヘルパー
-app/assets/stylesheets/comment.scss | このコントローラ用のCSS（カスケーディングスタイルシート）ファイル
 
 一般的なブログと同様、このブログの記事を読んだ人はそこに直接コメントを追加したくなるでしょう。そしてコメントを追加後に元の記事表示ページに戻り、コメントがそこに反映されていることを確認したいはずです。そこで、`CommentsController`を用いてコメントを作成したり、スパムコメントが書き込まれたら削除できるようにしたいと思います。
 
@@ -1356,6 +1357,8 @@ concernは、コントローラやモデルで普通のモジュールと同じ�
 app/controllers/concerns
 app/models/concerns
 ```
+
+以下の例ではブログの新機能を実装しますが、この機能にはconcernを利用するのが有益です。そこで、この機能を利用するためにconcernを作成し、コードをリファクタリングすることで、コードをよりDRYでメンテナンスしやすくします。
 
 1件のブログ記事はさまざまなステータスを持つ可能性があります。たとえば記事の可視性について「誰でも見てよい（`public`）」「著者だけに見せる（`private`）」というステータスを持つかもしれませんし、「復旧可能な形で記事を非表示にする（`archived`）」ことも考えられます。コメントについても同様に可視性やアーカイブを設定することもあるでしょう。こうしたステータスを表す方法の１つとして、モデルごとに`status`カラムを持たせるとしましょう。
 
@@ -1589,22 +1592,24 @@ Our blog has <%= Article.public_count %> articles and counting!
 最初に`app/views/comments/_comment.html.erb`パーシャルに削除用のボタンを追加しましょう。
 
 ```html+erb
-<p>
-  <strong>Commenter:</strong>
-  <%= comment.commenter %>
-</p>
+<% unless comment.archived? %>
+  <p>
+    <strong>Commenter:</strong>
+    <%= comment.commenter %>
+  </p>
 
-<p>
-  <strong>Comment:</strong>
-  <%= comment.body %>
-</p>
+  <p>
+    <strong>Comment:</strong>
+    <%= comment.body %>
+  </p>
 
-<p>
-  <%= link_to "Destroy Comment", [comment.article, comment], data: {
-                turbo_method: :delete,
-                turbo_confirm: "Are you sure?"
-              } %>
-</p>
+  <p>
+    <%= link_to "Destroy Comment", [comment.article, comment], data: {
+                  turbo_method: :delete,
+                  turbo_confirm: "Are you sure?"
+                } %>
+  </p>
+<% end %>
 ```
 
 この新しい「Destroy Comment」リンクをクリックすると、`DELETE /articles/:article_id/comments/:id`というリクエストが`CommentsController`に送信されます。コントローラはそれを受け取って、どのコメントを削除すべきかを検索することになります。それではコントローラ（`app/controllers/comments_controller.rb`）に`destroy`アクションを追加しましょう。
@@ -1621,7 +1626,7 @@ class CommentsController < ApplicationController
     @article = Article.find(params[:article_id])
     @comment = @article.comments.find(params[:id])
     @comment.destroy
-    redirect_to article_path(@article), status: 303
+    redirect_to article_path(@article), status: :see_other
   end
 
   private
@@ -1691,6 +1696,8 @@ class CommentsController < ApplicationController
 
 ![Basic HTTP Authentication Challenge](images/getting_started/challenge.png)
 
+正しいユーザー名とパスワードを入力すると、別のユーザー名とパスワードが要求されるか、ブラウザが閉じられるまで、認証された状態が続きます。
+
 もちろん、Railsでは他の認証方法も使えます。Railsにはさまざまな認証システムがありますが、その中で人気が高い認証システムは[Devise](https://github.com/plataformatec/devise)と[Authlogic](https://github.com/binarylogic/authlogic) gemの2つです。
 
 ### その他のセキュリティ対策
@@ -1705,7 +1712,6 @@ class CommentsController < ApplicationController
 
 - [Ruby on Railsガイド](/) (本サイトです)
 - [Ruby on Railsメーリングリスト](https://discuss.rubyonrails.org/c/rubyonrails-talk)（英語）
-- [freenode](https://freenode.net/)上にある[#rubyonrails](irc://irc.freenode.net/#rubyonrails)チャンネル（英語）
 
 ## 設定の落とし穴
 
