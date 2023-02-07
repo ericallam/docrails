@@ -215,7 +215,7 @@ class Dog < AnimalsRecord
 end
 ```
 
-Note: Railsはどのデータベースがreplicaなのかを認識しないので、完了したら抽象クラスにreplicaを追加する必要があります。
+NOTE: Railsはどのデータベースがreplicaなのかを認識しないので、完了したら抽象クラスにreplicaを追加する必要があります。
 
 Railsは新しいクラスを一度だけ生成します。新しいscaffoldによって上書きされることはなく、scaffoldが削除されると削除されます。
 
