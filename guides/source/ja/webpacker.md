@@ -1,7 +1,7 @@
 Webpacker の概要
 =========
 
-本ガイドではWebpackerのインストール方法と、Railsアプリケーションのクライアント側で用いるJavaScriptやCSSなどのアセットをWebpackerで利用する方法について解説します。
+本ガイドではWebpackerのインストール方法と、Railsアプリケーションのクライアント側で用いるJavaScriptやCSSなどのアセットをWebpackerで利用する方法について解説します。ただし[Webpackerは開発終了しました](https://github.com/rails/webpacker#webpacker-has-been-retired-)のでご注意ください。
 
 このガイドの内容:
 
