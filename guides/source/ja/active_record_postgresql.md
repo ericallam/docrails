@@ -92,7 +92,7 @@ NOTE: hstoreを使うには`hstore`拡張を有効にする必要があります
 
 ```ruby
 # db/migrate/20131009135255_create_profiles.rb
-ActiveRecord::Schema.define do
+class CreateProfiles < ActiveRecord::Migration[7.0]
   enable_extension 'hstore' unless extension_enabled?('hstore')
   create_table :profiles do |t|
     t.hstore 'settings'
@@ -625,3 +625,14 @@ irb> Article.count
 ```
 
 NOTE: このアプリケーションは、`archive`されていない`Articles`のみを扱う前提です。ビューには条件を設定可能なので、`archive`された`Articles`を直接除外できます。
+
+Structure Dumpについて
+--------------
+
+Railsの`config.active_record.schema_format`を`:sql`に設定すると、`pg_dump`を呼び出してstructure dumpを生成します。
+
+`ActiveRecord::Tasks::DatabaseTasks.structure_dump_flags`で`pg_dump`を設定できます。たとえば、structure dumpでコメントを除外したい場合は、イニシャライザに以下を追加します。
+
+```ruby
+ActiveRecord::Tasks::DatabaseTasks.structure_dump_flags = ['--no-comments']
+```
