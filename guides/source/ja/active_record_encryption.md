@@ -239,6 +239,8 @@ end
 
 デフォルトでは、暗号化済みカラムは[Railsのログで自動的にフィルタされます](https://railsguides.jp/action_controller_overview.html#%E3%83%AD%E3%82%B0%E3%82%92%E3%83%95%E3%82%A3%E3%83%AB%E3%82%BF%E3%81%99%E3%82%8B)。`config/application.rb`に以下を追加することで、この振る舞いを無効にできます。
 
+このフィルタパラメータを生成すると、モデル名がプレフィックスとして使われます。例: `Person#name`のフィルタパラメータは`person.name`になる。
+
 ```ruby
 config.active_record.encryption.add_to_filter_parameters = false
 ```
@@ -351,12 +353,11 @@ Active Recordは、データの暗号化や復号に使うキーをこのキー�
 - 復号では、成功するまですべてのキーを試行する
 
 ```yml
-active_record
-  encryption:
-    primary_key:
-        - a1cc4d7b9f420e40a337b9e68c5ecec6 # 以前のキーは引き続き既存コンテンツを復号する
-        - bc17e7b413fd4720716a7633027f8cc4 # 新しいコンテンツを暗号化するアクティブなキー
-    key_derivation_salt: a3226b97b3b2f8372d1fc6d497a0c0d3
+active_record_encryption:
+  primary_key:
+    - a1cc4d7b9f420e40a337b9e68c5ecec6 # 以前のキーは引き続き既存コンテンツを復号する
+    - bc17e7b413fd4720716a7633027f8cc4 # 新しいコンテンツを暗号化するアクティブなキー
+  key_derivation_salt: a3226b97b3b2f8372d1fc6d497a0c0d3
 ```
 
 これにより、「新しいキーの追加」「コンテンツの再暗号化」「古いキーの削除」を行ってキーのリストを短く保てるようになります。
@@ -406,29 +407,54 @@ article.encrypted_attribute?(:title)
 
 Active Record暗号化のオプションは、`config/application.rb`で行うことも（ほとんどの場合このファイルに書きます）、`config/environments/<環境名>.rb`で特定の環境設定ファイルに設定することも可能です。
 
-以下のように、設定オプションはすべて`active_record.encryption.config`によって名前空間化されます。
+WARNING: キーの保存には、Rails組み込みのcredentialsサポートを利用することが推奨されています。設定プロパティを用いて手動でキーを設定したい場合は、キーをコードに直書きしてリポジトリにコミットする方法ではなく 環境変数などを使ってください。
 
-```ruby
-config.active_record.encryption.key_provider = ActiveRecord::Encryption::EnvelopeEncryptionKeyProvider.new
-config.active_record.encryption.store_key_references = true
-config.active_record.encryption.extend_queries = true
-```
+#### `config.active_record.encryption.support_unencrypted_data`
 
-利用可能な設定オプションは以下のとおりです。
+`true`にすると、非暗号化データを通常通り読み出せるようになります。
+`false`にすると、非暗号化データを読み出したときにエラーになります。デフォルトは`false`です。
 
-| キー                                                          | 値                                                        |
-| ------------------------------------------------------------ | ------------------------------------------------------------ |
-| support_unencrypted_data                                   | `true`: 非暗号化データを通常どおり読み出せる。 `false`（デフォルト）: 非暗号化データを読み出すとエラーになる。 |
-| extend_queries | `true`: 決定論的に暗号化された属性を参照するクエリが、必要に応じて追加の値を含むように修正される。追加される値は非暗号化（`support_unencrypted_data`が`true`の場合）または以前の暗号化スキームで暗号化される（`previous:`で指定された場合）。デフォルトは`false`。|
-| encrypt_fixtures                                           | `true`: フィクスチャ内の暗号化可能な属性が読み込み時に自動的に暗号化される。デフォルトは`false`。|
-| store_key_references                                       | `true`: 暗号化キーへの参照が暗号化済みメッセージのヘッダ内に保存され、キーが複数使われる場合の暗号化が高速になる。デフォルトは`false`。|
-| add_to_filter_parameters                                   | `true`: 暗号化された属性名が自動的に[フィルタ対象paramsリスト](/configuring.html#rails全般の設定)に追加され、ログに出力されなくなる。デフォルトは`true`。|
-| excluded_from_filter_parameters                            | paramsのリストをフィルタしないよう設定する（`add_to_filter_parameters`が`true`の場合）。デフォルトは`[]`。|
-| validate_column_size                                        | カラムのサイズに応じたバリデーションを追加する。圧縮が効きやすいはずのペイロードを用いる巨大な値を保存しないために推奨されている。デフォルトは`true`。|
-| primary_key                                                 | rootデータ暗号化キーの導出に用いるキーまたはキーのリスト。キーの利用法はキープロバイダの設定によって異なる。`active_record_encryption.primary_key` credentialで設定するのが望ましい。|
-| deterministic_key                                          | 決定論的暗号化で用いるキーまたはキーのリスト。`active_record_encryption.deterministic_key` credentialで設定するのが望ましい。|
-| key_derivation_salt                                        | キー導出時に用いるソルト（salt）。`active_record_encryption.key_derivation_salt` credentialで設定するのが望ましい。|
-| forced_encoding_for_deterministic_encryption | 決定論的に暗号化された属性のデフォルトエンコーディング。このオプションを`nil`にするとエンコードの強制を無効化できる。デフォルトは`Encoding::UTF_8`。|
+#### `config.active_record.encryption.extend_queries`
+
+`true`に設定すると、決定論的に暗号化された属性を参照するクエリが、必要に応じて追加の値を含むように変更されます。追加される値は暗号化されない（`config.active_record.encryption.support_unencrypted_data`が`true`の場合）か、または以前の暗号化スキームで暗号化されます（`previous:`で指定された場合）。デフォルトは`false`です。
+
+#### `config.active_record.encryption.encrypt_fixtures`
+
+`true`の場合、フィクスチャ内の暗号化可能な属性が読み込み時に自動的に暗号化されます。デフォルトは`false`です。
+
+#### `config.active_record.encryption.store_key_references`
+
+`true`にすると、暗号化キーへの参照が暗号化済みメッセージのヘッダ内に保存され、キーが複数使われている場合の暗号化が高速になります。デフォルトは`false`です。
+
+#### `config.active_record.encryption.add_to_filter_parameters`
+
+`true`にすると、暗号化された属性名が自動的に[`config.filter_parameters`][]に追加され、ログに出力されなくなります。デフォルトは`true`です。
+
+[`config.filter_parameters`]: configuring.html#config-filter-parameters
+
+#### `config.active_record.encryption.excluded_from_filter_parameters`
+
+フィルタから除外するparamsのリストを設定します（`add_to_filter_parameters`が`true`の場合）。デフォルトは`[]`です。
+
+#### `config.active_record.encryption.validate_column_size`
+
+カラムのサイズに応じたバリデーションを追加します。巨大な値を圧縮率の高いペイロードを用いて保存しないために推奨されている設定です。デフォルトは`true`です。
+
+#### `config.active_record.encryption.primary_key`
+
+rootデータ暗号化キーの導出に用いるキーまたはキーのリストを設定します。キーの利用法はキープロバイダの設定によって異なります。`active_record_encryption.primary_key` credentialで設定するのが望ましい方法です。
+
+#### `config.active_record.encryption.deterministic_key`
+
+決定論的暗号化で用いるキーまたはキーのリストを設定します。`active_record_encryption.deterministic_key` credentialで設定するのが望ましい方法です。
+
+#### `config.active_record.encryption.key_derivation_salt`
+
+キー導出時に用いるソルト（salt）を設定します。`active_record_encryption.key_derivation_salt` credentialで設定するのが望ましい方法です。
+
+#### `config.active_record.encryption.forced_encoding_for_deterministic_encryption`
+
+決定論的に暗号化された属性のデフォルトエンコーディングを設定します。このオプションを`nil`にするとエンコードの強制を無効化できます。デフォルトは`Encoding::UTF_8`です。
 
 NOTE: キーの保存場所には、Rails組み込みのcredentialサポートを用いることが推奨されます。設定プロパティを用いて手動で設定したい場合は、キーを誤ってコードと一緒にリポジトリにコミットしないようご注意ください（環境変数などを用いること）。
 
