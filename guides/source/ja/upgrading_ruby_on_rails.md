@@ -76,6 +76,8 @@ Overwrite /myapp/config/application.rb? (enter "h" for help) [Ynaqdh]
 Rails 6.1からRails 7.0へのアップグレード
 -------------------------------------
 
+Rails 7.0で行われた変更について詳しくは、[7.0リリースノート](7_0_release_notes.html)を参照してください。
+
 ### `ActionView::Helpers::UrlHelper#button_to`の振る舞いが変更された
 
 Rails 7.0以降の`button_to`は、ボタンURLをビルドするのに使われるActive Recordオブジェクトが永続化されている場合は、`patch` HTTP verbを用いる`form`タグをレンダリングします。現在の振る舞いを維持するには、以下のように明示的に`method:`オプションを渡します。
@@ -100,7 +102,9 @@ Rails 7.0以降の`button_to`は、ボタンURLをビルドするのに使われ
 undefined method `mechanism=' for ActiveSupport::Dependencies:Module
 ```
 
-また、`config/environments/test.rb`で`config.cache_classes`設定を必ず`false`にしてください。
+また、`config/environments/test.rb`で[`config.cache_classes`][]設定を必ず`false`にしてください。
+
+[`config.cache_classes`]: configuring.html#config-cache-classes
 
 ### Sprocketsへの依存がオプショナルになった
 
@@ -154,13 +158,15 @@ to be an error condition in future versions of Rails.
 
 ### `config.autoload_once_paths`を設定可能になった
 
-`config.autoload_once_paths`は、`config/application.rb`で定義されるApplicationクラスの本体、または`config/environments/*`の環境向け設定で設定可能です。
+[`config.autoload_once_paths`][]は、`config/application.rb`で定義されるApplicationクラスの本体、または`config/environments/*`の環境向け設定で設定可能です。
 
 エンジンも同様に、エンジンクラスのクラス本体内にあるコレクションや、環境向けの設定内にあるコレクションを設定可能です。
 
 コレクションは以後frozenになり、これらのパスからオートロードできるようになります。特に、これらのパスから初期化中にオートロードできるようになります。これらのパスは、`Rails.autoloaders.once`オートローダーで管理されます。このオートローダーはリロードを行わず、オートロードやeager loadingのみを行います。
 
 環境設定が完了した後でこの設定を行ったときに`FrozenError`が発生する場合は、コードの置き場所を移動してください。
+
+[`config.autoload_once_paths`]: configuring.html#config-autoload-once-paths
 
 ### `ActionDispatch::Request#content_type`が Content-Typeヘッダーをそのまま返すようになった
 
@@ -187,25 +193,34 @@ request.media_type   #=> "text/csv"
 ### キージェネレータのメッセージダイジェストクラスがSHA256に変更
 
 キージェネレータで用いられるデフォルトのダイジェストクラスが、SHA1からSHA256に変更されました。
-その結果、Railsで生成されるあらゆる暗号化メッセージがこの影響を受けるようになり、暗号化cookieも同様に影響を受けます。
+その結果、Railsで生成されるあらゆる暗号化メッセージがこの影響を受けるようになり、暗号化および署名済みcookieも同様に影響を受けます。
 
 古いダイジェストクラスを用いてメッセージを読めるようにするには、ローテータの登録が必要です。
 
 以下は、暗号化cookie向けのローテータの設定例です。
 
 ```ruby
-Rails.application.config.action_dispatch.cookies_rotations.tap do |cookies|
-  salt = Rails.application.config.action_dispatch.authenticated_encrypted_cookie_salt
-  secret_key_base = Rails.application.secret_key_base
+# config/initializers/cookie_rotator.rb
+Rails.application.config.after_initialize do
+  Rails.application.config.action_dispatch.cookies_rotations.tap do |cookies|
+    authenticated_encrypted_cookie_salt = Rails.application.config.action_dispatch.authenticated_encrypted_cookie_salt
+    signed_cookie_salt = Rails.application.config.action_dispatch.signed_cookie_salt
 
-  key_generator = ActiveSupport::KeyGenerator.new(
-    secret_key_base, iterations: 1000, hash_digest_class: OpenSSL::Digest::SHA1
-  )
-  key_len = ActiveSupport::MessageEncryptor.key_len
-  secret = key_generator.generate_key(salt, key_len)
+    secret_key_base = Rails.application.secret_key_base
 
-  cookies.rotate :encrypted, secret
+    key_generator = ActiveSupport::KeyGenerator.new(
+      secret_key_base, iterations: 1000, hash_digest_class: OpenSSL::Digest::SHA1
+    )
+    key_len = ActiveSupport::MessageEncryptor.key_len
+
+    old_encrypted_secret = key_generator.generate_key(authenticated_encrypted_cookie_salt, key_len)
+    old_signed_secret = key_generator.generate_key(signed_cookie_salt)
+
+    cookies.rotate :encrypted, old_encrypted_secret
+    cookies.rotate :signed, old_signed_secret
+  end
 end
+```
 ```
 
 ### `ActiveSupport::Digest`で用いられるメッセージダイジェストクラスがSHA256に変更
@@ -512,7 +527,10 @@ $ bin/rails webpacker:install
 
 ### SSLの強制
 
-コントローラの`force_ssl`メソッドは非推奨化され、Rails 6.1で削除される予定です。`config.force_ssl`を有効にしてアプリ全体でHTTPS接続を強制することをおすすめします。特定のエンドポイントのみをリダイレクトしないようにする必要がある場合は、`config.ssl_options`で振る舞いを変更できます。
+コントローラの[`config.force_ssl`][]メソッドは非推奨化され、Rails 6.1で削除される予定です。`config.force_ssl`を有効にしてアプリ全体でHTTPS接続を強制することをおすすめします。特定のエンドポイントのみをリダイレクトしないようにする必要がある場合は、[`config.ssl_options`][]で振る舞いを変更できます。
+
+[`config.force_ssl`]: configuring.html#config-force-ssl
+[`config.ssl_options`]: configuring.html#config-ssl-options
 
 ### セキュリティ向上のためpurposeとexpiryメタデータが署名済みcookieや暗号化済みcookieに埋め込まれるようになった
 
@@ -779,15 +797,13 @@ Bootsnapのバージョンは1.4.2以上にする必要があります。
 
 #### `config.add_autoload_paths_to_load_path`
 
-以下の新しい設定は、後方互換性のためデフォルトで`true`になっていますが、これを`false`にすると`$LOAD_PATH`にオートロードパスを追加しなくなります。
-
-```ruby
-config.add_autoload_paths_to_load_path
-```
+[`config.add_autoload_paths_to_load_path`][]は、後方互換性のためデフォルトで`true`になっていますが、これを`false`にすると`$LOAD_PATH`にオートロードパスを追加しなくなります。
 
 この設定変更は、ほとんどのアプリケーションで有用です（`app/models`内などのファイルは決して`require`すべきではなく、Zeitwerkは内部で絶対パスだけを使うからです）。
 
 この新しい設定を無効にすれば、`$LOAD_PATH`の探索を最適化して（つまりチェックするディレクトリを減らして）、Bootsnapの動作を軽くしてメモリ消費量を削減できます。Bootsnapがそうしたディレクトリのインデックスをビルドする必要がなくなるからです。
+
+[`config.add_autoload_paths_to_load_path`]: configuring.html#config-add-autoload-paths-to-load-path
 
 #### スレッド安全性について
 
@@ -874,7 +890,9 @@ user.highlights.first.filename # => "funky.jpg"
 user.highlights.second.filename # => "town.jpg"
 ```
 
-この新しい振る舞いは、設定で`config.active_storage.replace_on_assign_to_many`を`true`にすることで利用できます。従来の振る舞いはRails 7.0で非推奨化され、Rails 7.1で削除される予定です。
+この新しい振る舞いは、設定で[`config.active_storage.replace_on_assign_to_many`][]を`true`にすることで利用できます。従来の振る舞いはRails 7.0で非推奨化され、Rails 7.1で削除される予定です。
+
+[`config.active_storage.replace_on_assign_to_many`]: configuring.html#config-active-storage-replace-on-assign-to-many
 
 Rails 5.1からRails 5.2へのアップグレード
 -------------------------------------
@@ -1191,11 +1209,13 @@ config.action_mailer.deliver_later_queue_name = :new_queue_name
 
 #### Action Mailerのビューでフラグメントキャッシュをサポート
 
-設定ファイルの`config.action_mailer.perform_caching`で、Action Mailerのビューでキャッシュをサポートするかどうかを指定できます。
+設定ファイルの[`config.action_mailer.perform_caching`][]で、Action Mailerのビューでキャッシュをサポートするかどうかを指定できます。
 
 ```ruby
 config.action_mailer.perform_caching = true
 ```
+
+[`config.action_mailer.perform_caching`]: configuring.html#config-action-mailer-perform-caching
 
 #### `db:structure:dump`の出力形式のカスタマイズ
 
@@ -2016,7 +2036,7 @@ Rails 4.0ではActive Resourceがgem化されました。この機能が必要�
 
     ただし、アプリケーションが特定のページで`<frame>`や`<iframe>`の読み込みに依存している場合は、`X-Frame-Options`を明示的に`ALLOW-FROM ...`または`ALLOWALL`に設定する必要があるでしょう。
 
-* Rails 4.0のアセットのプリコンパイルでは、`vendor/assets`および`lib/assets`にある非JS/CSSアセットを自動的にはコピーしなくなりました。Railsアプリケーションやエンジンの開発者は、これらのアセットを手動で`app/assets`に置き、`config.assets.precompile`を設定してください。
+* Rails 4.0のアセットのプリコンパイルでは、`vendor/assets`および`lib/assets`にある非JS/CSSアセットを自動的にはコピーしなくなりました。Railsアプリケーションやエンジンの開発者は、これらのアセットを手動で`app/assets`に置き、[`config.assets.precompile`][]`を設定してください。
 
 * Rails 4.0では、リクエストされたフォーマットがアクションで扱えなかった場合に`ActionController::UnknownFormat`が発生するようになりました。デフォルトでは、この例外は406 Not Acceptableレスポンスとして扱われますが、この動作はオーバーライドできます。Rails 3では常に406 Not Acceptableが返され、オーバーライドはできません。
 
@@ -2032,6 +2052,8 @@ Rails 4.0ではActive Resourceがgem化されました。この機能が必要�
 * Rails 4.0では`ActionController::AbstractResponse`が非推奨となりました。今後は`ActionDispatch::Response`をお使いください。
 * Rails 4.0では`ActionController::Response`が非推奨となりました。今後は`ActionDispatch::Response`をお使いください。
 * Rails 4.0では`ActionController::Routing`が非推奨となりました。今後は`ActionDispatch::Routing`をお使いください。
+
+[`config.assets.precompile`]: configuring.html#config-assets-precompile
 
 ### Active Support
 
@@ -2052,11 +2074,13 @@ Rails 4.0では複数のディレクトリからのヘルパーの読み込み�
 ### sprockets-rails
 
 * `assets:precompile:primary`および`assets:precompile:all`は削除されました。今後は`assets:precompile`をお使いください。
-* `config.assets.compress`オプションは、たとえば以下のように`config.assets.js_compressor` に変更する必要があります。
+* `config.assets.compress`オプションは、たとえば以下のように[`config.assets.js_compressor`][]に変更する必要があります。
 
     ```ruby
     config.assets.js_compressor = :uglifier
     ```
+
+[`config.assets.js_compressor`]: configuring.html#config-assets-js-compressor
 
 ### sass-rails
 
