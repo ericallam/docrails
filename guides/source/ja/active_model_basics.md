@@ -18,6 +18,46 @@ Active Model の基礎
 
 Active Modelは多くのモジュールを含むライブラリであり、それらのモジュールはRailsのAction Packライブラリとやりとりする必要のあるフレームワークで使用されます。Active Modelは、クラスで使用する既知の一連のインターフェイスを提供します。そのうちのいくつかについて以下で説明します。
 
+### API
+
+`ActiveModel::API` は、クラスをAction PackやAction Viewと連携させる機能をクラスに追加します。
+
+```ruby
+class EmailContact
+  include ActiveModel::API
+  attr_accessor :name, :email, :message
+  validates :name, :email, :message, presence: true
+  def deliver
+    if valid?
+      # deliver email
+    end
+  end
+end
+```
+
+`ActiveModel::API`を`include`すると、以下のような機能が使えるようになります。
+
+- モデル名のイントロスペクション
+- 変換
+- 翻訳（i18n）
+- バリデーション
+
+また、Active Recordオブジェクトと同様に、属性のハッシュを持つオブジェクトを初期化する機能も使えます。
+
+```irb
+irb> email_contact = EmailContact.new(name: 'David', email: 'david@example.com', message: 'Hello World')
+irb> email_contact.name
+=> "David"
+irb> email_contact.email
+=> "david@example.com"
+irb> email_contact.valid?
+=> true
+irb> email_contact.persisted?
+=> false
+```
+
+`ActiveModel::API`を`include`したクラスは、Active Recordオブジェクトと同様に、`form_with`や`render`などのAction Viewヘルパーでも利用できます。
+
 ### AttributeMethodsモジュール
 
 `ActiveModel::AttributeMethods`モジュールは、クラスのメソッドにカスタムのプレフィックスやサフィックスを追加できます。このモジュールを使用するには、プレフィックスまたはサフィックスを定義し、オブジェクト内にあるプレフィックス/サフィックスの追加対象となるメソッドを指定します。
@@ -108,7 +148,7 @@ irb> person.to_param
 
 ### Dirtyモジュール
 
-あるオブジェクトが数度にわたって変更され、保存されていない状態は、「汚れた（dirty）」状態です。`ActiveModel::Dirty`モジュールを使うと、オブジェクトで変更が生じたかどうかを検出できます。属性名に基づいたアクセサメソッドも使えます。`first_name`属性と`last_name`を持つPersonというクラスを例に考えてみましょう。
+あるオブジェクトが数度にわたって変更され、保存されていない状態は、「ダーティな（dirty:汚れた）」状態です。`ActiveModel::Dirty`モジュールを使うと、オブジェクトで変更が生じたかどうかを検出できます。属性名に基づいたアクセサメソッドも使えます。`first_name`属性と`last_name`を持つPersonというクラスを例に考えてみましょう。
 
 ```ruby
 class Person
@@ -215,7 +255,7 @@ class Person
 end
 ```
 
-```
+```irb
 irb> person = Person.new
 irb> person.token = "2b1f325"
 irb> person.valid?
@@ -292,7 +332,7 @@ end
 
 上のようにすることで、`serializable_hash`を使ってオブジェクトのシリアライズ化ハッシュにアクセスできるようになります。
 
-```
+```irb
 irb> person = Person.new
 irb> person.serializable_hash
 => {"name"=>nil}
@@ -323,7 +363,7 @@ end
 
 `serializable_hash`と似ている`as_json`メソッドは、モデルを表現するハッシュ形式を提供します。
 
-```
+```irb
 irb> person = Person.new
 irb> person.as_json
 => {"name"=>nil}
@@ -354,7 +394,7 @@ end
 
 上のようにすることで、`Person`のインスタンスを作成して`from_json`で属性を設定できるようになります。
 
-```
+```irb
 irb> json = { name: 'Bob' }.to_json
 irb> person = Person.new
 irb> person.from_json(json)
@@ -455,7 +495,7 @@ class Person
 end
 ```
 
-```
+```irb
 irb> person = Person.new
 
 # パスワードが空の場合
