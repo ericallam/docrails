@@ -383,6 +383,31 @@ Active Storageは、実行されなければならない変換のリストを画
 <% end %>
 ```
 
+### Active RecordのスキーマダンプにRailsのバージョンが含まれるようになった
+
+Rails 7.0では、いくつかのカラムタイプのデフォルト値が変更されました。6.1から7.0にアップグレードしたアプリケーションが現在のスキーマを読み込むときに、7.0の新しいデフォルト値が使われるのを避けるため、Railsはスキーマダンプにフレームワークのバージョンを含めるようになりました。
+
+Rails 7.0で初めてスキーマを読み込むときは、その前に`rails app:update`を実行して、スキーマのバージョンがスキーマダンプに含まれていることを確認してください。
+
+スキーマファイルは以下のような感じになります。
+
+```ruby
+# This file is auto-generated from the current state of the database. Instead
+# of editing this file, please use the migrations feature of Active Record to
+# incrementally modify your database, and then regenerate this schema definition.
+#
+# This file is the source Rails uses to define your schema when running `bin/rails
+# db:schema:load`. When creating a new database, `bin/rails db:schema:load` tends to
+# be faster and is potentially less error prone than running all of your
+# migrations from scratch. Old migrations may fail to apply correctly if those
+# migrations use external dependencies or application code.
+#
+# It's strongly recommended that you check this file into your version control system.
+ActiveRecord::Schema[6.1].define(version: 2022_01_28_123512) do
+```
+
+NOTE: Rails 7.0で初めてスキーマをダンプすると、そのファイルでカラム情報などさまざまな変更が行われていることがわかります。必ず新しいスキーマファイルの内容を確認してから、リポジトリにコミットすることを忘れないようにしましょう。
+
 Rails 6.0からRails 6.1へのアップグレード
 -------------------------------------
 
