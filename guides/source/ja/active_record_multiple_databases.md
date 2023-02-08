@@ -109,7 +109,7 @@ end
 
 ```ruby
 class PrimaryApplicationRecord < ActiveRecord::Base
-  self.primary_abstract_class
+  primary_abstract_class
 end
 ```
 
@@ -395,7 +395,7 @@ config.active_record.shard_resolver = ->(request) {
 ## 新しいコネクションハンドリングに移行する
 
 Rails 6.1以降のActive Recordでは、コネクション管理用の新しい内部APIが提供されています。
-ほとんどの場合、アプリケーションで`config.active_record.legacy_connection_handling = false`を設定して新しい振る舞いを有効にするだけでよく、それ以外の変更は不要です（Rails 6.0以前からアップグレードする場合）。データベースが１つしかないアプリケーションの場合は、その他の変更は不要です。複数のデータベースを利用しているアプリケーションで以下のメソッドを利用している場合は、以下の変更が必要です。
+ほとんどの場合、アプリケーションで[`config.active_record.legacy_connection_handling`][]を設定して新しい振る舞いを有効にするだけでよく、それ以外の変更は不要です（Rails 6.0以前からアップグレードする場合）。データベースが１つしかないアプリケーションの場合は、その他の変更は不要です。複数のデータベースを利用しているアプリケーションで以下のメソッドを利用している場合は、以下の変更が必要です。
 
 * `connection_handlers`および`connection_handlers=`は新しいコネクションハンドリングでは動作しなくなります。いずれかのコネクションハンドラでメソッドを呼び出している場合（`connection_handlers[:reading].retrieve_connection_pool("ActiveRecord::Base")`など）は、そのメソッド呼び出しを`connection_handlers.retrieve_connection_pool("ActiveRecord::Base", role: :reading)`のように更新する必要があります。
 
@@ -405,9 +405,11 @@ Rails 6.1以降のActive Recordでは、コネクション管理用の新しい�
 
 * アプリケーションで`legacy_connection_handling`をオフにすると、サポートされていないメソッド（ `connection_handlers=`など）でエラーが生じます。
 
+[`config.active_record.legacy_connection_handling`]: configuring.html#config-active-record-legacy-connection-handling
+
 ## 粒度の細かいデータベース接続切り替え
 
-Rails 6.1では、すべてのデータベースに対してグローバルにコネクションを切り替えるのではなく、1つのデータベースでコネクションを切り替えることが可能です。この機能を使うには、まずアプリケーションの設定で`config.active_record.legacy_connection_handling`を`false`に設定する必要があります。パブリックAPIの振る舞いは変わらないため、ほとんどのアプリケーションではそれ以外の変更は不要です。`legacy_connection_handling`を有効にして移行する方法については上のセクションを参照してください。
+Rails 6.1では、すべてのデータベースに対してグローバルにコネクションを切り替えるのではなく、1つのデータベースでコネクションを切り替えることが可能です。この機能を使うには、まずアプリケーションの設定で[`config.active_record.legacy_connection_handling`][]を`false`に設定する必要があります。パブリックAPIの振る舞いは変わらないため、ほとんどのアプリケーションではそれ以外の変更は不要です。`legacy_connection_handling`を有効にして移行する方法については上のセクションを参照してください。
 
 `legacy_connection_handling`を`false`に設定すると、任意の抽象コネクションクラスで、他のコネクションに影響を与えずにコネクションを切り替えられます。これは`ApplicationRecord`のクエリがプライマリに送信されることを保証しつつ、`AnimalsRecord`のクエリをレプリカから読み込むように切り替えるときに便利です。
 
