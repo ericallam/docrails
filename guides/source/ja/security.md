@@ -252,7 +252,7 @@ WebアプリケーションがRESTfulであれば、PATCH、PUT、DELETEなど�
 
 NOTE: `<script>`タグのoriginが同じサイトか悪意のあるサイトかは、区別しようがありません。このため`<script>`タグは、たとえ実際には自サイトの「同一オリジン」スクリプトであっても、全面的にブロックしなければなりません。このような場合、`<script>`を対象にJavaScriptを使う操作では明示的にCSRF保護をスキップします。
 
-この種の偽造リクエストをすべて防止するには、**必須セキュリティトークン**を導入します。このトークンは自分のサイトだけが知っており、他のサイトは知りません。リクエストにはこのセキュリティトークンを含め、サーバー側でこれを検証します。以下の1行コードはアプリケーションのコントローラに追加するものであり、Railsで新規作成したアプリケーションにはこのコードがデフォルトで含まれます。
+この種の偽造リクエストをすべて防止するには、**必須セキュリティトークン**を導入します。このトークンは自分のサイトだけが知っており、他のサイトは知りません。リクエストにはこのセキュリティトークンを含め、サーバー側でこれを検証します。これは、[`config.action_controller.default_protect_from_forgery`][] を`true`に設定すると自動的に行われるようになります。以下の1行コードはアプリケーションのコントローラに追加するものであり、Railsで新規作成したアプリケーションにはこのコードがデフォルトで含まれます。
 
 ```ruby
 protect_from_forgery with: :exception
@@ -273,6 +273,8 @@ end
 上のメソッドは`ApplicationController`に置けます。これにより、非GETリクエストにCSRFトークンがない場合やトークンが無効な場合にこのメソッドが呼び出されます。
 
 ただし、**クロスサイトスクリプティング（XSS）脆弱性があると、あらゆるCSRF保護が迂回されてしまいます**。XSS脆弱性が存在すると、攻撃者がWebページのあらゆる要素にアクセス可能になるので、フォームからCSRFセキュリティトークンを読みだしてそのフォームを直接送信できてしまいます。後述の[XSSの詳細](security.html#クロスサイトスクリプティング（xss）)もお読みください。
+
+[`config.action_controller.default_protect_from_forgery`]: configuring.html#config-action-controller-default-protect-from-forgery
 
 リダイレクトとファイル
 ---------------------
@@ -464,13 +466,15 @@ Ned Batchelderの[ブログ記事](http://nedbatchelder.com/text/stopbots.html)�
 
 WARNING: **パスワードをRailsのログに出力してはいけません。**
 
-デフォルトでは、RailsのログにはWebアプリケーションへのリクエストがすべて出力されます。しかしログファイルにはログイン情報、クレジットカード番号などの情報が含まれる可能性があるので、重大なセキュリティ問題の原因になることがあります。Webアプリケーションのセキュリティコンセプトを設計するときには、攻撃者がWebサーバーへのフルアクセスに成功してしまった場合についても必ず考慮しておく必要があります。パスワードや機密情報をログファイルに平文のまま出力してしまうと、データベース上でこれらの情報を暗号化する意味がなくなってしまいます。Railsアプリケーションのイニシャライザファイル（`initializers/filter_parameter_logging.rb`）に、以下のように**特定のリクエストパラメータをフィルタで除外する**設定を追加できます。フィルタされたパラメータは`[FILTERED]`という文字に置き換えられてログに出力されます。
+デフォルトでは、RailsのログにはWebアプリケーションへのリクエストがすべて出力されます。しかしログファイルにはログイン情報、クレジットカード番号などの情報が含まれる可能性があるので、重大なセキュリティ問題の原因になることがあります。Webアプリケーションのセキュリティコンセプトを設計するときには、攻撃者がWebサーバーへのフルアクセスに成功してしまった場合についても必ず考慮しておく必要があります。パスワードや機密情報をログファイルに平文のまま出力してしまうと、データベース上でこれらの情報を暗号化する意味がなくなってしまいます。Railsアプリケーションのイニシャライザファイル（`initializers/filter_parameter_logging.rb`）に、以下のように[`config.filter_parameters`][]で**特定のリクエストパラメータをフィルタで除外する**設定を追加できます。フィルタされたパラメータは`[FILTERED]`という文字に置き換えられてログに出力されます。
 
 ```ruby
 config.filter_parameters << :password
 ```
 
-NOTE: 指定したパラメータは正規表現の「部分マッチ」によって除外されます。Railsはデフォルトで`:password`を適切なイニシャライザ（`initializers/filter_parameter_logging.rb`）に追加し、アプリケーションの典型的な`password`パラメータや`password_confirmation`パラメータがログに出力されないようになっています（訳注: Rails 7ではデフォルトで`:passw, :secret, :token, :_key, :crypt, :salt, :certificate, :otp, :ssn`が部分マッチするようになっています）。
+NOTE: 指定したパラメータは正規表現の「部分マッチ」によって除外されます。Railsはデフォルトで`:password`を適切なイニシャライザ（`initializers/filter_parameter_logging.rb`）に追加し、アプリケーションの典型的な`password`や`password_confirmation`や`my_token`のようなパラメータがログに出力されないようになっています（訳注: Rails 7ではデフォルトで`:passw, :secret, :token, :_key, :crypt, :salt, :certificate, :otp, :ssn`が部分マッチするようになっています）。
+
+[`config.filter_parameters`]: configuring.html#config-filter-parameters
 
 ### 正規表現
 
@@ -640,7 +644,9 @@ Model.where("zip_code = :zip AND quantity >= :qty", values).first
 Model.where(zip_code: entered_zip_code).where("quantity >= ?", entered_quantity).first
 ```
 
-上の対策は、モデルのインスタンスでしか利用できない点にご注意ください。それ以外の場所では`sanitize_sql()`をお試しください。**SQLで外部入力文字列を使うときは、常にセキュリティ上の影響を考える習慣を付けましょう**。
+上の対策は、モデルのインスタンスでしか利用できない点にご注意ください。それ以外の場所では[`sanitize_sql`][]をお試しください。**SQLで外部入力文字列を使うときは、常にセキュリティ上の影響を考える習慣を付けましょう**。
+
+[`sanitize_sql`]: https://api.rubyonrails.org/classes/ActiveRecord/Sanitization/ClassMethods.html#method-i-sanitize_sql
 
 ### クロスサイトスクリプティング（XSS）
 
@@ -669,7 +675,7 @@ XSSのしくみを確かめる最も簡単なテストをご紹介します。
 このJavaScriptコードを実行すると、警告ボックスが1つ表示されるだけです。次の例は、見かけの動作はまったく同じですが、通常ではありえない場所にコードが置かれています。
 
 ```html
-<img src=javascript:alert('Hello')>
+<img src="javascript:alert('Hello')">
 <table background="javascript:alert('Hello')">
 ```
 
@@ -974,7 +980,7 @@ Railsをデフォルトでセキュアにするために、`deep_munge`メソッ
 config.action_dispatch.perform_deep_munge = false
 ```
 
-デフォルトのヘッダー
+HTTPセキュリティヘッダー
 ---------------
 
 Railsアプリケーションから受け取るすべてのHTTPレスポンスには、以下のセキュリティヘッダーがデフォルトで含まれています。
@@ -1014,11 +1020,11 @@ config.action_dispatch.default_headers.clear
 * **`Access-Control-Allow-Origin`**: このヘッダーは、同一オリジンポリシーのバイパスとクロスオリジン（cross-origin）リクエスト送信を許可するサイトを指定するのに使います。
 * `Strict-Transport-Security`: このヘッダーは、[セキュア接続によるサイトアクセスのみをブラウザに許可するかどうかを指定する](https://ja.wikipedia.org/wiki/HTTP_Strict_Transport_Security)のに使います。
 
-### Content Security Policy（CSP）
+### `Content-Security-Policy`ヘッダー
 
-Railsでは、アプリケーションで[Content Security Policy](https://developer.mozilla.org/ja/docs/Web/HTTP/Headers/Content-Security-Policy)（CSP）を設定するためのDSLが提供されています。グローバルなデフォルトポリシーを設定し、それをリソースごとにオーバーライドすることも、lambdaを用いてリクエストごとに値をヘッダーに注入することもできます（マルチテナントのアプリケーションにおけるアカウントのサブドメインなど）。
+XSSやインジェクションによる攻撃を防ぐために、アプリケーションのレスポンスヘッダーに[Content Security Policy](https://developer.mozilla.org/ja/docs/Web/HTTP/Headers/Content-Security-Policy)（CSP）を設定することが推奨されています。Railsでは、このヘッダーを設定するためのDSLが提供されています。
 
-以下はグローバルなポリシーの例です。
+このセキュリティポリシーを適切なイニシャライザで定義します。
 
 ```ruby
 # config/initializers/content_security_policy.rb
@@ -1035,33 +1041,42 @@ Rails.application.config.content_security_policy do |policy|
 end
 ```
 
-以下はコントローラでオーバーライドするコード例です。
+グローバルに設定されたポリシーは、リソース単位でオーバーライドできます。
 
 ```ruby
-# ポリシーをインラインでオーバーライドする場合
 class PostsController < ApplicationController
   content_security_policy do |policy|
     policy.upgrade_insecure_requests true
-  end
-end
-
-# リテラル値を使う場合
-class PostsController < ApplicationController
-  content_security_policy do |policy|
     policy.base_uri "https://www.example.com"
   end
 end
+```
 
-# 静的値と動的値を両方使う場合
+または、以下で無効にできます。
+
+```ruby
+class LegacyPagesController < ApplicationController
+  content_security_policy false, only: :index
+end
+```
+
+lambdaを使うと、マルチテナントのアプリケーション内のアカウントサブドメインなどの値をリクエストごとに注入できます。
+
+```ruby
 class PostsController < ApplicationController
   content_security_policy do |policy|
     policy.base_uri :self, -> { "https://#{current_user.domain}.example.com" }
   end
 end
+```
 
-# グローバルCSPをオフにする場合
-class LegacyPagesController < ApplicationController
-  content_security_policy false, only: :index
+#### 違反をレポートする
+
+指定されたURIに対する違反を報告する[`report-uri`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/report-uri)ディレクティブを有効にします。
+
+```ruby
+Rails.application.config.content_security_policy do |policy|
+  policy.report_uri "/csp-violation-report-endpoint"
 end
 ```
 
@@ -1072,14 +1087,17 @@ end
 Rails.application.config.content_security_policy_report_only = true
 ```
 
+以下のようにコントローラでオーバーライドすることもできます。
+
 ```ruby
-# コントローラでオーバーライドする場合
 class PostsController < ApplicationController
   content_security_policy_report_only only: :index
 end
 ```
 
-以下の方法でnonceの自動生成を有効にできます。
+#### nonceを追加する
+
+`'unsafe-inline'`の利用を検討しているのであれば、、代わりにnonceの利用を検討してください。既存のコードの上にContent Security Policyを実装する場合、`'unsafe-inline'`に比べて[nonceは実質的な改善](https://www.w3.org/TR/CSP3/#security-nonces)を提供できます。
 
 ```ruby
 # config/initializers/content_security_policy.rb
@@ -1104,7 +1122,7 @@ Rails.application.config.content_security_policy_nonce_generator = -> request { 
 <%= javascript_include_tag "script", nonce: true %>
 ```
 
-セッションごとにインライン`<script>`タグを許可するnonce値を含むcsp-nonceメタタグを生成するには、[`csp_meta_tag`](https://api.rubyonrails.org/classes/ActionView/Helpers/CspHelper.html#method-i-csp_meta_tag)ヘルパーをお使いください。
+セッションごとにインライン`<script>`タグを許可するnonce値を含む"csp-nonce"メタタグを生成するには、[`csp_meta_tag`](https://api.rubyonrails.org/classes/ActionView/Helpers/CspHelper.html#method-i-csp_meta_tag)ヘルパーをお使いください。
 
 ```html+erb
 <head>
