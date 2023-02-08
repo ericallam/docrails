@@ -407,7 +407,7 @@ article.encrypted_attribute?(:title)
 
 Active Record暗号化のオプションは、`config/application.rb`で行うことも（ほとんどの場合このファイルに書きます）、`config/environments/<環境名>.rb`で特定の環境設定ファイルに設定することも可能です。
 
-WARNING: キーの保存には、Rails組み込みのcredentialsサポートを利用することが推奨されています。設定プロパティを用いて手動でキーを設定したい場合は、キーをコードに直書きしてリポジトリにコミットする方法ではなく 環境変数などを使ってください。
+WARNING: キーの保存場所には、Rails組み込みのcredentialサポートを用いることが推奨されます。設定プロパティを用いて手動で設定したい場合は、キーを誤ってコードと一緒にリポジトリにコミットしないようご注意ください（環境変数などを用いること）。
 
 #### `config.active_record.encryption.support_unencrypted_data`
 
@@ -455,8 +455,6 @@ rootデータ暗号化キーの導出に用いるキーまたはキーのリス�
 #### `config.active_record.encryption.forced_encoding_for_deterministic_encryption`
 
 決定論的に暗号化された属性のデフォルトエンコーディングを設定します。このオプションを`nil`にするとエンコードの強制を無効化できます。デフォルトは`Encoding::UTF_8`です。
-
-NOTE: キーの保存場所には、Rails組み込みのcredentialサポートを用いることが推奨されます。設定プロパティを用いて手動で設定したい場合は、キーを誤ってコードと一緒にリポジトリにコミットしないようご注意ください（環境変数などを用いること）。
 
 ### 暗号化コンテキスト
 
