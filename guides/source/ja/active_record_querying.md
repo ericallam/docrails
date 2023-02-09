@@ -415,8 +415,9 @@ end
 
 ただしこれは順序指定がない場合に限ります。`find_each`メソッドでイテレートするには内部で順序を強制する必要があるためです。
 
-レシーバー側に順序がある場合、`config.active_record.error_on_ignored_order`フラグの状態によって振る舞いが変わります。たとえば`true`の場合は`ArgumentError`が発生し、`false`の場合は順序が無視されて警告が発生します。デフォルトは`false`です。このフラグを上書きしたい場合は`:error_on_ignore`オプション（後述）を使います。
+レシーバー側に順序がある場合、[`config.active_record.error_on_ignored_order`][]フラグの状態によって振る舞いが変わります。たとえば`true`の場合は`ArgumentError`が発生し、`false`の場合は順序が無視されて警告が発生します。デフォルトは`false`です。このフラグを上書きしたい場合は`:error_on_ignore`オプション（後述）を使います。
 
+[`config.active_record.error_on_ignored_order`]: configuring.html#config-active-record-error-on-ignored-order
 [`find_each`]: https://api.rubyonrails.org/classes/ActiveRecord/Batches.html#method-i-find_each
 
 ##### `find_each`のオプション
@@ -643,6 +644,18 @@ SELECT * FROM books WHERE (books.created_at BETWEEN '2008-12-21 00:00:00' AND '2
 
 [条件を配列で表す](#条件を配列で表す)では、さらに簡潔な文例をご紹介しています。
 
+Rubyの[終端/始端を持たない範囲オブジェクト](https://docs.ruby-lang.org/ja/latest/class/Range.html)（beginless/endless range）がサポートされており、以下のように「〜より大きい」「〜より小さい」条件の構築で利用できます。
+
+```ruby
+Book.where(created_at: (Time.now.midnight - 1.day)..)
+```
+
+上は、以下のようなSQLを生成します。
+
+```sql
+SELECT * FROM books WHERE books.created_at >= '2008-12-21 00:00:00'
+```
+
 #### サブセット条件
 
 SQLの`IN`式でレコードを検索したい場合、条件ハッシュにそのための配列を渡せます。
@@ -669,6 +682,18 @@ Customer.where.not(orders_count: [1,3,5])
 
 ```sql
 SELECT * FROM customers WHERE (customers.orders_count NOT IN (1,3,5))
+```
+
+あるクエリのnull許容（nullable）カラムに、非nil値を指定したハッシュ条件がある場合、null許容カラムに`nil`値を持つレコードは返されません。
+
+```ruby
+Customer.create!(nullable_country: nil)
+Customer.where.not(nullable_country: "UK")
+=> []
+# ただし
+Customer.create!(nullable_country: "UK")
+Customer.where.not(nullable_country: nil)
+=> [#<Customer id: 2, nullable_country: "UK">]
 ```
 
 [`where.not`]: https://api.rubyonrails.org/classes/ActiveRecord/QueryMethods/WhereChain.html#method-i-not
@@ -977,7 +1002,7 @@ Book.select(:title, :isbn).reselect(:created_at)
 上で実行されるSQLは以下のようになります。
 
 ```sql
-SELECT `books`.`created_at` FROM `books`
+SELECT books.created_at FROM books
 ```
 
 `reselect`句を使わない場合と比較してみましょう。
@@ -989,7 +1014,7 @@ Book.select(:title, :isbn).select(:created_at)
 上で実行されるSQLは以下のようになります。
 
 ```sql
-SELECT `books`.`title`, `books`.`isbn`, `books`.`created_at` FROM `books`
+SELECT books.title, books.isbn, books.created_at FROM books
 ```
 
 ### `reorder`
@@ -1066,7 +1091,7 @@ Book.where(out_of_print: true).rewhere(out_of_print: false)
 上で実行されるSQLは以下のようになります。
 
 ```sql
-SELECT * FROM books WHERE `out_of_print` = 0
+SELECT * FROM books WHERE out_of_print = 0
 ```
 
 `rewhere`句ではなく`where`句にすると、2つの`where`句のAND条件になります。
@@ -1078,7 +1103,7 @@ Book.where(out_of_print: true).where(out_of_print: false)
 上で実行されるSQLは以下のようになります。
 
 ```sql
-SELECT * FROM books WHERE `out_of_print` = 1 AND `out_of_print` = 0
+SELECT * FROM books WHERE out_of_print = 1 AND out_of_print = 0
 ```
 
 [`rewhere`]: https://api.rubyonrails.org/classes/ActiveRecord/QueryMethods.html#method-i-rewhere
@@ -1182,8 +1207,8 @@ end
 
 ```sql
 SQL (0.2ms)   BEGIN
-Book Load (0.3ms)   SELECT * FROM `books` LIMIT 1 FOR UPDATE
-Book Update (0.4ms)   UPDATE `books` SET `updated_at` = '2009-02-07 18:05:56', `title` = 'Algorithms, second edition' WHERE `id` = 1
+Book Load (0.3ms)   SELECT * FROM books LIMIT 1 FOR UPDATE
+Book Update (0.4ms)   UPDATE books SET updated_at = '2009-02-07 18:05:56', title = 'Algorithms, second edition' WHERE id = 1
 SQL (0.8ms)   COMMIT
 ```
 
@@ -1288,7 +1313,7 @@ SELECT books.* FROM books
 ##### ネストした関連付けを結合する（複数レベル）
 
 ```ruby
-Author.joins(books: [{reviews: { customer: :orders} }, :supplier] )
+Author.joins(books: [{ reviews: { customer: :orders } }, :supplier] )
 ```
 
 上によって以下が生成されます。
@@ -1322,7 +1347,7 @@ time_range = (Time.now.midnight - 1.day)..Time.now.midnight
 Customer.joins(:orders).where(orders: { created_at: time_range }).distinct
 ```
 
-さらに高度な条件指定や既存の名前付きスコープの再利用を行いたい場合は、`Relation#merge`が役に立つでしょう。最初に、Orderモデルに新しい名前付きスコープを追加してみましょう。
+さらに高度な条件指定や既存の名前付きスコープの再利用を行いたい場合は、[`merge`][]が利用できるでしょう。最初に、`Order`モデルに新しい名前付きスコープを追加してみましょう。
 
 ```ruby
 class Order < ApplicationRecord
@@ -1334,7 +1359,7 @@ class Order < ApplicationRecord
 end
 ```
 
-これで、`created_in_time_range`スコープ内で`Relation#merge`を用いてマージできるようになります。
+これで、`created_in_time_range`スコープ内で`merge`を用いてマージできるようになります。
 
 ```ruby
 time_range = (Time.now.midnight - 1.day)..Time.now.midnight
@@ -1405,9 +1430,9 @@ end
 最初の例では **11** 回もクエリが実行されましたが、書き直した例ではわずか **2** 回にまで減りました。
 
 ```sql
-SELECT `books`* FROM `books` LIMIT 10
-SELECT `authors`.* FROM `authors`
-  WHERE `authors`.`book_id` IN (1,2,3,4,5,6,7,8,9,10)
+SELECT books.* FROM books LIMIT 10
+SELECT authors.* FROM authors
+  WHERE authors.book_id IN (1,2,3,4,5,6,7,8,9,10)
 ```
 
 #### 複数の関連付けをeager loading
@@ -1443,7 +1468,7 @@ Author.includes(:books).where(books: { out_of_print: true })
 このコードは、以下のように`LEFT OUTER JOIN`を含むクエリを1つ生成します。`joins`メソッドを使うと、代わりに`INNER JOIN`を使うクエリが生成されます。
 
 ```sql
-  SELECT authors.id AS t0_r0, ... books.updated_at AS t1_r5 FROM authors LEFT OUTER JOIN "books" ON "books"."author_id" = "authors"."id" WHERE (books.out_of_print = 1)
+SELECT authors.id AS t0_r0, ... books.updated_at AS t1_r5 FROM authors LEFT OUTER JOIN books ON books.author_id = authors.id WHERE (books.out_of_print = 1)
 ```
 
 `where`条件がない場合は、通常のクエリが2つ生成されます。
@@ -1460,9 +1485,9 @@ NOTE: 関連付けがjoinの一部としてeager loadingされている場合、
 
 ### `preload`
 
-`preload`を使うと、Active Recordは指定されたすべての関連付けをクエリで読み込むようにします。
+`preload`を使うと、Active Recordは指定された関連付けを、1つの関連付けにつき1件のクエリで読み込むようにします。
 
-N+1クエリが発生した場合で再び説明すると、`preload`メソッドを使って以下のように`Book.limit(10)`を書き換えて著者（author）をプリロードできます。
+N+1クエリ問題が発生した場合で再び説明すると、`preload`メソッドを使って以下のように`Book.limit(10)`を書き換えて著者（author）をプリロードできます。
 
 ```ruby
 books = Book.preload(:author).limit(10)
@@ -1475,16 +1500,16 @@ end
 書き換え前は **11** 回もクエリが実行されましたが、書き直した上のコードはわずか **2** 回にまで減りました。
 
 ```sql
-SELECT `books`* FROM `books` LIMIT 10
-SELECT `authors`.* FROM `authors`
-  WHERE `authors`.`book_id` IN (1,2,3,4,5,6,7,8,9,10)
+SELECT books.* FROM books LIMIT 10
+SELECT authors.* FROM authors
+  WHERE authors.book_id IN (1,2,3,4,5,6,7,8,9,10)
 ```
 
 NOTE: 「配列」「ハッシュ」または「配列やハッシュをネストしたハッシュ」を用いる`preload`メソッドは、`includes`メソッドと同様に`Model.find`呼び出しで任意の個数の関連付けを読み込みます。ただし`includes`メソッドと異なり、eager loadingされる関連付けに条件を指定できません。
 
 ### `eager_load`
 
-`eager_load`メソッドを使うと、Active Recordは、指定されたすべての関連付けで`LEFT OUTER JOIN`によるeager loadingを強制的に行います。
+`eager_load`メソッドを使うと、Active Recordは、指定されたすべての関連付けを`LEFT OUTER JOIN`で読み込みます。
 
 N+1クエリが発生した場合で再び説明すると、`eager_load`メソッドを使って以下のように`Book.limit(10)`を書き換えて著者（author）をeager loadingできます。
 
@@ -1499,10 +1524,10 @@ end
 書き換え前は **11** 回もクエリが実行されましたが、書き直した上のコードはわずか **2** 回にまで減りました。
 
 ```sql
-SELECT DISTINCT `books`.`id` FROM `books` LEFT OUTER JOIN `authors` ON `authors`.`book_id` = `books`.`id` LIMIT 10
-SELECT `books`.`id` AS t0_r0, `books`.`last_name` AS t0_r1, ...
-  FROM `books` LEFT OUTER JOIN `authors` ON `authors`.`book_id` = `books`.`id`
-  WHERE `books`.`id` IN (1,2,3,4,5,6,7,8,9,10)
+SELECT DISTINCT books.id FROM books LEFT OUTER JOIN authors ON authors.book_id = books.id LIMIT 10
+SELECT books.id AS t0_r0, books.last_name AS t0_r1, ...
+  FROM books LEFT OUTER JOIN authors ON authors.book_id = books.id
+  WHERE books.id IN (1,2,3,4,5,6,7,8,9,10)
 ```
 
 NOTE: 「配列」「ハッシュ」または「配列やハッシュをネストしたハッシュ」を用いる`eager_load`メソッドは、`includes`メソッドと同様に`Model.find`呼び出しで任意の個数の関連付けを読み込みます。また、`includes`メソッドと同様に、eager loadingされる関連付けに条件を指定できます。
@@ -1754,7 +1779,7 @@ Active Recordは、テーブルに定義されるすべてのフィールド（�
 
 この動的検索メソッドの末尾に`Customer.find_by_first_name!("Ryan")`のように感嘆符 (`!`) を追加すると、該当するレコードがない場合に`ActiveRecord::RecordNotFound`エラーが発生するようになります。
 
-`name`と`orders_count`を両方検索したい場合は、2つのフィールド名を`_and_`でつなぐだけでメソッドを利用できるようになります。たとえば、`Customer.find_by_first_name_and_orders_count("Ryan", 5)`といった書き方が可能です。
+`first_name`と`orders_count`を両方検索したい場合は、2つのフィールド名を`_and_`でつなぐだけでメソッドを利用できるようになります。たとえば、`Customer.find_by_first_name_and_orders_count("Ryan", 5)`といった書き方が可能です。
 
 `enum`
 -----
@@ -1984,7 +2009,7 @@ irb> Customer.connection.select_all("SELECT first_name, created_at FROM customer
 
 ```
 irb> Book.where(out_of_print: true).pluck(:id)
-SELECT id FROM books WHERE out_of_print = false
+SELECT id FROM books WHERE out_of_print = true
 => [1, 2, 3]
 
 irb> Order.distinct.pluck(:status)
