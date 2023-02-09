@@ -134,7 +134,7 @@ class AddPartNumberToProducts < ActiveRecord::Migration[7.0]
 end
 ```
 
-This generator can do much more than append a timestamp to the file name.
+This generator can do much more than prepend a timestamp to the file name.
 Based on naming conventions and additional (optional) arguments it can
 also start fleshing out the migration.
 
@@ -251,8 +251,8 @@ class AddUserRefToProducts < ActiveRecord::Migration[7.0]
 end
 ```
 
-This migration will create a `user_id` column, [references](#references) are a
-shorthand for creating columns, indexes, foreign keys or even polymorphic
+This migration will create a `user_id` column. [References](#references) are a
+shorthand for creating columns, indexes, foreign keys, or even polymorphic
 association columns.
 
 There is also a generator which will produce join tables if `JoinTable` is part of the name:
@@ -281,7 +281,7 @@ end
 
 ### Model Generators
 
-The model, resource and scaffold generators will create migrations appropriate for adding
+The model, resource, and scaffold generators will create migrations appropriate for adding
 a new model. This migration will already contain instructions for creating the
 relevant table. If you tell Rails what columns you want, then statements for
 adding these columns will also be created. For example, running:
@@ -340,7 +340,7 @@ get to work!
 ### Creating a Table
 
 The [`create_table`][] method is one of the most fundamental, but most of the time,
-will be generated for you from using a model, resource or scaffold generator. A typical
+will be generated for you from using a model, resource, or scaffold generator. A typical
 use would be
 
 ```ruby
@@ -352,10 +352,10 @@ end
 which creates a `products` table with a column called `name`.
 
 By default, `create_table` will create a primary key called `id`. You can change
-the name of the primary key with the `:primary_key` option (don't forget to
-update the corresponding model) or, if you don't want a primary key at all, you
-can pass the option `id: false`. If you need to pass database specific options
-you can place an SQL fragment in the `:options` option. For example:
+the name of the primary key with the `:primary_key` option  or, if you don't
+want a primary key at all, you can pass the option `id: false`. If you need to
+pass database specific options you can place an SQL fragment in the `:options`
+option. For example:
 
 ```ruby
 create_table :products, options: "ENGINE=BLACKHOLE" do |t|
@@ -375,11 +375,11 @@ create_table :users do |t|
 end
 ```
 
-Also you can pass the `:comment` option with any description for the table
-that will be stored in database itself and can be viewed with database administration
+Also, you can pass the `:comment` option with any description for the table
+that will be stored in the database itself and can be viewed with database administration
 tools, such as MySQL Workbench or PgAdmin III. It's highly recommended to specify
 comments in migrations for applications with large databases as it helps people
-to understand data model and generate documentation.
+to understand the data model and generate documentation.
 Currently only the MySQL and PostgreSQL adapters support comments.
 
 [`create_table`]: https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-create_table
@@ -509,7 +509,7 @@ add_reference :users, :role
 ```
 
 This migration will create a `role_id` column in the users table. It creates an
-index for this column as well, unless explicitly told not with the
+index for this column as well, unless explicitly told not to with the
 `index: false` option:
 
 ```ruby
@@ -548,7 +548,7 @@ While it's not required you might want to add foreign key constraints to
 add_foreign_key :articles, :authors
 ```
 
-This `add_foreign_key` call adds a new constraint to the `articles` table.
+This [`add_foreign_key`][] call adds a new constraint to the `articles` table.
 The constraint guarantees that a row in the `authors` table exists where
 the `id` column matches the `articles.author_id`.
 
@@ -556,14 +556,14 @@ If the `from_table` column name cannot be derived from the `to_table` name,
 you can use the `:column` option. Use the `:primary_key` option if the
 referenced primary key is not `:id`.
 
-For example add a foreign key on `articles.reviewer` referencing `authors.email`:
+For example, to add a foreign key on `articles.reviewer` referencing `authors.email`:
 
 ```ruby
 add_foreign_key :articles, :authors, column: :reviewer, primary_key: :email
 ```
 
-Options such as `name`, `on_delete`, `if_not_exists`, `validate` and `deferrable`
-are described in the [`add_foreign_key`][] API.
+`add_foreign_key` also supports options such as `name`, `on_delete`,
+`if_not_exists`, `validate`, and `deferrable`.
 
 NOTE: Active Record only supports single column foreign keys. `execute` and
 `structure.sql` are required to use composite foreign keys. See
@@ -578,8 +578,6 @@ remove_foreign_key :accounts, :branches
 # remove foreign key for a specific column
 remove_foreign_key :accounts, column: :owner_id
 ```
-
-[`add_foreign_key`]: https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-add_foreign_key
 
 ### When Helpers aren't Enough
 
@@ -605,24 +603,28 @@ and
 ### Using the `change` Method
 
 The `change` method is the primary way of writing migrations. It works for the
-majority of cases, where Active Record knows how to reverse the migration
-automatically. Currently, the `change` method supports only these migration
-definitions:
+majority of cases in which Active Record knows how to reverse a migration's
+actions automatically. Below are some of the actions that `change` supports:
 
+* [`add_check_constraint`][]
 * [`add_column`][]
 * [`add_foreign_key`][]
 * [`add_index`][]
 * [`add_reference`][]
 * [`add_timestamps`][]
+* [`change_column_comment`][] (must supply a `:from` and `:to` option)
 * [`change_column_default`][] (must supply a `:from` and `:to` option)
 * [`change_column_null`][]
+* [`change_table_comment`][] (must supply a `:from` and `:to` option)
 * [`create_join_table`][]
 * [`create_table`][]
 * `disable_extension`
 * [`drop_join_table`][]
 * [`drop_table`][] (must supply a block)
 * `enable_extension`
+* [`remove_check_constraint`][] (must supply a constraint expression)
 * [`remove_column`][] (must supply a type)
+* [`remove_columns`][] (must supply a `:type` option)
 * [`remove_foreign_key`][] (must supply a second table)
 * [`remove_index`][]
 * [`remove_reference`][]
@@ -631,8 +633,8 @@ definitions:
 * [`rename_index`][]
 * [`rename_table`][]
 
-[`change_table`][] is also reversible, as long as the block does not call `change`,
-`change_default` or `remove`.
+[`change_table`][] is also reversible, as long as the block only calls
+reversible operations like the ones listed above.
 
 `remove_column` is reversible if you supply the column type as the third
 argument. Provide the original column options too, otherwise Rails can't
@@ -645,15 +647,20 @@ remove_column :posts, :slug, :string, null: false, default: ''
 If you're going to need to use any other methods, you should use `reversible`
 or write the `up` and `down` methods instead of using the `change` method.
 
+[`add_check_constraint`]: https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-add_check_constraint
 [`add_foreign_key`]: https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-add_foreign_key
 [`add_timestamps`]: https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-add_timestamps
+[`change_column_comment`]: https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-change_column_comment
+[`change_table_comment`]: https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-change_table_comment
 [`drop_join_table`]: https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-drop_join_table
 [`drop_table`]: https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-drop_table
+[`remove_check_constraint`]: https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-remove_check_constraint
 [`remove_foreign_key`]: https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-remove_foreign_key
 [`remove_index`]: https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-remove_index
 [`remove_reference`]: https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-remove_reference
 [`remove_timestamps`]: https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-remove_timestamps
 [`rename_column`]: https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-rename_column
+[`remove_columns`]: https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-remove_columns
 [`rename_index`]: https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-rename_index
 [`rename_table`]: https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-rename_table
 
@@ -1031,14 +1038,14 @@ summed up in the schema file.
 ### Types of Schema Dumps
 
 The format of the schema dump generated by Rails is controlled by the
-`config.active_record.schema_format` setting in `config/application.rb`. By
+[`config.active_record.schema_format`][] setting in `config/application.rb`. By
 default, the format is `:ruby`, but can also be set to `:sql`.
 
 If `:ruby` is selected, then the schema is stored in `db/schema.rb`. If you look
 at this file you'll find that it looks an awful lot like one very big migration:
 
 ```ruby
-ActiveRecord::Schema.define(version: 2008_09_06_171750) do
+ActiveRecord::Schema[7.0].define(version: 2008_09_06_171750) do
   create_table "authors", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
@@ -1075,6 +1082,8 @@ contain the output of `SHOW CREATE TABLE` for the various tables.
 To load the schema from `db/structure.sql`, run `bin/rails db:schema:load`.
 Loading this file is done by executing the SQL statements it contains. By
 definition, this will create a perfect copy of the database's structure.
+
+[`config.active_record.schema_format`]: configuring.html#config-active-record-schema-format
 
 ### Schema Dumps and Source Control
 

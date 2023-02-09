@@ -97,7 +97,7 @@ class AddPartNumberToProducts < ActiveRecord::Migration[7.0]
 end
 ```
 
-ジェネレータは、単にファイル名にタイムスタンプを追加するだけではありません。命名規約や追加の（オプション）引数に基づいて、マイグレーションに肉付けすることもできます。
+ジェネレータは、単にファイル名の冒頭にタイムスタンプを追加するだけではありません。命名規約や追加の（オプション）引数に基づいて、マイグレーションに肉付けすることもできます。
 
 マイグレーション名が"AddColumnToTable"や"RemoveColumnFromTable"で、かつその後ろにカラム名や型が続く形式になっていれば、適切な[`add_column`][]文や[`remove_column`][]文を含むマイグレーションが作成されます。
 
@@ -456,7 +456,7 @@ remove_reference :products, :user, foreign_key: true, index: false
 add_foreign_key :articles, :authors
 ```
 
-上の`add_foreign_key`呼び出しは、`articles`テーブルに新たな制約を追加します。この制約によって、`id`カラムが`articles.author_id`と一致する行が`authors`テーブル内に存在することが保証されます。
+上の[`add_foreign_key`][]呼び出しは、`articles`テーブルに新たな制約を追加します。この制約によって、`id`カラムが`articles.author_id`と一致する行が`authors`テーブル内に存在することが保証されます。
 
 `to_table`名から`from_table`カラム名を導出できない場合は、`:column`オプションでカラム名を指定できます。参照されている主キーが`:id`以外の場合は、`:primary_key`オプションで主キーを指定してください。
 
@@ -466,7 +466,7 @@ add_foreign_key :articles, :authors
 add_foreign_key :articles, :authors, column: :reviewer, primary_key: :email
 ```
 
-[`add_foreign_key`][] APIドキュメントには、`name`、`on_delete`、`if_not_exists`、`validate`、`deferrable`などのオプションも記載されています。
+`add_foreign_key`では、`name`、`on_delete`、`if_not_exists`、`validate`、`deferrable`などのオプションもサポートされています。
 
 NOTE: Active Recordでは単一カラムの外部キーのみがサポートされています。複合外部キーを使う場合は`execute`と`structure.sql`が必要です。詳しくは[スキーマダンプの意義](#スキーマダンプの意義)を参照してください。
 
@@ -479,8 +479,6 @@ remove_foreign_key :accounts, :branches
 # カラムを指定して外部キーを削除する場合
 remove_foreign_key :accounts, column: :owner_id
 ```
-
-[`add_foreign_key`]: https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-add_foreign_key
 
 ### ヘルパーの機能だけでは足りない場合
 
@@ -498,22 +496,27 @@ Product.connection.execute("UPDATE products SET price = 'free' WHERE 1=1")
 
 ### `change`メソッドを使う
 
-`change`メソッドは、マイグレーションを自作する場合に最もよく使われます。このメソッドを使えば、Active Recordがマイグレーションを逆進させる（以前のマイグレーションに戻す）方法を自動的に理解してくれるため、多くの場面で利用できます。現時点では、`change`でサポートされているマイグレーション定義は以下のものだけです。
+`change`メソッドは、マイグレーションを自作する場合に最もよく使われます。このメソッドを使えば、多くの場合にActive Recordがマイグレーションを逆進させる（以前のマイグレーションに戻す）方法を自動的に認識します。以下は`change`でサポートされているマイグレーション定義の一部です。
 
+* [`add_check_constraint`][]
 * [`add_column`][]
 * [`add_foreign_key`][]
 * [`add_index`][]
 * [`add_reference`][]
 * [`add_timestamps`][]
+* [`change_column_comment`][]（`:from`と`:to`の指定は省略不可）
 * [`change_column_default`][]（`:from`と`:to`の指定は省略不可）
 * [`change_column_null`][]
+* [`change_table_comment`][]（`:from`と`:to`の指定は省略不可）
 * [`create_join_table`][]
 * [`create_table`][]
 * `disable_extension`
 * [`drop_join_table`][]
 * [`drop_table`][]（ブロックが必須）
 * `enable_extension`
+* [`remove_check_constraint`][]（制約式の指定が必須）
 * [`remove_column`][]（型の指定が必須）
+* [`remove_columns`][]（`:type`オプションの指定が必須）
 * [`remove_foreign_key`][]（第2テーブルの指定が必須）
 * [`remove_index`][]
 * [`remove_reference`][]
@@ -522,7 +525,7 @@ Product.connection.execute("UPDATE products SET price = 'free' WHERE 1=1")
 * [`rename_index`][]
 * [`rename_table`][]
 
-ブロックで`change`、`change_default`、`remove`が呼び出されない限り、[`change_table`][] も逆進可能です。
+ブロックで上記の逆進可能操作が呼び出されない限り、[`change_table`][] も逆進可能です。
 
 `remove_column`は、第3引数でカラムの型を指定すれば逆進可能になります。この場合、元のカラムオプションも指定しておくこと。そうしないと、マイグレーションの逆進時にカラムを再作成できなくなります。
 
@@ -532,18 +535,22 @@ remove_column :posts, :slug, :string, null: false, default: ''
 
 これ以外のメソッドを使う必要がある場合は、`change`メソッドの代わりに`reversible`メソッドを利用するか、`up`と`down`メソッドを明示的に書いてください。
 
+[`add_check_constraint`]: https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-add_check_constraint
 [`add_foreign_key`]: https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-add_foreign_key
 [`add_timestamps`]: https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-add_timestamps
+[`change_column_comment`]: https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-change_column_comment
+[`change_table_comment`]: https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-change_table_comment
 [`drop_join_table`]: https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-drop_join_table
 [`drop_table`]: https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-drop_table
+[`remove_check_constraint`]: https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-remove_check_constraint
 [`remove_foreign_key`]: https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-remove_foreign_key
 [`remove_index`]: https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-remove_index
 [`remove_reference`]: https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-remove_reference
 [`remove_timestamps`]: https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-remove_timestamps
 [`rename_column`]: https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-rename_column
+[`remove_columns`]: https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-remove_columns
 [`rename_index`]: https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-rename_index
 [`rename_table`]: https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-rename_table
-
 
 ### `reversible`を使う
 
@@ -836,12 +843,12 @@ Railsのマイグレーションは強力ではありますが、データベー
 
 ### スキーマダンプの種類
 
-Railsで生成されるスキーマダンプのフォーマットは、`config/application.rb`の`config.active_record.schema_format`設定で制御されます。デフォルトのフォーマットは`:ruby`ですが、`:sql`も指定できます。
+Railsで生成されるスキーマダンプのフォーマットは、`config/application.rb`の[`config.active_record.schema_format`][]設定で制御されます。デフォルトのフォーマットは`:ruby`ですが、`:sql`も指定できます。
 
 `:ruby`を指定すると、スキーマは`db/schema.rb`に保存されます。このファイルを開いてみると、1つの巨大なマイグレーションのように見えます。
 
 ```ruby
-ActiveRecord::Schema.define(version: 2008_09_06_171750) do
+ActiveRecord::Schema[7.0].define(version: 2008_09_06_171750) do
   create_table "authors", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
@@ -865,6 +872,8 @@ end
 スキーマフォーマットを`:sql`にすると、データベース固有のツールを用いてデータベースの構造を`db/structure.sql`にダンプします。たとえばPostgreSQLの場合は`pg_dump`ユーティリティが使われます。MySQLやMariaDBの場合は、多くのテーブルで`SHOW CREATE TABLE`の出力結果がファイルに含まれます。
 
 スキーマを`db/structure.sql`から読み込む場合、`rails db:structure:load`を実行します。これにより、含まれているSQL文が実行されてファイルが読み込まれます。定義上、これによって作成されるデータベース構造は元の完全なコピーとなります。
+
+[`config.active_record.schema_format`]: configuring.html#config-active-record-schema-format
 
 ### スキーマダンプとソースコード管理
 
