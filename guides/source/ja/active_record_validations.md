@@ -22,7 +22,7 @@ class Person < ApplicationRecord
 end
 ```
 
-```
+```irb
 irb> Person.create(name: "John Doe").valid?
 => true
 irb> Person.create(name: nil).valid?
@@ -57,7 +57,7 @@ end
 
 `bin/rails console`の出力で様子を観察してみます。
 
-```
+```irb
 irb> p = Person.new(name: "John Doe")
 => #<Person id: nil, name: "John Doe", created_at: nil, updated_at: nil>
 
@@ -128,7 +128,7 @@ class Person < ApplicationRecord
 end
 ```
 
-```
+```irb
 irb> Person.create(name: "John Doe").valid?
 => true
 irb> Person.create(name: nil).valid?
@@ -140,13 +140,13 @@ Active Recordでバリデーションが行われた後で[`errors`][]インス�
 
 ただし、`new`でインスタンス化されたオブジェクトは、それが厳密には無効であってもエラーは出力されないので、注意が必要です。これは、`create`や`save`メソッドなどによってオブジェクトが保存されるときのみ、バリデーションが自動的に実行されるためです。
 
-```
+```ruby
 class Person < ApplicationRecord
   validates :name, presence: true
 end
 ```
 
-```
+```irb
 irb> p = Person.new
 => #<Person id: nil, name: nil>
 irb> p.errors.size
@@ -190,7 +190,7 @@ class Person < ApplicationRecord
 end
 ```
 
-```
+```irb
 irb> Person.new.errors[:name].any?
 => false
 irb> Person.create.errors[:name].any?
@@ -650,7 +650,7 @@ class Topic < ApplicationRecord
 end
 ```
 
-```
+```irb
 irb> Topic.create(title: "").valid?
 => true
 irb> Topic.create(title: nil).valid?
@@ -712,7 +712,7 @@ class Person < ApplicationRecord
 end
 ```
 
-```
+```irb
 irb> person = Person.new(age: 'thirty-three')
 irb> person.valid?
 => true
@@ -734,7 +734,7 @@ class Person < ApplicationRecord
 end
 ```
 
-```
+```irb
 irb> person = Person.new
 irb> person.valid?(:account_setup)
 => false
@@ -753,7 +753,7 @@ class Person < ApplicationRecord
 end
 ```
 
-```
+```irb
 irb> Person.new.valid?
 ActiveModel::StrictValidationFailed: Name can't be blank
 ```
@@ -766,7 +766,7 @@ class Person < ApplicationRecord
 end
 ```
 
-```
+```irb
 irb> Person.new.valid?
 TokenGenerationException: Token can't be blank
 ```
@@ -946,7 +946,7 @@ class Person < ApplicationRecord
 end
 ```
 
-```
+```irb
 irb> person = Person.new
 irb> person.valid?
 => false
@@ -972,7 +972,7 @@ class Person < ApplicationRecord
 end
 ```
 
-```
+```irb
 irb> person = Person.new(name: "John Doe")
 irb> person.valid?
 => true
@@ -1004,7 +1004,7 @@ class Person < ApplicationRecord
 end
 ```
 
-```
+```irb
 irb> person = Person.new
 irb> person.valid?
 => false
@@ -1018,7 +1018,7 @@ irb> person.errors.where(:name, :too_short)
 
 これらのエラーオブジェクトから、さまざまな情報を読み出せます。
 
-```
+```irb
 irb> error = person.errors.where(:name).last
 
 irb> error.attribute
@@ -1031,14 +1031,14 @@ irb> error.options[:count]
 
 エラーメッセージを生成することも可能です。
 
-```
+```irb
 irb> error.message
 => "is too short (minimum is 3 characters)"
 irb> error.full_message
 => "Name is too short (minimum is 3 characters)"
 ```
 
-[`full_message`][]メソッドは、属性名の冒頭を大文字にした読みやすいメッセージを生成します。
+[`full_message`][]メソッドは、属性名の冒頭を大文字にした読みやすいメッセージを生成します（`full_message`で使うフォーマットをカスタマイズする方法については、[国際化（i18n）ガイド](i18n.html#active-modelのメソッド)を参照してください）。
 
 [`full_message`]: https://api.rubyonrails.org/classes/ActiveModel/Errors.html#method-i-full_message
 [`where`]: https://api.rubyonrails.org/classes/ActiveModel/Errors.html#method-i-where
@@ -1055,7 +1055,7 @@ class Person < ApplicationRecord
 end
 ```
 
-```
+```irb
 irb> person = Person.create
 irb> person.errors.where(:name).first.type
 => :too_plain
@@ -1077,7 +1077,7 @@ class Person < ApplicationRecord
 end
 ```
 
-```
+```irb
 irb> person = Person.create
 irb> person.errors.where(:base).first.full_message
 => "この人物は以下の理由で無効です: "
@@ -1093,7 +1093,7 @@ class Person < ApplicationRecord
 end
 ```
 
-```
+```irb
 irb> person = Person.new
 irb> person.valid?
 => false
@@ -1121,7 +1121,7 @@ class Person < ApplicationRecord
 end
 ```
 
-```
+```irb
 irb> person = Person.new
 irb> person.valid?
 => false
