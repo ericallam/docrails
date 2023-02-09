@@ -221,7 +221,6 @@ Rails.application.config.after_initialize do
   end
 end
 ```
-```
 
 ### `ActiveSupport::Digest`で用いられるメッセージダイジェストクラスがSHA256に変更
 
