@@ -1020,7 +1020,7 @@ config.action_dispatch.default_headers.clear
 * **`Access-Control-Allow-Origin`**: このヘッダーは、同一オリジンポリシーのバイパスとクロスオリジン（cross-origin）リクエスト送信を許可するサイトを指定するのに使います。
 * `Strict-Transport-Security`: このヘッダーは、[セキュア接続によるサイトアクセスのみをブラウザに許可するかどうかを指定する](https://ja.wikipedia.org/wiki/HTTP_Strict_Transport_Security)のに使います。
 
-### Content-Security-Policyヘッダー
+### Content Security Policyヘッダー
 
 XSSやインジェクションによる攻撃を防ぐために、アプリケーションのレスポンスヘッダーに[Content Security Policy](https://developer.mozilla.org/ja/docs/Web/HTTP/Headers/Content-Security-Policy)（CSP）を設定することが推奨されています。Railsでは、このヘッダーを設定するためのDSLが提供されています。
 
