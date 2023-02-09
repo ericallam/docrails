@@ -551,7 +551,7 @@ $ bin/rails webpacker:install
 
 ### SSLの強制
 
-コントローラの[`config.force_ssl`][]メソッドは非推奨化され、Rails 6.1で削除される予定です。`config.force_ssl`を有効にしてアプリ全体でHTTPS接続を強制することをおすすめします。特定のエンドポイントのみをリダイレクトしないようにする必要がある場合は、[`config.ssl_options`][]で振る舞いを変更できます。
+コントローラのforce_ssl`メソッドは非推奨化され、Rails 6.1で削除される予定です。[`config.force_ssl`][]設定を有効にしてアプリ全体でHTTPS接続を強制することをおすすめします。特定のエンドポイントのみをリダイレクトしないようにする必要がある場合は、[`config.ssl_options`][]で振る舞いを変更できます。
 
 [`config.force_ssl`]: configuring.html#config-force-ssl
 [`config.ssl_options`]: configuring.html#config-ssl-options
