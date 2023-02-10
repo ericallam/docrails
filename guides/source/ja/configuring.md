@@ -49,6 +49,89 @@ WARNING: 関連付けされたクラスを直接呼び出すのではなく、�
 
 NOTE: 設定をクラスに直接適用する必要がある場合は、イニシャライザで[`ActiveSupport::LazyLoadHooks`](https://api.rubyonrails.org/classes/ActiveSupport/LazyLoadHooks.html)をお使いください（初期化が完了する前にクラスがオートロードされるのを避けるため）。初期化中にオートロードされるとアプリの再読み込みを安全に繰り返せなくなるため、失敗します。
 
+### Railsバージョンごとのデフォルト値
+
+[`config.load_defaults`] はターゲットバージョンとそれ以前のすべてのバージョンのデフォルトの設定値を読み込みます。たとえば、`config.load_defaults 6.1`はバージョン6.1までの全バージョンのデフォルトを読み込みます。
+
+[`config.load_defaults`]: https://api.rubyonrails.org/classes/Rails/Application/Configuration.html#method-i-load_defaults
+
+ターゲットバージョンごとに関連するデフォルト値を以下に示します。値が矛盾する場合は、新しいバージョンが古いバージョンより優先されます。
+
+#### ターゲットバージョン7.0のデフォルト値
+
+- [`config.action_controller.raise_on_open_redirects`](#config-action-controller-raise-on-open-redirects): `true`
+- [`config.action_controller.wrap_parameters_by_default`](#config-action-controller-wrap-parameters-by-default): `true`
+- [`config.action_dispatch.cookies_serializer`](#config-action-dispatch-cookies-serializer): `:json`
+- [`config.action_dispatch.default_headers`](#config-action-dispatch-default-headers): `{ "X-Frame-Options" => "SAMEORIGIN", "X-XSS-Protection" => "0", "X-Content-Type-Options" => "nosniff", "X-Download-Options" => "noopen", "X-Permitted-Cross-Domain-Policies" => "none", "Referrer-Policy" => "strict-origin-when-cross-origin" }`
+- [`config.action_dispatch.return_only_request_media_type_on_content_type`](#config-action-dispatch-return-only-request-media-type-on-content-type): `false`
+- [`config.action_mailer.smtp_timeout`](#config-action-mailer-smtp-timeout): `5`
+- [`config.action_view.apply_stylesheet_media_default`](#config-action-view-apply-stylesheet-media-default): `false`
+- [`config.action_view.button_to_generates_button_tag`](#config-action-view-button-to-generates-button-tag): `true`
+- [`config.active_record.automatic_scope_inversing`](#config-active-record-automatic-scope-inversing): `true`
+- [`config.active_record.partial_inserts`](#config-active-record-partial-inserts): `false`
+- [`config.active_record.verify_foreign_keys_for_fixtures`](#config-active-record-verify-foreign-keys-for-fixtures): `true`
+- [`config.active_storage.multiple_file_field_include_hidden`](#config-active-storage-multiple-file-field-include-hidden): `true`
+- [`config.active_storage.variant_processor`](#config-active-storage-variant-processor): `:vips`
+- [`config.active_storage.video_preview_arguments`](#config-active-storage-video-preview-arguments): `"-vf 'select=eq(n\\,0)+eq(key\\,1)+gt(scene\\,0.015),loop=loop=-1:size=2,trim=start_frame=1' -frames:v 1 -f image2"`
+- [`config.active_support.cache_format_version`](#config-active-support-cache-format-version): `7.0`
+- [`config.active_support.disable_to_s_conversion`](#config-active-support-disable-to-s-conversion): `true`
+- [`config.active_support.executor_around_test_case`](#config-active-support-executor-around-test-case): `true`
+- [`config.active_support.hash_digest_class`](#config-active-support-hash-digest-class): `OpenSSL::Digest::SHA256`
+- [`config.active_support.isolation_level`](#config-active-support-isolation-level): `:thread`
+- [`config.active_support.key_generator_hash_digest_class`](#config-active-support-key-generator-hash-digest-class): `OpenSSL::Digest::SHA256`
+- [`config.active_support.remove_deprecated_time_with_zone_name`](#config-active-support-remove-deprecated-time-with-zone-name): `true`
+- [`config.active_support.use_rfc4122_namespaced_uuids`](#config-active-support-use-rfc4122-namespaced-uuids): `true`
+
+#### ターゲットバージョン6.1のデフォルト値
+
+- [`ActiveSupport.utc_to_local_returns_utc_offset_times`](#activesupport-utc-to-local-returns-utc-offset-times): `true`
+- [`config.action_controller.urlsafe_csrf_tokens`](#config-action-controller-urlsafe-csrf-tokens): `true`
+- [`config.action_dispatch.cookies_same_site_protection`](#config-action-dispatch-cookies-same-site-protection): `:lax`
+- [`config.action_dispatch.ssl_default_redirect_status`](#config-action-dispatch-ssl-default-redirect-status): `308`
+- [`config.action_mailbox.queues.incineration`](#config-action-mailbox-queues-incineration): `nil`
+- [`config.action_mailbox.queues.routing`](#config-action-mailbox-queues-routing): `nil`
+- [`config.action_mailer.deliver_later_queue_name`](#config-action-mailer-deliver-later-queue-name): `nil`
+- [`config.action_view.form_with_generates_remote_forms`](#config-action-view-form-with-generates-remote-forms): `false`
+- [`config.action_view.preload_links_header`](#config-action-view-preload-links-header): `true`
+- [`config.active_job.retry_jitter`](#config-active-job-retry-jitter): `0.15`
+- [`config.active_record.has_many_inversing`](#config-active-record-has-many-inversing): `true`
+- [`config.active_record.legacy_connection_handling`](#config-active-record-legacy-connection-handling): `false`
+- [`config.active_storage.queues.analysis`](#config-active-storage-queues-analysis): `nil`
+- [`config.active_storage.queues.purge`](#config-active-storage-queues-purge): `nil`
+- [`config.active_storage.track_variants`](#config-active-storage-track-variants): `true`
+
+#### ターゲットバージョン6.0のデフォルト値
+
+- [`config.action_dispatch.use_cookies_with_metadata`](#config-action-dispatch-use-cookies-with-metadata): `true`
+- [`config.action_mailer.delivery_job`](#config-action-mailer-delivery-job): `"ActionMailer::MailDeliveryJob"`
+- [`config.action_view.default_enforce_utf8`](#config-action-view-default-enforce-utf8): `false`
+- [`config.active_record.collection_cache_versioning`](#config-active-record-collection-cache-versioning): `true`
+- [`config.active_storage.queues.analysis`](#config-active-storage-queues-analysis): `:active_storage_analysis`
+- [`config.active_storage.queues.purge`](#config-active-storage-queues-purge): `:active_storage_purge`
+- [`config.active_storage.replace_on_assign_to_many`](#config-active-storage-replace-on-assign-to-many): `true`
+
+#### ターゲットバージョン5.2のデフォルト値
+
+- [`config.action_controller.default_protect_from_forgery`](#config-action-controller-default-protect-from-forgery): `true`
+- [`config.action_dispatch.use_authenticated_cookie_encryption`](#config-action-dispatch-use-authenticated-cookie-encryption): `true`
+- [`config.action_view.form_with_generates_ids`](#config-action-view-form-with-generates-ids): `true`
+- [`config.active_record.cache_versioning`](#config-active-record-cache-versioning): `true`
+- [`config.active_support.hash_digest_class`](#config-active-support-hash-digest-class): `OpenSSL::Digest::SHA1`
+- [`config.active_support.use_authenticated_message_encryption`](#config-active-support-use-authenticated-message-encryption): `true`
+
+#### ターゲットバージョン5.1のデフォルト値
+
+- [`config.action_view.form_with_generates_remote_forms`](#config-action-view-form-with-generates-remote-forms): `true`
+- [`config.assets.unknown_asset_fallback`](#config-assets-unknown-asset-fallback): `false`
+
+#### ターゲットバージョン5.0のデフォルト値
+
+- [`ActiveSupport.to_time_preserves_timezone`](#activesupport-to-time-preserves-timezone): `true`
+- [`config.action_controller.forgery_protection_origin_check`](#config-action-controller-forgery-protection-origin-check): `true`
+- [`config.action_controller.per_form_csrf_tokens`](#config-action-controller-per-form-csrf-tokens): `true`
+- [`config.active_record.belongs_to_required_by_default`](#config-active-record-belongs-to-required-by-default): `true`
+- [`config.ssl_options`](#config-ssl-options): `{ hsts: { subdomains: true } }`
+
 ### Rails全般の設定
 
 Rails全般に対する設定を行うには、`Rails::Railtie`オブジェクトを呼び出すか、`Rails::Engine`や`Rails::Application`のサブクラスを呼び出します。
@@ -218,9 +301,10 @@ config.logger      = ActiveSupport::TaggedLogging.new(mylogger)
 
 暗号化キーの探索パスを設定します。
 
-#### `secret_key_base`
+#### `config.secret_key_base`
 
-このメソッドは、改ざん防止のためにアプリケーションのセッションを既知の秘密キーと照合するキーを指定するときに使います。test環境とdevelopment環境の場合はランダムに生成されたキーを使います。その他の環境ではキーを`config/credentials.yml.enc`に設定すべきです。
+アプリケーションのキージェネレータに入力する秘密鍵を指定する際に使われるフォールバックです。
+これは設定せずに、`config/credentials.yml.enc`で`secret_key_base`を指定することが推奨されます。別の設定方法などについて詳しくは、[`secret_key_base` API documentation]( https://api.rubyonrails.org/classes/Rails/Application.html#method-i-secret_key_base) を参照してください。
 
 #### `config.require_master_key`
 
@@ -232,23 +316,39 @@ config.logger      = ActiveSupport::TaggedLogging.new(mylogger)
 
 #### `config.session_store`
 
-セッションの保存に使うクラスを指定します。指定できる値は`:cookie_store`（デフォルト）、`:mem_cache_store`、`:disabled`です。`:disabled`を指定すると、Railsでセッションが扱われなくなります。デフォルトでは、アプリケーション名と同じ名前のcookieストアがセッションキーとして使われます。カスタムセッションストアを指定することも可能です。
+セッションの保存に使うクラスを指定します。指定できる値は`:cookie_store`（デフォルト）、`:mem_cache_store`、カスタムストア、または`:disabled`です。`:disabled`を指定すると、Railsでセッションが扱われなくなります。
+
+この設定は、セッターではなく、通常のメソッド呼び出しによって設定されます。これにより、以下のように追加のオプションを渡せます。
 
 ```ruby
+config.session_store :cookie_store, key: "_your_app_session"
+```
+
+以下のようにカスタムストアをシンボルとして指定した場合、`ActionDispatch::Session`名前空間に解決されます。
+
+```ruby
+# ActionDispatch::Session::MyCustomStoreをセッションストアとして用いる
 config.session_store :my_custom_store
 ```
 
-カスタムストアは`ActionDispatch::Session::MyCustomStore`として定義しなければなりません。
+デフォルトのストアは、アプリケーション名をセッションキーとするcookieストアです。
+
+#### `config.ssl_options`
+
+[`ActionDispatch::SSL`](https://api.rubyonrails.org/classes/ActionDispatch/SSL.html)ミドルウェアの設定オプションを指定します。
+
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | `{}`                 |
+| 5.0以降                | `{ hsts: { subdomains: true } }` |
 
 #### `config.time_zone`
 
 アプリケーションのデフォルトタイムゾーンを設定し、Active Recordで認識できるようにします。
 
 ### アセットを設定する
-
-#### `config.assets.enabled`
-
-アセットパイプラインを有効にするかどうかを指定します。デフォルト値は`true`です。
 
 #### `config.assets.css_compressor`
 
@@ -272,7 +372,14 @@ gzipされていないバージョンの作成に加えて、コンパイル済�
 
 #### `config.assets.unknown_asset_fallback`
 
-アセットがパイプラインにない場合のアセットパイプラインの挙動の変更に使います（sprockets-rails 3.2.0以降を使う場合）。デフォルト値は`true`です。
+アセットがパイプラインにない場合のアセットパイプラインの挙動の変更に使います（sprockets-rails 3.2.0以降を使う場合）。
+
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
+
+| 以下のバージョン以降      | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | `true`               |
+| 5.1                   | `false`              |
 
 #### `config.assets.prefix`
 
@@ -450,11 +557,11 @@ bodyがファイルから配信されているレスポンスをインターセ�
 
 #### `ActionDispatch::Session::CookieStore`
 
-セッションをcookieに保存する役割を担います。`config.action_controller.session_store`の値を変更すると別のミドルウェアを使えます。これに渡されるオプションは`config.action_controller.session_options`で設定できます。
+セッションをcookieに保存する役割を担います。[`config.session_store`](#config-session-store).の値を変更すると別のミドルウェアを使えます。
 
 #### `ActionDispatch::Flash`
 
-`flash`キーを設定します。これは、`config.action_controller.session_store`に値が設定されている場合にのみ有効です。
+`flash`キーを設定します。これは、[`config.session_store`](#config-session-store)に値が設定されている場合にのみ有効です。
 
 #### `Rack::MethodOverride`
 
@@ -522,7 +629,7 @@ config.middleware.delete Rack::MethodOverride
 
 #### `config.i18n.available_locales`
 
-アプリケーションで利用できるロケールを許可リスト化します。デフォルトでは、ロケールファイルにあるロケールキーはすべて有効になりますが、新しいアプリケーションの場合、通常は`:en`だけです。
+アプリケーションで利用できるロケールの許可リストを定義します。デフォルトでは、ロケールファイルにあるロケールキーはすべて有効になりますが、新しいアプリケーションの場合、通常は`:en`だけです。
 
 #### `config.i18n.default_locale`
 
@@ -568,7 +675,52 @@ config.middleware.delete Rack::MethodOverride
 
 #### `config.active_model.i18n_customize_full_message`
 
-`full_message`エラーフォーマットを属性レベルやモデルレベルでロケールファイルで上書きしてよいかどうかを制御するboolean値です。デフォルト値は`false`です。
+[`Error#full_message`][ActiveModel::Error#full_message]エラーフォーマットをi18nのロケールファイルで上書きしてよいかどうかを制御するboolean値です。デフォルト値は`false`です。
+
+`true`に設定すると、`full_message`はロケールファイルの属性とモデルレベルでフォーマットを探索します。デフォルトのフォーマットは`"%{attribute} %{message}"で、`attribute`は属性名、`message`はバリデーション固有のメッセージです。以下の例では、すべての `Person`属性と、特定の`Person`属性（`age`）のフォーマットをオーバーライドしています。
+
+```ruby
+class Person
+  include ActiveModel::Validations
+
+  attr_accessor :name, :age
+
+  validates :name, :age, presence: true
+end
+```
+
+```yml
+en:
+  activemodel: # または activerecord:
+    errors:
+      models:
+        person:
+          # すべてのPerson属性についてフォーマットをオーバーライドする
+          format: "Invalid %{attribute} (%{message})"
+          attributes:
+            age:
+              # このage属性についてフォーマットをオーバーライドする
+              format: "%{message}"
+              blank: "Please fill in your %{attribute}"
+```
+
+```irb
+irb> person = Person.new.tap(&:valid?)
+
+irb> person.errors.full_messages
+=> [
+  "Invalid Name (can't be blank)",
+  "Please fill in your Age"
+]
+
+irb> person.errors.messages
+=> {
+  :name => ["can't be blank"],
+  :age  => ["Please fill in your Age"]
+}
+```
+
+[ActiveModel::Error#full_message]: https://api.rubyonrails.org/classes/ActiveModel/Error.html#method-i-full_message
 
 ### Active Recordを設定する
 
@@ -641,6 +793,13 @@ Active Recordで楽観的ロック（optimistic locking）を使うかどうか�
 
 新規レコード作成で部分書き込みを行うかどうか（挿入時にデフォルトと異なる属性だけを設定するかどうか）を指定するboolean値です。
 
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | `true`               |
+| 7.0以降                | `false`              |
+
 #### `config.active_record.partial_updates`
 
 既存レコードの更新で部分書き込みを行なうかどうか（「dirty」とマークされた属性だけを更新するか）を指定するboolian値です。データベースで部分書き込みを使う場合は、`config.active_record.lock_optimistically`で楽観的ロックも有効にする必要がある点にご注意ください。これは更新処理が並行して実行された場合に、読み込み中の古い情報に基づいて属性に書き込まれる可能性があるためです。デフォルト値は`true`です。
@@ -661,6 +820,13 @@ Active Recordで楽観的ロック（optimistic locking）を使うかどうか�
 
 `belongs_to`関連付けが存在しない場合にレコードのバリデーションを失敗させるかどうかを指定するboolean値です。
 
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | `nil`                |
+| 5.0以降                | `true`               |
+
 #### `config.active_record.action_on_strict_loading_violation`
 
 関連付けに`strict_loading`が設定されている場合に、例外をraiseするかログに出力するかを設定します。デフォルト値はすべての環境で`:raise`です。これを`:log`に変更すると、例外をraiseせずにロガーに送信できます。
@@ -671,7 +837,7 @@ Active Recordで楽観的ロック（optimistic locking）を使うかどうか�
 
 #### `config.active_record.warn_on_records_fetched_greater_than`
 
-クエリ結果のサイズに応じて警告を出す場合の閾値（Threshold）を設定します。あるクエリから返されるレコード数がこの閾値を超えると、警告がログに出力されます。これは、メモリ肥大化の原因となっている可能性のあるクエリを特定するのに利用できます。
+クエリ結果のサイズに応じて警告を出す場合の閾値（threshold）を設定します。あるクエリから返されるレコード数がこの閾値を超えると、警告がログに出力されます。これは、メモリ肥大化の原因となっている可能性のあるクエリを特定するのに利用できます。
 
 #### `config.active_record.index_nested_attribute_errors`
 
@@ -685,21 +851,56 @@ Active Recordで楽観的ロック（optimistic locking）を使うかどうか�
 
 キャッシュバージョン変更を伴う安定した`#cache_key`メソッドを`#cache_version`メソッドで使うかどうかを指定します。
 
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | `false`              |
+| 5.2以降                | `true`               |
+
 #### `config.active_record.collection_cache_versioning`
 
 `ActiveRecord::Relation`型でキャッシュされたオブジェクトが、そのリレーションのキャッシュキーの揮発性の情報（updated atとcountの最大値）をキャッシュキーの再利用サポートのためにキャッシュバージョンに移動したときに、同じキャッシュキーが再利用されるようにします。
 
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | `false`              |
+| 6.0以降                | `true`               |
+
 #### `config.active_record.has_many_inversing`
 
-`belongs_to`関連付けを`has_many`関連付けにトラバースするときに`inverse_of`のレコードも設定されるようにします。
+`belongs_to`関連付けを`has_many`関連付けにトラバースするときに逆方向の（inverse）レコードを設定できるようにします。
+
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | `false`              |
+| 6.1以降                | `true`               |
 
 #### `config.active_record.automatic_scope_inversing`
 
 スコープ付き関連付けで`inverse_of`を自動的に推論するようにします。
 
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | `false`              |
+| 7.0以降                | `true`               |
+
 #### `config.active_record.legacy_connection_handling`
 
 新しいコネクションハンドリングAPIを有効化できます。この新しいAPIは、マルチプルデータベースを使うアプリケーション向けに粒度の細かいコネクションスワップをサポートします。
+
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | `true`               |
+| 6.1以降                | `false`              |
 
 #### `config.active_record.destroy_association_async_job`
 
@@ -715,7 +916,14 @@ Active Recordで楽観的ロック（optimistic locking）を使うかどうか�
 
 #### `config.active_record.verify_foreign_keys_for_fixtures`
 
-フィクスチャがテストに読み込まれた後で、すべての外部キー制約が有効になるようにします（PostgreSQLとSQLiteのみ）。デフォルト値は`false`です。
+フィクスチャがテストに読み込まれた後で、すべての外部キー制約が有効になるようにします（PostgreSQLとSQLiteのみ）。
+
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | `false`              |
+| 7.0以降                | `true`               |
 
 #### `config.active_record.query_log_tags_enabled`
 
@@ -750,17 +958,29 @@ SQLコメントに挿入するキーバリュータグを指定する`Array`を�
 
 #### `config.active_record.global_executor_concurrency`
 
-`config.active_record.async_query_executor = :global_thread_pool`設定で、並行に実行できる非同期クエリの個数を定義します。
+`config.active_record.async_query_executor = :global_thread_pool`設定で、並行（concurrent）に実行できる非同期クエリの個数を定義します。
 
 デフォルトは`4`です。
 
 この数値を検討するときは、`database.yml`で設定されているデータベースプールのサイズと調和させなければなりません。コネクションプールのサイズは、フォアグラウンドのスレッド（Webサーバーやジョブワーカーのスレッド）とバックグラウンドのスレッドを両方とも扱えるサイズにする必要があります。
 
+#### `config.active_record.yaml_column_permitted_classes`
+
+デフォルトは`[Symbol]`です。ここで追加したクラスのリストは、`ActiveRecord::Coders::YAMLColumn`の`safe_load()`でアプリケーションに含まれるようになります。
+
+#### `config.active_record.use_yaml_unsafe_load`
+
+デフォルトは`false`です。アプリケーションが`ActiveRecord::Coders::YAMLColumn`に対して`unsafe_load`を利用することを許可します。
+
+#### `config.active_record.raise_int_wider_than_64bit`
+
+デフォルトは`true`です。PostgreSQLアダプタに64ビット符号付き整数表現を超える整数が渡された場合に例外を発生させるかどうかを指定します。
+
 #### `ActiveRecord::ConnectionAdapters::Mysql2Adapter.emulate_booleans`
 
 Active RecordのMySQLアダプタがすべての`tinyint(1)`カラムをデフォルトでbooleanと認識するかどうかを指定します。デフォルト値は`true`です。
 
-#### `ActiveRecord::ConnectionAdapters::PostgreSQLAdapter.create_unlogged_table`
+#### `ActiveRecord::ConnectionAdapters::PostgreSQLAdapter.create_unlogged_tables`
 
 PostgreSQLが作成するデータベースを「unlogged」にすべきかどうかを制御します。unloggedにするとパフォーマンスは向上しますが、データベースがクラッシュしたときのデータ喪失リスクも増加します。production環境ではこれを有効にしないことを強くおすすめします。デフォルトではすべての環境で`false`になります。
 
@@ -816,17 +1036,45 @@ CSRF保護を有効にするかどうかを指定します。testモードでは
 
 CSRFの追加対策として、HTTPの`Origin`ヘッダーがサイトのoriginと一致することをチェックすべきかどうかを設定します。
 
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | `false`              |
+| 5.0以降                | `true`               |
+
 #### `config.action_controller.per_form_csrf_tokens`
 
 CSRFトークンの正当性をそれらが生成されたメソッドやアクションに対してのみ認めるかどうかを設定します。
+
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | `false`              |
+| 5.0以降                | `true`               |
 
 #### `config.action_controller.default_protect_from_forgery`
 
 フォージェリ保護を`ActionController:Base`に追加するかどうかを指定します。
 
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | `false`              |
+| 5.2以降                | `true`               |
+
 #### `config.action_controller.urlsafe_csrf_tokens`
 
 生成されるCSRFトークンをURL-safe（URLで使ってよい文字だけを使う）にするかどうかを設定します。
+
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | `false`              |
+| 6.1以降                | `true`               |
 
 #### `config.action_controller.relative_url_root`
 
@@ -868,7 +1116,14 @@ Rendered recordings/threads/_thread.html.erb in 1.5 ms [cache miss]
 
 #### `config.action_controller.raise_on_open_redirects`
 
-許可されていないオープンリダイレクトが発生した場合に`ArgumentError`をraiseします。デフォルト値は`false`です。
+許可されていないオープンリダイレクトが発生した場合に`ArgumentError`をraiseします。
+
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | `false`              |
+| 7.0以降                | `true`               |
 
 #### `config.action_controller.log_query_tags_around_actions`
 
@@ -878,31 +1133,40 @@ Rendered recordings/threads/_thread.html.erb in 1.5 ms [cache miss]
 
 JSONリクエストをデフォルトで[`ParamsWrapper`](https://api.rubyonrails.org/classes/ActionController/ParamsWrapper.html)でラップするように設定します。
 
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | `false`              |
+| 7.0以降                | `true`               |
+
 #### `ActionController::Base.wrap_parameters`
 
 [`ParamsWrapper`](https://api.rubyonrails.org/classes/ActionController/ParamsWrapper.html)を設定します。これはトップレベルで呼び出すことも、コントローラで個別に呼び出すこともできます。
 
 ### Action Dispatchを設定する
 
-#### `config.action_dispatch.session_store`
+#### `config.action_dispatch.cookies_serializer`
 
-セッションデータのストア名を設定します。デフォルトのストア名は`:cookie_store`です。この他に`:active_record_store`、`:mem_cache_store`、またはカスタムクラス名なども指定できます。
+cookieで使うシリアライザを指定します。詳しくは[Action Controller Cookies](action_controller_overview.html#cookie)を参照してください。
+
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | `:marshal`           |
+| 7.0以降                | `:json`              |
 
 #### `config.action_dispatch.default_headers`
 
-HTTPヘッダーで使われるハッシュです。このヘッダーはデフォルトですべてのレスポンスに設定されます。このオプションは、デフォルトでは以下のように設定されます。
+HTTPヘッダーで使われるハッシュです。このヘッダーはデフォルトですべてのレスポンスに設定されます。
 
-```ruby
-config.action_dispatch.default_headers = {
-  'X-Frame-Options' => 'SAMEORIGIN',
-  'X-XSS-Protection' => '0',
-  'X-Content-Type-Options' => 'nosniff',
-  'X-Download-Options' => 'noopen',
-  'X-Permitted-Cross-Domain-Policies' => 'none',
-  'Referrer-Policy' => 'strict-origin-when-cross-origin'
-}
-```
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
 
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | <pre><code>{<br>  "X-Frame-Options" => "SAMEORIGIN",<br>  "X-XSS-Protection" => "1; mode=block",<br>  "X-Content-Type-Options" => "nosniff",<br>  "X-Download-Options" => "noopen",<br>  "X-Permitted-Cross-Domain-Policies" => "none",<br>  "Referrer-Policy" => "strict-origin-when-cross-origin"<br>}</code></pre> |
+| 7.0以降                | <pre><code>{<br>  "X-Frame-Options" => "SAMEORIGIN",<br>  "X-XSS-Protection" => "0",<br>  "X-Content-Type-Options" => "nosniff",<br>  "X-Download-Options" => "noopen",<br>  "X-Permitted-Cross-Domain-Policies" => "none",<br>  "Referrer-Policy" => "strict-origin-when-cross-origin"<br>}</code></pre> |
 #### `config.action_dispatch.default_charset`
 
 すべてのレンダリングで使うデフォルトの文字セットを指定します。デフォルト値は`nil`です。
@@ -953,11 +1217,25 @@ HTTP Authのsalt値（訳注: ハッシュの安全性を強化するために�
 
 #### `config.action_dispatch.use_authenticated_cookie_encryption`
 
-署名暗号化済みcookieが値の期限切れ情報に埋め込まれる場合に、暗号化済みcookieでAES-256-GCまたは旧AES-256-CBCで認証された暗号を用いるかどうかを指定します。デフォルト値は`true`です。
+署名暗号化済みcookieでAES-256-GCMまたは旧AES-256-CBC暗号を用いるかどうかを指定します。
+
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | `false`              |
+| 5.2以降                | `true`               |
 
 #### `config.action_dispatch.use_cookies_with_metadata`
 
-`purpose`メタデータを埋め込んだcookieの書き込みを有効にします。デフォルト値は`true`です。
+`purpose`メタデータを埋め込んだcookieの書き込みを有効にします。
+
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | `false`              |
+| 6.0以降                | `true`               |
 
 #### `config.action_dispatch.perform_deep_munge`
 
@@ -1006,11 +1284,18 @@ config.action_dispatch.rescue_responses = {
 }
 ```
 
-設定されていない例外はすべて500 Internel Server Errorに割り当てられます。
+設定されていない例外はすべて500 Internal Server Errorに割り当てられます。
 
 #### `config.action_dispatch.return_only_request_media_type_on_content_type`
 
 `ActionDispatch::Response#content_type`が`Content-Type`ヘッダーを改変せずに返すよう変更します。
+
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | `true`               |
+| 7.0以降                | `false`              |
 
 #### `config.action_dispatch.cookies_same_site_protection`
 
@@ -1022,9 +1307,23 @@ config.action_dispatch.cookies_same_site_protection = ->(request) do
 end
 ```
 
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | `nil`                |
+| 6.1以降                | `lax`                |
+
 #### `config.action_dispatch.ssl_default_redirect_status`
 
-`ActionDispatch::SSL`ミドルウェア内で、GETリクエストとHEADリクエスト以外のリクエストをHTTPからHTTPSにリダイレクトするときに用いるデフォルトのHTTPステータスコードを設定します。デフォルト値は、[RFC7538](https://tools.ietf.org/html/rfc7538)で定義されている`308`です。
+`ActionDispatch::SSL`ミドルウェア内で、GETリクエストとHEADリクエスト以外のリクエストをHTTPからHTTPSにリダイレクトするときに用いるデフォルトのHTTPステータスコードを設定します。
+
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | `307`                |
+| 6.1以降                | `308`                |
 
 #### `config.action_dispatch.log_rescued_responses`
 
@@ -1098,13 +1397,34 @@ ERBテンプレートを`# frozen_string_literal: true`マジックコメント�
 
 `form_with`でリモートフォームを生成するかどうかを指定します。
 
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| 5.1                   | `true`               |
+| 6.1以降                | `false`              |
+
 #### `config.action_view.form_with_generates_ids`
 
-`form_with`でidを生成するかどうかを指定します。
+`form_with`のinputでidを生成するかどうかを指定します。
+
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | `false`              |
+| 5.2以降                | `true`               |
 
 #### `config.action_view.default_enforce_utf8`
 
-フォームを生成するときに、UTF-8でエンコードされたフォームを古いInternet Explorerで強制送信する隠しタグを付けるかどうかを指定します。デフォルト値は`false`です。
+フォームを生成するときに、UTF-8でエンコードされたフォームを古いInternet Explorerで強制送信する隠しタグを付けるかどうかを指定します。
+
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | `true`               |
+| 6.0以降                | `false`              |
 
 #### `config.action_view.image_loading`
 
@@ -1124,13 +1444,34 @@ ERBテンプレートを`# frozen_string_literal: true`マジックコメント�
 
 `javascript_include_tag`や`stylesheet_link_tag`で、アセットをプリロードする`Link`ヘッダーを生成するかどうかを指定します。
 
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | `nil`                |
+| 6.1以降                | `true`               |
+
 #### `config.action_view.button_to_generates_button_tag`
 
-`button_to`で、コンテンツが第1引数またはブロックとして渡されるかどうかにかかわらず、`<button>`要素をレンダリングするかどうかを指定します。
+`button_to`で、コンテンツが第1引数として渡されるかブロックとして渡されるかにかかわらず、`<button>`要素をレンダリングするかどうかを指定します。
+
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | `false`              |
+| 7.0以降                | `true`               |
 
 #### `config.action_view.apply_stylesheet_media_default`
 
 `media`属性が提供されていない場合に、`stylesheet_link_tag`で`media`属性のデフォルト値を`screen`としてレンダリングするかどうかを指定します。
+
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | `true`               |
+| 7.0以降                | `false`              |
 
 ### Action Mailboxを設定する
 
@@ -1157,9 +1498,23 @@ config.action_mailbox.incinerate_after = 14.days
 
 焼却（incinerate）ジョブに用いるActive Jobキューを示すシンボルを渡せます。このオプションが`nil`の場合、焼却ジョブがデフォルトのActive Jobキューに送信されます（`config.active_job.default_queue_name`を参照）。
 
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | `:action_mailbox_incineration` |
+| 6.1以降                | `nil`                |
+
 #### `config.action_mailbox.queues.routing`
 
 ルーティングジョブに用いるActive Jobキューを示すシンボルを渡せます。このオプションが`nil`の場合、ルーティングジョブがデフォルトのActive Jobキューに送信されます（`config.active_job.default_queue_name`を参照）。
+
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | `:action_mailbox_routing` |
+| 6.1以降                | `nil`                |
 
 #### `config.action_mailbox.storage_service`
 
@@ -1199,6 +1554,13 @@ Log4rのインターフェイスまたはデフォルトのRuby Loggerクラス�
 #### `config.action_mailer.smtp_timeout`
 
 メール配信用の`:smtp`メソッドの`:open_timeout`値と`:read_timeout`値を設定できます。
+
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | `nil`                |
+| 7.0以降                | `5`                  |
 
 #### `config.action_mailer.sendmail_settings`
 
@@ -1284,6 +1646,13 @@ config.action_mailer.show_previews = false
 
 このオプションが`nil`に設定されている場合、配信ジョブはデフォルトのActive Jobキューに送信されます（`config.active_job.default_queue_name`を参照）。Active Jobアダプタが指定のキューを処理可能な設定になっていることも確認してください。そうしない場合、配信ジョブはエラーを出さずに無視される可能性があります。
 
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | `:mailers`           |
+| 6.1以降                | `nil`                |
+
 #### `config.action_mailer.perform_caching`
 
 メーラーのテンプレートでフラグメントキャッシュを有効にするかどうかを指定します。指定のない場合のデフォルト値は`true`です。
@@ -1291,6 +1660,13 @@ config.action_mailer.show_previews = false
 #### `config.action_mailer.delivery_job`
 
 メールの配信ジョブを指定します。
+
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | `ActionMailer::MailDeliveryJob` |
+| 6.0以降                | `"ActionMailer::MailDeliveryJob"` |
 
 ### Active Supportを設定する
 
@@ -1320,17 +1696,46 @@ JSONエンコードされた時間値の精度を指定します。デフォル�
 
 重要でないダイジェスト（ETagヘッダーなど）の生成に用いるダイジェスト用クラスを設定します。
 
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | `OpenSSL::Digest::MD` |
+| 5.2                   | `OpenSSL::Digest::SHA1` |
+| 7.0以降                | `OpenSSL::Digest::SHA256` |
+
 #### `config.active_support.key_generator_hash_digest_class`
 
-暗号化済みcookieなどで、設定済みのsecretを元にsecretを導出するのに用いるダイジェスト用クラスを設定します。
+暗号化済みcookieなどで設定済みのsecretベースを元にして、secretを導出するのに用いるダイジェスト用クラスを設定します。
+
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | `OpenSSL::Digest::SHA1` |
+| 7.0以降                | `OpenSSL::Digest::SHA256` |
 
 #### `config.active_support.use_authenticated_message_encryption`
 
-AES-256-CBCではなくAES-256-GCM認証済み暗号を用いるかどうかを指定します。
+AES-256-CBCの代わりに、AES-256-GCM認証済み暗号をメッセージ暗号化のデフォルト暗号化方式として用いるかどうかを指定します。
+
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | `false`              |
+| 5.2以降                | `true`               |
 
 #### `config.active_support.cache_format_version`
 
 利用するキャッシュシリアライザのバージョンを指定します。指定可能な値は`6.1`と`7.0`です。
+
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | `6.1`                |
+| 7.0以降                | `7.0`                |
 
 #### `config.active_support.deprecation`
 
@@ -1348,10 +1753,21 @@ AES-256-CBCではなくAES-256-GCM認証済み暗号を用いるかどうかを�
 
 利用が許されない非推奨項目も含めて、すべての非推奨警告メッセージを停止できます。`ActiveSupport::Deprecation.warn`の設定は無効になります。production環境ではデフォルトで有効になります。
 
+#### `config.active_support.remove_deprecated_time_with_zone_name`
+
+[`ActiveSupport::TimeWithZone.name`](https://api.rubyonrails.org/classes/ActiveSupport/TimeWithZone.html#method-c-name)メソッドの非推奨のオーバーライドを削除して非推奨の警告が発生しないようにするかどうかを指定します。
+
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | `nil`                |
+| 7.0以降                | `true`               |
+
 #### `config.active_support.isolation_level`
 
 Rails内部ステートのほとんどの局所性（locality）を設定します。Fiberベースのサーバーやジョブプロセッサ（`falcon`など）を使う場合は、`:fiber`を設定してください。
-それ以外の場合は局所性を`:thread`にするのが最適です。
+それ以外の場合は局所性を`:thread`にするのが最適です。デフォルトは`:thread`です。
 
 #### `config.active_support.use_rfc4122_namespaced_uuids`
 
@@ -1371,17 +1787,36 @@ Rails内部ステートのほとんどの局所性（locality）を設定しま�
 * 名前空間IDは大文字小文字が区別される。
 * `Digest::UUID`で定義される名前空間ID定数を用いて生成される名前空間化UUIDのみが標準に準拠する。
 
-新規アプリのデフォルト値は`true`です。アップグレードされるアプリでは、後方互換性用に`false`が設定されます。
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | `false`              |
+| 7.0以降                | `true`               |
 
 #### `config.active_support.executor_around_test_case`
 
 テストケースをラップする`Rails.application.executor.wrap`を呼び出すように設定します。これにより、テストケースの振る舞いが実際のリクエストやジョブに近づきます。Active Recordクエリキャッシュや非同期クエリのような、通常のテストで無効にされる多くの機能が有効になります。
+
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | `false`              |
+| 7.0以降                | `true`               |
 
 #### `config.active_support.disable_to_s_conversion`
 
 ある種のRubyコアクラスに含まれる`#to_s`メソッドの上書きを無効にします。この設定は、アプリケーションで[Ruby 3.1の最適化](https://github.com/ruby/ruby/commit/b08dacfea39ad8da3f1fd7fdd0e4538cc892ec44)をいち早く利用したい場合に使えます。
 
 この設定は、`config/application.rb`の`Application`クラス内に記述する必要があります。それ以外の場所では無効です。
+
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | `false`              |
+| 7.0以降                | `true`               |
 
 #### `ActiveSupport::Logger.silencer`
 
@@ -1391,9 +1826,27 @@ Rails内部ステートのほとんどの局所性（locality）を設定しま�
 
 キャッシュストア操作で使うロガーを指定します。
 
+#### `ActiveSupport.to_time_preserves_timezone`
+
+`to_time`メソッドでレシーバのUTCオフセットを保持するかどうかを指定します。`false`の場合、`to_time`メソッドはローカルシステムのUTCオフセットに変換されます。
+
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | `false`              |
+| 5.0以降                | `true`               |
+
 #### `ActiveSupport.utc_to_local_returns_utc_offset_times`
 
-`ActiveSupport::TimeZone.utc_to_local`で、オフセットを考慮したUTC時間ではなく、UTCオフセットを考慮したローカル時間を返すように設定します。
+`ActiveSupport::TimeZone.utc_to_local`で、そのオフセットを考慮したUTC時間ではなく、UTCオフセット付きのローカル時間を返すように設定します。
+
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | `false`              |
+| 6.1以降                | `true`               |
 
 ### Active Jobを設定する
 
@@ -1469,6 +1922,13 @@ Active Jobのログ情報に使うロガーとして、Log4rのインターフ�
 
 失敗したジョブをリトライするときに算出する遅延時間に加えるジッター（jitter: ランダムな微変動値）の総量を指定します。
 
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | `0.0`                |
+| 6.1以降                | `0.15`               |
+
 #### `config.active_job.log_query_tags_around_perform`
 
 クエリタグのジョブコンテキストが`around_perform`で自動的に更新されるようにするかどうかを指定します。デフォルト値は`true`です。
@@ -1485,13 +1945,24 @@ Action Cableをメインサーバープロセスの一部としてマウント�
 
 設定オプションについて詳しくは、[Action Cableの概要](action_cable_overview.html#設定)を参照してください。
 
+#### `config.action_cable.precompile_assets`
+
+Action Cableのアセットをアセットパイプラインのプリコンパイルに追加するかどうかを指定します。Sprocketsを使っていない場合、この設定は影響しません。デフォルト値は`true`です。
+
 ### Active Storageを設定する
 
 `config.active_storage`では以下の設定オプションが提供されています。
 
 #### `config.active_storage.variant_processor`
 
-`:mini_magick`または`:vips`いずれかのシンボルを渡せます。これらはvariantの変換やblob解析にMiniMagickとruby-vipsのどちらを使うかを指定します。デフォルト値は`:mini_magick`です。
+`:mini_magick`または`:vips`いずれかのシンボルを渡せます。これらはvariantの変換やblob解析にMiniMagickとruby-vipsのどちらを使うかを指定します。
+
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | `mini_magick`        |
+| 7.0以降                | `vips`               |
 
 #### `config.active_storage.analyzers`
 
@@ -1533,7 +2004,7 @@ config.active_storage.paths[:ffprobe] = '/usr/local/bin/ffprobe'
 
 #### `config.active_storage.variable_content_types`
 
-Active StorageがImageMagickに変換可能なcontent typeを示す文字列を配列で受け取ります。デフォルトでは以下のように定義されます。
+Active StorageがImageMagickに変換可能なContent-Typeを示す文字列を配列で受け取ります。デフォルトでは以下のように定義されます。
 
 ```ruby
 config.active_storage.variable_content_types = %w(image/png image/gif image/jpeg image/tiff image/vnd.adobe.photoshop image/vnd.microsoft.icon image/webp image/avif image/heic image/heif)
@@ -1575,25 +2046,27 @@ config.active_storage.silence_invalid_content_types_warning = false
 
 解析ジョブに用いるActive Jobキューをシンボルで指定します。このオプションが`nil`の場合、解析ジョブはデフォルトのActive Jobキューに送信されます（`config.active_job.default_queue_name`を参照）。
 
-```ruby
-config.active_storage.queues.analysis = :low_priority
-```
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| 6.0                   | `:active_storage_analysis` |
+| 6.1以降                | `nil`                |
 
 #### `config.active_storage.queues.purge`
 
 purgeジョブに用いるActive Jobキューをシンボルで指定します。このオプションが`nil`の場合、purgeジョブはデフォルトのActive Jobキューに送信されます（`config.active_job.default_queue_name`を参照）。
 
-```ruby
-config.active_storage.queues.purge = :low_priority
-```
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| 6.0                   | `:active_storage_purge` |
+| 6.1以降                | `nil`                |
 
 #### `config.active_storage.queues.mirror`
 
 ダイレクトアップロードのミラーリングジョブに用いるActive Jobキューをシンボルで指定します。このオプションが`nil`の場合、ミラーリングジョブはデフォルトのActive Jobキューに送信されます（`config.active_job.default_queue_name`を参照）。デフォルト値は`nil`です。
-
-```ruby
-config.active_storage.queues.mirror = :low_priority
-```
 
 #### `config.active_storage.logger`
 
@@ -1629,11 +2102,25 @@ config.active_storage.routes_prefix = '/files'
 
 #### `config.active_storage.replace_on_assign_to_many`
 
-`has_many_attached`で宣言された添付ファイルのコレクションに代入するときに、既存の添付ファイルをすべて置き換えるか、追加（append）するかを指定します。デフォルト値は`true`です。
+`has_many_attached`で宣言された添付ファイルのコレクションに代入するときに、既存の添付ファイルをすべて置き換えるか、追加（append）するかを指定します。
+
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | `false`              |
+| 6.0以降                | `true`               |
 
 #### `config.active_storage.track_variants`
 
-variantをデータベースに記録するかどうかを指定します。デフォルト値は`true`です。
+variantをデータベースに記録するかどうかを指定します。
+
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | `false`              |
+| 6.1以降                | `true`               |
 
 #### `config.active_storage.draw_routes`
 
@@ -1654,164 +2141,35 @@ Active Storageのファイル配信方法をグローバルに変更できます
 
 ffmpegの動画プレビュー画像生成方法を変更できます。
 
-`config.load_defaults 7.0`の場合はデフォルトで以下が定義されます。
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
 
-```ruby
-config.active_storage.video_preview_arguments = "-vf 'select=eq(n\\,0)+eq(key\\,1)+gt(scene\\,0.015),loop=loop=-1:size=2,trim=start_frame=1' -frames:v 1 -f image2"
-```
-
-振る舞いは以下のようになります。
-
-1. `select=eq(n\,0)+eq(key\,1)+gt(scene\,0.015)`: 冒頭の動画フレームとキーフレーム、閾値に合う場面変更のフレーム
-2. `loop=loop=-1:size=2,trim=start_frame=1`: 他のフレームが条件を満たさない場合は冒頭の動画フレームにフォールバックする（選択したフレームの冒頭の1つまたは2つをループさせてから、冒頭のループフレームを削除する）
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | `"-y -vframes 1 -f image2"` |
+| 7.0以降                | `"-vf 'select=eq(n\\,0)+eq(key\\,1)+gt(scene\\,0.015)"`<sup><mark><strong><em>1</em></strong></mark></sup> <br> `+ ",loop=loop=-1:size=2,trim=start_frame=1'"`<sup><mark><strong><em>2</em></strong></mark></sup><br> `+ " -frames:v 1 -f image2"` <br><br> <ol><li>冒頭の動画フレームとキーフレーム、閾値に合う場面変更のフレームを選択する。</li> <li>他のフレームが条件を満たさない場合は、選択した冒頭の動画フレームにフォールバックして動画をループするか、選択した2つの動画フレームにフォールバックして動画をループする（冒頭のループフレームは使わない）。</li></ol> |
 
 #### `config.active_storage.multiple_file_field_include_hidden`
 
-Rails 7.1以降、Active Storageの`has_many_attached`リレーションシップは、デフォルトで現在のコレクションに**追加されるのではなく**、デフォルトで現在のコレクションを**置き換える**ようになる予定です。「**空の**」コレクションの送信をサポートするには、Action Viewのフォームビルダーでチェックボックス要素をレンダリングするのと同じ要領で、補助的な隠しフィールドをレンダリングしてください。
+Rails 7.1以降、Active Storageの`has_many_attached`リレーションシップは、デフォルトで現在のコレクションに**追加されるのではなく**、デフォルトで現在のコレクションを**置き換える**ようになる予定です。
+
+「**空の**」コレクションの送信をサポートするために、この`multiple_file_field_include_hidden`が`true`の場合は[`file_field`](https://api.rubyonrails.org/classes/ActionView/Helpers/FormBuilder.html#method-i-file_field)ヘルパーが補助的な隠しフィールドをレンダリングするようになります。これは、[`check_box`](https://api.rubyonrails.org/classes/ActionView/Helpers/FormBuilder.html#method-i-check_box)ヘルパーで補助フィールドをレンダリングするのと似ています。
+
+デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | `false`              |
+| 7.0以降                | `true`               |
+
+#### `config.active_storage.precompile_assets`
+
+アセットパイプラインのプリコンパイルにActive Storageアセットを追加するかどうかを指定します。Sprocketsを使っていない場合は、この設定は影響しません。デフォルト値は`true`です。
 
 ### Action Textを設定する
 
 #### `config.action_text.attachment_tag_name`
 
 添付ファイルをラップするHTMLタグを文字列で指定します。デフォルト値は`"action-text-attachment"`です。
-
-### `load_defaults`の結果
-
-`config.load_defaults`は、渡されたバージョンまでのデフォルト値を含む新しいデフォルト値を設定します。たとえば`6.0`を指定すると、6.0以前のあらゆるバージョンのデフォルト値も取得できます。
-
-#### '7.0'を指定した場合（以前のバージョンのデフォルト値を除く）
-
-- `config.action_controller.raise_on_open_redirects`: `true`
-- `config.action_view.button_to_generates_button_tag`: `true`
-- `config.action_view.apply_stylesheet_media_default`: `false`
-- `config.active_support.key_generator_hash_digest_class`: `OpenSSL::Digest::SHA256`
-- `config.active_support.hash_digest_class`: `OpenSSL::Digest::SHA256`
-- `config.active_support.cache_format_version`: `7.0`
-- `config.active_support.remove_deprecated_time_with_zone_name`: `true`
-- `config.active_support.executor_around_test_case`: `true`
-- `config.active_support.use_rfc4122_namespaced_uuids`: `true`
-- `config.active_support.disable_to_s_conversion`: `true`
-- `config.action_dispatch.return_only_request_media_type_on_content_type`: `false`
-- `config.action_dispatch.cookies_serializer`: `:json`
-- `config.action_mailer.smtp_timeout`: `5`
-- `config.active_storage.video_preview_arguments`: `"-vf 'select=eq(n\\,0)+eq(key\\,1)+gt(scene\\,0.015),loop=loop=-1:size=2,trim=start_frame=1' -frames:v 1 -f image2"`
-- `config.active_storage.multiple_file_field_include_hidden`: `true`
-- `config.active_record.automatic_scope_inversing`: `true`
-- `config.active_record.verify_foreign_keys_for_fixtures`: `true`
-- `config.active_record.partial_inserts`: `false`
-- `config.active_storage.variant_processor`: `:vips`
-- `config.action_controller.wrap_parameters_by_default`: `true`
-- `config.action_dispatch.default_headers`:
-
-```ruby
-    {
-      "X-Frame-Options" => "SAMEORIGIN",
-      "X-XSS-Protection" => "0",
-      "X-Content-Type-Options" => "nosniff",
-      "X-Download-Options" => "noopen",
-      "X-Permitted-Cross-Domain-Policies" => "none",
-      "Referrer-Policy" => "strict-origin-when-cross-origin"
-    }
-```
-
-#### '6.1'を指定した場合（以前のバージョンのデフォルト値を除く）
-
-- `config.active_record.has_many_inversing`: `true`
-- `config.active_record.legacy_connection_handling`: `false`
-- `config.active_storage.track_variants`: `true`
-- `config.active_storage.queues.analysis`: `nil`
-- `config.active_storage.queues.purge`: `nil`
-- `config.action_mailbox.queues.incineration`: `nil`
-- `config.action_mailbox.queues.routing`: `nil`
-- `config.action_mailer.deliver_later_queue_name`: `nil`
-- `config.active_job.retry_jitter`: `0.15`
-- `config.action_dispatch.cookies_same_site_protection`: `:lax`
-- `config.action_dispatch.ssl_default_redirect_status` = `308`
-- `ActiveSupport.utc_to_local_returns_utc_offset_times`: `true`
-- `config.action_controller.urlsafe_csrf_tokens`: `true`
-- `config.action_view.form_with_generates_remote_forms`: `false`
-- `config.action_view.preload_links_header`: `true`
-
-#### '6.0'を指定した場合（以前のバージョンのデフォルト値を除く）
-
-- `config.autoloader`: `:zeitwerk`
-- `config.action_view.default_enforce_utf8`: `false`
-- `config.action_dispatch.use_cookies_with_metadata`: `true`
-- `config.action_mailer.delivery_job`: `"ActionMailer::MailDeliveryJob"`
-- `config.active_storage.queues.analysis`: `:active_storage_analysis`
-- `config.active_storage.queues.purge`: `:active_storage_purge`
-- `config.active_storage.replace_on_assign_to_many`: `true`
-- `config.active_record.collection_cache_versioning`: `true`
-
-#### '5.2'を指定した場合（以前のバージョンのデフォルト値を除く）
-
-- `config.active_record.cache_versioning`: `true`
-- `config.action_dispatch.use_authenticated_cookie_encryption`: `true`
-- `config.active_support.use_authenticated_message_encryption`: `true`
-- `config.active_support.hash_digest_class`: `OpenSSL::Digest::SHA1`
-- `config.action_controller.default_protect_from_forgery`: `true`
-- `config.action_view.form_with_generates_ids`: `true`
-
-#### '5.1'を指定した場合（以前のバージョンのデフォルト値を除く）
-
-- `config.assets.unknown_asset_fallback`: `false`
-- `config.action_view.form_with_generates_remote_forms`: `true`
-
-#### '5.0'を指定した場合（ベースラインのデフォルト値を除く）
-
-- `config.action_controller.per_form_csrf_tokens`: `true`
-- `config.action_controller.forgery_protection_origin_check`: `true`
-- `ActiveSupport.to_time_preserves_timezone`: `true`
-- `config.active_record.belongs_to_required_by_default`: `true`
-- `config.ssl_options`: `{ hsts: { subdomains: true } }`
-
-#### 基本のデフォルト値
-
-- `config.action_controller.default_protect_from_forgery`: `false`
-- `config.action_controller.raise_on_open_redirects`: `false`
-- `config.action_controller.urlsafe_csrf_tokens`: `false`
-- `config.action_dispatch.cookies_same_site_protection`: `nil`
-- `config.action_mailer.delivery_job`: `ActionMailer::MailDeliveryJob`
-- `config.action_view.form_with_generates_ids`: `false`
-- `config.action_view.preload_links_header`: `nil`
-- `config.action_view.button_to_generates_button_tag`: `false`
-- `config.action_view.apply_stylesheet_media_default`: `true`
-- `config.active_job.retry_jitter`: `0.0`
-- `config.action_mailbox.queues.incineration`: `:action_mailbox_incineration`
-- `config.action_mailbox.queues.routing`: `:action_mailbox_routing`
-- `config.action_mailer.deliver_later_queue_name`: `:mailers`
-- `config.active_record.collection_cache_versioning`: `false`
-- `config.active_record.cache_versioning`: `false`
-- `config.active_record.has_many_inversing`: `false`
-- `config.active_record.legacy_connection_handling`: `true`
-- `config.active_record.partial_inserts`: `true`
-- `config.active_support.use_authenticated_message_encryption`: `false`
-- `config.active_support.hash_digest_class`: `OpenSSL::Digest::MD5`
-- `config.active_support.key_generator_hash_digest_class`: `OpenSSL::Digest::SHA1`
-- `config.active_support.cache_format_version`: `6.1`
-- `config.active_support.executor_around_test_case`: `false`
-- `config.active_support.isolation_level`: `:thread`
-- `config.active_support.use_rfc4122_namespaced_uuids`: `false`
-- `config.active_support.disable_to_s_conversion`: `false`
-- `config.action_dispatch.return_only_request_media_type_on_content_type`: `true`
-- `ActiveSupport.utc_to_local_returns_utc_offset_times`: `false`
-- `config.action_mailer.smtp_timeout`: `nil`
-- `config.active_storage.video_preview_arguments`: `"-y -vframes 1 -f image2"`
-- `config.active_storage.multiple_file_field_include_hidden`: `false`
-- `config.active_storage.variant_processor`: `:mini_magick`
-- `config.action_controller.wrap_parameters_by_default`: `false`
-- `config.action_dispatch.default_headers`:
-
-```ruby
-    {
-      "X-Frame-Options" => "SAMEORIGIN",
-      "X-XSS-Protection" => "1; mode=block",
-      "X-Content-Type-Options" => "nosniff",
-      "X-Download-Options" => "noopen",
-      "X-Permitted-Cross-Domain-Policies" => "none",
-      "Referrer-Policy" => "strict-origin-when-cross-origin"
-    }
-```
 
 ### データベースを設定する
 
@@ -1829,8 +2187,7 @@ development:
 上の設定は、`postgresql`を用いて`blog_development`という名前のデータベースに接続します。同じ接続情報をURL化して、以下のように環境変数に保存することも可能です。
 
 ```ruby
-> puts ENV['DATABASE_URL']
-postgresql://localhost/blog_development?pool=5
+ENV['DATABASE_URL'] # => "postgresql://localhost/blog_development?pool=5"
 ```
 
 `config/database.yml`ファイルには、Railsがデフォルトで実行できる以下の3つの異なる環境を記述するセクションが含まれています。
@@ -1841,7 +2198,7 @@ postgresql://localhost/blog_development?pool=5
 
 必要であれば、`config/database.yml`の内部でURLを直接指定することも可能です。
 
-```ruby
+```yaml
 development:
   url: postgresql://localhost/blog_development?pool=5
 ```
@@ -2166,9 +2523,11 @@ Rails環境の設定
 イニシャライザファイルを使う
 -----------------------
 
-Railsは、フレームワークの読み込みとすべてのgemの読み込みが完了してから、イニシャライザの読み込みを開始します。イニシャライザとは、アプリケーションの`config/initializers`ディレクトリに保存されているRubyファイルのことです。
+Railsは、フレームワークの読み込みとすべてのgemの読み込みが完了してから、イニシャライザの読み込みを開始します。イニシャライザとは、アプリケーションの`config/initializers`ディレクトリに保存されているRubyファイルのことです。イニシャライザファイルには、フレームワークやgemがすべて読み込まれた後に行いたい設定（フレームワークやgemを設定するオプションなど）を保存できます。
 
-イニシャライザファイルには、フレームワークやgemがすべて読み込まれた後に行いたい設定（フレームワークやgemを設定するオプションなど）を保存できます。
+`config/initializers`（および`config/initializers`のサブディレクトリ）にあるファイルは、`load_config_initializers`イニシャライザの一部として、ソートされて1つずつ読み込まれます。
+
+あるイニシャライザのコードが別のイニシャライザのコードに依存する場合、代わりにそれらを1つのイニシャライザーにまとめることが可能です。こうすることで依存関係がより明確になり、アプリケーション内で新しい概念を表面化するのに有用です。Railsは番号を振ったイニシャライザファイル名もサポートしていますが、これはファイル名の乱立につながる可能性があります。`require`で明示的にイニシャライザを読み込むとイニシャライザが2回読み込まれるので、おすすめできません。
 
 NOTE: 自分のイニシャライザが、他のすべてのgemのイニシャライザが実行された後で実行されるという保証はありません。そのようなgemに依存する初期化コードは、`config.after_initialize`ブロックに配置してください。
 
@@ -2401,7 +2760,7 @@ Action Controllerの`helpers_path`をアプリケーションの`helpers_path`�
 
 #### `load_environment_config`
 
-現在の環境に対応する`config/environments`を読み込みます。
+このイニシャライザーは`load_environment_hook`の前に実行されます。現在の環境用の`config/environments`ファイルを読み込みます。
 
 #### `prepend_helpers_path`
 
@@ -2417,7 +2776,7 @@ Action Controllerの`helpers_path`をアプリケーションの`helpers_path`�
 
 #### `add_generator_templates`
 
-アプリケーションやrailtiesやエンジンにある`lib/templates`ディレクトリにあるジェネレータ用のテンプレートを探索して`config.generators.templates`設定に追加します。この設定によって、すべてのジェネレータからテンプレートを参照できるようになります。
+アプリケーションやrailtiesやエンジンにある`lib/templates`ディレクトリにあるジェネレータ用のテンプレートを探索して`config.generators.templates`設定に追加します。この設定によって、すべてのジェネレータでテンプレートを参照できるようになります。
 
 #### `ensure_autoload_once_paths_as_subset`
 
