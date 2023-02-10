@@ -21,13 +21,15 @@ WIP: ここに記載されているのはヘルパーの一部です。完全な
 
 このモジュールは、ビューを「画像」「JavaScriptファイル」「スタイルシート（CSS）」「フィード」などのアセットにリンクするHTMLを生成するメソッド（ヘルパーメソッド）を提供します。
 
-デフォルトでは、現在のホストの`public/`フォルダにあるこれらのアセットにリンクされますが、アプリケーション設定の`config.asset_host`を設定すれば、アセット専用サーバー上にあるアセットに直接リンクできます。たとえば、アセットホストが`assets.example.com`の場合は以下のように設定します。
+デフォルトでは、現在のホストの`public/`フォルダにあるこれらのアセットにリンクされますが、アプリケーション設定の[`config.asset_host`][]を設定すれば、アセット専用サーバー上にあるアセットに直接リンクできます。たとえば、アセットホストが`assets.example.com`の場合は以下のように設定します。
 
 ```ruby
 config.asset_host = "assets.example.com"
 image_tag("rails.png")
 # => <img src="http://assets.example.com/images/rails.png" />
 ```
+
+[`config.asset_host`]: configuring.html#config-asset-host
 
 #### `auto_discovery_link_tag`
 
