@@ -17,44 +17,50 @@
 アセットパイプラインについて
 ---------------------------
 
-アセットパイプラインとは、JavaScriptやCSSのアセットを最小化 (minify: スペースや改行を詰めるなど) または圧縮して連結するためのフレームワークです。アセットパイプラインでは、CoffeeScriptやSass、ERBなど他の言語で記述されたアセットを作成する機能を追加することもできます。
-アセットパイプラインはアプリケーションのアセットを自動的に他のgemのアセットと結合できます。たとえば、jquery-railsにはRailsでAJAXを使えるようにするjquery.jsが含まれています。
+NOTE: 英語版ガイドは現在[#47012](https://github.com/rails/rails/pull/47012)で大幅な更新が進行中です。現状の7-0-stableブランチの英語版ガイドは多くがRails 6時代のものになっていますが、英語版が更新されるまでは現状に即した訳文としています。ご了承ください。
 
-アセットパイプラインは[sprockets-rails](https://github.com/rails/sprockets-rails) gemによって実装され、デフォルトで有効になっています。アプリケーションの新規作成中にアセットパイプラインを無効にするには、`--skip-sprockets`オプションを渡します。
+アセットパイプラインとは、JavaScriptやCSSのアセットを最小化 (minify: スペースや改行を詰めるなど) または圧縮して連結するためのフレームワークです。アセットパイプラインでは、CoffeeScriptやSass、ERBなど他の言語で記述されたアセットを作成する機能を追加することもできます。
+アセットパイプラインはアプリケーションのアセットを自動的に他のgemのアセットと結合できます。
+
+アセットパイプラインは[sprockets-rails](https://github.com/rails/sprockets-rails) gemによって実装され、デフォルトで有効になっています。アプリケーションの新規作成中にアセットパイプラインを無効にするには、`--skip-asset-pipeline`オプションを渡します。
 
 ```bash
-rails new appname --skip-sprockets
+$ rails new appname --skip-asset-pipeline
 ```
 
-Railsでは`sass-rails` gemが自動的にGemfileに追加されます。Sprocketsはアセット圧縮の際にこのgemを利用します。
+Railsでは[`sassc-rails`](https://github.com/sass/sassc-rails gemをGemfileに追加することでSassを手軽に利用できます、Sprocketsは、このgemをアセットのコンパイルで利用します。
 
 ```ruby
-gem 'sass-rails'
+gem 'sassc-rails'
 ```
 
-アセット圧縮方式を指定するには、`production.rb`の該当する設定オプションを設定します。`config.assets.css_compressor`はCSSの圧縮方式、`config.assets.js_compressor`はJavaScriptの圧縮方式をそれぞれ指定します。
+NOTE: sassc-rails gemで使われている[libsass](https://sass-lang.com/libsass)は現在非推奨です。
+
+アセット圧縮方式を指定するには、`production.rb`の該当する設定オプションを設定します。[`config.assets.css_compressor`][]はCSSの圧縮方式を、[`config.assets.js_compressor`][]はJavaScriptの圧縮方式をそれぞれ指定します。
 
 ```ruby
 config.assets.css_compressor = :yui
 config.assets.js_compressor = :terser
 ```
 
-NOTE: `sass-rails` gemが`Gemfile`に含まれていれば自動的にCSS圧縮に利用されます。この場合`config.assets.css_compressor`オプションは設定されません。
+NOTE: `sass-rails` gemが`Gemfile`に含まれていれば自動的にCSS圧縮で利用されます。この場合`config.assets.css_compressor`オプションは設定されません。
 
+[`config.assets.css_compressor`]: configuring.html#config-assets-css-compressor
+[`config.assets.js_compressor`]: configuring.html#config-assets-js-compressor
 
 ### 主要な機能
 
 アセットパイプラインの第1の機能はアセットを連結することです。これにより、ブラウザがWebページをレンダリングするためのリクエスト数を減らすことができます。Webブラウザが同時に処理できるリクエスト数には限りがあるため、同時リクエスト数を減らすことができればその分読み込みが高速になります。
 
-SprocketsはすべてのJavaScriptファイルを1つのマスター`.js`ファイルに連結し、すべてのCSSファイルを1つのマスター`.css`ファイルに連結します。本ガイドで後述するように、アセットファイルをグループ化する方法は自由にカスタマイズできます。production環境では、アセットファイル名にSHA256フィンガープリントを挿入し、アセットファイルがWebブラウザでキャッシュされるようにしています。このフィンガープリントを変更することでブラウザでキャッシュされていた既存のアセットを無効にすることができます。フィンガープリントの変更は、アセットファイルの内容が変更された時に自動的に行われます。
+SprocketsはすべてのJavaScriptファイルを連結して1個のマスター`.js`ファイルにし、すべてのCSSファイルを連結して1個のマスター`.css`ファイルにします。本ガイドで後述するように、アセットファイルをグループ化する方法は自由にカスタマイズできます。production環境では、アセットファイル名にSHA256フィンガープリントを挿入し、アセットファイルがWebブラウザでキャッシュされるようにしています。このフィンガープリントを変更することでブラウザでキャッシュされていた既存のアセットを無効にすることができます。アセットファイルの内容が変更されると、フィンガープリントも自動的に変更されます。
 
-アセットパイプラインの第2の機能はアセットの最小化（一種の圧縮）です。CSSファイルの最小化は、ホワイトスペースとコメントを削除することによって行われます。JavaScriptの最小化プロセスはもう少し複雑です。最小化方法はビルトインのオプションから選んだり、独自に指定したりすることができます。
+アセットパイプラインの第2の機能はアセットの最小化（minify）です。CSSファイルの最小化は、ホワイトスペースとコメントを削除することによって行われます。JavaScriptの最小化プロセスはもう少し複雑です。最小化方法はビルトインのオプションで選ぶことも、独自に指定することもできます。
 
 アセットパイプラインの第3の機能は、より高級な言語を利用したコーディングのサポートです。これらの言語で記述されたコードはプリコンパイルされ、実際のアセットになります。デフォルトでサポートされている言語は、CSSに代わるSass、JavaScriptに代わるCoffeeScript、CSS/JavaScriptに代わるERBです。
 
 ### フィンガープリントと注意点
 
-アセットファイル名で使われるフィンガープリントは、アセットファイルの内容に応じて変わります。アセットファイルの内容が少しでも変わると、アセットファイル名も必ずそれに応じて変わります（訳注: SHA256の性質により、異なるファイルからたまたま同じフィンガープリントが生成されることはほぼありません）。変更されていないファイルやめったに変更されないファイルがある場合、フィンガープリントも変化しないので、ファイルの内容が完全に同一であることが容易に確認できます。これはサーバーやデプロイ日が異なっていても有効です。
+アセットファイル名で使われるフィンガープリントは、アセットファイルの内容に応じて変わります。アセットファイルの内容が少しでも変わると、アセットファイル名も必ずそれに応じて変わります。内容を変更する予定のないファイルや変更頻度の低いファイルについて、フィンガープリントをチェックすれば内容が変更されていないかどうかを容易に確認できます。これはサーバーやデプロイ日が異なっていても有効です。
 
 アセットファイル名は内容が変わると必ず変化するので、CDN、ISP、ネットワーク機器、Webブラウザなどあらゆる場面で有効なキャッシュをHTTPヘッダに設定できます。ファイルの内容が更新されると、フィンガープリントも更新されます。これにより、リモートクライアントは（訳注: 既存のキャッシュを使わずに）コンテンツの新しいコピーをサーバーにリクエストします。この手法を一般に「キャッシュ破棄（cache busting）」と呼びます。
 
@@ -76,34 +82,37 @@ global-908e25f4bf641868d8683022a5b62f54.css
 
 **1. クエリパラメータ以外にファイル名に違いのないコンテンツは確実にキャッシュされないことがある**
 
-  * [Steve Soudersのブログ記事](http://www.stevesouders.com/blog/2008/08/23/revving-filenames-dont-use-querystring/)によると、「キャッシュされる可能性のあるリソースにクエリ文字列でアクセスするのは避けること」が推奨されています。Steveは、5%〜20%ものリクエストがキャッシュされていないことに気付きました。クエリ文字列は、キャッシュ無効化が発生する一部のCDNでは役に立ちません。
+  [Steve Soudersのブログ記事](http://www.stevesouders.com/blog/2008/08/23/revving-filenames-dont-use-querystring/)によると、「キャッシュされる可能性のあるリソースにクエリ文字列でアクセスするのは避けること」が推奨されています。Steveは、5%〜20%ものリクエストがキャッシュされていないことに気付きました。クエリ文字列は、キャッシュ無効化が発生する一部のCDNでは役に立ちません。
 
-**2. マルチサーバー環境でファイル名が異なってしまうことがある**
+**2. マルチサーバー環境でファイル名が異なる可能性がある**
 
-  * Rails 2.xのデフォルトのクエリ文字列はファイルの更新日付に基いていました。このアセットをサーバークラスタにデプロイすると、サーバー間でファイルのタイムスタンプが同じになる保証がないため、リクエストを受けるサーバーが変わるたびに値が異なってしまいます。
+  Rails 2.xのデフォルトのクエリ文字列はファイルの更新日付に基いていました。このアセットをサーバークラスタにデプロイすると、サーバー間でファイルのタイムスタンプが同じになる保証がないため、リクエストを受けるサーバーが変わるたびに値が異なってしまいます。
 
 **3. キャッシュの無効化が過剰に発生する**
 
-  * コードリリース時のデプロイが行われると、アセットに変更があるかどうかにかかわらず「すべての」ファイルのmtime（最終更新時刻）が変更されてしまいます。このため、アセットに変更がなくてもWebブラウザを含むあらゆるリモートクライアントで強制的にアセットが再取得されてしまいます。
+  コードリリース時のデプロイが行われると、アセットに変更があるかどうかにかかわらず「すべての」ファイルのmtime（最終更新時刻）が変更されてしまいます。このため、アセットに変更がなくてもWebブラウザを含むあらゆるリモートクライアントで強制的にアセットが再取得されてしまいます。
 
 フィンガープリントが導入されたことによって上述のクエリ文字列による問題点が解決され、アセットの内容が同じであればファイル名も常に同じになるようになりました。
 
-フィンガープリントはdevelopment環境とproduction環境の両方でデフォルトでオンになります。設定ファイルの`config.assets.digest`オプションを使うとフィンガープリントのオン/オフを制御できます。
+フィンガープリントはdevelopment環境とproduction環境の両方でデフォルトでオンになります。設定ファイルの[`config.assets.digest`][]オプションを使うとフィンガープリントのオン/オフを制御できます。
 
 詳しくは以下を参照してください。
 
 * [キャッシュの最適化](https://developers.google.com/speed/docs/insights/LeverageBrowserCaching)
 * [ファイル名の変更にクエリ文字列を使ってはいけない理由](http://www.stevesouders.com/blog/2008/08/23/revving-filenames-dont-use-querystring/)
 
+[`config.assets.digest`]: configuring.html#config-assets-digest
 
 アセットパイプラインの利用方法
 -----------------------------
 
 以前のRailsでは、すべてのアセットは`public`ディレクトリの下の`images`、`javascripts`、`stylesheets`などのサブフォルダに置かれました。アセットパイプライン導入後は、`app/assets`ディレクトリがアセットの置き場所として推奨されています。このディレクトリに置かれたファイルはSprocketsミドルウェアによってサポートされます。
 
-アセットは引き続き`public`ディレクトリ以下に置くことも可能です。`config.public_file_server.enabled`が`true`に設定されていると、`public`ディレクトリ以下に置かれているあらゆるアセットはアプリケーションまたはWebサーバーによって静的なファイルとして取り扱われます。プリプロセスが必要なファイルは`app/assets`ディレクトリの下に置く必要があります。
+アセットは引き続き`public`ディレクトリ以下に置くことも可能です。[`config.public_file_server.enabled`][]が`true`に設定されていると、`public`ディレクトリ以下に置かれているあらゆるアセットはアプリケーションまたはWebサーバーによって静的なファイルとして取り扱われます。プリプロセスが必要なファイルは`app/assets`ディレクトリの下に置く必要があります。
 
-productionモードでは、Railsはプリコンパイルされたファイルを`public/assets`に置きます。プリコンパイルされたファイルは、Webサーバーによって静的なアセットとして扱われます。`app/assets`に置かれたファイルがそのままの形でproduction環境で利用されることは決してありません。
+productionモードでは、Railsはプリコンパイルされたファイルを`public/assets`に置きます。プリコンパイルされたファイルは、Webサーバーによって静的なアセットとして扱われます。`app/assets`に置かれたファイルがそのままの形でproduction環境で配信されることは決してありません。
+
+[`config.public_file_server.enabled`]: configuring.html#config-public-file-server-enabled
 
 ### コントローラ固有のアセット
 
@@ -129,7 +138,7 @@ NOTE: CoffeeScriptを利用するには、ExecJSがランタイムでサポー�
 
 * `lib/assets`は、1つのアプリケーションの範疇に収まらないライブラリのコードや、複数のアプリケーションで共有されるライブラリのコードを置く場所です。
 
-* `vendor/assets`は、JavaScriptプラグインやCSSフレームワークなど、外部の団体などによって所有されているアセットの置き場所です。
+* `vendor/assets`は、JavaScriptプラグインやCSSフレームワークなど、外部の団体などによって所有されているアセットの置き場所です。ただし、アセットパイプラインでも処理される他のファイル(画像、スタイルシートなど)を参照するサードパーティのコードでは、`asset_path`などのヘルパーを使う形に書き直さなければならないことを覚えておいてください。
 
 #### パスの検索
 
@@ -167,7 +176,7 @@ app/assets/javascripts/sub/something.js
 //= require sub/something
 ```
 
-検索パスを調べるには、Railsコンソールで`Rails.application.config.assets.paths`を調べます。
+検索パスを調べるには、Railsコンソールで[`Rails.application.config.assets.paths`][`config.assets.paths`]を調べます。
 
 `config/initializers/assets.rb`に記述することで、標準の`assets/*`に加えて追加の（fully qualified: 完全修飾）パスをパイプラインに追加できます。以下の例で説明します。
 
@@ -178,6 +187,8 @@ Rails.application.config.assets.paths << Rails.root.join("lib", "videoplayer", "
 パスの探索は、検索パスでの出現順で行われます。デフォルトでは`app/assets`の検索が優先されるので、対応するパスが`lib`や`vendor`にある場合はマスクされます。
 
 ここで重要なのは、参照したいファイルがマニフェストの外にある場合は、それらをプリコンパイル配列に追加しなければならないという点です。追加しない場合、production環境で利用できなくなります。
+
+[`config.assets.paths`]: configuring.html#config-assets-paths
 
 #### indexファイルを使う
 
@@ -202,7 +213,7 @@ Sprocketsはアセットにアクセスするためのメソッドを特に追�
 <%= javascript_include_tag "application" %>
 ```
 
-Railsに同梱されているturbolinks gemを利用している場合、`'data-turbo-track'`オプションが利用できます。これはアセットが更新されてページに読み込まれたかどうかをTurboがチェックします。
+Railsに同梱されている turbolinks gem（訳注: 本パラグラフおよび以下のサンプルは、実際には[`turbo-rails`](https://github.com/hotwired/turbo-rails) gem向けの記述です）を利用している場合、`'data-turbo-track'`オプションが利用できます。これはアセットが更新されてページに読み込まれたかどうかをTurboがチェックします。
 
 ```erb
 <%= stylesheet_link_tag "application", media: "all", "data-turbo-track" => "reload" %>
@@ -219,7 +230,7 @@ Railsに同梱されているturbolinks gemを利用している場合、`'data-
 
 `public/assets/rails-f90d8a84c707a8dc923fca1ca1895ae8ed0a09237f6992015fef1e11be77c023.png`など、ファイル名にSHA256ハッシュを含むファイルへのリクエストについても同様に扱われます。ハッシュの生成法については、本ガイドの[production環境の場合](#production環境の場合)で後述します。
 
-Sprocketsは`config.assets.paths`で指定したパスも探索します。このパスには、標準的なアプリケーションパスと、Railsエンジンによって追加されるすべてのパスが含まれます。
+Sprocketsは[`config.assets.paths`][]で指定したパスも探索します。このパスには、標準的なアプリケーションパスと、Railsエンジンによって追加されるすべてのパスが含まれます。
 
 必要であれば画像ファイルをサブディレクトリに置いて整理することもできます。この画像にアクセスするには、ディレクトリ名を含めて以下のようにタグで指定します。
 
@@ -239,7 +250,7 @@ WARNING: アセットのプリコンパイルを行っている場合（[product
 
 ここには、指定されたアセットへのパスを記述します。上の例では、アセット読み込みパスのいずれかにある画像ファイル（`app/assets/images/image.png`など） が指定されたと解釈されます。この画像が既にフィンガープリント付きで`public/assets`にあれば、このパスによる参照は有効になります。
 
-[データURIスキーム](https://ja.wikipedia.org/wiki/Data_URI_scheme)（CSSファイルにデータを直接埋め込む手法）を使いたい場合は、`asset_data_uri`を使えます。
+[データURIスキーム](https://ja.wikipedia.org/wiki/Data_URI_scheme)（CSSファイルにデータを直接埋め込む手法）を使いたい場合は、`asset_data_uri`ヘルパーを使えます。
 
 ```css
 #logo { background: url(<%= asset_data_uri 'logo.png' %>) }
@@ -299,7 +310,7 @@ Railsは以下の行を含むデフォルトの`app/assets/stylesheets/applicati
 */
 ```
 
-Railsは`app/assets/stylesheets/application.css`ファイルを作成します。これはRailsアプリケーション新規作成時に`--skip-sprockets`を指定するかどうかにかかわらず行われます。これにより、必要に応じて後からアセットパイプラインを追加することも可能です。
+Railsは`app/assets/stylesheets/application.css`ファイルを作成します。これはRailsアプリケーション新規作成時に`--skip-asset-pipeline`を指定するかどうかにかかわらず行われます。これにより、必要に応じて後からアセットパイプラインを追加することも可能です。
 
 JavaScriptで使えるディレクティブはスタイルシートでも利用できます（なおJavaScriptと異なり、スタイルシートは明示的にインクルードされます）。CSSマニフェストにおける`require_tree`ディレクティブの動作はJavaScriptの場合と同様に、現在のディレクトリにあるすべてのスタイルシートを`require`します。
 
@@ -407,7 +418,7 @@ Sprocketsは、production環境では上述のフィンガープリントによ�
 
 NOTE: アセットパイプラインの`:cache`オプションと`:concat`オプションは廃止されました。これらのオプションは`javascript_include_tag`と`stylesheet_link_tag`から削除してください。
 
-フィンガープリントの振る舞いについては`config.assets.digest`初期化オプションで制御できます。デフォルトでは`true`です。
+フィンガープリントの振る舞いについては、[`config.assets.digest`][]初期化オプションで制御できます。デフォルトでは`true`です。
 
 NOTE: デフォルトの`config.assets.digest`オプションは、通常は変更しないでください。ファイル名にダイジェストが含まれていないと、遠い将来にヘッダが設定されたときに、ブラウザなどのリモートクライアントがファイルの内容変更を検出できなくなり、変更を再取得できなくなってしまいます。
 
@@ -415,7 +426,7 @@ NOTE: デフォルトの`config.assets.digest`オプションは、通常は変�
 
 Railsには、パイプラインにあるアセットマニフェストなどのファイルを手動でコンパイルするためのコマンドが1つバンドルされています。
 
-コンパイルされたアセットは、`config.assets.prefix`で指定された場所に保存されます。この保存場所は、デフォルトでは`/assets`ディレクトリです。
+コンパイルされたアセットは、[`config.assets.prefix`][]で指定された場所に保存されます。この保存場所は、デフォルトでは`/assets`ディレクトリです。
 
 デプロイ時にこのタスクをサーバー上で呼び出すと、コンパイル済みアセットをサーバー上で直接作成できます。ローカル環境でコンパイルする方法については次のセクションを参照してください。
 
@@ -423,12 +434,6 @@ Railsには、パイプラインにあるアセットマニフェストなどの
 
 ```bash
 $ RAILS_ENV=production bin/rails assets:precompile
-```
-
-なお、Capistrano（v2.15.1以降）にはデプロイ中にこのタスクを扱うレシピが含まれています。`Capfile`に以下を追加します。
-
-```ruby
-load 'deploy/assets'
 ```
 
 これにより、`config.assets.prefix`で指定されたフォルダが`shared/assets`にリンクされます。
@@ -474,9 +479,11 @@ NOTE: プリコンパイル配列にSassやCoffeeScriptファイルなどを追�
 
 NOTE: productionモードで見つからないプリコンパイル済みファイルがあると、見つからないファイル名をエラーメッセージに含んだ`Sprockets::Helpers::RailsHelper::AssetPaths::AssetNotPrecompiledError`が発生します。
 
+[`config.assets.prefix`]: configuring.html#config-assets-prefix
+
 #### 遠い将来に期限が切れるヘッダー
 
-プリコンパイル済みのアセットはファイルシステム上に置かれ、Webサーバーから直接クライアントに配信されます。これらプリコンパイル済みアセットには、いわゆる「遠い将来に期限が切れるヘッダ（far-future headers）」はデフォルトでは含まれません。したがって、フィンガープリントのメリットを得るためには、サーバーの設定を更新してこのヘッダを含める必要があります。
+プリコンパイル済みのアセットはファイルシステム上に置かれ、Webサーバーから直接クライアントに配信されます。これらプリコンパイル済みアセットには、いわゆる「遠い将来に失効するヘッダ（far-future headers）」はデフォルトでは含まれません。したがって、フィンガープリントのメリットを得るためには、サーバーの設定を更新してこのヘッダを含める必要があります。
 
 Apacheの設定:
 
@@ -506,9 +513,9 @@ location ~ ^/assets/ {
 
 ### ローカルでプリコンパイルする
 
-場合によっては、productionサーバーでアセットをコンパイルしたくないことがあります。たとえば、producionファイルシステムへの書き込みアクセスが制限されている場合や、アセットを変更しないデプロイが頻繁に行われる場合などが考えられます。
+場合によっては、productionサーバーでアセットをコンパイルしたくないことがあります。たとえば、productionファイルシステムへの書き込みアクセスが制限されている場合や、アセットを変更しないデプロイが頻繁に行われる場合などが考えられます。
 
-そのような場合は、アセットをローカルでプリコンパイルできます。つまり、production向けの最終的なコンパイル済みアセットを、production環境にデプロイする前にソースコードリポジトリに追加するということです。この方法なら、productionサーバーにデプロイするたびにproductionで別途プリコンパイルを実行する必要はありません。
+そのような場合は、アセットを**ローカルで**プリコンパイルできます。つまり、production向けの最終的なコンパイル済みアセットを、production環境にデプロイする前にソースコードリポジトリに追加するということです。この方法なら、productionサーバーにデプロイするたびにproductionで別途プリコンパイルを実行する必要はありません。
 
 以下を実行すると、production向けにプリコンパイルできます。
 
@@ -565,13 +572,13 @@ CDNの典型的な利用法は、productionサーバーを "origin" サーバー
 
 CDNを設定するには、Railsアプリケーションがインターネット上でproductionモードで運用されており、`example.com`などのような一般公開されているURLでアクセス可能になっている必要があります。次に、クラウドホスティングプロバイダが提供するCDNサービスと契約を結ぶ必要もあります。その際、CDNの"origin"設定をRailsアプリケーションのWebサイト`example.com`にする必要もあります。originサーバーの設定方法のドキュメントについてはプロバイダーにお問い合わせください。
 
-利用するCDNから、アプリケーションで使うカスタムサブドメイン（例: `mycdnsubdomain.fictional-cdn.com`）を交付してもらう必要もあります（メモ: fictional-cdn.comは説明用のドメインであり、少なくとも執筆時点では本当のCDNプロバイダーではありません）。CDNサーバーの設定が終わったら、今度はブラウザに対して、Railsサーバーに直接アクセスするのではなく、CDNからアセットを取得するように通知する必要があります。これを行なうには、従来の相対パスに代えてCDNをアセットのホストサーバーとするようRailsを設定します。Railsでアセットホストを設定するには、`config/environments/production.rb`の`config.asset_host`を以下のように設定します。
+利用するCDNから、アプリケーションで使うカスタムサブドメイン（例: `mycdnsubdomain.fictional-cdn.com`）を交付してもらう必要もあります（メモ: fictional-cdn.comは説明用のドメインであり、少なくとも執筆時点では本当のCDNプロバイダーではありません）。CDNサーバーの設定が終わったら、今度はブラウザに対して、Railsサーバーに直接アクセスするのではなく、CDNからアセットを取得するように通知する必要があります。これを行なうには、従来の相対パスに代えてCDNをアセットのホストサーバーとするようRailsを設定します。Railsでアセットホストを設定するには、`config/environments/production.rb`の[`config.asset_host`][]を以下のように設定します。
 
 ```ruby
 config.asset_host = 'mycdnsubdomain.fictional-cdn.com'
 ```
 
-NOTE: ここに記述するのは「ホスト名（サブドメインとルートドメインを合わせたもの）」だけです。`http://`や`https://`などのプロトコルスキームを記述する必要はありません。アセットへのリンクで使われるプロトコルスキームは、Webページヘのリクエスト発生時に、そのページへのデフォルトのアクセス方法に合わせて適切に生成されます。
+NOTE: ここに記述する必要があるのは「ホスト名（サブドメインとルートドメインを合わせたもの）」だけです。`http://`や`https://`などのプロトコルスキームを記述する必要はありません。アセットへのリンクで使われるプロトコルスキームは、Webページヘのリクエスト発生時に、そのページへのデフォルトのアクセス方法に合わせて適切に生成されます。
 
 この値は、以下のように[環境変数](https://ja.wikipedia.org/wiki/%E7%92%B0%E5%A2%83%E5%A4%89%E6%95%B0)でも設定できます。環境変数を使うと、stagingサーバー（訳注: 検証用に本番サーバーを模したサーバー）の実行が楽になります。
 
@@ -587,19 +594,18 @@ NOTE: 上の設定が有効になるためには、サーバーの`CDN_HOST`環�
 <%= asset_path('smile.png') %>
 ```
 
-上の例では、`/assets/smile.png`のようなパスは返されません（読みやすくするためダイジェスト文字は省略してあります）。実際に生成されるCDNへのフルパスは以下のようになります。
-
-```
-http://mycdnsubdomain.fictional-cdn.com/assets/smile.png
-```
+この場合、`http://mycdnsubdomain.fictional-cdn.com/assets/smile.png`のような完全CDN URLが生成されます（読みやすくするためダイジェスト文字は省略してあります）。
 
 `smile.png`のコピーがCDNにあれば、CDNが代わりにこのファイルをブラウザに送信します。元のサーバーはリクエストがあったことすら気づきません。ファイルのコピーがCDNにない場合は、CDNが「origin」（この場合は`example.com/assets/smile.png`）を探して今後のために保存しておきます。
 
-一部のアセットだけをCDNで配信したい場合は、アセットヘルパーのカスタム`:host`オプションで`config.action_controller.asset_host`の値セットを上書きすることも可能です。
+一部のアセットだけをCDNで配信したい場合は、アセットヘルパーのカスタム`:host`オプションで[`config.action_controller.asset_host`][]の値セットを上書きすることも可能です。
 
 ```erb
 <%= asset_path 'image.png', host: 'mycdnsubdomain.fictional-cdn.com' %>
 ```
+
+[`config.action_controller.asset_host`]: configuring.html#config-action-controller-asset-host
+[`config.asset_host`]: configuring.html#config-asset-host
 
 #### CDNのキャッシュの動作をカスタマイズする
 
@@ -655,7 +661,7 @@ CDNが提供する`X-Cache`などの機能やCDNが追加するヘッダなど�
 
 ##### CDNとCache-Controlヘッダ
 
-[`Cache-Control`ヘッダ](http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.9)は、リクエストがキャッシュされる方法を定めたW3Cの仕様です。CDNを使わない場合は、ブラウザはこのヘッダ情報に基づいてコンテンツをキャッシュします。このヘッダのおかげで、アセットで変更が発生していない場合にブラウザがCSSやJavaScriptをリクエストのたびに再度ダウンロードせずに済むので、非常に有用です。アセットの`Cache-Control`ヘッダは一般に "public" にしておくものであり、RailsサーバーはCDNやブラウザに対してそのことをこのヘッダで通知します。アセットが "public" であるということは、そのリクエストをどんなキャッシュに保存してもよいということを意味します。同様に`max-age` もこのヘッダでCDNやブラウザに通知されます。`max-age`は、オブジェクトをキャッシュに保存する期間を指定します。この期間を過ぎるとキャッシュは廃棄されます。`max-age`の値は秒単位で指定します。最大値は`31536000`であり、これは1年に相当します。Railsでは以下の設定でこの期間を指定できます。
+[`Cache-Control`][]ヘッダーは、リクエストがキャッシュされる方法を定めたW3Cの仕様です。CDNを使わない場合は、ブラウザはこのヘッダ情報に基づいてコンテンツをキャッシュします。このヘッダのおかげで、アセットで変更が発生していない場合にブラウザがCSSやJavaScriptをリクエストのたびに再度ダウンロードせずに済むので、非常に有用です。アセットの`Cache-Control`ヘッダは一般に "public" にしておくものであり、RailsサーバーはCDNやブラウザに対してそのことをこのヘッダで通知します。アセットが "public" であるということは、そのリクエストをどんなキャッシュに保存してもよいということを意味します。同様に`max-age` もこのヘッダでCDNやブラウザに通知されます。`max-age`は、オブジェクトをキャッシュに保存する期間を指定します。この期間を過ぎるとキャッシュは廃棄されます。`max-age`の値は秒単位で指定します。最大値は`31536000`であり、これは1年に相当します。Railsでは以下の設定でこの期間を指定できます。
 
 ```ruby
 config.public_file_server.headers = {
@@ -664,6 +670,8 @@ config.public_file_server.headers = {
 ```
 
 production環境のアセットがアプリケーションから配信されると、キャッシュは1年間保存されます。多くのCDNはリクエストのキャッシュも保存しているので、この`Cache-Control`ヘッダーはアセットをリクエストするすべてのブラウザ（将来登場するブラウザも含む）に渡されます。ブラウザはこのヘッダを受け取ると、次回再度リクエストが必要になったときに備えてそのアセットを当分の間キャッシュに保存してよいことを認識します。
+
+[`Cache-Control`]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
 
 ##### CDNにおけるURLベースのキャッシュ無効化について
 
@@ -686,7 +694,7 @@ http://mycdnsubdomain.fictional-cdn.com/assets/smile.png
 
 ### CSSを圧縮する
 
-YUIはCSS圧縮方法の１つです。[YUI CSS compressor](https://yui.github.io/yuicompressor/css.html)は最小化機能を提供します（訳注: この項では、圧縮 (compress) という語は最小化 (minify) や難読化 (uglify) と同じ意味で使われており、圧縮後のファイルはzipのようなバイナリではありません）。
+YUIはCSS圧縮方法の1つです。[YUI CSS compressor](https://yui.github.io/yuicompressor/css.html)は最小化機能を提供します（訳注: この項では、圧縮 (compress) という語は最小化 (minify) や難読化 (uglify) と同じ意味で使われており、圧縮後のファイルはzipのようなバイナリではありません）。
 
 YUI圧縮は以下の記述で有効にできます。これには`yui-compressor` gemが必要です。
 
@@ -704,7 +712,7 @@ config.assets.css_compressor = :sass
 
 JavaScriptの圧縮オプションには、`:terser`、`:closure`、`:uglifier`、`:yui`のいずれかを指定できます。それぞれ、`terser` gem、`closure-compiler` gem、`uglifier` gem、`yui-compressor` gemが必要です。
 
-ここでは`terser` gemを例にします。Railsの`Gemfile`にはデフォルトで[terser](https://github.com/terser/terser)が含まれています（）。このgemは、NodeJS向けのコードをRubyでラップしたものです。terserによる圧縮は次のように行われます。ホワイトスペースとコメントを除去し、ローカル変数名を短くし、可能であれば`if`と`else`を三項演算子に置き換えるなどの細かな最適化を行います。
+ここでは`terser` gemを例にします。Railsの`Gemfile`にはデフォルトで[terser](https://github.com/terser/terser)が含まれています。このgemは、Node.js向けのコードをRubyでラップしたものです。terserによる圧縮は次のように行われます。ホワイトスペースとコメントを除去し、ローカル変数名を短くし、可能であれば`if`と`else`を三項演算子に置き換えるなどの細かな最適化を行います。
 
 以下の設定により、JavaScriptの圧縮に`terser`が使われます。
 
