@@ -22,7 +22,7 @@ NOTE: このガイドはフォームヘルパーとその引数について網�
 基本的なフォームを作成する
 ------------------------
 
-最も基本的なフォームヘルパーは[`form_with`](https://api.rubyonrails.org/classes/ActionView/Helpers/FormHelper.html#method-i-form_with)です。
+最も基本的なフォームヘルパーは[`form_with`][]です。
 
 ```erb
 <%= form_with do |form| %>
@@ -40,14 +40,16 @@ NOTE: このガイドはフォームヘルパーとその引数について網�
 ```
 
 上のHTMLでは、`input`要素に`type=hidden`が指定されていることがわかります。GET以外のフォームは`input`がないと正常に送信できないので、この`input`は重要です。
-`authenticity_token`という名前の隠し`input`要素は、**クロスサイトリクエストフォージェリ（CSRF）保護** と呼ばれるRailsのセキュリティ機能です。フォームヘルパーは、GET以外のフォームでこのトークンを生成します（CSRF保護が有効な場合）。詳しくはは[セキュリティガイド](security.html#クロスサイトリクエストフォージェリ（csrf）)を参照してください。
+`authenticity_token`という名前の隠し`input`要素は、**クロスサイトリクエストフォージェリ（CSRF）保護** と呼ばれるRailsのセキュリティ機能です。フォームヘルパーは、GET以外のフォームでこのトークンを生成します（CSRF保護が有効な場合）。詳しくは[セキュリティガイド](security.html#クロスサイトリクエストフォージェリ（csrf）)を参照してください。
+
+[`form_with`]: https://api.rubyonrails.org/classes/ActionView/Helpers/FormHelper.html#method-i-form_with
 
 ### 一般的な検索フォーム
 
 検索フォームはWebでよく使われています。検索フォームには以下のものが含まれています。
 
 * GETメソッドを送信するためのフォーム要素
-* 入力するものを示すラベル
+* 入力項目を示すラベル
 * テキスト入力要素
 * 送信ボタン要素
 
@@ -83,11 +85,13 @@ IMPORTANT: GETメソッドは検索フォームでお使いください。こう
 これらのヘルパーメソッドに渡す第1パラメータには、常にinputの名前を指定します。
 フォームが送信されると、フォームデータとともにこの名前も渡され、ユーザーがフィールドに入力した値とともにコントローラの`params`に送られます。たとえばフォームに`<%= form.text_field :query %>`があると、コントローラ側で`params[:query]`と書くことでこのフィールドの値を取り出せるようになります。
 
-Railsでは、inputに名前を与えるときに特定の規約を利用します。これにより、配列やハッシュのような「非スカラー値」のパラメータをフォームから送信できるようになり、コントローラでも`params`にアクセス可能になりますこれらの命名規約について詳しくは、本ガイドで後述する「[パラメータの命名ルールを理解する](#パラメータの命名ルールを理解する)」を参照してください。これらのヘルパーの具体的な利用法について詳しくは[`ActionView::Helpers::FormTagHelper`](https://api.rubyonrails.org/classes/ActionView/Helpers/FormTagHelper.html) APIドキュメントを参照してください。
+Railsでは、inputに名前を与えるときに特定の規約を利用します。これにより、配列やハッシュのような「非スカラー値」のパラメータをフォームから送信できるようになり、コントローラでも`params`にアクセス可能になりますこれらの命名規約について詳しくは、本ガイドで後述する「[パラメータの命名ルールを理解する](#パラメータの命名ルールを理解する)」を参照してください。これらのヘルパーの具体的な利用法について詳しくは[`ActionView::Helpers::FormTagHelper`][] APIドキュメントを参照してください。
+
+[`ActionView::Helpers::FormTagHelper`]: https://api.rubyonrails.org/classes/ActionView/Helpers/FormTagHelper.html
 
 #### チェックボックス
 
-チェックボックスはフォームコントロールの一種で、ユーザーがオプションをオンまたはオフにできるようにします。
+チェックボックスはフォームコントロールの一種で、ユーザーが選択肢の項目をオン/オフできるようにします。
 
 ```erb
 <%= form.check_box :pet_dog %>
@@ -105,11 +109,13 @@ Railsでは、inputに名前を与えるときに特定の規約を利用しま�
 <label for="pet_cat">I own a cat</label>
 ```
 
-[`check_box`](https://api.rubyonrails.org/classes/ActionView/Helpers/FormBuilder.html#method-i-check_box)の第1パラメータはinputの名前です。第2パラメータはinput要素の`value`属性を指定します。チェックボックスをオンにすると、この値がフォームデータに含まれ、最終的に`params`に渡されます。
+[`check_box`][]の第1パラメータはinputの名前（`name`）です。チェックボックスの値 (`params`に表示される値) は、オプションで第3パラメータと第4パラメータで指定できます。詳しくはAPIドキュメントを参照してください。
+
+[`check_box`]: https://api.rubyonrails.org/classes/ActionView/Helpers/FormBuilder.html#method-i-check_box
 
 #### ラジオボタン
 
-チェックボックスと同様、ラジオボタンも一連のオプションをユーザーが選択できますが、一度に1つの項目しか選択できない排他的な動作が特徴です。
+チェックボックスと同様、ラジオボタンもユーザーが一連の選択肢から項目を選択できますが、一度に1つの項目しか選択できない排他的な動作が特徴です。
 
 ```erb
 <%= form.radio_button :age, "child" %>
@@ -127,13 +133,15 @@ Railsでは、inputに名前を与えるときに特定の規約を利用しま�
 <label for="age_adult">I am over 21</label>
 ```
 
-`check_box`ヘルパーのときと同様、[`radio_button`](https://api.rubyonrails.org/classes/ActionView/Helpers/FormBuilder.html#method-i-radio_button)の第2パラメータはinput要素の`value`属性を指定します。2つのラジオボタン項目は同じ名前（'age'）を共有しているので、ユーザーは一方の値だけを選択できます。そして`params[:age]`の値は"child"と"adult"のいずれかになります。
+[`radio_button`][]の第2パラメータは、inputの値（`value`）です。2つのラジオボタン項目は同じ名前（'age'）を共有しているので、ユーザーは一方の値だけを選択できます。これにより、`params[:age]`の値は"child"と"adult"のいずれかになります。
 
 NOTE: チェックボックスとラジオボタンには必ずラベルを表示してください。ラベルを表示することで、そのオプションとラベルの名前が関連付けられるだけでなく、ラベルの部分もクリック可能になるのでユーザーの操作性が向上します。
 
+[`radio_button`]: https://api.rubyonrails.org/classes/ActionView/Helpers/FormBuilder.html#method-i-radio_button
+
 ### その他のヘルパー
 
-これまで紹介した他にも、以下の「テキストエリア」「隠しフィールド」「パスワードフィールド」「数値フィールド」「日付時刻フィールド」など多くのフォームコントロールがあります。
+これまで紹介した他にも、以下の「テキストエリア」「隠しフィールド」「パスワードフィールド」「数値フィールド」「日付時刻フィールド」など多くのフォームコントロールを利用できます。
 
 ```erb
 <%= form.text_area :message, size: "70x5" %>
@@ -231,7 +239,7 @@ TIP: 通常、inputにはモデルの属性が反映されます。しかしこ�
 
 #### `fields_for`ヘルパー
 
-[`fields_for`](https://api.rubyonrails.org/classes/ActionView/Helpers/FormBuilder.html#method-i-fields_for)ヘルパーを使えば、`<form>`タグを実際に作成せずにフォームとオブジェクトを同様に紐付けできます。これは、同じフォームで別のモデルオブジェクトも編集可能にしたいときに便利です。たとえば、`Person`モデルと、それに関連付けられる`ContactDetail`モデルがある場合は、以下のようにフォームを作成できます。
+[`fields_for`][]ヘルパーを使えば、`<form>`タグを実際に作成せずにフォームとオブジェクトを同様に紐付けできます。これは、同じフォームで別のモデルオブジェクトのフィールドをレンダリングしたいときに便利です。たとえば、`Person`モデルと、それに関連付けられる`ContactDetail`モデルがある場合は、以下のようにフォームを作成できます。
 
 ```erb
 <%= form_with model: @person do |person_form| %>
@@ -254,6 +262,8 @@ TIP: 通常、inputにはモデルの属性が反映されます。しかしこ�
 
 `fields_for`で生成されるオブジェクトは、`form_with`で生成されるのと同様のフォームビルダーです。
 
+[`fields_for`]: https://api.rubyonrails.org/classes/ActionView/Helpers/FormBuilder.html#method-i-fields_for
+
 ### レコード識別を利用する
 
 これでアプリケーションのユーザーがArticleモデルを直接操作できるようになりました。Rails開発では、次にこれをルーティングで**リソース** として宣言するのがベストプラクティスです。
@@ -264,7 +274,7 @@ resources :articles
 
 TIP: リソースを宣言すると、他にも多くの設定が自動的に行われます。リソースの設定方法について詳しくは、[Railsルーティングガイド](routing.html#リソースベースのルーティング-railsのデフォルト)を参照してください。
 
-RESTfulなリソースを扱っている場合、レコード識別（record identification）を使うと`form_with`の呼び出しがはるかに簡単になります。これは、モデルのインスタンスを渡すだけで、後はRailsがそこからモデル名など必要なものを取り出して処理してくれるというものです。
+RESTfulなリソースを扱っている場合、レコード識別（record identification）を使うと`form_with`の呼び出しがはるかに簡単になります。これは、モデルのインスタンスを渡すだけで、後はRailsがそこからモデル名など必要なものを取り出して処理してくれるというものです。以下の例では、長いバージョンと短いバージョンのどちらも同じ出力を得られます。
 
 ```ruby
 ## 新しい記事の作成
@@ -280,7 +290,7 @@ form_with(model: @article, url: article_path(@article), method: "patch")
 form_with(model: @article)
 ```
 
-この短い`form_with`呼び出しは、レコードの作成・編集のどちらでもまったく同じです。これがどれほど便利であるかおわかりいただけると思います。レコード識別は、レコードが新しいかどうかを`record.persisted?`で識別します。さらに送信用の正しいパスを選択し、オブジェクトのクラスに基づいた名前も選択してくれます。
+短い方の`form_with`呼び出しは、レコードの作成・編集のどちらでもまったく同じです。これがどれほど便利であるかおわかりいただけると思います。レコード識別は、レコードが新しいかどうかを`record.persisted?`で識別します。さらに送信用の正しいパスを選択し、オブジェクトのクラスに基づいた名前も選択してくれます。
 
 [単数形リソース](routing.html#単数形リソース)を使う場合は、`form_with`が機能するために以下のように`resource`と`resolve`を呼び出す必要があります。
 
@@ -327,7 +337,7 @@ form_with(url: search_path, method: "patch")
 </form>
 ```
 
-Railsは、POSTされたデータを解析する際にこの特殊な`_method`パラメータをチェックし、ここで指定されているメソッド(この場合はPATCH)があたかも実際にHTTPメソッドとして指定されたかのように振る舞います。
+Railsは、POSTされたデータを解析する際にこの特殊な`_method`パラメータをチェックし、ここで指定されているメソッド（この場合はPATCH）があたかも実際にHTTPメソッドとして指定されたかのように振る舞います。
 
 `formmethod:`キーワードを指定すると、フォームをレンダリングするときに送信ボタンが指定の`method`属性をオーバーライドできるようになります。
 
@@ -362,7 +372,7 @@ Railsでは、POSTメソッド上でこれらのメソッドをエミュレー�
 
 HTMLでセレクトボックスを作成するには大量のマークアップを書かなくてはなりません（選択するオプションごとに1つの`<option>`要素が対応します）。そこでRailsでは、こうした作業を軽減するヘルパーメソッドを提供しています。
 
-たとえば、ユーザーに選択して欲しい都市名のリストがあるとします。[`select`](https://api.rubyonrails.org/classes/ActionView/Helpers/FormBuilder.html#method-i-select)ヘルパーを使うと以下のようにセレクトボックスを作成できます。
+たとえば、ユーザーに選択して欲しい都市名のリストがあるとします。[`select`][]ヘルパーを使うと以下のようにセレクトボックスを作成できます。
 
 ```erb
 <%= form.select :city, ["Berlin", "Chicago", "Madrid"] %>
@@ -412,6 +422,7 @@ HTMLでセレクトボックスを作成するには大量のマークアップ�
 </select>
 ```
 
+[`select`]: https://api.rubyonrails.org/classes/ActionView/Helpers/FormBuilder.html#method-i-select
 ### オプショングループ
 
 場合によっては、関連するオプションをグループ化してユーザーエクスペリエンスを向上させたいことがあります。これは、以下のように`select`に`Hash`（または同等の`Array`）を渡すことで行なえます。
@@ -469,13 +480,16 @@ HTMLでセレクトボックスを作成するには大量のマークアップ�
 
 ### タイムゾーンと国を選択する
 
-Railsでタイムゾーンをサポートするために、ユーザーが今どのタイムゾーンにいるのかを何らかの形でユーザーに尋ねなければなりません。そのためには、`collection_select`ヘルパーを使って、事前定義済みの[`ActiveSupport::TimeZone`](https://api.rubyonrails.org/classes/ActiveSupport/TimeZone.html)オブジェクトのリストからセレクトボックスを作成する必要がありますが、以下のようにその機能を既に持っている[`time_zone_select`](https://api.rubyonrails.org/classes/ActionView/Helpers/FormBuilder.html#method-i-time_zone_select)ヘルパーを使えば簡単にできます。
+Railsでタイムゾーンをサポートするために、ユーザーが今どのタイムゾーンにいるのかを何らかの形でユーザーに尋ねなければなりません。そのためには、`collection_select`ヘルパーを使って、事前定義済みの[`ActiveSupport::TimeZone`][]オブジェクトのリストからセレクトボックスを作成する必要がありますが、以下のようにその機能を既に持っている[`time_zone_select`][]ヘルパーを使えば簡単にできます。
 
 ```erb
 <%= form.time_zone_select :time_zone %>
 ```
 
 **以前の**Railsには国を選択する`country_select`ヘルパーがありましたが、この機能は[country_selectプラグイン](https://github.com/stefanpenner/country_select)に切り出されました。
+
+[`ActiveSupport::TimeZone`]: https://api.rubyonrails.org/classes/ActiveSupport/TimeZone.html
+[`time_zone_select`]: https://api.rubyonrails.org/classes/ActionView/Helpers/FormBuilder.html#method-i-time_zone_select
 
 日付時刻フォームヘルパーを使う
 --------------------------------
@@ -535,11 +549,15 @@ HTML5標準の日付/時刻入力フィールドを生成するヘルパーを�
 
 フォームが送信されたときの`params`ハッシュには、完全な日付を含む単一の値が存在しない点にご注目ください。代わりに、`"birth_date(1i)"`のような特殊な名前を持つ複数の値が存在します。Active Recordは、モデル属性の宣言された型に基づいて、これらの特殊な名前を持つ値を完全な日付や時刻として組み立てる方法を知っています。つまり、フォームで完全な日付を表す1個のフィールを使う場合と同じように、`params[:person]`を`Person.new`や`Person#update`などに渡せるということです。
 
-Railsでは、[`date_select`](https://api.rubyonrails.org/classes/ActionView/Helpers/FormBuilder.html#method-i-date_select)ヘルパーの他に[`time_select`](https://api.rubyonrails.org/classes/ActionView/Helpers/FormBuilder.html#method-i-time_select)ヘルパーや[`datetime_select`](https://api.rubyonrails.org/classes/ActionView/Helpers/FormBuilder.html#method-i-datetime_select)も提供しています。
+Railsでは、[`date_select`][]ヘルパーの他に[`time_select`][]ヘルパーや[`datetime_select`][]ヘルパーも提供しています。
+
+[`date_select`]: https://api.rubyonrails.org/classes/ActionView/Helpers/FormBuilder.html#method-i-date_select
+[`time_select`]: https://api.rubyonrails.org/classes/ActionView/Helpers/FormBuilder.html#method-i-time_select
+[`datetime_select`]: https://api.rubyonrails.org/classes/ActionView/Helpers/FormBuilder.html#method-i-datetime_select
 
 ### 個別の一時コンポーネント用のセレクトボックス
 
-Railsでは、個別の一時コンポーネント向けのセレクトボックスをレンダリングするヘルパーとして[`select_year`](https://api.rubyonrails.org/classes/ActionView/Helpers/DateHelper.html#method-i-select_year)、[`select_month`](https://api.rubyonrails.org/classes/ActionView/Helpers/DateHelper.html#method-i-select_month)、[`select_day`](https://api.rubyonrails.org/classes/ActionView/Helpers/DateHelper.html#method-i-select_day)、[`select_hour`](https://api.rubyonrails.org/classes/ActionView/Helpers/DateHelper.html#method-i-select_hour)、[`select_minute`](https://api.rubyonrails.org/classes/ActionView/Helpers/DateHelper.html#method-i-select_minute)、[`select_second`](https://api.rubyonrails.org/classes/ActionView/Helpers/DateHelper.html#method-i-select_second)も提供しています。
+Railsでは、個別の一時コンポーネント向けのセレクトボックスをレンダリングするヘルパーとして[`select_year`][]、[`select_month`][]、[`select_day`][]、[`select_hour`][]、[`select_minute`][]、[`select_second`][]も提供しています。
 
 これらのヘルパーは「素の」メソッドなので、フォームビルダーのインスタンスでは呼び出されません。たとえば以下のように`select_year`ヘルパーを使うとします。
 
@@ -567,25 +585,47 @@ Railsでは、個別の一時コンポーネント向けのセレクトボック
 
 各ヘルパーでは、数値の代わりに日付オブジェクトや時刻オブジェクトをデフォルト値に指定でき、そこから適切な一時コンポーネントを抽出して使います。
 
+[`select_year`]: https://api.rubyonrails.org/classes/ActionView/Helpers/DateHelper.html#method-i-select_year
+[`select_month`]: https://api.rubyonrails.org/classes/ActionView/Helpers/DateHelper.html#method-i-select_month
+[`select_day`]: https://api.rubyonrails.org/classes/ActionView/Helpers/DateHelper.html#method-i-select_day
+[`select_hour`]: https://api.rubyonrails.org/classes/ActionView/Helpers/DateHelper.html#method-i-select_hour
+[`select_minute`]: https://api.rubyonrails.org/classes/ActionView/Helpers/DateHelper.html#method-i-select_minute
+[`select_second`]: https://api.rubyonrails.org/classes/ActionView/Helpers/DateHelper.html#method-i-select_second
+
 任意のオブジェクトのコレクションから選択する
 ----------------------------------------------
 
-フォームで、オブジェクトのコレクションを選択可能にしたいことがよくあります。たとえば、ユーザーに選択して欲しい都市名がデータベースにあり、以下のような`City`モデルがあるとします。
+任意のオブジェクトのコレクションからセレクトボックス項目のセットを生成したいことがあります。たとえば、以下のような`City`モデルとそれに対応する`belongs_to :city`関連付けがあるとします。
 
 ```ruby
-City.order(:name).to_a
-# => [
-#      #<City id: 3, name: "Berlin">,
-#      #<City id: 1, name: "Chicago">,
-#      #<City id: 2, name: "Madrid">
-#    ]
+class City < ApplicationRecord
+end
+
+class Person < ApplicationRecord
+  belongs_to :city
+end
 ```
 
-Railsは、コレクションを明示的にイテレートせずにセレクトボックス/ラジオボタン/チェックボックスを生成できるヘルパーを提供しています。これらのヘルパーは、コレクション内のオブジェクトごとに指定のメソッドを代わりに呼び出して、選択肢の値とテキストラベルを決定します。
+```ruby
+City.order(:name).map { |city| [city.name, city.id] }
+# => [["Berlin", 3], ["Chicago", 1], ["Madrid", 2]]
+```
+
+続いて、以下のようなフォームで、ユーザーがデータベースから都市名を選択できるようにします。
+
+```erb
+<%= form_with model: @person do |form| %>
+  <%= form.select :city_id, City.order(:name).map { |city| [city.name, city.id] } %>
+<% end %>
+```
+
+NOTE: `belongs_to`関連付けのフィールドをレンダリングするときは、関連付け自体の名前ではなく、外部キー名（上の例では`city_id`）を指定しなければなりません。
+
+しかしRailsは、コレクションを明示的に列挙せずにセレクトボックス/ラジオボタン/チェックボックスを生成できるヘルパーを提供しています。これらのヘルパーは、コレクション内のオブジェクトごとに指定のメソッドを呼び出して、選択肢の値とテキストラベルを決定します。
 
 ### `collection_select`ヘルパー
 
-[`collection_select`](https://api.rubyonrails.org/classes/ActionView/Helpers/FormBuilder.html#method-i-collection_select)ヘルパーを使えば、以下のように都市名を選択するセレクトボックスを生成できます。
+[`collection_select`][]ヘルパーを使えば、以下のように都市名を選択するセレクトボックスを生成できます。
 
 ```erb
 <%= form.collection_select :city_id, City.order(:name), :id, :name %>
@@ -594,7 +634,7 @@ Railsは、コレクションを明示的にイテレートせずにセレクト
 セレクトボックスのHTML出力は以下のようになります。
 
 ```html
-<select name="city_id" id="city_id">
+<select name="person[city_id]" id="person_city_id">
   <option value="3">Berlin</option>
   <option value="1">Chicago</option>
   <option value="2">Madrid</option>
@@ -603,9 +643,11 @@ Railsは、コレクションを明示的にイテレートせずにセレクト
 
 NOTE: `collection_select`では、第1引数に値のメソッド（上の例では`:id`）、第2引数にテキストラベルのメソッド（上の例では`:name`）を指定します。この順序は、`select`ヘルパーで選択肢を指定する場合（テキストラベルが最初で次が値）と逆である点にご注意ください。
 
+[`collection_select`]: https://api.rubyonrails.org/classes/ActionView/Helpers/FormBuilder.html#method-i-collection_select
+
 ### `collection_radio_buttons`ヘルパー
 
-[`collection_radio_buttons`](https://api.rubyonrails.org/classes/ActionView/Helpers/FormBuilder.html#method-i-collection_radio_buttons)ヘルパーを使えば、以下のように都市名を選択するラジオボタンのセットを生成できます。
+ラジオボタンのセットを生成するには、[`collection_radio_buttons`][]ヘルパーを使います。
 
 ```erb
 <%= form.collection_radio_buttons :city_id, City.order(:name), :id, :name %>
@@ -614,37 +656,48 @@ NOTE: `collection_select`では、第1引数に値のメソッド（上の例で
 ラジオボタンのHTML出力は以下のようになります。
 
 ```html
-<input type="radio" name="city_id" value="3" id="city_id_3">
-<label for="city_id_3">Berlin</label>
-<input type="radio" name="city_id" value="1" id="city_id_1">
-<label for="city_id_1">Chicago</label>
-<input type="radio" name="city_id" value="2" id="city_id_2">
-<label for="city_id_2">Madrid</label>
+<input type="radio" name="person[city_id]" value="3" id="person_city_id_3">
+<label for="person_city_id_3">Berlin</label>
+
+<input type="radio" name="person[city_id]" value="1" id="person_city_id_1">
+<label for="person_city_id_1">Chicago</label>
+
+<input type="radio" name="person[city_id]" value="2" id="person_city_id_2">
+<label for="person_city_id_2">Madrid</label>
 ```
+
+[`collection_radio_buttons`]: https://api.rubyonrails.org/classes/ActionView/Helpers/FormBuilder.html#method-i-collection_radio_buttons
 
 ### `collection_check_boxes`ヘルパー
 
-[`collection_check_boxes`](https://api.rubyonrails.org/classes/ActionView/Helpers/FormBuilder.html#method-i-collection_check_boxes)ヘルパーを使えば、以下のように都市名を選択するチェックボックスのセットを生成できます。
+たとえば`has_and_belongs_to_many`関連付けをサポートする形でチェックボックスのセットを生成するには、[`collection_check_boxes`][]ヘルパーを使います。
 
 ```erb
-<%= form.collection_check_boxes :city_id, City.order(:name), :id, :name %>
+<%= form.collection_check_boxes :interest_ids, Interest.order(:name), :id, :name %>
 ```
 
 チェックボックスのHTML出力は以下のようになります。
 
 ```html
-<input type="checkbox" name="city_id[]" value="3" id="city_id_3">
-<label for="city_id_3">Berlin</label>
-<input type="checkbox" name="city_id[]" value="1" id="city_id_1">
-<label for="city_id_1">Chicago</label>
-<input type="checkbox" name="city_id[]" value="2" id="city_id_2">
-<label for="city_id_2">Madrid</label>
+<input type="checkbox" name="person[interest_id][]" value="3" id="person_interest_id_3">
+<label for="person_interest_id_3">Engineering</label>
+
+<input type="checkbox" name="person[interest_id][]" value="4" id="person_interest_id_4">
+<label for="person_interest_id_4">Math</label>
+
+<input type="checkbox" name="person[interest_id][]" value="1" id="person_interest_id_1">
+<label for="person_interest_id_1">Science</label>
+
+<input type="checkbox" name="person[interest_id][]" value="2" id="person_interest_id_2">
+<label for="person_interest_id_2">Technology</label>
 ```
+
+[`collection_check_boxes`]: https://api.rubyonrails.org/classes/ActionView/Helpers/FormBuilder.html#method-i-collection_check_boxes
 
 ファイルのアップロード
 ---------------
 
-ファイルのアップロードはアプリケーションでよく行われるタスクの1つです（プロフィール写真のアップロードや、処理したいCSVファイルのアップロードなど）。[`file_field`](https://api.rubyonrails.org/classes/ActionView/Helpers/FormBuilder.html#method-i-file_field)ヘルパーを使えば、以下のようにファイルアップロード用フィールドをレンダリングできます。
+ファイルのアップロードはアプリケーションでよく行われるタスクの1つです（プロフィール写真のアップロードや、処理したいCSVファイルのアップロードなど）。[`file_field`][]ヘルパーを使えば、以下のようにファイルアップロード用フィールドをレンダリングできます。
 
 ```erb
 <%= form_with model: @person do |form| %>
@@ -662,9 +715,11 @@ NOTE: `collection_select`では、第1引数に値のメソッド（上の例で
 
 なお、`form_with`の規約に基づいて上述の2つのフィールド名もそれぞれ異なります。つまり前者のフォームではフィールド名が`person[picture]`になり（`params[:person][:picture]`でアクセス可能）、後者のフォームでは単なる`picture`になります（`params[:picture]`でアクセス可能）。
 
+[`file_field`]: https://api.rubyonrails.org/classes/ActionView/Helpers/FormBuilder.html#method-i-file_field
+
 ### アップロード可能なファイル
 
-`params`ハッシュに含まれるこのオブジェクトは、[`ActionDispatch::Http::UploadedFile`](https://api.rubyonrails.org/classes/ActionDispatch/Http/UploadedFile.html)のインスタンスです。以下のコードスニペットは、アップロードされたファイルを`#{Rails.root}/public/uploads`のパスに元のファイル名で保存します。
+`params`ハッシュに含まれるこのオブジェクトは、[`ActionDispatch::Http::UploadedFile`][]のインスタンスです。以下のコードスニペットは、アップロードされたファイルを`#{Rails.root}/public/uploads`のパスに元のファイル名で保存します。
 
 ```ruby
 def upload
@@ -677,10 +732,12 @@ end
 
 ファイルのアップロードが完了すると、ファイルの保存先の決定（DiskやAmazon S3など）、モデルとの関連付け、画像ファイルのリサイズ、サムネイルの生成など、さまざまなタスクが必要になる可能性があります。[Active Storage](active_storage_overview.html)は、こうしたタスクを支援するように設計されています。
 
+[`ActionDispatch::Http::UploadedFile`]: https://api.rubyonrails.org/classes/ActionDispatch/Http/UploadedFile.html
+
 フォームビルダーをカスタマイズする
 -------------------------
 
-`form_with`や`fields_for`によって生成されるオブジェクトは、[`ActionView::Helpers::FormBuilder`](https://api.rubyonrails.org/classes/ActionView/Helpers/FormBuilder.html)のインスタンスです。フォームビルダーは、1個のオブジェクトのフォーム要素を表示するのに必要なものをカプセル化します。フォーム用のヘルパーを通常の方法で自作するときに、`ActionView::Helpers::FormBuilder`のサブクラスを作成してそこにヘルパーを追加することも可能です。次の例をご覧ください。
+`form_with`や`fields_for`によって生成されるオブジェクトは、[`ActionView::Helpers::FormBuilder`][]のインスタンスです。フォームビルダーは、1個のオブジェクトのフォーム要素を表示するのに必要なものをカプセル化します。フォーム用のヘルパーを通常の方法で自作するときに、`ActionView::Helpers::FormBuilder`のサブクラスを作成してそこにヘルパーを追加することも可能です。次の例をご覧ください。
 
 ```erb
 <%= form_with model: @person do |form| %>
@@ -723,6 +780,8 @@ end
 
 `f`が`ActionView::Helpers::FormBuilder`のインスタンスである場合、このコードは`form`パーシャルを生成し、そのパーシャルオブジェクトをフォームビルダーに設定します。このフォームビルダーのクラスが`LabellingFormBuilder`の場合 、代わりに`labelling_form`パーシャルがレンダリングされます。
 
+[`ActionView::Helpers::FormBuilder`]: https://api.rubyonrails.org/classes/ActionView/Helpers/FormBuilder.html
+
 パラメータの命名ルールを理解する
 ------------------------------------------
 
@@ -746,7 +805,7 @@ HTMLフォームは原理的に、いかなる構造化データについても�
 
 コントローラ内で`params[:person][:name]`でアクセスすると、送信された値を取り出せます。
 
-ハッシュは、以下のように必要に応じて何階層でもネストすることができます。
+ハッシュは、以下のように必要に応じて何階層でもネストできます。
 
 ```html
 <input id="person_address_city" name="person[address][city]" type="text" value="New York"/>
@@ -758,7 +817,7 @@ HTMLフォームは原理的に、いかなる構造化データについても�
 {'person' => {'address' => {'city' => 'New York'}}}
 ```
 
-Railsは、重複したパラメータ名を無視します。パラメータ名に空の角かっこ`[ ]`が含まれている場合、パラメータは配列の中にまとめられます。たとえば、複数の電話番号を入力できるようにしたい場合、フォームに以下を置くことができます。
+通常のRailsは、重複したパラメータ名を無視します。パラメータ名に空の角かっこ`[]`が含まれている場合、パラメータは配列の中にまとめられます。たとえば、複数の電話番号を入力できるようにしたい場合、フォームに以下を置くことができます。
 
 ```html
 <input name="person[phone_number][]" type="text"/>
@@ -787,9 +846,9 @@ Railsは、重複したパラメータ名を無視します。パラメータ名
 
 WARNING: 配列パラメータは、`check_box`ヘルパーとの相性がよくありません。HTMLの仕様では、オンになっていないチェックボックスからは値が送信されません。しかし、チェックボックスから常に値が送信される方が何かと便利です。そこで`check_box`ヘルパーでは、同じ名前で予備の隠し入力を作成しておき、本来送信されないはずのチェックボックス値が見かけ上送信されるようになっています。チェックボックスがオフになっていると隠し入力値だけが送信され、チェックボックスがオンになっていると本来のチェックボックス値と隠し入力値が両方送信されますが、このとき優先されるのは本来のチェックボックス値の方です。
 
-### `fields_for`ヘルパー
+### `fields_for`ヘルパーの`:index`オプション
 
-たとえば、個人の各住所に対応するフィールドのセットを持つフォームをレンダリングしたいとします。こんなときは`fields_for`ヘルパーと`:index`引数が役に立ちます。
+たとえば、各個人の住所に対応するフィールドのセットを持つフォームをレンダリングしたいとします。こんなときは[`fields_for`][]ヘルパーと`:index`オプションが役に立ちます。
 
 ```erb
 <%= form_with model: @person do |person_form| %>
@@ -802,7 +861,7 @@ WARNING: 配列パラメータは、`check_box`ヘルパーとの相性がよく
 <% end %>
 ```
 
-この個人が2つの住所を持っていて、idがそれぞれ23と45だとすると、以下のようなHTMLが出力されます。
+この個人が2つの住所を持っていて、idがそれぞれ23と45だとすると、上のフォームから以下のようなHTMLが出力されます。
 
 ```html
 <form accept-charset="UTF-8" action="/people/1" method="post">
@@ -816,12 +875,24 @@ WARNING: 配列パラメータは、`check_box`ヘルパーとの相性がよく
 このときの`params`ハッシュは以下のようになります。
 
 ```ruby
-{'person' => {'name' => 'Bob', 'address' => {'23' => {'city' => 'Paris'}, '45' => {'city' => 'London'}}}}
+{
+  "person" => {
+    "name" => "Bob",
+    "address" => {
+      "23" => {
+        "city" => "Paris"
+      },
+      "45" => {
+        "city" => "London"
+      }
+    }
+  }
+}
 ```
 
-最初のフォームビルダーで`fields_for`を呼び出していたので、Railsはこれらの入力が`person`ハッシュの一部であることを認識します。`:index`を指定すると、入力を`person[address][city]`という名前にするのではなく、`[]`で囲まれたインデックスを`address`と`city`の間に挿入するようRailsに指示します。
+フォームビルダーの`person_form`で`fields_for`を呼び出したので、フォームのすべてのinputは`"person"`ハッシュに対応付けられます。`:index`オプションを指定したことで、addressの入力は `person[address][city]` ではなく、`person[address][#{address.id}][city]`に対応付けられました。このように、`params`ハッシュを処理する際にAddressのどのレコードを変更すべきかを決定できるようになります。
 
-これは、Addressのどのレコードを変更すべきかを簡単に見つけられるので、何かと便利です。別の意味を持つ数字を渡すことも、文字列を渡すことも、`nil`を渡すことも可能です（この場合は配列パラメータが作成されます）。
+`:index`オプションには他の数値や文字列も渡せます。また、`nil`も渡せます（この場合は配列パラメータが作成されます）。
 
 さらに複雑な入れ子を作る場合は、入力名の冒頭部分（上の例では`person[address]`）を以下のように明示的に指定できます。
 
@@ -834,12 +905,14 @@ WARNING: 配列パラメータは、`check_box`ヘルパーとの相性がよく
 上のコードから以下のHTMLが生成されます。
 
 ```html
-<input id="person_address_primary_1_city" name="person[address][primary][1][city]" type="text" value="Bologna" />
+<input id="person_address_primary_23_city" name="person[address][primary][23][city]" type="text" value="Paris" />
 ```
 
-一般に、最終的な入力名は`fields_for`や`form_with`に渡された名前、インデックス値、属性名を連結したものになります。`:index`オプションは`text_field`などのヘルパーに直接渡すことも可能ですが、通常は個別の入力コントロールよりもフォームビルダーのレベルで指定する方がコードの繰り返しが少なく済みます。
+`text_field`などのヘルパーに直接`:index`オプションを渡すことも可能ですが、通常は個別のinputフィールドで指定するよりも、フォームビルダレベルで指定する方がコードの繰り返しを減らせます。
 
-以下のように、名前に`[]`を追加して`:index`オプションを省略するショートカットも利用できます。これは`index: address.id`を指定するのと同じです。
+一般に、最終的な入力名は「`fields_for`や`form_with`に渡された名前」「`:index`オプションの値」「属性名」を連結したものになります。
+
+最後に、`index: address.id`のように`:index`でIDを指定する代わりに、以下のように指定の名前に`"[]"`を追加するショートカットも利用できます。
 
 ```erb
 <%= fields_for 'person[address][primary][]', address do |address_form| %>
@@ -847,12 +920,12 @@ WARNING: 配列パラメータは、`check_box`ヘルパーとの相性がよく
 <% end %>
 ```
 
-つまり、上のコードでは前述の例と完全に同じHTML出力を得られます。
+つまり、上のコードで元のサンプルコードと完全に同じHTML出力を得られます。
 
 外部リソース用のフォーム
 ---------------------------
 
-外部リソースに何らかのデータを渡す必要がある場合も、Railsのフォームヘルパーを用いてフォームを作成する方がやはり便利です。しかし、その外部リソースに対して`authenticity_token`を設定しなければならない場合にはどうしたらよいでしょう。これは、`form_with`オプションに`authenticity_token: 'your_external_token'`パラメータを渡すことで実現できます。
+外部リソースに何らかのデータを渡す必要がある場合も、Railsのフォームヘルパーを用いてフォームを作成する方がやはり便利です。しかし、その外部リソースに対して`authenticity_token`を設定しなければならない場合にはどうしたらよいでしょう。これは、`form_with`オプションに`authenticity_token: '外部トークン'`パラメータを渡すことで実現できます。
 
 ```erb
 <%= form_with url: 'http://farfar.away/form', authenticity_token: 'external_token' do %>
@@ -860,7 +933,7 @@ WARNING: 配列パラメータは、`check_box`ヘルパーとの相性がよく
 <% end %>
 ```
 
-支払用ゲートウェイなどの外部リソースに対してデータを送信する場合、`authenticity_token`隠しフィールドを生成すると、フォームで使えるフィールドは外部APIによって制限されて不都合が生じることがあります。フィールド生成を抑制するには、`:authenticity_token`オプションに`false`を渡します。
+支払用ゲートウェイなどの外部リソースに対してデータを送信する場合、`authenticity_token`隠しフィールドを生成すると、フォームで使われる可能性のあるフィールドが外部APIによって制限されて不都合が生じることがあります。トークンの送信を抑制するには、`:authenticity_token`オプションに`false`を渡します。
 
 ```erb
 <%= form_with url: 'http://farfar.away/form', authenticity_token: false do %>
@@ -875,7 +948,7 @@ WARNING: 配列パラメータは、`check_box`ヘルパーとの相性がよく
 
 ### モデルを構成する
 
-Active Recordは[`accepts_nested_attributes_for`](https://api.rubyonrails.org/classes/ActiveRecord/NestedAttributes/ClassMethods.html#method-i-accepts_nested_attributes_for)メソッドでモデルレベルのサポートを行っています。
+Active Recordは[`accepts_nested_attributes_for`][]メソッドでモデルレベルのサポートを提供しています。
 
 ```ruby
 class Person < ApplicationRecord
@@ -888,7 +961,9 @@ class Address < ApplicationRecord
 end
 ```
 
-上のコードによって`addresses_attributes=`メソッドが`Person`モデル上に作成され、これを用いて住所の作成・更新・削除（必要な場合）を行なえます。
+上のコードによって`addresses_attributes=`メソッドが`Person`モデル上に作成され、これを用いて住所の作成、更新、および削除（必要な場合）を行なえます。
+
+[`accepts_nested_attributes_for`]: https://api.rubyonrails.org/classes/ActiveRecord/NestedAttributes/ClassMethods.html#method-i-accepts_nested_attributes_for
 
 ### ネストしたフォーム
 
@@ -912,7 +987,7 @@ end
 <% end %>
 ```
 
-ネストした属性が関連付けに渡されると、`fields_for`ヘルパーはその関連付けのすべての要素を一度ずつ出力します。特に、`Person`に住所が登録されていない場合は何も出力しません。フィールドのセットが少なくとも1つはユーザーに表示されるように、コントローラで1つ以上の空白の子を作成しておくというのはよく行われるパターンです。以下の例では、Personフォームを新たに作成したときに2組の住所フィールドがレンダリングされます。
+ネストした属性が関連付けに渡されると、`fields_for`ヘルパーはその関連付けのすべての要素を一度ずつ出力します。特に、`Person`に住所が登録されていない場合は何も出力しません。フィールドのセットが少なくとも1つはユーザーに表示されるように、コントローラで1つ以上の空白の子要素を作成しておくというのはよく行われるパターンです。以下の例では、Personフォームを新たに作成したときに2組の住所フィールドがレンダリングされます。
 
 ```ruby
 def new
@@ -990,7 +1065,7 @@ end
 <% end %>
 ```
 
-コントローラ内にある許可されたパラメータを以下のように更新して、`_destroy`フィールドが必ずパラメータに含まれるようにしておく必要があります。
+このとき、コントローラ内でパラメータの許可リストを以下のように更新して、`_destroy`フィールドが必ずパラメータに含まれるようにしておく必要があります。
 
 ```ruby
 def person_params
@@ -1001,7 +1076,7 @@ end
 
 ### 空のレコードができないようにする
 
-ユーザーが何も入力しなかったフィールドを無視できれば何かと便利です。これは、`:reject_if` procを`accepts_nested_attributes_for`に渡すことで制御できます。このprocは、フォームから送信された属性にあるハッシュごとに呼び出されます。このprocが`false`を返す場合、Active Recordはそのハッシュに関連付けられたオブジェクトを作成しません。以下の例では、`kind`属性が設定されている場合にのみ住所オブジェクトを生成します。
+ユーザーが何も入力しなかったフィールドを無視できれば何かと便利です。これは、`:reject_if` procを`accepts_nested_attributes_for`に渡すことで制御できます。このprocは、フォームから送信された属性にあるハッシュごとに呼び出されます。このprocが`true`を返す場合、Active Recordはそのハッシュに関連付けられたオブジェクトを作成しません。以下の例では、`kind`属性が設定されている場合にのみ住所オブジェクトを生成します。
 
 ```ruby
 class Person < ApplicationRecord
@@ -1010,16 +1085,16 @@ class Person < ApplicationRecord
 end
 ```
 
-代わりにシンボル`:all_blank`を渡すこともできます。このシンボルが渡されると、すべての値が空欄のレコードを受け付けなくなるprocが1つ生成され、`_destroy`ですべての値が取り除かれます。
+代わりにシンボル`:all_blank`を渡すこともできます。このシンボルが渡されると、`_destroy`の値を除くすべての属性が空白レコードを受け付けなくなるprocが1つ生成されます。
 
 ### フィールドを動的に追加する
 
-多くのフィールドセットを事前にレンダリングする代わりに、「新しい住所を追加」ボタンを押したときだけこれらのフィールドを動的に追加したいことがあります。残念ながらRailsではこのためのサポートは組み込まれていません。フィールドセットを動的に生成する場合は、関連する配列のキーが重複しないよう注意しなければなりません。JavaScriptで現在の日時（[エポック時間](https://ja.wikipedia.org/wiki/UNIX%E6%99%82%E9%96%93)からのミリ秒の経過時間）を取得して一意の値を得るのが定番の手法です。
+多くのフィールドセットを事前にレンダリングする代わりに、「新しい住所を追加」ボタンを押したときだけこれらのフィールドを動的に追加したいことがあります。Railsにはこのためのサポートは組み込まれていません。フィールドセットを動的に生成する場合は、関連する配列のキーが重複しないよう注意しなければなりません。JavaScriptで現在の日時（[エポック時間](https://ja.wikipedia.org/wiki/UNIX%E6%99%82%E9%96%93)からのミリ秒の経過時間）を取得して一意の値を得るのが定番の手法です。
 
 フォームビルダーなしで利用できるタグヘルパー
 ----------------------------------------
 
-フォームのフィールドをフォームビルダーのコンテキストの外でレンダリングする必要が生じたときのためにRailsではよく使われるフォーム要素を生成するタグヘルパーを提供しています。たとえば、[`check_box_tag`](https://api.rubyonrails.org/classes/ActionView/Helpers/FormTagHelper.html#method-i-check_box_tag)は以下のように使えます。
+フォームのフィールドをフォームビルダーのコンテキストの外でレンダリングする必要が生じたときのために、よく使われるフォーム要素を生成するタグヘルパーを提供しています。たとえば、[`check_box_tag`][]は以下のように使えます。
 
 ```erb
 <%= check_box_tag "accept" %>
@@ -1031,9 +1106,15 @@ end
 <input type="checkbox" name="accept" id="accept" value="1" />
 ```
 
-一般に、これらのヘルパー名は、フォームビルダーのヘルパー名の末尾に`_tag`を追加したものになります。完全なリストについては、[`FormTagHelper`](https://api.rubyonrails.org/classes/ActionView/Helpers/FormTagHelper.html) APIドキュメントを参照してください。
+一般に、これらのヘルパー名は、フォームビルダーのヘルパー名の末尾に`_tag`を追加したものになります。完全なリストについては、[`FormTagHelper`][] APIドキュメントを参照してください。
+
+[`check_box_tag`]: https://api.rubyonrails.org/classes/ActionView/Helpers/FormTagHelper.html#method-i-check_box_tag
+[`FormTagHelper`]: https://api.rubyonrails.org/classes/ActionView/Helpers/FormTagHelper.html
 
 `form_tag`や`form_for`の利用について
 -------------------------------
 
-Rails 5.1で`form_with`が導入されるまでは、`form_with`の機能は[`form_tag`](https://api.rubyonrails.org/v5.2/classes/ActionView/Helpers/FormTagHelper.html#method-i-form_tag)と[`form_for`](https://api.rubyonrails.org/v5.2/classes/ActionView/Helpers/FormHelper.html#method-i-form_for)に分かれていました。`form_tag`および`form_for`は、禁止ではないものの利用は推奨されていません。これらのメソッドの利用方法については、[旧バージョンのガイド](https://railsguides.jp/?version=5.2)を参照してください。
+Rails 5.1で`form_with`が導入されるまでは、`form_with`の機能は[`form_tag`][]と[`form_for`][]に分かれていました。`form_tag`および`form_for`は、禁止ではないものの、利用は推奨されていません。これらのメソッドの利用方法については、[旧バージョンのガイド](https://railsguides.jp/?version=5.2)を参照してください。
+
+[`form_tag`]: https://api.rubyonrails.org/v5.2/classes/ActionView/Helpers/FormTagHelper.html#method-i-form_tag
+[`form_for`]: https://api.rubyonrails.org/v5.2/classes/ActionView/Helpers/FormHelper.html#method-i-form_for
