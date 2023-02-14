@@ -108,7 +108,7 @@ Active Jobには、Sidekiq、Resque、Delayed Jobなどさまざまなキュー�
 
 ### バックエンドを設定する
 
-キューイングバックエンドの設定は簡単です。
+キューイングバックエンドは、[`config.active_job.queue_adapter`]で手軽に設定できます。
 
 ```ruby
 # config/application.rb
@@ -162,7 +162,7 @@ class GuestsCleanupJob < ApplicationJob
 end
 ```
 
-`application.rb`で以下のように`config.active_job.queue_name_prefix`を使うことで、すべてのジョブでキュー名の前に特定の文字列を追加することができます。
+`application.rb`で以下のように[`config.active_job.queue_name_prefix`][]を使うことで、すべてのジョブでキュー名の前に特定の文字列を追加できます。
 
 ```ruby
 # config/application.rb
@@ -198,7 +198,7 @@ end
 # `config.active_job.queue_name_prefix`の設定が上書きされます
 ```
 
-キュー名のプレフィックスのデフォルト区切り文字は'\_'です。`application.rb`の`config.active_job.queue_name_delimiter`を設定することでこの区切り文字を変更できます。
+キュー名のプレフィックスのデフォルト区切り文字は'\_'です。[`config.active_job.queue_name_delimiter`][]を設定することでこの区切り文字を変更できます。
 
 ```ruby
 # config/application.rb
@@ -252,8 +252,9 @@ ProcessVideoJob.perform_later(Video.last)
 
 NOTE: 設定したキュー名をキューイングバックエンドが「リッスンする」ようにしてください。一部のバックエンドでは、リッスンするキューを指定する必要が生じることもあります。
 
+[`config.active_job.queue_name_delimiter`]: configuring.html#config-active-job-queue-name-delimiter
+[`config.active_job.queue_name_prefix`]: configuring.html#config-active-job-queue-name-prefix
 [`queue_as`]: https://api.rubyonrails.org/classes/ActiveJob/QueueName/ClassMethods.html#method-i-queue_as
-
 コールバック
 ---------
 

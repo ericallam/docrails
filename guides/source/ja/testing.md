@@ -249,7 +249,7 @@ Finished in 0.040609s, 49.2500 runs/s, 24.6250 assertions/s.
 
 今度は'E'が出力されます。これはエラーが発生したテストが1つあることを示しています。
 
-NOTE: テストスイートに含まれる各テストメソッドは、エラーまたはアサーション失敗が発生するとそこで実行を中止し、次のメソッドに進みます。テストメソッドの実行順序はすべてランダムです。テストの実行順序は[`config.active_support.test_order`オプション](configuring.html#active-supportを設定する)で設定できます。
+NOTE: テストスイートに含まれる各テストメソッドは、エラーまたはアサーション失敗が発生するとそこで実行を中止し、次のメソッドに進みます。テストメソッドの実行順序はすべてランダムです。テストの実行順序は[`config.active_support.test_order`][]オプションで設定できます。
 
 テストが失敗すると、それに応じたバックトレースが出力されます。Railsはデフォルトでバックトレースをフィルタし、アプリケーションに関連するバックトレースのみを出力します。これによって、フレームワークから発生する不要な情報を排除して作成中のコードに集中できます。完全なバックトレースを参照しなければならなくなった場合は、`-b`（または`--backtrace`）引数を設定するだけで動作を変更できます。
 
@@ -269,6 +269,8 @@ end
 ```
 
 これでテストはパスするはずです。
+
+[`config.active_support.test_order`]: configuring.html#config-active-support-test-order
 
 ### 利用可能なアサーション
 
@@ -413,7 +415,7 @@ NOTE: アサーションの自作は高度なトピックなので、このチ�
 
 Railsは`minitest`フレームワークに以下のような独自のカスタムアサーションを追加しています。
 
-> 製版の都合上ここはリスト形式とする
+<!-- 製版の都合上ここはリスト形式とする -->
 
 **[`assert_difference(expressions, difference = 1, message = nil) {...}`](http://api.rubyonrails.org/classes/ActiveSupport/Testing/Assertions.html#method-i-assert_difference)**
 
@@ -439,7 +441,7 @@ Railsは`minitest`フレームワークに以下のような独自のカスタ�
 
 * 渡されたパスのルーティングが正しく扱われ、（`expected_options`ハッシュで渡された（解析オプションがパスと一致したことを主張する。基本的にこのアサーションでは、Railsが`expected_options`で渡されたルーティングを認識していると主張する。
 
-**[`assert_generates(expected_path, options, defaults={}, extras = {}, message=nil)`](http://api.rubyonrails.org/classes/ActionDispatch/Assertions/RoutingAssertions.html#method-i-assert_generates)**
+**[`assert_generates(expected_path, options, defaults={}, extras = {}, message=nil)`](https://api.rubyonrails.org/classes/ActionDispatch/Assertions/RoutingAssertions.html#method-i-assert_generates)**
 
 * 渡されたオプションは、渡されたパスの生成に使えるものであると主張する（`assert_recognizes`と逆の動作）。`extras`パラメータは、クエリ文字列に追加リクエストがある場合にそのパラメータの名前と値をリクエストに渡すのに使われる。`message`パラメータにはアサーションが失敗した場合のカスタムエラーメッセージを渡せる。
 
@@ -555,7 +557,7 @@ Known extensions: rails, pride
 並列テスト
 ----------------
 
-並列テストを用いてテストスイートを並列実行できます。デフォルトの手法はプロセスのforkですが、スレッディングもサポートされています。テストを並列に実行することで、テストスイート全体の実行に要する時間を削減できます。
+並列テスト（parallel testing）を用いてテストスイートを並列実行できます。デフォルトの手法はプロセスのforkですが、スレッディングもサポートされています。テストを並列に実行することで、テストスイート全体の実行に要する時間を削減できます。
 
 ### プロセスを用いた並列テスト
 
@@ -790,7 +792,7 @@ Railsはデフォルトで、`test/fixtures`フォルダにあるすべてのフ
 2. フィクスチャのデータをテーブルに読み込む
 3. フィクスチャに直接アクセスしたい場合はフィクスチャのデータをメソッドにダンプする
 
-TIP: Railsでは、データベースから既存のデータベースを削除するために外部キーやチェック制約といった参照整合性（referential integrity）トリガを無効にしようとします。テスト実行時のパーミッションエラーが発生して困っている場合は、test環境のデータベースユーザーがこれらのトリガを無効にする特権を持っていることをご確認ください（PostgreSQLの場合、すべてのトリガを無効にできるのはsuperuserのみです。PostgreSQLのパーミッションについて詳しくは[こちらの記事](https://blog.endpoint.com/2012/10/postgres-system-triggers-error.html)を参照してください）。
+TIP: Railsでは、データベースから既存のデータベースを削除するために外部キーやチェック制約といった参照整合性（referential integrity）トリガを無効にしようとします。テスト実行時のパーミッションエラーが発生して困っている場合は、test環境のデータベースユーザーがこれらのトリガを無効にする特権を持っていることをご確認ください（PostgreSQLの場合、すべてのトリガを無効にできるのはsuperuserのみです。PostgreSQLのパーミッションについて詳しくは[こちらの記事](https://www.postgresql.jp/document/current/html/sql-altertable.html)を参照してください）。
 
 #### フィクスチャはActive Recordオブジェクト
 
@@ -811,7 +813,7 @@ david.call(david.partner)
 複数のフィクスチャを一括で取得するには、次のようにフィクスチャ名をリストで渡します。
 
 ```ruby
-# this will return an array containing the fixtures david and steve
+# davidとsteveというフィクスチャを含む配列を返す
 users(:david, :steve)
 ```
 
@@ -1009,7 +1011,7 @@ end
 結合テスト
 -------------------
 
-結合テスト（integration test）は、複数のコントローラ同士のやりとりをテストします。一般に、アプリケーション内の重要なワークフローのテストに使われます。
+結合テスト（integration test、統合テストとも）は、複数のコントローラ同士のやりとりをテストします。一般に、アプリケーション内の重要なワークフローのテストに使われます。
 
 Railsの結合テストは、アプリケーションの`test/integration`ディレクトリに作成します。Railsでは結合テストのスケルトンを生成するジェネレータが提供されています。
 
@@ -1099,7 +1101,7 @@ end
 
 最初に`Articles`コントローラの`:new`アクションを呼びます。このレスポンスは成功するはずです。
 
-次に`Articles`コントローラの`:create`アクションを呼びます。
+次に`Articles`コントローラの`:create`アクションにPOSTリクエストを送信します。
 
 ```ruby
 post "/articles",
@@ -1116,7 +1118,7 @@ NOTE: リダイレクト実行後に続いて別のリクエストを行う予�
 
 #### 結合テストの利用法
 
-ブログを表示して記事を1件作成するという、きわめて小規模なワークフローを無事テストできました。このテストにコメントを追加するもよし、記事の削除や編集のテストを行うもよしです。結合テストは、アプリケーションのあらゆるユースケースに伴うエクスペリエンスのテストに向いています。
+ブログを表示して記事を1件作成するという、きわめて小規模なワークフローを無事テストできました。このテストにコメントを追加することも、記事の削除や編集のテストを行うこともできます。結合テストは、アプリケーションのあらゆるユースケースに伴うエクスペリエンスのテストに向いています。
 
 コントローラの機能テスト
 -------------------------------------
@@ -1217,7 +1219,7 @@ end
 
 これで、すべてのテストを実行するとパスするようになったはずです。
 
-NOTE: 「BASIC認証」セクションの手順に沿う場合は、すべてのテストをパスさせるために`setup`ブロックに以下を追加する必要があります。
+NOTE: [BASIC認証](getting_started.html#basic認証)セクションの手順に沿う場合は、すべてのテストをパスさせるために`setup`ブロックに以下を追加する必要があります。
 
 ```ruby
 post articles_url, params: { article: { body: "Rails is awesome!", title: "Hello Rails" } }, headers: { Authorization: ActionController::HttpAuthentication::Basic.encode_credentials("dhh", "secret") }
@@ -1386,7 +1388,9 @@ test "should show article" do
 end
 ```
 
-記事の削除は次のようにテストします。
+先ほどフィクスチャについて解説したように、`articles()`メソッドはArticlesフィクスチャにアクセスできることを思い出しましょう。
+
+既存の記事の削除は次のようにテストします。
 
 ```ruby
 test "should destroy article" do
@@ -1501,7 +1505,7 @@ end
 # test/test_helpers/multiple_assertions.rb
 module MultipleAssertions
   def assert_multiple_of_forty_two(number)
-    assert (number % 42 == 0), 'expected #{number} to be a multiple of 42'
+    assert (number % 42 == 0), "expected #{number} to be a multiple of 42"
   end
 end
 ```
@@ -1534,7 +1538,7 @@ end
 
 ####ヘルパーをeager requireする
 
-ヘルパーを`test_helper.rb`内でeagerに`require`できると、テストファイルが暗黙でヘルパーにアクセスできるので便利です。これは以下のようにすることで実現できます。
+ヘルパーを`test_helper.rb`内でeagerに`require`できると、テストファイルが暗黙でヘルパーにアクセスできるので便利です。これは以下のようなglob記法（`*`）で実現できます。
 
 ```ruby
 # test/test_helper.rb
@@ -1555,7 +1559,7 @@ Railsで使えるルーティングアサーションについて詳しくは、
 ビューをテストする
 -------------
 
-アプリケーションのビューのテストでは、リクエストに対するレスポンスをテストするために、あるページで重要なHTML要素とその内容がレスポンスに含まれているアサーションを書くことがよくあります。`assert_select`というアサーションを使うと、こうしたテストで簡潔かつ強力な文法を利用できるようになります。
+アプリケーションのビューのテストでは、リクエストに対するレスポンスをテストするために、あるページで重要なHTML要素とその内容がレスポンスに含まれているというアサーションを書くことがよくあります。ルーティングのテストと同様に、ビューテストも`test/controllers/`に配置するか、コントローラテストの一部に含めます。`assert_select`というアサーションメソッドを使うと、簡潔かつ強力な文法でレスポンスのHTML要素を調べられるようになります。
 
 `assert_select`には2つの書式があります。
 
@@ -1755,7 +1759,7 @@ class UsersTest < ActionDispatch::SystemTestCase
 end
 ```
 
-NOTE: `assert_emails`メソッドは特定の配信方法に紐付けられておらず、`deliver_now`メソッドと`deliver_later`メソッドのどちらでメールを配信する場合にも利用できます。メールがキューに登録されたことを明示的なアサーションにしたい場合は、`assert_enqueued_emails`メソッドを利用できます。詳しくは[`ActionMailer::TestHelper`](https://api.rubyonrails.org/classes/ActionMailer/TestHelper.html)APIドキュメントを参照してください。
+NOTE: `assert_emails`メソッドは特定の配信方法に紐付けられておらず、`deliver_now`メソッドと`deliver_later`メソッドのどちらでメールを配信する場合にも利用できます。メールがキューに登録されたことを明示的なアサーションにしたい場合は、`assert_enqueued_emails`メソッドを利用できます。詳しくは[`ActionMailer::TestHelper`](https://api.rubyonrails.org/classes/ActionMailer/TestHelper.html) APIドキュメントを参照してください。
 
 ジョブをテストする
 ------------
@@ -1764,7 +1768,7 @@ NOTE: `assert_emails`メソッドは特定の配信方法に紐付けられて�
 
 ### 基本のテストケース
 
-デフォルトではジョブを1つ作成すると、ジョブに関連するテストが`test/jobs`ディレクトリの下にも生成されます。以下は請求ジョブの例です。
+デフォルトではジョブを1つ作成すると、ジョブに関連するテストが`test/jobs`ディレクトリの下にも生成されます。以下は請求（billing）ジョブの例です。
 
 ```ruby
 require "test_helper"
@@ -1901,12 +1905,12 @@ class ProductTest < ActionCable::TestCase
 end
 ```
 
-`Channel.broadcast_to`によるブロードキャストをテストしたい場合は、`Channel.broadcasting_for`で背後のストリーム名を生成すべきです。
+`Channel.broadcast_to`によるブロードキャストをテストしたい場合は、`Channel.broadcasting_for`で背後のストリーム名を生成します。
 
 ```ruby
 # app/jobs/chat_relay_job.rb
 class ChatRelayJob < ApplicationJob
-  def perform_later(room, message)
+  def perform(room, message)
     ChatChannel.broadcast_to room, text: message
   end
 end
@@ -1938,7 +1942,7 @@ eager loadingをテストする
 
 ### CIの場合
 
-プロジェクトでCI（継続的インテグレーション）を利用している場合、アプリケーションでeager loadingを確実に行う手軽な方法の１つは、CIでeager loadingすることです。
+プロジェクトでCI（Continuous Integration: 継続的インテグレーション）を利用している場合、アプリケーションでeager loadingを確実に行う手軽な方法の１つは、CIでeager loadingすることです。
 
 CIは、テストスイートがそこで実行されていることを示すために、以下のように何らかの環境変数（`CI`など）を設定するのが普通です。
 
