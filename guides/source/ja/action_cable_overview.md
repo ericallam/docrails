@@ -112,10 +112,9 @@ module ApplicationCable
     rescue_from StandardError, with: :report_error
 
     private
-
-    def report_error(e)
-      SomeExternalBugtrackingService.notify(e)
-    end
+      def report_error(e)
+        SomeExternalBugtrackingService.notify(e)
+      end
   end
 end
 ```
@@ -179,10 +178,9 @@ class ChatChannel < ApplicationCable::Channel
   rescue_from 'MyError', with: :deliver_error_message
 
   private
-
-  def deliver_error_message(e)
-    broadcast_to(...)
-  end
+    def deliver_error_message(e)
+      broadcast_to(...)
+    end
 end
 ```
 
@@ -615,7 +613,7 @@ production:
 ##### Redisアダプタ
 
 Redisアダプタでは、Redisサーバーを指すURLを指定する必要があります。
-また、複数のアプリケーションが同一のRedisサーバーを用いる場合は、チャネル名衝突を避けるために`channel_prefix`の指定が必要になることもあります。詳しくは[Redis PubSubドキュメント](https://redis.io/topics/pubsub#database-amp-scoping)を参照してください。
+また、複数のアプリケーションが同一のRedisサーバーを用いる場合は、チャネル名衝突を避けるために`channel_prefix`の指定が必要になることもあります。詳しくは[Redis Pub/Subドキュメント](https://redis.io/topics/pubsub#database-amp-scoping)を参照してください。
 
 RedisアダプタではSSL/TLS接続もサポートされています。SSL/TLS接続に必要なパラメータは、設定用yamlファイルの`ssl_params`で指定できます。
 
