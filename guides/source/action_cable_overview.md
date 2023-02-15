@@ -227,10 +227,9 @@ class ChatChannel < ApplicationCable::Channel
   rescue_from 'MyError', with: :deliver_error_message
 
   private
-
-  def deliver_error_message(e)
-    broadcast_to(...)
-  end
+    def deliver_error_message(e)
+      broadcast_to(...)
+    end
 end
 ```
 
@@ -573,14 +572,14 @@ consumer.subscriptions.create("AppearanceChannel", {
   install() {
     window.addEventListener("focus", this.update)
     window.addEventListener("blur", this.update)
-    document.addEventListener("turbolinks:load", this.update)
+    document.addEventListener("turbo:load", this.update)
     document.addEventListener("visibilitychange", this.update)
   },
 
   uninstall() {
     window.removeEventListener("focus", this.update)
     window.removeEventListener("blur", this.update)
-    document.removeEventListener("turbolinks:load", this.update)
+    document.removeEventListener("turbo:load", this.update)
     document.removeEventListener("visibilitychange", this.update)
   },
 
@@ -721,7 +720,7 @@ The async adapter is intended for development/testing and should not be used in 
 
 The Redis adapter requires users to provide a URL pointing to the Redis server.
 Additionally, a `channel_prefix` may be provided to avoid channel name collisions
-when using the same Redis server for multiple applications. See the [Redis PubSub documentation](https://redis.io/topics/pubsub#database-amp-scoping) for more details.
+when using the same Redis server for multiple applications. See the [Redis Pub/Sub documentation](https://redis.io/docs/manual/pubsub/#database--scoping) for more details.
 
 The Redis adapter also supports SSL/TLS connections. The required SSL/TLS parameters can be passed in `ssl_params` key in the configuration yaml file.
 
@@ -770,9 +769,10 @@ in the development environment.
 ### Consumer Configuration
 
 To configure the URL, add a call to [`action_cable_meta_tag`][] in your HTML layout
-HEAD. This uses a URL or path typically set via `config.action_cable.url` in the
+HEAD. This uses a URL or path typically set via [`config.action_cable.url`][] in the
 environment configuration files.
 
+[`config.action_cable.url`]: configuring.html#config-action-cable-url
 [`action_cable_meta_tag`]: https://api.rubyonrails.org/classes/ActionCable/Helpers/ActionCableHelper.html#method-i-action_cable_meta_tag
 
 ### Worker Pool Configuration
@@ -790,7 +790,7 @@ connections as you have workers. The default worker pool size is set to 4, so
 that means you have to make at least 4 database connections available.
 You can change that in `config/database.yml` through the `pool` attribute.
 
-### Client-side logging
+### Client-side Logging
 
 Client-side logging is disabled by default. You can enable this by setting the `ActionCable.logger.enabled` to true.
 
@@ -823,7 +823,7 @@ For a full list of all configuration options, see the
 
 Action Cable can run alongside your Rails application. For example, to
 listen for WebSocket requests on `/websocket`, specify that path to
-`config.action_cable.mount_path`:
+[`config.action_cable.mount_path`][]:
 
 ```ruby
 # config/application.rb
@@ -836,9 +836,11 @@ You can use `ActionCable.createConsumer()` to connect to the cable
 server if `action_cable_meta_tag` is invoked in the layout. Otherwise, A path is
 specified as first argument to `createConsumer` (e.g. `ActionCable.createConsumer("/websocket")`).
 
-For every instance of your server, you create and for every worker your server
+For every instance of your server you create, and for every worker your server
 spawns, you will also have a new instance of Action Cable, but the Redis or
 PostgreSQL adapter keeps messages synced across connections.
+
+[`config.action_cable.mount_path`]: configuring.html#config-action-cable-mount-path
 
 ### Standalone
 
