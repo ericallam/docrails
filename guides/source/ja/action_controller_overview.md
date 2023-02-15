@@ -66,11 +66,12 @@ end
 
 アクションとして呼び出せるのは、publicメソッドだけです。補助メソッドやフィルタのような、アクションとして呼び出したくないメソッドには、`private`や`protected`を指定して公開しないようにするのが定石です。
 
-WARNING: 一部のメソッド名はAction Controllerで予約されています。予約済みメソッドを誤ってアクションや補助メソッドとして再定義すると、`SystemStackError`が発生する可能性があります。コントローラ内でRESTfulな[リソースルーティング](routing.html#リソースベースのルーティング-railsのデフォルト)アクションだけを使うようにしていれば、心配は無用です。
+WARNING: 一部のメソッド名はAction Controllerで予約されています。予約済みメソッドを誤ってアクションや補助メソッドとして再定義すると、`SystemStackError`が発生する可能性があります。コントローラ内でRESTfulな[リソースルーティング][]アクションだけを使うようにしていれば、心配は無用です。
 
 NOTE: 予約済みメソッド名をアクション名として使わざるを得ない場合は、たとえばカスタムルーティングを利用して、予約済みメソッド名を予約されていないアクションメソッド名に対応付けるという回避策が考えられます。
 
 [`ActionController::Base`]: https://api.rubyonrails.org/classes/ActionController/Base.html
+[Resource Routing]: routing.html#リソースベースのルーティング-railsのデフォルト
 
 パラメータ
 ----------
@@ -316,7 +317,7 @@ params.permit(:name, { emails: [] },
     * `family`属性:`name`属性が必須
         * `name`属性は任意の許可済みスカラー値を受け付ける
 
-#### その他の事例
+#### その他の例
 
 許可済み属性は`new`アクションでも利用できます。しかし通常は`new`を呼び出す時点ではrootキーがないので、rootキーで[`require`][]を指定できません。
 
@@ -449,13 +450,13 @@ end
 
 ```ruby
 class LoginsController < ApplicationController
-  # "Create" a login, aka "log the user in"
+  # ログインを作成する（ユーザーをログインさせる）
   def create
     if user = User.authenticate(params[:username], params[:password])
       # セッションのuser idを保存し、
       # 今後のリクエストで使えるようにする
       session[:current_user_id] = user.id
-      redirect_to root_url
+      redirect_to root_url, status: :see_other
     end
   end
 end
@@ -465,7 +466,7 @@ end
 
 ```ruby
 class LoginsController < ApplicationController
-  # ログインを削除する（ログアウト）
+  # ログインを削除する（ユーザーをログアウトさせる）
   def destroy
     # セッションからユーザーidを削除する
     session.delete(:current_user_id)
@@ -493,7 +494,7 @@ class LoginsController < ApplicationController
   def destroy
     session.delete(:current_user_id)
     flash[:notice] = "ログアウトしました"
-    redirect_to root_url
+    redirect_to root_url, status: :see_other
   end
 end
 ```
@@ -687,20 +688,19 @@ end
 
 フィルタは継承されるので、フィルタを`ApplicationController`で設定すればアプリケーションのすべてのコントローラでフィルタが有効になります。
 
-「before系」フィルタは、[`before_action`][]で登録します。リクエストサイクルを止めてしまう可能性があるのでご注意ください。「before系」フィルタのよくある使われ方の１つは、ユーザーがアクションを実行する前にログインを要求するというものです。このフィルタメソッドは以下のような感じになるでしょう。
+「before系」フィルタは、[`before_action`][]で登録します。リクエストサイクルを止めてしまう可能性があるのでご注意ください。「before系」フィルタのよくある使われ方の1つは、ユーザーがアクションを実行する前にログインを要求するというものです。このフィルタメソッドは以下のような感じになるでしょう。
 
 ```ruby
 class ApplicationController < ActionController::Base
   before_action :require_login
 
   private
-
-  def require_login
-    unless logged_in?
-      flash[:error] = "You must be logged in to access this section"
-      redirect_to new_login_url # リクエストサイクルを停止する
+    def require_login
+      unless logged_in?
+        flash[:error] = "このセクションにアクセスするにはログインが必要です"
+        redirect_to new_login_url # リクエストサイクルを停止する
+      end
     end
-  end
 end
 ```
 
@@ -739,16 +739,15 @@ class ChangesController < ApplicationController
   around_action :wrap_in_transaction, only: :show
 
   private
-
-  def wrap_in_transaction
-    ActiveRecord::Base.transaction do
-      begin
-        yield
-      ensure
-        raise ActiveRecord::Rollback
+    def wrap_in_transaction
+      ActiveRecord::Base.transaction do
+        begin
+          yield
+        ensure
+          raise ActiveRecord::Rollback
+        end
       end
     end
-  end
 end
 ```
 
@@ -769,7 +768,7 @@ end
 class ApplicationController < ActionController::Base
   before_action do |controller|
     unless controller.send(:logged_in?)
-      flash[:error] = "You must be logged in to access this section"
+      flash[:error] = "このセクションにアクセスするにはログインが必要です"
       redirect_to new_login_url
     end
   end
@@ -794,7 +793,7 @@ end
 class LoginFilter
   def self.before(controller)
     unless controller.send(:logged_in?)
-      controller.flash[:error] = "You must be logged in to access this section"
+      controller.flash[:error] = "このセクションにアクセスするにはログインが必要です"
       controller.redirect_to controller.new_login_url
     end
   end
@@ -1131,13 +1130,16 @@ Railsのログファイルは、環境ごとに`log`フォルダの下に出力�
 
 ### パラメータをフィルタする
 
-Railsアプリケーションの設定ファイル`config.filter_parameters`には、特定のリクエストパラメータをログ出力時にフィルタで除外する設定を追加できます。フィルタされたパラメータはログ内で`[FILTERED]`という文字に置き換えられます。
+Railsアプリケーションの設定ファイル[`config.filter_parameters`][]には、特定のリクエストパラメータをログ出力時にフィルタで除外する設定を追加できます。
+フィルタされたパラメータはログ内で`[FILTERED]`という文字に置き換えられます。
 
 ```ruby
 config.filter_parameters << :password
 ```
 
 NOTE: 渡されるパラメータは、正規表現の「部分マッチ」によってフィルタされる点にご注意ください。Railsは適切なイニシャライザ（`initializers/filter_parameter_logging.rb`）にデフォルトで`:password`を追加し、アプリケーションの典型的な`password`パラメータや`password_confirmation`パラメータも同様にフィルタで除外します。
+
+[`config.filter_parameters`]: configuring.html#config-filter-parameters
 
 ### リダイレクトをフィルタする
 
@@ -1196,7 +1198,7 @@ class ApplicationController < ActionController::Base
 
   private
     def user_not_authorized
-      flash[:error] = "You don't have access to this section."
+      flash[:error] = "このセクションへのアクセス権がありません"
       redirect_back(fallback_location: root_path)
     end
 end
@@ -1229,6 +1231,8 @@ NOTE: 例外の中には`ApplicationController`クラスでしかrescueできな
 HTTPSプロトコルを強制する
 --------------------
 
-コントローラへの通信をHTTPSのみに限定するには、アプリケーション環境の`config.force_ssl`設定で[`ActionDispatch::SSL`][]ミドルウェアを有効にします。
+コントローラへの通信をHTTPSのみに限定するには、アプリケーション環境の[`config.force_ssl`][]設定で[`ActionDispatch::SSL`][]ミドルウェアを有効にします。
 
+[`config.force_ssl`]: configuring.html#config-force-ssl
+[`ActionDispatch::SSL`]: https://api.rubyonrails.org/classes/ActionDispatch/SSL.html
 [`ActionDispatch::SSL`]: https://api.rubyonrails.org/classes/ActionDispatch/SSL.html
