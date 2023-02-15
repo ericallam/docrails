@@ -237,11 +237,11 @@ class ForwardsMailbox < ApplicationMailbox
   before_processing :require_projects
 
   def process
-    # Record the forward on the one project, or…
+    # 転送を1個のプロジェクトに記録する、または…
     if forwarder.projects.one?
       record_forward
     else
-      # …involve a second Action Mailer to ask which project to forward into.
+      # …2番目のAction Mailerに転送先プロジェクトを問い合わせてもらう
       request_forwarding_project
     end
   end
@@ -273,7 +273,9 @@ end
 
 デフォルトでは、処理が成功したInboundEmailは30日後に焼却（incinerate）されます。これにより、アカウントをキャンセルまたはコンテンツを削除したユーザーのデータをむやみに保持せずに済みます。この設計では、メールを処理した後に必要なメールをすべて切り出して、アプリケーションの業務ドメインモデルやコンテンツに取り込む必要があることが前提となります。InboundEmailがシステムに余分に保持される期間は、単にデバッグや事後調査のためのものです。
 
-実際のincinerationは、`config.action_mailbox.incinerate_after`でスケジュールされた時刻の後、`IncinerationJob`で行われます。この値はデフォルトで`30.days`に設定されますが、production.rbで設定を変更できます（incinerationを遠い未来にスケジューリングする場合、その間ジョブキューがジョブを保持可能になっていることが重要です）。
+実際のincinerationは、[`config.action_mailbox.incinerate_after`][]でスケジュールされた時刻の後、`IncinerationJob`で行われます。この値はデフォルトで`30.days`に設定されますが、production.rbで設定を変更できます（incinerationを遠い未来にスケジューリングする場合、その間ジョブキューがジョブを保持可能になっていることが重要です）。
+
+[`config.action_mailbox.incinerate_after`]: configuring.html#config-action-mailbox-incinerate-after
 
 ## Action Mailboxをdevelopment環境で使う
 
