@@ -152,6 +152,9 @@ table {
 img {
   max-width: 100%;
 }
+.table-wrapper {
+  overflow: scroll;
+}
 
 /*基本の赤ボタン*/
 .main-button {
