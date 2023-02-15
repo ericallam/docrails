@@ -602,11 +602,10 @@ class InvitationsMailer < ApplicationMailer
   end
 
   private
-
-  def set_inviter_and_invitee
-    @inviter = params[:inviter]
-    @invitee = params[:invitee]
-  end
+    def set_inviter_and_invitee
+      @inviter = params[:inviter]
+      @invitee = params[:invitee]
+    end
 end
 ```
 
@@ -686,7 +685,7 @@ Action Mailerを設定する
 |`smtp_settings`|`:smtp`の配信メソッドの詳細設定を行います。<ul><li>`:address`: リモートメールサーバーの利用を許可する。デフォルトは`"localhost"`であり、必要に応じて変更する。</li><li>`:port`: メールサーバーが万一ポート25番で動作していない場合はここで変更する。</li><li>`:domain`: HELOドメインを指定する必要がある場合はここで行なう。</li><li>`:user_name`: メールサーバーで認証が必要な場合はここでユーザー名を指定する。</li><li>`:password`: メールサーバーで認証が必要な場合はここでパスワードを指定する。</li><li>`:authentication`: メールサーバーで認証が必要な場合はここで認証の種類を指定する。`:plain`（パスワードを平文で送信）、`:login`（パスワードをBase64でエンコードする）、`:cram_md5`（チャレンジ/レスポンスによる情報交換と、MD5アルゴリズムによる重要情報のハッシュ化の組み合わせ）のいずれかのシンボルを指定する。</li><li>`:enable_starttls`: SMTPサーバーへの接続でSTARTTLSを利用する（サポートされていない場合は失敗する）。デフォルトは`false`。</li><li>`:enable_starttls_auto`: SMTPサーバーでSTARTTLSが有効かどうかを検出して有効にする。デフォルトは`true`。</li><li>`:openssl_verify_mode`: TLSを利用する場合にOpenSSLが認証をチェックする方法を指定できる。自己署名証明書やワイルドカード証明書でバリデーションを行う必要がある場合に非常に有用。OpenSSL検証定数の名前（'none'、'peer'、'client_once'、'fail_if_no_peer_cert'）を用いることも、この定数を直接用いることもできる（`OpenSSL::SSL::VERIFY_NONE`や`OpenSSL::SSL::VERIFY_PEER`など）</li><li>`:ssl/:tls`: SMTP接続でSMTP/TLS（SMTPS: SMTP over direct TLS connection）を有効にする。</li><li>`:open_timeout`: 接続オープン試行のタイムアウトを秒で指定する。</li><li>`:read_timeout`: read(2)呼び出しのタイムアウトを秒で指定する。</li></ul>|
 |`sendmail_settings`|`:sendmail`の配信オプションを上書きします。<ul><li>`:location`: sendmailの実行可能ファイルの場所を指定する。デフォルトは`/usr/sbin/sendmail`。</li><li>`:arguments`: sendmailに渡すコマンドライン引数を指定する。デフォルトは`-i`。</li></ul>|
 |`raise_delivery_errors`|メール配信に失敗した場合にエラーを発生するかどうかを指定します。このオプションは、外部のメールサーバーが即時配信を行っている場合にのみ機能します。|
-|`delivery_method`|配信方法を指定します。以下の配信方法を指定可能です。<ul><li>`:smtp` (default): `config.action_mailer.smtp_settings`で設定可能。</li><li>`:sendmail`: `config.action_mailer.sendmail_settings`で設定可能。</li><li>`:file`: メールをファイルとして保存する。`config.action_mailer.file_settings`で設定可能。</li><li>`:test`: メールを配列`ActionMailer::Base.deliveries`に保存する。</li></ul>詳しくは[APIドキュメント](http://api.rubyonrails.org/classes/ActionMailer/Base.html)を参照。|
+|`delivery_method`|配信方法を指定します。以下の配信方法を指定可能です。<ul><li>`:smtp` (default): [`config.action_mailer.smtp_settings`][]で設定可能。</li><li>`:sendmail`: [`config.action_mailer.sendmail_settings`][]で設定可能。</li><li>`:file`: メールをファイルとして保存する。`config.action_mailer.file_settings`で設定可能。</li><li>`:test`: メールを配列`ActionMailer::Base.deliveries`に保存する。</li></ul>詳しくは[APIドキュメント](http://api.rubyonrails.org/classes/ActionMailer/Base.html)を参照。|
 |`perform_deliveries`|Mailのメッセージに`deliver`メソッドを実行したときに実際にメール配信を行なうかどうかを指定します。デフォルトでは配信が行われます。機能テストなどで配信を一時的にオフにしたい場合に便利です。|
 |`deliveries`|`delivery_method :test`を用いてAction Mailerから送信されたメールの配列を保持します。単体テストおよび機能テストで最も便利です。|
 |`delivery_job`|`deliver_later`で使われるジョブクラス。デフォルトは`ActionMailer::MailDeliveryJob`。|
@@ -694,6 +693,9 @@ Action Mailerを設定する
 |`default_options`|`mail`メソッドオプション (`:from`、`:reply_to`など)のデフォルト値を設定します。|
 
 設定オプションの完全な説明については「Rails アプリケーションを設定する」ガイドの[Action Mailerを設定する](configuring.html#action-mailerを設定する)を参照してください。
+
+[`config.action_mailer.sendmail_settings`]: configuring.html#config-action-mailer-sendmail-settings
+[`config.action_mailer.smtp_settings`]: configuring.html#config-action-mailer-smtp-settings
 
 ### Action Mailerの設定例
 
