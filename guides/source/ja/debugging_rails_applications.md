@@ -53,7 +53,7 @@ Title: Rails debugging guide
 
 ### `to_yaml`
 
-他の方法として、任意のオブジェクトに対して`to_yaml`を呼び出すことでYAMLに変換できます。変換したこのオブジェクトは、`simple_format`ヘルパーメソッドに渡して出力を整形できます。これは`debug`のマジックです。
+別の方法として、任意のオブジェクトに対して`to_yaml`を呼び出すことでYAMLに変換できます。変換したこのオブジェクトは、`simple_format`ヘルパーメソッドに渡して出力を整形できます。これは`debug`のマジックです。
 
 インスタンス変数や、その他のあらゆるオブジェクトやメソッドをYAML形式で表示します。以下のような感じで使います。
 
@@ -257,7 +257,8 @@ logger.tagged("BCX") { logger.tagged("Jason") { logger.info "Stuff" } } # "[BCX]
 logger.debug "Person attributes hash: #{@person.attributes.inspect}"
 ```
 
-上の例では、たとえログ出力レベルをdebugにしなかった場合でもパフォーマンスが低下します。その理由は、上のコードでは文字列を評価する必要があり、その際に比較的動作が重い`String`オブジェクトのインスタンス化と、実行に時間のかかる変数の式展開（interpolation）が行われているからです。
+上の例では、たとえログ出力レベルをdebugにしなかった場合でもパフォーマンスが低下します。その理由は、上のコードでは文字列を評価する必要があり、その際に比較的動作が重い`String`オブジェクトのインスタンス化や変数の式展開（interpolation）が行われているからです。
+
 したがって、ロガーメソッドに渡すものはブロック形式にすることをおすすめします。ブロックとして渡しておけば、ブロックの評価は出力レベルが設定レベル以上になった場合にしか行われないようになる（遅延読み込みされる）ためです。これに従って上のコードを書き直すと以下のようになります。
 
 ```ruby
@@ -266,7 +267,7 @@ logger.debug {"Person attributes hash: #{@person.attributes.inspect}"}
 
 渡したブロックの内容（ここでは文字列の式展開）は、debug が有効になっている場合にしか評価されません。この方法によるパフォーマンスの改善は、大量のログを出力しているときでないとそれほど実感できないかもしれませんが、それでも採用する価値があります。
 
-INFO: 本セクションは[StackOverflowでのJon Cairnsによる回答](https://stackoverflow.com/questions/16546730/logging-in-rails-is-there-any-performance-hit/16546935#16546935)として書かれたものであり、[cc by-sa 4.0](https://creativecommons.org/licenses/by-sa/4.0/)ライセンスに基づいています。
+INFO: 本セクションは[Stack OverflowでのJon Cairnsによる回答](https://stackoverflow.com/questions/16546730/logging-in-rails-is-there-any-performance-hit/16546935#16546935)として書かれたものであり、[cc by-sa 4.0](https://creativecommons.org/licenses/by-sa/4.0/)ライセンスに基づいています。
 
 `debug` gemでデバッグする
 ---------------------------------
@@ -317,6 +318,8 @@ Processing by PostsController#index as HTML
   # and 72 frames (use `bt' command for all frames)
 (rdbg)
 ```
+
+デバッグセッションはいつでも終了可能です。アプリケーションの実行は`continue`（または`c`）コマンドで継続可能です。 また、デバッグセッションとアプリケーションの両方を終了させたい場合は、`quit`（または `q`）コマンドを使います。
 
 ### コンテキスト
 
@@ -414,7 +417,6 @@ Processing by PostsController#index as HTML
 - インスタンス変数
 - クラス変数
 - メソッド名とそのソースコード
-- （その他）
 
 ```ruby
 ActiveSupport::Configurable#methods: config
@@ -639,7 +641,7 @@ Stop by #0  BP - Watch  #<PostsController:0x00007fce69ca5320> @_response_body = 
 
 - `do: <cmdまたはexpr>`: ブレークポイントがトリガーされると、指定のコマンドや式を実行してプログラムを続行する
   - `break Foo#bar do: bt`: `Foo#bar`が呼び出されたときにスタックフレームを出力する
-- `pre: <cmd or expr>`: ブレークポイントがトリガーされると、指定のコマンドや式を実行してから停止する
+- `pre: <cmdまたはexpr>`: ブレークポイントがトリガーされると、指定のコマンドや式を実行してから停止する
   - `break Foo#bar pre: info`: `Foo#bar`が呼び出されると、周辺の変数を出力してから停止する
 - `if: <expr>`: `<expr`>の結果がtrueの場合にのみブレークポイントを停止する
   - `break Post#save if: params[:debug]`: `params[:debug]`もtrueの場合に`Post#save`で停止する
@@ -727,7 +729,7 @@ Stop by #0  BP - Catch  "ActiveRecord::RecordInvalid"
 
 #### オートローディングの注意点
 
-`debug` gemによるデバッグはほとんどの場面で有効ですが、１つエッジケースがあります。ファイルで定義されている名前空間をオートロードする式をコンソール上で評価すると、その名前空間にある定数を見つけられません。
+`debug` gemによるデバッグはほとんどの場面で有効ですが、1つエッジケースがあります。ファイルで定義されている名前空間をオートロードする式をコンソール上で評価すると、その名前空間にある定数を見つけられません。
 
 たとえば、アプリケーションに以下の2つのファイルがあるとします。
 
@@ -758,7 +760,7 @@ end
 `web-console` gemによるデバッグ
 ------------------------------------
 
-Web Consoleは`debug`と似ていますが、ブラウザ上で動作する点が異なります。開発中の任意のページで、ビューやコントローラのコンテキストでコンソールをリクエストできます。コンソールは、HTMLコンテンツの隣に表示されます。
+Web Consoleは`debug`と似ていますが、ブラウザ上で動作する点が異なります。開発中の任意のページで、ビューやコントローラのコンテキストでコンソールをリクエストできます。コンソールは、HTMLコンテンツの下に表示されます。
 
 ### console
 
@@ -815,6 +817,10 @@ Valgrindには、さまざまなメモリー管理上のバグやスレッドバ
 
 Valgrindのインストール方法とRuby内での利用方法について詳しくは、[ValgrindとRuby](http://blog.evanweaver.com/articles/2008/02/05/valgrind-and-ruby/)（Evan Weaver著、英語）を参照してください。
 
+### メモリーリークを探す
+
+derailed_benchmark gemの[README](https://github.com/schneems/derailed_benchmarks#is-my-app-leaking-memory)には、メモリーリークを検出および修正する優れた記事があります。
+
 デバッグ用プラグイン
 ---------------------
 
@@ -827,7 +833,7 @@ Valgrindのインストール方法とRuby内での利用方法について詳�
 * [Better Errors](https://github.com/charliesome/better_errors): Rails標準のエラーページを新しい表示に置き換えて、ソースコードや変数検査などのコンテキスト情報を見やすくしてくれます。
 * [RailsPanel](https://github.com/dejan/rails_panel): Rails開発用のChrome機能拡張です。これがあればdevelopment.logでtailコマンドを実行する必要がなくなります。Railsアプリケーションのリクエストに関するすべての情報をブラウザ上 (Developer Toolsパネル) に表示できます。
 db時間、レンダリング時間、トータル時間、パラメータリスト、出力したビューなども表示されます。
-* [Pry](https://github.com/pry/pry): もう１つのIRBであり、開発用の実行時コンソールです。
+* [Pry](https://github.com/pry/pry): もう1つのIRBであり、開発用の実行時コンソールです。
 
 参考資料
 ----------
