@@ -420,7 +420,7 @@ INFO. アダプタも独自のデータを追加します。
 | `:key`             | ストアで使われるキー                             |
 | `:store`           | ストアクラス名                           |
 | `:hit`             | ヒットしたかどうか                             |
-| `:super_operation` | 読み出しで`#fetch`が指定されている場合に:fetch を追加 |
+| `:super_operation` | 読み出しで`#fetch`が指定されている場合に`:fetch`を追加 |
 
 ### cache_generate.active_support
 
