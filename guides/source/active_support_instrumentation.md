@@ -16,7 +16,7 @@ After reading this guide, you will know:
 
 --------------------------------------------------------------------------------
 
-Introduction to instrumentation
+Introduction to Instrumentation
 -------------------------------
 
 The instrumentation API provided by Active Support allows developers to provide hooks which other developers may hook into. There are several of these within the [Rails framework](#rails-framework-hooks). With this API, developers can choose to be notified when certain events occur inside their application or another piece of Ruby code.
@@ -25,7 +25,7 @@ For example, there is a hook provided within Active Record that is called every 
 
 You are even able to [create your own events](#creating-custom-events) inside your application which you can later subscribe to.
 
-Subscribing to an event
+Subscribing to an Event
 -----------------------
 
 Subscribing to an event is easy. Use `ActiveSupport::Notifications.subscribe` with a block to
@@ -256,10 +256,10 @@ INFO. Additional keys may be added by the caller.
 
 #### unpermitted_parameters.action_controller
 
-| Key           | Value                                                                 |
-| ------------- | --------------------------------------------------------------------- |
-| `:keys`       | The unpermitted keys                                                  |
-| `:context`    | Hash with the following keys: :controller, :action, :params, :request |
+| Key           | Value                                                                         |
+| ------------- | ----------------------------------------------------------------------------- |
+| `:keys`       | The unpermitted keys                                                          |
+| `:context`    | Hash with the following keys: `:controller`, `:action`, `:params`, `:request` |
 
 ### Action Dispatch
 
@@ -419,12 +419,12 @@ INFO. The adapters will add their own data as well.
 
 #### cache_read.active_support
 
-| Key                | Value                                             |
-| ------------------ | ------------------------------------------------- |
-| `:key`             | Key used in the store                             |
-| `:store`           | Name of the store class                           |
-| `:hit`             | If this read is a hit                             |
-| `:super_operation` | :fetch is added when a read is used with `#fetch` |
+| Key                | Value                                               |
+| ------------------ | --------------------------------------------------- |
+| `:key`             | Key used in the store                               |
+| `:store`           | Name of the store class                             |
+| `:hit`             | If this read is a hit                               |
+| `:super_operation` | `:fetch` is added when a read is used with `#fetch` |
 
 #### cache_generate.active_support
 
@@ -714,7 +714,7 @@ information about it.
 | `:exception`        | An array of two elements. Exception class name and the message |
 | `:exception_object` | The exception object                                           |
 
-Creating custom events
+Creating Custom Events
 ----------------------
 
 Adding your own events is easy as well. `ActiveSupport::Notifications` will take care of

@@ -1,7 +1,7 @@
 Active Support の Instrumentation 機能
 ==============================
 
-Active SupportはRailsのコア機能の１つであり、Ruby言語の拡張、ユーティリティなどを提供するものです。Active Supportに含まれているInstrumentation APIは、Rubyコードで発生する特定の動作の計測に利用できます。Railsアプリケーション内部やフレームワーク自身も計測できますが、必要であればRails以外のRubyスクリプトなども測定できます。
+Active SupportはRailsのコア機能の1つであり、Ruby言語の拡張、ユーティリティなどを提供するものです。Active Supportに含まれているInstrumentation APIは、Rubyコードで発生する特定の動作の計測に利用できます。Railsアプリケーション内部やフレームワーク自身も計測できますが、必要であればRails以外のRubyスクリプトなども測定できます。
 
 本ガイドでは、RailsなどのRubyコード内のイベント計測に使う、Active Support内のInstrumentation APIについて解説します。
 
@@ -41,7 +41,7 @@ Active Supportが提供するInstrumentation APIを使ってフックを開発�
 ```ruby
 ActiveSupport::Notifications.subscribe "process_action.action_controller" do |name, started, finished, unique_id, data|
   # 自分のコードをここに書く
-  Rails.logger.info "#{name} Received! (started: #{started}, finished: #{finished})" # process_action.action_controller Received (started: 2019-05-05 13:43:57 -0800, finished: 2019-05-05 13:43:58 -0800)
+  Rails.logger.INFO:"#{name} Received! (started: #{started}, finished: #{finished})" # process_action.action_controller Received (started: 2019-05-05 13:43:57 -0800, finished: 2019-05-05 13:43:58 -0800)
 end
 ```
 
@@ -50,7 +50,7 @@ end
 ```ruby
 ActiveSupport::Notifications.monotonic_subscribe "process_action.action_controller" do |name, started, finished, unique_id, data|
   # 自分のコードをここに書く
-  Rails.logger.info "#{name} Received! (started: #{started}, finished: #{finished})" # process_action.action_controller Received (started: 1560978.425334, finished: 1560979.429234)
+  Rails.logger.INFO:"#{name} Received! (started: #{started}, finished: #{finished})" # process_action.action_controller Received (started: 1560978.425334, finished: 1560979.429234)
 end
 ```
 
@@ -65,7 +65,7 @@ ActiveSupport::Notifications.subscribe "process_action.action_controller" do |*a
   event.duration  # => 10 (in milliseconds)
   event.payload   # => {:extra=>information}
 
-  Rails.logger.info "#{event} Received!"
+  Rails.logger.INFO:"#{event} Received!"
 end
 ```
 
@@ -77,7 +77,7 @@ ActiveSupport::Notifications.subscribe "process_action.action_controller" do |ev
   event.duration  # => 10 (in milliseconds)
   event.payload   # => {:extra=>information}
 
-  Rails.logger.info "#{event} Received!"
+  Rails.logger.INFO:"#{event} Received!"
 end
 ```
 
@@ -107,9 +107,9 @@ Ruby on Railsでは、フレームワーク内の主なイベント向けのフ�
 
 #### write_fragment.action_controller
 
-| キー    | 値            |
+| キー    | 値               |
 | ------ | ---------------- |
-| `:key` | 完全なキー |
+| `:key` | 完全なキー         |
 
 ```ruby
 {
@@ -119,9 +119,9 @@ Ruby on Railsでは、フレームワーク内の主なイベント向けのフ�
 
 #### read_fragment.action_controller
 
-| キー    | 値            |
+| キー    | 値               |
 | ------ | ---------------- |
-| `:key` | 完全なキー |
+| `:key` | 完全なキー         |
 
 ```ruby
 {
@@ -131,9 +131,9 @@ Ruby on Railsでは、フレームワーク内の主なイベント向けのフ�
 
 #### expire_fragment.action_controller
 
-| Key    | Value            |
+| キー    | 値               |
 | ------ | ---------------- |
-| `:key` | 完全なキー |
+| `:key` | 完全なキー         |
 
 ```ruby
 {
@@ -155,14 +155,14 @@ Ruby on Railsでは、フレームワーク内の主なイベント向けのフ�
 
 #### start_processing.action_controller
 
-| キー           | 値                                                     |
+| キー           | 値                                                        |
 | ------------- | --------------------------------------------------------- |
-| `:controller` | コントローラ名                                       |
-| `:action`     | アクション                                                |
-| `:params`     | リクエストパラメータのハッシュ（フィルタされたパラメータは含まない）|
+| `:controller` | コントローラ名                                               |
+| `:action`     | アクション                                                  |
+| `:params`     | リクエストパラメータのハッシュ（フィルタされたパラメータは含まない）   |
 | `:headers`    | リクエスト ヘッダー                                           |
 | `:format`     | html/js/json/xml など                                      |
-| `:method`     | HTTP リクエストメソッド（verb）                                         |
+| `:method`     | HTTP リクエストメソッド（verb）                               |
 | `:path`       | リクエスト パス                                              |
 
 ```ruby
@@ -179,20 +179,20 @@ Ruby on Railsでは、フレームワーク内の主なイベント向けのフ�
 
 #### process_action.action_controller
 
-| キー             | 値                                                     |
+| キー             | 値                                                        |
 | --------------- | --------------------------------------------------------- |
-| `:controller` | コントローラ名                                       |
-| `:action`     | アクション                                                |
-| `:params`     | リクエストパラメータのハッシュ（フィルタされたパラメータは含まない）|
-| `:headers`    | リクエスト ヘッダー                                           |
-| `:format`     | html/js/json/xml など                                      |
-| `:method`     | HTTP リクエストメソッド（verb）                                         |
-| `:path`       | リクエスト パス                                              |
-| `:status`       | HTTP ステータスコード                                          |
-| `:request`      | `ActionDispatch::Request`                             |
-| `:response`     | `ActionDispatch::Response`                            |
-| `:view_runtime` | ビューでかかった合計時間（ms）                                |
-| `:db_runtime`   | データベースへのクエリ実行にかかった時間（ms）             |
+| `:controller` | コントローラ名                                                 |
+| `:action`     | アクション                                                    |
+| `:params`     | リクエストパラメータのハッシュ（フィルタされたパラメータは含まない）     |
+| `:headers`    | リクエスト ヘッダー                                            |
+| `:format`     | html/js/json/xml など                                       |
+| `:method`     | HTTP リクエストメソッド（verb）                                 |
+| `:path`       | リクエスト パス                                               |
+| `:status`       | HTTP ステータスコード                                        |
+| `:request`      | `ActionDispatch::Request`                                 |
+| `:response`     | `ActionDispatch::Response`                                |
+| `:view_runtime` | ビューでかかった合計時間（ms）                                 |
+| `:db_runtime`   | データベースへのクエリ実行にかかった時間（ms）                    |
 
 ```ruby
 {
@@ -213,11 +213,11 @@ Ruby on Railsでは、フレームワーク内の主なイベント向けのフ�
 
 #### send_file.action_controller
 
-| キー     | 値                     |
+| キー     | 値                        |
 | ------- | ------------------------- |
-| `:path` | ファイルへの完全なパス |
+| `:path` | ファイルへの完全なパス        |
 
-INFO. 呼び出し側でキーが追加される可能性があります。
+INFO: 呼び出し側でキーが追加される可能性があります。
 
 #### send_data.action_controller
 
@@ -225,10 +225,11 @@ INFO. 呼び出し側でキーが追加される可能性があります。
 
 #### redirect_to.action_controller
 
-| キー         | 値              |
-| ----------- | ------------------ |
-| `:status`   | HTTP レスポンス コード |
-| `:location` | リダイレクト先URL |
+| キー         | 値                            |
+| ----------- | ----------------------------- |
+| `:status`   | HTTP レスポンス コード           |
+| `:location` | リダイレクト先URL                |
+| `:request`  | The `ActionDispatch::Request` |
 
 ```ruby
 {
@@ -239,9 +240,9 @@ INFO. 呼び出し側でキーが追加される可能性があります。
 
 #### halted_callback.action_controller
 
-| キー         | 値              |
+| キー         | 値                          |
 | --------- | ----------------------------- |
-| `:filter` | アクションを停止させたフィルタ |
+| `:filter` | アクションを停止させたフィルタ      |
 
 ```ruby
 {
@@ -251,27 +252,27 @@ INFO. 呼び出し側でキーが追加される可能性があります。
 
 #### unpermitted_parameters.action_controller
 
-| キー    | 値               |
-| ------- | ---------------- |
-| `:keys` | 許可されていないキー |
-| `:context`    | 以下のキーを持つハッシュ: `:controller`、`:action`、`:params`、`:request` |
+| キー        | 値                                                                  |
+| ---------- | ------------------------------------------------------------------- |
+| `:keys`    | 許可されていないキー                                                    |
+| `:context` | 以下のキーを持つハッシュ: `:controller`、`:action`、`:params`、`:request` |
 
 ### Action Dispatch
 
 #### process_middleware.action_dispatch
 
-| キー         | 値              |
+| キー           | 値                     |
 | ------------- | ---------------------- |
-| `:middleware` | ミドルウェア名 |
+| `:middleware` | ミドルウェア名            |
 
 ### Action View
 
 #### render_template.action_view
 
-| キー         | 値              |
+| キー           | 値                    |
 | ------------- | --------------------- |
 | `:identifier` | テンプレートへの完全なパス |
-| `:layout`     | 該当のレイアウト     |
+| `:layout`     | 該当のレイアウト         |
 
 
 ```ruby
@@ -283,7 +284,7 @@ INFO. 呼び出し側でキーが追加される可能性があります。
 
 #### render_partial.action_view
 
-| キー         | 値              |
+| キー          | 値                     |
 | ------------- | --------------------- |
 | `:identifier` | テンプレートへの完全なパス |
 
@@ -295,11 +296,11 @@ INFO. 呼び出し側でキーが追加される可能性があります。
 
 #### render_collection.action_view
 
-| キー           | 値                                 |
+| キー           | 値                                    |
 | ------------- | ------------------------------------- |
-| `:identifier` | テンプレートへのフルパス              |
-| `:count`      | コレクションのサイズ                  |
-| `:cache_hits` | キャッシュからフェッチしたパーシャルの個数 |
+| `:identifier` | テンプレートへのフルパス                   |
+| `:count`      | コレクションのサイズ                      |
+| `:cache_hits` | キャッシュからフェッチしたパーシャルの個数    |
 
 `:cache_hits`は、`cached: true`をオンにしてレンダリングしたときだけ含まれます。
 
@@ -313,9 +314,9 @@ INFO. 呼び出し側でキーが追加される可能性があります。
 
 #### render_layout.action_view
 
-| キー           | 値                                 |
+| キー           | 値                    |
 | ------------- | --------------------- |
-| `:identifier` | テンプレートへのフルパス |
+| `:identifier` | テンプレートへのフルパス  |
 
 
 ```ruby
@@ -328,17 +329,17 @@ INFO. 呼び出し側でキーが追加される可能性があります。
 
 #### sql.active_record
 
-| キー         | 値              |
-| ---------------- | --------------------- |
-| `:sql`           | SQL文         |
-| `:name`          | 操作の名前 |
-| `:connection_id` | `self.object_id`      |
-| `:binds`         | バインドするパラメータ  |
-| `:type_casted_binds` | 型キャストされたバインドパラメータ               |
-| `:statement_name`    | SQL文の名前                      |
-| `:cached`        | キャッシュされたクエリが使われると`true`が追加される |
+| キー                  | 値                                          |
+| -------------------- | ------------------------------------------- |
+| `:sql`               | SQL文                                       |
+| `:name`              | 操作の名前                                    |
+| `:connection_id`     | `self.object_id`                            |
+| `:binds`             | バインドするパラメータ                          |
+| `:type_casted_binds` | 型キャストされるバインドパラメータ                |
+| `:statement_name`    | SQL文の名前                                   |
+| `:cached`            | キャッシュされたクエリが使われると`true`が追加される |
 
-INFO. アダプタも独自のデータを追加します。
+INFO: アダプタも独自のデータを追加します。
 
 ```ruby
 {
@@ -353,10 +354,10 @@ INFO. アダプタも独自のデータを追加します。
 
 #### instantiation.active_record
 
-| Key              | Value                                     |
+| キー              | 値                                        |
 | ---------------- | ----------------------------------------- |
-| `:record_count`  | レコードのインスタンス数       |
-| `:class_name`    | レコードのクラス                            |
+| `:record_count`  | レコードのインスタンス数                      |
+| `:class_name`    | レコードのクラス                             |
 
 ```ruby
 {
@@ -369,18 +370,18 @@ INFO. アダプタも独自のデータを追加します。
 
 #### deliver.action_mailer
 
-| キー         | 値              |
-| ------------- | -------------------------------------------- |
-| `:mailer`     | メーラークラス名                     |
-| `:message_id` | Mail gemが生成したメッセージID |
-| `:subject`    | メールの件名                          |
-| `:to`         | メールの宛先                   |
-| `:from`       | メールの差出人                     |
-| `:bcc`        | メールのBCCアドレス                    |
-| `:cc`         | メールのCCアドレス                     |
-| `:date`       | メールの日付                             |
-| `:mail`       | メールのエンコード形式                 |
-| `:perform_deliveries` | このメッセージが配信されたかどうか |
+| キー                   | 値                                           |
+| --------------------- | -------------------------------------------- |
+| `:mailer`             | メーラークラス名                                |
+| `:message_id`         | Mail gemが生成したメッセージID                   |
+| `:subject`            | メールの件名                                   |
+| `:to`                 | メールの宛先                                   |
+| `:from`               | メールの差出人                                  |
+| `:bcc`                | メールのBCCアドレス                             |
+| `:cc`                 | メールのCCアドレス                              |
+| `:date`               | メールの日付                                   |
+| `:mail`               | メールのエンコード形式                           |
+| `:perform_deliveries` | このメッセージが配信されたかどうか                 |
 
 ```ruby
 {
@@ -397,11 +398,11 @@ INFO. アダプタも独自のデータを追加します。
 
 #### process.action_mailer
 
-| キー           | 値                    |
+| キー           | 値                       |
 | ------------- | ------------------------ |
-| `:mailer`     | メーラーのクラス名 |
-| `:action`     | アクション       |
-| `:args`       | 引数            |
+| `:mailer`     | メーラーのクラス名          |
+| `:action`     | アクション                 |
+| `:args`       | 引数                      |
 
 ```ruby
 {
@@ -415,23 +416,23 @@ INFO. アダプタも独自のデータを追加します。
 
 #### cache_read.active_support
 
-| キー         | 値              |
+| キー                | 値                                                |
 | ------------------ | ------------------------------------------------- |
-| `:key`             | ストアで使われるキー                             |
-| `:store`           | ストアクラス名                           |
-| `:hit`             | ヒットしたかどうか                             |
-| `:super_operation` | 読み出しで`#fetch`が指定されている場合に:fetch を追加 |
+| `:key`             | ストアで使われるキー                                  |
+| `:store`           | ストアクラス名                                       |
+| `:hit`             | ヒットしたかどうか                                   |
+| `:super_operation` | 読み出しで`#fetch`が指定されている場合に`:fetch`を追加   |
 
 ### cache_generate.active_support
 
 このイベントは、`#fetch`をブロック付きで使用した場合にのみ使われます。
 
-| キー         | 値              |
-| ------ | --------------------- |
-| `:key`             | ストアで使われるキー                             |
-| `:store`           | ストアクラス名                           |
+| キー     | 値                    |
+| ------- | --------------------- |
+| `:key`  | ストアで使われるキー      |
+| `:store`| ストアクラス名           |
 
-INFO. `#fetch`に渡されたオプションは、ストアへの書き込み時にペイロードとマージされます。
+INFO: `#fetch`に渡されたオプションは、ストアへの書き込み時にペイロードとマージされます。
 
 ```ruby
 {
@@ -444,12 +445,12 @@ INFO. `#fetch`に渡されたオプションは、ストアへの書き込み時
 
 このイベントは、`#fetch`をブロック付きで呼び出した場合にのみ使われます。
 
-| キー         | 値              |
-| ------ | --------------------- |
-| `:key`             | ストアで使われるキー                             |
-| `:store`           | ストアクラス名                           |
+| キー      | 値                    |
+| -------- | --------------------- |
+| `:key`   | ストアで使われるキー      |
+| `:store` | ストアクラス名           |
 
-INFO. fetchに渡されたオプションは、ペイロードとマージされます。
+INFO: fetchに渡されたオプションは、ペイロードとマージされます。
 
 ```ruby
 {
@@ -460,12 +461,12 @@ INFO. fetchに渡されたオプションは、ペイロードとマージされ
 
 #### cache_write.active_support
 
-| キー         | 値              |
-| ------ | --------------------- |
-| `:key`  | ストアで使われるキー |
-| `:store`           | ストアクラス名                           |
+| キー      | 値                    |
+| -------- | --------------------- |
+| `:key`   | ストアで使われるキー      |
+| `:store` | ストアクラス名           |
 
-INFO. キャッシュストアが独自のキーを追加することがあります。
+INFO: キャッシュストアが独自のキーを追加することがあります。
 
 ```ruby
 {
@@ -476,10 +477,10 @@ INFO. キャッシュストアが独自のキーを追加することがあり�
 
 #### cache_delete.active_support
 
-| キー         | 値              |
-| ------ | --------------------- |
-| `:key` | ストアで使われるキー |
-| `:store`           | ストアクラス名                           |
+| キー      | 値                    |
+| -------- | --------------------- |
+| `:key`   | ストアで使われるキー      |
+| `:store` | ストアクラス名           |
 
 ```ruby
 {
@@ -490,10 +491,10 @@ INFO. キャッシュストアが独自のキーを追加することがあり�
 
 #### cache_exist?.active_support
 
-| キー   | 値              |
-| ------ | --------------------- |
-| `:key` | ストアで使われるキー |
-| `:store`           | ストアクラス名                           |
+| キー      | 値                    |
+| -------- | --------------------- |
+| `:key`   | ストアで使われるキー      |
+| `:store` | ストアクラス名           |
 
 ```ruby
 {
@@ -506,208 +507,208 @@ INFO. キャッシュストアが独自のキーを追加することがあり�
 
 #### enqueue_at.active_job
 
-| キー         | 値              |
-| ------------ | -------------------------------------- |
+| キー          | 値                                  |
+| ------------ | ----------------------------------- |
 | `:adapter`   | ジョブを処理するQueueAdapterオブジェクト |
-| `:job`       | Jobオブジェクト                             |
+| `:job`       | Jobオブジェクト                       |
 
 #### enqueue.active_job
 
-| キー         | 値              |
-| ------------ | -------------------------------------- |
+| キー          | 値                                  |
+| ------------ | ----------------------------------- |
 | `:adapter`   | ジョブを処理するQueueAdapterオブジェクト |
-| `:job`       | Jobオブジェクト                             |
+| `:job`       | Jobオブジェクト                       |
 
 #### enqueue_retry.active_job
 
-| キー         | 値              |
-| ------------ | -------------------------------------- |
-| `:job`       | Jobオブジェクト                             |
+| キー          | 値                                  |
+| ------------ | ----------------------------------- |
+| `:job`       | Jobオブジェクト                       |
 | `:adapter`   | ジョブを処理するQueueAdapterオブジェクト |
-| `:error`     | リトライが原因で発生したエラー        |
-| `:wait`      | リトライの遅延                 |
+| `:error`     | リトライが原因で発生したエラー            |
+| `:wait`      | リトライの遅延                         |
 
 #### perform_start.active_job
 
-| キー         | 値              |
-| ------------ | -------------------------------------- |
+| キー          | 値                                  |
+| ------------ | ----------------------------------- |
 | `:adapter`   | ジョブを処理するQueueAdapterオブジェクト |
-| `:job`       | Jobオブジェクト                             |
+| `:job`       | Jobオブジェクト                       |
 
 #### perform.active_job
 
-| キー         | 値              |
-| ------------ | -------------------------------------- |
+| キー          | 値                                  |
+| ------------ | ----------------------------------- |
 | `:adapter`   | ジョブを処理するQueueAdapterオブジェクト |
-| `:job`       | Jobオブジェクト                             |
+| `:job`       | Jobオブジェクト                       |
 
 #### retry_stopped.active_job
 
-| キー         | 値              |
-| ------------ | -------------------------------------- |
+| キー          | 値                                  |
+| ------------ | ----------------------------------- |
 | `:adapter`   | ジョブを処理するQueueAdapterオブジェクト |
-| `:job`       | Jobオブジェクト                             |
-| `:error`     | リトライが原因で発生したエラー        |
+| `:job`       | Jobオブジェクト                       |
+| `:error`     | リトライが原因で発生したエラー            |
 
 #### discard.active_job
 
-| キー         | 値              |
-| ------------ | -------------------------------------- |
+| キー          | 値                                  |
+| ------------ | ----------------------------------- |
 | `:adapter`   | ジョブを処理するQueueAdapterオブジェクト |
-| `:job`       | Jobオブジェクト                             |
-| `:error`     | リトライが原因で発生したエラー        |
+| `:job`       | Jobオブジェクト                       |
+| `:error`     | リトライが原因で発生したエラー            |
 
 ### Action Cable
 
 #### perform_action.action_cable
 
-| キー              | 値                       |
+| キー              | 値                        |
 | ---------------- | ------------------------- |
-| `:channel_class` | チャネルのクラス名      |
-| `:action`        | アクション                |
-| `:data`          | 日付（ハッシュ）          |
+| `:channel_class` | チャネルのクラス名            |
+| `:action`        | アクション                  |
+| `:data`          | 日付（ハッシュ）             |
 
 #### transmit.action_cable
 
-| キー              | 値                       |
+| キー              | 値                        |
 | ---------------- | ------------------------- |
-| `:channel_class` | チャネルのクラス名      |
-| `:data`          | 日付（ハッシュ）          |
-| `:via`           | 経由先                    |
+| `:channel_class` | チャネルのクラス名            |
+| `:action`        | アクション                  |
+| `:via`           | 経由先                     |
 
 #### transmit_subscription_confirmation.action_cable
 
-| キー              | 値                       |
+| キー              | 値                        |
 | ---------------- | ------------------------- |
-| `:channel_class` | チャネルのクラス名      |
+| `:channel_class` | チャネルのクラス名           |
 
 #### transmit_subscription_rejection.action_cable
 
-| キー              | 値                       |
+| キー              | 値                        |
 | ---------------- | ------------------------- |
-| `:channel_class` | チャネルのクラス名      |
+| `:channel_class` | チャネルのクラス名           |
 
 #### broadcast.action_cable
 
-| キー             | 値                       |
+| キー             | 値                   |
 | --------------- | -------------------- |
-| `:broadcasting` | 名前付きブロードキャスト  |
-| `:message`      | メッセージ（ハッシュ）    |
-| `:coder`        | コーダー                  |
+| `:broadcasting` | 名前付きブロードキャスト |
+| `:message`      | メッセージ（ハッシュ）   |
+| `:coder`        | コーダー              |
 
 ### Active Storage
 
 #### service_upload.active_storage
 
-| キー          | 値                          |
+| キー          | 値                           |
 | ------------ | ---------------------------- |
-| `:key`       | セキュアトークン             |
-| `:service`   | サービス名                   |
-| `:checksum`  | 完全性を担保するチェックサム |
+| `:key`       | セキュアトークン                |
+| `:service`   | サービス名                     |
+| `:checksum`  | 完全性を担保するチェックサム      |
 
 #### service_streaming_download.active_storage
 
-| キー          | 値               |
-| ------------ | ------------------- |
-| `:key`       | セキュアトークン             |
-| `:service`   | サービス名                   |
+| キー          | 値                           |
+| ------------ | ---------------------------- |
+| `:key`       | セキュアトークン                |
+| `:service`   | サービス名                     |
 
 #### service_download_chunk.active_storage
 
-| キー          | 値               |
-| ------------ | ------------------------------- |
-| `:key`       | セキュアトークン             |
-| `:service`   | サービス名                   |
-| `:range`     | 読み取りを試行するバイト範囲 |
+| キー          | 値                           |
+| ------------ | ---------------------------- |
+| `:key`       | セキュアトークン                |
+| `:service`   | サービス名                     |
+| `:range`     | 読み取りを試行するバイト範囲      |
 
 #### service_download.active_storage
 
-| キー          | 値               |
-| ------------ | ------------------- |
-| `:key`       | セキュアトークン             |
-| `:service`   | サービス名                   |
+| キー          | 値                           |
+| ------------ | ---------------------------- |
+| `:key`       | セキュアトークン                |
+| `:service`   | サービス名                     |
 
 #### service_delete.active_storage
 
-| キー          | 値               |
-| ------------ | ------------------- |
-| `:key`       | セキュアトークン             |
-| `:service`   | サービス名                   |
+| キー          | 値                           |
+| ------------ | ---------------------------- |
+| `:key`       | セキュアトークン                |
+| `:service`   | サービス名                     |
 
 #### service_delete_prefixed.active_storage
 
-| キー          | 値               |
+| キー          | 値                  |
 | ------------ | ------------------- |
-| `:prefix`    | キーのプレフィックス          |
-| `:service`   | サービス名                   |
+| `:prefix`    | キーのプレフィックス    |
+| `:service`   | サービス名            |
 
 #### service_exist.active_storage
 
-| キー          | 値                       |
-| ------------ | --------------------------- |
-| `:key`       | セキュアトークン             |
-| `:service`   | サービス名                   |
+| キー          | 値                             |
+| ------------ | ------------------------------ |
+| `:key`       | セキュアトークン                  |
+| `:service`   | サービス名                       |
 | `:exist`     | ファイルまたはblobが存在するかどうか |
 
 #### service_url.active_storage
 
-| キー          | 値                 |
-| ------------ | ------------------- |
-| `:key`       | セキュアトークン    |
-| `:service`   | サービス名          |
-| `:url`       | 生成されたURL       |
+| キー          | 値                           |
+| ------------ | ---------------------------- |
+| `:key`       | セキュアトークン                |
+| `:service`   | サービス名                     |
+| `:url`       | 生成されたURL                  |
 
 #### service_update_metadata.active_storage
 
-| キー          | 値                 |
-| --------------- | ------------------------------ |
-| `:key`       | セキュアトークン    |
-| `:service`   | サービス名          |
+| キー             | 値                               |
+| --------------- | -------------------------------- |
+| `:key`          | セキュアトークン                    |
+| `:service`      | サービス名                         |
 | `:content_type` | HTTP Content-Typeフィールド        |
 | `:disposition`  | HTTP Content-Dispositionフィールド |
 
-INFO. 現時点でこのフックを提供しているActive StorageサービスはGCSのみです。
+INFO: 現時点でこのフックを提供しているActive StorageサービスはGCSのみです。
 
 #### preview.active_storage
 
-| キー          | 値                 |
-| ------------ | ------------------- |
+| キー          | 値               |
+| ------------ | ---------------- |
 | `:key`       | セキュアトークン    |
 
 #### transform.active_storage
 
 #### analyze.active_storage
 
-| キー          | 値                 |
-| ------------ | ------------------------------ |
+| キー          | 値                      |
+| ------------ | ----------------------- |
 | `:analyzer`  | アナライザ名（ffprobeなど） |
 
 ### Railties
 
 #### load_config_initializer.railties
 
-| キー         | 値              |
+| キー            | 値                                                    |
 | -------------- | ----------------------------------------------------- |
-| `:initializer` | `config/initializers`から読み込まれたイニシャライザへのパス |
+| `:initializer` | `config/initializers`から読み込まれたイニシャライザへのパス  |
 
 ### Rails
 
 #### deprecation.rails
 
-| キー         | 値              |
-| ------------ | ------------------------------- |
-| `:message`   | 非推奨機能の警告メッセージ         |
-| `:callstack` | 非推奨警告の発生元 |
+| キー          | 値                       |
+| ------------ | ------------------------ |
+| `:message`   | 非推奨機能の警告メッセージ    |
+| `:callstack` | 非推奨警告の発生元          |
 
 例外
 ----------
 
 instrumentationの途中で例外が発生すると、ペイロードにその情報が含まれます。
 
-| キー         | 値              |
-| ------------------- | -------------------------------------------------------------- |
-| `:exception`        | 2個の要素（例外クラス名とメッセージ）を持つ配列 |
-| `:exception_object` | 例外オブジェクト                                           |
+| キー                 | 値                                      |
+| ------------------- | --------------------------------------- |
+| `:exception`        | 2個の要素（例外クラス名とメッセージ）を持つ配列  |
+| `:exception_object` | 例外オブジェクト                           |
 
 カスタムイベントの作成
 ----------------------
