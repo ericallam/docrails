@@ -129,7 +129,9 @@ run MyApp::Application.routes
 
 ### ミドルウェアスタックを設定する
 
-Railsが提供するシンプルな`config.middleware`を用いることで、ミドルウェアスタックにミドルウェアを追加・削除・変更できます。これは`application.rb`設定ファイルで行うことも、環境ごとの`environments/<環境名>.rb`設定ファイルで行うこともできます。
+Railsが提供するシンプルな[`config.middleware`][]を用いることで、ミドルウェアスタックにミドルウェアを追加・削除・変更できます。これは`application.rb`設定ファイルで行うことも、環境ごとの`environments/<環境名>.rb`設定ファイルで行うこともできます。
+
+[`config.middleware`]: configuring.html#config-middleware
 
 #### ミドルウェアを追加する
 
@@ -212,11 +214,15 @@ Action Controllerの機能の多くはミドルウェアとして実装されて
 
 **`Rack::Sendfile`**
 
-* X-Sendfile headerを設定します。`config.action_dispatch.x_sendfile_header`オプション経由で設定を変更できます。
+* X-Sendfile headerを設定します。[`config.action_dispatch.x_sendfile_header`][]オプション経由で設定を変更できます。
+
+[`config.action_dispatch.x_sendfile_header`]: configuring.html#config-action-dispatch-x-sendfile-header
 
 **`ActionDispatch::Static`**
 
-* 静的ファイルの配信に使います。`config.public_file_server.enabled`を`false`にするとオフになります。
+* 静的ファイルの配信に使います。[`config.public_file_server.enabled`][]`を`false`にするとオフになります。
+
+[`config.public_file_server.enabled`]: configuring.html#config-public-file-server-enabled
 
 **`Rack::Lock`**
 
@@ -284,7 +290,9 @@ Action Controllerの機能の多くはミドルウェアとして実装されて
 
 **`ActionDispatch::Flash`**
 
-* flashのキーをセットアップします（訳注: flashは連続するリクエスト間でメッセージを共有表示する機能です）。これは、`config.action_controller.session_store`に値が設定されている場合にのみ有効です。
+* flashのキーをセットアップします（訳注: flashは連続するリクエスト間でメッセージを共有表示する機能です）。これは、[`config.session_store`][]に値が設定されている場合にのみ有効です。
+
+[`config.session_store`]: configuring.html#config-session-store
 
 **`ActionDispatch::ContentSecurityPolicy::Middleware`**
 
