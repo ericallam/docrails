@@ -1182,7 +1182,7 @@ class ActionDispatch::IntegrationTest
 end
 ```
 
-[並列テスト]: testing.html#%E3%83%91%E3%83%A9%E3%83%AC%E3%83%AB%E3%83%86%E3%82%B9%E3%83%88
+[並列テスト]: testing.html#%E4%B8%A6%E5%88%97%E3%83%86%E3%82%B9%E3%83%88
 
 ### フィクスチャに添付ファイルを追加する
 
