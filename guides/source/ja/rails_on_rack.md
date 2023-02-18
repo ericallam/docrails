@@ -131,7 +131,7 @@ run MyApp::Application.routes
 
 Railsが提供するシンプルな[`config.middleware`][]を用いることで、ミドルウェアスタックにミドルウェアを追加・削除・変更できます。これは`application.rb`設定ファイルで行うことも、環境ごとの`environments/<環境名>.rb`設定ファイルで行うこともできます。
 
-[`config.middleware`]: configuring.html#%E3%83%9F%E3%83%89%E3%83%AB%E3%82%A6%E3%82%A7%E3%82%A2%E3%82%92%E8%A8%AD%E5%AE%9A%E3%81%99%E3%82%8B
+[`config.middleware`]: configuring.html#config-middleware
 
 #### ミドルウェアを追加する
 
