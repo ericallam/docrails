@@ -97,12 +97,6 @@ end
 
 ## リッチテキストコンテンツをレンダリングする
 
-Action Textは、リッチテキストコンテンツのサニタイズやレンダリングを自動で行います。
-
-デフォルトでは、Action TextエディタとコンテンツにはTrixのデフォルトのスタイルが与えられます。
-
-このデフォルトを変更するには、`application.scss`の`// require "actiontext.scss"`行を削除して[trix.css](https://raw.githubusercontent.com/basecamp/trix/master/dist/trix.css)が読み込まれないようにします。
-
 デフォルトでは、Action Textは`.trix-content` CSSクラスを宣言した要素内でリッチテキストコンテンツをレンダリングします。
 
 ```html+erb
@@ -112,15 +106,19 @@ Action Textは、リッチテキストコンテンツのサニタイズやレン
 </div>
 ```
 
-リッチテキストを囲むHTMLを独自のレイアウトで変更するには、独自の`app/views/layouts/action_text/contents/_content.html.erb`テンプレートを宣言してコンテンツ内で`yield`を呼び出します。
+この`.trix-content`クラスを持つ要素のスタイルは、Action Textエディタと同様に、[`trix`スタイルシート](https://raw.githubusercontent.com/basecamp/trix/master/dist/trix.css)によって設定されます。
 
-画像やその他の添付ファイル（いわゆるblob: binary large object）の埋め込みに使うHTMLにもスタイルを指定できます。Action Textをインストールすると、`app/views/active_storage/blobs/_blob.html.erb`というパーシャルが配置されるので、ここでスタイルをカスタマイズできます。
+独自のスタイルを提供するには、インストーラーが作成する`app/assets/stylesheets/actiontext.css`スタイルシートから`= require trix`行を削除してください。
+
+リッチテキストの周りに表示されるHTMLをカスタマイズするには、インストーラが作成する`app/views/layouts/action_text/contents/_content.html.erb`レイアウトを編集してください。
+
+埋め込み画像やその他の添付ファイル（いわゆる[blob](https://ja.wikipedia.org/wiki/%E3%83%90%E3%82%A4%E3%83%8A%E3%83%AA%E3%83%BB%E3%83%A9%E3%83%BC%E3%82%B8%E3%83%BB%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88)）に対してレンダリングされるHTMLをカスタマイズするには、インストーラが作成する`app/views/active_storage/blobs/_blob.html.erb`テンプレートを編集してください。
 
 ### 添付ファイルのレンダリング
 
 Action Textでは、Active Storage経由でアップロードした添付ファイルを埋め込むことも、[署名済みグローバルID](https://github.com/rails/globalid#signed-global-ids)で解決可能な任意のデータを埋め込むこともできます。
 
-Action Textは、`sgid`属性を解決してインスタンス化することで埋め込み`<action-text-attachment>`をレンダリングします。解決が成功すると、そのインスタンスが[`render`](https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/RenderingHelper.html#method-i-render)に渡されます。
+Action Textは、`sgid`属性を解決してインスタンス化することで埋め込み`<action-text-attachment>`をレンダリングします。解決が成功すると、そのインスタンスが[`render`](https://api.rubyonrails.org/classes/ActionView/Helpers/RenderingHelper.html#method-i-render)に渡されます。
 生成されるHTMLは、`<action-text-attachment>`要素の子孫として埋め込まれます。
 
 たとえば`User`モデルを例に考えてみましょう。
@@ -132,7 +130,7 @@ class User < ApplicationRecord
 end
 
 user = User.find(1)
-user.to_global_id.to_s #=> gid://MyRailsApp/User/1
+user.to_global_id.to_s        #=> gid://MyRailsApp/User/1
 user.to_signed_global_id.to_s #=> BAh7CEkiCG…
 ```
 
@@ -189,7 +187,7 @@ Action Textの`<action-text-attachment>`要素レンダリングと統合する�
 依存する`ActionText::RichText`をプリロードしたい場合は、以下のように名前付きスコープを利用できます（リッチテキストフィールド名が`content`という前提）。
 
 ```ruby
-Message.all.with_rich_text_content # 添付ファイルなしで本文をプリロードする
+Message.all.with_rich_text_content            # 添付ファイルなしで本文をプリロードする
 Message.all.with_rich_text_content_and_embeds # 本文と添付ファイルを両方プリロードする
 ```
 
