@@ -5,7 +5,7 @@ Rails のキャッシュ機構
 
 「キャッシュ（caching）」とは、リクエスト・レスポンスのサイクルの中で生成されたコンテンツを保存しておき、次回同じようなリクエストが発生したときのレスポンスでそのコンテンツを再利用することを指します。
 
-多くの場合、キャッシュはアプリケーションのパフォーマンスを効果的に増大するのに最適な方法です。キャッシュを導入することで、単一サーバー、単一データベースのWebサイトでも数千ユーザーの同時接続による負荷に耐えられるようになります。
+多くの場合、キャッシュはアプリケーションのパフォーマンスを効果的に増大するのに最適な方法です。キャッシュを導入することで、単一サーバーや単一データベースのWebサイトでも、数千ユーザーの同時接続による負荷に耐えられるようになります。
 
 Railsには、すぐ利用できるキャッシュ機能がいくつも用意されています。本ガイドでは、それぞれの機能について目的を解説します。Railsのキャッシュ機能を使いこなすことで、応答時間の低下や高額なサーバー使用料に悩まされずに、Railsアプリケーションが数百万ビューを配信できるようになります。
 
@@ -24,9 +24,11 @@ Railsには、すぐ利用できるキャッシュ機能がいくつも用意さ
 
 ここでは、キャッシュの手法を3種類ご紹介します。「ページキャッシュ」「アクションキャッシュ」「フラグメントキャッシュ」です。Railsのフラグメントキャッシュは本体に組み込まれており、デフォルトで利用できます。ページキャッシュやアクションキャッシュを利用するには、`Gemfile`に`actionpack-page_caching` gemや`actionpack-action_caching` gemを追加する必要があります。
 
-キャッシュは、デフォルトではproduction環境でのみ有効になります。ローカルでキャッシュを使ってみたい場合は、対応する環境の`config/environments/*.rb`ファイルで`config.action_controller.perform_caching`を`true`に設定します。
+キャッシュは、デフォルトではproduction環境でのみ有効になります。ローカルでキャッシュを使ってみたい場合は、対応する環境の`config/environments/*.rb`ファイルで[`config.action_controller.perform_caching`][]を`true`に設定します。
 
 NOTE: `config.action_controller.perform_caching`値の変更は、Action Controllerコンポーネントで提供されるキャッシュでのみ有効です。つまり、後述する[低レベルキャッシュ](#低レベルキャッシュ)の動作には影響しません。
+
+[`config.action_controller.perform_caching`]: configuring.html#config-action-controller-perform-caching
 
 ### ページキャッシュ
 
@@ -191,14 +193,14 @@ render partial: "documents/document", collection: @project.documents.where(publi
 <%= render_sortable_todolists @project.todolists %>
 ```
 
-単一テーブル継承などでは、こうした明示的な依存関係を多数書かなければならなくなる可能性もあります。テンプレートごとに依存関係を書く代わりに、以下のようにワイルドカードを用いてディレクトリ内の任意のテンプレートにマッチさせることも可能です。
+単一テーブル継承（STI）などでは、こうした明示的な依存関係を多数書かなければならなくなる可能性もあります。テンプレートごとに依存関係を書く代わりに、以下のようにワイルドカードを用いてディレクトリ内の任意のテンプレートにマッチさせることも可能です。
 
 ```html+erb
 <%# Template Dependency: events/* %>
 <%= render_categorizable_events @person.events %>
 ```
 
-コレクションのキャッシュで、パーシャルの冒頭でクリーンなキャッシュ呼び出しを行わない場合は、以下の特殊コメント形式をテンプレートのどこかに追加することで、コレクションキャッシュを引き続き有効にできます。
+コレクションのキャッシュで、パーシャルの冒頭でクリーンなキャッシュ呼び出しを行わない場合は、以下の特殊コメント形式をテンプレートの任意の場所に追加することで、コレクションキャッシュを引き続き有効にできます。
 
 ```html+erb
 <%# Template Collection: notification %>
@@ -209,7 +211,7 @@ render partial: "documents/document", collection: @project.documents.where(publi
 
 #### 外部の依存関係
 
-たとえば、キャッシュされたブロック内でヘルパーメソッドを利用すると、このヘルパーを更新するときにキャッシュも更新しなければならなくなります。キャッシュの更新方法はさほど問題ではありませんが、テンプレートファイルのMD5を変更しなければなりません。推奨されている方法の１つは、以下のようにコメントで明示的に更新を示すことです。
+たとえば、キャッシュされたブロック内でヘルパーメソッドを利用すると、このヘルパーを更新するときにキャッシュも更新しなければならなくなります。キャッシュの更新方法はさほど問題ではありませんが、テンプレートファイルのMD5を変更しなければなりません。推奨されている方法の1つは、以下のようにコメントで明示的に更新を示すことです。
 
 ```html+erb
 <%# Helper Dependency Updated: Jul 28, 2015 at 7pm %>
@@ -218,7 +220,7 @@ render partial: "documents/document", collection: @project.documents.where(publi
 
 ### 低レベルキャッシュ
 
-ビューのフラグメントをキャッシュするのではなく、特定の値やクエリ結果だけをキャッシュしたいことがあります。Railsのキャッシュメカニズムは、あらゆる種類の情報をキャッシュに保存するのに適しています。
+ビューのフラグメントをキャッシュするのではなく、特定の値やクエリ結果だけをキャッシュしたいことがあります。Railsのキャッシュメカニズムは、シリアライズ可能な任意の情報をキャッシュに保存するのに適しています。
 
 低レベルキャッシュの最も効果的な実装方法は、`Rails.cache.fetch`メソッドを利用することです。このメソッドは、キャッシュの書き込みと読み出しの両方に対応しています。引数を1個だけ渡すと、キーを読み出し、キャッシュから値を取り出して返します。ブロックを渡すと、キャッシュにヒットしなかった場合にブロックが実行されます。ブロックの戻り値は、指定のキャッシュキーの配下にあるキャッシュに書き込まれます。キャッシュにヒットした場合は、ブロックを実行せずにキャッシュの値を返します。
 
@@ -234,14 +236,14 @@ class Product < ApplicationRecord
 end
 ```
 
-NOTE: 上の例では`cache_key_with_version `メソッドを使っているので、キャッシュキーは`products/233-20140225082222765838000/competing_price`のような形式になります。`cache_key_with_version`は、モデルのクラス名と`id`と`updated_at`属性を元に文字列を生成します。この生成ルールは一般的に使われており、productが更新されるたびにキャッシュが無効になるというメリットがあります。一般に、低レベルキャッシュを適用する場合、キャッシュキーを生成する必要があります。
+NOTE: 上の例では`cache_key_with_version`メソッドを使っているので、キャッシュキーは`products/233-20140225082222765838000/competing_price`のような形式になります。`cache_key_with_version`は、モデルのクラス名と`id`と`updated_at`属性を元に文字列を生成します。この生成ルールは一般的に使われており、productが更新されるたびにキャッシュが無効になるというメリットがあります。一般に、低レベルキャッシュを適用する場合、キャッシュキーを生成する必要があります。
 
 #### Active Recordオブジェクトのインスタンスのキャッシュは避けること
 
 以下のコード例で考えてみましょう。このコードでは、スーパーユーザーを表すActive Recordオブジェクトのリストをキャッシュに保存しています。
 
 ```ruby
- # super_adminsのSQLクエリは重いので頻繁に実行しないこと
+# super_adminsのSQLクエリは重いので頻繁に実行しないこと
 Rails.cache.fetch("super_admin_users", expires_in: 12.hours) do
   User.super_admins.to_a
 end
@@ -252,7 +254,7 @@ end
 インスタンスをキャッシュするのではなく、以下のようにidなどのプリミティブなデータ型をキャッシュするようにしましょう。
 
 ```ruby
- # super_adminsのSQLクエリは重いので頻繁に実行しないこと
+# super_adminsのSQLクエリは重いので頻繁に実行しないこと
 ids = Rails.cache.fetch("super_admin_user_ids", expires_in: 12.hours) do
   User.super_admins.pluck(:id)
 end
@@ -298,33 +300,13 @@ Railsには、キャッシュデータの保存場所がいくつも用意され
 config.cache_store = :memory_store, { size: 64.megabytes }
 ```
 
-NOTE: `ActionController::Base.cache_store`は設定ブロックの外部でも呼び出せます。
+または、設定ブロックの外部で`ActionController::Base.cache_store`を設定することも可能です。
 
 キャッシュにアクセスするには、`Rails.cache`を呼び出します。
 
-### ActiveSupport::Cache::Store
-
-このクラスは、Railsのキャッシュにアクセスするための基盤を提供します。抽象クラスであるため、直接利用できません。クラスを利用するには、ストレージエンジンに関連するクラスを実装する必要があります。Railsに同梱されているさまざまな実装については後述します。
-
-主要なメソッドは、`read`、`write`、`delete`、`exist?`、`fetch`です。`fetch`メソッドはブロックを1つ受け取り、キャッシュにある既存の値を返します。既存の値がキャッシュにない場合は、ブロックを評価して結果をキャッシュに書き込みます。
-
-いくつかのオプションは、キャッシュのすべての実装で共通に利用できます。それらのオプションは、コンストラクタに渡すことも、エントリーにアクセスするさまざまなメソッドに渡すことも可能です。
-
-* `:namespace`: キャッシュストア内で名前空間を作成します。特に、キャッシュを他のアプリケーションと共有する場合に有用です。
-
-* `:compress`: デフォルトで有効です。キャッシュエントリを圧縮してメモリ上の同じフットプリントに保存できるデータを増やすことで、キャッシュのeviction（立ち退き）を削減してヒット率を高めます。
-
-* `:compress_threshold`: デフォルトは1KBです。キャッシュエントリがしきい値（バイト数を指定）を超えると圧縮します。
-
-* `:expires_in`: そのキャッシュエントリの有効期限を指定するオプションです（単位は秒）。このオプションがキャッシュストアでサポートされていれば、キャッシュから自動で削除されます。
-
-* `:race_condition_ttl`: `:expires_in`と併用します。マルチプロセスで同じエントリが同時に再生成されてキャッシュが無効になる（dog pile効果とも呼ばれます）ときに発生する競合状態を防止するのに使います。このオプションは、新しい値の再生成が完了していない状態で、無効になったエントリを再利用してよい時間を秒で指定します。`:expires_in`オプションを利用する場合は、このオプションにも値を設定するとよいでしょう。
-
-* `:coder`: このオプションを使うと、デフォルトのキャッシュシリアライズメカニズムをカスタムのメカニズムに置き換えられます。この`coder`は`dump`と`load`に応答しなければならず、カスタムコーダーを渡すと自動的に圧縮が無効になります。
-
 #### コネクションプールのオプション
 
-`MemCacheStore`と`RedisCacheStore`は、デフォルトではプロセスごとに１つのコネクションを利用します。これは、Puma（または別のスレッド化サーバー）を使えば、コネクション待ちをマルチスレッド化できるということです。
+[`:mem_cache_store`](#activesupport-cache-memcachestore)と[`:redis_cache_store`](#activesupport-cache-rediscachestore)は、デフォルトではプロセスごとに1つのコネクションを利用します。これは、Puma（または別のスレッド化サーバー）を使えば、コネクション待ちをマルチスレッド化できるということです。
 利用可能なコネクション数を増やすには、コネクションプールを有効にします。
 
 最初に、Gemfileに`connection_pool` gemを追加します。
@@ -343,19 +325,25 @@ config.cache_store = :mem_cache_store, "cache.example.com", { pool_size: 5, pool
 
 * `:pool_timeout`: コネクションごとの待ち時間を秒で指定します（デフォルトは5）。タイムアウトまでにコネクションを利用できない場合は、`Timeout::Error` エラーが発生します。
 
-#### カスタムのキャッシュストア
+### `ActiveSupport::Cache::Store`
 
-キャッシュストアを独自に作成するには、`ActiveSupport::Cache::Store`を拡張して適切なメソッドを実装します。これにより、Railsアプリケーションでさまざまなキャッシュ技術に差し替えられるようになります。
+[`ActiveSupport::Cache::Store`][]は、Railsでキャッシュとやりとりするための基盤を提供します。これは抽象クラスなので、単体では利用できません。代わりに、ストレージエンジンと結びついたこのクラスの具象実装を使う必要があります。Railsにはいくつかの実装が同梱されており、ドキュメントは以下にあります。
 
-カスタムのキャッシュストアを利用するには、自作クラスの新しいインスタンスにキャッシュストアを設定します。
+主要なAPIメソッドは、[`read`][ActiveSupport::Cache::Store#read]、[`write`][ActiveSupport::Cache::Store#write]、[`delete`][ActiveSupport::Cache::Store#delete]、[`exist?`][ActiveSupport::Cache::Store#exist?]、[`fetch`][ActiveSupport::Cache::Store#fetch]です。
 
-```ruby
-config.cache_store = MyCacheStore.new
-```
+キャッシュストアのコンストラクタに渡されるオプションは、該当するAPIメソッドのデフォルトオプションとして扱われます。
 
-### ActiveSupport::Cache::MemoryStore
+[`ActiveSupport::Cache::Store`]: https://api.rubyonrails.org/classes/ActiveSupport/Cache/Store.html
+[ActiveSupport::Cache::Store#delete]: https://api.rubyonrails.org/classes/ActiveSupport/Cache/Store.html#method-i-delete
+[ActiveSupport::Cache::Store#exist?]: https://api.rubyonrails.org/classes/ActiveSupport/Cache/Store.html#method-i-exist-3F
+[ActiveSupport::Cache::Store#fetch]: https://api.rubyonrails.org/classes/ActiveSupport/Cache/Store.html#method-i-fetch
+[ActiveSupport::Cache::Store#read]: https://api.rubyonrails.org/classes/ActiveSupport/Cache/Store.html#method-i-read
+[ActiveSupport::Cache::Store#write]: https://api.rubyonrails.org/classes/ActiveSupport/Cache/Store.html#method-i-write
 
-このキャッシュストアは、エントリーを同じRubyプロセス内のメモリに保持します。キャッシュストアのサイズを制限するには、イニシャライザで`:size`オプションを指定します（デフォルトは32MB）。キャッシュがこのサイズを超えるとクリーンアップが開始され、直近の利用が最も少ない（LRU: Least Recently Used）エントリから削除されます。
+### `ActiveSupport::Cache::MemoryStore`
+
+[`ActiveSupport::Cache::MemoryStore`][]は、エントリーを同じRubyプロセス内のメモリに保持します。
+キャッシュストアのサイズを制限するには、イニシャライザで`:size`オプションを指定します（デフォルトは32MB）。キャッシュがこのサイズを超えるとクリーンアップが開始され、直近の利用が最も少ない（LRU: Least Recently Used）エントリから削除されます。
 
 ```ruby
 config.cache_store = :memory_store, { size: 64.megabytes }
@@ -363,13 +351,15 @@ config.cache_store = :memory_store, { size: 64.megabytes }
 
 Ruby on Railsサーバーのプロセスを複数実行している場合（Phusion PassengerやPumaをクラスタモードで利用している場合）は、Railsサーバーのキャッシュデータをプロセスのインスタンス間で共有できなくなります。このキャッシュストアは、アプリケーションを大規模にデプロイするには向いていません。ただし、小規模でトラフィックの少ないサイトでサーバープロセスを数個動かす程度であれば問題なく動作します。もちろん、development環境やtest環境でも動作します。
 
-新規Railsプロジェクトでは、development環境でこの実装をデフォルトで使うよう設定されます。
+新規Railsプロジェクトのdevelopment環境では、この実装をデフォルトで使うよう設定されます。
 
 NOTE: `:memory_store`を使うとキャッシュデータがプロセス間で共有されないため、Railsコンソールから手動でキャッシュを読み書きすることも無効にすることもできません。
 
-### ActiveSupport::Cache::FileStore
+[`ActiveSupport::Cache::MemoryStore`]: https://api.rubyonrails.org/classes/ActiveSupport/Cache/MemoryStore.html
 
-このキャッシュストアは、エントリをファイルシステムに保存します。キャッシュを初期化するときに、ファイル保存場所へのパスを指定する必要があります。
+### `ActiveSupport::Cache::FileStore`
+
+[`ActiveSupport::Cache::FileStore`][]は、エントリをファイルシステムに保存します。キャッシュを初期化するときに、ファイル保存場所へのパスを指定する必要があります。
 
 ```ruby
 config.cache_store = :file_store, "/path/to/cache/directory"
@@ -381,9 +371,11 @@ config.cache_store = :file_store, "/path/to/cache/directory"
 
 `config.cache_store`を明示的に指定しない場合は、デフォルトのキャッシュストア実装（`"#{root}/tmp/cache/"`）が提供されます。
 
-### ActiveSupport::Cache::MemCacheStore
+[`ActiveSupport::Cache::FileStore`]: https://api.rubyonrails.org/classes/ActiveSupport/Cache/FileStore.html
 
-このキャッシュストアは、アプリケーションキャッシュの保存先をDangaの`memcached`サーバーに一元化します。Railsでは、本体にバンドルされている`dalli` gemがデフォルトで使われます。`dalli`は、現時点でproduction Webサイトで最も広く利用されているキャッシュストアです。高性能かつ高冗長性を備えており、単一のキャッシュストアも共有キャッシュクラスタも提供できます。
+### `ActiveSupport::Cache::MemCacheStore`
+
+[`ActiveSupport::Cache::MemCacheStore`][]は、アプリケーションキャッシュの保存先をDangaの`memcached`サーバーに一元化します。Railsでは、本体にバンドルされている`dalli` gemがデフォルトで使われます。`dalli`は、現時点で最も広くproduction Webサイトで利用されているキャッシュストアです。高性能かつ高冗長性を備えており、単一のキャッシュストアも共有キャッシュクラスタも提供できます。
 
 キャッシュを初期化するときは、クラスタ内の全memcachedサーバーのアドレスを指定するか、`MEMCACHE_SERVERS`環境変数を適切に設定しておく必要があります。
 
@@ -399,11 +391,14 @@ config.cache_store = :mem_cache_store # $MEMCACHE_SERVERSにフォールバッ�
 
 サポートされているアドレスの種類について詳しくは[`Dalli::Client`のドキュメント](https://www.rubydoc.info/github/mperham/dalli/Dalli%2FClient:initialize)を参照してください。
 
-このキャッシュの`write`メソッドや`fetch`メソッドでは、memcached固有の機能を利用するオプションを2つ指定できます。シリアライズを行わずに値を直接サーバーに送信するには、`:raw`を指定します（送信する値は文字列か数値でなければなりません）。値を`:raw`に指定した場合にのみ、`increment`や`decrement`などを指定してmemcachedを直接操作できます。memcachedが既存のエントリを上書きしないようにするには、`:unless_exist`を指定します。
+このキャッシュの[`write`][ActiveSupport::Cache::MemCacheStore#write]メソッド（および`fetch`メソッド）は、memcached固有の機能を利用する追加オプションを受け取れます。
 
-### ActiveSupport::Cache::RedisCacheStore
+[`ActiveSupport::Cache::MemCacheStore`]: https://api.rubyonrails.org/classes/ActiveSupport/Cache/MemCacheStore.html
+[ActiveSupport::Cache::MemCacheStore#write]: https://api.rubyonrails.org/classes/ActiveSupport/Cache/MemCacheStore.html#method-i-write
 
-Redisキャッシュストアは、メモリ使用量が最大に達したときにRedisの自動eviction（立ち退き）を利用して、Memcachedキャッシュサーバーと同様の機能を実現しています。
+### `ActiveSupport::Cache::RedisCacheStore`
+
+[`ActiveSupport::Cache::RedisCacheStore`][]は、メモリ使用量が最大に達したときにRedisの自動eviction（立ち退き）を利用して、Memcachedキャッシュサーバーと同様の機能を実現しています。
 
 デプロイに関するメモ: Redisのキーはデフォルトでは無期限なので、専用のRedisキャッシュサーバーを使うときはご注意ください。永続化用のRedisサーバーに期限付きのキャッシュデータを保存してはいけません。詳しくは[Redis cache server setup guide](https://redis.io/topics/lru-cache)（英語）を参照してください。
 
@@ -413,7 +408,9 @@ Redis 3以前では、`allkeys-lru`を用いてLRU（Least Recently Used: 直近
 
 キャッシュの読み書きのタイムアウトは、やや低めに設定しましょう。キャッシュの取り出しで1秒以上待つよりも、キャッシュ値を再生成する方が高速になることもよくあります。読み書きのデフォルトタイムアウト値は1秒ですが、ネットワークのレイテンシが常に低い場合は値を小さくするとよい結果が得られることがあります。
 
-キャッシュの読み書きでは決して例外が発生せず、単に`nil`を返してあたかも何もキャッシュされていないかのように振る舞います。キャッシュで例外が生じているかどうかを測定するには、`error_handler`を渡して例外収集サービスにレポートを送信してもよいでしょう。収集サービスは、「`method`（最初に呼び出されたキャッシュストアメソッド名、）」「`returning`（ユーザーに返した値（通常は`nil`）」「`exception`（rescueされた例外）」の3つの引数を受け取れる必要があります。
+キャッシュストアがリクエスト中に接続に失敗した場合、デフォルトではRedisへの再接続を試みません。接続が切れやすい場合は、再接続を試みるようにするとよいでしょう。
+
+キャッシュの読み書きでは決して例外が発生せず、単に`nil`を返してあたかも何もキャッシュされていないかのように振る舞います。キャッシュで例外が生じているかどうかを測定するには、`error_handler`を渡して例外収集サービスにレポートを送信してもよいでしょう。収集サービスは、「`method`（最初に呼び出されたキャッシュストアメソッド名、）」「`returning`（ユーザーに返した値（通常は`nil`）」「`exception`（rescueされた例外）」の3つのキーワード引数を受け取れる必要があります。
 
 Redisを利用するには、まず`Gemfile`にredis gemを追加します。
 
@@ -454,12 +451,26 @@ config.cache_store = :redis_cache_store, { url: cache_servers,
 }
 ```
 
-### ActiveSupport::Cache::NullStore
+[`ActiveSupport::Cache::RedisCacheStore`]: https://api.rubyonrails.org/classes/ActiveSupport/Cache/RedisCacheStore.html
 
-このキャッシュストアは個別のWebリクエストを対象とし、リクエストが終了すると保存された値をクリアするので、development環境やtest環境での利用のみを想定しています。`Rails.cache`と直接やりとりするコードを使っていて、キャッシュが原因でコード変更の結果が反映されなくなる場合にこのキャッシュストアを使うと非常に便利です。
+### `ActiveSupport::Cache::NullStore`
+
+[`ActiveSupport::Cache::NullStore`][]は個別のWebリクエストを対象とし、リクエストが終了すると保存された値をクリアするので、development環境やtest環境での利用のみを想定しています。`Rails.cache`と直接やりとりするコードを使っていて、キャッシュが原因でコード変更の結果が反映されなくなる場合にこのキャッシュストアを使うと非常に便利です。
 
 ```ruby
 config.cache_store = :null_store
+```
+
+[`ActiveSupport::Cache::NullStore`]: https://api.rubyonrails.org/classes/ActiveSupport/Cache/NullStore.html
+
+#### カスタムのキャッシュストア
+ 
+キャッシュストアを独自に作成するには、`ActiveSupport::Cache::Store`を拡張して適切なメソッドを実装します。これにより、Railsアプリケーションでさまざまなキャッシュ技術に差し替えられるようになります。
+ 
+カスタムのキャッシュストアを利用するには、自作クラスの新しいインスタンスにキャッシュストアを設定します。
+ 
+```ruby
+config.cache_store = MyCacheStore.new
 ```
 
 キャッシュのキー
@@ -474,7 +485,7 @@ config.cache_store = :null_store
 Rails.cache.read(site: "mysite", owners: [owner_1, owner_2])
 ```
 
-`Rails.cache`で使うキーは、ストレージエンジンで実際に使われるキーと同じになりません。実際のキーは、名前空間で修飾されたり、バックエンドの技術的制約に合わせて変更されていたりする可能性もあります。そのため、`Rails.cache`で値を保存してから`dalli` gemで値を取り出すことはできません。その代わり、memcachedのサイズ制限超過や構文規則違反を気にする必要もありません。
+`Rails.cache`で使うキーは、ストレージエンジンで実際に使われるキーと同じになりません。実際のキーは、バックエンドの技術的制約に合わせて名前空間化または変更される可能性もあります。そのため、たとえば`Rails.cache`で値を保存してから`dalli` gemで値を取り出すようなことはできません。その代わり、memcachedのサイズ制限超過や構文規則違反を気にする必要もありません。
 
 条件付きGETのサポート
 -----------------------
@@ -499,8 +510,8 @@ class ProductsController < ApplicationController
       end
     end
 
-    # リクエストが新鮮な（つまり前回から変更されていない）場合は
-    # 処理不要。デフォルトのレンダリングでは、前回の`stale?`呼び出しの結果に基いて
+    # リクエストがフレッシュな（つまり前回から変更されていない）場合は処理不要。
+    # デフォルトのレンダリングでは、前回の`stale?`呼び出しの結果に基いて
     # 処理が必要かどうかを判断して :not_modifiedを送信するだけでよい。
   end
 end
@@ -527,7 +538,7 @@ end
 ```ruby
 class ProductsController < ApplicationController
 
-  # リクエストが古くなければ自動的に:not_modifiedを返す
+  # リクエストがフレッシュな自動的に:not_modifiedを返す
   # 古い場合はデフォルトのテンプレート（product.*）を返す
 
   def show
@@ -563,7 +574,7 @@ Railsは、デフォルトで「弱い」[ETag](https://developer.mozilla.org/ja
 
 ```
   W/"618bbc92e2d35ea1945008b42799b0e7" → 弱いETag
-  "618bbc92e2d35ea1945008b42799b0e7" → 強いETag
+  "618bbc92e2d35ea1945008b42799b0e7"   → 強いETag
 ```
 
 強いETagは、弱いETagと異なり、レスポンスがバイトレベルで完全一致しなければなりません。強いETagは巨大な動画やPDFファイル内でRangeリクエストを実行する場合に便利です。Akamaiなど一部のCDNでは、強いETagのみをサポートしています。強いETagの生成がどうしても必要な場合は、次のようにできます。
@@ -596,7 +607,7 @@ Development mode is no longer being cached.
 ```
 
 NOTE: Railsのdevelopmentモードでは、デフォルトでキャッシュが**オフ**になります。Railsは
-[`ActiveSupport::Cache::NullStore`](#activesupport-cache-nullstore)を利用します。
+[`:null_store`](#activesupport-cache-nullstore)を利用します。
 
 参考
 ----------
