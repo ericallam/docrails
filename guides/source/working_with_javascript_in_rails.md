@@ -32,20 +32,6 @@ manage your JavaScript dependencies, there is no need to install Node.js or Yarn
 When using import maps, no separate build process is required, just start your server with
 `bin/rails server` and you are good to go.
 
-### Installing importmap-rails
-
-Importmap for Rails is automatically included in Rails 7+ for new applications, but you can also install it manually in existing applications:
-
-```bash
-$ bin/bundle add importmap-rails
-```
-
-Run the install task:
-
-```bash
-$ bin/rails importmap:install
-```
-
 ### Adding NPM Packages with importmap-rails
 
 To add new packages to your import map-powered application, run the `bin/importmap pin` command
@@ -191,6 +177,7 @@ Using this gem, you can render Turbo Streams from a controller action:
 ```ruby
 def create
   @post = Post.new(post_params)
+
   respond_to do |format|
     if @post.save
       format.turbo_stream
@@ -208,6 +195,7 @@ Turbo Stream responses can also be rendered inline in the controller action:
 ```ruby
 def create
   @post = Post.new(post_params)
+
   respond_to do |format|
     if @post.save
       format.turbo_stream { render turbo_stream: turbo_stream.prepend('posts', partial: 'post') }
@@ -296,5 +284,6 @@ The attribute can also be used with the `button_to` helper, however it must be
 added to the form that the `button_to` helper renders internally:
 
 ```erb
-<%= button_to "Delete post", post, method: :delete, form: { data: { turbo_confirm: "Are you sure?" } } %>
+<%= button_to "Delete post', post, method: :delete, form: { data: { turbo_confirm: "Are you sure?" } } %>
 ```
+

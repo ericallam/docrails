@@ -21,20 +21,6 @@ import mapsを利用するアプリケーションは、[Node.js](https://nodejs
 
 import mapsを利用する場合、別途ビルドプロセスを実行する必要はなく、`bin/rails server`コマンドでサーバーを起動するだけでOKです。
 
-### importmap-railsをインストールする
-
-Rails 7以降の新規アプリケーションでは、自動的にimportmap-railsが使われます。以下のように既存のアプリケーションに手動インストールすることも可能です。
-
-```bash
-$ bin/bundle add importmap-rails
-```
-
-以下のインストールタスクを実行します。
-
-```bash
-$ bin/rails importmap:install
-```
-
 ### NPMパッケージをimportmap-railsで追加する
 
 import mapを利用するアプリケーションに新しいパッケージを追加するには、ターミナルで以下のように`bin/importmap pin`コマンドを実行します。
@@ -144,6 +130,7 @@ Railsでは、[turbo-rails](https://github.com/hotwired/turbo-rails) gemを介�
 ```ruby
 def create
   @post = Post.new(post_params)
+
   respond_to do |format|
     if @post.save
       format.turbo_stream
@@ -161,6 +148,7 @@ Turbo Streamsのレスポンスも、以下のようにコントローラのア�
 ```ruby
 def create
   @post = Post.new(post_params)
+
   respond_to do |format|
     if @post.save
       format.turbo_stream { render turbo_stream: turbo_stream.prepend('posts', partial: 'post') }
