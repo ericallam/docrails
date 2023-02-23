@@ -130,8 +130,7 @@ $ cd blog
 |test/|このディレクトリには、単体テストやフィクスチャなどのテスト関連ファイルを置きます。テストについて詳しくは[Railsアプリケーションをテストする](testing.html)を参照してください。|
 |tmp/|このディレクトリには、キャッシュやpidなどの一時ファイルが置かれます。|
 |vendor/|サードパーティ製コードはすべてこのディレクトリに置きます。通常のRailsアプリケーションの場合、外部のgemファイルがここに置かれます。|
-|.gitattributes|
-このファイルは、gitリポジトリ内の特定のパスについてメタデータを定義します。このメタデータは、gitや他のツールで振る舞いを拡張できます。詳しくは[gitattributesドキュメント](https://git-scm.com/docs/gitattributes)を参照してください。|
+|.gitattributes|このファイルは、gitリポジトリ内の特定のパスについてメタデータを定義します。このメタデータは、gitや他のツールで振る舞いを拡張できます。詳しくは[gitattributesドキュメント](https://git-scm.com/docs/gitattributes)を参照してください。|
 |.gitignore|Gitに登録しないファイル（またはパターン）をこのファイルで指定します。Gitにファイルを登録しない方法について詳しくは[GitHub - Ignoring files](https://help.github.com/articles/ignoring-files)を参照してください。|
 |.ruby-version|このファイルには、デフォルトのRubyバージョンが記述されています。|
 
