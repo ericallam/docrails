@@ -93,7 +93,26 @@ $ bin/rails runner 'p Rails.autoloaders.zeitwerk_enabled?'
 アプリケーションがZeitwerkに沿っているかを確かめる
 -----------------------------------------------------
 
-`zeitwerk`モードを有効にしてから、以下を実行します。
+### config.eager_load_paths
+
+Zeitwerkに準拠しているかどうかのテストは、eager loadingされたファイルに対してのみ実行されます。そのため、Zeitwerkへの準拠を検証するには、すべての自動読み込みパスをeager loadパスに追加することが推奨されます。
+
+これは既にデフォルトで行われるようになっていますが、自分のプロジェクトで自動読み込みパスを以下のように貸したマイズしている場合は、eager loadingされないため検証されません。
+
+```ruby
+config.autoload_paths << "#{Rails.root}/extras"
+```
+
+以下のようにすることで、手軽にeager loadingパスに追加できます。
+
+```ruby
+config.autoload_paths << "#{Rails.root}/extras"
+config.eager_load_paths << "#{Rails.root}/extras"
+```
+
+### zeitwerk:check
+
+`zeitwerk`モードを有効にし、eager loading設定をダブルチェックしたら、以下を実行します。
 
 ```bash
 $ bin/rails zeitwerk:check
@@ -109,9 +128,11 @@ All is good!
 
 アプリケーションの設定によってはこの他にも出力されることがありますが、末尾に"All is good!"があればOKです。
 
+前節で説明したダブルチェックで、カスタムの自動読み込みパスがeager loadingパスの外にあると判断されると、タスクはそれを検出して警告を発します。しかし、テストスイートがそれらのファイルの読み込みに成功していれば、問題ありません。
+
 Zeitwerkで期待される定数が定義されていないファイルがあると、上のタスクで通知されます。このタスクは1ファイルごとに実行されます。問題が生じたときにタスクが先に進むと、あるファイルの読み込み失敗が他の無関係な失敗に連鎖してエラー出力が読みにくくなるためです。
 
-定数に１つでも問題があれば、その問題を解決し、"All is good!"が出力されるまでタスクを再実行します。
+定数に1つでも問題があれば、その問題を解決し、"All is good!"が出力されるまでタスクを再実行してください。
 
 たとえば以下のように出力されたとします。
 
@@ -144,18 +165,20 @@ end
 
 ```ruby
 # config/initializers/zeitwerk.rb
-Rails.autoloaders.each do |autoloader|
-  autoloader.inflector.inflect("vat" => "VAT")
-end
+Rails.autoloaders.main.inflector.inflect("vat" => "VAT")
 ```
 
-以上を反映すればチェックはパスします。
+このオプションを使うと、`vat.rb`というファイル名、または`vat`というディレクトリ名のみが`VAT`として認識されるので、より細かく制御できます。`vat_rules.rb という名前のファイルはその影響を受けないので、 `VatRules`を正しく定義できるようになります。このような名前の不一致があるプロジェクトで役に立つでしょう。。
+
+以上が終われば、チェックはパスします。
 
 ```bash
 $ bin/rails zeitwerk:check
 Hold on, I am eager loading the application.
 All is good!
 ```
+
+すべて問題なく動くようになったら、テストスイートで今後もプロジェクトを検証し続けることをおすすめします。これについて詳しくは[Zeitwerk準拠をテストスイートでチェックする](#Zeitwerk準拠をテストスイートでチェックする)で後述します。
 
 ### concernsについて
 
@@ -180,7 +203,7 @@ app/models/concerns
     delete("#{Rails.root}/app/models/concerns")
   ```
 
-### オートロードのパスに`app`を追加する
+### オートロードパスに`app`を追加する
 
 プロジェクトによっては、たとえば`API::Base`を定義する`app/api/base.rb`を置き、オートロードパスに`app`を追加することで利用したい場合もあります。
 
@@ -207,7 +230,7 @@ Rails.autoloaders.main.ignore(
 )
 ```
 
-上の設定がないと、アプリケーションがこれらのツリーをeager loadingします。読み込まれたファイルは定数を定義していないので、`app/admin`でエラーが発生し、さらに副作用として不要な`View`モジュールも生成されてしまいます。
+上の設定がないと、アプリケーションがこれらのツリーをeager loadingします。読み込まれたファイルは定数を定義しないので、`app/admin`でエラーが発生し、さらに副作用として不要な`View`モジュールも生成されてしまいます。
 
 このように、オートロードのパスに`app`ディレクトリを含めることは一応可能ですが、ややトリッキーになります。
 
@@ -290,6 +313,55 @@ config.autoload_paths += Dir["#{config.root}/extras/**/"]
 
 ```ruby
 config.autoload_paths << "#{config.root}/extras"
+```
+
+### エンジンからのクラスやモジュールをdecorateする
+
+アプリケーションがエンジンからクラスやモジュールをdecorateしているのであれば、どこかで以下のようなことをやっている可能性があります。
+
+```ruby
+config.to_prepare do
+  Dir.glob("#{Rails.root}/app/overrides/**/*_override.rb").each do |override|
+    require_dependency override
+  end
+end
+```
+
+これは更新しなければなりません。以下のように`main`オートローダーでオーバーライドを含むディレクトリを無視するように指示し、代わりに`load`でそれらを読み込む必要があります。
+
+```ruby
+overrides = "#{Rails.root}/app/overrides"
+Rails.autoloaders.main.ignore(overrides)
+config.to_prepare do
+  Dir.glob("#{overrides}/**/*_override.rb").each do |override|
+    load override
+  end
+end
+```
+
+### `before_remove_const`
+
+Rails 3.1では`before_remove_const`というコールバックがサポートされ、このメソッドに応答するクラスやモジュールが再読み込みされるときに呼び出されるようになりました。このコールバックはドキュメント化されていないため、おそらくアプリケーションコードで使われていることはないでしょう。
+
+しかしこのコールバックを利用している場合は、以下のように書き換えられます。
+
+```ruby
+class Country < ActiveRecord::Base
+  def self.before_remove_const
+    expire_redis_cache
+  end
+end
+```
+
+上を以下のように書き換えます。
+
+```ruby
+# config/initializers/country.rb
+unless Rails.application.config.cache_classes
+  Rails.autoloaders.main.on_unload("Country") do |klass, _abspath|
+    klass.expire_redis_cache
+  end
+end
 ```
 
 ### spring gemと`test`環境
@@ -395,7 +467,7 @@ class Admin::UsersController < ApplicationController
 end
 ```
 
-１つ注意すべきは、実行順序によってはclassicオートローダーで以下の`Foo::Wadus`をオートロードできる場合があった点です。
+1つ注意すべき点があります。実行順序によってはclassicオートローダーで以下の`Foo::Wadus`をオートロードできてしまう場合がありました。
 
 ```ruby
 class Foo::Bar
@@ -429,6 +501,6 @@ RailsにはWebリクエストをスレッドセーフにするロックが用意
 
 ### eager loadingとオートロードが一貫するようになった
 
-`classic`モードでは、`app/models/foo.rb`ファイルで`Bar`が定義されていると、このファイルをオートロードできません。しかし`classic`モードはファイルの読み込みを機械的に再帰するので、このファイルのeager loadingは可能です。テストを最初にeager loadingする形で実行すると、その後にオートロードが発生したときに実行が失敗する可能性があります。
+`classic`モードでは、`app/models/foo.rb`ファイルで`Bar`が定義されていると、このファイルをオートロードできません。しかし`classic`モードはファイルの読み込みを機械的に再帰するので、このファイルのeager loadingは可能です。テストを最初にeager loadingする形で実行すると、その後オートロードが発生したときに実行が失敗する可能性があります。
 
 `zeitwerk`モードではどちらの読み込みモードも一貫しているので、テストの失敗やエラーは同じファイル内で発生します。
