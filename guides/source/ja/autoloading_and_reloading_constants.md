@@ -18,9 +18,9 @@
 はじめに
 ------------
 
-INFO: 本ガイドでは、Rails 6.0で新たに導入された`Zeitwerk`モードの自動読み込みについて解説します。Rails 5.2 以前の`Classic`モードについては、[定数の自動読み込みと再読み込み (Classic)](/autoloading_and_reloading_constants_classic_mode.html) を参照してください。
+INFO: 本ガイドでは、Railsアプリケーションの「自動読み込み」「再読み込み」「eager loading」について解説します
 
-通常のRubyプログラムのクラスであれば、依存関係のあるプログラムを明示的に読み込む必要があります。たとえば、以下のコントローラでは`ApplicationController`クラスや`Post`クラスを用いており、通常、それらを呼び出すには`require`する必要があります。
+通常のRubyプログラムのクラスでは、依存関係のあるプログラムを明示的に読み込む必要があります。たとえば、以下のコントローラでは`ApplicationController`クラスや`Post`クラスを用いており、通常、それらを呼び出すには`require`する必要があります。
 
 ```ruby
 # Railsではこのように書かないこと
@@ -56,7 +56,7 @@ Railsアプリケーションで使うファイル名は、そこで定義され
 
 たとえば、`app/helpers/users_helper.rb`ファイルでは`UsersHelper`を定義すべきですし、`app/controllers/admin/payments_controller.rb`では`Admin::PaymentsController`を定義すべきです。
 
-Railsは、デフォルトでファイル名を`String#camelize`で活用するようZeitwerkを設定します。たとえば、`app/controllers/users_controller.rb`は以下のために`UsersController`という定数を定義します。
+デフォルトのRailsは、ファイル名を`String#camelize`メソッドで活用するようZeitwerkを設定します。たとえば、`app/controllers/users_controller.rb`から以下のように`UsersController`という定数を定義します。
 
 ```ruby
 "users_controller".camelize # => UsersController
@@ -69,22 +69,22 @@ Railsは、デフォルトでファイル名を`String#camelize`で活用する�
 `config.autoload_paths`
 --------------
 
-**自動読み込みパス**（autoload path）とは、その中身が自動読み込みの対象となるアプリケーションディレクトリ（`app/models`など）のリストを指します。これらのディレクトリはルート名前空間`Object`を表します。
+**自動読み込みパス**（オートロードパス: autoload path）とは、その中身が自動読み込みの対象となるアプリケーションディレクトリ（`app/models`など）のリストを指します。これらのディレクトリはルート名前空間である`Object`を表します。
 
 INFO: Zeitwerkのドキュメントでは自動読み込みのパスを**ルートディレクトリ**と呼んでいますが、本ガイドでは「自動読み込みパス」と呼びます。
 
 自動読み込みパスの下にあるファイル名は、[Zeitwerkのドキュメント](https://github.com/fxn/zeitwerk#file-structure)に記載されているとおりに定義された定数と一致しなければなりません。
 
-デフォルトでは、あるアプリケーションの自動読み込みパスは次のもので構成されています。アプリケーションの起動時に`app`の下にあるすべてのサブディレクトリ（`assets`、`javascripts`、`views`は除外）と、アプリケーションが依存する可能性のあるエンジンの自動読み込みパスです。
+デフォルトでは、あるアプリケーションの自動読み込みパスは次のもので構成されています。アプリケーションの起動時に`app`の下にあるすべてのサブディレクトリ（`assets`、`javascript`、`views`は除く）と、アプリケーションが依存する可能性のあるエンジンの自動読み込みパスです。
 
 たとえば、`app/helpers/users_helper.rb`に`UsersHelper`が実装されていれば、そのモジュールは以下のように自動読み込み可能になります。したがって`require`呼び出しは不要です（し、書くべきではありません）。
 
-```
+```bash
 $ rails runner 'p UsersHelper'
 UsersHelper
 ```
 
-自動読み込みパスは、`app`の下のあらゆるカスタムディレクトリを自動的に扱います。たとえば、アプリケーションに`app/presenters`があると、自動読み込みの設定を変更しなくても`app/presenters`の下にあるものをすぐ利用できます。
+Railsの自動読み込みパスには、`app`の下のあらゆるカスタムディレクトリも自動的に追加されます。たとえば、アプリケーションに`app/presenters`ディレクトリがあれば、自動読み込みの設定を変更しなくても`app/presenters`の下に置かれたものをすぐ利用できます。
 
 デフォルトの自動読み込みパスの配列は、`config/application.rb`または`config/environments/*.rb`で以下のように`config.autoload_paths`に追加することで拡張可能です。
 
@@ -96,7 +96,7 @@ module MyApplication
 end
 ```
 
-Railsエンジンは、エンジンクラスの本文の中とエンジン自身の`config/environments/*.rb`の中から自動読み込みパスを追加することも可能です。
+また、Railsエンジンはエンジンクラスの本文内やエンジン独自の`config/environments/*.rb`にあるものを自動読み込みパスに追加することも可能です。
 
 WARNING: `ActiveSupport::Dependencies.autoload_paths`はくれぐれも改変しないでください。自動読み込みパスを変更するpublicなインターフェイスは`config.autoload_paths`の方です。
 
@@ -107,9 +107,9 @@ WARNING: アプリケーションの起動中は、自動読み込みパス内�
 `config.autoload_once_paths`
 --------------------------
 
-クラスやモジュールを再読み込みせずに自動読み込みできるようにしたい場合があります。`autoload_once_paths`には、自動読み込みは可能だが再読み込みされないコードを保存します。
+クラスやモジュールを再読み込みせずに自動読み込みできるようにしたい場合があります。`autoload_once_paths`には、自動読み込みするが再読み込みはしないコードの保存場所を指定します。
 
-このコレクションはデフォルトでは空ですが、`config.autoload_once_paths`に追加する形で拡張可能です。たとえば以下は`config/application.rb`または`config/environments/*.rb`で実行できます。
+このコレクションはデフォルトでは空ですが、`config.autoload_once_paths`に追加する形で拡張可能です。たとえば以下は`config/application.rb`または`config/environments/*.rb`に書けます。
 
 ```ruby
 module MyApplication
@@ -119,9 +119,9 @@ module MyApplication
 end
 ```
 
-Railsエンジンは、エンジンクラスの本文の中とエンジン自身の`config/environments/*.rb`の中から自動読み込みパスを追加することも可能です。
+また、Railsエンジンはエンジンクラスの本文内やエンジン独自の`config/environments/*.rb`にあるものを自動読み込みパスに追加することも可能です。
 
-INFO: `app/serializers`を`config.autoload_once_paths`に追加すると、`app/`の下のカスタムディレクトリであってもRailsはこれを自動読み込みパスとみなさなくなります。この設定を行うと、このルールが上書きされます。
+INFO: `app/serializers`を`config.autoload_once_paths`に追加すると、`app/`の下のカスタムディレクトリであってもRailsはこれを自動読み込みパスと見なさなくなります。この設定を行うと、このルールが上書きされます。
 
 これは、Railsフレームワーク自体のような、再読み込みが可能な場所でキャッシュされるクラスやモジュールで重要になります。
 
@@ -134,7 +134,7 @@ Rails.application.config.active_job.custom_serializers << MoneySerializer
 
 再読み込みが発生しても、Active Jobそのものは再読み込みされず、自動読み込みパスにあるアプリケーションコードとエンジンコードのみが再読み込みされます。
 
-この`MoneySerializer`を再読み込み可能にすると、改変バージョンを再読み込みしてもActive Job内に保存されるそのクラスのオブジェクトに反映されないので、混乱が生じる可能性があります。実際に`MoneySerializer`を再読み込み可能にすると、Rails 7以降ではそのようなイニシャライザで`NameError`が発生します。
+この`MoneySerializer`を再読み込み可能にすると、改変バージョンのコードを再読み込みしてもActive Job内に保存されるそのクラスのオブジェクトに反映されないので、混乱が生じる可能性があります。実際に`MoneySerializer`を再読み込み可能にすると、Rails 7以降ではそのようなイニシャライザで`NameError`が発生します。
 
 別のユースケースは、以下のようにフレームワークのクラスをdecorateするエンジンの場合です。
 
@@ -168,7 +168,7 @@ INFO: 技術的には、`once`オートローダーによって管理される�
 config.add_autoload_paths_to_load_path = false
 ```
 
-こうすることで探索が削減され、正当な`require`が少し速くなる可能性もあります。また、アプリケーションで[Bootsnap](https://github.com/Shopify/bootsnap)を使っている場合は、このライブラリが不要なインデックスを構築しなくても済むため、必要なRAM容量を節約できます。
+こうすることで探索が削減され、正当な`require`が少し速くなる可能性もあります。また、アプリケーションで[Bootsnap](https://github.com/Shopify/bootsnap)を使っている場合は、このライブラリが不要なインデックスを構築しなくても済むため、必要なメモリ使用量を節約できます。
 
 再読み込み
 ---------
@@ -177,15 +177,15 @@ Railsアプリケーションのファイルが変更されると、クラスや
 
 正確に言うと、Webサーバーが実行中の状態でアプリケーションのファイルが変更されると、Railsは次のリクエストが処理される直前に、`main`オートローダが管理しているすべての定数をアンロードします。これによって、アプリケーションでリクエスト継続中に使われるクラスやモジュールが自動読み込みされるようになり、続いてファイルシステム上の現在の実装が反映されます。
 
-再読み込みは有効にも無効にもできます。この振る舞いを制御するのは`config.cache_classes`設定です。これは`development`モードではデフォルトで`false`（再読み込みが有効）、`production`モードでは`true`（再読み込みが無効）になります。
+再読み込みは有効にも無効にもできます。この振る舞いを制御するのは[`config.cache_classes`][]設定です。これは`development`モードではデフォルトで`false`（再読み込みが有効）、`production`モードでは`true`（再読み込みが無効）になります。
 
-デフォルトのRailsは、変更されたファイルをイベンテッドファイルモニタで検出しますが、自動読み込みパスを調べてファイル変更を検出することも可能です。これは、`config.file_watcher`の設定で制御されます。
+デフォルトのRailsは、変更されたファイルをイベンテッドファイルモニタで検出しますが、自動読み込みパスを調べてファイル変更を検出することも可能です。これは、[`config.file_watcher`][]の設定で制御されます。
 
-Railsコンソールでは、 `config.cache_classes`の値にかかわらずファイルウォッチャーは動作しません。通常、コンソールセッションの最中に再読み込みが行われると混乱を招く可能性があります。一般にコンソールセッションは、 個別のリクエストと同様に変化しない、一貫したアプリケーションクラスとモジュールのセットによって提供されることが望まれます。
+Railsコンソールでは、 `config.cache_classes`の値にかかわらずファイルウォッチャーは動作しません（通常、コンソールセッションの最中に再読み込みが行われると混乱を招く可能性があるためです）。一般にコンソールセッションは、 個別のリクエストと同様に変化しない、一貫したアプリケーションクラスとモジュールのセットによって提供されることが望まれます。
 
 ただし、コンソールで`reload!`を実行することで強制的に再読み込みできます。
 
-```
+```irb
 irb(main):001:0> User.object_id
 => 70136277390120
 irb(main):002:0> reload!
@@ -195,7 +195,10 @@ irb(main):003:0> User.object_id
 => 70136284426020
 ```
 
-上のように、`User`定数に保存されているクラスオブジェクトは、再読み込み後に変化します。
+上のように、`User`定数に保存されているクラスオブジェクトは、再読み込みすると異なるものに変わります。
+
+[`config.cache_classes`]: configuring.html#config-cache-classes
+[`config.file_watcher`]: configuring.html#config-file-watcher
 
 ### 古くなったオブジェクトの再読み込み
 
@@ -203,7 +206,7 @@ Rubyには、メモリ上のクラスやモジュールを真の意味で再読�
 
 たとえば、Railsコンソールセッションで以下をチェックしてみます。
 
-```ruby
+```irb
 irb> joe = User.new
 irb> reload!
 irb> alice = User.new
@@ -221,7 +224,7 @@ class VipUser < User
 end
 ```
 
-`User`が再読み込みされても`VipUser`は再読み込みされないので、`VipUser`のスーパークラスは元の古いクラスのオブジェクトになります。
+`User`が再読み込みされても`VipUser`は再読み込みされないので、`VipUser`のスーパークラスは元の古いクラスのオブジェクトのままです。
 
 結論: **再読み込み可能なクラスやモジュールをキャッシュしてはいけません**。
 
@@ -235,6 +238,8 @@ end
 
 ### ユースケース1: 起動中に、再読み込み可能なコードを読み込む
 
+#### 起動時と各再読み込みの両方で実行される自動読み込み
+
 `main`オートローダーが管理している`app/services`に`ApiGateway`という再読み込み可能なクラスがあるとします。そしてアプリケーション起動時にエンドポイントを設定する必要が生じたとします。
 
 ```ruby
@@ -244,7 +249,7 @@ ApiGateway.endpoint = "https://example.com" # やってはいけない
 
 上のコードは再実行されないので、再読み込みされた`ApiGateway`のエンドポイントは`nil`になるでしょう。
 
-起動時にセットアップを行うことは引き続き可能ですが、以下のようにそれらを`to_prepare`ブロックでラップする必要があります。この部分は起動時にも再読み込みのたびにも読み込まれます。
+起動時にセットアップを行うことは引き続き可能ですが、以下のようにそれらを`to_prepare`ブロックでラップしておく必要があります。この部分は起動時に読み込まれ、また再読み込みのたびに読み込まれるようになります。
 
 ```ruby
 # config/initializers/api_gateway_setup.rb
@@ -253,13 +258,28 @@ Rails.application.config.to_prepare do
 end
 ```
 
-NOTE: 歴史的な理由により、このコールバックは2回実行される可能性があります。すなわち、ここで実行するコードは[冪等](https://ja.wikipedia.org/wiki/%E5%86%AA%E7%AD%89#%E6%83%85%E5%A0%B1%E5%B7%A5%E5%AD%A6%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8B%E5%86%AA%E7%AD%89)でなければなりません。
+NOTE: 歴史的な理由により、このコールバックは2回実行される可能性があります。ここで実行するコードは[冪等](https://ja.wikipedia.org/wiki/%E5%86%AA%E7%AD%89#%E6%83%85%E5%A0%B1%E5%B7%A5%E5%AD%A6%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8B%E5%86%AA%E7%AD%89)でなければなりません。
+
+#### 起動時にのみ実行される自動読み込み
+
+再読み込み可能なクラスとモジュールは、`after_initialize`ブロックでも自動読み込みが可能です。これらは起動時に実行されますが、再読み込み時には再実行されません。この動作は、例外的なケースでは望ましいこともあります。
+
+以下のようなプリフライトチェックはそうしたユースケースのひとつです。
+
+```ruby
+# config/initializers/check_admin_presence.rb
+Rails.application.config.after_initialize do
+  unless Role.where(name: "admin").exists?
+    abort "adminロールが存在しません。データベースのseedを行ってください。"
+  end
+end
+```
 
 ### ユースケース2: 起動中に、キャッシュされたままのコードを読み込む
 
 設定によっては、何らかのクラスやモジュールのオブジェクトを受け取って、それを再読み込みされない場所に保存することがあります。
 
-そうした例の１つがミドルウェアです。
+そうした例の1つがミドルウェアです。
 
 ```ruby
 config.middleware.use MyApp::Middleware::Foo
@@ -288,7 +308,7 @@ end
 
 これにより、`ActiveRecord::Base`の先祖への継承チェインにモジュールオブジェクトが追加されます。しかし再読み込みが発生しても`Turbo::Broadcastable`の変更は反映されないので、先祖への継承チェインには元のオブジェクトが引き続き残ります。
 
-結論: こうしたクラスやモジュールは**再読み込み可能にできません**。
+すなわち、こうしたクラスやモジュールは**再読み込み可能にできません**。
 
 そのようなクラスやモジュールを起動時に参照する最も手軽な方法は、自動読み込みパスに属さないディレクトリでそれらを定義することです。たとえば`lib/`に置くのが妥当でしょう。`lib/`はデフォルトでは自動読み込みパスに属しませんが、`$LOAD_PATH`には属しているので、`require`するだけで読み込めます。
 
@@ -299,20 +319,22 @@ eager loading
 
 一般的にproduction的な環境では、アプリケーションの起動時にアプリケーションコードをすべて読み込んでおく方が望ましいと言えます。eager loading（一括読み込み）はすべてをメモリ上に読み込むことでリクエストに即座に対応できるように備え、[CoW](https://ja.wikipedia.org/wiki/%E3%82%B3%E3%83%94%E3%83%BC%E3%82%AA%E3%83%B3%E3%83%A9%E3%82%A4%E3%83%88)（コピーオンライト）との相性にも優れています。
 
-eager loadingは`config.eager_load`フラグで制御します。これは`production`モードではデフォルトで有効です。
+eager loadingは[`config.eager_load`][]フラグで制御します。これは`production`モードではデフォルトで有効です。
 
 ファイルがeager loadingされる順序は未定義です。
 
 eager loading中に、Railsは`Zeitwerk::Loader.eager_load_all`を呼び出します。これはすべてのZeitwerkが管理している依存gemもeager loadされていることを保証します。
 
+[`config.eager_load`]: configuring.html#config-eager-load
+
 STI（単一テーブル継承）
 ------------------------
 
-単一テーブル継承機能は、lazy loadingとの相性があまりよくありません。一般に単一テーブル継承のAPIが正しく動作するには、STI階層を正しく列挙できる必要があるためです。lazy loadingでは、クラスが参照されるまでクラス読み込みは遅延されます。まだ参照されていないものは列挙できないのです。
+単一テーブル継承機能は、lazy loading（遅延読み込み）との相性があまりよくありません。一般に単一テーブル継承のAPIが正しく動作するには、STI階層を正しく列挙できる必要があるためです。lazy loadingでは、クラスが参照されるまでクラス読み込みは遅延されます。まだ参照されていないものは列挙できないのです。
 
 ある意味、アプリケーションは読み込みモードにかかわらずSTI階層をeager loadする必要があります。
 
-もちろん、アプリケーションが起動時にeager loadするのであれば目的は既に達成されます。そうでない場合、実際にはデータベース内の既存の型をインスタンス化すれば十分です。developmentモードやtestモードであれば普通はこれで問題ありません。これを行う方法の１つは、このモジュールを`lib`ディレクトリに配置することです。
+もちろん、アプリケーションが起動時にeager loadするのであれば目的は既に達成されます。そうでない場合、実際にはデータベース内の既存の型をインスタンス化すれば十分です。developmentモードやtestモードであれば普通はこれで問題ありません。これを行う方法の1つは、このモジュールを`lib`ディレクトリに配置することです。
 
 ```ruby
 module StiPreload
@@ -362,7 +384,7 @@ end
 require "sti_preload"
 
 class Shape < ApplicationRecord
-  include StiPreload # Only in the root class.
+  include StiPreload # rootクラスにのみ存在するO
 end
 ```
 
@@ -383,9 +405,9 @@ end
 
 デフォルトのRailsは、指定のファイル名やディレクトリ名がどんな定数を定義すべきかを知るのに`String#camelize`を利用します。たとえば、`posts_controller.rb`というファイル名の場合は`PostsController`が定義されていると認識しますが、これは`"posts_controller".camelize`が`PostsController`を返すからです。
 
-場合によっては、特定のファイル名やディレクトリ名が期待どおりに活用されないことがあります。たとえば`html_parser.rb`はデフォルトでは`HtmlParser`を定義すると予測できます。しかしクラス名を`HTMLParser`にするとどうなるでしょう。この場合のカスタマイズ方法はいくつか考えられます。
+場合によっては、特定のファイル名やディレクトリ名が期待どおりに活用されないことがあります。たとえば`html_parser.rb`はデフォルトでは`HtmlParser`を定義すると予測できます。しかしクラス名を`HTMLParser`にしたい場合はどうすればよいでしょうか。この場合のカスタマイズ方法はいくつか考えられます。
 
-最も手軽な方法は、`config/initializers/inflections.rb`に略語を定義することです。
+最も手軽な方法は、以下のように略語を定義することです。
 
 ```ruby
 ActiveSupport::Inflector.inflections(:en) do |inflect|
@@ -394,10 +416,10 @@ ActiveSupport::Inflector.inflections(:en) do |inflect|
 end
 ```
 
-これによって、Active Supportによる活用方法がグローバルに反映されます。これで問題のないアプリケーションもありますが、以下のようにデフォルトのインフレクタに上書き用のコレクションを渡して、Active Supportの個別の基本語形をキャメルケース化する方法をカスタマイズすることも可能です。
+これによって、Active Supportによる活用方法がグローバルに反映されます。
+これで問題のないアプリケーションもありますが、以下のようにデフォルトのインフレクタに上書き用のコレクションを渡して、Active Supportの個別の基本語形をキャメルケース化する方法をカスタマイズすることも可能です。
 
 ```ruby
-# config/initializers/zeitwerk.rb
 Rails.autoloaders.each do |autoloader|
   autoloader.inflector.inflect(
     "html_parser" => "HTMLParser",
@@ -409,7 +431,6 @@ end
 しかしデフォルトのインフレクタは`String#camelize`をフォールバック先として使っているので、この手法は依然として`String#camelize`に依存しています。Active Supportの活用形機能に一切依存せずに活用形を絶対的に制御したい場合は、以下のように`Zeitwerk::Inflector`のインスタンスをインフレクタとして設定します。
 
 ```ruby
-# config/initializers/zeitwerk.rb
 Rails.autoloaders.each do |autoloader|
   autoloader.inflector = Zeitwerk::Inflector.new
   autoloader.inflector.inflect(
@@ -419,9 +440,15 @@ Rails.autoloaders.each do |autoloader|
 end
 ```
 
-この場合は、インスタンスに影響するようなグローバル設定が存在しないので、活用形は１つに決定されます。
+この場合は、インスタンスに影響するようなグローバル設定が存在しないので、活用形は1つに決定されます。
 
 カスタムインフレクタを定義して柔軟性を高めることも可能です。詳しくは[Zeitwerkドキュメント](https://github.com/fxn/zeitwerk#custom-inflector)を参照してください。
+
+### 活用形のカスタマイズはどこで行うべきか
+
+アプリケーションが`once`オートローダを使わない場合、上記のスニペットは`config/initializers`に保存できます。たとえば、Active Supportを使う場合は`config/initializers/inflections.rb`に書き、それ以外の場合は`config/initializers/zeitwerk.rb`に書くとよいでしょう。
+
+アプリケーションが`once`オートローダを使う場合は、この設定を別の場所に移動するか、`config/application.rb`のアプリケーションクラスの本体から読み込む必要があります。`once`オートローダーはブートプロセスの早い段階でインフレクタを利用するからです。
 
 自動読み込みとRailsエンジン
 -----------------------
@@ -495,7 +522,7 @@ Rails.autoloaders.log!
 Rails.autoloaders.logger = Logger.new("#{Rails.root}/log/autoloading.log")
 ```
 
-Railsロガーは`config/application.rb`には設定されていませんが、以下のようにイニシャライザで設定されています。
+Railsロガーは、`config/application.rb`が実行される時点ではまだ利用できません。Railsロガーを使いたい場合は、イニシャライザの設定を以下のように変更します。
 
 ```ruby
 # config/initializers/log_autoloaders.rb
