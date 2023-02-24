@@ -247,7 +247,7 @@ git commit: "-a -m 'Initial commit'"
 
 ### `after_bundle(&block)`
 
-gemのバンドルとbinstub生成の完了後に実行したいコールバックを登録します。生成したすべてのファイルをバージョン管理したい場合に便利です。
+gemのバンドルとbinstub生成の完了後に実行したいコールバックを登録します。生成したすべてのファイルをバージョン管理に追加したい場合に便利です。
 
 ```ruby
 after_bundle do
