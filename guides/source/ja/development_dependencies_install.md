@@ -14,7 +14,9 @@ Rails コア開発環境の構築方法
 すぐできる方法
 ------------
 
-[Rails development box](https://github.com/rails/rails-dev-box)にある準備済みのdevelopment環境を入手するのがおすすめです。
+[Rails development box][dev-box]にある準備済みのdevelopment環境を入手するのがおすすめです。
+
+[dev-box]: https://github.com/rails/rails-dev-box
 
 個別にインストールする方法
 ------------
@@ -23,13 +25,20 @@ Rails development boxを利用できない事情がある場合は、この先�
 
 ### Gitをインストールする
 
-Ruby on Railsではソースコード管理にGitを使っています。インストール方法については[Gitホームページ](https://git-scm.com/)に記載されています。Gitを学べる以下のような多数の資料があります（特記ないものは英語）。
+Ruby on Railsではソースコード管理にGitを使っています。インストール方法については[Gitホームページ][git-scm]に記載されています。Gitを学べる以下のような多数の資料があります（特記ないものは英語）。
 
-* [Try Git course](https://try.github.io/)は、対話的な操作のできるコースで基礎を学べます。
-* [Git公式ドキュメント](https://git-scm.com/documentation)には多くの情報がまとめられており、Gitの基礎を学べる動画もあります。
-* [Everyday Git](https://schacon.github.io/git/everyday.html)は最小限必要なGitの知識を学ぶのに向いています。
-* [GitHub](https://help.github.com)にはさまざまなGit関連リソースへのリンクがあります。
-* [Pro Git日本語版](https://progit-ja.github.io/)ではGitについてすべてをカバーした書籍がさまざまな形式で翻訳されており、クリエイティブ・コモンズ・ライセンスで公開されています。
+* [Try Git course][]は、対話的な操作のできるコースで基礎を学べます。
+* [Git公式ドキュメント][Git docs]には多くの情報がまとめられており、Gitの基礎を学べる動画もあります。
+* [Everyday Git][]は最小限必要なGitの知識を学ぶのに向いています。
+* [GitHub][GItHub support]にはさまざまなGit関連リソースへのリンクがあります。
+* [Pro Git日本語版][Pro Git]ではGitについてすべてをカバーした書籍がさまざまな形式で翻訳されており、クリエイティブ・コモンズ・ライセンスで公開されています。
+
+[git-scm]: https://git-scm.com/
+[Try Git course]: https://docs.github.com/ja/get-started/quickstart/set-up-git
+[Git docs]: https://git-scm.com/book/ja/
+[Everyday Git]: https://schacon.github.io/git/everyday.html
+[GitHub support]: https://support.github.com/
+[Pro Git]: https://progit-ja.github.io/
 
 ### Ruby on Railsリポジトリをクローンする
 
@@ -48,23 +57,24 @@ Railsのテストの中には追加のツールに依存しているものもあ
 
 * Action Cable: Redisに依存
 * Active Record: SQLite3、MySQL、PostgreSQLに依存
-* Active Storage: Yarn（Yarnは[Node.js](https://nodejs.org/))に依存）、ImageMagick、FFmpeg、muPDF、macOSに依存
-  also XQuartz and Poppler.
+* Active Storage: Yarn（Yarnは[Node.js][]に依存）、ImageMagick、FFmpeg、muPDF、またmacOSではXQuartzとPopplerにも依存
 * Active Support: memcached、Redisに依存
-* Railties: JavaScriptランタイム環境（[Node.js](https://nodejs.org/)など）に依存
-  [Node.js](https://nodejs.org/) installed.
+* Railties: JavaScriptランタイム環境（[Node.js][]など）に依存
 
 機能を変更したいgemを正しくテストするには、そのgemが依存するサービスをすべてインストールする必要があります。
 
-NOTE: Redisのドキュメントでは、パッケージマネージャによるRedisインストールは推奨されていません（パッケージマネージャーが古いため）。Redisをソースからインストールしてサーバーを立ち上げる方法については、[Redisドキュメント](https://redis.io/download#installation)に詳しく記載されています。
+NOTE: Redisのドキュメントでは、パッケージマネージャによるRedisインストールは推奨されていません（パッケージマネージャーが古いため）。Redisをソースからインストールしてサーバーを立ち上げる方法については、[Redisドキュメント][Redis install]に詳しく記載されています。
 
 NOTE: Active Recordのテストは、少なくともMySQLとPostgreSQLとSQLite3で**必ず**パスしなければなりません。アダプタごとに微妙な違いがあるので、特定のアダプタではテストがパスしたパッチの多くが却下されています。
 
 以下は、OSごとの追加ツールのインストール方法です。
 
+[Node.js]: https://nodejs.org/
+[Redis install]: https://redis.io/download#installation
+
 #### macOS
 
-macOSの場合は、必要な追加ツールを[Homebrew](https://brew.sh/)ですべてインストールできます。
+macOSの場合は、必要な追加ツールを[Homebrew][]ですべてインストールできます。
 
 ツールをすべてインストールするには、クローンしたRailsディレクトリで以下を実行します。
 
@@ -85,6 +95,8 @@ $ brew services start mysql
 ```
 
 上のコマンドの`mysql`は、起動したいサービス名に置き換えます。
+
+[Homebrew]: https://brew.sh/
 
 #### Ubuntu
 
@@ -108,9 +120,9 @@ $ sudo apt-get install yarn
 $ sudo dnf install sqlite-devel sqlite-libs mysql-server mysql-devel postgresql-server postgresql-devel redis memcached imagemagick ffmpeg mupdf libxml2-devel
 
 # Yarnをインストールする
-# Use this command if you do not have Node.js installed
+# Node.jsをインストールしていない場合はこのコマンドを使う
 $ curl --silent --location https://rpm.nodesource.com/setup_8.x | sudo bash -
-# If you have Node.js installed, use this command instead
+# Node.jsをインストール済みの場合は代わりにこのコマンドを使う
 $ curl --silent --location https://dl.yarnpkg.com/rpm/yarn.repo | sudo tee /etc/yum.repos.d/yarn.repo
 $ sudo dnf install yarn
 ```
@@ -125,7 +137,9 @@ $ sudo mariadb-install-db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
 $ sudo systemctl start redis mariadb memcached
 ```
 
-NOTE: MySQLはArch Linuxではサポートされなくなったので、代わりにMariaDBをインストールする必要があります（[Arch Linuxのお知らせ](https://www.archlinux.org/news/mariadb-replaces-mysql-in-repositories/)を参照）。
+NOTE: MySQLはArch Linuxではサポートされなくなったので、代わりにMariaDBをインストールする必要があります（[Arch Linuxのお知らせ][announcement]を参照）。
+
+[announcement]: https://www.archlinux.org/news/mariadb-replaces-mysql-in-repositories/
 
 #### FreeBSD
 
@@ -138,7 +152,9 @@ $ pkg install sqlite3 mysql80-client mysql80-server postgresql11-client postgres
 
 `ports`ですべてのツールをインストールすることも可能です（パッケージは`databases`フォルダに保存されます）。
 
-NOTE: MySQLのインストールで発生する問題については、[MySQLドキュメント](https://dev.mysql.com/doc/refman/en/freebsd-installation.html)を参照してください。
+NOTE: MySQLのインストールで発生する問題については、[MySQLドキュメント][MySQL doc]を参照してください。
+
+[MySQL doc]: https://dev.mysql.com/doc/refman/8.0/ja/freebsd-installation.html
 
 ### データベースを設定する
 
@@ -208,7 +224,7 @@ $ yarn install
 
 ### Bundler gemをインストールする
 
-[Bundler](https://bundler.io/)の最新バージョンをインストールします。
+[Bundler][]の最新バージョンをインストールします。
 
 ```bash
 $ gem install bundler
@@ -231,3 +247,4 @@ $ bundle install --without db
 
 設定がすべて完了したら、ガイドの[Ruby on Rails に貢献する](contributing_to_ruby_on_rails.html#ローカルブランチでアプリケーションを実行する)をお読みください。
 
+[Bundler]: https://bundler.io/
