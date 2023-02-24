@@ -3,7 +3,7 @@ Rails プラグイン作成入門
 
 Railsのプラグインは、コアフレームワークの拡張や変更に使われます。プラグインは以下の機能を提供します。
 
-* 安定版コードベースを変更せずに、最先端のアイディアを共有できます。
+* 安定版コードベースを変更せずに、最先端のアイデアを共有できます。
 * アーキテクチャを分割して、修正や更新を異なるスケジュールで進められます。
 * コア開発者が新機能の一部のみを共有するのに使えます。
 
@@ -34,21 +34,34 @@ Railsのプラグインは**gem化**されています。gem形式を採用し�
 RailsにはあらゆるRails拡張機能の開発用スケルトンを作成する`rails plugin new`というコマンドが用意されています。これで作成したスケルトンはダミーのRailsアプリケーションを使用して結合テストを実行することもできます。プラグインを作成するには以下のコマンドを実行します。
 
 ```bash
-$ bin/rails plugin new yaffle
+$ rails plugin new yaffle
 ```
 
 利用法とオプションは以下の方法で表示できます。
 
 ```bash
-$ bin/rails plugin new --help
+$ rails plugin new --help
 ```
 
 新しく生成したプラグインをテストする
 -----------------------------------
 
-プラグインを作成したディレクトリに移動して`bundle install`コマンドを実行し、自動生成されたテストを`bin/test`コマンドで実行します。
+プラグインを作成したディレクトリに移動して`yaffle.gemspec`ファイルを編集し、値に`TODO`がある行をすべて以下の要領で置き換えます。
 
-実行結果は以下のようになります。
+```ruby
+  spec.homepage    = "http://example.com"
+  spec.summary     = "（Yaffleの概要）"
+  spec.description = "（Yaffleの説明）"
+
+...
+
+  spec.metadata["source_code_uri"] = "http://example.com"
+  spec.metadata["changelog_uri"] = "http://example.com"
+```
+
+終わったら`bundle install`コマンドを実行します。
+
+これで、自動生成されたテストを`bin/test`コマンドで実行すると以下のような結果が出力されるはずです。
 
 ```
   1 runs, 1 assertions, 0 failures, 0 errors, 0 skips
@@ -61,7 +74,7 @@ $ bin/rails plugin new --help
 
 このセクションでは、Railsアプリケーションのどこでも利用できるメソッドをStringクラスに追加する方法を解説します。
 
-この例では、`to_squawk`（ガーガー鳴くの意）という名前のメソッドをStringクラスに追加します。最初に、テストファイルを１つ作成してそこにアサーションをいくつか追加しましょう。
+この例では、`to_squawk`（ガーガー鳴くの意）という名前のメソッドをStringクラスに追加します。最初に、テストファイルを1つ作成してそこにアサーションをいくつか追加しましょう。
 
 ```ruby
 # yaffle/test/core_ext_test.rb
@@ -101,6 +114,7 @@ Finished in 0.003358s, 595.6483 runs/s, 297.8242 assertions/s.
 ```ruby
 # yaffle/lib/yaffle.rb
 
+require "yaffle/version"
 require "yaffle/railtie"
 require "yaffle/core_ext"
 
@@ -127,9 +141,9 @@ end
   2 runs, 2 assertions, 0 failures, 0 errors, 0 skips
 ```
 
-最後にメソッドを実際に使ってみましょう。`test/dummy`ディレクトリに移動して`bin/rails console`を実行し、ガーガー鳴いてみましょう（squawk）。
+最後にメソッドを実際に使ってみましょう。`test/dummy`ディレクトリに移動して`bin/rails console`を実行し、鳴き声（squawk）を出してみましょう。
 
-```
+```irb
 irb> "Hello World".to_squawk
 => "squawk! Hello World"
 ```
@@ -153,6 +167,7 @@ end
 ```ruby
 # yaffle/lib/yaffle.rb
 
+require "yaffle/version"
 require "yaffle/railtie"
 require "yaffle/core_ext"
 require "yaffle/acts_as_yaffle"
@@ -183,9 +198,9 @@ end
 
 ### クラスメソッドを追加する
 
-このプラグインはモデルに`last_squawk`という名前のメソッドが追加されていることを前提にしています。しかし、プラグインがインストールされた環境には、そのモデルに目的の異なる`last_squawk`という名前のメソッドが既にあるかもしれません。そこで、このプラグインでは`yaffle_text_field`という名前のクラスメソッドを１つ追加することによって名前を変更できるようにしたいと思います。
+このプラグインはモデルに`last_squawk`という名前のメソッドが追加されていることを前提にしています。しかし、プラグインがインストールされた環境には、そのモデルに目的の異なる`last_squawk`という名前のメソッドが既にあるかもしれません。そこで、このプラグインでは`yaffle_text_field`という名前のクラスメソッドを1つ追加することによって名前を変更できるようにしたいと思います。
 
-最初に、以下のように振る舞う、失敗するテストを１つ作成します。
+最初に、以下のように振る舞う、失敗するテストを1つ作成します。
 
 ```ruby
 # yaffle/test/acts_as_yaffle_test.rb
@@ -233,7 +248,7 @@ Finished in 0.004812s, 831.2949 runs/s, 415.6475 assertions/s.
 4 runs, 2 assertions, 0 failures, 2 errors, 0 skips
 ```
 
-この結果から、そもそもテストの対象となるモデル（Hickwall and Wickwall）がないことがわかります。必要なモデルはダミーのRailsアプリケーションで簡単に作成できます。`test/dummy`ディレクトリに移動して以下のコマンドを実行します。
+この結果から、そもそもテストで必要なモデル（HickwallとWickwall）がないことがわかります。必要なモデルはダミーのRailsアプリケーションで簡単に作成できます。`test/dummy`ディレクトリに移動して以下のコマンドを実行します。
 
 ```bash
 $ cd test/dummy
@@ -359,9 +374,9 @@ end
 
 ### インスタンスメソッドを追加する
 
-今度はこのプラグインに'squawk'というメソッドを追加して、`acts_as_yaffle`を呼び出すすべてのActive Recordオブジェクトに追加しましょう。'squawk'メソッドはデータベースのフィールドにある値のいずれか１つを設定するだけのシンプルなものです。
+今度はこのプラグインに'squawk'というメソッドを追加して、`acts_as_yaffle`を呼び出すすべてのActive Recordオブジェクトに追加しましょう。'squawk'メソッドはデータベースのフィールドにある値のいずれか1つを設定するだけのシンプルなものです。
 
-最初に、以下のように振る舞う、失敗するテストを１つ作成します。
+最初に、以下のように振る舞う、失敗するテストを1つ作成します。
 
 ```ruby
 # yaffle/test/acts_as_yaffle_test.rb
@@ -430,7 +445,7 @@ end
   6 runs, 6 assertions, 0 failures, 0 errors, 0 skips
 ```
 
-NOTE: 上のコードではモデルのフィールドへの書き出しを`write_attribute`で行っていますが、これはあくまでプラグインからモデルとやりとりする際の書き方を示すための一例にすぎません。この書き方が適切とは限らないこともあるのでご注意ください。たとえば同じコードを以下のように書くこともできます。
+NOTE: 上のコードではモデルのフィールドへの書き込みを`write_attribute`で行っていますが、これはあくまでプラグインからモデルとやりとりする際の書き方を示すための一例にすぎません。このメソッドを使うのが適切とは限らないこともあるのでご注意ください。たとえば同じコードを以下のように書くこともできます。
 
 ```ruby
 send("#{self.class.yaffle_text_field}=", string.to_squawk)
@@ -495,4 +510,4 @@ $ bundle exec rake rdoc
 
 * [Bundlerを使ってRubyGemを開発する](https://github.com/radar/guides/blob/master/gem-development.md)（英語）
 * [gemspecsを意図したとおりに使う](http://yehudakatz.com/2010/04/02/using-gemspecs-as-intended/)（英語）
-* [Gemspecリファレンス](http://guides.rubygems.org/specification-reference/)（英語）
+* [Gemspecリファレンス](https://guides.rubygems.org/specification-reference/)（英語）
