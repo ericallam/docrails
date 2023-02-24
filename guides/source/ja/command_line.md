@@ -13,6 +13,59 @@
 
 NOTE: このチュートリアルは、[Railsをはじめよう](getting_started.html)で基本的なRailsの知識を身につけていることを前提としています。
 
+Railsアプリを作成する
+--------------------
+
+最初に、`rails new`コマンドで簡単なRailsアプリケーションを作成してみましょう。
+
+このアプリケーションを使って、このガイドで説明されているすべてのコマンドを動かしながら発見していくことにします。
+
+INFO: rails gemがインストールされていない場合は、`gem install rails`を実行することでインストールできます。
+
+### `rails new`
+
+`rails new`コマンドに渡す第1引数は、アプリケーションの名前です。
+
+```bash
+$ rails new my_app
+     create
+     create  README.md
+     create  Rakefile
+     create  config.ru
+     create  .gitignore
+     create  Gemfile
+     create  app
+     ...
+     create  tmp/cache
+     ...
+        run  bundle install
+```
+
+こんな短いコマンドを入力するだけで、Railsが膨大なファイルをセットアップします。これでRailsのディレクトリ構造全体と、このシンプルなアプリケーションをすぐに実行するのに必要なすべてのコードが揃います。
+
+生成をスキップしたいファイルやライブラリがある場合は、`rails new`コマンドに以下の引数のいずれかを追加します。
+
+| 引数                     | 説明                                               |
+| ----------------------- | -------------------------------------------------- |
+| `--skip-git`            | git init、.gitignore、.gitattributesをスキップ        |
+| `--skip-keeps`          | バージョン管理用の.keepファイルをスキップ                 |
+| `--skip-action-mailer`  | Action Mailerのファイルをスキップ                      |
+| `--skip-action-mailbox` | Action Mailbox gemをスキップ                         |
+| `--skip-action-text`    | Action Text gemをスキップ                            |
+| `--skip-active-record`  | Active Recordファイルをスキップ                       |
+| `--skip-active-job`     | Active Jobをスキップ                                 |
+| `--skip-active-storage` | Active Storageのファイルをスキップ                     |
+| `--skip-action-cable`   | Action Cableのファイルをスキップ                       |
+| `--skip-asset-pipeline` | アセットパイプラインをスキップ                           |
+| `--skip-javascript`     | JavaScriptファイルをスキップ                           |
+| `--skip-hotwire`        | Hotwire統合をスキップ                                 |
+| `--skip-jbuilder`       | jbuilder gemをスキップ                               |
+| `--skip-test`           | テストファイルをスキップ                                |
+| `--skip-system-test`    | システムテストのファイルをスキップ                        |
+| `--skip-bootsnap`       | bootsnap gemをスキップ                               |
+
+`rails new`には他にも多くのオプションを渡せます。すべてのオプションを表示するには`rails new --help`を実行してください。
+
 コマンドラインの基礎
 -------------------
 
@@ -28,7 +81,7 @@ Railsを利用するうえで、きわめて重要なコマンドがいくつか
 * `bin/rails dbconsole`
 * `rails new app_name`
 
-利用可能なrailsコマンドのリストは、`rails --help`で表示できます。利用できるコマンドは現在のディレクトリによって変わることがよくあります。各コマンドの説明で必要なものを探せます。
+利用可能なrailsコマンドのリストは、`rails --help`で表示できます。利用できるコマンドは現在のディレクトリに応じて変わることがよくあります。各コマンドには説明があるので、必要なものを探せます。
 
 ```bash
 $ rails --help
@@ -66,48 +119,6 @@ In addition to those commands, there are:
 
 簡単なRailsアプリケーションをつくりながら、一つずつコマンドを実行していきましょう。
 
-### `rails new`
-
-Railsをインストールしたあと、最初にやりたいことは`rails new`コマンドを実行して、新しいRailsアプリケーションを作成することです。
-
-INFO: まだRailsをインストールしていない場合、`gem install rails`を実行してRailsをインストールできます。
-
-```bash
-$ rails new commandsapp
-     create
-     create  README.md
-     create  Rakefile
-     create  config.ru
-     create  .gitignore
-     create  Gemfile
-     create  app
-     ...
-     create  tmp/cache
-     ...
-        run  bundle install
-```
-
-このような短いコマンドを入力するだけで、Railsは非常に多くのものを用意してくれます。たったこれだけで、完璧なRailsのディレクトリ構成と、アプリケーションに必要なコードがすぐ利用できるようになります。
-
-特定のファイルやコンポーネントをスキップして生成しないようにするには、`rails new`に以下の引数を追加します。
-
-| 引数                | 説明                                                 |
-| ----------------------- | ----------------------------------------------------------- |
-| `--skip-git`            | .gitignoreファイルをスキップする                                        |
-| `--skip-keeps`          | .keepファイル（バージョン管理用）の生成をスキップする                             |
-| `--skip-action-mailer`  | Action Mailerのファイルをスキップする                                   |
-| `--skip-action-text`    | Action Text gemをスキップする                                        |
-| `--skip-active-record`  | Active Recordのファイルをスキップする                                    |
-| `--skip-active-storage` | Active Storageのファイルをスキップする                                   |
-| `--skip-action-cable`   | Action Cableのファイルをスキップする                                     |
-| `--skip-sprockets`      | Sprocketsのファイルをスキップする                                        |
-| `--skip-javascript`     | JavaScriptのファイルをスキップする                                       |
-| `--skip-turbolinks`     | turbolinks gemをスキップする                                         |
-| `--skip-test`           | テストファイルをスキップする                                             |
-| `--skip-system-test`    | システムテストファイルをスキップする                                      |
-| `--skip-bootsnap`       | bootsnap gemをスキップする                                           |
-
-
 ### `bin/rails server`
 
 `bin/rails server`コマンドを実行すると、PumaというWebサーバーが起動します（PumaはRailsに標準でバンドルされます）。Webブラウザからアプリケーションにアクセスしたいときは、このコマンドを使います。
@@ -115,10 +126,10 @@ $ rails new commandsapp
 `bin/rails server`を実行することで、新しいRailsアプリケーションを作成後すぐにRailsアプリケーションを起動できます。
 
 ```bash
-$ cd commandsapp
+$ cd my_app
 $ bin/rails server
 => Booting Puma
-=> Rails 6.0.0 application starting in development
+=> Rails 7.0.0 application starting in development
 => Run `bin/rails server --help` for more startup options
 Puma starting in single mode...
 * Version 3.12.1 (ruby 2.5.7-p206), codename: Llamas in Pajamas
@@ -128,7 +139,7 @@ Puma starting in single mode...
 Use Ctrl-C to stop
 ```
 
-わずか3つのコマンドで、Railsサーバーを3000番ポートで起動しました。ブラウザを立ち上げて、[http://localhost:3000](http://localhost:3000)を開いてみてください。Railsアプリケーションが動作していることが分かります。
+わずか3つのコマンドを実行しただけで、Railsサーバーを3000番ポートで起動できるようになりました。ブラウザを立ち上げて、[http://localhost:3000](http://localhost:3000)を開いてみてください。Railsアプリケーションが動作していることが分かります。
 
 INFO: サーバーを起動する際には`bin/rails s`のように"s"というエイリアスが使えます。
 
@@ -164,13 +175,13 @@ Rails:
   ...
 ```
 
-NOTE: ジェネレータgemをインストールしたり、プラグインに付属しているジェネレータをインストールしたりすることで、ジェネレータを追加できます。自分でジェネレータを開発することもできます。
+NOTE: ジェネレータgemをインストールしたり、プラグインに付属しているジェネレータをインストールしたりすることで、ジェネレータを追加できます。自分でジェネレータを作成することも可能です。
 
-ジェネレータを使うと、アプリケーションを動かすのに必要な [**ボイラープレートコード**](https://ja.wikipedia.org/wiki/%E3%83%9C%E3%82%A4%E3%83%A9%E3%83%BC%E3%83%97%E3%83%AC%E3%83%BC%E3%83%88%E3%82%B3%E3%83%BC%E3%83%89)を書かなくて済むため、多くの時間を節約できます。
+ジェネレータを使うと、アプリケーションを動かすのに必要な [**ボイラープレートコード**](https://ja.wikipedia.org/wiki/%E3%83%9C%E3%82%A4%E3%83%A9%E3%83%BC%E3%83%97%E3%83%AC%E3%83%BC%E3%83%88%E3%82%B3%E3%83%BC%E3%83%89)（定形コード）を書かなくて済むため、多くの時間を節約できます。
 
-それではコントローラジェネレータを使って、コントローラを作ってみましょう。どのようなコマンドを使えばよいのでしょうか？ジェネレータに聞いてみましょう。
+それではコントローラジェネレータを使って、コントローラを作ってみましょう。どんなコマンドを使えばよいかをジェネレータに聞いてみましょう。
 
-INFO: Railsのすべてのコマンドにはヘルプがついています。多くの *nix（訳注: LinuxやUnix、UnixライクなOSなど）のユーティリティと同じようにコマンドの末尾に`--help`もしくは`-h`オプションを追加します（例: `rails server --help`）。
+INFO: Railsのすべてのコマンドにはヘルプがついています。多くの *nix（LinuxなどのUnixライクなOS）のユーティリティと同じようにコマンドの末尾に`--help`もしくは`-h`オプションを追加します（例: `rails server --help`）。
 
 ```bash
 $ bin/rails generate controller
@@ -240,7 +251,7 @@ $ bin/rails server
 
 アクセスするURLは[http://localhost:3000/greetings/hello](http://localhost:3000/greetings/hello)です。
 
-INFO: 通常のRailsアプリケーションでは、URLは`http://ホスト名/コントローラ名/アクション名`というパターンになります。アクション名を指定しない`http://ホスト名/コントローラ名`というパターンのURLは、コントローラの**index**アクションにアクセスするURLです。
+INFO: 通常のRailsアプリケーションでは、URLは`http://ホスト名/コントローラ名/アクション名`というパターンになります。アクション名を指定しない`http://ホスト名/コントローラ名`というパターンのURLは、コントローラの**`index`**アクションにアクセスします。
 
 Railsにはデータモデルを生成するジェネレータもあります。
 
@@ -264,7 +275,7 @@ Description:
 ...
 ```
 
-NOTE: `type`パラメータで指定できるフィールド型については、[APIドキュメント](http://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-add_column)に記載されている、`SchemaStatements`モジュールの`add_column`メソッドの説明を参照してください。`index`パラメータを指定すると、カラムに対応するインデックスも生成されます。
+NOTE: `type`パラメータで指定できるフィールド型については、[APIドキュメント][API docs]に記載されている、[`SchemaStatements`][]モジュールの[`add_column`][]メソッドの説明を参照してください。`index`パラメータを指定すると、カラムに対応するインデックスも生成されます。
 
 ここでは直接モデルを作成する代わりに（モデルの作成は後ほど行います）、scaffoldをセットアップしましょう。Railsにおける**scaffold**（足場）とは、「モデル」「モデルのマイグレーションファイル「モデルを操作するコントローラ」「データを操作・表示するビュー」「それぞれのテストファイル」一式をさします。
 
@@ -301,9 +312,10 @@ $ bin/rails generate scaffold HighScore game:string score:integer
     create      app/views/high_scores/_high_score.json.jbuilder
 ```
 
-ジェネレータは、「モデル」「コントローラ」「ヘルパー」「レイアウト」「機能テスト」「単体テスト」「スタイルシート用のディレクトリ」が存在することをチェックし、ビュー、コントローラ、モデル、マイグレーション（`high_scores`テーブルとフィールドを作成します）を生成し、この**リソース**用のルーティングを追加します。また、これらのテストも作成します。
+ジェネレータは、モデル、ビュー、コントローラ、マイグレーション（`high_scores`テーブルとフィールドを作成します）を生成し、この**リソース**用のルーティングを追加します。また、これらのテストも作成します。
 
-scaffold生成の次は、**マイグレーション**（migration: 移行）を実行する必要があります。マイグレーションを実行するには、データベースのスキーマを変更するRubyのコード（`20130717151933_create_high_scores.rb`にあるコードのことです）を実行する必要があります。データベースとはどのデータベースでしょうか？`bin/rails db:migrate`コマンドを実行すると、RailsはSQLite3に新しいデータベースを作ります。このコマンドについて詳しくは後述します。
+scaffold生成の次は、**マイグレーション**（migration: 移行）を実行する必要があります。マイグレーションを実行するには、データベースのスキーマを変更するRubyのコード（上で出力された`20190416145729_create_high_scores.rb`にあるコードのことです）を実行する必要があります。
+データベースとはどのデータベースでしょうか？`bin/rails db:migrate`コマンドを実行すると、RailsはSQLite3に新しいデータベースを作ります。このコマンドについて詳しくは後述します。
 
 ```bash
 $ bin/rails db:migrate
@@ -322,6 +334,10 @@ $ bin/rails server
 ```
 
 ブラウザで[http://localhost:3000/high_scores](http://localhost:3000/high_scores)を開いてみましょう。それではハイスコアを更新するとしましょう（スペースインベーダーで55,160点とかね！）（訳注: 2003年にDonald Hayesがたたき出したスコアです）。
+
+[API docs]: http://api.rubyonrails.org/
+[`SchemaStatements`]: https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html
+[`add_column`]: http://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-add_column
 
 ### `bin/rails console`
 
@@ -344,13 +360,13 @@ Any modifications you make will be rolled back on exit
 irb(main):001:0>
 ```
 
-#### appオブジェクトとhelperオブジェクト
+#### `app`オブジェクトと`helper`オブジェクト
 
 `bin/rails console`の実行中、`app`オブジェクトと`helper`オブジェクトにアクセスできます。
 
 `app`メソッドを使うと、名前付きルーティングヘルパーにアクセスできます。リクエストを投げることもできます。
 
-```
+```irb
 irb> app.root_path
 => "/"
 
@@ -361,7 +377,7 @@ Started GET "/" for 127.0.0.1 at 2014-06-19 10:41:57 -0300
 
 `helper`メソッドを使うと、Railsのアプリケーションヘルパーと自分が実装したヘルパーにアクセスできます。
 
-```
+```irb
 irb> helper.time_ago_in_words 30.days.ago
 => "about 1 month"
 
@@ -374,6 +390,8 @@ irb> helper.my_custom_helper
 `bin/rails dbconsole`コマンドは使っているデータベースを見つけて、適切なデータベースコマンドラインツールを起動します（コマンドラインツールに必要な引数も与えられます）。MySQL（MariaDBも含む）、PostgreSQL、SQLite、そしてSQLite3をサポートしています。
 
 INFO: DBコンソールコマンドを実行するときに`bin/rails db`のように「db」というエイリアスが使えます。
+
+データベースを複数使っている場合（マルチプルデータベース）、 `bin/rails dbconsole` はデフォルトでprimaryデータベースに接続します。接続するデータベースは、`--database`または`--db` で指定できます。
 
 ```bash
 $ bin/rails dbconsole --database=animals
@@ -416,7 +434,6 @@ $ bin/rails generate model Oops
       create      test/models/oops_test.rb
       create      test/fixtures/oops.yml
 ```
-
 ```bash
 $ bin/rails destroy model Oops
       invoke  active_record
@@ -429,18 +446,19 @@ $ bin/rails destroy model Oops
 
 ### `bin/rails about`
 
-`bin/rails about`を実行すると、Ruby、RubyGems、Rails、Railsのサブコンポーネントのバージョン、Railsアプリケーションのフォルダー名、現在のRailsの環境名とデータベースアダプタ、スキーマのバージョンが表示されます。チーム内やフォーラムで質問するときや、セキュリティパッチが自分のアプリケーションに影響するかどうかを確認したいときなど、現在使っているRailsに関する情報が必要なときに使うと便利です。
+`bin/rails about`を実行すると、Ruby、RubyGems、Rails、Railsのサブコンポーネントのバージョン、Railsアプリケーションのフォルダー名、現在のRailsの環境名とデータベースアダプタ、スキーマのバージョンが表示されます。
+チーム内やフォーラムで質問するときや、セキュリティパッチが自分のアプリケーションに影響するかどうかを確認したいときなど、現在使っているRailsに関する情報が必要なときに便利です。
 
 ```bash
 $ bin/rails about
 About your application's environment
-Rails version             6.0.0
+Rails version             7.0.0
 Ruby version              2.7.0 (x86_64-linux)
 RubyGems version          2.7.3
 Rack version              2.0.4
 JavaScript Runtime        Node.js (V8)
 Middleware:               Rack::Sendfile, ActionDispatch::Static, ActionDispatch::Executor, ActiveSupport::Cache::Strategy::LocalCache::Middleware, Rack::Runtime, Rack::MethodOverride, ActionDispatch::RequestId, ActionDispatch::RemoteIp, Sprockets::Rails::QuietAssets, Rails::Rack::Logger, ActionDispatch::ShowExceptions, WebConsole::Middleware, ActionDispatch::DebugExceptions, ActionDispatch::Reloader, ActionDispatch::Callbacks, ActiveRecord::Migration::CheckPending, ActionDispatch::Cookies, ActionDispatch::Session::CookieStore, ActionDispatch::Flash, Rack::Head, Rack::ConditionalGet, Rack::ETag
-Application root          /home/foobar/commandsapp
+Application root          /home/foobar/my_app
 Environment               development
 Database adapter          sqlite3
 Database schema version   20180205173523
@@ -462,7 +480,7 @@ Database schema version   20180205173523
 
 `bin/rails notes`は、特定のキーワードで始まるコードコメントを検索して表示します。`bin/rails notes --help`で利用法を表示できます。
 
-デフォルトでは、`app`、`config`、`db`、`lib`、`test`ディレクトリにある、拡張子が `.builder`、`.rb`、`.rake`、`.yml`、`.yaml`、`.ruby`、`.css`、`.js`、`.erb`のファイルの中から、「FIXME」「OPTIMIZE」「TODO」キーワードで始まるコメントを検索します（訳注: コメントのキーワードを`[FIXME]`のように`[]`で囲んでしまうと検索されません）。
+デフォルトでは、`app`、`config`、`db`、`lib`、`test`ディレクトリにある、拡張子が `.builder`、`.rb`、`.rake`、`.yml`、`.yaml`、`.ruby`、`.css`、`.js`、`.erb`のファイルの中から、「FIXME」「OPTIMIZE」「TODO」キーワードで始まるコメントを検索します（訳注: コメントのキーワードが`[FIXME]`のように`[]`で囲まれていると検索されません）。
 
 ```bash
 $ bin/rails notes
@@ -628,7 +646,7 @@ end
 
 ```bash
 $ bin/rails task_name
-$ bin/rails "task_name[value 1]" # 引数の文字列全体を引用符で囲むこと
+$ bin/rails "task_name[value 1]"                 # 引数の文字列全体を引用符で囲むこと
 $ bin/rails "task_name[value 1, value2, value3]" # 複数の引数はカンマで区切る
 $ bin/rails db:nothing
 ```
@@ -707,4 +725,4 @@ development:
 
 Railsは、指定のデータベース（PostgreSQL）に対応する`database.yml`を作成します。
 
-NOTE: バージョン管理システムに関するオプションを使う場合は、最初にアプリケーション用のディレクトリを作り、バージョン管理システムを初期化してから、`rails new`コマンドを実行するようにしてください。
+NOTE: バージョン管理システムに関するオプションを指定する場合の唯一の問題は、最初にアプリケーション用のディレクトリを作り、バージョン管理システムを初期化してから、`rails new`コマンドを実行しなければならないことです。
