@@ -12,10 +12,14 @@ Rails ガイドのガイドライン
 --------------------------------------------------------------------------------
 
 
-マークダウン (Markdown)
+Markdown
 -------
 
-ガイドは [GitHub Flavored Markdown](http://github.github.com/github-flavored-markdown/) で書かれています。まとまった[Markdownドキュメント](http://daringfireball.net/projects/markdown/syntax)、[チートシート](http://daringfireball.net/projects/markdown/basics)、通常のMarkdownとの違いに関する[追加ドキュメント](http://github.github.com/github-flavored-markdown/) がそれぞれあります。
+ガイドは[GitHub Flavored Markdown][] で書かれています。まとまった[Markdownドキュメント][Markdown doc]と[チートシート][cheatsheet]があります。
+
+[GitHub Flavored Markdown]: https://docs.github.com/ja/get-started/writing-on-github
+[Markdown doc]: https://daringfireball.net/projects/markdown/syntax
+[cheatsheet]: https://daringfireball.net/projects/markdown/basics
 
 プロローグ
 --------
@@ -98,7 +102,7 @@ APIドキュメントの書き方
 
 ガイドとAPIは、必要な箇所が互いに首尾一貫している必要があります。[APIドキュメント作成ガイドライン](api_documentation_guidelines.html)の以下のセクションを参照してください
 
-* [言葉遣い](api_documentation_guidelines.html#語調)
+* [語調](api_documentation_guidelines.html#語調)
 * [サンプルコード](api_documentation_guidelines.html#サンプルコード)
 * [ファイル名](api_documentation_guidelines.html#ファイル名)
 * [フォント](api_documentation_guidelines.html#フォント)
@@ -108,7 +112,9 @@ APIドキュメントの書き方
 HTMLガイド
 -----------
 
-ガイドを生成する前に、システムに最新のBundlerがインストールされていることを確認してください。現時点であれば、Bundler 1.3.5以降がインストールされている必要があります。
+ガイドを生成する前に、システムに最新のBundlerがインストールされていることを確認してください。Bundlerの最新バージョンは[ここ][Bundler]で確認できます（日本語版更新時点のバージョンはv2.4.7です）。
+
+[Bundler]: https://rubygems.org/gems/bundler
 
 最新のBundlerをインストールするには`gem install bundler`コマンドを実行してください。
 
@@ -116,23 +122,23 @@ HTMLガイド
 
 すべてのガイドを生成するには、`cd`コマンドで`guides`ディレクトリに移動し、`bundle install`を実行してから以下のいずれかを実行します。
 
-```
-bundle exec rake guides:generate
+```bash
+$ bundle exec rake guides:generate
 ```
 
 または
 
-```
-bundle exec rake guides:generate:html
+```bash
+$ bundle exec rake guides:generate:html
 ```
 
 生成されたHTMLファイルは、`./output`ディレクトリに配置されます。
 
 `my_guide.md`ファイルだけを生成したい場合は環境変数`ONLY`に設定します。
 
-```
-touch my_guide.md
-bundle exec rake guides:generate ONLY=my_guide
+```bash
+$ touch my_guide.md
+$ bundle exec rake guides:generate ONLY=my_guide
 ```
 
 デフォルトでは、変更のないガイドは生成がスキップされるので、`ONLY`を使う機会はあまりないと思われます。
@@ -141,25 +147,25 @@ bundle exec rake guides:generate ONLY=my_guide
 
 英語以外の言語向けに生成を行いたい場合は、`source`ディレクトリの下にたとえば`source/es`のようにその言語用のディレクトリを作成し、`GUIDES_LANGUAGE`環境変数を設定します。
 
-```
-bundle exec rake guides:generate GUIDES_LANGUAGE=es
+```bash
+$ bundle exec rake guides:generate GUIDES_LANGUAGE=es
 ```
 
 生成スクリプトの設定に使える環境変数をすべて知りたい場合は、単に以下を実行してください。
 
-```
-rake
+```bash
+$ rake
 ```
 
 ### バリデーション
 
 生成されたHTMLをバリデーション（検証）するには以下を実行します。
 
-```
-bundle exec rake guides:validate
+```bash
+$ bundle exec rake guides:validate
 ```
 
-特に、タイトルを元にIDが生成される関係上、タイトルでの重複が生じやすくなっています。重複を検出するには、ガイド生成時に`WARNINGS=1`を指定してください。警告に解決方法が出力されます。
+特に、タイトルを元にIDが生成される関係上、タイトルでの重複が生じやすくなっています。
 
 Kindleガイド
 -------------
@@ -168,6 +174,6 @@ Kindleガイド
 
 Kindle向けにガイドを生成するには、以下のrakeタスクを実行します。
 
-```
-bundle exec rake guides:generate:kindle
+```bash
+$ bundle exec rake guides:generate:kindle
 ```
