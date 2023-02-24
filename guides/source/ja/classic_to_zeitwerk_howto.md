@@ -97,7 +97,7 @@ $ bin/rails runner 'p Rails.autoloaders.zeitwerk_enabled?'
 
 Zeitwerkに準拠しているかどうかのテストは、eager loadingされたファイルに対してのみ実行されます。そのため、Zeitwerkへの準拠を検証するには、すべての自動読み込みパスをeager loadパスに追加することが推奨されます。
 
-これは既にデフォルトで行われるようになっていますが、自分のプロジェクトで自動読み込みパスを以下のように貸したマイズしている場合は、eager loadingされないため検証されません。
+これは既にデフォルトで行われるようになっていますが、自分のプロジェクトで自動読み込みパスを以下のようにカスタマイズしている場合は、eager loadingされないため検証されません。
 
 ```ruby
 config.autoload_paths << "#{Rails.root}/extras"
