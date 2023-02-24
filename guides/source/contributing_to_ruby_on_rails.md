@@ -96,7 +96,7 @@ For starters, it helps just to verify bug reports. Can you reproduce the reporte
 
 If an issue is very vague, can you help narrow it down to something more specific? Maybe you can provide additional information to reproduce the bug, or maybe you can eliminate unnecessary steps that aren't required to demonstrate the problem.
 
-If you find a bug report without a test, it's very useful to contribute a failing test. This is also a great way to explore the source code: looking at the existing test files will teach you how to write more tests. New tests are best contributed in the form of a patch, as explained later on in the "[Contributing to the Rails Code](#contributing-to-the-rails-code)" section.
+If you find a bug report without a test, it's very useful to contribute a failing test. This is also a great way to explore the source code: looking at the existing test files will teach you how to write more tests. New tests are best contributed in the form of a patch, as explained later on in the [Contributing to the Rails Code](#contributing-to-the-rails-code) section.
 
 Anything you can do to make bug reports more succinct or easier to reproduce helps folks trying to write code to fix those bugs - whether you end up writing the code yourself or not.
 
@@ -189,7 +189,7 @@ To move on from submitting bugs to helping resolve existing issues or contributi
 
 #### The Easiest Way
 
-Start a Github Codespace from the repository and start developing right away from the browser IDE or in your local VScode. The Codespace is initialized with all required dependencies and allows you to run all tests.
+Start a GitHub Codespace from the repository and start developing right away from the browser IDE or in your local VScode. The Codespace is initialized with all required dependencies and allows you to run all tests.
 
 #### The Easy Way
 
@@ -486,7 +486,7 @@ The Ruby on Rails [guides](https://guides.rubyonrails.org/) provide a high-level
 
 If your PR adds a new feature, or changes how an existing feature behaves, check the relevant documentation, and update it or add to it as necessary.
 
-For example, if you modify Active Storage's image analyzer to add a new metadata field, you should update the [Analyzing Files](https://edgeguides.rubyonrails.org/active_storage_overview.html#analyzing-files) section of the Active Storage guide to reflect that.
+For example, if you modify Active Storage's image analyzer to add a new metadata field, you should update the [Analyzing Files](active_storage_overview.html#analyzing-files) section of the Active Storage guide to reflect that.
 
 ### Updating the CHANGELOG
 
@@ -642,7 +642,7 @@ Ensure the changesets you introduced are included. Fill in some details about
 your potential patch, using the pull request template provided. When finished, click "Create
 pull request". The Rails core team will be notified about your submission.
 
-### Get some Feedback
+### Get Some Feedback
 
 Most pull requests will go through a few iterations before they get merged.
 Different contributors will sometimes have different opinions, and often

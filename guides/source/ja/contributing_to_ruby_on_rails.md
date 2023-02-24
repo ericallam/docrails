@@ -13,7 +13,10 @@ Ruby on Rails に貢献する方法
 
 Ruby on Railsは、「どこかで誰かがうまくやってくれているフレームワーク」ではありません。Ruby on Railsには、長年に渡って数千人もの開発者が貴重な貢献を行っています。貢献の内容は、わずか1文字の修正から、大規模なアーキテクチャ変更、重要なドキュメント作成まで多岐に渡ります。これらの作業はいずれも、Ruby on Railsをすべての人々にとってよりよいものにするためです。コードを書いたりドキュメントを作成したりする以外にも、issueの作成やパッチのテストなど、さまざまな方法で貢献できます（訳注: サンプルのコミットメッセージも日本語に翻訳していますが、実際のissueやコミットメッセージは英語で書きます ）。
 
-[RailsのREADME](https://github.com/rails/rails/blob/main/README.md)にも記載されているように、Railsのコードベースやサブプロジェクトのコードベースについて、issueトラッカーやチャットルームやメーリングリストでやり取りする方はすべて、Railsの[行動規範](https://rubyonrails.org/conduct/)に従うことが期待されます。
+[RailsのREADME][README]にも記載されているように、Railsのコードベースやサブプロジェクトのコードベースについて、issueトラッカーやチャットルームやメーリングリストでやり取りする方はすべて、Railsの[行動規範][CoC]に従うことが期待されます。
+
+[README]: https://github.com/rails/rails/blob/main/README.md
+[CoC]: https://rubyonrails.org/conduct/
 
 --------------------------------------------------------------------------------
 
@@ -21,13 +24,13 @@ Ruby on Railsは、「どこかで誰かがうまくやってくれているフ�
 issueを作成する
 ------------------
 
-Ruby on Railsでは[GitHubのIssueトラッキング](https://github.com/rails/rails/issues)機能でissueをトラッキングしています（issueは、主にバグや新しいコードの貢献に使われます）。Ruby on Railsでバグを見つけたら、そこから貢献を開始できます。GitHubへのissue送信、issueへのコメント、プルリクエストの作成を行うには、まずGitHubアカウント（無料）を作成する必要があります。
+Ruby on Railsでは[GitHubのIssueトラッキング][issues]機能でissueをトラッキングしています（issueは、主にバグや新しいコードの貢献に使われます）。Ruby on Railsでバグを見つけたら、そこから貢献を開始できます。GitHubへのissue送信、issueへのコメント、プルリクエストの作成を行うには、まずGitHubアカウント（無料）を作成する必要があります。
 
 NOTE: Ruby on Railsの最新リリースで見つけたバグは最も注目を集める可能性があります。Railsコアチームは、**edge Rails**（開発中のRailsのコード）でのテストに時間を割いてくれる方からのフィードバックも常に歓迎しています。テスティング用にedge Railsを入手する方法については後述します。
 
 ### バグレポートを作成する
 
-Ruby on Railsで何らかの問題を発見し、それがセキュリティ上の問題でなければ、まずGitHubの[issue](https://github.com/rails/rails/issues)を検索して、既にレポートがあがっているかどうかを確認してみましょう。該当する問題がまだissuesにない場合は、[新しいissueを作成](https://github.com/rails/rails/issues/new)します。セキュリティ上のissueをレポートする方法については次のセクションで説明します。
+Ruby on Railsで何らかの問題を発見し、それがセキュリティ上の問題でなければ、まずGitHubの[issues][]を検索して、既にレポートがあがっているかどうかを確認してみましょう。該当する問題がまだissuesにない場合は、[新しいissueを作成][new issue]します。セキュリティ上のissueをレポートする方法については次のセクションで説明します。
 
 issueレポートには、少なくともタイトルとissueの明快な説明が必要です。できるだけ多くの関連情報を含めるようにしてください。また、問題を再現できるコードサンプルもできるだけ含めてください。期待される動作になっていないことを示す「失敗する」単体テストも含めてもらえるとさらに助かります。他の人たちにとっても自分自身にとっても、バグの再現と修正点の把握がやりやすくなることを目指してください。
 
@@ -37,38 +40,68 @@ issueレポートには、少なくともタイトルとissueの明快な説明�
 
 自分のissueを再現する手順を用意しておくと、他の開発者がissueを確認・調査・修正する上で大変役立ちます。そのための方法は、実行可能なテストケースを提供することです。この作業を少しでも楽にするために、Railsチームは以下のバグレポート用テンプレートを多数用意しているので、これを元に作業を開始できます。
 
-* Active Record（モデル、データベース）issue用テンプレート: [gem](https://github.com/rails/rails/blob/main/guides/bug_report_templates/active_record_gem.rb) / [main](https://github.com/rails/rails/blob/main/guides/bug_report_templates/active_record_main.rb)
-* Active Record（マイグレーション）issue用テンプレート: [gem](https://github.com/rails/rails/blob/main/guides/bug_report_templates/active_record_migrations_gem.rb) / [main](https://github.com/rails/rails/blob/main/guides/bug_report_templates/active_record_migrations_main.rb)
-* Action Pack（コントローラ、ルーティング）issue用テンプレート: [gem](https://github.com/rails/rails/blob/main/guides/bug_report_templates/action_controller_gem.rb) / [main](https://github.com/rails/rails/blob/main/guides/bug_report_templates/action_controller_main.rb)
-* Active Job issue用テンプレート: [gem](https://github.com/rails/rails/blob/main/guides/bug_report_templates/active_job_gem.rb) / [main](https://github.com/rails/rails/blob/main/guides/bug_report_templates/active_job_main.rb)
-* Active Storage issue用テンプレート: [gem](https://github.com/rails/rails/blob/main/guides/bug_report_templates/active_storage_gem.rb) / [main](https://github.com/rails/rails/blob/main/guides/bug_report_templates/active_storage_main.rb)
-* Action Mailbox issue用テンプレート: [gem](https://github.com/rails/rails/blob/main/guides/bug_report_templates/action_mailbox_gem.rb) / [main](https://github.com/rails/rails/blob/main/guides/bug_report_templates/action_mailbox_main.rb)
-* その他のissue用一般テンプレート: [gem](https://github.com/rails/rails/blob/main/guides/bug_report_templates/generic_gem.rb) / [main](https://github.com/rails/rails/blob/main/guides/bug_report_templates/generic_main.rb)
+* Active Record（モデル、データベース）issue用テンプレート: [gem][gem: AR models/db] / [main][main: AR models/db]
+* Active Record（マイグレーション）issue用テンプレート: [gem][gem: AR migration] / [main][main: AR migration]
+* Action Pack（コントローラ、ルーティング）issue用テンプレート: [gem][gem: ActionPack] / [main][main: ActionPack]
+* Active Job issue用テンプレート: [gem][gem: ActiveJob] / [main][main: ActiveJob]
+* Active Storage issue用テンプレート: [gem][gem: ActiveStorage]: / [main][main: ActiveStorage]:
+* Action Mailbox issue用テンプレート: [gem][gem: ActionMailbox] / [main][main: ActionMailbox]
+* その他のissue用一般テンプレート: [gem][gem: generic] / [main][main: generic]
 
 テンプレートには「ボイラープレート（boilerplate）」と呼ばれる一種のひな形コードが含まれており、これを用いてRailsのリリースバージョン（`*_gem.rb`）やedge Rails（`*_main.rb`）に対するテストケースを設定できます。
 
 該当するテンプレートの内容をコピーして`.rb`ファイルに貼り付けて適宜変更を行い、issueを再現できるようにします。このコードを実行するには、ターミナルで`ruby the_file.rb`を実行します。テストコードが正しく作成されていれば、このテストケースはバグがあることによって失敗する（failと表示される）はずです。
 
-続いて、この実行可能テストケースをGitHubの[gist](https://gist.github.com)で共有するか、issueの説明に貼り付けます。
+続いて、この実行可能テストケースをGitHubの[gist][]で共有するか、issueの説明に貼り付けます。
+
+[issues]: https://github.com/rails/rails/issues
+[new issue]: https://github.com/rails/rails/issues/new
+
+[gem: AR models/db]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/active_record_gem.rb
+[main: AR models/db]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/active_record_main.rb
+
+[gem: AR migration]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/active_record_migrations_gem.rb
+[main: AR migration]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/active_record_migrations_main.rb
+
+[gem: ActionPack]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/action_controller_gem.rb
+[main: ActionPack]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/action_controller_main.rb
+
+[gem: ActiveJob]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/active_job_gem.rb
+[main: ActiveJob]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/active_job_main.rb
+
+[gem: ActiveStorage]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/active_storage_gem.rb
+[main: ActiveStorage]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/active_storage_main.rb
+
+[gem: ActionMailbox]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/action_mailbox_gem.rb
+[main: ActionMailbox]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/action_mailbox_main.rb
+
+[gem: generic]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/generic_gem.rb
+[main: generic]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/generic_main.rb
+
+[gist]: https://gist.github.com
 
 ### セキュリティissueの特殊な取り扱い方法について
 
-WARNING: セキュリティ脆弱性に関する問題は、一般公開されているGitHubのissueレポート機能には「**絶対に掲載しないでください**」。セキュリティ関連のissueを扱う方法について詳しくは、[Railsセキュリティポリシーページ](https://rubyonrails.org/security)（英語）を参照してください。
+WARNING: セキュリティ脆弱性に関する問題は、一般公開されているGitHubのissueレポート機能には「**絶対に掲載しないでください**」。セキュリティ関連のissueを扱う方法について詳しくは、[Railsセキュリティポリシーページ][security policy]（英語）を参照してください。
+
+[security policy]: https://rubyonrails.org/security
 
 ### 機能リクエストについて
 
-GitHubのIssueは「機能リクエスト」の場ではありません。Ruby on Railsで欲しい機能があるなら、自分でコードを書くか、誰かにお願いしてコードを書いてもらってください（Ruby on Rails用のパッチを提案する方法については後述します）。GitHubのissueにこのような「欲しい機能リスト」をコードも添えずに書き込んでも、Issueをチェックした人によって早晩「無効」とマーキングされて終わるでしょう。
+GitHub Issuesは「機能リクエスト」の場ではありません。Ruby on Railsで欲しい機能があるなら、自分でコードを書くか、誰かにお願いしてコードを書いてもらってください（Ruby on Rails用のパッチを提案する方法については後述します）。GitHub Issuesにこのような「欲しい機能リスト」をコードも添えずに書き込んでも、Issueをチェックした人によって早晩「無効」とマーキングされて終わるでしょう。
 
 その一方、「バグ」と「機能」は簡単に線引きできないこともあります。一般に、「機能」はアプリケーションに新しい振る舞いを追加するものであり、「バグ」は既存の振る舞いが期待どおりでないことを示します。場合によってはコアチームがバグか機能かを審査する必要もあるでしょう。とはいうものの、バグか機能かの違いは、送られたパッチをどのリリースに反映するかという扱いの違いでしかないことがほとんどです（バグ修正は早めにリリースされ、機能追加はメジャーリリースで反映されるなど）。私たちは、修正パッチと同様に機能追加も大歓迎しています。送っていただいた機能追加をメンテナンス用ブランチに押し込めておしまいにすることはしません。
 
-機能追加用のパッチを送信する前に自分のアイディアに意見を募りたい場合は、[rails-coreメーリングリスト](https://groups.google.com/forum/?fromgroups#!forum/rubyonrails-core)にメールを送信してください。もし誰からも返信がなければ、自分のアイディアに誰も関心を持っていないということがわかります。あるいは、自分のアイディアに興味を示してくれる人が返信してくれるかもしれません。あるいは「悪いけど採用できそうにないかも」という返信があるかもしれません。しかしこのメーリングリストは、こうしたアイディアについて議論するために用意された場所です。逆にGitHubのissueは、こうした新しいアイディアで必要な議論（ときには長期かつ複雑になることもあるでしょう）を行うには向いていません。
+機能追加用のパッチを送信する前に自分のアイディアに意見を募りたい場合は、[rails-coreメーリングリスト][rails-core ml]にメールを送信してください。もし誰からも返信がなければ、自分のアイディアに誰も関心を持っていないということがわかります。あるいは、自分のアイディアに興味を示してくれる人が返信してくれるかもしれません。あるいは「悪いけど採用できそうにないかも」という返信があるかもしれません。しかしこのメーリングリストは、こうしたアイディアについて議論するために用意された場所です。逆にGitHubのissueは、こうした新しいアイディアで必要な議論（ときには長期かつ複雑になることもあるでしょう）を行うには向いていません。
+
+[rails-core ml]: https://discuss.rubyonrails.org/c/rubyonrails-core
 
 既存のissueの解決を手伝う
 ----------------------------------
 
 issueをレポートする以外に、既存のissueにコメントすることでコアチームによるissue解決を手伝うことも可能です。Railsのコア開発経験が初めての方にとってはRailsのコードベースや問題解決の手順に慣れる機会にもなるので、issueへのコメント追加は貢献の第一歩を踏み出すにも最適でしょう。
 
-GitHubのissueにあがっている[issueのリスト] (https://github.com/rails/rails/issues)を見てみると、注目を集めているissueがたくさん見つかります。自分も何かissueに貢献できる方法はあるでしょうか。もちろんあります。しかもさまざまな方法があります。
+GitHub Issuesにあがっている[issueリスト][issues]を見てみると、注目を集めているissueがたくさん見つかります。自分も何かissueに貢献できる方法はあるでしょうか。もちろんあります。しかもさまざまな方法があります。
 
 ### バグレポートの確認
 
@@ -111,13 +144,15 @@ $ git pull JohnSmith orange
 Railsのドキュメントに貢献する
 ---------------------------------------
 
-Ruby on Railsには2種類のドキュメントがあります。１つはこの「Railsガイド」であり、Ruby on Railsを学ぶためのドキュメントです。もう１つはAPIドキュメントであり、こちらはリファレンス用です。
+Ruby on Railsには2種類のドキュメントがあります。1つはこの「Railsガイド」であり、Ruby on Railsを学ぶためのドキュメントです。もう1つはAPIドキュメントであり、こちらはリファレンス用です。
 
 Railsガイドの改善にはどなたでも貢献できます。Railsガイドに求められる改善とは、「一貫していること」「矛盾がないこと」「読みやすいこと」「情報の追加」「事実と異なっている部分の修正」「タイポの修正」「最新のedge Railsに追い付くこと」などです。
 
-英語ドキュメントに貢献したい方は、Railsガイドの[英語ソースファイル](https://github.com/rails/rails/tree/main/guides/source)を変更してから、プルリクエストでmainブランチに変更の反映を依頼してください。
+英語ドキュメントに貢献したい方は、Railsガイドの[英語ソースファイル][guides source]を変更してから、プルリクエストでmainブランチに変更の反映を依頼してください。
 
 ドキュメント関連で貢献するときは、[API ドキュメント作成のガイドライン](api_documentation_guidelines.html)と[Rails ガイドのガイドライン](ruby_on_rails_guides_guidelines.html)に十分目を通しておいてください。
+
+[guides source]: https://github.com/rails/rails/tree/main/guides/source
 
 Railsガイドの翻訳に貢献する
 ------------------------
@@ -147,18 +182,31 @@ NOTE: redcarpet gemはJRubyでは動きません。
 
 現在把握されている翻訳プロジェクトは以下のとおりです（バージョンはそれぞれ異なっています）。
 
-* **イタリア語**: [https://github.com/rixlabs/docrails](https://github.com/rixlabs/docrails)
-* **スペイン語**: [https://github.com/gramos/docrails/wiki](https://github.com/gramos/docrails/wiki)
-* **ポーランド語**: [https://github.com/apohllo/docrails](https://github.com/apohllo/docrails)
-* **フランス語** : [https://github.com/railsfrance/docrails](https://github.com/railsfrance/docrails)
-* **チェコ語** : [https://github.com/rubyonrails-cz/docrails/tree/czech](https://github.com/rubyonrails-cz/docrails/tree/czech)
-* **トルコ語** : [https://github.com/ujk/docrails](https://github.com/ujk/docrails)
-* **韓国語** : [https://github.com/rorlakr/rails-guides](https://github.com/rorlakr/rails-guides)
-* **中国語（簡体字）** : [https://github.com/ruby-china/guides](https://github.com/ruby-china/guides)
-* **中国語（繁体字）** : [https://github.com/docrails-tw/guides](https://github.com/docrails-tw/guides)
-* **ロシア語** : [https://github.com/morsbox/rusrails](https://github.com/morsbox/rusrails)
-* **日本語** : [https://github.com/yasslab/railsguides.jp](https://github.com/yasslab/railsguides.jp)
-* **ポルトガル語（ブラジル）** : [https://github.com/campuscode/rails-guides-pt-BR](https://github.com/campuscode/rails-guides-pt-BR)
+* **イタリア語**: [https://github.com/rixlabs/docrails][Italian]
+* **スペイン語**: [https://github.com/gramos/docrails/wiki][Spanish]
+* **ポーランド語**: [https://github.com/apohllo/docrails][Polish]
+* **フランス語** : [https://github.com/railsfrance/docrails][French]
+* **チェコ語** : [https://github.com/rubyonrails-cz/docrails/tree/czech][Czech]
+* **トルコ語** : [https://github.com/ujk/docrails][Turkish]
+* **韓国語** : [https://github.com/rorlakr/rails-guides][Korean]
+* **中国語（簡体字）** : [https://github.com/ruby-china/guides][Simplified Chinese]
+* **中国語（繁体字）** : [https://github.com/docrails-tw/guides][Traditional Chinese]
+* **ロシア語** : [https://github.com/morsbox/rusrails][Russian]
+* **日本語** : [https://github.com/yasslab/railsguides.jp][Japanese]
+* **ポルトガル語（ブラジル）** : [https://github.com/campuscode/rails-guides-pt-BR][Brazilian Portuguese]
+
+[Italian]: https://github.com/rixlabs/docrails
+[Spanish]: https://github.com/latinadeveloper/railsguides.es
+[Polish]: https://github.com/apohllo/docrails
+[French]: https://github.com/railsfrance/docrails
+[Czech]: https://github.com/rubyonrails-cz/docrails/tree/czech
+[Turkish]: https://github.com/ujk/docrails
+[Korean]: https://github.com/rorlakr/rails-guides
+[Simplified Chinese]: https://github.com/ruby-china/guides
+[Traditional Chinese]: https://github.com/docrails-tw/guides
+[Russian]: https://github.com/morsbox/rusrails
+[Japanese]: https://github.com/yasslab/railsguides.jp
+[Brazilian Portuguese]: https://github.com/campuscode/rails-guides-pt-BR
 
 Railsのコードに貢献する
 ------------------------------
@@ -167,9 +215,17 @@ Railsのコードに貢献する
 
 バグレポートを送信して既存の問題解決を手伝ったり、コードを書いてRuby on Railsに貢献したりするためには、ぜひともテストスイートを自分の環境で実行できるようにしておく必要があります。このセクションでは、自分のパソコン上でテスト用の環境を構築する方法について解説します。
 
+#### 最も楽な方法
+
+リポジトリから[GitHub Codespaces][]を起動して、ブラウザIDEまたはローカルのVScodeからすぐに開発を開始できます。Codespacesは必要なすべての依存関係で初期化され、すべてのテストを実行できます。
+
+[GitHub Codespaces]: https://docs.github.com/ja/codespaces/getting-started/quickstart
+
 #### 楽な方法
 
-[rails-dev-box](https://github.com/rails/rails-dev-box)にある作成済みのdevelopment環境を入手するのがおすすめです。
+[rails-dev-box][]にある作成済みのdevelopment環境を入手するのがおすすめです。
+
+[rails-dev-box]: https://github.com/rails/rails-dev-box
 
 #### 面倒な方法
 
@@ -211,7 +267,7 @@ $ bundle exec rails new ~/my-test-app --dev
 
 `~/my-test-app`で生成されたアプリケーションはローカルブランチのコードを実行します。サーバーを再起動すると、設定の変更をアプリケーションで確認できます。
 
-JavaScriptパッケージについては、以下のように[`yarn link`](https://yarnpkg.com/cli/link)を用いることで、生成されたアプリケーションでローカルブランチをソースにできます。
+JavaScriptパッケージについては、以下のように[`yarn link`][]を用いることで、生成されたアプリケーションでローカルブランチをソースにできます。
 
 ```bash
 $ cd rails/activestorage
@@ -219,6 +275,8 @@ $ yarn link
 $ cd ~/my-test-app
 $ yarn link "@rails/activestorage"
 ```
+
+[`yarn link`]: https://yarnpkg.com/cli/link
 
 ### コードを書く
 
@@ -229,7 +287,9 @@ $ yarn link "@rails/activestorage"
 * 自分が書いたコードがないと失敗し、あると成功するテストを書くこと。
 * 関連するドキュメント、実行例、ガイドなど、コードが影響する部分をすべて更新すること。
 
-TIP: スタイルなどの表面的な変更や、Railsの安定性・機能・テストのしやすさについて根本部分が改善されない変更は受け付けられません。詳しくは[#13771のコメント](https://github.com/rails/rails/pull/13771#issuecomment-32746700)（英語）を参照してください。
+TIP: スタイルなどの表面的な変更や、Railsの安定性・機能・テストのしやすさについて根本部分が改善されない変更は受け付けられません。詳しくは[#13771のコメント][#13771]（英語）を参照してください。
+
+[#13771]: https://github.com/rails/rails/pull/13771#issuecomment-32746700
 
 #### Railsコーディングルールに従う
 
@@ -249,7 +309,7 @@ Railsのコーディングを行う場合は、以下のシンプルなスタイ
 
 上はあくまでガイドラインであり、最適な方法については各自でご判断ください。
 
-その他に、私たちのコーディング規約の一部をコード化するために定義された[RuboCop](https://www.rubocop.org/)ルールも用いています。プルリクエストを送信する前に、ローカルで変更したファイルで以下のようにRuboCopを実行してください。
+その他に、私たちのコーディング規約の一部をコード化するために定義された[RuboCop][]ルールも用いています。プルリクエストを送信する前に、ローカルで変更したファイルで以下のようにRuboCopを実行してください。
 
 ```bash
 $ bundle exec rubocop actionpack/lib/action_controller/metal/strong_parameters.rb
@@ -261,9 +321,11 @@ Inspecting 1 file
 
 `rails-ujs`のCoffeeScriptやJavaScriptファイルについては、`actionview`フォルダで`npm run lint`を実行できます。
 
+[RuboCop]: https://www.rubocop.org/
+
 #### スペルチェック
 
-Railsでは、[GitHub Actions](https://github.com/rails/rails/blob/main/.github/workflows/lint.yml)で[misspell](https://github.com/client9/misspell)を実行してスペルチェックを実施しています（misspellは主に[Go](https://golang.org/)で書かれています）。以下の要領で`misspell`を実行して、よくあるスペルミスをその場で修正しておきましょう（`misspell`はカスタム辞書を使わない点が他のスペルチェッカーと異なります）。`misspell`は、ローカルであらゆるファイルに対して実行できます。
+Railsでは、[GitHub Actions][]で[misspell][]を実行してスペルチェックを実施しています（misspellは主に[Go][]で書かれています）。以下の要領で`misspell`を実行して、よくあるスペルミスをその場で修正しておきましょう（`misspell`はカスタム辞書を使わない点が他のスペルチェッカーと異なります）。`misspell`は、ローカルであらゆるファイルに対して実行できます。
 
 ```bash
 find . -type f | xargs ./misspell -i 'aircrafts, devels, invertions' -error
@@ -274,11 +336,18 @@ find . -type f | xargs ./misspell -i 'aircrafts, devels, invertions' -error
 - `-i 文字列`: 修正したくない語のリストをカンマ区切りで渡す
 - `-w`: 修正をファイルに反映する（デフォルトは表示のみ）
 
-また、GitHub Actionでは[codespell](https://github.com/codespell-project/codespell)も実行しています（codespellでは小さなカスタム辞書を用いています）。codespellは[Python](https://www.python.org/)で書かれており、以下のように実行できます。
+また、GitHub Actionでは[codespell][]も実行しています（codespellでは[小さなカスタム辞書][custom dict]を用いています）。codespellは[Python][]で書かれており、以下のように実行できます。
 
 ```bash
 codespell --ignore-words=codespell.txt
 ```
+
+[misspell]: https://github.com/client9/misspell
+[Go]: https://golang.org/
+[GitHub Actions]: https://github.com/rails/rails/blob/main/.github/workflows/lint.yml
+[codespell]: https://github.com/codespell-project/codespell
+[custom dict]: https://github.com/rails/rails/blob/main/codespell.txt
+[Python]: https://www.python.org/
 
 ### ベンチマークを実行する
 
@@ -286,13 +355,18 @@ codespell --ignore-words=codespell.txt
 
 特定のケースに限ってパフォーマンスを最適化すると、他の一般的なケースでパフォーマンスが低下することがよくあります。したがって、productionアプリケーションで実際に得られた代表的なケースをひととおり網羅したリストに対して変更をテストすべきです。
 
-[ベンチマーク用のテンプレート](https://github.com/rails/rails/blob/main/guides/bug_report_templates/benchmark.rb)を元にベンチマークを作るとよいでしょう。このテンプレートには、[benchmark-ips](https://github.com/evanphx/benchmark-ips) gemを用いてベンチマークを設定するコードテンプレートが含まれており、スクリプト内にインライン記述可能な、比較的自己完結的なテストを念頭に設計されています。
+[ベンチマーク用のテンプレート][benchmark template]を元にベンチマークを作るとよいでしょう。このテンプレートには、[benchmark-ips][] gemを用いてベンチマークを設定するコードテンプレートが含まれており、スクリプト内にインライン記述可能な、比較的自己完結的なテストを念頭に設計されています。
+
+[benchmark template]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/benchmark.rb
+[benchmark-ips]: https://github.com/evanphx/benchmark-ips
 
 ### テストを実行する
 
-Railsには、変更をプッシュするときにテストスイートをフル実行する規約はありません。特に、[rails-dev-box](https://github.com/rails/rails-dev-box)で推奨されているワークフーローを用いてソースコードを`/vagrant`にマウントすると、railtiesのテストに時間がかかります。
+Railsには、変更をプッシュするときにテストスイートをフル実行する規約はありません。特に、[rails-dev-box][]で推奨されているワークフーローを用いてソースコードを`/vagrant`にマウントすると、railtiesのテストに時間がかかります。
 
-現実的な妥協案として、作成したコードによって影響が生じるかどうかをテストしましょう。railtiesで変更が発生していない場合は、影響を受けるコンポーネントのすべてのテストスイートを実行しましょう。すべてのテストがパスすれば、それだけで貢献を提案できます。Rails では、他の箇所で生じた予想外のエラーを検出するために[Buildkite](https://buildkite.com/rails/rails)を利用しています。
+現実的な妥協案として、作成したコードによって影響が生じるかどうかをテストしましょう。railtiesで変更が発生していない場合は、影響を受けるコンポーネントのすべてのテストスイートを実行しましょう。すべてのテストがパスすれば、それだけで貢献を提案できます。Rails では、他の箇所で生じた予想外のエラーを検出するために[Buildkite][]を利用しています。
+
+[Buildkite]: https://buildkite.com/rails/rails
 
 #### Rails 全体のテストを実行する
 
@@ -414,7 +488,7 @@ $ bundle exec rake test
 $ ARCONN=sqlite3 bundle exec ruby -Itest test/cases/associations/has_many_associations_test.rb
 ```
 
-１つのテストをすべてのデータベースアダプタに対して実行するには以下のようにします。
+1つのテストをすべてのデータベースアダプタに対して実行するには以下のようにします。
 
 ```bash
 $ bundle exec rake TEST=test/cases/associations/has_many_associations_test.rb
@@ -424,15 +498,18 @@ $ bundle exec rake TEST=test/cases/associations/has_many_associations_test.rb
 
 ### 警告の扱いについて
 
-テストスイートの実行では、警告表示がオンになります。Ruby on Railsのテストで警告が１つも表示されないのが理想ですが、サードパーティのものも含めて若干の警告が表示される可能性があります。これらの警告は無視してください（でなければ修正しましょう）。可能であれば、新しい警告を表示しないようにするパッチの送信もお願いします。
+テストスイートの実行では、警告表示がオンになります。Ruby on Railsのテストで警告が1つも表示されないのが理想ですが、サードパーティのものも含めて若干の警告が表示される可能性があります。これらの警告は無視してください（でなければ修正しましょう）。可能であれば、新しい警告を表示しないようにするパッチの送信もお願いします。
 
 ### ドキュメントの更新
 
-[Railsガイド](https://railsguides.jp/)はRailsの機能を大まかに解説するドキュメントであり、[APIドキュメント](https://api.rubyonrails.org/)は機能を具体的に解説するドキュメントです。
+[Railsガイド][guides]はRailsの機能を大まかに解説するドキュメントであり、[APIドキュメント][api doc]は機能を具体的に解説するドキュメントです。
 
 プルリクで新機能を追加する場合や、既存機能の振る舞いを変更する場合は、関連するドキュメントもチェックして適宜追加または更新してください。
 
-たとえば、Active Storageの画像アナライザに新しいメタデータフィールドを追加する場合は、対応するActive Storageガイドの[Analyzing Files](https://edgeguides.rubyonrails.org/active_storage_overview.html#analyzing-files)セクションにも反映します。
+たとえば、Active Storageの画像アナライザに新しいメタデータフィールドを追加する場合は、対応するActive Storageガイドの「[ファイルを解析する](active_storage_overview.html#%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E8%A7%A3%E6%9E%90%E3%81%99%E3%82%8B)」セクションにも反映します。
+
+[guides]: https://railsguides.jp/
+[api doc]: https://api.rubyonrails.org/
 
 ### CHANGELOGの更新
 
@@ -463,7 +540,9 @@ CHANGELOGのエントリには変更内容の適切な要約を記入し、最�
 
 ### エディタやIDEが作成するファイルをコミットに含めないようにする
 
-エディタやIDEによっては、`rails`フォルダ内に独自の隠しファイルや隠しディレクトリを作成するものもあります。これらはコミットに含めないようにする必要がありますが、その場合は、コミットのたびに手動で取り除いたりRailsの`.gitignore`に追加したりするのではなく、自分の環境の[グローバルなgitignoreファイル](https://docs.github.com/ja/get-started/getting-started-with-git/ignoring-files#configuring-ignored-files-for-all-repositories-on-your-computer)に追加してください。
+エディタやIDEによっては、`rails`フォルダ内に独自の隠しファイルや隠しディレクトリを作成するものもあります。これらはコミットに含めないようにする必要がありますが、その場合は、コミットのたびに手動で取り除いたりRailsの`.gitignore`に追加したりするのではなく、自分の環境の[グローバルなgitignoreファイル][global gitignore]に追加してください。
+
+[global gitignore]: https://docs.github.com/ja/get-started/getting-started-with-git/ignoring-files#configuring-ignored-files-for-all-repositories-on-your-computer
 
 ### Gemfile.lockを更新する
 
@@ -508,7 +587,7 @@ $ git commit -a
 - 箇条書きはダッシュ (-)かアスタリスク (*) で始めること
 
 - 箇条書きの行は72文字目で折り返し、読みやすさのために
-  追加行の冒頭にスペース2つを置いてインデントします
+  追加行の冒頭にスペース2つを置いてインデントします
 ```
 
 TIP: コミットが複数ある場合は、スカッシュ（squash）を実行して1個のコミットにまとめてください。そうすることで今後のcherry pickがやりやすくなり、Gitのログもシンプルになります。
@@ -533,7 +612,7 @@ $ git rebase main
 
 ### fork
 
-Railsの[GitHubリポジトリ](https://github.com/rails/rails)をブラウザで開いて、右上隅の「Fork」をクリックします。
+Railsの[GitHubリポジトリ][Rails repo]をブラウザで開いて、右上隅の「Fork」をクリックします。
 
 以下を実行して、ローカルPC上にあるローカルリポジトリに新しい"fork"リモートを追加します。
 
@@ -569,6 +648,8 @@ $ git push fork main
 $ git push fork my_new_branch
 ```
 
+[Rails repo]: https://github.com/rails/rails
+
 ### プルリクエストを発行する
 
 プッシュしたRailsアプリケーションのリポジトリをブラウザで開いて（ここでは`https://github.com/自分のユーザー名/rails`にリポジトリがあるとします）、画面上部の「Pull Requests」タブをクリックします。次のページで右上隅の「New pull request」ボタンをクリックします。
@@ -585,7 +666,7 @@ $ git push fork my_new_branch
 
 GitHubのメール通知機能をオンにしているRailsコントリビュータもいますが、そうとは限りません。Railsに携わっている人のほとんどはボランティアなので、プルリクエストに返信をもらうまでに数日かかることもざらにあります。どうかめげずにプルリクエストをどしどし送信してください。おどろくほど早く反応がもらえることもあれば、そうでないこともあります。それがオープンソースというものです。
 
-一週間経っても何の音沙汰もないようなら、[rubyonrails-coreメーリングリスト](https://groups.google.com/forum/#!forum/rubyonrails-core)で少しつっついてみてもよいでしょう。プルリクエストに自分でコメントを追加してみてもよいでしょう。
+一週間経っても何の音沙汰もないようなら、[rubyonrails-coreメーリングリスト][rails-core ml]で少しつっついてみてもよいでしょう。プルリクエストに自分でコメントを追加してみてもよいでしょう。
 
 よい機会なので、自分のプルリクエストへの反応を待っている間に、他の人のプルリクエストを開いてコメントを追加してみましょう。きっとその人たちも、あなたが自分のパッチに返信をもらったときと同じぐらい喜んでくれるでしょう。
 
@@ -597,7 +678,7 @@ GitHubのメール通知機能をオンにしているRailsコントリビュー
 
 #### コミットをスカッシュする
 
-あなたのコミットに対してスカッシュ（squash: 複数のコミットを１つにまとめること）を求められることもあります。プルリクエストは、１つのコミットにまとめておくことが望まれます。コミットを１つにまとめることで、新しい変更を安定版ブランチにバックポートしやすくなり、よくないコミットを取り消しやすくなり、Gitの履歴も多少追いやすくなります。Railsは巨大プロジェクトであり、不要なコミットが増えすぎると膨大なノイズが生じる可能性があります。
+あなたのコミットに対してスカッシュ（squash: 複数のコミットを1つにまとめること）を求められることもあります。プルリクエストは、1つのコミットにまとめておくことが望まれます。コミットを1つにまとめることで、新しい変更を安定版ブランチにバックポートしやすくなり、よくないコミットを取り消しやすくなり、Gitの履歴も多少追いやすくなります。Railsは巨大プロジェクトであり、不要なコミットが増えすぎると膨大なノイズが生じる可能性があります。
 
 ```bash
 $ git fetch rails
@@ -631,15 +712,17 @@ $ git branch --track 4-0-stable rails/4-0-stable
 $ git checkout 4-0-stable
 ```
 
-TIP: [シェルのプロンプトにGitブランチ名を表示](http://qugstart.com/blog/git-and-svn/add-colored-git-branch-name-to-your-shell-prompt/)すると、今どのバージョンで作業しているかがその場で確認できるので便利です。
+TIP: [シェルのプロンプトにGitブランチ名を表示][show branch]すると、今どのバージョンで作業しているかがその場で確認できるので便利です。
 
 NOTE: 旧バージョンのRailsで作業する前に、[メンテナンスポリシー](maintenance_policy.html)でサポート期限を確認してください。
+
+[show branch]: http://qugstart.com/blog/git-and-svn/add-colored-git-branch-name-to-your-shell-prompt/
 
 #### バックポート
 
 mainブランチにマージされた変更は、Railsの次期メジャーリリースに取り入れられます。場合によっては、メンテナンスのために過去の安定版にも変更をバックポートするのがよいこともあります。一般に、セキュリティ修正とバグ修正は、バックポートの候補になります。新機能や動作変更用パッチはバックポートの候補になりません。自分の変更がどちらに該当するかわからない場合は、不要な作業を避けるためにも、変更をバックポートする前にRailsチームのメンバーに相談しましょう。
 
-単純な修正をバックポートする最も簡単な方法は、[mainと自分の変更のdiffをとって対象ブランチに適用する](http://ariejan.net/2009/10/26/how-to-create-and-apply-a-patch-with-git)ことです。
+単純な修正をバックポートする最も簡単な方法は、[mainと自分の変更のdiffをとって対象ブランチに適用する][extract diff]ことです。
 
 最初に、mainブランチと自分の変更のdiff以外に差分がないことを確認します。
 
@@ -668,7 +751,11 @@ $ git apply ~/my_changes.patch
 
 解説は以上です。さて、次はどんな貢献をしましょうか。
 
+[extract diff]: https://www.devroom.io/2009/10/26/how-to-create-and-apply-a-patch-with-git/
+
 Railsコントリビュータ
 ------------------
 
-Railsに貢献したすべての開発者は[Railsコントリビュータ](http://contributors.rubyonrails.org)にクレジットが掲載されます。
+Railsに貢献したすべての開発者は[Railsコントリビュータ][contributors]にクレジットが掲載されます。
+
+[contributors]: https://contributors.rubyonrails.org
