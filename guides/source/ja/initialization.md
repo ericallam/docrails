@@ -5,7 +5,7 @@ Rails の初期化プロセス
 
 このガイドの内容:
 
-* `bin/rails server`の使用法
+* `bin/rails server`の利用法
 * Rails初期化シーケンスのタイムライン
 * 起動シーケンスで通常以外のファイルが必要な場所
 * `Rails::Server`インターフェイスの定義方法と利用法
@@ -48,38 +48,9 @@ require "bundler/setup" # Set up gems listed in the Gemfile.
 
 標準的なRailsアプリケーションにはGemfileというファイルがあり、アプリケーション内のすべての依存関係がそのファイル内で宣言されています。`config/boot.rb`はGemfileの位置を`ENV['BUNDLE_GEMFILE']`に設定します。Gemfileが存在する場合、`bundler/setup`を`require`します。この`require`は、Gemfileの依存ファイルが置かれている読み込みパスをBundlerで設定するときに使われます。
 
-標準的なRailsアプリケーションは多くのgemに依存しています。具体的には以下のとおりです。
-
-* actioncable
-* actionmailer
-* actionpack
-* actionview
-* activejob
-* activemodel
-* activerecord
-* activestorage
-* activesupport
-* actionmailbox
-* actiontext
-* arel
-* builder
-* bundler
-* erubi
-* i18n
-* mail
-* mime-types
-* rack
-* rack-test
-* rails
-* railties
-* rake
-* sqlite3
-* thor
-* tzinfo
-
 ### `rails/commands.rb`
 
-`config/boot.rb`の実行が完了すると、次にコマンドの別名を拡張する`rails/commands`を`require`します。この状況では`ARGV`配列に`server`だけが含まれており、以下のように渡されます。
+`config/boot.rb`の実行が完了すると、次にコマンドのエイリアスを拡張する`rails/commands`を`require`します。この状況では`ARGV`配列に`server`だけが含まれており、以下のように渡されます。
 
 ```ruby
 require "rails/command"
@@ -108,7 +79,7 @@ Railsコマンドを入力すると、`invoke`が指定の名前空間内でコ�
 
 コマンドがRailsによって認識されない場合は、Rakeが引き継いで同じ名前でタスクを実行します。
 
-以下のソースでわかるように、`namespace`が空の場合、`Rails::Command`は自動的にヘルプを出力します。
+以下のソースコードでわかるように、`namespace`が空の場合、`Rails::Command`は自動的にヘルプを出力します。
 
 ```ruby
 module Rails
@@ -169,7 +140,7 @@ module Rails
 end
 ```
 
-上のファイルは、`config.ru`ファイルが見つからない場合に限り、Railsのルートディレクトリ（`config/application.rb`を指す`APP_PATH`から2階層上のディレクトリ）に変更されます。これによって、次は`Rails::Server`クラスが起動されます。
+上のファイルは、`config.ru`ファイルが見つからない場合に限り、Railsのルートディレクトリ（`config/application.rb`を指す`APP_PATH`から2階層上のディレクトリ）に移動します。これによって、次は`Rails::Server`クラスが起動されます。
 
 ### `actionpack/lib/action_dispatch.rb`
 
@@ -543,7 +514,7 @@ def run_initializers(group = :default, *args)
   @ran = true
 end
 ```
-`run_initializers`のコードはややトリッキーです。Railsはここで、あらゆる先祖クラスの中から`initializers`メソッドに応答するものを探索します。次にそれらを名前順でソートして実行します。たとえば、`Engine`クラスは`initializers`メソッドを提供しているので、あらゆるエンジンを利用できるようになります。
+`run_initializers`のコード自身はトリッキーです。Railsはここで、あらゆる先祖クラスの中から`initializers`メソッドに応答するものを探索します。次にそれらを名前順でソートして実行します。たとえば、`Engine`クラスは`initializers`メソッドを提供しているので、あらゆるエンジンを利用できるようになります。
 
 `Rails::Application`クラスは`railties/lib/rails/application.rb`ファイルで定義されており、その中で`bootstrap`、`railtie`、`finisher`イニシャライザをそれぞれ定義しています。
 `bootstrap`イニシャライザは、ロガーの初期化などアプリケーションの準備を行います
@@ -586,8 +557,7 @@ module Rack
 end
 ```
 
-このコードの`app`とは、Railsアプリケーション自身（ミドルウェアの一種）であり、
-ここから先は、提供されているすべてのミドルウェアをRackが呼び出します。
+このコードの`app`とは、Railsアプリケーション自身（ミドルウェアの一種）であり、ここから先は、提供されているすべてのミドルウェアをRackが呼び出します。
 
 ```ruby
 module Rack
