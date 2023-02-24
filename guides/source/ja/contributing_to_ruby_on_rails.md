@@ -63,7 +63,7 @@ issueレポートには、少なくともタイトルとissueの明快な説明�
 [gem: AR migration]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/active_record_migrations_gem.rb
 [main: AR migration]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/active_record_migrations_main.rb
 
-[gem: ActionPack]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/action_controller_gem.rb)
+[gem: ActionPack]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/action_controller_gem.rb
 [main: ActionPack]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/action_controller_main.rb
 
 [gem: ActiveJob]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/active_job_gem.rb
