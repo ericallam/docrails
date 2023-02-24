@@ -1,11 +1,11 @@
 API ドキュメント作成ガイドライン
 ============================
 
-本ガイドでは、Rails APIドキュメント作成のガイドラインについて解説します（訳注: APIドキュメントが英語で書かれることを前提とします。また、サンプルのコメントは基本的に英語のままにしています）。
+本ガイドでは、Rails APIドキュメント作成のガイドラインについて解説します。
 
 このガイドの内容:
 
-* APIドキュメントを効果的に書く方法
+* 英文APIドキュメントを効果的に書く方法
 * ドキュメント作成用のスタイルガイド (Rubyコード開発用のスタイルガイドとは別)
 
 --------------------------------------------------------------------------------
@@ -14,7 +14,7 @@ API ドキュメント作成ガイドライン
 RDoc
 ----
 
-[Rails API ドキュメント](http://api.rubyonrails.org)は[RDoc](https://ruby.github.io/rdoc/)で生成されます。生成するには、Railsのルートディレクトリで`bundle install`を実行してから、以下を実行します。
+[Rails API ドキュメント][Rails API doc]は[RDoc][]で生成されます。生成するには、Railsのルートディレクトリで`bundle install`を実行してから、以下を実行します。
 
 ```bash
 $ bundle exec rake rdoc
@@ -22,18 +22,27 @@ $ bundle exec rake rdoc
 
 生成されたHTMLファイルは./doc/rdocディレクトリに置かれます。
 
-RDocの記法については[markup](https://ruby.github.io/rdoc/RDoc/Markup.html)を参照してください（訳注: 別ページですが[日本語のRDocライブラリ解説](https://docs.ruby-lang.org/ja/master/library/rdoc.html)があります）。[追加のディレクティブ](https://ruby.github.io/rdoc/RDoc/Parser/Ruby.html)にも目を通しておいてください。
+RDocの記法については[markup][]を参照してください（訳注: 別ページですが[日本語のRDocライブラリ解説][]があります）。[追加のディレクティブ][directives]にも目を通しておいてください。
+
+[Rails API doc]: http://api.rubyonrails.org
+[RDoc]: https://ruby.github.io/rdoc/
+[markup]: https://ruby.github.io/rdoc/RDoc/Markup.html
+[日本語のRDocライブラリ解説]: https://docs.ruby-lang.org/ja/master/library/rdoc.html
+[directives]: https://ruby.github.io/rdoc/RDoc/Parser/Ruby.html
 
 リンクの表記
 -----
 
-Rails APIドキュメントはGitHub上での表示を想定していません。例えばRails APIで相対リンクを書く場合はRDocの [`link`](https://ruby.github.io/rdoc/RDoc/Markup.html#class-RDoc::Markup-label-Links)を使う必要があります。
+Rails APIドキュメントはGitHub上での表示を想定していません。例えばRails APIで相対リンクを書く場合はRDocの[`link`][]を使う必要があります。
 
-これは、GitHub Markdownと、[api.rubyonrails.org](https://api.rubyonrails.org)や[edgeapi.rubyonrails.org](https://edgeapi.rubyonrails.org)で公開されているRDoc生成の違いによるものです。
+これは、GitHub Markdownと、[api.rubyonrails.org][Rails API doc]や[edgeapi.rubyonrails.org][edgeapi]で公開されているRDoc生成の違いによるものです。
 
 たとえば、RDocで生成された`ActiveRecord::Base`クラスへのリンクを作成するときは`[link:classes/ActiveRecord/Base.html]`と書きます。
 
 `[https://api.rubyonrails.org/classes/ActiveRecord/Base.html]`のような絶対URLを使うとAPIドキュメントの読者が別バージョンのドキュメント（edgeapi.rubyonrails.orgなど）を開いてしまう可能性があるので、上のような表記が推奨されます。
+
+[`link`]: https://ruby.github.io/rdoc/RDoc/Markup.html#class-RDoc::Markup-label-Links
+[edgeapi]: https://edgeapi.rubyonrails.org
 
 語調
 -------
@@ -54,11 +63,11 @@ end
 
 現時点の最新の方法が、読者に明示的に（かつ暗黙にも）伝わるように書くこと。先進的な分野で推奨されている慣用表現を使うこと。推奨される方法が強調されるようセクションの順序に注意し、必要であれば順序を入れ替えること。作成するドキュメント自身がRailsのベストプラクティスのよいモデルとなるように、そしてRailsの最新かつ模範的な用法になるように書くこと。
 
-ドキュメントは、簡潔かつ全体を理解できるものであること。例外的なケースについても調査し、ドキュメントに盛り込むこと（あるモジュールが無名であったらどうなるか。あるコレクションの内容が空であったらどうなるか。引数がnilであったらどうなるか、など）。
+ドキュメントは短く、かつ全体を理解できるものであること。例外的なケースについても調査し、ドキュメントに盛り込むこと（あるモジュールが無名であったらどうなるか。あるコレクションの内容が空であったらどうなるか。引数がnilであったらどうなるか、など）。
 
-Railsのコンポーネント名は語の間にスペースを1つ置く表記が正式（例: "Active Support"）。なお、`ActiveRecord`はRubyモジュール名ですが、Active RecordはORMを指します。Railsドキュメント内でコンポーネントを指す場合には常に正式名称を使うこと。ブログ投稿やプレゼンテーションなどでもこの点に留意し、表記ゆれで読者が戸惑わないようにすること。
+Railsのコンポーネント名は語の間にスペースを1つ置く表記が正式（例: "Active Support"）。なお、`ActiveRecord`はRubyモジュール名ですが、Active RecordはORMを指します。Railsドキュメント内でコンポーネントを指す場合には常に正式名称を使うこと。
 
-正しいスペルを使うこと（Arel、Test::Unit、RSpec、HTML、MySQL、JavaScript、ERBなど）。大文字小文字にも注意すること。疑わしい場合は、公式ドキュメントなどの信頼できる情報源を参照すること。
+正しいスペルを使うこと（Arel、Test::Unit、RSpec、HTML、MySQL、JavaScript、ERB、Hotwireなど）。大文字小文字にも注意すること。疑わしい場合は、公式ドキュメントなどの信頼できる情報源を参照すること。
 
 "SQL" という語の前には冠詞 "an" を付けること（例: "an SQL statement"）。同様に、"an SQLite database"のようにすること。
 
@@ -85,12 +94,16 @@ If `return` is needed it is recommended to explicitly define a method.
 英語
 -------
 
-単語はアメリカ英語を使うこと（*color*、*center*、*modularize*など）。詳しくは[アメリカ英語とイギリス英語のスペルの違い](https://en.wikipedia.org/wiki/American_and_British_English_spelling_differences)（英語）を参照。
+アメリカ英語で表記すること（*color*、*center*、*modularize*など）。詳しくは[アメリカ英語とイギリス英語のスペルの違い][wiki us-gb diff]（英語）を参照。
+
+[wiki us-gb diff]: https://en.wikipedia.org/wiki/American_and_British_English_spelling_differences
 
 オックスフォードカンマ
 ------------
 
-カンマは、[オックスフォードスタイル](https://en.wikipedia.org/wiki/Serial_comma)（カンマなしの"red, white and blue"ではなく、カンマありの"red, white, and blue"で列挙する）で統一すること。
+カンマは、[オックスフォードスタイル][Oxford comma]（カンマなしの"red, white and blue"ではなく、カンマありの"red, white, and blue"で列挙する）で統一すること。
+
+[Oxford comma]: https://en.wikipedia.org/wiki/Serial_comma
 
 サンプルコード
 ------------
@@ -105,7 +118,7 @@ If `return` is needed it is recommended to explicitly define a method.
 # Converts a collection of elements into a formatted string by
 # calling +to_s+ on all elements and joining them.
 #
-#   Blog.all.to_formatted_s # => "First PostSecond PostThird Post"
+#   Blog.all.to_fs # => "First PostSecond PostThird Post"
 ```
 
 逆に長文ドキュメントでは"Examples"セクションを設けることもできます。
@@ -156,7 +169,7 @@ If `return` is needed it is recommended to explicitly define a method.
 
 述語やフラグの記述は、`true`や`false`（実際のリテラル値）よりも平文のtrueやfalseを優先すること。
 
-trueやfalseをRubyの定義（`nil`と`false`以外はすべてtrue）どおりに使う場合は、trueやfalseを平文で表記すること。逆にシングルトンの`true`および`false`が必要な場合は等幅フォントで表記すること。「truthy」のような用語は避けること（Rubyでは言語レベルでtrueとfalseが定義されているので、これらの用語は技術的に厳密な意味が与えられており、他の言語の用語を使う必要はありません）
+trueやfalseをRubyの定義（`nil`と`false`以外はすべてtrue）どおりに使う場合は、trueやfalseを平文で表記すること。逆にシングルトンの`true`および`false`が必要な場合は等幅フォントで表記すること。「truthy」のような用語は避けること（Rubyでは言語レベルでtrueとfalseが定義されているので、これらの用語は技術的に厳密な意味が与えられており、他の言語の用語を使う必要はありません）。
 
 原則として、シングルトンの`true`や`false`をAPIドキュメントに書かないこと（やむを得ない場合を除く）。シングルトンの`true`や`false`を避けることで、読者がシングルトンにつられて`!!`や三項演算子のような余分な人工的記法を使うことも避けられ、リファクタリングもしやすくなります。また、実装で呼び出されるメソッドが返す値の表現が少しでも違うとコードが正常に動作しなくなる事態も避けられます。
 
@@ -348,4 +361,6 @@ Rails APIの一部をドキュメント化するときは、そのAPIがRailsス
 
 しかしこの場合は、特定のメソッドの振る舞いだけではなく、**フレームワーク**の振る舞いもドキュメントに書きたいと思うでしょう。
 
-Railsチームが特定のAPIをどのように扱っているかを知りたい場合は、Railsリポジトリでお気軽にissueをオープンするか、[issue tracker](https://github.com/rails/rails/issues)にパッチを送ってください。
+Railsチームが特定のAPIをどのように扱っているかを知りたい場合は、Railsリポジトリでお気軽にissueをオープンするか、[issue tracker][issues]にパッチを送ってください。
+
+[issues]: https://github.com/rails/rails/issues
