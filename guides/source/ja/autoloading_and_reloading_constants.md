@@ -384,7 +384,7 @@ end
 require "sti_preload"
 
 class Shape < ApplicationRecord
-  include StiPreload # rootクラスにのみ存在するO
+  include StiPreload # rootクラスにのみ存在する
 end
 ```
 
