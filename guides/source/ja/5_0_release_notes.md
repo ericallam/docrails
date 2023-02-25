@@ -114,7 +114,7 @@ model.attributes # => {field_without_db_column: [1, 2, 3]}
 
 このtypeの属性は、「ダーティトラッキング」の実行方法を変更できるようになります。
 
-詳しくは [ドキュメント](https://api.rubyonrails.org/classes/ActiveRecord/Attributes/ClassMethods.html) をご覧ください。
+詳しくは[ドキュメント](https://api.rubyonrails.org/v5.0.1/classes/ActiveRecord/Attributes/ClassMethods.html)をご覧ください。
 
 
 ### テストランナー
