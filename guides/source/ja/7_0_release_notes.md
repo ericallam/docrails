@@ -295,7 +295,7 @@ Active Support
 
 ### 非推奨化
 
-*   フォーマットを`#to_s`に渡すことが非推奨化された。今後`Array`、`Range`、`Date`、`DateTime`、`Time`、`BigDecimal`、`Float`、`Integer`では`#to_formatted_s`を使うこと。
+*   フォーマットを`#to_s`に渡すことが非推奨化された。今後`Array`、`Range`、`Date`、`DateTime`、`Time`、`BigDecimal`、`Float`、`Integer`では`#to_fs`を使うこと。
 
     この非推奨化は、Ruby 3.1である種のオブジェクトの式展開を高速化する[最適化](https://github.com/ruby/ruby/commit/b08dacfea39ad8da3f1fd7fdd0e4538cc892ec44)を利用できるようにするためのものです。
 
