@@ -121,7 +121,7 @@ Rails 4.0では多くの機能が切り出されてgemに移行しました。�
 Railties
 --------
 
-変更の詳細については[Changelog](https://github.com/rails/rails/blob/4-0-stable/railties/CHANGELOG.md) を参照してください。
+変更の詳細については[Changelog][railties] を参照してください。
 
 ### 主な変更点
 
@@ -142,7 +142,7 @@ Railties
 Action Mailer
 -------------
 
-変更の詳細については[Changelog](https://github.com/rails/rails/blob/4-0-stable/actionmailer/CHANGELOG.md) を参照してください。
+変更の詳細については[Changelog][action-mailer] を参照してください。
 
 ### 主な変更点
 
@@ -151,7 +151,7 @@ Action Mailer
 Active Model
 ------------
 
-変更の詳細については[Changelog](https://github.com/rails/rails/blob/4-0-stable/activemodel/CHANGELOG.md) を参照してください。
+変更の詳細については[Changelog][active-model] を参照してください。
 
 ### 主な変更点
 
@@ -164,7 +164,7 @@ Active Model
 Active Support
 --------------
 
-変更の詳細については[Changelog](https://github.com/rails/rails/blob/4-0-stable/activesupport/CHANGELOG.md) を参照してください。
+変更の詳細については[Changelog][active-support] を参照してください。
 
 ### 主な変更点
 
@@ -205,7 +205,7 @@ Active Support
 Action Pack
 -----------
 
-変更の詳細については[Changelog](https://github.com/rails/rails/blob/4-0-stable/actionpack/CHANGELOG.md) を参照してください。
+変更の詳細については[Changelog][action-pack] を参照してください。
 
 ### 主な変更点
 
@@ -217,7 +217,7 @@ Action Pack
 Active Record
 -------------
 
-変更の詳細については[Changelog](https://github.com/rails/rails/blob/4-0-stable/activerecord/CHANGELOG.md) を参照してください。
+変更の詳細については[Changelog][active-record] を参照してください。
 
 ### 主な変更点
 
@@ -275,3 +275,10 @@ Active Record
 -------
 
 Railsを頑丈かつ安定したフレームワークにするために多大な時間を費やしてくださった多くの開発者については、[Railsコントリビューターの完全なリスト](https://contributors.rubyonrails.org/)を参照してください。これらの方々全員に敬意を表明いたします。
+
+[railties]:       https://github.com/rails/rails/blob/4-1-stable/railties/CHANGELOG.md
+[action-mailer]:  https://github.com/rails/rails/blob/4-1-stable/actionmailer/CHANGELOG.md
+[active-model]:   https://github.com/rails/rails/blob/4-1-stable/activemodel/CHANGELOG.md
+[active-support]: https://github.com/rails/rails/blob/4-1-stable/activesupport/CHANGELOG.md
+[action-pack]:    https://github.com/rails/rails/blob/4-1-stable/actionpack/CHANGELOG.md
+[active-record]:  https://github.com/rails/rails/blob/4-1-stable/activerecord/CHANGELOG.md
