@@ -495,7 +495,7 @@ Active Record
 
 * `ActiveRecord::Base#dup`を呼ぶとレコードが複製され、after_initializeフックも呼び出されます。frozenなステートはコピーされず、関連付けはすべてクリアされます。`dup`されたレコードは`new_record?`で`true`を返し、idフィールドは`nil`に設定され、かつ保存可能になります。
 
-* クエリキャッシュがprepared statmentで使えるようになりました。アプリケーションの変更は不要です。
+* クエリキャッシュがprepared statementで使えるようになりました。アプリケーションの変更は不要です。
 
 Active Model
 ------------
