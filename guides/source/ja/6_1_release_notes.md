@@ -184,7 +184,7 @@ Action Mailer
 
 ### 削除されたもの
 
-*   非推奨の`ActionMailer::Base.receive`を削除（今後は[Action Mailbox](https://github.com/rails/rails/tree/master/actionmailbox)を利用）
+*   非推奨の`ActionMailer::Base.receive`を削除（今後は[Action Mailbox](https://github.com/rails/rails/tree/6-1-stable/actionmailbox)を利用）
 
 ### 非推奨化
 
@@ -441,7 +441,7 @@ Action Mailbox
 
 ### 非推奨化
 
-(準備中...)
+*   `Rails.application.credentials.action_mailbox.api_key`および`MAILGUN_INGRESS_API_KEY`が非推奨化。今後は`Rails.application.credentials.action_mailbox.signing_key`および`MAILGUN_INGRESS_SIGNING_KEY`を利用すること。
 
 ### 主な変更
 
@@ -461,16 +461,16 @@ Credits
 
 Railsを頑丈かつ安定したフレームワークにするために多大な時間を費やしてくださった多くの開発者については、[Railsコントリビューターの完全なリスト](https://contributors.rubyonrails.org/)を参照してください。これらの方々全員に深く敬意を表明いたします。
 
-[railties]:       https://github.com/rails/rails/blob/master/railties/CHANGELOG.md
-[action-pack]:    https://github.com/rails/rails/blob/master/actionpack/CHANGELOG.md
-[action-view]:    https://github.com/rails/rails/blob/master/actionview/CHANGELOG.md
-[action-mailer]:  https://github.com/rails/rails/blob/master/actionmailer/CHANGELOG.md
-[action-cable]:   https://github.com/rails/rails/blob/master/actioncable/CHANGELOG.md
-[active-record]:  https://github.com/rails/rails/blob/master/activerecord/CHANGELOG.md
-[active-storage]: https://github.com/rails/rails/blob/master/activestorage/CHANGELOG.md
-[active-model]:   https://github.com/rails/rails/blob/master/activemodel/CHANGELOG.md
-[active-support]: https://github.com/rails/rails/blob/master/activesupport/CHANGELOG.md
-[active-job]:     https://github.com/rails/rails/blob/master/activejob/CHANGELOG.md
-[action-text]:    https://github.com/rails/rails/blob/master/actiontext/CHANGELOG.md
-[action-mailbox]: https://github.com/rails/rails/blob/master/actionmailbox/CHANGELOG.md
-[guides]:         https://github.com/rails/rails/blob/master/guides/CHANGELOG.md
+[railties]:       https://github.com/rails/rails/blob/6-1-stable/railties/CHANGELOG.md
+[action-pack]:    https://github.com/rails/rails/blob/6-1-stable/actionpack/CHANGELOG.md
+[action-view]:    https://github.com/rails/rails/blob/6-1-stable/actionview/CHANGELOG.md
+[action-mailer]:  https://github.com/rails/rails/blob/6-1-stable/actionmailer/CHANGELOG.md
+[action-cable]:   https://github.com/rails/rails/blob/6-1-stable/actioncable/CHANGELOG.md
+[active-record]:  https://github.com/rails/rails/blob/6-1-stable/activerecord/CHANGELOG.md
+[active-storage]: https://github.com/rails/rails/blob/6-1-stable/activestorage/CHANGELOG.md
+[active-model]:   https://github.com/rails/rails/blob/6-1-stable/activemodel/CHANGELOG.md
+[active-support]: https://github.com/rails/rails/blob/6-1-stable/activesupport/CHANGELOG.md
+[active-job]:     https://github.com/rails/rails/blob/6-1-stable/activejob/CHANGELOG.md
+[action-text]:    https://github.com/rails/rails/blob/6-1-stable/actiontext/CHANGELOG.md
+[action-mailbox]: https://github.com/rails/rails/blob/6-1-stable/actionmailbox/CHANGELOG.md
+[guides]:         https://github.com/rails/rails/blob/6-1-stable/guides/CHANGELOG.md
