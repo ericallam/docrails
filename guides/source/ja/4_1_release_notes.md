@@ -8,7 +8,7 @@ Rails 4.1の注目ポイント
 * Action Packのバリアント
 * Action Mailerプレビュー
 
-本リリースノートでは、主要な変更についてのみ説明します。細かなバグ修正や変更については、change logを参照するか、GitHubの主要なRailsリポジトリにある[コミットリスト](https://github.com/rails/rails/commits/master) を参照してください。
+本リリースノートでは、主要な変更についてのみ説明します。細かなバグ修正や変更については、change logを参照するか、GitHubの主要なRailsリポジトリにある[コミットリスト](https://github.com/rails/rails/commits/4-1-stable)を参照してください。
 
 --------------------------------------------------------------------------------
 
@@ -16,7 +16,7 @@ Rails 4.1の注目ポイント
 Rails 4.1へのアップグレード
 ----------------------
 
-既存のアプリケーションをアップグレードするのであれば、その前に質のよいテストカバレッジを用意するのがよい考えです。アプリケーションがRails 4.0までアップグレードされていない場合は先にそれを完了し、アプリケーションが正常に動作することを十分確認してからRails 4.1にアップデートしてください。アップグレードの注意点などについては[Ruby on Railsアップグレードガイド](upgrading_ruby_on_rails.html#rails-4-0からrails-4-1へのアップグレード) を参照してください。
+既存のアプリケーションをアップグレードするのであれば、その前に質のよいテストカバレッジを用意するのがよい考えです。アプリケーションがRails 4.0までアップグレードされていない場合は先にそれを完了し、アプリケーションが正常に動作することを十分確認してからRails 4.1にアップデートしてください。アップグレードの注意点などについては[Ruby on Railsアップグレードガイド](upgrading_ruby_on_rails.html#rails-4-0からrails-4-1へのアップグレード)を参照してください。
 
 
 主要な変更
@@ -193,7 +193,7 @@ end
 
 この例は、`EventTracking`モジュールをインラインで定義し、`ActiveSupport::Concern`でextendし、`Todo`クラスにミックスインしたのと同等です。
 
-詳細および想定されるユースケースについては[マニュアル](http://api.rubyonrails.org/v4.1.0/classes/Module/Concerning.html) を参照してください。
+詳細および想定されるユースケースについては[マニュアル](http://api.rubyonrails.org/v4.1.0/classes/Module/Concerning.html)を参照してください。
 
 ### リモート `<script>` タグにCSRF保護を実施
 
@@ -205,7 +205,7 @@ JavaScriptレスポンスを伴うGETリクエストもクロスサイトリク�
 Railties
 --------
 
-変更の詳細については[Changelog](https://github.com/rails/rails/blob/4-1-stable/railties/CHANGELOG.md) を参照してください。
+変更の詳細については[Changelog][railties]を参照してください。
 
 ### 削除されたもの
 
@@ -239,7 +239,7 @@ Railties
 Action Pack
 -----------
 
-変更の詳細については[Changelog](https://github.com/rails/rails/blob/4-1-stable/actionpack/CHANGELOG.md) を参照してください。
+変更の詳細については[Changelog][action-pack]を参照してください。
 
 ### 削除されたもの
 
@@ -283,7 +283,7 @@ Action Pack
 Action Mailer
 -------------
 
-変更の詳細については[Changelog](https://github.com/rails/rails/blob/4-1-stable/actionmailer/CHANGELOG.md) を参照してください。
+変更の詳細については[Changelog][action-mailer]を参照してください。
 
 ### 主な変更点
 
@@ -295,7 +295,7 @@ Action Mailer
 Active Record
 -------------
 
-変更の詳細については[Changelog](https://github.com/rails/rails/blob/4-1-stable/activerecord/CHANGELOG.md) を参照してください。
+変更の詳細については[Changelog][active-record]を参照してください。
 
 ### 削除されたもの
 
@@ -418,7 +418,7 @@ Active Record
 Active Model
 ------------
 
-変更の詳細については[Changelog](https://github.com/rails/rails/blob/4-1-stable/activemodel/CHANGELOG.md) を参照してください。
+変更の詳細については[Changelog][active-model]を参照してください。
 
 ### 非推奨
 
@@ -436,7 +436,7 @@ Active Model
 Active Support
 --------------
 
-変更の詳細については[Changelog](https://github.com/rails/rails/blob/4-1-stable/activesupport/CHANGELOG.md) を参照してください。
+変更の詳細については[Changelog][active-support]を参照してください。
 
 
 ### 削除されたもの
@@ -526,3 +526,11 @@ Active Support
 -------
 
 膨大な時間を費やしてRailsを作り、頑丈かつ安定したフレームワークにしてくれた多くの皆様については、[Railsコントリビューターの完全なリスト](https://contributors.rubyonrails.org/)を参照してください。これらの方々全員に敬意を表明いたします。
+
+[railties]:       https://github.com/rails/rails/blob/4-1-stable/railties/CHANGELOG.md
+[action-pack]:    https://github.com/rails/rails/blob/4-1-stable/actionpack/CHANGELOG.md
+[action-mailer]:  https://github.com/rails/rails/blob/4-1-stable/actionmailer/CHANGELOG.md
+[active-record]:  https://github.com/rails/rails/blob/4-1-stable/activerecord/CHANGELOG.md
+[active-storage]: https://github.com/rails/rails/blob/4-1-stable/activestorage/CHANGELOG.md
+[active-model]:   https://github.com/rails/rails/blob/4-1-stable/activemodel/CHANGELOG.md
+[active-support]: https://github.com/rails/rails/blob/4-1-stable/activesupport/CHANGELOG.md
