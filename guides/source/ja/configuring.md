@@ -164,7 +164,7 @@ Railsが定数を自動読み込みするパスの配列を渡せます。`confi
 
 #### `config.cache_classes`
 
-アプリケーションのクラスやモジュールをリクエストごとに再読み込みするか（=キャッシュしないかどうか）どうかを指定します。`config.cache_classes`のデフォルト値は、developmentモードでは`false`なのでコードの更新がすぐ反映され、productionモードの場合は`true`なので高速に動作します。testモードでは、spring gemがインストールされている場合はデフォルトで`false`、そうでない場合は`true`になります。
+アプリケーションのクラスやモジュールをリクエストごとに再読み込みするかどうかを指定します。キャッシュを有効にすると(`true`)、再読み込みは発生しません。`config.cache_classes`のデフォルト値は、developmentモードでは`false`なのでコードの更新がすぐ反映され、productionモードの場合は`true`なので高速に動作します。testモードでは、spring gemがインストールされている場合はデフォルトで`false`、そうでない場合は`true`になります。
 
 #### `config.beginning_of_week`
 
