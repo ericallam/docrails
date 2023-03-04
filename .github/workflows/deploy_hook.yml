@@ -18,7 +18,7 @@ jobs:
         with:
           fetch-depth: 2
 
-      - name: ☑️ Check if contents changed
+      - name: ✅️ Check if contents changed
         uses: dorny/paths-filter@v2
         id: changes
         with:
