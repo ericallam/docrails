@@ -44,8 +44,5 @@ guides/archive
 # Ignore for direnv
 .envrc
 
-## Ignore github template files
-.github
-
 ## Ignore contributing guide
 CONTRIBUTING.md
