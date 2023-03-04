@@ -531,6 +531,12 @@ video.preview(resize_to_limit: [100, 100])
 video.preview(resize_to_fill: [100, 100])
 ```
 
+### `ActiveModel::Error` クラスが追加された
+
+エラーが新しく `ActiveModel::Error` クラスのインスタンスになり、APIの変更もあわせて行われました。これらの変更によって、新しくエラーが発生する、または Rails 7.0 で廃止されるため非推奨の警告を出力する場合があります。
+
+この変更とAPIの詳細については[PR](https://github.com/rails/rails/pull/32313)を参照してください。
+
 Rails 5.2からRails 6.0へのアップグレード
 -------------------------------------
 
