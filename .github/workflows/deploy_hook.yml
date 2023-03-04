@@ -35,5 +35,5 @@ jobs:
           curl -X POST \
                -H "Accept: application/vnd.github.v3+json" \
                -H "Authorization: token ${{ env.DEPLOY_HOOK_TOKEN }}" \
-               ${{ secrets.DEPLOY_HOOK_ENDPOINT }} \
+               ${{ env.DEPLOY_HOOK_ENDPOINT }} \
                -d '{"ref":"master"}'
