@@ -20,6 +20,7 @@ pkg
 /railties/doc
 /railties/tmp
 /guides/output
+/guides/.jekyll-cache
 node_modules/
 /actionview/log
 
