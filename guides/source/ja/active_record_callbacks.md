@@ -487,7 +487,7 @@ WARNING: あるトランザクションが完了すると、`after_commit`コー
 
 WARNING: `after_commit`コールバックや`after_rollback`コールバックの中で実行されるコードそのものは、トランザクションで囲まれません。
 
-WARNING: 同一のモデル内で同じメソッド名を引数に`after_create_commit`と`after_update_commit`を両方用いると、最後に定義したコールバックだけが有効になります。理由は、これらのコールバックが内部で`after_commit`のエイリアスになっていて、最初に同じメソッド名を引数に定義したコールバックがオーバーライドされるからです。
+WARNING: 同一のモデル内で同じメソッド名を引数に取る`after_create_commit`と`after_update_commit`を両方用いると、最後に定義したコールバックだけが有効になります。理由は、これらのコールバックが内部で`after_commit`のエイリアスになっていて、最初に同じメソッド名を引数に定義したコールバックがオーバーライドされるからです。
 
 ```ruby
 class User < ApplicationRecord
