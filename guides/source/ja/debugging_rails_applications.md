@@ -204,7 +204,7 @@ Completed 302 Found in 4ms (ActiveRecord: 0.8ms)
 
 データベースクエリのログを見ただけでは、1個のメソッドを呼び出したときに大量のデータベースクエリがトリガーされる理由がすぐにわからないこともあります。
 
-```
+```irb
 irb(main):001:0> Article.pamplemousse
   Article Load (0.4ms)  SELECT "articles".* FROM "articles"
   Comment Load (0.2ms)  SELECT "comments".* FROM "comments" WHERE "comments"."article_id" = ?  [["article_id", 1]]
@@ -215,7 +215,7 @@ irb(main):001:0> Article.pamplemousse
 
 `bin/rails console`セッションで`ActiveRecord::Base.verbose_query_logs = true`を実行すると詳細クエリログモードが有効になります。同じメソッドをもう一度実行すると、大量のデータベース呼び出しを生成しているコード行がどこにあるかががわかるようになります。
 
-```
+```irb
 irb(main):003:0> Article.pamplemousse
   Article Load (0.2ms)  SELECT "articles".* FROM "articles"
   ↳ app/models/article.rb:5

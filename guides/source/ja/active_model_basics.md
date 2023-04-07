@@ -83,7 +83,7 @@ class Person
 end
 ```
 
-```
+```irb
 irb> person = Person.new
 irb> person.age = 110
 irb> person.age_highest?
@@ -136,7 +136,7 @@ class Person
 end
 ```
 
-```
+```irb
 irb> person = Person.new
 irb> person.to_model == person
 => true
@@ -182,7 +182,7 @@ end
 
 #### 変更されたすべての属性のリストをオブジェクトから直接取得する
 
-```
+```irb
 irb> person = Person.new
 irb> person.changed?
 => false
@@ -212,7 +212,7 @@ irb> person.changes
 
 特定の属性が変更されたかどうかを検出します。
 
-```
+```irb
 irb> person.first_name
 => "First Name"
 

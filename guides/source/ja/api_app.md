@@ -309,7 +309,7 @@ APIアプリケーション（`ActionController::API`を利用）には、デフ
 
 他のプラグインによってモジュールが追加されることもあります。`ActionController::API`の全モジュールのリストは以下のコマンドで表示できます。
 
-```
+```irb
 irb> ActionController::API.ancestors - ActionController::Metal.ancestors
 => [ActionController::API,
     ActiveRecord::Railties::ControllerRuntime,

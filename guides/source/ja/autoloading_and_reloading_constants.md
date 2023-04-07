@@ -459,7 +459,7 @@ Railsが起動すると、エンジンのディレクトリが自動読み込み
 
 たとえば、以下のアプリケーションは[Devise](https://github.com/heartcombo/devise)を使っています。
 
-```
+```bash
 % bin/rails runner 'pp ActiveSupport::Dependencies.autoload_paths'
 [".../app/controllers",
  ".../app/controllers/concerns",
@@ -469,7 +469,7 @@ Railsが起動すると、エンジンのディレクトリが自動読み込み
  ".../gems/devise-4.8.0/app/controllers",
  ".../gems/devise-4.8.0/app/helpers",
  ".../gems/devise-4.8.0/app/mailers"]
- ```
+```
 
 このエンジンが親アプリケーションの自動読み込みを制御するのであれば、これまでどおりにエンジンを書けます。
 

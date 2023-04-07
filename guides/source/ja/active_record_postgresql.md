@@ -106,7 +106,7 @@ class Profile < ApplicationRecord
 end
 ```
 
-```
+```irb
 irb> Profile.create(settings: { "color" => "blue", "resolution" => "800x600" })
 
 irb> profile = Profile.first
@@ -143,7 +143,7 @@ class Event < ApplicationRecord
 end
 ```
 
-```
+```irb
 irb> Event.create(payload: { kind: "user_renamed", change: ["jack", "john"]})
 
 irb> event = Event.first
@@ -176,7 +176,7 @@ class Event < ApplicationRecord
 end
 ```
 
-```
+```irb
 irb> Event.create(duration: Date.new(2014, 2, 11)..Date.new(2014, 2, 12))
 
 irb> event = Event.first
@@ -229,7 +229,7 @@ class Contact < ApplicationRecord
 end
 ```
 
-```
+```irb
 irb> Contact.create address: "(Paris,Champs-Élysées)"
 irb> contact = Contact.first
 irb> contact.address
@@ -274,7 +274,7 @@ class Article < ApplicationRecord
 end
 ```
 
-```
+```irb
 irb> Article.create status: "draft"
 irb> article = Article.first
 irb> article.status
@@ -333,7 +333,7 @@ class Revision < ApplicationRecord
 end
 ```
 
-```
+```irb
 irb> Revision.create identifier: "A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A11"
 
 irb> revision = Revision.first
@@ -388,7 +388,7 @@ class User < ApplicationRecord
 end
 ```
 
-```
+```irb
 irb> User.create settings: "01010011"
 irb> user = User.first
 irb> user.settings
@@ -420,7 +420,7 @@ class Device < ApplicationRecord
 end
 ```
 
-```
+```irb
 irb> macbook = Device.create(ip: "192.168.1.12", network: "192.168.2.0/24", address: "32:01:16:6d:05:ef")
 
 irb> macbook.ip
@@ -459,7 +459,7 @@ class Event < ApplicationRecord
 end
 ```
 
-```
+```irb
 irb> Event.create(duration: 2.days)
 
 irb> event = Event.first
@@ -613,7 +613,7 @@ class Article < ApplicationRecord
 end
 ```
 
-```
+```irb
 irb> first = Article.create! title: "Winter is coming", status: "published", published_at: 1.year.ago
 irb> second = Article.create! title: "Brace yourself", status: "draft", published_at: 1.month.ago
 

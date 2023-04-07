@@ -183,7 +183,7 @@ class User < ApplicationRecord
 end
 ```
 
-```
+```irb
 irb> u = User.create(name: 'Kuldeep')
 => #<User id: 1, name: "Kuldeep", created_at: "2013-11-25 12:17:49", updated_at: "2013-11-25 12:17:49">
 
@@ -523,7 +523,7 @@ class User < ApplicationRecord
 end
 ```
 
-```
+```irb
 irb> @user = User.create # Userを作成
 ユーザーはデータベースに保存されました
 

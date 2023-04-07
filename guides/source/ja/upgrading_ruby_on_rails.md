@@ -1591,7 +1591,7 @@ class FooBar
 end
 ```
 
-```
+```irb
 irb> FooBar.new.to_json
 => "{\"foo\":\"bar\"}"
 irb> JSON.generate(FooBar.new, quirks_mode: true)
