@@ -36,7 +36,7 @@ Railties
 
     `rails` gemが`sprockets-rails`に依存しなくなりました。自分のアプリケーションでSprocketsを使う必要がある場合は、以下のようにGemfileに追加してください。
 
-    ```
+    ```ruby
     gem "sprockets-rails"
     ```
 

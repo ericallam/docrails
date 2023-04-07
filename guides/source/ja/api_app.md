@@ -309,7 +309,7 @@ APIアプリケーション（`ActionController::API`を利用）には、デフ
 
 他のプラグインによってモジュールが追加されることもあります。`ActionController::API`の全モジュールのリストは以下のコマンドで表示できます。
 
-```
+```irb
 irb> ActionController::API.ancestors - ActionController::Metal.ancestors
 => [ActionController::API,
     ActiveRecord::Railties::ControllerRuntime,
@@ -342,6 +342,7 @@ Action Controllerのどのモジュールも、自身が依存するモジュー
       self.cache_store = :mem_cache_store
     end
     ```
+
   Railsはこの設定を「自動的には渡しません」。
 
 モジュールは`ApplicationController`に追加するのが最適ですが、個別のコントローラに追加することも可能です。

@@ -300,7 +300,7 @@ Railsの自動読み込みは**このアルゴリズムをエミュレートし�
 
 Railsは、そのための環境が設定されていれば常に自動読み込みを行います。たとえば、以下の`runner`コマンドを実行すると自動読み込みが行われます。
 
-```
+```bash
 $ bin/rails runner 'p User.column_names'
 ["id", "email", "created_at", "updated_at"]
 ```
@@ -348,7 +348,7 @@ config.autoload_paths += "#{Rails.root}/lib"
 
 `autoload_paths`の値を検査することもできます。生成したRailsアプリケーションでは以下のようになります (ただし編集済み)。
 
-```
+```bash
 $ bin/rails r 'puts ActiveSupport::Dependencies.autoload_paths'
 .../app/assets
 .../app/controllers
@@ -603,7 +603,7 @@ WARNING: `require_dependency`は自動読み込みと異なり、そのファイ
 
 たとえば、Railsのコンソールセッションを開いている状態で、いくつかのファイルがバックグラウンドで更新された場合、`reload!`コマンドを使用して定数を再読み込みできます。
 
-```
+```bash
 > reload!
 ```
 
@@ -928,7 +928,7 @@ end
 
 [前述](#修飾済み定数を解決するアルゴリズム)のとおり、Rubyは`Hotel`とその先祖の定数を探索します。`app/models/image.rb`が読み込まれているが`app/models/hotel/image.rb`が読み込まれていない状況になった場合、Rubyは`Image`を`Hotel`内ではなく`Object`内で探索します。
 
-```
+```bash
 $ bin/rails r 'Image; p Hotel::Image' 2>/dev/null
 Image # これはHotel::Imageではない
 ```
@@ -943,7 +943,7 @@ warning: toplevel constant Image referenced by Hotel::Image
 
 この驚くべき定数解決方法は、実はどのクラスを修飾するときにも観察できます。
 
-```
+```irb
 2.1.5 :001 > String::Array
 (irb):1: warning: toplevel constant Array referenced by String::Array
 => Array

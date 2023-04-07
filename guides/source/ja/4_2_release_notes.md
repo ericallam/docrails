@@ -80,13 +80,13 @@ post.comments(true)
   # キャッシュされない
   Post.find(1, 2, 3)
   Post.find([1,2])
-  ```
+```
 
 - `find_by`でSQLフラグメントを使用している
 
 ```ruby
   Post.find_by('published_at < ?', 2.weeks.ago)
-  ```
+```
 
 ### Web Console gem
 
