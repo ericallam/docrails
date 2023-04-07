@@ -550,6 +550,7 @@ Active Recordは最初の引数を、文字列で表された条件として受�
 ```ruby
 Book.where("title = ? AND out_of_print = ?", params[:title], false)
 ```
+
 上の例では、1つ目の疑問符は`params[:title]`の値で置き換えられ、2つ目の疑問符は`false`をSQL形式に変換したもの (変換方法はアダプタによって異なる) で置き換えられます。
 
 以下のように`?`を用いるコードの書き方を強く推奨します。
@@ -1052,6 +1053,7 @@ Author.find(10).books.reorder('year_published ASC')
 SELECT * FROM authors WHERE id = 10 LIMIT 1
 SELECT * FROM books WHERE author_id = 10 ORDER BY year_published ASC
 ```
+
 ### `reverse_order`
 
 [`reverse_order`][]メソッドは、並び順が指定されている場合に並び順を逆にします。
@@ -1684,6 +1686,7 @@ end
 irb> Book.new
 => #<Book id: nil, out_of_print: nil>
 ```
+
 [`default_scope`]: https://edgeapi.rubyonrails.org/classes/ActiveRecord/Scoping/Default/ClassMethods.html#method-i-default_scope
 
 ### スコープのマージ

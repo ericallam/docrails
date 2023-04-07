@@ -83,13 +83,13 @@ $ cd myapp
 
 `Bundler`と`Gemfile`のおかげで、専用の`bundle`コマンド一発でRailsアプリケーションのgemを簡単に安定させることができます。Gitリポジトリから直接bundleしたい場合は`--edge`フラグを追加します。
 
-```
+```bash
 $ rails new myapp --edge
 ```
 
 Railsアプリケーションのリポジトリをローカルにチェックアウトしたものがあり、それを使ってアプリケーションを生成したい場合は、`--dev`フラグを追加します。
 
-```
+```bash
 $ ruby /path/to/rails/railties/bin/rails new m
 ```
 
@@ -343,9 +343,9 @@ Active Record
 
 * マイグレーションを特定のスコープ（対象）に対してのみ実行する機能が追加されました。これを用いて、特定のエンジンのマイグレーションのみを実行できます（取り外す必要のあるエンジンでの変更を元に戻すなど）。
 
-    ```
-    rake db:migrate SCOPE=blog
-    ```
+  ```bash
+  rake db:migrate SCOPE=blog
+  ```
 
 * エンジンからコピーしたマイグレーションファイルのスコープが、エンジンの名前で指定されるようになりました（例: `01_create_posts.blog.rb`）。
 

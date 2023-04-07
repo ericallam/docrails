@@ -342,6 +342,7 @@ Action Controllerのどのモジュールも、自身が依存するモジュー
       self.cache_store = :mem_cache_store
     end
     ```
+
   Railsはこの設定を「自動的には渡しません」。
 
 モジュールは`ApplicationController`に追加するのが最適ですが、個別のコントローラに追加することも可能です。

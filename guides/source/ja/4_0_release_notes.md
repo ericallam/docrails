@@ -22,7 +22,7 @@ Rails 4.0へのアップグレード
 Rails 4.0アプリケーションを作成する
 --------------------------------
 
-```
+```bash
 # 'rails'というRubyGemがインストールされている必要があります。
 $ rails new myapp
 $ cd myapp
@@ -38,13 +38,13 @@ Railsでは、アプリケーションのルートディレクトリに置かれ
 
 `Bundler`と`Gemfile`のおかげで、専用の`bundle`コマンド一発でRailsアプリケーションのgemを簡単に安定させることができます。Gitリポジトリから直接bundleしたい場合は`--edge`フラグを追加します。
 
-```
+```bash
 $ rails new myapp --edge
 ```
 
 Railsアプリケーションのリポジトリをローカルにチェックアウトしたものがあり、それを使ってアプリケーションを生成したい場合は、`--dev`フラグを追加します。
 
-```
+```bash
 $ ruby /path/to/rails/railties/bin/rails new myapp --dev
 ```
 

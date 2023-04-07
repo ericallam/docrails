@@ -208,6 +208,7 @@ class AnimalsRecord < ApplicationRecord
   connects_to database: { writing: :animals }
 end
 ```
+
 生成されたモデルは自動的に`AnimalsRecord`クラスを継承します。
 
 ```ruby

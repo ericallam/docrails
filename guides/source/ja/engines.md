@@ -762,6 +762,7 @@ module MyApp
   end
 end
 ```
+
 #### 既存のクラスを`class_eval`で再オープンする
 
 たとえば以下のエンジンモデルをオーバライドするとします。
@@ -900,6 +901,7 @@ end
 ```erb
 <%= link_to "Blog articles", blorgh.articles_path %>
 ```
+
 逆にエンジン内部からアプリケーションを参照する場合は、同じ要領で`main_app`を使います。
 
 ```erb
