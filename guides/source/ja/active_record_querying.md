@@ -82,7 +82,7 @@ class Supplier < ApplicationRecord
 end
 ```
 
-![bookstpreの全モデルの図](images/active_record_querying/bookstore_models.png)
+![bookstoreの全モデルの図](images/active_record_querying/bookstore_models.png)
 
 データベースからオブジェクトを取り出す
 ------------------------------------
