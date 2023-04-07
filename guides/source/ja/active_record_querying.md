@@ -462,6 +462,16 @@ end
 
 リレーション内に特定の順序があれば例外を発生させたい場合は、このオプションでアプリケーションの設定を上書きします。
 
+**`:order`**
+
+主キーの並び順（`:asc`または`:desc`）を指定します。デフォルト値は`:asc`です。
+
+```ruby
+Customer.find_each(order: :desc) do |customer|
+  NewsMailer.weekly(customer).deliver_now
+end
+```
+
 #### `find_in_batches`
 
 [`find_in_batches`][]メソッドは、レコードをバッチで取り出すという点で`find_each`と似ています。違うのは、`find_in_batches`は**バッチ**を個別にではなくモデルの配列としてブロックにyieldするという点です。以下の例では、与えられたブロックに対して一度に最大1000人までの顧客（customer）の配列をyieldしています。最後のブロックには残りの顧客が含まれます。
