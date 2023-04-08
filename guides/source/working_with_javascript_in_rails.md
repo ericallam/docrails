@@ -287,3 +287,4 @@ added to the form that the `button_to` helper renders internally:
 <%= button_to "Delete post', post, method: :delete, form: { data: { turbo_confirm: "Are you sure?" } } %>
 ```
 
+
