@@ -1177,7 +1177,7 @@ WARNING: マスターキーは安全な場所に保管してください。マ�
 
 動きの激しいセキュリティ動向に常に目を配り、常に最新の情報を入手しましょう。新しく登場した脆弱性を見逃すと、壊滅的な損害をこうむる可能性があります。Railsのセキュリティ関連の追加リソースをご紹介します。
 
-* Railsセキュリティ [メーリングリスト](https://groups.google.com/forum/#!forum/rubyonrails-security)を購読しましょう。
+* Railsセキュリティ [メーリングリスト](https://discuss.rubyonrails.org/c/security-announcements/9)を購読しましょう。
 * [Brakeman - Rails Security Scanner](https://brakemanscanner.org/): Railsアプリケーションの静的セキュリティ解析を行うgemです。
 * [Mozilla's Web Security Guidelines](https://infosec.mozilla.org/guidelines/web_security.html): Content Security Policy、HTTPヘッダー、cookie、TLS接続などの推奨事項が掲載されています。
 * OWASPの[優れたセキュリティブログ](https://owasp.org)には[クロスサイトスクリプティングのチートシート](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.md)が掲載されています。
