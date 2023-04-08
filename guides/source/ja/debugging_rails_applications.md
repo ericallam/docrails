@@ -213,7 +213,7 @@ irb(main):001:0> Article.pamplemousse
 => #<Comment id: 2, author: "1", body: "Well, actually...", article_id: 1, created_at: "2018-10-19 00:56:10", updated_at: "2018-10-19 00:56:10">
 ```
 
-`bin/rails console`セッションで`ActiveRecord::Base.verbose_query_logs = true`を実行すると詳細クエリログモードが有効になります。同じメソッドをもう一度実行すると、大量のデータベース呼び出しを生成しているコード行がどこにあるかががわかるようになります。
+`bin/rails console`セッションで`ActiveRecord.verbose_query_logs = true`を実行すると詳細クエリログモードが有効になります。同じメソッドをもう一度実行すると、大量のデータベース呼び出しを生成しているコード行がどこにあるかががわかるようになります。
 
 ```irb
 irb(main):003:0> Article.pamplemousse
