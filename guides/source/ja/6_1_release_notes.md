@@ -35,7 +35,7 @@ Rails 6.0では、データベースの機能的パーティショニング（�
 
 ### Delegated Types
 
-「Delegated Types」は、シングルテーブル継承（STI: Single Table Instance）の代替に使える設計です。（[#39341](https://github.com/rails/rails/pull/39341)）。Delegated Typesはクラス階層を表現するときに有用で、スーパークラスを「スーパークラス自身が持つテーブルで表される具象クラス」にできるようになります。スーパークラスの各サブクラスは、追加属性用に独自のテーブルを持ちます。
+「Delegated Types」は、単一テーブル継承（STI: Single Table Instance）の代替に使える設計です。（[#39341](https://github.com/rails/rails/pull/39341)）。Delegated Typesはクラス階層を表現するときに有用で、スーパークラスを「スーパークラス自身が持つテーブルで表される具象クラス」にできるようになります。スーパークラスの各サブクラスは、追加属性用に独自のテーブルを持ちます。
 
 ### 関連付けの非同期削除
 
