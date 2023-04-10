@@ -64,7 +64,7 @@ import mapをJavaScriptアセットパイプラインとして使う
 
 import mapは、RailsのデフォルトのJavaScriptプロセッサです。import mapを生成するロジックは[`importmap-rails`](https://github.com/rails/importmap-rails) gemによって処理されます。
 
-WARNING: import mapはJavaScriptファイル専用であり、CSSの配信には利用できません。CSSについては[Sprockets](#Sprocketsの使い方)セクションを参照してください。
+WARNING: import mapはJavaScriptファイル専用であり、CSSの配信には利用できません。CSSについては[Sprocketsの使い方](#Sprocketsの使い方)セクションを参照してください。
 
 詳しい使い方は`importmap-rails` gemのホームページで確認できますが、`importmap-rails`の基本を理解しておくことが大切です。
 
@@ -286,7 +286,7 @@ Railsでscaffoldやコントローラを生成すると、そのコントロー�
 
 #### 探索パス
 
-ファイルがマニフェストやヘルパーから参照されると、Sprocketsは`manifest.js`で指定されたすべての場所を探索してファイルを探します。探索パスは、Railsコンソールで [`Rails.application.config.assets.paths`](`config.assets.paths`)を調べることで表示できます。
+ファイルがマニフェストやヘルパーから参照されると、Sprocketsは`manifest.js`で指定されたすべての場所を探索してファイルを探します。探索パスは、Railsコンソールで [`Rails.application.config.assets.paths`](configuring.html#config-assets-paths)を調べることで表示できます。
 
 #### indexファイルをフォルダのプロキシとして使う
 
