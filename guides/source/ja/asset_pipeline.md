@@ -64,7 +64,7 @@ import mapをJavaScriptアセットパイプラインとして使う
 
 import mapは、RailsのデフォルトのJavaScriptプロセッサです。import mapを生成するロジックは[`importmap-rails`](https://github.com/rails/importmap-rails) gemによって処理されます。
 
-WARNING: import mapはJavaScriptファイル専用であり、CSSの配信には利用できません。CSSについては[Sprocketsの使い方](#Sprocketsの使い方)セクションを参照してください。
+WARNING: import mapはJavaScriptファイル専用であり、CSSの配信には利用できません。CSSについては[Sprocketsの使い方](#Sprockets%E3%81%AE%E4%BD%BF%E3%81%84%E6%96%B9)セクションを参照してください。
 
 詳しい使い方は`importmap-rails` gemのホームページで確認できますが、`importmap-rails`の基本を理解しておくことが大切です。
 
