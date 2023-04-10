@@ -64,7 +64,7 @@ import mapをJavaScriptアセットパイプラインとして使う
 
 import mapは、RailsのデフォルトのJavaScriptプロセッサです。import mapを生成するロジックは[`importmap-rails`](https://github.com/rails/importmap-rails) gemによって処理されます。
 
-WARNING: import mapはJavaScriptファイル専用であり、CSSの配信には利用できません。CSSについては[Sprocketsの使い方](#Sprockets%E3%81%AE%E4%BD%BF%E3%81%84%E6%96%B9)セクションを参照してください。
+WARNING: import mapはJavaScriptファイル専用であり、CSSの配信には利用できません。CSSについては、[Sprocketsの利用法](#Sprocketsの利用法)セクションを参照してください。
 
 詳しい使い方は`importmap-rails` gemのホームページで確認できますが、`importmap-rails`の基本を理解しておくことが大切です。
 
@@ -221,7 +221,7 @@ pin "md5", to: "https://cdn.jsdelivr.net/npm/md5@2.3.0/md5.js"
 
 NOTE: 最新のドキュメントについては[`importmap-rails`](https://github.com/rails/importmap-rails)リポジトリを参照してください。
 
-Sprocketsの使い方
+Sprocketsの利用法
 -----------------------------
 
 アプリケーションのアセットをWebで公開する素朴なアプローチは、`public`フォルダの`images`や `stylesheets`などのサブディレクトリにアセットを保存することでしょう。現代のWebアプリケーションは、アセットの圧縮やフィンガープリントの追加といった特定の方法で処理する必要があるため、これを手動で行うことは困難です。
