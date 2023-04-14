@@ -770,7 +770,7 @@ first_thumbnail_attachment:
   blob: first_thumbnail_blob
 ```
 
-[image/png]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types#image_types
+[image/png]: https://developer.mozilla.org/ja/docs/Web/HTTP/Basics_of_HTTP/MIME_types#画像タイプ
 
 #### ERB
 

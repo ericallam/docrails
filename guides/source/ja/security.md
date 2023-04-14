@@ -1072,7 +1072,7 @@ end
 
 #### 違反をレポートする
 
-指定されたURIに対する違反を報告する[`report-uri`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/report-uri)ディレクティブを有効にします。
+指定されたURIに対する違反を報告する[`report-uri`](https://developer.mozilla.org/ja/docs/Web/HTTP/Headers/Content-Security-Policy/report-uri)ディレクティブを有効にします。
 
 ```ruby
 Rails.application.config.content_security_policy do |policy|
@@ -1080,7 +1080,7 @@ Rails.application.config.content_security_policy do |policy|
 end
 ```
 
-レガシーなコンテンツを移行するときにコンテンツの違反だけをレポートしたい場合は、設定で`content_security_policy_report_only`属性を用いて[Content-Security-Policy-Report-Only](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy-Report-Only)を設定します。
+レガシーなコンテンツを移行するときにコンテンツの違反だけをレポートしたい場合は、設定で`content_security_policy_report_only`属性を用いて[Content-Security-Policy-Report-Only](https://developer.mozilla.org/ja/docs/Web/HTTP/Headers/Content-Security-Policy-Report-Only)を設定します。
 
 ```ruby
 # config/initializers/content_security_policy.rb
