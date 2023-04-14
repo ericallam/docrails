@@ -363,9 +363,9 @@ Railsでは、POSTメソッド上でこれらのメソッドをエミュレー�
 </form>
 ```
 
-[`formmethod`]: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#attr-formmethod
-[button-name]: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#attr-name
-[button-value]: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#attr-value
+[`formmethod`]: https://developer.mozilla.org/ja/docs/Web/HTML/Element/button#attr-formmethod
+[button-name]: https://developer.mozilla.org/ja/docs/Web/HTML/Element/button#attr-name
+[button-value]: https://developer.mozilla.org/ja/docs/Web/HTML/Element/button#attr-value
 
 セレクトボックスを簡単に作成する
 -----------------------------

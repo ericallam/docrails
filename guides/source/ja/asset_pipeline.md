@@ -660,7 +660,7 @@ config.public_file_server.headers = {
 
 これで、production環境のアセットがアプリケーションから配信されると、キャッシュは1年間保存されます。多くのCDNはリクエストのキャッシュも保存しているので、この`Cache-Control`ヘッダーはアセットをリクエストするすべてのブラウザ（将来登場するブラウザも含む）に渡されます。ブラウザはこのヘッダを受け取ると、次回再度リクエストが必要になったときに備えて、そのアセットを非常に長い期間キャッシュに保存してよいことを認識します。
 
-[`Cache-Control`]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
+[`Cache-Control`]: https://developer.mozilla.org/ja/docs/Web/HTTP/Headers/Cache-Control
 
 ##### CDNにおけるURLベースのキャッシュ無効化について
 
