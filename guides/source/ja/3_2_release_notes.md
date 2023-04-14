@@ -83,13 +83,13 @@ $ cd myapp
 
 `Bundler`と`Gemfile`のおかげで、専用の`bundle`コマンド一発でRailsアプリケーションのgemを簡単に安定させることができます。Gitリポジトリから直接bundleしたい場合は`--edge`フラグを追加します。
 
-```
+```bash
 $ rails new myapp --edge
 ```
 
 Railsアプリケーションのリポジトリをローカルにチェックアウトしたものがあり、それを使ってアプリケーションを生成したい場合は、`--dev`フラグを追加します。
 
-```
+```bash
 $ ruby /path/to/rails/railties/bin/rails new m
 ```
 
@@ -331,30 +331,30 @@ Active Record
 
 * 単一カラムのキーバリューストアを宣言する`ActiveRecord::Base.store`が追加されました。
 
-    ```ruby
-    class User < ActiveRecord::Base
-      store :settings, accessors: [ :color, :homepage ]
-    end
+```ruby
+class User < ActiveRecord::Base
+  store :settings, accessors: [ :color, :homepage ]
+end
 
-    u = User.new(color: 'black', homepage: '37signals.com')
-    u.color                          # アクセサに保存されている属性
-    u.settings[:country] = 'Denmark' # アクセサで指定されていない属性でも使える
-    ```
+u = User.new(color: 'black', homepage: '37signals.com')
+u.color                          # アクセサに保存されている属性
+u.settings[:country] = 'Denmark' # アクセサで指定されていない属性でも使える
+```
 
 * マイグレーションを特定のスコープ（対象）に対してのみ実行する機能が追加されました。これを用いて、特定のエンジンのマイグレーションのみを実行できます（取り外す必要のあるエンジンでの変更を元に戻すなど）。
 
-    ```
-    rake db:migrate SCOPE=blog
-    ```
+```bash
+$ rake db:migrate SCOPE=blog
+```
 
 * エンジンからコピーしたマイグレーションファイルのスコープが、エンジンの名前で指定されるようになりました（例: `01_create_posts.blog.rb`）。
 
 * `ActiveRecord::Relation#pluck`メソッドが実装されました。これは背後のテーブルのカラム値を直接配列として返します。シリアライズされた属性でも使えます
 
-    ```ruby
-    Client.where(:active => true).pluck(:id)
-    # SELECT id from clients where active = 1
-    ```
+```ruby
+Client.where(:active => true).pluck(:id)
+# SELECT id from clients where active = 1
+```
 
 * 関連付けメソッドの生成は、独立した1つのモジュール内で作成されるようになりました。これはオーバーライドやコンポジションできるようにするためです。たとえば`MyModel`というクラスがあり、そのモジュールが`MyModel::GeneratedFeatureMethods`だとします。Active Modelで定義された`generated_attributes_methods`が実行されると、このモジュールはただちにそのモデルクラスにincludeされるので、関連付けメソッドは同じ名前の属性メソッドをオーバーライドします。
 
@@ -381,9 +381,9 @@ Active Record
 
 * `:class_name`オプションで文字列の他にシンボルも取れるようになりました。Railsに慣れていない人の混乱を避けるのと、既に文字列とシンボルのどちらも取れる`:foreign_key`などとの一貫性を保つのが目的です。
 
-    ```ruby
-    has_many :clients, :class_name => :Client # シンボルの最初は大文字にする必要があることに注意
-    ```
+```ruby
+has_many :clients, :class_name => :Client # シンボルの最初は大文字にする必要があることに注意
+```
 
 * developmentモードで`db:drop`を実行するとtestデータベースも削除されるようになりました。`db:create`と動作を対称的にするのが目的です。
 

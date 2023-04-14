@@ -83,7 +83,7 @@ class Person
 end
 ```
 
-```
+```irb
 irb> person = Person.new
 irb> person.age = 110
 irb> person.age_highest?
@@ -136,7 +136,7 @@ class Person
 end
 ```
 
-```
+```irb
 irb> person = Person.new
 irb> person.to_model == person
 => true
@@ -182,7 +182,7 @@ end
 
 #### 変更されたすべての属性のリストをオブジェクトから直接取得する
 
-```
+```irb
 irb> person = Person.new
 irb> person.changed?
 => false
@@ -212,7 +212,7 @@ irb> person.changes
 
 特定の属性が変更されたかどうかを検出します。
 
-```
+```irb
 irb> person.first_name
 => "First Name"
 
@@ -223,7 +223,7 @@ irb> person.first_name_changed?
 
 属性の直前の値を返します。
 
-```
+```irb
 # attr_name_was accessor
 irb> person.first_name_was
 => nil
@@ -231,7 +231,7 @@ irb> person.first_name_was
 
 変更された属性の、直前の値と現在の値を両方返します。変更があった場合は配列を返し、変更がなかった場合はnilを返します。
 
-```
+```irb
 # attr_name_change
 irb> person.first_name_change
 => [nil, "First Name"]
@@ -417,7 +417,7 @@ end
 
 * config/locales/app.pt-BR.yml
 
-```
+```yaml
 pt-BR:
   activemodel:
     attributes:

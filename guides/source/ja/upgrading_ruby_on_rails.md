@@ -130,10 +130,10 @@ Rails 7では、オートロードのモードを指定する`config.autoloader=
 
 * `ActiveSupport::Dependencies.constantize`または`ActiveSupport::Dependencies.safe_constantize`を使っている場合は、`String#constantize`または`String#safe_constantize`に変更してください。
 
-  ```ruby
-  ActiveSupport::Dependencies.constantize("User") # 今後は利用不可
-  "User".constantize # 👍
-  ```
+```ruby
+ActiveSupport::Dependencies.constantize("User") # 今後は利用不可
+"User".constantize # 👍
+```
 
 * `ActiveSupport::Dependencies.mechanism`やそのリーダーやライターを使っている場合は、`config.cache_classes`のアクセスで置き換える必要があります。
 
@@ -1591,7 +1591,7 @@ class FooBar
 end
 ```
 
-```
+```irb
 irb> FooBar.new.to_json
 => "{\"foo\":\"bar\"}"
 irb> JSON.generate(FooBar.new, quirks_mode: true)

@@ -30,19 +30,19 @@ Rails 4.1アプリケーションに含まれるbinstubは「spring化」され�
 
 **rakeタスクの実行:**
 
-```
+```bash
 bin/rake test:models
 ```
 
 **Railsコマンドの実行:**
 
-```
+```bash
 bin/rails console
 ```
 
 **Springの状態確認:**
 
-```
+```bash
 $ bin/spring status
 Spring is running:
 

@@ -514,6 +514,7 @@ def run_initializers(group = :default, *args)
   @ran = true
 end
 ```
+
 `run_initializers`のコード自身はトリッキーです。Railsはここで、あらゆる先祖クラスの中から`initializers`メソッドに応答するものを探索します。次にそれらを名前順でソートして実行します。たとえば、`Engine`クラスは`initializers`メソッドを提供しているので、あらゆるエンジンを利用できるようになります。
 
 `Rails::Application`クラスは`railties/lib/rails/application.rb`ファイルで定義されており、その中で`bootstrap`、`railtie`、`finisher`イニシャライザをそれぞれ定義しています。

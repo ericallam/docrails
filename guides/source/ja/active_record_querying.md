@@ -82,7 +82,7 @@ class Supplier < ApplicationRecord
 end
 ```
 
-![bookstpreの全モデルの図](images/active_record_querying/bookstore_models.png)
+![bookstoreの全モデルの図](images/active_record_querying/bookstore_models.png)
 
 データベースからオブジェクトを取り出す
 ------------------------------------
@@ -199,7 +199,7 @@ WARNING: `find`メソッドに渡された主キーの中に、どのレコー�
 
 [`take`][]メソッドはレコードを1件取り出します。どのレコードが取り出されるかは指定されません。以下に例を示します。
 
-```
+```irb
 irb> customer = Customer.take
 => #<Customer id: 1, first_name: "Lifo">
 ```
@@ -236,7 +236,7 @@ TIP: このメソッドで取り出されるレコードは、利用するデー
 
 [`first`][]メソッドは、デフォルトでは主キー順の最初のレコードを取り出します。以下に例を示します。
 
-```
+```irb
 irb> customer = Customer.first
 => #<Customer id: 1, first_name: "Lifo">
 ```
@@ -253,7 +253,7 @@ SELECT * FROM customers ORDER BY customers.id ASC LIMIT 1
 
 以下のように、`first`メソッドで返すレコードの最大数を数値の引数で指定することもできます。
 
-```
+```irb
 irb> customers = Customer.first(3)
 => [#<Customer id: 1, first_name: "Lifo">, #<Customer id: 2, first_name: "Fifo">, #<Customer id: 3, first_name: "Filo">]
 ```
@@ -266,7 +266,7 @@ SELECT * FROM customers ORDER BY customers.id ASC LIMIT 3
 
 `order`を使って順序を変更したコレクションの場合、`first`メソッドは`order`で指定された属性に従って最初のレコードを返します。
 
-```
+```irb
 irb> customer = Customer.order(:first_name).first
 => #<Customer id: 2, first_name: "Fifo">
 ```
@@ -286,7 +286,7 @@ SELECT * FROM customers ORDER BY customers.first_name ASC LIMIT 1
 
 [`last`][]メソッドは、(デフォルトでは) 主キーの順序に従って最後のレコードを返します。 以下に例を示します。
 
-```
+```irb
 irb> customer = Customer.last
 => #<Customer id: 221, first_name: "Russel">
 ```
@@ -303,7 +303,7 @@ SELECT * FROM customers ORDER BY customers.id DESC LIMIT 1
 
 `last`メソッドで返すレコードの最大数を数値の引数で指定することもできます。例:
 
-```
+```irb
 irb> customers = Customer.last(3)
 => [#<Customer id: 219, first_name: "James">, #<Customer id: 220, first_name: "Sara">, #<Customer id: 221, first_name: "Russel">]
 ```
@@ -316,7 +316,7 @@ SELECT * FROM customers ORDER BY customers.id DESC LIMIT 3
 
 `order`を使って順序を変更したコレクションの場合、`last`メソッドは`order`で指定された属性に従って最後のレコードを返します。
 
-```
+```irb
 irb> customer = Customer.order(:first_name).last
 => #<Customer id: 220, first_name: "Sara">
 ```
@@ -336,7 +336,7 @@ SELECT * FROM customers ORDER BY customers.first_name DESC LIMIT 1
 
 [`find_by`][]メソッドは、与えられた条件にマッチするレコードのうち最初のレコードだけを返します。以下に例を示します。
 
-```
+```irb
 irb> Customer.find_by first_name: 'Lifo'
 => #<Customer id: 1, first_name: "Lifo">
 
@@ -360,7 +360,7 @@ SELECT * FROM customers WHERE (customers.first_name = 'Lifo') LIMIT 1
 
 [`find_by!`][] メソッドの動作は、マッチするレコードが見つからない場合に`ActiveRecord::RecordNotFound`例外が発生する点を除いて、`find_by`メソッドとまったく同じです。以下に例を示します。
 
-```
+```irb
 irb> Customer.find_by! first_name: 'does not exist'
 => ActiveRecord::RecordNotFound
 ```
@@ -462,6 +462,16 @@ end
 
 リレーション内に特定の順序があれば例外を発生させたい場合は、このオプションでアプリケーションの設定を上書きします。
 
+**`:order`**
+
+主キーの並び順（`:asc`または`:desc`）を指定します。デフォルト値は`:asc`です。
+
+```ruby
+Customer.find_each(order: :desc) do |customer|
+  NewsMailer.weekly(customer).deliver_now
+end
+```
+
 #### `find_in_batches`
 
 [`find_in_batches`][]メソッドは、レコードをバッチで取り出すという点で`find_each`と似ています。違うのは、`find_in_batches`は**バッチ**を個別にではなくモデルの配列としてブロックにyieldするという点です。以下の例では、与えられたブロックに対して一度に最大1000人までの顧客（customer）の配列をyieldしています。最後のブロックには残りの顧客が含まれます。
@@ -550,6 +560,7 @@ Active Recordは最初の引数を、文字列で表された条件として受�
 ```ruby
 Book.where("title = ? AND out_of_print = ?", params[:title], false)
 ```
+
 上の例では、1つ目の疑問符は`params[:title]`の値で置き換えられ、2つ目の疑問符は`false`をSQL形式に変換したもの (変換方法はアダプタによって異なる) で置き換えられます。
 
 以下のように`?`を用いるコードの書き方を強く推奨します。
@@ -775,7 +786,7 @@ Book.order("title ASC", "created_at DESC")
 
 `order`メソッドを複数回呼び出すと、続く並び順は最初の並び順に追加されていきます。
 
-```
+```irb
 irb> Book.order("title ASC").order("created_at DESC")
 # SELECT * FROM books ORDER BY title ASC, created_at DESC
 ```
@@ -887,7 +898,7 @@ GROUP BY created_at
 
 グループ化した項目の合計を１つのクエリで得るには、`group`の次に[`count`][]を呼び出します。
 
-```
+```irb
 irb> Order.group(:status).count
 => {"being_packed"=>7, "shipped"=>12}
 ```
@@ -1052,6 +1063,7 @@ Author.find(10).books.reorder('year_published ASC')
 SELECT * FROM authors WHERE id = 10 LIMIT 1
 SELECT * FROM books WHERE author_id = 10 ORDER BY year_published ASC
 ```
+
 ### `reverse_order`
 
 [`reverse_order`][]メソッドは、並び順が指定されている場合に並び順を逆にします。
@@ -1553,14 +1565,14 @@ end
 
 作成した`out_of_print`スコープは、以下のようにクラスメソッドとして呼び出せます。
 
-```
+```irb
 irb> Book.out_of_print
 => #<ActiveRecord::Relation> # all out of print books
 ```
 
 あるいは、以下のように`Book`オブジェクトを用いる関連付けでも呼び出せます。
 
-```
+```irb
 irb> author = Author.first
 irb> author.books.out_of_print
 => #<ActiveRecord::Relation> # all out of print books by `author`
@@ -1589,7 +1601,7 @@ end
 
 引数付きスコープの呼び出しは、クラスメソッドの呼び出しと同様です。
 
-```
+```irb
 irb> Book.costs_more_than(100.10)
 ```
 
@@ -1605,7 +1617,7 @@ end
 
 スコープとして定義したメソッドは、関連付けオブジェクトからもアクセス可能です。
 
-```
+```irb
 irb> author.books.costs_more_than(100.10)
 ```
 
@@ -1665,7 +1677,7 @@ class Book < ApplicationRecord
 end
 ```
 
-```
+```irb
 irb> Book.new
 => #<Book id: nil, out_of_print: false>
 irb> Book.unscoped.new
@@ -1680,10 +1692,11 @@ class Book < ApplicationRecord
 end
 ```
 
-```
+```irb
 irb> Book.new
 => #<Book id: nil, out_of_print: nil>
 ```
+
 [`default_scope`]: https://edgeapi.rubyonrails.org/classes/ActiveRecord/Scoping/Default/ClassMethods.html#method-i-default_scope
 
 ### スコープのマージ
@@ -1700,21 +1713,21 @@ class Book < ApplicationRecord
 end
 ```
 
-```
+```irb
 irb> Book.out_of_print.old
 SELECT books.* FROM books WHERE books.out_of_print = 'true' AND books.year_published < 1969
 ```
 
 `scope`と`where`条件を混用してマッチさせることが可能です。このとき生成される最終的なSQLでは、以下のようにすべての条件が`AND`で結合されます。
 
-```
+```irb
 irb> Book.in_print.where('price < 100')
 SELECT books.* FROM books WHERE books.out_of_print = 'false' AND books.price < 100
 ```
 
 末尾の`where`句をどうしてもスコープより優先したい場合は、[`merge`][]が使えます。
 
-```
+```irb
 irb> Book.in_print.merge(Book.out_of_print)
 SELECT books.* FROM books WHERE books.out_of_print = true
 ```
@@ -1730,7 +1743,7 @@ class Book < ApplicationRecord
 end
 ```
 
-```
+```irb
 irb> Book.all
 SELECT books.* FROM books WHERE (year_published >= 1969)
 
@@ -1755,7 +1768,7 @@ Book.unscoped.load
 
 このメソッドはスコープをすべて解除し、テーブルに対して通常の (スコープなしの) クエリを実行するようにします。
 
-```
+```irb
 irb> Book.unscoped.all
 SELECT books.* FROM books
 
@@ -1765,7 +1778,7 @@ SELECT books.* FROM books
 
 `unscoped` はブロックも受け取れます。
 
-```
+```irb
 irb> Book.unscoped { Book.out_of_print }
 SELECT books.* FROM books WHERE books.out_of_print
 ```
@@ -1802,7 +1815,7 @@ end
 
 このとき`status` enumの[スコープ](#スコープ)が自動的に作成され、以下のように`status`の特定の値を持つ（または持たない）すべてのオブジェクトを検索できるようになります。
 
-```
+```irb
 irb> Order.shipped
 => #<ActiveRecord::Relation> # all orders with status == :shipped
 irb> Order.not_shipped
@@ -1811,7 +1824,7 @@ irb> Order.not_shipped
 
 以下の`?`付きインスタンスメソッドは自動で作成されます。以下のようにモデルが`status` enumの値を持っているかどうかを`true`/`false`で返します。
 
-```
+```irb
 irb> order = Order.shipped.first
 irb> order.shipped?
 => true
@@ -1821,7 +1834,7 @@ irb> order.complete?
 
 以下の`!`付きインスタンスメソッドは自動で作成されます。最初に`status`の値を更新し、次に`status`がその値に設定されたかどうかを`true`/`false`で返します。
 
-```
+```irb
 irb> order = Order.first
 irb> order.shipped!
 UPDATE "orders" SET "status" = ?, "updated_at" = ? WHERE "orders"."id" = ?  [["status", 0], ["updated_at", "2019-01-24 07:13:08.524320"], ["id", 1]]
@@ -1893,7 +1906,7 @@ NOTE: １つのクエリが複数のレコードとマッチする場合、`find
 
 'Andy'という名前の顧客を探し、いなければ作成したいとします。これを行なうには以下を実行します。
 
-```
+```irb
 irb> Customer.find_or_create_by(first_name: 'Andy')
 => #<Customer id: 5, first_name: "Andy", last_name: nil, title: nil, visits: 0, orders_count: nil, lock_version: 0, created_at: "2019-01-17 07:06:45", updated_at: "2019-01-17 07:06:45">
 ```
@@ -1941,7 +1954,7 @@ validates :orders_count, presence: true
 
 `orders_count`を指定せずに新しい`Customer`モデルを作成しようとすると、レコードは無効になって以下のように例外が発生します。
 
-```
+```irb
 irb> Customer.find_or_create_by!(first_name: 'Andy')
 ActiveRecord::RecordInvalid: Validation failed: Orders count can't be blank
 ```
@@ -1952,7 +1965,7 @@ ActiveRecord::RecordInvalid: Validation failed: Orders count can't be blank
 
 [`find_or_initialize_by`][]メソッドは`find_or_create_by`と同様に動作しますが、`create`の代わりに`new`を呼ぶ点が異なります。つまり、モデルの新しいインスタンスは作成されますが、その時点ではデータベースに保存されていません。`find_or_create_by`の例を少し変えて説明を続けます。今度は'Nina'という名前の顧客が必要だとします。
 
-```
+```irb
 irb> nina = Customer.find_or_initialize_by(first_name: 'Nina')
 => #<Customer id: nil, first_name: "Nina", orders_count: 0, locked: true, created_at: "2011-08-30 06:09:27", updated_at: "2011-08-30 06:09:27">
 
@@ -1971,7 +1984,7 @@ SELECT * FROM customers WHERE (customers.first_name = 'Nina') LIMIT 1
 
 このオブジェクトをデータベースに保存したい場合は、単に`save`を呼び出します。
 
-```
+```irb
 irb> nina.save
 => true
 ```
@@ -1983,7 +1996,7 @@ SQLで検索する
 
 独自のSQLでレコードを検索したい場合は、[`find_by_sql`][]メソッドが使えます。この`find_by_sql`メソッドは、オブジェクトの配列を1つ返します。クエリがレコードを1つしか返さなかった場合にも配列が返されますのでご注意ください。たとえば、以下のクエリを実行したとします。
 
-```
+```irb
 irb> Customer.find_by_sql("SELECT * FROM customers INNER JOIN orders ON customers.id = orders.customer_id ORDER BY customers.created_at desc")
 => [#<Customer id: 1, first_name: "Lucas" ...>, #<Customer id: 2, first_name: "Jan" ...>, ...]
 ```
@@ -1996,7 +2009,7 @@ irb> Customer.find_by_sql("SELECT * FROM customers INNER JOIN orders ON customer
 
 `find_by_sql`は[`connection.select_all`][]と深い関係があります。`select_all`は`find_by_sql`と同様、カスタムSQLを用いてデータベースからオブジェクトを取り出しますが、取り出したオブジェクトをインスタンス化しない点が異なります。このメソッドは`ActiveRecord::Result`クラスのインスタンスを1つ返します。このオブジェクトで`to_a`を呼ぶと、各レコードに対応するハッシュを含む配列を1つ返します。
 
-```
+```irb
 irb> Customer.connection.select_all("SELECT first_name, created_at FROM customers WHERE id = '1'").to_a
 => [{"first_name"=>"Rafael", "created_at"=>"2012-11-10 23:23:45.281189"}, {"first_name"=>"Eileen", "created_at"=>"2013-12-09 11:22:35.221282"}]
 ```
@@ -2007,7 +2020,7 @@ irb> Customer.connection.select_all("SELECT first_name, created_at FROM customer
 
 [`pluck`][]は、1つのモデルで使われているテーブルから1つ以上のカラムを取得するクエリを送信するときに利用できます。引数としてカラム名のリストを与えると、指定したカラムの値の配列を、対応するデータ型で返します。
 
-```
+```irb
 irb> Book.where(out_of_print: true).pluck(:id)
 SELECT id FROM books WHERE out_of_print = true
 => [1, 2, 3]
@@ -2049,7 +2062,7 @@ class Customer < ApplicationRecord
 end
 ```
 
-```
+```irb
 irb> Customer.select(:first_name).map &:name
 => ["私はDavid", "私はJeremy", "私はJose"]
 
@@ -2059,13 +2072,13 @@ irb> Customer.pluck(:first_name)
 
 単一テーブルのフィールド読み出しに加えて、複数のテーブルでも同じことができます。
 
-```
+```irb
 irb> Order.joins(:customer, :books).pluck("orders.created_at, customers.email, books.title")
 ```
 
 さらに`pluck`は、`select`などの`Relation`スコープと異なり、クエリを直接トリガするので、その後ろに他のスコープをチェインできません。ただし、構成済みのスコープを`pluck`の前に置くことは可能です。
 
-```
+```irb
 irb> Customer.pluck(:first_name).limit(1)
 NoMethodError: undefined method `limit' for #<Array:0x007ff34d3ad6d8>
 
@@ -2075,7 +2088,7 @@ irb> Customer.limit(1).pluck(:first_name)
 
 NOTE: 知っておくと良い注意点は、リレーションオブジェクトにincludesがあると、eager loadingが不必要なクエリにおいてでも、`pluck`がeager loadingを引き起こすことです。以下に例を示します。
 
-```
+```irb
 irb> assoc = Customer.includes(:reviews)
 irb> assoc.pluck(:id)
 SELECT "customers"."id" FROM "customers" LEFT OUTER JOIN "reviews" ON "reviews"."id" = "customers"."review_id"
@@ -2083,7 +2096,7 @@ SELECT "customers"."id" FROM "customers" LEFT OUTER JOIN "reviews" ON "reviews".
 
 これを回避する方法の１つは、以下のようにincludesを`unscope`することです。
 
-```
+```irb
 irb> assoc.unscope(:includes).pluck(:id)
 ```
 
@@ -2093,7 +2106,7 @@ irb> assoc.unscope(:includes).pluck(:id)
 
 [`ids`][]は、テーブルの主キーを使っているリレーションのIDをすべて取り出すのに使えます。
 
-```
+```irb
 irb> Customer.ids
 SELECT id FROM customers
 ```
@@ -2104,7 +2117,7 @@ class Customer < ApplicationRecord
 end
 ```
 
-```
+```irb
 irb> Customer.ids
 SELECT customer_id FROM customers
 ```
@@ -2175,21 +2188,21 @@ Customer.first.orders.many?
 
 あらゆる計算メソッドは、モデルに対して直接実行できます。
 
-```
+```irb
 irb> Customer.count
 SELECT COUNT(*) FROM customers
 ```
 
 リレーションに対しても直接実行できます。
 
-```
+```irb
 irb> Customer.where(first_name: 'Ryan').count
 SELECT COUNT(*) FROM customers WHERE (first_name = 'Ryan')
 ```
 
 この他にも、リレーションに対してさまざまな検索メソッドを利用して複雑な計算を行なえます。
 
-```
+```irb
 irb> Customer.includes("orders").where(first_name: 'Ryan', orders: { status: 'shipped' }).count
 ```
 

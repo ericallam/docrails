@@ -729,7 +729,7 @@ run ActionCable.server
 
 続いて、`bin/cable`のbinstubを使ってサーバーを起動します。
 
-```
+```bash
 #!/bin/bash
 bundle exec puma -p 28080 cable/config.ru
 ```

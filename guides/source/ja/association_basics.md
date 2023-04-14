@@ -2537,7 +2537,7 @@ end
 * `proxy_association.reflection`: 関連付けを記述するリフレクションオブジェクトを返します。
 * `proxy_association.target`: `belongs_to`または`has_one`関連付けのオブジェクトを返すか、`has_many`または`has_and_belongs_to_many`関連付けオブジェクトのコレクションを返します。
 
-シングルテーブル継承 （STI）
+単一テーブル継承 （STI）
 ------------------------
 
 異なるモデル間でフィールドや振る舞いを共有したい場合があります。
@@ -2549,7 +2549,7 @@ end
 $ bin/rails generate model vehicle type:string color:string price:decimal{10.2}
 ```
 
-"type"フィールドを追加している点にご注目ください。すべてのモデルはデータベース上のテーブルに保存されるため、Railsはこのカラムに該当するモデル名を保存します。この例では "Car"、"Motorcycle"または"Bicycle"になります。この例のシングルテーブル継承（STI: Single Table Inheritance）では、テーブルに"type"フィールドがないとうまく動きません。
+"type"フィールドを追加している点にご注目ください。すべてのモデルはデータベース上のテーブルに保存されるため、Railsはこのカラムに該当するモデル名を保存します。この例では "Car"、"Motorcycle"または"Bicycle"になります。この例の単一テーブル継承（STI: Single Table Inheritance）では、テーブルに"type"フィールドがないとうまく動きません。
 
 次に、`Vehicle`モデルを継承して3つのモデルをそれぞれ生成します。このとき、`--parent=親モデル`オプションを使って特定の親モデルを継承している点にご注目ください。このオプションを使うと、同様のマイグレーションファイルを生成せずにモデルを生成できます（該当するテーブルが既に存在しているため）。
 

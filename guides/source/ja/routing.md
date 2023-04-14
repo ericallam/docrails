@@ -899,13 +899,13 @@ Rackアプリケーションをマッチャーのエンドポイントとして�
 
 ```ruby
  match '/admin', to: AdminApp, via: :all
- ```
+```
 
 Rackアプリケーションがrootパスでリクエストを受け取るようにしたい場合は、[`mount`][]を使います。
 
 ```ruby
  mount AdminApp, at: '/admin'
- ```
+```
 
 [`mount`]: https://api.rubyonrails.org/classes/ActionDispatch/Routing/Mapper/Base.html#method-i-mount
 

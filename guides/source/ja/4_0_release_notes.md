@@ -22,7 +22,7 @@ Rails 4.0へのアップグレード
 Rails 4.0アプリケーションを作成する
 --------------------------------
 
-```
+```bash
 # 'rails'というRubyGemがインストールされている必要があります。
 $ rails new myapp
 $ cd myapp
@@ -38,13 +38,13 @@ Railsでは、アプリケーションのルートディレクトリに置かれ
 
 `Bundler`と`Gemfile`のおかげで、専用の`bundle`コマンド一発でRailsアプリケーションのgemを簡単に安定させることができます。Gitリポジトリから直接bundleしたい場合は`--edge`フラグを追加します。
 
-```
+```bash
 $ rails new myapp --edge
 ```
 
 Railsアプリケーションのリポジトリをローカルにチェックアウトしたものがあり、それを使ってアプリケーションを生成したい場合は、`--dev`フラグを追加します。
 
-```
+```bash
 $ ruby /path/to/rails/railties/bin/rails new myapp --dev
 ```
 
@@ -178,15 +178,15 @@ Active Support
 
 * `String#to_date`に無効な日付を渡した場合に発生するエラーが`NoMethodError: undefined method 'div' for nil:NilClass`から`ArgumentError: invalid date`に変更されました。これによって`Date.parse`と同じ動作になり、以下のように3.xよりも日付を適切に扱えるようになりました。
 
-  ```ruby
-  # ActiveSupport 3.x
-  "asdf".to_date # => NoMethodError: undefined method `div' for nil:NilClass
-  "333".to_date # => NoMethodError: undefined method `div' for nil:NilClass
+```ruby
+# ActiveSupport 3.x
+"asdf".to_date # => NoMethodError: undefined method `div' for nil:NilClass
+"333".to_date # => NoMethodError: undefined method `div' for nil:NilClass
 
-  # ActiveSupport 4
-  "asdf".to_date # => ArgumentError: invalid date
-  "333".to_date # => Fri, 29 Nov 2013
-  ```
+# ActiveSupport 4
+"asdf".to_date # => ArgumentError: invalid date
+"333".to_date # => Fri, 29 Nov 2013
+```
 
 ### 非推奨
 

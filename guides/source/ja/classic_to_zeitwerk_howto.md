@@ -195,12 +195,12 @@ app/models/concerns
 1. これらのクラスやモジュールから`Concerns`名前空間を削除してクライアントコードを更新する。
 2. オートロードのパスから`app/models/concerns`を除外することで現状のままにする。
 
-  ```ruby
-  # config/initializers/zeitwerk.rb
-  ActiveSupport::Dependencies.
-    autoload_paths.
-    delete("#{Rails.root}/app/models/concerns")
-  ```
+```ruby
+# config/initializers/zeitwerk.rb
+ActiveSupport::Dependencies.
+  autoload_paths.
+  delete("#{Rails.root}/app/models/concerns")
+```
 
 ### オートロードパスに`app`を追加する
 
@@ -320,7 +320,7 @@ config.autoload_paths << "#{config.root}/extras"
 
 ```ruby
 config.to_prepare do
-  Dir.glob("#{Rails.root}/app/overrides/**/*_override.rb").each do |override|
+  Dir.glob("#{Rails.root}/app/overrides/**/*_override.rb").sort.each do |override|
     require_dependency override
   end
 end
@@ -332,7 +332,7 @@ end
 overrides = "#{Rails.root}/app/overrides"
 Rails.autoloaders.main.ignore(overrides)
 config.to_prepare do
-  Dir.glob("#{overrides}/**/*_override.rb").each do |override|
+  Dir.glob("#{overrides}/**/*_override.rb").sort.each do |override|
     load override
   end
 end
