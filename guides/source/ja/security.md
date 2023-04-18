@@ -181,7 +181,7 @@ NOTE: **セッションを無期限にすると、CSRF、セッションハイ�
 ```ruby
 class Session < ApplicationRecord
   def self.sweep(time = 1.hour)
-    where("updated_at < ?", time.ago.to_formatted_s(:db)).delete_all
+    where(updated_at: ...time.ago).delete_all
   end
 end
 ```
@@ -189,7 +189,7 @@ end
 本セクションでは、セッション維持の問題で触れたセッション固定攻撃について説明します。攻撃者が5分おきにセッションを維持すると、サーバーがセッションを無効にしようとしてもセッションが恒久的に継続してしまいます。シンプルな対策は、セッションテーブルに`created_at`カラムを追加することです。これで、期限を過ぎたセッションを削除できます。上の`sweep`メソッドで以下のコードを使います。
 
 ```ruby
-where("updated_at < ? OR created_at < ?", time.ago.to_formatted_s(:db), 2.days.ago.to_formatted_s(:db)).delete_all
+where(updated_at: ...time.ago).or(where(created_at: ...2.days.ago)).delete_all
 ```
 
 クロスサイトリクエストフォージェリ（CSRF）
@@ -932,7 +932,7 @@ Location: http://www.malicious.tld
 ```
 HTTP/1.1 302 Found [最初は通常の302レスポンス]
 Date: Tue, 12 Apr 2005 22:09:07 GMT
-Location: Content-Type: text/html
+Location:Content-Type: text/html
 
 
 HTTP/1.1 200 OK [ここより下は攻撃者によって作成された次の新しいレスポンス]
