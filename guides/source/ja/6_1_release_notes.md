@@ -354,7 +354,7 @@ Active Support
 
 ### 削除されたもの
 
-*   `config.i18n.fallbacks`が空の場合に`I18n.default_local`にフォールバックする挙動（非推奨）を削除
+*   `config.i18n.fallbacks`が空の場合に`I18n.default_locale`にフォールバックする挙動（非推奨）を削除
 
 *   非推奨の`LoggerSilence`定数を削除
 
