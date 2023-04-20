@@ -319,13 +319,14 @@ eager loading
 
 一般的にproduction的な環境では、アプリケーションの起動時にアプリケーションコードをすべて読み込んでおく方が望ましいと言えます。eager loading（一括読み込み）はすべてをメモリ上に読み込むことでリクエストに即座に対応できるように備え、[CoW](https://ja.wikipedia.org/wiki/%E3%82%B3%E3%83%94%E3%83%BC%E3%82%AA%E3%83%B3%E3%83%A9%E3%82%A4%E3%83%88)（コピーオンライト）との相性にも優れています。
 
-eager loadingは[`config.eager_load`][]フラグで制御します。これは`production`モードではデフォルトで有効です。
+eager loadingは[`config.eager_load`][]フラグで制御します。これは`production`以外のすべての環境でデフォルトで無効になっています。rakeタスクが実行されると、`config.eager_load`は[`config.rake_eager_load`][]で上書きされ、デフォルトでは`false`になります。つまり、production環境で実行するrakeタスクは、デフォルトではアプリケーションをeager loadingしません。
 
 ファイルがeager loadingされる順序は未定義です。
 
 eager loading中に、Railsは`Zeitwerk::Loader.eager_load_all`を呼び出します。これはすべてのZeitwerkが管理している依存gemもeager loadされていることを保証します。
 
 [`config.eager_load`]: configuring.html#config-eager-load
+[`config.rake_eager_load`]: configuring.html#config-rake-eager-load
 
 STI（単一テーブル継承）
 ------------------------
