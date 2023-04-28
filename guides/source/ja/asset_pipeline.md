@@ -841,7 +841,7 @@ Sprockets.register_preprocessor 'text/css', AddComment
 
 ### [Webpacker/Shakapacker](webpacker.html)
 
-Webpackerは、Rails 5および6のデフォルトのJavaScriptプリプロセッサ兼バンドラでした。現在は開発が終了しています。後継として[shakapacker`](https://github.com/shakacode/shakapacker)が存在しますが、Railsチームやプロジェクトはメンテナンスしていません。
+Webpackerは、Rails 5および6のデフォルトのJavaScriptプリプロセッサ兼バンドラでした。現在は開発が終了しています。後継として[`shakapacker`](https://github.com/shakacode/shakapacker)が存在しますが、Railsチームやプロジェクトはメンテナンスしていません。
 
 このリストにある他のライブラリと異なり、`webpacker`/`shakapacker`はSprocketsから完全に独立していて、JavaScriptとCSSの両方のファイルを処理できます。詳しくは[Webpackerガイド](webpacker.html)を参照してください。
 
