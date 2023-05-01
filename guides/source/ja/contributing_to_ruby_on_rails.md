@@ -28,7 +28,7 @@ Ruby on Railsでは[GitHubのIssueトラッキング][issues]機能でissueを�
 
 NOTE: Ruby on Railsの最新リリースで見つけたバグは最も注目を集める可能性があります。Railsコアチームは、**edge Rails**（開発中のRailsのコード）でのテストに時間を割いてくれる方からのフィードバックも常に歓迎しています。テスティング用にedge Railsを入手する方法については後述します。Railsのどのバージョンがサポートされているかについては、[メンテナンスポリシー][maintenance_policy]を参照してください。セキュリティ関連のissueは、GitHubのissue trackerには絶対に報告しないでください。
 
-[maintenance_policy]: https://guides.rubyonrails.org/maintenance_policy.html
+[maintenance_policy]: maintenance_policy.html
 
 ### バグレポートを作成する
 
