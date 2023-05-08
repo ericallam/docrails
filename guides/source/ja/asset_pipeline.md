@@ -260,7 +260,7 @@ Sprocketsは、指定されたファイルを読み込んで必要に応じて�
 
 ### コントローラ固有のアセット
 
-Railsでscaffoldやコントローラを生成すると、そのコントローラ用のCSSファイルtファイルも生成されます。scaffoldで生成する場合は、`scaffolds.css`というファイルも生成されます。
+Railsでscaffoldやコントローラを生成すると、そのコントローラ用のCSSファイルも生成されます。scaffoldで生成する場合は、`scaffolds.css`というファイルも生成されます。
 
 たとえば、`ProjectsController`を生成すると、Railsは`app/assets/stylesheets/projects.css`というファイルも追加します。デフォルトでは、`manifest.js`ファイル内の`link_directory`ディレクティブを使うことで、これらのファイルをアプリケーションですぐに利用可能になります。
 
