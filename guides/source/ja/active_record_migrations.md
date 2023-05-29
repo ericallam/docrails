@@ -563,19 +563,18 @@ class ExampleMigration < ActiveRecord::Migration[7.0]
       t.string :zipcode
     end
 
-    reversible do |dir|
-      dir.up do
-        # CHECK制約を追加
+    reversible do |direction|
+      direction.up do
+        # distributors viewを作成
         execute <<-SQL
-          ALTER TABLE distributors
-            ADD CONSTRAINT zipchk
-              CHECK (char_length(zipcode) = 5) NO INHERIT;
+          CREATE VIEW distributors_view AS
+          SELECT id, zipcode
+          FROM distributors;
         SQL
       end
       dir.down do
         execute <<-SQL
-          ALTER TABLE distributors
-            DROP CONSTRAINT zipchk
+          DROP VIEW distributors_view;
         SQL
       end
     end
@@ -599,17 +598,17 @@ end
 たとえば、`up`メソッドでテーブルを作成したら、`down`メソッドではそのテーブルを削除する必要があります。`down`メソッド内で行なう変換の順序は、`up`メソッド内で行なう順序の正確な逆順にするのがよいでしょう。先の`reversible`セクションの例は以下と同等になります。
 
 ```ruby
-class ExampleMigration < ActiveRecord::Migration [7.0]
+class ExampleMigration < ActiveRecord::Migration[7.0]
   def up
     create_table :distributors do |t|
       t.string :zipcode
     end
 
-    # CHECK制約を追加
+    # distributors viewを作成
     execute <<-SQL
-      ALTER TABLE distributors
-        ADD CONSTRAINT zipchk
-        CHECK (char_length(zipcode) = 5);
+      CREATE VIEW distributors_view AS
+      SELECT id, zipcode
+      FROM distributors;
     SQL
 
     add_column :users, :home_page_url, :string
@@ -621,8 +620,7 @@ class ExampleMigration < ActiveRecord::Migration [7.0]
     remove_column :users, :home_page_url
 
     execute <<-SQL
-      ALTER TABLE distributors
-        DROP CONSTRAINT zipchk
+      DROP VIEW distributors_view;
     SQL
 
     drop_table :distributors
@@ -651,26 +649,26 @@ end
 ```
 
 `revert`には、逆進を行う命令を含むブロックも渡せます。これは、以前のマイグレーションの一部のみを逆進させたい場合に便利です。
-たとえば、`ExampleMigration`がコミット済みになっており、後になって郵便番号を検証するには、`CHECK`制約よりもActive Recordのバリデーションを使う方がよいことに気付いたとしましょう。
+
+たとえば、`ExampleMigration`がコミット済みになっており、後になってDistributors viewが不要になったとします。
 
 ```ruby
-class DontUseConstraintForZipcodeValidationMigration < ActiveRecord::Migration[7.0]
+class DontUseDistributorsViewMigration < ActiveRecord::Migration[7.0]
   def change
     revert do
-      # ExampleMigrationのコードをコピペ
-      reversible do |dir|
-        dir.up do
-          # CHECK制約を追加
+      # ExampleMigrationからコピペしたコード
+      reversible do |direction|
+        direction.up do
+          # distributors viewを作成する
           execute <<-SQL
-            ALTER TABLE distributors
-              ADD CONSTRAINT zipchk
-                CHECK (char_length(zipcode) = 5);
+            CREATE VIEW distributors_view AS
+            SELECT id, zipcode
+            FROM distributors;
           SQL
         end
         dir.down do
           execute <<-SQL
-            ALTER TABLE distributors
-              DROP CONSTRAINT zipchk
+            DROP VIEW distributors_view;
           SQL
         end
       end
