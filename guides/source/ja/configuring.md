@@ -2446,7 +2446,16 @@ development:
 
 Railsにデフォルトで備わっている環境は、"development"、"test"、"production"の3つです。通常はこの3つの環境で事足りますが、場合によっては環境を追加したくなることもあると思います。
 
-たとえば、production環境をミラーコピーしたサーバーをテスト目的でのみ使いたいという場合を想定してみましょう。このようなサーバーは通常「ステージングサーバー（staging server）」と呼ばれます。"staging"環境をサーバーに追加したいのであれば、`config/environments/staging.rb`というファイルを作成するだけで済みます。その際にはなるべく`config/environments`にある既存のファイルを流用し、必要な部分のみを変更するようにしてください。
+たとえば、production環境をミラーコピーしたサーバーをテスト目的でのみ使いたいという場合を想定してみましょう。このようなサーバーは通常「ステージングサーバー（staging server）」と呼ばれます。"staging"環境をサーバーに追加したい場合は、`config/environments/staging.rb`というファイルを作成するだけで済みます。これはproductionに近い環境なので、`config/environments/production.rb`の内容をコピーして、それを元に必要な変更を加えられます。以下のように、他の環境の設定をrequireして拡張することも可能です。
+
+```ruby
+# config/environments/staging.rb
+require_relative "production"
+
+Rails.application.configure do
+  # Staging用の設定をオーバーライドする
+end
+```
 
 このようにして追加された環境は、デフォルトの3つの環境と同じように利用できます。`rails server -e staging`を実行すればステージング環境でサーバーを起動でき、`rails console -e staging`や`Rails.env.staging?`なども動作するようになります。
 
