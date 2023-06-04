@@ -97,8 +97,16 @@ module RailsGuides
         File.join('https://github.com/yasslab/railsguides.jp/tree/master/guides/source/ja', @markdown_file_name)
       end
 
+      def edgeguides_content_link
+        File.join(
+             'https://edgeguides.rubyonrails.org/',
+             @markdown_file_name.sub('.md', '.html')
+             )
+      end
+
       def render_page
         @view.content_for(:markdown_path_on_github) { markdown_path_on_github }
+        @view.content_for(:edgeguides_content_link) { edgeguides_content_link }
         @view.content_for(:references) { @references }
         super
       end
