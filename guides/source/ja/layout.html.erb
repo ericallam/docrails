@@ -152,13 +152,15 @@
           <%= yield.html_safe %>
           <%= yield :references %>
 
-          <% if yield(:markdown_path_on_github).present? ||
+          <% if yield(:edit_on_github_url).present? ||
 	        yield(:origin_content_url).present? %>
             <p id="mdEditLink" style="font-size: 1.1428em; text-align: right;">
-              <%= link_to '🖋 GitHubで編集を提案する', yield(:markdown_path_on_github) if yield(:markdown_path_on_github).present? %>
-	      <%= ' / ' if yield(:markdown_path_on_github).present? &&
+              <%= link_to '🖋 GitHubで編集を提案する',
+	                   yield(:edit_on_github_url) if yield(:edit_on_github_url).present? %>
+	      <%= ' / ' if yield(:edit_on_github_url).present? &&
 	                   yield(:origin_content_url).present? %>
-              <%= link_to '📕 英語で読む', yield(:origin_content_url) if yield(:origin_content_url).present? %>
+              <%= link_to '📕 英語で読む',
+	                   yield(:origin_content_url) if yield(:origin_content_url).present? %>
             </p>
           <% end %>
 
