@@ -93,8 +93,11 @@ module RailsGuides
         end
       end
 
-      def markdown_path_on_github
-        File.join('https://github.com/yasslab/railsguides.jp/tree/master/guides/source/ja', @markdown_file_name)
+      def edit_on_github_url
+        File.join(
+             'https://github.com/yasslab/railsguides.jp/tree/master/guides/source/ja',
+             @markdown_file_name
+             )
       end
 
       def origin_content_url
@@ -105,7 +108,7 @@ module RailsGuides
       end
 
       def render_page
-        @view.content_for(:markdown_path_on_github) { markdown_path_on_github }
+        @view.content_for(:edit_on_github_url) { edit_on_github_url }
         @view.content_for(:origin_content_url) { origin_content_url }
         @view.content_for(:references) { @references }
         super
