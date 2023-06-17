@@ -460,7 +460,7 @@ add_foreign_key :articles, :authors
 
 `to_table`名から`from_table`カラム名を導出できない場合は、`:column`オプションでカラム名を指定できます。参照されている主キーが`:id`以外の場合は、`:primary_key`オプションで主キーを指定してください。
 
-たとえば、`articles.reviewer`を参照する`articles.reviewer`に外部キーを追加するには以下のようにします。
+たとえば、`authors.email`を参照する`articles.reviewer`に外部キーを追加するには以下のようにします。
 
 ```ruby
 add_foreign_key :articles, :authors, column: :reviewer, primary_key: :email
