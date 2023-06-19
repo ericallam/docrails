@@ -320,7 +320,7 @@ $ bin/rails generate scaffold Article body:text
 
 NOTE: 組み込みの`helper`ジェネレータには`invoke test_unit`という行がありますが、今作った`my_helper`ジェネレータにはありません。`helper`ジェネレータはデフォルトではテストを生成しませんが、[`hook_for`][]でテストを生成するためのフックを提供しています。`MyHelperGenerator`クラスに`hook_for :test_framework, as: :helper`を追加すれば、これと同じことを実現できます。詳しくは`hook_for`のドキュメントを参照してください。
 
-[`config.generators`]: configuring.html#configuring-generators
+[`config.generators`]: configuring.html#ジェネレータを設定する
 [`hook_for`]: https://api.rubyonrails.org/classes/Rails/Generators/Base.html#method-c-hook_for
 
 ### ジェネレータのフォールバック
@@ -388,7 +388,7 @@ $ bin/rails generate scaffold Comment body:text
 アプリケーションテンプレート
 ---------------------
 
-アプリケーションテンプレートは特殊なジェネレータです。このテンプレートでは、[ジェネレータのヘルパーメソッド](#generator-helper-methods)をすべて利用可能ですが、RubyクラスではなくRubyスクリプトとして記述する点が異なります。以下はアプリケーションテンプレートの例です。
+アプリケーションテンプレートは特殊なジェネレータです。このテンプレートでは、[ジェネレータのヘルパーメソッド](#ジェネレータのヘルパーメソッド)をすべて利用可能ですが、RubyクラスではなくRubyスクリプトとして記述する点が異なります。以下はアプリケーションテンプレートの例です。
 
 ```ruby
 # template.rb
