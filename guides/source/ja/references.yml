@@ -1,6 +1,8 @@
 getting_started:
 - title: Ruby on Railsガイドのすすめ
   url: https://qiita.com/yui-knk/items/4b4aaf4b8dea049efe6e
+- title: OSS入門としてのRailsガイド
+  url: https://speakerdeck.com/yasslab/railsguides-as-an-oss-gate
 - title: Ruby on Railsチュートリアル - プロダクト開発の０→１を学ぼう
   url: https://railstutorial.jp
 
