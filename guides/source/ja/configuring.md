@@ -304,7 +304,7 @@ config.logger      = ActiveSupport::TaggedLogging.new(mylogger)
 #### `config.secret_key_base`
 
 アプリケーションのキージェネレータに入力する秘密鍵を指定する際に使われるフォールバックです。
-これは設定せずに、`config/credentials.yml.enc`で`secret_key_base`を指定することが推奨されます。別の設定方法などについて詳しくは、[`secret_key_base` API documentation]( https://api.rubyonrails.org/classes/Rails/Application.html#method-i-secret_key_base) を参照してください。
+これは設定せずに、`config/credentials.yml.enc`で`secret_key_base`を指定することが推奨されます。別の設定方法などについて詳しくは、APIドキュメント[`secret_key_base`]( https://api.rubyonrails.org/classes/Rails/Application.html#method-i-secret_key_base)を参照してください。
 
 #### `config.require_master_key`
 
