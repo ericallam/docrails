@@ -524,7 +524,7 @@ WARNING: Active Storageのすべてのコントローラは、デフォルトで
 
 ### リダイレクトモード
 
-[`url_for`][ActionView::RoutingUrlFor#url_for]ビューヘルパーにblobを渡すと、永続的なblob URLを生成できます。生成されるURLでは、そのblogの[`RedirectController`][`ActiveStorage::Blobs::RedirectController`]にルーティングされる[`signed_id`][ActiveStorage::Blob#signed_id]が使われます。
+[`url_for`][ActionView::RoutingUrlFor#url_for]ビューヘルパーにblobを渡すと、永続的なblob URLを生成できます。生成されるURLでは、そのblobの[`RedirectController`][`ActiveStorage::Blobs::RedirectController`]にルーティングされる[`signed_id`][ActiveStorage::Blob#signed_id]が使われます。
 
 ```ruby
 url_for(user.avatar)
