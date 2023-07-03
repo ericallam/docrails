@@ -666,7 +666,7 @@ class DontUseDistributorsViewMigration < ActiveRecord::Migration[7.0]
             FROM distributors;
           SQL
         end
-        dir.down do
+        direction.down do
           execute <<-SQL
             DROP VIEW distributors_view;
           SQL
