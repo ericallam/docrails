@@ -357,8 +357,7 @@ send_file('/var/www/uploads/' + params[:filename])
 ```ruby
 basename = File.expand_path('../../files', __dir__)
 filename = File.expand_path(File.join(basename, @file.public_filename))
-raise if basename !=
-     File.expand_path(File.join(File.dirname(filename), '../../../'))
+raise if basename != File.expand_path(File.dirname(filename))
 send_file filename, disposition: 'inline'
 ```
 
