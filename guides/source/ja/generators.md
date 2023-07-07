@@ -45,7 +45,9 @@ $ bin/rails generate scaffold --help
 ```ruby
 class InitializerGenerator < Rails::Generators::Base
   def create_initializer_file
-    create_file "config/initializers/initializer.rb", "# （イニシャライザの内容をここに記述する）"
+    create_file "config/initializers/initializer.rb", <<~RUBY
+      # 初期化時のコンテンツをここに追加する
+    RUBY
   end
 end
 ```
