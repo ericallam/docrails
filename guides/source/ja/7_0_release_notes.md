@@ -299,7 +299,7 @@ Active Support
 
     この非推奨化は、Ruby 3.1である種のオブジェクトの式展開を高速化する[最適化](https://github.com/ruby/ruby/commit/b08dacfea39ad8da3f1fd7fdd0e4538cc892ec44)を利用できるようにするためのものです。
 
-    新しいアプリケーションではそれらのクラスの`#to_s`メソッドがオーバーライドされます。既存のアプリケーションでは`config.active_support.disable_to_s_conversion`で無効にできます。
+    新しいアプリケーションではそれらのクラスの`#to_s`メソッドがオーバーライドされません。既存のアプリケーションでは`config.active_support.disable_to_s_conversion`でオーバーライドされないようにできます。
 
 ### 主な変更点
 
