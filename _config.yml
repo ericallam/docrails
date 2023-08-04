@@ -1,14 +1,16 @@
 # Site settings
 title: Ruby on Rails ガイド
-email: yasulab@gmail.com
 description: > # this means to ignore newlines until "baseurl:"
   Rails を学び，使うための公式リファレンスマニュアル
-baseurl: "" # the subpath of your site, e.g. /blog/
-url: "http://railsguides.jp" # the base hostname & protocol for your site
-twitter_username: yasulab
-github_username:  yasulab
+baseurl: "/"                      # the subpath of your site, e.g. /blog/
+url:     "https://railsguides.jp" # the base hostname & protocol for your site
 source:      ./guides/output/ja
 destination: ./_site
+
+# Contacts
+contact: https://railsguides.jp/contact
+github:  https://github.com/YassLab
+twitter: https://twitter.com/RailsGuidesJP
 
 # Build settings
 markdown: kramdown
