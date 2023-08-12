@@ -49,6 +49,8 @@ Railsをインストールする前に、必要な要件が自分のシステム
 * Ruby
 * SQLite3
 
+TIP: 訳注：GitHubが提供するクラウド開発環境『[Codespaces](https://github.co.jp/features/codespaces)』には、[公式のRuby on Railsテンプレート](https://github.com/codespaces/templates)が用意されています。`Use this template` ボタンから、ワンクリックでRailsを動かせるクラウド開発環境が手に入ります。（参考: [GitHub Codespaces を利用する - Rails Girls](https://railsgirls.jp/install/codespaces)）
+
 #### Rubyをインストールする
 
 ターミナル（コマンドプロンプトとも言います）ウィンドウを開いてください。macOSの場合、ターミナル（Terminal.app）という名前のアプリケーションを実行します。Windowsの場合は[スタート]メニューから[ファイル名を指定して実行]をクリックして'cmd.exe'と入力します。`$`で始まる記述はコマンド行なので、これらをコマンドラインに入力して実行します。次に以下を実行して、現在インストールされているRubyが最新バージョンであることを確認しましょう。
