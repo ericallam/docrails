@@ -77,7 +77,6 @@ NOTE: 設定をクラスに直接適用する必要がある場合は、イニ�
 - [`config.active_support.disable_to_s_conversion`](#config-active-support-disable-to-s-conversion): `true`
 - [`config.active_support.executor_around_test_case`](#config-active-support-executor-around-test-case): `true`
 - [`config.active_support.hash_digest_class`](#config-active-support-hash-digest-class): `OpenSSL::Digest::SHA256`
-- [`config.active_support.isolation_level`](#config-active-support-isolation-level): `:thread`
 - [`config.active_support.key_generator_hash_digest_class`](#config-active-support-key-generator-hash-digest-class): `OpenSSL::Digest::SHA256`
 - [`config.active_support.remove_deprecated_time_with_zone_name`](#config-active-support-remove-deprecated-time-with-zone-name): `true`
 - [`config.active_support.use_rfc4122_namespaced_uuids`](#config-active-support-use-rfc4122-namespaced-uuids): `true`
