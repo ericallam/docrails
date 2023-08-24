@@ -1287,7 +1287,7 @@ config.action_dispatch.rescue_responses = {
 
 #### `config.action_dispatch.return_only_request_media_type_on_content_type`
 
-`ActionDispatch::Response#content_type`が`Content-Type`ヘッダーを改変せずに返すよう変更します。
+`ActionDispatch::Request#content_type`が`Content-Type`ヘッダーを改変せずに返すよう変更します。
 
 デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
 
