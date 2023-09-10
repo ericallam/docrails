@@ -737,7 +737,17 @@ end
 フォームビルダーをカスタマイズする
 -------------------------
 
-`form_with`や`fields_for`によって生成されるオブジェクトは、[`ActionView::Helpers::FormBuilder`][]のインスタンスです。フォームビルダーは、1個のオブジェクトのフォーム要素を表示するのに必要なものをカプセル化します。フォーム用のヘルパーを通常の方法で自作するときに、`ActionView::Helpers::FormBuilder`のサブクラスを作成してそこにヘルパーを追加することも可能です。次の例をご覧ください。
+`form_with`や`fields_for`によって生成されるオブジェクトは、[`ActionView::Helpers::FormBuilder`][]のインスタンスです。フォームビルダーは、1個のオブジェクトのフォーム要素を表示するのに必要なものをカプセル化します。フォーム用のヘルパーを通常の方法で自作するときに、`ActionView::Helpers::FormBuilder`のサブクラスを作成してそこにヘルパーを追加することも可能です。
+
+たとえば、アプリケーション内で`text_field_with_label`というヘルパーメソッドが以下のように定義されているとします。
+
+```ruby
+module ApplicationHelper
+  def text_field_with_label(form, attribute)
+    form.label(attribute) + form.text_field(attribute)
+  end
+end
+```
 
 ```erb
 <%= form_with model: @person do |form| %>
@@ -766,9 +776,11 @@ end
 このクラスを頻繁に再利用する場合は、以下のように`labeled_form_with`ヘルパーを定義して`builder: LabellingFormBuilder`オプションを自動的に適用してもよいでしょう。
 
 ```ruby
-def labeled_form_with(model: nil, scope: nil, url: nil, format: nil, **options, &block)
-  options.merge! builder: LabellingFormBuilder
-  form_with model: model, scope: scope, url: url, format: format, **options, &block
+module ApplicationHelper
+  def labeled_form_with(model: nil, scope: nil, url: nil, format: nil, **options, &block)
+    options.merge! builder: LabellingFormBuilder
+    form_with model: model, scope: scope, url: url, format: format, **options, &block
+  end
 end
 ```
 
@@ -1114,7 +1126,7 @@ end
 `form_tag`や`form_for`の利用について
 -------------------------------
 
-Rails 5.1で`form_with`が導入されるまでは、`form_with`の機能は[`form_tag`][]と[`form_for`][]に分かれていました。`form_tag`および`form_for`は、禁止ではないものの、利用は推奨されていません。これらのメソッドの利用方法については、[旧バージョンのガイド](https://railsguides.jp/?version=5.2)を参照してください。
+Rails 5.1で`form_with`が導入されるまでは、`form_with`の機能は[`form_tag`][]と[`form_for`][]に分かれていました。`form_tag`および`form_for`は、禁止ではないものの、利用は推奨されていません。これらのメソッドの利用方法については、[旧バージョンのガイド](https://railsguides.jp/v5.2/form_helpers.html)を参照してください。
 
 [`form_tag`]: https://api.rubyonrails.org/v5.2/classes/ActionView/Helpers/FormTagHelper.html#method-i-form_tag
 [`form_for`]: https://api.rubyonrails.org/v5.2/classes/ActionView/Helpers/FormHelper.html#method-i-form_for
