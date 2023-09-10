@@ -1126,7 +1126,7 @@ end
 `form_tag`や`form_for`の利用について
 -------------------------------
 
-Rails 5.1で`form_with`が導入されるまでは、`form_with`の機能は[`form_tag`][]と[`form_for`][]に分かれていました。`form_tag`および`form_for`は、禁止ではないものの、利用は推奨されていません。これらのメソッドの利用方法については、[旧バージョンのガイド](https://railsguides.jp/?version=5.2)を参照してください。
+Rails 5.1で`form_with`が導入されるまでは、`form_with`の機能は[`form_tag`][]と[`form_for`][]に分かれていました。`form_tag`および`form_for`は、禁止ではないものの、利用は推奨されていません。これらのメソッドの利用方法については、[旧バージョンのガイド](https://railsguides.jp/v5.2/form_helpers.html)を参照してください。
 
 [`form_tag`]: https://api.rubyonrails.org/v5.2/classes/ActionView/Helpers/FormTagHelper.html#method-i-form_tag
 [`form_for`]: https://api.rubyonrails.org/v5.2/classes/ActionView/Helpers/FormHelper.html#method-i-form_for
