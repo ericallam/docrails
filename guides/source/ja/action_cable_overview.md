@@ -615,12 +615,12 @@ production:
 Redisアダプタでは、Redisサーバーを指すURLを指定する必要があります。
 また、複数のアプリケーションが同一のRedisサーバーを用いる場合は、チャネル名衝突を避けるために`channel_prefix`の指定が必要になることもあります。詳しくは[Redis Pub/Subドキュメント](https://redis.io/topics/pubsub#database-amp-scoping)を参照してください。
 
-RedisアダプタではSSL/TLS接続もサポートされています。SSL/TLS接続に必要なパラメータは、設定用yamlファイルの`ssl_params`で指定できます。
+RedisアダプタではSSL/TLS接続もサポートされています。SSL/TLS接続に必要なパラメータは、設定用yamlファイルの`ssl_params`で指定できます（注: `rediss://`は[RedisのHTTPS接続](https://github.com/redis/redis-rb/#ssltls-support)を表します）。
 
 ```yaml
 production:
   adapter: redis
-  url: redis://10.10.3.153:tls_port
+  url: rediss://10.10.3.153:tls_port
   channel_prefix: appname_production
   ssl_params: {
     ca_file: "/path/to/ca.crt"
