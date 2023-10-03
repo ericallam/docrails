@@ -15,8 +15,6 @@ Rails 7.0にアップグレードする
 主要な機能
 --------------
 
-（準備中...）
-
 Railties
 --------
 
@@ -28,7 +26,7 @@ Railties
 
 ### 非推奨化
 
-（準備中...）
+特になし。
 
 ### 主な変更点
 
@@ -47,15 +45,15 @@ Action Cable
 
 ### 削除されたもの
 
-（準備中...）
+特になし。
 
 ### 非推奨化
 
-（準備中...）
+特になし。
 
 ### 主な変更点
 
-（準備中...）
+特になし。
 
 Action Pack
 -----------
@@ -74,11 +72,12 @@ Action Pack
 
 ### 非推奨化
 
-（準備中...）
+特になし。
 
 ### 主な変更点
 
-（準備中...）
+特になし。
+
 
 Action View
 -----------
@@ -91,7 +90,7 @@ Action View
 
 ### 非推奨化
 
-（準備中...）
+特になし。
 
 ### 主な変更点
 
@@ -103,6 +102,7 @@ Action View
     #=>   <input type="hidden" name="_method" value="post" autocomplete="off" />
     # After
     #=>   <input type="hidden" name="_method" value="patch" autocomplete="off" />
+    ```
 
 Action Mailer
 -------------
@@ -115,11 +115,11 @@ Action Mailer
 
 ### 非推奨化
 
-（準備中...）
+特になし。
 
 ### 主な変更点
 
-（準備中...）
+特になし。
 
 Active Record
 -------------
@@ -221,6 +221,7 @@ Active Record
     # Rails 7.0 （IN句の振る舞いは同じで、マージされる側の条件が常に置き換えられる）
     Author.where(id: [david.id, mary.id]).merge(Author.where(id: bob)) # => [bob]
     Author.where(id: david.id..mary.id).merge(Author.where(id: bob)) # => [bob]
+    ```
 
 Active Storage
 --------------
@@ -229,15 +230,15 @@ Active Storage
 
 ### 削除されたもの
 
-（準備中...）
+特になし。
 
 ### 非推奨化
 
-（準備中...）
+特になし。
 
 ### 主な変更点
 
-（準備中...）
+特になし。
 
 Active Model
 ------------
@@ -272,11 +273,11 @@ Active Model
 
 ### 非推奨化
 
-（準備中...）
+特になし。
 
 ### 主な変更点
 
-（準備中...）
+特になし。
 
 Active Support
 --------------
@@ -303,7 +304,7 @@ Active Support
 
 ### 主な変更点
 
-（準備中...）
+特になし。
 
 Active Job
 ----------
@@ -323,7 +324,7 @@ Active Job
 
 ### 主な変更
 
-（準備中...）
+特になし。
 
 Action Text
 ----------
@@ -332,15 +333,15 @@ Action Text
 
 ### 削除されたもの
 
-（準備中...）
+特になし。
 
 ### 非推奨化
 
-（準備中...）
+特になし。
 
 ### 主な変更点
 
-（準備中...）
+特になし。
 
 Action Mailbox
 ----------
@@ -355,11 +356,11 @@ Action Mailbox
 
 ### 非推奨化
 
-（準備中...）
+特になし。
 
 ### 主な変更点
 
-（準備中...）
+特になし。
 
 Ruby on Railsガイド
 --------------------
@@ -368,7 +369,7 @@ Ruby on Railsガイド
 
 ### 主な変更点
 
-（準備中...）
+特になし。
 
 クレジット
 -------
