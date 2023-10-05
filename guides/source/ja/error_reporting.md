@@ -1,16 +1,16 @@
-Rails アプリケーションのエラー報告機能
+Rails アプリケーションのエラー通知機能
 ========================
 
 このガイドは、Ruby on Railsアプリケーションで発生する例外の管理方法を解説します。
 
 本ガイドの内容:
 
-* Railsの`ErrorReporter`でエラーをキャプチャして報告する方法
-* エラー報告サービス用のカスタムサブスクライバの作成方法
+* Railsの`ErrorReporter`でエラーをキャプチャして通知する方法
+* エラー通知サービス用のカスタムサブスクライバの作成方法
 
 --------------------------------------------------------------------------------
 
-エラー報告機能
+エラー通知機能
 ------------------------
 
 Railsの[`ErrorReporter`][]は、アプリケーションで発生した例外を収集して、好みのサービスや場所に通知する標準的な方法を提供します。
@@ -33,9 +33,9 @@ Rails.error.handle(SomethingIsBroken) do
 end
 ```
 
-Railsはすべての実行（HTTPリクエスト、ジョブ、`rails runner`の起動など）を`ErrorReporter`にラップするので、アプリで発生した未処理のエラーは、そのサブスクライバを介してエラーレポートサービスに自動的に報告されます。
+Railsはすべての実行（HTTPリクエスト、ジョブ、`rails runner`の起動など）を`ErrorReporter`にラップするので、アプリで発生した未処理のエラーは、そのサブスクライバを介してエラーレポートサービスに自動的に通知されます。
 
-これにより、サードパーティのエラー報告ライブラリは、Rackミドルウェアを挿入したり、未処理の例外をキャプチャするパッチを適用したりする必要がなくなります。また、Active Supportを使うライブラリがこの機能を利用して、従来ログに出力されなかった警告を、コードに手を加えずに報告できるようになります。
+これにより、サードパーティのエラー通知ライブラリは、Rackミドルウェアを挿入したり、未処理の例外をキャプチャするパッチを適用したりする必要がなくなります。また、Active Supportを使うライブラリがこの機能を利用して、従来ログに出力されなかった警告を、コードに手を加えずに通知できるようになります。
 
 [`ErrorReporter`]: https://api.rubyonrails.org/classes/ActiveSupport/ErrorReporter.html
 
@@ -43,9 +43,9 @@ Railsはすべての実行（HTTPリクエスト、ジョブ、`rails runner`の
 
 ### エラーレポーターにサブスクライブする
 
-エラーレポーターを利用するには**サブスクライバ**（subscriber）が必要です。サブスクライバは、`report`メソッドを持つ任意のオブジェクトのことです。アプリケーションでエラーが発生したり、手動で報告されたりすると、Railsのエラーレポーターはエラーオブジェクトといくつかのオプションを使ってこのメソッドを呼び出します。
+エラーレポーターを利用するには**サブスクライバ**（subscriber）が必要です。サブスクライバは、`report`メソッドを持つ任意のオブジェクトのことです。アプリケーションでエラーが発生したり、手動で通知されたりすると、Railsのエラーレポーターはエラーオブジェクトといくつかのオプションを使ってこのメソッドを呼び出します。
 
-[Sentry][]や[Honeybadger][]などのように、自動的にサブスクライバを登録してくれるエラー報告ライブラリもあります。詳しくはプロバイダのドキュメントを参照してください。
+[Sentry][]や[Honeybadger][]などのように、自動的にサブスクライバを登録してくれるエラー通知ライブラリもあります。詳しくはプロバイダのドキュメントを参照してください。
 
 また、以下のようにカスタムサブスクライバを作成することも可能です。
 
@@ -66,7 +66,7 @@ Rails.error.subscribe(ErrorSubscriber.new)
 
 サブスクライバはいくつでも登録できます。Railsはサブスクライバを登録順に呼び出します。
 
-NOTE: Railsのエラーレポーターは、どの環境でも常に登録されたサブスクライバーを呼び出します。しかし多くのエラー報告サービスは、デフォルトではproduction環境でのみエラーを報告します。必要に応じて、複数の環境で設定を行ってテストする必要があります。
+NOTE: Railsのエラーレポーターは、どの環境でも常に登録されたサブスクライバーを呼び出します。しかし多くのエラー通知サービスは、デフォルトではproduction環境でのみエラーを通知します。必要に応じて、複数の環境で設定を行ってテストする必要があります。
 
 [Sentry]: https://github.com/getsentry/sentry-ruby/blob/e18ce4b6dcce2ebd37778c1e96164684a1e9ebfc/sentry-rails/lib/sentry/rails/error_subscriber.rb
 [Honeybadger]: https://docs.honeybadger.io/lib/ruby/integration-guides/rails-exception-tracking/
@@ -76,9 +76,9 @@ NOTE: Railsのエラーレポーターは、どの環境でも常に登録され
 
 エラーレポーターの使い方は3種類あります。
 
-#### エラーを報告して握りつぶす
+#### エラーを通知して握りつぶす
 
-[`Rails.error.handle`][] は、ブロック内で発生したエラーを報告してから、そのエラーを**握りつぶします**。ブロックの外の残りのコードは通常通り続行されます。
+[`Rails.error.handle`][] は、ブロック内で発生したエラーを通知してから、そのエラーを**握りつぶします**。ブロックの外の残りのコードは通常通り続行されます。
 
 ```ruby
 result = Rails.error.handle do
@@ -100,9 +100,9 @@ end
 
 [`Rails.error.handle`]: https://api.rubyonrails.org/classes/ActiveSupport/ErrorReporter.html#method-i-handle
 
-#### エラーを報告して再度raiseする
+#### エラーを通知して再度raiseする
 
-[`Rails.error.record`][] はすべての登録済みレポーターにエラーを報告し、その後エラーを再度raiseします。残りのコードは実行されません。
+[`Rails.error.record`][] はすべての登録済みレポーターにエラーを通知し、その後エラーを再度raiseします。残りのコードは実行されません。
 
 ```ruby
 Rails.error.record do
@@ -117,7 +117,7 @@ end
 
 #### エラーを手動で通知する
 
-[`Rails.error.report`][]を呼び出して手動でエラーを報告することも可能です。
+[`Rails.error.report`][]を呼び出して手動でエラーを通知することも可能です。
 
 ```ruby
 begin
@@ -131,7 +131,7 @@ end
 
 [`Rails.error.report`]: https://api.rubyonrails.org/classes/ActiveSupport/ErrorReporter.html#method-i-report
 
-### エラー報告機能のオプション
+### エラー通知機能のオプション
 
 3つのレポートAPI（`#handle`、`#record`、`#report`）はすべて以下のオプションをサポートしています。これらのオプションは、すべての登録済みサブスクライバに渡されます。
 
@@ -147,7 +147,7 @@ end
 
 - `source`: エラーの発生源に関する`String`。
   デフォルトのソースは`"application"`です。
-  内部ライブラリから報告されたエラーは他のソースを設定する可能性があります（例: Redis キャッシュライブラリは`"redis_cache_store.active_support"`を設定する可能性があります）。
+  内部ライブラリから通知されたエラーは他のソースを設定する可能性があります（例: Redis キャッシュライブラリは`"redis_cache_store.active_support"`を設定する可能性があります）。
   サブスクライバは、ソースを利用することで興味のないエラーを無視できます。
 
 ```ruby
@@ -158,7 +158,7 @@ end
 
 ### エラークラスでフィルタリングする
 
-`Rails.error.handle`や`Rails.error.record`では、以下のように特定のクラスのエラーだけを報告できます。
+`Rails.error.handle`や`Rails.error.record`では、以下のように特定のクラスのエラーだけを通知できます。
 
 ```ruby
 Rails.error.handle(IOError) do
@@ -167,7 +167,7 @@ end
 1 + 1 # TypeErrorsはIOErrorsではないので、ここは「実行されない」
 ```
 
-上の`TypeError`はRailsのエラー報告レポーターにキャプチャされません。報告されるのは `IOError`およびその子孫インスタンスだけです。その他のエラーは通常どおりraiseします。
+上の`TypeError`はRailsのエラー通知レポーターにキャプチャされません。通知されるのは `IOError`およびその子孫インスタンスだけです。その他のエラーは通常どおりraiseします。
 
 ### コンテキストをグローバルに設定する
 
@@ -182,16 +182,16 @@ Rails.error.set_context(section: "checkout", user_id: @user.id)
 ```ruby
 Rails.error.set_context(a: 1)
 Rails.error.handle(context: { b: 2 }) { raise }
-# 報告されるコンテキスト: {:a=>1, :b=>2}
+# 通知されるコンテキスト: {:a=>1, :b=>2}
 Rails.error.handle(context: { b: 3 }) { raise }
-# 報告されるコンテキスト: {:a=>1, :b=>3}
+# 通知されるコンテキスト: {:a=>1, :b=>3}
 ```
 
 [`#set_context`]: https://api.rubyonrails.org/classes/ActiveSupport/ErrorReporter.html#method-i-set_context
 
 ### ライブラリで利用する
 
-エラー報告ライブラリは、以下のように`Railtie`でライブラリのサブスクライバを登録できます。
+エラー通知ライブラリは、以下のように`Railtie`でライブラリのサブスクライバを登録できます。
 
 ```ruby
 module MySdk
@@ -203,4 +203,4 @@ module MySdk
 end
 ```
 
-エラーサブスクライバを登録すると、Rackミドルウェアのような他のエラー機構がある場合、エラーが何度も報告される可能性があります。他のエラー機構を削除するか、レポーターの機能を調整して、報告済みの例外を報告しないようにする必要があります。
+エラーサブスクライバを登録すると、Rackミドルウェアのような他のエラー機構がある場合、エラーが何度も通知される可能性があります。他のエラー機構を削除するか、レポーターの機能を調整して、通知済みの例外を通知しないようにする必要があります。
