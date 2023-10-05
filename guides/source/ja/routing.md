@@ -1097,7 +1097,7 @@ end
 
 ### 名前付きルーティングヘルパーにプレフィックスを追加する
 
-以下のように`:as`オプションを使うことで、Railsがルーティングに対して生成する名前付きルーティングヘルパー名の冒頭に文字を追加できます（プレフィックス）。パススコープを使うルーティング同士での名前の衝突を避けたい場合にお使いください。
+以下のように`:as`オプションを使うことで、Railsがルーティングに対して生成する名前付きルーティングヘルパー名の冒頭に文字を追加（プレフィックス）できます。パススコープを使うルーティング同士での名前の衝突を避けたい場合にお使いください。
 
 ```ruby
 scope 'admin' do
@@ -1107,7 +1107,8 @@ end
 resources :photos
 ```
 
-上のルーティングでは、`admin_photos_path`や`new_admin_photo_path`などのルーティングヘルパーが生成されます。
+上のように`as:`を使うと、`/admin/photos`のルーティングヘルパーが、`photos_path`、`new_photos_path`などから`admin_photos_path`、`new_admin_photo_path`などに変更されます。
+`as: 'admin_photos`をスコープ付き`resources :photos`に追加しない場合は、スコープなしの`resources :photos`はルーティングヘルパーを持つことができません。
 
 ルーティングヘルパーのグループにまとめてプレフィックスを追加するには、以下のように`scope`メソッドで`:as`オプションを使います。
 
@@ -1119,7 +1120,7 @@ end
 resources :photos, :accounts
 ```
 
-上によって、`admin_photos_path`と`admin_accounts_path`などのルーティングが生成されます。これらは`/admin/photos`と`/admin/accounts`にそれぞれ割り当てられます。
+上のルーティングは、先ほどと同様に`/admin`のスコープ付きリソースヘルパーを`admin_photos_path`と`admin_accounts_path`に変更し、さらにスコープなしのリソース`photos_path`と`accounts_path`も利用可能になります。
 
 NOTE: `namespace`スコープを使うと、`:module`や`:path`プレフィックスに加えて`:as`も自動的に追加されます。
 

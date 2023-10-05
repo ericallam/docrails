@@ -83,6 +83,94 @@ $ rails new my_api --api
 - `ApplicationController`が通常の`ActionController::Base`ではなく`ActionController::API`を継承します。ミドルウェアと同様、Action Controllerモジュールのうち、ブラウザ向けアプリケーションでしか使われないモジュールをすべて除外します。
 - ビュー、ヘルパー、アセットを生成しないようジェネレーターを設定します。
 
+### 新しいリソースを生成する
+
+新しく作成したAPIで新しいリソースを生成する方法を確認するために、新しいGroupリソースを作成してみましょう。各グループごとに名前を付けます。
+
+```bash
+$ bin/rails g scaffold Group name:string
+```
+
+scaffoldで生成したコードを使えるようにするには、データベーススキーマを更新する必要があります。
+
+```bash
+$ bin/rails db:migrate
+```
+
+ここで`GroupsController`を開いてみると、API RailsアプリではJSONデータのみをレンダリングしていることがわかります。`index`アクションでは`Group.all`をクエリしてインスタンス変数`@groups`に代入しています。これを、`render`に`:json`オプションを指定して渡すと、自動的にグループをJSONとしてレンダリングします。
+
+```ruby
+# app/controllers/groups_controller.rb
+class GroupsController < ApplicationController
+  before_action :set_group, only: %i[ show update destroy ]
+
+  # GET /groups
+  def index
+    @groups = Group.all
+
+    render json: @groups
+  end
+
+  # GET /groups/1
+  def show
+    render json: @group
+  end
+
+  # POST /groups
+  def create
+    @group = Group.new(group_params)
+
+    if @group.save
+      render json: @group, status: :created, location: @group
+    else
+      render json: @group.errors, status: :unprocessable_entity
+    end
+  end
+
+  # PATCH/PUT /groups/1
+  def update
+    if @group.update(group_params)
+      render json: @group
+    else
+      render json: @group.errors, status: :unprocessable_entity
+    end
+  end
+
+  # DELETE /groups/1
+  def destroy
+    @group.destroy
+  end
+
+  private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_group
+      @group = Group.find(params[:id])
+    end
+
+    # Only allow a list of trusted parameters through.
+    def group_params
+      params.require(:group).permit(:name)
+    end
+end
+```
+
+最後に、Railsコンソールでデータベースにグループを追加してみましょう。
+
+```irb
+irb> Group.create(name: "Rails Founders")
+irb> Group.create(name: "Rails Contributors")
+```
+
+ある程度のデータがアプリにあれば、サーバーを起動して<http://localhost:3000/groups.json>にアクセスするとJSONデータを表示できます。
+
+
+```json
+[
+{"id":1, "name":"Rails Founders", "created_at": ...},
+{"id":2, "name":"Rails Contributors", "created_at": ...}
+]
+```
+
 ### 既存アプリケーションを変更する
 
 既存のアプリケーションをAPI専用に変えるには、以下の手順をお読みください。
@@ -134,6 +222,7 @@ APIアプリケーションでは、デフォルトで以下のミドルウェ�
 - `Rack::Sendfile`
 - `ActionDispatch::Static`
 - `ActionDispatch::Executor`
+- `ActionDispatch::ServerTiming`
 - `ActiveSupport::Cache::Strategy::LocalCache::Middleware`
 - `Rack::Runtime`
 - `ActionDispatch::RequestId`
@@ -159,11 +248,12 @@ APIアプリケーションでは、デフォルトで以下のミドルウェ�
 $ bin/rails middleware
 ```
 
-### キャッシュミドルウェアを使う
+### Rack::Cacheを使う
 
-Railsにデフォルトで追加されるミドルウェアは、アプリケーションの設定に基づくキャッシュストア（デフォルトはmemcache）を提供します。このため、Railsに組み込まれているHTTPキャッシュはこのキャッシュストアに依存します。
+`Rack::Cache`は、Railsで利用する場合はRailsのキャッシュストアをエンティティストアとメタストアに使います。つまり、たとえばRailsアプリでmemcacheを使うと、組み込みのHTTPキャッシュがmemcacheを使うようになります。
 
-たとえば、次のように`stale?`メソッドを呼び出すとします。
+`Rack::Cache`を利用するには、最初に`rack-cache` gemを`Gemfile`に追加し、`config.action_dispatch.rack_cache`に`true`を設定する必要があります。この機能を有効にするには、コントローラで`stale?`を使う必要があります。以下は、`stale?`の利用例です。
+
 
 ```ruby
 def show
@@ -177,7 +267,7 @@ end
 
 `stale?`呼び出しは、リクエストにある`If-Modified-Since`ヘッダと`@post.updated_at`を比較します。ヘッダが最終更新時より新しい場合、「304 Not Modified」を返すか、レスポンスをレンダリングして`Last-Modified`ヘッダをそこに表示します。
 
-通常、この動作はクライアントごとに行われますが、キャッシュミドルウェアがあるとクライアント間でこのキャッシュを共有できるようになります。以下のように、`stale?`の呼び出しを使ってクロスクライアントキャッシュを有効にできます。
+通常、この動作はクライアントごとに行われますが、`Rack::Cache`があるとクライアント間でこのキャッシュを共有できるようになります。以下のように、`stale?`の呼び出しを使ってクロスクライアントキャッシュを有効にできます。
 
 ```ruby
 def show
@@ -189,7 +279,7 @@ def show
 end
 ```
 
-キャッシュミドルウェアは上のコードによって、URLに対応する`Last-Modified`値をRailsキャッシュに保存し、以後同じURLへのリクエストを受信したときに`If-Modified-Since`ヘッダを追加するようになります。
+`Rack::Cache`は上のコードによって、URLに対応する`Last-Modified`値をRailsキャッシュに保存し、以後同じURLへのリクエストを受信したときに`If-Modified-Since`ヘッダを追加するようになります。
 
 これは、HTTPセマンティクスを利用したページキャッシュと考えることができます。
 
@@ -239,7 +329,7 @@ jQuery.ajax({
 `ActionDispatch::Request`はこの`Content-Type`を認識し、パラメータは以下のようになります。
 
 ```ruby
-{ :person => { :firstName => "Yehuda", :lastName => "Katz" } }
+{ person: { firstName: "Yehuda", lastName: "Katz" } }
 ```
 
 ### セッションミドルウェアを利用する
@@ -293,17 +383,19 @@ config.middleware.delete ::Rack::Sendfile
 
 APIアプリケーション（`ActionController::API`を利用）には、デフォルトで次のコントローラモジュールが含まれます。
 
+<!-- epubなどでのレイアウト崩れ防止のため、念のためリスト形式を維持します -->
+
 - `ActionController::UrlFor`: `url_for`などのヘルパーを提供
 - `ActionController::Redirecting`: `redirect_to`をサポート
 - `AbstractController::Rendering`と`ActionController::ApiRendering`: 基本的なレンダリングのサポート
 - `ActionController::Renderers::All`: `render :json`などのサポート
 - `ActionController::ConditionalGet`: `stale?`のサポート
 - `ActionController::BasicImplicitRender`: 指定がない限り空のレスポンスを返す
-- `ActionController::StrongParameters`: パラメータの許可リストをサポート（Active Modelのマスアサインメントと連携）
+- `ActionController::StrongParameters`: パラメータのフィルタリングをサポート（Active Modelのマスアサインメントと連携）
 - `ActionController::DataStreaming`: `send_file`や`send_data`のサポート
 - `AbstractController::Callbacks`: `before_action`などのヘルパーをサポート
 - `ActionController::Rescue`: `rescue_from`をサポート
-- `ActionController::Instrumentation`: Action Controllerで定義するinstrumentationフックをサポート（詳しくは[instrumentationガイド](active_support_instrumentation.html#action-controller) を参照）
+- `ActionController::Instrumentation`: Action Controllerで定義するinstrumentationフックをサポート（詳しくは[instrumentationガイド][] を参照）
 - `ActionController::ParamsWrapper`: パラメータハッシュをラップしてネステッドハッシュにする（たとえばPOSTリクエスト送信時のroot要素が必須でなくなる）
 - `ActionController::Head`: コンテンツのないヘッダのみのレスポンスを返すのに用いる
 
@@ -319,6 +411,8 @@ irb> ActionController::API.ancestors - ActionController::Metal.ancestors
     AbstractController::Rendering,
     ActionView::ViewPaths]
 ```
+
+[instrumentationガイド]: active_support_instrumentation.html#action-controller
 
 ### その他のモジュールを追加する
 
@@ -343,6 +437,6 @@ Action Controllerのどのモジュールも、自身が依存するモジュー
     end
     ```
 
-  Railsはこの設定を「自動的には渡しません」。
+    Railsはこの設定を「自動的には渡しません」。
 
 モジュールは`ApplicationController`に追加するのが最適ですが、個別のコントローラに追加することも可能です。

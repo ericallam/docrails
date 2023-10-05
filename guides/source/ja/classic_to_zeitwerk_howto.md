@@ -26,7 +26,7 @@ Rails 6から、より優れた新しいオートロード方法がRailsに搭�
 `classic`から`zeitwerk`に切り替える理由
 ----------------------------------------
 
-`classic`オートローダーは非常に便利でしたが、取り扱いに少々注意を要したり時に混乱を招いたりする[問題](https://guides.rubyonrails.org/v6.1/autoloading_and_reloading_constants_classic_mode.html#common-gotchas)が多数存在していました。Zeitwerkはこうした問題を解決するために開発されました（その他にもさまざまな[動機](https://github.com/fxn/zeitwerk#motivation)があります）。
+`classic`オートローダーは非常に便利でしたが、取り扱いに少々注意を要したり時に混乱を招いたりする[問題](/v6.1/autoloading_and_reloading_constants_classic_mode.html#よくある落とし穴)が多数存在していました。Zeitwerkはこうした問題を解決するために開発されました（その他にもさまざまな[動機](https://github.com/fxn/zeitwerk#motivation)があります）。
 
 `classic`モードは非推奨化されたので、Railsを6.xにアップグレードする際に`zeitwerk`モードに移行することを強く推奨します。
 
@@ -356,7 +356,7 @@ end
 
 ```ruby
 # config/initializers/country.rb
-unless Rails.application.config.cache_classes
+if Rails.application.config.reloading_enabled?
   Rails.autoloaders.main.on_unload("Country") do |klass, _abspath|
     klass.expire_redis_cache
   end
@@ -372,10 +372,21 @@ spring gemは、アプリケーションコードが変更されると再読み�
 config.cache_classes = false
 ```
 
-そうしないと、以下のエラーが発生します。
+Rails 7.1以降は以下の設定が必要です。
+
+```ruby
+# config/environments/test.rb
+config.enable_reloading = true
+```
+
+そうしないと、以下のいずれかのエラーが発生します。
 
 ```
 reloading is disabled because config.cache_classes is true
+```
+
+```
+reloading is disabled because config.enable_reloading is false
 ```
 
 なお、この設定でパフォーマンスは低下しません。

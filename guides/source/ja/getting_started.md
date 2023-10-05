@@ -49,7 +49,7 @@ Railsをインストールする前に、必要な要件が自分のシステム
 * Ruby
 * SQLite3
 
-TIP: 訳注：GitHubが提供するクラウド開発環境『[Codespaces](https://github.co.jp/features/codespaces)』には、[公式のRuby on Railsテンプレート](https://github.com/codespaces/templates)が用意されています。`Use this template` ボタンから、ワンクリックでRailsを動かせるクラウド開発環境が手に入ります。（参考: [GitHub Codespaces を利用する - Rails Girls](https://railsgirls.jp/install/codespaces)）
+TIP: 訳注：GitHubが提供するクラウド開発環境『[Codespaces](https://github.co.jp/features/codespaces)』には、[公式のRuby on Railsテンプレート](https://github.com/codespaces/templates)が用意されています。`Use this template`ボタンから、ワンクリックでRailsを動かせるクラウド開発環境が手に入ります。（参考: [GitHub Codespaces を利用する - Rails Girls](https://railsgirls.jp/install/codespaces)）
 
 #### Rubyをインストールする
 
@@ -1376,12 +1376,15 @@ $ bin/rails generate migration AddStatusToComments status:string
 $ bin/rails db:migrate
 ```
 
+既存の記事やコメントのステータスを一括指定するには、生成されたマイグレーションファイルに`default: "public"`オプションを追加してデフォルト値を追加し、マイグレーションを再度実行する方法が使えます。あるいは、railsコンソールで`Article.update_all(status: "public")`や`Comment.update_all(status: "public")`を呼び出すことでも可能です。
+
 TIP: マイグレーションについて詳しくは、[Active Record マイグレーション](
 active_record_migrations.html)ガイドを参照してください。
 
-次に、`app/controllers/articles_controller.rb`のStrong Parametersを以下のように更新して`:status`キーも許可しておかなければなりません。
+次に、`app/controllers/articles_controller.rb`のStrong Parametersを以下のように更新して`:status`キーも許可しておく必要があります。
 
 ```ruby
+
   private
     def article_params
       params.require(:article).permit(:title, :body, :status)
@@ -1391,6 +1394,7 @@ active_record_migrations.html)ガイドを参照してください。
 `app/controllers/comments_controller.rb`でも同様に`:status`キーを許可します。
 
 ```ruby
+
   private
     def comment_params
       params.require(:comment).permit(:commenter, :body, :status)
@@ -1568,12 +1572,14 @@ Our blog has <%= Article.public_count %> articles and counting!
 <%= link_to "New Article", new_article_path %>
 ```
 
-仕上げとして、フォームにセレクトボックスを追加して、ユーザーが記事を作成したりコメントを投稿したりするときにステータスを選択できるようにします。デフォルトのステータスを`public`と指定することもできます。`app/views/articles/_form.html.erb`に以下を追加します。
+仕上げとして、フォームにセレクトボックスを追加して、ユーザーが記事を作成したりコメントを投稿したりするときにステータスを選択できるようにします。
+
+オブジェクトのステータスを選択する（ステータスが未設定の場合は`public`をデフォルトに指定する）ことも可能です。`app/views/articles/_form.html.erb`に以下を追加します。
 
 ```html+erb
 <div>
   <%= form.label :status %><br>
-  <%= form.select :status, ['public', 'private', 'archived'], selected: 'public' %>
+  <%= form.select :status, Visible::VALID_STATUSES, selected: article.status || 'public' %>
 </div>
 ```
 
@@ -1582,7 +1588,7 @@ Our blog has <%= Article.public_count %> articles and counting!
 ```html+erb
 <p>
   <%= form.label :status %><br>
-  <%= form.select :status, ['public', 'private', 'archived'], selected: 'public' %>
+  <%= form.select :status, Visible::VALID_STATUSES, selected: 'public' %>
 </p>
 ```
 
@@ -1668,7 +1674,6 @@ Railsではこのような場合に便利な、非常にシンプルなHTTP認�
 
 ```ruby
 class ArticlesController < ApplicationController
-
   http_basic_authenticate_with name: "dhh", password: "secret", except: [:index, :show]
 
   def index
@@ -1676,13 +1681,13 @@ class ArticlesController < ApplicationController
   end
 
   #（以下省略）
+end
 ```
 
 コメントの削除も認証済みユーザーにだけ許可したいので、`CommentsController`（`app/controllers/comments_controller.rb`）に以下のように追記します。
 
 ```ruby
 class CommentsController < ApplicationController
-
   http_basic_authenticate_with name: "dhh", password: "secret", only: :destroy
 
   def create
@@ -1691,6 +1696,7 @@ class CommentsController < ApplicationController
   end
 
   #（以下省略）
+end
 ```
 
 これで、記事を新規作成しようとすると、以下のようなBASIC http認証ダイアログが表示されます。

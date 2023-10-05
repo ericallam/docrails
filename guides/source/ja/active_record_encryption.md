@@ -27,7 +27,7 @@ Active Record暗号化は、アプリケーション内の機密情報を保護�
 
 ### セットアップ
 
-最初に、[Rails credentials](/security.html#独自のcredential)にキーをいくつか追加しておく必要があります。以下のように`bin/rails db:encryption:init`を実行して、ランダムなキーセットを生成します。
+`bin/rails db:encryption:init`を実行して、ランダムなキーセットを生成します。
 
 ```bash
 $ bin/rails db:encryption:init
@@ -37,6 +37,14 @@ active_record_encryption:
   primary_key: EGY8WhulUOXixybod7ZWwMIL68R9o5kC
   deterministic_key: aPA5XyALhf75NNnMzaspW7akTfZp0lPY
   key_derivation_salt: xEY0dt6TZcAMg52K7O84wYzkjvbA62Hz
+```
+
+これらの値は、生成された値を既存の[Rails credentials](/security.html#独自のcredential)にコピーして貼り付けることで保存できます。また、環境変数など他のソースを用いてこれらの値を設定することも可能です。
+
+```ruby
+config.active_record.encryption.primary_key = ENV['ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY']
+config.active_record.encryption.deterministic_key = ENV['ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY']
+config.active_record.encryption.key_derivation_salt = ENV['ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT']
 ```
 
 NOTE: 生成される値は32バイト長です。これらを自分で生成する場合は、最低でも主キー用に12バイト（これは[AES](https://ja.wikipedia.org/wiki/Advanced_Encryption_Standard)の32バイトのキー導出に用いられます）、ソルト（salt）用に20バイトが必要です。
@@ -64,7 +72,34 @@ article.title # => "すべて暗号化せよ！"
 INSERT INTO `articles` (`title`) VALUES ('{\"p\":\"n7J0/ol+a7DRMeaE\",\"h\":{\"iv\":\"DXZMDWUKfp3bg/Yu\",\"at\":\"X1/YjMHbHD4talgF9dt61A==\"}}')
 ```
 
-値のほかにBase64エンコーディングとメタデータも保存されるので、暗号化を利用する場合はカラムの容量を余分に必要とします。組み込みのエンベロープ暗号化キープロバイダが使われる場合、最悪で250バイトほど余分に必要になると見積もれます。これは中大規模の`text`カラムでは無視できる量ですが、255バイトの`string`カラムではこれに応じて上限を増やしておく必要があります（推奨は510バイト）。
+#### 重要: ストレージとカラムのサイズについて
+
+暗号化では容量が余分に必要です。これは、Base64エンコーディングや暗号化済みペイロードと一緒に保存されるメタデータがあるからです。
+組み込みのエンベロープ暗号化キープロバイダを使う場合、最悪の場合のオーバーヘッドは約255バイトが見込まれます。このオーバーヘッドは、サイズが大きくなれば無視できるほど小さくなります。それに加えて、ライブラリがデフォルトで圧縮を行うため、大きなペイロードの場合、非暗号化バージョンと比較して最大30%のストレージ削減が可能です。
+
+ただし、文字列のカラムサイズについては重要な懸念事項があります。
+最近のデータベースでは、カラムサイズはバイト数ではなく、アロケーション可能な**文字数**（number of characters）で決定されます。
+
+たとえば、UTF-8では1文字あたり4バイトまで利用可能なので、UTF-8を利用しているデータベースのカラムは、**バイト数***で見ると、そのサイズの4倍まで容量が増加する可能性があります。そして、暗号化済みペイロードはBase64としてシリアライズされたバイナリ文字列なので、通常の`string`カラムに保存可能です。これらはASCIIバイトのシーケンスなので、暗号化済みカラムは平文カラムの4倍までサイズが増加する可能性があります。
+
+すなわち、データベースに保存するバイト数が同じでも、カラムのサイズは4倍大きくなければならないことになります。
+
+これは、実際には以下のようになります。
+
+* 欧米のアルファベット（主にASCII文字）で書かれた短い文章を暗号化する場合は、カラムサイズを定義する際に255バイトのオーバーヘッド追加分を考慮しておく必要があります。
+
+* キリル文字のような非西洋アルファベットで書かれた短いテキストを暗号化する場合、カラムサイズを4倍にしておく必要があります。
+
+* 長い文章を暗号化する場合、カラムサイズに関する懸念は無視できます。
+
+以下に例を示します。
+
+| 暗号化するコンテンツ               | 元のカラムサイズ | 暗号化カラムの推奨サイズ | ストレージのオーバーヘッド（最大）|
+| ------------------------------- | ------------ | -------------------- | --------------------------- |
+| メールアドレス                    | string(255)   | string(510)         | 255 bytes                   |
+| 絵文字の短いシーケンス              | string(255)  | string(1020)         | 255 bytes                   |
+| 非西洋アルファベットのサマリーテキスト | string(500)  | string(2000)         | 255 bytes                   |
+| 任意の巨大テキスト                 | text         | text                 | 無視可能                     |
 
 ### 決定論的暗号化と非決定論的暗号化について
 
@@ -123,14 +158,14 @@ Action Textのフィクスチャを暗号化するには、`fixtures/action_text
 ```ruby
 # 正しい
 class Article < ApplicationRecord
-  serialize :title, Title
+  serialize :title, type: Title
   encrypts :title
 end
 
 # 誤り
 class Article < ApplicationRecord
   encrypts :title
-  serialize :title, Title
+  serialize :title, type: Title
 end
 ```
 
@@ -239,13 +274,17 @@ end
 
 デフォルトでは、暗号化済みカラムは[Railsのログで自動的にフィルタされます](https://railsguides.jp/action_controller_overview.html#%E3%83%AD%E3%82%B0%E3%82%92%E3%83%95%E3%82%A3%E3%83%AB%E3%82%BF%E3%81%99%E3%82%8B)。`config/application.rb`に以下を追加することで、この振る舞いを無効にできます。
 
-このフィルタパラメータを生成すると、モデル名がプレフィックスとして使われます。例: `Person#name`のフィルタパラメータは`person.name`になる。
-
 ```ruby
 config.active_record.encryption.add_to_filter_parameters = false
 ```
 
-特定のカラムだけを自動フィルタの対象から外したい場合は、外したいカラムを`config.active_record.encryption.excluded_from_filter_parameters`に追加します。
+フィルタを有効にした状態で、特定のカラムをフィルタから除外したい場合は、`config.active_record.encryption.excluded_from_filter_parameters`に以下を追加します。
+
+```ruby
+config.active_record.encryption.excluded_from_filter_parameters = [:catchphrase]
+```
+
+フィルタパラメータを生成するとき、Railsはモデル名をプレフィックスとして使います。たとえば、`Person#name`の場合、フィルタパラメータは`person.name`になります。
 
 ### エンコード
 
@@ -456,6 +495,14 @@ rootデータ暗号化キーの導出に用いるキーまたはキーのリス�
 
 決定論的に暗号化された属性のデフォルトエンコーディングを設定します。このオプションを`nil`にするとエンコードの強制を無効化できます。デフォルトは`Encoding::UTF_8`です。
 
+#### `config.active_record.encryption.hash_digest_class`
+
+鍵の導出に使うダイジェストアルゴリズムです。デフォルトは`OpenSSL::Digest::SHA1`です。
+
+#### `config.active_record.encryption.support_sha1_for_non_deterministic_encryption`
+
+ダイジェストクラスSHA1で非決定的に暗号化されたデータの復号をサポートします。デフォルトは`false`で、`config.active_record.encryption.hash_digest_class`で設定されたダイジェストアルゴリズムのみをサポートします。
+
 ### 暗号化コンテキスト
 
 暗号化コンテキストとは、ある時点に使われる暗号化コンポーネントを定義するものです。デフォルトではグローバルな設定に基づいた暗号化コンテキストが使われますが、特定の属性で用いるカスタムコンテキストや、コードの特定のブロックを実行するときのカスタムコンテキストを定義可能です。
@@ -496,7 +543,7 @@ end
 
 ```ruby
 ActiveRecord::Encryption.with_encryption_context(encryptor: ActiveRecord::Encryption::NullEncryptor.new) do
-  ...
+  # ...
 end
 ```
 
@@ -508,7 +555,7 @@ end
 
 ```ruby
 ActiveRecord::Encryption.without_encryption do
-   ...
+  #  ...
 end
 ```
 
@@ -520,7 +567,7 @@ end
 
 ```ruby
 ActiveRecord::Encryption.protecting_encrypted_data do
-   ...
+  #  ...
 end
 ```
 

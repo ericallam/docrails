@@ -192,7 +192,7 @@ Windowsユーザーは、これらのコマンドを`bundle exec rails server`�
 
 ### Webpackerをデプロイする
 
-Webpackerは`assets:precompile`のrakeタスクに`webpacker:compile`タスクを追加するので、`assets:precompile`を使う既存のデプロイパイプラインはすべて動作します。`webpacker:compile`タスクはpackをコンパイルして`public/packs`に配置します。
+Webpackerは`bin/rails assets:precompile`のrakeタスクに`webpacker:compile`タスクを追加するので、`assets:precompile`を使う既存のデプロイパイプラインはすべて動作します。`webpacker:compile`タスクはpackをコンパイルして`public/packs`に配置します。
 
 追加のドキュメント
 ------------------------

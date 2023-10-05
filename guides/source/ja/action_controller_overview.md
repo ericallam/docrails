@@ -13,6 +13,7 @@ Action Controller の概要
 * ユーザーのブラウザにデータを直接ストリーミング送信する方法
 * 機密性の高いパラメータをフィルタしてログに出力されないようにする方法
 * リクエスト処理中に発生する可能性のある例外の取り扱い
+* 組み込みのヘルスチェックエンドポイントをロードバランサーやアップタイムモニタで活用する方法
 
 --------------------------------------------------------------------------------
 
@@ -149,7 +150,7 @@ NOTE: `params`の中にある`[nil]`や`[nil, nil, ...]`などの値は、セキ
 
 ### JSONパラメータ
 
-Webサービスを開発していると、パラメータをJSONフォーマットで受け取りたくなることがあります。リクエストの`Content-Type`ヘッダーで`application/json`を指定すると、Railsがパラメータを自動的に`params`ハッシュに読み込み、以後は通常の`params`ハッシュと同様に操作できるようになります。
+アプリケーションでAPIを公開している場合、JSON形式のパラメータを受け取ることが多いでしょう。リクエストの"Content-Type"ヘッダーが"application/json"に設定されていれば、Railsは自動的にパラメータを`params`ハッシュに読み込んで、通常と同じようにアクセスできるようになります。
 
 たとえば、以下のJSONコンテンツを送信したとします。
 
@@ -190,6 +191,32 @@ get '/clients/:status', to: 'clients#index', foo: 'bar'
 
 [`controller_name`]: https://api.rubyonrails.org/classes/ActionController/Metal.html#method-i-controller_name
 [`action_name`]: https://api.rubyonrails.org/classes/AbstractController/Base.html#method-i-action_name
+
+### 複合キーのパラメータ
+
+複合キーのパラメータには、1つのパラメータに複数の値が含まれているため、各値を抽出してActive Recordに渡す必要があります。このユースケースでは、`extract_value`メソッドを活用できます。
+
+以下のコントローラがあるとします。
+
+```ruby
+class BooksController < ApplicationController
+  def show
+    # URLパラメータから複合ID値を抽出する
+    id = params.extract_value(:id)
+    # この複合IDでbookを検索する
+    @book = Book.find(id)
+    # デフォルトのレンダリング動作でビューを表示する
+  end
+end
+```
+
+ルーティングは以下のようになっているとします。
+
+```ruby
+get '/books/:id', to: 'books#show'
+```
+
+ユーザーがURL `/books/4_2`を開くと、コントローラは複合キーの値`["4", "2"]`を抽出して`Book.find`に渡し、ビューで正しいレコードを表示します。`extract_value`メソッドは、区切られた任意のパラメータから配列を抽出するのに利用できます。
 
 ### `default_url_options`
 
@@ -366,8 +393,9 @@ Railsアプリケーションは、ユーザーごとにセッションを設定
 
 * [`ActionDispatch::Session::CookieStore`][] すべてをクライアント側に保存する
 * [`ActionDispatch::Session::CacheStore`][]: データをRailsのキャッシュに保存する
-* `ActionDispatch::Session::ActiveRecordStore`: Active Recordデータベースに保存する（`activerecord-session_store` gemが必要）
 * [`ActionDispatch::Session::MemCacheStore`][] データをmemcachedクラスタに保存する（この実装は古いので`CacheStore`をご検討ください）
+* [`ActionDispatch::Session::ActiveRecordStore`][activerecord-session_store]: Active Recordデータベースに保存する（[`activerecord-session_store`][activerecord-session_store] gemが必要）
+* 独自のストアや、サードパーティgemが提供するストア
 
 あらゆるセッションは、cookieを利用してセッション固有のIDを保存します（cookieは必ず使うこと: セッションIDをURLで渡すとセキュリティが低下するため、この方法はRailsで許可されません）。
 
@@ -384,11 +412,10 @@ CookieStoreには約4KBのデータを保存できます。他のセッション
 別のセッションメカニズムが必要な場合は、イニシャライザで切り替えられます。
 
 ```ruby
-# 機密性の高いデータを保存すべきでないcookieベースのデフォルトではなく
-# データベースにセッションを保存する場合にこのオプションを使う
-# （"rails g active_record:session_migration"でセッションテーブルを作成すること）
-# Rails.application.config.session_store :active_record_store
+Rails.application.config.session_store :cache_store
 ```
+
+詳しくは設定ガイドの[`config.session_store`](configuring.html#config-session-store)を参照してください。
 
 Railsは、セッションデータに署名するときにセッションキー（cookieの名前）を設定します。この動作もイニシャライザで変更できます。
 
@@ -421,6 +448,7 @@ NOTE: `CookieStore`を利用中に`secret_key_base`を変更すると、既存�
 [`ActionDispatch::Session::CookieStore`]: https://api.rubyonrails.org/classes/ActionDispatch/Session/CookieStore.html
 [`ActionDispatch::Session::CacheStore`]: https://api.rubyonrails.org/classes/ActionDispatch/Session/CacheStore.html
 [`ActionDispatch::Session::MemCacheStore`]: https://api.rubyonrails.org/classes/ActionDispatch/Session/MemCacheStore.html
+[activerecord-session_store]: https://github.com/rails/activerecord-session_store
 
 ### セッションにアクセスする
 
@@ -432,17 +460,15 @@ NOTE: セッションは遅延読み込み（lazy loaded）されます。アク
 
 ```ruby
 class ApplicationController < ActionController::Base
-
   private
-
-  # :current_user_idキーを持つセッションに保存されたidでユーザーを検索する
-  #  これはRailsアプリケーションでユーザーログインを扱う際の定番の方法
-  # ログインするとセッション値が設定され、
-  # ログアウトするとセッション値が削除される
-  def current_user
-    @_current_user ||= session[:current_user_id] &&
-      User.find_by(id: session[:current_user_id])
-  end
+    # :current_user_idキーを持つセッションに保存されたidでユーザーを検索する
+    #  これはRailsアプリケーションでユーザーログインを扱う際の定番の方法
+    # ログインするとセッション値が設定され、
+    # ログアウトするとセッション値が削除される
+    def current_user
+      @_current_user ||= session[:current_user_id] &&
+        User.find_by(id: session[:current_user_id])
+    end
 end
 ```
 
@@ -623,24 +649,9 @@ Railsでは、機密データを保存するための署名済みcookie jarと�
 詳しくは[APIドキュメント](https://api.rubyonrails.org/classes/ActionDispatch/Cookies.html)を参照してください。
 
 これらの特殊なcookie jarは、値をシリアライザで文字列に変換して保存し、読み込み時にデシリアライズしてRubyオブジェクトを復元します。
+どのシリアライザを利用するかについては[`config.action_dispatch.cookies_serializer`][]で設定可能です。
 
-利用するシリアライザを指定することも可能です。
-
-```ruby
-Rails.application.config.action_dispatch.cookies_serializer = :json
-```
-
-新規アプリケーションのデフォルトシリアライザは`:json`です。既存のcookieが残っている旧アプリケーションとの互換性のため、`serializer`オプションに何も指定されていない場合は`:marshal`が使われます。
-
-シリアライザのオプションには`:hybrid`も指定できます。これは、`Marshal`でシリアライズされた既存のcookieも透過的にデシリアライズし、`JSON`フォーマットで再保存します。これは、既存のアプリケーションを`:json`シリアライザに移行するときに便利です。
-
-`load`メソッドと`dump`メソッドに応答するカスタムのシリアライザも指定できます。
-
-```ruby
-Rails.application.config.action_dispatch.cookies_serializer = MyCustomSerializer
-```
-
-`:json`または`:hybrid`シリアライザを使う場合、一部のRubyオブジェクトがJSONとしてシリアライズされない可能性があることにご注意ください。たとえば、`Date`オブジェクトや`Time`オブジェクトは文字列としてシリアライズされ、`Hash`のキーは文字列に変換されます。
+新しいアプリケーションのシリアライザはデフォルトで`:json`に設定されます。ただし、JSONはRubyオブジェクトのシリアライズ/デシリアライズのサポートが限られていることにご注意ください。たとえば、`Date`、`Time`、および`Symbol`オブジェクト（`Hash`のキーを含む）は `String`にシリアライズおよびデシリアライズされます。
 
 ```ruby
 class CookiesController < ApplicationController
@@ -655,16 +666,17 @@ class CookiesController < ApplicationController
 end
 ```
 
-cookieには「単純なデータ（文字列や数値）」だけを保存することをおすすめします。cookieに複雑なオブジェクトを保存しなければならない場合は、以後のリクエストでcookieから値を読み出すときに手動で変換する必要があります。
+そうしたオブジェクトや、さらに複雑なオブジェクトを保存する必要がある場合は、後続のリクエストで読み込む際に値を手動で変換する必要があります。
 
 cookieセッションストアを使う場合、`session`や`flash`ハッシュについても同様のことが該当します。
 
+[`config.action_dispatch.cookies_serializer`]: configuring.html#config-action-dispatch-cookies-serializer
 [`cookies`]: https://api.rubyonrails.org/classes/ActionController/Cookies.html#method-i-cookies
 
-XMLとJSONデータをレンダリングする
----------------------------
+レンダリング
+----------
 
-ActionControllerでは、`XML`データや`JSON`データのレンダリングを非常に簡単に行えます。scaffoldで生成したコントローラは、以下のようにXMLとJSONにも対応しています。
+ActionControllerでは、HTMLデータ、XMLデータ、JSONデータのレンダリングを非常に手軽に行えます。scaffoldで生成したコントローラは、以下のようになっています。
 
 ```ruby
 class UsersController < ApplicationController
@@ -680,6 +692,8 @@ end
 ```
 
 上のコードでは、`render xml: @users.to_xml`ではなく`render xml: @users`となっていることにご注目ください。Railsは、オブジェクトが`String`型でない場合は自動的に`to_xml`を呼び出します。
+
+レンダリングについて詳しくは、[レイアウトとレンダリング](layouts_and_rendering.html)ガイドを参照してください。
 
 フィルタ
 -------
@@ -907,7 +921,7 @@ Railsには3種類のHTTP認証機構が組み込まれています。
 
 ### HTTP BASIC認証
 
-HTTP BASIC認証は認証スキームの一種であり、主要なブラウザおよびHTTPクライアントでサポートされています。例として、Webアプリケーションに管理画面があり、ブラウザのHTTP BASIC認証ダイアログウィンドウでユーザー名とパスワードを入力しないとアクセスできないようにしたいとします。以下のように[`http_basic_authenticate_with`][]メソッドを使うだけで、この組み込み認証メカニズムを手軽に利用できます。
+HTTP BASIC認証は認証スキームの一種であり、主要なブラウザおよびHTTPクライアントでサポートされています。例として、Webアプリケーションに管理画面があり、ブラウザのHTTP BASIC認証ダイアログウィンドウでユーザー名とパスワードを入力しないとアクセスできないようにしたいとします。組み込み認証メカニズムを使えば、以下の[`http_basic_authenticate_with`][]メソッドだけでできます。
 
 ```ruby
 class AdminsController < ApplicationController
@@ -921,7 +935,7 @@ end
 
 ### HTTPダイジェスト認証
 
-HTTPダイジェスト認証は、BASIC認証よりも高度な認証システムであり、暗号化されていない平文パスワードをネットワークに送信しなくて済む利点があります (BASIC認証も、HTTPS上で行えば安全になります)。Railsでは、以下のように[`authenticate_or_request_with_http_digest`][]メソッドを使うだけでダイジェスト認証も手軽に利用できます。
+HTTPダイジェスト認証は、BASIC認証よりも高度な認証システムであり、暗号化されていない平文パスワードをネットワークに送信しなくて済む利点があります (BASIC認証も、HTTPS上で行えば安全になります)。RailsのHTTPダイジェスト認証は、以下の[`authenticate_or_request_with_http_digest`][]メソッドだけでできます。
 
 [`authenticate_or_request_with_http_digest`]: https://api.rubyonrails.org/classes/ActionController/HttpAuthentication/Digest/ControllerMethods.html#method-i-authenticate_or_request_with_http_digest
 
@@ -946,7 +960,7 @@ end
 
 HTTPトークン認証は、HTTPの`Authorization`ヘッダー内で[Bearerトークン](https://ja.wikipedia.org/wiki/Bearer%E3%83%88%E3%83%BC%E3%82%AF%E3%83%B3)を利用可能にするスキームです。本ガイドでは触れませんが、トークン認証ではさまざまなフォーマットや記述方法を利用できます。
 
-例として、事前に発行された認証トークンを利用して認証とアクセスを行えるようにしたいとします。Railsでトークン認証を実装するのは比較的簡単であり、以下のように[`authenticate_or_request_with_http_token`][]メソッドだけでできます。
+例として、事前に発行された認証トークンを利用して認証とアクセスを行えるようにしたいとします。Railsのトークン認証の実装は、以下の[`authenticate_or_request_with_http_token`][]メソッドだけでできます。
 
 ```ruby
 class PostsController < ApplicationController
@@ -1029,7 +1043,7 @@ TIP: 静的なファイルをRailsからストリーミング送信すること�
 
 ### RESTfulなダウンロード
 
-`send_data`は問題なく利用できますが、真にRESTfulなアプリケーションを作成しているときに、ファイルダウンロード専用のアクションを別途作成する必要は通常ありません。RESTという用語においては、上の例で使われているPDFファイルのようなものは、クライアントリソースを別の形で表現したものであると見なされます。Railsには、これに基づいた「RESTfulダウンロード」を手軽に実現するための洗練された手段も用意されています。以下は上の例を変更して、PDFダウンロードをストリーミングとして扱わずに`show`アクションの一部として扱うようにしたものです。
+`send_data`は問題なく利用できますが、真にRESTfulなアプリケーションを作成しているときに、ファイルダウンロード専用のアクションを別途作成する必要は通常ありません。RESTという用語においては、上の例で使われているPDFファイルのようなものは、クライアントリソースを別の形で表現したものであると見なされます。Railsには、これに基づいた「RESTful」ダウンロードを手軽に実現するための洗練された方法も用意されています。以下は上の例を変更して、PDFダウンロードをストリーミングとして扱わずに`show`アクションの一部として扱うようにしたものです。
 
 ```ruby
 class ClientsController < ApplicationController
@@ -1236,3 +1250,24 @@ HTTPSプロトコルを強制する
 [`config.force_ssl`]: configuring.html#config-force-ssl
 [`ActionDispatch::SSL`]: https://api.rubyonrails.org/classes/ActionDispatch/SSL.html
 [`ActionDispatch::SSL`]: https://api.rubyonrails.org/classes/ActionDispatch/SSL.html
+
+組み込みのヘルスチェックエンドポイント
+------------------------------
+
+Railsには、`/up`パスでアクセス可能な組み込みのヘルスチェックエンドポイントも用意されています。このエンドポイントは、アプリが正常に起動した場合はステータスコード200を返し、例外が発生した場合はステータスコード500を返します。
+
+production環境では、多くのアプリケーションが、問題が発生したときにエンジニアに報告するアップタイムモニタや、ポッドの健全性を判断するロードバランサや、Kubernetesコントローラーなどを用いて、状態を上流側に報告する必要があります。このヘルスチェックは、多くの状況で利用できるように設計されています。
+
+新しく生成されたRailsアプリケーションのヘルスチェックは`/up`にありますが、`config/routes.rb`でパスを自由に設定できます。
+
+```ruby
+Rails.application.routes.draw do
+  get "healthz" => "rails/health#show", as: :rails_health_check
+end
+```
+
+上の設定によって、`/healthz`パスでヘルスチェックにアクセスできるようになります。
+
+NOTE: このエンドポイントは、データベースやredisクラスタなど、アプリケーションのあらゆる依存関係のステータスを反映するものではありません。アプリケーション固有のニーズについては、`rails/health#show`を独自のコントローラアクションに置き換えてください。
+
+ヘルスチェックで何をチェックするかは慎重に検討しましょう。場合によっては、サードパーティのサービスの不具合でアプリケーションが再起動するような事態を招く可能性もあります。理想的には、そのような停止を優雅に処理できるようにアプリケーションを設計する必要があります。

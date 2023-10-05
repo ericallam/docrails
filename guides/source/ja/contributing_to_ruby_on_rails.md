@@ -13,7 +13,7 @@ Ruby on Rails に貢献する方法
 
 Ruby on Railsは、「どこかで誰かがうまくやってくれているフレームワーク」ではありません。Ruby on Railsには、長年に渡って数千人もの開発者が貴重な貢献を行っています。貢献の内容は、わずか1文字の修正から、大規模なアーキテクチャ変更、重要なドキュメント作成まで多岐に渡ります。これらの作業はいずれも、Ruby on Railsをすべての人々にとってよりよいものにするためです。コードを書いたりドキュメントを作成したりする以外にも、issueの作成やパッチのテストなど、さまざまな方法で貢献できます（訳注: サンプルのコミットメッセージも日本語に翻訳していますが、実際のissueやコミットメッセージは英語で書きます ）。
 
-[RailsのREADME][README]にも記載されているように、Railsのコードベースやサブプロジェクトのコードベースについて、issueトラッカーやチャットルームやメーリングリストでやり取りする方はすべて、Railsの[行動規範][CoC]に従うことが期待されます。
+[RailsのREADME][README]にも記載されているように、Railsのコードベースやサブプロジェクトのコードベースについて、issueトラッカーやチャットルーム、discussionボード、メーリングリストでやり取りする方はすべて、Railsの[行動規範][CoC]に従うことが期待されます。
 
 [README]: https://github.com/rails/rails/blob/main/README.md
 [CoC]: https://rubyonrails.org/conduct/
@@ -30,9 +30,12 @@ NOTE: Ruby on Railsの最新リリースで見つけたバグは最も注目を�
 
 [maintenance_policy]: maintenance_policy.html
 
+Railsのどのバージョンがサポートされているかについては、[メンテナンスポリシー](maintenance_policy.html)を参照してください。
+セキュリティ問題は、GitHubのissue trackerには絶対に報告しないようご注意ください。
+
 ### バグレポートを作成する
 
-Ruby on Railsで何らかの問題を発見し、それがセキュリティ上の問題でなければ、まずGitHubの[issues][]を検索して、既にレポートがあがっているかどうかを確認してみましょう。該当する問題がまだissuesにない場合は、[新しいissueを作成][new issue]します。セキュリティ上のissueをレポートする方法については次のセクションで説明します。
+Ruby on Railsで何らかの問題を発見し、それがセキュリティ上の問題でなければ、まず[GitHub Issues][issues]を検索して、既にレポートがあがっているかどうかを確認してみましょう。該当する問題がまだissuesにない場合は、[新しいissueを作成][new issue]します。セキュリティ上のissueをレポートする方法については次のセクションで説明します。
 
 issueを作成する際に、フレームワークにバグがあるかどうかを判断するのに必要なすべての情報を含められるように、issueテンプレートを用意しています。各issueには、タイトルと問題の明確な説明を含める必要があります。issueの説明には、期待される動作を示すコードサンプル、失敗するテスト、システム構成など、できるだけ多くの関連情報を含めるようにしてください。他の人たちにとっても自分自身にとっても、バグの再現と修正点の把握がやりやすくなることを目指してください。
 
@@ -50,11 +53,11 @@ issueを作成する際に、フレームワークにバグがあるかどうか
 * Action Mailbox issue用テンプレート: [gem][gem: ActionMailbox] / [main][main: ActionMailbox]
 * その他のissue用一般テンプレート: [gem][gem: generic] / [main][main: generic]
 
-テンプレートには「ボイラープレート（boilerplate）」と呼ばれる一種のひな形コードが含まれており、これを用いてRailsのリリースバージョン（`*_gem.rb`）やedge Rails（`*_main.rb`）に対するテストケースを設定できます。
+テンプレートにはボイラープレート（boilerplate）と呼ばれる一種のひな形コードが含まれており、これを用いてRailsのリリースバージョン（`*_gem.rb`）やedge Rails（`*_main.rb`）に対するテストケースを1ファイルでセットアップできます。
 
-該当するテンプレートの内容をコピーして`.rb`ファイルに貼り付けて適宜変更を行い、issueを再現できるようにします。このコードを実行するには、ターミナルで`ruby the_file.rb`を実行します。テストコードが正しく作成されていれば、このテストケースはバグがあることによって失敗する（failと表示される）はずです。
+該当するテンプレートの内容をコピーして`.rb`ファイルに貼り付け、issueを再現できるよう適宜変更します。このコードを実行するには、ターミナルで`ruby the_file.rb`を実行します。テストコードが正しく作成されていれば、このテストケースはバグによって失敗する（failと表示される）はずです。
 
-続いて、この実行可能テストケースをGitHubの[gist][]で共有するか、issueの説明に貼り付けます。
+続いて、この実行可能テストケースをGitHubの[gist][]で共有するか、issueの説明に貼り付けてください。
 
 [issues]: https://github.com/rails/rails/issues
 [new issue]: https://github.com/rails/rails/issues/new
@@ -90,13 +93,13 @@ WARNING: セキュリティ脆弱性に関する問題は、一般公開され�
 
 ### 機能リクエストについて
 
-GitHub Issuesは「機能リクエスト」の場ではありません。Ruby on Railsで欲しい機能があるなら、自分でコードを書くか、誰かにお願いしてコードを書いてもらってください（Ruby on Rails用のパッチを提案する方法については後述します）。GitHub Issuesにこのような「欲しい機能リスト」をコードも添えずに書き込んでも、Issueをチェックした人によって早晩「無効」とマーキングされて終わるでしょう。
+GitHub Issuesは「機能リクエスト」の場ではありません。Ruby on Railsで欲しい機能があれば、自分でコードを書くか、誰かにお願いしてコードを書いてもらってください（Ruby on Rails用のパッチを提案する方法については後述します）。GitHub Issuesにこのような「欲しい機能リスト」をコードも添えずに書き込んでも、Issueをチェックした人によって早晩「無効」とマーキングされて終わるでしょう。
 
 その一方、「バグ」と「機能」は簡単に線引きできないこともあります。一般に、「機能」はアプリケーションに新しい振る舞いを追加するものであり、「バグ」は既存の振る舞いが期待どおりでないことを示します。場合によってはコアチームがバグか機能かを審査する必要もあるでしょう。とはいうものの、バグか機能かの違いは、送られたパッチをどのリリースに反映するかという扱いの違いでしかないことがほとんどです（バグ修正は早めにリリースされ、機能追加はメジャーリリースで反映されるなど）。私たちは、修正パッチと同様に機能追加も大歓迎しています。送っていただいた機能追加をメンテナンス用ブランチに押し込めておしまいにすることはしません。
 
-機能追加用のパッチを送信する前に自分のアイディアに意見を募りたい場合は、[rails-coreメーリングリスト][rails-core ml]にメールを送信してください。もし誰からも返信がなければ、自分のアイディアに誰も関心を持っていないということがわかります。あるいは、自分のアイディアに興味を示してくれる人が返信してくれるかもしれません。あるいは「悪いけど採用できそうにないかも」という返信があるかもしれません。しかしこのメーリングリストは、こうしたアイディアについて議論するために用意された場所です。逆にGitHubのissueは、こうした新しいアイディアで必要な議論（ときには長期かつ複雑になることもあるでしょう）を行うには向いていません。
+機能追加用のパッチを送信する前に自分のアイデアに意見を募りたい場合は、最初にdiscuss.rubyonrails.orgというSNSの[rails-core][rails-core]に投稿してみてください。もし反応がなければ自分のアイデアに誰も関心を持っていないことがわかりますし、自分のアイデアに興味を示した人が反応する可能性もあります。場合によっては「残念ながら採用できません」という返信があるかもしれません。しかしこのSNSこそ、そうしたアイデアについて議論するための場所なのです。逆にGitHubのissueは、こうした新しいアイデアで必要な議論（ときには長期かつ複雑になることもあるでしょう）を行う場としては不向きです。
 
-[rails-core ml]: https://discuss.rubyonrails.org/c/rubyonrails-core
+[rails-core]: https://discuss.rubyonrails.org/c/rubyonrails-core
 
 既存のissueの解決を手伝う
 ----------------------------------
@@ -107,23 +110,23 @@ GitHub Issuesにあがっている[issueリスト][issues]を見てみると、�
 
 ### バグレポートの確認
 
-貢献の第一歩として、バグレポートを確認する作業も非常に有用です。issueを自分のコンピュータで再現できるかどうかを試してみましょう。問題をうまく再現できたら、そのことをissueのコメントに追加しましょう。
+貢献の第一歩として、バグレポートを検証する作業も非常に有用です。issueを自分のコンピュータで再現できるかどうかを試し、問題をうまく再現できたら、そのことをissueのコメントに追加しましょう。
 
-issueにあいまいな点があるなら、どこがわかりにくいかをコメントで伝えましょう。バグを再現するうえで有用な情報を追加したり、不要な手順を削除したりするのも重要な貢献です。
+issueにあいまいな点があるなら、どこがわかりにくいかをコメントで伝えましょう。バグを再現するうえで有用な情報を追加したり、不要な手順を削減したりするのも重要な貢献です。
 
-テストが添えられていないバグレポートを見かけたら貢献のチャンスです。「失敗する」テストを作成して貢献できますし、既存のテストファイルを詳しく読むことでテストの書き方も学べるので、Railsのソースコードを深く調べる絶好の機会となります。作成するテストは「パッチ」の形式で投稿するのがベストです。詳しくは[Railsのコードに貢献する](/contributing_to_ruby_on_rails.html#rails%E3%81%AE%E3%82%B3%E3%83%BC%E3%83%89%E3%81%AB%E8%B2%A2%E7%8C%AE%E3%81%99%E3%82%8B)で後述します。
+テストが添えられていないバグレポートを見かけたら貢献のチャンスです。「失敗する」テストを作成して貢献できますし、既存のテストファイルを詳しく読むことでテストの書き方も学べるので、Railsのソースコードを深く調べる絶好の機会となります。作成するテストは「パッチ」の形式で投稿するのがベストです。詳しくは[Railsのコードに貢献する](/contributing_to_ruby_on_rails.html#railsのコードに貢献する)で後述します。
 
-バグレポートは、とにかく簡潔でわかりやすく、そして現象をなるべく楽に再現できるように書きましょう。バグを修正する開発者にとって何よりありがたいのは、このような「よいバグレポート」です。たとえバグレポートを作成するあなたが最終的にコードを書かなくても、よいバグレポートはそれだけで大きな貢献になります。
+バグレポートをより簡潔でわかりやすく、現象をなるべく楽に再現できる形にする作業は、バグを修正する開発者にとって大きな助けになります。たとえあなたが最終的にコードを書かなくても、バグレポートが改善されればそれだけで大きな貢献になります。
 
 ### パッチをテストする
 
-GitHubからRuby on Railsに送信されたプルリクエスト（pull request、プルリクとも）をチェックしてくれる人もいると助かります。寄せられた修正を適用するには、まず以下のように専用のブランチを作成します。
+GitHubからRuby on Railsに送信されたプルリクエスト（pull request、PR、プルリクとも）を検査することも大きな助けになります。寄せられた修正を適用するには、まず以下のように専用のブランチを作成します。
 
 ```bash
 $ git checkout -b testing_branch
 ```
 
-続いて、このリモートブランチでローカルのコードベースを更新します。たとえばJohnSmithという名前のGitHubユーザーが、Railsをforkして https://github.com/JohnSmith/rails の"orange"というトピックブランチにpushする場合は、以下を実行します。
+続いて、このリモートブランチを使ってコードベースを更新します。たとえばJohnSmithという名前のGitHubユーザーが、Railsをforkして https://github.com/JohnSmith/rails の"orange"というトピックブランチにpushする場合は、以下を実行します。
 
 ```bash
 $ git remote add JohnSmith https://github.com/JohnSmith/rails.git
@@ -137,9 +140,9 @@ $ git pull JohnSmith orange
 * 修正は本当に有効か。
 * このテストでみんなが幸せになれるか。テストの内容を自分で理解できているか。足りないテストはないか。
 * ドキュメントの記載は適切か。ドキュメントも更新する必要があるか。
-* 自分の実装がよいと思えるか。同じ変更をもっと高速かつ素晴らしい方法で実装できないか。
+* 自分の実装がよいと思えるか。同じ変更をより高速な方法やよい良い方法で実装できないか。
 
-プルリクエストの変更内容がよさそうだと思えたら、気づいた点をGitHubのissueに何らかの形でコメントしましょう。コメントを追加するときは、「この変更はよい」と、どの変更点がよいと思うかについて書き、なるべく具体的に述べておきましょう。たとえば次のようにコメントします。
+プルリクエストの変更内容がよさそうだと思えたら、気づいた点をGitHubのissueに何らかの形でコメントしましょう。コメントを追加するときは、「この変更はよい」と、どの変更点がよいと思うかをなるべく具体的に述べておきましょう。たとえば次のようにコメントします。
 
 >I like the way you've restructured that code in generate_finder_sql - much nicer.（generate_finder_sqlのコードが非常によい形で再構築されている点がよいと思います）The tests look good too.（テストもよく書けているようです）
 
@@ -152,9 +155,17 @@ Railsのドキュメントに貢献する
 
 Ruby on Railsには2種類のドキュメントがあります。1つはこの「Railsガイド」であり、Ruby on Railsを学ぶためのドキュメントです。もう1つはAPIドキュメントであり、こちらはリファレンス用です。
 
-Railsガイドの改善にはどなたでも貢献できます。Railsガイドに求められる改善とは、「一貫していること」「矛盾がないこと」「読みやすいこと」「情報の追加」「事実と異なっている部分の修正」「タイポの修正」「最新のedge Railsに追い付くこと」などです。
+RailsガイドやAPIリファレンスは以下のような形で改善できます。
+
+- 内容の整合性を高め、矛盾を解消する
+- 読みやすく書き直す
+- 不足している情報を追加する
+- 事実と異なる内容を修正する
+- タイポを修正する
+- 最新のedge Railsに対応する
 
 英語ドキュメントに貢献したい方は、Railsガイドの[英語ソースファイル][guides source]を変更してから、プルリクエストでmainブランチに変更の反映を依頼してください。
+ドキュメント変更のプルリクエストでは、CIビルドの実行を避けるため、プルリクエストのタイトルに`[ci skip]`を含めてください。
 
 ドキュメント関連で貢献するときは、[API ドキュメント作成のガイドライン](api_documentation_guidelines.html)と[Rails ガイドのガイドライン](ruby_on_rails_guides_guidelines.html)に十分目を通しておいてください。
 
@@ -170,7 +181,7 @@ Railsガイドを翻訳するボランティアも歓迎いたします。次の
 * *guides/source*に置かれているコンテンツファイルをそのフォルダ内にコピーして翻訳する。
 * HTMLファイルは**翻訳しないでください**（HTMLファイルは自動生成されます）。
 
-翻訳の送り先はRailsリポジトリではないことにご注意ください。上述したように、翻訳はforkしたリポジトリで行います。ドキュメントのメンテナンスをパッチベースで行う場合、英語のみに統一しておかないと維持できないためです。
+翻訳はRailsリポジトリに送信しないようご注意ください。上述したように、翻訳はforkしたリポジトリで行ってください。ドキュメントのパッチベースによるメンテナンスは、英語でないと継続が難しいためです。
 
 ガイドをHTML形式で生成するには、guidesディレクトリに`cd`して以下を実行します（言語がit-ITの場合）。
 
@@ -225,8 +236,22 @@ Railsのコードに貢献する
 
 GitHub Codespacesを有効にしているOrganization（組織）に属していれば、そのOrganizationにRailsをforkする形でGitHub Codespacesを利用できます。GitHub Codespacesは必要なすべての依存関係で初期化され、すべてのテストを実行可能です。
 
-GitHub Codespacesが有効なOrganization（組織）に属していない場合は、[VS Code remote containers plugin][remote_containers_plugin]を利用できます。このプラグインは、リポジトリの`.devcontainer`設定を読み込んで、Dockerコンテナをローカルでビルドします。
+#### VS Codeリモートコンテナを使う
 
+[Visual Studio Code](https://code.visualstudio.com)と[Docker](https://www.docker.com)がインストールされている場合、[VS Codeのリモートコンテナプラグイン](https://code.visualstudio.com/docs/remote/containers-tutorial)を利用できます。このプラグインは、リポジトリの[`.devcontainer`](https://github.com/rails/rails/tree/main/.devcontainer)設定を読み込んで、Dockerコンテナをローカルでビルドします。
+
+#### Dev Container CLIを使う
+
+または、[Docker](https://www.docker.com)と[npm](https://github.com/npm/cli)がインストールされている場合、[Dev Container CLI](https://github.com/devcontainers/cli)を実行して、コマンドラインから[`.devcontainer`](https://github.com/rails/rails/tree/main/.devcontainer)の設定を利用することも可能です。
+
+```bash
+$ npm install -g @devcontainers/cli
+$ cd rails
+$ devcontainer up --workspace-folder .
+$ devcontainer exec --workspace-folder . bash
+```
+
+[Organization]: https://docs.github.com/ja/organizations/collaborating-with-groups-in-organizations/about-organizations
 [GitHub Codespaces]: https://docs.github.com/ja/codespaces/getting-started/quickstart
 
 [remote_containers_plugin]: https://code.visualstudio.com/docs/remote/containers-tutorial
@@ -292,12 +317,13 @@ $ yarn link "@rails/activestorage"
 
 準備が整ったら、早速コードを書きましょう。自分が書いたコードをRailsに追加するときは、以下の点を心がけてください。
 
+* Railsのスタイルや規約に従うこと。
 * Railsで広く使われている規約やヘルパーメソッドを用いること。
 * 自分が書いたコードがないと失敗し、あると成功するテストを書くこと。
 * 関連するドキュメント、実行例、ガイドなど、コードが影響する部分もすべて更新すること。
 * 変更内容が機能の追加・削除・変更の場合は、必ずCHANGELOGにエントリを追加すること（変更がバグフィックスの場合、CHANGELOGエントリは不要です）。
 
-TIP: スタイルなどの表面的な変更や、Railsの安定性・機能・テストのしやすさについて根本部分が改善されない変更は受け付けられません。詳しくは[#13771のコメント][#13771]（英語）を参照してください。
+TIP: スタイルなどの表面的な変更や、Railsの安定性・機能・テストのしやすさについて根本部分が改善されない変更は原則として受け付けられません。詳しくは[#13771のコメント][#13771]（英語）を参照してください。
 
 [#13771]: https://github.com/rails/rails/pull/13771#issuecomment-32746700
 
@@ -335,27 +361,15 @@ Inspecting 1 file
 
 #### スペルチェック
 
-Railsでは、[GitHub Actions][]で[misspell][]を実行してスペルチェックを実施しています（misspellは主に[Go][]で書かれています）。以下の要領で`misspell`を実行して、よくあるスペルミスをその場で修正しておきましょう（`misspell`はカスタム辞書を使わない点が他のスペルチェッカーと異なります）。`misspell`は、ローカルであらゆるファイルに対して実行できます。
+Railsでは、[GitHub Actions][]で[codespell][]によるスペルチェックを実行しています（[codespell][codespell2]では[小さなカスタム辞書][custom dict]を用いています）。codespellは[Python][]で書かれており、以下のように実行できます。
 
 ```bash
-find . -type f | xargs ./misspell -i 'aircrafts, devels, invertions' -error
+$ codespell --ignore-words=codespell.txt
 ```
 
-以下は`misspell`で有用なオプションやフラグです。
-
-- `-i 文字列`: 修正したくない語のリストをカンマ区切りで渡す
-- `-w`: 修正をファイルに反映する（デフォルトは表示のみ）
-
-また、GitHub Actionでは[codespell][]も実行しています（codespellでは[小さなカスタム辞書][custom dict]を用いています）。codespellは[Python][]で書かれており、以下のように実行できます。
-
-```bash
-codespell --ignore-words=codespell.txt
-```
-
-[misspell]: https://github.com/client9/misspell
-[Go]: https://golang.org/
 [GitHub Actions]: https://github.com/rails/rails/blob/main/.github/workflows/lint.yml
 [codespell]: https://github.com/codespell-project/codespell
+[codespell2]: https://pypi.org/project/codespell/
 [custom dict]: https://github.com/rails/rails/blob/main/codespell.txt
 [Python]: https://www.python.org/
 
@@ -423,6 +437,15 @@ $ cd actionmailer
 $ bin/test test/mail_layout_test.rb -n test_explicit_class_layout
 ```
 
+#### 特定行のテストを実行する
+
+テスト名がすぐわかるとは限りません。テストの開始行がわかっている場合は以下のオプションで指定できます。
+
+```bash
+$ cd railties
+$ bin/test test/application/asset_debugging_test.rb:69
+```
+
 #### seedを指定してテストを実行する
 
 テストはseedによってランダムな順序で実行されます。ランダム化したテストが失敗する場合、seedを指定することで、失敗するテストをより正確に再現できます。
@@ -481,6 +504,7 @@ MySQLやPostgreSQLを対象にテストを実行する場合は、`sqlite3`の�
 
 ```bash
 $ bundle exec rake test:mysql2
+$ bundle exec rake test:trilogy
 $ bundle exec rake test:postgresql
 ```
 
@@ -506,9 +530,15 @@ $ bundle exec rake TEST=test/cases/associations/has_many_associations_test.rb
 
 これで`test_jdbcmysql`、`test_jdbcsqlite3`、`test_jdbcpostgresql`が順に呼び出されます。特定のデータベースを対象にテストを実行する方法について詳しくは、Railsリポジトリ内の`activerecord/RUNNING_UNIT_TESTS.rdoc`を参照してください。
 
+#### テストでデバッガを使う
+
+外部デバッガ（pry、byebugなど）を利用する場合は、デバッガをインストールして通常どおりに使います。デバッガの問題が発生した場合は、`PARALLEL_WORKERS=1`を設定してテストをシリアル実行するか、`n test_long_test_name`で単一のテストを実行してください。
+
 ### 警告の扱いについて
 
 テストスイートの実行では、警告表示がオンになります。Ruby on Railsのテストで警告が1つも表示されないのが理想ですが、サードパーティのものも含めて若干の警告が表示される可能性があります。これらの警告は無視してください（でなければ修正しましょう）。可能であれば、新しい警告を表示しないようにするパッチの送信もお願いします。
+
+Rails CIは、警告が発生すると警告を表示します。ローカル環境で同じ動作をさせるには、テストスイートを実行するときに`RAILS_STRICT_WARNINGS=1`を設定します。
 
 ### ドキュメントの更新
 
@@ -525,11 +555,11 @@ $ bundle exec rake TEST=test/cases/associations/has_many_associations_test.rb
 
 CHANGELOGファイルはすべてのリリースで重要な位置を占めます。Railsの各バージョンの変更内容はここに記録します。
 
-機能の追加や削除、バグ修正のコミット、非推奨通知の追加を行ったら、必ず修正したフレームワークでCHANGELOGファイルのその時点の**冒頭に**エントリを追加してください。リファクタリングやドキュメント変更の場合はCHANGELOGを変更しないでください。
+機能の追加や削除、非推奨通知の追加を行ったら、必ず修正したフレームワークでCHANGELOGファイルのその時点の**冒頭に**エントリを追加してください。リファクタリングやドキュメント変更はCHANGELOGに記載しないでください。
 
 CHANGELOGのエントリには変更内容の適切な要約を記入し、最後に作者の名前を書きます。必要であれば複数行にわたってエントリを記入することも、スペース4つのインデントを置いたコード例を記入することもできます。変更が特定のissueに関連する場合は、issue番号も記入してください。CHANGELOGエントリの例を以下に示します（訳注: 実際は英語で書きます）。
 
-```
+```markdown
 *  （変更内容の要約をここに記入）
 
    （複数行のエントリを記入する場合は80文字目で折り返す）
@@ -547,6 +577,88 @@ CHANGELOGのエントリには変更内容の適切な要約を記入し、最�
 ```
 
 コード例や複数行エントリを使わない場合、名前はエントリの最後に続けて記入してエントリが1行に収まるようにします。その他の場合は、最後の行に名前だけを記入します。
+
+### 破壊的変更
+
+既存のアプリケーションを壊す可能性のある変更は、常に破壊的変更（breaking change）とみなされます。Railsアプリケーションのアップグレード作業を容易にするために、破壊的変更を行う場合は「非推奨期間」が必要です。
+
+#### 振る舞いを削除する場合
+
+破壊的変更によって既存の振る舞いが削除される場合は、最初に既存の振る舞いを維持したまま、非推奨の警告表示を追加する必要があります。
+
+たとえば、`ActiveRecord::Base`のパブリックメソッドを削除したいとします。mainブランチがリリース前の7.0バージョンを指している場合、Rails 7.0で非推奨の警告を表示する必要があります。これにより、Rails 7.0のどのバージョンにアップグレードしても非推奨の警告が表示されるようになり、Rails 7.1でこのメソッドを削除可能になります。
+
+非推奨の警告は次のような方法で追加できます。
+
+```ruby
+def deprecated_method
+  ActiveRecord.deprecator.warn(<<-MSG.squish)
+    `ActiveRecord::Base.deprecated_method` is deprecated and will be removed in Rails 7.1.
+  MSG
+  # 既存の振る舞い
+end
+```
+
+#### 振る舞いを変更する場合
+
+破壊的変更で既存の振る舞いが変更される場合は、フレームワークのデフォルトを追加する必要があります。フレームワークのデフォルトは、アプリを1つずつ新しいデフォルトに切り替え可能にすることで、Railsのアップグレードを容易にします。
+
+フレームワークの新しいデフォルトを実装するには、最初に対象となるフレームワークにアクセサを追加して設定を作成します。アップグレード中に何も壊れないよう、デフォルト値は既存の振る舞いのままにしておきます。
+
+```ruby
+module ActiveJob
+  mattr_accessor :existing_behavior, default: true
+end
+```
+
+この新しい設定を使って、以下のように新しい振る舞いを条件付きで実装します。
+
+```ruby
+def changed_method
+  if ActiveJob.existing_behavior
+    # 既存の振る舞い
+  else
+    # 新しい振る舞い
+  end
+end
+```
+
+この新しいフレームワークのデフォルトを設定するには、 `Rails::Application::Configuration#load_defaults`で新しい値を設定します。
+
+
+```ruby
+def load_defaults(target_version)
+  case target_version.to_s
+  when "7.1"
+    # ...
+    if respond_to?(:active_job)
+      active_job.existing_behavior = false
+    end
+    # ...
+  end
+end
+```
+
+アップグレードを容易にするために、`new_framework_defaults`テンプレートにも新しいデフォルトを追加する必要があります。コメントアウト済みのセクションを追加して、以下のように新しい値を設定します。
+
+```ruby
+# new_framework_defaults_7_1.rb.tt
+
+# Rails.application.config.active_job.existing_behavior = false
+```
+
+最後に、新しい設定の情報を[設定ガイド][]の`configuration.md`にも追加します：
+
+```markdown
+#### `config.active_job.existing_behavior
+
+| Starting with version | The default value is |
+| --------------------- | -------------------- |
+| (original)            | `true`               |
+| 7.1                   | `false`              |
+```
+
+[設定ガイド]: configuring.html
 
 ### エディタやIDEが作成するファイルをコミットに含めないようにする
 
@@ -572,7 +684,7 @@ $ git commit -a
 
 よいコミットメッセージは以下のような感じになります。
 
-```
+```markdown
 短い要約文（理想は50文字以下）
 
 もちろん必要に応じて詳しく書いても構いません。
@@ -682,7 +794,7 @@ $ git push fork my_new_branch
 
 GitHubのメール通知機能をオンにしているRailsコントリビュータもいますが、そうとは限りません。Railsに携わっている人のほとんどはボランティアなので、プルリクエストに返信をもらうまでに数日かかることもざらにあります。どうかめげずにプルリクエストをどしどし送信してください。おどろくほど早く反応がもらえることもあれば、そうでないこともあります。それがオープンソースというものです。
 
-一週間経っても何の音沙汰もないようなら、[rubyonrails-coreメーリングリスト][rails-core ml]で少しつっついてみてもよいでしょう。プルリクエストに自分でコメントを追加してみてもよいでしょう。
+一週間経っても何の音沙汰もないようなら、[rails-core][rails-core]で少しつっついてみてもよいでしょう。プルリクエストに自分でコメントを追加してみてもよいでしょう。
 
 よい機会なので、自分のプルリクエストへの反応を待っている間に、他の人のプルリクエストを開いてコメントを追加してみましょう。きっとその人たちも、あなたが自分のパッチに返信をもらったときと同じぐらい喜んでくれるでしょう。
 
@@ -729,13 +841,13 @@ $ git branch --track 7-0-stable rails/7-0-stable
 $ git checkout 7-0-stable
 ```
 
-NOTE: 旧バージョンのRailsで作業する前に、[メンテナンスポリシー][maintenance_policy]でサポート期限を確認してください。サポート期限が終了したバージョンへの変更は受け付けられません。
+NOTE: 旧バージョンのRailsで作業する前に、[メンテナンスポリシー](maintenance_policy.html)でサポート期限を確認してください。サポート期限が終了したバージョンへの変更は受け付けられません。
 
 [show branch]: http://qugstart.com/blog/git-and-svn/add-colored-git-branch-name-to-your-shell-prompt/
 
 #### バックポート
 
-mainブランチにマージされた変更は、Railsの次期メジャーリリースに取り入れられます。場合によっては、メンテナンスのために過去の安定版にも変更をバックポートするのがよいこともあります。一般に、セキュリティ修正とバグ修正は、バックポートの候補になります。新機能や動作変更用パッチはバックポートの候補になりません。自分の変更がどちらに該当するかわからない場合は、不要な作業を避けるためにも、変更をバックポートする前にRailsチームのメンバーに相談しましょう。
+mainブランチにマージされた変更は、Railsの次期メジャーリリースに取り入れられます。場合によっては、メンテナンスのために安定版にも変更をバックポートするのがよいこともあります。一般に、セキュリティ修正とバグ修正は、バックポートの候補になります。新機能や動作変更用パッチはバックポートの候補になりません。自分の変更がどちらに該当するかわからない場合は、不要な作業を避けるためにも、変更をバックポートする前にRailsチームのメンバーに相談しましょう。
 
 最初に、mainブランチを最新の状態にします。
 

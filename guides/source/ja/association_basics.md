@@ -14,7 +14,11 @@ Active Record の関連付け
 関連付けを使う理由
 -----------------
 
-Railsの「関連付け（アソシエーション: association）」は、2つのActive Recordモデル同士のつながりを指します。モデルとモデルの間には関連付けを行なう必要がありますが、その理由はおわかりでしょうか。関連付けを行うことで、自分のコードの共通操作がシンプルになって扱いやすくなります。簡単なRailsアプリケーションを例にとって説明しましょう。このアプリケーションにはAuthor（著者）モデルとBook（書籍）モデルがあります。一人の著者は、複数の書籍を持っています。関連付けを設定していない状態では、モデルの宣言は以下のようになります。
+Railsの「関連付け（アソシエーション: association）」は、2つのActive Recordモデル同士のつながりを指します。モデルとモデルの間で関連付けを行なう理由はおわかりでしょうか。関連付けを行うことで、自分のコードの共通操作がシンプルになって扱いやすくなります。
+
+簡単なRailsアプリケーションを例にとって説明しましょう。このアプリケーションにはAuthor（著者）モデルとBook（書籍）モデルがあります。一人の著者は、複数の書籍を持っています。
+
+関連付けを設定していない状態では、モデルの宣言は以下のようになります。
 
 ```ruby
 class Author < ApplicationRecord
@@ -69,7 +73,9 @@ end
 関連付けの種類
 -------------------------
 
-Railsでサポートされている関連付けは以下の6種類です。
+Railsでは6種類の関連付けをサポートしています。それぞれの関連付けは、特定の用途に特化しています。
+
+以下は、Railsでサポートされている全種類の関連付けのリストです。リストはAPIドキュメントにリンクされているので、詳しい情報や利用方法、メソッドパラメータなどはリンク先を参照してください。
 
 * [`belongs_to`][]
 * [`has_one`][]
@@ -104,7 +110,7 @@ NOTE: `belongs_to`関連付けで指定するモデル名は必ず「**単数形
 上の関連付けに対応するマイグレーションは以下のような感じになります。
 
 ```ruby
-class CreateBooks < ActiveRecord::Migration[7.0]
+class CreateBooks < ActiveRecord::Migration[7.1]
   def change
     create_table :authors do |t|
       t.string :name
@@ -122,9 +128,9 @@ end
 
 `belongs_to`を単独で利用すると、一方向のみの「1対1」つながりが生成されます。つまり上の例で言うと、「個別の書籍はその著者を知っている」状態になりますが、「著者は自分の書籍について知らない」状態になります。
 
-[双方向関連付け](#双方向関連付け)をセットアップするには、`belongs_to`関連付けを使うときに相手側のモデルに`has_one`または`has_many`関連付けを指定します。
+[双方向関連付け](#双方向関連付け)をセットアップするには、`belongs_to`関連付けを使うときに相手側のモデル（ここではAuthorモデル）に`has_one`または`has_many`関連付けを指定します。
 
-`belongs_to`では「参照の一貫性」が担保されません。そのため、ユースケースによっては以下のように参照カラムでデータベースレベルの外部キー制約（`foreign_key: true`）を追加する必要があります。
+`optional`がtrueに設定されている場合、`belongs_to`では「参照の一貫性」が担保されません。そのため、ユースケースによっては以下のように参照カラムでデータベースレベルの外部キー制約（`foreign_key: true`）を追加する必要があります。
 
 ```ruby
 create_table :books do |t|
@@ -150,7 +156,7 @@ end
 上の関連付けに対応するマイグレーションは以下のような感じになります。
 
 ```ruby
-class CreateSuppliers < ActiveRecord::Migration[7.0]
+class CreateSuppliers < ActiveRecord::Migration[7.1]
   def change
     create_table :suppliers do |t|
       t.string :name
@@ -196,7 +202,7 @@ NOTE: `has_many`関連付けを宣言する場合、相手のモデル名は「�
 上の関連付けに対応するマイグレーションは以下のような感じになります。
 
 ```ruby
-class CreateAuthors < ActiveRecord::Migration[7.0]
+class CreateAuthors < ActiveRecord::Migration[7.1]
   def change
     create_table :authors do |t|
       t.string :name
@@ -249,7 +255,7 @@ end
 上の関連付けに対応するマイグレーションは以下のような感じになります。
 
 ```ruby
-class CreateAppointments < ActiveRecord::Migration[7.0]
+class CreateAppointments < ActiveRecord::Migration[7.1]
   def change
     create_table :physicians do |t|
       t.string :name
@@ -330,7 +336,7 @@ end
 上の関連付けに対応するマイグレーションは以下のような感じになります。
 
 ```ruby
-class CreateAccountHistories < ActiveRecord::Migration[7.0]
+class CreateAccountHistories < ActiveRecord::Migration[7.1]
   def change
     create_table :suppliers do |t|
       t.string :name
@@ -371,7 +377,7 @@ end
 上の関連付けに対応するマイグレーションは以下のような感じになります。
 
 ```ruby
-class CreateAssembliesAndParts < ActiveRecord::Migration[7.0]
+class CreateAssembliesAndParts < ActiveRecord::Migration[7.1]
   def change
     create_table :assemblies do |t|
       t.string :name
@@ -410,7 +416,7 @@ end
 上の関連付けに対応するマイグレーションは以下のような感じになります。
 
 ```ruby
-class CreateSuppliers < ActiveRecord::Migration[7.0]
+class CreateSuppliers < ActiveRecord::Migration[7.1]
   def change
     create_table :suppliers do |t|
       t.string :name
@@ -469,6 +475,10 @@ end
 
 joinモデルでバリデーション、コールバック、追加の属性が必要な場合は、`has_many :through`をお使いください。
 
+`has_and_belongs_to_many`リレーションシップは、`id: false`を介して「主キーを含まない」joinテーブルを作成することを示唆していますが、`has_many :through`リレーションシップでは、joinテーブルに複合主キーを含めることを検討してください。
+
+たとえば上の例では `create_table :manifests, primary_key: [:assembly_id, :part_id]`を使うことが推奨されます。
+
 ### ポリモーフィック関連付け
 
 **ポリモーフィック関連付け**（polymorphic association）は、関連付けのやや高度な応用です。ポリモーフィック関連付けを使うと、ある1つのモデルが他の複数のモデルに属していることを、1つの関連付けだけで表現できます。たとえば、写真（picture）モデルがあり、このモデルを従業員（employee）モデルと製品（product）モデルの両方に従属させたいとします。この場合は以下のように宣言します。
@@ -494,7 +504,7 @@ end
 `Picture`モデルのインスタンスがあれば、`@picture.imageable`とすることでその親を取得できます。これを可能にするには、ポリモーフィックなインターフェイスを宣言するモデルで、外部キーのカラムと型のカラムを両方とも宣言しておく必要があります。
 
 ```ruby
-class CreatePictures < ActiveRecord::Migration[7.0]
+class CreatePictures < ActiveRecord::Migration[7.1]
   def change
     create_table :pictures do |t|
       t.string  :name
@@ -524,6 +534,65 @@ end
 
 ![ポリモーフィック関連付けの図](images/association_basics/polymorphic.png)
 
+### 複合主キーを持つモデルの関連付け
+
+Railsは多くの場合、追加情報を必要とせずに、複合主キーをモデル間の関連付けで「主キー〜外部キー」情報を推論できます。以下の例をご覧ください。
+
+```ruby
+class Order < ApplicationRecord
+  self.primary_key = [:shop_id, :id]
+  has_many :books
+end
+
+class Book < ApplicationRecord
+  belongs_to :order
+end
+```
+
+ここでRailsは、1件のorder（注文）とそのbooks（本）の関連付けの主キーに`:id`カラムが使われると仮定します。これは、通常の`has_many`関連付けや`belongs_to`関連付けと同様です。Railsは、`books`テーブル上の外部キーカラムが`:order_id`であると推測します。
+ある本の注文に、以下のようにアクセスするとします。
+
+```ruby
+order = Order.create!(id: [1, 2], status: "pending")
+book = order.books.create!(title: "A Cool Book")
+
+book.reload.order
+```
+
+この場合、以下のSQLを生成してorderにアクセスします。
+
+```sql
+SELECT * FROM orders WHERE id = 2
+```
+
+これが期待通りに動作するのは、このモデルの複合主キーに`:id`カラムが含まれており、かつ`:id`カラムがすべてのレコードで一意である場合だけです。関連付けで完全な複合主キーを使うには、その関連付けで`query_constraints`オプションを設定してください。このオプションは、関連付けられるレコードをクエリするときに複合外部キーを指定します。例:
+
+```ruby
+class Author < ApplicationRecord
+  self.primary_key = [:first_name, :last_name]
+  has_many :books, query_constraints: [:first_name, :last_name]
+end
+
+class Book < ApplicationRecord
+  belongs_to :author, query_constraints: [:author_first_name, :author_last_name]
+end
+```
+
+以下のように、ある本のauthor（著者）にアクセスするとします。
+
+```ruby
+author = Author.create!(first_name: "Jane", last_name: "Doe")
+book = author.books.create!(title: "A Cool Book")
+
+book.reload.author
+```
+
+この場合、以下のようにSQLクエリで`:first_name`と`:last_name`が使われます。
+
+```sql
+SELECT * FROM authors WHERE first_name = 'Jane' AND last_name = 'Doe'
+```
+
 ### 自己結合
 
 データモデルを設計していると、モデルを自分自身に関連付ける必要が生じることがあります。たとえば、全従業員（employees）を1つのデータベースモデルに格納しておきたいが、マネージャー（manager）と部下（subordinates）のリレーションシップも追えるようにしておきたい場合が考えられます。この状況は、以下のように自己結合（self-joining）関連付けでモデル化できます。
@@ -542,7 +611,7 @@ end
 マイグレーションおよびスキーマでは、モデル自身にreferencesカラムを追加します。
 
 ```ruby
-class CreateEmployees < ActiveRecord::Migration[7.0]
+class CreateEmployees < ActiveRecord::Migration[7.1]
   def change
     create_table :employees do |t|
       t.references :manager, foreign_key: { to_table: :employees }
@@ -551,6 +620,10 @@ class CreateEmployees < ActiveRecord::Migration[7.0]
   end
 end
 ```
+
+NOTE: `foreign_key`に渡される`to_table`オプションなどについて詳しくは、[`SchemaStatements#add_reference`][connection.add_reference]を参照してください。
+
+[connection.add_reference]: https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-add_reference
 
 ヒントと注意事項
 --------------------------
@@ -615,7 +688,7 @@ end
 上の宣言は、以下のbooksテーブル上で対応する外部キーカラムと整合している必要があります。作成した直後のテーブルの場合、マイグレーションは次のような感じになります。
 
 ```ruby
-class CreateBooks < ActiveRecord::Migration[7.0]
+class CreateBooks < ActiveRecord::Migration[7.1]
   def change
     create_table :books do |t|
       t.datetime   :published_at
@@ -629,14 +702,16 @@ end
 一方、既存のテーブルの場合、マイグレーションは次のような感じになります。
 
 ```ruby
-class AddAuthorToBooks < ActiveRecord::Migration[7.0]
+class AddAuthorToBooks < ActiveRecord::Migration[7.1]
   def change
     add_reference :books, :author
   end
 end
 ```
 
-NOTE: [データベースレベルでの参照整合性を強制する](/active_record_migrations.html#外部キー)には、上の‘reference’カラム宣言に`foreign_key: true`オプションを追加します。
+NOTE: [データベースレベルでの参照整合性を強制する][foreign_keys]には、上の‘reference’カラム宣言に`foreign_key: true`オプションを追加します。
+
+[foreign_keys]: /active_record_migrations.html#外部キー
 
 #### `has_and_belongs_to_many`関連付けに対応するjoinテーブルを作成する
 
@@ -659,7 +734,7 @@ end
 この関連付けに対応する`assemblies_parts`テーブルをマイグレーションで作成する必要があります。作成するテーブルには主キーを設定しないでください。
 
 ```ruby
-class CreateAssembliesPartsJoinTable < ActiveRecord::Migration[7.0]
+class CreateAssembliesPartsJoinTable < ActiveRecord::Migration[7.1]
   def change
     create_table :assemblies_parts, id: false do |t|
       t.bigint :assembly_id
@@ -674,10 +749,10 @@ end
 
 このテーブルはモデルを表現していないので、`create_table`に`id: false`を渡します。こうしておかないとこの関連付けは正常に動作しません。モデルのIDが破損する、IDの競合で例外が発生するなど、`has_and_belongs_to_many`関連付けの動作が怪しい場合は、この設定を忘れていないかどうか再度確認してみてください。
 
-`create_join_table`メソッドを使うことも可能です。
+以下のように`create_join_table`メソッドを使ってシンプルに書くことも可能です。
 
 ```ruby
-class CreateAssembliesPartsJoinTable < ActiveRecord::Migration[7.0]
+class CreateAssembliesPartsJoinTable < ActiveRecord::Migration[7.1]
   def change
     create_join_table :assemblies, :parts do |t|
       t.index :assembly_id
@@ -760,18 +835,57 @@ end
 
 Active Recordは、これらの関連付けの設定から、2つのモデルが双方向の関連を共有していることを自動的に認識しようとします。以下に示すように、Active Recordは`Author`オブジェクトを1個だけ読み出すことで、アプリケーションの効率を高めるとともにデータの一貫性を維持します。
 
-```irb
-irb> a = Author.first
-irb> b = a.books.first
-irb> a.first_name == b.author.first_name
-=> true
-irb> a.first_name = 'David'
-irb> a.first_name == b.author.first_name
-=> true
-```
+* 既に読み込まれたデータに対する不要なクエリを防ぐ
 
-Active Recordでは、ほとんどの標準的な名前同士の関連付けついて自動認識をサポートしています。ただしActive Recordは、`:through`や`:foreign_key`オプションを含む双方向関連付けを自動認識しません。
-また、関連付け自身でカスタムスコープが使われている場合も、[`config.active_record.automatic_scope_inversing`][]を`true`に設定しない限り自動認識しません（新しいアプリケーションではデフォルトで`config.active_record.automatic_scope_inversing = true`が設定されます）。
+    ```irb
+    irb> author = Author.first
+    irb> author.books.all? do |book|
+    irb>   book.author.equal?(author) # 追加クエリはここで実行されない
+    irb> end
+    => true
+    ```
+
+* データの不整合を防ぐ（`Author`オブジェクトのコピーは1個しか読み込まれない）
+
+    ```irb
+    irb> author = Author.first
+    irb> book = author.books.first
+    irb> author.name == book.author.name
+    => true
+    irb> author.name = "Changed Name"
+    irb> author.name == book.author.name
+    => true
+    ```
+
+* 関連付けを自動保存するケースを増やす
+
+    ```irb
+    irb> author = Author.new
+    irb> book = author.books.new
+    irb> book.save!
+    irb> book.persisted?
+    => true
+    irb> author.persisted?
+    => true
+    ```
+
+* 関連付けの[`presence`](active_record_validations.html#presence)や[`absence`](active_record_validations.html#absence)をバリデーションするケースを増やす
+
+    ```irb
+    irb> book = Book.new
+    irb> book.valid?
+    => false
+    irb> book.errors.full_messages
+    => ["Author must exist"]
+    irb> author = Author.new
+    irb> book = author.books.new
+    irb> book.valid?
+    => true
+    ```
+
+Active Recordでは、ほとんどの標準的な名前同士の関連付けについて自動識別をサポートしています。ただしActive Recordは、`:through`や`:foreign_key`オプションを含む双方向関連付けを自動認識しません。
+
+また、関連付け自身でカスタムスコープが使われている場合も、[`config.active_record.automatic_scope_inversing`][]を`true`に設定しない限り自動識別しません（新しいアプリケーションではデフォルトで`config.active_record.automatic_scope_inversing = true`が設定されます）。
 
 たとえば、次のようなモデルを宣言したケースを考えてみましょう。
 
@@ -785,18 +899,52 @@ class Book < ApplicationRecord
 end
 ```
 
-この場合、Active Recordは双方向関連付けを自動的に認識しません。
+この場合、`:foreign_key`オプションのため、Active Recordは双方向関連付けを自動的に認識しなくなります。これによってアプリケーションで以下が発生する可能性があります。
 
-```irb
-irb> a = Author.first
-irb> b = a.books.first
-irb> a.first_name == b.writer.first_name
-=> true
-irb> a.first_name = 'David'
-irb> a.first_name == b.writer.first_name
-=> false
-```
+* 同じデータに対して不要なクエリを実行する（この例ではN+1クエリが発生する）
 
+    ```irb
+    irb> author = Author.first
+    irb> author.books.any? do |book|
+    irb>   book.author.equal?(author) # authorクエリがbook 1件ごとに発生する
+    irb> end
+    => false
+    ```
+
+* データが一貫していないモデルの複数のコピーを参照する
+
+    ```irb
+    irb> author = Author.first
+    irb> book = author.books.first
+    irb> author.name == book.author.name
+    => true
+    irb> author.name = "Changed Name"
+    irb> author.name == book.author.name
+    => false
+    ```
+
+* 関連付けの自動保存が失敗する
+
+    ```irb
+    irb> author = Author.new
+    irb> book = author.books.new
+    irb> book.save!
+    irb> book.persisted?
+    => true
+    irb> author.persisted?
+    => false
+    ```
+
+* `presence`や`absence`バリデーションが失敗する
+
+    ```irb
+    irb> author = Author.new
+    irb> book = author.books.new
+    irb> book.valid?
+    => false
+    irb> book.errors.full_messages
+    => ["Author must exist"]
+    ```
 Active Recordが提供している`:inverse_of`オプションを使うと、双方向関連付けを明示的に宣言できます。
 
 ```ruby
@@ -809,17 +957,7 @@ class Book < ApplicationRecord
 end
 ```
 
-`has_many`の関連付けを宣言するときに`:inverse_of`オプションも追加することで、Active Recordは双方向関連付けを認識するようになります。
-
-```irb
-irb> a = Author.first
-irb> b = a.books.first
-irb> a.first_name == b.writer.first_name
-=> true
-irb> a.first_name = 'David'
-irb> a.first_name == b.writer.first_name
-=> true
-```
+`has_many`関連付けの宣言で`:inverse_of`オプションを使うと、Active Recordが双方向関連付けを認識して、上述の最初の例のように動作するようになります。
 
 [`config.active_record.automatic_scope_inversing`]: configuring.html#config-active-record-automatic-scope-inversing
 
@@ -842,6 +980,7 @@ irb> a.first_name == b.writer.first_name
 * `create_association(attributes = {})`
 * `create_association!(attributes = {})`
 * `reload_association`
+* `reset_association`
 * `association_changed?`
 * `association_previously_changed?`
 
@@ -857,16 +996,15 @@ end
 
 このとき、`Book`モデルのインスタンスで以下のメソッドが使えるようになります。
 
-```ruby
-author
-author=
-build_author
-create_author
-create_author!
-reload_author
-author_changed?
-author_previously_changed?
-```
+* `author`
+* `author=`
+* `build_author`
+* `create_author`
+* `create_author!`
+* `reload_author`
+* `reset_author`
+* `author_changed?`
+* `author_previously_changed?`
 
 NOTE: 新しく作成した`has_one`関連付けまたは`belongs_to`関連付けを初期化するには、`association.build`メソッドではなく`build_`で始まるメソッドを使う必要があります（`association.build`は`has_many`関連付けや`has_and_belongs_to_many`関連付けで使われます）。関連付けを作成する場合も、`create_`で始まるメソッドをお使いください。
 
@@ -878,10 +1016,16 @@ NOTE: 新しく作成した`has_one`関連付けまたは`belongs_to`関連付�
 @author = @book.author
 ```
 
-関連付けられたオブジェクトがデータベースから既に取得されている場合は、キャッシュされたものを返します。キャッシュを読み出さずにデータベースから直接読み込みたい場合は、親オブジェクトが持つ`#reload_association`メソッドを呼び出します。
+関連付けられたオブジェクトがデータベースから既に取得されている場合は、キャッシュされたものを返します。この振る舞いを上書きして、キャッシュを読み出さずにデータベースから強制的に読み込みたい場合は、親オブジェクトが持つ`#reload_association`メソッドを呼び出します。
 
 ```ruby
 @author = @book.reload_author
+```
+
+関連付けされたオブジェクトのキャッシュバージョンをアンロードして、次回のアクセスでデータベース呼び出しからクエリするには、親オブジェクトの`#reset_association`を呼び出します。
+
+```ruby
+@book.reset_author
 ```
 
 ##### `association=(associate)`
@@ -958,14 +1102,19 @@ end
 * `:autosave`
 * `:class_name`
 * `:counter_cache`
+* `:default`
 * `:dependent`
+* `:ensuring_owner_was`
 * `:foreign_key`
+* `:foreign_type`
 * `:primary_key`
 * `:inverse_of`
+* `:optional`
 * `:polymorphic`
+* `:required`
+* `:strict_loading`
 * `:touch`
 * `:validate`
-* `:optional`
 
 ##### `:autosave`
 
@@ -1024,7 +1173,15 @@ end
 
 NOTE: これは、関連付けの`belongs_to`側で`:counter_cache`オプションを設定するだけでできます。
 
-カウンタキャッシュ用のカラムは、`attr_readonly`によってそのモデルの読み出し専用属性リストに追加されます。
+カウンタキャッシュ用のカラムは、`attr_readonly`によってオーナーモデルの読み出し専用属性リストに追加されます。
+
+何らかの理由でオーナーモデルの主キーの値を変更し、カウントされたモデルの外部キーも更新しなかった場合、カウンタキャッシュのデータが古くなっている可能性があります（つまり、孤立したモデルも引き続きカウンタでカウントされます）。古くなったカウンタキャッシュを修正するには、[`reset_counters`][]をお使いください。
+
+[`reset_counters`]: https://api.rubyonrails.org/classes/ActiveRecord/CounterCache/ClassMethods.html#method-i-reset_counters
+
+##### `:default`
+
+`true`に設定すると、その関連付けが存在することが保証されなくなります。
 
 ##### `:dependent`
 
@@ -1033,8 +1190,13 @@ NOTE: これは、関連付けの`belongs_to`側で`:counter_cache`オプショ�
 * `:destroy`: オブジェクトが削除されるときに、関連付けられたオブジェクトの`destroy`メソッドが実行されます。
 * `:delete`: オブジェクトが削除されるときに、関連付けられたオブジェクトが直接データベースから削除されます。`destroy`メソッドは実行されません。
 * `:destroy_async`: オブジェクトが削除されるときに、`ActiveRecord::DestroyAssociationAsyncJob`ジョブがジョブキューに入り、関連付けられたオブジェクトで`destroy`メソッドを呼び出します。このジョブが動作するには、Active Jobをセットアップしておく必要があります。
+  関連付けの背後にデータベースの外部キー制約がある場合は、このオプションを使ってはいけません。外部キー制約の操作は、そのオーナーを削除するのと同じトランザクション内で発生します。
 
 WARNING: このオプションは、他のクラスの`has_many`関連付けとつながりのある`belongs_to`関連付けに対して使ってはいけません。孤立レコードがデータベースに残ってしまう可能性があります。
+
+##### `:ensuring_owner_was`
+
+オーナーによって呼び出されるインスタンスメソッドを指定します。関連付けられるレコードがバックグラウンドジョブで削除されるようにするには、このメソッドが`true`を返さなければなりません。
 
 ##### `:foreign_key`
 
@@ -1048,6 +1210,10 @@ end
 ```
 
 TIP: Railsは外部キーのカラムを自動的に作成することはありません。外部キーを使うには、マイグレーションで明示的に定義する必要があります。
+
+##### `:foreign_type`
+
+ポリモーフィック関連付けが有効になっている場合、関連付けられるオブジェクトの型を保存するカラムを指定します。デフォルトでは、これは関連付け名の末尾に`_type`サフィックスを追加した名前を推測します。したがって、`belongs_to :taggable, polymorphic: true`という関連付けを定義するクラスでは、`taggable_type`がデフォルトの`:foreign_type`として使われます。
 
 ##### `:primary_key`
 
@@ -1070,6 +1236,7 @@ end
 ##### `:inverse_of`
 
 `:inverse_of`オプションは、その関連付けの逆関連付けとなる`has_many`関連付けまたは`has_one`関連付けの名前を指定します。
+詳しくは[双方向関連付け][#双方向関連付け]を参照してください。
 
 ```ruby
 class Author < ApplicationRecord
@@ -1081,9 +1248,23 @@ class Book < ApplicationRecord
 end
 ```
 
+##### `:optional`
+
+`:optional`オプションに`true`を指定すると、関連付けられるオブジェクトが存在することが保証されなくなります。このオプションは、デフォルトでは`false`です。
+
 ##### `:polymorphic`
 
 `:polymorphic`オプションに`true`を指定すると、ポリモーフィック関連付けを指定できます。ポリモーフィック関連付けについて詳しくは本ガイドの[ポリモーフィック関連付け](#ポリモーフィック関連付け)を参照してください。
+
+##### `:required`
+
+`true`を指定すると、その関連付けが存在することも保証されるようになります。これによってバリデーションされるのは関連付け自身であり、idではありません。`:inverse_of`を使うと、バリデーション時に余分なクエリが発生することを回避できます。
+
+NOTE: この`required`オプションはデフォルトで`true`に設定されますが、これは非推奨化されています。関連付けの存在をバリデーションしたくない場合は、`optional: true`をお使いください。
+
+##### `:strict_loading`
+
+`true`を指定すると、関連付けられるレコードが、この関連付けを経由して読み込まれるたびにstrict loadingを強制するようになります。
 
 ##### `:touch`
 
@@ -1110,10 +1291,6 @@ end
 ##### `:validate`
 
 `:validate`オプションを`true`に設定すると、新たに関連付けられたオブジェクトを保存するときに必ずバリデーションされます。デフォルトは`false`であり、この場合新たに関連付けられたオブジェクトは保存時にバリデーションされません。
-
-##### `:optional`
-
-`:optional`オプションを`true`に設定すると、関連付けされたオブジェクトの存在バリデーションが実行されなくなります。このオプションはデフォルトでは`false`です。
 
 #### `belongs_to`のスコープ
 
@@ -1218,6 +1395,7 @@ end
 * `create_association(attributes = {})`
 * `create_association!(attributes = {})`
 * `reload_association`
+* `reset_association`
 
 上のメソッド名の*`association`*の部分は**プレースホルダ**なので、`has_one`の第1引数として渡されるものの名前で読み替えてください。
 
@@ -1229,14 +1407,13 @@ end
 
 これにより、`Supplier`モデルのインスタンスで以下のメソッドが使えるようになります。
 
-```ruby
-account
-account=
-build_account
-create_account
-create_account!
-reload_account
-```
+* `account`
+* `account=`
+* `build_account`
+* `create_account`
+* `create_account!`
+* `reload_account`
+* `reset_account`
 
 NOTE: 新しく作成した`has_one`関連付けまたは`belongs_to`関連付けを初期化するには、`association.build`メソッドではなく`build_`で始まるメソッドを使う必要があります（`association.build`は`has_many`関連付けや`has_and_belongs_to_many`関連付けで使われます）。関連付けを作成する場合も、`create_`で始まるメソッドをお使いください。
 
@@ -1252,6 +1429,12 @@ NOTE: 新しく作成した`has_one`関連付けまたは`belongs_to`関連付�
 
 ```ruby
 @account = @supplier.reload_account
+```
+
+関連付けされたオブジェクトのキャッシュバージョンをアンロードして、次回のアクセスでデータベース呼び出しからクエリするには、親オブジェクトの`#reset_association`を呼び出します。
+
+```ruby
+@supplier.reset_account
 ```
 
 ##### `association=(associate)`
@@ -1298,11 +1481,16 @@ end
 * `:autosave`
 * `:class_name`
 * `:dependent`
+* `:disable_joins`
+* `:ensuring_owner_was`
 * `:foreign_key`
 * `:inverse_of`
 * `:primary_key`
+* `:query_constraints`
+* `:required`
 * `:source`
 * `:source_type`
+* `:strict_loading`
 * `:through`
 * `:touch`
 * `:validate`
@@ -1333,11 +1521,18 @@ end
 * `:destroy`: 関連付けられたオブジェクトも同時にdestroyされます。
 * `:delete`: 関連付けられたオブジェクトはデータベースから直接削除されます（コールバックは実行されません）。
 * `:destroy_async`: オブジェクトが削除されるときに、`ActiveRecord::DestroyAssociationAsyncJob`ジョブがジョブキューに入り、関連付けられたオブジェクトで`destroy`メソッドを呼び出します。このジョブが動作するには、Active Jobをセットアップしておく必要があります。
+    関連付けの背後にデータベースの外部キー制約がある場合は、このオプションを使ってはいけません。外部キー制約の操作は、そのオーナーを削除するのと同じトランザクション内で発生します。
 * `:nullify`: 外部キーが`NULL`に設定されます。ポリモーフィックなtypeカラムもポリモーフィック関連付けで`NULL`に設定されます。コールバックは実行されません。
 * `:restrict_with_exception`: 関連付けられたレコードがある場合に`ActiveRecord::DeleteRestrictionError`例外が発生します。
 * `:restrict_with_error`: 関連付けられたオブジェクトがある場合にエラーがオーナーに追加されます。
 
 `NOT NULL`データベース制約のある関連付けでは、`:nullify`オプションを与えないようにする必要があります。そのような関連付けをdestroyするときに`dependent`を設定しなかった場合、関連付けられたオブジェクトを変更できなくなってしまいます。これは、最初に関連付けられたオブジェクトの外部キーが`NULL`値になってしまい、この値は許されていないためです。
+
+##### `:disable_joins`
+
+関連付けでJOINをスキップするかどうかを指定します。
+`true`を指定した場合、クエリが2つ以上生成されるようになります。ただし場合によっては、ORDERやLIMITが適用されるとデータベースの制限によりインメモリで処理されることがあります。
+このオプションは、`has_one :through`関連付けにのみ適用されます（`has_one`単体ではJOINは実行されません）。
 
 ##### `:foreign_key`
 
@@ -1354,6 +1549,7 @@ TIP: Railsは外部キーのカラムを自動的に作成することはあり�
 ##### `:inverse_of`
 
 `:inverse_of`オプションは、その関連付けの逆関連付けとなる`belongs_to`関連付けの名前を指定します。
+詳しくは[双方向関連付け][#双方向関連付け]を参照してください。
 
 ```ruby
 class Supplier < ApplicationRecord
@@ -1368,6 +1564,14 @@ end
 ##### `:primary_key`
 
 Railsの規約では、モデルの主キーは`id`カラムに保存されていることを前提とします。`:primary_key`オプションで主キーを明示的に指定することでこれを上書きできます。
+
+##### `:query_constraints`
+
+複合外部キーとして機能するようになります。関連付けられるオブジェクトをクエリするために使うカラムのリストを定義します。この機能はオプションです（デフォルトでは、値の自動導出を試みます）。値が設定されている場合、`Array`のサイズは、関連付けられるモデルの主キーのサイズまたは`query_constraints`のサイズと一致する必要があります。
+
+##### `:required`
+
+`true`を指定すると、その関連付けが存在することも保証されるようになります。これによってバリデーションされるのは関連付け自身であり、idではありません。`:inverse_of`を使うと、バリデーション時に余分なクエリが発生することを回避できます。
 
 ##### `:source`
 
@@ -1396,6 +1600,10 @@ end
 
 class DustJacket < ApplicationRecord; end
 ```
+
+##### `:strict_loading`
+
+`true`を指定すると、関連付けられるレコードが、この関連付けを経由して読み込まれるたびにstrict loadingを強制するようになります。
 
 ##### `:through`
 
@@ -1554,7 +1762,7 @@ end
 
 これにより、`Author`モデルのインスタンスで以下のメソッドが使えるようになります。
 
-```ruby
+```
 books
 books<<(object, ...)
 books.delete(object, ...)
@@ -1746,11 +1954,17 @@ end
 * `:class_name`
 * `:counter_cache`
 * `:dependent`
+* `:disable_joins`
+* `:ensuring_owner_was`
+* `:extend`
 * `:foreign_key`
+* `:foreign_type`
 * `:inverse_of`
 * `:primary_key`
+* `:query_constraints`
 * `:source`
 * `:source_type`
+* `:strict_loading`
 * `:through`
 * `:validate`
 
@@ -1790,6 +2004,20 @@ end
 
 `:destroy`オプションや`:delete_all`オプションは、`collection.delete`メソッドや`collection=`メソッドのセマンティクス（意味）にも影響します（コレクションから削除されると、関連付けられたオブジェクトもdestroyされます）。
 
+##### `:disable_joins`
+
+関連付けでJOINをスキップするかどうかを指定します。
+`true`を指定した場合、クエリが2つ以上生成されるようになります。ただし場合によっては、ORDERやLIMITが適用されるとデータベースの制限によりインメモリで処理されることがあります。
+このオプションは、`has_many :through associations`関連付けにのみ適用されます（`has_many`単体ではJOINは実行されません）。
+
+##### `:ensuring_owner_was`
+
+オーナーによって呼び出されるインスタンスメソッドを指定します。関連付けられるレコードがバックグラウンドジョブで削除されるようにするには、このメソッドが`true`を返さなければなりません。
+
+##### `:extend`
+
+返される関連付けオブジェクトを拡張するのに使うモジュール（またはモジュールの配列）を指定します。メソッドを複数の関連付けで定義する場合、特に複数の関連付けオブジェクト間で共有する必要がある場合に便利です。
+
 ##### `:foreign_key`
 
 Railsの規約では、相手のモデル上の外部キーを保持しているカラム名については、そのモデル名にサフィックス `_id` を追加した関連付け名が使われることを前提とします。`:foreign_key`オプションを使うと外部キーの名前を直接指定できます。
@@ -1801,6 +2029,10 @@ end
 ```
 
 TIP: Railsは外部キーのカラムを自動的に作成することはありません。外部キーを使うには、マイグレーションで明示的に定義する必要があります。
+
+##### `:foreign_type`
+
+ポリモーフィック関連付けが有効になっている場合、関連付けられるオブジェクトの型を保存するカラムを指定します。デフォルトでは、`as`オプションで指定したポリモーフィック関連付け名に`_type`サフィックスを追加した名前を推測します。したがって、`has_many :tags, as: :taggable`という関連付けを定義するクラスでは、`taggable_type`がデフォルトの`:foreign_type`として使われます。
 
 ##### `:inverse_of`
 
@@ -1830,6 +2062,10 @@ end
 
 `@todo = @user.todos.create`を実行すると、`@todo`レコードの`user_id`の値は `@user`の`guid`になります。
 
+##### `:query_constraints`
+
+複合外部キーとして機能するようになります。関連付けられるオブジェクトをクエリするために使うカラムのリストを定義します。この機能はオプションです（デフォルトでは、値の自動導出を試みます）。値が設定されている場合、`Array`のサイズは、関連付けられるモデルの主キーのサイズまたは`query_constraints`のサイズと一致する必要があります。
+
 ##### `:source`
 
 `:source`オプションは、`has_many :through`関連付けで用いる関連付け元の名前を指定します。このオプションが必要になるのは、関連付け名から関連付け元の名前を自動的に推論できない場合のみです。
@@ -1851,6 +2087,10 @@ end
 class Hardback < ApplicationRecord; end
 class Paperback < ApplicationRecord; end
 ```
+
+##### `:strict_loading`
+
+`true`を指定すると、関連付けられるレコードが、この関連付けを経由して読み込まれるたびにstrict loadingを強制するようになります。
 
 ##### `:through`
 
@@ -2108,7 +2348,7 @@ end
 
 これにより、`Part`モデルのインスタンスで以下のメソッドが使えるようになります。
 
-```ruby
+```
 assemblies
 assemblies<<(object, ...)
 assemblies.delete(object, ...)
@@ -2232,7 +2472,7 @@ NOTE: このメソッドは`collection.concat`および`collection.push`のエ�
 [`collection.build`][]メソッドは、関連付けられた型の新しいオブジェクトを1つ返します。このオブジェクトは、渡された属性でインスタンス化され、そのjoinテーブルを介してリンクが作成されます。ただし、関連付けられたオブジェクトはこの時点では保存されて**いない**ことにご注意ください。
 
 ```ruby
-@assembly = @part.assemblies.build({assembly_name: "Transmission housing"})
+@assembly = @part.assemblies.build({ assembly_name: "Transmission housing" })
 ```
 
 ##### `collection.create(attributes = {})`
@@ -2240,7 +2480,7 @@ NOTE: このメソッドは`collection.concat`および`collection.push`のエ�
 [`collection.create`][]メソッドは、関連付けられた型の新しいオブジェクトを1つ返します。このオブジェクトは、渡された属性を用いてインスタンス化され、joinテーブルを介してリンクが作成されます。そして、関連付けられたモデルで指定されているバリデーションがすべてパスすると、この関連付けられたオブジェクトは保存されます。
 
 ```ruby
-@assembly = @part.assemblies.create({assembly_name: "Transmission housing"})
+@assembly = @part.assemblies.create({ assembly_name: "Transmission housing" })
 ```
 
 ##### `collection.create!(attributes = {})`
@@ -2273,6 +2513,7 @@ end
 * `:class_name`
 * `:foreign_key`
 * `:join_table`
+* `:strict_loading`
 * `:validate`
 
 ##### `:association_foreign_key`
@@ -2322,6 +2563,10 @@ end
 
 辞書順に基いて生成されたjoinテーブルのデフォルト名が気に入らない場合、`:join_table`オプションを用いてデフォルトのテーブル名を上書きできます。
 
+##### `:strict_loading`
+
+`true`を指定すると、関連付けられるレコードが、この関連付けを経由して読み込まれるたびにstrict loadingを強制するようになります。
+
 ##### `:validate`
 
 `:validate`オプションを`false`に設定すると、新たに関連付けられたオブジェクトは保存時にバリデーションされません。デフォルトは`true`であり、この場合新たに関連付けられたオブジェクトは保存時にバリデーションされます。
@@ -2369,7 +2614,7 @@ class Parts < ApplicationRecord
 end
 ```
 
-`where`オプションでハッシュを用いた場合、この関連付けで作成されたレコードは自動的にこのハッシュを使うスコープに含まれるようになります。この例の場合、`@parts.assemblies.create`または`@parts.assemblies.build`を実行すると、`factory`カラムに`Seattle`を持つオブジェクトが作成されます。
+`where`オプションでハッシュを用いた場合、この関連付けで作成されたレコードは自動的にこのハッシュを使うスコープに含まれるようになります。この例の場合、`@parts.assemblies.create`または`@parts.assemblies.build`を実行すると、`factory`カラムに`Seattle`を持つassembliesが作成されます。
 
 ##### `extending`
 
@@ -2537,6 +2782,15 @@ end
 * `proxy_association.reflection`: 関連付けを記述するリフレクションオブジェクトを返します。
 * `proxy_association.target`: `belongs_to`または`has_one`関連付けのオブジェクトを返すか、`has_many`または`has_and_belongs_to_many`関連付けオブジェクトのコレクションを返します。
 
+### 関連付けのオーナーで関連付けのスコープを制御する
+
+関連付けのスコープをさらに制御する必要がある状況では、関連付けのオーナーをスコープブロックに引数として渡すことが可能です。ただし、関連付けのプリロードができなくなる点にご注意ください。
+
+```ruby
+class Supplier < ApplicationRecord
+  has_one :account, ->(supplier) { where active: supplier.active? }
+end
+```
 単一テーブル継承 （STI）
 ------------------------
 
@@ -2590,4 +2844,156 @@ Car.all
 
 ```sql
 SELECT "vehicles".* FROM "vehicles" WHERE "vehicles"."type" IN ('Car')
+```
+
+Delegated Types
+----------------
+
+[単一テーブル継承(STI)`](#single-table-inheritance-sti)は、サブクラスとその属性にほとんど違いがない場合に最適ですが、単一テーブルを作るために必要なすべてのサブクラスのすべての属性を含めることになります。
+
+この方法の欠点は、テーブルが肥大化することです。他のクラスでは使われないサブクラス固有の属性まで含まれてしまうからです。
+
+以下の例では、同じ"Entry"クラスを継承する2つのActive Recordモデルがあり、`subject`属性が含まれています。
+
+```ruby
+# Schema: entries[ id, type, subject, created_at, updated_at]
+class Entry < ApplicationRecord
+end
+
+class Comment < Entry
+end
+
+class Message < Entry
+end
+```
+
+delegated typesでは、`delegated_type`を用いてこの問題を解決します。
+
+delegated typesを使うためには、特定の方法でデータをモデル化する必要があります。要件は以下の通りです。
+
+* すべてのサブクラス間で共有される属性をテーブルに格納するスーパークラスが存在すること。
+* 各サブクラスはスーパークラスを継承しなければならず、そのクラス固有の追加属性のために別のテーブルを持たなければならない。
+
+これにより、すべてのサブクラスで意図せず共有される属性を1個のテーブルで定義する必要がなくなります。
+
+これを上記の例に適用するためには、モデルを再度生成する必要があります。
+まず、スーパークラスとして機能するベース`Entry`モデルを生成してみましょう：
+
+```bash
+$ bin/rails generate model entry entryable_type:string entryable_id:integer
+```
+
+次に、委譲で使う新しい`Message`モデルと`Comment`モデルを生成します。
+
+```bash
+$ bin/rails generate model message subject:string body:string
+$ bin/rails generate model comment content:string
+```
+
+ジェネレータを実行すると、次のようなモデルができるはずです。
+
+```ruby
+# Schema: entries[ id, entryable_type, entryable_id, created_at, updated_at ]
+class Entry < ApplicationRecord
+end
+
+# Schema: messages[ id, subject, body, created_at, updated_at ]
+class Message < ApplicationRecord
+end
+
+# Schema: comments[ id, content, created_at, updated_at ]
+class Comment < ApplicationRecord
+end
+```
+
+### `delegated_type`を宣言する
+
+まず、`Entry`スーパークラスで`delegated_type`を宣言します。
+
+```ruby
+class Entry < ApplicationRecord
+  delegated_type :entryable, types: %w[ Message Comment ], dependent: :destroy
+end
+```
+
+`entryable`パラメータは、委譲で使うフィールドを指定し、委譲クラスとして`Message`型と`Comment`型を含みます。
+
+この`Entry`クラスは`entryable_type`フィールドと`entryable_id`フィールドを持ちます。これは、`delegated_type`の定義内で、`entryable`という名前に`_type`と`_id`というサフィックスを付加したフィールドです。
+
+`entryable_type`には委譲サブクラス名が保存され、`entryable_id`には委譲サブクラスのレコードIDが保存されます。
+
+次に、それらのdelegated typesを実装するモジュールを定義する必要があります。このモジュールは、`as: :entryable`パラメータを`has_one`関連付けに宣言することで定義します。
+
+```ruby
+module Entryable
+  extend ActiveSupport::Concern
+
+  included do
+    has_one :entry, as: :entryable, touch: true
+  end
+end
+```
+
+続いて、作成したモジュールをサブクラスに`include`します。
+
+```ruby
+class Message < ApplicationRecord
+  include Entryable
+end
+
+class Comment < ApplicationRecord
+  include Entryable
+end
+```
+
+定義が完了し、`Entry`デリゲーターは以下のメソッドを提供するようになりました。
+
+| メソッド | 戻り値 |
+|---|---|
+| `Entry#entryable_class` | Message または Comment |
+| `Entry#entryable_name` | "message" または "comment" |
+| `Entry.messages` | `Entry.where(entryable_type: "Message")` |
+| `Entry#message?` | `entryable_type == "Message"`の場合trueを返す |
+| `Entry#message` | `entryable_type == "Message"`の場合はメッセージレコードを返し、それ以外の場合は `nil` を返す|
+| `Entry#message_id` | `entryable_type == "Message"`の場合は`entryable_id`を返し、それ以外の場合は`nil`を返す |
+| `Entry.comments` | `Entry.where(entryable_type: "Comment")` |
+| `Entry#comment?` | `entryable_type == "Comment"`の場合はtrueを返す |
+| `Entry#comment` | `entryable_type == "Comment"`の場合はコメント・メッセージを返し、それ以外の場合は`nil`を返す |
+| `Entry#comment_id` | `entryable_type == "Comment"`の場合は`entryable_id`を返し、それ以外の場合は`nil`を返す |
+
+### オブジェクトを作成する
+
+新しい`Entry`オブジェクトを作成する際に、`entryable`サブクラスを同時に指定できます。
+
+```ruby
+Entry.create! entryable: Message.new(subject: "hello!")
+```
+
+### さらに委譲を追加する
+
+`Entry`デリゲータを拡張し、`delegates`を定義してサブクラスに対してポリモーフィズムを使用することで、さらに拡張できます。
+
+たとえば、`Entry`の`title`メソッドをそのサブクラスに委譲するには以下のようにします。
+
+```ruby
+class Entry < ApplicationRecord
+  delegated_type :entryable, types: %w[ Message Comment ]
+  delegate :title, to: :entryable
+end
+
+class Message < ApplicationRecord
+  include Entryable
+
+  def title
+    subject
+  end
+end
+
+class Comment < ApplicationRecord
+  include Entryable
+
+  def title
+    content.truncate(20)
+  end
+end
 ```

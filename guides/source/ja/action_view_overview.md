@@ -47,19 +47,17 @@ Railsのビューには命名規則があります。上で生成されたファ
 
 これらのERBファイルに、それらをラップするレイアウトテンプレートや、ビューから参照されるあらゆるパーシャル（部分テンプレート）を組み合わせることで完全なHTMLが生成され、クライアントに送信されます。この後、本ガイドではこれらの3つの要素について詳しく説明します。
 
-テンプレート、パーシャル、レイアウト
--------------------------------
-
 前述のとおり、Railsがレンダリングする最終的なHTMLは「テンプレート」「パーシャル」「レイアウト」の3つの要素から構成されます。
-これらについて簡単に説明いたします。
+これらについて簡単に説明します。
 
-### テンプレート
+テンプレート
+---------
 
 Action Viewのテンプレートはさまざまな方法で記述できます。テンプレートの拡張子が`.erb`であれば、ERB（Rubyのコードはここに含まれます）とHTMLを記述します。テンプレートの拡張子が`.builder`であれば、`Builder::XmlMarkup`ライブラリが使われます。
 
 Railsでは複数のテンプレートシステムがサポートされており、テンプレートファイルの拡張子で区別されます。たとえば、ERBテンプレートシステムを使うHTMLファイルの拡張子は`.html.erb`になります。
 
-#### ERB
+### ERB
 
 ERBテンプレートの内部では、`<% %>`タグや`<%= %>`タグの中にRubyコードを書けます。
 最初の`<% %>`タグはその中に書かれたRubyコードを実行しますが、実行結果はレンダリングされません。条件文やループ、ブロックなどレンダリングの不要な行はこのタグの中に書くとよいでしょう。
@@ -83,7 +81,7 @@ Hi, Mr. <% puts "Frodo" %>
 
 なお、Webページへのレンダリング結果の冒頭と末尾からホワイトスペースを取り除きたい場合は、`<%-` および `-%>`を通常の`<%` および `%>`と使い分けてください（訳注: これは英語のようなスペース分かち書きを行なう言語向けのノウハウです）。
 
-#### Builder
+### Builder
 
 BuilderテンプレートはERBの代わりに利用できる、よりプログラミング向きな記法です。これ特にXMLコンテンツを生成するときに便利です。テンプレートの拡張子を`.builder`にすると、`xml`という名前のXmlMarkupオブジェクトが自動で利用できるようになります。
 
@@ -148,7 +146,7 @@ xml.rss("version" => "2.0", "xmlns:dc" => "http://purl.org/dc/elements/1.1/") do
 end
 ```
 
-#### Jbuilder
+### Jbuilder
 
 [Jbuilder](https://github.com/rails/jbuilder)はRailsチームによってメンテナンスされているgemの１つで、RailsのGemfileにデフォルトで含まれています。
 
@@ -180,15 +178,16 @@ json.email("alex@example.com")
 
 この他のコード例や詳しい情報については[Jbuilder documentation](https://github.com/rails/jbuilder#jbuilder)を参照してください。
 
-#### テンプレートをキャッシュする
+### テンプレートをキャッシュする
 
 Railsは、デフォルトでビューの各テンプレートをコンパイルしてレンダリング用メソッドにします。developmentモードの場合、ビューテンプレートが変更されるとファイルの更新日時で変更が検出され、再コンパイルされます。
 
-### パーシャル
+パーシャル
+--------
 
 パーシャル（部分テンプレート）は、レンダリング処理を扱いやすく分割する仕組みです。パーシャルを使うことで、ビュー内のコードをいくつものファイルに分割して書き出し、他のテンプレートでも使い回せるようになります。
 
-#### パーシャルの命名ルール
+### パーシャルをレンダリングする
 
 パーシャルをビューの一部に含めてレンダリングするには、ビューで`render`メソッドを使います。
 
@@ -201,17 +200,17 @@ Railsは、デフォルトでビューの各テンプレートをコンパイル
 ただし`render`で呼び出す際にはこのアンダースコアは不要です。以下のように、他のフォルダの下にあるパーシャルを呼び出す際にもアンダースコアは不要です。
 
 ```erb
-<%= render "shared/menu" %>
+<%= render "application/menu" %>
 ```
 
-上のコードは、その位置に`app/views/shared/_menu.html.erb`パーシャルを読み込みます。
+上のコードは、その位置に`app/views/application/_menu.html.erb`パーシャルを読み込みます。
 
-#### パーシャルを活用してビューを簡潔に保つ
+### パーシャルを活用してビューを簡潔に保つ
 
 すぐに思い付くパーシャルの利用法といえば、パーシャルをサブルーチンと同等とみなすというのがあります。ビューの詳細部分をパーシャルに移動し、コードの見通しを良くするために、パーシャルを使うのです。たとえば、以下のようなビューがあるとします。
 
 ```html+erb
-<%= render "shared/ad_banner" %>
+<%= render "application/ad_banner" %>
 
 <h1>Products</h1>
 
@@ -220,12 +219,133 @@ Railsは、デフォルトでビューの各テンプレートをコンパイル
   <%= render partial: "product", locals: { product: product } %>
 <% end %>
 
-<%= render "shared/footer" %>
+<%= render "application/footer" %>
 ```
 
 上のコードの`_ad_banner.html.erb`パーシャルと`_footer.html.erb`パーシャルに含まれるコンテンツは、アプリケーションの多くのページと共有できます。あるページを開発中、パーシャルの部分については詳細を気にせずに済みます。
 
-#### `partial`と`locals`オプションのない`render`
+TIP: ビューのパーシャルは、テンプレートやレイアウトと同じ[テンプレートの継承](/layouts_and_rendering.html#テンプレートの継承)に依存しているので、`ApplicationController`から継承したコントローラでレンダリングするテンプレートは、`app/views/application`で宣言されたビューパーシャルを表示できるようになります。
+
+コントローラでは、パーシャルを継承チェインで解決するだけでなく、デフォルトのパーシャルも継承チェインでオーバーライドできます。
+たとえば、`ProductsController`が`ApplicationController`を継承すると、`<%= render "ad_banner" %>`を呼び出したときに、最初に`app/views/products/_ad_banner.html.erb`を検索し、見つからない場合は`app/views/application/_ad_banner.html.erb`にフォールバックします。
+
+## `render`で`locals`オプションを渡す
+
+パーシャルをレンダリングするときには、`locals:`オプションで渡された個別のキーを、そのパーシャル内のローカル変数として利用可能になります。
+
+```html+erb
+<%# app/views/products/show.html.erb %>
+
+<%= render partial: "products/product", locals: { product: @product } %>
+
+<%# app/views/products/_product.html.erb %>
+
+<%= tag.div id: dom_id(product) do %>
+  <h1><%= product.name %></h1>
+<% end %>
+```
+
+`locals:`オプションの一部としてビューに渡されていない変数をテンプレートが参照すると、テンプレートで`ActionView::Template::Error`エラーが発生します。
+
+```html+erb
+<%# app/views/products/_product.html.erb %>
+
+<%= tag.div id: dom_id(product) do %>
+  <h1><%= product.name %></h1>
+
+  <%# => ActionView::Template::Errorが発生する %>
+  <% related_products.each do |related_product| %>
+    <%# ... %>
+  <% end %>
+<% end %>
+```
+
+### `local_assigns`を使う
+
+`locals:`オプションに渡した個別のキーは、以下のように[`local_assigns`][]ヘルパーメソッドを使うことでパーシャルのローカル変数としてアクセスできるようになります。
+
+```html+erb
+<%# app/views/products/show.html.erb %>
+
+<%= render partial: "products/product", locals: { product: @product } %>
+```
+
+```html+erb
+<%# app/views/products/_product.html.erb %>
+
+<% local_assigns[:product]          # => "#<Product:0x0000000109ec5d10>" %>
+<% local_assigns[:options]          # => nil %>
+```
+
+`local_assigns`は`Hash`なので、Ruby 3.1の[パターンマッチング代入演算子](https://docs.ruby-lang.org/en/master/syntax/pattern_matching_rdoc.html)と互換性があります。
+
+```ruby
+local_assigns => { product:, **options }
+product # => "#<Product:0x0000000109ec5d10>"
+options # => {}
+```
+
+パーシャルの`Hash`ローカル変数に`:product`以外のキーを複数代入する場合、以下のようにsplat演算子`**`でヘルパーメソッド呼び出しに展開して渡せます。
+
+```html+erb
+<%# app/views/products/_product.html.erb %>
+
+<% local_assigns => { product:, **options } %>
+
+<%= tag.div id: dom_id(product), **options do %>
+  <h1><%= product.name %></h1>
+<% end %>
+```
+
+```html+erb
+<%# app/views/products/show.html.erb %>
+
+<%= render "products/product", product: @product, class: "card" %>
+<%# => <div id="product_1" class="card">
+  #      <h1>A widget</h1>
+  #    </div>
+%>
+```
+
+パターンマッチングの代入では、変数のリネームもサポートされます。
+
+```ruby
+local_assigns => { product: record }
+product             # => "#<Product:0x0000000109ec5d10>"
+record              # => "#<Product:0x0000000109ec5d10>"
+product == record   # => true
+```
+
+`local_assigns`は`Hash`のインスタンスを返すので、以下のように変数を条件付きで読み出して、`locals:`オプションにないキーの場合はデフォルト値にフォールバックできます。
+
+```html+erb
+<%# app/views/products/_product.html.erb %>
+
+<% local_assigns.fetch(:related_products, []).each do |related_product| %>
+  <%# ... %>
+<% end %>
+```
+
+Ruby 3.1のパターンマッチング代入演算子に[`Hash#with_defaults`][]呼び出しを組み合わせると、パーシャルのローカル変数のデフォルト値代入を以下のようにコンパクトに書けます。
+
+```html+erb
+<%# app/views/products/_product.html.erb %>
+
+<% local_assigns.with_defaults(related_products: []) => { product:, related_products: } %>
+
+<%= tag.div id: dom_id(product) do %>
+  <h1><%= product.name %></h1>
+
+  <% related_products.each do |related_product| %>
+    <%# ... %>
+  <% end %>
+<% end %>
+```
+
+[`local_assigns`]: https://api.rubyonrails.org/classes/ActionView/Template.html#method-i-local_assigns
+[`Hash#with_defaults`]: https://api.rubyonrails.org/classes/Hash.html#method-i-with_defaults
+
+### `partial`と`locals`オプションのない`render`
 
 上の例では、`render`は`partial`と`locals`の2つのオプションを取っています。しかし、渡したいオプションが他にない場合は、これらのオプションを省略できます。
 
@@ -241,7 +361,7 @@ Railsは、デフォルトでビューの各テンプレートをコンパイル
 <%= render "product", product: @product %>
 ```
 
-#### `as`と`object`オプション
+### `as`と`object`オプション
 
 `ActionView::Partials::PartialRenderer`は、デフォルトでテンプレートと同じ名前を持つローカル変数の中に自身のオブジェクトを持ちます。以下のコードを見てみましょう。
 
@@ -281,7 +401,7 @@ Railsは、デフォルトでビューの各テンプレートをコンパイル
 <%= render partial: "product", locals: { item: @item } %>
 ```
 
-#### コレクションを出力する
+### コレクションをレンダリングする
 
 テンプレート上にコレクションを1つ表示し、サブテンプレートでそのコレクションの要素を1つずつレンダリングするというのは、よく行われるパターンです。このパターンは1つのメソッドだけで実行できます。このメソッドは配列を受け取り、配列内の各要素ごとにパーシャルを出力します。
 
@@ -309,7 +429,7 @@ Railsは、デフォルトでビューの各テンプレートをコンパイル
 
 使われるパーシャル名は、コレクションの中にある「モデル名」を参照して決定されます。この場合のモデル名は`Product`です。作成するコレクションの各要素が不揃い（訳注: 要素ごとにモデルが異なる場合を指します）であっても、Railsはコレクションのメンバごとに適切なパーシャルを選んでレンダリングします。
 
-#### スペーサーテンプレート
+### スペーサーテンプレート
 
 `:spacer_template`オプションを使うと、メインのパーシャルの間を埋める第2のパーシャルを指定できます。
 
@@ -319,14 +439,36 @@ Railsは、デフォルトでビューの各テンプレートをコンパイル
 
 メインの`_product`パーシャルの間に、スペーサーとなる`_product_ruler`パーシャルをレンダリングします（`_product_ruler`にはデータを渡していません）。
 
+### 厳密な`locals`
+
+デフォルトでは、テンプレートはキーワード引数として任意の`locals`を受け取れます。テンプレートが受け取ってよい`locals`を定義するには、以下のように`locals`マジックコメントを追加します。
+
+```erb
+<%# locals: (message:) -%>
+<%= message %>
+```
+
+`locals`にはデフォルト値も設定できます。
+
+```erb
+<%# locals: (message: "Hello, world!") -%>
+<%= message %>
+```
+
+以下のように、`locals`を完全に無効にすることも可能です。
+
+```erb
+<%# locals: () %>
+```
+
 ### レイアウト
 
 Railsにおける「レイアウト」は、多くのコントローラのアクションにわたって共通して利用できるテンプレートのことです。Railsアプリケーションには必ず全体用のレイアウトがあり、ほぼすべてのWebページ出力はこの全体レイアウトの内側で行われますが、これが典型的なレイアウトです。
+
 たとえば、あるWebサイトにはユーザーログイン用のレイアウトが使われていたり、別のWebサイトにはマーケティングやセールス用のレイアウトが使われていたりします。ログインしたユーザー向けのレイアウトであれば、ナビゲーションツールバーをページのトップレベルに表示し、多くのコントローラやアクションで共通して利用できるようにするでしょう。SaaSアプリケーションにおけるセールス用のレイアウトであれば、トップレベルのナビゲーションに「お値段」や「お問い合わせ先」を共通して表示するでしょう。レイアウトごとに異なる外観を設定してこれらを使い分けることができます。
 レイアウトについて詳しくは、[ビューのレイアウトとレンダリング](layouts_and_rendering.html) ガイドを参照してください。
 
-パーシャルレイアウト
----------------
+### パーシャルレイアウト
 
 パーシャルに独自のレイアウトを適用できます。パーシャル用のレイアウトは、アクション全体にわたるグローバルなレイアウトとは異なりますが、動作は同じです。
 
@@ -421,7 +563,7 @@ Action Viewは、現在のロケールに応じてさまざまなテンプレー
 
 同じ要領で、publicディレクトリのレスキューファイル (いわゆるエラーページ) もローカライズできます。たとえば、`I18n.locale = :de`と設定し、`public/500.de.html`と`public/404.de.html`を作成することで、ローカライズ版のレスキューページを作成できます。
 
-RailsはI18n.localeに設定できるシンボルを制限していないので、ローカライズにかぎらず、あらゆる状況に合わせて異なるコンテンツを表示し分けることが可能です。たとえば、エキスパートユーザーには通常ユーザーと異なる画面を表示したいとします。これを行なうには、`app/controllers/application.rb`に以下のように追記します。
+Railsは`I18n.locale`に設定できるシンボルを制限していないので、ローカライズにかぎらず、あらゆる状況に合わせて異なるコンテンツを表示し分けることが可能です。たとえば、エキスパートユーザーには通常ユーザーと異なる画面を表示したいとします。これを行なうには、`app/controllers/application_controller.rb`に以下のように追記します。
 
 ```ruby
 before_action :set_expert_locale

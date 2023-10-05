@@ -121,6 +121,28 @@ end
 
 [`rescue_from`]: https://api.rubyonrails.org/classes/ActiveSupport/Rescuable/ClassMethods.html#method-i-rescue_from
 
+#### コネクションのコールバック
+
+`before_command`、`after_command`、`around_command`コールバックがあり、それぞれクライアントが受け取ったコマンドの「前」「後」「前後」で呼び出せます。
+ここでいう"コマンド"とは、クライアントが受け取るあらゆる対話的操作（サブスクライブ、アンサブスクライブ、アクションの実行）を指します。
+
+```ruby
+# app/channels/application_cable/connection.rb
+module ApplicationCable
+  class Connection < ActionCable::Connection::Base
+    identified_by :user
+
+    around_command :set_current_account
+
+    private
+      def set_current_account(&block)
+        # これですべてのチャネルがCurrent.accountを利用可能になる
+        Current.set(account: user.account, &block)
+      end
+  end
+end
+```
+
 ### チャネル
 
 **チャネル**（Channel） は論理的な作業単位をカプセル化するものであり、典型的なMVCセットアップでコントローラが果たす役割と似ています。Railsはデフォルトで、チャネル間で共有されるロジックをカプセル化する以下の`ApplicationCable::Channel`という親クラス（これは[`ActionCable::Channel::Base`][]を継承します）を作成します。
@@ -179,7 +201,36 @@ class ChatChannel < ApplicationCable::Channel
 
   private
     def deliver_error_message(e)
-      broadcast_to(...)
+      # broadcast_to(...)
+    end
+end
+```
+
+#### チャネルのコールバック
+
+`ApplicationCable::Channel` は、チャネルのライフサイクル中にロジックをトリガーするのに利用できる、いくつかのコールバックを提供します。利用可能なコールバックは以下の通りです。
+
+- `before_subscribe`
+- `after_subscribe`（エイリアス: `on_subscribe`）
+- `before_unsubscribe`
+- `after_unsubscribe`（エイリアス: `on_unsubscribe`）
+
+NOTE: `reject`メソッドでサブスクライブが拒否された場合でも、`subscribed`メソッドが呼び出されると`after_subscribe`コールバックが起動されます。
+サブスクライブが成功したときだけ after_subscribe`を起動するには、`after_subscribe :send_welcome_message, unless: :subscription_rejected?`をお使いください。
+
+```ruby
+# app/channels/chat_channel.rb
+class ChatChannel < ApplicationCable::Channel
+  after_subscribe :send_welcome_message, unless: :subscription_rejected?
+  after_subscribe :track_subscription
+
+  private
+    def send_welcome_message
+      # broadcast_to(...)
+    end
+
+    def track_subscription
+      # ...
     end
 end
 ```
@@ -271,10 +322,10 @@ end
 ActionCable.server.broadcast("chat_Best Room", { body: "このチャットルーム名はBest Roomです" })
 ```
 
-あるモデルに関連するストリームを作成すると、そのモデルとチャネルからブロードキャストが生成されます。以下の例は、`comments:Z2lkOi8vVGVzdEFwcC9Qb3N0LzE`のような形式のブロードキャストを[`stream_for`][]でサブスクライブします（`Z2lkOi8vVGVzdEFwcC9Qb3N0LzE`はPostモデルのGlobalID）。
+あるモデルに関連するストリームを作成すると、そのモデルとチャネルからブロードキャストが生成されます。以下の例は、`posts:Z2lkOi8vVGVzdEFwcC9Qb3N0LzE`のような形式のブロードキャストを[`stream_for`][]でサブスクライブします（`Z2lkOi8vVGVzdEFwcC9Qb3N0LzE`はPostモデルのGlobalID）。
 
 ```ruby
-class CommentsChannel < ApplicationCable::Channel
+class PostsChannel < ApplicationCable::Channel
   def subscribed
     post = Post.find(params[:id])
     stream_for post
@@ -285,7 +336,7 @@ end
 これで、以下のように[`broadcast_to`][]を呼び出せばこのチャネルにブロードキャストできるようになります。
 
 ```ruby
-CommentsChannel.broadcast_to(@post, @comment)
+PostsChannel.broadcast_to(@post, @comment)
 ```
 
 [`broadcast`]: https://api.rubyonrails.org/classes/ActionCable/Server/Broadcasting.html#method-i-broadcast
@@ -406,7 +457,7 @@ const chatChannel = consumer.subscriptions.create({ channel: "ChatChannel", room
   received(data) {
     // data => { sent_by: "Paul", body: "This is a cool chat app." }
   }
-}
+})
 
 chatChannel.send({ sent_by: "Paul", body: "This is a cool chat app." })
 ```
@@ -674,7 +725,7 @@ config.action_cable.worker_pool_size = 4
 
 クライアント側のログ出力はデフォルトで無効になります。以下のように`ActionCable.logger.enabled`に`true`を設定することで、クライアントログ出力有効にできます。
 
-```ruby
+```js
 import * as ActionCable from '@rails/actioncable'
 
 ActionCable.logger.enabled = true
@@ -698,6 +749,8 @@ config.action_cable.log_tags = [
 
 ## Action Cable専用サーバーを実行する
 
+Action Cableは、Railsアプリケーションの一部として実行することも、スタンドアロンサーバーとして実行することも可能です。development環境ではRailsアプリケーションの一部として実行するのが一般的ですが、production環境ではスタンドアロンとして実行すべきです。
+
 ### アプリケーションで実行
 
 Action CableはRailsアプリケーションと一緒に実行できます。たとえば、`/websocket`でWebSocketリクエストをリッスンするには、以下のように[`config.action_cable.mount_path`][]にパスを指定します。
@@ -709,11 +762,12 @@ class Application < Rails::Application
 end
 ```
 
-レイアウトで`action_cable_meta_tag`が呼び出されると、`ActionCable.createConsumer()`でAction Cableサーバーに接続できるようになります。それ以外の場合は、パスが`createConsumer`の最初の引数として指定されます（例: `ActionCable.createConsumer("/websocket")`）。
+レイアウトで[`action_cable_meta_tag`][]が呼び出されると、`ActionCable.createConsumer()`でAction Cableサーバーに接続できるようになります。それ以外の場合は、パスが`createConsumer`の最初の引数として指定されます（例: `ActionCable.createConsumer("/websocket")`）。
 
-この場合、サーバーのインスタンスを作成するか、サーバーがワーカーを生成するたびに、Action Cableの新しいインスタンスも含まれます。RedisやPostgreSQLのアダプタは、コネクション間でメッセージを同期します。
+この場合、サーバーのインスタンスを作成するたびに、およびサーバーがワーカーを生成するたびに、Action Cableの新しいインスタンスも含まれます。RedisやPostgreSQLのアダプタは、コネクション間でメッセージを同期します。
 
 [`config.action_cable.mount_path`]: configuring.html#config-action-cable-mount-path
+[`action_cable_meta_tag`]: https://api.rubyonrails.org/classes/ActionCable/Helpers/ActionCableHelper.html#method-i-action_cable_meta_tag
 
 ### スタンドアロン
 
@@ -727,14 +781,24 @@ Rails.application.eager_load!
 run ActionCable.server
 ```
 
-続いて、`bin/cable`のbinstubを使ってサーバーを起動します。
+続いて、サーバーを起動します。
 
 ```bash
 #!/bin/bash
 bundle exec puma -p 28080 cable/config.ru
 ```
 
-これで、Action Cableサーバーがポート28080で起動します。
+これで、Action Cableサーバーがポート28080で起動します。Railsにこのサーバーを使うように指示するには、設定を以下のように更新します。
+
+```ruby
+# config/environments/development.rb
+Rails.application.configure do
+  config.action_cable.mount_path = nil
+  config.action_cable.url = "ws://localhost:28080" # productionではwss://を使うこと
+end
+```
+
+最後に、[コンシューマーが正しく設定済みである](#コンシューマーの設定)ことを確認してください。
 
 ### メモ
 

@@ -139,7 +139,10 @@ class Product < ApplicationRecord
 end
 ```
 
-NOTE: Active Recordでは、`id`という名前を主キー以外のカラムで用いることはサポートされていません。
+NOTE: **Active Recordでは、`id`という名前を「主キー以外のカラム」で用いることは推奨されていません。**
+単一カラムの主キーでない`id`という名前の列を使うと、カラム値へのアクセスが複雑になってしまいます。その場合、アプリケーションは「主キーでない」`id`カラムにアクセスするときは[`id_value`][]エイリアス属性を使う必要があります。
+
+[`id_value`]: https://api.rubyonrails.org/classes/ActiveRecord/ModelSchema.html#method-i-id_value
 
 CRUD: データの読み書き
 ------------------------------

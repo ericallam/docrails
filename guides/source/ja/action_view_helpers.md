@@ -190,7 +190,7 @@ end
 
 ```erb
 <% cache do %>
-  <%= render "shared/footer" %>
+  <%= render "application/footer" %>
 <% end %>
 ```
 
@@ -275,7 +275,7 @@ time_ago_in_words(3.minutes.from_now) # => 3 minutes
 オブジェクトをYAML形式でダンプした`pre`タグを返します。これにより、オブジェクトを見やすい形で取り出せます。
 
 ```ruby
-my_hash = { 'first' => 1, 'second' => 'two', 'third' => [1,2,3] }
+my_hash = { 'first' => 1, 'second' => 'two', 'third' => [1, 2 ,3] }
 debug(my_hash)
 ```
 
@@ -463,6 +463,9 @@ url_for @profile
 
 url_for [ @hotel, @booking, page: 2, line: 3 ]
 # => /hotels/1/bookings/1?line=3&page=2
+
+url_for @post # 複合主キー[:blog_id, :id]を渡した場合
+# => /posts/1_2
 ```
 
 #### `link_to`
@@ -474,6 +477,9 @@ url_for [ @hotel, @booking, page: 2, line: 3 ]
 ```ruby
 link_to "Profile", @profile
 # => <a href="/profiles/1">Profile</a>
+
+link_to "Book", @book # 複合主キー[:author_id, :id]を渡した場合
+# => <a href="/books/2_1">Book</a>
 ```
 
 以下のERBのようにブロックを渡すことで、リンク文字列を`name`パラメータに応じて変えることもできます。
@@ -518,7 +524,7 @@ link_to "Profile", @profile
 
 "csrf-param"メタタグと"csrf-token"メタタグに、CSRF保護用のパラメータとトークンを入れて返します。
 
-```html+erb
+```erb
 <%= csrf_meta_tags %>
 ```
 

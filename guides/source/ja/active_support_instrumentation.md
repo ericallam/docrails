@@ -9,6 +9,7 @@ Active SupportはRailsのコア機能の1つであり、Ruby言語の拡張、�
 
 * Instrumentationでできること
 * Railsフレームワーク内のInstrumentationフック
+* Instrumentationで得たタイミング情報をブラウザで表示する
 * フックにサブスクライバを追加する
 * 独自のInstrumentationを実装する
 
@@ -57,7 +58,7 @@ end
 
 ```ruby
 ActiveSupport::Notifications.subscribe "process_action.action_controller" do |*args|
-  event = ActiveSupport::Notifications::Event.new *args
+  event = ActiveSupport::Notifications::Event.new(*args)
 
   event.name      # => "process_action.action_controller"
   event.duration  # => 10 (in milliseconds)
@@ -82,10 +83,25 @@ end
 正規表現に一致するイベントだけをサブスクライブすることも可能です。これはさまざまなイベントを一括でサブスクライブしたい場合に便利です。以下は、`ActionController`のイベントをすべて登録する場合の例です。
 
 ```ruby
-ActiveSupport::Notifications.subscribe /action_controller/ do |*args|
+ActiveSupport::Notifications.subscribe(/action_controller/) do |*args|
   # ActionControllerの全イベントをチェック
 end
 ```
+
+[`ActiveSupport::Notifications::Event`]: https://api.rubyonrails.org/classes/ActiveSupport/Notifications/Event.html
+[`ActiveSupport::Notifications.monotonic_subscribe`]: https://api.rubyonrails.org/classes/ActiveSupport/Notifications.html#method-c-monotonic_subscribe
+[`ActiveSupport::Notifications.subscribe`]: https://api.rubyonrails.org/classes/ActiveSupport/Notifications.html#method-c-subscribe
+
+Instrumentationで得たタイミング情報をブラウザで表示する
+-------------------------------------------------
+
+Railsは、[Server Timing](https://www.w3.org/TR/server-timing/)標準を実装して、タイミング情報をWebブラウザで表示可能にしています。これを有効にするには、環境設定（development環境で使うことが最も多いので、通常は`development.rb`にします）を編集し、以下の内容を追加します。
+
+```ruby
+config.server_timing = true
+```
+
+設定（およびサーバーの再起動など）が完了したら、ブラウザのDevToolsパネルを開き、Networkタブを選択してページを再読み込みします。これで、Railsサーバーへの任意のリクエストを選択すると、Timingタブにサーバータイミングが表示されるようになります。操作方法の例については、[Firefoxドキュメント](https://firefox-source-docs.mozilla.org/devtools-user/network_monitor/request_details/index.html#server-timing)を参照してください。
 
 [`ActiveSupport::Notifications::Event`]: https://api.rubyonrails.org/classes/ActiveSupport/Notifications/Event.html
 [`ActiveSupport::Notifications.monotonic_subscribe`]: https://api.rubyonrails.org/classes/ActiveSupport/Notifications.html#method-c-monotonic_subscribe
@@ -135,7 +151,7 @@ Ruby on Railsでは、フレームワーク内の主なイベント向けのフ�
 | `:path`       | リクエスト パス                                               |
 | `:request`      | [`ActionDispatch::Request`][]オブジェクト                   |
 | `:response`     | [`ActionDispatch::Response`][]オブジェクト                  |
-| `:status`       | HTTPステータスコード                                         |
+| `:status`       | HTTP ステータスコード                                        |
 | `:view_runtime` | ビューでかかった合計時間（ms）                                 |
 | `:db_runtime`   | データベースへのクエリ実行にかかった時間（ms）                    |
 
@@ -179,7 +195,8 @@ Ruby on Railsでは、フレームワーク内の主なイベント向けのフ�
 ```ruby
 {
   status: 302,
-  location: "http://localhost:3000/posts/new"
+  location: "http://localhost:3000/posts/new",
+  request: <ActionDispatch::Request:0x00007ff1cb9bd7b8>
 }
 ```
 
@@ -260,32 +277,49 @@ Ruby on Railsでは、フレームワーク内の主なイベント向けのフ�
 | ------------- | ---------------------- |
 | `:middleware` | ミドルウェア名            |
 
+#### `redirect.action_dispatch`
+
+| キー         | 値                                     |
+| ----------- | -------------------------------------- |
+| `:status`   | HTTPレスポンスコード                      |
+| `:location` | リダイレクト先URL                         |
+| `:request`  | [`ActionDispatch::Request`][]オブジェクト |
+
+#### `request.action_dispatch`
+
+| キー         | 値                                     |
+| ----------- | -------------------------------------- |
+| `:request`  | [`ActionDispatch::Request`][]オブジェクト |
+
 ### Action View
 
 #### `render_template.action_view`
 
-| キー           | 値                    |
-| ------------- | --------------------- |
-| `:identifier` | テンプレートへの完全なパス |
-| `:layout`     | 該当のレイアウト         |
-
+| キー           | 値                          |
+| ------------- | --------------------------- |
+| `:identifier` | テンプレートへの完全なパス       |
+| `:layout`     | 該当のレイアウト               |
+| `:locals`     | テンプレートに渡されるローカル変数 |
 
 ```ruby
 {
   identifier: "/Users/adam/projects/notifications/app/views/posts/index.html.erb",
-  layout: "layouts/application"
+  layout: "layouts/application",
+  locals: { foo: "bar" }
 }
 ```
 
 #### `render_partial.action_view`
 
-| キー          | 値                     |
-| ------------- | --------------------- |
-| `:identifier` | テンプレートへの完全なパス |
+| キー          | 値                           |
+| ------------- | --------------------------- |
+| `:identifier` | テンプレートへの完全なパス       |
+| `:locals`     | テンプレートに渡されるローカル変数 |
 
 ```ruby
 {
-  identifier: "/Users/adam/projects/notifications/app/views/posts/_form.html.erb"
+  identifier: "/Users/adam/projects/notifications/app/views/posts/_form.html.erb",
+  locals: { foo: "bar" }
 }
 ```
 
@@ -330,11 +364,11 @@ Ruby on Railsでは、フレームワーク内の主なイベント向けのフ�
 | キー                  | 値                                          |
 | -------------------- | ------------------------------------------- |
 | `:sql`               | SQL文                                       |
-| `:name`              | 操作の名前                                    |
-| `:connection`        | コネクションオブジェクト                         |
+| `:name`              | 操作の名前                                   |
+| `:connection`        | コネクションオブジェクト                        |
 | `:binds`             | バインドするパラメータ                          |
 | `:type_casted_binds` | 型キャストされたバインドパラメータ                |
-| `:statement_name`    | SQL文の名前                                   |
+| `:statement_name`    | SQL文の名前                                  |
 | `:cached`            | キャッシュされたクエリが使われると`true`が追加される |
 
 アダプタが独自のデータを追加する可能性もあります。
@@ -343,12 +377,23 @@ Ruby on Railsでは、フレームワーク内の主なイベント向けのフ�
 {
   sql: "SELECT \"posts\".* FROM \"posts\" ",
   name: "Post Load",
-  connection: #<ActiveRecord::ConnectionAdapters::SQLite3Adapter:0x00007f9f7a838850>,
-  binds: [#<ActiveModel::Attribute::WithCastValue:0x00007fe19d15dc00>],
+  connection: <ActiveRecord::ConnectionAdapters::SQLite3Adapter:0x00007f9f7a838850>,
+  binds: [<ActiveModel::Attribute::WithCastValue:0x00007fe19d15dc00>],
   type_casted_binds: [11],
   statement_name: nil
 }
 ```
+
+#### `strict_loading_violation.active_record`
+
+このイベントは[`config.active_record.action_on_strict_loading_violation`][]が`:log`に設定されている場合にのみ発火します。
+
+| キー           | 値                                  |
+| ------------- | ----------------------------------- |
+| `:owner`      | `strict_loading`が有効化されたモデル     |
+| `:reflection` | 読み込もうとしている関連付けのリフレクション |
+
+[`config.active_record.action_on_strict_loading_violation`]: configuring.html#config-active-record-action-on-strict-loading-violation
 
 #### `instantiation.active_record`
 
@@ -372,14 +417,14 @@ Ruby on Railsでは、フレームワーク内の主なイベント向けのフ�
 | --------------------- | -------------------------------------------- |
 | `:mailer`             | メーラークラス名                                |
 | `:message_id`         | Mail gemが生成したメッセージID                   |
-| `:subject`            | メールの件名                                   |
-| `:to`                 | メールの宛先（複数可）                           |
-| `:from`               | メールの差出人                                  |
-| `:bcc`                | メールのBCCアドレス（複数可）                     |
-| `:cc`                 | メールのCCアドレス（複数可）                      |
-| `:date`               | メールの日付                                   |
-| `:mail`               | メールのエンコード形式                           |
-| `:perform_deliveries` | このメッセージが配信されたかどうか                 |
+| `:subject`            | メールの件名                                 |
+| `:to`                 | メールの宛先（複数可）                         |
+| `:from`               | メールの差出人                               |
+| `:bcc`                | メールのBCCアドレス（複数可）                  |
+| `:cc`                 | メールのCCアドレス（複数可）                   |
+| `:date`               | メールの日付                                |
+| `:mail`               | メールのエンコード形式                        |
+| `:perform_deliveries` | このメッセージが配信されたかどうか              |
 
 ```ruby
 {
@@ -419,7 +464,7 @@ Ruby on Railsでは、フレームワーク内の主なイベント向けのフ�
 | `:key`             | ストアで使われるキー                                  |
 | `:store`           | ストアクラス名                                       |
 | `:hit`             | ヒットしたかどうか                                   |
-| `:super_operation` | 読み出しに[`fetch`][ActiveSupport::Cache::Store#fetch]が使われる場合に`:fetch`を追加 |
+| `:super_operation` | [`fetch`][ActiveSupport::Cache::Store#fetch]で読み出された場合は`:fetch` |
 
 #### `cache_read_multi.active_support`
 
@@ -427,8 +472,8 @@ Ruby on Railsでは、フレームワーク内の主なイベント向けのフ�
 | ------------------ | ------------------------------------------------- |
 | `:key`             | ストアで使われるキー                                  |
 | `:store`           | ストアクラス名                                       |
-| `:hit`             | ヒットしたかどうか                                   |
-| `:super_operation` | 読み出しに[`fetch_multi`][ActiveSupport::Cache::Store#fetch_multi]が使われる場合に`:fetch_multi`を追加 |
+| `:hits`            | ヒットしたかどうか                                   |
+| `:super_operation` | [`fetch_multi`][ActiveSupport::Cache::Store#fetch_multi]で読み出された場合は`fetch_multi`を追加|
 
 #### `cache_generate.active_support`
 
@@ -439,7 +484,7 @@ Ruby on Railsでは、フレームワーク内の主なイベント向けのフ�
 | `:key`  | ストアで使われるキー      |
 | `:store`| ストアクラス名           |
 
-`fetch`に渡されたオプションは、ストアへの書き込み時にペイロードとマージされます。
+`#fetch`に渡されたオプションは、ストアへの書き込み時にペイロードとマージされます。
 
 ```ruby
 {
@@ -473,7 +518,7 @@ Ruby on Railsでは、フレームワーク内の主なイベント向けのフ�
 | `:key`   | ストアで使われるキー      |
 | `:store` | ストアクラス名           |
 
-キャッシュストアが独自のキーを追加することがあります。
+キャッシュストアが独自のデータを追加する可能性もあります。
 
 ```ruby
 {
@@ -484,21 +529,20 @@ Ruby on Railsでは、フレームワーク内の主なイベント向けのフ�
 
 #### `cache_write_multi.active_support`
 
-| キー      | 値                       |
-| -------- | ------------------------ |
-| `:key`   | ストアに書き込まれるキーと値  |
-| `:store` | ストアクラス名             |
-
+| キー      | 値                    |
+| -------- | --------------------- |
+| `:key`   | ストアで使われるキーと値   |
+| `:store` | ストアクラス名           |
 
 #### `cache_increment.active_support`
 
-このイベントが発火するのは、[`MemCacheStore`][ActiveSupport::Cache::MemCacheStore]または[`RedisCacheStore`][ActiveSupport::Cache::RedisCacheStore]を使っている場合のみです。
+このイベントは、[`MemCacheStore`][ActiveSupport::Cache::MemCacheStore]または[`RedisCacheStore`][ActiveSupport::Cache::RedisCacheStore]を使った場合にのみ発火します。
 
-| キー      | 値                       |
-| -------- | ------------------------ |
-| `:key`   | ストアに書き込まれるキーと値  |
-| `:store` | ストアクラス名             |
-| `:amount` | インクリメントの総量       |
+| キー      | 値                    |
+| -------- | --------------------- |
+| `:key`   | ストアで使われるキー      |
+| `:store` | ストアクラス名           |
+| `:amount` | インクリメントする量     |
 
 ```ruby
 {
@@ -510,13 +554,13 @@ Ruby on Railsでは、フレームワーク内の主なイベント向けのフ�
 
 #### `cache_decrement.active_support`
 
-このイベントが発火するのは、[`MemCacheStore`][ActiveSupport::Cache::MemCacheStore]または[`RedisCacheStore`][ActiveSupport::Cache::RedisCacheStore]を使っている場合のみです。
+このイベントは、[`MemCacheStore`][ActiveSupport::Cache::MemCacheStore]または[`RedisCacheStore`][ActiveSupport::Cache::RedisCacheStore]を使った場合にのみ発火します。
 
-| キー      | 値                       |
-| -------- | ------------------------ |
-| `:key`   | ストアに書き込まれるキーと値  |
-| `:store` | ストアクラス名             |
-| `:amount` | デクリメントの総量         |
+| キー      | 値                    |
+| -------- | --------------------- |
+| `:key`   | ストアで使われるキー      |
+| `:store` | ストアクラス名           |
+| `:amount` | デクリメントする量       |
 
 ```ruby
 {
@@ -549,11 +593,11 @@ Ruby on Railsでは、フレームワーク内の主なイベント向けのフ�
 
 #### `cache_delete_matched.active_support`
 
-このイベントが発火するのは、[`RedisCacheStore`][ActiveSupport::Cache::RedisCacheStore]、[`FileStore`][ActiveSupport::Cache::FileStore]、または[`MemoryStore`][ActiveSupport::Cache::MemoryStore]を使っている場合のみです。
+このイベントは、[`RedisCacheStore`][ActiveSupport::Cache::RedisCacheStore]、 [`FileStore`][ActiveSupport::Cache::FileStore]、または[`MemoryStore`][ActiveSupport::Cache::MemoryStore]を使った場合にのみ発火します。
 
 | キー      | 値                    |
 | -------- | --------------------- |
-| `:key`   | 使われるキーパターン      |
+| `:key`   | 使われるキーのパターン    |
 | `:store` | ストアクラス名           |
 
 ```ruby
@@ -565,7 +609,7 @@ Ruby on Railsでは、フレームワーク内の主なイベント向けのフ�
 
 #### `cache_cleanup.active_support`
 
-このイベントが発火するのは、[`MemoryStore`][ActiveSupport::Cache::MemoryStore]を使っている場合のみです。
+このイベントは、[`MemoryStore`][ActiveSupport::Cache::MemoryStore]を使った場合にのみ発火します。
 
 | キー      | 値                                   |
 | -------- | ------------------------------------ |
@@ -581,13 +625,13 @@ Ruby on Railsでは、フレームワーク内の主なイベント向けのフ�
 
 #### `cache_prune.active_support`
 
-このイベントが発火するのは、[`MemoryStore`][ActiveSupport::Cache::MemoryStore]を使っている場合のみです。
+このイベントは、[`MemoryStore`][ActiveSupport::Cache::MemoryStore]を使った場合にのみ発火します。
 
-| キー      | 値                                   |
-| -------- | ------------------------------------ |
-| `:store` | ストアクラス名                          |
-| `:key`   | キャッシュのターゲットサイズ（バイト単位）   |
-| `:from`  | prune前のキャッシュサイズ（バイト単位）    |
+| キー      | 値                                     |
+| -------- | -------------------------------------- |
+| `:store` | ストアクラス名                            |
+| `:key`   | キャッシュのターゲットサイズ（バイト単位）     |
+| `:from`  | prune（刈込）前のキャッシュサイズ（バイト単位）|
 
 ```ruby
 {
@@ -618,6 +662,26 @@ Ruby on Railsでは、フレームワーク内の主なイベント向けのフ�
 [ActiveSupport::Cache::Store#fetch]: https://api.rubyonrails.org/classes/ActiveSupport/Cache/Store.html#method-i-fetch
 [ActiveSupport::Cache::Store#fetch_multi]: https://api.rubyonrails.org/classes/ActiveSupport/Cache/Store.html#method-i-fetch_multi
 
+### Active Support — Messages
+
+#### `message_serializer_fallback.active_support`
+
+| キー      | 値                                   |
+| -------- | ------------------------------------ |
+| `:serializer`   | プライマリ（意図した）シリアライザ  |
+| `:fallback`     | フォールバック（実際の）シリアライザ |
+| `:serialized`   | シリアライズされた文字列          |
+| `:deserialized` | デシリアライズされた値            |
+
+```ruby
+{
+  serializer: :json_allow_marshal,
+  fallback: :marshal,
+  serialized: "\x04\b{\x06I\"\nHello\x06:\x06ETI\"\nWorld\x06;\x00T",
+  deserialized: { "Hello" => "World" },
+}
+```
+
 ### Active Job
 
 #### `enqueue_at.active_job`
@@ -643,6 +707,13 @@ Ruby on Railsでは、フレームワーク内の主なイベント向けのフ�
 | `:error`     | リトライが原因で発生したエラー            |
 | `:wait`      | リトライの遅延                         |
 
+#### `enqueue_all.active_job`
+
+| キー          | 値                                  |
+| ------------ | ----------------------------------- |
+| `:adapter`   | ジョブを処理するQueueAdapterオブジェクト |
+| `:jobs`      | Jobオブジェクトの配列                  |
+
 #### `perform_start.active_job`
 
 | キー          | 値                                  |
@@ -656,6 +727,7 @@ Ruby on Railsでは、フレームワーク内の主なイベント向けのフ�
 | ------------ | ----------------------------------- |
 | `:adapter`   | ジョブを処理するQueueAdapterオブジェクト |
 | `:job`       | Jobオブジェクト                       |
+| `:db_runtime` | データベースクエリの総実行時間（ms）     |
 
 #### `retry_stopped.active_job`
 
@@ -715,19 +787,19 @@ Ruby on Railsでは、フレームワーク内の主なイベント向けのフ�
 
 #### `preview.active_storage`
 
-| キー          | 値               |
-| ------------ | ---------------- |
-| `:key`       | セキュアトークン    |
+| キー          | 値                   |
+| ------------ | -------------------- |
+| `:key`       | セキュアトークン        |
 
 #### `transform.active_storage`
 
 #### `analyze.active_storage`
 
-| キー          | 値                      |
-| ------------ | ----------------------- |
-| `:analyzer`  | アナライザ名（ffprobeなど） |
+| キー          | 値                   |
+| ------------ | -------------------- |
+| `:analyzer`  | アナライザ名（ffprobeなど）|
 
-### Active Storage — ストレージサービス
+### Active Storage: ストレージサービス
 
 #### `service_upload.active_storage`
 
@@ -759,7 +831,7 @@ Ruby on Railsでは、フレームワーク内の主なイベント向けのフ�
 | `:key`       | セキュアトークン                |
 | `:service`   | サービス名                     |
 
-#### `service_download.active_storage`
+#### `service_delete.active_storage`
 
 | キー          | 値                           |
 | ------------ | ---------------------------- |
@@ -791,14 +863,36 @@ Ruby on Railsでは、フレームワーク内の主なイベント向けのフ�
 
 #### `service_update_metadata.active_storage`
 
-このイベントが発火するのは、Google Cloud Storageサービスを使っている場合のみです。
+このイベントはGoogle Cloud Storageサービスを使っている場合にのみ発火します。
 
-| キー             | 値                               |
-| --------------- | -------------------------------- |
-| `:key`          | セキュアトークン                    |
-| `:service`      | サービス名                         |
-| `:content_type` | HTTP Content-Typeフィールド        |
-| `:disposition`  | HTTP Content-Dispositionフィールド |
+| キー             | 値                                 |
+| --------------- | ---------------------------------- |
+| `:key`          | セキュアトークン                      |
+| `:service`      | サービス名                           |
+| `:content_type` | HTTP `Content-Type`フィールド        |
+| `:disposition`  | HTTP `Content-Disposition`フィールド |
+
+### Action Mailbox
+
+#### `process.action_mailbox`
+
+| Key              | Value                                     |
+| -----------------| ----------------------------------------- |
+| `:mailbox`       | [`ActionMailbox::Base`][]から継承したMailboxクラスのインスタンス|
+| `:inbound_email` | 処理中の受信メールに関するデータのハッシュ         |
+
+```ruby
+{
+  mailbox: #<RepliesMailbox:0x00007f9f7a8388>,
+  inbound_email: {
+    id: 1,
+    message_id: "0CB459E0-0336-41DA-BC88-E6E28C697DDB@37signals.com",
+    status: "processing"
+  }
+}
+```
+
+[`ActionMailbox::Base`]: https://api.rubyonrails.org/classes/ActionMailbox/Base.html
 
 ### Railties
 
@@ -806,7 +900,7 @@ Ruby on Railsでは、フレームワーク内の主なイベント向けのフ�
 
 | キー            | 値                                                    |
 | -------------- | ----------------------------------------------------- |
-| `:initializer` | `config/initializers`で読み込まれたイニシャライザへのパス    |
+| `:initializer` | `config/initializers`で読み込まれたイニシャライザへのパス  |
 
 ### Rails
 
@@ -816,6 +910,8 @@ Ruby on Railsでは、フレームワーク内の主なイベント向けのフ�
 | ------------ | ------------------------ |
 | `:message`   | 非推奨機能の警告メッセージ    |
 | `:callstack` | 非推奨警告の発生元          |
+| `:gem_name`  | 非推奨警告で報告されたgem名 |
+| `:deprecation_horizon` | 非推奨の振る舞いが削除されるバージョン |
 
 例外
 ----------
@@ -830,8 +926,8 @@ instrumentationの途中で例外が発生すると、ペイロードにその�
 カスタムイベントの作成
 ----------------------
 
-独自のイベントも手軽に追加できます。面倒な作業はActive Supportが代行するので、[`ActiveSupport::Notifications.instrument`][]に`name`、`payload`、およびブロックを指定して呼び出すだけでイベント追加が完了します。
-通知は、ブロックから制御が戻った後で送信されます。Active Supportでは、開始時刻、終了時刻、およびinstrumenterのユニークIDが生成されます。`instrument`呼び出しに渡されるすべてのデータがペイロードに含まれます。
+独自のイベントを自由に追加できます。Active Supportは、面倒な作業を代行してくれます。イベント追加は、`name`、`payload`、ブロックを指定して[`ActiveSupport::Notifications.instrument`][]を呼び出すだけで完了します。
+通知は、ブロックが戻ってから送信されます。Active Supportでは、開始時刻、終了時刻、InstrumenterのユニークIDが生成されます。`instrument`呼び出しに渡されるすべてのデータがペイロードに含まれます。
 
 以下に例を示します。
 
@@ -849,7 +945,7 @@ ActiveSupport::Notifications.subscribe "my.custom.event" do |name, started, fini
 end
 ```
 
-以下のように、`instrument`にブロックを渡さずに呼び出すことも可能です。これにより、instrumentationインフラストラクチャを他のメッセージング用途に活用できます。
+以下のように、ブロックを渡さずに`instrument`を呼び出すことも可能です。これにより、instrumentationインフラストラクチャを他のメッセージング用途に活用できます。
 
 ```ruby
 ActiveSupport::Notifications.instrument "my.custom.event", this: :data

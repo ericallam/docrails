@@ -139,7 +139,7 @@ Rails.logger.level = 0 # いつでも利用可能
 
 これは、development環境やstaging環境ではログを出力し、production環境では不要な情報をログに出力したくない場合などに便利です。
 
-TIP: Railsのデフォルトログレベルは全環境で`debug`です。
+TIP: Railsのデフォルトログレベルは全環境で`debug`です。ただし、デフォルトで生成される`config/environments/production.rb`では、`production`環境のデフォルトログレベルを`:info`に設定しています。
 
 ### メッセージ送信
 
@@ -234,6 +234,45 @@ Rails 5.2以降は、developmentモードで詳細クエリモードがデフォ
 
 WARNING: production環境では詳細クエリモードを有効にしないことをおすすめします。この設定はRubyの`Kernel#caller`メソッドに依存しており、メソッド呼び出しのスタックトレース生成で大量のメモリをアロケーションする傾向があります。
 
+### 詳細なエンキューログ
+
+上述の「詳細なクエリログ」と同様に、バックグラウンドジョブをエンキューするメソッドのソースの場所を表示できます。
+
+development環境ではデフォルトで有効になっています。他の環境で有効にするには、`application.rb`または任意の環境イニシャライザに以下を追加します。
+
+```rb
+config.active_job.verbose_enqueue_logs = true
+```
+
+詳細なクエリログと同様に、production環境での利用は推奨されていません。
+
+SQLクエリコメント
+------------------
+
+SQLステートメントに実行時情報（コントローラやジョブの名前など）を含むタグをコメントすることで、問題のあるクエリを、ステートメントを生成したアプリケーションの領域までさかのぼってトレースできます。
+この機能は、遅いクエリをログ出力するとき（例：[MySQL][slow_query_log]、[PostgreSQL][runtime_config_logging]）や、現在実行中のクエリを表示するとき、エンドツーエンドのトレースツールで利用するときに便利です。
+
+この機能を有効にするには、`application.rb`または任意の環境イニシャライザに以下を追加します。
+
+```rb
+config.active_record.query_log_tags_enabled = true
+```
+
+デフォルトでは、「アプリケーション名」「コントローラ名とアクション」または「ジョブ名」がログ出力されます。デフォルトの形式は[SQLCommenter][]です。たとえば、以下のような形式でログが出力されます。
+
+```
+Article Load (0.2ms)  SELECT "articles".* FROM "articles" /*application='Blog',controller='articles',action='index'*/
+
+Article Update (0.3ms)  UPDATE "articles" SET "title" = ?, "updated_at" = ? WHERE "posts"."id" = ? /*application='Blog',job='ImproveTitleJob'*/  [["title", "Improved Rails debugging guide"], ["updated_at", "2022-10-16 20:25:40.091371"], ["id", 1]]
+```
+
+[`ActiveRecord::QueryLogs`][]の振る舞いを変更して、SQLクエリの全体像を把握するのに有用な情報（アプリケーションログのリクエストやジョブのID、アカウントやテナントの識別子など）を含めることも可能です。
+
+[slow_query_log]: https://dev.mysql.com/doc/refman/en/slow-query-log.html
+[runtime_config_logging]: https://www.postgresql.org/docs/current/runtime-config-logging.html#GUC-LOG-MIN-DURATION-STATEMENT
+[SQLCommenter]: https://open-telemetry.github.io/opentelemetry-sqlcommenter/
+[`ActiveRecord::QueryLogs`]: https://api.rubyonrails.org/classes/ActiveRecord/QueryLogs.html
+
 ### タグ付きログの出力
 
 ユーザーとアカウントを多数使うアプリケーションを実行するときに、何らかのカスタムルールを設定してログをフィルタできると便利です。Active Supportの`TaggedLogging`を使えば、サブドメインやリクエストIDなどを指定してログを絞り込むことができ、このようなアプリケーションのデバッグがはかどります。
@@ -262,7 +301,7 @@ logger.debug "Person attributes hash: #{@person.attributes.inspect}"
 したがって、ロガーメソッドに渡すものはブロック形式にすることをおすすめします。ブロックとして渡しておけば、ブロックの評価は出力レベルが設定レベル以上になった場合にしか行われないようになる（遅延読み込みされる）ためです。これに従って上のコードを書き直すと以下のようになります。
 
 ```ruby
-logger.debug {"Person attributes hash: #{@person.attributes.inspect}"}
+logger.debug { "Person attributes hash: #{@person.attributes.inspect}" }
 ```
 
 渡したブロックの内容（ここでは文字列の式展開）は、debug が有効になっている場合にしか評価されません。この方法によるパフォーマンスの改善は、大量のログを出力しているときでないとそれほど実感できないかもしれませんが、それでも採用する価値があります。
@@ -281,7 +320,7 @@ Rails 7では、CRubyで生成した新しいアプリケーションの`Gemfile
 
 ### デバッグセッションに入る
 
-デフォルトでは、`debug`ライブラリが`require`された後でデバッグセッションが開始されます。これはアプリの起動中に行われます。しかしデバッグセッションがあなたのプログラムを邪魔することはないので心配は無用です。
+デフォルトでは、デバッグセッションが開始されるのは`debug`ライブラリが`require`された後です。これはアプリの起動中に行われます。しかしデバッグセッションがあなたのプログラムを邪魔することはないので心配は無用です。
 
 デバッグセッションに入るには、`binding.break`（またはエイリアスの`binding.b`や`debugger`）を利用できます。以下の例では`debugger`を使います。
 
@@ -314,7 +353,7 @@ Processing by PostsController#index as HTML
     10|   # GET /posts/1 or /posts/1.json
     11|   def show
 =>#0    PostsController#index at ~/projects/rails-guide-example/app/controllers/posts_controller.rb:7
-  #1    ActionController::BasicImplicitRender#send_action(method="index", args=[]) at ~/.rbenv/versions/3.0.1/lib/ruby/gems/3.0.0/gems/actionpack-7.0.0.alpha2/lib/action_controller/metal/basic_implicit_render.rb:6
+  #1    ActionController::BasicImplicitRender#send_action(method="index", args=[]) at ~/.rbenv/versions/3.0.1/lib/ruby/gems/3.0.0/gems/actionpack-7.1.0.alpha/lib/action_controller/metal/basic_implicit_render.rb:6
   # and 72 frames (use `bt' command for all frames)
 (rdbg)
 ```
@@ -354,9 +393,9 @@ Processing by PostsController#index as HTML
 - `backtrace`（`bt`）: バックトレースと付加情報を表示する
 - `outline` (or `o`, `ls`): 現在のスコープで利用可能なメソッド、定数、ローカル変数、インスタンス変数を表示する
 
-#### infoコマンド
+#### `info`コマンド
 
-現在のフレームで参照可能なローカル変数やインスタンス変数の値に関する概要を表示します。
+`info`は、現在のフレームで参照可能なローカル変数やインスタンス変数の値に関する概要を表示します。
 
 ```ruby
 (rdbg) info    # command
@@ -374,20 +413,20 @@ Processing by PostsController#index as HTML
 @rendered_format = nil
 ```
 
-#### backtraceコマンド
+#### `backtrace`コマンド
 
-オプションなしで実行すると、以下のようにスタックのフレームをすべて表示します。
+オプションなしで実行すると、`backtrace`が以下のようにスタックのフレームをすべて表示します。
 
-```ruby
+```rb
 =>#0    PostsController#index at ~/projects/rails-guide-example/app/controllers/posts_controller.rb:7
-  #1    ActionController::BasicImplicitRender#send_action(method="index", args=[]) at ~/.rbenv/versions/3.0.1/lib/ruby/gems/3.0.0/gems/actionpack-7.0.0.alpha2/lib/action_controller/metal/basic_implicit_render.rb:6
-  #2    AbstractController::Base#process_action(method_name="index", args=[]) at ~/.rbenv/versions/3.0.1/lib/ruby/gems/3.0.0/gems/actionpack-7.0.0.alpha2/lib/abstract_controller/base.rb:214
-  #3    ActionController::Rendering#process_action(#arg_rest=nil) at ~/.rbenv/versions/3.0.1/lib/ruby/gems/3.0.0/gems/actionpack-7.0.0.alpha2/lib/action_controller/metal/rendering.rb:53
-  #4    block in process_action at ~/.rbenv/versions/3.0.1/lib/ruby/gems/3.0.0/gems/actionpack-7.0.0.alpha2/lib/abstract_controller/callbacks.rb:221
-  #5    block in run_callbacks at ~/.rbenv/versions/3.0.1/lib/ruby/gems/3.0.0/gems/activesupport-7.0.0.alpha2/lib/active_support/callbacks.rb:118
-  #6    ActionText::Rendering::ClassMethods#with_renderer(renderer=#<PostsController:0x0000000000af78>) at ~/.rbenv/versions/3.0.1/lib/ruby/gems/3.0.0/gems/actiontext-7.0.0.alpha2/lib/action_text/rendering.rb:20
-  #7    block {|controller=#<PostsController:0x0000000000af78>, action=#<Proc:0x00007fd91985f1c0 /Users/st0012/...|} in <class:Engine> (4 levels) at ~/.rbenv/versions/3.0.1/lib/ruby/gems/3.0.0/gems/actiontext-7.0.0.alpha2/lib/action_text/engine.rb:69
-  #8    [C] BasicObject#instance_exec at ~/.rbenv/versions/3.0.1/lib/ruby/gems/3.0.0/gems/activesupport-7.0.0.alpha2/lib/active_support/callbacks.rb:127
+  #1    ActionController::BasicImplicitRender#send_action(method="index", args=[]) at ~/.rbenv/versions/3.0.1/lib/ruby/gems/3.0.0/gems/actionpack-7.1.0.alpha/lib/action_controller/metal/basic_implicit_render.rb:6
+  #2    AbstractController::Base#process_action(method_name="index", args=[]) at ~/.rbenv/versions/3.0.1/lib/ruby/gems/3.0.0/gems/actionpack-7.1.0.alpha/lib/abstract_controller/base.rb:214
+  #3    ActionController::Rendering#process_action(#arg_rest=nil) at ~/.rbenv/versions/3.0.1/lib/ruby/gems/3.0.0/gems/actionpack-7.1.0.alpha/lib/action_controller/metal/rendering.rb:53
+  #4    block in process_action at ~/.rbenv/versions/3.0.1/lib/ruby/gems/3.0.0/gems/actionpack-7.1.0.alpha/lib/abstract_controller/callbacks.rb:221
+  #5    block in run_callbacks at ~/.rbenv/versions/3.0.1/lib/ruby/gems/3.0.0/gems/activesupport-7.1.0.alpha/lib/active_support/callbacks.rb:118
+  #6    ActionText::Rendering::ClassMethods#with_renderer(renderer=#<PostsController:0x0000000000af78>) at ~/.rbenv/versions/3.0.1/lib/ruby/gems/3.0.0/gems/actiontext-7.1.0.alpha/lib/action_text/rendering.rb:20
+  #7    block {|controller=#<PostsController:0x0000000000af78>, action=#<Proc:0x00007fd91985f1c0 /Users/st0012/...|} in <class:Engine> (4 levels) at ~/.rbenv/versions/3.0.1/lib/ruby/gems/3.0.0/gems/actiontext-7.1.0.alpha/lib/action_text/engine.rb:69
+  #8    [C] BasicObject#instance_exec at ~/.rbenv/versions/3.0.1/lib/ruby/gems/3.0.0/gems/activesupport-7.1.0.alpha/lib/active_support/callbacks.rb:127
   ..... and more
 ```
 
@@ -409,7 +448,7 @@ Processing by PostsController#index as HTML
 
 `backtrace [num] /pattern/`のように、2つのオプションを同時に指定することも可能です。
 
-#### outlineコマンド
+#### `outline`コマンド
 
 このコマンドは、`pry`や`irb`の`ls`コマンドに似ています。以下のような、現在のスコープでアクセス可能なものを表示します。
 
@@ -441,7 +480,7 @@ instance variables:
   @_action_has_layout  @_action_name    @_config  @_lookup_context                      @_request
   @_response           @_response_body  @_routes  @marked_for_same_origin_verification  @posts
   @rendered_format
-class variables: @@raise_on_missing_translations  @@raise_on_open_redirects
+class variables: @@raise_on_open_redirects
 ```
 
 ### ブレークポイント
@@ -465,7 +504,7 @@ class variables: @@raise_on_missing_translations  @@raise_on_open_redirects
 
 #### `break`コマンド
 
-**指定の行番号にブレークポイントを設定する（例: `b 28`）**
+指定の行番号にブレークポイントを設定します（例: `b 28`）。
 
 ```rb
 [20, 29] in ~/projects/rails-guide-example/app/controllers/posts_controller.rb
@@ -506,7 +545,7 @@ class variables: @@raise_on_missing_translations  @@raise_on_open_redirects
 Stop by #0  BP - Line  /Users/st0012/projects/rails-guide-example/app/controllers/posts_controller.rb:28 (line)
 ```
 
-**指定のメソッド呼び出しにブレークポイントを設定する（例: `b @post.save`）**
+以下は指定のメソッド呼び出しにブレークポイントを設定します（例: `b @post.save`）。
 
 ```rb
 [20, 29] in ~/projects/rails-guide-example/app/controllers/posts_controller.rb
@@ -550,7 +589,7 @@ Stop by #0  BP - Method  @post.save at /Users/st0012/.rbenv/versions/3.0.1/lib/r
 
 #### `catch`コマンド
 
-**例外発生時に停止する（例: `catch ActiveRecord::RecordInvalid`）**
+例外発生時に停止します（例: `catch ActiveRecord::RecordInvalid`）。
 
 ```rb
 [20, 29] in ~/projects/rails-guide-example/app/controllers/posts_controller.rb
@@ -593,7 +632,7 @@ Stop by #1  BP - Catch  "ActiveRecord::RecordInvalid"
 
 #### `watch`コマンド
 
-**インスタンス変数の変更時に停止する（例: `watch @_response_body`）**
+インスタンス変数の変更時に停止します（例: `watch @_response_body`）。
 
 ```rb
 [20, 29] in ~/projects/rails-guide-example/app/controllers/posts_controller.rb
@@ -727,36 +766,6 @@ Stop by #0  BP - Catch  "ActiveRecord::RecordInvalid"
 
 その他のコマンドや設定オプションについて詳しくは`debug` gemの[ドキュメント](https://github.com/ruby/debug)を参照してください。
 
-#### オートローディングの注意点
-
-`debug` gemによるデバッグはほとんどの場面で有効ですが、1つエッジケースがあります。ファイルで定義されている名前空間をオートロードする式をコンソール上で評価すると、その名前空間にある定数を見つけられません。
-
-たとえば、アプリケーションに以下の2つのファイルがあるとします。
-
-```ruby
-# hotel.rb
-class Hotel
-end
-
-# hotel/pricing.rb
-module Hotel::Pricing
-end
-```
-
-この`Hotel`がまだ読み込まれていないとします。
-
-```
-(rdbg) p Hotel::Pricing
-```
-
-このとき上を実行すると`NameError`が発生します。場合によっては、Rubyが別のスコープにある予想外の定数に解決してしまうこともあります。
-
-このような場合は、`config.eager_load = true`でeager loadingを有効にしてからデバッグセッションを再起動してください。
-
-この問題は、`next`や`continue`などのステップ実行コマンドでは発生しません。サブディレクトリ内でのみ暗黙で定義されている名前空間も、この問題の対象外です。
-
-詳しくは[ruby/debug#408](https://github.com/ruby/debug/issues/408)を参照してください。
-
 `web-console` gemによるデバッグ
 ------------------------------------
 
@@ -826,9 +835,7 @@ derailed_benchmark gemの[README](https://github.com/schneems/derailed_benchmark
 
 アプリケーションのエラーを検出し、デバッグするためのRailsプラグインがあります。デバッグ用に便利なプラグインのリストを以下にご紹介します。
 
-* [Footnotes](https://github.com/josevalim/rails-footnotes): すべてのRailsページに脚注を追加し、リクエスト情報を表示したり、TextMateでソースを開くためのリンクを表示したりします。
 * [Query Trace](https://github.com/ruckus/active-record-query-trace/tree/master): ログにクエリ元のトレースを追加します。
-* [Query Reviewer](https://github.com/nesquena/query_reviewer): このRailsプラグインは、開発中のselectクエリの前に"EXPLAIN"を実行します。また、ページごとにDIVセクションを追加して、分析対象のクエリごとの警告の概要をそこに表示します。
 * [Exception Notifier](https://github.com/smartinez87/exception_notification/tree/master): Railsアプリケーションでのエラー発生時用の、メーラーオブジェクトとメール通知送信テンプレートのデフォルトセットを提供します。
 * [Better Errors](https://github.com/charliesome/better_errors): Rails標準のエラーページを新しい表示に置き換えて、ソースコードや変数検査などのコンテキスト情報を見やすくしてくれます。
 * [RailsPanel](https://github.com/dejan/rails_panel): Rails開発用のChrome機能拡張です。これがあればdevelopment.logでtailコマンドを実行する必要がなくなります。Railsアプリケーションのリクエストに関するすべての情報をブラウザ上 (Developer Toolsパネル) に表示できます。

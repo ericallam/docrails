@@ -49,22 +49,24 @@ $ rails plugin new --help
 プラグインを作成したディレクトリに移動して`yaffle.gemspec`ファイルを編集し、値に`TODO`がある行をすべて以下の要領で置き換えます。
 
 ```ruby
-  spec.homepage    = "http://example.com"
-  spec.summary     = "（Yaffleの概要）"
-  spec.description = "（Yaffleの説明）"
+spec.homepage    = "http://example.com"
+spec.summary     = "（Yaffleの概要）"
+spec.description = "（Yaffleの説明）"
 
 ...
 
-  spec.metadata["source_code_uri"] = "http://example.com"
-  spec.metadata["changelog_uri"] = "http://example.com"
+spec.metadata["source_code_uri"] = "http://example.com"
+spec.metadata["changelog_uri"] = "http://example.com"
 ```
 
 終わったら`bundle install`コマンドを実行します。
 
 これで、自動生成されたテストを`bin/test`コマンドで実行すると以下のような結果が出力されるはずです。
 
-```
-  1 runs, 1 assertions, 0 failures, 0 errors, 0 skips
+```bash
+$ bin/test
+...
+1 runs, 1 assertions, 0 failures, 0 errors, 0 skips
 ```
 
 生成が無事完了し、いつでも機能を追加できる状態であることがわかります。
@@ -90,7 +92,8 @@ end
 
 `bin/test`を実行してテストします。`to_squawk`は実装されていないので、当然テストは失敗します。
 
-```
+```bash
+$ bin/test
 E
 
 Error:
@@ -103,7 +106,6 @@ bin/test /path/to/yaffle/test/core_ext_test.rb:4
 .
 
 Finished in 0.003358s, 595.6483 runs/s, 297.8242 assertions/s.
-
 2 runs, 1 assertions, 0 failures, 1 errors, 0 skips
 ```
 
@@ -138,7 +140,9 @@ end
 プラグインのあるディレクトリで`bin/test`テストを実行して、メソッドがテストにパスすることを確認します。
 
 ```bash
-  2 runs, 2 assertions, 0 failures, 0 errors, 0 skips
+$ bin/test
+...
+2 runs, 2 assertions, 0 failures, 0 errors, 0 skips
 ```
 
 最後にメソッドを実際に使ってみましょう。`test/dummy`ディレクトリに移動して`bin/rails console`を実行し、鳴き声（squawk）を出してみましょう。
@@ -220,7 +224,8 @@ end
 
 `bin/test`を実行すると以下が出力されます。
 
-```
+```bash
+$ bin/test
 # Running:
 
 ..E
@@ -244,7 +249,6 @@ bin/test /path/to/yaffle/test/acts_as_yaffle_test.rb:4
 
 
 Finished in 0.004812s, 831.2949 runs/s, 415.6475 assertions/s.
-
 4 runs, 2 assertions, 0 failures, 2 errors, 0 skips
 ```
 
@@ -310,7 +314,8 @@ end
 
 終わったら`cd ../..`を実行してプラグインのルートディレクトリに戻り、`bin/test`を実行してテストを再実行します。
 
-```
+```bash
+$ bin/test
 # Running:
 
 .E
@@ -334,7 +339,6 @@ bin/test /path/to/yaffle/test/acts_as_yaffle_test.rb:8
 .
 
 Finished in 0.008263s, 484.0999 runs/s, 242.0500 assertions/s.
-
 4 runs, 2 assertions, 0 failures, 2 errors, 0 skips
 ```
 
@@ -368,8 +372,10 @@ end
 
 `bin/test`を実行すると、今度のテストはすべてパスします。
 
-```
-  4 runs, 4 assertions, 0 failures, 0 errors, 0 skips
+```bash
+$ bin/test
+...
+4 runs, 4 assertions, 0 failures, 0 errors, 0 skips
 ```
 
 ### インスタンスメソッドを追加する
@@ -441,8 +447,10 @@ end
 
 最後に`bin/test`を実行すると以下の結果が表示されます。
 
-```
-  6 runs, 6 assertions, 0 failures, 0 errors, 0 skips
+```bash
+$ bin/test
+...
+6 runs, 6 assertions, 0 failures, 0 errors, 0 skips
 ```
 
 NOTE: 上のコードではモデルのフィールドへの書き込みを`write_attribute`で行っていますが、これはあくまでプラグインからモデルとやりとりする際の書き方を示すための一例にすぎません。このメソッドを使うのが適切とは限らないこともあるのでご注意ください。たとえば同じコードを以下のように書くこともできます。
@@ -498,7 +506,7 @@ RDocドキュメント
 * アプリケーションに機能を追加する具体的な方法（一般的なユースケースもいくつか例として追加）
 * 警告、注意点、ヒントなど（ユーザーが無駄な時間を使わずに済むように）
 
-READMEの内容が固まってきたら、コードをひととおりチェックしてすべてのメソッドにrdoc形式のコメントを追加します。このコメントは開発者にとって役立つ情報となります。パブリックAPIにしたくないメソッドには`#:nodoc:`というコメントを追加します。
+READMEの内容が固まってきたら、コードをひととおりチェックしてすべてのメソッドにRDoc形式のコメントを追加します。このコメントは開発者にとって役立つ情報となります。パブリックAPIにしたくないメソッドには`# :nodoc:`というコメントを追加します。
 
 コメントを付け終わったらプラグインのルートディレクトリに移動して以下を実行します。
 

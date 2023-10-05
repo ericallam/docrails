@@ -301,7 +301,7 @@ Active Record
 
      ```ruby
      User.where.not(name: "Jon", role: "admin")
-     # SELECT * FROM users WHERE NOT (name == 'Jon' AND role == 'admin')
+    # SELECT * FROM users WHERE NOT (name = 'Jon' AND role = 'admin')
      ```
 
 Active Storage

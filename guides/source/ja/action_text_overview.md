@@ -59,7 +59,7 @@ end
 または、新しいモデルを生成するときに以下のようにリッチテキストフィールドを追加します。
 
 ```bash
-bin/rails generate model Message content:rich_text
+$ bin/rails generate model Message content:rich_text
 ```
 
 NOTE: 自分の`messages`テーブルに`content`フィールドを追加する必要はありません。
@@ -82,6 +82,8 @@ NOTE: 自分の`messages`テーブルに`content`フィールドを追加する�
 <%= @message.content %>
 ```
 
+NOTE: `content`フィールドに添付されたリソースがある場合、自分のコンピュータに**libvips/libvips42**パッケージがローカルにインストールされていないと正しく表示されない可能性があります。インストール方法については、[libvipsのドキュメント][libvips_install]を参照してください。
+
 リッチテキストコンテンツをコントローラで受け取れるようにするには、参照される属性を許可するだけで済みます。
 
 ```ruby
@@ -94,6 +96,7 @@ end
 ```
 
 [`rich_text_area`]: https://api.rubyonrails.org/classes/ActionView/Helpers/FormHelper.html#method-i-rich_text_area
+[libvips_install]: https://www.libvips.org/install.html
 
 ## リッチテキストコンテンツをレンダリングする
 
@@ -106,7 +109,7 @@ end
 </div>
 ```
 
-この`.trix-content`クラスを持つ要素のスタイルは、Action Textエディタと同様に、[`trix`スタイルシート](https://raw.githubusercontent.com/basecamp/trix/master/dist/trix.css)によって設定されます。
+この`.trix-content`クラスを持つ要素のスタイルは、Action Textエディタと同様に、[`trix`スタイルシート](https://unpkg.com/trix/dist/trix.css)によって設定されます。
 
 独自のスタイルを提供するには、インストーラーが作成する`app/assets/stylesheets/actiontext.css`スタイルシートから`= require trix`行を削除してください。
 
@@ -172,11 +175,33 @@ end
 <span><%= image_tag user.avatar %> <%= user.name %></span>
 ```
 
+Action Textが`User`インスタンスを解決できない場合（レコードが削除されているなど）、デフォルトのフォールバックパーシャルがレンダリングされます。
+
+Railsでは、添付ファイルが見つからない場合のグローバルパーシャルを用意しています。このパーシャルはアプリケーションの`views/action_text/attachables/missing_attachable`にインストールされます。これを変更することでレンダリングされるHTMLを変更できます。
+
+添付ファイルがない見つからない場合にレンダリングするパーシャルを変更するには、以下のようにクラスレベルの`to_missing_attachable_partial_path`メソッドを定義します。
+
+```ruby
+class User < ApplicationRecord
+  def self.to_missing_attachable_partial_path
+    "users/missing_attachable"
+  end
+end
+```
+
+次にそのパーシャルを宣言します。
+
+```html+erb
+<%# app/views/users/missing_attachable.html.erb %>
+<span>Deleted user</span>
+```
+
 Action Textの`<action-text-attachment>`要素レンダリングと統合するには、クラスが以下の条件を満たさなければなりません。
 
-* `ActionText::Attachable`モジュールを`include`する
-* `#to_sgid(**options)`を実装する（[`GlobalID::Identification` concern][global-id])経由で利用可能）
-* （オプション）`#to_attachable_partial_path`を宣言する
+* `ActionText::Attachable`モジュールを`include`していること
+* `#to_sgid(**options)`を実装していること（[`GlobalID::Identification` concern][global-id])経由で利用可能）
+* （オプション）`#to_attachable_partial_path`を宣言していること
+* （オプション）レコードが見つからない場合のクラスレベルのメソッド`#to_missing_attachable_partial_path`を宣言していること
 
 デフォルトでは、`ActiveRecord::Base`のすべての子孫は[`GlobalID::Identification` concern][global-id]をミックスインするので、`ActionText::Attachable`と互換性があります。
 

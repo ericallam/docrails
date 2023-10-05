@@ -92,6 +92,8 @@ require "test_helper"
 
 ```ruby
 class ArticleTest < ActiveSupport::TestCase
+  # ...
+end
 ```
 
 `ArticleTest`クラスは`ActiveSupport::TestCase`を継承することによって、**テストケース**（test case）を１つ定義しています。これにより、`ActiveSupport::TestCase`のすべてのメソッドを`ArticleTest`で利用できます。これらのメソッドのいくつかについては後述します。
@@ -277,7 +279,7 @@ end
 ここまでにいくつかのアサーションをご紹介しましたが、これらはごく一部に過ぎません。アサーションこそは、テストの中心を担う重要な存在です。システムが計画通りに動作していることを実際に確認しているのはアサーションです。
 
 アサーションは非常に多くの種類が使えるようになっています。
-以下で紹介するのは、[`Minitest`](https://github.com/seattlerb/minitest)で使えるアサーションからの抜粋です。MinitestはRailsにデフォルトで組み込まれているテスティングライブラリです。`[msg]`パラメータは1個のオプション文字列メッセージであり、テストが失敗したときのメッセージをわかりやすくするにはここで指定します（必須ではありません）。
+以下で紹介するのは、[`Minitest`](https://github.com/minitest/minitest)で使えるアサーションからの抜粋です。MinitestはRailsにデフォルトで組み込まれているテスティングライブラリです。`[msg]`パラメータは1個のオプション文字列メッセージであり、テストが失敗したときのメッセージをわかりやすくするにはここで指定します（必須ではありません）。
 
 <!-- PDFの表示崩れを防ぐため、ここはリスト形式を維持する -->
 
@@ -401,6 +403,14 @@ end
 
 * `obj.predicate`はfalseであると主張する (例:`assert_not_predicate str, :empty?`)。
 
+**`assert_error_reported(class) { block }`**
+
+* 指定のエラークラスがブロック内で報告されたことを主張する（例: `assert_error_reported IOError { Rails.error.report(IOError.new("Oops")) }`）。
+
+**`assert_no_error_reported { block }`**
+
+* ブロック内でエラーが報告されないことを主張する（例: `assert_no_error_reported { perform_service }`）
+
 **`flunk( [msg] )`**
 
 * 必ず失敗すると主張する。これはテストが未完成であることを示すのに便利。
@@ -514,6 +524,12 @@ Finished tests in 0.009064s, 110.3266 tests/s, 110.3266 assertions/s.
 $ bin/rails test test/models/article_test.rb:6 # 特定のテストの特定行のみをテスト
 ```
 
+行を範囲指定することで、特定の範囲のテストを実行することも可能です。
+
+```bash
+$ bin/rails test test/models/article_test.rb:6-20 # 6行目から20行目までテストを実行
+```
+
 ディレクトリを指定すると、そのディレクトリ内のすべてのテストを実行できます。
 
 ```bash
@@ -529,6 +545,10 @@ Usage: rails test [options] [files or directories]
 You can run a single test by appending a line number to a filename:
 
     bin/rails test test/models/user_test.rb:27
+
+You can run multiple tests with in a line range by appending the line range to a filename:
+
+    bin/rails test test/models/user_test.rb:10-20
 
 You can run multiple files and directories at the same time:
 
@@ -553,6 +573,16 @@ Known extensions: rails, pride
     -c, --[no-]color                 Enable color in the output
     -p, --pride                      Pride. Show your testing pride!
 ```
+
+### テストをCIで実行する
+
+CI（Continuous Integration）環境ですべてのテストを実行するのに必要なコマンドは、以下の1つだけです。
+
+```bash
+$ bin/rails test
+```
+
+[システムテスト](#システムテスト)を利用している場合、動作が遅いため`bin/rails test`ではシステムテストを実行しません。システムテストを実行するには、`bin/rails test:system`を実行するCIステップを追加するか、最初のステップを`bin/rails test:all`に変更して、システムテストを含むすべてのテストを実行するようにします。
 
 並列テスト
 ----------------
@@ -778,9 +808,9 @@ ERBは、テンプレート内にRubyコードを埋め込むのに使われま�
 
 ```erb
 <% 1000.times do |n| %>
-user_<%= n %>:
-  username: <%= "user#{n}" %>
-  email: <%= "user#{n}@example.com" %>
+  user_<%= n %>:
+    username: <%= "user#{n}" %>
+    email: <%= "user#{n}@example.com" %>
 <% end %>
 ```
 
@@ -898,9 +928,52 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
 end
 ```
 
+[DockerのヘッドレスChrome][docker-selenium] などのリモートブラウザを使いたい場合は、`options`で`browser`にリモート`url`を追加する必要があります。
+
+```ruby
+require "test_helper"
+
+class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
+  url = ENV.fetch("SELENIUM_REMOTE_URL", nil)
+  options = if url
+    { browser: :remote, url: url }
+  else
+    { browser: :chrome }
+  end
+  driven_by :selenium, using: :headless_chrome, options: options
+end
+```
+
+これで、以下を実行すればリモートブラウザに接続されるはずです。
+
+```bash
+$ SELENIUM_REMOTE_URL=http://localhost:4444/wd/hub bin/rails test:system
+```
+
+テスト対象のアプリケーションがリモートでも動作している場合（Dockerコンテナなど）は、[リモートサーバーの呼び出し方法][capybara#setup]に関する追加情報をCapybaraに渡す必要があります。
+
+```ruby
+require "test_helper"
+
+class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
+  def setup
+    Capybara.server_host = "0.0.0.0" # すべてのインターフェイスにバインドする
+    Capybara.app_host = "http://#{IPSocket.getaddress(Socket.gethostname)}" if ENV["SELENIUM_REMOTE_URL"].present?
+    super
+  end
+  # ...
+end
+```
+
+これで、DockerコンテナとCIのどちらで動作していても、リモートブラウザとサーバに接続できるようになったはずです。
+
 Railsで提供されていないCapybara設定が必要な場合は、`application_system_test_case.rb`ファイルに設定を追加できます。
 
-追加設定については[Capybaraのドキュメント](https://github.com/teamcapybara/capybara#setup)を参照してください。
+追加設定については[Capybaraのドキュメント][capybara#setup]を参照してください。
+
+[docker-selenium]: https://github.com/SeleniumHQ/docker-selenium
+[call remote servers]: https://github.com/teamcapybara/capybara#calling-remote-servers
+[capybara#setup]: https://github.com/teamcapybara/capybara#setup
 
 ### スクリーンショットヘルパー
 
@@ -996,7 +1069,6 @@ end
 require "mobile_system_test_case"
 
 class PostsTest < MobileSystemTestCase
-
   test "visiting the index" do
     visit posts_url
     assert_selector "h1", text: "Posts"
@@ -1042,6 +1114,8 @@ end
 結合テストランナーについては[`ActionDispatch::Integration::Runner`](https://api.rubyonrails.org/classes/ActionDispatch/Integration/Runner.html)を参照してください。
 
 リクエストの実行については[`ActionDispatch::Integration::RequestHelpers`](https://api.rubyonrails.org/classes/ActionDispatch/Integration/RequestHelpers.html)にあるヘルパーを用いることにします。
+
+ファイルをアップロードする必要がある場合は、[`ActionDispatch::TestProcess::FixtureFile`](https://api.rubyonrails.org/classes/ActionDispatch/TestProcess/FixtureFile.html)を参照してください。
 
 セッションを改変する必要がある場合や、結合テストのステートを変更する必要がある場合は、[`ActionDispatch::Integration::Session`](https://api.rubyonrails.org/classes/ActionDispatch/Integration/Session.html)を参照してください。
 
@@ -1240,9 +1314,9 @@ HTTPリクエストに精通していれば、`get`がHTTPリクエストの一�
 
 NOTE: 機能テストによる検証では、そのリクエストがアクションで受け付けられるかどうかよりも結果を重視します。アクションが受け付けられるかどうかについては、リクエストテストの方が適切です。
 
-### XHR（AJAX）リクエストをテストする
+### XHR（Ajax）リクエストをテストする
 
-`get`、`post`、`patch`、`put`、`delete`メソッドで次のように`xhr: true`を指定することで、AJAXリクエストをテストできます。
+`get`、`post`、`patch`、`put`、`delete`メソッドで、次のように`xhr: true`を指定することでAjaxリクエストをテストできます。
 
 ```ruby
 test "ajax request" do
@@ -1265,14 +1339,14 @@ end
 これらのハッシュは、通常のHashオブジェクトと同様に文字列をキーとして値を参照できます。たとえば次のようにシンボル名による参照も可能です。
 
 ```ruby
-flash["gordon"]               flash[:gordon]
-session["shmession"]          session[:shmession]
-cookies["are_good_for_u"]     cookies[:are_good_for_u]
+flash["gordon"]               # flash[:gordon]も可
+session["shmession"]          # session[:shmession]も可
+cookies["are_good_for_u"]     # cookies[:are_good_for_u]も可
 ```
 
 ### 利用可能なインスタンス変数
 
-機能テストでは、1つのリクエストの完了ごとに以下の3つの専用インスタンス変数を使えます。
+機能テストの以下の3つの専用インスタンス変数は、**リクエストが完了した後で**使えるようになります。
 
 * `@controller` - リクエストを処理するコントローラ
 * `@request` - リクエストオブジェクト
@@ -1486,7 +1560,6 @@ end
 require "test_helper"
 
 class ProfileControllerTest < ActionDispatch::IntegrationTest
-
   test "should show profile" do
     # ヘルパーがどのコントローラテストケースでも再利用可能になっている
     sign_in_as users(:david)
@@ -1619,6 +1692,148 @@ assert_select_email do
 end
 ```
 
+ビューのパーシャルをテストする
+---------------------
+
+ パーシャル（partial template: 部分テンプレートとも）は、レンダリングプロセスを分割して管理しやすくする別の方法です。パーシャルを利用することで、コードの一部をテンプレートから別のファイルに抽出して再利用できるようになります。
+
+ビューのテストは、パーシャルが期待通りにコンテンツをレンダリングするかどうかをテストする機会を提供します。ビューのパーシャルのテストは`test/views/`に配置し、`ActionView::TestCase`を継承します。
+
+パーシャルをレンダリングするには、テンプレート内で行うのと同様に`render`を呼び出します。レンダリングしたコンテンツは、test環境やローカル環境の`#rendered`メソッドを通じて利用できるようになります。
+
+```ruby
+class ArticlePartialTest < ActionView::TestCase
+  test "renders a link to itself" do
+    article = Article.create! title: "Hello, world"
+
+    render "articles/article", article: article
+
+    assert_includes rendered, article.title
+  end
+end
+```
+
+`ActionView::TestCase`を継承するテストでは、[rails-dom-testing][] gemが提供する[`assert_select`](#ビューをテストする)などの[ビューベースの追加アサーション](#その他のビューベースのアサーション)も利用できるようになります。
+
+```ruby
+test "renders a link to itself" do
+  article = Article.create! title: "Hello, world"
+
+  render "articles/article", article: article
+
+  assert_select "a[href=?]", article_url(article), text: article.title
+end
+```
+
+`ActionView::TestCase`から継承したテストでは、`document_root_element`メソッドを宣言することで[rails-dom-testing][] gemと統合されます。このメソッドは、レンダリングされたコンテンツを[`Nokogiri::XML::Node``](https://www.rubydoc.info/github/sparklemotion/nokogiri/Nokogiri/XML/Node)のインスタンスとして返します。
+
+```ruby
+test "renders a link to itself" do
+  article = Article.create! title: "Hello, world"
+
+  render "articles/article", article: article
+  anchor = document_root_element.at("a")
+  url = article_url(article)
+
+  assert_equal article.name, anchor.text
+  assert_equal article_url(article), anchor["href"]
+end
+```
+
+アプリケーションでRuby3.0以上を利用している場合は、[Rubyのパターンマッチング](https://docs.ruby-lang.org/en/master/syntax/pattern_matching_rdoc.html)をサポートする[Nokogiri（1.14.0以上）](https://github.com/sparklemotion/nokogiri/releases/tag/v1.14.0)と[Minitest（5.18.0以上）](https://github.com/minitest/minitest/blob/v5.18.0/History.rdoc#5180--2023-03-04-)に依存するようになります。
+
+```ruby
+test "renders a link to itself" do
+  article = Article.create! title: "Hello, world"
+
+  render "articles/article", article: article
+  anchor = document_root_element.at("a")
+
+  assert_pattern do
+    anchor => { content: "Hello, world", attributes: [{ name: "href", value: url }] }
+  end
+end
+```
+
+[機能テストやシステムテスト](#機能テストとシステムテスト)で使われているのと同じ[Capybaraベースのアサーション](https://rubydoc.info/github/teamcapybara/capybara/master/Capybara/Minitest/Assertions)にアクセスしたい場合は、`ActionView::TestCase`を継承するベースクラスを以下のように定義することで`document_root_element`を`page`メソッドに変換できます。
+
+```ruby
+# test/view_partial_test_case.rb
+
+require "test_helper"
+require "capybara/minitest"
+
+class ViewPartialTestCase < ActionView::TestCase
+  include Capybara::Minitest::Assertions
+
+  def page
+    Capybara.string(document_root_element)
+  end
+end
+```
+
+```ruby
+# test/views/article_partial_test.rb
+
+require "view_partial_test_case"
+
+class ArticlePartialTest < ViewPartialTestCase
+  test "renders a link to itself" do
+    article = Article.create! title: "Hello, world"
+
+    render "articles/article", article: article
+
+    assert_link article.title, href: article_url(article)
+  end
+end
+```
+
+Action View 7.1以降の`#rendered`ヘルパーメソッドは、ビューパーシャルでレンダリングされたコンテンツを解析できるオブジェクトを返すようになります。
+
+`#rendered`メソッドが返す`String`コンテンツをオブジェクトに変換するには、`.register_parser`を呼び出してパーサーを定義します。`.register_parser :rss`を呼び出せば、`#rendered.rss`ヘルパーメソッドが定義されます。
+
+たとえば、レンダリングした[RSS コンテンツ][]を`#rendered.rss`で解析してオブジェクトにする場合は、以下のように`RSS::Parser.parse`呼び出しを登録します。
+
+```ruby
+register_parser :rss, -> rendered { RSS::Parser.parse(rendered) }
+
+test "renders RSS" do
+  article = Article.create!(title: "Hello, world")
+
+  render formats: :rss, partial: article
+
+  assert_equal "Hello, world", rendered.rss.items.last.title
+end
+```
+
+`ActionView::TestCase`には、デフォルトで以下のパーサーが定義されています。
+
+* `:html`: [`Nokogiri::XML::Node`](https://nokogiri.org/rdoc/Nokogiri/XML/Node.html)のインスタンスを返します
+* `:json`: [`ActiveSupport::HashWithIndifferentAccess`](https://api.rubyonrails.org/classes/ActiveSupport/HashWithIndifferentAccess.html)のインスタンスを返します
+
+```ruby
+test "renders HTML" do
+  article = Article.create!(title: "Hello, world")
+
+  render partial: "articles/article", locals: { article: article }
+
+  assert_pattern { rendered.html.at("main h1") => { content: "Hello, world" } }
+end
+```
+
+```ruby
+test "renders JSON" do
+  article = Article.create!(title: "Hello, world")
+
+  render formats: :json, partial: "articles/article", locals: { article: article }
+
+  assert_pattern { rendered.json => { title: "Hello, world" } }
+end
+```
+
+[rails-dom-testing]: https://github.com/rails/rails-dom-testing
+[RSS content]: https://www.rssboard.org/rss-specification
+
 ヘルパーをテストする
 ---------------
 
@@ -1720,9 +1935,89 @@ friend@example.comさん、こんにちは。
 どうぞよろしく!
 ```
 
-ここでメーラーのテスト作成方法の詳細部分についてご説明したいと思います。`config/environments/test.rb`の`ActionMailer::Base.delivery_method = :test`という行で送信モードをtestに設定しています。これにより、送信したメールが実際に配信されないようにできます。そうしないと、テスト中にユーザーにスパムメールを送りつけてしまうことになります。この設定で送信したメールは、`ActionMailer::Base.deliveries`という配列に追加されます。
+ここでメーラーのテスト作成方法の詳細部分について解説します。`config/environments/test.rb`の`ActionMailer::Base.delivery_method = :test`という行で送信モードをtestに設定しています。これにより、送信したメールが実際に配信されないようにできます。そうしないと、テスト中にユーザーにスパムメールを送りつけてしまうことになります。この設定で送信したメールは、`ActionMailer::Base.deliveries`という配列に追加されます。
 
 NOTE: この`ActionMailer::Base.deliveries`という配列は、`ActionMailer::TestCase`と`ActionDispatch::IntegrationTest`でのテストを除き、自動的にはリセットされません。それらのテストの外で配列をクリアしたい場合は、`ActionMailer::Base.deliveries.clear`で手動リセットできます。
+
+#### キューに登録されたメールをテストする
+
+`Assert_enqueued_email_with`アサーションを使えば、期待されるメーラーメソッドの引数やパラメータをすべて利用してメールがエンキュー（enqueue）されたことを確認できます。これにより、`deliver_later`メソッドでエンキューされたすべてのメールにマッチできるようになります。
+
+基本的なテストケースと同様に、メールを作成し、返されたオブジェクトを`email`変数に保存します。引数やパラメータを渡すテスト例をいくつか紹介します。
+
+以下の例は、メールが正しい引数でエンキューされたことを主張します。
+
+```ruby
+require "test_helper"
+
+class UserMailerTest < ActionMailer::TestCase
+  test "invite" do
+    # メールを作成し、今後さらにアサーションするために保存する
+    email = UserMailer.create_invite("me@example.com", "friend@example.com")
+
+    # 正しい引数でメールがエンキューされたことをテストする
+    assert_enqueued_email_with UserMailer, :create_invite, args: ["me@example.com", "friend@example.com"] do
+      email.deliver_later
+    end
+  end
+end
+```
+
+以下の例は、引数のハッシュを`args`として渡すことで、メーラーメソッドの正しい名前付き引数でメーラーがエンキューされたことを主張します。
+
+```ruby
+require "test_helper"
+
+class UserMailerTest < ActionMailer::TestCase
+  test "invite" do
+    # メールを作成し、今後さらにアサーションするために保存する
+    email = UserMailer.create_invite(from: "me@example.com", to: "friend@example.com")
+
+    # 正しい名前付き引数でメールがエンキューされたことをテストする
+    assert_enqueued_email_with UserMailer, :create_invite, args: [{ from: "me@example.com",
+                                                                    to: "friend@example.com" }] do
+      email.deliver_later
+    end
+  end
+end
+```
+
+以下の例は、パラメータ化されたメーラーが正しいパラメータと引数でエンキューされたことを主張します。メーラーのパラメータは`params`として、メーラーメソッドの引数は`args`として渡されます：
+
+```ruby
+require "test_helper"
+
+class UserMailerTest < ActionMailer::TestCase
+  test "invite" do
+    # メールを作成し、今後さらにアサーションするために保存する
+    email = UserMailer.with(all: "good").create_invite("me@example.com", "friend@example.com")
+
+    # パラメータと引数の正しいメーラーでメールがエンキューされたことをテストする
+    assert_enqueued_email_with UserMailer, :create_invite, params: { all: "good" },
+                                                           args: ["me@example.com", "friend@example.com"] do
+      email.deliver_later
+    end
+  end
+end
+```
+
+以下の例は、パラメータ化されたメーラーが正しいパラメータでエンキューされたかどうかをテストする別の方法です。
+
+```ruby
+require "test_helper"
+
+class UserMailerTest < ActionMailer::TestCase
+  test "invite" do
+    # メールを作成し、今後さらにアサーションするために保存する
+    email = UserMailer.with(to: "friend@example.com").create_invite
+
+    # パラメータの正しいメーラーでメールがエンキューされたことをテストする
+    assert_enqueued_email_with UserMailer.with(to: "friend@example.com"), :create_invite do
+      email.deliver_later
+    end
+  end
+end
+```
 
 ### 機能テストとシステムテスト
 
@@ -1759,8 +2054,9 @@ class UsersTest < ActionDispatch::SystemTestCase
 end
 ```
 
-NOTE: `assert_emails`メソッドは特定の配信方法に紐付けられておらず、`deliver_now`メソッドと`deliver_later`メソッドのどちらでメールを配信する場合にも利用できます。メールがキューに登録されたことを明示的なアサーションにしたい場合は、`assert_enqueued_emails`メソッドを利用できます。詳しくは[`ActionMailer::TestHelper`](https://api.rubyonrails.org/classes/ActionMailer/TestHelper.html) APIドキュメントを参照してください。
+NOTE: `assert_emails`メソッドは特定の配信方法に紐付けられておらず、`deliver_now`メソッドと`deliver_later`メソッドのどちらでメールを配信する場合にも利用できます。メールがキューに登録されたことを明示的なアサーションにしたい場合は、`assert_enqueued_email_with`メソッド（[上述の例を参照](#キューに登録されたメールをテストする)）か、`assert_enqueued_emails`メソッドを利用できます。詳しくは[`ActionMailer::TestHelper`][] APIドキュメントを参照してください。
 
+[`ActionMailer::TestHelper`]: https://api.rubyonrails.org/classes/ActionMailer/TestHelper.html
 ジョブをテストする
 ------------
 
@@ -1775,21 +2071,21 @@ require "test_helper"
 
 class BillingJobTest < ActiveJob::TestCase
   test "that account is charged" do
-    BillingJob.perform_now(account, product)
+    perform_enqueued_jobs do
+      BillingJob.perform_later(account, product)
+    end
     assert account.reload.charged_for?(product)
   end
 end
 ```
 
-このテストは、ジョブが期待どおり動作したというアサーションのみを行うかなりシンプルなものです。
-
-デフォルトでは`ActiveJob::TestCase`がキューアダプタを`:test`に設定してジョブがインラインで実行されるようにします。また、それまでに実行されキューイングされたジョブを各テスト前にすべてクリアして、各テストのスコープ内で既に実行されたジョブが存在しないというアサーションを安全に行えるようにします。
+このテストは非常にシンプルで、ジョブが期待通りに振る舞ったことだけを確認します。また、`perform_now`でジョブをインライン実行することも可能ですが、リトライが設定されている場合、ジョブによって発生した例外は無視されます。一方、`perform_enqueued_jobs`ではテストが失敗し、例外情報が表示されます。
 
 ### カスタムアサーションと他のコンポーネント内のジョブのテスト
 
 Active Jobには、テストをシンプルに書くためのカスタムアサーションが多数付属しています。利用できるアサーションの全リストについては、[`ActiveJob::TestHelper`](https://api.rubyonrails.org/classes/ActiveJob/TestHelper.html)のAPIドキュメントを参照してください。
 
-（コントローラなどでの）呼び出しのたびにジョブが正しくキューに登録または実行されているかをテストするのはよい方法です。こういうときこそActive Jobが提供するカスタムアサーションの出番です。以下はモデル内でのテストです。
+（コントローラなどでの）呼び出しのたびにジョブが正しくキューに登録または実行されているかをテストするのはよい方法です。こういうときこそActive Jobが提供するカスタムアサーションの出番です。以下はモデル内でジョブがキューに登録されたことを確かめるテストです。
 
 ```ruby
 require "test_helper"
@@ -1801,9 +2097,48 @@ class ProductTest < ActiveSupport::TestCase
     assert_enqueued_with(job: BillingJob) do
       product.charge(account)
     end
+    assert_not account.reload.charged_for?(product)
   end
 end
 ```
+
+デフォルトのアダプタである`:test`は、ジョブがキューに登録されたときには実行されません。ジョブを実行したいときは、以下のように明示的に指定する必要があります。
+
+```ruby
+require "test_helper"
+
+class ProductTest < ActiveSupport::TestCase
+  include ActiveJob::TestHelper
+
+  test "billing job scheduling" do
+    perform_enqueued_jobs(only: BillingJob) do
+      product.charge(account)
+    end
+    assert account.reload.charged_for?(product)
+  end
+end
+```
+
+これまで実行されてキューに登録されたジョブをすべてクリアしてからテストを実行するので、各テストのスコープ内ではすでに実行されているジョブはないと確実に想定できます。
+
+### 例外が発生することをテストする
+
+特にリトライが設定されている場合は、特定のケースでジョブが例外を発生することをテストするのが難しくなることもあります。`perform_enqueued_jobs`ヘルパーは、ジョブが例外を発生するとテストが失敗するので、例外の発生時にテストを成功させるには、以下のようにジョブの`perform`メソッドを直接呼び出すことになります。
+
+```ruby
+require "test_helper"
+
+class BillingJobTest < ActiveJob::TestCase
+  test "does not charge accounts with insufficient funds" do
+    assert_raises(InsufficientFundsError) do
+      BillingJob.new(empty_account, product).perform
+    end
+    refute account.reload.charged_for?(product)
+  end
+end
+```
+
+この方法はフレームワークの一部（引数のシリアライズなど）を回避するため、一般には推奨されていません。
 
 Action Cableをテストする
 --------------------
@@ -1988,7 +2323,7 @@ end
 
 Railsには、時間の影響を受けやすいコードが期待どおりに動作しているというアサーションに役立つ組み込みのヘルパーメソッドを提供しています。
 
-以下の例では[`travel_to`](https://api.rubyonrails.org/classes/ActiveSupport/Testing/TimeHelpers.html#method-i-travel_to)ヘルパーを使っています。
+以下の例では[`travel_to`][travel_to]ヘルパーを使っています。
 
 ```ruby
 # 登録後のユーザーは1か月分の特典が有効だとする
@@ -2001,4 +2336,7 @@ end
 assert_equal Date.new(2004, 10, 24), user.activation_date # この変更は`travel_to`ブロック内からしか見えない
 ```
 
-時間関連のヘルパーについて詳しくは、[`ActiveSupport::Testing::TimeHelpers`](https://api.rubyonrails.org/classes/ActiveSupport/Testing/TimeHelpers.html) APIドキュメントを参照してください。
+時間関連のヘルパーについて詳しくは、[`ActiveSupport::Testing::TimeHelpers`][time_helpers_api] APIドキュメントを参照してください。
+
+[travel_to]: https://api.rubyonrails.org/classes/ActiveSupport/Testing/TimeHelpers.html#method-i-travel_to
+[time_helpers_api]: https://api.rubyonrails.org/classes/ActiveSupport/Testing/TimeHelpers.html

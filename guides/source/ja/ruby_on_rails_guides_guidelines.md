@@ -96,6 +96,10 @@ http://api.rubyonrails.org/v5.1.0/classes/ActionDispatch/Response.html
 
 `edgeapi.rubyonrails.org`には手動でリンクしないでください。
 
+行の折返しについて
+---------------
+
+古いガイドの行を折り返すためだけの目的で再フォーマットしないでください。ただし、新しいセクションとガイドは80文字目で折り返す必要があります。
 
 APIドキュメントの書き方
 ----------------------------
@@ -112,11 +116,9 @@ APIドキュメントの書き方
 HTMLガイド
 -----------
 
-ガイドを生成する前に、システムに最新のBundlerがインストールされていることを確認してください。Bundlerの最新バージョンは[ここ][Bundler]で確認できます（日本語版更新時点のバージョンはv2.4.7です）。
+ガイドを生成する前に、システムに最新のBundlerがインストールされていることを確認してください。最新のBundlerをインストールするには`gem install bundler`コマンドを実行してください。
 
-[Bundler]: https://rubygems.org/gems/bundler
-
-最新のBundlerをインストールするには`gem install bundler`コマンドを実行してください。
+Bundlerを既にインストールしている場合は、`gem update bundler`で最新のBundlerに更新できます。
 
 ### 生成
 

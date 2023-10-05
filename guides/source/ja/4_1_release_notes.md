@@ -377,7 +377,7 @@ Active Record
 
 * enum属性を宣言する`ActiveRecord::Base#enum`が追加されました。enum属性はデータベースのintegerにマップされますが、名前でクエリできます。([Commit](https://github.com/rails/rails/commit/db41eb8a6ea88b854bf5cd11070ea4245e1639c5))
 
-* json値が書き込み時に型変換されます。これにより値がデータベースからの読み出し時と一貫します。([Pull Request](https://github.com/rails/rails/pull/12643))
+* JSON値が書き込み時に型変換されます。これにより値がデータベースからの読み出し時と一貫します。([Pull Request](https://github.com/rails/rails/pull/12643))
 
 * hstore値が書き込み時に型変換されます。これにより値がデータベースからの読み出し時と一致します。([Commit](https://github.com/rails/rails/commit/5ac2341fab689344991b2a4817bd2bc8b3edac9d))
 

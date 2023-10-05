@@ -125,18 +125,18 @@ pin "react", to: "https://ga.jspm.io/npm:react@17.0.2/index.js"
 
 ### npmパッケージをJavaScript CDN経由で利用する
 
-`importmap-rails`インストールの一部として追加される`./bin/importmap`コマンドを使って、import map内のnpmパッケージを`pin`、`unpin`、または更新できます。binstubではCDNとして[`JSPM.org`](https://jspm.org/)を利用しています。
+`importmap-rails`インストールの一部として追加される`bin/importmap`コマンドを使って、import map内のnpmパッケージを`pin`、`unpin`、または更新できます。binstubではCDNとして[`JSPM.org`](https://jspm.org/)を利用しています。
 
 このコマンドは以下のように動作します。
 
-```sh
-./bin/importmap pin react react-dom
+```bash
+$ bin/importmap pin react react-dom
 Pinning "react" to https://ga.jspm.io/npm:react@17.0.2/index.js
 Pinning "react-dom" to https://ga.jspm.io/npm:react-dom@17.0.2/index.js
 Pinning "object-assign" to https://ga.jspm.io/npm:object-assign@4.1.1/index.js
 Pinning "scheduler" to https://ga.jspm.io/npm:scheduler@0.20.2/index.js
 
-./bin/importmap json
+bin/importmap json
 
 {
   "imports": {
@@ -160,38 +160,38 @@ import ReactDOM from "react-dom"
 
 `pin`コマンドでは、以下のようにバージョンも指定できます。
 
-```sh
-./bin/importmap pin react@17.0.1
+```bash
+$ bin/importmap pin react@17.0.1
 Pinning "react" to https://ga.jspm.io/npm:react@17.0.1/index.js
 Pinning "object-assign" to https://ga.jspm.io/npm:object-assign@4.1.1/index.js
 ```
 
 `pin`したパッケージは、以下のように`unpin`で削除できます。
 
-```sh
-./bin/importmap unpin react
+```bash
+$ bin/importmap unpin react
 Unpinning "react"
 Unpinning "object-assign"
 ```
 
 production（デフォルト）とdevelopmentでビルドが分かれているパッケージでは、以下のように`--env`でパッケージの環境を制御できます。
 
-```sh
-./bin/importmap pin react --env development
+```bash
+$ bin/importmap pin react --env development
 Pinning "react" to https://ga.jspm.io/npm:react@17.0.2/dev.index.js
 Pinning "object-assign" to https://ga.jspm.io/npm:object-assign@4.1.1/index.js
 ```
 
 また、`pin`実行時に、サポートされている別のCDNプロバイダー（[`unpkg`](https://unpkg.com/)や[`jsdelivr`](https://www.jsdelivr.com/)など）も指定できます。デフォルトのCDNは[`jspm`](https://jspm.org/)です。
 
-```sh
-./bin/importmap pin react --from jsdelivr
+```bash
+$ bin/importmap pin react --from jsdelivr
 Pinning "react" to https://cdn.jsdelivr.net/npm/react@17.0.2/index.js
 ```
 
 ただし、`pin`をあるCDNプロバイダから別のプロバイダに切り替える場合、最初のプロバイダが追加した依存関係のうち、次のプロバイダで使われていないものを整理しなければならない場合があります。
 
-単に`./bin/importmap`を実行すると、すべてのオプションが表示されます。
+単に`bin/importmap`を実行すると、すべてのオプションが表示されます。
 
 なお、この`importmap`コマンドは、単に論理パッケージ名をCDN URLに解決するための便宜的なラッパーです。
 また、CDN URLを自分で調べて`pin`することも可能です。たとえば、ReactにSkypackを使いたい場合は、`config/importmap.rb`に以下を追加できます。
@@ -210,7 +210,9 @@ pin "react", to: "https://cdn.skypack.dev/react"
 # config/importmap.rb
 pin "@github/hotkey", to: "https://ga.jspm.io/npm:@github/hotkey@1.4.4/dist/index.js", preload: true
 pin "md5", to: "https://cdn.jsdelivr.net/npm/md5@2.3.0/md5.js"
+```
 
+```erb
 # app/views/layouts/application.html.erb
 <%= javascript_importmap_tags %>
 
@@ -827,10 +829,11 @@ Sprockets.register_preprocessor 'text/css', AddComment
 
 私たちは、さまざまなJavaScriptフレームワークやCSSのフレームワーク、拡張機能に対して万能なソリューションが存在しないことを認識しています。Railsのエコシステムには他にもさまざまなバンドルライブラリがあり、デフォルトのセットアップでは不十分な場合に頼りにできるはずです。
 
-### [jsbundling-rails](https://github.com/rails/jsbundling-rails)
+### jsbundling-rails
 
-`jsbundling-rails` gemは、`importmap-rails`方式の代わりにNode.jsに依存する形を取る代替手段です。以下のいずれかをJavaScriptのバンドルに利用できます。
+[`jsbundling-rails`](https://github.com/rails/jsbundling-rails) gemを使うと、`importmap-rails`方式の代わりに以下のいずれかをJavaScriptのバンドルに利用できるようになります。
 
+- [Bun](https://bun.sh)
 - [esbuild](https://esbuild.github.io/)
 - [rollup.js](https://rollupjs.org/)
 - [Webpack](https://webpack.js.org/)
@@ -839,17 +842,17 @@ Sprockets.register_preprocessor 'text/css', AddComment
 
 **`importmap-rails`の代わりに使うのがよい場合**: JavaScriptコードがトランスパイルに依存している場合（例: [Babel](https://babeljs.io/)、[TypeScript](https://www.typescriptlang.org/)、 React `JSX`フォーマット）は、`jsbundling-rails`が正しい方法となります。
 
-### [Webpacker/Shakapacker](webpacker.html)
+### Webpacker/Shakapacker
 
-Webpackerは、Rails 5および6のデフォルトのJavaScriptプリプロセッサ兼バンドラでした。現在は開発が終了しています。後継として[`shakapacker`](https://github.com/shakacode/shakapacker)が存在しますが、Railsチームやプロジェクトはメンテナンスしていません。
+[`Webpacker`](https://github.com/rails/webpacker)は、Rails 5および6のデフォルトのJavaScriptプリプロセッサ兼バンドラでした。現在は開発が終了しています。後継として[`shakapacker`](https://github.com/shakacode/shakapacker)が存在しますが、Railsチームやプロジェクトはメンテナンスしていません。
 
-このリストにある他のライブラリと異なり、`webpacker`/`shakapacker`はSprocketsから完全に独立していて、JavaScriptとCSSの両方のファイルを処理できます。詳しくは[Webpackerガイド](webpacker.html)を参照してください。
+このリストにある他のライブラリと異なり、`webpacker`/`shakapacker`はSprocketsから完全に独立していて、JavaScriptとCSSの両方のファイルを処理できます。
 
 NOTE: `jsbundling-rails`と`webpacker`/`shakapacker`の違いについては、[Webpackerとの比較](https://github.com/rails/jsbundling-rails/blob/main/docs/comparison_with_webpacker.md)ドキュメントをお読みください。
 
-### [cssbundling-rails](https://github.com/rails/cssbundling-rails)
+### cssbundling-rails
 
-`cssbundling-rails` gemは、以下のいずれかを利用するCSSをバンドルおよび処理して、アセットパイプライン経由でCSSを配信します。
+[`cssbundling-rails`](https://github.com/rails/cssbundling-rails) gemは、以下のいずれかを利用するCSSをバンドルおよび処理して、アセットパイプライン経由でCSSを配信します。
 
 - [Tailwind CSS](https://tailwindcss.com/)
 - [Bootstrap](https://getbootstrap.com/)
@@ -865,15 +868,15 @@ NOTE: `cssbundling-rails`はCSSの処理をNode.jsに依存しています。
 `dartsass-rails` gemと`tailwindcss-rails` gemは、それぞれTailwind CSSとDart Sassのスタンドアロン版実行ファイルを使うので、Node.jsに依存しません。
 JavaScriptを`importmap-rails`で処理し、CSSを`dartsass-rails`または`tailwindcss-rails`で処理する形にすれば、Node依存を完全に避けられるので、よりシンプルなソリューションとなります。
 
-### [dartsass-rails](https://github.com/rails/dartsass-rails)
+### dartsass-rails
 
-アプリケーションで [`Sass`](https://sass-lang.com/)を使いたい場合は、レガシーな`sassc-rails` gemの代わりにこの`dartsass-rails` gemが提供されています。
+アプリケーションで [`Sass`](https://sass-lang.com/)を使いたい場合は、レガシーな`sassc-rails` gemの代わりにこの[`dartsass-rails`](https://github.com/rails/dartsass-rails) gemが提供されています。
 `dartsass-rails` gemは、`sassc-rails` gemで使われていた[`LibSass`](https://sass-lang.com/blog/libsass-is-deprecated)（2020年に非推奨化）に代えて`Dart Sass`の実装を利用しています。
 
 この新しい`dartsass-rails` gemは`sassc-rails`とは異なり、`Sprockets`と直接統合されているわけではありません。インストールや移行の手順については、[dartsass-rails gem](https://github.com/rails/dartsass-rails)のドキュメントを参照してください。
 
 WARNING: 以前広く使われていた`sassc-rails` gemは、2020年に非推奨化されました。
 
-### [tailwindcss-rails](https://github.com/rails/tailwindcss-rails)
+### tailwindcss-rails
 
-`tailwindcss-rails` gemは、Tailwind CSS v3フレームワークの[スタンドアロン実行可能版](https://tailwindcss.com/blog/standalone-cli)をラップしています。新しいアプリケーションを開発する際に、`rails new`コマンドに `--css tailwind`を指定することで利用できます。development環境では、Tailwindの出力を自動的に生成するための`watch`プロセスが提供されます。production環境では、`assets:precompile`タスクにフックします。
+[`tailwindcss-rails`](https://github.com/rails/tailwindcss-rails) gemは、Tailwind CSS v3フレームワークの[スタンドアロン実行可能版](https://tailwindcss.com/blog/standalone-cli)をラップしています。新しいアプリケーションを開発する際に、`rails new`コマンドに `--css tailwind`を指定することで利用できます。development環境では、Tailwindの出力を自動的に生成するための`watch`プロセスが提供されます。production環境では、`assets:precompile`タスクにフックします。

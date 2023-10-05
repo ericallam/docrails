@@ -20,7 +20,7 @@
 
 INFO: 本ガイドでは、Railsアプリケーションの「自動読み込み」「再読み込み」「eager loading」について解説します
 
-通常のRubyプログラムのクラスでは、依存関係のあるプログラムを明示的に読み込む必要があります。たとえば、以下のコントローラでは`ApplicationController`クラスや`Post`クラスを用いており、通常、それらを呼び出すには`require`する必要があります。
+通常のRubyプログラムでは、使いたいクラスやモジュールを定義したファイルを明示的に読み込みます。たとえば、以下のコントローラでは`ApplicationController`クラスや`Post`クラスを参照しており、通常はこれらに対して`require`呼び出しを行います。
 
 ```ruby
 # Railsではこのように書かないこと
@@ -35,7 +35,7 @@ class PostsController < ApplicationController
 end
 ```
 
-Railsアプリケーションでは上のようなことはしません。アプリケーションのクラスやモジュールはどこででも利用できます。
+Railsアプリケーションでは上のようなことはしません。アプリケーションのクラスやモジュールは、`require`呼び出しを行なわずに、どこでも利用できます。
 
 ```ruby
 class PostsController < ApplicationController
@@ -45,9 +45,9 @@ class PostsController < ApplicationController
 end
 ```
 
-通常のRailsアプリケーションで`require`呼び出しを行うのは、`lib`ディレクトリにあるものや、Ruby標準ライブラリ、Ruby gemなどを読み込むときだけです。そのため、これらのような自動読み込みパスに属さないものについてはすべて後述します。
+Railsは、必要に応じてクラスやモジュールを開発者の代わりに**自動読み込み**（autoload）します。これが可能になるのは、Railsがセットアップするいくつかの[Zeitwerk](https://github.com/fxn/zeitwerk)ローダーのおかげです。これらのローダーは、自動読み込み、再読み込み、eager loadingを提供します。
 
-Railsではこの機能を提供するため、いくつもの[Zeitwerk](https://github.com/fxn/zeitwerk)ローダーを開発者の代わりに管理しています。
+ただし、これらのローダーはそれ以外のものを一切管理しません。特に、Ruby標準ライブラリやgemの依存関係、Railsコンポーネント自体、さらには（デフォルトで）アプリケーションの`lib`ディレクトリさえも管理しません。これらのコードは通常どおりに読み込む必要があります。
 
 プロジェクトの構造
 -----------------
@@ -56,11 +56,7 @@ Railsアプリケーションで使うファイル名は、そこで定義され
 
 たとえば、`app/helpers/users_helper.rb`ファイルでは`UsersHelper`を定義すべきですし、`app/controllers/admin/payments_controller.rb`では`Admin::PaymentsController`を定義すべきです。
 
-デフォルトのRailsは、ファイル名を`String#camelize`メソッドで活用するようZeitwerkを設定します。たとえば、`app/controllers/users_controller.rb`から以下のように`UsersController`という定数を定義します。
-
-```ruby
-"users_controller".camelize # => UsersController
-```
+デフォルトのRailsは、ファイル名を`String#camelize`メソッドで活用するようZeitwerkを設定します。たとえば、`"users_controller".camelize`は`UsersController`を返すので、`app/controllers/users_controller.rb`では`UsersController`という定数が定義されることが期待されます。
 
 このような活用形をカスタマイズする方法については、本ガイドの「[活用形をカスタマイズする](#活用形をカスタマイズする)」で後述します。
 
@@ -103,6 +99,49 @@ WARNING: `ActiveSupport::Dependencies.autoload_paths`はくれぐれも改変し
 WARNING: アプリケーションの起動中は、自動読み込みパス内のコードは自動で読み込まれません（特に`config/initializers/*.rb`の中）。正しい方法については、後述の[アプリケーション起動時の自動読み込み](#アプリケーション起動時の自動読み込み)を参照してください。
 
 自動読み込みパスは、`Rails.autoloaders.main`オートローダーによって管理されます。
+
+`config.autoload_lib(ignore:)`
+----------------------------
+
+デフォルトでは、`lib`ディレクトリはアプリケーションやエンジンの自動読み込みパスに含まれません。
+
+設定メソッド`config.autoload_lib`は、`lib`ディレクトリを`config.autoload_paths`と`config.eager_load_paths`に追加します。このメソッドは`config/application.rb`または`config/environments/*.rb`から呼び出される必要があり、エンジンでは利用できません。
+
+通常、`lib`ディレクトリには、オートローダーによって管理されるべきでないサブディレクトリが含まれています。そのため、たとえば以下のように`ignore`キーワード引数に`lib`からの相対パスで指定してください。
+
+```ruby
+config.autoload_lib(ignore: %w(assets tasks))
+```
+
+このようにする理由は、`assets`ディレクトリと`tasks`ディレクトリは通常のRubyコードで`lib`ディレクトリを共有していますが、それらのディレクトリの内容は自動読み込みやeager loadingのためのものではないからです。
+
+この`ignore`リストには、`lib`のサブディレクトリのうち、拡張子が`.rb`のファイルを含まないサブディレクトリや、自動読み込みもeager loadもすべきでないサブディレクトリを以下のようにすべて含めておくべきです。
+
+```ruby
+config.autoload_lib(ignore: %w(assets tasks templates generators middleware))
+```
+
+`config.autoload_lib`はRails 7.1より前では利用できませんが、アプリケーションがZeitwerkを利用している限り、以下のように引き続きエミュレーションできます。
+
+```ruby
+# config/application.rb
+module MyApp
+  class Application < Rails::Application
+    lib = root.join("lib")
+
+    config.autoload_paths << lib
+    config.eager_load_paths << lib
+
+    Rails.autoloaders.main.ignore(
+      lib.join("assets"),
+      lib.join("tasks"),
+      lib.join("generators")
+    )
+
+    # ...
+  end
+end
+```
 
 `config.autoload_once_paths`
 --------------------------
@@ -159,6 +198,35 @@ INFO: 技術的には、`once`オートローダーによって管理される�
 
 `autoload_once_paths`は、`Rails.autoloaders.once`で管理されます。
 
+`config.autoload_lib_once(ignore:)`
+---------------------------------
+
+`config.autoload_lib_once`メソッドは、`config.autoload_lib`と似ていますが、`lib`を`config.autoload_once_paths`に追加する点が異なります。このメソッドは、`config/application.rb`または`config/environments/*.rb`から呼び出す必要があります。エンジンでは利用できません。
+
+`config.autoload_lib_once`を呼び出すことで、`lib`内のクラスやモジュールが自動的に読み込まれます。アプリケーションの初期化時でも再読み込みは行われません。
+
+`config.autoload_lib_once`は7.1以前では利用できませんが、アプリケーションがZeitwerkを使用している限り、エミュレーションは可能です。
+
+```ruby
+# config/application.rb
+module MyApp
+  class Application < Rails::Application
+    lib = root.join("lib")
+
+    config.autoload_once_paths << lib
+    config.eager_load_paths << lib
+
+    Rails.autoloaders.once.ignore(
+      lib.join("assets"),
+      lib.join("tasks"),
+      lib.join("generators")
+    )
+
+    # ...
+  end
+end
+```
+
 `$LOAD_PATH{#load_path}`
 ----------
 
@@ -170,6 +238,8 @@ config.add_autoload_paths_to_load_path = false
 
 こうすることで探索が削減され、正当な`require`が少し速くなる可能性もあります。また、アプリケーションで[Bootsnap](https://github.com/Shopify/bootsnap)を使っている場合は、このライブラリが不要なインデックスを構築しなくても済むため、必要なメモリ使用量を節約できます。
 
+`lib`ディレクトリはこのフラグの影響を受けません。常に`$LOAD_PATH`に追加されます。
+
 再読み込み
 ---------
 
@@ -177,11 +247,11 @@ Railsアプリケーションのファイルが変更されると、クラスや
 
 正確に言うと、Webサーバーが実行中の状態でアプリケーションのファイルが変更されると、Railsは次のリクエストが処理される直前に、`main`オートローダが管理しているすべての定数をアンロードします。これによって、アプリケーションでリクエスト継続中に使われるクラスやモジュールが自動読み込みされるようになり、続いてファイルシステム上の現在の実装が反映されます。
 
-再読み込みは有効にも無効にもできます。この振る舞いを制御するのは[`config.cache_classes`][]設定です。これは`development`モードではデフォルトで`false`（再読み込みが有効）、`production`モードでは`true`（再読み込みが無効）になります。
+再読み込みは有効にも無効にもできます。この振る舞いを制御するのは[`config.enable_reloading`][]設定です。これは`development`モードではデフォルトで`false`（再読み込みが有効）、`production`モードでは`true`（再読み込みが無効）になります。
 
 デフォルトのRailsは、変更されたファイルをイベンテッドファイルモニタで検出しますが、自動読み込みパスを調べてファイル変更を検出することも可能です。これは、[`config.file_watcher`][]の設定で制御されます。
 
-Railsコンソールでは、 `config.cache_classes`の値にかかわらずファイルウォッチャーは動作しません（通常、コンソールセッションの最中に再読み込みが行われると混乱を招く可能性があるためです）。一般にコンソールセッションは、 個別のリクエストと同様に変化しない、一貫したアプリケーションクラスとモジュールのセットによって提供されることが望まれます。
+Railsコンソールでは、`config.enable_reloading`の値にかかわらずファイルウォッチャーは動作しません（通常、コンソールセッションの最中に再読み込みが行われると混乱を招く可能性があるためです）。一般にコンソールセッションは、 個別のリクエストと同様に変化しない、一貫したアプリケーションクラスとモジュールのセットによって提供されることが望まれます。
 
 ただし、コンソールで`reload!`を実行することで強制的に再読み込みできます。
 
@@ -197,7 +267,7 @@ irb(main):003:0> User.object_id
 
 上のように、`User`定数に保存されているクラスオブジェクトは、再読み込みすると異なるものに変わります。
 
-[`config.cache_classes`]: configuring.html#config-cache-classes
+[`config.enable_reloading`]: configuring.html#config-enable-reloading
 [`config.file_watcher`]: configuring.html#config-file-watcher
 
 ### 古くなったオブジェクトの再読み込み
@@ -234,7 +304,11 @@ end
 
 ただし、`main`オートローダが管理している自動読み込みパスからの自動読み込みはできません。これは、`config/initializers`にあるコードや、アプリケーションやエンジンのイニシャライズについても同様です。
 
-その理由は、イニシャライザはアプリケーション起動時に1度しか実行されないためです。サーバーを再起動すれば、新しいプロセスで再度実行されますが、再読み込みはサーバーを再起動しないので、イニシャライザは実行されません。主な2つのユースケースを見てみましょう。
+イニシャライザーは、アプリケーションの起動時に一度だけ実行されます。再読み込み時に再度実行されることはありません。もしイニシャライザがリロード可能なクラスやモジュールを使用していた場合、それらに対する編集はその初期コードに反映されないため、古くさくなってしまいます。したがって、初期化時にリロード可能な定数を参照することは禁止されています。
+
+その理由は、イニシャライザはアプリケーション起動時に1度しか実行されないためです。再読み込み時に再実行されることはありません。イニシャライザが再読み込み可能なクラスやモジュールを利用している場合、それらを編集しても初期コードに反映されないため、古くなってしまいます。この理由により、初期化時に再読み込み可能な定数を参照することは禁止されています。
+
+では、代わりにどうすればいいのか見てみましょう。
 
 ### ユースケース1: 起動中に、再読み込み可能なコードを読み込む
 
@@ -351,75 +425,91 @@ eager loading中に、Railsは`Zeitwerk::Loader.eager_load_all`を呼び出し�
 STI（単一テーブル継承）
 ------------------------
 
-単一テーブル継承機能は、lazy loading（遅延読み込み）との相性があまりよくありません。一般に単一テーブル継承のAPIが正しく動作するには、STI階層を正しく列挙できる必要があるためです。lazy loadingでは、クラスが参照されるまでクラス読み込みは遅延されます。まだ参照されていないものは列挙できないのです。
+単一テーブル継承機能は、lazy loading（遅延読み込み）との相性があまりよくありません。Active Recordが正しく動作するには、STI階層を正しく認識する必要がありますが、正確にはlazy loadingが行われるときにクラスはオンデマンドで読み込まれるのです。
 
-ある意味、アプリケーションは読み込みモードにかかわらずSTI階層をeager loadする必要があります。
+この根本的なミスマッチに対処するためには、STIをプリロードする必要があります。これを実現するオプションはいくつかありますが、それぞれトレードオフがあります。それらを見てみましょう。
 
-もちろん、アプリケーションが起動時にeager loadするのであれば目的は既に達成されます。そうでない場合、実際にはデータベース内の既存の型をインスタンス化すれば十分です。developmentモードやtestモードであれば普通はこれで問題ありません。これを行う方法の1つは、このモジュールを`lib`ディレクトリに配置することです。
+### オプション1: eager loadingを有効にする
+
+STIをプリロードする最も手軽な方法は、設定でeager loadingを有効にすることです。
 
 ```ruby
-module StiPreload
-  unless Rails.application.config.eager_load
-    extend ActiveSupport::Concern
+config.eager_load = true
+```
 
-    included do
-      cattr_accessor :preloaded, instance_accessor: false
-    end
+上の設定は、`config/environments/development.rb`と`config/environments/test.rb`で行います。
 
-    class_methods do
-      def descendants
-        preload_sti unless preloaded
-        super
-      end
+この方法はシンプルですが、起動時や再読み込みのたびにアプリケーション全体をeager loadingするので、コストがかかる可能性があります。しかし小規模なアプリケーションでは、このトレードオフの価値があるかもしれません。
 
-      # データベース内にあるすべての型を定数化する。
-      # その分ディスク容量が余分に必要だが、
-      # STIのAPIに配慮されていれば実際には問題ではない。
-      #
-      # store_full_sti_classがtrue（デフォルト）であることが前提
-      def preload_sti
-        types_in_db = \
-          base_class.
-            unscoped.
-            select(inheritance_column).
-            distinct.
-            pluck(inheritance_column).
-            compact
+### オプション2: 折りたたんだディレクトリをプリロードする
 
-        types_in_db.each do |type|
-          logger.debug("Preloading STI type #{type}")
-          type.constantize
-        end
+階層を定義するファイルを専用のディレクトリに置くことで、概念的にも意味のあるものになります。このディレクトリは名前空間を表すものではなく、STIをグループ化することだけが目的です。
 
-        self.preloaded = true
-      end
-    end
+```
+app/models/shapes/shape.rb
+app/models/shapes/circle.rb
+app/models/shapes/square.rb
+app/models/shapes/triangle.rb
+```
+
+この例では、`app/models/shapes/circle.rb`で定義するものを`Shapes::Circle`ではなく引き続き`Circle`にしたいとします。理由付けとしては、話を簡単にしたいという個人的な好みかもしれませんし、既存のコードベースのリファクタリングを避けたいからかもしれません。
+これは、Zeitwerkの[collapsing](https://github.com/fxn/zeitwerk#collapsing-directories)（折り畳み）機能を使えば可能です。
+
+```ruby
+# config/initializers/preload_stis.rb
+
+shapes = "#{Rails.root}/app/models/shapes"
+Rails.autoloaders.main.collapse(shapes) # 名前空間ではない
+
+unless Rails.application.config.eager_load
+  Rails.application.config.to_prepare do
+    Rails.autoloaders.main.eager_load_dir(shapes)
   end
 end
 ```
 
-続いて、プロジェクトのSTIルートクラスで`include`します。
+このオプションでは、たとえSTIが利用されていなくても、起動時にこれら少数のファイルをeager loadingおよび再読み込みします。ただし、アプリケーションによほど多くのSTIがない限り、測定可能なインパクトを与えることはありません。
+
+INFO: この`Zeitwerk::Loader#eager_load_dir`メソッドはZeitwerk 2.6.2で追加されました。それより前のバージョンでも、`app/models/shapes`ディレクトリをリストアップして、その内容に対して`require_dependency`を呼び出すことは可能です。
+
+WARNING: このSTIにモデルが追加・修正・削除された場合、再読み込みは期待通りに動作します。ただし、アプリケーションに別のSTI階層が新たに追加された場合は、イニシャライザを編集してサーバーを再起動する必要があります。
+
+### オプション3: 通常のディレクトリをプリロードする
+
+これはオプション2と似ていますが、ディレクトリが名前空間を表します。つまり、`app/models/shapes/circle.rb`は`Shapes::Circle`を定義することが期待されます。
+
+オプション3のイニシャライザは、折り畳み（collapsing）の設定がない点を除けば同じです。
 
 ```ruby
-# app/models/shape.rb
-require "sti_preload"
+# config/initializers/preload_stis.rb
 
-class Shape < ApplicationRecord
-  include StiPreload # rootクラスにのみ存在する
+unless Rails.application.config.eager_load
+  Rails.application.config.to_prepare do
+    Rails.autoloaders.main.eager_load_dir("#{Rails.root}/app/models/shapes")
+  end
 end
 ```
 
+トレードオフもオプション2と同じです。
+
+### オプション4: データベースから型をプリロードする
+
+このオプションではファイルの配置を変更する必要はまったくありません。代わりにデータベースを使います。
+
 ```ruby
-# app/models/polygon.rb
-class Polygon < Shape
+# config/initializers/preload_stis.rb
+
+unless Rails.application.config.eager_load
+  Rails.application.config.to_prepare do
+    types = Shape.unscoped.select(:type).distinct.pluck(:type)
+    types.compact.each(&:constantize)
+  end
 end
 ```
 
-```ruby
-# app/models/triangle.rb
-class Triangle < Polygon
-end
-```
+WARNING: このSTIは、テーブルに存在しない型があっても正しく動作しますが、`subclasses`や`descendants`などのメソッドは存在しない型を返すことはありません。
+
+WARNING: このSTIにモデルが追加・修正・削除された場合、再読み込みは期待通りに動作します。ただし、アプリケーションに別のSTI階層が新たに追加された場合は、イニシャライザを編集してサーバーを再起動する必要があります。
 
 活用形をカスタマイズする
 -----------------------
@@ -470,6 +560,43 @@ end
 アプリケーションが`once`オートローダを使わない場合、上記のスニペットは`config/initializers`に保存できます。たとえば、Active Supportを使う場合は`config/initializers/inflections.rb`に書き、それ以外の場合は`config/initializers/zeitwerk.rb`に書くとよいでしょう。
 
 アプリケーションが`once`オートローダを使う場合は、この設定を別の場所に移動するか、`config/application.rb`のアプリケーションクラスの本体から読み込む必要があります。`once`オートローダーはブートプロセスの早い段階でインフレクタを利用するからです。
+
+カスタム名前空間
+-----------------
+
+これまで見てきたように、自動読み込みパスはトップレベルの名前空間である`Object`をを表します。
+
+`app/services`を例に考えてみましょう。このディレクトリはデフォルトでは生成されませんが、存在すればRailsは自動的に自動読み込みパスに追加します。
+
+`app/services/users/signup.rb`は、デフォルトでは`Users::Signup`を定義することになっています。しかしサブツリー全体を`Services`名前空間の下に置きたい場合はどうでしょうか。デフォルトの設定では、サブディレクトリ`app/services/services`を作成することで実現できます。
+
+しかし、好みにもよりますが、`app/services/services`という配置に違和感をぬぐえない人もいるでしょう。`app/services/users/signup.rb`というファイルがあれば、シンプルに`Services::Users::Signup`が定義されるようにしたいかもしれません。
+
+Zeitwerkは、このユースケースに対応するために[カスタムroot名前空間](https://github.com/fxn/zeitwerk#custom-root-namespaces)をサポートしており、`main`オートローダーを以下のようにカスタマイズすることで実現できます。
+
+```ruby
+# config/initializers/autoloading.rb
+
+# この名前空間は実際に存在する必要がある。
+#
+# この例では、モジュールをその場で定義している。
+# 他の場所でモジュールを作成し、その定義を通常のrequireで読み込むことも可能。
+# どの場合についても、`push_dir`はクラスまたはモジュールオブジェクトを期待している。
+module Services; end
+
+Rails.autoloaders.main.push_dir("#{Rails.root}/app/services", namespace: Services)
+```
+
+Rails 7.1より前のバージョンではこの機能をサポートしていませんでしたが、同じファイル内に以下のコードを追加して動かすことは可能です。
+
+```ruby
+# Rails 7.1より前のアプリケーション用追加コード
+app_services_dir = "#{Rails.root}/app/services" # 必ず文字列にすること
+ActiveSupport::Dependencies.autoload_paths.delete(app_services_dir)
+Rails.application.config.watchable_dirs[app_services_dir] = [:rb]
+```
+
+カスタム名前空間は`once`オートローダーにも対応しています。しかし、これはブートプロセスの初期段階で設定されるため、アプリケーションのイニシャライザでは設定できません。代わりに、たとえば`config/application.rb`の中に入れてください。
 
 自動読み込みとRailsエンジン
 -----------------------

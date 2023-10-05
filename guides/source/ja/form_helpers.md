@@ -237,6 +237,41 @@ HTML出力は以下のようになります。
 
 TIP: 通常、inputにはモデルの属性が反映されます。しかしこれは必須ではありません。フォームに他の情報を含めたい場合は、属性と同じようにフォームに含めれば`params[:article][:my_nifty_non_attribute_input]`でアクセスできるようになります。
 
+#### 複合主キーを使うフォーム
+
+複合主キー（composite primary key）を持つモデルでもフォームを作成できます。この場合、フォームの構文は同じですが、出力がわずかに異なります。
+
+複合キー`[:author_id, :id]`を持つ`@book`モデルオブジェクトの場合を例にします。
+
+```ruby
+@book = Book.find([2, 25])
+# => #<Book id: 25, title: "Some book", author_id: 2>
+```
+
+以下のフォームを作成します。
+
+```erb
+<%= form_with model: @book do |form| %>
+  <%= form.text_field :title %>
+  <%= form.submit %>
+<% end %>
+```
+
+出力は以下のようになります。
+
+```html
+<form action="/books/2_25" method="post" accept-charset="UTF-8" >
+  <input name="authenticity_token" type="hidden" value="..." />
+  <input type="text" name="book[title]" id="book_title" value="My book" />
+  <input type="submit" name="commit" value="Update Book" data-disable-with="Update Book">
+</form>
+```
+
+生成されたURLには、`author_id`と`id`がアンダースコア区切りの形で含まれていることにご注目ください。
+送信後、コントローラーはパラメータから[個別の主キーの値を抽出][]して、単一の主キーと同様にレコードを更新できます。
+
+[extract each primary key value]: action_controller_overview.html#複合キーのパラメータ
+
 #### `fields_for`ヘルパー
 
 [`fields_for`][]ヘルパーを使えば、`<form>`タグを実際に作成せずにフォームとオブジェクトを同様に紐付けできます。これは、同じフォームで別のモデルオブジェクトのフィールドをレンダリングしたいときに便利です。たとえば、`Person`モデルと、それに関連付けられる`ContactDetail`モデルがある場合は、以下のようにフォームを作成できます。
@@ -767,7 +802,7 @@ end
 
 ```ruby
 class LabellingFormBuilder < ActionView::Helpers::FormBuilder
-  def text_field(attribute, options={})
+  def text_field(attribute, options = {})
     label(attribute) + super
   end
 end
@@ -778,7 +813,7 @@ end
 ```ruby
 module ApplicationHelper
   def labeled_form_with(model: nil, scope: nil, url: nil, format: nil, **options, &block)
-    options.merge! builder: LabellingFormBuilder
+    options[:builder] = LabellingFormBuilder
     form_with model: model, scope: scope, url: url, format: format, **options, &block
   end
 end
@@ -812,7 +847,7 @@ HTMLフォームは原理的に、いかなる構造化データについても�
 このとき、`params`ハッシュの内容は以下のようになります。
 
 ```ruby
-{'person' => {'name' => 'Henry'}}
+{ 'person' => { 'name' => 'Henry' } }
 ```
 
 コントローラ内で`params[:person][:name]`でアクセスすると、送信された値を取り出せます。
@@ -826,7 +861,7 @@ HTMLフォームは原理的に、いかなる構造化データについても�
 上のコードによってできる`params`ハッシュは以下のようになります。
 
 ```ruby
-{'person' => {'address' => {'city' => 'New York'}}}
+{ 'person' => { 'address' => { 'city' => 'New York' } } }
 ```
 
 通常のRailsは、重複したパラメータ名を無視します。パラメータ名に空の角かっこ`[]`が含まれている場合、パラメータは配列の中にまとめられます。たとえば、複数の電話番号を入力できるようにしたい場合、フォームに以下を置くことができます。
@@ -902,7 +937,7 @@ WARNING: 配列パラメータは、`check_box`ヘルパーとの相性がよく
 }
 ```
 
-フォームビルダーの`person_form`で`fields_for`を呼び出したので、フォームのすべてのinputは`"person"`ハッシュに対応付けられます。`:index`オプションを指定したことで、addressの入力は `person[address][city]` ではなく、`person[address][#{address.id}][city]`に対応付けられました。このように、`params`ハッシュを処理する際にAddressのどのレコードを変更すべきかを決定できるようになります。
+フォームビルダーの`person_form`で`fields_for`を呼び出したので、フォームのすべてのinputは`"person"`ハッシュに対応付けられます。また、`index: address.id`を指定することで、各都市のinputの`name`属性を`person[address][city]`ではなく`person[address][#{address.id}][city]`としてレンダリングしています。このように、`params`ハッシュを処理する際に、どのAddressレコードを変更すべきかを決定可能になります。。
 
 `:index`オプションには他の数値や文字列も渡せます。また、`nil`も渡せます（この場合は配列パラメータが作成されます）。
 
@@ -1028,7 +1063,7 @@ end
 }
 ```
 
-`:addresses_attributes`ハッシュのキーはここでは重要ではありません。各アドレスのキーが重複しないことが必要です。
+この`:address_attributes`ハッシュのキーの実際の値は重要ではありませんが、アドレスごとに異なる整数の文字列である必要があります。
 
 関連付けられたオブジェクトが既に保存されている場合、`fields_for`メソッドは、保存されたレコードの`id`を持つ隠し入力を自動生成します。`fields_for`に`include_id: false`を渡すことでこの自動生成をオフにできます。
 
@@ -1093,7 +1128,7 @@ end
 ```ruby
 class Person < ApplicationRecord
   has_many :addresses
-  accepts_nested_attributes_for :addresses, reject_if: lambda {|attributes| attributes['kind'].blank?}
+  accepts_nested_attributes_for :addresses, reject_if: lambda { |attributes| attributes['kind'].blank? }
 end
 ```
 
@@ -1126,7 +1161,7 @@ end
 `form_tag`や`form_for`の利用について
 -------------------------------
 
-Rails 5.1で`form_with`が導入されるまでは、`form_with`の機能は[`form_tag`][]と[`form_for`][]に分かれていました。`form_tag`および`form_for`は、禁止ではないものの、利用は推奨されていません。これらのメソッドの利用方法については、[旧バージョンのガイド](https://railsguides.jp/v5.2/form_helpers.html)を参照してください。
+Rails 5.1で`form_with`が導入されるまでは、`form_with`の機能は[`form_tag`][]と[`form_for`][]に分かれていました。`form_tag`および`form_for`は、禁止ではないものの、利用は推奨されていません。これらのメソッドの利用方法については、[旧バージョンのガイド](https://railsguides.jp/?version=5.2)を参照してください。
 
 [`form_tag`]: https://api.rubyonrails.org/v5.2/classes/ActionView/Helpers/FormTagHelper.html#method-i-form_tag
 [`form_for`]: https://api.rubyonrails.org/v5.2/classes/ActionView/Helpers/FormHelper.html#method-i-form_for
