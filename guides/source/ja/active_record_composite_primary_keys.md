@@ -107,7 +107,7 @@ Product.where(Product.primary_key => [[1, "ABC98765"], [7, "ZZZ11111"]])
 [`where`]: https://api.rubyonrails.org/classes/ActiveRecord/QueryMethods.html#method-i-where
 [`find`]: https://api.rubyonrails.org/classes/ActiveRecord/FinderMethods.html#method-i-find
 
-[Active Record Querying]: active_record_querying.html#条件をidで指定する
+[Active Record Querying]: active_record_querying.html#条件を%60:id%60で指定する
 
 複合主キーを持つモデルの関連付け
 -------------------------------------------------------

@@ -16,7 +16,7 @@ Rails コア開発環境の構築方法
 
 ローカルマシンでRailsを開発用にセットアップしたくない場合は、Codespaces、VS Code Remote Plugin、またはrails-dev-boxを利用できます。これらのオプションについて詳しくは[こちら][setup]を参照してください。
 
-[setup]: contributing_to_ruby_on_rails.html#setting-up-a-development-environment
+[setup]: contributing_to_ruby_on_rails.html#development環境を構築する
 
 ローカル開発環境のセットアップ
 ------------

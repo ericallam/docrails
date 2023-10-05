@@ -2791,7 +2791,7 @@ class Supplier < ApplicationRecord
   has_one :account, ->(supplier) { where active: supplier.active? }
 end
 ```
-単一テーブル継承 （STI）
+単一テーブル継承（STI）
 ------------------------
 
 異なるモデル間でフィールドや振る舞いを共有したい場合があります。
@@ -2849,7 +2849,7 @@ SELECT "vehicles".* FROM "vehicles" WHERE "vehicles"."type" IN ('Car')
 Delegated Types
 ----------------
 
-[単一テーブル継承(STI)`](#single-table-inheritance-sti)は、サブクラスとその属性にほとんど違いがない場合に最適ですが、単一テーブルを作るために必要なすべてのサブクラスのすべての属性を含めることになります。
+[単一テーブル継承（STI）](#単一テーブル継承（STI）)は、サブクラスとその属性にほとんど違いがない場合に最適ですが、単一テーブルを作るために必要なすべてのサブクラスのすべての属性を含めることになります。
 
 この方法の欠点は、テーブルが肥大化することです。他のクラスでは使われないサブクラス固有の属性まで含まれてしまうからです。
 

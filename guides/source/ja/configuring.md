@@ -274,11 +274,11 @@ end
 
 #### `config.content_security_policy_nonce_directives`
 
-セキュリティガイドの[nonceを追加する](security.html#security.html)を参照
+セキュリティガイドの[nonceを追加する](security.html#nonceを追加する)を参照
 
 #### `config.content_security_policy_nonce_generator`
 
-セキュリティガイドの[nonceを追加する](security.html#security.html)を参照
+セキュリティガイドの[nonceを追加する](security.html#nonceを追加する)を参照
 
 #### `config.content_security_policy_report_only`
 
@@ -514,7 +514,7 @@ config.railties_order = [Blog::Engine, :main_app, :all]
 
 #### `config.read_encrypted_secrets`
 
-**非推奨**: 暗号化済みsecrets（秘密情報）ではなく、[credentials](/security.html#custom-credentials)を使うこと。
+**非推奨**: 暗号化済みsecrets（秘密情報）ではなく、[credentials](/security.html#独自のcredential)を使うこと。
 
 `true`に設定すると、暗号化済みsecretsを`config/secrets.yml.enc`から読み込もうとします。
 

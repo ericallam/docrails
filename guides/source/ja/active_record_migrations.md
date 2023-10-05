@@ -80,7 +80,7 @@ class ChangeProductsPrice < ActiveRecord::Migration[7.1]
 end
 ```
 
-INFO: 詳しくは[`reversible`](#using-reversible)を参照してください。
+INFO: 詳しくは[`reversible`](#%60reversible%60を使う)を参照してください。
 
 マイグレーションを生成する
 --------------------

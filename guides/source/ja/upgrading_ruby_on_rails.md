@@ -2313,7 +2313,7 @@ Rails 4.0では`ERB::Util#json_escape`のエイリアス`j`が廃止されまし
 
 #### キャッシュ
 
-Rails 3.xからRails 4.0への移行に伴い、キャッシュ用のメソッドが変更されました。[キャッシュの名前空間を変更](/v5.0/caching_with_rails.html#activesupport-cache-store)し、コールドキャッシュ（cold cache）を使って更新してください。
+Rails 3.xからRails 4.0への移行に伴い、キャッシュ用のメソッドが変更されました。[キャッシュの名前空間を変更](v5.0/caching_with_rails.html#activesupport-cache-store)し、コールドキャッシュ（cold cache）を使って更新してください。
 
 ### ヘルパーの読み込み順序
 

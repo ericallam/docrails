@@ -177,7 +177,7 @@ ENV['DATABASE_URL'] # => "trilogy://localhost/blog_development?pool=5"
 
 [`ActiveSupport::MessagePack`][]は、[`msgpack` gem][]と統合されたシリアライザです（[#47770][]）。`ActiveSupport::MessagePack`は、`msgpack`でサポートされている基本的なRubyの型に加えて、`Time`、 `ActiveSupport::TimeWithZone`、`ActiveSupport::HashWithIndifferentAccess`などの追加の型もシリアライズできます。`ActiveSupport::MessagePack`は、`JSON`や`Marshal`に比べてペイロードサイズを削減しパフォーマンスを向上させることが可能です。
 
-`ActiveSupport::MessagePack`は、以下のように[メッセージシリアライザ](/v7.1/configuring.html#config-active-support-message-serializer)として利用できます。
+`ActiveSupport::MessagePack`は、以下のように[メッセージシリアライザ](v7.1/configuring.html#config-active-support-message-serializer)として利用できます。
 
 ```ruby
 config.active_support.message_serializer = :message_pack
@@ -187,13 +187,13 @@ ActiveSupport::MessageEncryptor.new(secret, serializer: :message_pack)
 ActiveSupport::MessageVerifier.new(secret, serializer: :message_pack)
 ```
 
-以下のように[cookieシリアライザ](/v7.1/configuring.html#config-action-dispatch-cookies-serializer)としても利用できます（[#48103][]）。
+以下のように[cookieシリアライザ](v7.1/configuring.html#config-action-dispatch-cookies-serializer)としても利用できます（[#48103][]）。
 
 ```ruby
 config.action_dispatch.cookies_serializer = :message_pack
 ```
 
-以下のように[キャッシュシリアライザ](/v7.1/caching_with_rails.html#設定)としても利用できます（[#48104][]）。
+以下のように[キャッシュシリアライザ](v7.1/caching_with_rails.html#設定)としても利用できます（[#48104][]）。
 
 ```ruby
 config.cache_store = :file_store, "tmp/cache", { serializer: :message_pack }

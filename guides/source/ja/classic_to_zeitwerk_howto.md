@@ -26,7 +26,7 @@ Rails 6から、より優れた新しいオートロード方法がRailsに搭�
 `classic`から`zeitwerk`に切り替える理由
 ----------------------------------------
 
-`classic`オートローダーは非常に便利でしたが、取り扱いに少々注意を要したり時に混乱を招いたりする[問題](/v6.1/autoloading_and_reloading_constants_classic_mode.html#よくある落とし穴)が多数存在していました。Zeitwerkはこうした問題を解決するために開発されました（その他にもさまざまな[動機](https://github.com/fxn/zeitwerk#motivation)があります）。
+`classic`オートローダーは非常に便利でしたが、取り扱いに少々注意を要したり時に混乱を招いたりする[問題](autoloading_and_reloading_constants_classic_mode.html#よくある落とし穴)が多数存在していました。Zeitwerkはこうした問題を解決するために開発されました（その他にもさまざまな[動機](https://github.com/fxn/zeitwerk#motivation)があります）。
 
 `classic`モードは非推奨化されたので、Railsを6.xにアップグレードする際に`zeitwerk`モードに移行することを強く推奨します。
 

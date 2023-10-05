@@ -712,8 +712,8 @@ NOTE: これらのオプションは、すべてのバリデータでサポー�
 * [`:allow_blank`](#allow-blank): 属性がblankの場合にバリデーションをスキップする。
 * [`:message`](#message): カスタムのエラーメッセージを指定する。
 * [`:on`](#on): このバリデーションを有効にするコンテキストを指定する。
-* [`:strict`](#strict-validations): バリデーション失敗時にraiseする。
-* [`:if`と`:unless`](#conditional-validation): バリデーションする場合やしない場合の条件を指定する。
+* [`:strict`](#厳密なバリデーション): バリデーション失敗時にraiseする。
+* [`:if`と`:unless`](#条件付きバリデーション): バリデーションする場合やしない場合の条件を指定する。
 
 [`ActiveModel::Validations`]: https://api.rubyonrails.org/classes/ActiveModel/Validations.html
 
