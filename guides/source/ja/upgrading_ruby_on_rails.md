@@ -176,7 +176,7 @@ Rails.autoloaders.main.do_not_eager_load(config.root.join("lib"))
 config.cache_store = :mem_cache_store, "cache.example.com", { pool: false }
 ```
 
-詳しくは、[Rails のキャッシュ機構](/v7.1/caching_with_rails.html#コネクションプールのオプション)ガイドを参照してください。
+詳しくは、[Rails のキャッシュ機構](caching_with_rails.html#コネクションプールのオプション)ガイドを参照してください。
 
 ### `SQLite3Adapter`が文字列の`strict`モードで設定されるようになった
 
@@ -237,7 +237,7 @@ I18n.t("missing.key") # 7.0/7.1どちらもraiseしない
 ```
 
 または、`I18n.exception_handler`をカスタマイズすることも可能です。
-詳しくは[国際化（i18n）ガイド](/v7.1/18n.html#標準以外の例外ハンドラを使う)を参照してください。
+詳しくは[国際化（i18n）ガイド](18n.html#標準以外の例外ハンドラを使う)を参照してください。
 
 `AbstractController::Translation.raise_on_missing_translations`は削除されました。これはprivate APIですが、万一これに依存している場合は、`config.i18n.raise_on_missing_translations`またはカスタムの例外ハンドラに移行する必要があります。
 
