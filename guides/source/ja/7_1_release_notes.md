@@ -958,7 +958,10 @@ Ruby on Railsガイド
 
 ### 主な変更点
 
-特になし。
+訳注：以下のガイドが新たに追加されました。
+
+* [Active Record の複合主キー](active_record_composite_primary_keys.html)
+* [Rails アプリケーションのエラー通知](error_reporting.html)
 
 
 Credits
