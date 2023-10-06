@@ -237,7 +237,7 @@ I18n.t("missing.key") # 7.0/7.1どちらもraiseしない
 ```
 
 または、`I18n.exception_handler`をカスタマイズすることも可能です。
-詳しくは[国際化（i18n）ガイド](18n.html#標準以外の例外ハンドラを使う)を参照してください。
+詳しくは[国際化（i18n）ガイド](i18n.html#%E6%A8%99%E6%BA%96%E4%BB%A5%E5%A4%96%E3%81%AE%E4%BE%8B%E5%A4%96%E3%83%8F%E3%83%B3%E3%83%89%E3%83%A9%E3%82%92%E4%BD%BF%E3%81%86)を参照してください。
 
 `AbstractController::Translation.raise_on_missing_translations`は削除されました。これはprivate APIですが、万一これに依存している場合は、`config.i18n.raise_on_missing_translations`またはカスタムの例外ハンドラに移行する必要があります。
 
@@ -2313,7 +2313,7 @@ Rails 4.0では`ERB::Util#json_escape`のエイリアス`j`が廃止されまし
 
 #### キャッシュ
 
-Rails 3.xからRails 4.0への移行に伴い、キャッシュ用のメソッドが変更されました。[キャッシュの名前空間を変更](v5.0/caching_with_rails.html#activesupport-cache-store)し、コールドキャッシュ（cold cache）を使って更新してください。
+Rails 3.xからRails 4.0への移行に伴い、キャッシュ用のメソッドが変更されました。[キャッシュの名前空間を変更](caching_with_rails.html#activesupport-cache-store)し、コールドキャッシュ（cold cache）を使って更新してください。
 
 ### ヘルパーの読み込み順序
 
