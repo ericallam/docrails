@@ -44,9 +44,9 @@
       description: Active Recordを用いてデータベースの情報を暗号化する方法について解説します。
       work_in_progress: true
     -
-      name: Active Record のマルチプルデータベース
+      name: Active Record で複数のデータベース利用
       url: active_record_multiple_databases.html
-      description: Active Recordでマルチデータベースを利用する方法について解説します。
+      description: Active Recordで複数のデータベースを利用する方法について説明します。
       work_in_progress: false
     -
       name: Active Record の複合主キー
