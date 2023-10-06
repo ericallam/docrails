@@ -6,11 +6,11 @@ Rails 7.1 の注目ポイント:
 * デフォルトで Docker をサポート
 * 認証システム実装用のメソッドの追加
 * Active Record の非同期クエリの改善
-* MySQL互換のTrilogy用アダプタの導入
-* DBとアプリの両方で複合主キーをサポート
+* MySQL 互換の Trilogy 用アダプタの導入
+* DB とアプリの両方で複合主キーをサポート
 * 大量のジョブをエンキューする機能の追加
 * 自動読み込みを拡張できるメソッドの追加
-* JavaScriptランタイム「Bun」のサポート
+* JavaScript ランタイム「Bun」のサポート
 
 （訳注：[英語版のガイド](https://guides.rubyonrails.org/7_1_release_notes.html)も更新中のため、一時的に[公式ブログ](https://rubyonrails.org/2023/10/5/Rails-7-1-0-has-been-released)の各セクションを注目ポイントとしてまとめています）
 
