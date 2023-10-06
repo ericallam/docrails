@@ -805,7 +805,7 @@ Active Support
 *   `ActiveSupport::Notifications.unsubscribe`を変更（Regexなどのマルチパターンサブスクライバを正しく扱えるようになった）
     ([Pull Request](https://github.com/rails/rails/pull/32861))
 
-*   Zeitwerkを用いる新しいオートローディングメカニズムを追加
+*   Zeitwerkを用いる新しい自動読み込みメカニズムを追加
     ([Commit](https://github.com/rails/rails/commit/e53430fa9af239e21e11548499d814f540d421e5))
 
 *   `Array#including`と`Enumerable#including`を追加（コレクションを簡単に拡大できるようになった）
@@ -897,7 +897,7 @@ Ruby on Rails Guides
 *   Active Recordでのマルチプルデータベースガイドを追加
     ([Pull Request](https://github.com/rails/rails/pull/36389))
 
-*   定数オートローディングのトラブルシューティングに関するセクションを追加
+*   定数の自動読み込みのトラブルシューティングに関するセクションを追加
     ([Commit](https://github.com/rails/rails/commit/c03bba4f1f03bad7dc034af555b7f2b329cf76f5))
 
 *   Action Mailbox Basicsガイドを追加

@@ -843,9 +843,9 @@ config.hosts << /[a-z0-9-]+\.myapp\.com/ # 正規表現も利用可能
 
 その他の環境では、`config.hosts`はデフォルトで空になります。これは、Railsがホストをまったく検証しないことを意味します。production環境で検証を有効にしたい場合は、オプションで追加できます。
 
-### オートローディング
+### 自動読み込み
 
-Rails 6のデフォルト設定では、CRubyで`zeitwerk`のオートローディングモードが有効になります。
+Rails 6のデフォルト設定では、CRubyで`zeitwerk`の自動読み込みモードが有効になります。
 
 ```ruby
 # config/application.rb
