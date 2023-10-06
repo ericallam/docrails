@@ -1,7 +1,18 @@
 Ruby on Rails 7.1 リリースノート
 ===============================
 
-訳注：本ガイドでは2023年10月にリリースされたRails 7.1の主要な機能と、削除・非推奨化されたもの、主な変更点などについてまとめています。
+Rails 7.1 の注目ポイント:
+
+* デフォルトで Docker をサポート
+* 認証システム実装の改善
+* Active Record の非同期クエリの改善
+* MySQL互換のTrilogy用アダプタの導入
+* DBとアプリの両方で複合主キーをサポート
+* 大量のジョブをエンキューする機能の追加
+* 自動読み込みを拡張できるメソッドの追加
+* JavaScriptランタイム「Bun」のサポート
+
+（訳注：[英語版のガイド](https://guides.rubyonrails.org/7_1_release_notes.html)も更新中のため、一時的に[公式ブログ](https://rubyonrails.org/2023/10/5/Rails-7-1-0-has-been-released)の各セクションを注目ポイントとしてまとめています）
 
 --------------------------------------------------------------------------------
 
@@ -107,7 +118,7 @@ User.find_by_token_for(:password_reset, token) # => nil
 [`ActiveRecord::Base.generates_token_for`]: https://api.rubyonrails.org/v7.1/classes/ActiveRecord/TokenFor/ClassMethods.html#method-i-generates_token_for
 [#44189]: https://github.com/rails/rails/pull/44189
 
-### 複数のジョブを一度にエンキューする`perform_all_later`が追加
+### 大量のジョブを一度にエンキューする`perform_all_later`が追加
 
 Active Jobの`perform_all_later`メソッドは、複数のジョブを同時にエンキューするプロセスを効率化するために設計されています（[#46603][]）。この強力な追加機能により、コールバックをトリガーせずに効率的にジョブをエンキューできるようになります。これは特に複数ジョブを一括でエンキューする必要がある場合や、データがキューデータストアと何度も往復することによるオーバーヘッドを削減したい場合に便利です。
 
