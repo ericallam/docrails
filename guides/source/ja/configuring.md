@@ -587,7 +587,7 @@ config.session_store :my_custom_store
 
 #### `config.x`
 
-ネストしたカスタムコンフィグをアプリケーションのコンフィグオブジェクトに手軽に追加したい場合に利用できます。
+ネストしたカスタム設定をアプリケーションの設定オブジェクトに手軽に追加したい場合に利用できます。
 
 ```ruby
 config.x.payment_processing.schedule = :daily

@@ -209,7 +209,7 @@ ActiveSupport::Cache.lookup_store(:file_store, "tmp/cache", serializer: :message
 [#48103]: https://github.com/rails/rails/pull/48103
 [#48104]: https://github.com/rails/rails/pull/48104
 
-### 自動読み込みを拡張する`config.autoload_lib`と`config.autoload_lib_once`コンフィグが導入
+### 自動読み込みを拡張する`config.autoload_lib`と`config.autoload_lib_once`設定が導入
 
 `config.autoload_lib(ignore:)`という新しい設定メソッドが導入されました（[#48572][]）。このメソッドは、デフォルトでは自動読み込みパスに含まれていない`lib`ディレクトリをアプリケーションの自動読み込みパスに追加するために利用されます。また、新しいアプリケーションでは`config.autoload_lib(ignore: %w(assets tasks))`が生成されます。
 
@@ -631,7 +631,7 @@ Active Record
 
 * 非推奨化されていた`ActiveRecord.legacy_connection_handling`のサポートを削除（[#44827][]）。
 
-* 非推奨化されていた`ActiveRecord::Base`のコンフィグアクセサを削除（[96c9db1][]）。
+* 非推奨化されていた`ActiveRecord::Base`の設定アクセサを削除（[96c9db1][]）。
 
 * `configs_for`での`:include_replicas`のサポートを削除。今後は`:include_hidden`を使うこと（[#47536][]）。
 

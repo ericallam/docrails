@@ -87,7 +87,7 @@ Rails 7.1以降、オートローダーが管理するすべてのディレク�
 
 `$LOAD_PATH`のサイズが削減されたことで、`bootsnap`を使っていないアプリの `require`呼び出しが高速化され、その他のアプリの`bootsnap`キャッシュのサイズも削減されます。
 
-これらのパスを引き続き`$LOAD_PATH`に残しておきたい場合は、以下のコンフィグで一応可能です。
+これらのパスを引き続き`$LOAD_PATH`に残しておきたい場合は、以下の設定で一応可能です。
 
 ```ruby
 config.add_autoload_paths_to_load_path = true
@@ -148,7 +148,7 @@ config.autoload_lib(ignore: %w(assets tasks))
 config.autoload_lib(ignore: %w(assets tasks templates generators middleware))
 ```
 
-このコンフィグ行によって、`config.eager_load`が`true`の場合（`production`モードのデフォルト）には`lib`内の（無視されていない）コードもeager loadされるようになります。通常はこれが望ましい動作ですが、これまで`lib`をeager loadパスに追加しておらず、引き続き`lib`をeager loadしないようにしたい場合は、以下のコンフィグでオプトアウトしてください。
+この設定の行によって、`config.eager_load`が`true`の場合（`production`モードのデフォルト）には`lib`内の（無視されていない）コードもeager loadされるようになります。通常はこれが望ましい動作ですが、これまで`lib`をeager loadパスに追加しておらず、引き続き`lib`をeager loadしないようにしたい場合は、以下の設定でオプトアウトしてください。
 
 ```ruby
 Rails.autoloaders.main.do_not_eager_load(config.root.join("lib"))
