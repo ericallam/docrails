@@ -2791,7 +2791,7 @@ class Supplier < ApplicationRecord
   has_one :account, ->(supplier) { where active: supplier.active? }
 end
 ```
-単一テーブル継承（STI）
+単一テーブル継承 （STI）
 ------------------------
 
 異なるモデル間でフィールドや振る舞いを共有したい場合があります。
