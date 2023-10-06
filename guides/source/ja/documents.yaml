@@ -44,7 +44,7 @@
       description: Active Recordを用いてデータベースの情報を暗号化する方法について解説します。
       work_in_progress: true
     -
-      name: Active Record で複数のデータベース利用
+      name: Active Record の複数データベース対応
       url: active_record_multiple_databases.html
       description: Active Recordで複数のデータベースを利用する方法について説明します。
       work_in_progress: false
