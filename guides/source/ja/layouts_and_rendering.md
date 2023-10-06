@@ -278,6 +278,12 @@ render MyRenderable.new
 
 上のコードは、現在のビューコンテキストで指定のオブジェクト上の`render_in`を呼び出します。
 
+また、以下のように`render`に`:renderable`オプションを指定すると、オブジェクトをレンダリングできます。
+
+```ruby
+render renderable: MyRenderable.new
+```
+
 #### `render`のオプション
 
  [`render`][controller.render]メソッド呼び出しでは、一般に以下の6つのオプションを指定できます。
@@ -434,14 +440,14 @@ def index
   request.variant = determine_variant
 end
 
-private
+  private
+    def determine_variant
+      variant = nil
+      # 別テンプレートを決定するコード
+      variant = :mobile if session[:use_mobile]
 
-def determine_variant
-  variant = nil
-  # 別テンプレートを決定するコード
-  variant = :mobile if session[:use_mobile]
-
-  variant
+      variant
+    end
 end
 ```
 
@@ -492,7 +498,6 @@ class ProductsController < ApplicationController
     def products_layout
       @current_user.special? ? "special" : "products"
     end
-
 end
 ```
 
@@ -628,21 +633,21 @@ end
 ```
 
 `@book.special?`が`true`と評価されると、Railsはレンダリングを開始し、`@book`変数を`special_show`ビューに転送します。しかし`show`アクションのコードはそこで**止まらない**ことにご注意ください。`show`アクションのコードは最終行まで実行され、`regular_show`ビューのレンダリングを行おうとした時点でエラーが発生します。
-解決法はいたって単純で、`render`メソッドや`redirect`メソッドが1つのコード実行パス内で「1回だけ」呼び出されるようにすることです。こういうときには`and return`というとても便利な書き方があります。以下はこの方法で修正したコードです。
+
+解決法はいたって単純で、`render`メソッドや`redirect`メソッドが1つのコード実行パス内で「1回だけ」呼び出されるようにすることです。こういうときには単に`return`と書くのがポイントです。以下はこの方法で修正したコードです。
 
 ```ruby
 def show
   @book = Book.find(params[:id])
   if @book.special?
-    render action: "special_show" and return
+    render action: "special_show"
+    return
   end
   render action: "regular_show"
 end
 ```
 
-`&& return`ではなく`and return`を使うのがポイントです。Ruby言語の`&&`演算子の優先順位は`and`より高いので、`&& return`はこの文脈では正常に動作しません。
-
-なお、Rails組み込みのActionControllerが行なう暗黙のレンダリングは、`render`メソッドが呼び出されているかどうかを確認してから開始されます。従って、以下のコードは正常に動作します。
+なお、ActionControllerが行う暗黙のレンダリングは、`render`が呼ばれたかどうかを検出するので、以下は問題なく動作します。
 
 ```ruby
 def show
@@ -1082,10 +1087,10 @@ HTMLオプションをハッシュ形式で追加できます。
 レンダリングされるビュー内に置かれている上のコードは、その場所で`_menu.html.erb`という名前のファイルをレンダリングします。パーシャルファイル名の冒頭にはアンダースコア（`_`）が付いていることにご注意ください。パーシャルをコードから参照するときはアンダースコアを付けませんが、通常のビューファイルと区別するためにアンダースコアをパーシャルファイル名に付けます。これは他のフォルダの下にあるパーシャルを取り込む場合も同様です。
 
 ```html+erb
-<%= render "shared/menu" %>
+<%= render "application/menu" %>
 ```
 
-上のコードは、`app/views/shared/_menu.html.erb`パーシャルをその位置に取り込みます。
+ビューのパーシャルは、テンプレートやレイアウトと同じ[テンプレートの継承](#テンプレートの継承)に依存しているので、上のコードは`app/views/application/_menu.html.erb`パーシャルをその位置に取り込みます。
 
 [view.render]: https://api.rubyonrails.org/classes/ActionView/Helpers/RenderingHelper.html#method-i-render
 
@@ -1094,14 +1099,14 @@ HTMLオプションをハッシュ形式で追加できます。
 パーシャルの利用方法の1つは、パーシャルをサブルーチンと同様に扱うことです。表示の詳細をパーシャル化してビューから追い出し、コードを読みやすくします。たとえば以下のようなビューがあるとします。
 
 ```erb
-<%= render "shared/ad_banner" %>
+<%= render "application/ad_banner" %>
 
 <h1>Products</h1>
 
 <p>Here are a few of our fine products:</p>
-...
+<%# ... %>
 
-<%= render "shared/footer" %>
+<%= render "application/footer" %>
 ```
 
 上のコードの`_ad_banner.html.erb`パーシャルと`_footer.html.erb`パーシャルに含まれるコンテンツは、アプリケーションの多くのページと共有できます。こうすることで、そのセクションの詳細を気にせずにページの開発に集中できます。
@@ -1111,7 +1116,7 @@ HTMLオプションをハッシュ形式で追加できます。
 * `users/index.html.erb`
 
     ```html+erb
-    <%= render "shared/search_filters", search: @q do |form| %>
+    <%= render "application/search_filters", search: @q do |form| %>
       <p>
         Name contains: <%= form.text_field :name_contains %>
       </p>
@@ -1121,14 +1126,14 @@ HTMLオプションをハッシュ形式で追加できます。
 * `roles/index.html.erb`
 
     ```html+erb
-    <%= render "shared/search_filters", search: @q do |form| %>
+    <%= render "application/search_filters", search: @q do |form| %>
       <p>
         Title contains: <%= form.text_field :title_contains %>
       </p>
     <% end %>
     ```
 
-* `shared/_search_filters.html.erb`
+* `application/_search_filters.html.erb`
 
     ```html+erb
     <%= form_with model: search do |form| %>
@@ -1310,7 +1315,22 @@ TIP: すべてのページで共有したいコンテンツがある場合は、
 
 上の場合、`title`という名前のローカル変数に"Products Page"という値が含まれており、パーシャルからこの値にアクセスできるようになります。
 
-TIP: コレクションによって呼び出されるパーシャル内では、カウンタ変数も利用できます。このカウンタ変数は、パーシャル名の末尾に`_counter`を追加した名前になります。たとえば、パーシャル内で`@products`をレンダリングするときに、`_product.html.erb`で`product_counter`変数を参照できます。`product_counter`変数は、それを囲むビュー内でレンダリングされた回数を表します。
+#### カウンタ変数
+
+コレクションによって呼び出されるパーシャル内では、カウンタ変数も利用できます。このカウンタ変数は、パーシャル名の末尾に`_counter`を追加した名前になります。
+
+たとえば、パーシャル内で`@products`コレクションをレンダリングするときに、`_product.html.erb`で`product_counter`変数にアクセスできます。この変数は、パーシャルを囲むビューの中でレンダリングされた回数を示すもので、最初のレンダリングでは値が`0`から始まります。
+
+```erb
+# index.html.erb
+<%= render partial: "product", collection: @products %>
+```
+
+```erb
+# _product.html.erb
+<%= product_counter %> # 最初のproductは0、次のproductは1...
+```
+
 なお、これは`as:`オプションでパーシャル名を変更した場合にも該当します。たとえば上のコードのカウンタ変数は`item_counter`になります。
 
 #### スペーサーテンプレート

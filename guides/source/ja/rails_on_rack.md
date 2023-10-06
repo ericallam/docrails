@@ -97,9 +97,11 @@ $ bin/rails middleware
 作成直後のRailsアプリケーションでは、以下のように出力されるはずです。
 
 ```ruby
+use ActionDispatch::HostAuthorization
 use Rack::Sendfile
 use ActionDispatch::Static
 use ActionDispatch::Executor
+use ActionDispatch::ServerTiming
 use ActiveSupport::Cache::Strategy::LocalCache::Middleware
 use Rack::Runtime
 use Rack::MethodOverride
@@ -165,6 +167,24 @@ config.middleware.insert_after ActionDispatch::Executor, Lifo::Cache, page_cache
 config.middleware.swap ActionDispatch::ShowExceptions, Lifo::ShowExceptions
 ```
 
+#### ミドルウェアを移動する
+
+ミドルウェアスタック内の既存のミドルウェアを移動して順序を変更するには、`config.middleware.move_before`と`config.middleware.move_after`を使います。
+
+```ruby
+# config/application.rb
+
+# ActionDispatch::ShowExceptionsをLifo::ShowExceptionsの前に移動
+config.middleware.move_before Lifo::ShowExceptions, ActionDispatch::ShowExceptions
+```
+
+```ruby
+# config/application.rb
+
+# ActionDispatch::ShowExceptionsをLifo::ShowExceptionsの後に移動
+config.middleware.move_after Lifo::ShowExceptions, ActionDispatch::ShowExceptions
+```
+
 #### ミドルウェアを削除する
 
 アプリケーションの設定に以下のコードを追加します。
@@ -212,6 +232,10 @@ config.middleware.delete! ActionDispatch::Executor
 
 Action Controllerの機能の多くはミドルウェアとして実装されています。それぞれの役割について以下のリストで説明します。
 
+**`ActionDispatch::HostAuthorization`**
+
+* リクエストの送信先ホストを明示的に許可することで、DNSリバインディング攻撃から保護します。設定方法については、[設定ガイド](configuring.html#actiondispatch-hostauthorization)を参照してください。
+
 **`Rack::Sendfile`**
 
 * X-Sendfile headerを設定します。[`config.action_dispatch.x_sendfile_header`][]オプション経由で設定を変更できます。
@@ -231,6 +255,10 @@ Action Controllerの機能の多くはミドルウェアとして実装されて
 **`ActionDispatch::Executor`**
 
 * スレッドセーフのコードを開発中にリロードするときに使います。
+
+**`ActionDispatch::ServerTiming`**
+
+* リクエストのパフォーマンスメトリクスを含む [`Server-Timing`](https://developer.mozilla.org/ja/docs/Web/HTTP/Headers/Server-Timing)ヘッダーを設定します。
 
 **`ActiveSupport::Cache::Strategy::LocalCache::Middleware`**
 

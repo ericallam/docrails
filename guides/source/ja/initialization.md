@@ -296,7 +296,7 @@ end
 ```ruby
 module Rack
   class Server
-    def start &blk
+    def start(&blk)
       if options[:warn]
         $-w = true
       end
@@ -380,7 +380,6 @@ module Rack
       def build_app_from_string
         Rack::Builder.new_from_string(self.options[:builder])
       end
-
   end
 end
 ```
@@ -408,7 +407,7 @@ module Rack
 
     # ...
 
-    def self.new_from_string(builder_script, file="(rackup)")
+    def self.new_from_string(builder_script, file = "(rackup)")
       eval "Rack::Builder.new {\n" + builder_script + "\n}.to_app",
         TOPLEVEL_BINDING, file, 0
     end
@@ -553,7 +552,6 @@ module Rack
       def build_app_from_string
         Rack::Builder.new_from_string(self.options[:builder])
       end
-
   end
 end
 ```
@@ -595,7 +593,7 @@ module Rack
 
         events = options.delete(:Silent) ? ::Puma::Events.strings : ::Puma::Events.stdio
 
-        launcher = ::Puma::Launcher.new(conf, :events => events)
+        launcher = ::Puma::Launcher.new(conf, events: events)
 
         yield launcher if block_given?
         begin

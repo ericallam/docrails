@@ -33,12 +33,12 @@ require 'active_support'
 この例では、[`Hash#with_indifferent_access`][Hash#with_indifferent_access]の読み込み方を説明します。この拡張機能は、`Hash`を[`ActiveSupport::HashWithIndifferentAccess`][ActiveSupport::HashWithIndifferentAccess]に変換して、以下のように文字列とシンボルのどちらをキーに指定してもアクセスできるようにします。
 
 ```ruby
-{a: 1}.with_indifferent_access["a"] # => 1
+{ a: 1 }.with_indifferent_access["a"] # => 1
 ```
 
 本ガイドでは、コア拡張機能として定義されているすべてのメソッドについて、その定義ファイルの置き場所も示してあります。たとえば`with_indifferent_access` の場合、以下のようなメモを追加してあります。
 
-NOTE: 定義は[`active_support/core_ext/hash/indifferent_access.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/hash_with_indifferent_access.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/hash/indifferent_access.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/hash_with_indifferent_access.rb)にあります。
 
 つまり、以下のようにピンポイントで`require`を実行できます。
 
@@ -124,7 +124,7 @@ def set_conditional_cache_control!
 end
 ```
 
-NOTE: 定義は[`active_support/core_ext/object/blank.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/object/blank.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/object/blank.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/object/blank.rb)にあります。
 
 [Object#blank?]: https://api.rubyonrails.org/classes/Object.html#method-i-blank-3F
 [Object#present?]: https://api.rubyonrails.org/classes/Object.html#method-i-present-3F
@@ -137,7 +137,7 @@ NOTE: 定義は[`active_support/core_ext/object/blank.rb`](https://github.com/ra
 host = config[:host].presence || 'localhost'
 ```
 
-NOTE: 定義は[`active_support/core_ext/object/blank.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/object/blank.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/object/blank.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/object/blank.rb)にあります。
 
 [Object#presence]: https://api.rubyonrails.org/classes/Object.html#method-i-presence
 
@@ -165,7 +165,7 @@ Complex(1).duplicable?      # => true
 
 WARNING: どんなクラスでも、`dup`メソッドと`clone`メソッドを除去することでこれらのメソッドを無効にできます。このとき、これらのメソッドが実行されると例外が発生します。このような状態では、どんなオブジェクトについてもそれが複製可能かどうかを確認するには`rescue`を使う以外に方法はありません。`duplicable?`メソッドは、上のハードコードされたリストに依存しますが、その代わり`rescue`よりずっと高速です。実際のユースケースでハードコードされたリストで十分であることがわかっている場合にのみ、`duplicable?`をお使いください。
 
-NOTE: 定義は[`active_support/core_ext/object/duplicable.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/object/duplicable.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/object/duplicable.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/object/duplicable.rb)にあります。
 
 [Object#duplicable?]: https://api.rubyonrails.org/classes/Object.html#method-i-duplicable-3F
 
@@ -212,7 +212,7 @@ duplicate = number.deep_dup
 number.object_id == duplicate.object_id   # => true
 ```
 
-NOTE: 定義は[`active_support/core_ext/object/deep_dup.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/object/deep_dup.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/object/deep_dup.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/object/deep_dup.rb)にあります。
 
 [Object#deep_dup]: https://api.rubyonrails.org/classes/Object.html#method-i-deep_dup
 
@@ -256,7 +256,7 @@ end
 @number.try!(:nest) # NoMethodError: undefined method `nest' for 1:Integer
 ```
 
-NOTE: 定義は[`active_support/core_ext/object/try.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/object/try.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/object/try.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/object/try.rb)にあります。
 
 [Object#try]: https://api.rubyonrails.org/classes/Object.html#method-i-try
 [Object#try!]: https://api.rubyonrails.org/classes/Object.html#method-i-try-21
@@ -280,7 +280,7 @@ class Proc
 end
 ```
 
-NOTE: 定義は[`active_support/core_ext/kernel/singleton_class.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/kernel/singleton_class.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/kernel/singleton_class.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/kernel/singleton_class.rb)にあります。
 
 [Kernel#class_eval]: https://api.rubyonrails.org/classes/Kernel.html#method-i-class_eval
 
@@ -301,7 +301,7 @@ some_klass.acts_like?(:string)
 
 Railsには`Date`クラスや`Time`クラスと同様に振る舞うクラスがいくつかあり、この手法を使えます。
 
-NOTE: 定義は[`active_support/core_ext/object/acts_like.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/object/acts_like.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/object/acts_like.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/object/acts_like.rb)にあります。
 
 [Object#acts_like?]: https://api.rubyonrails.org/classes/Object.html#method-i-acts_like-3F
 
@@ -347,7 +347,7 @@ user_path(@user) # => "/users/357-john-smith"
 
 WARNING: コントローラ側では、`to_param`メソッドがモデル側で再定義されている可能性があることに常に注意しておく必要があります。上のようなリクエストを受信した場合、`params[:id]`の値が「357-john-smith」になるからです。
 
-NOTE: 定義は[`active_support/core_ext/object/to_param.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/object/to_param.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/object/to_param.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/object/to_param.rb)にあります。
 
 [Array#to_param]: https://api.rubyonrails.org/classes/Array.html#method-i-to_param
 [Object#to_param]: https://api.rubyonrails.org/classes/Object.html#method-i-to_param
@@ -389,17 +389,17 @@ account.to_query('company[name]')
 ハッシュも`to_query`に応答しますが、使われるシグネチャが異なります。メソッドに引数が渡されない場合、このメソッド呼び出しは、一連のキーバリューペアをソート済みの形で生成し、それぞれの値に対して`to_query(key)`を呼び出し、結果を「&」で連結します。
 
 ```ruby
-{c: 3, b: 2, a: 1}.to_query # => "a=1&b=2&c=3"
+{ c: 3, b: 2, a: 1 }.to_query # => "a=1&b=2&c=3"
 ```
 
 [`Hash#to_query`][Hash#to_query]メソッドは、それらのキーに対して名前空間をオプションで与えることもできます。
 
 ```ruby
-{id: 89, name: "John Smith"}.to_query('user')
+{ id: 89, name: "John Smith" }.to_query('user')
 # => "user%5Bid%5D=89&user%5Bname%5D=John+Smith"
 ```
 
-NOTE: 定義は[`active_support/core_ext/object/to_query.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/object/to_query.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/object/to_query.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/object/to_query.rb)にあります。
 
 [Hash#to_query]: https://api.rubyonrails.org/classes/Hash.html#method-i-to_query
 [Object#to_query]: https://api.rubyonrails.org/classes/Object.html#method-i-to_query
@@ -443,7 +443,7 @@ end
 
 TIP: `with_options`はメソッドをレシーバに転送しているので、呼び出しをネストすることもできます。各ネスティングレベルでは、自身の呼び出しに、継承したデフォルト呼び出しをマージします。
 
-NOTE: 定義は[`active_support/core_ext/object/with_options.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/object/with_options.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/object/with_options.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/object/with_options.rb)にあります。
 
 [Object#with_options]: https://api.rubyonrails.org/classes/Object.html#method-i-with_options
 
@@ -451,7 +451,7 @@ NOTE: 定義は[`active_support/core_ext/object/with_options.rb`](https://github
 
 Active Supportが提供する`to_json`メソッドの実装は、通常`json` gemがRubyオブジェクトに対して提供している`to_json`よりも優れています。その理由は、`Hash`や`OrderedHash`、`Process::Status`などのクラスでは、正しいJSON表現を提供するために特別な処理が必要になるためです。
 
-NOTE: 定義は[`active_support/core_ext/object/json.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/object/json.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/object/json.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/object/json.rb)にあります。
 
 ### インスタンス変数
 
@@ -471,7 +471,7 @@ end
 C.new(0, 1).instance_values # => {"x" => 0, "y" => 1}
 ```
 
-NOTE: 定義は[`active_support/core_ext/object/instance_variables.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/object/instance_variables.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/object/instance_variables.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/object/instance_variables.rb)にあります。
 
 [Object#instance_values]: https://api.rubyonrails.org/classes/Object.html#method-i-instance_values
 
@@ -489,7 +489,7 @@ end
 C.new(0, 1).instance_variable_names # => ["@x", "@y"]
 ```
 
-NOTE: 定義は[`active_support/core_ext/object/instance_variables.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/object/instance_variables.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/object/instance_variables.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/object/instance_variables.rb)にあります。
 
 [Object#instance_variable_names]: https://api.rubyonrails.org/classes/Object.html#method-i-instance_variable_names
 
@@ -510,7 +510,7 @@ suppress(ActiveRecord::StaleObjectError) do
 end
 ```
 
-NOTE: 定義は[`active_support/core_ext/kernel/reporting.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/kernel/reporting.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/kernel/reporting.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/kernel/reporting.rb)にあります。
 
 [Kernel#enable_warnings]: https://api.rubyonrails.org/classes/Kernel.html#method-i-enable_warnings
 [Kernel#silence_warnings]: https://api.rubyonrails.org/classes/Kernel.html#method-i-silence_warnings
@@ -523,13 +523,13 @@ NOTE: 定義は[`active_support/core_ext/kernel/reporting.rb`](https://github.co
 `in?`の例を示します。
 
 ```ruby
-1.in?([1,2])        # => true
-"lo".in?("hello")   # => true
-25.in?(30..50)      # => false
-1.in?(1)            # => ArgumentError
+1.in?([1, 2])        # => true
+"lo".in?("hello")    # => true
+25.in?(30..50)       # => false
+1.in?(1)             # => ArgumentError
 ```
 
-NOTE: 定義は[`active_support/core_ext/object/inclusion.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/object/inclusion.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/object/inclusion.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/object/inclusion.rb)にあります。
 
 [Object#in?]: https://api.rubyonrails.org/classes/Object.html#method-i-in-3F
 
@@ -550,7 +550,7 @@ class User < ApplicationRecord
 end
 ```
 
-NOTE: 定義は[`active_support/core_ext/module/aliasing.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/module/aliasing.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/module/aliasing.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/module/aliasing.rb)にあります。
 
 [Module#alias_attribute]: https://api.rubyonrails.org/classes/Module.html#method-i-alias_attribute
 
@@ -590,7 +590,7 @@ module ActionView
 end
 ```
 
-NOTE: 定義は[`active_support/core_ext/module/attr_internal.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/module/attr_internal.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/module/attr_internal.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/module/attr_internal.rb)にあります。
 
 [Module#attr_internal]: https://api.rubyonrails.org/classes/Module.html#method-i-attr_internal
 [Module#attr_internal_accessor]: https://api.rubyonrails.org/classes/Module.html#method-i-attr_internal_accessor
@@ -609,7 +609,7 @@ module ActiveStorage
 end
 ```
 
-NOTE: 定義は[`active_support/core_ext/module/attribute_accessors.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/module/attribute_accessors.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/module/attribute_accessors.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/module/attribute_accessors.rb)にあります。
 
 [Module#mattr_accessor]: https://api.rubyonrails.org/classes/Module.html#method-i-mattr_accessor
 [Module#mattr_reader]: https://api.rubyonrails.org/classes/Module.html#method-i-mattr_reader
@@ -638,7 +638,7 @@ M.module_parent       # => X::Y
 
 WARNING: `module_parent_name`はこの場合に`nil`を返します。
 
-NOTE: 定義は[`active_support/core_ext/module/introspection.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/module/introspection.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/module/introspection.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/module/introspection.rb)にあります。
 
 [Module#module_parent]: https://api.rubyonrails.org/classes/Module.html#method-i-module_parent
 
@@ -663,7 +663,7 @@ M.module_parent_name       # => "X::Y"
 
 WARNING: `module_parent`はこの場合`Object`を返します。
 
-NOTE: 定義は[`active_support/core_ext/module/introspection.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/module/introspection.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/module/introspection.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/module/introspection.rb)にあります。
 
 [Module#module_parent_name]: https://api.rubyonrails.org/classes/Module.html#method-i-module_parent_name
 
@@ -684,7 +684,7 @@ X::Y::Z.module_parents # => [X::Y, X, Object]
 M.module_parents       # => [X::Y, X, Object]
 ```
 
-NOTE: 定義は[`active_support/core_ext/module/introspection.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/module/introspection.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/module/introspection.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/module/introspection.rb)にあります。
 
 [Module#module_parents]: https://api.rubyonrails.org/classes/Module.html#method-i-module_parents
 
@@ -726,7 +726,7 @@ m.anonymous? # => false
 
 逆に無名モジュールは、定義上必ず到達不能になります。
 
-NOTE: 定義は[`active_support/core_ext/module/anonymous.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/module/anonymous.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/module/anonymous.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/module/anonymous.rb)にあります。
 
 [Module#anonymous?]: https://api.rubyonrails.org/classes/Module.html#method-i-anonymous-3F
 
@@ -822,7 +822,7 @@ delegate :date_of_birth, to: :profile, private: true
 
 委譲されたメソッドはデフォルトでpublicになりますが、`private: true`を渡すことで変更できます。
 
-NOTE: 定義は[`active_support/core_ext/module/delegation.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/module/delegation.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/module/delegation.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/module/delegation.rb)にあります。
 
 [Module#delegate]: https://api.rubyonrails.org/classes/Module.html#method-i-delegate
 
@@ -840,7 +840,7 @@ end
 
 オブジェクト内にある呼び出し可能なもの（インスタンス変数、メソッド、定数など）なら何でも対象にできます。対象のうち、publicなメソッドだけが委譲されます。
 
-NOTE: 定義は[`active_support/core_ext/module/delegation.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/module/delegation.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/module/delegation.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/module/delegation.rb)にあります。
 
 [Module#delegate_missing_to]: https://api.rubyonrails.org/classes/Module.html#method-i-delegate_missing_to
 
@@ -852,7 +852,7 @@ NOTE: 定義は[`active_support/core_ext/module/delegation.rb`](https://github.c
 
 （`delegate`を使っているなどの理由で）メソッド自身の置き換えを定義する必要がある場合は、[`silence_redefinition_of_method`][Module#silence_redefinition_of_method]を使うこともできます。
 
-NOTE: 定義は[`active_support/core_ext/module/redefine_method.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/module/redefine_method.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/module/redefine_method.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/module/redefine_method.rb)にあります。
 
 [Module#redefine_method]: https://api.rubyonrails.org/classes/Module.html#method-i-redefine_method
 [Module#silence_redefinition_of_method]: https://api.rubyonrails.org/classes/Module.html#method-i-silence_redefinition_of_method
@@ -942,7 +942,7 @@ A.new.x # NoMethodError
 
 インスタンス述語が不要な場合、`instance_predicate: false`を指定すれば定義されなくなります。
 
-NOTE: 定義は[`active_support/core_ext/class/attribute.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/class/attribute.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/class/attribute.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/class/attribute.rb)にあります。
 
 [Class#class_attribute]: https://api.rubyonrails.org/classes/Class.html#method-i-class_attribute
 
@@ -971,7 +971,9 @@ end
 ```ruby
 module ActionView
   class Base
-    cattr_accessor :field_error_proc, default: Proc.new { ... }
+    cattr_accessor :field_error_proc, default: Proc.new {
+      # ...
+    }
   end
 end
 ```
@@ -995,7 +997,7 @@ end
 
 `:instance_accessor`を`false`に設定すると、モデルの属性設定時にマスアサインメントを防止するのに便利です。
 
-NOTE: 定義は[`active_support/core_ext/module/attribute_accessors.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/class/attribute_accessors.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/module/attribute_accessors.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/class/attribute_accessors.rb)にあります。
 
 [Module#cattr_accessor]: https://api.rubyonrails.org/classes/Module.html#method-i-cattr_accessor
 [Module#cattr_reader]: https://api.rubyonrails.org/classes/Module.html#method-i-cattr_reader
@@ -1023,7 +1025,7 @@ C.subclasses # => [B, D]
 
 返されるクラスの順序は一定ではありません。
 
-NOTE: 定義は[`active_support/core_ext/class/subclasses.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/class/subclasses.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/class/subclasses.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/class/subclasses.rb)にあります。
 
 [Class#subclasses]: https://api.rubyonrails.org/classes/Class.html#method-i-subclasses
 
@@ -1047,7 +1049,7 @@ C.descendants # => [B, A, D]
 
 返されるクラスの順序は一定ではありません。
 
-NOTE: 定義は[`active_support/core_ext/class/subclasses.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/class/subclasses.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/class/subclasses.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/class/subclasses.rb)にあります。
 
 [Class#descendants]: https://api.rubyonrails.org/classes/Class.html#method-i-descendants
 
@@ -1125,7 +1127,7 @@ def raw(stringish)
 end
 ```
 
-NOTE: 定義は[`active_support/core_ext/string/output_safety.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/output_safety.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/string/output_safety.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/string/output_safety.rb)にあります。
 
 [`raw`]: https://api.rubyonrails.org/classes/ActionView/Helpers/OutputSafetyHelper.html#method-i-raw
 [String#html_safe]: https://api.rubyonrails.org/classes/String.html#method-i-html_safe
@@ -1156,7 +1158,7 @@ INFO: こうしたメソッドを実行すると、実際に変換が行われ�
 
 このメソッドには破壊的なバージョンの`String#remove!`もあります。
 
-NOTE: 定義は[`active_support/core_ext/string/filters.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/filters.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/string/filters.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/string/filters.rb)にあります。
 
 [String#remove]: https://api.rubyonrails.org/classes/String.html#method-i-remove
 
@@ -1172,7 +1174,7 @@ NOTE: 定義は[`active_support/core_ext/string/filters.rb`](https://github.com/
 
 このメソッドでは、ASCIIとUnicodeのホワイトスペースを扱えます。
 
-NOTE: 定義は[`active_support/core_ext/string/filters.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/filters.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/string/filters.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/string/filters.rb)にあります。
 
 [String#squish]: https://api.rubyonrails.org/classes/String.html#method-i-squish
 
@@ -1212,7 +1214,7 @@ NOTE: 定義は[`active_support/core_ext/string/filters.rb`](https://github.com/
 
 上の例では、"dear"という単語の途中で切り落とされそうになるところを、`:separator`によって防いでいます。
 
-NOTE: 定義は[`active_support/core_ext/string/filters.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/filters.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/string/filters.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/string/filters.rb)にあります。
 
 [String#truncate]: https://api.rubyonrails.org/classes/String.html#method-i-truncate
 
@@ -1233,7 +1235,7 @@ NOTE: 定義は[`active_support/core_ext/string/filters.rb`](https://github.com/
 # => "👍👍🖖"
 ```
 
-NOTE: 定義は[`active_support/core_ext/string/filters.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/filters.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/string/filters.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/string/filters.rb)にあります。
 
 [String#truncate_bytes]: https://api.rubyonrails.org/classes/String.html#method-i-truncate_bytes
 
@@ -1267,7 +1269,7 @@ NOTE: 定義は[`active_support/core_ext/string/filters.rb`](https://github.com/
 # => "Oh dear! Oh dear!..."
 ```
 
-NOTE: 定義は[`active_support/core_ext/string/filters.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/filters.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/string/filters.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/string/filters.rb)にあります。
 
 [String#truncate_words]: https://api.rubyonrails.org/classes/String.html#method-i-truncate_word
 
@@ -1280,7 +1282,7 @@ NOTE: 定義は[`active_support/core_ext/string/filters.rb`](https://github.com/
 "active".inquiry.inactive?       # => false
 ```
 
-NOTE: 定義は[`active_support/core_ext/string/inquiry.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/inquiry.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/string/inquiry.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/string/inquiry.rb)にあります。
 
 [String#inquiry]: https://api.rubyonrails.org/classes/String.html#method-i-inquiry
 
@@ -1293,7 +1295,7 @@ Active Supportでは、`String#start_with?`と`String#end_with?`を英語的に�
 "foo".ends_with?("o")   # => true
 ```
 
-NOTE: 定義は[`active_support/core_ext/string/starts_ends_with.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/starts_ends_with.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/string/starts_ends_with.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/string/starts_ends_with.rb)にあります。
 
 ### `strip_heredoc`
 
@@ -1317,7 +1319,7 @@ end
 
 技術的には、インデントが最も浅い行を探して、そのインデント分だけ行頭のホワイトスペースを全体から削除するという操作を行っています。
 
-NOTE: 定義は[`active_support/core_ext/string/strip.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/strip.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/string/strip.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/string/strip.rb)にあります。
 
 [String#strip_heredoc]: https://api.rubyonrails.org/classes/String.html#method-i-strip_heredoc
 
@@ -1356,7 +1358,7 @@ EOS
 
 [`indent!`][String#indent!]メソッドはインデントをその場で (破壊的に) 行います。
 
-NOTE: 定義は[`active_support/core_ext/string/indent.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/indent.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/string/indent.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/string/indent.rb)にあります。
 
 [String#indent!]: https://api.rubyonrails.org/classes/String.html#method-i-indent-21
 [String#indent]: https://api.rubyonrails.org/classes/String.html#method-i-indent
@@ -1374,7 +1376,7 @@ NOTE: 定義は[`active_support/core_ext/string/indent.rb`](https://github.com/r
 "hello".at(10) # => nil
 ```
 
-NOTE: 定義は[`active_support/core_ext/string/access.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/access.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/string/access.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/string/access.rb)にあります。
 
 [String#at]: https://api.rubyonrails.org/classes/String.html#method-i-at
 
@@ -1389,7 +1391,7 @@ NOTE: 定義は[`active_support/core_ext/string/access.rb`](https://github.com/r
 "hello".from(10) # => nil
 ```
 
-NOTE: 定義は[`active_support/core_ext/string/access.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/access.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/string/access.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/string/access.rb)にあります。
 
 [String#from]: https://api.rubyonrails.org/classes/String.html#method-i-from
 
@@ -1404,7 +1406,7 @@ NOTE: 定義は[`active_support/core_ext/string/access.rb`](https://github.com/r
 "hello".to(10) # => "hello"
 ```
 
-NOTE: 定義は[`active_support/core_ext/string/access.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/access.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/string/access.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/string/access.rb)にあります。
 
 [String#to]: https://api.rubyonrails.org/classes/String.html#method-i-to
 
@@ -1414,7 +1416,7 @@ NOTE: 定義は[`active_support/core_ext/string/access.rb`](https://github.com/r
 
 `str.first(n)`という呼び出しは、`n` > 0の場合は`str.to(n-1)`と等価です。`n` == 0の場合は空文字列を返します。
 
-NOTE: 定義は[`active_support/core_ext/string/access.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/access.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/string/access.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/string/access.rb)にあります。
 
 [String#first]: https://api.rubyonrails.org/classes/String.html#method-i-first
 
@@ -1424,7 +1426,7 @@ NOTE: 定義は[`active_support/core_ext/string/access.rb`](https://github.com/r
 
 `str.last(n)` という呼び出しは、`n` > 0の場合は`str.from(-n)`と等価です。`n` == 0の場合は空文字列を返します。
 
-NOTE: 定義は[`active_support/core_ext/string/access.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/access.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/string/access.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/string/access.rb)にあります。
 
 [String#last]: https://api.rubyonrails.org/classes/String.html#method-i-last
 
@@ -1460,7 +1462,7 @@ def undecorated_table_name(model_name)
 end
 ```
 
-NOTE: 定義は[`active_support/core_ext/string/inflections.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/inflections.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/string/inflections.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/string/inflections.rb)にあります。
 
 [String#pluralize]: https://api.rubyonrails.org/classes/String.html#method-i-pluralize
 
@@ -1485,7 +1487,7 @@ def derive_class_name
 end
 ```
 
-NOTE: 定義は[`active_support/core_ext/string/inflections.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/inflections.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/string/inflections.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/string/inflections.rb)にあります。
 
 [String#singularize]: https://api.rubyonrails.org/classes/String.html#method-i-singularize
 
@@ -1535,7 +1537,7 @@ end
 
 [`camelcase`][String#camelcase]は`camelize`のエイリアスです。
 
-NOTE: 定義は[`active_support/core_ext/string/inflections.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/inflections.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/string/inflections.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/string/inflections.rb)にあります。
 
 [String#camelcase]: https://api.rubyonrails.org/classes/String.html#method-i-camelcase
 [String#camelize]: https://api.rubyonrails.org/classes/String.html#method-i-camelize
@@ -1577,7 +1579,7 @@ end
 
 INFO: `underscore`メソッドの動作は、`camelize`メソッドと逆の動作と考えるとわかりやすいでしょう。ただし完全に逆の動作ではありません。たとえば、`"SSLError".underscore.camelize`を実行した結果は`"SslError"`になり、元に戻りません。
 
-NOTE: 定義は[`active_support/core_ext/string/inflections.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/inflections.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/string/inflections.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/string/inflections.rb)にあります。
 
 [String#underscore]: https://api.rubyonrails.org/classes/String.html#method-i-underscore
 
@@ -1592,7 +1594,7 @@ NOTE: 定義は[`active_support/core_ext/string/inflections.rb`](https://github.
 
 [`titlecase`][String#titlecase]メソッドは`titleize`のエイリアスです。
 
-NOTE: 定義は[`active_support/core_ext/string/inflections.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/inflections.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/string/inflections.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/string/inflections.rb)にあります。
 
 [String#titlecase]: https://api.rubyonrails.org/classes/String.html#method-i-titlecase
 [String#titleize]: https://api.rubyonrails.org/classes/String.html#method-i-titleize
@@ -1616,7 +1618,7 @@ def reformat_name(name)
 end
 ```
 
-NOTE: 定義は[`active_support/core_ext/string/inflections.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/inflections.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/string/inflections.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/string/inflections.rb)にあります。
 
 [String#dasherize]: https://api.rubyonrails.org/classes/String.html#method-i-dasherize
 
@@ -1646,7 +1648,7 @@ def counter_cache_column
 end
 ```
 
-NOTE: 定義は[`active_support/core_ext/string/inflections.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/inflections.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/string/inflections.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/string/inflections.rb)にあります。
 
 [String#demodulize]: https://api.rubyonrails.org/classes/String.html#method-i-demodulize
 
@@ -1660,7 +1662,7 @@ NOTE: 定義は[`active_support/core_ext/string/inflections.rb`](https://github.
 "Admin::Hotel::ReservationUtils".deconstantize # => "Admin::Hotel"
 ```
 
-NOTE: 定義は[`active_support/core_ext/string/inflections.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/inflections.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/string/inflections.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/string/inflections.rb)にあります。
 
 [String#deconstantize]: https://api.rubyonrails.org/classes/String.html#method-i-deconstantize
 
@@ -1687,7 +1689,7 @@ NOTE: 定義は[`active_support/core_ext/string/inflections.rb`](https://github.
 "Kurt Gödel".parameterize(separator: "_") # => "kurt_godel"
 ```
 
-NOTE: 定義は[`active_support/core_ext/string/inflections.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/inflections.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/string/inflections.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/string/inflections.rb)にあります。
 
 [String#parameterize]: https://api.rubyonrails.org/classes/String.html#method-i-parameterize
 
@@ -1703,7 +1705,7 @@ NOTE: 定義は[`active_support/core_ext/string/inflections.rb`](https://github.
 
 単純な場合であれば、モデル名に`tableize`を使うとモデルのテーブル名を得られます。実際のActive Recordの実装は、単に`tableize`を実行する場合よりも複雑です。Active Recordではクラス名に対して`demodulize`も行っており、返される文字列に影響する可能性のあるオプションもいくつかチェックしています。
 
-NOTE: 定義は[`active_support/core_ext/string/inflections.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/inflections.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/string/inflections.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/string/inflections.rb)にあります。
 
 [String#tableize]: https://api.rubyonrails.org/classes/String.html#method-i-tableize
 
@@ -1725,7 +1727,7 @@ NOTE: 定義は[`active_support/core_ext/string/inflections.rb`](https://github.
 
 `classify`が返すクラス名は文字列であることにご注意ください。得られた文字列に対して`constantize` (後述) を実行することで実際のクラスオブジェクトを得られます。
 
-NOTE: 定義は[`active_support/core_ext/string/inflections.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/inflections.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/string/inflections.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/string/inflections.rb)にあります。
 
 [String#classify]: https://api.rubyonrails.org/classes/String.html#method-i-classify
 
@@ -1770,7 +1772,7 @@ rescue NameError => e
 end
 ```
 
-NOTE: 定義は[`active_support/core_ext/string/inflections.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/inflections.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/string/inflections.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/string/inflections.rb)にあります。
 
 [String#constantize]: https://api.rubyonrails.org/classes/String.html#method-i-constantize
 
@@ -1819,7 +1821,7 @@ def full_message
 end
 ```
 
-NOTE: 定義は[`active_support/core_ext/string/inflections.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/inflections.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/string/inflections.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/string/inflections.rb)にあります。
 
 [String#humanize]: https://api.rubyonrails.org/classes/String.html#method-i-humanize
 
@@ -1846,9 +1848,35 @@ NOTE: 定義は[`active_support/core_ext/string/inflections.rb`](https://github.
 foreign_key = options[:foreign_key] || reflection.active_record.name.foreign_key
 ```
 
-NOTE: 定義は[`active_support/core_ext/string/inflections.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/inflections.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/string/inflections.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/string/inflections.rb)にあります。
 
 [String#foreign_key]: https://api.rubyonrails.org/classes/String.html#method-i-foreign_key
+
+#### `upcase_first`
+
+[`upcase_first`][String#upcase_first]メソッドはレシーバの冒頭の文字を大文字にします。
+
+```ruby
+"employee salary".upcase_first # => "Employee salary"
+"".upcase_first                # => ""
+```
+
+NOTE: 定義は`active_support/core_ext/string/inflections.rb`にあります。
+
+[String#upcase_first]: https://api.rubyonrails.org/classes/String.html#method-i-upcase_first
+
+#### `downcase_first`
+
+The method [`downcase_first`][String#downcase_first] converts the first letter of the receiver to lowercase:
+
+```ruby
+"If I had read Alice in Wonderland".downcase_first # => "if I had read Alice in Wonderland"
+"".downcase_first                                  # => ""
+```
+
+NOTE: Defined in `active_support/core_ext/string/inflections.rb`.
+
+[String#downcase_first]: https://api.rubyonrails.org/classes/String.html#method-i-downcase_first
 
 ### 各種変換
 
@@ -1875,7 +1903,7 @@ NOTE: 定義は[`active_support/core_ext/string/inflections.rb`](https://github.
 
 INFO: 3つのメソッドはいずれも、レシーバが空の場合は`nil`を返します。
 
-NOTE: 定義は[`active_support/core_ext/string/conversions.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/string/conversions.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/string/conversions.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/string/conversions.rb)にあります。
 
 [String#to_date]: https://api.rubyonrails.org/classes/String.html#method-i-to_date
 [String#to_datetime]: https://api.rubyonrails.org/classes/String.html#method-i-to_datetime
@@ -1911,7 +1939,7 @@ NOTE: 定義は[`active_support/core_ext/string/conversions.rb`](https://github.
 1.megabyte # => 1048576
 ```
 
-NOTE: 定義は[`active_support/core_ext/numeric/bytes.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/numeric/bytes.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/numeric/bytes.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/numeric/bytes.rb)にあります。
 
 [Numeric#bytes]: https://api.rubyonrails.org/classes/Numeric.html#method-i-bytes
 [Numeric#exabytes]: https://api.rubyonrails.org/classes/Numeric.html#method-i-exabytes
@@ -1950,7 +1978,7 @@ NOTE: 定義は[`active_support/core_ext/numeric/bytes.rb`](https://github.com/r
 
 WARNING: 上記以外の期間については、`Integer`の`Time`拡張を参照してください。
 
-NOTE: 定義は[`active_support/core_ext/numeric/time.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/numeric/time.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/numeric/time.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/numeric/time.rb)にあります。
 
 [Duration#ago]: https://api.rubyonrails.org/classes/ActiveSupport/Duration.html#method-i-ago
 [Duration#from_now]: https://api.rubyonrails.org/classes/ActiveSupport/Duration.html#method-i-from_now
@@ -2049,7 +2077,7 @@ NOTE: 定義は[`active_support/core_ext/numeric/time.rb`](https://github.com/ra
 1234567890123456.to_fs(:human)  # => "1.23 Quadrillion"
 ```
 
-NOTE: 定義は[`active_support/core_ext/numeric/conversions.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/numeric/conversions.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/numeric/conversions.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/numeric/conversions.rb)にあります。
 
 `Integer`の拡張
 -----------------------
@@ -2063,7 +2091,7 @@ NOTE: 定義は[`active_support/core_ext/numeric/conversions.rb`](https://github
 1.multiple_of?(2) # => false
 ```
 
-NOTE: 定義は[`active_support/core_ext/integer/multiple.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/integer/multiple.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/integer/multiple.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/integer/multiple.rb)にあります。
 
 [Integer#multiple_of?]: https://api.rubyonrails.org/classes/Integer.html#method-i-multiple_of-3F
 
@@ -2080,7 +2108,7 @@ NOTE: 定義は[`active_support/core_ext/integer/multiple.rb`](https://github.co
 -134.ordinal # => "th"
 ```
 
-NOTE: 定義は[`active_support/core_ext/integer/inflections.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/integer/inflections.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/integer/inflections.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/integer/inflections.rb)にあります。
 
 [Integer#ordinal]: https://api.rubyonrails.org/classes/Integer.html#method-i-ordinal
 
@@ -2097,7 +2125,7 @@ NOTE: 定義は[`active_support/core_ext/integer/inflections.rb`](https://github
 -134.ordinalize # => "-134th"
 ```
 
-NOTE: 定義は[`active_support/core_ext/integer/inflections.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/integer/inflections.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/integer/inflections.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/integer/inflections.rb)にあります。
 
 [Integer#ordinalize]: https://api.rubyonrails.org/classes/Integer.html#method-i-ordinalize
 
@@ -2125,7 +2153,7 @@ NOTE: 定義は[`active_support/core_ext/integer/inflections.rb`](https://github
 
 WARNING: 上記以外の期間については、`Numeric`の`Time`拡張を参照してください。
 
-NOTE: 定義は[`active_support/core_ext/integer/time.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/integer/time.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/integer/time.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/integer/time.rb)にあります。
 
 [Integer#months]: https://api.rubyonrails.org/classes/Integer.html#method-i-months
 [Integer#years]: https://api.rubyonrails.org/classes/Integer.html#method-i-years
@@ -2150,47 +2178,6 @@ BigDecimal(5.00, 6).to_s("e")  # => "0.5E1"
 `Enumerable`の拡張
 --------------------------
 
-### `sum`
-
-[`sum`][Enumerable#sum]メソッドはenumerableの要素を合計します。
-
-```ruby
-[1, 2, 3].sum # => 6
-(1..100).sum  # => 5050
-```
-
-`+`に応答する要素のみが加算の対象として前提とされます。
-
-```ruby
-[[1, 2], [2, 3], [3, 4]].sum    # => [1, 2, 2, 3, 3, 4]
-%w(foo bar baz).sum             # => "foobarbaz"
-{a: 1, b: 2, c: 3}.sum          # => [:a, 1, :b, 2, :c, 3]
-```
-
-空のコレクションはデフォルトではゼロを返しますが、この動作はカスタマイズ可能です。
-
-```ruby
-[].sum    # => 0
-[].sum(1) # => 1
-```
-
-ブロックが与えられると、`sum`はイテレータになってコレクションの要素を`yield`し、そこから返された値を合計します。
-
-```ruby
-(1..5).sum {|n| n * 2 } # => 30
-[2, 4, 6, 8, 10].sum    # => 30
-```
-
-ブロックを与える場合にも、レシーバが空のときのデフォルト値をカスタマイズできます。
-
-```ruby
-[].sum(1) {|n| n**3} # => 1
-```
-
-NOTE: 定義は[`active_support/core_ext/enumerable.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/enumerable.rb)にあります。
-
-[Enumerable#sum]: https://api.rubyonrails.org/classes/Enumerable.html#method-i-sum
-
 ### `index_by`
 
 [`index_by`][Enumerable#index_by]メソッドは、何らかのキーによってインデックス化されたenumerableの要素を持つハッシュを生成します。
@@ -2204,7 +2191,7 @@ invoices.index_by(&:number)
 
 WARNING: キーは通常は一意でなければなりません。異なる要素から同じ値が返されると、そのキーのコレクションは作成されません。返された項目のうち、最後の項目だけが使われます。
 
-NOTE: 定義は[`active_support/core_ext/enumerable.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/enumerable.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/enumerable.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/enumerable.rb)にあります。
 
 [Enumerable#index_by]: https://api.rubyonrails.org/classes/Enumerable.html#method-i-index_by
 
@@ -2222,7 +2209,7 @@ WEEKDAYS.index_with(Interval.all_day)
 # => { monday: [ 0, 1440 ], … }
 ```
 
-NOTE: 定義は[`active_support/core_ext/enumerable.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/enumerable.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/enumerable.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/enumerable.rb)にあります。
 
 
 [Enumerable#index_with]: https://api.rubyonrails.org/classes/Enumerable.html#method-i-index_with
@@ -2240,10 +2227,10 @@ NOTE: 定義は[`active_support/core_ext/enumerable.rb`](https://github.com/rail
 `many?`は、ブロックがオプションとして与えられると、`true`を返す要素だけを扱います。
 
 ```ruby
-@see_more = videos.many? {|video| video.category == params[:category]}
+@see_more = videos.many? { |video| video.category == params[:category] }
 ```
 
-NOTE: 定義は[`active_support/core_ext/enumerable.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/enumerable.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/enumerable.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/enumerable.rb)にあります。
 
 [Enumerable#many?]: https://api.rubyonrails.org/classes/Enumerable.html#method-i-many-3F
 
@@ -2255,7 +2242,7 @@ NOTE: 定義は[`active_support/core_ext/enumerable.rb`](https://github.com/rail
 to_visit << node if visited.exclude?(node)
 ```
 
-NOTE: 定義は[`active_support/core_ext/enumerable.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/enumerable.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/enumerable.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/enumerable.rb)にあります。
 
 [Enumerable#exclude?]: https://api.rubyonrails.org/classes/Enumerable.html#method-i-exclude-3F
 
@@ -2269,7 +2256,7 @@ NOTE: 定義は[`active_support/core_ext/enumerable.rb`](https://github.com/rail
 ["David", "Rafael"].including %w[ Aaron Todd ] # => ["David", "Rafael", "Aaron", "Todd"]
 ```
 
-NOTE: 定義は[`active_support/core_ext/enumerable.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/enumerable.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/enumerable.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/enumerable.rb)にあります。
 
 [Enumerable#including]: https://api.rubyonrails.org/classes/Enumerable.html#method-i-including
 
@@ -2284,7 +2271,7 @@ NOTE: 定義は[`active_support/core_ext/enumerable.rb`](https://github.com/rail
 
 [`without`][Enumerable#without]は`excluding`のエイリアスです。
 
-NOTE: 定義は[`active_support/core_ext/enumerable.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/enumerable.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/enumerable.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/enumerable.rb)にあります。
 
 [Enumerable#excluding]: https://api.rubyonrails.org/classes/Enumerable.html#method-i-excluding
 [Enumerable#without]: https://api.rubyonrails.org/classes/Enumerable.html#method-i-without
@@ -2297,7 +2284,7 @@ NOTE: 定義は[`active_support/core_ext/enumerable.rb`](https://github.com/rail
 [{ name: "David" }, { name: "Rafael" }, { name: "Aaron" }].pluck(:name) # => ["David", "Rafael", "Aaron"]
 ```
 
-NOTE: 定義は[`active_support/core_ext/enumerable.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/enumerable.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/enumerable.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/enumerable.rb)にあります。
 
 [Enumerable#pluck]: https://api.rubyonrails.org/classes/Enumerable.html#method-i-pluck
 
@@ -2312,7 +2299,7 @@ The method [`pick`][Enumerable#pick] extracts the given key from the first eleme
 [{ id: 1, name: "David" }, { id: 2, name: "Rafael" }].pick(:id, :name) # => [1, "David"]
 ```
 
-NOTE: 定義は[`active_support/core_ext/enumerable.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/enumerable.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/enumerable.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/enumerable.rb)にあります。
 
 [Enumerable#pick]: https://api.rubyonrails.org/classes/Enumerable.html#method-i-pick
 
@@ -2358,7 +2345,7 @@ Active Supportには配列のAPIが多数追加されており、配列に容易
 %w(a b c d).fifth # => nil
 ```
 
-NOTE: 定義は[`active_support/core_ext/array/access.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/array/access.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/array/access.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/array/access.rb)にあります。
 
 [Array#excluding]: https://api.rubyonrails.org/classes/Array.html#method-i-excluding
 [Array#fifth]: https://api.rubyonrails.org/classes/Array.html#method-i-fifth
@@ -2382,7 +2369,7 @@ odd_numbers = numbers.extract! { |number| number.odd? } # => [1, 3, 5, 7, 9]
 numbers # => [0, 2, 4, 6, 8]
 ```
 
-NOTE: 定義は[`active_support/core_ext/array/extract.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/array/extract.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/array/extract.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/array/extract.rb)にあります。
 
 [Array#extract!]: https://api.rubyonrails.org/classes/Array.html#method-i-extract-21
 
@@ -2412,7 +2399,7 @@ end
 
 このメソッドは、任意の数のアクション名を引数に取ることができ、引数の末尾項目でオプションハッシュを使えます。`extract_options!`メソッドを使うと、このオプションハッシュの取得と`actions`からの除去を簡単かつ明示的に行えます。
 
-NOTE: 定義は[`active_support/core_ext/array/extract_options.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/array/extract_options.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/array/extract_options.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/array/extract_options.rb)にあります。
 
 [Array#extract_options!]: https://api.rubyonrails.org/classes/Array.html#method-i-extract_options-21
 
@@ -2443,7 +2430,7 @@ NOTE: 定義は[`active_support/core_ext/array/extract_options.rb`](https://gith
 | `:words_connector`     | `support.array.words_connector`     |
 | `:last_word_connector` | `support.array.last_word_connector` |
 
-NOTE: 定義は[`active_support/core_ext/array/conversions.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/array/conversions.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/array/conversions.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/array/conversions.rb)にあります。
 
 [Array#to_sentence]: https://api.rubyonrails.org/classes/Array.html#method-i-to_sentence
 
@@ -2461,7 +2448,7 @@ invoice.lines.to_fs(:db) # => "23,567,556,12"
 
 上の例の整数は、`id`への呼び出しによって取り出されたものとみなされます。
 
-NOTE: 定義は[`active_support/core_ext/array/conversions.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/array/conversions.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/array/conversions.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/array/conversions.rb)にあります。
 
 [Array#to_fs]: https://api.rubyonrails.org/classes/Array.html#method-i-to_fs
 
@@ -2524,7 +2511,7 @@ Contributor.limit(2).order(:rank).to_xml
 レシーバがハッシュの配列である場合、root要素はデフォルトで`objects`になります。
 
 ```ruby
-[{a: 1, b: 2}, {c: 3}].to_xml
+[{ a: 1, b: 2 }, { c: 3 }].to_xml
 # =>
 # <?xml version="1.0" encoding="UTF-8"?>
 # <objects type="array">
@@ -2564,7 +2551,7 @@ Contributor.limit(2).order(:rank).to_xml(skip_types: true)
 # </contributors>
 ```
 
-NOTE: 定義は[`active_support/core_ext/array/conversions.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/array/conversions.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/array/conversions.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/array/conversions.rb)にあります。
 
 [Array#to_xml]: https://api.rubyonrails.org/classes/Array.html#method-i-to_xml
 
@@ -2603,7 +2590,7 @@ Array(foo: :bar)      # => [[:foo, :bar]]
 [*object]
 ```
 
-NOTE: 定義は[`active_support/core_ext/array/wrap.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/array/wrap.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/array/wrap.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/array/wrap.rb)にあります。
 
 [Array.wrap]: https://api.rubyonrails.org/classes/Array.html#method-c-wrap
 
@@ -2618,7 +2605,7 @@ dup[1][2] = 4
 array[1][2] == nil   # => true
 ```
 
-NOTE: 定義は[`active_support/core_ext/object/deep_dup.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/object/deep_dup.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/object/deep_dup.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/object/deep_dup.rb)にあります。
 
 [Array#deep_dup]: https://api.rubyonrails.org/classes/Array.html#method-i-deep_dup
 
@@ -2658,7 +2645,7 @@ NOTE: 定義は[`active_support/core_ext/object/deep_dup.rb`](https://github.com
 
 このため、`false`は空きを埋める値としては利用できません。
 
-NOTE: 定義は[`active_support/core_ext/array/grouping.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/array/grouping.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/array/grouping.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/array/grouping.rb)にあります。
 
 [Array#in_groups_of]: https://api.rubyonrails.org/classes/Array.html#method-i-in_groups_of
 
@@ -2674,7 +2661,7 @@ NOTE: 定義は[`active_support/core_ext/array/grouping.rb`](https://github.com/
 ブロックが渡された場合は`yield`します。
 
 ```ruby
-%w(1 2 3 4 5 6 7).in_groups(3) {|group| p group}
+%w(1 2 3 4 5 6 7).in_groups(3) { |group| p group }
 ["1", "2", "3"]
 ["4", "5", nil]
 ["6", "7", nil]
@@ -2698,7 +2685,7 @@ NOTE: 定義は[`active_support/core_ext/array/grouping.rb`](https://github.com/
 
 このため、`false`は空きを埋める値としては利用できません。
 
-NOTE: 定義は[`active_support/core_ext/array/grouping.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/array/grouping.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/array/grouping.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/array/grouping.rb)にあります。
 
 [Array#in_groups]: https://api.rubyonrails.org/classes/Array.html#method-i-in_groups
 
@@ -2722,7 +2709,7 @@ NOTE: 定義は[`active_support/core_ext/array/grouping.rb`](https://github.com/
 
 TIP: 上の例からもわかるように、セパレータが連続すると空の配列になります。
 
-NOTE: 定義は[`active_support/core_ext/array/grouping.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/array/grouping.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/array/grouping.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/array/grouping.rb)にあります。
 
 [Array#split]: https://api.rubyonrails.org/classes/Array.html#method-i-split
 
@@ -2736,7 +2723,7 @@ NOTE: 定義は[`active_support/core_ext/array/grouping.rb`](https://github.com/
 [`to_xml`][Hash#to_xml]メソッドは、レシーバをXML表現に変換したものを含む文字列を返します。
 
 ```ruby
-{"foo" => 1, "bar" => 2}.to_xml
+{ foo: 1, bar: 2 }.to_xml
 # =>
 # <?xml version="1.0" encoding="UTF-8"?>
 # <hash>
@@ -2775,7 +2762,7 @@ rootノードはデフォルトでは「hash」ですが、`:root`オプショ�
 
 デフォルトのXMLビルダは、`Builder::XmlMarkup`から直接生成されたインスタンスです。`:builder`オブションで独自のビルダを構成できます。このメソッドでは`:dasherize`とその同族と同様のオプションが利用でき、指定したオプションはビルダに転送されます。
 
-NOTE: 定義は[`active_support/core_ext/hash/conversions.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/hash/conversions.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/hash/conversions.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/hash/conversions.rb)にあります。
 
 [Hash#to_xml]: https://api.rubyonrails.org/classes/Hash.html#method-i-to_xml
 
@@ -2784,7 +2771,7 @@ NOTE: 定義は[`active_support/core_ext/hash/conversions.rb`](https://github.co
 Rubyには、2つのハッシュをマージする組み込みの`Hash#merge`メソッドがあります。
 
 ```ruby
-{a: 1, b: 1}.merge(a: 0, c: 2)
+{ a: 1, b: 1 }.merge(a: 0, c: 2)
 # => {:a=>0, :b=>1, :c=>2}
 ```
 
@@ -2795,7 +2782,7 @@ Active Supportでは、この他にも便利なハッシュのマージをいく
 `merge`でキーが衝突した場合、引数のハッシュのキーが優先されます。以下のような定形の手法を利用すれば、デフォルト値付きオプションハッシュを簡潔に書けます。
 
 ```ruby
-options = {length: 30, omission: "..."}.merge(options)
+options = { length: 30, omission: "..." }.merge(options)
 ```
 
 Active Supportでは、別の記法を使いたい場合のために[`reverse_merge`][Hash#reverse_merge]も定義されています。
@@ -2812,7 +2799,7 @@ options.reverse_merge!(length: 30, omission: "...")
 
 WARNING: `reverse_merge!`は呼び出し元のハッシュを変更する可能性があることにご注意ください。それが意図した副作用であるかそうでないかにかかわらず、注意が必要です。
 
-NOTE: 定義は[`active_support/core_ext/hash/reverse_merge.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/hash/reverse_merge.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/hash/reverse_merge.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/hash/reverse_merge.rb)にあります。
 
 [Hash#reverse_merge!]: https://api.rubyonrails.org/classes/Hash.html#method-i-reverse_merge-21
 [Hash#reverse_merge]: https://api.rubyonrails.org/classes/Hash.html#method-i-reverse_merge
@@ -2823,7 +2810,7 @@ NOTE: 定義は[`active_support/core_ext/hash/reverse_merge.rb`](https://github.
 
 WARNING: `reverse_update`には`!`のついたバージョンはありません。
 
-NOTE: 定義は[`active_support/core_ext/hash/reverse_merge.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/hash/reverse_merge.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/hash/reverse_merge.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/hash/reverse_merge.rb)にあります。
 
 [Hash#reverse_update]: https://api.rubyonrails.org/classes/Hash.html#method-i-reverse_update
 
@@ -2834,13 +2821,13 @@ NOTE: 定義は[`active_support/core_ext/hash/reverse_merge.rb`](https://github.
 Active Supportでは[`Hash#deep_merge`][Hash#deep_merge]が定義されています。ディープマージでは、レシーバと引数の両方に同じキーが出現し、さらにどちらも値がハッシュである場合に、その下位のハッシュを**マージ**したものが、最終的なハッシュの値として使われます。
 
 ```ruby
-{a: {b: 1}}.deep_merge(a: {c: 2})
+{ a: { b: 1 } }.deep_merge(a: { c: 2 })
 # => {:a=>{:b=>1, :c=>2}}
 ```
 
 [`deep_merge!`][Hash#deep_merge!]メソッドはディープマージを破壊的に実行します。
 
-NOTE: 定義は[`active_support/core_ext/hash/deep_merge.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/hash/deep_merge.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/hash/deep_merge.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/hash/deep_merge.rb)にあります。
 
 [Hash#deep_merge!]: https://api.rubyonrails.org/classes/Hash.html#method-i-deep_merge-21
 [Hash#deep_merge]: https://api.rubyonrails.org/classes/Hash.html#method-i-deep_merge
@@ -2860,7 +2847,7 @@ hash[:b][:e] == nil      # => true
 hash[:b][:d] == [3, 4]   # => true
 ```
 
-NOTE: 定義は[`active_support/core_ext/object/deep_dup.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/object/deep_dup.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/object/deep_dup.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/object/deep_dup.rb)にあります。
 
 [Hash#deep_dup]: https://api.rubyonrails.org/classes/Hash.html#method-i-deep_dup
 
@@ -2871,19 +2858,19 @@ NOTE: 定義は[`active_support/core_ext/object/deep_dup.rb`](https://github.com
 [`except`][Hash#except]メソッドは、引数で指定されたキーがあればレシーバのハッシュから取り除きます。
 
 ```ruby
-{a: 1, b: 2}.except(:a) # => {:b=>2}
+{ a: 1, b: 2 }.except(:a) # => {:b=>2}
 ```
 
 レシーバが`convert_key`に応答する場合、このメソッドはすべての引数に対して呼び出されます。そのおかげで、たとえばハッシュの`with_indifferent_access`で`except`メソッドが期待どおりに動作します。
 
 ```ruby
-{a: 1}.with_indifferent_access.except(:a)  # => {}
-{a: 1}.with_indifferent_access.except("a") # => {}
+{ a: 1 }.with_indifferent_access.except(:a)  # => {}
+{ a: 1 }.with_indifferent_access.except("a") # => {}
 ```
 
 レシーバーからキーを取り除く破壊的な[`except!`][Hash#except!]もあります。
 
-NOTE: 定義は[`active_support/core_ext/hash/except.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/hash/except.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/hash/except.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/hash/except.rb)にあります。
 
 [Hash#except!]: https://api.rubyonrails.org/classes/Hash.html#method-i-except-21
 [Hash#except]: https://api.rubyonrails.org/classes/Hash.html#method-i-except
@@ -2893,14 +2880,14 @@ NOTE: 定義は[`active_support/core_ext/hash/except.rb`](https://github.com/rai
 [`stringify_keys`][Hash#stringify_keys]メソッドは、レシーバのハッシュキーを文字列に変換したハッシュを返します。具体的には、レシーバのハッシュキーに対して`to_s`を送信しています。
 
 ```ruby
-{nil => nil, 1 => 1, a: :a}.stringify_keys
+{ nil => nil, 1 => 1, a: :a }.stringify_keys
 # => {"" => nil, "1" => 1, "a" => :a}
 ```
 
 キーが重複している場合、ハッシュに最も新しく挿入された値が使われます。
 
 ```ruby
-{"a" => 1, a: 2}.stringify_keys
+{ "a" => 1, a: 2 }.stringify_keys
 # 値は以下になる
 # => {"a"=>2}
 ```
@@ -2922,11 +2909,11 @@ end
 また、[`deep_stringify_keys`][Hash#deep_stringify_keys]や[`deep_stringify_keys!`][Hash#deep_stringify_keys!]を使うと、与えられたハッシュのすべてのキーを文字列化し、その中にネストされているすべてのハッシュのキーを文字列化することもできます。以下に例を示します。
 
 ```ruby
-{nil => nil, 1 => 1, nested: {a: 3, 5 => 5}}.deep_stringify_keys
+{ nil => nil, 1 => 1, nested: { a: 3, 5 => 5 } }.deep_stringify_keys
 # => {""=>nil, "1"=>1, "nested"=>{"a"=>3, "5"=>5}}
 ```
 
-NOTE: 定義は[`active_support/core_ext/hash/keys.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/hash/keys.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/hash/keys.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/hash/keys.rb)にあります。
 
 [Hash#deep_stringify_keys!]: https://api.rubyonrails.org/classes/Hash.html#method-i-deep_stringify_keys-21
 [Hash#deep_stringify_keys]: https://api.rubyonrails.org/classes/Hash.html#method-i-deep_stringify_keys
@@ -2938,7 +2925,7 @@ NOTE: 定義は[`active_support/core_ext/hash/keys.rb`](https://github.com/rails
 [`symbolize_keys`][Hash#symbolize_keys]メソッドは、レシーバのハッシュキーをシンボルに変換したハッシュを返します。具体的には、レシーバのハッシュキーに対して`to_sym`を送信しています。
 
 ```ruby
-{nil => nil, 1 => 1, "a" => "a"}.symbolize_keys
+{ nil => nil, 1 => 1, "a" => "a" }.symbolize_keys
 # => {nil=>nil, 1=>1, :a=>"a"}
 ```
 
@@ -2947,7 +2934,7 @@ WARNING: 上の例では、3つのキーのうち最後の1つしかシンボル
 キーが重複している場合、ハッシュに最も新しく挿入された値が使われます。
 
 ```ruby
-{"a" => 1, a: 2}.symbolize_keys
+{ "a" => 1, a: 2 }.symbolize_keys
 # => {:a=>2}
 ```
 
@@ -2969,11 +2956,11 @@ end
 また、[`deep_symbolize_keys`][Hash#deep_symbolize_keys]や[`deep_symbolize_keys!`][Hash#deep_symbolize_keys!]を使うと、与えられたハッシュのすべてのキーと、その中にネストされているすべてのハッシュのキーをシンボルに変換することもできます。以下に例を示します。
 
 ```ruby
-{nil => nil, 1 => 1, "nested" => {"a" => 3, 5 => 5}}.deep_symbolize_keys
+{ nil => nil, 1 => 1, "nested" => { "a" => 3, 5 => 5 } }.deep_symbolize_keys
 # => {nil=>nil, 1=>1, nested:{a:3, 5=>5}}
 ```
 
-NOTE: 定義は[`active_support/core_ext/hash/keys.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/hash/keys.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/hash/keys.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/hash/keys.rb)にあります。
 
 [Hash#deep_symbolize_keys!]: https://api.rubyonrails.org/classes/Hash.html#method-i-deep_symbolize_keys-21
 [Hash#deep_symbolize_keys]: https://api.rubyonrails.org/classes/Hash.html#method-i-deep_symbolize_keys
@@ -2984,7 +2971,7 @@ NOTE: 定義は[`active_support/core_ext/hash/keys.rb`](https://github.com/rails
 
 [`to_options`][Hash#to_options]と[`to_options!`][Hash#to_options!]メソッドは、それぞれ`symbolize_keys`メソッドと`symbolize_keys!`メソッドのエイリアスです。
 
-NOTE: 定義は[`active_support/core_ext/hash/keys.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/hash/keys.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/hash/keys.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/hash/keys.rb)にあります。
 
 [Hash#to_options!]: https://api.rubyonrails.org/classes/Hash.html#method-i-to_options-21
 [Hash#to_options]: https://api.rubyonrails.org/classes/Hash.html#method-i-to_options
@@ -2994,13 +2981,13 @@ NOTE: 定義は[`active_support/core_ext/hash/keys.rb`](https://github.com/rails
 [`assert_valid_keys`][Hash#assert_valid_keys]メソッドは任意の個数の引数を受け取ることが可能で、許可リストに含まれていないキーがレシーバにあるかどうかをチェックします。そのようなキーが見つかった場合、`ArgumentError`が発生します。
 
 ```ruby
-{a: 1}.assert_valid_keys(:a)  # パスする
-{a: 1}.assert_valid_keys("a") # ArgumentError
+{ a: 1 }.assert_valid_keys(:a)  # パスする
+{ a: 1 }.assert_valid_keys("a") # ArgumentError
 ```
 
 たとえばActive Recordは、関連付けをビルドするときに未知のオプションを受け付けません。Active Recordは`assert_valid_keys`による制御を実装しています。
 
-NOTE: 定義は[`active_support/core_ext/hash/keys.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/hash/keys.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/hash/keys.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/hash/keys.rb)にあります。
 
 [Hash#assert_valid_keys]: https://api.rubyonrails.org/classes/Hash.html#method-i-assert_valid_keys
 
@@ -3013,13 +3000,13 @@ NOTE: 定義は[`active_support/core_ext/hash/keys.rb`](https://github.com/rails
 ```ruby
 hash = { person: { name: 'Rob', age: '28' } }
 
-hash.deep_transform_values{ |value| value.to_s.upcase }
+hash.deep_transform_values { |value| value.to_s.upcase }
 # => {person: {name: "ROB", age: "28"}}
 ```
 
 ブロック操作を用いてすべての値を破壊的に変更する[`deep_transform_values!`][Hash#deep_transform_values!]もあります。
 
-NOTE: 定義は[`active_support/core_ext/hash/deep_transform_values.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/hash/deep_transform_values.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/hash/deep_transform_values.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/hash/deep_transform_values.rb)にあります。
 
 [Hash#deep_transform_values!]: https://api.rubyonrails.org/classes/Hash.html#method-i-deep_transform_values-21
 [Hash#deep_transform_values]: https://api.rubyonrails.org/classes/Hash.html#method-i-deep_transform_values
@@ -3029,12 +3016,12 @@ NOTE: 定義は[`active_support/core_ext/hash/deep_transform_values.rb`](https:/
 破壊的なスライス操作を行なう`slice!`メソッドは、指定のキーのみを置き換え、削除されたキーバリューペアを含むハッシュを1つ返します。
 
 ```ruby
-hash = {a: 1, b: 2}
+hash = { a: 1, b: 2 }
 rest = hash.slice!(:a) # => {:b=>2}
 hash                   # => {:a=>1}
 ```
 
-NOTE: 定義は[`active_support/core_ext/hash/slice.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/hash/slice.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/hash/slice.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/hash/slice.rb)にあります。
 
 [Hash#slice!]: https://api.rubyonrails.org/classes/Hash.html#method-i-slice-21
 
@@ -3043,7 +3030,7 @@ NOTE: 定義は[`active_support/core_ext/hash/slice.rb`](https://github.com/rail
 [`extract!`][Hash#extract!]メソッドは、与えられたキーにマッチするキーバリューペアを取り除き、取り除いたペアを返します。
 
 ```ruby
-hash = {a: 1, b: 2}
+hash = { a: 1, b: 2 }
 rest = hash.extract!(:a) # => {:a=>1}
 hash                     # => {:b=>2}
 ```
@@ -3051,12 +3038,12 @@ hash                     # => {:b=>2}
 `extract!`メソッドは、レシーバのハッシュのサブクラスと同じサブクラスを返します。
 
 ```ruby
-hash = {a: 1, b: 2}.with_indifferent_access
+hash = { a: 1, b: 2 }.with_indifferent_access
 rest = hash.extract!(:a).class
 # => ActiveSupport::HashWithIndifferentAccess
 ```
 
-NOTE: 定義は[`active_support/core_ext/hash/slice.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/hash/slice.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/hash/slice.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/hash/slice.rb)にあります。
 
 [Hash#extract!]: https://api.rubyonrails.org/classes/Hash.html#method-i-extract-21
 
@@ -3068,7 +3055,7 @@ NOTE: 定義は[`active_support/core_ext/hash/slice.rb`](https://github.com/rail
 {a: 1}.with_indifferent_access["a"] # => 1
 ```
 
-NOTE: 定義は[`active_support/core_ext/hash/indifferent_access.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/hash/indifferent_access.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/hash/indifferent_access.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/hash/indifferent_access.rb)にあります。
 
 [ActiveSupport::HashWithIndifferentAccess]: https://api.rubyonrails.org/classes/ActiveSupport/HashWithIndifferentAccess.html
 [Hash#with_indifferent_access]: https://api.rubyonrails.org/classes/Hash.html#method-i-with_indifferent_access
@@ -3100,29 +3087,28 @@ def verify_regexp_requirements(requirements)
 end
 ```
 
-NOTE: 定義は[`active_support/core_ext/regexp.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/regexp.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/regexp.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/regexp.rb)にあります。
 
 [Regexp#multiline?]: https://api.rubyonrails.org/classes/Regexp.html#method-i-multiline-3F
 
 `Range`の拡張
 ---------------------
 
-### `to_s`
+### `to_fs`
 
-Active Supportは`Range#to_s`メソッドを拡張してフォーマット引数をオプションで受け付けるようにしています。執筆時点では、デフォルトでないフォーマットとしてサポートされているのは`:db`のみです（訳注: `to_s(:db)`は非推奨の警告が表示されます。`to_fs(:db)`では警告は表示されません）。
+Active Supportでは、オプションのフォーマット引数を理解する`to_s`の代替として`Range#to_fs`を定義しています。執筆時点では、デフォルトでないフォーマットとしてサポートされているのは`:db`のみです。
 
 ```ruby
-(Date.today..Date.tomorrow).to_s
+(Date.today..Date.tomorrow).to_fs
 # => "2009-10-25..2009-10-26"
 
-(Date.today..Date.tomorrow).to_s(:db)
-# => DEPRECATION WARNING: Range#to_s(:db) is deprecated. Please use Range#to_fs(:db) instead.
+(Date.today..Date.tomorrow).to_fs(:db)
 # => "BETWEEN '2009-10-25' AND '2009-10-26'"
 ```
 
 上の例でもわかるように、フォーマットに`:db`を指定するとSQLの`BETWEEN`句が生成されます。このフォーマットは、Active Recordで条件の値の範囲をサポートするときに使われます。
 
-NOTE: 定義は[`active_support/core_ext/range/conversions.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/range/conversions.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/range/conversions.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/range/conversions.rb)にあります。
 
 ### `===`、`include?`
 
@@ -3146,21 +3132,21 @@ Active Supportではこれらのメソッドを拡張して、他の範囲指定
 (1...9).include?(3..9)  # => false
 ```
 
-NOTE: 定義は[`active_support/core_ext/range/compare_range.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/range/compare_range.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/range/compare_range.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/range/compare_range.rb)にあります。
 
-### `overlaps?`
+### `overlap?`
 
-`Range#overlaps?`メソッドは、与えられた2つの範囲に（空白でない）重なりがあるかどうかをチェックします。
+[`Range#overlap?`][Range#overlap?]メソッドは、与えられた2つの範囲に（空白でない）重なりがあるかどうかをチェックします。
 
 ```ruby
-(1..10).overlaps?(7..11)  # => true
-(1..10).overlaps?(0..7)   # => true
-(1..10).overlaps?(11..27) # => false
+(1..10).overlap?(7..11)  # => true
+(1..10).overlap?(0..7)   # => true
+(1..10).overlap?(11..27) # => false
 ```
 
-NOTE: 定義は[`active_support/core_ext/range/overlaps.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/range/overlaps.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/range/overlap.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/range/overlap.rb)にあります。
 
-[Range#overlaps?]: https://api.rubyonrails.org/classes/Range.html#method-i-overlaps-3F
+[Range#overlap?]: https://api.rubyonrails.org/classes/Range.html#method-i-overlap-3F
 
 `Date`の拡張
 --------------------
@@ -3175,7 +3161,7 @@ Active Supportでは、[`Date.current`][Date.current]を定義して現在のタ
 
 ユーザー定義のタイムゾーンを考慮するメソッドを用いて日付を比較したい場合、`Date.today`ではなく必ず`Date.current`を使ってください。ユーザー定義のタイムゾーンは、システムのタイムゾーンより未来になる可能性があります（`Date.today`はデフォルトでシステムのタイムゾーンを使います）。つまり、`Date.today`が`Date.yesterday`と等しくなる可能性があるということです。
 
-NOTE: 定義は[`active_support/core_ext/date/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/date/calculations.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/date/calculations.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/date/calculations.rb)にあります。
 
 [Date.current]: https://api.rubyonrails.org/classes/Date.html#method-c-current
 [Date.tomorrow]: https://api.rubyonrails.org/classes/Date.html#method-c-tomorrow
@@ -3201,7 +3187,7 @@ d.end_of_week(:sunday)       # => Sat, 08 May 2010
 
 [`at_beginning_of_week`][DateAndTime::Calculations#at_beginning_of_week]は`beginning_of_week`のエイリアス、[`at_end_of_week`][DateAndTime::Calculations#at_end_of_week]は`end_of_week`のエイリアスです。
 
-NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
 
 [`config.beginning_of_week`]: configuring.html#config-beginning-of-week
 [DateAndTime::Calculations#at_beginning_of_week]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-at_beginning_of_week
@@ -3225,7 +3211,7 @@ d = Date.new(2012, 9, 16)    # => Sun, 16 Sep 2012
 d.sunday                     # => Sun, 16 Sep 2012
 ```
 
-NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
 
 [DateAndTime::Calculations#monday]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-monday
 [DateAndTime::Calculations#sunday]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-sunday
@@ -3252,7 +3238,7 @@ d.prev_week(:friday)     # => Fri, 30 Apr 2010
 
 `Date.beginning_of_week`または`config.beginning_of_week`が設定されていれば、`next_week`と`prev_week`はどちらも正常に動作します。
 
-NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
 
 [Date.beginning_of_week]: https://api.rubyonrails.org/classes/Date.html#method-c-beginning_of_week
 [DateAndTime::Calculations#last_week]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-last_week
@@ -3271,14 +3257,21 @@ d.end_of_month           # => Mon, 31 May 2010
 
 [`at_beginning_of_month`][DateAndTime::Calculations#at_beginning_of_month]は`beginning_of_month`のエイリアス、[`at_end_of_month`][DateAndTime::Calculations#at_end_of_month]は`end_of_month`のエイリアスです。
 
-NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
 
 [DateAndTime::Calculations#at_beginning_of_month]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-at_beginning_of_month
 [DateAndTime::Calculations#at_end_of_month]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-at_end_of_month
 [DateAndTime::Calculations#beginning_of_month]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-beginning_of_month
 [DateAndTime::Calculations#end_of_month]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-end_of_month
 
-##### `beginning_of_quarter`、`end_of_quarter`
+##### `quarter`, `beginning_of_quarter`, `end_of_quarter`
+
+[`quarter`][DateAndTime::Calculations#quarter]は、レシーバのカレンダー年における四半期を返します。
+
+```ruby
+d = Date.new(2010, 5, 9) # => Sun, 09 May 2010
+d.quarter                # => 2
+```
 
 [`beginning_of_quarter`][DateAndTime::Calculations#beginning_of_quarter]メソッドと[`end_of_quarter`][DateAndTime::Calculations#end_of_quarter]メソッドは、レシーバのカレンダー年における四半期「最初の日」と「最後の日」をそれぞれ返します。
 
@@ -3290,8 +3283,9 @@ d.end_of_quarter         # => Wed, 30 Jun 2010
 
 [`at_beginning_of_quarter`][DateAndTime::Calculations#at_beginning_of_quarter]は`beginning_of_quarter`のエイリアス、[`at_end_of_quarter`][DateAndTime::Calculations#at_end_of_quarter]は`end_of_quarter`のエイリアスです。
 
-NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
 
+[DateAndTime::Calculations#quarter]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-quarter
 [DateAndTime::Calculations#at_beginning_of_quarter]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-at_beginning_of_quarter
 [DateAndTime::Calculations#at_end_of_quarter]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-at_end_of_quarter
 [DateAndTime::Calculations#beginning_of_quarter]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-beginning_of_quarter
@@ -3309,7 +3303,7 @@ d.end_of_year            # => Fri, 31 Dec 2010
 
 [`at_beginning_of_year`][DateAndTime::Calculations#at_beginning_of_year]は`beginning_of_year`のエイリアス、[`at_end_of_year`][DateAndTime::Calculations#at_end_of_year]は`end_of_year`のエイリアスです。
 
-NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
 
 [DateAndTime::Calculations#at_beginning_of_year]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-at_beginning_of_year
 [DateAndTime::Calculations#at_end_of_year]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-at_end_of_year
@@ -3343,7 +3337,7 @@ Date.new(2012, 2, 29).years_since(3)   # => Sat, 28 Feb 2015
 
 [`last_year`][DateAndTime::Calculations#last_year]は`#years_ago(1)`のショートハンドです。
 
-NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
 
 [DateAndTime::Calculations#last_year]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-last_year
 [DateAndTime::Calculations#years_ago]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-years_ago
@@ -3367,7 +3361,7 @@ Date.new(2009, 12, 31).months_since(2) # => Sun, 28 Feb 2010
 
 [`last_month`][DateAndTime::Calculations#last_month]は`#months_ago(1)`のショートハンドです。
 
-NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
 
 [DateAndTime::Calculations#last_month]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-last_month
 [DateAndTime::Calculations#months_ago]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-months_ago
@@ -3382,7 +3376,7 @@ Date.new(2010, 5, 24).weeks_ago(1)    # => Mon, 17 May 2010
 Date.new(2010, 5, 24).weeks_ago(2)    # => Mon, 10 May 2010
 ```
 
-NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
 
 [DateAndTime::Calculations#weeks_ago]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-weeks_ago
 
@@ -3398,7 +3392,7 @@ date.advance(months: 2, days: -2) # => Wed, 04 Aug 2010
 
 上の例にも示されているように、増分値には負の数も指定できます。
 
-NOTE: 定義は[`active_support/core_ext/date/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/date/calculations.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/date/calculations.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/date/calculations.rb)にあります。
 
 [Date#advance]: https://api.rubyonrails.org/classes/Date.html#method-i-advance
 
@@ -3418,7 +3412,7 @@ Date.new(2010, 1, 31).change(month: 2)
 # => ArgumentError: invalid date
 ```
 
-NOTE: 定義は[`active_support/core_ext/date/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/date/calculations.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/date/calculations.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/date/calculations.rb)にあります。
 
 [Date#change]: https://api.rubyonrails.org/classes/Date.html#method-i-change
 
@@ -3466,7 +3460,7 @@ date.end_of_day # => Mon Jun 07 23:59:59 +0200 2010
 
 [`at_beginning_of_day`][Date#at_beginning_of_day]と[`midnight`][Date#midnight]と[`at_midnight`][Date#at_midnight]は、`beginning_of_day`のエイリアスです。
 
-NOTE: 定義は[`active_support/core_ext/date/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/date/calculations.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/date/calculations.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/date/calculations.rb)にあります。
 
 [Date#at_beginning_of_day]: https://api.rubyonrails.org/classes/Date.html#method-i-at_beginning_of_day
 [Date#at_midnight]: https://api.rubyonrails.org/classes/Date.html#method-i-at_midnight
@@ -3492,7 +3486,7 @@ date.end_of_hour # => Mon Jun 07 19:59:59 +0200 2010
 
 [`at_beginning_of_hour`][DateTime#at_beginning_of_hour]は`beginning_of_hour`のエイリアスです。
 
-NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
 
 ##### `beginning_of_minute`、`end_of_minute`
 
@@ -3514,7 +3508,7 @@ date.end_of_minute # => Mon Jun 07 19:55:59 +0200 2010
 
 INFO: `beginning_of_hour`、`end_of_hour`、`beginning_of_minute`、`end_of_minute`は、`Time`および`DateTime`向けの実装ですが、`Date`向けの実装では**ありません**。時刻情報を含まない`Date`インスタンスに対して時間や分の最初や最後を問い合わせる意味はありません。
 
-NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
 
 [DateTime#at_beginning_of_minute]: https://api.rubyonrails.org/classes/DateTime.html#method-i-at_beginning_of_minute
 [DateTime#beginning_of_minute]: https://api.rubyonrails.org/classes/DateTime.html#method-i-beginning_of_minute
@@ -3536,7 +3530,7 @@ date = Date.current # => Fri, 11 Jun 2010
 date.since(1)       # => Fri, 11 Jun 2010 00:00:01 EDT -04:00
 ```
 
-NOTE: 定義は[`active_support/core_ext/date/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/date/calculations.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/date/calculations.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/date/calculations.rb)にあります。
 
 [Date#ago]: https://api.rubyonrails.org/classes/Date.html#method-i-ago
 [Date#since]: https://api.rubyonrails.org/classes/Date.html#method-i-since
@@ -3582,7 +3576,7 @@ WARNING: `DateTime`は夏時間 (DST) ルールについては関知しません
 
 Active Supportでは、[`DateTime.current`][DateTime.current]を`Time.now.to_datetime`と同様に定義しています。ただし、`DateTime.current`はユーザータイムゾーンが定義されている場合に対応する点が異なります。インスタンスでは[`past?`][DateAndTime::Calculations#past?]および[`future?`][DateAndTime::Calculations#future?]という述語メソッドを利用でき、これらの定義は`Date.current`を起点としています。
 
-NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
 
 [DateTime.current]: https://api.rubyonrails.org/classes/DateTime.html#method-c-current
 
@@ -3597,7 +3591,7 @@ now = DateTime.current     # => Mon, 07 Jun 2010 20:26:36 +0000
 now.seconds_since_midnight # => 73596
 ```
 
-NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
 
 [DateTime#seconds_since_midnight]: https://api.rubyonrails.org/classes/DateTime.html#method-i-seconds_since_midnight
 
@@ -3612,7 +3606,7 @@ now.utc                # => Mon, 07 Jun 2010 23:27:52 +0000
 
 [`getutc`][DateTime#getutc]は`utc`のエイリアスです。
 
-NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
 
 [DateTime#getutc]: https://api.rubyonrails.org/classes/DateTime.html#method-i-getutc
 [DateTime#utc]: https://api.rubyonrails.org/classes/DateTime.html#method-i-utc
@@ -3627,7 +3621,7 @@ now.utc?          # => false
 now.utc.utc?      # => true
 ```
 
-NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
 
 [DateTime#utc?]: https://api.rubyonrails.org/classes/DateTime.html#method-i-utc-3F
 
@@ -3662,7 +3656,7 @@ d.advance(seconds: 1).advance(months: 1)
 
 WARNING: `DateTime`は夏時間 (DST) を考慮しません。算出された時間が最終的に存在しない時間になっても警告やエラーは発生しません。
 
-NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
 
 [DateTime#advance]: https://api.rubyonrails.org/classes/DateTime.html#method-i-advance
 [DateTime#since]: https://api.rubyonrails.org/classes/DateTime.html#method-i-since
@@ -3699,7 +3693,7 @@ DateTime.current.change(month: 2, day: 30)
 # => ArgumentError: invalid date
 ```
 
-NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
 
 [DateTime#change]: https://api.rubyonrails.org/classes/DateTime.html#method-i-change
 
@@ -3756,7 +3750,7 @@ Active Supportでは、[`Time.current`][Time.current]を定義して現在のタ
 
 ユーザー定義のタイムゾーンを考慮するメソッドを用いて時刻を比較したい場合、`Time.now`ではなく必ず`Time.current`を使ってください。ユーザー定義のタイムゾーンは、システムのタイムゾーンより未来になる可能性があります（`Time.now`はデフォルトでシステムのタイムゾーンを使います）。つまり、`Time.now.to_date`が`Date.yesterday`と等しくなる可能性があるということです。
 
-NOTE: 定義は[`active_support/core_ext/time/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/time/calculations.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/time/calculations.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/time/calculations.rb)にあります。
 
 [DateAndTime::Calculations#next_day?]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-next_day-3F
 [DateAndTime::Calculations#prev_day?]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-prev_day-3F
@@ -3793,7 +3787,7 @@ now.all_year
 # => Fri, 01 Jan 2010 00:00:00 UTC +00:00..Fri, 31 Dec 2010 23:59:59 UTC +00:00
 ```
 
-NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
 
 [DateAndTime::Calculations#all_day]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-all_day
 [DateAndTime::Calculations#all_month]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-all_month
@@ -3812,7 +3806,7 @@ t.prev_day               # => 2010-05-07 00:00:00 +0900
 t.next_day               # => 2010-05-09 00:00:00 +0900
 ```
 
-NOTE: 定義は[`active_support/core_ext/time/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/time/calculations.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/time/calculations.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/time/calculations.rb)にあります。
 
 [Time#next_day]: https://api.rubyonrails.org/classes/Time.html#method-i-next_day
 [Time#prev_day]: https://api.rubyonrails.org/classes/Time.html#method-i-prev_day
@@ -3836,7 +3830,7 @@ Time.new(2000, 5, 31).next_month # => 2000-06-30 00:00:00 +0900
 Time.new(2000, 1, 31).next_month # => 2000-02-29 00:00:00 +0900
 ```
 
-NOTE: 定義は[`active_support/core_ext/time/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/time/calculations.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/time/calculations.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/time/calculations.rb)にあります。
 
 [Time#next_month]: https://api.rubyonrails.org/classes/Time.html#method-i-next_month
 [Time#prev_month]: https://api.rubyonrails.org/classes/Time.html#method-i-prev_month
@@ -3859,7 +3853,7 @@ t.prev_year               # => 1999-02-28 00:00:00 +0900
 t.next_year               # => 2001-02-28 00:00:00 +0900
 ```
 
-NOTE: 定義は[`active_support/core_ext/time/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/time/calculations.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/time/calculations.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/time/calculations.rb)にあります。
 
 [Time#next_year]: https://api.rubyonrails.org/classes/Time.html#method-i-next_year
 [Time#prev_year]: https://api.rubyonrails.org/classes/Time.html#method-i-prev_year
@@ -3885,7 +3879,7 @@ Time.local(2000, 11, 31).next_quarter # => 2001-03-01 00:00:00 +0200
 
 [`last_quarter`][DateAndTime::Calculations#last_quarter]は`prev_quarter`のエイリアスです。
 
-NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/date_and_time/calculations.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/date_and_time/calculations.rb)にあります。
 
 [DateAndTime::Calculations#last_quarter]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-last_quarter
 [DateAndTime::Calculations#next_quarter]: https://api.rubyonrails.org/classes/DateAndTime/Calculations.html#method-i-next_quarter
@@ -3957,7 +3951,7 @@ WARNING: `atomic_write`は追記を行えません。
 
 この補助ファイルは標準の一時ファイル用ディレクトリに書き込まれますが、第2引数でディレクトリを直接指定することもできます。
 
-NOTE: 定義は[`active_support/core_ext/file/atomic.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/file/atomic.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/file/atomic.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/file/atomic.rb)にあります。
 
 [File.atomic_write]: https://api.rubyonrails.org/classes/File.html#method-c-atomic_write
 
@@ -3984,7 +3978,7 @@ rescue NameError => e
 end
 ```
 
-NOTE: 定義は[`active_support/core_ext/name_error.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/name_error.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/name_error.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/name_error.rb)にあります。
 
 [NameError#missing_name?]: https://api.rubyonrails.org/classes/NameError.html#method-i-missing_name-3F
 
@@ -4009,7 +4003,7 @@ rescue NameError => e
 end
 ```
 
-NOTE: 定義は[`active_support/core_ext/load_error.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/load_error.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/load_error.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/load_error.rb)にあります。
 
 [LoadError#is_missing?]: https://api.rubyonrails.org/classes/LoadError.html#method-i-is_missing-3F
 
@@ -4024,6 +4018,6 @@ NOTE: 定義は[`active_support/core_ext/load_error.rb`](https://github.com/rail
 content = Pathname.new("file").existence&.read
 ```
 
-NOTE: 定義は[`active_support/core_ext/pathname/existence.rb`](https://github.com/rails/rails/blob/7-0-stable/activesupport/lib/active_support/core_ext/pathname/existence.rb)にあります。
+NOTE: 定義は[`active_support/core_ext/pathname/existence.rb`](https://github.com/rails/rails/blob/7-1-stable/activesupport/lib/active_support/core_ext/pathname/existence.rb)にあります。
 
 [Pathname#existence]: https://api.rubyonrails.org/classes/Pathname.html#method-i-existence

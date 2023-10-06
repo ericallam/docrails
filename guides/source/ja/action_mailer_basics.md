@@ -206,7 +206,7 @@ end
 
 [`with`][]に渡されるキーの値は、メーラーアクションでは単なる`params`になります。つまり、`with(user: @user, account: @user.account)`と書けば、メーラーアクションで`params[:user]`や`params[:account]`を使えるようになります。ちょうどコントローラのparamsと同じ要領です。
 
-この`welcome_email`メソッドは[`ActionMailer::MessageDelivery`][]オブジェクトを1つ返します。このオブジェクトは、そのメール自身が送信対象であることを`deliver_now`や`deliver_later`に伝えます。`ActionMailer::MessageDelivery`オブジェクトは、`Mail::Message`をラップしています。内部の[`Mail::Message`][]オブジェクトの表示や変更などを行いたい場合は、[`ActionMailer::MessageDelivery`][]オブジェクトの[`message`][]メソッドにアクセスします。
+この`weekly_summary`メソッドは[`ActionMailer::MessageDelivery`][]オブジェクトを1つ返します。このオブジェクトは、そのメール自身が送信対象であることを`deliver_now`や`deliver_later`に伝えます。`ActionMailer::MessageDelivery`オブジェクトは、`Mail::Message`をラップしています。内部の[`Mail::Message`][]オブジェクトの表示や変更などを行いたい場合は、[`ActionMailer::MessageDelivery`][]オブジェクトの[`message`][]メソッドにアクセスします。
 
 [`ActionMailer::MessageDelivery`]: https://api.rubyonrails.org/classes/ActionMailer/MessageDelivery.html
 [`deliver_later`]: https://api.rubyonrails.org/classes/ActionMailer/MessageDelivery.html#method-i-deliver_later
@@ -460,10 +460,10 @@ end
 
 `app/views/user_mailer/welcome_email.html.erb`やメーラー自身に何らかの変更を加えると、自動的に再読み込みしてレンダリングされるので、スタイル変更を画面ですぐ確認できます。利用可能なプレビューのリストは<http://localhost:3000/rails/mailers>で表示できます。
 
-これらのプレビュー用クラスは、デフォルトで`test/mailers/previews`に配置されます。このパスは`preview_path`オプションで設定できます。たとえば`lib/mailer_previews`に変更したい場合は`config/application.rb`に以下の設定を追加します。
+これらのプレビュー用クラスは、デフォルトで`test/mailers/previews`に配置されます。このパスは`preview_paths`オプションで設定できます。たとえば`lib/mailer_previews`に変更したい場合は`config/application.rb`に以下の設定を追加します。
 
 ```ruby
-config.action_mailer.preview_path = "#{Rails.root}/lib/mailer_previews"
+config.action_mailer.preview_paths << "#{Rails.root}/lib/mailer_previews"
 ```
 
 ### Action MailerのビューでURLを生成する
@@ -575,7 +575,12 @@ end
 Action Mailerのコールバック
 ---------------------------
 
-Action Mailerでは、[`before_action`][]、[`after_action`][]、[`around_action`][]というコールバックを指定できます。
+Action Mailerには以下のコールバックがあります。
+
+メッセージの設定: [`before_action`][]、[`after_action`][]、
+[`around_action`][]。
+
+配信の制御: [`before_deliver`][]、[`after_deliver`][]、[`around_deliver`][]。
 
 * コントローラと同様、メーラークラスのメソッドにもフィルタ付きのブロックまたはシンボルを渡せます。
 
@@ -628,7 +633,6 @@ class UserMailer < ApplicationMailer
   end
 
   private
-
     def set_delivery_options
       # ここではメールのインスタンスや
       # @businessや@userインスタンス変数にアクセスできる
@@ -651,11 +655,44 @@ class UserMailer < ApplicationMailer
 end
 ```
 
-* メールのbodyにnil以外の値が設定されている場合、Mailer Filtersは処理を中止します。
+* `after_delivery`はメッセージ配信を記録するのに利用できます。
+    オブザーバーやインターセプタのような振る舞いも可能ですが、メーラーのコンテキスト全体にアクセスできる点が優れています。
+
+```ruby
+class UserMailer < ApplicationMailer
+  after_deliver :mark_delivered
+  before_deliver :sandbox_staging
+  after_deliver :observe_delivery
+
+  def feedback_message
+    @feedback = params[:feedback]
+  end
+
+  private
+    def mark_delivered
+      params[:feedback].touch(:delivered_at)
+    end
+
+    # インターセプタの代替
+    def sandbox_staging
+      message.to = ['sandbox@example.com'] if Rails.env.staging?
+    end
+
+    # コールバックは、同様のオブザーバーの例よりも多くのコンテキストを含む
+    def observe_delivery
+      EmailDelivery.log(message, self.class, action_name, params)
+    end
+end
+```
+
+* メールのbodyにnil以外の値が設定されている場合、メーラーのコールバックは以後の処理を中止します。`before_deliver`は`throw :abort`で中止できます。
 
 [`after_action`]: https://api.rubyonrails.org/classes/AbstractController/Callbacks/ClassMethods.html#method-i-after_action
+[`after_deliver`]: https://api.rubyonrails.org/classes/ActionMailer/Callbacks/ClassMethods.html#method-i-after_deliver
 [`around_action`]: https://api.rubyonrails.org/classes/AbstractController/Callbacks/ClassMethods.html#method-i-around_action
+[`around_deliver`]: https://api.rubyonrails.org/classes/ActionMailer/Callbacks/ClassMethods.html#method-i-around_deliver
 [`before_action`]: https://api.rubyonrails.org/classes/AbstractController/Callbacks/ClassMethods.html#method-i-before_action
+[`before_deliver`]: https://api.rubyonrails.org/classes/ActionMailer/Callbacks/ClassMethods.html#method-i-before_deliver
 
 Action Mailerヘルパーを使う
 ---------------------------
@@ -678,21 +715,89 @@ Action Mailerを設定する
 
 以下の設定オプションは、environment.rbやproduction.rbなどの環境設定ファイルのいずれかで利用するのが最適です。
 
-
-| 設定 | 説明 |
-|---------------|-------------|
-|`logger`|可能であればメール送受信に関する情報を生成します。`nil`を指定するとログ出力を行わなくなります。Ruby自身の`Logger`ロガーおよび`Log4r`ロガーのどちらとも互換性があります。|
-|`smtp_settings`|`:smtp`の配信メソッドの詳細設定を行います。<ul><li>`:address`: リモートメールサーバーの利用を許可する。デフォルトは`"localhost"`であり、必要に応じて変更する。</li><li>`:port`: メールサーバーが万一ポート25番で動作していない場合はここで変更する。</li><li>`:domain`: HELOドメインを指定する必要がある場合はここで行なう。</li><li>`:user_name`: メールサーバーで認証が必要な場合はここでユーザー名を指定する。</li><li>`:password`: メールサーバーで認証が必要な場合はここでパスワードを指定する。</li><li>`:authentication`: メールサーバーで認証が必要な場合はここで認証の種類を指定する。`:plain`（パスワードを平文で送信）、`:login`（パスワードをBase64でエンコードする）、`:cram_md5`（チャレンジ/レスポンスによる情報交換と、MD5アルゴリズムによる重要情報のハッシュ化の組み合わせ）のいずれかのシンボルを指定する。</li><li>`:enable_starttls`: SMTPサーバーへの接続でSTARTTLSを利用する（サポートされていない場合は失敗する）。デフォルトは`false`。</li><li>`:enable_starttls_auto`: SMTPサーバーでSTARTTLSが有効かどうかを検出して有効にする。デフォルトは`true`。</li><li>`:openssl_verify_mode`: TLSを利用する場合にOpenSSLが認証をチェックする方法を指定できる。自己署名証明書やワイルドカード証明書でバリデーションを行う必要がある場合に非常に有用。OpenSSL検証定数の名前（'none'、'peer'、'client_once'、'fail_if_no_peer_cert'）を用いることも、この定数を直接用いることもできる（`OpenSSL::SSL::VERIFY_NONE`や`OpenSSL::SSL::VERIFY_PEER`など）</li><li>`:ssl/:tls`: SMTP接続でSMTP/TLS（SMTPS: SMTP over direct TLS connection）を有効にする。</li><li>`:open_timeout`: 接続オープン試行のタイムアウトを秒で指定する。</li><li>`:read_timeout`: read(2)呼び出しのタイムアウトを秒で指定する。</li></ul>|
-|`sendmail_settings`|`:sendmail`の配信オプションを上書きします。<ul><li>`:location`: sendmailの実行可能ファイルの場所を指定する。デフォルトは`/usr/sbin/sendmail`。</li><li>`:arguments`: sendmailに渡すコマンドライン引数を指定する。デフォルトは`-i`。</li></ul>|
-|`raise_delivery_errors`|メール配信に失敗した場合にエラーを発生するかどうかを指定します。このオプションは、外部のメールサーバーが即時配信を行っている場合にのみ機能します。|
-|`delivery_method`|配信方法を指定します。以下の配信方法を指定可能です。<ul><li>`:smtp` (default): [`config.action_mailer.smtp_settings`][]で設定可能。</li><li>`:sendmail`: [`config.action_mailer.sendmail_settings`][]で設定可能。</li><li>`:file`: メールをファイルとして保存する。`config.action_mailer.file_settings`で設定可能。</li><li>`:test`: メールを配列`ActionMailer::Base.deliveries`に保存する。</li></ul>詳しくは[APIドキュメント](http://api.rubyonrails.org/classes/ActionMailer/Base.html)を参照。|
-|`perform_deliveries`|Mailのメッセージに`deliver`メソッドを実行したときに実際にメール配信を行なうかどうかを指定します。デフォルトでは配信が行われます。機能テストなどで配信を一時的にオフにしたい場合に便利です。|
-|`deliveries`|`delivery_method :test`を用いてAction Mailerから送信されたメールの配列を保持します。単体テストおよび機能テストで最も便利です。|
-|`delivery_job`|`deliver_later`で使われるジョブクラス。デフォルトは`ActionMailer::MailDeliveryJob`。|
-|`deliver_later_queue_name`|`deliver_later`で使われるキュー名。|
-|`default_options`|`mail`メソッドオプション (`:from`、`:reply_to`など)のデフォルト値を設定します。|
-
 設定オプションの完全な説明については「Rails アプリケーションを設定する」ガイドの[Action Mailerを設定する](configuring.html#action-mailerを設定する)を参照してください。
+
+### `logger`
+
+可能であればメール送受信に関する情報を生成します。`nil`を指定するとログ出力を行わなくなります。Ruby自身の`Logger`ロガーおよび`Log4r`ロガーのどちらとも互換性があります。
+
+### `smtp_settings`
+
+`:smtp`の配信メソッドの詳細設定を行います。
+
+* `:address`: リモートメールサーバーを利用可能にします。デフォルトは`"localhost"`で、必要に応じて変更します。
+
+* `:port`: メールサーバーが万一ポート25番で動作していない場合はここで変更できます。
+
+* `:domain`: HELOドメインを指定する必要がある場合はここで設定できます。
+
+* `:user_name`: メールサーバーで認証が必要な場合はここでユーザー名を指定します。
+
+* `:password`: メールサーバーで認証が必要な場合はここでパスワードを指定します。
+
+* `:authentication`: メールサーバーで認証が必要な場合はここで認証の種類を指定します。以下のいずれかのシンボルを指定します。
+  * `:plain`（パスワードを平文で送信）
+  * `:login`（パスワードをBase64でエンコードする）
+  * `:cram_md5`（チャレンジ/レスポンスによる情報交換と、MD5アルゴリズムによる重要情報のハッシュ化の組み合わせ）
+
+* `:enable_starttls`: SMTPサーバーへの接続でSTARTTLSを利用します（サポートされていない場合は失敗します）。デフォルトは`false`です。
+
+* `:enable_starttls_auto`: SMTPサーバーでSTARTTLSが有効かどうかを検出して有効にします。デフォルトは`true`します。
+
+* `:openssl_verify_mode`: TLSを利用する場合にOpenSSLが認証をチェックする方法を指定できます。自己署名証明書やワイルドカード証明書でバリデーションを行う必要がある場合に非常に有用です。
+  OpenSSL検証定数の名前（'none'、'peer'、'client_once'、'fail_if_no_peer_cert'）を用いることも、`OpenSSL::SSL::VERIFY_NONE`や`OpenSSL::SSL::VERIFY_PEER`定数を直接用いることも可能です。
+
+* `:ssl/:tls`: SMTP接続でSMTP/TLS（SMTPS: SMTP over direct TLS connection）を有効にします。
+
+* `:open_timeout`: 接続オープン試行のタイムアウトを秒で指定します。
+
+* `:read_timeout`: read(2)呼び出しのタイムアウトを秒で指定します。
+
+### `sendmail_settings`
+
+`:sendmail`の配信オプションを上書きします。
+
+* `:location`: sendmailの実行可能ファイルの場所を指定します。デフォルトは`/usr/sbin/sendmail`です。
+
+* `:arguments`: sendmailに渡すコマンドライン引数を指定します。デフォルトは`["-i"]`です。
+
+### `raise_delivery_errors`
+
+メール配信に失敗した場合にエラーを発生するかどうかを指定します。このオプションは、外部のメールサーバーが即時配信を行っている場合にのみ機能します。デフォルトは`true`です。
+
+### `delivery_method`
+
+配信方法を指定します。以下の配信方法を指定可能です。
+
+* `:smtp` (default): [`config.action_mailer.smtp_settings`][]で設定できます。
+
+* `:sendmail`: [`config.action_mailer.sendmail_settings`][]で設定できます。
+
+* `:file`: メールをファイルに保存します。`config.action_mailer.file_settings`で設定できます。
+
+* `:test`: メールを配列`ActionMailer::Base.deliveries`に保存します。
+  詳しくは[APIドキュメント](http://api.rubyonrails.org/classes/ActionMailer/Base.html)を参照してください。
+
+
+### `perform_deliveries`
+
+Mailのメッセージに`deliver`メソッドを実行したときに実際にメール配信を行なうかどうかを指定します。デフォルトでは配信が行われます。機能テストなどで配信を一時的にオフにしたい場合に便利です。
+
+### `deliveries`
+
+`delivery_method :test`を用いてAction Mailerから送信されたメールの配列を保持します。単体テストおよび機能テストで最も便利です。
+
+### `delivery_job`
+
+`deliver_later`で使われるジョブクラスです。デフォルトは`ActionMailer::MailDeliveryJob`です。
+
+### `deliver_later_queue_name`
+
+デフォルトの`deliver_later`で使われるキュー名です。デフォルトのActive Jobキューがデフォルトです。
+
+### `default_options`
+
+`mail`メソッドオプション (`:from`、`:reply_to`など)のデフォルト値を設定します。
 
 [`config.action_mailer.sendmail_settings`]: configuring.html#config-action-mailer-sendmail-settings
 [`config.action_mailer.smtp_settings`]: configuring.html#config-action-mailer-smtp-settings
@@ -706,11 +811,11 @@ config.action_mailer.delivery_method = :sendmail
 # デフォルトは以下:
 # config.action_mailer.sendmail_settings = {
 #   location: '/usr/sbin/sendmail',
-#   arguments: '-i'
+#   arguments: %w[ -i ]
 # }
 config.action_mailer.perform_deliveries = true
 config.action_mailer.raise_delivery_errors = true
-config.action_mailer.default_options = {from: 'no-reply@example.com'}
+config.action_mailer.default_options = { from: 'no-reply@example.com' }
 ```
 
 ### Gmail用のAction Mailer設定
@@ -720,19 +825,21 @@ Action Mailerは[Mail gem](https://github.com/mikel/mail)を利用して同様�
 ```ruby
 config.action_mailer.delivery_method = :smtp
 config.action_mailer.smtp_settings = {
-  address:              'smtp.gmail.com',
-  port:                 587,
-  domain:               'example.com',
-  user_name:            '<ユーザー名>',
-  password:             '<パスワード>',
-  authentication:       'plain',
-  enable_starttls_auto: true,
-  open_timeout:         5,
-  read_timeout:         5 }
+  address:         'smtp.gmail.com',
+  port:            587,
+  domain:          'example.com',
+  user_name:       '<username>',
+  password:        '<password>',
+  authentication:  'plain',
+  enable_starttls: true,
+  open_timeout:    5,
+  read_timeout:    5 }
 ```
 
-NOTE: Googleは2014年7月15日より[同社のセキュリティ対策を引き上げ](https://support.google.com/accounts/answer/6010255)、「安全性が低い」とみなされたアプリケーションからの試行をブロックするようになりました。
-この試行を許可するには、[ここ](https://www.google.com/settings/security/lesssecureapps)でGmailの設定を変更できます。利用するGmailアカウントで2要素認証が有効になっている場合は、[アプリケーションのパスワード](https://myaccount.google.com/apppasswords)を設定して通常のパスワードの代わりに使う必要があります。
+古いバージョンのMail gem（2.6.x以前）を使っている場合は、`enable_starttls`の代わりに`enable_starttls_auto`をお使いください。
+
+NOTE: Googleは、安全性が低いと判断したアプリからのサインインを[ブロック](https://support.google.com/accounts/answer/6010255)しています。
+Gmailの設定を[ここ](https://www.google.com/settings/security/lesssecureapps)で変更することで、サインイン試行を許可できます。Gmailアカウントで2要素認証が有効になっている場合は、[アプリケーションのパスワード](https://myaccount.google.com/apppasswords)を設定し、通常のパスワードの代わりにそれを使用する必要があります。
 
 メーラーのテスト
 --------------

@@ -51,7 +51,7 @@ $ ruby /path/to/rails/railties/bin/rails new myapp --dev
 主要な変更
 --------------
 
-[![Rails 4.0](images/rails4_features.png)](https://guides.rubyonrails.org/images/4_0_release_notes/rails4_features.png)
+[![Rails 4.0](images/rails4_features.png)](https://railsguides.jp/railsguides/images/rails4_features.png)
 
 ### アップグレード
 
@@ -198,7 +198,7 @@ Active Support
 
 * 互換用の`Module#local_constant_names`メソッドは非推奨になりました。今後はシンボルを返す`Module#local_constants`をご利用ください。
 
-* `BufferedLogger`は非推奨になりました。今後は`ActiveSupport::Logger`またはRuby標準ライブラリのロガーをご利用ください。
+* `ActiveSupport::BufferedLogger`は非推奨になりました。今後は`ActiveSupport::Logger`またはRuby標準ライブラリのロガーをご利用ください。
 
 * `assert_present`および`assert_blank`は非推奨になりました。今後は`assert object.blank?`や`assert object.present?`をご利用ください。
 

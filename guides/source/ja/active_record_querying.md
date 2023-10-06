@@ -115,6 +115,7 @@ Active Recordでは、データベースからオブジェクトを取り出す�
 * [`references`][]
 * [`reorder`][]
 * [`reselect`][]
+* [`regroup`][]
 * [`reverse_order`][]
 * [`select`][]
 * [`where`][]
@@ -153,6 +154,7 @@ Active Recordでは、データベースからオブジェクトを取り出す�
 [`references`]: https://api.rubyonrails.org/classes/ActiveRecord/QueryMethods.html#method-i-references
 [`reorder`]: https://api.rubyonrails.org/classes/ActiveRecord/QueryMethods.html#method-i-reorder
 [`reselect`]: https://api.rubyonrails.org/classes/ActiveRecord/QueryMethods.html#method-i-reselect
+[`regroup`]: https://api.rubyonrails.org/classes/ActiveRecord/QueryMethods.html#method-i-regroup
 [`reverse_order`]: https://api.rubyonrails.org/classes/ActiveRecord/QueryMethods.html#method-i-reverse_order
 [`select`]: https://api.rubyonrails.org/classes/ActiveRecord/QueryMethods.html#method-i-select
 [`where`]: https://api.rubyonrails.org/classes/ActiveRecord/QueryMethods.html#method-i-where
@@ -171,7 +173,7 @@ irb> customer = Customer.find(10)
 => #<Customer id: 10, first_name: "Ryan">
 ```
 
-これと同等のSQLは以下のようになります。
+上と同等のSQLは以下のようになります。
 
 ```sql
 SELECT * FROM customers WHERE (customers.id = 10) LIMIT 1
@@ -187,13 +189,41 @@ irb> customers = Customer.find([1, 10]) # OR Customer.find(1, 10)
 => [#<Customer id: 1, first_name: "Lifo">, #<Customer id: 10, first_name: "Ryan">]
 ```
 
-これと同等のSQLは以下のようになります。
+上と同等のSQLは以下のようになります。
 
 ```sql
 SELECT * FROM customers WHERE (customers.id IN (1,10))
 ```
 
 WARNING: `find`メソッドに渡された主キーの中に、どのレコードにもマッチしない主キーが**1個でも**あると、`ActiveRecord::RecordNotFound`例外が発生します。
+
+テーブルで複合主キーを利用している場合、単一の項目を検索するときに配列を渡す必要があります。たとえば、customersテーブルの主キーが`[:store_id, :id]`と定義されている場合は、以下のように指定します。
+
+```irb
+# customerを「store_id 3」と「id 17」で検索する
+irb> customers = Customer.find([3, 17])
+=> #<Customer store_id: 3, id: 17, first_name: "Magda">
+```
+
+上と同等のSQLは以下のようになります。
+
+```sql
+SELECT * FROM customers WHERE store_id = 3 AND id = 17
+```
+
+複合IDで複数の顧客を検索する場合は、以下のように配列の配列を渡します。
+
+```irb
+# 複数の顧客を主キー「[1, 8]」と「[7, 15]」で検索する
+irb> customers = Customer.find([[1, 8], [7, 15]]) # OR Customer.find([1, 8], [7, 15])
+=> [#<Customer store_id: 1, id: 8, first_name: "Pat">, #<Customer store_id: 7, id: 15, first_name: "Chris">]
+```
+
+上と同等のSQLは以下のようになります。
+
+```sql
+SELECT * FROM customers WHERE (store_id = 1 AND id = 8 OR store_id = 7 AND id = 15)
+```
 
 #### `take`
 
@@ -204,7 +234,7 @@ irb> customer = Customer.take
 => #<Customer id: 1, first_name: "Lifo">
 ```
 
-これと同等のSQLは以下のようになります。
+上と同等のSQLは以下のようになります。
 
 ```sql
 SELECT * FROM customers LIMIT 1
@@ -219,7 +249,7 @@ irb> customers = Customer.take(2)
 => [#<Customer id: 1, first_name: "Lifo">, #<Customer id: 220, first_name: "Sara">]
 ```
 
-これと同等のSQLは以下のようになります。
+上と同等のSQLは以下のようになります。
 
 ```sql
 SELECT * FROM customers LIMIT 2
@@ -241,7 +271,7 @@ irb> customer = Customer.first
 => #<Customer id: 1, first_name: "Lifo">
 ```
 
-これと同等のSQLは以下のようになります。
+上と同等のSQLは以下のようになります。
 
 ```sql
 SELECT * FROM customers ORDER BY customers.id ASC LIMIT 1
@@ -258,10 +288,24 @@ irb> customers = Customer.first(3)
 => [#<Customer id: 1, first_name: "Lifo">, #<Customer id: 2, first_name: "Fifo">, #<Customer id: 3, first_name: "Filo">]
 ```
 
-これと同等のSQLは以下のようになります。
+上と同等のSQLは以下のようになります。
 
 ```sql
 SELECT * FROM customers ORDER BY customers.id ASC LIMIT 3
+```
+
+複合主キーを持つモデルの順序付けは、複合主キー全体を利用する形で行われます。
+たとえば、Customerモデルの主キーが`[:store_id, :id]`で定義されている場合は以下のようになります。
+
+```irb
+irb> customer = Customer.first
+=> #<Customer id: 2, store_id: 1, first_name: "Lifo">
+```
+
+上と同等のSQLは以下のようになります。
+
+```sql
+SELECT * FROM customers ORDER BY customers.store_id ASC, customers.id ASC LIMIT 1
 ```
 
 `order`を使って順序を変更したコレクションの場合、`first`メソッドは`order`で指定された属性に従って最初のレコードを返します。
@@ -271,7 +315,7 @@ irb> customer = Customer.order(:first_name).first
 => #<Customer id: 2, first_name: "Fifo">
 ```
 
-これと同等のSQLは以下のようになります。
+上と同等のSQLは以下のようになります。
 
 ```sql
 SELECT * FROM customers ORDER BY customers.first_name ASC LIMIT 1
@@ -291,13 +335,27 @@ irb> customer = Customer.last
 => #<Customer id: 221, first_name: "Russel">
 ```
 
-これと同等のSQLは以下のようになります。
+上と同等のSQLは以下のようになります。
 
 ```sql
 SELECT * FROM customers ORDER BY customers.id DESC LIMIT 1
 ```
 
 `last`メソッドは、モデルにレコードが1件もない場合は`nil`を返します。このとき例外は発生しません。
+
+複合主キーを持つモデルの順序付けは、複合主キー全体を利用する形で行われます。
+たとえば、Customerモデルの主キーが`[:store_id, :id]`で定義されている場合は以下のようになります。
+
+```irb
+irb> customer = Customer.last
+=> #<Customer id: 221, store_id: 1, first_name: "Lifo">
+```
+
+上と同等のSQLは以下のようになります。
+
+```sql
+SELECT * FROM customers ORDER BY customers.store_id DESC, customers.id DESC LIMIT 1
+```
 
 [デフォルトスコープ](active_record_querying.html#デフォルトスコープを適用する)が順序に関するメソッドを含んでいる場合、`last`メソッドはその順序に従って最後のレコードを返します。
 
@@ -308,7 +366,7 @@ irb> customers = Customer.last(3)
 => [#<Customer id: 219, first_name: "James">, #<Customer id: 220, first_name: "Sara">, #<Customer id: 221, first_name: "Russel">]
 ```
 
-これと同等のSQLは以下のようになります。
+上と同等のSQLは以下のようになります。
 
 ```sql
 SELECT * FROM customers ORDER BY customers.id DESC LIMIT 3
@@ -321,7 +379,7 @@ irb> customer = Customer.order(:first_name).last
 => #<Customer id: 220, first_name: "Sara">
 ```
 
-これと同等のSQLは以下のようになります。
+上と同等のSQLは以下のようになります。
 
 ```sql
 SELECT * FROM customers ORDER BY customers.first_name DESC LIMIT 1
@@ -350,7 +408,7 @@ irb> Customer.find_by first_name: 'Jon'
 Customer.where(first_name: 'Lifo').take
 ```
 
-これと同等のSQLは以下のようになります。
+上と同等のSQLは以下のようになります。
 
 ```sql
 SELECT * FROM customers WHERE (customers.first_name = 'Lifo') LIMIT 1
@@ -373,6 +431,32 @@ Customer.where(first_name: 'does not exist').take!
 
 [`find_by`]: https://api.rubyonrails.org/classes/ActiveRecord/FinderMethods.html#method-i-find_by
 [`find_by!`]: https://api.rubyonrails.org/classes/ActiveRecord/FinderMethods.html#method-i-find_by-21
+
+##### 条件を`id`で指定する
+
+[`find_by`][]や[`where`][]などのメソッドで条件を指定するときに`id`を使うと、モデルの`:id`属性と一致します（これは、渡すIDが主キーでなければならない[`find`][]と異なります）。
+
+`:id`が主キー**でない**モデルで`find_by(id:)`を使う場合は注意が必要です。たとえば、`[:store_id, :id]`が主キーとして定義されているCustomerモデルの場合を考えてみましょう。
+
+```irb
+irb> customer = Customer.last
+=> #<Customer id: 10, store_id: 5, first_name: "Joe">
+irb> Customer.find_by(id: customer.id) # Customer.find_by(id: [5, 10])
+=> #<Customer id: 5, store_id: 3, first_name: "Bob">
+```
+
+ここでは、複合主キー`[5, 10]`を持つ1件のレコードを検索するつもりだった可能性がありますが、Active Recordは`:id`カラムが5または10の**いずれか一方**であるレコードを検索するため、誤ったレコードを返す可能性があります。
+
+TIP:  [`id_value`][]メソッドは、`find_by`や`where`などのfinderメソッドでレコードの`:id`カラムの値を取得する目的に利用できます。以下に例を示します。
+
+```irb
+irb> customer = Customer.last
+=> #<Customer id: 10, store_id: 5, first_name: "Joe">
+irb> Customer.find_by(id: customer.id_value) # Customer.find_by(id: 10)
+=> #<Customer id: 10, store_id: 5, first_name: "Joe">
+```
+
+[`id_value`]: https://api.rubyonrails.org/classes/ActiveRecord/ModelSchema.html#method-i-id_value
 
 ### 複数のオブジェクトをバッチで取り出す
 
@@ -641,6 +725,22 @@ Book.where(author: author)
 Author.joins(:books).where(books: { author: author })
 ```
 
+ハッシュ条件は、以下のように「キーがカラムの配列である」かつ「値がタプルの配列である」タプル的な構文でも指定できます。
+
+```ruby
+Book.where([:author_id, :id] => [[15, 1], [15, 2]])
+```
+
+この構文は、以下のようにテーブルが複合主キーを利用しているリレーションをクエリするときに便利な場合があります。
+
+```ruby
+class Book < ApplicationRecord
+  self.primary_key = [:author_id, :id]
+end
+
+Book.where(Book.primary_key => [[2, 1], [3, 1]])
+```
+
 #### 範囲条件
 
 ```ruby
@@ -672,13 +772,13 @@ SELECT * FROM books WHERE books.created_at >= '2008-12-21 00:00:00'
 SQLの`IN`式でレコードを検索したい場合、条件ハッシュにそのための配列を渡せます。
 
 ```ruby
-Customer.where(orders_count: [1,3,5])
+Customer.where(orders_count: [1, 3, 5])
 ```
 
 上のコードを実行すると、以下のようなSQLが生成されます。
 
 ```sql
-SELECT * FROM customers WHERE (customers.orders_count IN (1,3,5))
+SELECT * FROM customers WHERE (customers.orders_count IN (1, 3, 5))
 ```
 
 ### NOT条件
@@ -686,13 +786,13 @@ SELECT * FROM customers WHERE (customers.orders_count IN (1,3,5))
 SQLの`NOT`クエリは、[`where.not`][]で表せます。
 
 ```ruby
-Customer.where.not(orders_count: [1,3,5])
+Customer.where.not(orders_count: [1, 3, 5])
 ```
 
 言い換えれば、このクエリは`where`に引数を付けずに呼び出し、直後に`where`条件に`not`を渡してチェインすることで生成されています。これは以下のようなSQLを出力します。
 
 ```sql
-SELECT * FROM customers WHERE (customers.orders_count NOT IN (1,3,5))
+SELECT * FROM customers WHERE (customers.orders_count NOT IN (1, 3, 5))
 ```
 
 あるクエリのnull許容（nullable）カラムに、非nil値を指定したハッシュ条件がある場合、null許容カラムに`nil`値を持つレコードは返されません。
@@ -700,11 +800,11 @@ SELECT * FROM customers WHERE (customers.orders_count NOT IN (1,3,5))
 ```ruby
 Customer.create!(nullable_country: nil)
 Customer.where.not(nullable_country: "UK")
-=> []
+# => []
 # ただし
 Customer.create!(nullable_country: "UK")
 Customer.where.not(nullable_country: nil)
-=> [#<Customer id: 2, nullable_country: "UK">]
+# => [#<Customer id: 2, nullable_country: "UK">]
 ```
 
 [`where.not`]: https://api.rubyonrails.org/classes/ActiveRecord/QueryMethods/WhereChain.html#method-i-not
@@ -714,11 +814,11 @@ Customer.where.not(nullable_country: nil)
 ２つのリレーションをまたいで`OR`条件を使いたい場合は、１つ目のリレーションで[`or`][]メソッドを呼び出し、そのメソッドの引数に２つ目のリレーションを渡すことで実現できます。
 
 ```ruby
-Customer.where(last_name: 'Smith').or(Customer.where(orders_count: [1,3,5]))
+Customer.where(last_name: 'Smith').or(Customer.where(orders_count: [1, 3, 5]))
 ```
 
 ```sql
-SELECT * FROM customers WHERE (customers.last_name = 'Smith' OR customers.orders_count IN (1,3,5))
+SELECT * FROM customers WHERE (customers.last_name = 'Smith' OR customers.orders_count IN (1, 3, 5))
 ```
 
 [`or`]: https://api.rubyonrails.org/classes/ActiveRecord/QueryMethods.html#method-i-or
@@ -728,11 +828,11 @@ SELECT * FROM customers WHERE (customers.last_name = 'Smith' OR customers.orders
 `AND`条件は、`where`条件をチェインすることで構成できます。
 
 ```ruby
-Customer.where(last_name: 'Smith').where(orders_count: [1,3,5]))
+Customer.where(last_name: 'Smith').where(orders_count: [1, 3, 5]))
 ```
 
 ```sql
-SELECT * FROM customers WHERE customers.last_name = 'Smith' AND customers.orders_count IN (1,3,5)
+SELECT * FROM customers WHERE customers.last_name = 'Smith' AND customers.orders_count IN (1, 3, 5)
 ```
 
 リレーション間の論理的な交差（共通集合）を表す`AND`条件は、1個目のリレーションで[`and`][]を呼び出し、その引数で2個目のリレーションを指定することで構成できます。
@@ -817,7 +917,7 @@ SELECT isbn, out_of_print FROM books
 `select`を使うと、選択したフィールドだけを使ってモデルオブジェクトが初期化されるため、注意が必要です。モデルオブジェクトの初期化時に指定しなかったフィールドにアクセスしようとすると、以下のメッセージが表示されます。
 
 ```bash
-ActiveModel::MissingAttributeError: missing attribute: <属性名>
+ActiveModel::MissingAttributeError: missing attribute: <属性名> for Book
 ```
 
 `<属性名>`は、アクセスしようとした属性です。`id`メソッドは、この`ActiveRecord::MissingAttributeError`を発生しません。このため、関連付けを扱う場合にはご注意ください。関連付けが正常に動作するには`id`メソッドが必要です。
@@ -913,7 +1013,7 @@ GROUP BY status
 
 [`count`]: https://api.rubyonrails.org/classes/ActiveRecord/Calculations.html#method-i-count
 
-Having
+HAVING条件
 ------
 
 SQLでは、`GROUP BY`フィールドで条件を指定する場合に`HAVING`句を使います。検索メソッドで[`having`][]メソッドを使えば、`Model.find`で生成されるSQLに`HAVING`句を追加できます。
@@ -1120,6 +1220,35 @@ SELECT * FROM books WHERE out_of_print = 1 AND out_of_print = 0
 
 [`rewhere`]: https://api.rubyonrails.org/classes/ActiveRecord/QueryMethods.html#method-i-rewhere
 
+### `regroup`
+
+[`regroup`][]メソッドは、既存の名前付き`group`条件をオーバーライドします。
+例:
+
+```ruby
+Book.group(:author).regroup(:id)
+```
+
+上で実行されるSQLは以下のようになります。
+
+```sql
+SELECT * FROM books GROUP BY id
+```
+
+`regroup`を使わない場合、`group`句は結合されます。
+
+```ruby
+Book.group(:author).group(:id)
+```
+
+上で実行されるSQLは以下のようになります。
+
+```sql
+SELECT * FROM books GROUP BY author, id
+```
+
+[`regroup`]: https://api.rubyonrails.org/classes/ActiveRecord/QueryMethods.html#method-i-regroup
+
 Nullリレーション
 -------------
 
@@ -1325,13 +1454,13 @@ SELECT books.* FROM books
 ##### ネストした関連付けを結合する（複数レベル）
 
 ```ruby
-Author.joins(books: [{ reviews: { customer: :orders } }, :supplier] )
+Author.joins(books: [{ reviews: { customer: :orders } }, :supplier])
 ```
 
 上によって以下が生成されます。
 
 ```sql
-SELECT * FROM authors
+SELECT authors.* FROM authors
   INNER JOIN books ON books.author_id = authors.id
   INNER JOIN reviews ON reviews.book_id = books.id
   INNER JOIN customers ON customers.id = reviews.customer_id
@@ -1397,13 +1526,48 @@ LEFT OUTER JOIN reviews ON reviews.customer_id = customers.id GROUP BY customers
 
 上のSQLを日本語で書くと「すべての顧客を返すとともに、それらの顧客がレビューを付けていればレビュー数を返し、レビューを付けていない場合はレビュー数を返さない」となります。
 
+### `where.associated`と`where.missing`
+
+`associated`クエリメソッドとmissing`クエリメソッドでは、関連付けの有無に基づいてレコードの集合を選択できます。
+
+`where.associated`は以下のように使います。
+
+```ruby
+Customer.where.associated(:reviews)
+```
+
+Produces:
+
+```sql
+SELECT customers.* FROM customers
+INNER JOIN reviews ON reviews.customer_id = customers.id
+WHERE reviews.id IS NOT NULL
+```
+
+これは「1件以上レビューした全顧客を返せ」という意味になります。
+
+`where.missing`は以下のように使います。
+
+```ruby
+Customer.where.missing(:reviews)
+```
+
+上のコードは、以下のクエリを生成します。
+
+```sql
+SELECT customers.* FROM customers
+LEFT OUTER JOIN reviews ON reviews.customer_id = customers.id
+WHERE reviews.id IS NULL
+```
+
+これは「レビューをしていない全顧客を返せ」という意味になります。
 
 関連付けをeager loadingする
 --------------------------
 
 eager loading（一括読み込み）とは、`Model.find`によって返されるオブジェクトに関連付けられたレコードを、クエリの利用回数をできるかぎり減らして読み込むためのメカニズムです。
 
-**N + 1クエリ問題**
+### N + 1クエリ問題
 
 以下のコードについて考えてみましょう。このコードは、本を10冊検索して著者の`last_name`を表示します。
 
@@ -1417,7 +1581,7 @@ end
 
 このコードは一見何の問題もないように見えます。しかし本当の問題は、実行されたクエリの回数が無駄に多いことなのです。上のコードでは、最初に本を10冊検索するクエリを1回発行し、次にそこから`last_name`を取り出すのにクエリを10回発行しますので、合計で **11** 回のクエリが発行されます。
 
-**N + 1クエリ問題を解決する**
+#### N + 1クエリ問題を解決する
 
 Active Recordでは、以下のメソッドを用いることで、読み込まれるすべての関連付けを事前に指定できます。
 
@@ -1451,7 +1615,7 @@ SELECT authors.* FROM authors
 
 Active Recordは、1つの`Model.find`呼び出しで関連付けをいくつでもeager loadingできます。これを行なうには、`includes`メソッドを呼び出して「配列」「ハッシュ」または「配列やハッシュをネストしたハッシュ」を指定します。
 
-#### 複数の関連付けの配列
+##### 複数の関連付けの配列
 
 ```ruby
 Customer.includes(:orders, :reviews)
@@ -1462,7 +1626,7 @@ Customer.includes(:orders, :reviews)
 ##### ネストした関連付けハッシュ
 
 ```ruby
-Customer.includes(orders: {books: [:supplier, :author]}).find(1)
+Customer.includes(orders: { books: [:supplier, :author] }).find(1)
 ```
 
 上のコードは、id=1の顧客を検索し、関連付けられたすべての注文、それぞれの本の仕入先と著者を読み込みます。
@@ -1543,6 +1707,43 @@ SELECT books.id AS t0_r0, books.last_name AS t0_r1, ...
 ```
 
 NOTE: 「配列」「ハッシュ」または「配列やハッシュをネストしたハッシュ」を用いる`eager_load`メソッドは、`includes`メソッドと同様に`Model.find`呼び出しで任意の個数の関連付けを読み込みます。また、`includes`メソッドと同様に、eager loadingされる関連付けに条件を指定できます。
+
+### `strict_loading`
+
+eager loadingはN+1クエリを防止できますが、いくつかの関連付けを遅延読み込みしている可能性もあります。[`strict_loading`][]を有効にすることで、関連付けが遅延読み込みされないようにできます。
+
+リレーションで`strict_loading`モードを有効にすると、レコードが任意の関連付けを遅延読み込みしようとしたときに`ActiveRecord::StrictLoadingViolationError`が発生します。
+
+```ruby
+user = User.strict_loading.first
+user.address.city  # ActiveRecord::StrictLoadingViolationErrorが発生
+user.comments.to_a # ActiveRecord::StrictLoadingViolationErrorが発生
+```
+
+[`strict_loading`]: https://api.rubyonrails.org/classes/ActiveRecord/QueryMethods.html#method-i-strict_loading
+
+### `strict_loading!`
+
+以下のように、レコード自身で[`strict_loading!`][]を呼び出すことでstrict loadingを有効にすることも可能です。
+
+```ruby
+user = User.first
+user.strict_loading!
+user.address.city  # ActiveRecord::StrictLoadingViolationErrorが発生
+user.comments.to_a # ActiveRecord::StrictLoadingViolationErrorが発生
+```
+
+`strict_loading!`メソッドには`:mode`引数も渡せます。
+`:n_plus_one_only`を指定すると、N+1クエリを引き起こす関連付けが遅延読み込みされた場合にのみエラーをraiseするようになります。
+
+```ruby
+user.strict_loading!(mode: :n_plus_one_only)
+user.address.city  # => "Tatooine"
+user.comments.to_a # => [#<Comment:0x00...]
+user.comments.first.likes.to_a # ActiveRecord::StrictLoadingViolationErrorが発生
+```
+
+[`strict_loading!`]: https://api.rubyonrails.org/classes/ActiveRecord/Core.html#method-i-strict_loading-21
 
 スコープ
 ------
@@ -1776,11 +1977,11 @@ irb> Book.where(out_of_print: true).unscoped.all
 SELECT books.* FROM books
 ```
 
-`unscoped` はブロックも受け取れます。
+`unscoped`にはブロックも渡せます。
 
 ```irb
 irb> Book.unscoped { Book.out_of_print }
-SELECT books.* FROM books WHERE books.out_of_print
+SELECT books.* FROM books WHERE books.out_of_print = true
 ```
 
 [`unscoped`]: https://api.rubyonrails.org/classes/ActiveRecord/Scoping/Default/ClassMethods.html#method-i-unscoped
@@ -1788,7 +1989,7 @@ SELECT books.* FROM books WHERE books.out_of_print
 動的検索
 ---------------
 
-Active Recordは、テーブルに定義されるすべてのフィールド（属性とも呼ばれます）に対して自動的に検索メソッドを提供します。たとえば、`Customer`モデルに`first_name`というフィールドがあると、`find_by_first_name`というメソッドがActive Recordによって自動的に作成されます。`Customer`モデルに`locked`というフィールドがあれば、`find_by_locked`というメソッドを利用できるようになります。
+Active Recordは、テーブルに定義されるすべてのフィールド（属性とも呼ばれます）に対して自動的に検索メソッド（finderメソッド）を提供します。たとえば、`Customer`モデルに`first_name`というフィールドがあると、`find_by_first_name`というメソッドがActive Recordによって自動的に作成されます。`Customer`モデルに`locked`というフィールドがあれば、`find_by_locked`というメソッドを利用できるようになります。
 
 この動的検索メソッドの末尾に`Customer.find_by_first_name!("Ryan")`のように感嘆符 (`!`) を追加すると、該当するレコードがない場合に`ActiveRecord::RecordNotFound`エラーが発生するようになります。
 
@@ -2018,7 +2219,7 @@ irb> Customer.connection.select_all("SELECT first_name, created_at FROM customer
 
 ### `pluck`
 
-[`pluck`][]は、1つのモデルで使われているテーブルから1つ以上のカラムを取得するクエリを送信するときに利用できます。引数としてカラム名のリストを与えると、指定したカラムの値の配列を、対応するデータ型で返します。
+`pluck`は、指定したカラム名の値を現在のリレーションから取得するときに利用できます。引数としてカラム名のリストを渡すと、指定したカラムの値の配列を、対応するデータ型で返します。
 
 ```irb
 irb> Book.where(out_of_print: true).pluck(:id)
@@ -2094,13 +2295,33 @@ irb> assoc.pluck(:id)
 SELECT "customers"."id" FROM "customers" LEFT OUTER JOIN "reviews" ON "reviews"."id" = "customers"."review_id"
 ```
 
-これを回避する方法の１つは、以下のようにincludesを`unscope`することです。
+これを回避する方法の1つは、以下のようにincludesを`unscope`することです。
 
 ```irb
 irb> assoc.unscope(:includes).pluck(:id)
 ```
 
 [`pluck`]: https://api.rubyonrails.org/classes/ActiveRecord/Calculations.html#method-i-pluck
+
+### `pick`
+
+[`pick`][]は、指定したカラム名の値を現在のリレーションから取得するときに利用できます。引数としてカラム名のリストを渡すと、指定したカラムの値の最初の行を、対応するデータ型で返します。
+
+`pick`は、`relation.limit(1).pluck(*column_names).first`のショートハンドです。主に、既に1行に制限されたリレーションがある場合に有用です。
+
+`pick`を使うと、以下のようなコードをシンプルなものに置き換えられます。
+
+```ruby
+Customer.where(id: 1).pluck(:id).first
+```
+
+上のコードは以下のように置き換えられます。
+
+```ruby
+Customer.where(id: 1).pick(:id)
+```
+
+[`pick`]: https://api.rubyonrails.org/classes/ActiveRecord/Calculations.html#method-i-pick
 
 ### `ids`
 
@@ -2136,7 +2357,7 @@ Customer.exists?(1)
 `exists?`の引数には複数の値を渡せます。ただし、それらの値のうち1つでも存在していれば、他の値が存在していなくても`true`を返します。
 
 ```ruby
-Customer.exists?(id: [1,2,3])
+Customer.exists?(id: [1, 2, 3])
 # または
 Customer.exists?(first_name: ['Jane', 'Sergei'])
 ```
@@ -2160,15 +2381,15 @@ Customer.exists?
 ```ruby
 # モデル経由
 Order.any?
-# => SELECT 1 FROM orders LIMIT 1
+# SELECT 1 FROM orders LIMIT 1
 Order.many?
-# => SELECT COUNT(*) FROM (SELECT 1 FROM orders LIMIT 2)
+# SELECT COUNT(*) FROM (SELECT 1 FROM orders LIMIT 2)
 
 # 名前付きスコープ経由
 Order.shipped.any?
-# => SELECT 1 FROM orders WHERE orders.status = 0 LIMIT 1
+# SELECT 1 FROM orders WHERE orders.status = 0 LIMIT 1
 Order.shipped.many?
-# => SELECT COUNT(*) FROM (SELECT 1 FROM orders WHERE orders.status = 0 LIMIT 2)
+# SELECT COUNT(*) FROM (SELECT 1 FROM orders WHERE orders.status = 0 LIMIT 2)
 
 # リレーション経由
 Book.where(out_of_print: true).any?
@@ -2214,13 +2435,13 @@ SELECT COUNT(DISTINCT customers.id) FROM customers
   WHERE (customers.first_name = 'Ryan' AND orders.status = 0)
 ```
 
-### 個数を数える
+### `count`
 
 モデルのテーブルに含まれるレコードの個数を数えるには`Customer.count`が使えます。返されるのはレコードの個数です。肩書きを指定して顧客の数を数えるときは`Customer.count(:title)`と書けます。
 
 オプションについては、1つ上の[計算](#計算)セクションを参照してください。
 
-### 平均
+### `average`
 
 テーブルに含まれる特定の数値の平均を得るには、そのテーブルを持つクラスで[`average`][]メソッドを呼び出します。このメソッド呼び出しは以下のようになります。
 
@@ -2234,7 +2455,7 @@ Order.average("subtotal")
 
 [`average`]: https://api.rubyonrails.org/classes/ActiveRecord/Calculations.html#method-i-average
 
-### 最小値
+### `minimum`
 
 テーブルに含まれるフィールドの最小値を得るには、そのテーブルを持つクラスで[`minimum`][]メソッドを呼び出します。このメソッド呼び出しは以下のようになります。
 
@@ -2246,7 +2467,7 @@ Order.minimum("subtotal")
 
 [`minimum`]: https://api.rubyonrails.org/classes/ActiveRecord/Calculations.html#method-i-minimum
 
-### 最大値
+### `maximum`
 
 テーブルに含まれるフィールドの最大値を得るには、そのテーブルを持つクラスに対して[`maximum`][]メソッドを呼び出します。このメソッド呼び出しは以下のようになります。
 
@@ -2258,7 +2479,7 @@ Order.maximum("subtotal")
 
 [`maximum`]: https://api.rubyonrails.org/classes/ActiveRecord/Calculations.html#method-i-maximum
 
-### 合計
+### `sum`
 
 テーブルに含まれるフィールドのすべてのレコードにおける合計を得るには、そのテーブルを持つクラスに対して[`sum`][]メソッドを呼び出します。このメソッド呼び出しは以下のようになります。
 
@@ -2281,8 +2502,8 @@ Customer.where(id: 1).joins(:orders).explain
 
 上では以下のような結果が生成されます。
 
-```
-EXPLAIN for: SELECT `customers`.* FROM `customers` INNER JOIN `orders` ON `orders`.`customer_id` = `customers`.`id` WHERE `customers`.`id` = 1
+```sql
+EXPLAIN SELECT `customers`.* FROM `customers` INNER JOIN `orders` ON `orders`.`customer_id` = `customers`.`id` WHERE `customers`.`id` = 1
 +----+-------------+------------+-------+---------------+
 | id | select_type | table      | type  | possible_keys |
 +----+-------------+------------+-------+---------------+
@@ -2303,8 +2524,8 @@ EXPLAIN for: SELECT `customers`.* FROM `customers` INNER JOIN `orders` ON `order
 
 Active Recordは、対応するデータベースシェルの出力をエミュレーションして整形します。同じクエリをPostgreSQLアダプタで実行すると、以下のような結果が得られます。
 
-```
-EXPLAIN for: SELECT "customers".* FROM "customers" INNER JOIN "orders" ON "orders"."customer_id" = "customers"."id" WHERE "customers"."id" = $1 [["id", 1]]
+```sql
+EXPLAIN SELECT "customers".* FROM "customers" INNER JOIN "orders" ON "orders"."customer_id" = "customers"."id" WHERE "customers"."id" = $1 [["id", 1]]
                                   QUERY PLAN
 ------------------------------------------------------------------------------
  Nested Loop  (cost=4.33..20.85 rows=4 width=164)
@@ -2325,8 +2546,8 @@ Customer.where(id: 1).includes(:orders).explain
 
 MySQLとMariaDBでは以下の結果を生成します。
 
-```
-EXPLAIN for: SELECT `customers`.* FROM `customers`  WHERE `customers`.`id` = 1
+```sql
+EXPLAIN SELECT `customers`.* FROM `customers`  WHERE `customers`.`id` = 1
 +----+-------------+-----------+-------+---------------+
 | id | select_type | table     | type  | possible_keys |
 +----+-------------+-----------+-------+---------------+
@@ -2358,10 +2579,10 @@ EXPLAIN for: SELECT `orders`.* FROM `orders`  WHERE `orders`.`customer_id` IN (1
 
 PostgreSQLの場合は以下のような結果を生成します。
 
-```
+```sql
   Customer Load (0.3ms)  SELECT "customers".* FROM "customers" WHERE "customers"."id" = $1  [["id", 1]]
   Order Load (0.3ms)  SELECT "orders".* FROM "orders" WHERE "orders"."customer_id" = $1  [["customer_id", 1]]
-=> EXPLAIN for: SELECT "customers".* FROM "customers" WHERE "customers"."id" = $1 [["id", 1]]
+=> EXPLAIN SELECT "customers".* FROM "customers" WHERE "customers"."id" = $1 [["id", 1]]
                                     QUERY PLAN
 ----------------------------------------------------------------------------------
  Index Scan using customers_pkey on customers  (cost=0.15..8.17 rows=1 width=164)
@@ -2370,6 +2591,65 @@ PostgreSQLの場合は以下のような結果を生成します。
 ```
 
 [`explain`]: https://api.rubyonrails.org/classes/ActiveRecord/Relation.html#method-i-explain
+
+### Explainのオプション
+
+データベースとそれをサポートするアダプタ（現在はPostgreSQLとMySQL）については、より深い分析を行うためのオプションを渡すことが可能です。
+
+PostgreSQLの場合は以下のようになります。
+
+```ruby
+Customer.where(id: 1).joins(:orders).explain(:analyze, :verbose)
+```
+
+上のコードは以下を生成します。
+
+```sql
+EXPLAIN (ANALYZE, VERBOSE) SELECT "shop_accounts".* FROM "shop_accounts" INNER JOIN "customers" ON "customers"."id" = "shop_accounts"."customer_id" WHERE "shop_accounts"."id" = $1 [["id", 1]]
+                                                                   QUERY PLAN
+------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.30..16.37 rows=1 width=24) (actual time=0.003..0.004 rows=0 loops=1)
+   Output: shop_accounts.id, shop_accounts.customer_id, shop_accounts.customer_carrier_id
+   Inner Unique: true
+   ->  Index Scan using shop_accounts_pkey on public.shop_accounts  (cost=0.15..8.17 rows=1 width=24) (actual time=0.003..0.003 rows=0 loops=1)
+         Output: shop_accounts.id, shop_accounts.customer_id, shop_accounts.customer_carrier_id
+         Index Cond: (shop_accounts.id = '1'::bigint)
+   ->  Index Only Scan using customers_pkey on public.customers  (cost=0.15..8.17 rows=1 width=8) (never executed)
+         Output: customers.id
+         Index Cond: (customers.id = shop_accounts.customer_id)
+         Heap Fetches: 0
+ Planning Time: 0.063 ms
+ Execution Time: 0.011 ms
+(12 rows)
+```
+
+MySQLまたはMariaDBの場合は、以下のようになります。
+
+```ruby
+Customer.where(id: 1).joins(:orders).explain(:analyze)
+```
+
+PostgreSQLの場合は以下のようになります。
+
+```sql
+ANALYZE SELECT `shop_accounts`.* FROM `shop_accounts` INNER JOIN `customers` ON `customers`.`id` = `shop_accounts`.`customer_id` WHERE `shop_accounts`.`id` = 1
++----+-------------+-------+------+---------------+------+---------+------+------+--------+----------+------------+--------------------------------+
+| id | select_type | table | type | possible_keys | key  | key_len | ref  | rows | r_rows | filtered | r_filtered | Extra                          |
++----+-------------+-------+------+---------------+------+---------+------+------+--------+----------+------------+--------------------------------+
+|  1 | SIMPLE      | NULL  | NULL | NULL          | NULL | NULL    | NULL | NULL | NULL   | NULL     | NULL       | no matching row in const table |
++----+-------------+-------+------+---------------+------+---------+------+------+--------+----------+------------+--------------------------------+
+1 row in set (0.00 sec)
+```
+
+NOTE: EXPLAINやANALYZEのオプションは、MySQLやMariaDBのバージョンによって異なります。
+
+- [MySQL 5.7][MySQL5.7-explain]
+- [MySQL 8.0][MySQL8-explain]
+- [MariaDB][MariaDB-explain]
+
+[MySQL5.7-explain]: https://dev.mysql.com/doc/refman/5.7/en/explain.html
+[MySQL8-explain]: https://dev.mysql.com/doc/refman/8.0/en/explain.html
+[MariaDB-explain]: https://mariadb.com/kb/en/analyze-and-explain-statements/
 
 ### EXPLAINの出力結果を解釈する
 
@@ -2382,4 +2662,4 @@ EXPLAINの出力を解釈することは、本ガイドの範疇を超えます�
 
 * MariaDB: [EXPLAIN](https://mariadb.com/kb/en/explain/)
 
-* PostgreSQL: [EXPLAINの利用](https://www.postgresql.jp/document/13/html/using-explain.html) （v13日本語）
+* PostgreSQL: [EXPLAINの利用](https://www.postgresql.jp/document/current/html/using-explain.html) （v13日本語）

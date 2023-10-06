@@ -119,7 +119,7 @@ Reloaderを呼び出す場所は、長時間実行される「トップレベル
 フレームワークの挙動
 ------------------
 
-Railsフレームワークのコンポーネントでは、必要な並行性の管理にもこのツールが用いられています。
+Railsフレームワークのコンポーネントでは、必要な並行性（concurrency: コンカレンシー）の管理にもこのツールが用いられています。
 
 Rackミドルウェアである`ActionDispatch::Executor`と`ActionDispatch::Reloader`は、それぞれExecutorとReloaderでリクエストをラップします。2つのRackミドルウェアはデフォルトのアプリケーションスタックに自動的にインクルードされます。Reloaderは、コードが変更されたときに常に新しく読み込まれたアプリケーションでHTTPリクエストを配信するようにします。
 
@@ -131,11 +131,11 @@ Action CableではReloaderではなくExecutorが使われます。Action Cable�
 
 ### 設定
 
-Reloaderは、`cache_classes`が`false`かつ`reload_classes_only_on_change`が`true`の場合（`development`のデフォルト設定）にのみファイルの変更をチェックします。
+Reloaderは、`config.enable_reloading`が`true`かつ`config.reload_classes_only_on_change`が`true`の場合にのみファイルの変更をチェックします。これらは`development`環境でのデフォルトです。
 
-`cache_classes`が`true`（`production`のデフォルト設定）の場合、ReloaderはExecutorへのパススルーのみを行います。
+`config.enable_reloading`が`false` (`production`のデフォルト) の場合は、ReloaderはExecutorへのパススルーのみを行います。
 
-Executorは、データベース接続の管理などの重要な作業を常に抱えています。`cache_classes`と`eager_load`がどちらも`true`の場合（`production`モード）、自動読み込みやクラスの再読み込みは発生しなくなるため、Load Interlockは不要になります。`cache_classes`と`eager_load`のいずれかが`false`の場合（`development`モード）、ExecutorはLoad Interlockを用いて安全な場合にのみ定数を読み込みます。
+Executorは、データベース接続の管理などの重要な作業を常に抱えています。`config.enable_reloading`が`false`かつ`config.eager_load`が`true` （`production` のデフォルト）の場合、Load Interlockは不要になります。`development`環境のデフォルト設定では、ExecutorはLoad Interlockを利用して、安全な場合にのみ定数を読み込みます。
 
 Load Interlock
 --------------

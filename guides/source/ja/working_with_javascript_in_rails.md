@@ -6,7 +6,7 @@ Rails で JavaScript を利用する
 このガイドの内容:
 
 * Node.jsやYarnやJavaScriptのバンドラーを使わずにRailsを利用する方法
-* JavaScriptをimport maps・esbuild・rollup・webpackでバンドルする新規Railsアプリケーションを作成する方法
+* JavaScriptをimport maps・bun・esbuild・rollup・webpackでバンドルする新規Railsアプリケーションを作成する方法
 * Turboの概要と利用法
 * Railsが提供するTurbo HTMLヘルパーの利用法
 
@@ -20,6 +20,20 @@ import maps
 import mapsを利用するアプリケーションは、[Node.js](https://nodejs.org/en/)や[Yarn](https://yarnpkg.com/)なしで機能します。RailsのJavaScript依存関係を`importmap-rails`で管理する予定であれば、Node.jsやYarnをインストールする必要はありません。
 
 import mapsを利用する場合、別途ビルドプロセスを実行する必要はなく、`bin/rails server`コマンドでサーバーを起動するだけでOKです。
+
+### importmap-railsをインストールする
+
+Importmap for Railsは、Rails 7以降の新規アプリケーションに自動的に含まれていますが、既存のアプリケーションに手動でインストールすることも可能です。
+
+```bash
+$ bin/bundle add importmap-rails
+```
+
+以下のインストールタスクを実行します。
+
+```bash
+$ bin/rails importmap:install
+```
 
 ### NPMパッケージをimportmap-railsで追加する
 
@@ -40,23 +54,44 @@ import ReactDOM from "react-dom"
 NPMパッケージをJavaScriptバンドラーで追加する
 --------
 
-import mapsは新規Railsアプリケーションのデフォルトですが、従来のJavaScriptバンドラーを使いたい場合は、新規Railsアプリケーション作成時に[esbuild](https://esbuild.github.io/)、[webpack](https://webpack.js.org/)、[rollup.js](https://rollupjs.org/guide/en/)のいずれかを選択できます。
+import mapsは新規Railsアプリケーションのデフォルトですが、従来のJavaScriptバンドラーを使いたい場合は、新規Railsアプリケーション作成時にいずれかを選択できます。
+
+* [Bun](https://bun.sh)
+* [esbuild](https://esbuild.github.io/)
+* [webpack](https://webpack.js.org/)
+* [rollup.js](https://rollupjs.org/guide/en/)
 
 import mapsではなくJavaScriptバンドラーを新規Railsアプリケーションで利用するには、以下のように`rails new`コマンドに`—javascript`または`-j`オプションを渡します。
 
 ```bash
-$ rails new my_new_app --javascript=webpack
-OR
-$ rails new my_new_app -j webpack
+$ rails new my_new_app --javascript=bun
+# または
+$ rails new my_new_app -j bun
 ```
 
 どのバンドルオプションにも、シンプルな設定と、[jsbundling-rails](https://github.com/rails/jsbundling-rails) gemによるアセットパイプラインとの統合が用意されています。
 
 バンドルオプションを利用する場合は、development環境でのRailsサーバー起動とJavaScriptのビルドに`bin/dev`コマンドをお使いください。
 
-### Node.jsとYarnをインストールする
+### JavaScriptランタイムをインストールする
 
-RailsアプリケーションでJavaScriptバンドラーを使う場合は、Node.jsとYarnをインストールしなければなりません。
+Railsアプリケーションでesbuild、rollup.js、WebpackのいずれかをJavaScriptランタイムとして使う場合は、Node.jsとYarnをインストールしなければなりません。
+
+Bunを使う場合は、BunをJavaScriptのランタイムとバンドラーの兼用としてインストールするだけで済みます。
+
+#### Bunをインストールする
+
+[Bunウェブサイト](https://bun.sh)でインストール手順を見つけ、インストール後に以下のコマンドを実行して正しくインストールされているかを確認してください。
+
+```bash
+$ bun --version
+```
+
+インストールされているBunランタイムのバージョンが表示されるはずです。`1.0.0`のようにバージョンが表示されれば、Bunは正しくインストールされています。
+
+#### Node.jsとYarnをインストールする
+
+Railsアプリケーションでesbuild、rollup.js、Webpackのいずれかを使う場合は、Node.jsとYarnをインストールしなければなりません。
 
 Node.jsのインストール方法については[Node.js Webサイト](https://nodejs.org/ja/download/)を参照してください。また、以下のコマンドで正しくインストールされたかどうかを確認してください。
 
@@ -88,7 +123,7 @@ Railsチームは、import mapsが複雑さを削減して開発者のエクス�
 * コードでトランスパイルが必須である場合（JSXやTypeScriptなどを使う場合）
 * CSSをインクルードするJavaScriptライブラリや、[Webpack loaders](https://webpack.js.org/loaders/)に依存する必要がある場合
 * [tree-shaking](https://webpack.js.org/guides/tree-shaking/)がどうしても必要な場合
-* [cssbundling-rails gem](https://github.com/rails/cssbundling-rails)経由でBootstrap、Bulma、PostCSS、Dart CSSをインストールする場合。なお、`rails new`で特に別のオプションを指定しなかった場合は、cssbundling-rails gemが自動的に`esbuild`をインストールします（Tailwindを選んだ場合はインストールされません）。
+* [cssbundling-rails gem](https://github.com/rails/cssbundling-rails)経由でBootstrap、Bulma、PostCSS、Dart CSSをインストールする場合。なお、`rails new`で特に別のオプションを指定しなかった場合は、cssbundling-rails gemが自動的に`esbuild`をインストールします（TailwindやSassを選んだ場合はインストールされません）。
 
 Turbo
 -----
@@ -114,7 +149,7 @@ Railsでは、[turbo-rails](https://github.com/hotwired/turbo-rails) gemを介�
 ```erb
 <%= turbo_frame_tag dom_id(post) do %>
   <div>
-     <%= link_to post.title, post_path(path) %>
+     <%= link_to post.title, post_path(post) %>
   </div>
 <% end %>
 ```
@@ -178,11 +213,11 @@ WebSocketによって、更新を受け取る以下のようなページとの�
 Rails/UJSの機能を置き換える
 ----------------------------------------
 
-Rails 6に同梱されていたUJSというツールは、開発者が`<a>`タグをオーバーライドすることでハイパーリンクのクリック後に非GETリクエストを実行し、アクション実行前に確認ダイアログを追加できるようにします。Rails 7より前はこの方法がデフォルトでしたが、現在はTurboの利用が推奨されています。
+Rails 6にはUJS（Unobtrusive JavaScript）というツールが同梱されていました。UJSは、開発者が`<a>`タグをオーバーライドすることでハイパーリンクのクリック後に非GETリクエストを実行し、アクション実行前に確認ダイアログを追加できるようにします。Rails 7より前はこの方法がデフォルトでしたが、現在はTurboの利用が推奨されています。
 
 ### HTTPメソッド
 
-リンクをクリックすると、常にHTTP GETリクエストが発生します。[RESTful](https://ja.wikipedia.org/wiki/Representational_State_Transfer)なアプリケーションでは、実際には一部のリンクがサーバーのデータを変更するアクションを起動しますが、これは非GETリクエストで実行されるべきです。属性を利用することで、そうしたリンクをPOSTやPUTやDELETEなどのHTTPメソッドで明示的にマークアップできるようになります。
+リンクをクリックすると、常にHTTP GETリクエストが発生します。[RESTful](https://ja.wikipedia.org/wiki/Representational_State_Transfer)なアプリケーションでは、実際には一部のリンクがサーバーのデータを変更するアクションを起動しますが、これは非GETリクエストで実行されるべきです。`data-turbo-method`属性を利用することで、そうしたリンクをPOSTやPUTやDELETEなどのHTTPメソッドで明示的にマークアップできるようになります。
 
 Turboは、アプリケーション内の`<a>`タグをスキャンして`turbo-method`データ属性があるかどうかを調べ、HTTPメソッドが指定されている場合はそのHTTPメソッドを使う形で、デフォルトのGETアクションをオーバーライドします。
 
@@ -222,3 +257,36 @@ HTTPメソッドの変更は、`data-turbo-method`属性をリンクに追加す
 ```erb
 <%= button_to "Delete post", post, method: :delete, form: { data: { turbo_confirm: "削除してよろしいですか？" } } %>
 ```
+### Ajaxリクエスト
+
+JavaScriptからGET以外のリクエストを行う場合、`X-CSRF-Token`ヘッダーが必要です。このヘッダーがないと、Railsはリクエストを受け付けません。
+
+NOTE: このトークンは、クロスサイトリクエストフォージェリ（CSRF）攻撃を防ぐためにRailsで必須になっています。詳しくは[セキュリティガイド](security.html#クロスサイトリクエストフォージェリ（csrf）)をお読みください。
+
+Railsリポジトリにある[Request.JS](https://github.com/rails/request.js)は、Railsで必須のリクエストヘッダーを追加するロジックをカプセル化したものです。このパッケージから`FetchRequest`クラスをインポートして、リクエストメソッド、URL、オプションを渡してインスタンス化し、`await request.perform()`を呼び出せば、レスポンスに必要な処理を行えます。
+
+以下の例を見てみましょう。
+
+```javascript
+import { FetchRequest } from '@rails/request.js'
+
+....
+
+async myMethod () {
+  const request = new FetchRequest('post', 'localhost:3000/posts', {
+    body: JSON.stringify({ name: 'Request.JS' })
+  })
+  const response = await request.perform()
+  if (response.ok) {
+    const body = await response.text
+  }
+}
+```
+
+その他のライブラリを利用してAjax呼び出しを行う場合、自分でセキュリティトークンをデフォルトヘッダーとして追加する必要があります。このトークンを取得するには、[`csrf_meta_tags`][]から出力される`<meta name='csrf-token' content='（トークン）'>`を参照します。トークンの取得は以下のような感じで行なえます。
+
+```javascript
+document.head.querySelector("meta[name=csrf-token]")?.content
+```
+
+[`csrf_meta_tags`]: https://api.rubyonrails.org/classes/ActionView/Helpers/CsrfHelper.html#method-i-csrf_meta_tags

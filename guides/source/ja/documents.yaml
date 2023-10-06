@@ -42,11 +42,16 @@
       name: Active Record と暗号化
       url: active_record_encryption.html
       description: Active Recordを用いてデータベースの情報を暗号化する方法について解説します。
-    -
-      name: Active Record で複数のデータベース利用
-      url: active_record_multiple_databases.html
-      description: Active Recordでデータベースを複数利用する方法について解説します。
       work_in_progress: true
+    -
+      name: Active Record の複数データベース対応
+      url: active_record_multiple_databases.html
+      description: Active Recordで複数のデータベースを利用する方法について説明します。
+      work_in_progress: false
+    -
+      name: Active Record の複合主キー
+      url: active_record_composite_primary_keys.html
+      description: データベースのテーブルに複合主キーを導入する方法について解説します。
     -
       name: Active Model の基礎
       url: active_model_basics.html
@@ -137,11 +142,15 @@
       url: security.html
       description: Webアプリケーション全般におけるセキュリティ問題と、Railsでこれらの問題を回避する方法について解説します。
     -
+      name: Rails アプリケーションのエラー通知
+      url: error_reporting.html
+      description: Railsアプリケーションで発生する例外を管理する方法について解説します。
+    -
       name: Rails アプリケーションのデバッグ
       url: debugging_rails_applications.html
       description: Railsアプリケーションのデバッグ方法について解説します。さまざまなデバッグ方法や、作成したコードの舞台裏でどのような動作が行われているかについても解説します。
     -
-      name: Rails アプリケーションを設定する
+      name: Rails アプリケーションの設定項目
       url: configuring.html
       description: Railsアプリケーションの基本的な設定方法について解説します。
     -
@@ -155,20 +164,20 @@
     -
       name: Rails で JavaScript を利用する
       url: working_with_javascript_in_rails.html
-      description: RailsビルトインのAjax/JavaScriptについて解説します。
+      description: importmapやjsbundling-railsを用いてRaisアプリケーションにJavaScriptを組み込む方法を解説します。RailsでTurboを使う基本的な方法についても解説します。
     -
       name: Rails の初期化プロセス
       work_in_progress: true
       url: initialization.html
       description: Rails 内部の初期化プロセスについて解説します。
     -
-      name: 定数の自動読み込みと再読み込み (Zeitwerk)
+      name: Rails の自動読み込みと再読み込み
       url: autoloading_and_reloading_constants.html
-      description: 定数の自動読み込みや再読み込みの動作について解説します。(Zeitwerk モード)
+      description: Rails 内部の自動読み込みや再読み込みの動作について解説します。
 #    -
-#      name: 定数の自動読み込みと再読み込み (Classic)
+#      name: Rails の自動読み込みと再読み込み (Classic)
 #      url: autoloading_and_reloading_constants_classic_mode.html
-#      description: 定数の自動読み込みや再読み込みの動作について解説します。(Classic モード)
+#      description: Rails 内部の自動読み込みや再読み込みの動作について解説します。(Classic モード)
     -
       name: Classic から Zeitwerk への移行
       url: classic_to_zeitwerk_howto.html
@@ -187,11 +196,6 @@
       work_in_progress: true
       url: rails_application_templates.html
       description: テンプレートを使って生成/カスタマイズを行う方法や、テンプレートAPIを使って再利用可能なテンプレートを開発する方法について解説します。
-#    -
-#      name: Rails アプリケーションを解析する
-#      work_in_progress: true
-#      url: profiling.html
-#      description: Railsのパフォーマンス向上に役立つプロファイリングの手法について解説します。
     -
       name: Rails による API 専用アプリケーション
       url: api_app.html
@@ -217,7 +221,7 @@
       name: Rails エンジン入門
       url: engines.html
       description: マウント可能なエンジンの作成方法について解説します。
-      work_in_progress: false
+      work_in_progress: true
     -
       name: Rails のスレッドとコード実行
       url: threading_and_code_execution.html
@@ -256,6 +260,10 @@
       name: Rails アップグレードガイド
       url: upgrading_ruby_on_rails.html
       description: アプリケーションのRuby on Railsを最新バージョンにアップグレードする方法について解説します。
+    -
+      name: Rails 7.1 - 2023/10
+      url: 7_1_release_notes.html
+      description: Rails 7.1のリリースノートです。
     -
       name: Rails 7.0 - 2021/12
       url: 7_0_release_notes.html

@@ -5,7 +5,7 @@ Active Record コールバック
 
 このガイドの内容:
 
-* Active Recordオブジェクトのライフサイクル
+* Active Recordオブジェクトのライフサイクルでいつイベントが発生するか
 * オブジェクトのライフサイクルにおけるイベントに応答するコールバックメソッドを作成する方法
 * コールバックで共通となる振る舞いをカプセル化する特殊なクラスの作成方法
 
@@ -17,6 +17,19 @@ Active Record コールバック
 Railsアプリケーションを普通に操作すると、その内部でオブジェクトが作成・更新・削除（destroy）されます。Active Recordはこの**オブジェクトライフサイクル**へのフックを提供しており、これを用いてアプリケーションやデータを制御できます。
 
 コールバックは、オブジェクトの状態が切り替わる「前」または「後」にロジックをトリガします。
+
+```ruby
+class Baby < ApplicationRecord
+  after_create -> { puts "Congratulations!" }
+end
+```
+
+```irb
+irb> @baby = Baby.create
+Congratulations!
+```
+
+このように、ライフサイクルにはさまざまなイベントがあり、イベントの「前」「後」「前後」のいずれかにフックできます。
 
 コールバックの概要
 ------------------
@@ -35,7 +48,7 @@ class User < ApplicationRecord
 
   private
     def ensure_login_has_a_value
-      if login.nil?
+      if login.blank?
         self.login = email unless email.blank?
       end
     end
@@ -54,7 +67,31 @@ class User < ApplicationRecord
 end
 ```
 
-特定のライフサイクルのイベントでのみ呼び出されるようにコールバックを登録することも可能です。
+以下のように、コールバックにprocを渡してトリガーさせることも可能です。
+
+```ruby
+class User < ApplicationRecord
+  before_create ->(user) { user.name = user.login.capitalize if user.name.blank? }
+end
+```
+
+最後に、独自のカスタムコールバックオブジェクトも定義できます。これについては[後述](#コールバッククラス)します。
+
+```ruby
+class User < ApplicationRecord
+  before_create MaybeAddName
+end
+
+class MaybeAddName
+  def self.before_create(record)
+    if record.name.blank?
+      record.name = record.login.capitalize
+    end
+  end
+end
+```
+
+コールバックは、特定のライフサイクルのイベントでのみ呼び出される形で登録することも可能です。 これにより、コールバックがトリガーされるタイミングやコンテキストを完全に制御できるようになります。
 
 ```ruby
 class User < ApplicationRecord
@@ -75,6 +112,8 @@ end
 ```
 
 コールバックはprivateメソッドとして宣言するのが好ましい方法です。コールバックメソッドがpublicな状態のままだと、このメソッドがモデルの外から呼び出され、オブジェクトのカプセル化の原則に違反する可能性があります。
+
+WARNING: コールバック内のオブジェクトに副作用を与える`update`、`save`などのメソッド呼び出しは避けてください。たとえば、コールバック内で`update(attribute: "value")`を呼び出してはいけません。これはモデルのステートを変更する可能性があり、コミット時に予期せぬ副作用が発生する可能性があります。代わりに、`before_create`や`before_update`、またはそれより前にトリガーされるコールバックで安全に値を直接代入できます（例: `self.attribute = "value"`）。
 
 利用可能なコールバック
 -------------------
@@ -120,6 +159,8 @@ Active Recordで利用可能なコールバックの一覧を以下に示しま�
 [`around_update`]: https://api.rubyonrails.org/classes/ActiveRecord/Callbacks/ClassMethods.html#method-i-around_update
 [`before_update`]: https://api.rubyonrails.org/classes/ActiveRecord/Callbacks/ClassMethods.html#method-i-before_update
 
+WARNING: `after_save`は`create`と`update`の両方で実行されますが、マクロ呼び出しの実行順序にかかわらず、常に`after_create`や`after_update`という特定のコールバックよりも**後**に呼び出されます。
+
 ### オブジェクトのdestroy
 
 * [`before_destroy`][]
@@ -131,19 +172,18 @@ Active Recordで利用可能なコールバックの一覧を以下に示しま�
 [`around_destroy`]: https://api.rubyonrails.org/classes/ActiveRecord/Callbacks/ClassMethods.html#method-i-around_destroy
 [`before_destroy`]: https://api.rubyonrails.org/classes/ActiveRecord/Callbacks/ClassMethods.html#method-i-before_destroy
 
-WARNING: `after_save`コールバックは作成と更新の両方で呼び出されますが、コールバックマクロの呼び出し順序にかかわらず、常に、より具体的な`after_create`コールバックや`after_update`コールバックより**後に**呼び出されます。
-
-WARNING: コールバック内では属性の更新や保存は行わないようにしてください。たとえば、コールバック内で`update(attribute: "value")`を呼び出してはいけません。このような操作はモデルのステートを変化させて、コミット時に思わぬ副作用が生じる可能性があります。`before_create`、`before_update`、およびそれより前に発火するコールバックで値を（`self.attribute = "value"`のように）直接代入するのは安全です。
-
 NOTE: `before_destroy`コールバックは、`dependent: :destroy`よりも**前**に配置すること（または`prepend: true`オプションをお使いください）。理由は、そのレコードが`dependent: :destroy`関連付けによって削除されるよりも前に`before_destroy`コールバックが実行されるようにするためです。
+
+WARNING: `after_commit`の保証は、`after_save`や`after_update`や`after_destroy`の保証とは大きく異なります。たとえば、`after_save`で例外が発生した場合、トランザクションはロールバックされ、データは永続化されません。
+一方、`after_commit`で発生したものは、トランザクションが既に完了し、データがデータベースに永続化されたことを保証できます。詳しくは[トランザクションのコールバック](#トランザクションのコールバック)で後述します。
 
 ### `after_initialize`と`after_find`
 
-[`after_initialize`][]コールバックは、Active Recordオブジェクトが1つインスタンス化されるたびに呼び出されます。インスタンス化は、直接`new`を実行する他にデータベースからレコードが読み込まれるときにも行われます。これを利用すれば、Active Recordの`initialize`メソッドを直接オーバーライドせずに済みます。
+[`after_initialize`][]コールバックは、Active Recordオブジェクトがインスタンス化されるたびに呼び出されます。インスタンス化は、直接`new`を実行する他に、データベースからレコードが読み込まれるときにも行われます。これを利用すれば、Active Recordの`initialize`メソッドを直接オーバーライドせずに済みます。
 
-[`after_find`][]コールバックは、Active Recordがデータベースからレコードを1つ読み込むたびに呼び出されます。`after_find`と`after_initialize`が両方定義されている場合は、`after_find`が先に実行されます。
+[`after_find`][]コールバックは、Active Recordがデータベースからレコードを1件読み込むたびに呼び出されます。`after_find`と`after_initialize`が両方定義されている場合は、`after_find`が先に呼び出されます。
 
-`after_initialize`と`after_find`コールバックには、対応する`before_*`メソッドはありませんが、他のActive Recordコールバックと同様に登録できます。
+NOTE: `after_initialize`と`after_find`コールバックには、対応する`before_*`メソッドはありませんが、他のActive Recordコールバックと同様に登録できます。
 
 ```ruby
 class User < ApplicationRecord
@@ -195,31 +235,31 @@ irb> u.touch
 このコールバックは`belongs_to`と併用できます。
 
 ```ruby
-class Employee < ApplicationRecord
-  belongs_to :company, touch: true
+class Book < ApplicationRecord
+  belongs_to :library, touch: true
   after_touch do
-    puts 'Employeeがtouchされました'
+    puts 'Bookがtouchされました'
   end
 end
 
-class Company < ApplicationRecord
-  has_many :employees
-  after_touch :log_when_employees_or_company_touched
+class Library < ApplicationRecord
+  has_many :books
+  after_touch :log_when_books_or_library_touched
 
   private
-    def log_when_employees_or_company_touched
-      puts 'Employee/Companyがtouchされました'
+    def log_when_books_or_library_touched
+      puts 'Book/Libraryがtouchされました'
     end
 end
 ```
 
 ```irb
-irb> @employee = Employee.last
-=> #<Employee id: 1, company_id: 1, created_at: "2013-11-25 17:04:22", updated_at: "2013-11-25 17:05:05">
+irb> @book = Book.last
+=> #<Book id: 1, library_id: 1, created_at: "2013-11-25 17:04:22", updated_at: "2013-11-25 17:05:05">
 
-irb> @employee.touch # triggers @employee.company.touch
-Employeeがtouchされました
-Employee/Companyがtouchされました
+irb> @book.touch # @book.library.touchがトリガーされる
+Bookがtouchされました
+Book/Libraryがtouchされました
 => true
 ```
 
@@ -298,7 +338,9 @@ NOTE: `find_by_*`メソッドと`find_by_*!`メソッドは、属性ごとに自
 throw :abort
 ```
 
-WARNING: `ActiveRecord::Rollback`や`ActiveRecord::RecordInvalid`を除く例外は、その例外によってコールバックチェインが停止した後も、Railsによって再び発生します。このため、`ActiveRecord::Rollback`や`ActiveRecord::RecordInvalid`以外の例外を発生させると、`save`や`update`のようなメソッド（つまり通常`true`か`false`を返そうとするメソッド）が例外を発生することを想定していないコードが中断する恐れがあります。
+WARNING: `ActiveRecord::Rollback`や`ActiveRecord::RecordInvalid`を除く例外は、その例外によってコールバックチェインが停止した後も、Railsによって再び発生します。さらに、`ActiveRecord::Rollback`や`ActiveRecord::RecordInvalid`以外の例外が発生すると、`save`や`update`のようなメソッド（つまり通常`true`か`false`を返そうとするメソッド）が例外を発生することを想定していないコードが中断する恐れがあります。
+
+NOTE: `after_destroy`、`before_destroy`、または`around_destroy`コールバック内で `ActiveRecord::RecordNotDestroyed`例外が発生した場合、`destroy`メソッドは再度例外を発生せずに`false`を返します。
 
 リレーションシップのコールバック
 --------------------
@@ -332,17 +374,24 @@ irb> user.destroy
 条件付きコールバック
 ---------------------
 
-検証と同様、与えられた述語の条件を満たす場合に実行されるコールバックメソッドの呼び出しも作成可能です。これを行なうには、コールバックで`:if`オプションまたは`:unless`オプションを使います。このオプションはシンボル、`Proc`、または`Array`を引数に取ります。特定の状況でのみコールバックが呼び出される必要がある場合は、`:if`オプションを使います。特定の状況でコールバックを**呼び出してはならない**場合は、`:unless`オプションを使います。
+バリデーションと同様、指定された述語の条件を満たす場合に実行されるコールバックメソッドの呼び出しも作成可能です。これを行なうには、コールバックで`:if`オプションまたは`:unless`オプションを使います。このオプションはシンボル、`Proc`、または`Array`を引数に取ります。
+
+特定の状況でのみコールバックを**呼び出す必要がある**場合は、`:if`オプションを使います。特定の状況でコールバックを**呼び出してはならない**場合は、`:unless`オプションを使います。
 
 ### `:if`および`:unless`オプションでシンボルを使う
 
-`:if`オプションまたは`:unless`オプションは、コールバックの直前に呼び出される述語メソッドの名前に対応するシンボルと関連付けることが可能です。`:if`オプションを使う場合、述語メソッドが`false`を返せばコールバックは実行されません。`:unless`オプションを使う場合、述語メソッドが`true`を返せばコールバックは実行されません。これはコールバックで最もよく使われるオプションです。この方法で登録すれば、さまざまな述語メソッドを登録して、コールバックを呼び出すべきかどうかをチェックできるようになります。
+`:if`オプションまたは`:unless`オプションは、コールバックの直前に呼び出される述語メソッド名に対応するシンボルと関連付けることが可能です。
+
+`:if`オプションを使う場合、述語メソッドが`false`を返せばコールバックは**実行されません**。
+`:unless`オプションを使う場合、述語メソッドが`true`を返せばコールバックは**実行されません**。これはコールバックで最もよく使われるオプションです。
 
 ```ruby
 class Order < ApplicationRecord
   before_save :normalize_card_number, if: :paid_with_card?
 end
 ```
+
+この方法で登録すれば、さまざまな述語メソッドを登録して、コールバックを呼び出すべきかどうかをチェックできるようになります。詳しくは[後述](#コールバックで複数の条件を指定する)します。
 
 ### `:if`および`:unless`オプションで`Proc`を使う
 
@@ -388,18 +437,42 @@ class Comment < ApplicationRecord
 end
 ```
 
+条件リストではprocを手軽に利用できます。
+
+```ruby
+class Comment < ApplicationRecord
+  before_save :filter_content,
+    if: [:subject_to_parental_control?, Proc.new { untrusted_author? }]
+end
+```
+
+### `:if`と`:unless`を同時に使う
+
+コールバックは、同じ宣言の中で`:if`と`:unless`を併用できます。
+
+```ruby
+class Comment < ApplicationRecord
+  before_save :filter_content,
+    if: Proc.new { forum.parental_control? },
+    unless: Proc.new { author.trusted? }
+end
+```
+
+このコールバックは、すべての`:if`条件が`true`と評価され、どの`:unless`条件も`true`と評価されなかった場合にのみ実行されます。
+
 コールバッククラス
 ----------------
 
 有用なコールバックメソッドを書いた後で、他のモデルでも使い回したいことがあります。Active Recordは、コールバックメソッドをカプセル化したクラスを作成できるので、手軽に再利用できます。
 
-以下の例では、`PictureFile`モデル用に`after_destroy`コールバックを持つクラスを作成しています。
+ここでは、ファイルシステム上で破棄されたファイルのクリーンアップを行うために`after_destroy`コールバックを持つクラスを作成する例を示します。
+この振る舞いは`PictureFile`モデルに固有のものではなく、共有したい場合もあるので、これを別のクラスにカプセル化するのは良い考えです。これにより、その振る舞いのテストや変更がずっと簡単になります。
 
 ```ruby
-class PictureFileCallbacks
-  def after_destroy(picture_file)
-    if File.exist?(picture_file.filepath)
-      File.delete(picture_file.filepath)
+class FileDestroyerCallback
+  def after_destroy(file)
+    if File.exist?(file.filepath)
+      File.delete(file.filepath)
     end
   end
 end
@@ -413,23 +486,23 @@ class PictureFile < ApplicationRecord
 end
 ```
 
-コールバックをインスタンスメソッドとして宣言したので、`PictureFileCallbacks`オブジェクトを新しくインスタンス化する必要があったことにご注意ください。これは、インスタンス化されたオブジェクトの状態をコールバックメソッドで利用したい場合に特に便利です。ただし、コールバックをクラスメソッドとして宣言する方が理にかなうこともよくあります。
+コールバックをインスタンスメソッドとして宣言したので、`FileDestroyerCallback`オブジェクトを新しくインスタンス化する必要があったことにご注意ください。これは、インスタンス化されたオブジェクトの状態をコールバックメソッドで利用したい場合に特に便利です。ただし、コールバックをクラスメソッドとして宣言する方が理にかなうこともよくあります。
 
 ```ruby
-class PictureFileCallbacks
-  def self.after_destroy(picture_file)
-    if File.exist?(picture_file.filepath)
-      File.delete(picture_file.filepath)
+class FileDestroyerCallback
+  def self.after_destroy(file)
+    if File.exist?(file.filepath)
+      File.delete(file.filepath)
     end
   end
 end
 ```
 
-コールバックメソッドを上のように宣言した場合は、`PictureFileCallbacks`オブジェクトのインスタンス化は不要です。
+コールバックメソッドを上のように宣言した場合は、モデル内で`FileDestroyerCallback`オブジェクトのインスタンス化が不要になります。
 
 ```ruby
 class PictureFile < ApplicationRecord
-  after_destroy PictureFileCallbacks
+  after_destroy FileDestroyerCallback
 end
 ```
 
@@ -438,7 +511,10 @@ end
 トランザクションのコールバック
 ---------------------
 
-データベースのトランザクションが完了したときにトリガされるコールバックが2つあります。[`after_commit`][]と[`after_rollback`][]です。これらのコールバックは`after_save`コールバックときわめて似ていますが、データベースの変更のコミットまたはロールバックが完了するまでトリガされない点が異なります。これらのメソッドは、Active Recordのモデルから、データベーストランザクションの一部に含まれていない外部のシステムとやりとりしたい場合に特に便利です。
+### 整合性を扱う
+
+データベースのトランザクションが完了したときにトリガされるコールバックが2つあります。[`after_commit`][]と[`after_rollback`][]です。
+これらのコールバックは`after_save`コールバックときわめて似ていますが、データベースの変更のコミットまたはロールバックが完了するまでトリガされない点が異なります。これらのメソッドは、Active Recordのモデルから、データベーストランザクションの一部に含まれていない外部のシステムとやりとりしたい場合に特に便利です。
 
 例として、直前の例で用いた`PictureFile`モデルで、対応するレコードが削除された後にファイルを1つ削除する必要があるとしましょう。`after_destroy`コールバックの直後に何らかの例外が発生してトランザクションがロールバックすると、ファイルが削除され、モデルの一貫性が損なわれたままになります。ここで、以下のコードにある`picture_file_2`オブジェクトが無効で、`save!`メソッドがエラーを発生するとします。
 
@@ -465,7 +541,9 @@ end
 
 NOTE: `:on`オプションは、コールバックがトリガされる条件を指定します。`:on`オプションを指定しないと、すべてのアクションでコールバックがトリガされます。
 
-`after_commit`コールバックは作成/更新/削除でのみ用いることが多いので、それぞれのエイリアスも用意されています。
+### コンテキストは重要
+
+`after_commit`コールバックは作成・更新・削除でのみ用いることが多いので、それぞれのエイリアスも用意されています。
 
 * [`after_create_commit`][]
 * [`after_update_commit`][]
@@ -508,9 +586,9 @@ irb> @user.save          # @userを更新する
 ユーザーはデータベースに保存されました
 ```
 
-コールバックを作成と更新の両方の操作に登録するには、代わりに`after_commit`をお使いください。以下のエイリアスも、作成や更新の両方で使える`after_commit`コールバックとして用いることができます。
+### `after_save_commit`
 
-* [`after_save_commit`][]
+作成と更新の両方で`after_commit`コールバックを使う場合のエイリアスとして、[`after_save_commit`][]も利用できます。
 
 ```ruby
 class User < ApplicationRecord
@@ -530,6 +608,19 @@ irb> @user = User.create # Userを作成
 irb> @user.save # @userを更新
 ユーザーはデータベースに保存されました
 ```
+
+### トランザクショナルなコールバックの順序
+
+トランザクションの `after_*`コールバック（`after_commit`、`after_rollback`など）を複数定義すると、**定義とは逆順で実行されます**。
+
+```ruby
+class User < ActiveRecord::Base
+  after_commit { puts("これは実際には2番目に実行される") }
+  after_commit { puts("これは実際には1番目に実行される") }
+end
+```
+
+NOTE: これは、`after_destroy_commit`などを含む、すべての`after_*_commit`のバリエーションにも当てはまります。
 
 [`after_create_commit`]: https://api.rubyonrails.org/classes/ActiveRecord/Transactions/ClassMethods.html#method-i-after_create_commit
 [`after_destroy_commit`]: https://api.rubyonrails.org/classes/ActiveRecord/Transactions/ClassMethods.html#method-i-after_destroy_commit

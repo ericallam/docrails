@@ -159,11 +159,11 @@ render "comments/comments"
 render 'comments/comments'
 render('comments/comments')
 
-render "header" translates to render("comments/header")
+render "header" # render("comments/header")に変換される
 
-render(@topic)         translates to render("topics/topic")
-render(topics)         translates to render("topics/topic")
-render(message.topics) translates to render("topics/topic")
+render(@topic)         # render("topics/topic")に変換される
+render(topics)         # render("topics/topic")に変換される
+render(message.topics) # render("topics/topic")に変換される
 ```
 
 ただし、一部の呼び出しについては、キャッシュが適切に動作するための変更が必要です。たとえば、独自のコレクションを渡す場合は、次のように変更する必要があります。
@@ -269,8 +269,7 @@ Railsのクエリキャッシュは、各クエリが返す結果セットをキ
 
 ```ruby
 class ProductsController < ApplicationController
-
-def index
+  def index
     # 検索クエリの実行
     @products = Product.all
 
@@ -279,7 +278,6 @@ def index
     # 同じクエリの再実行
     @products = Product.all
   end
-
 end
 ```
 
@@ -306,24 +304,23 @@ config.cache_store = :memory_store, { size: 64.megabytes }
 
 #### コネクションプールのオプション
 
-[`:mem_cache_store`](#activesupport-cache-memcachestore)と[`:redis_cache_store`](#activesupport-cache-rediscachestore)は、デフォルトではプロセスごとに1つのコネクションを利用します。これは、Puma（または別のスレッド化サーバー）を使えば、コネクション待ちをマルチスレッド化できるということです。
-利用可能なコネクション数を増やすには、コネクションプールを有効にします。
+[`:mem_cache_store`](#activesupport-cache-memcachestore)と[`:redis_cache_store`](#activesupport-cache-rediscachestore)は、デフォルトではプロセスごとに1つのコネクションを利用します。これは、Puma（または別のスレッド化サーバー）を使えば、複数のスレッドがキャッシュストアへのクエリを同時実行できるということです。
 
-最初に、Gemfileに`connection_pool` gemを追加します。
-
-```ruby
-gem 'connection_pool'
-```
-
-次に、`config.cache_store`設定に`:pool_size`オプションや`:pool_timeout`オプションを渡します。
+コネクションプールを無効にしたい場合は、キャッシュストアの設定時に`:pool`オプションを`false`に設定します。
 
 ```ruby
-config.cache_store = :mem_cache_store, "cache.example.com", { pool_size: 5, pool_timeout: 5 }
+config.cache_store = :mem_cache_store, "cache.example.com", { pool: false }
 ```
 
-* `:pool_size`: プロセス1個あたりのコネクション数を指定します（デフォルトは5）
+また、`:pool`オプションに個別のオプションを指定することで、デフォルトのプール設定をオーバーライドすることも可能です。
 
-* `:pool_timeout`: コネクションごとの待ち時間を秒で指定します（デフォルトは5）。タイムアウトまでにコネクションを利用できない場合は、`Timeout::Error` エラーが発生します。
+```ruby
+config.cache_store = :mem_cache_store, "cache.example.com", { pool: { size: 32, timeout: 1 } }
+```
+
+* `:size`: プロセス1個あたりのコネクション数を指定します（デフォルトは5）
+
+* `:timeout`: コネクションごとの待ち時間を秒で指定します（デフォルトは5）。タイムアウトまでにコネクションを利用できない場合は、`Timeout::Error`エラーが発生します。
 
 ### `ActiveSupport::Cache::Store`
 
@@ -418,14 +415,6 @@ Redisを利用するには、まず`Gemfile`にredis gemを追加します。
 gem 'redis'
 ```
 
-より高速な[hiredis](https://github.com/redis/hiredis)によるRubyラッパーを`Gemfile`に追加すると、hiredisコネクションライブラリによるサポートを有効にできます。
-
-```ruby
-gem 'hiredis'
-```
-
-hiredisが利用可能になっていれば、Redisキャッシュストアによって自動的にhiredisが`require`されます。その他の設定は不要です。
-
 最後に、関連する`config/environments/*.rb`ファイルに以下の設定を追加します。
 
 ```ruby
@@ -445,7 +434,7 @@ config.cache_store = :redis_cache_store, { url: cache_servers,
 
   error_handler: -> (method:, returning:, exception:) {
     # エラーをwarningとしてSentryに送信する
-    Raven.capture_exception exception, level: 'warning',
+    Sentry.capture_exception exception, level: 'warning',
       tags: { method: method, returning: returning }
   }
 }
@@ -464,11 +453,11 @@ config.cache_store = :null_store
 [`ActiveSupport::Cache::NullStore`]: https://api.rubyonrails.org/classes/ActiveSupport/Cache/NullStore.html
 
 #### カスタムのキャッシュストア
- 
+
 キャッシュストアを独自に作成するには、`ActiveSupport::Cache::Store`を拡張して適切なメソッドを実装します。これにより、Railsアプリケーションでさまざまなキャッシュ技術に差し替えられるようになります。
- 
+
 カスタムのキャッシュストアを利用するには、自作クラスの新しいインスタンスにキャッシュストアを設定します。
- 
+
 ```ruby
 config.cache_store = MyCacheStore.new
 ```
@@ -498,7 +487,6 @@ Rails.cache.read(site: "mysite", owners: [owner_1, owner_2])
 
 ```ruby
 class ProductsController < ApplicationController
-
   def show
     @product = Product.find(params[:id])
 
@@ -537,7 +525,6 @@ end
 
 ```ruby
 class ProductsController < ApplicationController
-
   # リクエストがフレッシュな自動的に:not_modifiedを返す
   # 古い場合はデフォルトのテンプレート（product.*）を返す
 

@@ -325,7 +325,7 @@ class Person
   attr_accessor :name
 
   def attributes
-    {'name' => nil}
+    { 'name' => nil }
   end
 end
 ```
@@ -356,7 +356,7 @@ class Person
   attr_accessor :name
 
   def attributes
-    {'name' => nil}
+    { 'name' => nil }
   end
 end
 ```
@@ -387,7 +387,7 @@ class Person
   end
 
   def attributes
-    {'name' => nil}
+    { 'name' => nil }
   end
 end
 ```

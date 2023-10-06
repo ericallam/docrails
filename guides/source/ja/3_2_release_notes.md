@@ -147,8 +147,8 @@ Railties
 
 * caffoldジェネレータ/モデルジェネレータ/マイグレーションジェネレータで「index」や「uniq」を指定できるようになりました。例:
 
-    ```ruby
-    rails g scaffold Post title:string:index author:uniq price:decimal{7,2}
+    ```bash
+    $ bin/rails g scaffold Post title:string:index author:uniq price:decimal{7,2}
     ```
 
     上の前者は`title`と`author`でインデックスを作成し、後者はuniqueインデックスを作成します。「decimal」などの型ではカスタムオプションも指定できます。上の例では`price`でdecimalカラムの精度（全体の桁）を7、桁（小数点以下の桁）を2に指定しています。

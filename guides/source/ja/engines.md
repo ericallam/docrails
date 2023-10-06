@@ -469,6 +469,18 @@ $ bin/rails blorgh:install:migrations
 $ bin/rails railties:install:migrations
 ```
 
+マイグレーションで`MIGRATIONS_PATH`を指定することで、ソースのエンジンのカスタムパスを指定できます。
+
+```bash
+$ bin/rails railties:install:migrations MIGRATIONS_PATH=db_blourgh
+```
+
+マルチプルデータベースを利用している場合は、`DATABASE`を指定することでターゲットのデータベースを指定できます。
+
+```bash
+$ bin/rails railties:install:migrations DATABASE=animals
+```
+
 このコマンドは、初回実行時にエンジンからすべてのマイグレーションをコピーします。次回以降の実行時には、コピーされていないマイグレーションのみがコピーされます。このコマンドの初回実行時の出力結果は以下のようになります。
 
 ```bash
@@ -1076,11 +1088,17 @@ end
 | `ActionText::Content`                | `action_text_content`                |
 | `ActionText::Record`                 | `action_text_record`                 |
 | `ActionText::RichText`               | `action_text_rich_text`              |
+| `ActionText::EncryptedRichText`      | `action_text_encrypted_rich_text`    |
 | `ActionView::Base`                   | `action_view`                        |
 | `ActionView::TestCase`               | `action_view_test_case`              |
 | `ActiveJob::Base`                    | `active_job`                         |
 | `ActiveJob::TestCase`                | `active_job_test_case`               |
 | `ActiveRecord::Base`                 | `active_record`                      |
+| `ActiveRecord::TestFixtures`         | `active_record_fixtures`             |
+| `ActiveRecord::ConnectionAdapters::PostgreSQLAdapter`    | `active_record_postgresqladapter`    |
+| `ActiveRecord::ConnectionAdapters::Mysql2Adapter`        | `active_record_mysql2adapter`        |
+| `ActiveRecord::ConnectionAdapters::TrilogyAdapter`       | `active_record_trilogyadapter`       |
+| `ActiveRecord::ConnectionAdapters::SQLite3Adapter`       | `active_record_sqlite3adapter`       |
 | `ActiveStorage::Attachment`          | `active_storage_attachment`          |
 | `ActiveStorage::VariantRecord`       | `active_storage_variant_record`      |
 | `ActiveStorage::Blob`                | `active_storage_blob`                |

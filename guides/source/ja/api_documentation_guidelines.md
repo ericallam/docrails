@@ -14,7 +14,7 @@ API ドキュメント作成ガイドライン
 RDoc
 ----
 
-[Rails API ドキュメント][Rails API doc]は[RDoc][]で生成されます。生成するには、Railsのルートディレクトリで`bundle install`を実行してから、以下を実行します。
+[Rails API ドキュメント][Rails_API]は[RDoc][]で生成されます。生成するには、Railsのルートディレクトリで`bundle install`を実行してから、以下を実行します。
 
 ```bash
 $ bundle exec rake rdoc
@@ -22,25 +22,25 @@ $ bundle exec rake rdoc
 
 生成されたHTMLファイルは./doc/rdocディレクトリに置かれます。
 
-RDocの記法については[markup][]を参照してください（訳注: 別ページですが[日本語のRDocライブラリ解説][]があります）。[追加のディレクティブ][directives]にも目を通しておいてください。
+NOTE: RDocの記法については[RDocのmarkup][RDoc_Markup]を参照してください（訳注: 別ページですが[日本語のRDocライブラリ解説][]もあります）。
 
-[Rails API doc]: http://api.rubyonrails.org
+[Rails_API]: http://api.rubyonrails.org
 [RDoc]: https://ruby.github.io/rdoc/
-[markup]: https://ruby.github.io/rdoc/RDoc/Markup.html
 [日本語のRDocライブラリ解説]: https://docs.ruby-lang.org/ja/master/library/rdoc.html
-[directives]: https://ruby.github.io/rdoc/RDoc/Parser/Ruby.html
 
 リンクの表記
 -----
 
-Rails APIドキュメントはGitHub上での表示を想定していません。例えばRails APIで相対リンクを書く場合はRDocの[`link`][]を使う必要があります。
+Rails APIドキュメントはGitHub上での表示を想定していません。たとえばRails APIで相対リンクを書く場合はRDocの[`link`][]を使う必要があります。
 
-これは、GitHub Markdownと、[api.rubyonrails.org][Rails API doc]や[edgeapi.rubyonrails.org][edgeapi]で公開されているRDoc生成の違いによるものです。
+これは、GitHub Markdownと、[api.rubyonrails.org][Rails_API]や[edgeapi.rubyonrails.org][edgeapi]で公開されているRDoc生成の違いによるものです。
 
 たとえば、RDocで生成された`ActiveRecord::Base`クラスへのリンクを作成するときは`[link:classes/ActiveRecord/Base.html]`と書きます。
 
 `[https://api.rubyonrails.org/classes/ActiveRecord/Base.html]`のような絶対URLを使うとAPIドキュメントの読者が別バージョンのドキュメント（edgeapi.rubyonrails.orgなど）を開いてしまう可能性があるので、上のような表記が推奨されます。
 
+[RDoc_Markup]: https://ruby.github.io/rdoc/RDoc/MarkupReference.html
+[RDoc Links]: https://ruby.github.io/rdoc/RDoc/MarkupReference.html#class-RDoc::MarkupReference-label-Links
 [`link`]: https://ruby.github.io/rdoc/RDoc/Markup.html#class-RDoc::Markup-label-Links
 [edgeapi]: https://edgeapi.rubyonrails.org
 
@@ -66,6 +66,8 @@ end
 ドキュメントは短く、かつ全体を理解できるものであること。例外的なケースについても調査し、ドキュメントに盛り込むこと（あるモジュールが無名であったらどうなるか。あるコレクションの内容が空であったらどうなるか。引数がnilであったらどうなるか、など）。
 
 Railsのコンポーネント名は語の間にスペースを1つ置く表記が正式（例: "Active Support"）。なお、`ActiveRecord`はRubyモジュール名ですが、Active RecordはORMを指します。Railsドキュメント内でコンポーネントを指す場合には常に正式名称を使うこと。
+
+「エンジン」や「プラグイン」ではなく「Railsアプリケーション」に言及する場合は、常に"application"を使うこと。サービス指向アーキテクチャについて特に議論しない限り、Railsアプリケーションは"services"を指しません。
 
 正しいスペルを使うこと（Arel、Test::Unit、RSpec、HTML、MySQL、JavaScript、ERB、Hotwireなど）。大文字小文字にも注意すること。疑わしい場合は、公式ドキュメントなどの信頼できる情報源を参照すること。
 
@@ -164,6 +166,39 @@ If `return` is needed it is recommended to explicitly define a method.
 #   polymorphic_url(record)  # same as comment_url(record)
 ```
 
+### SQL
+
+SQL文をドキュメントに書く場合は、結果の前に`=>`を付けないこと。
+
+For example,
+
+```ruby
+#   User.where(name: 'Oscar').to_sql
+#   # SELECT "users".* FROM "users"  WHERE "users"."name" = 'Oscar'
+```
+
+### IRB
+
+Rubyの対話型REPLであるIRBの動作をドキュメントに書く場合は、以下のようにコマンドの前に必ず`irb>`を付け、出力には`=>`をつけること。
+
+```irb
+# Find the customer with primary key (id) 10.
+#   irb> customer = Customer.find(10)
+#   # => #<Customer id: 10, first_name: "Ryan">
+```
+
+### Bash / コマンドライン
+
+コマンドラインのサンプルでは、常にコマンドの冒頭に`$`を追加すること。出力の冒頭には何も追加する必要はありません。
+
+For command-line examples, always prefix the command with `$`, the output doesn't have to be prefixed with anything.
+
+```bash
+# Run the following command:
+#   $ bin/rails new zomg
+#   ...
+```
+
 論理値
 --------
 
@@ -240,7 +275,7 @@ class Array
 end
 ```
 
-WARNING: 等幅フォントを`+...+`というマークアップで表記するのは、通常のメソッド名、シンボル、（通常のスラッシュを用いる）パスのようなシンプルなものだけにすること。これらよりも複雑なものを表記する場合は必ず`<tt>...</tt>`でマークアップすること。特に名前空間を使うクラス名やモジュール名では必須（`<tt>ActiveRecord::Base</tt>`など）。
+WARNING: 等幅フォントを`+...+`というマークアップで表記するのは、通常のメソッド名、シンボル、（通常のスラッシュを用いる）パスのようなシンプルなものだけにすること。これらよりも複雑なものを表記する場合は必ず`<tt>...</tt>`でマークアップすること。
 
 RDocの出力は以下のコマンドで手軽に確認できます。
 
@@ -248,6 +283,8 @@ RDocの出力は以下のコマンドで手軽に確認できます。
 $ echo "+:to_param+" | rdoc --pipe
 # => <p><code>:to_param</code></p>
 ```
+
+たとえば、スペースや引用符を含むコードは`<tt>...</tt>`で囲むこと。
 
 ### 平文フォント
 
@@ -280,24 +317,31 @@ end
 
 説明文は通常の英語として大文字で始め、ピリオドで終わること。
 
+さらに詳細な情報や事例を提供したい場合は、"Options"セクションを使うスタイルも利用可能。
+
+[`ActiveSupport::MessageEncryptor#encrypt_and_sign`][#encrypt_and_sign]は良い例。
+
+```ruby
+# ==== Options
+#
+# [+:expires_at+]
+#   The datetime at which the message expires. After this datetime,
+#   verification of the message will fail.
+#
+#     message = encryptor.encrypt_and_sign("hello", expires_at: Time.now.tomorrow)
+#     encryptor.decrypt_and_verify(message) # => "hello"
+#     # 24 hours later...
+#     encryptor.decrypt_and_verify(message) # => nil
+```
+
+[#encrypt_and_sign]: https://edgeapi.rubyonrails.org/classes/ActiveSupport/MessageEncryptor.html#method-i-encrypt_and_sign
+
 動的に生成されるメソッド
 -----------------------------
 
 `(module|class)_eval(文字列)`メソッドで作成されるメソッドの右側に、コードで生成されるインスタンスをコメントで書くこと。このように作成されたコメントには、スペース2文字分のインデントを与えること。
 
-```ruby
-for severity in Severity.constants
-  class_eval <<-EOT, __FILE__, __LINE__ + 1
-    def #{severity.downcase}(message = nil, progname = nil, &block)  # def debug(message = nil, progname = nil, &block)
-      add(#{severity}, message, progname, &block)                    #   add(DEBUG, message, progname, &block)
-    end                                                              # end
-                                                                     #
-    def #{severity.downcase}?                                        # def debug?
-      #{severity} >= @level                                          #   DEBUG >= @level
-    end                                                              # end
-  EOT
-end
-```
+[![(module|class)_eval(STRING) code comments](images/dynamic_method_class_eval.png)](images/dynamic_method_class_eval.png)
 
 生成された行が多過ぎる（200行を超える）場合は、コメントを呼び出しの上に置くこと。
 
@@ -311,7 +355,7 @@ self.class_eval %{
     options = args.extract_options!
     ...
   end
-}
+}, __FILE__, __LINE__
 ```
 
 メソッドの可視性

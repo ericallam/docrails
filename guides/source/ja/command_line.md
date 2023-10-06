@@ -48,6 +48,7 @@ $ rails new my_app
 | 引数                     | 説明                                               |
 | ----------------------- | -------------------------------------------------- |
 | `--skip-git`            | git init、.gitignore、.gitattributesをスキップ        |
+| `--skip-docker`         | Dockerfile、.dockerignore、bin/docker-entrypointをスキップ |
 | `--skip-keeps`          | バージョン管理用の.keepファイルをスキップ                 |
 | `--skip-action-mailer`  | Action Mailerのファイルをスキップ                      |
 | `--skip-action-mailbox` | Action Mailbox gemをスキップ                         |
@@ -63,8 +64,56 @@ $ rails new my_app
 | `--skip-test`           | テストファイルをスキップ                                |
 | `--skip-system-test`    | システムテストのファイルをスキップ                        |
 | `--skip-bootsnap`       | bootsnap gemをスキップ                               |
+| `--skip-dev-gems`       | development用gemの追加をスキップ                               |
 
 `rails new`には他にも多くのオプションを渡せます。すべてのオプションを表示するには`rails new --help`を実行してください。
+
+### さまざまなデータベースを事前に指定する
+
+新しいRailsアプリケーションを作成するとき、アプリケーションで使うデータベースの種類を指定するオプションがあります。これにより、数分の時間と、確実に多くの入力を節約できます。
+
+`--database=postgresql`オプションを指定した場合の動作を見てみましょう。
+
+```bash
+$ rails new petstore --database=postgresql
+      create
+      create  app/controllers
+      create  app/helpers
+...
+```
+
+それに応じて、`config/database.yml`に書き込まれる内容は以下のようになります。
+
+```yaml
+# PostgreSQL. Versions 9.3 and up are supported.
+#
+# Install the pg driver:
+#   gem install pg
+# On macOS with Homebrew:
+#   gem install pg -- --with-pg-config=/usr/local/bin/pg_config
+# On Windows:
+#   gem install pg
+#       Choose the win32 build.
+#       Install PostgreSQL and put its /bin directory on your path.
+#
+# Configure Using Gemfile
+# gem "pg"
+#
+default: &default
+  adapter: postgresql
+  encoding: unicode
+
+  # For details on connection pooling, see Rails configuration guide
+  # https://guides.rubyonrails.org/configuring.html#database-pooling
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+development:
+  <<: *default
+  database: petstore_development
+...
+```
+
+PostgreSQLを選択したことに対応するデータベース設定が生成されたことがわかります。
 
 コマンドラインの基礎
 -------------------
@@ -85,39 +134,39 @@ Railsを利用するうえで、きわめて重要なコマンドがいくつか
 
 ```bash
 $ rails --help
-Usage: rails COMMAND [ARGS]
+Usage:
+  bin/rails COMMAND [options]
 
-The most common rails commands are:
- generate    Generate new code (short-cut alias: "g")
- console     Start the Rails console (short-cut alias: "c")
- server      Start the Rails server (short-cut alias: "s")
- ...
+You must specify a command. The most common commands are:
+
+  generate     Generate new code (short-cut alias: "g")
+  console      Start the Rails console (short-cut alias: "c")
+  server       Start the Rails server (short-cut alias: "s")
+  ...
 
 All commands can be run with -h (or --help) for more information.
 
 In addition to those commands, there are:
- about                               List versions of all Rails ...
- assets:clean[keep]                  Remove old compiled assets
- assets:clobber                      Remove compiled assets
- assets:environment                  Load asset compile environment
- assets:precompile                   Compile all the assets ...
- ...
- db:fixtures:load                    Loads fixtures into the ...
- db:migrate                          Migrate the database ...
- db:migrate:status                   Display status of migrations
- db:rollback                         Rolls the schema back to ...
- db:schema:cache:clear               Clears a db/schema_cache.yml file
- db:schema:cache:dump                Creates a db/schema_cache.yml file
- db:schema:dump                      Creates a database schema file (either db/schema.rb or db/structure.sql ...
- db:schema:load                      Loads a database schema file (either db/schema.rb or db/structure.sql ...
- db:seed                             Loads the seed data ...
- db:version                          Retrieves the current schema ...
- ...
- restart                             Restart app by touching ...
- tmp:create                          Creates tmp directories ...
+about                               List versions of all Rails ...
+assets:clean[keep]                  Remove old compiled assets
+assets:clobber                      Remove compiled assets
+assets:environment                  Load asset compile environment
+assets:precompile                   Compile all the assets ...
+...
+db:fixtures:load                    Load fixtures into the ...
+db:migrate                          Migrate the database ...
+db:migrate:status                   Display status of migrations
+db:rollback                         Roll the schema back to ...
+db:schema:cache:clear               Clears a db/schema_cache.yml file
+db:schema:cache:dump                Create a db/schema_cache.yml file
+db:schema:dump                      Create a database schema file (either db/schema.rb or db/structure.sql ...
+db:schema:load                      Load a database schema file (either db/schema.rb or db/structure.sql ...
+db:seed                             Load the seed data ...
+db:version                          Retrieve the current schema ...
+...
+restart                             Restart app by touching ...
+tmp:create                          Create tmp directories ...
 ```
-
-簡単なRailsアプリケーションをつくりながら、一つずつコマンドを実行していきましょう。
 
 ### `bin/rails server`
 
@@ -159,7 +208,8 @@ INFO: ジェネレータコマンドを実行する際には`bin/rails g`のよ�
 
 ```bash
 $ bin/rails generate
-Usage: rails generate GENERATOR [args] [options]
+Usage:
+  bin/rails generate GENERATOR [args] [options]
 
 ...
 ...
@@ -185,7 +235,8 @@ INFO: Railsのすべてのコマンドにはヘルプがついています。多
 
 ```bash
 $ bin/rails generate controller
-Usage: bin/rails generate controller NAME [action action] [options]
+Usage:
+  bin/rails generate controller NAME [action action] [options]
 
 ...
 ...
@@ -355,7 +406,7 @@ $ bin/rails console -e staging
 
 ```bash
 $ bin/rails console --sandbox
-Loading development environment in sandbox (Rails 7.0.0)
+Loading development environment in sandbox (Rails 7.1.0)
 Any modifications you make will be rolled back on exit
 irb(main):001:0>
 ```
@@ -652,78 +703,10 @@ $ bin/rails "task_name[value 1, value2, value3]" # 複数の引数はカンマ�
 $ bin/rails db:nothing
 ```
 
-NOTE: タスク内でアプリケーション内のモデルを使う場合や、データベースに対してクエリを送信する場合は、そのタスクを`environment`タスクに依存させる必要があります。`environment`タスクはアプリケーションのコードを読み込むタスクです。
+アプリケーションモデルの操作やデータベースクエリの実行などが必要なタスクは、以下のようにアプリケーションコードを読み込む`environment`タスクに依存する必要があります。
 
-Railsの高度なコマンドライン
--------------------------------
-
-コマンドラインを使いこなすようになると、自分のニーズやワークフローにふさわしい便利な（時に驚くような）オプションを見つけられるようになります。ここでは、Railsコマンドラインの裏技をいくつか紹介します。
-
-### Railsのデータベースとバージョン管理
-
-新しいRailsアプリケーションを作成するときに、データベースの種類やバージョン管理の種類（Gitなど）も指定できます。このオプションで、ちょっとした時間と多くのキー入力を節約できます。
-
-それでは`--git`オプションと`--database=postgresql`オプションの動きを見てみましょう。
-
-```bash
-$ mkdir gitapp
-$ cd gitapp
-$ git init
-Initialized empty Git repository in .git/
-$ rails new . --git --database=postgresql
-      exists
-      create  app/controllers
-      create  app/helpers
-...
-...
-      create  tmp/cache
-      create  tmp/pids
-      create  Rakefile
-add 'Rakefile'
-      create  README.md
-add 'README.md'
-      create  app/controllers/application_controller.rb
-add 'app/controllers/application_controller.rb'
-      create  app/helpers/application_helper.rb
-...
-      create  log/test.log
-add 'log/test.log'
+```ruby
+task task_that_requires_app_code: [:environment] do
+  User.create!
+end
 ```
-
-Railsがリポジトリにファイルを作成する前に、**gitapp**ディレクトリを作成して空のgitリポジトリを初期化しておく必要があります。Railsが作成したデータベースの設定ファイルを見てみましょう。
-
-```bash
-$ cat config/database.yml
-# PostgreSQL. Versions 9.3 and up are supported.
-#
-# Install the pg driver:
-#   gem install pg
-# On macOS with Homebrew:
-#   gem install pg -- --with-pg-config=/usr/local/bin/pg_config
-# On macOS with MacPorts:
-#   gem install pg -- --with-pg-config=/opt/local/lib/postgresql84/bin/pg_config
-# On Windows:
-#   gem install pg
-#       Choose the win32 build.
-#       Install PostgreSQL and put its /bin directory on your path.
-#
-# Configure Using Gemfile
-# gem 'pg'
-#
-default: &default
-  adapter: postgresql
-  encoding: unicode
-  # For details on connection pooling, see Rails configuration guide
-  # https://guides.rubyonrails.org/configuring.html#database-pooling
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-
-development:
-  <<: *default
-  database: gitapp_development
-...
-...
-```
-
-Railsは、指定のデータベース（PostgreSQL）に対応する`database.yml`を作成します。
-
-NOTE: バージョン管理システムに関するオプションを指定する場合の唯一の問題は、最初にアプリケーション用のディレクトリを作り、バージョン管理システムを初期化してから、`rails new`コマンドを実行しなければならないことです。

@@ -1,5 +1,3 @@
-**DO NOT READ THIS FILE ON GITHUB, GUIDES ARE PUBLISHED ON https://guides.rubyonrails.org.**
-
 Ruby on Rails 2.3 リリースノート
 ===============================
 
@@ -578,11 +576,11 @@ $ rake rails:template LOCATION=~/template.rb
 
 thoughtbotの [Quiet Backtrace](https://github.com/thoughtbot/quietbacktrace) プラグインは`Test::Unit` のバックトレースから選択的に行を削除できますが、Rails 2.3ではそれをベースにした `ActiveSupport::BacktraceCleaner` と `Rails::BacktraceCleaner` をコアに実装しています。これは、フィルタ（バックトレース行を正規表現で置換する）とサイレンサー（バックトレース行を完全に削除する）の両方をサポートします。Railsは新しいアプリケーションで最も一般的なノイズを取り除くためにサイレンサーを自動的に追加し、フィルタに追加するものを保存できる`config/backtrace_silencers.rb` ファイルを生成します。この機能により、バックトレース中の任意のgemの出力もpretty printされるようになります。
 
-### 遅延読み込みとオートロードでdevelopmentモードの起動が高速化
+### 遅延読み込みと自動読み込みでdevelopmentモードの起動が高速化
 
 Railsの一部（とその依存関係）が実際に必要なときだけメモリに読み込まれるようにするために、かなりの作業が行われました。コアフレームワークであるActive Support、Active Record、Action Controller、Action Mailer、Action Viewは、それぞれのクラスを`autoload`で遅延読み込みするようになりました。この作業によりメモリフットプリントが抑えられ、Rails全体のパフォーマンスが向上するはずです。
 
-また、起動時にコアライブラリをオートロードするかどうかを（新しい `preload_frameworks` オプションで）指定できます。デフォルトの `false` ではRailsが少しずつオートロードされますが、一度にすべてを取り込む必要が生じることもあります（PassengerとJRubyは、Railsのすべてを一括で読み込むことを希望しています）。
+また、起動時にコアライブラリを自動読み込みするかどうかを（新しい `preload_frameworks` オプションで）指定できます。デフォルトの `false` ではRailsが少しずつ自動読み込みされますが、一度にすべてを取り込む必要が生じることもあります（PassengerとJRubyは、Railsのすべてを一括で読み込むことを希望しています）。
 
 ### rake gemタスクが書き直された
 

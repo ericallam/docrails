@@ -45,10 +45,23 @@ WARNING: サードパーティのソフトウェアをインストールして�
 
 ## セットアップ
 
-Active Storageは、アプリケーションのデータベースで `active_storage_blobs`、`active_storage_variant_records`、`active_storage_attachments`という名前の3つのテーブルを使います。
-新規アプリケーション作成した後（または既存のアプリケーションをRails 5.2にアップグレードした後）に、`rails active_storage:install`を実行して、これらのテーブルを作成するマイグレーションファイルを作成します。マイグレーションファイルを実行するには`rails db:migrate`を使います。
+```bash
+$ bin/rails active_storage:install
+$ bin/rails db:migrate
+```
 
-WARNING: `active_storage_attachments`は、使うモデルのクラス名を保存するポリモーフィックjoinテーブルです。モデルのクラス名を変更した場合は、このテーブルに対してマイグレーションを実行して背後の`record_type`をモデルの新しいクラス名に更新する必要があります。
+上を実行すると設定が行われ、Active Storageが利用する3つのテーブルを作成します。
+
+- `active_storage_blobs`
+- `active_storage_attachments`
+- `active_storage_variant_records`
+
+| テーブル      | 目的 |
+| ------------------- | ----- |
+| `active_storage_blobs` | アップロードされたファイルに関するデータ（ファイル名、Content-Typeなど）を保存します。|
+| `active_storage_attachments` | [モデルをblobsに接続する](#ファイルをレコードに添付する)ポリモーフィックjoinテーブルです。モデルのクラス名が変更された場合は、このテーブルでマイグレーションを実行して、背後の`record_type`をモデルの新しいクラス名に更新する必要があります。|
+| `active_storage_variant_records` | [バリアントトラッキング](#ファイルをレコードに添付する)が有効な場合は、生成された各バリアントに関するレコードを保存します。 |
+
 
 WARNING: モデルの主キーに整数値ではなくUUIDを使っている場合は、生成されるマイグレーションファイルの`active_storage_attachments.record_id`と`active_storage_variant_records.id`のカラム型も変更する必要があります。
 
@@ -94,8 +107,6 @@ config.active_storage.service = :amazon
 config.active_storage.service = :test
 ```
 
-組み込みのサービスアダプタ（`Disk`や`S3`など）およびそれらに必要な設定について、詳しくは後述します。
-
 NOTE: 環境固有の設定ファイルが優先されます。たとえばproduction環境では、`config/storage/production.yml`ファイルが存在すれば`config/storage.yml`ファイルよりも優先されます。
 
 productionのデータ喪失リスクをさらに軽減するために、以下のようにバケット名に`Rails.env`を使うことをおすすめします。
@@ -116,6 +127,8 @@ azure:
   # ...
   container: your_container_name-<%= Rails.env %>
 ```
+
+組み込みのサービスアダプタ（`Disk`や`S3`など）、およびそれらで必要な設定についての詳細を次に説明します。
 
 ### Diskサービス
 
@@ -154,6 +167,7 @@ amazon:
   retry_limit: 0
   upload:
     server_side_encryption: "" # 'aws:kms'または'AES256'
+    cache_control: "private, max-age=<%= 1.day.to_i %>"
 ```
 
 TIP: HTTPタイムアウトやリトライ上限数には、アプリケーションに適した値を設定してください。特定の障害シナリオでは、デフォルトのAWSクライアント設定によってコネクションが数分間保持されてしまい、リクエストの待ち行列が発生する可能性があります。
@@ -313,12 +327,12 @@ gcs: &gcs
 
 private_gcs:
   <<: *gcs
-  credentials: <%= Rails.root.join("path/to/private_keyfile.json") %>
+  credentials: <%= Rails.root.join("path/to/private_key.json") %>
   bucket: ""
 
 public_gcs:
   <<: *gcs
-  credentials: <%= Rails.root.join("path/to/public_keyfile.json") %>
+  credentials: <%= Rails.root.join("path/to/public_key.json") %>
   bucket: ""
   public: true
 ```
@@ -344,8 +358,8 @@ end
 
 Rails 6.0以降を使う場合は、以下のようにモデルのジェネレータコマンドを実行できます。
 
-```ruby
-bin/rails generate model User avatar:attachment
+```bash
+$ bin/rails generate model User avatar:attachment
 ```
 
 以下のように書くことでアバター画像付きのuserを作成できます。
@@ -381,11 +395,11 @@ user.avatar.attach(params[:avatar])
 user.avatar.attached?
 ```
 
-特定の添付ファイルについてはデフォルトのサービスを上書きしたい場合があります。以下のように`service`オプションを指定すると、添付ファイルごとに特定のサービスを設定できます。
+特定の添付ファイルについてはデフォルトのサービスを上書きしたい場合があります。以下のように`service`オプションでサービス名を指定すると、添付ファイルごとに特定のサービスを設定できます。
 
 ```ruby
 class User < ApplicationRecord
-  has_one_attached :avatar, service: :s3
+  has_one_attached :avatar, service: :google
 end
 ```
 
@@ -405,6 +419,20 @@ end
 <%= image_tag user.avatar.variant(:thumb) %>
 ```
 
+プレビューにも特定のバリアントを利用できます。
+
+```ruby
+class User < ApplicationRecord
+  has_one_attached :video do |attachable|
+    attachable.variant :thumb, resize_to_limit: [100, 100]
+  end
+end
+```
+
+```erb
+<%= image_tag user.video.preview(:thumb) %>
+```
+
 [`has_one_attached`]: https://api.rubyonrails.org/classes/ActiveStorage/Attached/Model.html#method-i-has_one_attached
 [Attached::One#attach]: https://api.rubyonrails.org/classes/ActiveStorage/Attached/One.html#method-i-attach
 [Attached::One#attached?]: https://api.rubyonrails.org/classes/ActiveStorage/Attached/One.html#method-i-attached-3F
@@ -419,6 +447,12 @@ end
 class Message < ApplicationRecord
   has_many_attached :images
 end
+```
+
+Rails 6.0以降を使う場合は、以下のようにモデルのジェネレータコマンドを実行できます。
+
+```bash
+$ bin/rails generate model Message images:attachments
 ```
 
 以下のように書くことで、画像付きのメッセージを作成できます。
@@ -498,6 +532,33 @@ HTTPリクエスト経由では配信されないファイルをアタッチす�
 
 `content_type:`を指定せず、Active StorageがファイルのContent-Typeを自動的に判別できない場合は、デフォルトで`application/octet-stream`が設定されます。
 
+### 添付ファイルの置き換え vs 追加
+
+Railsでは、デフォルトで`has_many_attached`関連付けにファイルを添付すると、既存の添付ファイルがすべて置き換えられます。
+
+既存の添付ファイルを維持する場合は、以下のように`form.hidden_field`で各添付ファイルの[`signed_id`][ActiveStorage::Blob#signed_id]を指定することで実現できます。
+
+```erb
+<% @message.images.each do |image| %>
+  <%= form.hidden_field :images, multiple: true, value: image.signed_id %>
+<% end %>
+
+<%= form.file_field :images, multiple: true %>
+```
+
+この方法には、既存の添付ファイルを選択的に削除可能になるというメリットがあります。たとえば、個別の隠しフィールドをJavaScriptで削除できます。
+
+[ActiveStorage::Blob#signed_id]: https://api.rubyonrails.org/classes/ActiveStorage/Blob.html#method-i-signed_id
+
+### フォームのバリデーション
+
+添付ファイルは、関連するレコードの`save`が成功するまでストレージサービスに送信されません。つまり、フォームの送信がバリデーションに失敗すると、新しい添付ファイルは失われ、再度アップロードする必要があります。[ダイレクトアップロード](#ダイレクトアップロード)ではフォームの送信前に添付ファイルが保存されるので、これを使うことでバリデーションが失敗した場合でもアップロードが失われないようになります。
+
+```erb
+<%= form.hidden_field :avatar, value: @user.avatar.signed_id if @user.avatar.attached? %>
+<%= form.file_field :avatar, direct_upload: true %>
+```
+
 ファイルを削除する
 -----------------------------
 
@@ -576,15 +637,17 @@ Active Storageの添付ファイルでCDNを使うには、URLをプロキシモ
 ```ruby
 # config/routes.rb
 direct :cdn_image do |model, options|
+  expires_in = options.delete(:expires_in) { ActiveStorage.urls_expire_in }
+
   if model.respond_to?(:signed_id)
     route_for(
       :rails_service_blob_proxy,
-      model.signed_id,
+      model.signed_id(expires_in: expires_in),
       model.filename,
       options.merge(host: ENV['CDN_HOST'])
     )
   else
-    signed_blob_id = model.blob.signed_id
+    signed_blob_id = model.blob.signed_id(expires_in: expires_in)
     variation_key  = model.variation.key
     filename       = model.blob.filename
 
@@ -634,7 +697,7 @@ end
 <%= image_tag account_logo_path %>
 ```
 
-このとき、一般からアクセス可能なURLでファイルにアクセスされるのを防ぐために、以下のようにActive Storageのデフォルトルーティングを無効にするとよいでしょう。
+次に、Active Storageのデフォルトルートを無効化する必要があります。
 
 ```ruby
 config.active_storage.draw_routes = false
@@ -721,7 +784,13 @@ Active Storageは、デフォルトで表示をlazyに処理します。
 image_tag file.representation(resize_to_limit: [100, 100])
 ```
 
-上のコードで生成される`<img>`タグには、[`ActiveStorage::Representations::RedirectController`][]を指す`src`属性が追加されます。ブラウザがこのコントローラにリクエストを送信すると、リモートサービスへの`302`リダイレクトが返されます（[プロキシモード](#プロキシモード)の場合はファイルのコンテンツが返されます）。
+上のコードで生成される`<img>`タグには、[`ActiveStorage::Representations::RedirectController`][]を指す`src`属性が追加されます。ブラウザがこのコントローラにリクエストを送信すると、以下が行われます。
+
+1. ファイルを処理し、必要に応じて処理済みファイルをアップロードします。
+2. ファイルを以下のいずれかの方法で返します。
+  * リモートサービス（例: S3）への`302`リダイレクト。
+  * `ActiveStorage::Blobs::ProxyController`への`302`リダイレクト。[プロキシモード](#プロキシモード)が有効な場合はファイルのコンテンツが返されます。
+
 
 ファイルが遅延読み込みされることで、[単一用途URL](#パブリックアクセス)のような機能を使っても最初のページ読み込みが遅くならなくなります。
 
@@ -770,7 +839,7 @@ Active Storageでは、バリアントプロセッサとして[Vips][]またはM
 
 MiniMagickとVipsの互換性は完全ではないため、MiniMagickからVips（またはその逆）に移行すると、フォーマット固有のオプションを使っている場合は以下のように若干の変更が必要になります。
 
-```rhtml
+```erb
 <!-- MiniMagick -->
 <%= image_tag user.avatar.variant(resize_to_limit: [100, 100], format: :jpeg, sampling_factor: "4:2:0", strip: true, interlace: "JPEG", colorspace: "sRGB", quality: 80) %>
 
@@ -778,11 +847,25 @@ MiniMagickとVipsの互換性は完全ではないため、MiniMagickからVips�
 <%= image_tag user.avatar.variant(resize_to_limit: [100, 100], format: :jpeg, saver: { subsample_mode: "on", strip: true, interlace: true, quality: 80 }) %>
 ```
 
+利用可能なパラメータは[`image_processing`][] gemで定義されており、利用するバリアントプロセッサによって異なりますが、どちらも以下のパラメータをサポートしています。
+
+| パラメータ      | 例 | 説明 |
+| ------------------- | ---------------- | ----- |
+| `resize_to_limit` | `resize_to_limit: [100, 100]` | 元の縦横比を維持したまま、指定の寸法に収まるように画像を縮小します。指定の寸法より大きい場合のみ、画像のサイズを変更します。 |
+| `resize_to_fit` | `resize_to_fit: [100, 100]` | 元の縦横比を維持したまま、指定の寸法に収まるように画像をリサイズします。指定の寸法より大きい場合は縮小し、小さい場合は拡大します。|
+| `resize_to_fill` | `resize_to_fill: [100, 100]` | 元のアスペクト比を維持したまま、指定の寸法に収まるように画像をリサイズします。必要な場合は、大きい方の寸法で画像を切り取ります。|
+| `resize_and_pad` | `resize_and_pad: [100, 100]` | 元の縦横比を維持したまま、指定の寸法に収まるように画像をリサイズします。必要に応じて、元画像にアルファチャンネルがある場合は透明色で、ない場合は黒で残りの領域を塗ります。|
+| `crop` | `crop: [20, 50, 300, 300]` | 画像から領域を抽出します。最初の2つの引数は、抽出する領域の左端と上端、最後の2つの引数は、抽出する領域の幅と高さです。|
+| `rotate` | `rotate: 90` | 画像を指定の角度だけ回転します。|
+
+[`image_processing`][]では、[Vips](https://github.com/janko/image_processing/blob/master/doc/vips.md)プロセッサおよび[MiniMagick](https://github.com/janko/image_processing/blob/master/doc/minimagick.md)プロセッサ独自のドキュメントに記載されている多くのオプション（画像圧縮の設定を可能にする`saver`など）が利用できます。
+
 [`config.active_storage.variable_content_types`]: configuring.html#config-active-storage-variable-content-types
 [`config.active_storage.variant_processor`]: configuring.html#config-active-storage-variant-processor
 [`config.active_storage.web_image_content_types`]: configuring.html#config-active-storage-web-image-content-types
 [`variant`]: https://api.rubyonrails.org/classes/ActiveStorage/Blob/Representable.html#method-i-variant
 [Vips]: https://www.rubydoc.info/gems/ruby-vips/Vips/Image
+[`image_processing`]: https://github.com/janko/image_processing
 
 ファイルのプレビュー
 -----------------------
@@ -849,7 +932,6 @@ Active Storageは、付属のJavaScriptライブラリを用いて、クライ�
 * 自分のアプリがアクセスされるすべてのオリジン
 * `PUT`リクエストメソッド
 * 以下のヘッダー
-  * `Origin`
   * `Content-Type`
   * `Content-MD5`
   * `Content-Disposition`（Azure Storageでは不要）
@@ -865,19 +947,15 @@ Diskサービスはアプリのオリジンを共有するので、CORS設定は
 [
   {
     "AllowedHeaders": [
-      "*"
+      "Content-Type",
+      "Content-MD5",
+      "Content-Disposition"
     ],
     "AllowedMethods": [
       "PUT"
     ],
     "AllowedOrigins": [
       "https://www.example.com"
-    ],
-    "ExposeHeaders": [
-      "Origin",
-      "Content-Type",
-      "Content-MD5",
-      "Content-Disposition"
     ],
     "MaxAgeSeconds": 3600
   }
@@ -891,7 +969,7 @@ Diskサービスはアプリのオリジンを共有するので、CORS設定は
   {
     "origin": ["https://www.example.com"],
     "method": ["PUT"],
-    "responseHeader": ["Origin", "Content-Type", "Content-MD5", "Content-Disposition"],
+    "responseHeader": ["Content-Type", "Content-MD5", "Content-Disposition"],
     "maxAgeSeconds": 3600
   }
 ]
@@ -904,7 +982,7 @@ Diskサービスはアプリのオリジンを共有するので、CORS設定は
   <CorsRule>
     <AllowedOrigins>https://www.example.com</AllowedOrigins>
     <AllowedMethods>PUT</AllowedMethods>
-    <AllowedHeaders>Origin, Content-Type, Content-MD5, x-ms-blob-content-disposition, x-ms-blob-type</AllowedHeaders>
+    <AllowedHeaders>Content-Type, Content-MD5, x-ms-blob-content-disposition, x-ms-blob-type</AllowedHeaders>
     <MaxAgeInSeconds>3600</MaxAgeInSeconds>
   </CorsRule>
 </Cors>
@@ -1018,9 +1096,9 @@ input[type=file][data-direct-upload-url][disabled] {
 }
 ```
 
-### ライブラリやフレームワークとの統合
+### カスタムのドラッグアンドドロップ機能
 
-ダイレクトアップロード機能をJavaScriptフレームワークから利用したい場合や、ドラッグアンドドロップをカスタマイズしたい場合は、`DirectUpload`クラスを利用できます。選択したライブラリからファイルを1件受信したら、`DirectUpload`をインスタンス化してそのインスタンスの`create`メソッドを呼び出します。`create`には、アップロード完了時に呼び出すコールバックを1つ渡せます。
+`DirectUpload`クラスを利用してドラッグアンドドロップをカスタマイズできます。選択したライブラリからファイルを1件受信したら、`DirectUpload`をインスタンス化してそのインスタンスの`create`メソッドを呼び出します。`create`は、アップロード完了時に呼び出すコールバックを受け取ります。
 
 ```js
 import { DirectUpload } from "@rails/activestorage"
@@ -1064,7 +1142,10 @@ const uploadFile = (file) => {
 }
 ```
 
-ファイルアップロードの進行状況をトラッキングする必要がある場合は、`DirectUpload`コンストラクタに第3パラメータを渡せます。`DirectUpload`はアップロード中にオブジェクトの`directUploadWillStoreFileWithXHR`メソッドを呼び出すので、以後はXHRで独自のプログレスハンドラをバインドできるようになります。
+### ファイルアップロードの進行状況をトラッキングする
+
+`DirectUpload`コンストラクタを使うと、第3パラメータを含めることが可能になります。
+ これにより、アップロード中に`DirectUpload`オブジェクトが `directUploadWillStoreFileWithXHR`メソッドを呼び出せるようになり、ニーズに応じた独自のプログレスハンドラをXHRにアタッチできるようになります。
 
 ```js
 import { DirectUpload } from "@rails/activestorage"
@@ -1095,12 +1176,63 @@ class Uploader {
 }
 ```
 
+### ライブラリやフレームワークとの統合
+
+選択したライブラリからファイルを受信したら、`DirectUpload`インスタンスを作成してから、その`create`メソッドでアップロード処理を開始し、必要に応じて追加のヘッダーを追加する必要があります。この`create`メソッドには、アップロードが終了したときに起動するコールバック関数も指定する必要があります。
+
+```js
+import { DirectUpload } from "@rails/activestorage"
+
+class Uploader {
+  constructor(file, url, token) {
+    const headers = { 'Authentication': `Bearer ${token}` }
+    // INFO: ヘッダーの送信はオプションのパラメーターです。
+    // ヘッダーを送信しない場合、認証はcookieかセッションデータを使って行われます。
+    this.upload = new DirectUpload(this.file, this.url, this, headers)
+  }
+
+  upload(file) {
+    this.upload.create((error, blob) => {
+      if (error) {
+        // エラー処理をここに書く
+      } else {
+        // 次のリクエストでblob.signed_idをファイル参照として利用する
+      }
+    })
+  }
+
+  directUploadWillStoreFileWithXHR(request) {
+    request.upload.addEventListener("progress",
+      event => this.directUploadDidProgress(event))
+  }
+
+  directUploadDidProgress(event) {
+    // event.loadedとevent.totalを使ってプログレスバーを更新する
+  }
+}
+```
+
+カスタマイズ認証を実装するためには、Railsアプリケーション側に以下のような新しいコントローラを作成する必要があります。
+
+```ruby
+class DirectUploadsController < ActiveStorage::DirectUploadsController
+  skip_forgery_protection
+  before_action :authenticate!
+
+  def authenticate!
+    @token = request.headers['Authorization']&.split&.last
+
+    return head :unauthorized unless valid_token?(@token)
+  end
+end
+```
+
 NOTE: [ダイレクトアップロード](#ダイレクトアップロード)では、ファイルがアップロードされたにもかかわらずレコードにまったくアタッチされないことがあります。[アタッチされなかったアップロードを破棄する](#アタッチされなかったアップロードを破棄する)を参照してください。
 
 テスト
 -------------------------------------------
 
-結合テストやコントローラのテストでファイルのアップロードをテストするには、[`fixture_file_upload`][]を使います。
+結合テストやコントローラのテストでファイルのアップロードをテストするには、[`file_fixture_upload`][]を使います。
 Railsは、ファイルを他のパラメータと同様に扱います。
 
 ```ruby
@@ -1108,7 +1240,7 @@ class SignupController < ActionDispatch::IntegrationTest
   test "can sign up" do
     post signup_path, params: {
       name: "David",
-      avatar: fixture_file_upload("david.png", "image/png")
+      avatar: file_fixture_upload("david.png", "image/png")
     }
 
     user = User.order(:created_at).last
@@ -1117,7 +1249,7 @@ class SignupController < ActionDispatch::IntegrationTest
 end
 ```
 
-[`fixture_file_upload`]: https://api.rubyonrails.org/classes/ActionDispatch/TestProcess/FixtureFile.html
+[`file_fixture_upload`]: https://api.rubyonrails.org/classes/ActionDispatch/TestProcess/FixtureFile.html#method-i-file_fixture_upload
 
 テスト中に作成したファイルを破棄する
 -----------------------------------------------
@@ -1257,6 +1389,32 @@ end
 
 [フィクスチャ]: testing.html#フィクスチャのしくみ
 [`ActiveStorage::FixtureSet`]: https://api.rubyonrails.org/classes/ActiveStorage/FixtureSet.html
+
+### サービスを設定する
+
+`config/storage/test.yml`を追加することで、テスト環境で利用するサービスを設定できます。これは`service`オプションを使うときに便利です。
+
+```ruby
+class User < ApplicationRecord
+  has_one_attached :avatar, service: :s3
+end
+```
+
+`config/storage/test.yml`がないと、テスト実行中も`config/storage.yml`で設定された`s3`サービスが使われます。
+
+その場合はデフォルト設定が使われ、ファイルは`config/storage.yml`に設定されたサービスプロバイダにアップロードされます。
+
+`config/storage/test.yml`を追加して、`s3`サービスにDiskサービスを指定することで、リクエストの送信を防止できます。
+
+```yaml
+test:
+  service: Disk
+  root: <%= Rails.root.join("tmp/storage") %>
+
+s3:
+  service: Disk
+  root: <%= Rails.root.join("tmp/storage") %>
+```
 
 その他のクラウドサービスのサポートを実装する
 ---------------------------------

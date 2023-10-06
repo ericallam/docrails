@@ -45,7 +45,7 @@ Railsのバージョンを変更する場合、マイナーバージョンを1�
 Railsのバージョン間を移動するには以下のようにします。
 
 1. `Gemfile`ファイル内のRailsバージョン番号を変更し、`bundle update`を実行する。
-2. `package.json`ファイル内のRails JavaScriptパッケージのバージョンを変更する。Webpackerで動かす場合は`yarn install`を実行する。
+2. `package.json`ファイル内のRails JavaScriptパッケージのバージョンを変更する。jsbundling-railsを使っている場合は、`bin/rails javascript:install`を実行する。
 3. [アップデートタスク](#アップデートタスク)を実行する。
 4. テストを実行する。
 
@@ -73,10 +73,206 @@ Overwrite /myapp/config/application.rb? (enter "h" for help) [Ynaqdh]
 
 `app:update`タスクでは、アプリケーションを新しいデフォルト設定に1つずつアップグレードできるように、`config/initializers/new_framework_defaults_X.Y.rb`ファイルが作成されます（ファイル名にはRailsのバージョンが含まれます）。このファイル内のコメントを解除して、新しいデフォルト設定を有効にする必要があります。この作業は、数回のデプロイに分けて段階的に実行できます。アプリケーションを新しいデフォルト設定で動かせる準備が整ったら、このファイルを削除して`config.load_defaults`の値を反転できます。
 
+Rails 7.0からRails 7.1へのアップグレード
+-------------------------------------
+
+Rails 7.1で行われた変更について詳しくは、[Rails 7.1のリリースノート](7_1_release_notes.html)を参照してください。
+
+### 自動読み込みされるパスが`$LOAD_PATH`に含まれなくなった
+
+* [Disable config.add_autoload_paths_to_load_path by default in Rails 7.1 by casperisfine · Pull Request #44133 · rails/rails](https://github.com/rails/rails/pull/44133)
+
+Rails 7.1以降、オートローダーが管理するすべてのディレクトリは`$LOAD_PATH`に追加されなくなりました。
+これにより、手動で`require`を呼び出してそれらを読み込むことはできなくなります（いずれにしろ手動の`require`は行うべきではありません）。
+
+`$LOAD_PATH`のサイズが削減されたことで、`bootsnap`を使っていないアプリの `require`呼び出しが高速化され、その他のアプリの`bootsnap`キャッシュのサイズも削減されます。
+
+これらのパスを引き続き`$LOAD_PATH`に残しておきたい場合は、以下のコンフィグで一応可能です。
+
+```ruby
+config.add_autoload_paths_to_load_path = true
+```
+
+ただしこれは推奨されません。自動読み込みパス内のクラスやモジュールは、自動読み込みされるようにするためにあるので、単に参照するだけにしてください。
+
+`lib`ディレクトリはこのフラグの影響を受けず、常に`$LOAD_PATH`に追加されます。
+
+### config.autoload_lib and config.autoload_lib_once
+
+* [Introduce config.autoload_lib_once(ignore:) by fxn · Pull Request #48610 · rails/rails](https://github.com/rails/rails/pull/48610)
+
+アプリケーションの`lib`ディレクトリがautoloadのパスやautoload onceのパスに含まれていない場合、このセクションをスキップしてください。
+
+パスに`lib`が含まれているかどうかは、以下の表示をチェックすることで確認できます。
+
+```bash
+# autoloadパスを表示する
+$ bin/rails runner 'pp Rails.autoloaders.main.dirs'
+
+# autoload onceパスを表示する
+$ bin/rails runner 'pp Rails.autoloaders.once.dirs'
+```
+
+アプリケーションの`lib`ディレクトリがautoloadのパスに既に含まれている場合は、多くの場合、config/application.rbに以下のような設定があるでしょう。
+
+```ruby
+# libを自動読み込みするがeager loadはしない（見落とされる可能性あり）
+config.autoload_paths << config.root.join("lib")
+```
+
+または
+
+```ruby
+# libを自動読み込みおよびeager loadする
+config.autoload_paths << config.root.join("lib")
+config.eager_load_paths << config.root.join("lib")
+```
+
+または
+
+```ruby
+# すべてのeager loadパスが自動読み込みパスにもなるので同じ
+config.eager_load_paths << config.root.join("lib")
+```
+
+これらの設定も引き続き動作しますが、これらの設定行がある場合は以下のように簡潔な設定に置き換えることが推奨されます。
+
+```ruby
+config.autoload_lib(ignore: %w(assets tasks))
+```
+
+この`ignore`リストには、`lib`のサブディレクトリのうち、`.rb`ファイルを含まないサブディレクトリや、または、リロードもeager loadもすべきでないサブディレクトリを追加してください。
+たとえば、アプリケーションに`lib/templates`、`lib/generators`、または`lib/middleware`がある場合、それらの名前を以下のように`lib`からの相対パスで追加します。
+
+```ruby
+config.autoload_lib(ignore: %w(assets tasks templates generators middleware))
+```
+
+このコンフィグ行によって、`config.eager_load`が`true`の場合（`production`モードのデフォルト）には`lib`内の（無視されていない）コードもeager loadされるようになります。通常はこれが望ましい動作ですが、これまで`lib`をeager loadパスに追加しておらず、引き続き`lib`をeager loadしないようにしたい場合は、以下のコンフィグでオプトアウトしてください。
+
+```ruby
+Rails.autoloaders.main.do_not_eager_load(config.root.join("lib"))
+```
+
+`config.autoload_lib_once`メソッドは、アプリケーションの[`config.autoload_once_paths`]に`lib`がある場合と同様に振る舞います。
+
+[`config-autoload-once-paths`]: https://railsguides.jp/configuring.html#config-autoload-once-paths
+
+### `ActiveStorage::BaseController`がストリーミングのconcernを`include`しなくなった
+
+* [Don't stream redirect controller responses by bubba · Pull Request #44244 · rails/rails](https://github.com/rails/rails/pull/44244)
+
+`ActiveStorage::BaseController`を継承し、カスタムファイル配信ロジックをストリーミングで実装するアプリケーションコントローラは、明示的に `ActiveStorage::Streaming`モジュールを`include`する必要があります。
+
+### `MemCacheStore`と`RedisCacheStore`がデフォルトでコネクションプールを使うようになった
+
+* [Enable connection pooling by default for `MemCacheStore` and `RedisCacheStore` by fatkodima · Pull Request #45235 · rails/rails](https://github.com/rails/rails/pull/45235)
+
+`connection_pool` gem が`activesupport`gemの依存関係として追加され、`MemCacheStore`と`RedisCacheStore`はデフォルトでコネクションプールを使うようになりました。
+
+コネクションプールを使いたくない場合は、キャッシュストアの設定時に`:pool`オプションを`false`に設定してください：
+
+```ruby
+config.cache_store = :mem_cache_store, "cache.example.com", { pool: false }
+```
+
+詳しくは、[Rails のキャッシュ機構](caching_with_rails.html#コネクションプールのオプション)ガイドを参照してください。
+
+### `SQLite3Adapter`が文字列の`strict`モードで設定されるようになった
+
+* [Add `:strict` option to default SQLite database.yml template by fatkodima · Pull Request #45346 · rails/rails](https://github.com/rails/rails/pull/45346)
+
+`strict`文字列モードによって、二重引用符`""`で囲まれた文字列リテラルが無効になります。
+
+SQLiteは、二重引用符で囲まれた文字列リテラルについて、いくつかの癖があります。
+SQLiteは最初に、二重引用符で囲まれた文字列を識別子名と見なそうとしますが、識別子が存在しない場合は文字列リテラルと見なします。これが原因で入力ミスを見落としてしまう可能性があります。
+たとえば、存在しないカラムに対してインデックスを作成できてしまいます。詳しくは[SQLiteドキュメント](https://www.sqlite.org/quirks.html#double_quoted_string_literals_are_accepted)を参照してください。
+
+`SQLite3Adapter`を`strict`モードで使いたくない場合は、以下の設定でこの動作を無効にできます。
+
+```ruby
+# config/application.rb
+config.active_record.sqlite3_adapter_strict_strings_by_default = false
+```
+
+### `ActionMailer::Preview`でプレビューのパスを複数指定できるようになった
+
+* [Support multiple preview paths for mailers by fatkodima · Pull Request #31595 · rails/rails](https://github.com/rails/rails/pull/31595)
+
+`config.action_mailer.preview_path`オプション（単数形）は非推奨化され、今後は`config.action_mailer.preview_paths`オプション（複数形）を使うようになります。
+この設定オプションにパスを追加すると、メーラーのプレビューの探索でそれらのパスが使われるようになります。
+
+```ruby
+config.action_mailer.preview_paths << "#{Rails.root}/lib/mailer_previews"
+```
+
+### `config.i18n.raise_on_missing_translations = true`で訳文が見つからない場合に常にエラーをraiseするようになった
+
+* [Make `raise_on_missing_translations` raise on any missing translation by ghiculescu · Pull Request #47105 · rails/rails](https://github.com/rails/rails/pull/47105)
+
+従来は、ビューやコントローラで呼び出されたときだけraiseしていました。今後は、`I18n.t`に認識できないキーが与えられると常にraiseします。
+
+```ruby
+# config.i18n.raise_on_missing_translations = trueの場合
+
+# ビューとコントローラ:
+t("missing.key") # 7.0/7.1どちらもraiseする
+I18n.t("missing.key") # 7.0: raiseしない、7.1: raiseする
+
+# すべての場所:
+I18n.t("missing.key") # # 7.0: raiseしない、7.1: raiseする
+```
+
+この振る舞いにしたくない場合は、`config.i18n.raise_on_missing_translations = false`を設定します。
+
+```ruby
+# config.i18n.raise_on_missing_translations = falseの場合
+
+# ビューとコントローラ:
+t("missing.key") # 7.0/7.1どちらもraiseしない
+I18n.t("missing.key") # 7.0/7.1どちらもraiseしない
+
+# すべての場所:
+I18n.t("missing.key") # 7.0/7.1どちらもraiseしない
+```
+
+または、`I18n.exception_handler`をカスタマイズすることも可能です。
+詳しくは[国際化（i18n）ガイド](i18n.html#%E6%A8%99%E6%BA%96%E4%BB%A5%E5%A4%96%E3%81%AE%E4%BE%8B%E5%A4%96%E3%83%8F%E3%83%B3%E3%83%89%E3%83%A9%E3%82%92%E4%BD%BF%E3%81%86)を参照してください。
+
+`AbstractController::Translation.raise_on_missing_translations`は削除されました。これはprivate APIですが、万一これに依存している場合は、`config.i18n.raise_on_missing_translations`またはカスタムの例外ハンドラに移行する必要があります。
+
+### `bin/rails test`で`test:prepare`タスクが実行されるようになった
+
+`bin/rails test`でテストを実行すると、テストの実行前に`rake test:prepare`タスクを実行するようになりました。`test:prepare`タスクを拡張している場合は、その拡張機能をテストの前に実行します。`tailwindcss-rails`、`jsbundling-rails`、`cssbundling-rails`は、他のサードパーティgemと同様にこのタスクを拡張します。
+
+詳しくは、[Rails テスティングガイド](https://railsguides.jp/testing.html#テストをCIで実行する)を参照してください。
+
+なお、単体ファイルのテストを実行する場合（例: `bin/rails test test/models/user_test.rb`）は、`test:prepare`を事前実行しません。
+
+### `ActionView::TestCase#rendered`が`String`を返さなくなった
+
+Rails 7.1から、`ActionView::TestCase#rendered`はさまざまなフォーマットメソッドに応答するオブジェクト（`rendered.html`や`rendered.json`など）を返すようになります。後方互換性を維持するために、`rendered`から返されるオブジェクトは、テスト中にレンダリングされる"missing"メソッドを`String`に委譲します。たとえば、以下の[`assert_match``][]アサーションはパスします。
+
+```ruby
+assert_match(/some content/i, rendered)
+```
+
+ただし、`ActionView::TestCase#rendered`が`String`のインスタンスを返すことに依存しているテストは失敗します。従来の振る舞いに戻すには、以下のように`#rendered`メソッドをオーバーライドして`@rendered`インスタンス変数から読み取ることが可能です。
+
+```ruby
+# config/initializers/action_view.rb
+
+ActiveSupport.on_load :action_view_test_case do
+  attr_reader :rendered
+end
+```
+
+[`assert_match``]: https://docs.seattlerb.org/minitest/Minitest/Assertions.html#method-i-assert_match
+
 Rails 6.1からRails 7.0へのアップグレード
 -------------------------------------
 
-Rails 7.0で行われた変更について詳しくは、[7.0リリースノート](7_0_release_notes.html)を参照してください。
+Rails 7.0で行われた変更について詳しくは、[Rails 7.0のリリースノート](7_0_release_notes.html)を参照してください。
 
 ### `ActionView::Helpers::UrlHelper#button_to`の振る舞いが変更された
 
@@ -120,7 +316,7 @@ gem "sprockets-rails"
 
 ### `config.autoloader=`セッターが削除された
 
-Rails 7では、オートロードのモードを指定する`config.autoloader=`設定そのものがなくなりました。何らかの理由で`:zeitwerk`に設定していた場合は、その設定行を削除してください。
+Rails 7では、自動読み込みモードを指定する`config.autoloader=`設定そのものがなくなりました。何らかの理由で`:zeitwerk`に設定していた場合は、その設定行を削除してください。
 
 ### `ActiveSupport::Dependencies`のprivate APIが削除された
 
@@ -141,9 +337,9 @@ ActiveSupport::Dependencies.constantize("User") # 今後は利用不可
 
 `ActiveSupport::Dependencies::Reference`や`ActiveSupport::Dependencies::Blamable`などの補助的なクラスやモジュールも削除されました。
 
-### 初期化中のオートロード
+### 初期化中の自動読み込み
 
-Rails 6.0以降では、アプリケーションの初期化中に、再読み込み可能な定数を`to_prepare`ブロックの外でオートロードすると、それらの定数がアンロードされて以下の警告が出力されます。
+Rails 6.0以降では、アプリケーションの初期化中に、再読み込み可能な定数を`to_prepare`ブロックの外で自動読み込みすると、それらの定数がアンロードされて以下の警告が出力されます。
 
 ```
 DEPRECATION WARNING: Initialization autoloaded the constant ....
@@ -154,7 +350,7 @@ to be an error condition in future versions of Rails.
 ...
 ```
 
-この警告が引き続きログに出力される場合は、[アプリケーション起動時の自動読み込み](https://railsguides.jp/autoloading_and_reloading_constants.html#アプリケーション起動時の自動読み込み)でアプリケーション起動時のオートロードについての記述を参照してください。これに対応しないと、Rails 7で`NameError`が出力されます。
+この警告が引き続きログに出力される場合は、[アプリケーション起動時の自動読み込み](https://railsguides.jp/autoloading_and_reloading_constants.html#アプリケーション起動時の自動読み込み)でアプリケーション起動時の自動読み込みについての記述を参照してください。これに対応しないと、Rails 7で`NameError`が出力されます。
 
 ### `config.autoload_once_paths`を設定可能になった
 
@@ -162,7 +358,7 @@ to be an error condition in future versions of Rails.
 
 エンジンも同様に、エンジンクラスのクラス本体内にあるコレクションや、環境向けの設定内にあるコレクションを設定可能です。
 
-コレクションは以後frozenになり、これらのパスからオートロードできるようになります。特に、これらのパスから初期化中にオートロードできるようになります。これらのパスは、`Rails.autoloaders.once`オートローダーで管理されます。このオートローダーはリロードを行わず、オートロードやeager loadingのみを行います。
+コレクションは以後frozenになり、これらのパスから自動読み込みできるようになります。特に、これらのパスから初期化中に自動読み込みできるようになります。これらのパスは、`Rails.autoloaders.once`オートローダーで管理されます。このオートローダーはリロードを行わず、自動読み込みやeager loadingのみを行います。
 
 環境設定が完了した後でこの設定を行ったときに`FrozenError`が発生する場合は、コードの置き場所を移動してください。
 
@@ -190,12 +386,12 @@ request.content_type #=> "text/csv; header=present; charset=utf-16"
 request.media_type   #=> "text/csv"
 ```
 
-### キージェネレータのメッセージダイジェストクラスがSHA256に変更
+### キージェネレータのメッセージダイジェストクラスでcookieローテーターが必須になった
 
 キージェネレータで用いられるデフォルトのダイジェストクラスが、SHA1からSHA256に変更されました。
 その結果、Railsで生成されるあらゆる暗号化メッセージがこの影響を受けるようになり、暗号化および署名済みcookieも同様に影響を受けます。
 
-古いダイジェストクラスを用いてメッセージを読めるようにするには、ローテータの登録が必要です。
+古いダイジェストクラスを用いてメッセージを読めるようにするには、ローテータの登録が必要です。これを行わないと、アップグレード中にユーザーのセッションが無効になる可能性があります。
 
 以下は、暗号化cookie向けのローテータの設定例です。
 
@@ -403,6 +599,8 @@ Rails 7.0で初めてスキーマを読み込むときは、その前に`rails a
 #
 # It's strongly recommended that you check this file into your version control system.
 ActiveRecord::Schema[6.1].define(version: 2022_01_28_123512) do
+  # ...
+end
 ```
 
 NOTE: Rails 7.0で初めてスキーマをダンプすると、そのファイルでカラム情報などさまざまな変更が行われていることがわかります。必ず新しいスキーマファイルの内容を確認してから、リポジトリにコミットすることを忘れないようにしましょう。
@@ -410,7 +608,7 @@ NOTE: Rails 7.0で初めてスキーマをダンプすると、そのファイ�
 Rails 6.0からRails 6.1へのアップグレード
 -------------------------------------
 
-Rails 6.1の変更点について詳しくは[リリースノート](6_1_release_notes.html)を参照してください。
+Rails 6.1の変更点について詳しくは[Rails 6.1のリリースノート](6_1_release_notes.html)を参照してください。
 
 ### `Rails.application.config_for`の戻り値をStringキーでアクセスするサポートが終了した
 
@@ -503,7 +701,7 @@ prefix = "foo/bar".camelize
 
 この変更は、多くのアプリケーションで後方互換性が保たれているので、これに該当する場合は対応不要です。
 
-ただし技術的には、autoloadパス上にない`$LOAD_PATH`内のディレクトリを指すようコントローラが`helpers_path`を設定することも可能でしたが、今後このようなユースケースはすぐ使える形ではサポートされません。ヘルパーモジュールがオートロード可能でない場合は、`helper`を呼び出す前にアプリケーションが明示的に読み込んでおく責任があります。
+ただし技術的には、autoloadパス上にない`$LOAD_PATH`内のディレクトリを指すようコントローラが`helpers_path`を設定することも可能でしたが、今後このようなユースケースはすぐ使える形ではサポートされません。ヘルパーモジュールが自動読み込み可能でない場合は、`helper`を呼び出す前にアプリケーションが明示的に読み込んでおく責任があります。
 
 TIP: （訳注）詳しくは[Remove \`require\_dependency\` usage in \`helper\` \[Closes \#37632\] · rails/rails@5b28a0e](https://github.com/rails/rails/commit/5b28a0e972da31da570ed24be505ef7958ab4b5e)もどうぞ。`helper`での読み込みに`require_dependency`が使われなくなったことによる変更です。
 
@@ -535,12 +733,12 @@ video.preview(resize_to_fill: [100, 100])
 
 エラーが新しく `ActiveModel::Error` クラスのインスタンスになり、APIの変更もあわせて行われました。これらの変更によって、新しくエラーが発生する、または Rails 7.0 で廃止されるため非推奨の警告を出力する場合があります。
 
-この変更とAPIの詳細については[PR](https://github.com/rails/rails/pull/32313)を参照してください。
+この変更とAPIについて詳しくは[#32313](https://github.com/rails/rails/pull/32313)を参照してください。
 
 Rails 5.2からRails 6.0へのアップグレード
 -------------------------------------
 
-Rails 6.0の変更点について詳しくは[リリースノート](6_0_release_notes.html)を参照してください。
+Rails 6.0の変更点について詳しくは[Rails 6.0のリリースノート](6_0_release_notes.html)を参照してください。
 
 ### Webpackerの利用について
 
@@ -632,6 +830,19 @@ resp.content_type #=> "text/csv; header=present; charset=utf-16"
 resp.media_type   #=> "text/csv"
 ```
 
+### 新しい`config.hosts`設定
+
+Railsに、セキュリティ用の`config.hosts`設定が新たに追加されました。この設定は、development環境ではデフォルトで`localhost`に設定されます。開発中に他のドメインを使う場合は、以下のように明示的に許可する必要があります。
+
+```ruby
+# config/environments/development.rb
+
+config.hosts << 'dev.myapp.com'
+config.hosts << /[a-z0-9-]+\.myapp\.com/ # 正規表現も利用可能
+```
+
+その他の環境では、`config.hosts`はデフォルトで空になります。これは、Railsがホストをまったく検証しないことを意味します。production環境で検証を有効にしたい場合は、オプションで追加できます。
+
 ### オートローディング
 
 Rails 6のデフォルト設定では、CRubyで`zeitwerk`のオートローディングモードが有効になります。
@@ -642,7 +853,7 @@ Rails 6のデフォルト設定では、CRubyで`zeitwerk`のオートローデ�
 config.load_defaults "6.0"
 ```
 
-オートローディングモードでは、オートロード、再読み込み、eager loadingを[Zeitwerk](https://github.com/fxn/zeitwerk)で管理します。
+自動読み込みモードでは、自動読み込み、再読み込み、eager loadingを[Zeitwerk](https://github.com/fxn/zeitwerk)で管理します。
 
 以前のバージョンのRailsのデフォルトを使っている場合は、以下の方法でzeitwerkを有効にできます。
 
@@ -666,7 +877,7 @@ Rails.autoloaders.main
 
 #### プロジェクトの構成
 
-アップグレードしたアプリケーションのオートロードが正しく動いていれば、プロジェクトの構成はほぼ互換性が保たれているはずです。
+アップグレードしたアプリケーションの自動読み込みが正しく動いていれば、プロジェクトの構成はほぼ互換性が保たれているはずです。
 
 ただし`classic`モードは、見つからない定数名からファイル名を推測しますが（`underscore`）、`zeitwerk`モードはファイル名から定数名を推測します（`camelize`）。特に略語がからむ場合、これらのヘルパーで双方向に変換できるとは限りません。たとえば、`"FOO".underscore`は`"foo"`になりますが、`"foo".camelize`は`"FOO"`ではなく`"Foo"`になります。
 
@@ -689,13 +900,13 @@ All is good!
 クラス定義やモジュール定義で、定数パスを安定して使えるようになりました。
 
 ```ruby
-# このクラスの本文のオートロードがRubyのセマンティクスと一致するようになった
+# このクラスの本文の自動読み込みがRubyのセマンティクスと一致するようになった
 class Admin::UsersController < ApplicationController
   # ...
 end
 ```
 
-ここで知っておいていただきたいのは、`classic`モードのオートローダーでは、実行順序によっては以下のコードの`Foo::Wadus`をオートロードできてしまう場合があるということです。
+ここで知っておいていただきたいのは、`classic`モードのオートローダーでは、実行順序によっては以下のコードの`Foo::Wadus`を自動読み込みできてしまう場合があるということです。
 
 ```ruby
 class Foo::Bar
@@ -723,28 +934,28 @@ end
 
 #### `concerns`について
 
-以下のような標準的な構造は、オートロードもeager loadも可能です。
+以下のような標準的な構造は、自動読み込みもeager loadも可能です。
 
 ```
 app/models
 app/models/concerns
 ```
 
-上は、（オートロードパスに属するので）`app/models/concerns`がrootディレクトリであると仮定され、名前空間としては無視されます。したがって、`app/models/concerns/foo.rb`は`Concerns::Foo`ではなく`Foo`と定義すべきです。
+上は、（自動読み込みパスに属するので）`app/models/concerns`がrootディレクトリであると仮定され、名前空間としては無視されます。したがって、`app/models/concerns/foo.rb`は`Concerns::Foo`ではなく`Foo`と定義すべきです。
 
 `Concerns::`名前空間は、`classic`モードのオートローダーでは実装の副作用によって動作していましたが、実際は意図した動作ではありませんでした。`Concerns::`を使っているアプリケーションが`zeitwerk`モードで動くようにするには、こうしたクラスやモジュールをリネームする必要があります。
 
-#### オートロードパス内に`app`がある場合
+#### 自動読み込みパス内に`app`がある場合
 
-プロジェクトによっては、`API::Base`を定義するために`app/api/base.rb`のようなものが欲しい場合があります。`classic`モードではこれを行うためにオートロードパスに`app`を追加します。Railsは`app`の全サブディレクトリをオートロードに自動的に追加するので、ネストしたルートディレクトリがある状況がもう１つ存在することになり、セットアップが機能しなくなります。この原則は上述の`concerns`と同様です。
+プロジェクトによっては、`API::Base`を定義するために`app/api/base.rb`のようなものが欲しい場合があります。`classic`モードではこれを行うために自動読み込みパスに`app`を追加します。Railsは`app`の全サブディレクトリを自動読み込みパスに追加するので、ネストしたルートディレクトリがある状況がもう１つ存在することになり、セットアップが機能しなくなります。この原則は上述の`concerns`と同様です。
 
-そうした構造を維持したい場合は、イニシャライザで以下のようにサブディレクトリをオートロードパスから削除する必要があります。
+そうした構造を維持したい場合は、イニシャライザで以下のようにサブディレクトリを自動読み込みパスから削除する必要があります。
 
 ```ruby
 ActiveSupport::Dependencies.autoload_paths.delete("#{Rails.root}/app/api")
 ```
 
-#### 定数のオートロードと明示的な名前空間
+#### 定数の自動読み込みと明示的な名前空間
 
 あるファイルの中で名前空間が1つ定義されているとします（ここでは`Hotel`）。
 
@@ -788,7 +999,7 @@ class Bar
 end
 ```
 
-上で`Foo`をオートロードすると、`Bar`をオートロードできなかった場合にも`Bar`をオートロード済みとマーキングすることがありました。このようなコードは`zeitwerk`では対象外なので、`Bar`はそれ専用の`bar.rb`というファイルに移すべきです。「1つのファイルには1つの定数だけ」となります。
+上で`Foo`を自動読み込みすると、`Bar`を自動読み込みできなかった場合にも`Bar`を自動読み込み済みとマーキングすることがありました。このようなコードは`zeitwerk`では対象外なので、`Bar`はそれ専用の`bar.rb`というファイルに移すべきです。「1つのファイルには1つの定数だけ」となります。
 
 これは、上の例のように「同じトップレベルにある」定数にのみ適用されます。ネストの内側にあるクラスやモジュールは影響を受けません。以下の例をご覧ください。
 
@@ -827,7 +1038,7 @@ Bootsnapのバージョンは1.4.2以上にする必要があります。
 
 #### `config.add_autoload_paths_to_load_path`
 
-[`config.add_autoload_paths_to_load_path`][]は、後方互換性のためデフォルトで`true`になっていますが、これを`false`にすると`$LOAD_PATH`にオートロードパスを追加しなくなります。
+[`config.add_autoload_paths_to_load_path`][]は、後方互換性のためデフォルトで`true`になっていますが、これを`false`にすると`$LOAD_PATH`に自動読み込みパスを追加しなくなります。
 
 この設定変更は、ほとんどのアプリケーションで有用です（`app/models`内などのファイルは決して`require`すべきではなく、Zeitwerkは内部で絶対パスだけを使うからです）。
 
@@ -837,9 +1048,9 @@ Bootsnapのバージョンは1.4.2以上にする必要があります。
 
 #### スレッド安全性について
 
-`classic`モードの定数オートロードはスレッド安全ではありません。Railsには、オートロードが有効な状態でWebのリクエストをスレッド安全にする（これはdevelopment環境でよくあることです）ためのロックがあるにもかかわらずです。
+`classic`モードにおける定数の自動読み込みはスレッド安全ではありません。Railsには、自動読み込みが有効な状態でWebのリクエストをスレッド安全にする（これはdevelopment環境でよくあることです）ためのロックがあるにもかかわらずです。
 
-`zeitwerk`モードの定数オートロードは、スレッド安全です。たとえば、`runner`コマンドで実行されるマルチスレッドでもオートロードが可能です。
+`zeitwerk`モードにおける定数の自動読み込みは、スレッド安全です。たとえば、`runner`コマンドで実行されるマルチスレッドでも自動読み込みが可能です。
 
 #### config.autoload_pathsの注意事項
 
@@ -857,9 +1068,9 @@ config.autoload_paths += Dir["#{config.root}/lib/**/"]
 config.autoload_paths << "#{config.root}/lib"
 ```
 
-#### eager loadingとオートロードが一貫するようになる
+#### eager loadingと自動読み込みが一貫するようになる
 
-`classic`の場合、たとえば`app/models/foo.rb`で`Bar`を定義すると、そのファイルをオートロードできなくなりますが、eager loading（一括読み込み）は機械的にファイルを再帰読み込みするため、オートロード可能です。この挙動のため、テストの冒頭で何かをeager loadingするとその後の実行でオートロードが失敗し、エラーの原因となる可能性があります。
+`classic`の場合、たとえば`app/models/foo.rb`で`Bar`を定義すると、そのファイルを自動読み込みできなくなりますが、eager loading（一括読み込み）は機械的にファイルを再帰読み込みするため、自動読み込み可能です。この挙動のため、テストの冒頭で何かをeager loadingするとその後の実行で自動読み込みが失敗し、エラーの原因となる可能性があります。
 
 `zeitwerk`モードの場合、どちらの読み込みモードも一貫するので、失敗やエラーは同一のファイルで発生するようになります。
 
@@ -885,10 +1096,10 @@ class User < ApplicationRecord
   has_many_attached :highlights
 end
 
-user.highlights.attach(filename: "funky.jpg", ...)
+user.highlights.attach(filename: "funky.jpg")
 user.highlights.count # => 1
 
-blob = ActiveStorage::Blob.create_after_upload!(filename: "town.jpg", ...)
+blob = ActiveStorage::Blob.create_after_upload!(filename: "town.jpg")
 user.update!(highlights: [ blob ])
 
 user.highlights.count # => 2
@@ -899,10 +1110,10 @@ user.highlights.second.filename # => "town.jpg"
 Rails 6.0のデフォルト設定では、添付ファイルのコレクションへの代入は、追加ではなく既存ファイルの置き換え操作になります。これにより、Active Recordでコレクションの関連付けに代入するときの振る舞いと一貫するようになります。
 
 ```ruby
-user.highlights.attach(filename: "funky.jpg", ...)
+user.highlights.attach(filename: "funky.jpg")
 user.highlights.count # => 1
 
-blob = ActiveStorage::Blob.create_after_upload!(filename: "town.jpg", ...)
+blob = ActiveStorage::Blob.create_after_upload!(filename: "town.jpg")
 user.update!(highlights: [ blob ])
 
 user.highlights.count # => 1
@@ -912,7 +1123,7 @@ user.highlights.first.filename # => "town.jpg"
 既存のものを削除せずに添付ファイルを新たに追加するには、`#attach`が利用できます。
 
 ```ruby
-blob = ActiveStorage::Blob.create_after_upload!(filename: "town.jpg", ...)
+blob = ActiveStorage::Blob.create_after_upload!(filename: "town.jpg")
 user.highlights.attach(blob)
 
 user.highlights.count # => 2
@@ -924,10 +1135,19 @@ user.highlights.second.filename # => "town.jpg"
 
 [`config.active_storage.replace_on_assign_to_many`]: configuring.html#config-active-storage-replace-on-assign-to-many
 
+### カスタム例外処理アプリケーション
+
+無効な`Accept`または`Content-Type`リクエストヘッダーは例外を発生するようになりました。
+
+デフォルトの[`config.exceptions_app`][]は、このエラーを特別に処理して対処します。
+カスタム例外アプリケーションもこのエラーを処理する必要があります。そうしないと、そうしたリクエストに対してフォールバック用の例外アプリケーションが使われ、Railsが`500 Internal Server Error`を返すようになります。
+
+[`config.exceptions_app`]: configuring.html#config-exceptions-app
+
 Rails 5.1からRails 5.2へのアップグレード
 -------------------------------------
 
-Rails 5.2 の変更点について詳しくは[リリースノート](5_2_release_notes.html)を参照してください。
+Rails 5.2 の変更点について詳しくは[Rails 5.2のリリースノート](5_2_release_notes.html)を参照してください。
 
 ### Bootsnap
 
@@ -944,7 +1164,7 @@ Rails 5.1 以前で新しいcookieを読み込みたい場合や、Rails 5.2 で
 Rails 5.0からRails 5.1へのアップグレード
 -------------------------------------
 
-Rails 5.1 の変更点について詳しくは[リリースノート](5_1_release_notes.html)を参照してください。
+Rails 5.1 の変更点について詳しくは[Rails 5.1のリリースノート](5_1_release_notes.html)を参照してください。
 
 ### トップレベルの`HashWithIndifferentAccess`が緩やかに非推奨化された
 
@@ -990,7 +1210,7 @@ redirect_back(fallback_location: root_path)
 Rails 4.2からRails 5.0へのアップグレード
 -------------------------------------
 
-Rails 5.0 の変更点について詳しくは[リリースノート](5_0_release_notes.html)を参照してください。
+Rails 5.0 の変更点について詳しくは[Rails 5.0のリリースノート](5_0_release_notes.html)を参照してください。
 
 ### Ruby 2.2.2以上が必須
 
@@ -1060,11 +1280,11 @@ end
 
 詳しくは[#26404](https://github.com/rails/rails/issues/26404)を参照してください。
 
-### production環境での起動後はオートロードが無効になる
+### production環境での起動後は自動読み込みが無効になる
 
-今後Railsがproduction環境で起動されると、オートロードがデフォルトで無効になります。
+今後Railsがproduction環境で起動されると、自動読み込みがデフォルトで無効になります。
 
-アプリケーションのeager loading（一括読み込み）は起動プロセスに含まれています。このため、トップレベルの定数についてはファイルを`require`しなくても問題なく利用でき、従来と同様にオートロードされます。
+アプリケーションのeager loading（一括読み込み）は起動プロセスに含まれています。このため、トップレベルの定数についてはファイルを`require`しなくても問題なく利用でき、従来と同様に自動読み込みされます。
 
 トップレベルより下で、実行時にのみ有効にする定数（通常のメソッド本体など）を定義した場合も、起動時にeager loadingされるので問題なく利用できます。
 
@@ -1420,15 +1640,15 @@ SSL攻撃を緩和するために、`form_authenticity_token`がマスクされ�
 
 ```ruby
 class Notifier < ActionMailer::Base
-  def notify(user, ...)
+  def notify(user)
     puts "Called"
-    mail(to: user.email, ...)
+    mail(to: user.email)
   end
 end
 ```
 
 ```ruby
-mail = Notifier.notify(user, ...) # Notifier#notifyはこの時点では呼び出されない
+mail = Notifier.notify(user) # Notifier#notifyはこの時点では呼び出されない
 mail = mail.deliver_now           # "Called"を出力する
 ```
 
@@ -1644,7 +1864,7 @@ class ReadOnlyModel < ActiveRecord::Base
 
   private
     def before_save_callback
-      return false
+      false
     end
 end
 ```
@@ -1912,10 +2132,10 @@ Rails 4.0 では`vendor/plugins` 読み込みのサポートは完全に終了�
 * Rails 4.0のスコープでは、Procやlambdaなどの呼び出し可能なオブジェクトの利用が必須となりました。
 
     ```ruby
-      scope :active, where(active: true)
+    scope :active, where(active: true)
 
-      # 上のコードは以下のように変更が必要
-      scope :active, -> { where active: true }
+    # 上のコードは以下のように変更が必要
+    scope :active, -> { where active: true }
     ```
 
 * Rails 4.0では`ActiveRecord::Fixtures`が非推奨となりました。今後は`ActiveRecord::FixtureSet`をお使いください。
@@ -1941,11 +2161,13 @@ Rails 4.0 では`vendor/plugins` 読み込みのサポートは完全に終了�
 * Rails 4.0 では、`has_and_belongs_to_many`リレーションで2番目のテーブル名の共通プレフィックスを除去する際に、デフォルトでjoin tableを使うよう変更されました。共通プレフィックスがあるモデル同士の`has_and_belongs_to_many`リレーションでは、以下のように必ず`join_table`オプションを指定する必要があります。
 
     ```ruby
-    CatalogCategory < ActiveRecord::Base
+    class CatalogCategory < ActiveRecord::Base
       has_and_belongs_to_many :catalog_products, join_table: 'catalog_categories_catalog_products'
     end
+    ```
 
-    CatalogProduct < ActiveRecord::Base
+    ```ruby
+    class CatalogProduct < ActiveRecord::Base
       has_and_belongs_to_many :catalog_categories, join_table: 'catalog_categories_catalog_products'
     end
     ```
@@ -1974,9 +2196,9 @@ Rails 4.0ではActive Resourceがgem化されました。この機能が必要�
 * Rails 4.0から`ActiveSupport::KeyGenerator`が導入され、署名付きcookieの生成や照合などに使われるようになりました。Rails 3.xで生成された既存の署名付きcookieは、既存の`secret_token`はそのままにして`secret_key_base`を新しく追加することで透過的にアップグレードされます。
 
     ```ruby
-      # config/initializers/secret_token.rb
-      Myapp::Application.config.secret_token = 'existing secret token'
-      Myapp::Application.config.secret_key_base = 'new secret key base'
+    # config/initializers/secret_token.rb
+    Myapp::Application.config.secret_token = 'existing secret token'
+    Myapp::Application.config.secret_key_base = 'new secret key base'
     ```
 
     注意：`secret_key_base`を設定するのは、Rails 4.xへのユーザーベースの移行が100%完了し、Rails 3.xにロールバックする必要が完全になくなってからにしてください。これは、Rails 4.xの新しい`secret_key_base`で署名されたcookieにはRails 3.xのcookieとの後方互換性がないためです。他のアップグレードが完全に完了するまでは、既存の`secret_token`をそのままにして`secret_key_base`を設定せず、非推奨警告を無視する方法も可能です。
@@ -2034,14 +2256,14 @@ Rails 4.0ではActive Resourceがgem化されました。この機能が必要�
 * Rails 4.0でルーティングに`match`を使う場合は、リクエストメソッドの指定が必須となりました。以下に例を示します。
 
     ```ruby
-      # Rails 3.x
-      match '/' => 'root#index'
+    # Rails 3.x
+    match '/' => 'root#index'
 
-      # 上は以下に変更が必要
-      match '/' => 'root#index', via: :get
+    # 上は以下に変更が必要
+    match '/' => 'root#index', via: :get
 
-      # または
-      get '/' => 'root#index'
+    # または
+    get '/' => 'root#index'
     ```
 
 * Rails 4.0から`ActionDispatch::BestStandardsSupport`ミドルウェアが削除されました。`<!DOCTYPE html>`は既に https://msdn.microsoft.com/en-us/library/jj676915(v=vs.85).aspx の標準モードをトリガーするようになり、ChromeFrameヘッダは`config.action_dispatch.default_headers`に移動されました。
@@ -2058,10 +2280,10 @@ Rails 4.0ではActive Resourceがgem化されました。この機能が必要�
 * Rails 4.0では、`config.action_dispatch.default_headers`でHTTPヘッダーを設定できるようになりました。デフォルト設定は以下のとおりです。
 
     ```ruby
-      config.action_dispatch.default_headers = {
-        'X-Frame-Options' => 'SAMEORIGIN',
-        'X-XSS-Protection' => '1; mode=block'
-      }
+    config.action_dispatch.default_headers = {
+      'X-Frame-Options' => 'SAMEORIGIN',
+      'X-XSS-Protection' => '1; mode=block'
+    }
     ```
 
     ただし、アプリケーションが特定のページで`<frame>`や`<iframe>`の読み込みに依存している場合は、`X-Frame-Options`を明示的に`ALLOW-FROM ...`または`ALLOWALL`に設定する必要があるでしょう。
@@ -2091,7 +2313,7 @@ Rails 4.0では`ERB::Util#json_escape`のエイリアス`j`が廃止されまし
 
 #### キャッシュ
 
-Rails 3.xからRails 4.0への移行に伴い、キャッシュ用のメソッドが変更されました。[キャッシュの名前空間を変更](https://guides.rubyonrails.org/caching_with_rails.html#activesupport-cache-store)し、コールドキャッシュ（cold cache）を使って更新してください。
+Rails 3.xからRails 4.0への移行に伴い、キャッシュ用のメソッドが変更されました。[キャッシュの名前空間を変更](caching_with_rails.html#activesupport-cache-store)し、コールドキャッシュ（cold cache）を使って更新してください。
 
 ### ヘルパーの読み込み順序
 

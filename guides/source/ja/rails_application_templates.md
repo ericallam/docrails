@@ -59,11 +59,7 @@ gem "bj"
 gem "nokogiri"
 ```
 
-Gemfileでgemを指定しただけではインストール**されません**。指定したgemをインストールするには`bundle install`を実行する必要があります。
-
-```bash
-bundle install
-```
+このメソッドは`Gemfile`にgemを追加するだけです。gemのインストールは行いません。
 
 ### `gem_group(*names, &block)`
 
@@ -262,7 +258,7 @@ end
 高度な利用法
 --------------
 
-アプリケーションテンプレートは、`Rails::Generators::AppGenerator`インスタンスのコンテキストで評価されます。ここで使われる[`apply`](https://rdoc.info/github/wycats/thor/Thor/Actions#apply-instance_method)アクションはThorが提供しています。
+アプリケーションテンプレートは、`Rails::Generators::AppGenerator`インスタンスのコンテキストで評価されます。ここで使われる[`apply`](https://www.rubydoc.info/gems/thor/Thor/Actions#apply-instance_method)アクションはThorが提供しています。
 これにより、このインスタンスを必要に応じて拡張および変更できます。
 
 たとえば、`source_paths`メソッドを上書きしてテンプレートの位置を指定できます。これにより、`copy_file`などのメソッドでテンプレートの位置からの相対パスを指定できるようになります。

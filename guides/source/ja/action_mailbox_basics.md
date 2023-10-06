@@ -218,8 +218,8 @@ NOTE: SendGridのInbound Parse webhookを設定するときには、必ず**“P
 ```ruby
 # app/mailboxes/application_mailbox.rb
 class ApplicationMailbox < ActionMailbox::Base
-  routing /^save@/i     => :forwards
-  routing /@replies\./i => :replies
+  routing(/^save@/i     => :forwards)
+  routing(/@replies\./i => :replies)
 end
 ```
 
