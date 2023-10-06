@@ -489,7 +489,11 @@ Action Cable
 
 ### 削除されたもの
 
+特になし。
+
 ### 非推奨化
+
+特になし。
 
 ### 主な変更点
 
@@ -569,6 +573,8 @@ Action View
 
 ### 非推奨化
 
+特になし。
+
 ### 主な変更点
 
 * `check_box_tag`と`radio_button_tag`に`checked:`をキーワード引数として渡せるようになった（[#45527][]）。
@@ -592,6 +598,8 @@ Action Mailer
 変更点について詳しくは[Changelog][action-mailer]を参照してください。
 
 ### 削除されたもの
+
+特になし。
 
 ### 非推奨化
 
@@ -746,6 +754,8 @@ Active Storage
 
 ### 非推奨化
 
+特になし。
+
 ### 主な変更点
 
 * `ActiveStorage::Analyzer::AudioAnalyzer`が、出力の`metadata`ハッシュで`sample_rate`と`tags`を出力するようになった（[#48823][]、[#47749][]）。
@@ -773,7 +783,11 @@ Active Model
 
 ### 削除されたもの
 
+特になし。
+
 ### 非推奨化
+
+特になし。
 
 ### 主な変更点
 
@@ -865,6 +879,8 @@ Active Support
 
 ### 主な変更点
 
+特になし。
+
 Active Job
 ----------
 
@@ -877,6 +893,8 @@ Active Job
 [#46005]: https://github.com/rails/rails/pull/46005
 
 ### 非推奨化
+
+特になし。
 
 ### 主な変更点
 
@@ -900,9 +918,16 @@ Action Text
 
 ### 削除されたもの
 
+特になし。
+
 ### 非推奨化
 
+特になし。
+
 ### 主な変更点
+
+特になし。
+
 
 Action Mailbox
 ----------
@@ -911,7 +936,11 @@ Action Mailbox
 
 ### 削除されたもの
 
+特になし。
+
 ### 非推奨化
+
+特になし。
 
 ### 主な変更点
 
@@ -928,6 +957,9 @@ Ruby on Railsガイド
 変更点について詳しくは[Changelog][guides]を参照してください。
 
 ### 主な変更点
+
+特になし。
+
 
 Credits
 -------
