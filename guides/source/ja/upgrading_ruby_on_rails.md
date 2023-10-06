@@ -97,7 +97,7 @@ config.add_autoload_paths_to_load_path = true
 
 `lib`ディレクトリはこのフラグの影響を受けず、常に`$LOAD_PATH`に追加されます。
 
-### config.autoload_lib and config.autoload_lib_once
+### config.autoload_libとconfig.autoload_lib_onceについて
 
 * [Introduce config.autoload_lib_once(ignore:) by fxn · Pull Request #48610 · rails/rails](https://github.com/rails/rails/pull/48610)
 
