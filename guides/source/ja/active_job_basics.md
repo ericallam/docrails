@@ -429,7 +429,7 @@ end
 Rails.application.config.active_job.custom_serializers << MoneySerializer
 ```
 
-初期化中は、再読み込み可能なコードのオートロードがサポートされていない点にご注意ください。そのため、たとえば以下のように`config/application.rb`を修正するなどして、シリアライザが1度だけ読み込まれるように設定することをおすすめします。
+初期化中は、再読み込み可能なコードの自動読み込みがサポートされていない点にご注意ください。そのため、たとえば以下のように`config/application.rb`を修正するなどして、シリアライザが1度だけ読み込まれるように設定することをおすすめします。
 
 ```ruby
 # config/application.rb

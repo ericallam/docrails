@@ -78,7 +78,7 @@ Rails 7.0からRails 7.1へのアップグレード
 
 Rails 7.1で行われた変更について詳しくは、[7.1リリースノート](7_1_release_notes.html)を参照してください。
 
-### オートロードされるパスが`$LOAD_PATH`に含まれなくなった
+### 自動読み込みされるパスが`$LOAD_PATH`に含まれなくなった
 
 * [Disable config.add_autoload_paths_to_load_path by default in Rails 7.1 by casperisfine · Pull Request #44133 · rails/rails](https://github.com/rails/rails/pull/44133)
 
@@ -93,7 +93,7 @@ Rails 7.1以降、オートローダーが管理するすべてのディレク�
 config.add_autoload_paths_to_load_path = true
 ```
 
-ただしこれは推奨されません。オートロードパス内のクラスやモジュールはオートロードされるようにするためにあるので、単に参照するだけにしてください。
+ただしこれは推奨されません。自動読み込みパス内のクラスやモジュールは、自動読み込みされるようにするためにあるので、単に参照するだけにしてください。
 
 `lib`ディレクトリはこのフラグの影響を受けず、常に`$LOAD_PATH`に追加されます。
 
@@ -116,14 +116,14 @@ $ bin/rails runner 'pp Rails.autoloaders.once.dirs'
 アプリケーションの`lib`ディレクトリがautoloadのパスに既に含まれている場合は、多くの場合、config/application.rbに以下のような設定があるでしょう。
 
 ```ruby
-# libをオートロードするがeager loadはしない（見落とされる可能性あり）
+# libを自動読み込みするがeager loadはしない（見落とされる可能性あり）
 config.autoload_paths << config.root.join("lib")
 ```
 
 または
 
 ```ruby
-# libをオートロードおよびeager loadする
+# libを自動読み込みおよびeager loadする
 config.autoload_paths << config.root.join("lib")
 config.eager_load_paths << config.root.join("lib")
 ```
@@ -131,7 +131,7 @@ config.eager_load_paths << config.root.join("lib")
 または
 
 ```ruby
-# すべてのeager loadパスがオートロードパスにもなるので同じ
+# すべてのeager loadパスが自動読み込みパスにもなるので同じ
 config.eager_load_paths << config.root.join("lib")
 ```
 
@@ -316,7 +316,7 @@ gem "sprockets-rails"
 
 ### `config.autoloader=`セッターが削除された
 
-Rails 7では、オートロードのモードを指定する`config.autoloader=`設定そのものがなくなりました。何らかの理由で`:zeitwerk`に設定していた場合は、その設定行を削除してください。
+Rails 7では、自動読み込みモードを指定する`config.autoloader=`設定そのものがなくなりました。何らかの理由で`:zeitwerk`に設定していた場合は、その設定行を削除してください。
 
 ### `ActiveSupport::Dependencies`のprivate APIが削除された
 
@@ -337,9 +337,9 @@ ActiveSupport::Dependencies.constantize("User") # 今後は利用不可
 
 `ActiveSupport::Dependencies::Reference`や`ActiveSupport::Dependencies::Blamable`などの補助的なクラスやモジュールも削除されました。
 
-### 初期化中のオートロード
+### 初期化中の自動読み込み
 
-Rails 6.0以降では、アプリケーションの初期化中に、再読み込み可能な定数を`to_prepare`ブロックの外でオートロードすると、それらの定数がアンロードされて以下の警告が出力されます。
+Rails 6.0以降では、アプリケーションの初期化中に、再読み込み可能な定数を`to_prepare`ブロックの外で自動読み込みすると、それらの定数がアンロードされて以下の警告が出力されます。
 
 ```
 DEPRECATION WARNING: Initialization autoloaded the constant ....
@@ -350,7 +350,7 @@ to be an error condition in future versions of Rails.
 ...
 ```
 
-この警告が引き続きログに出力される場合は、[アプリケーション起動時の自動読み込み](https://railsguides.jp/autoloading_and_reloading_constants.html#アプリケーション起動時の自動読み込み)でアプリケーション起動時のオートロードについての記述を参照してください。これに対応しないと、Rails 7で`NameError`が出力されます。
+この警告が引き続きログに出力される場合は、[アプリケーション起動時の自動読み込み](https://railsguides.jp/autoloading_and_reloading_constants.html#アプリケーション起動時の自動読み込み)でアプリケーション起動時の自動読み込みについての記述を参照してください。これに対応しないと、Rails 7で`NameError`が出力されます。
 
 ### `config.autoload_once_paths`を設定可能になった
 
@@ -358,7 +358,7 @@ to be an error condition in future versions of Rails.
 
 エンジンも同様に、エンジンクラスのクラス本体内にあるコレクションや、環境向けの設定内にあるコレクションを設定可能です。
 
-コレクションは以後frozenになり、これらのパスからオートロードできるようになります。特に、これらのパスから初期化中にオートロードできるようになります。これらのパスは、`Rails.autoloaders.once`オートローダーで管理されます。このオートローダーはリロードを行わず、オートロードやeager loadingのみを行います。
+コレクションは以後frozenになり、これらのパスから自動読み込みできるようになります。特に、これらのパスから初期化中に自動読み込みできるようになります。これらのパスは、`Rails.autoloaders.once`オートローダーで管理されます。このオートローダーはリロードを行わず、自動読み込みやeager loadingのみを行います。
 
 環境設定が完了した後でこの設定を行ったときに`FrozenError`が発生する場合は、コードの置き場所を移動してください。
 
@@ -701,7 +701,7 @@ prefix = "foo/bar".camelize
 
 この変更は、多くのアプリケーションで後方互換性が保たれているので、これに該当する場合は対応不要です。
 
-ただし技術的には、autoloadパス上にない`$LOAD_PATH`内のディレクトリを指すようコントローラが`helpers_path`を設定することも可能でしたが、今後このようなユースケースはすぐ使える形ではサポートされません。ヘルパーモジュールがオートロード可能でない場合は、`helper`を呼び出す前にアプリケーションが明示的に読み込んでおく責任があります。
+ただし技術的には、autoloadパス上にない`$LOAD_PATH`内のディレクトリを指すようコントローラが`helpers_path`を設定することも可能でしたが、今後このようなユースケースはすぐ使える形ではサポートされません。ヘルパーモジュールが自動読み込み可能でない場合は、`helper`を呼び出す前にアプリケーションが明示的に読み込んでおく責任があります。
 
 TIP: （訳注）詳しくは[Remove \`require\_dependency\` usage in \`helper\` \[Closes \#37632\] · rails/rails@5b28a0e](https://github.com/rails/rails/commit/5b28a0e972da31da570ed24be505ef7958ab4b5e)もどうぞ。`helper`での読み込みに`require_dependency`が使われなくなったことによる変更です。
 
@@ -853,7 +853,7 @@ Rails 6のデフォルト設定では、CRubyで`zeitwerk`のオートローデ�
 config.load_defaults "6.0"
 ```
 
-オートローディングモードでは、オートロード、再読み込み、eager loadingを[Zeitwerk](https://github.com/fxn/zeitwerk)で管理します。
+自動読み込みモードでは、自動読み込み、再読み込み、eager loadingを[Zeitwerk](https://github.com/fxn/zeitwerk)で管理します。
 
 以前のバージョンのRailsのデフォルトを使っている場合は、以下の方法でzeitwerkを有効にできます。
 
@@ -877,7 +877,7 @@ Rails.autoloaders.main
 
 #### プロジェクトの構成
 
-アップグレードしたアプリケーションのオートロードが正しく動いていれば、プロジェクトの構成はほぼ互換性が保たれているはずです。
+アップグレードしたアプリケーションの自動読み込みが正しく動いていれば、プロジェクトの構成はほぼ互換性が保たれているはずです。
 
 ただし`classic`モードは、見つからない定数名からファイル名を推測しますが（`underscore`）、`zeitwerk`モードはファイル名から定数名を推測します（`camelize`）。特に略語がからむ場合、これらのヘルパーで双方向に変換できるとは限りません。たとえば、`"FOO".underscore`は`"foo"`になりますが、`"foo".camelize`は`"FOO"`ではなく`"Foo"`になります。
 
@@ -900,13 +900,13 @@ All is good!
 クラス定義やモジュール定義で、定数パスを安定して使えるようになりました。
 
 ```ruby
-# このクラスの本文のオートロードがRubyのセマンティクスと一致するようになった
+# このクラスの本文の自動読み込みがRubyのセマンティクスと一致するようになった
 class Admin::UsersController < ApplicationController
   # ...
 end
 ```
 
-ここで知っておいていただきたいのは、`classic`モードのオートローダーでは、実行順序によっては以下のコードの`Foo::Wadus`をオートロードできてしまう場合があるということです。
+ここで知っておいていただきたいのは、`classic`モードのオートローダーでは、実行順序によっては以下のコードの`Foo::Wadus`を自動読み込みできてしまう場合があるということです。
 
 ```ruby
 class Foo::Bar
@@ -934,28 +934,28 @@ end
 
 #### `concerns`について
 
-以下のような標準的な構造は、オートロードもeager loadも可能です。
+以下のような標準的な構造は、自動読み込みもeager loadも可能です。
 
 ```
 app/models
 app/models/concerns
 ```
 
-上は、（オートロードパスに属するので）`app/models/concerns`がrootディレクトリであると仮定され、名前空間としては無視されます。したがって、`app/models/concerns/foo.rb`は`Concerns::Foo`ではなく`Foo`と定義すべきです。
+上は、（自動読み込みパスに属するので）`app/models/concerns`がrootディレクトリであると仮定され、名前空間としては無視されます。したがって、`app/models/concerns/foo.rb`は`Concerns::Foo`ではなく`Foo`と定義すべきです。
 
 `Concerns::`名前空間は、`classic`モードのオートローダーでは実装の副作用によって動作していましたが、実際は意図した動作ではありませんでした。`Concerns::`を使っているアプリケーションが`zeitwerk`モードで動くようにするには、こうしたクラスやモジュールをリネームする必要があります。
 
-#### オートロードパス内に`app`がある場合
+#### 自動読み込みパス内に`app`がある場合
 
-プロジェクトによっては、`API::Base`を定義するために`app/api/base.rb`のようなものが欲しい場合があります。`classic`モードではこれを行うためにオートロードパスに`app`を追加します。Railsは`app`の全サブディレクトリをオートロードに自動的に追加するので、ネストしたルートディレクトリがある状況がもう１つ存在することになり、セットアップが機能しなくなります。この原則は上述の`concerns`と同様です。
+プロジェクトによっては、`API::Base`を定義するために`app/api/base.rb`のようなものが欲しい場合があります。`classic`モードではこれを行うために自動読み込みパスに`app`を追加します。Railsは`app`の全サブディレクトリを自動読み込みパスに追加するので、ネストしたルートディレクトリがある状況がもう１つ存在することになり、セットアップが機能しなくなります。この原則は上述の`concerns`と同様です。
 
-そうした構造を維持したい場合は、イニシャライザで以下のようにサブディレクトリをオートロードパスから削除する必要があります。
+そうした構造を維持したい場合は、イニシャライザで以下のようにサブディレクトリを自動読み込みパスから削除する必要があります。
 
 ```ruby
 ActiveSupport::Dependencies.autoload_paths.delete("#{Rails.root}/app/api")
 ```
 
-#### 定数のオートロードと明示的な名前空間
+#### 定数の自動読み込みと明示的な名前空間
 
 あるファイルの中で名前空間が1つ定義されているとします（ここでは`Hotel`）。
 
@@ -999,7 +999,7 @@ class Bar
 end
 ```
 
-上で`Foo`をオートロードすると、`Bar`をオートロードできなかった場合にも`Bar`をオートロード済みとマーキングすることがありました。このようなコードは`zeitwerk`では対象外なので、`Bar`はそれ専用の`bar.rb`というファイルに移すべきです。「1つのファイルには1つの定数だけ」となります。
+上で`Foo`を自動読み込みすると、`Bar`を自動読み込みできなかった場合にも`Bar`を自動読み込み済みとマーキングすることがありました。このようなコードは`zeitwerk`では対象外なので、`Bar`はそれ専用の`bar.rb`というファイルに移すべきです。「1つのファイルには1つの定数だけ」となります。
 
 これは、上の例のように「同じトップレベルにある」定数にのみ適用されます。ネストの内側にあるクラスやモジュールは影響を受けません。以下の例をご覧ください。
 
@@ -1038,7 +1038,7 @@ Bootsnapのバージョンは1.4.2以上にする必要があります。
 
 #### `config.add_autoload_paths_to_load_path`
 
-[`config.add_autoload_paths_to_load_path`][]は、後方互換性のためデフォルトで`true`になっていますが、これを`false`にすると`$LOAD_PATH`にオートロードパスを追加しなくなります。
+[`config.add_autoload_paths_to_load_path`][]は、後方互換性のためデフォルトで`true`になっていますが、これを`false`にすると`$LOAD_PATH`に自動読み込みパスを追加しなくなります。
 
 この設定変更は、ほとんどのアプリケーションで有用です（`app/models`内などのファイルは決して`require`すべきではなく、Zeitwerkは内部で絶対パスだけを使うからです）。
 
@@ -1048,9 +1048,9 @@ Bootsnapのバージョンは1.4.2以上にする必要があります。
 
 #### スレッド安全性について
 
-`classic`モードの定数オートロードはスレッド安全ではありません。Railsには、オートロードが有効な状態でWebのリクエストをスレッド安全にする（これはdevelopment環境でよくあることです）ためのロックがあるにもかかわらずです。
+`classic`モードにおける定数の自動読み込みはスレッド安全ではありません。Railsには、自動読み込みが有効な状態でWebのリクエストをスレッド安全にする（これはdevelopment環境でよくあることです）ためのロックがあるにもかかわらずです。
 
-`zeitwerk`モードの定数オートロードは、スレッド安全です。たとえば、`runner`コマンドで実行されるマルチスレッドでもオートロードが可能です。
+`zeitwerk`モードにおける定数の自動読み込みは、スレッド安全です。たとえば、`runner`コマンドで実行されるマルチスレッドでも自動読み込みが可能です。
 
 #### config.autoload_pathsの注意事項
 
@@ -1068,9 +1068,9 @@ config.autoload_paths += Dir["#{config.root}/lib/**/"]
 config.autoload_paths << "#{config.root}/lib"
 ```
 
-#### eager loadingとオートロードが一貫するようになる
+#### eager loadingと自動読み込みが一貫するようになる
 
-`classic`の場合、たとえば`app/models/foo.rb`で`Bar`を定義すると、そのファイルをオートロードできなくなりますが、eager loading（一括読み込み）は機械的にファイルを再帰読み込みするため、オートロード可能です。この挙動のため、テストの冒頭で何かをeager loadingするとその後の実行でオートロードが失敗し、エラーの原因となる可能性があります。
+`classic`の場合、たとえば`app/models/foo.rb`で`Bar`を定義すると、そのファイルを自動読み込みできなくなりますが、eager loading（一括読み込み）は機械的にファイルを再帰読み込みするため、自動読み込み可能です。この挙動のため、テストの冒頭で何かをeager loadingするとその後の実行で自動読み込みが失敗し、エラーの原因となる可能性があります。
 
 `zeitwerk`モードの場合、どちらの読み込みモードも一貫するので、失敗やエラーは同一のファイルで発生するようになります。
 
@@ -1280,11 +1280,11 @@ end
 
 詳しくは[#26404](https://github.com/rails/rails/issues/26404)を参照してください。
 
-### production環境での起動後はオートロードが無効になる
+### production環境での起動後は自動読み込みが無効になる
 
-今後Railsがproduction環境で起動されると、オートロードがデフォルトで無効になります。
+今後Railsがproduction環境で起動されると、自動読み込みがデフォルトで無効になります。
 
-アプリケーションのeager loading（一括読み込み）は起動プロセスに含まれています。このため、トップレベルの定数についてはファイルを`require`しなくても問題なく利用でき、従来と同様にオートロードされます。
+アプリケーションのeager loading（一括読み込み）は起動プロセスに含まれています。このため、トップレベルの定数についてはファイルを`require`しなくても問題なく利用でき、従来と同様に自動読み込みされます。
 
 トップレベルより下で、実行時にのみ有効にする定数（通常のメソッド本体など）を定義した場合も、起動時にeager loadingされるので問題なく利用できます。
 

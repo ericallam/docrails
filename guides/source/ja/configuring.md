@@ -47,7 +47,7 @@ config.active_record.schema_format = :ruby
 
 WARNING: 関連付けされたクラスを直接呼び出すのではなく、必ずpublicな設定メソッドを使うこと。例: `ActionMailer::Base.options`ではなく`Rails.application.config.action_mailer.options`を使う。
 
-NOTE: 設定をクラスに直接適用する必要がある場合は、イニシャライザで[`ActiveSupport::LazyLoadHooks`](https://api.rubyonrails.org/classes/ActiveSupport/LazyLoadHooks.html)をお使いください（初期化が完了する前にクラスがオートロードされるのを避けるため）。初期化中にオートロードされるとアプリの再読み込みを安全に繰り返せなくなるため、失敗します。
+NOTE: 設定をクラスに直接適用する必要がある場合は、イニシャライザで[`ActiveSupport::LazyLoadHooks`](https://api.rubyonrails.org/classes/ActiveSupport/LazyLoadHooks.html)をお使いください（初期化が完了する前にクラスが自動読み込みされるのを避けるため）。初期化中に自動読み込みされるとアプリの再読み込みを安全に繰り返せなくなるため、失敗します。
 
 ### Railsバージョンごとのデフォルト値
 
@@ -161,7 +161,7 @@ Rails全般に対する設定を行うには、`Rails::Railtie`オブジェク�
 
 #### `config.add_autoload_paths_to_load_path`
 
-オートロードのパスを`$LOAD_PATH`に追加しなければならないかどうかを指定します。`zeitwerk`モードでは`config/application.rb`で`false` に設定することが推奨されます。
+自動読み込みパスを`$LOAD_PATH`に追加しなければならないかどうかを指定します。`zeitwerk`モードでは`config/application.rb`で`false` に設定することが推奨されます。
 Zeitwerkは内部的に絶対パスを使用し、`:zeitwerk`モードで動作するアプリケーションには `require_dependency`が不要なので、モデル、コントローラ、ジョブなどは`$LOAD_PATH`に入れておく必要がありません。
 これを`false`に設定すると、Ruby が相対パスで`require`呼び出しを解決する際にこれらのディレクトリをチェックする必要がなくなり、Bootsnapの作業とメモリを節約できます。
 
@@ -526,7 +526,7 @@ config.railties_order = [Blog::Engine, :main_app, :all]
 #### `config.reload_classes_only_on_change`
 
 トラッキングしているファイルが変更された場合のみのクラス再読み込みを有効または無効にします。
-デフォルトでは、すべてのオートロードパスをトラッキングし、`true`に設定されています。
+デフォルトでは、すべての自動読み込みパスをトラッキングし、`true`に設定されています。
 このオプションは、`config.enable_reloading`が`false`の場合は無視されます。
 
 #### `config.require_master_key`

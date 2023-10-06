@@ -209,9 +209,9 @@ ActiveSupport::Cache.lookup_store(:file_store, "tmp/cache", serializer: :message
 [#48103]: https://github.com/rails/rails/pull/48103
 [#48104]: https://github.com/rails/rails/pull/48104
 
-### オートローディングを拡張する`config.autoload_lib`と`config.autoload_lib_once`コンフィグが導入
+### 自動読み込みを拡張する`config.autoload_lib`と`config.autoload_lib_once`コンフィグが導入
 
-`config.autoload_lib(ignore:)`という新しい設定メソッドが導入されました（[#48572][]）。このメソッドは、デフォルトではオートロードパスに含まれていない`lib`ディレクトリをアプリケーションのオートロードパスに追加するために利用されます。また、新しいアプリケーションでは`config.autoload_lib(ignore: %w(assets tasks))`が生成されます。
+`config.autoload_lib(ignore:)`という新しい設定メソッドが導入されました（[#48572][]）。このメソッドは、デフォルトでは自動読み込みパスに含まれていない`lib`ディレクトリをアプリケーションの自動読み込みパスに追加するために利用されます。また、新しいアプリケーションでは`config.autoload_lib(ignore: %w(assets tasks))`が生成されます。
 
 このメソッドが`config/application.rb`または`config/environments/*.rb`から呼び出されると、`lib`ディレクトリを`config.autoload_paths`および`config.eager_load_paths`の両方に追加します。ただし、この機能はエンジンでは利用できません。
 
