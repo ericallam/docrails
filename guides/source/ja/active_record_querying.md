@@ -432,7 +432,7 @@ Customer.where(first_name: 'does not exist').take!
 [`find_by`]: https://api.rubyonrails.org/classes/ActiveRecord/FinderMethods.html#method-i-find_by
 [`find_by!`]: https://api.rubyonrails.org/classes/ActiveRecord/FinderMethods.html#method-i-find_by-21
 
-##### 条件を`:id`で指定する
+##### 条件を`id`で指定する
 
 [`find_by`][]や[`where`][]などのメソッドで条件を指定するときに`id`を使うと、モデルの`:id`属性と一致します（これは、渡すIDが主キーでなければならない[`find`][]と異なります）。
 
