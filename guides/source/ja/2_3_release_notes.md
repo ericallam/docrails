@@ -51,7 +51,7 @@ Railsは、これまでのCGIと決別し、あらゆる場所でRackを使う�
 ドキュメント
 -------------
 
-[Railsガイド](https://railsguides.jp/)プロジェクトはRails 2.3向けにガイドをいくつも追加しました。さらに、[edgeguides.rubyonrails.org](https://edgeguides.rubyonrails.org/)という別サイトでエッジRailsのガイド（英語のみ）を参照できるようになりました。また、ドキュメント関連では[Rails wiki](http://newwiki.rubyonrails.org/)やRails Bookの再立ち上げなども行われました（訳注: Rails wikiとRails Bookは現在は動いていません）。
+[Railsガイド](https://railsguides.jp/)プロジェクトはRails 2.3向けにガイドをいくつも追加しました。さらに、[edgeguides.rubyonrails.org](https://edgeguides.rubyonrails.org/)という別サイトでRails Edgeガイド（英語のみ）を参照できるようになりました。また、ドキュメント関連では[Rails wiki](http://newwiki.rubyonrails.org/)やRails Bookの再立ち上げなども行われました（訳注: Rails wikiとRails Bookは現在は動いていません）。
 
 
 * 詳しくは[Rails Documentation Projects](https://rubyonrails.org/2009/1/15/rails-documentation-projects)を参照して下さい。
