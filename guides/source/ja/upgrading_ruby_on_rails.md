@@ -76,7 +76,7 @@ Overwrite /myapp/config/application.rb? (enter "h" for help) [Ynaqdh]
 Rails 7.0からRails 7.1へのアップグレード
 -------------------------------------
 
-Rails 7.1で行われた変更について詳しくは、[7.1リリースノート](7_1_release_notes.html)を参照してください。
+Rails 7.1で行われた変更について詳しくは、[Rails 7.1のリリースノート](7_1_release_notes.html)を参照してください。
 
 ### 自動読み込みされるパスが`$LOAD_PATH`に含まれなくなった
 
@@ -272,7 +272,7 @@ end
 Rails 6.1からRails 7.0へのアップグレード
 -------------------------------------
 
-Rails 7.0で行われた変更について詳しくは、[7.0リリースノート](7_0_release_notes.html)を参照してください。
+Rails 7.0で行われた変更について詳しくは、[Rails 7.0のリリースノート](7_0_release_notes.html)を参照してください。
 
 ### `ActionView::Helpers::UrlHelper#button_to`の振る舞いが変更された
 
@@ -608,7 +608,7 @@ NOTE: Rails 7.0で初めてスキーマをダンプすると、そのファイ�
 Rails 6.0からRails 6.1へのアップグレード
 -------------------------------------
 
-Rails 6.1の変更点について詳しくは[リリースノート](6_1_release_notes.html)を参照してください。
+Rails 6.1の変更点について詳しくは[Rails 6.1のリリースノート](6_1_release_notes.html)を参照してください。
 
 ### `Rails.application.config_for`の戻り値をStringキーでアクセスするサポートが終了した
 
@@ -738,7 +738,7 @@ video.preview(resize_to_fill: [100, 100])
 Rails 5.2からRails 6.0へのアップグレード
 -------------------------------------
 
-Rails 6.0の変更点について詳しくは[リリースノート](6_0_release_notes.html)を参照してください。
+Rails 6.0の変更点について詳しくは[Rails 6.0のリリースノート](6_0_release_notes.html)を参照してください。
 
 ### Webpackerの利用について
 
@@ -1147,7 +1147,7 @@ user.highlights.second.filename # => "town.jpg"
 Rails 5.1からRails 5.2へのアップグレード
 -------------------------------------
 
-Rails 5.2 の変更点について詳しくは[リリースノート](5_2_release_notes.html)を参照してください。
+Rails 5.2 の変更点について詳しくは[Rails 5.2のリリースノート](5_2_release_notes.html)を参照してください。
 
 ### Bootsnap
 
@@ -1164,7 +1164,7 @@ Rails 5.1 以前で新しいcookieを読み込みたい場合や、Rails 5.2 で
 Rails 5.0からRails 5.1へのアップグレード
 -------------------------------------
 
-Rails 5.1 の変更点について詳しくは[リリースノート](5_1_release_notes.html)を参照してください。
+Rails 5.1 の変更点について詳しくは[Rails 5.1のリリースノート](5_1_release_notes.html)を参照してください。
 
 ### トップレベルの`HashWithIndifferentAccess`が緩やかに非推奨化された
 
@@ -1210,7 +1210,7 @@ redirect_back(fallback_location: root_path)
 Rails 4.2からRails 5.0へのアップグレード
 -------------------------------------
 
-Rails 5.0 の変更点について詳しくは[リリースノート](5_0_release_notes.html)を参照してください。
+Rails 5.0 の変更点について詳しくは[Rails 5.0のリリースノート](5_0_release_notes.html)を参照してください。
 
 ### Ruby 2.2.2以上が必須
 
