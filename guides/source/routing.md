@@ -1145,10 +1145,7 @@ end
 resources :photos
 ```
 
-This changes the route helpers for `/admin/photos` from `photos_path`,
-`new_photos_path`, etc. to `admin_photos_path`, `new_admin_photo_path`,
-etc. Without the addition of `as: 'admin_photos` on the scoped `resources
-:photos`, the non-scoped `resources :photos` will not have any route helpers.
+This will provide route helpers such as `admin_photos_path`, `new_admin_photo_path`, etc.
 
 To prefix a group of route helpers, use `:as` with `scope`:
 
@@ -1160,9 +1157,7 @@ end
 resources :photos, :accounts
 ```
 
-Just as before, this changes the `/admin` scoped resource helpers to
-`admin_photos_path` and `admin_accounts_path`, and allows the non-scoped
-resources to use `photos_path` and `accounts_path`.
+This will generate routes such as `admin_photos_path` and `admin_accounts_path` which map to `/admin/photos` and `/admin/accounts` respectively.
 
 NOTE: The `namespace` scope will automatically add `:as` as well as `:module` and `:path` prefixes.
 

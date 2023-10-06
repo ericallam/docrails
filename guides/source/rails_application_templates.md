@@ -60,7 +60,11 @@ gem "bj"
 gem "nokogiri"
 ```
 
-Note that this method only adds the gem to the `Gemfile`; it does not install the gem.
+Please note that this will NOT install the gems for you and you will have to run `bundle install` to do that.
+
+```bash
+$ bundle install
+```
 
 ### gem_group(*names, &block)
 
@@ -268,7 +272,7 @@ Advanced Usage
 
 The application template is evaluated in the context of a
 `Rails::Generators::AppGenerator` instance. It uses the
-[`apply`](https://www.rubydoc.info/gems/thor/Thor/Actions#apply-instance_method)
+[`apply`](https://rdoc.info/github/wycats/thor/Thor/Actions#apply-instance_method)
 action provided by Thor.
 
 This means you can extend and change the instance to match your needs.
