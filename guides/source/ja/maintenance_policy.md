@@ -70,4 +70,4 @@ NPM パッケージ
 
 npmの制約により、Railsが提供する[NPMパッケージ][]のセキュリティリリースに4桁目を使えなくなりました。つまり、同等のgemバージョン`7.0.1.4`の代わりに、NPMパッケージのバージョンは`7.0.1-4`と表記されます。
 
-[NPM packages]: https://www.npmjs.com/org/rails
+[NPMパッケージ]: https://www.npmjs.com/org/rails
