@@ -30,9 +30,9 @@ webpackなどのフロントエンドビルドシステムの目的は、開発�
 
 RailsにはSprocketsも同梱されています。SprocketsもWebpackerと同様のアセットパッケージングツールで、Webpackerと機能が重複しています。どちらのツールも、JavaScriptをブラウザに適したファイルにコンパイルすることでproduction環境でのminifyやフィンガープリント追加を行えます。development環境では、SprocketsもWebpackerもファイルをインクリメンタルに変更できます。
 
-SprocketsはRailsで使われる前提で設計されているため、統合方法はWebpackerよりもシンプルで、Ruby gemを用いてSprocketsにコードを追加できます。webpackは、より新しいJavaScriptツールやNPMパッケージとの統合に優れており、より多くのものを統合できます。新しいRailsアプリは「JavaScriptはwebpackで管理する」「CSSはSprocketsで管理する」設定になっていますが、webpackでCSSを管理することもできます。
+SprocketsはRailsで使われる前提で設計されているため、統合方法はWebpackerよりもシンプルで、Ruby gemを用いてSprocketsにコードを追加できます。webpackは、より新しいJavaScriptツールやnpmパッケージとの統合に優れており、より多くのものを統合できます。新しいRailsアプリは「JavaScriptはwebpackで管理する」「CSSはSprocketsで管理する」設定になっていますが、webpackでCSSを管理することもできます。
 
-新しいプロジェクトで「NPMパッケージを使いたい場合」「最新のJavaScript機能やツールにアクセスしたい場合」は、Sprocketsではなくwebpackerを選択すべきでしょう。「移行にコストがかかるレガシーアプリケーション」「gemで統合したい場合」「パッケージ化するコードの量が非常に少ない場合」は、WebpackerではなくSprocketsを選ぶべきでしょう。
+新しいプロジェクトで「npmパッケージを使いたい場合」「最新のJavaScript機能やツールにアクセスしたい場合」は、Sprocketsではなくwebpackerを選択すべきでしょう。「移行にコストがかかるレガシーアプリケーション」「gemで統合したい場合」「パッケージ化するコードの量が非常に少ない場合」は、WebpackerではなくSprocketsを選ぶべきでしょう。
 
 Sprocketsに慣れ親しんでいる方は、以下の表を参考に両者の対応関係を理解するとよいでしょう。なお、ツールごとに構造が微妙に異なっているため、必ずしも概念が直接対応しているとは限らない点にご注意ください。
 
@@ -49,7 +49,7 @@ Webpackerをインストールする
 
 Webpackerを使うには、Yarnパッケージマネージャー（1.x以上）とNode.js（10.13.0以上）のインストールが必要です。
 
-NOTE: WebpackerはNPMとYarnに依存しています。NPM（Node package manager）レジストリは、Node.jsとブラウザランタイムの両方で、主にオープンソースのJavaScriptプロジェクトの公開やダウンロードに用いられるリポジトリです。NPMの位置づけは、Rubyのgemを扱うrubygems.orgに似ています。Yarnコマンドラインユーティリティは、RubyのBundlerと位置づけが似ています。BundlerがRubyの依存関係のインストールや管理を行うのと同様に、YarnはJavaScriptの依存関係をインストールおよび管理できます。
+NOTE: WebpackerはnpmとYarnに依存しています。npm（Node Package Manager）レジストリは、Node.jsとブラウザランタイムの両方で、主にオープンソースのJavaScriptプロジェクトの公開やダウンロードに用いられるリポジトリです。npmの位置づけは、Rubyのgemを扱うrubygems.orgに似ています。Yarnコマンドラインユーティリティは、RubyのBundlerと位置づけが似ています。BundlerがRubyの依存関係のインストールや管理を行うのと同様に、YarnはJavaScriptの依存関係をインストールおよび管理できます。
 
 新規プロジェクトにWebpackerを含めるには、`rails new`コマンドに`--webpack`を追加します。
 既存のプロジェクトにWebpackerを追加するには、プロジェクトの`Gemfile`に`webpacker` gemを追加して`bundle install`を実行し、続いて`bin/rails webpacker:install`を実行します。
@@ -116,7 +116,7 @@ Webpackerでは、PostCSSプロセッサを用いてCSSやSCSSのサポートを
 
 CSSコードをpackにインクルードするには、まずCSSファイルをトップレベルのpackファイルにインクルードします（JavaScriptファイルをインクルードするときと同じ要領です）。つまり、CSSのトップレベルマニフェストが`app/javascript/styles/styles.scss`にある場合は、`import styles/styles` でインポートします。これにより、webpackがCSSファイルをダウンロードに含められるようになります。実際にWebページで読み込むには、ビューのコードに`<%= stylesheet_pack_tag "application" %>`を追加します。
 
-CSSフレームワークを用いる場合は、フレームワークを`yarn`でNPMモジュールとして読み込むインストール手順（`yarn add <フレームワーク名>`が典型）に従えば、Webpackerにフレームワークを追加できます。たいていのフレームワークには、CSSやSCSSファイルにインポートする手順があるはずです。
+CSSフレームワークを用いる場合は、フレームワークを`yarn`でnpmモジュールとして読み込むインストール手順（`yarn add <フレームワーク名>`が典型）に従えば、Webpackerにフレームワークを追加できます。たいていのフレームワークには、CSSやSCSSファイルにインポートする手順があるはずです。
 
 ### 静的アセットをWebpacker経由で利用する
 
@@ -159,7 +159,7 @@ Webpackerで静的アセットを扱う場合のAction Viewヘルパーについ
 
 バージョン5の時点のWebpackerは「Railsエンジン対応」では**ありません**。つまりWebpackerは、Railsエンジンで利用できるSprocketsと機能的な互換性がありません。
 
-Railsエンジンgemの作者がWebpackerの利用をサポートする場合は、フロントエンドアセットをgem本体に追加してNPMパッケージとして配布し、ホストアプリケーションとの統合方法を説明する指示書（またはインストーラ）を提供することが推奨されます。[Alchemy CMS](https://github.com/AlchemyCMS/alchemy_cms)は、このアプローチの良い例です。
+Railsエンジンgemの作者がWebpackerの利用をサポートする場合は、フロントエンドアセットをgem本体に追加してnpmパッケージとして配布し、ホストアプリケーションとの統合方法を説明する指示書（またはインストーラ）を提供することが推奨されます。[Alchemy CMS](https://github.com/AlchemyCMS/alchemy_cms)は、このアプローチの良い例です。
 
 ### webpackのHot Module Replacement（HMR）について
 

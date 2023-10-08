@@ -15,7 +15,7 @@ Rails で JavaScript を利用する
 import maps
 -----------
 
-[import maps](https://github.com/rails/importmap-rails)は、バージョン付けされたファイルに対応する論理名を用いてJavaScriptモジュールをブラウザで直接importできます。import mapsはRails 7からデフォルトになっており、トランスパイルやバンドルの必要なしにほとんどのNPMパッケージを用いて誰でもモダンなJavaScriptアプリケーションを構築できるようになります。
+[import maps](https://github.com/rails/importmap-rails)は、バージョン付けされたファイルに対応する論理名を用いてJavaScriptモジュールをブラウザで直接importできます。import mapsはRails 7からデフォルトになっており、トランスパイルやバンドルの必要なしにほとんどのnpmパッケージを用いて誰でもモダンなJavaScriptアプリケーションを構築できるようになります。
 
 import mapsを利用するアプリケーションは、[Node.js](https://nodejs.org/en/)や[Yarn](https://yarnpkg.com/)なしで機能します。RailsのJavaScript依存関係を`importmap-rails`で管理する予定であれば、Node.jsやYarnをインストールする必要はありません。
 
@@ -35,7 +35,7 @@ $ bin/bundle add importmap-rails
 $ bin/rails importmap:install
 ```
 
-### NPMパッケージをimportmap-railsで追加する
+### npmパッケージをimportmap-railsで追加する
 
 import mapを利用するアプリケーションに新しいパッケージを追加するには、ターミナルで以下のように`bin/importmap pin`コマンドを実行します。
 
@@ -51,7 +51,7 @@ import React from "react"
 import ReactDOM from "react-dom"
 ```
 
-NPMパッケージをJavaScriptバンドラーで追加する
+npmパッケージをJavaScriptバンドラーで追加する
 --------
 
 import mapsは新規Railsアプリケーションのデフォルトですが、従来のJavaScriptバンドラーを使いたい場合は、新規Railsアプリケーション作成時にいずれかを選択できます。
