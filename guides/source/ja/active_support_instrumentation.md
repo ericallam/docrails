@@ -1,4 +1,4 @@
-Active Support の Instrumentation 機能
+Active Support Instrumentation で計測
 ==============================
 
 Active SupportはRailsのコア機能の1つであり、Ruby言語の拡張、ユーティリティなどを提供するものです。Active Supportに含まれているInstrumentation APIは、Rubyコードで発生する特定の動作の計測に利用できます。Railsアプリケーション内部やフレームワーク自身の計測はもちろん、必要であればRails以外のRubyスクリプトなども測定できます。
