@@ -152,7 +152,7 @@
     -
       name: Rails アプリケーションの設定項目
       url: configuring.html
-      description: Railsアプリケーションの基本的な設定方法について解説します。
+      description: Railsアプリケーションの基本的な設定方法（Config：コンフィグ）について解説します。
     -
       name: コマンドラインツール
       url: command_line.html
