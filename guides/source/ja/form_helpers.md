@@ -241,7 +241,7 @@ TIP: 通常、inputにはモデルの属性が反映されます。しかしこ�
 
 複合主キー（composite primary key）を持つモデルでもフォームを作成できます。この場合、フォームの構文は同じですが、出力がわずかに異なります。
 
-複合キー`[:author_id, :id]`を持つ`@book`モデルオブジェクトの場合を例にします。
+複合主キー`[:author_id, :id]`を持つ`@book`モデルオブジェクトの場合を例にします。
 
 ```ruby
 @book = Book.find([2, 25])
@@ -270,7 +270,7 @@ TIP: 通常、inputにはモデルの属性が反映されます。しかしこ�
 生成されたURLには、`author_id`と`id`がアンダースコア区切りの形で含まれていることにご注目ください。
 送信後、コントローラーはパラメータから[個別の主キーの値を抽出][]して、単一の主キーと同様にレコードを更新できます。
 
-[extract each primary key value]: action_controller_overview.html#複合キーのパラメータ
+[extract each primary key value]: action_controller_overview.html#複合主キーのパラメータ
 
 #### `fields_for`ヘルパー
 

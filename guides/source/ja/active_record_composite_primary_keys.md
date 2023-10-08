@@ -176,7 +176,7 @@ SELECT * FROM authors WHERE first_name = 'Jane' AND last_name = 'Doe'
 
 [Form Helpers]: form_helpers.html
 
-複合キー`[:author_id, :id]`を持つ`@book`モデルオブジェクトの場合を例にします。
+複合主キー`[:author_id, :id]`を持つ`@book`モデルオブジェクトの場合を例にします。
 
 ```ruby
 @book = Book.find([2, 25])
@@ -205,7 +205,7 @@ SELECT * FROM authors WHERE first_name = 'Jane' AND last_name = 'Doe'
 生成されたURLには、`author_id`と`id`がアンダースコア区切りの形で含まれていることにご注目ください。
 送信後、コントローラーはパラメータから主キーの値を抽出して、単一の主キーと同様にレコードを更新できます。詳しくは次のセクションを参照してください。
 
-複合キーのパラメータ
+複合主キーのパラメータ
 ------------------------
 
 れているため、各値を抽出してActive Recordに渡す必要があります。このユースケースでは、`extract_value`メソッドを活用できます。
@@ -230,7 +230,7 @@ end
 get '/books/:id', to: 'books#show'
 ```
 
-ユーザーがURL `/books/4_2`を開くと、コントローラは複合キーの値`["4", "2"]`を抽出して`Book.find`に渡し、ビューで正しいレコードを表示します。`extract_value`メソッドは、区切られた任意のパラメータから配列を抽出するのに利用できます。
+ユーザーがURL `/books/4_2`を開くと、コントローラは複合主キーの値`["4", "2"]`を抽出して`Book.find`に渡し、ビューで正しいレコードを表示します。`extract_value`メソッドは、区切られた任意のパラメータから配列を抽出するのに利用できます。
 
 複合主キーのフィクスチャ
 ------------------------------

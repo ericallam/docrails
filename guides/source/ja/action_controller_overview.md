@@ -192,9 +192,9 @@ get '/clients/:status', to: 'clients#index', foo: 'bar'
 [`controller_name`]: https://api.rubyonrails.org/classes/ActionController/Metal.html#method-i-controller_name
 [`action_name`]: https://api.rubyonrails.org/classes/AbstractController/Base.html#method-i-action_name
 
-### 複合キーのパラメータ
+### 複合主キーのパラメータ
 
-複合キーのパラメータには、1つのパラメータに複数の値が含まれているため、各値を抽出してActive Recordに渡す必要があります。このユースケースでは、`extract_value`メソッドを活用できます。
+複合主キーのパラメータには、1つのパラメータに複数の値が含まれているため、各値を抽出してActive Recordに渡す必要があります。このユースケースでは、`extract_value`メソッドを活用できます。
 
 以下のコントローラがあるとします。
 
@@ -216,7 +216,7 @@ end
 get '/books/:id', to: 'books#show'
 ```
 
-ユーザーがURL `/books/4_2`を開くと、コントローラは複合キーの値`["4", "2"]`を抽出して`Book.find`に渡し、ビューで正しいレコードを表示します。`extract_value`メソッドは、区切られた任意のパラメータから配列を抽出するのに利用できます。
+ユーザーがURL `/books/4_2`を開くと、コントローラは複合主キーの値`["4", "2"]`を抽出して`Book.find`に渡し、ビューで正しいレコードを表示します。`extract_value`メソッドは、区切られた任意のパラメータから配列を抽出するのに利用できます。
 
 ### `default_url_options`
 
