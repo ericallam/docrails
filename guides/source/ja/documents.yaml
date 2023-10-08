@@ -28,7 +28,7 @@
     -
       name: Active Record の関連付け
       url: association_basics.html
-      description: Active Recordが提供するすべての関連付け機能について解説します。
+      description: Active Recordが提供するすべての関連付け機能（Association: アソシエーション）について解説します。
     -
       name: Active Record クエリインターフェイス
       url: active_record_querying.html
