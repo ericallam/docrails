@@ -9,7 +9,6 @@ Active SupportはRailsのコア機能の1つであり、Ruby言語の拡張、�
 
 * Instrumentationでできること
 * Railsフレームワーク内のInstrumentationフック
-* Instrumentationで得たタイミング情報をブラウザで表示する
 * フックにサブスクライバを追加する
 * 独自のInstrumentationを実装する
 
@@ -87,21 +86,6 @@ ActiveSupport::Notifications.subscribe(/action_controller/) do |*args|
   # ActionControllerの全イベントをチェック
 end
 ```
-
-[`ActiveSupport::Notifications::Event`]: https://api.rubyonrails.org/classes/ActiveSupport/Notifications/Event.html
-[`ActiveSupport::Notifications.monotonic_subscribe`]: https://api.rubyonrails.org/classes/ActiveSupport/Notifications.html#method-c-monotonic_subscribe
-[`ActiveSupport::Notifications.subscribe`]: https://api.rubyonrails.org/classes/ActiveSupport/Notifications.html#method-c-subscribe
-
-Instrumentationで得たタイミング情報をブラウザで表示する
--------------------------------------------------
-
-Railsは、[Server Timing](https://www.w3.org/TR/server-timing/)標準を実装して、タイミング情報をWebブラウザで表示可能にしています。これを有効にするには、環境設定（development環境で使うことが最も多いので、通常は`development.rb`にします）を編集し、以下の内容を追加します。
-
-```ruby
-config.server_timing = true
-```
-
-設定（およびサーバーの再起動など）が完了したら、ブラウザのDevToolsパネルを開き、Networkタブを選択してページを再読み込みします。これで、Railsサーバーへの任意のリクエストを選択すると、Timingタブにサーバータイミングが表示されるようになります。操作方法の例については、[Firefoxドキュメント](https://firefox-source-docs.mozilla.org/devtools-user/network_monitor/request_details/index.html#server-timing)を参照してください。
 
 [`ActiveSupport::Notifications::Event`]: https://api.rubyonrails.org/classes/ActiveSupport/Notifications/Event.html
 [`ActiveSupport::Notifications.monotonic_subscribe`]: https://api.rubyonrails.org/classes/ActiveSupport/Notifications.html#method-c-monotonic_subscribe
