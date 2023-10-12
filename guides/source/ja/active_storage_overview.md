@@ -589,7 +589,7 @@ WARNING: Active Storageのすべてのコントローラは、デフォルトで
 
 ```ruby
 url_for(user.avatar)
-# => /rails/active_storage/blobs/:signed_id/my-avatar.png
+# => https://www.example.com/rails/active_storage/blobs/redirect/:signed_id/my-avatar.png
 ```
 
 `RedirectController`は、サービスの実際のエンドポイントにリダイレクトします。この間接参照によってサービスURLと実際のURLが切り離され、たとえば添付ファイルを別サービスにミラーリングして可用性を高めることが可能になります。リダイレクトのHTTP有効期限は5分です。

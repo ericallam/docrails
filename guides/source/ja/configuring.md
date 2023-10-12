@@ -540,7 +540,7 @@ config.railties_order = [Blog::Engine, :main_app, :all]
 
 #### `config.server_timing`
 
-`true`にすると、[ServerTimingミドルウェア](#actiondispatch-servertiming)をミドルウェアスタックに追加します。
+`true`にすると、[ServerTimingミドルウェア](#actiondispatch-servertiming)をミドルウェアスタックに追加します。デフォルトは`false`ですが、生成されるデフォルトの`config/environments/development.rb`ファイルでは`true`に設定されます。
 
 #### `config.session_options`
 
@@ -757,7 +757,9 @@ Rails.application.config.host_authorization = {
 
 #### `ActionDispatch::ServerTiming`
 
-`Server-Timing`ヘッダーにメトリクスを追加して、ブラウザのDevToolsで参照できるようにします。
+サーバーのパフォーマンスメトリクスを含む[`Server-Timing`][]ヘッダーをレスポンスに追加します。このデータは、ブラウザのDevToolsの「Network」ペインでレスポンスを調べることで確認できます。ほとんどのブラウザには、このデータを可視化する「Timing」タブがあります。
+
+[`Server-Timing`]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Server-Timing
 
 #### `ActionDispatch::SSL`
 
@@ -1673,6 +1675,15 @@ Rendered messages/_message.html.erb in 1.2 ms [cache hit]
 Rendered recordings/threads/_thread.html.erb in 1.5 ms [cache miss]
 ```
 
+#### `config.action_controller.raise_on_missing_callback_actions`
+
+コールバックの`:only`オプションや`:except`オプションで指定したアクションがコントローラ内に存在しない場合に`AbstractController::ActionNotFound`をraiseするかどうかを指定します。
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | `false`              |
+| 7.1                   | `true`（developmentとtest）、`false`（その他の環境）|
+
 #### `config.action_controller.raise_on_open_redirects`
 
 許可されていないオープンリダイレクトが発生した場合に`ActionController::Redirecting::UnsafeRedirectError`をraiseします。
@@ -1730,7 +1741,7 @@ cookieで使うシリアライザを指定します。[`config.active_support.me
 
 #### `config.action_dispatch.debug_exception_log_level`
 
-リクエスト中にキャッチされない例外をログ出力する際に、DebugExceptionsミドルウェアで使うログレベルを設定します。
+リクエスト中にキャッチされない例外をログ出力する際に、[`ActionDispatch::DebugExceptions`]ミドルウェアで使うログレベルを設定します。
 
 デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
 
@@ -1738,6 +1749,8 @@ cookieで使うシリアライザを指定します。[`config.active_support.me
 | --------------------- | -------------------- |
 | （オリジナル）           | `:fatal`             |
 | 7.1以降                | `:error`             |
+
+[`ActionDispatch::DebugExceptions`]: https://api.rubyonrails.org/classes/ActionDispatch/DebugExceptions.html
 
 #### `config.action_dispatch.default_headers`
 

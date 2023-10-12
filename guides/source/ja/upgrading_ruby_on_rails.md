@@ -267,7 +267,39 @@ ActiveSupport.on_load :action_view_test_case do
 end
 ```
 
-[`assert_match``]: https://docs.seattlerb.org/minitest/Minitest/Assertions.html#method-i-assert_match
+### `Rails.logger`が`ActiveSupport::BroadcastLogger`インスタンスを返すようになった
+
+新しい`ActiveSupport::BroadcastLogger`クラスを使うと、ログを手軽にさまざまな出力先（STDOUT、ログファイルなど）にブロードキャストできるようになります。
+
+`ActiveSupport::Logger.broadcast` privateメソッドを用いる従来のログブロードキャストAPIは削除されました。
+アプリケーションがこのAPIに依存している場合は、以下のような変更が必要です。
+
+```ruby
+logger = Logger.new("some_file.log")
+
+# 変更前
+
+Rails.logger.extend(ActiveSupport::Logger.broadcast(logger))
+
+# 変更後
+
+Rails.logger.broadcast_to(logger)
+```
+
+アプリケーションでカスタムロガーを利用している場合は、すべてのメソッドが`Rails.logger`にラップおよびプロキシされるので、特に変更は必要ありません。
+
+カスタムロガーのインスタンスにアクセスする必要がある場合は、以下のように`broadcasts`メソッドでアクセスできます。
+
+```ruby
+# config/application.rb
+config.logger = MyLogger.new
+
+# アプリケーションのどこでも利用できる
+puts Rails.logger.class      #=> BroadcastLogger
+puts Rails.logger.broadcasts #=> [MyLogger]
+```
+
+[`assert_match`]: https://docs.seattlerb.org/minitest/Minitest/Assertions.html#method-i-assert_match
 
 Rails 6.1からRails 7.0へのアップグレード
 -------------------------------------
