@@ -480,7 +480,7 @@ end
 
 この宣言によって、アプリケーションのすべてのビューで`app/views/layouts/main.html.erb`レイアウトが使われるようになります。
 
-[`layout`]: https://edgeapi.rubyonrails.org/classes/ActionView/Layouts/ClassMethods.html#method-i-layout
+[`layout`]: https://api.rubyonrails.org/classes/ActionView/Layouts/ClassMethods.html#method-i-layout
 
 ##### 実行時にレイアウトを指定する
 
