@@ -245,7 +245,7 @@ I18n.t("missing.key") # 7.0/7.1どちらもraiseしない
 
 `bin/rails test`でテストを実行すると、テストの実行前に`rake test:prepare`タスクを実行するようになりました。`test:prepare`タスクを拡張している場合は、その拡張機能をテストの前に実行します。`tailwindcss-rails`、`jsbundling-rails`、`cssbundling-rails`は、他のサードパーティgemと同様にこのタスクを拡張します。
 
-詳しくは、[Rails テスティングガイド](https://railsguides.jp/testing.html#テストをCIで実行する)を参照してください。
+詳しくは、[Rails テスティングガイド](https://railsguides.jp/testing.html#テストをciで実行する)を参照してください。
 
 なお、単体ファイルのテストを実行する場合（例: `bin/rails test test/models/user_test.rb`）は、`test:prepare`を事前実行しません。
 
