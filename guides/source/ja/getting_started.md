@@ -89,9 +89,10 @@ $ gem install rails
 
 ```bash
 $ rails --version
+Rails 7.1.0
 ```
 
-"Rails 7.0.1"などのバージョンが表示されたら、次に進みましょう。
+"Rails 7.1.0"などのバージョンが表示されたら、次に進みましょう。
 
 ### ブログアプリケーションを作成する
 
@@ -295,7 +296,7 @@ create      test/fixtures/articles.yml
 `db/migrate/`ディレクトリの下に生成されたマイグレーションファイルを開いてみましょう。
 
 ```ruby
-class CreateArticles < ActiveRecord::Migration[7.0]
+class CreateArticles < ActiveRecord::Migration[7.1]
   def change
     create_table :articles do |t|
       t.string :title
@@ -345,7 +346,7 @@ $ bin/rails console
 以下のような`irb`プロンプトが表示されるはずです。
 
 ```irb
-Loading development environment (Rails 7.0.1)
+Loading development environment (Rails 7.1.0)
 irb(main):001:0>
 ```
 
@@ -1049,7 +1050,7 @@ Commentモデルの内容は、これまでに見た`Articleモデル`と非常�
 モデルファイルの他に、以下のようなマイグレーションファイルも生成されています。マイグレーションファイルは、モデルに対応するデータベーステーブルを生成するのに使います。
 
 ```ruby
-class CreateComments < ActiveRecord::Migration[7.0]
+class CreateComments < ActiveRecord::Migration[7.1]
   def change
     create_table :comments do |t|
       t.string :commenter

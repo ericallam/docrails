@@ -2057,20 +2057,23 @@ end
 NOTE: `assert_emails`メソッドは特定の配信方法に紐付けられておらず、`deliver_now`メソッドと`deliver_later`メソッドのどちらでメールを配信する場合にも利用できます。メールがキューに登録されたことを明示的なアサーションにしたい場合は、`assert_enqueued_email_with`メソッド（[上述の例を参照](#キューに登録されたメールをテストする)）か、`assert_enqueued_emails`メソッドを利用できます。詳しくは[`ActionMailer::TestHelper`][] APIドキュメントを参照してください。
 
 [`ActionMailer::TestHelper`]: https://api.rubyonrails.org/classes/ActionMailer/TestHelper.html
+
 ジョブをテストする
 ------------
 
-カスタムジョブはアプリケーション内部のさまざまなレベルでキューに登録されるため、ジョブそのもの（キューイングされるときの振る舞い）と、その他のエンティティが正常にキューに登録されるかどうかを両方テストする必要があります。
+複数のジョブを分離してテストする（ジョブの振る舞いに注目する）ことも、コンテキストでテストする（呼び出し元のコードの振る舞いに注目する）ことも可能です。
 
-### 基本のテストケース
+### ジョブを分離してテストする
 
-デフォルトではジョブを1つ作成すると、ジョブに関連するテストが`test/jobs`ディレクトリの下にも生成されます。以下は請求（billing）ジョブの例です。
+ジョブを生成すると、ジョブに関連するテストも`test/jobs`ディレクトリの下に生成されます。
+
+以下は請求（billing）ジョブの例です。
 
 ```ruby
 require "test_helper"
 
 class BillingJobTest < ActiveJob::TestCase
-  test "that account is charged" do
+  test "account is charged" do
     perform_enqueued_jobs do
       BillingJob.perform_later(account, product)
     end
@@ -2079,47 +2082,43 @@ class BillingJobTest < ActiveJob::TestCase
 end
 ```
 
-このテストは非常にシンプルで、ジョブが期待通りに振る舞ったことだけを確認します。また、`perform_now`でジョブをインライン実行することも可能ですが、リトライが設定されている場合、ジョブによって発生した例外は無視されます。一方、`perform_enqueued_jobs`ではテストが失敗し、例外情報が表示されます。
+テスト用のデフォルトキューアダプタは、[`perform_enqueued_jobs`][]が呼び出されるまでジョブを実行しません。さらに、テスト同士が干渉しないようにするため、個別のテストを実行する前にすべてのジョブをクリアします。
 
-### カスタムアサーションと他のコンポーネント内のジョブのテスト
+このテストでは、`perform_enqueued_jobs`と[`perform_later`][]を使っています。[`perform_now`][]の代わりにこれらを使うことで、リトライが設定されている場合には失敗したリトライが（再度エンキューされて無視されずに）テストでキャッチされるようになります。
 
-Active Jobには、テストをシンプルに書くためのカスタムアサーションが多数付属しています。利用できるアサーションの全リストについては、[`ActiveJob::TestHelper`](https://api.rubyonrails.org/classes/ActiveJob/TestHelper.html)のAPIドキュメントを参照してください。
+[`perform_enqueued_jobs`]: https://api.rubyonrails.org/classes/ActiveJob/TestHelper.html#method-i-perform_enqueued_jobs
+[`perform_later`]: https://api.rubyonrails.org/classes/ActiveJob/Enqueuing/ClassMethods.html#method-i-perform_later
+[`perform_now`]: https://api.rubyonrails.org/classes/ActiveJob/Execution/ClassMethods.html#method-i-perform_now
 
-（コントローラなどでの）呼び出しのたびにジョブが正しくキューに登録または実行されているかをテストするのはよい方法です。こういうときこそActive Jobが提供するカスタムアサーションの出番です。以下はモデル内でジョブがキューに登録されたことを確かめるテストです。
+### Testing Jobs in Context
+
+
+コントローラなどで、呼び出しのたびにジョブが正しくエンキューされているかどうかをテストするのはよい方法です。[`ActiveJob::TestHelper`][]モジュールは、そのために役立つ[`assert_enqueued_with`][]などのメソッドを提供しています。
+
+以下はAccountモデルのメソッドをテストする例です。
 
 ```ruby
 require "test_helper"
 
-class ProductTest < ActiveSupport::TestCase
+class AccountTest < ActiveSupport::TestCase
   include ActiveJob::TestHelper
 
-  test "billing job scheduling" do
+  test "#charge_for enqueues billing job" do
     assert_enqueued_with(job: BillingJob) do
-      product.charge(account)
+      account.charge_for(product)
     end
+
     assert_not account.reload.charged_for?(product)
-  end
-end
-```
 
-デフォルトのアダプタである`:test`は、ジョブがキューに登録されたときには実行されません。ジョブを実行したいときは、以下のように明示的に指定する必要があります。
+    perform_enqueued_jobs
 
-```ruby
-require "test_helper"
-
-class ProductTest < ActiveSupport::TestCase
-  include ActiveJob::TestHelper
-
-  test "billing job scheduling" do
-    perform_enqueued_jobs(only: BillingJob) do
-      product.charge(account)
-    end
     assert account.reload.charged_for?(product)
   end
 end
 ```
 
-これまで実行されてキューに登録されたジョブをすべてクリアしてからテストを実行するので、各テストのスコープ内ではすでに実行されているジョブはないと確実に想定できます。
+[`ActiveJob::TestHelper`]: https://api.rubyonrails.org/classes/ActiveJob/TestHelper.html
+[`assert_enqueued_with`]: https://api.rubyonrails.org/classes/ActiveJob/TestHelper.html#method-i-assert_enqueued_with
 
 ### 例外が発生することをテストする
 

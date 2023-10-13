@@ -20,9 +20,9 @@ RDoc
 $ bundle exec rake rdoc
 ```
 
-生成されたHTMLファイルは./doc/rdocディレクトリに置かれます。
+生成されたHTMLファイルは`./doc/rdoc`ディレクトリに置かれます。
 
-NOTE: RDocの記法については[RDocのmarkup][RDoc_Markup]を参照してください（訳注: 別ページですが[日本語のRDocライブラリ解説][]もあります）。
+NOTE: RDocの記法については[RDocのmarkupリファレンス][RDoc Markup Reference]を参照してください（訳注: 別ページですが[日本語のRDocライブラリ解説][]もあります）。
 
 [Rails_API]: http://api.rubyonrails.org
 [RDoc]: https://ruby.github.io/rdoc/
@@ -31,17 +31,17 @@ NOTE: RDocの記法については[RDocのmarkup][RDoc_Markup]を参照してく
 リンクの表記
 -----
 
-Rails APIドキュメントはGitHub上での表示を想定していません。たとえばRails APIで相対リンクを書く場合はRDocの[`link`][]を使う必要があります。
+Rails APIドキュメントはGitHub上での表示を想定していません。たとえばRails APIで相対リンクを書く場合は[RDocの`link`記法][RDoc link markup]を使わなければなりません。
 
-これは、GitHub Markdownと、[api.rubyonrails.org][Rails_API]や[edgeapi.rubyonrails.org][edgeapi]で公開されているRDoc生成の違いによるものです。
+その理由は、GitHub Markdownと、[api.rubyonrails.org][Rails_API]や[edgeapi.rubyonrails.org][edgeapi]で公開されているRDoc生成方法の違いによるものです。
 
 たとえば、RDocで生成された`ActiveRecord::Base`クラスへのリンクを作成するときは`[link:classes/ActiveRecord/Base.html]`と書きます。
 
 `[https://api.rubyonrails.org/classes/ActiveRecord/Base.html]`のような絶対URLを使うとAPIドキュメントの読者が別バージョンのドキュメント（edgeapi.rubyonrails.orgなど）を開いてしまう可能性があるので、上のような表記が推奨されます。
 
-[RDoc_Markup]: https://ruby.github.io/rdoc/RDoc/MarkupReference.html
-[RDoc Links]: https://ruby.github.io/rdoc/RDoc/MarkupReference.html#class-RDoc::MarkupReference-label-Links
-[`link`]: https://ruby.github.io/rdoc/RDoc/Markup.html#class-RDoc::Markup-label-Links
+[RDoc Markup Reference]: https://ruby.github.io/rdoc/RDoc/MarkupReference.html
+[RDoc link markup]: https://ruby.github.io/rdoc/RDoc/MarkupReference.html#class-RDoc::MarkupReference-label-Links
+
 [edgeapi]: https://edgeapi.rubyonrails.org
 
 語調
@@ -75,14 +75,16 @@ Railsのコンポーネント名は語の間にスペースを1つ置く表記�
 
 "you"や"your"を含む表現を避けること。
 
-```markdown
-If you need to use `return` statements in your callbacks, it is recommended that you explicitly define them as methods.
+```ruby
+# If you need to use +return+ statements in your callbacks, it is
+# recommended that you explicitly define them as methods.
 ```
 
 上のようにyouを3度も使うのではなく、以下のスタイルで書くこと。
 
-```markdown
-If `return` is needed it is recommended to explicitly define a method.
+```ruby
+# If +return+ is needed, it is recommended to explicitly define a
+# method.
 ```
 
 ただし、説明上何らかの登場人物を仮定して、その人物を代名詞で呼ぶ場合（"a user with a session cookie" など）は、以下のようにheやsheのような性別のある代名詞を避け、they/their/themのような性別に影響されない代名詞を使うこと。
@@ -112,7 +114,7 @@ If `return` is needed it is recommended to explicitly define a method.
 
 意味のあるサンプルコードを使うこと。概要と基本を端的に示し、かつ興味深い点や落とし穴も示されているのが理想です。
 
-サンプルコードのインデントにはスペース2文字を使うこと。マークアップ用には左マージンに合わせてスペース2文字を使うこと。サンプルコードの例は「[Railsコーディングルールに従う](contributing_to_ruby_on_rails.html#rails%E3%82%B3%E3%83%BC%E3%83%87%E3%82%A3%E3%83%B3%E3%82%B0%E3%83%AB%E3%83%BC%E3%83%AB%E3%81%AB%E5%BE%93%E3%81%86)」を参照。
+正しく表示するために、左マージンからスペース2文字ずつインデントすること。サンプルコードの例は「[Railsコーディングルールに従う][Rails coding conventions]」を参照。
 
 短いドキュメントでは、単にパラグラフに続けてスニペットを記述すること（"Examples"ラベルでスニペットを明示する必要はありません）。
 
@@ -166,6 +168,8 @@ If `return` is needed it is recommended to explicitly define a method.
 #   polymorphic_url(record)  # same as comment_url(record)
 ```
 
+[Rails coding conventions]: contributing_to_ruby_on_rails.html#rails%E3%82%B3%E3%83%BC%E3%83%87%E3%82%A3%E3%83%B3%E3%82%B0%E3%83%AB%E3%83%BC%E3%83%AB%E3%81%AB%E5%BE%93%E3%81%86
+
 ### SQL
 
 SQL文をドキュメントに書く場合は、結果の前に`=>`を付けないこと。
@@ -181,8 +185,8 @@ For example,
 
 Rubyの対話型REPLであるIRBの動作をドキュメントに書く場合は、以下のようにコマンドの前に必ず`irb>`を付け、出力には`=>`をつけること。
 
-```irb
-# Find the customer with primary key (id) 10.
+```ruby
+# Find the customer with primary key (id) 10.（主キー（id）10のcustomerを検索）
 #   irb> customer = Customer.find(10)
 #   # => #<Customer id: 10, first_name: "Ryan">
 ```
@@ -193,8 +197,8 @@ Rubyの対話型REPLであるIRBの動作をドキュメントに書く場合は
 
 For command-line examples, always prefix the command with `$`, the output doesn't have to be prefixed with anything.
 
-```bash
-# Run the following command:
+```ruby
+# Run the following command:（以下のコマンドを実行する:）
 #   $ bin/rails new zomg
 #   ...
 ```
@@ -210,9 +214,9 @@ trueやfalseをRubyの定義（`nil`と`false`以外はすべてtrue）どおり
 
 例:
 
-```markdown
-`config.action_mailer.perform_deliveries` specifies whether mail will actually be delivered and is true by default
-`config.action_mailer.perform_deliveries`: メールを実際に配信するかどうかを指定します（デフォルト値はtrue）。
+```ruby
+# `config.action_mailer.perform_deliveries` specifies whether mail will actually be delivered and is true by default
+# （`config.action_mailer.perform_deliveries`: メールを実際に配信するかどうかを指定します。デフォルト値はtrueです。）
 ```
 
 上の例では、フラグの実際のデフォルト値が`true`そのものかどうかをユーザーが知る必要はないので、trueで論理値の意味だけをドキュメントに書きます。
@@ -223,12 +227,12 @@ trueやfalseをRubyの定義（`nil`と`false`以外はすべてtrue）どおり
 # Returns true if the collection is empty.（コレクションが空の場合はtrueを返す。）
 #
 # If the collection has been loaded（コレクションが読み込まれる場合は）
-# it is equivalent to <tt>collection.size.zero?</tt>. （<tt>collection.size.zero?</tt>と同値）
+# it is equivalent to +collection.size.zero?+. （+collection.size.zero?+と同値）
 # if the collection has not been loaded, it is equivalent to（コレクションが読み込まれなかった場合は）
-# <tt>collection.exists?</tt>. <tt>collection.exists?</tt>と同値。）
+# +collection.exists?+. （+collection.exists?+と同値。）
 # If the collection has not already been （コレクションが読み込まれていない状態で）
 # loaded and you are going to fetch the records anyway（レコードを取り出したい場合は）
-# it is better to check <tt>collection.length.zero?</tt>. （<tt>collection.length.zero?</tt>をチェックするとよい）
+# it is better to check +collection.length.zero?+. （+collection.length.zero?+をチェックするとよい）
 def empty?
   if loaded?
     size.zero?
@@ -245,11 +249,7 @@ end
 
 原則として、ファイル名はRailsアプリケーションのルートディレクトリからの相対パスで記述すること。
 
-```
-config/routes.rb            # YES
-routes.rb                   # NO
-RAILS_ROOT/config/routes.rb # NO
-```
+`routes.rb`や`RAILS_ROOT/config/routes.rb`ではなく、`config/routes.rb`と書くこと。
 
 フォント
 -----
@@ -264,6 +264,8 @@ RAILS_ROOT/config/routes.rb # NO
 * シンボル
 * メソッドのパラメータ
 * ファイル名
+* HTMLのタグや属性
+* CSSのセレクタ、属性、値
 
 ```ruby
 class Array
@@ -334,7 +336,7 @@ end
 #     encryptor.decrypt_and_verify(message) # => nil
 ```
 
-[#encrypt_and_sign]: https://edgeapi.rubyonrails.org/classes/ActiveSupport/MessageEncryptor.html#method-i-encrypt_and_sign
+[#encrypt_and_sign]: https://api.rubyonrails.org/classes/ActiveSupport/MessageEncryptor.html#method-i-encrypt_and_sign
 
 動的に生成されるメソッド
 -----------------------------
@@ -361,13 +363,11 @@ self.class_eval %{
 メソッドの可視性
 -----------------
 
-Railsのドキュメントを作成するときは、ユーザー向けに公開するパブリックなAPIと内部APIの違いを理解しておくことが重要です。
+Railsのドキュメントを作成するときは、ユーザー向けに公開するpublic APIと内部APIを区別することが重要です。
 
-多くのライブラリと同様、Railsでも内部APIの定義にprivateキーワードが使われますが、公開するAPIのルールは若干異なります。内部APIであるメソッドには`:nodoc:`ディレクティブを追加すること。
+Rubyのprivateスコープに置かれたメソッドは、ユーザー向けのAPIから除外されます。しかし、フレームワークの他の場所から呼び出される必要がある内部APIメソッドも、Rubyのpublicスコープに置かれていなければなりません。このようなメソッドをユーザー向けのAPIから除外するには、以下のようにRDocの`:nodoc:`ディレクティブを使います。
 
-つまりRailsでは、可視性が`public`のメソッドであっても、ユーザーに公開されているとは限りません。
-
-`ActiveRecord::Core::ClassMethods#arel_table`の例
+`ActiveRecord::Core::ClassMethods#arel_table`の例:
 
 ```ruby
 module ActiveRecord::Core::ClassMethods
@@ -377,33 +377,27 @@ module ActiveRecord::Core::ClassMethods
 end
 ```
 
-上のメソッドは`ActiveRecord::Core`のpublicなクラスメソッドに見えますし、可視性は実際にpublicです。しかしRailsチームはこの種のメソッドに依存して欲しくないと考えているので、`:nodoc:`を指定してAPIドキュメントに出力されないようにしています。可視性をpublicにする実際の理由は、Railsチームがこの種の内部メソッドの振る舞いを必要に応じてリリースごとに変更可能にするためです。これらのメソッドは名前や戻り値が変更されたり、クラス自体が消滅したりする可能性もあるので、外部に対して何も保証しません。Railsアプリケーションやプラグインは、この種のAPIに依存すべきではありません。これらのAPIに依存してしまうと、Railsを次のリリースでアップグレードしたときにアプリケーションやgemが動かなくなるリスクが生じます。
+このようなメソッドは、publicであっても依存すべきではありません。このメソッド名が変更される可能性や、戻り値が変更される可能性、あるいはこのメソッド自体が削除される可能性があるからです。メソッド定義で`:nodoc:`を指定することで、ユーザー向けのAPIドキュメントから除外されるようになります。
 
-Railsコントリビュータがドキュメントを作成する場合、そのAPIを外部開発者に公開してよいかどうかに常に注意を払うことが重要です。Railsチームは、パブリックなAPIに対する重大な変更は、必ず非推奨サイクルを経てから行なうようにしています。内部メソッドや内部クラスの可視性がprivateになっていない場合は、`:nodoc:`オプションを指定することが推奨されます（なお可視性がprivateの場合はデフォルトで内部扱いになります）。APIが安定した後は可視性の変更も一応可能ですが、後方互換性を維持しながらパブリックAPIを変更するのはかなり困難です。
 
-`:nodoc:`をクラスやモジュールに対して指定すると、それらの中にあるメソッドはすべて内部APIであり、直接のアクセスは許されていないことを示せます。
-
-まとめ: Railsチームは、可視性がpublicで内部利用限定のメソッドやクラスには`:nodoc:`を指定すること。APIの可視性変更は慎重に行なうべきであり、pull requestでの議論を経てからにすること。
+Railsコントリビュータがドキュメントを作成する場合、そのAPIを外部開発者に公開すべきかどうかに常に注意を払うことが重要です。Railsチームは、public APIに対する破壊的な変更は、必ず非推奨サイクルを経てから行なうようにしています。可視性がprivateでない内部メソッドや内部モジュールには、`:nodoc:`オプションを指定すべきです（モジュールやクラスに`:nodoc:`を追加すると、そのメソッドはすべて内部APIであることを示し、ユーザー向けのAPIドキュメントから削除されます）。
 
 Railsスタック
 -------------------------
 
-Rails APIの一部をドキュメント化するときは、そのAPIがRailsスタックの一部に組み込まれることを意識することが重要です。
+Rails APIの一部をドキュメント化するときは、Railsスタック全体を意識することが重要です。つまり、ドキュメント化するメソッドやクラスは、コンテキストに応じて振る舞いが変化する可能性があるということです。
 
-つまり、ドキュメント化するメソッドやクラスのスコープやコンテキストに応じて、振る舞いが変化する可能性があります。
-
-同じコードでも、スタック全体を考慮するとさまざまな場所で振る舞いが変化することがあります。以下の`ActionView::Helpers::AssetTagHelper#image_tag`は典型的な例です。
+以下の`ActionView::Helpers::AssetTagHelper#image_tag`は典型的な例です。
 
 ```ruby
 # image_tag("icon.png")
 #   # => <img src="/assets/icon.png" />
 ```
 
-`#image_tag`はデフォルトでは常に`/images/icon.png`を返しますが、アセットパイプラインなどを含むRailsのフルスタックでは上のように結果が変わることがあります。
+`#image_tag`を単独で考えれば`/images/icon.png`を返しますが、アセットパイプラインなどを含むRailsのフルスタックでは上のように結果が変わることがあります。
 
-通常、私たちがRailsフルスタックを使うときは、デフォルトの振る舞いしか気にしないものです。
-
-しかしこの場合は、特定のメソッドの振る舞いだけではなく、**フレームワーク**の振る舞いもドキュメントに書きたいと思うでしょう。
+私たちは、メソッド単独の振る舞いだけではなく、**フレームワーク**の振る舞いもドキュメント化したいと考えています。
+私たちの関心は、ユーザーがデフォルトの完全なRailsスタックを使ったときに経験する振る舞いを記述することにあります。
 
 Railsチームが特定のAPIをどのように扱っているかを知りたい場合は、Railsリポジトリでお気軽にissueをオープンするか、[issue tracker][issues]にパッチを送ってください。
 

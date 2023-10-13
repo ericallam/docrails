@@ -554,7 +554,7 @@ Product.connection.execute("UPDATE products SET price = 'free' WHERE 1=1")
 
 ### `change`メソッドを使う
 
-`change`メソッドは、マイグレーションを自作する場合に最もよく使われます。このメソッドを使えば、多くの場合にActive Recordがマイグレーションを逆進させる（以前のマイグレーションに戻す）方法を自動的に認識します。以下は`change`でサポートされているマイグレーション定義の一部です。
+`change`メソッドは、マイグレーションを自作する場合に最もよく使われます。このメソッドを使えば、多くの場合にActive Recordがマイグレーションを逆進させる（以前のマイグレーションにロールバックする）方法を自動的に認識します。以下は`change`でサポートされているマイグレーション定義の一部です。
 
 * [`add_check_constraint`][]
 * [`add_column`][]
@@ -570,26 +570,20 @@ Product.connection.execute("UPDATE products SET price = 'free' WHERE 1=1")
 * [`create_table`][]
 * `disable_extension`
 * [`drop_join_table`][]
-* [`drop_table`][]（ブロックが必須）
+* [`drop_table`][]（テーブル作成時のオプションとブロックは省略不可）
 * `enable_extension`
-* [`remove_check_constraint`][]（制約式の指定が必須）
-* [`remove_column`][]（型の指定が必須）
-* [`remove_columns`][]（`:type`オプションの指定が必須）
-* [`remove_foreign_key`][]（第2テーブルの指定が必須）
-* [`remove_index`][]
-* [`remove_reference`][]
-* [`remove_timestamps`][]
+* [`remove_check_constraint`][]（元の制約式の指定は省略不可）
+* [`remove_column`][]（元の型名とカラムオプションの指定は省略不可）
+* [`remove_columns`][]（元の型名とカラムオプションの指定は省略不可）
+* [`remove_foreign_key`][]（他のテーブル名と元のオプションの指定は省略不可）
+* [`remove_index`][]（カラム名と元のオプションの指定は省略不可）
+* [`remove_reference`][]（元のオプションの指定は省略不可）
+* [`remove_timestamps`][]（元のオプションの指定は省略不可）
 * [`rename_column`][]
 * [`rename_index`][]
 * [`rename_table`][]
 
 ブロックで上記の逆進可能操作が呼び出されない限り、[`change_table`][] も逆進可能です。
-
-`remove_column`は、第3引数でカラムの型を指定すれば逆進可能になります。この場合、元のカラムオプションも指定しておくこと。そうしないと、マイグレーションの逆進時にカラムを再作成できなくなります。
-
-```ruby
-remove_column :posts, :slug, :string, null: false, default: ''
-```
 
 これ以外のメソッドを使う必要がある場合は、`change`メソッドの代わりに`reversible`メソッドを利用するか、`up`と`down`メソッドを明示的に書いてください。
 
@@ -637,13 +631,12 @@ class ExampleMigration < ActiveRecord::Migration[7.1]
       end
     end
 
-    add_column :users, :home_page_url, :string
-    rename_column :users, :email, :email_address
+    add_column :users, :address, :string
   end
 end
 ```
 
-`reversible`メソッドを使うことで、各命令を正しい順序で実行できます。前述のマイグレーション例を逆転させた場合、`down`ブロックは必ず`home_page_url`カラムが削除された直後、そして`distributors`テーブルがDROPされる直前に実行されます。
+`reversible`メソッドを使うことで、各命令を正しい順序で実行できます。前述のマイグレーション例を逆転させた場合、`down`ブロックは必ず`users.address`カラムが削除された直後、そして`distributors`テーブルがDROPされる直前に実行されます。
 
 [`reversible`]: https://api.rubyonrails.org/classes/ActiveRecord/Migration.html#method-i-reversible
 
@@ -669,13 +662,11 @@ class ExampleMigration < ActiveRecord::Migration[7.1]
       FROM distributors;
     SQL
 
-    add_column :users, :home_page_url, :string
-    rename_column :users, :email, :email_address
+    add_column :users, :address, :string
   end
 
   def down
-    rename_column :users, :email_address, :email
-    remove_column :users, :home_page_url
+    remove_column :users, :address
 
     execute <<-SQL
       DROP VIEW distributors_view;
