@@ -16,12 +16,14 @@ Rails をはじめよう
 
 本ガイドは、Railsアプリケーションを構築したいと考えているRails初心者を対象にしています。読者にRailsの経験があることは前提としていません。
 
-Railsとは、プログラミング言語「Ruby」の上で動作する[Webアプリケーションフレームワーク](https://ja.wikipedia.org/wiki/Web%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%83%95%E3%83%AC%E3%83%BC%E3%83%A0%E3%83%AF%E3%83%BC%E3%82%AF)です。ただしプログラミング経験がまったくない人がいきなりRailsを学ぼうとすると、かなり大変な作業になるでしょう。オンラインで学べる洗練されたコンテンツはたくさんあるので、その中から以下をご紹介します。
+Railsとは、プログラミング言語「Ruby」の上で動作する[Webアプリケーションフレームワーク](https://ja.wikipedia.org/wiki/Webアプリケーションフレームワーク)です。ただしプログラミング経験がまったくない人がいきなりRailsを学ぼうとすると、かなり大変な作業になるでしょう。オンラインで学べる洗練されたコンテンツはたくさんあるので、その中から以下をご紹介します。
 
 - [プログラミング言語Ruby公式Webサイト](https://www.ruby-lang.org/ja/documentation/)
 - [プログラミング学習コンテンツまとめ](https://github.com/EbookFoundation/free-programming-books/blob/master/books/free-programming-books-ja.md#ruby)
 
 いずれもよくできていますが中には古いものもあり、たとえば通常のRails開発で見かけるような最新の構文がカバーされていない可能性もあります。
+
+TIP: 訳注：Railsガイドでは開発経験者が早くキャッチアップできるよう、いくつかの用語説明などを省略しています。読んでいて「難しい」と感じた場合は[Railsチュートリアル](https://railstutorial.jp/)からお読みください。
 
 ## Railsとは何か
 
@@ -165,8 +167,7 @@ Railsの起動ページは、新しいRailsアプリケーションの「スモ�
 
 Railsで「Hello」と表示するには、少なくとも「**ルーティング**」「**コントローラ**」「**ビュー**」が必要です。ルーティングは、リクエストをどのコントローラに振り分けるかを決定します。コントローラは、アプリケーションに対する特定のリクエストを受け取って処理します。コントローラの *アクション* は、リクエストを扱うのに必要な処理を実行します。ビューは、データを好みの書式で表示します。
 
-実装の面から見れば、ルーティングはRubyの[DSL（Domain-Specific Language）](https://ja.wikipedia.org/wiki/%E3%83%89%E3%83%A1%E3%82%A4%E3%83%B3%E5%9B%BA%E6%9C%89%E8%A8%80%E8%AA%9E) で記述されたルールです。コントローラはRubyのクラスで、そのクラスのpublicメソッドがアクションです。ビュー
-はテンプレートで、多くの場合HTMLの中にRubyコードも含んでいます。
+実装の面から見れば、ルーティングはRubyの[DSL（Domain-Specific Language）](https://ja.wikipedia.org/wiki/ドメイン固有言語) で記述されたルールです。コントローラはRubyのクラスで、そのクラスのpublicメソッドがアクションです。ビューはテンプレートで、多くの場合HTMLの中にRubyコードも含んでいます。
 
 それではルーティングを1個追加してみましょう。`config/routes.rb`を開き、`Rails.application.routes.draw`ブロックの冒頭に以下を書きます。
 
@@ -571,7 +572,7 @@ https://api.rubyonrails.org/classes/ActionView/Helpers/UrlHelper.html#method-i-l
 </ul>
 ```
 
-すっきりしましたね！
+スッキリしましたね！
 
 TIP: ルーティングについて詳しくは[Railsのルーティング](
 routing.html)を参照してください。
