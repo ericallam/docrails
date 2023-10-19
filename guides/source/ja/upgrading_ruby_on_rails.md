@@ -301,6 +301,34 @@ puts Rails.logger.broadcasts #=> [MyLogger]
 
 [`assert_match`]: https://docs.seattlerb.org/minitest/Minitest/Assertions.html#method-i-assert_match
 
+### Active Record 暗号化アルゴリズムの変更について
+
+Active Record暗号化で、ハッシュダイジェストアルゴリズムとしてSHA-256を使うようになりました。従来のRailsバージョンで暗号化したデータがある場合は、アップグレードで考慮すべき2つのシナリオがあります。
+
+1. [`config.active_support.key_generator_hash_digest_class`](configuring.html#config-active-support-key-generator-hash-digest-class)が**SHA-1**に設定されている場合（Rails 7.0より前のデフォルト）、Active Record暗号化で以下の設定も**SHA-1**に設定する必要があります。
+
+    ```ruby
+    config.active_record.encryption.hash_digest_class = OpenSSL::Digest::SHA1
+    ```
+
+2. [`config.active_support.key_generator_hash_digest_class`](configuring.html#config-active-support-key-generator-hash-digest-class)が**SHA-256**に設定されている場合（Rails 7.0の新しいデフォルト）、Active Record暗号化で以下の設定も**SHA-256**に設定する必要があります。
+
+    ```ruby
+    config.active_record.encryption.hash_digest_class = OpenSSL::Digest::SHA256
+    ```
+
+`config.active_record.encryption.hash_digest_class`について詳しくは、[Rails アプリケーションの設定項目](configuring.html#config-active-record-encryption-hash-digest-class)ガイドを参照してください。
+
+また、[`config.active_record.encryption.support_sha1_for_non_deterministic_encryption`](configuring.html#config-active-record-encryption-support-sha1-for-non-deterministic-encryption)という新しい設定も導入されました（[#48530](https://github.com/rails/rails/pull/48530)）。これは、前述の`hash_digest_class`をSHA-256に設定していても、一部の属性がSHA-1で暗号化されるバグ（[#42922](https://github.com/rails/rails/issues/42922）)を解決するためのものです。
+
+この`config.active_record.encryption.support_sha1_for_non_deterministic_encryption`設定は、Rails 7.1ではデフォルトで無効になっています。Rails 7.1より前のバージョンで、暗号化データが上記のバグの影響を受けている可能性がある場合は、この設定を有効にする必要があります。
+
+```ruby
+config.active_record.encryption.support_sha1_for_non_deterministic_encryption = true
+```
+
+暗号化データを扱っている場合は、必ず上記の点を慎重に確認してください。
+
 Rails 6.1からRails 7.0へのアップグレード
 -------------------------------------
 
