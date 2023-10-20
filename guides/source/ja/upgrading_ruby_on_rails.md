@@ -319,7 +319,7 @@ Active Record暗号化で、ハッシュダイジェストアルゴリズムと�
 
 `config.active_record.encryption.hash_digest_class`について詳しくは、[Rails アプリケーションの設定項目](configuring.html#config-active-record-encryption-hash-digest-class)ガイドを参照してください。
 
-また、[`config.active_record.encryption.support_sha1_for_non_deterministic_encryption`](configuring.html#config-active-record-encryption-support-sha1-for-non-deterministic-encryption)という新しい設定も導入されました（[#48530](https://github.com/rails/rails/pull/48530)）。これは、前述の`hash_digest_class`をSHA-256に設定していても、一部の属性がSHA-1で暗号化されるバグ（[#42922](https://github.com/rails/rails/issues/42922）)を解決するためのものです。
+また、[`config.active_record.encryption.support_sha1_for_non_deterministic_encryption`](configuring.html#config-active-record-encryption-support-sha1-for-non-deterministic-encryption)という新しい設定も導入されました（[#48530](https://github.com/rails/rails/pull/48530)）。これは、前述の`hash_digest_class`をSHA-256に設定していても、一部の属性がSHA-1で暗号化されるバグ（[#42922](https://github.com/rails/rails/issues/42922)）を解決するためのものです。
 
 この`config.active_record.encryption.support_sha1_for_non_deterministic_encryption`設定は、Rails 7.1ではデフォルトで無効になっています。Rails 7.1より前のバージョンで、暗号化データが上記のバグの影響を受けている可能性がある場合は、この設定を有効にする必要があります。
 
