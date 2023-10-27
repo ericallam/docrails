@@ -2629,7 +2629,7 @@ MySQLまたはMariaDBの場合は、以下のようになります。
 Customer.where(id: 1).joins(:orders).explain(:analyze)
 ```
 
-PostgreSQLの場合は以下のようになります。
+上のコードは以下を生成します。
 
 ```sql
 ANALYZE SELECT `shop_accounts`.* FROM `shop_accounts` INNER JOIN `customers` ON `customers`.`id` = `shop_accounts`.`customer_id` WHERE `shop_accounts`.`id` = 1
