@@ -1131,7 +1131,7 @@ class PostsController < ApplicationController
 end
 ```
 
-[Content Security Policy]: https://developer.mozilla.org/ja/docs/Web/HTTP/Headers/Content-Security-Policy
+[`Content Security Policy`]: https://developer.mozilla.org/ja/docs/Web/HTTP/Headers/Content-Security-Policy
 
 #### 違反をレポートする
 
