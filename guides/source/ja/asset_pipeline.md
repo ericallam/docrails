@@ -25,7 +25,7 @@
 $ rails new appname --skip-asset-pipeline
 ```
 
-NOTE: 本ガイドでは、CSSの処理に`sprockets`を、JavaScriptの処理に`importmap-rails`のみを利用するデフォルトのアセットパイプラインに重点を置いています。この2つの主な制限は、トランスパイルをサポートしていないため、`Babel`、`Typescript`、`Sass`、`React JSX format`、`TailwindCSS`といったものが使えないことです。JavaScriptやCSSのトランスパイルが必要な場合は、「[別のライブラリを使う](#別のライブラリを使う)」セクションをお読みください。
+NOTE: 本ガイドでは、CSSの処理に`sprockets`を、JavaScriptの処理に`importmap-rails`のみを利用するデフォルトのアセットパイプラインに重点を置いています。この2つの主な制限は、トランスパイルをサポートしていないため、Babel、Typescript、Sass、React JSX format、Tailwind CSSといったものが使えないことです。JavaScriptやCSSのトランスパイルが必要な場合は、「[別のライブラリを使う](#別のライブラリを使う)」セクションをお読みください。
 
 ### 主要な機能
 
@@ -840,7 +840,7 @@ Sprockets.register_preprocessor 'text/css', AddComment
 
 `jsbundling-rails` gemは、`yarn build --watch`プロセスを提供し、development環境で自動的に出力を生成します。production環境では`javascript:build`タスクを`assets:precompile`タスクに自動的にフックし、パッケージの依存関係がすべてインストールされ、すべてのエントリポイントに対してJavaScriptがビルドされるようにできます。
 
-**`importmap-rails`の代わりに使うのがよい場合**: JavaScriptコードがトランスパイルに依存している場合（例: [Babel](https://babeljs.io/)、[TypeScript](https://www.typescriptlang.org/)、 React `JSX`フォーマット）は、`jsbundling-rails`が正しい方法となります。
+**`importmap-rails`の代わりに使うのがよい場合**: JavaScriptコードがトランスパイルに依存している場合（例: [Babel](https://babeljs.io/)、[TypeScript](https://www.typescriptlang.org/)、 React JSXフォーマット）は、`jsbundling-rails`が正しい方法となります。
 
 ### Webpacker/Shakapacker
 
@@ -860,9 +860,9 @@ NOTE: `jsbundling-rails`と`webpacker`/`shakapacker`の違いについては、[
 - [PostCSS](https://postcss.org/)
 - [Dart Sass](https://sass-lang.com/)
 
-`cssbundling-rails`の動作は`jsbundling-rails`と似ています。development環境では`yarn build:css --watch`プロセスでスタイルシートを再生成し、production環境では`assets:precompile`タスクにフックしてアプリケーションにNode.js依存性を追加します。
+`cssbundling-rails`の動作は`jsbundling-rails`と似ています。development環境では`yarn build:css --watch`プロセスでスタイルシートを再生成し、production環境では`assets:precompile`タスクにフックしてアプリケーションにNode.js依存関係を追加します。
 
-**Sprocketsとの違い**: Sprockets単体ではSassをCSSにトランスパイルできないため、`.sass`ファイルから`.css`ファイルを生成するためにNode.jsが必要です。`.css`ファイルが生成されれば、`Sprockets`からクライアントに配信できるようになります。
+**Sprocketsとの違い**: Sprockets単体ではSassをCSSにトランスパイルできないため、`.sass`ファイルから`.css`ファイルを生成するためにNode.jsが必要です。`.css`ファイルが生成されれば、Sprocketsからクライアントに配信できるようになります。
 
 NOTE: `cssbundling-rails`はCSSの処理をNode.jsに依存しています。
 `dartsass-rails` gemと`tailwindcss-rails` gemは、それぞれTailwind CSSとDart Sassのスタンドアロン版実行ファイルを使うので、Node.jsに依存しません。
@@ -870,12 +870,12 @@ JavaScriptを`importmap-rails`で処理し、CSSを`dartsass-rails`または`tai
 
 ### dartsass-rails
 
-アプリケーションで [`Sass`](https://sass-lang.com/)を使いたい場合は、レガシーな`sassc-rails` gemの代わりにこの[`dartsass-rails`](https://github.com/rails/dartsass-rails) gemが提供されています。
-`dartsass-rails` gemは、`sassc-rails` gemで使われていた[`LibSass`](https://sass-lang.com/blog/libsass-is-deprecated)（2020年に非推奨化）に代えて`Dart Sass`の実装を利用しています。
+アプリケーションで [Sass](https://sass-lang.com/)を使いたい場合は、レガシーな`sassc-rails` gemの代わりにこの[`dartsass-rails`](https://github.com/rails/dartsass-rails) gemが提供されています。
+`dartsass-rails` gemは、`sassc-rails` gemで使われていた[LibSass](https://sass-lang.com/blog/libsass-is-deprecated)（2020年に非推奨化）に代えてDart Sassの実装を利用しています。
 
-この新しい`dartsass-rails` gemは`sassc-rails`とは異なり、`Sprockets`と直接統合されているわけではありません。インストールや移行の手順については、[dartsass-rails gem](https://github.com/rails/dartsass-rails)のドキュメントを参照してください。
+この新しい`dartsass-rails` gemは`sassc-rails`とは異なり、Sprocketsと直接統合されているわけではありません。インストールや移行の手順については、[dartsass-rails gem](https://github.com/rails/dartsass-rails)のドキュメントを参照してください。
 
-WARNING: 以前広く使われていた`sassc-rails` gemは、2020年に非推奨化されました。
+WARNING: 以前広く使われていた`sassc-rails` gemは、2019年以降メンテナンスされていません。
 
 ### tailwindcss-rails
 
