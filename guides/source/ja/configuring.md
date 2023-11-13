@@ -494,9 +494,10 @@ config.logger      = ActiveSupport::TaggedLogging.new(mylogger)
 
 #### `config.public_file_server.enabled`
 
-publicディレクトリから静的ファイルを配信するようにRailsを設定します。このオプションのデフォルトは`true`ですが、アプリケーションの実行時に使うサーバソフトウェア（NGINX や Apache など）が代わりに静的ファイルを配信すべきなので、production環境では`false`に設定されています。
+Railsの`public`ディレクトリから静的ファイルを配信するかどうかを設定します。
+デフォルトは`true`です。
 
-production環境でアプリをWEBrickで実行またはテストする場合（ただしproduction環境でWEBrickを利用することは推奨されません）、このオプションを`true`に設定してください。そうしないと、ページキャッシュが使えなくなり、publicディレクトリ以下にあるファイルへのリクエストができなくなります。
+NGINXやApacheなどのサーバーソフトウェアが静的ファイルを配信する場合は、この値を`false`に設定します。
 
 #### `config.railties_order`
 
@@ -1344,7 +1345,7 @@ Active Recordの複数のインスタンスがトランザクション内で同�
 
 #### `config.active_record.run_after_transaction_callbacks_in_order_defined`
 
-trueにすると、`after_commit`コールバックはモデル内で定義された順に実行されます。falseにすると、逆順に実行されます。
+`true`にすると、`after_commit`コールバックはモデル内で定義された順に実行されます。`false`にすると、逆順に実行されます。
 
 その他のコールバックは、常にモデルで定義された順序で実行されます（`prepend: true`を使わない限り）。
 
@@ -1847,19 +1848,19 @@ config.action_dispatch.rescue_responses = {
   'ActionController::RoutingError' => :not_found,
   'AbstractController::ActionNotFound' => :not_found,
   'ActionController::MethodNotAllowed' => :method_not_allowed,
-  'ActionController::UnknownHttpMethod'=> :method_not_allowed,
+  'ActionController::UnknownHttpMethod' => :method_not_allowed,
   'ActionController::NotImplemented' => :not_implemented,
-  'ActionController::UnknownFormat'=> :not_acceptable,
+  'ActionController::UnknownFormat' => :not_acceptable,
   'ActionController::InvalidAuthenticityToken' => :unprocessable_entity,
-  'ActionController::InvalidCrossOriginRequest'=> :unprocessable_entity,
+  'ActionController::InvalidCrossOriginRequest' => :unprocessable_entity,
   'ActionDispatch::Http::Parameters::ParseError' => :bad_request,
   'ActionController::BadRequest' => :bad_request,
   'ActionController::ParameterMissing' => :bad_request,
-  'Rack::QueryParser::ParameterTypeError'=> :bad_request,
+  'Rack::QueryParser::ParameterTypeError' => :bad_request,
   'Rack::QueryParser::InvalidParameterError' => :bad_request,
   'ActiveRecord::RecordNotFound' => :not_found,
   'ActiveRecord::StaleObjectError' => :conflict,
-  'ActiveRecord::RecordInvalid'=> :unprocessable_entity,
+  'ActiveRecord::RecordInvalid' => :unprocessable_entity,
   'ActiveRecord::RecordNotSaved' => :unprocessable_entity
 }
 ```
@@ -2665,7 +2666,7 @@ config.active_storage.content_types_to_serve_as_binary = %w(text/html image/svg+
 Active Storageでインライン配信を許可するContent-Typeを示す文字列を配列で受け取ります。デフォルトでは以下のように定義されます。
 
 ```ruby
-config.active_storage.content_types_allowed_inline` = %w(image/png image/gif image/jpeg image/tiff image/vnd.adobe.photoshop image/vnd.microsoft.icon application/pdf)
+config.active_storage.content_types_allowed_inline = %w(image/png image/gif image/jpeg image/tiff image/vnd.adobe.photoshop image/vnd.microsoft.icon application/pdf)
 ```
 
 #### `config.active_storage.queues.analysis`
@@ -3512,7 +3513,7 @@ Action Controllerの`helpers_path`をアプリケーションの`helpers_path`�
 
 Active Recordのデータベース接続は`ActiveRecord::ConnectionAdapters::ConnectionPool`で管理されます。これは、コネクション数に限りのあるデータベース接続にアクセスするときに、スレッドアクセス数とコネクションプールが同期するようにします。デフォルトの最大接続数は5で、`database.yml`でカスタマイズ可能です。
 
-```ruby
+```yaml
 development:
   adapter: sqlite3
   database: storage/development.sqlite3
@@ -3526,7 +3527,7 @@ development:
 
 利用可能な数を超えるコネクションを使おうとすると、Active Recordはコネクションをブロックし、プールのコネクションが空くのを待ちます。コネクションを取得できない場合は以下のようなタイムアウトエラーが発生します。
 
-```ruby
+```
 ActiveRecord::ConnectionTimeoutError - could not obtain a database connection within 5.000 seconds (waited 5.000 seconds)
 ```
 
