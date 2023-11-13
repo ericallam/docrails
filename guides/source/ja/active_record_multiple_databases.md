@@ -325,6 +325,7 @@ Railsで水平シャーディングをサポートするAPIは、Rails6.0以降�
 
 シャードは次のように3層（3-tier）構成で宣言されます。
 
+
 ```yaml
 production:
   primary:
@@ -337,28 +338,49 @@ production:
   primary_shard_one:
     database: my_primary_shard_one
     adapter: mysql2
+    migrations_paths: db/migrate_shards
   primary_shard_one_replica:
     database: my_primary_shard_one
     adapter: mysql2
     replica: true
+    migrations_paths: db/migrate_shards
+  primary_shard_two:
+    database: my_primary_shard_two
+    adapter: mysql2
+    migrations_paths: db/migrate_shards
+  primary_shard_two_replica:
+    database: my_primary_shard_two
+    adapter: mysql2
+    replica: true
+    migrations_paths: db/migrate_shards
 ```
 
 次に、モデルは `shards`キーを介して`connects_to`APIに接続されます。
 
 ```ruby
 class ApplicationRecord < ActiveRecord::Base
+  primary_abstract_class
+
+  connects_to database: { writing: :primary, reading: :primary_replica }
+end
+
+class ShardRecord < ApplicationRecord
   self.abstract_class = true
 
   connects_to shards: {
-    default: { writing: :primary, reading: :primary_replica },
-    shard_one: { writing: :primary_shard_one, reading: :primary_shard_one_replica }
+    shard_one: { writing: :primary_shard_one, reading: :primary_shard_one_replica },
+    shard_two: { writing: :primary_shard_two, reading: :primary_shard_two_replica }
   }
 end
 ```
 
-最初のシャード名を必ずしも`default`にする必要はありません。Railsは、`connects_to`ハッシュ内にある最初のシャード名を「デフォルトの」コネクションであると想定します。このコネクションは、スキーマがすべてのシャードで同じである場合に、型データやその他の情報を内部的に読み込むために使われます。
+シャードを利用する場合は、必ずすべてのシャードで`migrations_paths`に同じパスを設定してください。マイグレーションを生成するときに`--database`オプションを渡すことで、シャード名のいずれか1つを指定できます。これらはすべて同じパスを設定するため、どのシャード名を指定しても問題ありません。
 
-これで、モデルは`connected_to`APIを用いて手動でコネクションを切り替えられるようになります。シャーディングを使う場合は、`role`と`shard`の両方を渡す必要があります。
+```bash
+$ bin/rails g scaffold Dog name:string --database primary_shard_one
+```
+
+これで、モデルは`connected_to`APIを用いて手動でシャードを切り替えられるようになります。シャーディングを使う場合は、`role`と`shard`の両方を渡す必要があります。
 
 ```ruby
 ActiveRecord::Base.connected_to(role: :writing, shard: :default) do

@@ -1608,7 +1608,7 @@ end
 ```sql
 SELECT books.* FROM books LIMIT 10
 SELECT authors.* FROM authors
-  WHERE authors.book_id IN (1,2,3,4,5,6,7,8,9,10)
+  WHERE authors.id IN (1,2,3,4,5,6,7,8,9,10)
 ```
 
 #### 複数の関連付けをeager loading
@@ -1678,7 +1678,7 @@ end
 ```sql
 SELECT books.* FROM books LIMIT 10
 SELECT authors.* FROM authors
-  WHERE authors.book_id IN (1,2,3,4,5,6,7,8,9,10)
+  WHERE authors.id IN (1,2,3,4,5,6,7,8,9,10)
 ```
 
 NOTE: 「配列」「ハッシュ」または「配列やハッシュをネストしたハッシュ」を用いる`preload`メソッドは、`includes`メソッドと同様に`Model.find`呼び出しで任意の個数の関連付けを読み込みます。ただし`includes`メソッドと異なり、eager loadingされる関連付けに条件を指定できません。
@@ -1700,9 +1700,9 @@ end
 書き換え前は **11** 回もクエリが実行されましたが、書き直した上のコードはわずか **2** 回にまで減りました。
 
 ```sql
-SELECT DISTINCT books.id FROM books LEFT OUTER JOIN authors ON authors.book_id = books.id LIMIT 10
+SELECT DISTINCT books.id FROM books LEFT OUTER JOIN authors ON authors.id = books.author_id LIMIT 10
 SELECT books.id AS t0_r0, books.last_name AS t0_r1, ...
-  FROM books LEFT OUTER JOIN authors ON authors.book_id = books.id
+  FROM books LEFT OUTER JOIN authors ON authors.id = books.author_id
   WHERE books.id IN (1,2,3,4,5,6,7,8,9,10)
 ```
 

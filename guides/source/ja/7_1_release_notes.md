@@ -681,6 +681,8 @@ Active Record
 
 * `#merge`の`rewhere`オプションを非推奨化（[#45498][]）。
 
+* 属性でないものを`alias_attribute`でエイリアスにすることを非推奨化（[#48972][]）。
+
 [#48681]: https://github.com/rails/rails/pull/48681
 [#48964]: https://github.com/rails/rails/pull/48964
 [#47659]: https://github.com/rails/rails/pull/47659
@@ -691,6 +693,7 @@ Active Record
 [#45961]: https://github.com/rails/rails/pull/45961
 [#49019]: https://github.com/rails/rails/pull/49019
 [#45498]: https://github.com/rails/rails/pull/45498
+[#48972]: https://github.com/rails/rails/pull/48972
 
 ### 主な変更点
 

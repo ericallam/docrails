@@ -405,7 +405,7 @@ Redis 3以前では、`allkeys-lru`を用いてLRU（Least Recently Used: 直近
 
 キャッシュの読み書きのタイムアウトは、やや低めに設定しましょう。キャッシュの取り出しで1秒以上待つよりも、キャッシュ値を再生成する方が高速になることもよくあります。読み書きのデフォルトタイムアウト値は1秒ですが、ネットワークのレイテンシが常に低い場合は値を小さくするとよい結果が得られることがあります。
 
-キャッシュストアがリクエスト中に接続に失敗した場合、デフォルトではRedisへの再接続を試みません。接続が切れやすい場合は、再接続を試みるようにするとよいでしょう。
+キャッシュストアがリクエスト中に接続に失敗した場合、デフォルトではRedisへの再接続を1回試みます。
 
 キャッシュの読み書きでは決して例外が発生せず、単に`nil`を返してあたかも何もキャッシュされていないかのように振る舞います。キャッシュで例外が生じているかどうかを測定するには、`error_handler`を渡して例外収集サービスにレポートを送信してもよいでしょう。収集サービスは、「`method`（最初に呼び出されたキャッシュストアメソッド名、）」「`returning`（ユーザーに返した値（通常は`nil`）」「`exception`（rescueされた例外）」の3つのキーワード引数を受け取れる必要があります。
 
@@ -427,10 +427,10 @@ config.cache_store = :redis_cache_store, { url: ENV['REDIS_URL'] }
 cache_servers = %w(redis://cache-01:6379/0 redis://cache-02:6379/0)
 config.cache_store = :redis_cache_store, { url: cache_servers,
 
-  connect_timeout:    30,  # デフォルトは20（秒）
+  connect_timeout:    30,  # デフォルトは1（秒）
   read_timeout:       0.2, # デフォルトは1（秒）
   write_timeout:      0.2, # デフォルトは1（秒）
-  reconnect_attempts: 1,   # デフォルトは0
+  reconnect_attempts: 2,   # デフォルトは1
 
   error_handler: -> (method:, returning:, exception:) {
     # エラーをwarningとしてSentryに送信する

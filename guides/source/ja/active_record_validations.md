@@ -633,7 +633,7 @@ NOTE: `record.errors[:base]`には、そのレコード全体のステートに�
 
 バリデーションメソッドを実装するには、メソッド定義内に`record`パラメータが必要です。このパラメータはバリデーションを行なうレコードを表します。
 
-特定の属性に関するエラーを追加したい場合は、`record.errors.add(:first_name, "please choose another name")`のように第1引数にその属性を渡します。詳しくは[バリデーションエラー][]で後述します。
+特定の属性に関するエラーを追加したい場合は、`record.errors.add(:first_name, "please choose another name")`のように第1引数にその属性を渡します。詳しくは[バリデーションエラー](#バリデーションエラーに対応する)で後述します。
 
 ```ruby
 def validate(record)
@@ -694,7 +694,7 @@ class GoodnessValidator
 end
 ```
 
-詳しくは[バリデーションエラー][]で後述します。
+詳しくは[カスタムバリデーション][#カスタムバリデーションを実行する]で後述します。
 
 [バリデーションエラー](#バリデーションエラーに対応する)
 [`validates_with`]: https://api.rubyonrails.org/classes/ActiveModel/Validations/ClassMethods.html#method-i-validates_with

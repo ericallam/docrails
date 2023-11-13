@@ -125,9 +125,14 @@ $ sudo apt-get install sqlite3 libsqlite3-dev mysql-server libmysqlclient-dev po
 
 # Yarnをインストールする
 # Node.jsがインストールされない場合は以下のコマンドを使う
-$ curl --fail --silent --show-error --location https://deb.nodesource.com/setup_18.x | sudo -E bash -
+# 参考: https://github.com/nodesource/distributions#installation-instructions
+$ sudo mkdir -p /etc/apt/keyrings
+$ curl --fail --silent --show-error --location https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
+$ echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_20.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
+$ sudo apt-get update
 $ sudo apt-get install -y nodejs
-# Node.jsをインストール済みの場合は以下のコマンドでyarn npmパッケージをインストールする
+
+# Node.jsをインストール済みの場合は、以下のコマンドでyarn npmパッケージをインストールする
 $ sudo npm install --global yarn
 ```
 
@@ -140,8 +145,10 @@ $ sudo dnf install sqlite-devel sqlite-libs mysql-server mysql-devel postgresql-
 
 # Yarnをインストールする
 # Node.jsをインストールしていない場合はこのコマンドを使う
-$ curl --silent --location https://rpm.nodesource.com/setup_18.x | sudo bash -
-$ sudo dnf install -y nodejs
+# 参考: https://github.com/nodesource/distributions#installation-instructions-1
+$ sudo dnf install https://rpm.nodesource.com/pub_20/nodistro/repo/nodesource-release-nodistro-1.noarch.rpm -y
+$ sudo dnf install nodejs -y --setopt=nodesource-nodejs.module_hotfixes=1
+
 # Node.jsをインストール済みの場合は以下のコマンドでyarn npmパッケージをインストールする
 $ sudo npm install --global yarn
 ```

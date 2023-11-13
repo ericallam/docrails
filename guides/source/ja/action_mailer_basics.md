@@ -526,6 +526,8 @@ NOTE: `GET`以外のリンクが機能するには[rails-ujs](https://github.com
 config.action_mailer.asset_host = 'http://example.com'
 ```
 
+NOTE: このプロトコルはリクエストから推測できないため、`:asset_host`コンフィグでは`http://`や`https://`などのプロトコルを指定する必要があります。
+
 これで、以下のようにメール内で画像を表示できます。
 
 ```html+erb
