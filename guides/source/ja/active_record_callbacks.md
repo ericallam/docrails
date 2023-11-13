@@ -371,6 +371,67 @@ irb> user.destroy
 => #<User id: 1>
 ```
 
+関連付けのコールバック
+---------------------
+
+関連付けのコールバックは通常のコールバックと似ていますが、コレクションのライフサイクル内で発生するイベントによってトリガーされる点が異なります。利用可能な関連付けコールバックは以下のとおりです。
+
+* `before_add`
+* `after_add`
+* `before_remove`
+* `after_remove`
+
+関連付けコールバックを定義するには、関連付けの宣言で以下のようにオプションを追加します。
+
+```ruby
+class Author < ApplicationRecord
+  has_many :books, before_add: :check_credit_limit
+
+  def check_credit_limit(book)
+    # ...
+  end
+end
+```
+
+Railsは、追加または削除されるオブジェクトをコールバックに渡します。
+
+以下のようにコールバックを配列として渡すことで、単一のイベントに複数のコールバックを登録できます。
+
+```ruby
+class Author < ApplicationRecord
+  has_many :books,
+    before_add: [:check_credit_limit, :calculate_shipping_charges]
+
+  def check_credit_limit(book)
+    # ...
+  end
+
+  def calculate_shipping_charges(book)
+    # ...
+  end
+end
+```
+
+`before_add`コールバックが`:abort`をスローした場合、オブジェクトはコレクションに追加されません。 同様に、`before_remove`コールバックが``:abort`をスローした場合、オブジェクトはコレクションから削除されません。
+
+```ruby
+# limit_reached?がtrueの場合はbookが追加されない
+def check_credit_limit(book)
+  throw(:abort) if limit_reached?
+end
+```
+
+NOTE: これらのコールバックは、関連付けられるオブジェクトが関連付けのコレクションを介して追加または削除された場合にのみ呼び出されます。
+
+```ruby
+# この場合は`before_add`コールバックがトリガーされる
+author.books << book
+author.books = [book, book2]
+
+# この場合は`before_add`コールバックがトリガーされない
+book.update(author_id: 1)
+```
+
 条件付きコールバック
 ---------------------
 
@@ -511,9 +572,10 @@ end
 トランザクションのコールバック
 ---------------------
 
-### 整合性を扱う
+### `after_commit`コールバックと`after_rollback`コールバック
 
 データベースのトランザクションが完了したときにトリガされるコールバックが2つあります。[`after_commit`][]と[`after_rollback`][]です。
+
 これらのコールバックは`after_save`コールバックときわめて似ていますが、データベースの変更のコミットまたはロールバックが完了するまでトリガされない点が異なります。これらのメソッドは、Active Recordのモデルから、データベーストランザクションの一部に含まれていない外部のシステムとやりとりしたい場合に特に便利です。
 
 例として、直前の例で用いた`PictureFile`モデルで、対応するレコードが削除された後にファイルを1つ削除する必要があるとしましょう。`after_destroy`コールバックの直後に何らかの例外が発生してトランザクションがロールバックすると、ファイルが削除され、モデルの一貫性が損なわれたままになります。ここで、以下のコードにある`picture_file_2`オブジェクトが無効で、`save!`メソッドがエラーを発生するとします。
@@ -541,7 +603,17 @@ end
 
 NOTE: `:on`オプションは、コールバックがトリガされる条件を指定します。`:on`オプションを指定しないと、すべてのアクションでコールバックがトリガされます。
 
-### コンテキストは重要
+WARNING: トランザクションが完了すると、そのトランザクション内で作成・更新・破棄されたすべてのモデルに対して`after_commit`コールバックまたは`after_rollback`コールバックが呼び出されます。
+ただし、これらのコールバックのいずれか内で例外が発生した場合、例外はバブルアップし、残りの`after_commit`メソッドや`after_rollback`メソッドは実行されません。
+そのため、コールバックのコードで例外が発生する可能性がある場合は、他のコールバックを実行できるように、その例外を`rescue`してコールバック内で処理する必要があることにご注意ください。
+
+WARNING: `after_commit`コールバックや`after_rollback`コールバック内で実行されるコード自体は、トランザクション内に含まれない点にご注意ください。
+
+WARNING: 単一トランザクションのコンテキストで、データベース内の同じレコードを表す複数の読み込み済みオブジェクトを操作する場合、`after_commit`コールバックや`after_rollback`コールバックの振る舞いには重要な注意点があります。
+これらのコールバックは、トランザクション内で変更される特定のレコードの「最初のオブジェクト」に対してのみトリガーされます。読み込まれている他のオブジェクトは、同じデータベースレコードを表しているにもかかわらず、`after_commit`コールバックや`after_rollback`コールバックをトリガーしません。
+この微妙な振る舞いによる影響が特に大きいシナリオは、「同じデータベースレコードに関連付けられるオブジェクトごとに、コールバックが独立して実行されることが予想される」場合です。この振る舞いは、コールバックシーケンスのフローや予測可能性に影響を与える可能性があり、トランザクションに沿って動作するアプリケーションロジックに不整合が生じる可能性があります。
+
+### `after_commit`コールバックのエイリアス
 
 `after_commit`コールバックは作成・更新・削除でのみ用いることが多いので、それぞれのエイリアスも用意されています。
 
@@ -560,10 +632,6 @@ class PictureFile < ApplicationRecord
   end
 end
 ```
-
-WARNING: あるトランザクションが完了すると、`after_commit`コールバックおよび`after_rollback`コールバックは、1つのトランザクションブロック内で作成・更新・削除されたすべてのモデルで呼び出されます。ただし、これらのコールバックのいずれかで何らかの例外が発生すると、その例外のせいで以後の`after_commit`コールバックや`after_rollback`コールバックのメソッドは**実行されなくなります**。このため、もし自作のコールバックで例外が発生する可能性がある場合は、他のコールバックが停止しないように自分のコールバック内で`rescue`して適切にエラー処理を行う必要があります。
-
-WARNING: `after_commit`コールバックや`after_rollback`コールバックの中で実行されるコードそのものは、トランザクションで囲まれません。
 
 WARNING: 同一のモデル内で同じメソッド名を引数に取る`after_create_commit`と`after_update_commit`を両方用いると、最後に定義したコールバックだけが有効になります。理由は、これらのコールバックが内部で`after_commit`のエイリアスになっていて、最初に同じメソッド名を引数に定義したコールバックがオーバーライドされるからです。
 
@@ -611,7 +679,8 @@ irb> @user.save # @userを更新
 
 ### トランザクショナルなコールバックの順序
 
-トランザクションの `after_*`コールバック（`after_commit`、`after_rollback`など）を複数定義すると、**定義とは逆順で実行されます**。
+デフォルトでは、コールバックは定義された順序で実行されます。
+ただし、トランザクショナルな`after_`コールバック（`after_commit`や`after_rollback など）を複数定義すると、定義時と逆順で実行される可能性があります。
 
 ```ruby
 class User < ActiveRecord::Base
@@ -621,6 +690,15 @@ end
 ```
 
 NOTE: これは、`after_destroy_commit`などを含む、すべての`after_*_commit`のバリエーションにも当てはまります。
+
+この実行順序は以下の設定で変更できます。
+
+```ruby
+config.active_record.run_after_transaction_callbacks_in_order_defined = false
+```
+
+`true`（Rails 7.1以降のデフォルト）に設定すると、コールバックは定義された順序で実行されます。
+`false`に設定すると、上の例と同様に、実行順序が逆になります。
 
 [`after_create_commit`]: https://api.rubyonrails.org/classes/ActiveRecord/Transactions/ClassMethods.html#method-i-after_create_commit
 [`after_destroy_commit`]: https://api.rubyonrails.org/classes/ActiveRecord/Transactions/ClassMethods.html#method-i-after_destroy_commit
