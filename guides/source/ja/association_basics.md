@@ -2705,44 +2705,7 @@ class Author < ApplicationRecord
 end
 ```
 
-Railsは、追加されるオブジェクトや削除されるオブジェクトをコールバックに渡します。
-
-1つのイベントで複数のコールバックを使いたい場合には、配列で渡します。
-
-```ruby
-class Author < ApplicationRecord
-  has_many :books,
-    before_add: [:check_credit_limit, :calculate_shipping_charges]
-
-  def check_credit_limit(book)
-    # ...
-  end
-
-  def calculate_shipping_charges(book)
-    # ...
-  end
-end
-```
-
-`before_add`コールバックが`throw(:abort)`した場合、オブジェクトはコレクションに追加されません。同様に、`before_remove`が`throw(:abort)`した場合も、オブジェクトはコレクションから削除されません。
-
-```ruby
-# 本が上限に達した場合は追加されない
-def check_credit_limit(book)
-  throw(:abort) if limit_reached?
-end
-```
-
-NOTE: これらのコールバックは、関連付けられたオブジェクトが関連付けコレクションを介して追加または削除された場合にのみ呼び出されます。
-
-```ruby
-# `before_add`コールバックはトリガーされる
-author.books << book
-author.books = [book, book2]
-
-# `before_add`コールバックはトリガーされない
-book.update(author_id: 1)
-```
+関連付けのコールバックについて詳しくは、[Active Recordの関連付けガイド](active_record_callbacks.html#関連付けのコールバック)を参照してください。
 
 ### 関連付けの拡張
 
