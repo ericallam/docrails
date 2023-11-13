@@ -1923,6 +1923,7 @@ NOTE: 定義は[`active_support/core_ext/string/conversions.rb`](https://github.
 * [`terabytes`][Numeric#terabytes]
 * [`petabytes`][Numeric#petabytes]
 * [`exabytes`][Numeric#exabytes]
+* [`zettabytes`][Numeric#zettabytes]
 
 これらのメソッドは、対応するバイト数を返すときに1024の倍数を使います。
 
@@ -1948,6 +1949,7 @@ NOTE: 定義は[`active_support/core_ext/numeric/bytes.rb`](https://github.com/r
 [Numeric#megabytes]: https://api.rubyonrails.org/classes/Numeric.html#method-i-megabytes
 [Numeric#petabytes]: https://api.rubyonrails.org/classes/Numeric.html#method-i-petabytes
 [Numeric#terabytes]: https://api.rubyonrails.org/classes/Numeric.html#method-i-terabytes
+[Numeric#zettabytes]: https://api.rubyonrails.org/classes/Numeric.html#method-i-zettabytes
 
 
 ### Time
