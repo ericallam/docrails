@@ -1366,7 +1366,7 @@ end
 
 ### HTTPとヘッダーとCGI変数を設定する
 
-[HTTPヘッダー](https://tools.ietf.org/search/rfc2616#section-5.3)と[CGI変数](https://tools.ietf.org/search/rfc3875#section-4.1)はヘッダーとして渡されます。
+[HTTPヘッダー](https://datatracker.ietf.org/doc/html/rfc2616#section-5.3)と[CGI変数](https://datatracker.ietf.org/doc/html/rfc3875#section-4.1)はヘッダーとして渡されます。
 
 ```ruby
 # HTTPヘッダーを設定する
