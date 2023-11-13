@@ -481,7 +481,7 @@ Finished in 0.024899s, 240.9735 runs/s, 1204.8677 assertions/s.
 
 1. パスワードが存在すること
 2. パスワードが（`XXX_confirmation`で渡された）パスワード確認入力と等しいこと
-3. パスワードの最大長が72文字であること（`ActiveModel::SecurePassword`が依存している`bcrypt`による要求）
+3. パスワードの最大長が72文字であること（`ActiveModel::SecurePassword`が依存している`bcrypt`による要件であり、暗号化前にこの文字数まで切り詰められます）
 
 #### 例
 
