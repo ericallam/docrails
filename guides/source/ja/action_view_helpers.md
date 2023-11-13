@@ -186,13 +186,15 @@ end
 
 #### `cache`
 
-アクション全体やページ全体ではなく、ビューのフラグメントをキャッシュするメソッドです。この手法は、メニューやニューストピックのリスト、静的なHTMLフラグメントなどをキャッシュする場合に便利です。このメソッドは、キャッシュしたいコンテンツを含むブロックを1個受け取ります。詳しくは`AbstractController::Caching::Fragments`を参照してください。
+アクション全体やページ全体ではなく、ビューのフラグメントをキャッシュするメソッドです。この手法は、メニューやニューストピックのリスト、静的なHTMLフラグメントなどをキャッシュする場合に便利です。このメソッドは、キャッシュしたいコンテンツを含むブロックを1個受け取ります。詳しくは[`AbstractController::Caching::Fragments`][]を参照してください。
 
 ```erb
 <% cache do %>
   <%= render "application/footer" %>
 <% end %>
 ```
+
+[`AbstractController::Caching::Fragments`]: https://api.rubyonrails.org/classes/AbstractController/Caching/Fragments.html
 
 ### CaptureHelperモジュール
 
