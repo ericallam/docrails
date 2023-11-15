@@ -197,34 +197,6 @@ $ bundle exec rake guides:generate:html GUIDES_LANGUAGE=it-IT
 
 NOTE: redcarpet gemはJRubyでは動きません。
 
-現在把握されている翻訳プロジェクトは以下のとおりです（バージョンはそれぞれ異なっています）。
-
-* **イタリア語**: [https://github.com/rixlabs/docrails][Italian]
-* **スペイン語**: [https://github.com/gramos/docrails/wiki][Spanish]
-* **ポーランド語**: [https://github.com/apohllo/docrails][Polish]
-* **フランス語** : [https://github.com/railsfrance/docrails][French]
-* **チェコ語** : [https://github.com/rubyonrails-cz/docrails/tree/czech][Czech]
-* **トルコ語** : [https://github.com/ujk/docrails][Turkish]
-* **韓国語** : [https://github.com/rorlakr/rails-guides][Korean]
-* **中国語（簡体字）** : [https://github.com/ruby-china/guides][Simplified Chinese]
-* **中国語（繁体字）** : [https://github.com/docrails-tw/guides][Traditional Chinese]
-* **ロシア語** : [https://github.com/morsbox/rusrails][Russian]
-* **日本語** : [https://github.com/yasslab/railsguides.jp][Japanese]
-* **ポルトガル語（ブラジル）** : [https://github.com/campuscode/rails-guides-pt-BR][Brazilian Portuguese]
-
-[Italian]: https://github.com/rixlabs/docrails
-[Spanish]: https://github.com/latinadeveloper/railsguides.es
-[Polish]: https://github.com/apohllo/docrails
-[French]: https://github.com/railsfrance/docrails
-[Czech]: https://github.com/rubyonrails-cz/docrails/tree/czech
-[Turkish]: https://github.com/ujk/docrails
-[Korean]: https://github.com/rorlakr/rails-guides
-[Simplified Chinese]: https://github.com/ruby-china/guides
-[Traditional Chinese]: https://github.com/docrails-tw/guides
-[Russian]: https://github.com/morsbox/rusrails
-[Japanese]: https://github.com/yasslab/railsguides.jp
-[Brazilian Portuguese]: https://github.com/campuscode/rails-guides-pt-BR
-
 Railsのコードに貢献する
 ------------------------------
 
