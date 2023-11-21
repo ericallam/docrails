@@ -694,9 +694,8 @@ class GoodnessValidator
 end
 ```
 
-詳しくは[カスタムバリデーション][#カスタムバリデーションを実行する]で後述します。
+詳しくは[カスタムバリデーション](#カスタムバリデーションを実行する)で後述します。
 
-[バリデーションエラー](#バリデーションエラーに対応する)
 [`validates_with`]: https://api.rubyonrails.org/classes/ActiveModel/Validations/ClassMethods.html#method-i-validates_with
 
 バリデーションの共通オプション
