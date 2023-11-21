@@ -1236,7 +1236,7 @@ end
 ##### `:inverse_of`
 
 `:inverse_of`オプションは、その関連付けの逆関連付けとなる`has_many`関連付けまたは`has_one`関連付けの名前を指定します。
-詳しくは[双方向関連付け][#双方向関連付け]を参照してください。
+詳しくは[双方向関連付け](#双方向関連付け)を参照してください。
 
 ```ruby
 class Author < ApplicationRecord
@@ -1549,7 +1549,7 @@ TIP: Railsは外部キーのカラムを自動的に作成することはあり�
 ##### `:inverse_of`
 
 `:inverse_of`オプションは、その関連付けの逆関連付けとなる`belongs_to`関連付けの名前を指定します。
-詳しくは[双方向関連付け][#双方向関連付け]を参照してください。
+詳しくは[双方向関連付け](#双方向関連付け)を参照してください。
 
 ```ruby
 class Supplier < ApplicationRecord
@@ -2705,7 +2705,7 @@ class Author < ApplicationRecord
 end
 ```
 
-関連付けのコールバックについて詳しくは、[Active Recordの関連付けガイド](active_record_callbacks.html#関連付けのコールバック)を参照してください。
+関連付けのコールバックについて詳しくは、[Active Recordコールバックガイド](active_record_callbacks.html#関連付けのコールバック)を参照してください。
 
 ### 関連付けの拡張
 
