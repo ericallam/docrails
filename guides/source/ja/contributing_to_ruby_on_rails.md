@@ -99,7 +99,7 @@ GitHub Issuesは「機能リクエスト」の場ではありません。Ruby on
 
 機能追加用のパッチを送信する前に自分のアイデアに意見を募りたい場合は、最初にdiscuss.rubyonrails.orgというSNSの[rubyonrails-core][]に投稿してみてください。もし反応がなければ自分のアイデアに誰も関心を持っていないことがわかりますし、自分のアイデアに興味を示した人が反応する可能性もあります。場合によっては「残念ながら採用できません」という返信があるかもしれません。しかしこのSNSこそ、そうしたアイデアについて議論するための場所なのです。逆にGitHubのissueは、こうした新しいアイデアで必要な議論（ときには長期かつ複雑になることもあるでしょう）を行う場としては不向きです。
 
-[rubyonrails-core](https://discuss.rubyonrails.org/c/rubyonrails-core)
+[rubyonrails-core]: https://discuss.rubyonrails.org/c/rubyonrails-core
 
 既存のissueの解決を手伝う
 ----------------------------------

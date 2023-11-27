@@ -251,7 +251,7 @@ I18n.t("missing.key") # 7.0/7.1どちらもraiseしない
 
 ### `ActionView::TestCase#rendered`が`String`を返さなくなった
 
-Rails 7.1から、`ActionView::TestCase#rendered`はさまざまなフォーマットメソッドに応答するオブジェクト（`rendered.html`や`rendered.json`など）を返すようになります。後方互換性を維持するために、`rendered`から返されるオブジェクトは、テスト中にレンダリングされる"missing"メソッドを`String`に委譲します。たとえば、以下の[`assert_match``][]アサーションはパスします。
+Rails 7.1から、`ActionView::TestCase#rendered`はさまざまなフォーマットメソッドに応答するオブジェクト（`rendered.html`や`rendered.json`など）を返すようになります。後方互換性を維持するために、`rendered`から返されるオブジェクトは、テスト中にレンダリングされる"missing"メソッドを`String`に委譲します。たとえば、以下の[`assert_match`][]アサーションはパスします。
 
 ```ruby
 assert_match(/some content/i, rendered)
