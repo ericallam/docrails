@@ -937,7 +937,7 @@ WARNING: 配列パラメータは、`check_box`ヘルパーとの相性がよく
 }
 ```
 
-フォームビルダーの`person_form`で`fields_for`を呼び出したので、フォームのすべてのinputは`"person"`ハッシュに対応付けられます。また、`index: address.id`を指定することで、各都市のinputの`name`属性を`person[address][city]`ではなく`person[address][#{address.id}][city]`としてレンダリングしています。このように、`params`ハッシュを処理する際に、どのAddressレコードを変更すべきかを決定可能になります。。
+フォームビルダーの`person_form`で`fields_for`を呼び出したので、フォームのすべてのinputは`"person"`ハッシュに対応付けられます。また、`index: address.id`を指定することで、各都市のinputの`name`属性を`person[address][city]`ではなく`person[address][#{address.id}][city]`としてレンダリングしています。このように、`params`ハッシュを処理する際に、どのAddressレコードを変更すべきかを決定可能になります。
 
 `:index`オプションには他の数値や文字列も渡せます。また、`nil`も渡せます（この場合は配列パラメータが作成されます）。
 
