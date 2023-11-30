@@ -280,7 +280,7 @@ Active Recordコールバックを使うと、モデルのライフサイクル�
 Railsにはデータベーススキーマを管理するためのDSL（ドメイン固有言語: Domain Specific Language）があり、マイグレーション（migration）と呼ばれています。マイグレーションをファイルに保存して`bin/rails`を実行すると、Active Recordがサポートするデータベースに対してマイグレーションが実行されます。以下はテーブルを作成するマイグレーションです。
 
 ```ruby
-class CreatePublications < ActiveRecord::Migration[7.0]
+class CreatePublications < ActiveRecord::Migration[7.1]
   def change
     create_table :publications do |t|
       t.string :title
