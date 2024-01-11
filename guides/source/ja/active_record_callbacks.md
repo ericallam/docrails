@@ -680,7 +680,7 @@ irb> @user.save # @userを更新
 ### トランザクショナルなコールバックの順序
 
 デフォルトでは、コールバックは定義された順序で実行されます。
-ただし、トランザクショナルな`after_`コールバック（`after_commit`や`after_rollback　`など）を複数定義すると、定義時と逆順で実行される可能性があります。
+ただし、トランザクショナルな`after_`コールバック（`after_commit`や`after_rollback`など）を複数定義すると、定義時と逆順で実行される可能性があります。
 
 ```ruby
 class User < ActiveRecord::Base
