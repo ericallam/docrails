@@ -212,15 +212,6 @@ end
 ログのファイル出力をバッファリングせず、即座に書き出す設定を有効にします。
 デフォルトは `true` です。
 
-#### `config.autoload_once_paths`
-
-サーバーへのリクエストごとにクリアされない定数を自動読み込みするパスの配列をRailsに渡せます。この設定は再読み込みが有効になっている場合に関連し、developmentモードではデフォルトでオフになります。それ以外の場合、自動読み込みは1度しか行われません。この配列内にあるすべての要素は`autoload_paths`に存在しなければなりません。
-デフォルト値は空の配列です。
-
-#### `config.autoload_paths`
-
-Railsが定数を自動読み込みするパスの配列を渡せます。デフォルト値は空の配列です。[Rails 6](upgrading_ruby_on_rails.html#自動読み込み)以降は、この設定の変更は推奨されません。詳しくは[定数の自動読み込みと再読み込み](autoloading_and_reloading_constants.html)を参照してください。
-
 #### `config.autoload_lib(ignore:)`
 
 このメソッドは、`lib`を`config.autoload_paths`と`config.eager_load_paths`に追加します。
@@ -238,6 +229,15 @@ config.autoload_lib(ignore: %w(assets tasks generators))
 `config.autoload_lib_once`メソッドは、`config.autoload_lib`と似ていますが、`lib`を`config.autoload_once_paths`に追加する点が異なります。
 
 `config.autoload_lib_once`を呼び出すことで、`lib`内のクラスやモジュールが自動的に読み込まれます。アプリケーションの初期化時でも再読み込みは行われません。
+
+#### `config.autoload_once_paths`
+
+サーバーへのリクエストごとにクリアされない定数を自動読み込みするパスの配列をRailsに渡せます。この設定は再読み込みが有効になっている場合に関連し、developmentモードではデフォルトでオフになります。それ以外の場合、自動読み込みは1度しか行われません。この配列内にあるすべての要素は`autoload_paths`に存在しなければなりません。
+デフォルト値は空の配列です。
+
+#### `config.autoload_paths`
+
+Railsが定数を自動読み込みするパスの配列を渡せます。デフォルト値は空の配列です。[Rails 6](upgrading_ruby_on_rails.html#自動読み込み)以降は、この設定の変更は推奨されません。詳しくは[定数の自動読み込みと再読み込み](autoloading_and_reloading_constants.html)を参照してください。
 
 #### `config.beginning_of_week`
 
@@ -310,10 +310,6 @@ development環境でエラーが発生した場合に、レスポンスで使う
 #### `config.disable_sandbox`
 
 コンソールをsandboxモードで起動してよいかどうかを制御します。これは、sandboxコンソールのセッションを長時間動かしっぱなしにするとデータベースサーバーのメモリが枯渇するのを避けるうえで有用です。デフォルト値は`false`です。
-
-#### `config.sandbox_by_default`
-
-`true`にすると、Railsコンソールをsandboxモードで起動します。sandboxモードを無効にしてRailsコンソールを起動するには、`--no-sandbox`を明示的に指定しなければなりません。これは、production環境のデータベースに誤って書き込むのを防止したいときに有用です。デフォルト値は`false`です。
 
 #### `config.dom_testing_default_html_version`
 
@@ -533,6 +529,10 @@ config.railties_order = [Blog::Engine, :main_app, :all]
 #### `config.require_master_key`
 
 `ENV["RAILS_MASTER_KEY"]`環境変数または`config/master.key`ファイルからマスターキーを取得できない場合はアプリを起動しないようにします。
+
+#### `config.sandbox_by_default`
+
+`true`にすると、Railsコンソールをsandboxモードで起動します。sandboxモードを無効にしてRailsコンソールを起動するには、`--no-sandbox`を明示的に指定しなければなりません。これは、production環境のデータベースに誤って書き込むのを防止したいときに有用です。デフォルト値は`false`です。
 
 #### `config.secret_key_base`
 
@@ -824,7 +824,7 @@ bodyがファイルから配信されているレスポンスをインターセ�
 
 #### `Rack::Head`
 
-HEADリクエストをGETリクエストに変換して配信します。
+すべてのHEADリクエストに対して空のbodyを返します。その他すべてのリクエストは変更されません。
 
 #### カスタムミドルウェアを追加する
 
@@ -1687,7 +1687,9 @@ Rendered recordings/threads/_thread.html.erb in 1.5 ms [cache miss]
 
 #### `config.action_controller.raise_on_open_redirects`
 
-許可されていないオープンリダイレクトが発生した場合に`ActionController::Redirecting::UnsafeRedirectError`をraiseします。
+外部リダイレクトをオプトインにすることで、アプリケーションが意図せずに外部ホストにリダイレクトされること (オープンリダイレクト（open redirect）とも呼ばれます) から保護します。
+
+この設定が`true`の場合、外部ホストを含​​むURLが[redirect_to][]に渡されると、`ActionController::Redirecting::UnsafeRedirectError`が発生します。オープンリダイレクトを許可する必要がある場合は、`redirect_to`呼び出しに`allow_other_host: true`オプションを追加できます。
 
 デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
 
@@ -1695,6 +1697,8 @@ Rendered recordings/threads/_thread.html.erb in 1.5 ms [cache miss]
 | --------------------- | -------------------- |
 | （オリジナル）           | `false`              |
 | 7.0以降                | `true`               |
+
+[redirect_to]: https://api.rubyonrails.org/classes/ActionController/Redirecting.html#method-i-redirect_to
 
 #### `config.action_controller.log_query_tags_around_actions`
 
@@ -1702,7 +1706,11 @@ Rendered recordings/threads/_thread.html.erb in 1.5 ms [cache miss]
 
 #### `config.action_controller.wrap_parameters_by_default`
 
-JSONリクエストをデフォルトで[`ParamsWrapper`](https://api.rubyonrails.org/classes/ActionController/ParamsWrapper.html)でラップするように設定します。
+Rails 7.0より前は、新しいアプリケーションを生成するときに、JSONリクエスト用に`ActionController::Base`でパラメータのラッピングを有効にする`wrap_parameters.rb`という名前のイニシャライザが生成されていました。
+
+この設定値を`true`にすると、そのイニシャライザがある場合と同じ振る舞いになるので、パラメータのラッピング動作をカスタマイズしない場合、アプリケーションのイニシャライザを削除できるようになります。
+
+この値に関係なく、アプリケーションはイニシャライザで、またはコントローラごとに従来と同様にパラメータのラッピング動作をカスタマイズ可能です。パラメータのラッピングについて詳しくは、[`ParamsWrapper`][params_wrapper]を参照してください。
 
 デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
 
@@ -1710,6 +1718,8 @@ JSONリクエストをデフォルトで[`ParamsWrapper`](https://api.rubyonrail
 | --------------------- | -------------------- |
 | （オリジナル）           | `false`              |
 | 7.0以降                | `true`               |
+
+[params_wrapper]: https://api.rubyonrails.org/classes/ActionController/ParamsWrapper.html
 
 #### `ActionController::Base.wrap_parameters`
 
@@ -1841,16 +1851,25 @@ HTTP Authのsalt値（訳注: ハッシュの安全性を強化するために�
 
 #### `config.action_dispatch.rescue_responses`
 
-HTTPステータスに割り当てる例外を設定します。ここには、例外とステータスのさまざまなペアを指定したハッシュを1つ指定可能です。デフォルトの定義は次のようになっています。
+HTTPステータスに割り当てる例外を設定します。ここには、例外とステータスのペアを指定したハッシュを1つ指定可能です。
 
 ```ruby
-config.action_dispatch.rescue_responses = {
+# デフォルト値を尊重するために、#[]= または #merge! を使うのがよい
+config.action_dispatch.rescue_responses['MyAuthenticationError'] = :unauthorized
+```
+
+この設定を観察するには`ActionDispatch::ExceptionWrapper.rescue_responses`を使います。デフォルトの定義は次のようになっています。
+
+```ruby
+{
   'ActionController::RoutingError' => :not_found,
   'AbstractController::ActionNotFound' => :not_found,
   'ActionController::MethodNotAllowed' => :method_not_allowed,
   'ActionController::UnknownHttpMethod' => :method_not_allowed,
   'ActionController::NotImplemented' => :not_implemented,
   'ActionController::UnknownFormat' => :not_acceptable,
+  'ActionDispatch::Http::MimeNegotiation::InvalidType' => :not_acceptable,
+  'ActionController::MissingExactTemplate' => :not_acceptable,
   'ActionController::InvalidAuthenticityToken' => :unprocessable_entity,
   'ActionController::InvalidCrossOriginRequest' => :unprocessable_entity,
   'ActionDispatch::Http::Parameters::ParseError' => :bad_request,
@@ -1898,6 +1917,25 @@ end
 #### `config.action_dispatch.log_rescued_responses`
 
 `rescue_responses`で設定されている、処理されなかった例外のログ出力を有効にします。デフォルト値は`true`です。
+
+#### `config.action_dispatch.show_exceptions`
+
+`config.action_dispatch.show_Exceptions`設定は、リクエストへの応答中にAction Pack（具体的には[`ActionDispatch::ShowExceptions`](/configuring.html#actiondispatch-showexceptions)ミドルウェア）が発生した例外を処理する方法を指定します。
+
+値を`:all`または`true`に設定すると、例外をrescueして対応するエラーページを表示するようにAction Packを構成します。たとえば、Action Packは `ActiveRecord::RecordNotFound`例外をrescueし、`public/404.html`にあるコンテンツをステータスコード`404 Not found`でレンダリングします。
+
+値を`:rescueable`に設定すると、[`config.action_dispatch.rescue_responses`](#config-action-dispatch-rescue-responses)リストで定義されている例外についてはrescueし、その他すべてはraiseするようAction Packを構成します。 たとえば、Action Packは`ActiveRecord::RecordNotFound`をrescueしますが、`NoMethodError`をraiseします。
+
+値を``:none`または`false`に設定すると、Action Packがすべての例外をraiseするように構成されます。
+
+* `:all`, `true`: すべての例外をエラーページで表示する
+* `:rescuable`: [`config.action_dispatch.rescue_responses`](#config-action-dispatch-rescue-responses)で宣言されている例外をエラーページで表示する
+* `:none`, `false`: すべての例外をraiseする
+
+| バージョン              | デフォルト値           |
+| --------------------- | -------------------- |
+| （オリジナル）           | `true`                |
+| 7.1以降                | `:all`                |
 
 #### `ActionDispatch::Callbacks.before`
 
@@ -2023,7 +2061,19 @@ ERBテンプレートを`# frozen_string_literal: true`マジックコメント�
 
 #### `config.action_view.button_to_generates_button_tag`
 
-`button_to`で、コンテンツが第1引数として渡されるかブロックとして渡されるかにかかわらず、`<button>`要素をレンダリングするかどうかを指定します。
+`false`に設定すると、`button_to`がコンテンツの受け渡し方法に応じて`<form>`内に`<button>`要素または`<input>`要素のどちらかをレンダリングします（以下は簡潔にするために`<form>`を省略）。
+
+```erb
+<%= button_to "Content", "/" %>
+# => <input type="submit" value="Content">
+
+<%= button_to "/" do %>
+  Content
+<% end %>
+# => <button type="submit">Content</button>
+```
+
+`true`に設定すると、`button_to`は上のどちらの場合も`<form>`内に`<button>`タグを生成します。
 
 デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
 
@@ -2138,7 +2188,7 @@ Log4rのインターフェイスまたはデフォルトのRuby Loggerクラス�
 
 #### `config.action_mailer.smtp_timeout`
 
-メール配信用の`:smtp`メソッドの`:open_timeout`値と`:read_timeout`値を設定できます。
+バージョン2.8.0より前の`mail` gemは、SMTPリクエストにデフォルトのタイムアウトを設定していませんでした。この設定を使うことで、アプリケーションで`mail` gemの`:open_timeout`と`:read_timeout`の両方についてデフォルト値を設定してリクエストが無期限に停止しないようにできます。
 
 デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
 
@@ -2338,7 +2388,7 @@ INFO: `:message_pack`および`:message_pack_allow_marshal`シリアライザは
 または、`dump`メソッドと`load`メソッドに応答するシリアライザオブジェクトを以下のように指定することも可能です。
 
 ```ruby
-config.active_job.message_serializer = YAML
+config.active_support.message_serializer = YAML
 ```
 
 デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
@@ -2384,15 +2434,17 @@ config.active_job.message_serializer = YAML
 
 #### `config.active_support.deprecation`
 
-非推奨警告メッセージの振る舞いを設定します。`:raise`、`:stderr`、`:log`、`:notify`、`:silence`を指定可能です。デフォルト値は`:stderr`です。`ActiveSupport::Deprecation.behavior`でも設定可能です。
+非推奨警告メッセージの振る舞いを設定します。指定可能なオプションについては[`Deprecation::Behavior`][deprecation_behavior]を参照してください。
 
-デフォルトで生成される`config/environments`以下のファイルでは、development環境では`:log`が、test環境では`:stderr`がそれぞれ設定されます。production環境では [`config.active_support.report_deprecations`] (#config-active-support-report-deprecations)を優先して省略されます。
+デフォルトで生成される`config/environments`以下のファイルでは、development環境では`:log`が、test環境では`:stderr`がそれぞれ設定されます。production環境ではこの設定は無視され、[`config.active_support.report_deprecations`] (#config-active-support-report-deprecations)の設定が使われます。
+
+[deprecation_behavior]: https://api.rubyonrails.org/classes/ActiveSupport/Deprecation/Behavior.html#method-i-behavior-3D
 
 #### `config.active_support.disallowed_deprecation`
 
-利用が許されない非推奨警告メッセージの振る舞いを設定します。`:raise`、`:stderr`、`:log`、`:notify`、`:silence`を指定可能です。デフォルト値は`:raise`です。`ActiveSupport::Deprecation.disallowed_behavior`でも設定可能です。
+利用が許されない非推奨警告メッセージの振る舞いを設定します。指定可能なオプションについては[`Deprecation::Behavior`][deprecation_behavior]を参照してください。
 
-デフォルトで生成される`config/environments`以下のファイルでは、development環境とtest環境では`:raise`が設定されます。production環境では [`config.active_support.report_deprecations`] (#config-active-support-report-deprecations)を優先して省略されます。
+デフォルトで生成される`config/environments`以下のファイルでは、development環境とtest環境では`:raise`が設定されます。production環境ではこの設定は無視され、[`config.active_support.report_deprecations`] (#config-active-support-report-deprecations)の設定が使われます。
 
 #### `config.active_support.disallowed_deprecation_warnings`
 
@@ -2707,11 +2759,17 @@ config.active_storage.logger = ActiveSupport::Logger.new(STDOUT)
 
 以下によって生成されるURLのデフォルトの有効期限を指定します。
 
-* `ActiveStorage::Blob#url`
-* `ActiveStorage::Blob#service_url_for_direct_upload`
-* `ActiveStorage::Variant#url`
+* [`ActiveStorage::Blob#url`][]
+* [`ActiveStorage::Blob#service_url_for_direct_upload`][]
+* [`ActiveStorage::Preview#url`][]
+* [`ActiveStorage::Variant#url`][]
 
 デフォルト値は5分間です。
+
+[`ActiveStorage::Blob#url`]: https://api.rubyonrails.org/classes/ActiveStorage/Blob.html#method-i-url
+[`ActiveStorage::Blob#service_url_for_direct_upload`]: https://api.rubyonrails.org/classes/ActiveStorage/Blob.html#method-i-service_url_for_direct_upload
+[`ActiveStorage::Preview#url`]: https://api.rubyonrails.org/classes/ActiveStorage/Preview.html#method-i-url
+[`ActiveStorage::Variant#url`]: https://api.rubyonrails.org/classes/ActiveStorage/Variant.html#method-i-url
 
 #### `config.active_storage.urls_expire_in`
 
@@ -3433,6 +3491,7 @@ Action Controllerの`helpers_path`をアプリケーションの`helpers_path`�
 #### `set_load_path`
 
 このイニシャライザは`bootstrap_hook`の前に実行されます。`config.load_paths`およびすべての自動読み込みパスが`$LOAD_PATH`に追加されます。
+また、`config.add_autoload_paths_to_load_path`を`false`に設定「しない」場合は、`config.autoload_paths`、`config.eager_load_paths`、`config.autoload_once_paths`で指定された自動読み込みパスもすべて追加されます。
 
 #### `set_autoload_paths`
 
@@ -3511,7 +3570,7 @@ Action Controllerの`helpers_path`をアプリケーションの`helpers_path`�
 データベース接続をプールする
 ----------------
 
-Active Recordのデータベース接続は`ActiveRecord::ConnectionAdapters::ConnectionPool`で管理されます。これは、コネクション数に限りのあるデータベース接続にアクセスするときに、スレッドアクセス数とコネクションプールが同期するようにします。デフォルトの最大接続数は5で、`database.yml`でカスタマイズ可能です。
+Active Recordのデータベース接続は[`ActiveRecord::ConnectionAdapters::ConnectionPool`][]で管理されます。これは、コネクション数に限りのあるデータベース接続にアクセスするときに、スレッドアクセス数とコネクションプールが同期するようにします。デフォルトの最大接続数は5で、`database.yml`でカスタマイズ可能です。
 
 ```yaml
 development:
@@ -3534,6 +3593,8 @@ ActiveRecord::ConnectionTimeoutError - could not obtain a database connection wi
 上のエラーが発生する場合は、`database.yml`の`pool`オプションの数値を増やしてコネクションプールのサイズを増やすとよいでしょう。
 
 NOTE: マルチスレッド環境で動作しているアプリケーションでは、多数のスレッドが多数のコネクションに同時アクセスする可能性があります。その時点のリクエストの負荷によっては、限られたコネクションを多数のスレッドが奪い合う可能性があります。
+
+[`ActiveRecord::ConnectionAdapters::ConnectionPool`]: https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/ConnectionPool.html
 
 カスタム設定
 --------------------
