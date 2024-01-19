@@ -249,6 +249,27 @@ I18n.t("missing.key") # 7.0/7.1どちらもraiseしない
 
 なお、単体ファイルのテストを実行する場合（例: `bin/rails test test/models/user_test.rb`）は、`test:prepare`を事前実行しません。
 
+### `@rails/ujs`からのインポート構文が変更された
+
+Rails 7.1以降、`@rails/ujs`からモジュールをインポートするときの構文が変更されました。Railsは`@rails/ujs`からのモジュールの直接インポートをサポートしなくなりました。たとえば、以下の構文でライブラリから関数をインポートしようとすると失敗します。
+
+```javascript
+import { fileInputSelector } from "@rails/ujs"
+// ERROR: export 'fileInputSelector' (imported as 'fileInputSelector') was not found in '@rails/ujs' (possible exports: default)
+```
+
+Rails 7.1 では、最初にRailsオブジェクトを`@rails/ujs`から直接インポートしておく必要があります。
+ユーザーは、このRailsオブジェクトから特定のモジュールをインポートできます。
+Rails 7.1でのインポートの例を以下に示します。
+
+```javascript
+import Rails from "@rails/ujs"
+// このメソッドをエイリアスする
+const fileInputSelector = Rails.fileInputSelector
+// または、利用する場所でRailsオブジェクトから参照する
+Rails.fileInputSelector(...)
+```
+
 ### `ActionView::TestCase#rendered`が`String`を返さなくなった
 
 Rails 7.1から、`ActionView::TestCase#rendered`はさまざまなフォーマットメソッドに応答するオブジェクト（`rendered.html`や`rendered.json`など）を返すようになります。後方互換性を維持するために、`rendered`から返されるオブジェクトは、テスト中にレンダリングされる"missing"メソッドを`String`に委譲します。たとえば、以下の[`assert_match`][]アサーションはパスします。
@@ -328,6 +349,21 @@ config.active_record.encryption.support_sha1_for_non_deterministic_encryption = 
 ```
 
 暗号化データを扱っている場合は、必ず上記の点を慎重に確認してください。
+
+### コントローラーテスト、結合テスト、システムテストの例外処理方法が新しくなった
+
+`config.action_dispatch.show_exceptions`設定は、リクエストへの応答中に発生した例外をAction Packで処理する方法を制御します。
+
+Rails 7.1より前のAction Packでは、`config.action_dispatch.show_exceptions = true`を設定すると、例外をrescueして適切なHTMLエラーページをレンダリングするように設定されていました（例: `ActiveRecord::RecordNotFound`例外をraiseするのではなく、`public/404.html`をステータスコード`404 Not found`でレンダリングする）。
+`config.action_dispatch.show_exceptions = false`を設定すると、例外をrescueしないようにAction Packが設定されました。Rails 7.1より前の新しいアプリケーションでは、生成された`config/environments/test.rb`内で`config.action_dispatch.show_Exceptions = false`が設定されていました。
+
+Rails 7.1では、この設定に渡せる値が`true`と`false`から、`:all`と`:rescuable`と`:none`に変更されました。
+
+* `:all`（`true`と同等）: すべての例外をHTMLエラーページで表示する
+* `:rescuable`: [`config.action_dispatch.rescue_responses`](/configuring.html#config-action-dispatch-rescue-responses)で宣言されている例外についてはHTMLエラーページを表示する
+* `:none`（`false`と同等）: 例外をrescueしない
+
+Rails 7.1以降で生成したアプリケーションの`config/environments/test.rb`には `config.action_dispatch.show_Exceptions = :rescuable`が設定されます。アップグレードする場合、既存のアプリケーションの`config.action_dispatch.show_exceptions = :rescuable`を新しい振る舞いに沿って変更することも、古い値を対応する新しい値に置き換える（`true`を`:all`に置き換え、`false`を`:none`に置き換える）ことも可能です。
 
 Rails 6.1からRails 7.0へのアップグレード
 -------------------------------------
