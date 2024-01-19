@@ -891,6 +891,8 @@ end
 
 システムテストでは、デフォルトでSeleniumドライバと画面サイズ1400x1400のChromeブラウザを用いて実行されます。次のセクションで、デフォルト設定の変更方法について説明します。
 
+デフォルトのRailsは、テスト中に発生した例外のrescueを試み、HTMLエラーページで応答します。この振る舞いは[`config.action_dispatch.show_exceptions`](/configuring.html#config-action-dispatch-show-exceptions)設定で制御できます。
+
 ### デフォルト設定の変更
 
 Railsのシステムテストのデフォルト設定変更方法は非常にシンプルです。すべての設定が抽象化されているので、テストの作成に集中できます。
@@ -1107,6 +1109,8 @@ end
 
 結合テストは`ActionDispatch::IntegrationTest`から継承されます。これにより、結合テスト内でさまざまなヘルパーが利用できます。
 
+デフォルトのRailsは、テスト中に発生した例外のrescueを試み、HTMLエラーページで応答します。この振る舞いは[`config.action_dispatch.show_exceptions`](/configuring.html#config-action-dispatch-show-exceptions)設定で制御できます。
+
 ### 結合テストで利用できるヘルパー
 
 システムテストでは、標準のテストヘルパー以外にも`ActionDispatch::IntegrationTest`から継承されるいくつかのヘルパーを利用できます。その中から3つのカテゴリについて簡単にご紹介します。
@@ -1298,6 +1302,8 @@ NOTE: [BASIC認証](getting_started.html#basic認証)セクションの手順に
 ```ruby
 post articles_url, params: { article: { body: "Rails is awesome!", title: "Hello Rails" } }, headers: { Authorization: ActionController::HttpAuthentication::Basic.encode_credentials("dhh", "secret") }
 ```
+
+デフォルトのRailsは、テスト中に発生した例外のrescueを試み、HTMLエラーページで応答します。この振る舞いは[`config.action_dispatch.show_exceptions`](/configuring.html#config-action-dispatch-show-exceptions)設定で制御できます。
 
 ### 機能テストで利用できるHTTPリクエストの種類
 
@@ -1672,7 +1678,7 @@ assert_select "ol" do
 end
 ```
 
-`assert_select`はきわめて強力なアサーションです。このアサーションの高度な利用法については[ドキュメント](https://github.com/rails/rails-dom-testing/blob/master/lib/rails/dom/testing/assertions/selector_assertions.rb)を参照してください。
+`assert_select`はきわめて強力なアサーションです。このアサーションの高度な利用法については[ドキュメント](https://github.com/rails/rails-dom-testing/blob/main/lib/rails/dom/testing/assertions/selector_assertions.rb)を参照してください。
 
 ### その他のビューベースのアサーション
 
@@ -1767,7 +1773,7 @@ class ViewPartialTestCase < ActionView::TestCase
   include Capybara::Minitest::Assertions
 
   def page
-    Capybara.string(document_root_element)
+    Capybara.string(rendered)
   end
 end
 ```
