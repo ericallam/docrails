@@ -274,7 +274,7 @@ google:
   gsa_email: "foobar@baz.iam.gserviceaccount.com"
 ```
 
-`Gemfile`に[`google-cloud-storage`](https://github.com/GoogleCloudPlatform/google-cloud-ruby/tree/master/google-cloud-storage) gemを追加します。
+`Gemfile`に[`google-cloud-storage`](https://github.com/GoogleCloudPlatform/google-cloud-ruby/tree/main/google-cloud-storage) gemを追加します。
 
 ``` ruby
 gem "google-cloud-storage", "~> 1.11", require: false
@@ -432,6 +432,18 @@ end
 ```erb
 <%= image_tag user.video.preview(:thumb) %>
 ```
+
+バリアントにアクセスされることが事前にわかっている場合は、以下の方法でバリアントを事前生成するように指定できます。
+
+```ruby
+class User < ApplicationRecord
+  has_one_attached :video do |attachable|
+    attachable.variant :thumb, resize_to_limit: [100, 100], preprocessed: true
+  end
+end
+```
+
+Railsは、添付ファイルがレコードにアタッチされた後で、バリアントを生成するジョブをキューに入れます。
 
 [`has_one_attached`]: https://api.rubyonrails.org/classes/ActiveStorage/Attached/Model.html#method-i-has_one_attached
 [Attached::One#attach]: https://api.rubyonrails.org/classes/ActiveStorage/Attached/One.html#method-i-attach
