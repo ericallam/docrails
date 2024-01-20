@@ -97,6 +97,33 @@ javascript_url "common"
 # => http://www.example.com/assets/common.js
 ```
 
+#### `picture_tag`
+
+ソースに対応するHTMLの`<picture>`タグを返します。String、Array、またはブロックを渡せます。
+
+```ruby
+picture_tag("icon.webp", "icon.png")
+```
+
+上のコードは以下のHTMLを生成します。
+
+```html
+<picture>
+  <source srcset="/assets/icon.webp" type="image/webp" />
+  <source srcset="/assets/icon.png" type="image/png" />
+  <img src="/assets/icon.png" />
+</picture>
+```
+
+#### `preload_link_tag`
+
+ブラウザでソースをプリロードさせるのに利用できるリンクタグを返します。指定できるソースは、アセットパイプラインによって管理されるリソースパス、フルパス、またはURIです。
+
+```ruby
+preload_link_tag "application.css"
+# => <link rel="preload" href="/assets/application.css" as="style" type="text/css" />
+```
+
 #### `stylesheet_link_tag`
 
 引数で指定されたソースに対応するスタイルシートリンクタグを返します。拡張子が指定されていない場合は、自動的に`.css`が追加されます。
