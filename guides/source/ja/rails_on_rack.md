@@ -328,7 +328,7 @@ Action Controllerの機能の多くはミドルウェアとして実装されて
 
 **`Rack::Head`**
 
-* `HEAD`リクエストを`GET`に変換し、`GET`として配信します。
+* すべての`HEAD`リクエストに対して空のbodyを返します。その他のリクエストは変更しません。
 
 **`Rack::ConditionalGet`**
 
