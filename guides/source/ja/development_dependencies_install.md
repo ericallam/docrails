@@ -141,7 +141,7 @@ $ sudo npm install --global yarn
 以下を実行すると、すべての依存関係をインストールできます。
 
 ```bash
-$ sudo dnf install sqlite-devel sqlite-libs mysql-server mysql-devel postgresql-server postgresql-devel redis memcached imagemagick ffmpeg mupdf libxml2-devel vips poppler-utils
+$ sudo dnf install sqlite-devel sqlite-libs mysql-server mysql-devel postgresql-server postgresql-devel redis memcached ImageMagick ffmpeg mupdf libxml2-devel vips poppler-utils
 
 # Yarnをインストールする
 # Node.jsをインストールしていない場合はこのコマンドを使う
