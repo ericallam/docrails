@@ -805,7 +805,7 @@ end
 ライブラリやGemをプリプロセッサ化する
 ------------------------------------------
 
-Sprocketsでは機能を拡張するのにProcessors、Transformers、Compressors、Exportersを使います。詳しくはSprocketsのREADME「[Extending Sprockets](https://github.com/rails/sprockets/blob/master/guides/extending_sprockets.md)」を参照してください。以下ではtext/css (`.css`)ファイルの末尾にコメントを追加するプリプロセッサを登録しています。
+Sprocketsでは機能を拡張するのにProcessors、Transformers、Compressors、Exportersを使います。詳しくはSprocketsのREADME「[Extending Sprockets](https://github.com/rails/sprockets/blob/main/guides/extending_sprockets.md)」を参照してください。以下ではtext/css (`.css`)ファイルの末尾にコメントを追加するプリプロセッサを登録しています。
 
 ```ruby
 module AddComment
