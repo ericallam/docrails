@@ -214,6 +214,8 @@ create      app/views/blorgh/articles/edit.html.erb
 create      app/views/blorgh/articles/show.html.erb
 create      app/views/blorgh/articles/new.html.erb
 create      app/views/blorgh/articles/_form.html.erb
+create      app/views/blorgh/articles/_article.html.erb
+invoke    resource_route
 invoke    test_unit
 create      test/controllers/blorgh/articles_controller_test.rb
 create      test/system/blorgh/articles_test.rb
@@ -587,12 +589,12 @@ $ bin/rails db:migrate
 
 これですべての部品が定位置に置かれ、ある記事 (article) を、`users`テーブルのレコードで表される作者 (author) に関連付けるアクションが実行されるようになりました。この記事は`blorgh_articles`テーブルで表されます。
 
-最後に、作者名を記事のページに表示しましょう。以下のコードを`app/views/blorgh/articles/show.html.erb`の"Title"出力の上に追加します。
+最後に、作者名を記事のページに表示しましょう。以下のコードを`app/views/blorgh/articles/_article.html.erb`の"Title"出力の上に追加します。
 
 ```html+erb
 <p>
-  <b>Author:</b>
-  <%= @article.author.name %>
+  <strong>Author:</strong>
+  <%= article.author.name %>
 </p>
 ```
 
