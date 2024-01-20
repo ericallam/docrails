@@ -516,6 +516,6 @@ $ bundle exec rake rdoc
 
 ### 参考資料
 
-* [Bundlerを使ってRubyGemを開発する](https://github.com/radar/guides/blob/master/gem-development.md)（英語）
+* [Bundlerを使ってRubyGemを開発する](https://bundler.io/guides/creating_gem.html)（英語）
 * [gemspecsを意図したとおりに使う](http://yehudakatz.com/2010/04/02/using-gemspecs-as-intended/)（英語）
 * [Gemspecリファレンス](https://guides.rubygems.org/specification-reference/)（英語）
