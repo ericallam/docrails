@@ -125,6 +125,7 @@ $ cd blog
 |config/|このディレクトリには、アプリケーションの各種設定ファイル（ルーティング、データベースなど）が置かれます。詳しくは[Rails アプリケーションの設定項目](configuring.html) を参照してください。|
 |config.ru|アプリケーションの起動に使われるRackベースのサーバー用のRack設定ファイルです。Rackについて詳しくは、[RackのWebサイト](https://rack.github.io/)を参照してください。|
 |db/|このディレクトリには、現在のデータベーススキーマと、データベースマイグレーションファイルが置かれます。|
+|Dockerfile|Dockerの設定ファイルです。|
 |Gemfile<br>Gemfile.lock|これらのファイルは、Railsアプリケーションで必要となるgemの依存関係を記述します。この2つのファイルはBundler gemで使われます。Bundlerについて詳しくは[BundlerのWebサイト](https://bundler.io/)を参照してください。|
 |lib/|このディレクトリには、アプリケーションで使う拡張モジュールが置かれます。|
 |log/|このディレクトリには、アプリケーションのログファイルが置かれます。|
@@ -135,6 +136,7 @@ $ cd blog
 |test/|このディレクトリには、単体テストやフィクスチャなどのテスト関連ファイルを置きます。テストについて詳しくは[Railsアプリケーションをテストする](testing.html)を参照してください。|
 |tmp/|このディレクトリには、キャッシュやpidなどの一時ファイルが置かれます。|
 |vendor/|サードパーティ製コードはすべてこのディレクトリに置きます。通常のRailsアプリケーションの場合、外部のgemファイルがここに置かれます。|
+|.dockerignore|コンテナにコピーすべきでないファイルをDockerに指示するのに使うファイルです。|
 |.gitattributes|このファイルは、gitリポジトリ内の特定のパスについてメタデータを定義します。このメタデータは、gitや他のツールで振る舞いを拡張できます。詳しくは[gitattributesドキュメント](https://git-scm.com/docs/gitattributes)を参照してください。|
 |.gitignore|Gitに登録しないファイル（またはパターン）をこのファイルで指定します。Gitにファイルを登録しない方法について詳しくは[GitHub - Ignoring files](https://help.github.com/articles/ignoring-files)を参照してください。|
 |.ruby-version|このファイルには、デフォルトのRubyバージョンが記述されています。|

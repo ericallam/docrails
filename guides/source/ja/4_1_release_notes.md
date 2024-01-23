@@ -51,7 +51,7 @@ Spring is running:
 3746 spring app    | my_app | started 10 secs ago | development mode
 ```
 
-Springのすべての機能については[Spring README](https://github.com/rails/spring/blob/master/README.md)を参照してください。
+Springのすべての機能については[Spring README](https://github.com/rails/spring/blob/main/README.md)を参照してください。
 
 [Ruby on Railsアップグレードガイド](upgrading_ruby_on_rails.html#rails-6-1からrails-7-0へのアップグレード-spring-gem)には、この機能を既存のアプリケーションと統合する方法について記載されています。
 

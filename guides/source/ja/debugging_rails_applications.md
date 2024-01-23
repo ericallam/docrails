@@ -824,7 +824,7 @@ Railsに限らず、Rubyアプリケーションではメモリーリークが�
 
 Valgrindには、さまざまなメモリー管理上のバグやスレッドバグなどを自動検出し、プログラムの詳細なプロファイリングを行うための各種ツールがあります。たとえば、インタプリタ内にあるC拡張機能が`malloc()`を呼び出した後`free()`を正しく呼び出さなかった場合、このメモリーはアプリケーションが終了するまで利用できなくなります。
 
-Valgrindのインストール方法とRuby内での利用方法について詳しくは、[ValgrindとRuby](http://blog.evanweaver.com/articles/2008/02/05/valgrind-and-ruby/)（Evan Weaver著、英語）を参照してください。
+Valgrindのインストール方法とRuby内での利用方法について詳しくは、[ValgrindとRuby](https://web.archive.org/web/20230518081626/https://blog.evanweaver.com/2008/02/05/valgrind-and-ruby/)（Evan Weaver著、英語）を参照してください。
 
 ### メモリーリークを探す
 

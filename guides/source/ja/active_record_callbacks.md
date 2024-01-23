@@ -279,6 +279,7 @@ Book/Libraryがtouchされました
 * `save`
 * `save!`
 * `save(validate: false)`
+* `save!(validate: false)`
 * `toggle!`
 * `touch`
 * `update_attribute`
