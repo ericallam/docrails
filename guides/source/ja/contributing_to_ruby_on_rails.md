@@ -41,49 +41,44 @@ issueを作成する際に、フレームワークにバグがあるかどうか
 
 地球滅亡レベルの重大な問題でもない限り、issueへの対応はすぐに開始されることもあれば、そうでないこともあります。しかしこれは、私たちがあなたのバグに関心がないわけではなく、多くの問題やプルリクエストを処理しなければならないだけです。同じ問題を抱えている他の人が、あなたのissueを見つけてバグを確認し、あなたと協力して修正することもあります。バグを修正する方法が既にわかっている場合は、先にプルリクエストをオープンしてください。
 
+[issues]: https://github.com/rails/rails/issues
+[new issue]: https://github.com/rails/rails/issues/new
+
 ### 実行可能なテストケースを作成する
 
 自分のissueを再現する手順を用意しておくと、他の開発者がissueを確認・調査・修正する上で大変役立ちます。そのための方法は、実行可能なテストケースを提供することです。この作業を少しでも楽にするために、Railsチームは以下のバグレポート用テンプレートを多数用意しているので、これを元に作業を開始できます。
 
-* Active Record（モデル、データベース）issue用テンプレート: [gem][gem: AR models/db] / [main][main: AR models/db]
-* Active Record（マイグレーション）issue用テンプレート: [gem][gem: AR migration] / [main][main: AR migration]
-* Action Pack（コントローラ、ルーティング）issue用テンプレート: [gem][gem: ActionPack] / [main][main: ActionPack]
-* Active Job issue用テンプレート: [gem][gem: ActiveJob] / [main][main: ActiveJob]
-* Active Storage issue用テンプレート: [gem][gem: ActiveStorage]: / [main][main: ActiveStorage]:
-* Action Mailbox issue用テンプレート: [gem][gem: ActionMailbox] / [main][main: ActionMailbox]
-* その他のissue用一般テンプレート: [gem][gem: generic] / [main][main: generic]
+* [Active Record（モデル、データベース）issue用テンプレート][main: AR models/db]
+* [Active Record（マイグレーション）issue用テンプレート][main: AR migration]
+* [Action Pack（コントローラ、ルーティング）issue用テンプレート][main: ActionPack]
+* [Active Job issue用テンプレート][main: ActiveJob]
+* [Active Storage issue用テンプレート][main: ActiveStorage]
+* [Active Mailer issue用テンプレート][main: Action Mailer]
+* [Action Mailbox issue用テンプレート][main: ActionMailbox]
+* [その他のissue用一般テンプレート][main: generic]
 
-テンプレートにはボイラープレート（boilerplate）と呼ばれる一種のひな形コードが含まれており、これを用いてRailsのリリースバージョン（`*_gem.rb`）やedge Rails（`*_main.rb`）に対するテストケースを1ファイルでセットアップできます。
-
-該当するテンプレートの内容をコピーして`.rb`ファイルに貼り付け、issueを再現できるよう適宜変更します。このコードを実行するには、ターミナルで`ruby the_file.rb`を実行します。テストコードが正しく作成されていれば、このテストケースはバグによって失敗する（failと表示される）はずです。
+これらのテンプレートには、テストケースをセットアップするための定型コードが含まれています。該当するテンプレートの内容を`.rb`ファイルにコピーして、issueを実証するのに必要な変更を加えてください。作成したテストケースは、ターミナルで`ruby the_file.rb`を実行すると実行できます。すべてがうまくいけば、テストケースが失敗することがわかります。
 
 続いて、この実行可能テストケースをGitHubの[gist][]で共有するか、issueの説明に貼り付けてください。
 
-[issues]: https://github.com/rails/rails/issues
-[new issue]: https://github.com/rails/rails/issues/new
-
-[gem: AR models/db]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/active_record_gem.rb
 [main: AR models/db]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/active_record_main.rb
 
-[gem: AR migration]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/active_record_migrations_gem.rb
 [main: AR migration]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/active_record_migrations_main.rb
 
-[gem: ActionPack]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/action_controller_gem.rb
 [main: ActionPack]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/action_controller_main.rb
 
-[gem: ActiveJob]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/active_job_gem.rb
 [main: ActiveJob]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/active_job_main.rb
 
-[gem: ActiveStorage]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/active_storage_gem.rb
 [main: ActiveStorage]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/active_storage_main.rb
 
-[gem: ActionMailbox]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/action_mailbox_gem.rb
+[main: Action Mailer]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/action_mailer.rb
+
 [main: ActionMailbox]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/action_mailbox_main.rb
 
-[gem: generic]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/generic_gem.rb
 [main: generic]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/generic_main.rb
 
 [gist]: https://gist.github.com
+
 
 ### セキュリティissueの特殊な取り扱い方法について
 
