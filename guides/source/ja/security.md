@@ -815,9 +815,9 @@ alert(eval('document.body.inne' + 'rHTML'));
 
 ### テキスタイルインジェクション（Textile Injection）
 
-セキュリティ上の理由でHTML以外のテキストフォーマット機能を提供する場合は、何らかのマークアップ言語を採用し、それをサーバー側でHTMLに変換してください。[RedCloth](http://redcloth.org/)はRuby用に開発されたマークアップ言語の一種ですが、注意して使わないとXSSに対して脆弱になる可能性もあります。
+セキュリティ上の理由でHTML以外のテキストフォーマット機能を提供する場合は、何らかのマークアップ言語を採用し、それをサーバー側でHTMLに変換してください。[RedCloth](https://github.com/jgarber/redcloth)はRuby用に開発されたマークアップ言語の一種ですが、注意して使わないとXSSに対して脆弱になる可能性もあります。
 
-例として、RedClothは `_test_`というマークアップを`<em>test<em>`に変換します。この箇所のテキストはイタリックになります。しかし、執筆当時の最新バージョンである3.0.4までのRedClothはXSSに関しても脆弱でした。この重大なバグを取り除くには[最新のバージョン4](http://www.redcloth.org)を入手してください。しかし新しいバージョンでも[若干のセキュリティバグ](https://rorsecurity.info/journal/2008/10/13/new-redcloth-security.html)が見つかったので、対策は不可欠です。バージョン3.0.4の例を以下に示します。
+例として、RedClothは `_test_`というマークアップを`<em>test<em>`に変換します。この箇所のテキストはイタリックになります。しかし、執筆当時の最新バージョンである3.0.4までのRedClothはXSSに関しても脆弱でした。この重大なバグを取り除くには[最新のバージョン4](https://github.com/jgarber/redcloth)を入手してください。しかし新しいバージョンでも[若干のセキュリティバグ](https://rorsecurity.info/journal/2008/10/13/new-redcloth-security.html)が見つかったので、対策は不可欠です。バージョン3.0.4の例を以下に示します。
 
 ```ruby
 RedCloth.new('<script>alert(1)</script>').to_html
