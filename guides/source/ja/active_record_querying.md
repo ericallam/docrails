@@ -1284,7 +1284,7 @@ Active Recordには、返されたどのオブジェクトに対しても変更�
 ```ruby
 customer = Customer.readonly.first
 customer.visits += 1
-customer.save
+customer.save # ActiveRecord::ReadOnlyRecordがraiseされる
 ```
 
 上のコードでは `customer`に対して明示的に`readonly`が指定されているため、`visits`の値を更新して `customer.save`を行なうと`ActiveRecord::ReadOnlyRecord`例外が発生します。
