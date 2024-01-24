@@ -61,21 +61,21 @@ issueを作成する際に、フレームワークにバグがあるかどうか
 
 続いて、この実行可能テストケースをGitHubの[gist][]で共有するか、issueの説明に貼り付けてください。
 
-[main: AR models/db]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/active_record_main.rb
+[main: AR models/db]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/active_record.rb
 
-[main: AR migration]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/active_record_migrations_main.rb
+[main: AR migration]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/active_record_migrations.rb
 
-[main: ActionPack]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/action_controller_main.rb
+[main: ActionPack]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/action_controller.rb
 
-[main: ActiveJob]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/active_job_main.rb
+[main: ActiveJob]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/active_job.rb
 
-[main: ActiveStorage]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/active_storage_main.rb
+[main: ActiveStorage]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/active_storage.rb
 
 [main: Action Mailer]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/action_mailer.rb
 
-[main: ActionMailbox]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/action_mailbox_main.rb
+[main: ActionMailbox]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/action_mailbox.rb
 
-[main: generic]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/generic_main.rb
+[main: generic]: https://github.com/rails/rails/blob/main/guides/bug_report_templates/generic.rb
 
 [gist]: https://gist.github.com
 
