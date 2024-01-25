@@ -232,10 +232,11 @@ ActiveSupport::Cache.lookup_store(:file_store, "tmp/cache", serializer: :message
 config.autoload_lib(ignore: %w(assets tasks generators))
 ```
 
-`config.autoload_lib_once`メソッド（[#48610](https://github.com/rails/rails/pull/)）は、`config.autoload_lib`と似ていますが、`lib`を`config.autoload_once_paths`に追加する点が異なります。
+`config.autoload_lib_once`メソッド（[#48610][]）は、`config.autoload_lib`と似ていますが、`lib`を`config.autoload_once_paths`に追加する点が異なります。
 
 詳しくはZeitwerkの[自動読み込みガイド](autoloading_and_reloading_constants.html#config-autoload-lib-ignore)を参照してください。
 
+[#48610]: https://github.com/rails/rails/pull/48610
 [#48572]: https://github.com/rails/rails/pull/48572
 
 ### 汎用の非同期クエリを対象とするActive Record API
