@@ -2658,7 +2658,7 @@ EXPLAINの出力を解釈することは、本ガイドの範疇を超えます�
 
 * SQLite3: [EXPLAIN QUERY PLAN](https://www.sqlite.org/eqp.html)
 
-* MySQL: [EXPLAIN 出力フォーマット](https://dev.mysql.com/doc/refman/5.6/ja/explain-output.html) （v5.6日本語）
+* MySQL: [EXPLAIN 出力フォーマット](https://dev.mysql.com/doc/refman/8.0/ja/explain-output.html) （v8.0日本語）
 
 * MariaDB: [EXPLAIN](https://mariadb.com/kb/en/explain/)
 
