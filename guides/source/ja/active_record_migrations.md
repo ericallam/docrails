@@ -455,7 +455,7 @@ INFO: 詳しくは[Active Record の関連付け][]ガイドも参照してく�
 add_belongs_to :taggings, :taggable, polymorphic: true
 ```
 
-`polymorphic:`オプションは、taggingsテーブルに`taggable_type`カラムおよびtaggable_id`カラムというポリモーフィック関連付け用のカラムを2つ作成します。
+`polymorphic:`オプションは、taggingsテーブルに`taggable_type`カラムおよび`taggable_id`カラムというポリモーフィック関連付け用のカラムを2つ作成します。
 
 INFO: 詳しくは[ポリモーフィック関連付け][]も参照してください。
 
