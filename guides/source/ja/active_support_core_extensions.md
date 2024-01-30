@@ -2294,8 +2294,6 @@ NOTE: 定義は[`active_support/core_ext/enumerable.rb`](https://github.com/rail
 
 [`pick`][Enumerable#pick]メソッドは、最初の要素から指定のキーで値を取り出します。
 
-The method [`pick`][Enumerable#pick] extracts the given key from the first element:
-
 ```ruby
 [{ name: "David" }, { name: "Rafael" }, { name: "Aaron" }].pick(:name) # => "David"
 [{ id: 1, name: "David" }, { id: 2, name: "Rafael" }].pick(:id, :name) # => [1, "David"]
