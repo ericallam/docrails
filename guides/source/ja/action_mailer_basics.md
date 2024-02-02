@@ -657,7 +657,7 @@ class UserMailer < ApplicationMailer
 end
 ```
 
-* `after_delivery`はメッセージ配信を記録するのに利用できます。
+* `after_deliver`はメッセージ配信を記録するのに利用できます。
     オブザーバーやインターセプタのような振る舞いも可能ですが、メーラーのコンテキスト全体にアクセスできる点が優れています。
 
 ```ruby
