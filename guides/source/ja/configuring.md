@@ -431,8 +431,6 @@ Rails.application.config.filter_redirect += ['s3.amazonaws.com', /private-match/
 
 `Host`ヘッダの有効性を確認するために使われる、「文字列」「正規表現」「`IPAddr`」の配列です。[HostAuthorization ミドルウェア](#actiondispatch-hostauthorization)で使われ、DNSリバインディング攻撃を防ぐのに役立ちます。
 
-An array of strings, regular expressions, or `IPAddr` used to validate the `Host` header. Used by the [HostAuthorization middleware](#actiondispatch-hostauthorization) to help prevent DNS rebinding attacks.
-
 #### `config.javascript_path`
 
 アプリのJavaScriptを保存するパスを、`app/`ディレクトリからの相対パスで設定します。デフォルト値は`javascript`です（[webpacker](https://github.com/rails/webpacker)で使われます）。アプリで設定済みの`javascript_path`は`autoload_paths`から除外されます。
