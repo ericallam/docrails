@@ -1918,7 +1918,7 @@ end
 
 #### `config.action_dispatch.show_exceptions`
 
-`config.action_dispatch.show_Exceptions`設定は、リクエストへの応答中にAction Pack（具体的には[`ActionDispatch::ShowExceptions`](/configuring.html#actiondispatch-showexceptions)ミドルウェア）が発生した例外を処理する方法を指定します。
+`config.action_dispatch.show_exceptions`設定は、リクエストへの応答中にAction Pack（具体的には[`ActionDispatch::ShowExceptions`](/configuring.html#actiondispatch-showexceptions)ミドルウェア）が発生した例外を処理する方法を指定します。
 
 値を`:all`または`true`に設定すると、例外をrescueして対応するエラーページを表示するようにAction Packを構成します。たとえば、Action Packは `ActiveRecord::RecordNotFound`例外をrescueし、`public/404.html`にあるコンテンツをステータスコード`404 Not found`でレンダリングします。
 
