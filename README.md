@@ -37,9 +37,10 @@ Railsガイドを読んで誤字・脱字・誤訳などを見かけましたら
 4. 気になる箇所を修正し、修正内容にタイトルと説明文を付け、Propose file change をクリックする
 5. 修正内容を確認し、問題なければ Create pull request をクリックする
 
-以上で完了です。提案されたRailsガイドの修正はコミッターによって再確認され、問題なければ提案された内容が反映されます。もし問題があってもコミッター側で気付いて修正することができるので、まずはお気軽に提案してみてください :wink:
+以上で完了です。提案されたRailsガイドの修正はコミッターによって再確認され、問題なければ提案された内容が反映されます。もし問題があってもコミッター側で修正できるので、まずは気軽に提案してみてください :wink:
 
 - 参考スライド: [⛩ OSS入門としてのRailsガイド 📕](https://speakerdeck.com/yasslab/railsguides-as-an-oss-gate)
+- [&raquo; Railsガイド (日本語) への修正提案が、Rails Guides (英語) にも反映された例](https://github.com/rails/rails/pull/50756)
 - [&raquo; これまでの修正提案（プルリクエスト）の一覧を見る](https://github.com/yasslab/railsguides.jp/pulls?q=is%3Apr+is%3Aclosed)
 
 <br>
