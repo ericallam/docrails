@@ -40,6 +40,7 @@ Railsガイドを読んで誤字・脱字・誤訳などを見かけましたら
 以上で完了です。提案されたRailsガイドの修正はコミッターによって再確認され、問題なければ提案された内容が反映されます。もし問題があってもコミッター側で気付いて修正することができるので、まずはお気軽に提案してみてください :wink:
 
 - 参考スライド: [⛩ OSS入門としてのRailsガイド 📕](https://speakerdeck.com/yasslab/railsguides-as-an-oss-gate)
+- [&rawuo; これまでの修正提案（プルリクエスト）の一覧を見る](https://github.com/yasslab/railsguides.jp/pulls?q=is%3Apr+is%3Aclosed)
 
 <br>
 
