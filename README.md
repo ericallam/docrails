@@ -25,8 +25,6 @@ Railsガイドを読んで誤字・脱字・誤訳などを見かけましたら
 
 『[Railsガイド](https://railsguides.jp/)』および『[Rails Guides](https://guides.rubyonrails.org/)』の品質向上に向けて、皆さまのご協力が得られれば嬉しいです 🙏✨
 
-- 参考スライド: [⛩ OSS入門としてのRailsガイド 📕](https://speakerdeck.com/yasslab/railsguides-as-an-oss-gate)
-
 <br>
 
 ### ブラウザでRailsガイドの修正を提案する (オススメ)
@@ -40,6 +38,8 @@ Railsガイドを読んで誤字・脱字・誤訳などを見かけましたら
 5. 修正内容を確認し、問題なければ Create pull request をクリックする
 
 以上で完了です。提案されたRailsガイドの修正はコミッターによって再確認され、問題なければ提案された内容が反映されます。もし問題があってもコミッター側で気付いて修正することができるので、まずはお気軽に提案してみてください :wink:
+
+- 参考スライド: [⛩ OSS入門としてのRailsガイド 📕](https://speakerdeck.com/yasslab/railsguides-as-an-oss-gate)
 
 <br>
 
