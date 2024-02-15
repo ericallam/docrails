@@ -930,7 +930,7 @@ config.middleware.delete Rack::MethodOverride
 
 [`Error#full_message`][ActiveModel::Error#full_message]エラーフォーマットをi18nのロケールファイルで上書きしてよいかどうかを制御するboolean値です。デフォルト値は`false`です。
 
-`true`に設定すると、`full_message`はロケールファイルの属性とモデルレベルでフォーマットを探索します。デフォルトのフォーマットは`"%{attribute} %{message}"で、`attribute`は属性名、`message`はバリデーション固有のメッセージです。以下の例では、すべての `Person`属性と、特定の`Person`属性（`age`）のフォーマットをオーバーライドしています。
+`true`に設定すると、`full_message`はロケールファイルの属性とモデルレベルでフォーマットを探索します。デフォルトのフォーマットは`"%{attribute} %{message}"`で、`attribute`は属性名、`message`はバリデーション固有のメッセージです。以下の例では、すべての `Person`属性と、特定の`Person`属性（`age`）のフォーマットをオーバーライドしています。
 
 ```ruby
 class Person
