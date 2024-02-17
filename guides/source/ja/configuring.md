@@ -407,7 +407,7 @@ Rails.application.config.filter_parameters += [
 
 #### `config.filter_redirect`
 
-アプリケーションログからリダイレクトURをフィルタで除外するために使います。
+アプリケーションログからリダイレクトURLをフィルタで除外するために使います。
 
 ```ruby
 Rails.application.config.filter_redirect += ['s3.amazonaws.com', /private-match/]
@@ -481,7 +481,7 @@ config.logger      = ActiveSupport::TaggedLogging.new(mylogger)
 
 | バージョン              | デフォルト値           |
 | --------------------- | -------------------- |
-|（オリジナル            | `false`              |
+|（オリジナル）            | `false`              |
 | 7.1以降                | `true`               |
 
 [`ActiveSupport::ParameterFilter.precompile_filters`]: https://api.rubyonrails.org/classes/ActiveSupport/ParameterFilter.html#method-c-precompile_filters
