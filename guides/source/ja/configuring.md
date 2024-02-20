@@ -810,7 +810,7 @@ bodyがファイルから配信されているレスポンスをインターセ�
 
 #### `ActionDispatch::Session::CookieStore`
 
-セッションをcookieに保存する役割を担います。[`config.session_store`](#config-session-store).の値を変更すると別のミドルウェアを使えます。
+セッションをcookieに保存する役割を担います。[`config.session_store`](#config-session-store)の値を変更すると別のミドルウェアを使えます。
 
 #### `ActionDispatch::Flash`
 
@@ -1113,7 +1113,7 @@ Active Recordで楽観的ロック（optimistic locking）を使うかどうか�
 
 #### `config.active_record.partial_updates`
 
-既存レコードの更新で部分書き込みを行なうかどうか（「dirty」とマークされた属性だけを更新するか）を指定するboolian値です。データベースで部分書き込みを使う場合は、`config.active_record.lock_optimistically`で楽観的ロックも有効にする必要がある点にご注意ください。これは更新処理が並行して実行された場合に、読み込み中の古い情報に基づいて属性に書き込まれる可能性があるためです。デフォルト値は`true`です。
+既存レコードの更新で部分書き込みを行なうかどうか（「dirty」とマークされた属性だけを更新するか）を指定するboolean値です。データベースで部分書き込みを使う場合は、`config.active_record.lock_optimistically`で楽観的ロックも有効にする必要がある点にご注意ください。これは更新処理が並行して実行された場合に、読み込み中の古い情報に基づいて属性に書き込まれる可能性があるためです。デフォルト値は`true`です。
 
 #### `config.active_record.maintain_test_schema`
 
@@ -1499,7 +1499,7 @@ record.token # => "fwZcXX6SkJBJRogzMdciS7wf"
 | （オリジナル）           | `:create`            |
 | 7.1以降                | `:initialize`        |
 
-#### `ActiveRecord::ConnectionAdapters::Mysql2Adapter.emulate_booleans`とActiveRecord::ConnectionAdapters::TrilogyAdapter.emulate_booleans`
+#### `ActiveRecord::ConnectionAdapters::Mysql2Adapter.emulate_booleans`と`ActiveRecord::ConnectionAdapters::TrilogyAdapter.emulate_booleans`
 
 Active RecordのMySQLアダプタがすべての`tinyint(1)`カラムをデフォルトでbooleanと認識するかどうかを指定します。デフォルト値は`true`です。
 
