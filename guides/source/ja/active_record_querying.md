@@ -2662,4 +2662,4 @@ EXPLAINの出力を解釈することは、本ガイドの範疇を超えます�
 
 * MariaDB: [EXPLAIN](https://mariadb.com/kb/en/explain/)
 
-* PostgreSQL: [EXPLAINの利用](https://www.postgresql.jp/document/current/html/using-explain.html) （v13日本語）
+* PostgreSQL: [EXPLAINの利用](https://www.postgresql.jp/document/15/html/using-explain.html) （v15日本語）
