@@ -889,7 +889,7 @@ Railsは、リクエストに関連するすべてのパラメータを`params`�
 
 ### `response`オブジェクト
 
-responseオブジェクトを直接使うことは通常ありません。しかし、たとえば「after系」フィルタ内などで`response`オブジェクトを直接操作できると便利です。`response`オブジェクトのアクセサメソッドにセッターがあれば、それを利用して`response`オブジェクトの値を直接変更できます。利用可能なメソッドをすべて知りたい場合は[Rails APIドキュメント](https://api.rubyonrails.org/classes/ActionDispatch/Request.html)と[Rackドキュメント](https://www.rubydoc.info/github/rack/rack/Rack/Request)を参照してください。
+responseオブジェクトを直接使うことは通常ありません。しかし、たとえば「after系」フィルタ内などで`response`オブジェクトを直接操作できると便利です。`response`オブジェクトのアクセサメソッドにセッターがあれば、それを利用して`response`オブジェクトの値を直接変更できます。利用可能なメソッドをすべて知りたい場合は[Rails APIドキュメント](https://api.rubyonrails.org/classes/ActionDispatch/Response.html)と[Rackドキュメント](https://www.rubydoc.info/github/rack/rack/Rack/Response)を参照してください。
 
 | `response`のプロパティ | 目的                                                                                             |
 | ---------------------- | --------------------------------------------------------------------------------------------------- |
