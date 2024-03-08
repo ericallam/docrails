@@ -1,18 +1,21 @@
+# frozen_string_literal: true
+
 module ActiveRecord
   module Locking
     # == What is Optimistic Locking
     #
     # Optimistic locking allows multiple users to access the same record for edits, and assumes a minimum of
-    # conflicts with the data.  It does this by checking whether another process has made changes to a record since
-    # it was opened, an ActiveRecord::StaleObjectError is thrown if that has occurred and the update is ignored.
+    # conflicts with the data. It does this by checking whether another process has made changes to a record since
+    # it was opened, an <tt>ActiveRecord::StaleObjectError</tt> exception is thrown if that has occurred
+    # and the update is ignored.
     #
-    # Check out ActiveRecord::Locking::Pessimistic for an alternative.
+    # Check out <tt>ActiveRecord::Locking::Pessimistic</tt> for an alternative.
     #
     # == Usage
     #
-    # Active Records support optimistic locking if the field <tt>lock_version</tt> is present.  Each update to the
-    # record increments the lock_version column and the locking facilities ensure that records instantiated twice
-    # will let the last one saved raise a StaleObjectError if the first was also updated. Example:
+    # Active Record supports optimistic locking if the +lock_version+ field is present. Each update to the
+    # record increments the +lock_version+ column and the locking facilities ensure that records instantiated twice
+    # will let the last one saved raise a +StaleObjectError+ if the first was also updated. Example:
     #
     #   p1 = Person.find(1)
     #   p2 = Person.find(1)
@@ -21,29 +24,36 @@ module ActiveRecord
     #   p1.save
     #
     #   p2.first_name = "should fail"
-    #   p2.save # Raises a ActiveRecord::StaleObjectError
+    #   p2.save # Raises an ActiveRecord::StaleObjectError
+    #
+    # Optimistic locking will also check for stale data when objects are destroyed. Example:
+    #
+    #   p1 = Person.find(1)
+    #   p2 = Person.find(1)
+    #
+    #   p1.first_name = "Michael"
+    #   p1.save
+    #
+    #   p2.destroy # Raises an ActiveRecord::StaleObjectError
     #
     # You're then responsible for dealing with the conflict by rescuing the exception and either rolling back, merging,
     # or otherwise apply the business logic needed to resolve the conflict.
     #
-    # You must ensure that your database schema defaults the lock_version column to 0.
+    # This locking mechanism will function inside a single Ruby process. To make it work across all
+    # web requests, the recommended approach is to add +lock_version+ as a hidden field to your form.
     #
     # This behavior can be turned off by setting <tt>ActiveRecord::Base.lock_optimistically = false</tt>.
-    # To override the name of the lock_version column, invoke the <tt>set_locking_column</tt> method.
-    # This method uses the same syntax as <tt>set_table_name</tt>
+    # To override the name of the +lock_version+ column, set the <tt>locking_column</tt> class attribute:
+    #
+    #   class Person < ActiveRecord::Base
+    #     self.locking_column = :lock_person
+    #   end
+    #
     module Optimistic
-      def self.included(base) #:nodoc:
-        base.extend ClassMethods
+      extend ActiveSupport::Concern
 
-        base.cattr_accessor :lock_optimistically, :instance_writer => false
-        base.lock_optimistically = true
-
-        base.alias_method_chain :update, :lock
-        base.alias_method_chain :attributes_from_column_definition, :lock
-
-        class << base
-          alias_method :locking_column=, :set_locking_column
-        end
+      included do
+        class_attribute :lock_optimistically, instance_writer: false, default: true
       end
 
       def locking_enabled? #:nodoc:
@@ -51,96 +61,151 @@ module ActiveRecord
       end
 
       private
-        def attributes_from_column_definition_with_lock
-          result = attributes_from_column_definition_without_lock
 
-          # If the locking column has no default value set,
-          # start the lock version at zero.  Note we can't use
-          # locking_enabled? at this point as @attributes may
-          # not have been initialized yet
-
-          if lock_optimistically && result.include?(self.class.locking_column)
-            result[self.class.locking_column] ||= 0
-          end
-
-          return result
+        def increment_lock
+          lock_col = self.class.locking_column
+          previous_lock_value = send(lock_col)
+          send("#{lock_col}=", previous_lock_value + 1)
         end
 
-        def update_with_lock(attribute_names = @attributes.keys) #:nodoc:
-          return update_without_lock(attribute_names) unless locking_enabled?
+        def _create_record(attribute_names = self.attribute_names, *)
+          if locking_enabled?
+            # We always want to persist the locking version, even if we don't detect
+            # a change from the default, since the database might have no default
+            attribute_names |= [self.class.locking_column]
+          end
+          super
+        end
 
-          lock_col = self.class.locking_column
-          previous_value = send(lock_col).to_i
-          send(lock_col + '=', previous_value + 1)
-
-          attribute_names += [lock_col]
-          attribute_names.uniq!
+        def _update_record(attribute_names = self.attribute_names)
+          return super unless locking_enabled?
+          return 0 if attribute_names.empty?
 
           begin
-            affected_rows = connection.update(<<-end_sql, "#{self.class.name} Update with optimistic locking")
-              UPDATE #{self.class.quoted_table_name}
-              SET #{quoted_comma_pair_list(connection, attributes_with_quotes(false, false, attribute_names))}
-              WHERE #{self.class.primary_key} = #{quote_value(id)}
-              AND #{self.class.quoted_locking_column} = #{quote_value(previous_value)}
-            end_sql
+            lock_col = self.class.locking_column
+
+            previous_lock_value = read_attribute_before_type_cast(lock_col)
+
+            increment_lock
+
+            attribute_names.push(lock_col)
+
+            relation = self.class.unscoped
+
+            affected_rows = relation.where(
+              self.class.primary_key => id,
+              lock_col => previous_lock_value
+            ).update_all(
+              attributes_for_update(attribute_names).map do |name|
+                [name, _read_attribute(name)]
+              end.to_h
+            )
 
             unless affected_rows == 1
-              raise ActiveRecord::StaleObjectError, "Attempted to update a stale object"
+              raise ActiveRecord::StaleObjectError.new(self, "update")
             end
 
             affected_rows
 
-          # If something went wrong, revert the version.
+          # If something went wrong, revert the locking_column value.
           rescue Exception
-            send(lock_col + '=', previous_value)
+            send("#{lock_col}=", previous_lock_value.to_i)
+
             raise
           end
         end
 
-      module ClassMethods
-        DEFAULT_LOCKING_COLUMN = 'lock_version'
+        def destroy_row
+          affected_rows = super
 
-        def self.extended(base)
-          class <<base
-            alias_method_chain :update_counters, :lock
+          if locking_enabled? && affected_rows != 1
+            raise ActiveRecord::StaleObjectError.new(self, "destroy")
           end
+
+          affected_rows
         end
 
-        # Is optimistic locking enabled for this table? Returns true if the
-        # #lock_optimistically flag is set to true (which it is, by default)
-        # and the table includes the #locking_column column (defaults to
-        # lock_version).
-        def locking_enabled?
-          lock_optimistically && columns_hash[locking_column]
+        def relation_for_destroy
+          relation = super
+
+          if locking_enabled?
+            locking_column = self.class.locking_column
+            relation = relation.where(locking_column => read_attribute_before_type_cast(locking_column))
+          end
+
+          relation
         end
 
-        # Set the column to use for optimistic locking. Defaults to lock_version.
-        def set_locking_column(value = nil, &block)
-          define_attr_method :locking_column, value, &block
-          value
-        end
+        module ClassMethods
+          DEFAULT_LOCKING_COLUMN = "lock_version"
 
-        # The version column used for optimistic locking. Defaults to lock_version.
-        def locking_column
-          reset_locking_column
-        end
+          # Returns true if the +lock_optimistically+ flag is set to true
+          # (which it is, by default) and the table includes the
+          # +locking_column+ column (defaults to +lock_version+).
+          def locking_enabled?
+            lock_optimistically && columns_hash[locking_column]
+          end
 
-        # Quote the column name used for optimistic locking.
-        def quoted_locking_column
-          connection.quote_column_name(locking_column)
-        end
+          # Set the column to use for optimistic locking. Defaults to +lock_version+.
+          def locking_column=(value)
+            reload_schema_from_cache
+            @locking_column = value.to_s
+          end
 
-        # Reset the column used for optimistic locking back to the lock_version default.
-        def reset_locking_column
-          set_locking_column DEFAULT_LOCKING_COLUMN
-        end
+          # The version column used for optimistic locking. Defaults to +lock_version+.
+          def locking_column
+            @locking_column = DEFAULT_LOCKING_COLUMN unless defined?(@locking_column)
+            @locking_column
+          end
 
-        # make sure the lock version column gets updated when counters are
-        # updated.
-        def update_counters_with_lock(id, counters)
-          counters = counters.merge(locking_column => 1) if locking_enabled?
-          update_counters_without_lock(id, counters)
+          # Reset the column used for optimistic locking back to the +lock_version+ default.
+          def reset_locking_column
+            self.locking_column = DEFAULT_LOCKING_COLUMN
+          end
+
+          # Make sure the lock version column gets updated when counters are
+          # updated.
+          def update_counters(id, counters)
+            counters = counters.merge(locking_column => 1) if locking_enabled?
+            super
+          end
+
+          private
+
+            # We need to apply this decorator here, rather than on module inclusion. The closure
+            # created by the matcher would otherwise evaluate for `ActiveRecord::Base`, not the
+            # sub class being decorated. As such, changes to `lock_optimistically`, or
+            # `locking_column` would not be picked up.
+            def inherited(subclass)
+              subclass.class_eval do
+                is_lock_column = ->(name, _) { lock_optimistically && name == locking_column }
+                decorate_matching_attribute_types(is_lock_column, :_optimistic_locking) do |type|
+                  LockingType.new(type)
+                end
+              end
+              super
+            end
         end
+    end
+
+    # In de/serialize we change `nil` to 0, so that we can allow passing
+    # `nil` values to `lock_version`, and not result in `ActiveRecord::StaleObjectError`
+    # during update record.
+    class LockingType < DelegateClass(Type::Value) # :nodoc:
+      def deserialize(value)
+        super.to_i
+      end
+
+      def serialize(value)
+        super.to_i
+      end
+
+      def init_with(coder)
+        __setobj__(coder["subtype"])
+      end
+
+      def encode_with(coder)
+        coder["subtype"] = __getobj__
       end
     end
   end

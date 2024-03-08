@@ -1,55 +1,85 @@
-# OrderedHash is namespaced to prevent conflicts with other implementations
+# frozen_string_literal: true
+
+require "active_support/core_ext/object/blank"
+
 module ActiveSupport
-  # Hash is ordered in Ruby 1.9!
-  if RUBY_VERSION >= '1.9'
-    OrderedHash = ::Hash
-  else
-    class OrderedHash < Array #:nodoc:
-      def []=(key, value)
-        if pair = assoc(key)
-          pair.pop
-          pair << value
+  # Usually key value pairs are handled something like this:
+  #
+  #   h = {}
+  #   h[:boy] = 'John'
+  #   h[:girl] = 'Mary'
+  #   h[:boy]  # => 'John'
+  #   h[:girl] # => 'Mary'
+  #   h[:dog]  # => nil
+  #
+  # Using +OrderedOptions+, the above code could be reduced to:
+  #
+  #   h = ActiveSupport::OrderedOptions.new
+  #   h.boy = 'John'
+  #   h.girl = 'Mary'
+  #   h.boy  # => 'John'
+  #   h.girl # => 'Mary'
+  #   h.dog  # => nil
+  #
+  # To raise an exception when the value is blank, append a
+  # bang to the key name, like:
+  #
+  #   h.dog! # => raises KeyError: :dog is blank
+  #
+  class OrderedOptions < Hash
+    alias_method :_get, :[] # preserve the original #[] method
+    protected :_get # make it protected
+
+    def []=(key, value)
+      super(key.to_sym, value)
+    end
+
+    def [](key)
+      super(key.to_sym)
+    end
+
+    def method_missing(name, *args)
+      name_string = name.to_s
+      if name_string.chomp!("=")
+        self[name_string] = args.first
+      else
+        bangs = name_string.chomp!("!")
+
+        if bangs
+          self[name_string].presence || raise(KeyError.new(":#{name_string} is blank"))
         else
-          self << [key, value]
-        end
-      end
-
-      def [](key)
-        pair = assoc(key)
-        pair ? pair.last : nil
-      end
-
-      def keys
-        collect { |key, value| key }
-      end
-
-      def values
-        collect { |key, value| value }
-      end
-
-      def to_hash
-        returning({}) do |hash|
-          each { |array| hash[array[0]] = array[1] }
+          self[name_string]
         end
       end
     end
-  end
-end
 
-class OrderedOptions < ActiveSupport::OrderedHash #:nodoc:
-  def []=(key, value)
-    super(key.to_sym, value)
+    def respond_to_missing?(name, include_private)
+      true
+    end
   end
 
-  def [](key)
-    super(key.to_sym)
-  end
+  # +InheritableOptions+ provides a constructor to build an +OrderedOptions+
+  # hash inherited from another hash.
+  #
+  # Use this if you already have some hash and you want to create a new one based on it.
+  #
+  #   h = ActiveSupport::InheritableOptions.new({ girl: 'Mary', boy: 'John' })
+  #   h.girl # => 'Mary'
+  #   h.boy  # => 'John'
+  class InheritableOptions < OrderedOptions
+    def initialize(parent = nil)
+      if parent.kind_of?(OrderedOptions)
+        # use the faster _get when dealing with OrderedOptions
+        super() { |h, k| parent._get(k) }
+      elsif parent
+        super() { |h, k| parent[k] }
+      else
+        super()
+      end
+    end
 
-  def method_missing(name, *args)
-    if name.to_s =~ /(.*)=$/
-      self[$1.to_sym] = args.first
-    else
-      self[name]
+    def inheritable_copy
+      self.class.new(self)
     end
   end
 end

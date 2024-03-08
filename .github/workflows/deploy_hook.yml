@@ -1,0 +1,39 @@
+name: Deploy Hook
+
+on:
+  push:
+    branches:
+      - master
+
+  # Allows you to run this workflow manually from the Actions tab
+  # https://docs.github.com/en/actions/managing-workflow-runs/manually-running-a-workflow
+  workflow_dispatch:
+
+jobs:
+  event:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Download codes from GitHub
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: ✅️ Check if contents changed
+        uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          filters: |
+            contents:
+              - 'guides/**'
+
+      - name: 🚀 Deploy if contents changed
+        if: steps.changes.outputs.contents == 'true'
+        env:
+          DEPLOY_HOOK_TOKEN:    ${{ secrets.DEPLOY_HOOK_TOKEN }}
+          DEPLOY_HOOK_ENDPOINT: ${{ secrets.DEPLOY_HOOK_ENDPOINT }}
+        run: |
+          curl -X POST \
+               -H "Accept: application/vnd.github+json" \
+               -H "Authorization: token ${{ env.DEPLOY_HOOK_TOKEN }}" \
+               ${{ env.DEPLOY_HOOK_ENDPOINT }} \
+               -d '{"ref":"master"}'

@@ -1,96 +1,110 @@
+# frozen_string_literal: true
+
 module ActiveRecord
   module Associations
-    class HasOneAssociation < BelongsToAssociation #:nodoc:
-      def initialize(owner, reflection)
-        super
-        construct_sql
+    # = Active Record Has One Association
+    class HasOneAssociation < SingularAssociation #:nodoc:
+      include ForeignAssociation
+
+      def handle_dependency
+        case options[:dependent]
+        when :restrict_with_exception
+          raise ActiveRecord::DeleteRestrictionError.new(reflection.name) if load_target
+
+        when :restrict_with_error
+          if load_target
+            record = owner.class.human_attribute_name(reflection.name).downcase
+            owner.errors.add(:base, :'restrict_dependent_destroy.has_one', record: record)
+            throw(:abort)
+          end
+
+        else
+          delete
+        end
       end
 
-      def create(attrs = {}, replace_existing = true)
-        new_record(replace_existing) { |klass| klass.create(attrs) }
-      end
-
-      def create!(attrs = {}, replace_existing = true)
-        new_record(replace_existing) { |klass| klass.create!(attrs) }
-      end
-
-      def build(attrs = {}, replace_existing = true)
-        new_record(replace_existing) { |klass| klass.new(attrs) }
-      end
-
-      def replace(obj, dont_save = false)
+      def replace(record, save = true)
+        raise_on_type_mismatch!(record) if record
         load_target
 
-        unless @target.nil?
-          if dependent? && !dont_save && @target != obj
-            @target.destroy unless @target.new_record?
-            @owner.clear_association_cache
-          else
-            @target[@reflection.primary_key_name] = nil
-            @target.save unless @owner.new_record? || @target.new_record?
+        return target unless target || record
+
+        assigning_another_record = target != record
+        if assigning_another_record || record.has_changes_to_save?
+          save &&= owner.persisted?
+
+          transaction_if(save) do
+            remove_target!(options[:dependent]) if target && !target.destroyed? && assigning_another_record
+
+            if record
+              set_owner_attributes(record)
+              set_inverse_instance(record)
+
+              if save && !record.save
+                nullify_owner_attributes(record)
+                set_owner_attributes(target) if target
+                raise RecordNotSaved, "Failed to save the new associated #{reflection.name}."
+              end
+            end
           end
         end
 
-        if obj.nil?
-          @target = nil
-        else
-          raise_on_type_mismatch(obj)
-          set_belongs_to_association_for(obj)
-          @target = (AssociationProxy === obj ? obj.target : obj)
-        end
+        self.target = record
+      end
 
-        @loaded = true
-
-        unless @owner.new_record? or obj.nil? or dont_save
-          return (obj.save ? self : false)
-        else
-          return (obj.nil? ? nil : self)
+      def delete(method = options[:dependent])
+        if load_target
+          case method
+          when :delete
+            target.delete
+          when :destroy
+            target.destroyed_by_association = reflection
+            target.destroy
+          when :nullify
+            target.update_columns(reflection.foreign_key => nil) if target.persisted?
+          end
         end
       end
-            
+
       private
-        def find_target
-          @reflection.klass.find(:first, 
-            :conditions => @finder_sql, 
-            :order      => @reflection.options[:order], 
-            :include    => @reflection.options[:include],
-            :readonly    => @reflection.options[:readonly]
-          )
+
+        # The reason that the save param for replace is false, if for create (not just build),
+        # is because the setting of the foreign keys is actually handled by the scoping when
+        # the record is instantiated, and so they are set straight away and do not need to be
+        # updated within replace.
+        def set_new_record(record)
+          replace(record, false)
         end
 
-        def construct_sql
-          case
-            when @reflection.options[:as]
-              @finder_sql = 
-                "#{@reflection.quoted_table_name}.#{@reflection.options[:as]}_id = #{@owner.quoted_id} AND " +
-                "#{@reflection.quoted_table_name}.#{@reflection.options[:as]}_type = #{@owner.class.quote_value(@owner.class.base_class.name.to_s)}"
-            else
-              @finder_sql = "#{@reflection.quoted_table_name}.#{@reflection.primary_key_name} = #{@owner.quoted_id}"
-          end
-          @finder_sql << " AND (#{conditions})" if conditions
-        end
-        
-        def construct_scope
-          create_scoping = {}
-          set_belongs_to_association_for(create_scoping)
-          { :create => create_scoping }
-        end
-
-        def new_record(replace_existing)
-          # Make sure we load the target first, if we plan on replacing the existing
-          # instance. Otherwise, if the target has not previously been loaded
-          # elsewhere, the instance we create will get orphaned.
-          load_target if replace_existing
-          record = @reflection.klass.send(:with_scope, :create => construct_scope[:create]) { yield @reflection.klass }
-
-          if replace_existing
-            replace(record, true) 
+        def remove_target!(method)
+          case method
+          when :delete
+            target.delete
+          when :destroy
+            target.destroyed_by_association = reflection
+            target.destroy
           else
-            record[@reflection.primary_key_name] = @owner.id unless @owner.new_record?
-            self.target = record
-          end
+            nullify_owner_attributes(target)
+            remove_inverse_instance(target)
 
-          record
+            if target.persisted? && owner.persisted? && !target.save
+              set_owner_attributes(target)
+              raise RecordNotSaved, "Failed to remove the existing associated #{reflection.name}. " \
+                                    "The record failed to save after its foreign key was set to nil."
+            end
+          end
+        end
+
+        def nullify_owner_attributes(record)
+          record[reflection.foreign_key] = nil
+        end
+
+        def transaction_if(value)
+          if value
+            reflection.klass.transaction { yield }
+          else
+            yield
+          end
         end
     end
   end

@@ -1,84 +1,51 @@
+# frozen_string_literal: true
+
+require "active_support/concern"
+require "active_support/callbacks"
+
 module ActiveSupport
   module Testing
+    # Adds support for +setup+ and +teardown+ callbacks.
+    # These callbacks serve as a replacement to overwriting the
+    # <tt>#setup</tt> and <tt>#teardown</tt> methods of your TestCase.
+    #
+    #   class ExampleTest < ActiveSupport::TestCase
+    #     setup do
+    #       # ...
+    #     end
+    #
+    #     teardown do
+    #       # ...
+    #     end
+    #   end
     module SetupAndTeardown
-      def self.included(base)
-        base.send :include, ActiveSupport::Callbacks
-        base.define_callbacks :setup, :teardown
+      extend ActiveSupport::Concern
 
-        begin
-          require 'mocha'
-          base.alias_method_chain :run, :callbacks_and_mocha
-        rescue LoadError
-          base.alias_method_chain :run, :callbacks
+      included do
+        include ActiveSupport::Callbacks
+        define_callbacks :setup, :teardown
+      end
+
+      module ClassMethods
+        # Add a callback, which runs before <tt>TestCase#setup</tt>.
+        def setup(*args, &block)
+          set_callback(:setup, :before, *args, &block)
+        end
+
+        # Add a callback, which runs after <tt>TestCase#teardown</tt>.
+        def teardown(*args, &block)
+          set_callback(:teardown, :after, *args, &block)
         end
       end
 
-      # This redefinition is unfortunate but test/unit shows us no alternative.
-      def run_with_callbacks(result) #:nodoc:
-        return if @method_name.to_s == "default_test"
-
-        yield(Test::Unit::TestCase::STARTED, name)
-        @_result = result
-        begin
-          run_callbacks :setup
-          setup
-          __send__(@method_name)
-        rescue Test::Unit::AssertionFailedError => e
-          add_failure(e.message, e.backtrace)
-        rescue *Test::Unit::TestCase::PASSTHROUGH_EXCEPTIONS
-          raise
-        rescue Exception
-          add_error($!)
-        ensure
-          begin
-            teardown
-            run_callbacks :teardown, :enumerator => :reverse_each
-          rescue Test::Unit::AssertionFailedError => e
-            add_failure(e.message, e.backtrace)
-          rescue *Test::Unit::TestCase::PASSTHROUGH_EXCEPTIONS
-            raise
-          rescue Exception
-            add_error($!)
-          end
-        end
-        result.add_run
-        yield(Test::Unit::TestCase::FINISHED, name)
+      def before_setup # :nodoc:
+        super
+        run_callbacks :setup
       end
 
-      # Doubly unfortunate: mocha does the same so we have to hax their hax.
-      def run_with_callbacks_and_mocha(result)
-        return if @method_name.to_s == "default_test"
-
-        yield(Test::Unit::TestCase::STARTED, name)
-        @_result = result
-        begin
-          mocha_setup
-          begin
-            run_callbacks :setup
-            setup
-            __send__(@method_name)
-            mocha_verify { add_assertion }
-          rescue Mocha::ExpectationError => e
-            add_failure(e.message, e.backtrace)
-          rescue Test::Unit::AssertionFailedError => e
-            add_failure(e.message, e.backtrace)
-          rescue StandardError, ScriptError
-            add_error($!)
-          ensure
-            begin
-              teardown
-              run_callbacks :teardown, :enumerator => :reverse_each
-            rescue Test::Unit::AssertionFailedError => e
-              add_failure(e.message, e.backtrace)
-            rescue StandardError, ScriptError
-              add_error($!)
-            end
-          end
-        ensure
-          mocha_teardown
-        end
-        result.add_run
-        yield(Test::Unit::TestCase::FINISHED, name)
+      def after_teardown # :nodoc:
+        run_callbacks :teardown
+        super
       end
     end
   end

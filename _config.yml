@@ -1,0 +1,25 @@
+# Site settings
+title: Ruby on Rails ガイド
+description: > # this means to ignore newlines until "baseurl:"
+  Rails を学び，使うための公式リファレンスマニュアル
+baseurl: "/"                      # the subpath of your site, e.g. /blog/
+url:     "https://railsguides.jp" # the base hostname & protocol for your site
+source:      ./guides/output/ja
+destination: ./_site
+
+# Contacts
+contact: https://railsguides.jp/contact
+github:  https://github.com/YassLab
+twitter: https://twitter.com/RailsGuidesJP
+
+# Build settings
+markdown: kramdown
+plugins:  ['kramdown']
+exclude:
+  - README.md
+  - Procfile
+  - Gemfile
+  - Gemfile.lock
+  - config.ru
+  - vendor
+  - app.json
