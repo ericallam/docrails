@@ -1687,7 +1687,7 @@ Rendered recordings/threads/_thread.html.erb in 1.5 ms [cache miss]
 
 外部リダイレクトをオプトインにすることで、アプリケーションが意図せずに外部ホストにリダイレクトされること (オープンリダイレクト（open redirect）とも呼ばれます) から保護します。
 
-この設定が`true`の場合、外部ホストを含​​むURLが[redirect_to][]に渡されると、`ActionController::Redirecting::UnsafeRedirectError`が発生します。オープンリダイレクトを許可する必要がある場合は、`redirect_to`呼び出しに`allow_other_host: true`オプションを追加できます。
+この設定が`true`の場合、外部ホストを含むURLが[redirect_to][]に渡されると、`ActionController::Redirecting::UnsafeRedirectError`が発生します。オープンリダイレクトを許可する必要がある場合は、`redirect_to`呼び出しに`allow_other_host: true`オプションを追加できます。
 
 デフォルト値は、`config.load_defaults`のターゲットバージョンによって異なります。
 
