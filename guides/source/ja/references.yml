@@ -13,3 +13,7 @@ constant_autoloading_and_reloading:
 contributing_to_ruby_on_rails:
 - title: OSS入門としてのRailsガイド
   url: https://speakerdeck.com/yasslab/railsguides-as-an-oss-gate
+
+working_with_javascript_in_rails:
+- title: "Turbo Handbook - Hotwire 公式ハンドブック"
+  url: https://everyleaf.github.io/hotwire_ja/
