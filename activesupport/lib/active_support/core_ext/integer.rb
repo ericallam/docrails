@@ -1,7 +1,5 @@
-require 'active_support/core_ext/integer/even_odd'
-require 'active_support/core_ext/integer/inflections'
+# frozen_string_literal: true
 
-class Integer #:nodoc:
-  include ActiveSupport::CoreExtensions::Integer::EvenOdd
-  include ActiveSupport::CoreExtensions::Integer::Inflections
-end
+require "active_support/core_ext/integer/multiple"
+require "active_support/core_ext/integer/inflections"
+require "active_support/core_ext/integer/time"

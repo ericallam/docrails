@@ -1,0 +1,204 @@
+getting_started:
+- title: Kaigi on Rails - Railsアプリケーション開発者のためのブックガイド
+  url: https://kaigionrails.org/2025/talks/takahashim/
+- title: Rails 8はSQLiteで大幅に強化された「個人が扱えるフレームワーク」
+  url: https://note.com/yasslab/n/n89d6850e296d
+- title: Ruby on Railsガイドのすすめ - yui-knk
+  url: https://qiita.com/yui-knk/items/4b4aaf4b8dea049efe6e
+- title: OSS入門としてのRailsガイド (OSS Gate のご紹介)
+  url: https://speakerdeck.com/yasslab/railsguides-as-an-oss-gate
+- title: Top Ruby Companies (Rubyを活用している上場企業まとめサイト)
+  url: https://toprubycompanies.info/
+- title: The Rails Doctrine (日本語訳) - Ruby on Rails 公式サイト
+  url: https://rubyonrails.org/doctrine/ja
+- title: Ruby on Railsチュートリアル - プロダクト開発の０→１を学ぼう
+  url: https://railstutorial.jp
+
+install_ruby_on_rails:
+- title: Railsガイド - Dev Container での開発ガイド
+  url: https://railsguides.jp/getting_started_with_devcontainer.html
+- title: Railsチュートリアル - GitHub Codespaces を利用する
+  url: https://railstutorial.jp/docs/codespaces.html
+- title: Railsチュートリアル - Docker と RubyMine を使って開発する
+  url: 'https://railstutorial.jp/help#rubymine'
+
+getting_started_with_devcontainer:
+- title: Railsガイド - Ruby on Rails インストールガイド
+  url: https://railsguides.jp/install_ruby_on_rails.html
+- title: Railsチュートリアル - GitHub Codespaces を利用する
+  url: https://railstutorial.jp/docs/codespaces.html
+
+active_job_basics:
+- title: Railsの練習帳 - Solid Queue
+  url: https://zenn.dev/igaiga/books/rails-practice-note/viewer/solid_queue
+- title: Railsの練習帳 - Continuations
+  url: https://zenn.dev/igaiga/books/rails-practice-note/viewer/active_job_continuations
+- title: "Kaigi on Rails - Sidekiq その前に：Webアプリケーションにおける非同期ジョブ設計原則"
+  url: https://kaigionrails.org/2025/talks/morihirok/
+- title: "Kaigi on Rails - 非同期処理実行基盤、Delayed脱出〜SolidQueue完全移行への旅路。"
+  url: https://kaigionrails.org/2025/talks/srockstyle/
+- title: "RailsTokyo (2025/12) - Active Job 近況 - Continuations, Solid Queue"
+  url: https://speakerdeck.com/igaiga/activejobupdates
+
+active_record_querying:
+- title: Kaigi on Rails - Active Record クエリクイズ
+  url: https://kaigionrails.org/2023/talks/pocke/
+- title: Railsの練習帳 - トランザクションとロック
+  url: https://zenn.dev/igaiga/books/rails-practice-note/viewer/ar_transaction_lock
+
+active_storage_overview:
+- title: Railsの練習帳 - Active Storageの各種機能
+  url: https://zenn.dev/igaiga/books/rails-practice-note/viewer/active_storage
+
+active_support_core_extensions:
+- title: "Kaigi on Rails - ActiveSupport::CurrentAttributes: すっごく便利なのに嫌われ者？！"
+  url: https://kaigionrails.org/2023/talks/sampokuokkanen/
+
+active_support_instrumentation:
+- title: 'OpenTelemetryによるRailsアプリの計装を支えるActiveSupport::Notiﬁcations - Kaigi Rails 2024 事後勉強会'
+  url: https://speakerdeck.com/ymtdzzz/activesupport-notifications-supporting-instrumentation-of-rails-apps-with-opentelemetry
+- title: 'モノリスでも使える！OpenTelemetryでRailsアプリのパフォーマンス分析を始めてみよう - Kaigi on Rails'
+  url: https://kaigionrails.org/2024/talks/ymtdzzz/
+
+association_basics:
+- title: "Kaigi on Rails - Simplicity on Rails - RDB, REST and Ruby"
+  url: https://kaigionrails.org/2023/talks/moro/
+- title: "Kaigi on Rails - Keynote: dynamic!"
+  url: https://kaigionrails.org/2025/talks/moro/
+- title: "Kaigi on Rails - Railsだからできる、例外業務に禍根を残さない設定設計パターン"
+  url: https://kaigionrails.org/2025/talks/ei-ei-eiichi/
+
+action_mailer_basics:
+- title: メール送信を使ったアカウント有効化 - Railsチュートリアル
+  url: https://railstutorial.jp/chapters/account_activation?version=5.1
+- title: メール送信を使ったパスワード再設定 - Railsチュートリアル
+  url: https://railstutorial.jp/chapters/password_reset?version=5.1
+
+action_view_overview:
+- title: "Kaigi on Rails - Introducing ReActionView: A ActionView-Compatible ERB Engine"
+  url: https://kaigionrails.org/2025/talks/marcoroth/
+
+api_app:
+- title: "Kaigi on Rails - Rails APIモードのためのシンプルで効果的なCSRF対策"
+  url: https://kaigionrails.org/2024/talks/corocn/
+
+autoloading_and_reloading_constants:
+- title: Railsガイド - Classic から Zeitwerk への移行
+  url: https://railsguides.jp/classic_to_zeitwerk_howto.html
+- title: Zeitwerk と Ruby のコード読み込みを理解する
+  url: https://zenn.dev/hayaokimura/articles/understand-zeitwerk
+
+classic_to_zeitwerk_howto:
+- title: Railsガイド - Railsの自動読み込みと再読み込み (Classic) ※ Rails 5.2 以前
+  url: https://railsguides.jp/autoloading_and_reloading_constants_classic_mode.html
+- title: Railsガイド - Railsの自動読み込みと再読み込み (Zeitwerk) ※ Rails 6.0 以降
+  url: https://railsguides.jp/autoloading_and_reloading_constants.html
+- title: Zeitwerkの壊し方
+  url: https://qiita.com/fursich/items/717a720d9f4465e4cbbb
+- title: STORES Rails アプリを Zeitwerk 有効化するまでの道のり
+  url: https://product.st.inc/entry/2021/08/13/105437
+- title: Zeitwerkとrequire_dependency - Money Forward Developers Blog
+  url: https://moneyforward-dev.jp/entry/2022/05/20/zeitwerk-and-require_dependency/
+
+constant_autoloading_and_reloading:
+- title: Railsガイド - Classic から Zeitwerk への移行
+  url: https://railsguides.jp/classic_to_zeitwerk_howto.html
+- title: Railsガイドを読む (定数の自動読み込みと再読み込み)
+  url: https://qiita.com/yui-knk/items/8f7e693b89423d983097
+
+
+contributing_to_ruby_on_rails:
+- title: OSS入門としてのRailsガイド
+  url: https://speakerdeck.com/yasslab/railsguides-as-an-oss-gate
+- title: Kaigi on Rails - あなたとRails
+  url: https://kaigionrails.org/2022/talks/yahonda/
+
+i18n:
+- title: "Rails: 失われたメッセージを巡る冒険 | タイムインターメディア"
+  url: https://www.timedia.co.jp/tech/20240409-tech/
+
+initialization:
+- title: rails/rails - GitHub
+  url: https://github.com/rails/rails
+- title: Ruby on Rails に貢献する方法 - Railsガイド
+  url: https://railsguides.jp/contributing_to_ruby_on_rails.html
+
+maintenance_policy:
+- title: "Ruby on Rails Maintenance Policy - 最新のバージョン別サポート期間まとめ (英語)"
+  url: https://rubyonrails.org/maintenance
+- title: Railsアップグレードガイド - Railsガイド
+  url: https://railsguides.jp/upgrading_ruby_on_rails.html
+
+threading_and_code_execution:
+- title: "Kaigi on Rails - Rails Executor: フレームワークとあなたのコードとの境"
+  url: https://kaigionrails.org/2023/talks/Envek/
+
+rails_on_rack:
+- title: "たのしいOSSコードリーディング: Let's read \"cookies\"🍪"
+  url: https://qiita.com/coe401_/items/ad7dc2f3e319c5beaf40
+- title: Railsの練習帳 - RackとRackミドルウェア
+  url: https://zenn.dev/igaiga/books/rails-practice-note/viewer/rack_middleware_and_rack
+- title: Kaigi on Rails - Rackを理解しRailsアプリケーション開発の足腰を鍛えよう
+  url: https://kaigionrails.org/2024/workshop/
+- title: スタディサプリ最大のRailsアプリケーションにYJIT+pitchforkを導入してメモリ使用量を劇的に削減するまで
+  url: https://blog.studysapuri.jp/entry/2024-pitchfork-into-the-largest-rails-application-in-studysapuri
+
+security:
+- title: "安全なウェブサイトの作り方 | 情報セキュリティ | IPA 独立行政法人 情報処理推進機構"
+  url: https://www.ipa.go.jp/security/vuln/websecurity/index.html
+- title: "Railsでセッションリプレイ攻撃を防ぐ方法（翻訳）| TechRacho"
+  url: https://techracho.bpsinc.jp/hachi8833/2023_06_02/130443
+- title: Railsの練習帳 - SQLインジェクションを防ぐ
+  url: https://zenn.dev/igaiga/books/rails-practice-note/viewer/ar_sql_injection
+
+sign_up_and_settings:
+- title: "Kaigi on Rails - rails g authenticationから学ぶRails8.0時代の認証"
+  url: https://kaigionrails.org/2025/talks/willnet/
+
+testing:
+- title: "Kaigi on Rails - 2分台で1500examples完走！爆速CIを支える環境構築術"
+  url: https://kaigionrails.org/2025/talks/falcon8823/
+
+tuning_performance_for_deployment:
+- title: 'Railsアプリケーションとパフォーマンスチューニング ー 秒間5万リクエストのモバイルオーダーシステムを支える事例 ー'
+  url: https://speakerdeck.com/falcon8823/railsapurikesiyonto-pahuomansutiyuningu-miao-jian-5mo-rikuesutono-mobairuodasisutemuwozhi-erushi-li-rubysemina-da-ban
+- title: 'Kaigi on Rails - Keynote: Building and Deploying Interactive Rails Applications with Falcon'
+  url: https://kaigionrails.org/2025/talks/ioquatix/
+- title: "Kaigi on Rails - もう並列実行は怖くない コネクション枯渇とデッドロック解決の実践的アプローチ"
+  url: https://kaigionrails.org/2025/talks/katakyo/
+- title: "Kaigi on Rails - 避けられないI/O待ちに対処する: RailsアプリにおけるSSEとAsync gemの活用"
+  url: https://kaigionrails.org/2025/talks/moznion/
+- title: "Kaigi on Rails - 都市伝説バスターズ「WebアプリのボトルネックはDBだから言語の性能は関係ない」"
+  url: https://kaigionrails.org/2024/talks/osyoyu/
+
+upgrading_ruby_on_rails:
+- title: ruby-jp - Railsアップグレードガイド
+  url: https://cosen.se/ruby-jp/Railsアップグレードガイド
+- title: ruby-jp - Rubyアップグレードガイド
+  url: https://cosen.se/ruby-jp/Rubyアップグレードガイド
+- title: GitHubは200万行規模のRailsアプリケーションであり、毎週RailsとRubyを最新版にアップデートし続けている - Publickey
+  url: https://www.publickey1.jp/blog/23/github200railsrailsruby.html
+
+webpacker:
+- title: Techracho - Webpacker→jsbundling-rails+webpackアップグレード手順
+  url: https://techracho.bpsinc.jp/hachi8833/2024_01_22/115289
+- title: TechRacho - Webpacker v5からShakapacker v6へのアップグレードガイド
+  url: https://techracho.bpsinc.jp/hachi8833/2023_08_08/115955
+
+working_with_javascript_in_rails:
+- title: Turbo Handbook - Hotwire 公式ハンドブック
+  url: https://everyleaf.github.io/hotwire_ja/
+- title: Hotwireことはじめ - 万葉
+  url: https://note.com/everyleaf/n/n9dc49676521c
+- title: 猫でもわかるHotwire入門 - Zenn
+  url: https://zenn.dev/shita1112/books/cat-hotwire-turbo
+- title: Hotwire for Frontend Developers - フロントエンドエンジニアのためのHotwire入門
+  url: https://hotwire-and-next.vercel.app/
+- title: Kaigi on Rails - Hotwire的な設計を追求して「Web紙芝居」に行き着いた話
+  url: https://kaigionrails.org/2023/talks/nay3/
+- title: Kaigi on Rails - Importmapを使ったJavaScriptの読み込みとブラウザアドオンの影響
+  url: https://kaigionrails.org/2024/talks/swamp09/
+- title: Kaigi on Rails - Web Componentsで実現するHotwireとフロントエンドフレームワークの橋渡し
+  url: https://kaigionrails.org/2025/talks/kudoas/
+- title: Kaigi on Rails - 高度なUI/UXこそHotwireで作ろう
+  url: https://kaigionrails.org/2025/talks/naofumi/

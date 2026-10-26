@@ -1,24 +1,45 @@
-require 'test/unit'
+# frozen_string_literal: true
 
-$:.unshift "#{File.dirname(__FILE__)}/../lib"
-$:.unshift File.dirname(__FILE__)
-require 'active_support'
+ORIG_ARGV = ARGV.dup
 
-def uses_gem(gem_name, test_name, version = '> 0')
-  require 'rubygems'
-  gem gem_name.to_s, version
-  require gem_name.to_s
-  yield
-rescue LoadError
-  $stderr.puts "Skipping #{test_name} tests. `gem install #{gem_name}` and try again."
+require "active_support/core_ext/kernel/reporting"
+
+silence_warnings do
+  Encoding.default_internal = Encoding::UTF_8
+  Encoding.default_external = Encoding::UTF_8
 end
 
-# Wrap tests that use Mocha and skip if unavailable.
-unless defined? uses_mocha
-  def uses_mocha(test_name, &block)
-    uses_gem('mocha', test_name, '>= 0.5.5', &block)
-  end
-end
+require "active_support/testing/autorun"
+require "active_support/testing/method_call_assertions"
+
+ENV["NO_RELOAD"] = "1"
+require "active_support"
+
+Thread.abort_on_exception = true
 
 # Show backtraces for deprecated behavior for quicker cleanup.
 ActiveSupport::Deprecation.debug = true
+
+# Default to old to_time behavior but allow running tests with new behavior
+ActiveSupport.to_time_preserves_timezone = ENV["PRESERVE_TIMEZONES"] == "1"
+
+# Disable available locale checks to avoid warnings running the test suite.
+I18n.enforce_available_locales = false
+
+class ActiveSupport::TestCase
+  include ActiveSupport::Testing::MethodCallAssertions
+
+  # Skips the current run on Rubinius using Minitest::Assertions#skip
+  private def rubinius_skip(message = "")
+    skip message if RUBY_ENGINE == "rbx"
+  end
+
+  # Skips the current run on JRuby using Minitest::Assertions#skip
+  private def jruby_skip(message = "")
+    skip message if defined?(JRUBY_VERSION)
+  end
+
+  def frozen_error_class
+    Object.const_defined?(:FrozenError) ? FrozenError : RuntimeError
+  end
+end

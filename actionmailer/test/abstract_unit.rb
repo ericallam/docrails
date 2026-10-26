@@ -1,49 +1,47 @@
-require 'test/unit'
+# frozen_string_literal: true
 
-$:.unshift "#{File.dirname(__FILE__)}/../lib"
-require 'action_mailer'
-require 'action_mailer/test_case'
+require "active_support/core_ext/kernel/reporting"
+
+# These are the normal settings that will be set up by Railties
+# TODO: Have these tests support other combinations of these values
+silence_warnings do
+  Encoding.default_internal = Encoding::UTF_8
+  Encoding.default_external = Encoding::UTF_8
+end
+
+module Rails
+  def self.root
+    File.expand_path("..", __dir__)
+  end
+end
+
+require "active_support/testing/autorun"
+require "active_support/testing/method_call_assertions"
+require "action_mailer"
+require "action_mailer/test_case"
+
+# Emulate AV railtie
+require "action_view"
+ActionMailer::Base.include(ActionView::Layouts)
 
 # Show backtraces for deprecated behavior for quicker cleanup.
 ActiveSupport::Deprecation.debug = true
 
-$:.unshift "#{File.dirname(__FILE__)}/fixtures/helpers"
-ActionMailer::Base.template_root = "#{File.dirname(__FILE__)}/fixtures"
+# Disable available locale checks to avoid warnings running the test suite.
+I18n.enforce_available_locales = false
 
-class MockSMTP
-  def self.deliveries
-    @@deliveries
+FIXTURE_LOAD_PATH = File.expand_path("fixtures", __dir__)
+ActionMailer::Base.view_paths = FIXTURE_LOAD_PATH
+
+class ActiveSupport::TestCase
+  include ActiveSupport::Testing::MethodCallAssertions
+
+  # Skips the current run on Rubinius using Minitest::Assertions#skip
+  private def rubinius_skip(message = "")
+    skip message if RUBY_ENGINE == "rbx"
   end
-
-  def initialize
-    @@deliveries = []
+  # Skips the current run on JRuby using Minitest::Assertions#skip
+  private def jruby_skip(message = "")
+    skip message if defined?(JRUBY_VERSION)
   end
-
-  def sendmail(mail, from, to)
-    @@deliveries << [mail, from, to]
-  end
-end
-
-class Net::SMTP
-  def self.start(*args)
-    yield MockSMTP.new
-  end
-end
-
-# Wrap tests that use Mocha and skip if unavailable.
-def uses_mocha(test_name)
-  gem 'mocha', ">=0.5"
-  require 'stubba'
-  yield
-rescue Gem::LoadError
-  $stderr.puts "Skipping #{test_name} tests (Mocha >= 0.5 is required). `gem install mocha` and try again."
-end
-
-def set_delivery_method(delivery_method)
-  @old_delivery_method = ActionMailer::Base.delivery_method
-  ActionMailer::Base.delivery_method = delivery_method
-end
-
-def restore_delivery_method
-  ActionMailer::Base.delivery_method = @old_delivery_method
 end

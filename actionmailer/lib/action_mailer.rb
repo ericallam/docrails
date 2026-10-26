@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 #--
-# Copyright (c) 2004-2007 David Heinemeier Hansson
+# Copyright (c) 2004-2018 David Heinemeier Hansson
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -21,32 +23,40 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
-unless defined?(ActionController)
-  begin
-    $:.unshift "#{File.dirname(__FILE__)}/../../actionpack/lib"
-    require 'action_controller'
-  rescue LoadError
-    require 'rubygems'
-    gem 'actionpack', '>= 1.12.5'
+require "abstract_controller"
+require "action_mailer/version"
+
+# Common Active Support usage in Action Mailer
+require "active_support"
+require "active_support/rails"
+require "active_support/core_ext/class"
+require "active_support/core_ext/module/attr_internal"
+require "active_support/core_ext/string/inflections"
+require "active_support/lazy_load_hooks"
+
+module ActionMailer
+  extend ::ActiveSupport::Autoload
+
+  eager_autoload do
+    autoload :Collector
   end
+
+  autoload :Base
+  autoload :DeliveryMethods
+  autoload :InlinePreviewInterceptor
+  autoload :MailHelper
+  autoload :Parameterized
+  autoload :Preview
+  autoload :Previews, "action_mailer/preview"
+  autoload :TestCase
+  autoload :TestHelper
+  autoload :MessageDelivery
+  autoload :DeliveryJob
 end
 
-require 'action_mailer/vendor'
-require 'tmail'
+autoload :Mime, "action_dispatch/http/mime_type"
 
-require 'action_mailer/base'
-require 'action_mailer/helpers'
-require 'action_mailer/mail_helper'
-require 'action_mailer/quoting'
-require 'action_mailer/test_helper'
-
-require 'net/smtp'
-
-ActionMailer::Base.class_eval do
-  include ActionMailer::Quoting
-  include ActionMailer::Helpers
-
-  helper MailHelper
+ActiveSupport.on_load(:action_view) do
+  ActionView::Base.default_formats ||= Mime::SET.symbols
+  ActionView::Template::Types.delegate_to Mime
 end
-
-silence_warnings { TMail::Encoder.const_set("MAX_LINE_LEN", 200) }

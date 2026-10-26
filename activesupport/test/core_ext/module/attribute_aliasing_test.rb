@@ -1,4 +1,7 @@
-require 'abstract_unit'
+# frozen_string_literal: true
+
+require "abstract_unit"
+require "active_support/core_ext/module/aliasing"
 
 module AttributeAliasing
   class Content
@@ -23,7 +26,7 @@ module AttributeAliasing
   end
 end
 
-class AttributeAliasingTest < Test::Unit::TestCase
+class AttributeAliasingTest < ActiveSupport::TestCase
   def test_attribute_alias
     e = AttributeAliasing::Email.new
 
@@ -43,16 +46,16 @@ class AttributeAliasingTest < Test::Unit::TestCase
     # upper-case attributes, and when people want to alias those names
     # to more sensible ones, everything goes *foof*.
     e = AttributeAliasing::Email.new
-    
+
     assert !e.body?
     assert !e.Data?
-    
+
     e.body = "No, really, this is not a joke."
     assert_equal "No, really, this is not a joke.", e.Data
     assert e.Data?
-    
-    e.Data = "Uppercased methods are teh suck"
-    assert_equal "Uppercased methods are teh suck", e.body
+
+    e.Data = "Uppercased methods are the suck"
+    assert_equal "Uppercased methods are the suck", e.body
     assert e.body?
   end
 end

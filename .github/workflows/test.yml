@@ -1,0 +1,35 @@
+name: YAML/HTML Proofer
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - "*"
+  # Allows you to run this workflow manually from the Actions tab
+  # https://docs.github.com/en/actions/managing-workflow-runs/manually-running-a-workflow
+  workflow_dispatch:
+
+# GITHUB_TOKEN は checkout にしか使わないので、読み取りだけにする
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Download codes from GitHub
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 2
+
+      - name: 💎 Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: 🔧 Build & Test
+        run: |
+          bundle exec rake assets:precompile
+          bundle exec rake test 

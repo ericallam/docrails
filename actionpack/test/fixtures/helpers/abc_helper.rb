@@ -1,5 +1,5 @@
+# frozen_string_literal: true
+
 module AbcHelper
   def bare_a() end
-  def bare_b() end
-  def bare_c() end
 end
